@@ -1,0 +1,367 @@
+<?xml version="1.0"?>
+<glade-interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <widget class="GtkWindow" id="secondarywindow">
+    <property name="title" translatable="yes">TELEOPERATE CAMERAS</property>
+    <child>
+      <widget class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkEventBox" id="eventbox_left">
+            <property name="width_request">320</property>
+            <property name="height_request">240</property>
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkImage" id="image1">
+                <property name="width_request">320</property>
+                <property name="height_request">240</property>
+                <property name="visible">True</property>
+                <property name="stock">gtk-missing-image</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="x">1</property>
+            <property name="y">1</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkEventBox" id="eventbox_right">
+            <property name="width_request">320</property>
+            <property name="height_request">240</property>
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkImage" id="image2">
+                <property name="width_request">320</property>
+                <property name="height_request">240</property>
+                <property name="visible">True</property>
+                <property name="stock">gtk-missing-image</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="x">328</property>
+            <property name="y">1</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="centerCameras_button">
+            <property name="label" translatable="yes">CENTER</property>
+            <property name="width_request">70</property>
+            <property name="height_request">70</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </widget>
+          <packing>
+            <property name="x">497</property>
+            <property name="y">309</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkDrawingArea" id="w_canvas_teleoperate_cameras">
+            <property name="width_request">200</property>
+            <property name="height_request">200</property>
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="x">227</property>
+            <property name="y">251</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="windowTeleoperate">
+    <property name="title" translatable="yes">TELEOPERATE ROBOT</property>
+    <child>
+      <widget class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <property name="extension_events">all</property>
+        <child>
+          <widget class="GtkButton" id="stop_button">
+            <property name="label" translatable="yes">STOP</property>
+            <property name="width_request">75</property>
+            <property name="height_request">53</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip" translatable="yes">W=0 &amp; V=0</property>
+            <property name="image_position">bottom</property>
+          </widget>
+          <packing>
+            <property name="x">262</property>
+            <property name="y">100</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label1">
+            <property name="width_request">28</property>
+            <property name="height_request">28</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">+W</property>
+          </widget>
+          <packing>
+            <property name="y">208</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label2">
+            <property name="width_request">28</property>
+            <property name="height_request">28</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">W-</property>
+          </widget>
+          <packing>
+            <property name="x">179</property>
+            <property name="y">208</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label3">
+            <property name="width_request">28</property>
+            <property name="height_request">28</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">V+</property>
+          </widget>
+          <packing>
+            <property name="x">206</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label4">
+            <property name="width_request">28</property>
+            <property name="height_request">28</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">V-</property>
+          </widget>
+          <packing>
+            <property name="x">206</property>
+            <property name="y">184</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="exitButton">
+            <property name="width_request">80</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip" translatable="yes">EXIT GUI</property>
+            <property name="image_position">bottom</property>
+            <child>
+              <widget class="GtkImage" id="image10">
+                <property name="visible">True</property>
+                <property name="stock">gtk-quit</property>
+                <property name="icon-size">6</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="x">262</property>
+            <property name="y">6</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="yourCodeButton">
+            <property name="width_request">80</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip" translatable="yes">RUN ITERATION CONTROL</property>
+            <child>
+              <widget class="GtkImage" id="image8">
+                <property name="visible">True</property>
+                <property name="stock">gtk-media-play</property>
+                <property name="icon-size">6</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="x">355</property>
+            <property name="y">6</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="stopCodeButton">
+            <property name="width_request">80</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="has_tooltip">True</property>
+            <property name="tooltip" translatable="yes">STOP ITERATION CONTROL</property>
+            <property name="xalign">0.50999999046325684</property>
+            <child>
+              <widget class="GtkImage" id="image9">
+                <property name="visible">True</property>
+                <property name="stock">gtk-media-stop</property>
+                <property name="icon-size">6</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="x">355</property>
+            <property name="y">6</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkCheckButton" id="check_cameras">
+            <property name="label" translatable="yes">Cameras</property>
+            <property name="width_request">84</property>
+            <property name="height_request">23</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">True</property>
+          </widget>
+          <packing>
+            <property name="x">352</property>
+            <property name="y">184</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkCheckButton" id="check_world">
+            <property name="label" translatable="yes">3D World</property>
+            <property name="width_request">84</property>
+            <property name="height_request">23</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">True</property>
+          </widget>
+          <packing>
+            <property name="x">352</property>
+            <property name="y">161</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkCheckButton" id="check_laser">
+            <property name="label" translatable="yes">Laser</property>
+            <property name="width_request">84</property>
+            <property name="height_request">23</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">True</property>
+          </widget>
+          <packing>
+            <property name="x">352</property>
+            <property name="y">208</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label5">
+            <property name="width_request">88</property>
+            <property name="height_request">26</property>
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">WINDOWS</property>
+          </widget>
+          <packing>
+            <property name="x">350</property>
+            <property name="y">137</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkDrawingArea" id="w_canvas_teleoperate">
+            <property name="width_request">200</property>
+            <property name="height_request">200</property>
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="x">2</property>
+            <property name="y">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkCheckButton" id="check_windowDepurate">
+            <property name="label" translatable="yes">Depurate
+Window</property>
+            <property name="width_request">106</property>
+            <property name="height_request">35</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">False</property>
+            <property name="draw_indicator">True</property>
+          </widget>
+          <packing>
+            <property name="x">245</property>
+            <property name="y">184</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="windowLaser">
+    <property name="title" translatable="yes">LASER</property>
+    <child>
+      <widget class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkDrawingArea" id="canvas_laser">
+            <property name="width_request">360</property>
+            <property name="height_request">180</property>
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="x">1</property>
+            <property name="y">1</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="world_window">
+    <property name="title" translatable="yes">3D WORLD</property>
+    <child>
+      <widget class="GtkFixed" id="fixed1">
+        <property name="visible">True</property>
+        <child>
+          <widget class="GtkButton" id="deleteLinesButton">
+            <property name="label" translatable="yes">Delete Lines</property>
+            <property name="width_request">100</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="yalign">0.46000000834465027</property>
+          </widget>
+          <packing>
+            <property name="x">1</property>
+            <property name="y">451</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkDrawingArea" id="world">
+            <property name="width_request">994</property>
+            <property name="height_request">450</property>
+            <property name="visible">True</property>
+          </widget>
+          <packing>
+            <property name="x">1</property>
+            <property name="y">1</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="pioneerCameraButton">
+            <property name="label" translatable="yes">Pioneer View Point</property>
+            <property name="width_request">100</property>
+            <property name="height_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </widget>
+          <packing>
+            <property name="x">100</property>
+            <property name="y">451</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</glade-interface>
