@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<sdf version="1.3">
+  <world name="default">
+    <!-- Faces -->
+    <include>
+      <uri>model://face1</uri>
+      <pose>0 0 0 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://face2</uri>
+      <pose>3 -3 0 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://face3</uri>
+      <pose>-1 -4 0 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://face4</uri>
+      <pose>4 2 0 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://face5</uri>
+      <pose>-4 0 0 0 0 -1.57</pose>
+    </include>
+    <include>
+      <uri>model://face6</uri>
+      <pose>-1 5 0 0 0 -1.57</pose>
+    </include>
+
+    <!-- My robots -->
+    <include>
+      <uri>model://ArDrone</uri>
+      <pose>10 0 0.5 0 0 0</pose>
+    </include>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    
+    <include>
+      <uri>model://rescue_area</uri>
+      <pose>2 0 0 0 0 -1.57</pose>
+    </include>
+
+  </world>
+</sdf>
