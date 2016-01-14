@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<sdf version="1.3">
+  <world name="default">
+    <!-- Arrows -->
+    <include>
+      <uri>model://arrow</uri>
+      <pose>-4 -6 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>2.5 -6 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>9 -6 0 0 0 1.57</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>9 0 0 0 0 3.14</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>2 0 0 0 0 3.14</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>-6 0 0 0 0 1.57</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>-6 5 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>1 5 0 0 0 1.57</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>1 9 0 0 0 3.14</pose>
+    </include>
+    <include>
+      <uri>model://arrow</uri>
+      <pose>-6 9 0 0 0 3.14</pose>
+    </include>
+
+    <!-- My robots -->
+    <include>
+      <uri>model://ArDrone</uri>
+      <pose>-4 -6 0.5 0 0 0</pose>
+    </include>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    
+    <include>
+      <uri>model://simpleWorld</uri>
+    </include>
+
+  </world>
+</sdf>

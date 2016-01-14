@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python /usr/local/share/jderobot/python/introrob_py/main.py $1
