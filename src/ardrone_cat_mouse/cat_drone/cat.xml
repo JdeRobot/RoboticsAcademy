@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<DroneSearch>
+  <cat>
+    <min_hue>0</min_hue>
+    <max_hue>20</max_hue>
+    <min_val>0</min_val>
+    <max_val>255</max_val>
+    <min_sat>0</min_sat>
+    <max_sat>255</max_sat>
+    <min_area>1500</min_area>
+    <max_area>7000</max_area>
+    <min_area_limit>20</min_area_limit>
+    <max_area_limit>60000</max_area_limit>
+    <velX>0.75</velX>
+    <velY>0.5</velY>
+    <velZ>0.5</velZ>
+    <angular_vel>1</angular_vel>
+  </cat>
+</DroneSearch>

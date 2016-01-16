@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<DroneSearch>
+	<Configuration>
+		<path>
+            <beacon>0 0 2</beacon>
+            <beacon>5 0 2</beacon>
+            <beacon>7 3 2</beacon>
+            <beacon>7 5 2</beacon>
+            <beacon>5 6 2</beacon>
+            <beacon>0 6 4</beacon>
+            <beacon>-3 3 4</beacon>
+            <beacon>-3 0 4</beacon>
+		</path>
+        <quadrotor>
+            <max_linear_velocity_mps>2</max_linear_velocity_mps>
+            <dist_threshold_m>1.5</dist_threshold_m>
+            <zdist_threshold_m>0.5</zdist_threshold_m>
+            <xydist_threshold_m>0.7</xydist_threshold_m>
+            <yaw_threshold_rad>0.3</yaw_threshold_rad>
+            <height_offset_m>0</height_offset_m>
+            <max_angular_velocity_rps>0.6</max_angular_velocity_rps>
+            <roll_pitch_thr_rad>0.15</roll_pitch_thr_rad>
+        </quadrotor>
+        <mouse>
+            <preparing_angle_rad>0</preparing_angle_rad>
+            <easy_angle_rad>0.1</easy_angle_rad>
+            <medium_angle_rad>0.5</medium_angle_rad>
+            <hard_angle_rad>1</hard_angle_rad>
+            <preparing_linear_rad>0</preparing_linear_rad>
+            <easy_linear_rad>0.1</easy_linear_rad>
+            <medium_linear_rad>0.3</medium_linear_rad>
+            <hard_linear_rad>1</hard_linear_rad>
+            <preparing_time_usec>0</preparing_time_usec>
+            <easy_time_usec>20000000</easy_time_usec>
+            <medium_time_usec>50000000</medium_time_usec>
+            <hard_time_usec>70000000</hard_time_usec>
+        </mouse>
+	</Configuration>
+</DroneSearch>
