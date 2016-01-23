@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<sdf version="1.3">
+  <world name="default">
+    <!-- Ground -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Turtlebot model -->
+    <include>
+      <uri>model://turtlebotJde2cam</uri>
+    </include>
+
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://simpleWorld</uri>
+    </include>
+
+  </world>
+</sdf>
