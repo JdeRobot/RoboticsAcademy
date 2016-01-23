@@ -21,7 +21,6 @@ from datetime import datetime
 
 time_cycle = 80;
 
-
 class ThreadSensor(threading.Thread):
 
     def __init__(self, sensor, algorithm):

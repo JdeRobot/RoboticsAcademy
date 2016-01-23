@@ -18,7 +18,6 @@
 #
 import threading, time
 from datetime import datetime
-
 time_cycle = 50;
 
 class ThreadGUI(threading.Thread):  
@@ -27,7 +26,7 @@ class ThreadGUI(threading.Thread):
 
         threading.Thread.__init__(self)  
  
-    def run(self):  
+    def run(self):
 
         while(True):
             

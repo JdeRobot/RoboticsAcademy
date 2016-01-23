@@ -140,6 +140,40 @@ class Sensor:
 
         return None
 
+    def getColorImage(self):
+        if self.cameraProxy:
+            self.lock.acquire()
+            img = np.zeros((self.height, self.width,3), np.uint8)
+            img = self.trackImage
+            img.shape = self.trackImage.shape
+            self.lock.release()
+            return img
+        return None
+
+    def setColorImage(self,image):
+        if self.cameraProxy:
+            self.lock.acquire()
+            self.trackImage = image
+            self.trackImage.shape = image.shape
+            self.lock.release()
+
+    def getThresoldImage(self):
+        if self.cameraProxy:
+            self.lock.acquire()
+            img = np.zeros((self.height, self.width,1), np.uint8)
+            img = self.thresoldImage
+            img.shape = self.thresoldImage.shape
+            self.lock.release()
+            return img
+        return None
+
+    def setThresoldImage(self,image):
+        if self.cameraProxy:
+            self.lock.acquire()
+            self.thresoldImage = image
+            self.thresoldImage.shape = image.shape
+            self.lock.release()
+
     def takeoff(self):
         if self.extraProxy:
             self.sendCMDVel(0,0,0,0,0,0)

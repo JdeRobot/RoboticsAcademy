@@ -24,6 +24,7 @@ from gui.teleopWidget import TeleopWidget
 from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
+from gui.colorFilterWidget import  ColorFilterWidget
 
 class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     
@@ -41,14 +42,17 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         
         self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
+        self.colorFilterCheck.stateChanged.connect(self.showColorFilterWidget)
         
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
         
         self.cameraWidget=CameraWidget(self)
         self.sensorsWidget=SensorsWidget(self)
+        self.colorFilterWidget=ColorFilterWidget(self)
 
         self.cameraCommunicator=Communicator()
+        self.colorFilterCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
         self.stopButton.clicked.connect(self.stopClicked)
@@ -66,7 +70,8 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     
     def updateGUI(self):
         self.cameraWidget.imageUpdate.emit()
-        self.sensorsWidget.sensorsUpdate.emit()  
+        self.sensorsWidget.sensorsUpdate.emit()
+        self.colorFilterWidget.imageUpdate.emit()
     
     def playClicked(self):
         if self.record == True:
@@ -110,7 +115,16 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
             
     def closeCameraWidget(self):
         self.cameraCheck.setChecked(False)
-        
+
+    def showColorFilterWidget(self,state):
+        if state == QtCore.Qt.Checked:
+            self.colorFilterWidget.show()
+        else:
+            self.colorFilterWidget.close()
+
+    def closeColorFilterWidget(self):
+        self.colorFilterCheck.setChecked(False)
+
     def showSensorsWidget(self,state):
         if state == QtCore.Qt.Checked:
             self.sensorsWidget.show()           
