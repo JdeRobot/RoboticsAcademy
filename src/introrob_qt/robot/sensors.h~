@@ -6,7 +6,7 @@
 #include <Ice/Ice.h>
 #include <IceUtil/IceUtil.h>
 
-#include <jderobot/pose3d.h>
+#include <jderobot/encoders.h>
 #include <jderobot/camera.h>
 #include <jderobot/laser.h>
 
