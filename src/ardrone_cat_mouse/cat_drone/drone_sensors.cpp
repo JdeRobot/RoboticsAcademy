@@ -42,7 +42,7 @@ void DroneSensors::Update() {
 
 cv::Mat DroneSensors::GetImage() {
 	//jderobot::ImageDataPtr data = cprx->getImageData(colorspaces::ImageRGB8::FORMAT_RGB8.get()->name);
-    jderobot::ImageDataPtr data = cprx->getImageData();
+    jderobot::ImageDataPtr data = cprx->getImageData("RGB8");
 	cv::Mat result;
     result.create(data->description->height,
                   data->description->width,
