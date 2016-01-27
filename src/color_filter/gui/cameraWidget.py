@@ -50,7 +50,7 @@ class CameraWidget(QtGui.QWidget):
         changeCamButton.clicked.connect(self.changeCamera)
         
         self.imgLabel=QtGui.QLabel(self)
-        self.imgLabel.resize(self.IMAGE_COLS_MAX,self.IMAGE_ROWS_MAX)
+        self.imgLabel.resize(640,360)
         self.imgLabel.move(10,5)
         self.imgLabel.show()
         
