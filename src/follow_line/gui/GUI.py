@@ -41,11 +41,9 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def playClicked(self):
         self.sensor.setPlayButton(self.pushButton.isChecked())
         if self.pushButton.isChecked():
-            print "GREEN"
             self.pushButton.setText('RUNNING')
             self.pushButton.setStyleSheet("background-color: green")
         else:
-            print 'RED'
             self.pushButton.setText('STOPPED')
             self.pushButton.setStyleSheet("background-color: red")
 
