@@ -146,9 +146,9 @@ void Sensors::update()
 	if (pose3dON) {
     	pose3ddata = this->p3dprx->getPose3DData();
 	    mutex.lock();
-		robotx = pose3ddata->x;
-		roboty = pose3ddata->y;
-		//robottheta = pose3ddata->robottheta;
+		robotx = pose3ddata->robotx;
+		roboty = pose3ddata->roboty;
+		robottheta = pose3ddata->robottheta;
 	    mutex.unlock();
 	}
 
