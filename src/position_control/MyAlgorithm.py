@@ -28,4 +28,3 @@ class MyAlgorithm():
 
     def execute(self):
         # Add your code here
-        self.actualBeacon=self.getNextBeacon()
