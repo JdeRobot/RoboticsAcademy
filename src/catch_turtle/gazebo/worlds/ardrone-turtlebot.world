@@ -52,7 +52,7 @@
     </model>
 
     <include>
-      <uri>model://ArDrone</uri>
+      <uri>model://ArDrone2</uri>
       <pose>3 1 0.1 0 0 0</pose>
     </include>
 
