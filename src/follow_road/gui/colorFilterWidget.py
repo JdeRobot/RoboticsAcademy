@@ -53,14 +53,43 @@ class ColorFilterWidget(QtGui.QWidget):
 
         if img != None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QtGui.QImage.Format_RGB888)
-            self.imgLabelColor.setPixmap(QtGui.QPixmap.fromImage(image))
+            
+            if img.shape[1] == self.IMAGE_COLS_MAX:
+            	x = 20
+            else:
+            	x=(self.IMAGE_COLS_MAX+20)/2-(img.shape[1]/2)
+            	
+            if img.shape[0] == self.IMAGE_ROWS_MAX:
+            	y = 20
+            else:
+	        y=(self.IMAGE_ROWS_MAX+40)/2-(img.shape[0]/2)
+	        
+            size=QtCore.QSize(img.shape[1],img.shape[0])
+            self.imgLabelColor.move(x,y)
+            self.imgLabelColor.resize(size)
+            self.imgLabelColor.setPixmap(QtGui.QPixmap.fromImage(image))          
 
     def setThresoldImage(self):
         img = self.winParent.getSensor().getThresoldImage()
 
         if img != None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QtGui.QImage.Format_Indexed8)
-            self.imgLabelBlackWhite.setPixmap(QtGui.QPixmap.fromImage(image))
+            
+            if img.shape[1] == self.IMAGE_COLS_MAX:
+            	x = 40 + self.IMAGE_COLS_MAX
+            else:
+            	x= 40 + self.IMAGE_COLS_MAX + ((self.IMAGE_COLS_MAX+20)/2-(img.shape[1]/2))
+            	
+            if img.shape[0] == self.IMAGE_ROWS_MAX:
+            	y = 20
+            else:
+	        y=(self.IMAGE_ROWS_MAX+40)/2-(img.shape[0]/2)   
+	        
+            size=QtCore.QSize(img.shape[1],img.shape[0])
+            self.imgLabelBlackWhite.move(x,y)
+            self.imgLabelBlackWhite.resize(size)
+            self.imgLabelBlackWhite.setPixmap(QtGui.QPixmap.fromImage(image))     	                 
+           
         
     def updateImage(self):
         self.setColorImage()
