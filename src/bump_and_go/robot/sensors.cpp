@@ -148,7 +148,32 @@ void Sensors::update()
 	    mutex.lock();
 		robotx = pose3ddata->x;
 		roboty = pose3ddata->y;
-		//robottheta = pose3ddata->robottheta;
+
+		//theta
+		double magnitude,w,x,y,z,squ,sqx,sqy,sqz;
+		magnitude = sqrt(this->pose3ddata->q0 * this->pose3ddata->q0 + this->pose3ddata->q1 * this->pose3ddata->q1 + this->pose3ddata->q2 * this->pose3ddata->q2 + this->pose3ddata->q3 * this->pose3ddata->q3);
+
+		w = this->pose3ddata->q0 / magnitude;
+		x = this->pose3ddata->q1 / magnitude;
+		y = this->pose3ddata->q2 / magnitude;
+		z = this->pose3ddata->q3 / magnitude;
+
+		squ = w * w;
+		sqx = x * x;
+		sqy = y * y;
+		sqz = z * z;
+
+		double angle;
+
+		angle = atan2( 2 * (x * y + w * z), squ + sqx - sqy - sqz) * 180.0 / M_PI;
+
+		if(angle < 0)
+		{
+		    angle += 360.0;
+		}
+
+		this->robottheta = angle;
+
 	    mutex.unlock();
 	}
 
