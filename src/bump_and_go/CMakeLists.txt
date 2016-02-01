@@ -35,7 +35,7 @@ if (${QT_COMPILE})
         ${easyiceconfig_LIBRARY_DIRS}
     )
 
-    add_executable( introrob_qt main.cpp depuratewindow.cpp MyAlgorithm.cpp
+    add_executable( bump_and_go main.cpp depuratewindow.cpp MyAlgorithm.cpp
 				    robot/actuators.cpp robot/robot.cpp robot/sensors.cpp robot/threadupdaterobot.cpp 
 			        pioneer/pioneer.c pioneer/pioneeropengl.c
 			        gui/gui.cpp gui/stategui.cpp gui/threadupdategui.cpp
@@ -44,7 +44,7 @@ if (${QT_COMPILE})
 			        ${qt_RESOURCES_RCC}
     )
 			       
-    target_link_libraries(introrob_qt
+    target_link_libraries(bump_and_go
         ${CMAKE_THREAD_LIBS_INIT}
         ${OpenCV_LIBRARIES}
 	    ${QT_LIBRARIES_JDE}
