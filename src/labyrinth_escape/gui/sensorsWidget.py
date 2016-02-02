@@ -338,3 +338,4 @@ class SensorsWidget(QtGui.QWidget):
         return compass
 
         
+

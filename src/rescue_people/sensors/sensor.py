@@ -17,6 +17,7 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 import sys, traceback, Ice
+import easyiceconfig as EasyIce
 import jderobot
 import numpy as np
 import threading
@@ -43,7 +44,7 @@ class Sensor:
         self.cmd.angularY=0.0
 
         try:
-            ic = Ice.initialize(sys.argv)
+            ic = EasyIce.initialize(sys.argv)
             properties = ic.getProperties()
             basecamera = ic.propertyToProxy("Introrob.Camera.Proxy")
             self.cameraProxy = jderobot.CameraPrx.checkedCast(basecamera)
@@ -260,3 +261,4 @@ class Sensor:
 
     def isVirtual(self):
         return self.virtualDrone
+

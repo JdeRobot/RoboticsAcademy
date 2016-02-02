@@ -39,18 +39,18 @@ class CameraWidget(QtGui.QWidget):
         
     def initUI(self):
         
-        self.setMinimumSize(660,450)
-        self.setMaximumSize(660,450)
+        self.setMinimumSize(680,500)
+        self.setMaximumSize(680,500)
         
         self.setWindowTitle("Camera")
         changeCamButton=QtGui.QPushButton("Change Camera")
         changeCamButton.resize(170,40)
-        changeCamButton.move(245,400)
+        changeCamButton.move(245,450)
         changeCamButton.setParent(self)
         changeCamButton.clicked.connect(self.changeCamera)
         
         self.imgLabel=QtGui.QLabel(self)
-        self.imgLabel.resize(640,360)
+        self.imgLabel.resize(self.IMAGE_COLS_MAX,self.IMAGE_ROWS_MAX)
         self.imgLabel.move(10,5)
         self.imgLabel.show()
         

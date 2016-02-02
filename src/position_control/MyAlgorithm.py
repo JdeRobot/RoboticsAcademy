@@ -28,3 +28,4 @@ class MyAlgorithm():
 
     def execute(self):
         # Add your code here
+        pass
