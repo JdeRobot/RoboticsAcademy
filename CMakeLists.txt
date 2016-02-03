@@ -100,7 +100,7 @@ SET (CPACK_DEBIAN_PACKAGE_SECTION "net")
 dpkg_arch(CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
 
 SET (CPACK_MONOLITHIC_INSTALL ON)
-SET(CPACK_DEBIAN_PACKAGE_DEPENDS "git, cmake, jderobot")
+SET(CPACK_DEBIAN_PACKAGE_DEPENDS "git, cmake, libgtkgl2.0-dev, libgtkmm-2.4-dev, libglademm-2.4-dev, libgnomecanvasmm-2.6-dev, libgtkglextmm-x11-1.2-dev, libzeroc-ice35-dev, libboost-system1.54-dev, libboost-filesystem1.54-dev, libtinyxml-dev, libssl-dev, freeglut3-dev, libglu1-mesa-dev, libgsl0-dev, libxml++2.6-dev, libopencv-core-dev, libopencv-flann-dev, libopencv-imgproc-dev, libopencv-ml-dev, libopencv-features2d-dev, libopencv-video-dev, libopencv-objdetect-dev, libopencv-contrib-dev, libopencv-gpu-dev, libopencv-legacy-dev, libopencv-dev, jderobot")
 
 SET (CPACK_PACKAGE_DESCRIPTION_SUMMARY
 "JdeRobot is a software development suite for robotics applications.")
