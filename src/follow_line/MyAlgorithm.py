@@ -1,4 +1,3 @@
-from gevent.select import select
 from sensors import sensor
 import numpy as np
 import threading
