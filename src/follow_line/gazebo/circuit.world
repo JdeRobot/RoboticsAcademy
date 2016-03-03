@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <scene>
+      <grid>false</grid>
+    </scene>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://pista</uri>
+<pose>-160 17 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://f1</uri>
+      <pose>1 0 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>
