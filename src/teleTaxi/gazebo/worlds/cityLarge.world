@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="cityLarge">
+    <!-- My city -->
+    <include>
+      <uri>model://cityLarge</uri>
+    </include>
+    <!-- My robots -->
+    <include>
+      <uri>model://yellowTaxi</uri>
+      <pose>0 0 0.5 0 0 0</pose>
+    </include>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+  </world>
+</sdf>
