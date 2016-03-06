@@ -31,6 +31,11 @@ class Sensor:
     MAX_LINZ  = 0.3
     MAX_ANGZ  = 0.4
 
+    MAX_LINX_SIM  = 2.0
+    MAX_LINY_SIM  = 2.0
+    MAX_LINZ_SIM  = 2.0
+    MAX_ANGZ_SIM  = 2.0
+
     def __init__(self):
         self.lock = threading.Lock()
 
@@ -198,7 +203,29 @@ class Sensor:
 
     def sendCMDVel(self,vx,vy,vz,yaw,roll,pitch):
         cmd=jderobot.CMDVelData()
+
         if self.isVirtual() == True:
+
+            if vx > self.MAX_LINX_SIM:
+                vx = self.MAX_LINX_SIM
+            elif vx < -self.MAX_LINX_SIM:
+                vx = -self.MAX_LINX_SIM
+
+            if vy > self.MAX_LINY_SIM:
+                vy = self.MAX_LINY_SIM
+            elif vy < -self.MAX_LINY_SIM:
+                vy = -self.MAX_LINY_SIM
+
+            if vz > self.MAX_LINZ_SIM:
+                vz = self.MAX_LINZ_SIM
+            elif vz < -self.MAX_LINZ_SIM:
+                vz = -self.MAX_LINZ_SIM
+
+            if yaw > self.MAX_ANGZ_SIM:
+                yaw = self.MAX_ANGZ_SIM
+            elif yaw < -self.MAX_ANGZ_SIM:
+                yaw = -self.MAX_ANGZ_SIM
+
             cmd.linearX=vy
             cmd.linearY=vx
             cmd.linearZ=vz
