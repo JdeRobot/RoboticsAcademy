@@ -1,0 +1,8 @@
+jderobot-teachingrobotics (0.1.2) unstable; urgency=low
+
+  * release 0.1.2
+  * [issue #25] Added the uav_viewer configuration file and new ArDrone.world
+  * [issue #26] worlds, models and images for the teletaxi exercise
+  * [issue #37] Added cat_py component
+  
+ -- Francisco Perez <f.perez475@gmail.com>,  Tue, 8 Mar 2016 21:00:00 +0100
