@@ -54,8 +54,8 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         return self.algorithm
 
     def setXYValues(self,newX,newY):
-        self.sensor.setV(-newY)
-        self.sensor.setW(newX)
+        self.sensor.setV(-newY,True)
+        self.sensor.setW(newX,True)
 
     def stopClicked(self):
         self.sensor.setV(0)

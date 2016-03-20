@@ -16,6 +16,8 @@ class Sensor:
             basecameraL = ic.propertyToProxy("FollowLine.CameraLeft.Proxy")
             self.cameraProxyL = jderobot.CameraPrx.checkedCast(basecameraL)
 
+            self.robot = properties.getProperty("FolowLine.robot")
+
             if self.cameraProxyL:
                 self.imageLeft = self.cameraProxyL.getImageData("RGB8")
                 self.imageLeft_h= self.imageLeft.description.height
@@ -42,8 +44,13 @@ class Sensor:
                 print 'Interface for motors not connected'
 
 
-            self.maxSpeedV=100
-            self.maxSpeedW=100
+            if self.robot == 'F1':
+                self.maxSpeedV=30
+                self.maxSpeedW=3
+            else:
+                self.maxSpeedV=100
+                self.maxSpeedW=100
+
 
         except:
             traceback.print_exc()
@@ -101,13 +108,23 @@ class Sensor:
     def isVirtual(self):
         return self.virtualDrone
 
-    def setV(self,v):
-        normalizedV=v*self.maxSpeedV
-        self.motorsProxy.setV(normalizedV)
+    def setV(self,v,percentage=False):
+        myV=v
 
-    def setW(self,w):
-        normalizedW=w*self.maxSpeedW
-        self.motorsProxy.setW(normalizedW)
+        if (percentage or self.robot=='Pioneer'):
+            myV=myV*self.maxSpeedV
+
+        self.motorsProxy.setV(myV)
+
+    def setW(self,w,percentage=False):
+        myW=w
+        if self.robot =='F1':
+            myW=-myW
+
+        if (percentage or self.robot=='Pioneer'):
+            myW=myW*self.maxSpeedW
+
+        self.motorsProxy.setW(myW)
 
 
     def getV(self):
