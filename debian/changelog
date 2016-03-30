@@ -1,3 +1,11 @@
+jderobot-teachingrobotics (0.1.3) unstable; urgency=low
+
+  * release 0.1.3
+  * [issue #30] New exercise obstacle avoidance
+  * Included 3d reconstruction component
+  
+ -- Francisco Perez <f.perez475@gmail.com>,  Fri, 1 Apr 2016 01:15:00 +0100
+
 jderobot-teachingrobotics (0.1.2) unstable; urgency=low
 
   * release 0.1.2
