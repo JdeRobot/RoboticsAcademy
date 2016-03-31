@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <scene>
+      <grid>false</grid>
+    </scene>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://pistaSimple</uri>
+	<pose>-160 17 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://f1</uri>
+      <pose>1 0 0 0 0 0</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>0 -33 0 0 0 0</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>-40 -13 0 0 0 -1.54</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>-59 6 0 0 0 1.54</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>-90 21 0 0 0 -1.54</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>-153 35 0 0 0 2.79</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>-66 42 0 0 0 1.54</pose>
+    </include>
+	<include>
+      <uri>model://f1_dummy</uri>
+      <pose>-4 59 0 0 0 0.785</pose>
+    </include>
+  </world>
+</sdf>
