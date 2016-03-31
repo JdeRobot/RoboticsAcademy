@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/frivas/devel/JdeRobot-TeachingRobotics/src/3d_reconstruction/sensors/sensor.py", line 54, in __init__
+    self.viewerProxy = jderobot.VisualizationPrx.checkedCast(baseViewer)
+  File "/usr/lib/python2.7/jderobot/visualization_ice.py", line 524, in checkedCast
+    return _M_jderobot.VisualizationPrx.ice_checkedCast(proxy, '::jderobot::Visualization', facetOrCtx, _ctx)
+ConnectionRefusedException: Ice.ConnectionRefusedException:
+Connection refused
+loading Ice.Config file ./3d_reconstruction.cfg
+Interface for motors connected
