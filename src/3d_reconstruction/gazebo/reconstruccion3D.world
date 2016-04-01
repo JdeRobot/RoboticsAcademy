@@ -8,6 +8,27 @@
         <uri>model://sun</uri>
     </include>
 
+    <light type="spot" name="spot">
+	<pose>1 0 2 0 0 0</pose>
+	<diffuse>.5 .5 .5 1</diffuse>
+	<specular>.1 .1 .1 1</specular>
+	<attenuation>
+		<range>20</range>
+		<linear>0.01</linear>
+		<constant>0.03</constant>
+		<quadratic>0.0</quadratic>
+	</attenuation>	
+	<spot>
+		<inner_angle>0.6</inner_angle>
+		<outer_angle>0.0</outer_angle>
+		<falloff>0.0</falloff>				
+	</spot>
+	<direction>0 0 -1</direction>
+	<cast_shadows>true</cast_shadows>
+		
+    </light> 
+    
+    
     <!-- Pioneer2dx model -->
     <include>
       <uri>model://pioneer2dxJde</uri>
