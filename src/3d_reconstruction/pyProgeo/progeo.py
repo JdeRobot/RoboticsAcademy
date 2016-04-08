@@ -125,24 +125,17 @@ class Progeo():
         outPoint = np.array([p[0]/p[2],p[1]/p[2],1.0]);
         return outPoint
 
-
-
-
-
     def graficToOptical(self,point2d):
         x = point2d[0]
         y = point2d[1]
-        point2d[0]=self.height-1-y
-        point2d[1]=x
-        return point2d
-
+        point = np.array([self.height-1-y,x, point2d[2]])
+        return point
+             
     def opticalToGrafic(self,point2d):
         x = point2d[0]
         y = point2d[1]
-        point2d[0]=y
-        point2d[1]=self.height - 1 - x
-        return point2d
-
+        point = np.array([y,self.height - 1 - x, point2d[2]])
+        return point
 
     def getCameraPosition(self):
         return np.array([-self.RT[2,3],self.RT[1,3],-self.RT[0,3]])
