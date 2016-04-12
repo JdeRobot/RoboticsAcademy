@@ -1,3 +1,10 @@
+jderobot-teachingrobotics (0.1.5) unstable; urgency=low
+
+  * release 0.1.5
+  * Fix Added two missing dependencies
+  
+ -- Francisco Perez <f.perez475@gmail.com>,  Tue, 12 Apr 2016 18:38:00 +0100
+
 jderobot-teachingrobotics (0.1.4) unstable; urgency=low
 
   * release 0.1.4
