@@ -18,30 +18,37 @@
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy1</name>
       <pose>0 -33 0 0 0 0</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy2</name>
       <pose>-40 -13 0 0 0 -1.54</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy3</name>
       <pose>-59 6 0 0 0 1.54</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy4</name>
       <pose>-90 21 0 0 0 -1.54</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy5</name>
       <pose>-153 35 0 0 0 2.79</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy6</name>
       <pose>-66 42 0 0 0 1.54</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
+      <name>f1_dummy7</name>
       <pose>-4 59 0 0 0 0.785</pose>
     </include>
   </world>
