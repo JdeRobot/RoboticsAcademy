@@ -86,6 +86,18 @@ Para emplearlo solo se deben realizar dos acciones:
          return laser
 ```
 
+```
+        laser_vectorized = []
+        for d,a in laser:
+            # (4.2.1) laser into GUI reference system
+            x = d * math.cos(a) * -1
+            y = d * math.sin(a) * -1
+            v = (x,y)
+            laser_vectorized += [v]
+
+        laser_mean = np.mean(laser_vectorized, axis=0)
+```
+
 ### Sistema de coordenadas
 ```
     def absolutas2relativas(x, y, rx, ry, rt):
