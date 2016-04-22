@@ -57,6 +57,8 @@ insertar la lógica de control.
 * sensor.getRobotY() - para lbtener la posición del robot
 * sensor.getRobotTheta() - para obtener la orientacion del robot con 
   respecto al mapa
+* sensor.getLaserData() - para obtener los datos del sensor laser
+  se compone de 180 pares de valores: (0-180º distancia en milimetos)
 * sensor.setV() - para establecer la velocidad lineal
 * sensor.setW() - para establecer la velocidad angular
 
@@ -68,6 +70,35 @@ Para emplearlo solo se deben realizar dos acciones:
    `self.currentTarget=self.getNextTarget()`
 2. Marcarlo como visitado cuando sea preciso:
    `self.currentTarget.setReached(True)`
+
+
+## Conversion de tipos
+### Laser
+```
+    laser_data = self.sensor.getLaserData()
+
+    def parse_laser_data(laser_data):
+        laser = []
+        for i in range(laser_data.numLaser):
+            dist = laser_data.distanceData[i]/1000.0
+            angle = math.radians(i)
+            laser += [(dist, angle)]
+         return laser
+```
+
+### Sistema de coordenadas
+```
+    def absolutas2relativas(x, y, rx, ry, rt):
+        # Convert to relatives
+        dx = x - rx
+        dy = y - ry
+
+        # Rotate with current angle
+        x = dx*math.cos(-rt) - dy*math.sin(-rt)
+        y = dx*math.sin(-rt) + dy*math.cos(-rt)
+
+	return x,y
+```
 
 
 ## Depuración
