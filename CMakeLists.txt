@@ -103,15 +103,13 @@ SET (CPACK_MONOLITHIC_INSTALL ON)
 SET(CPACK_DEBIAN_PACKAGE_DEPENDS "git, cmake, libgtkgl2.0-dev, libgtkmm-2.4-dev, libglademm-2.4-dev, libgnomecanvasmm-2.6-dev, libgtkglextmm-x11-1.2-dev, libzeroc-ice35-dev, libboost-system1.54-dev, libboost-filesystem1.54-dev, libtinyxml-dev, libssl-dev, freeglut3-dev, libglu1-mesa-dev, libgsl0-dev, libxml++2.6-dev, libopencv-core-dev, libopencv-flann-dev, libopencv-imgproc-dev, libopencv-ml-dev, libopencv-features2d-dev, libopencv-video-dev, libopencv-objdetect-dev, libopencv-contrib-dev, libopencv-gpu-dev, libopencv-legacy-dev, libopencv-dev, python-gnome2, python-docutils, jderobot")
 
 SET (CPACK_PACKAGE_DESCRIPTION_SUMMARY
-"JdeRobot is a software development suite for robotics applications.")
+"Exercises for teaching Robotics and Computer Vision with JdeRobot")
 SET (CPACK_PACKAGE_DESCRIPTION
-"JdeRobot is a software development suite for robotics applications,
- written in C++ language.
- It provides a programming environment where the robot control program is made
- up of a collection of several concurrent asynchronous threads named schemas.
- It is based on JDE cognitive architecture for autonomous robots.
- .
- Get source from https://github.com/RoboticsURJC/JdeRobot
+"Collection of exercises for teaching Robotics and Computer Vision 
+with JdeRobot and Gazebo. It includes visual control, visual 3D reconstruction
+components, exercises with drones, autonomous robot local navigation for 
+a formula1, autonomous car global navigation, etc.
+ Get source from https://github.com/RoboticsURJC/JdeRobot-TeachingRobotics
  Package created with revision ${GIT_HEAD}")
 
 ## Patch: CPACK_PACKAGE_DESCRIPTION behavior is broken. Always use SUMMARY
