@@ -109,10 +109,10 @@ class Sensor:
             myW = -myW
 
         if (percentage or self.robot == 'Pioneer'):
-            myX = myW * self.maxSpeedW
+            myW = myW * self.maxSpeedW
 
         if self.motorsProxy:
-            print "W: ", myX
+            print "W: ", myW
             self.motorsProxy.setW(myW)
     
     def  getV(self):
