@@ -75,18 +75,18 @@ Hay dos partes en las que se debe insertar el código:
 
 ### API propia
 Este componente, además de relacionarse con el mundo, tiene que relacionarse con el mapa. Para simplificar esto, se tiene un objeto grid con las siguientes funciones:
-*grid.getMap() - devuelve la imagen del mapa que se está mostrando.
-*grid.getDestiny() - devuelve el destino seleccionado mediante la GUI.
-*grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo.
+* grid.getMap() - devuelve la imagen del mapa que se está mostrando.
+* grid.getDestiny() - devuelve el destino seleccionado mediante la GUI.
+* grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo.
 
 La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
-*grid.getVal(x,y) - devuelve el valor en esa posición del grid. 
-*grid.setVal(x,y, val) - establece el valor val en la posición indicada.
+* grid.getVal(x,y) - devuelve el valor en esa posición del grid. 
+* grid.setVal(x,y, val) - establece el valor val en la posición indicada.
 
 Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino una vez encontrado. Los puntos con valor 0 serán ignorados, los valores superiores serán considerados camino. Las funciones para interactuar son:
-*grid.setPathVal(x,y, val) - establece el valor val en la posición indicada.
-*grid.getPathVal(x,y) - devuelve el valor de la posición indicada.
-*grid.setPathFinded() - establece que se ha encontrado el camino para que empiece a pintarse. 
+* grid.setPathVal(x,y, val) - establece el valor val en la posición indicada.
+* grid.getPathVal(x,y) - devuelve el valor de la posición indicada.
+* grid.setPathFinded() - establece que se ha encontrado el camino para que empiece a pintarse. 
 
 
 ## Video demostrativo
