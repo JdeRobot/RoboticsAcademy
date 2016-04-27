@@ -68,8 +68,7 @@ Hay dos partes en las que se debe insertar el código:
 ### API
 * sensor.getRobotX() - para otener la posición del robot
 * sensor.getRobotY() - para otener la posición del robot
-* sensor.quat2Angle() - para obtener la orientacion del robot con 
-  respecto al mapa
+* sensor.quat2Angle() - para obtener la orientacion del robot con respecto al mapa
 * sensor.setV() - para establecer la velocidad lineal
 * sensor.setW() - para establecer la velocidad angular
 
