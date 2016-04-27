@@ -83,8 +83,7 @@ La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la dist
 *grid.getVal(x,y) - devuelve el valor en esa posición del grid. 
 *grid.setVal(x,y, val) - establece el valor val en la posición indicada.
 
-Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino una vez encontrado. Los puntos con valor 0 serán ignorados, los valores superiores serán considerados camino.
-
+Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino una vez encontrado. Los puntos con valor 0 serán ignorados, los valores superiores serán considerados camino. Las funciones para interactuar son:
 *grid.setPathVal(x,y, val) - establece el valor val en la posición indicada.
 *grid.getPathVal(x,y) - devuelve el valor de la posición indicada.
 *grid.setPathFinded() - establece que se ha encontrado el camino para que empiece a pintarse. 
