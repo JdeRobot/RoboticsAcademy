@@ -16,11 +16,11 @@ class MyAlgorithm():
         Call to grid.setPath(path) mathod for setting the path. """
     def generatePath(self):
         print "LOOKING FOR SHORTER PATH"
-       
+        mapIm = self.grid.getMap()      
+        dest = self.grid.getDestiny()   
+        gridPos = self.grid.getPose()
 
-
-    def findPath(self, filteredMap):
-        print "findinfPath"
+        #TODO
 
 
     """ Write in this mehtod the code necessary for going to the desired place,

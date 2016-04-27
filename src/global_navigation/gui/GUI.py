@@ -66,6 +66,21 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def height(self):
         return self.map.height
 
+    def worldWidth(self):
+        return self.map.worldWidth
+
+    def worldHeight(self):
+        return self.map.worldHeight
+
+    def origX(self):
+        return self.map.originX
+
+    def origY(self):
+        return self.map.originY
+
+    def mapAngle(self):
+        return self.map.mapAngle
+
     def getPathClicked(self):
         self.getPathSig.emit()
 
@@ -83,8 +98,8 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def setXYValues(self,newW,newV):
         self.WValue.setText(unicode(newW))
         self.VValue.setText(unicode(-newV))
-        self.sensor.setV(-newV)
-        self.sensor.setW(newW)
+        self.sensor.setV(-newV, True)
+        self.sensor.setW(newW, True)
 
     def closeColorFilterWidget(self):
         self.colorFilter.setChecked(False)

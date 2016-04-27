@@ -31,6 +31,11 @@ import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
+
+    if len(sys.argv) < 2:
+        print >> sys.stderr, 'ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]'
+        sys.exit(-1)
+
     sensor = Sensor();
     app = QtGui.QApplication(sys.argv)
     frame = MainWindow()
@@ -38,7 +43,7 @@ if __name__ == '__main__':
     sensor.setGetPathSignal(frame.getPathSig)
     frame.show()
 
-    grid = Grid(frame.width(), frame.height(), sensor.WORLDWIDTH, sensor.WORLDHEIGHT)
+    grid = Grid(frame)
     sensor.setGrid(grid)
     frame.setGrid(grid)
     

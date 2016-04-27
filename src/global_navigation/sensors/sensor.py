@@ -25,9 +25,6 @@ from math import asin, atan2, pi
 
 class Sensor:
 
-    WORLDWIDTH = 500
-    WORLDHEIGHT = 500
-
     def __init__(self):
         self.lock = threading.Lock()
         self.playButton=False
@@ -55,8 +52,8 @@ class Sensor:
             else:
                 print 'Pose3D not connected'
 
-            self.maxSpeedV = 30
-            self.maxSpeedW = 3    
+            self.maxSpeedV = 50
+            self.maxSpeedW = 20   
 
         except:
             traceback.print_exc()
@@ -68,6 +65,8 @@ class Sensor:
         self.grid = grid
         if self.pose3DProxy:
             self.grid.initPose(self.pose.x, self.pose.y, self.angle)
+        else:
+            self.grid.initPose(0, 0, 0)
 
     def quat2Angle(self, qw, qx, qy, qz):
         rotateZa0=2.0*(qx*qy + qw*qz)
@@ -93,11 +92,10 @@ class Sensor:
     def setV(self, v, percentage=False):
         myV = v
 
-        if (percentage or self.robot == 'Pioneer'):
+        if (percentage):
             myV = myV * self.maxSpeedV
 
         if self.motorsProxy:
-            print "V: ", myV
             self.motorsProxy.setV(myV)
         
     def setGetPathSignal(self, signal):
@@ -105,14 +103,11 @@ class Sensor:
 
     def setW(self, w, percentage=False):
         myW = w
-        if self.robot == "F1":
-            myW = -myW
 
-        if (percentage or self.robot == 'Pioneer'):
+        if (percentage):
             myW = myW * self.maxSpeedW
 
         if self.motorsProxy:
-            print "W: ", myW
             self.motorsProxy.setW(myW)
     
     def  getV(self):
@@ -136,6 +131,12 @@ class Sensor:
             return tmp
 
         return None
+
+    def getRobotX(self):
+        self.encodersProxy.getPose3DData().x
+
+    def getRobotY(self):
+        self.encodersProxy.getPose3DData().y
 
     def isPlayButton(self):
         return self.playButton

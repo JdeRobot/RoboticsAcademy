@@ -2,19 +2,17 @@
 #       Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
 #
 
-import sys
+import sys, math
 import threading
 from PyQt4 import QtGui, QtCore
 import cv2
 
 class Map(QtGui.QWidget):
     
-    MAP1 = "resources/images/cityLarge.png"
-    MAP2 = "resources/images/cityMedium.png"
-
     def __init__(self, winParent):
         super(Map, self).__init__()
         self.lock = threading.Lock()
+        self.readConfFile()
         self.parent = winParent        
 
         self.initUI()
@@ -24,8 +22,39 @@ class Map(QtGui.QWidget):
         self.lastPath = None
 
 
+    def readConfFile(self):
+        lines = None
+        for arg in sys.argv:
+            splitedArg = arg.split("=")
+            if (splitedArg[0] == "--mapConfig"):
+                lines = open(splitedArg[1], "r").readlines()
+
+        if not lines:
+            raise Exception("Could not read map config file")
+
+        for line in lines:
+            lineSplit = line.split("=")
+            if (lineSplit[0] == "img"):
+                if (lineSplit[1][-1] == "\n"):
+                    self.mapPath = lineSplit[1][:-1]
+                else:
+                    self.mapPath = lineSplit[1]
+            elif (lineSplit[0] == "worldWidth"):
+                self.worldWidth = int(lineSplit[1])
+            elif (lineSplit[0] == "worldHeight"):
+                self.worldHeight = lineSplit[1]
+            elif (lineSplit[0] == "originX"):
+                self.originX = int(lineSplit[1])
+            elif (lineSplit[0] == "originY"):
+                self.originY = int(lineSplit[1])
+            elif (lineSplit[0] == "angle"):
+                self.mapAngle = int(lineSplit[1]) % 360
+                print "Grados:", self.mapAngle
+
+
     def initUI(self):
-        self.map = cv2.imread(self.MAP1)
+        self.map = cv2.imread(self.mapPath)
+        self.map = cv2.resize(self.map, (400, 400))
         image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1]*self.map.shape[2], QtGui.QImage.Format_RGB888);
         self.pixmap = QtGui.QPixmap.fromImage(image)
         self.height = self.pixmap.height()
@@ -39,7 +68,10 @@ class Map(QtGui.QWidget):
         x = event.pos().x()
         y = event.pos().y()
         print "Destiny: ", x, ", ", y
+        rX, rY = self.parent.grid.gridToWorld(x,y) 
+        print "WORLD: ", rX, ", ", rY
         self.parent.grid.setDestiny(x, y)
+        self.parent.grid.resetPath()
 
 
     def setPainterSettings(self, painter, color, width):
@@ -58,14 +90,21 @@ class Map(QtGui.QWidget):
 
     def paintPosition(self, x, y, angle, img, painter):
         #Compensating the position
-        x = x - 4
+
+        if self.mapAngle >= 0 and self.mapAngle < 90:
+            x = x + 5
+        elif self.mapAngle >= 90 and self.mapAngle < 180:
+            x = x - 5
+            y = y + 3
+        elif self.mapAngle >= 90 and self.mapAngle < 180:
+            y = y + 5
 
         triangle = QtGui.QPolygon()
+        triangle.append(QtCore.QPoint(x-4, y-4))
         triangle.append(QtCore.QPoint(x+4, y-4))
-        triangle.append(QtCore.QPoint(x+4, y+4))
-        triangle.append(QtCore.QPoint(x-5, y))
+        triangle.append(QtCore.QPoint(x, y+5))
         matrix = QtGui.QMatrix()
-        matrix.rotate(-angle)
+        matrix.rotate(-angle + self.mapAngle)
         triangle = matrix.map(triangle)
         center = matrix.map(QtCore.QPoint(x, y))
         xDif = x - center.x()
@@ -102,10 +141,8 @@ class Map(QtGui.QWidget):
         dest = grid.getDestiny()
         path = grid.getPath()
 
-        if (pos == self.lastPos and dest == self.lastDest):
-            if (path != None and self.lastPath != None):
-                if (path.all() == self.lastPath.all()):
-                    return                
+        if (pos == self.lastPos and dest == self.lastDest and not grid.pathFinded):
+            return              
 
         self.lock.acquire()
         copy = self.pixmap.copy()
@@ -115,7 +152,7 @@ class Map(QtGui.QWidget):
             self.setPainterSettings(painter, QtCore.Qt.red, 3)
             self.paintDestiny(painter, dest)
 
-        if path != None:
+        if grid.pathFinded:
             self.setPainterSettings(painter, QtCore.Qt.green, 3)
             self.paintPath(painter, path)
 
@@ -127,4 +164,5 @@ class Map(QtGui.QWidget):
 
         self.lastPos = pos
         self.lastDest = dest
-        self.lastPath = path
+        grid.pathFinded = False
+        #self.lastPath = path
