@@ -122,7 +122,10 @@ class Grid:
 		return tmp
 
 	def getPath(self):
-		return self.path
+		self.lock.acquire()
+		tmp = self.path
+		self.lock.release()
+		return tmp
 
 	def setPathFinded(self):
 		self.pathFinded = True
@@ -134,13 +137,29 @@ class Grid:
 		return self.map
 
 	def getVal(self, x, y):
-		return self.grid[y][x]
+		self.lock.acquire()
+		tmp = self.grid[y][x]
+		self.lock.release()
+		return tmp
 
 	def setVal(self, x, y, val):
+		self.lock.acquire()
 		self.grid[y][x] = val
+		self.lock.release()
 
 	def resetPath(self):
 		self.lock.acquire()
 		self.path = np.zeros([self.gWidth, self.gHeight])
 		self.pathFinded = False
 		self.lock.release()
+
+	def resetGrid(self):
+		self.lock.acquire()
+		self.grid = np.empty([self.gWidth, self.gHeight], float)
+		self.lock.release()
+
+	def getWidth(self):
+		return self.gWidth
+
+	def getHeight(self):
+		return self.gHeight

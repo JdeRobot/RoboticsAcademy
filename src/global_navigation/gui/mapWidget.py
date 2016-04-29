@@ -19,7 +19,6 @@ class Map(QtGui.QWidget):
 
         self.lastPos = None
         self.lastDest = None
-        self.lastPath = None
 
 
     def readConfFile(self):
@@ -72,6 +71,7 @@ class Map(QtGui.QWidget):
         print "WORLD: ", rX, ", ", rY
         self.parent.grid.setDestiny(x, y)
         self.parent.grid.resetPath()
+        self.parent.grid.resetGrid()
 
 
     def setPainterSettings(self, painter, color, width):
@@ -152,9 +152,8 @@ class Map(QtGui.QWidget):
             self.setPainterSettings(painter, QtCore.Qt.red, 3)
             self.paintDestiny(painter, dest)
 
-        if grid.pathFinded:
-            self.setPainterSettings(painter, QtCore.Qt.green, 3)
-            self.paintPath(painter, path)
+        self.setPainterSettings(painter, QtCore.Qt.green, 3)
+        self.paintPath(painter, path)
 
         self.paintPosition(pos[0], pos[1], grid.getAngle(), copy, painter)
 
@@ -165,4 +164,3 @@ class Map(QtGui.QWidget):
         self.lastPos = pos
         self.lastDest = dest
         grid.pathFinded = False
-        #self.lastPath = path

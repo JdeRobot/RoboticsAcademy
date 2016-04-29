@@ -88,6 +88,10 @@ Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino
 * grid.getPathVal(x,y) - devuelve el valor de la posición indicada.
 * grid.setPathFinded() - establece que se ha encontrado el camino para que empiece a pintarse. 
 
+Por último, el objeto grid también ofrece funciones para pasar de coordenadasdel mundo a coordenadas del mapa y viceversa:
+* gridToWorld(gridX, gridY) - recibe las componentes x e y de las coordenadas del mapa y devuelve una tupla con las coordenadas equivalentes en el mundo: (worldX, worldY)
+* worldToGrid(worldX, worldY) - recibe las componentes x e y de las coordenadas del mundo y devulve una tupla con las coordenadas equivalentes en el mapa: (gridX, gridY)
+
 
 ## Video demostrativo
 
