@@ -52,7 +52,7 @@ class Map(QtGui.QWidget):
 
 
     def initUI(self):
-        self.map = cv2.imread(self.mapPath, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        self.map = cv2.imread(self.mapPath, cv2.IMREAD_GRAYSCALE)
         print self.map.shape
         self.map = cv2.resize(self.map, (400, 400))
         image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
