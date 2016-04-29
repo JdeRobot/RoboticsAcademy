@@ -52,9 +52,10 @@ class Map(QtGui.QWidget):
 
 
     def initUI(self):
-        self.map = cv2.imread(self.mapPath)
+        self.map = cv2.imread(self.mapPath, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        print self.map.shape
         self.map = cv2.resize(self.map, (400, 400))
-        image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1]*self.map.shape[2], QtGui.QImage.Format_RGB888);
+        image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
         self.pixmap = QtGui.QPixmap.fromImage(image)
         self.height = self.pixmap.height()
         self.width = self.pixmap.width()
@@ -124,7 +125,7 @@ class Map(QtGui.QWidget):
         points = QtGui.QPolygonF()
         for i in range(path.shape[0]):
             for j in range(path.shape[1]):
-                if path[i][j] == 1:
+                if path[i][j] > 0:
                     points.append(QtCore.QPointF(j, i))
 
         self.setPainterSettings(painter, QtCore.Qt.green, 2)

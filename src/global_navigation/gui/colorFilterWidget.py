@@ -53,7 +53,7 @@ class ColorFilterWidget(QtGui.QWidget, Ui_Form):
         img = self.winParent.grid.map
 
         if img != None:
-            image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QtGui.QImage.Format_RGB888);
+            image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QtGui.QImage.Format_Indexed8)
             self.inputImage.setPixmap(QtGui.QPixmap.fromImage(image))
         else:
             print "image is none"
