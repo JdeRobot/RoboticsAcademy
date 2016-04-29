@@ -75,14 +75,13 @@ Hay dos partes en las que se debe insertar el código:
 
 ### API propia
 Este componente, además de relacionarse con el mundo, tiene que relacionarse con el mapa. Para simplificar esto, se tiene un objeto grid con las siguientes funciones:
-<<<<<<< HEAD
-*grid.getMap() - devuelve la imagen del mapa que se está mostrando. La imagen devuelta será una imagen de 3 canales con valores 0 y 255, donde 0 representa los obstaculos y 255 la carretera. Aunque la imagen tenga 3 canales, para la práctica servirá con usar uno sólo.
-*grid.getDestiny() - devuelve el destino seleccionado mediante la GUI como una tupla (x,y).
-*grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo, también como una tupla (x,y).
+* grid.getMap() - devuelve la imagen del mapa que se está mostrando. La imagen devuelta será una imagen de 3 canales con valores 0 y 255, donde 0 representa los obstaculos y 255 la carretera. Aunque la imagen tenga 3 canales, para la práctica servirá con usar uno sólo.
+* grid.getDestiny() - devuelve el destino seleccionado mediante la GUI como una tupla (x,y).
+* grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo, también como una tupla (x,y).
 
 La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. Los valores de esta rejilla son del tipo float. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
-*grid.getVal(x, y) - devuelve el valor en esa posición del grid. 
-*grid.setVal(x, y, val) - establece el valor val en la posición indicada.
+* grid.getVal(x, y) - devuelve el valor en esa posición del grid. 
+* grid.setVal(x, y, val) - establece el valor val en la posición indicada.
 =======
 * grid.getMap() - devuelve la imagen del mapa que se está mostrando.
 * grid.getDestiny() - devuelve el destino seleccionado mediante la GUI.
