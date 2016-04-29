@@ -82,7 +82,6 @@ Este componente, además de relacionarse con el mundo, tiene que relacionarse co
 La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. Los valores de esta rejilla son del tipo float. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
 * grid.getVal(x, y) - devuelve el valor en esa posición del grid. 
 * grid.setVal(x, y, val) - establece el valor val en la posición indicada.
-=======
 * grid.getMap() - devuelve la imagen del mapa que se está mostrando.
 * grid.getDestiny() - devuelve el destino seleccionado mediante la GUI.
 * grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo.
@@ -90,7 +89,6 @@ La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la dist
 La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
 * grid.getVal(x,y) - devuelve el valor en esa posición del grid. 
 * grid.setVal(x,y, val) - establece el valor val en la posición indicada.
->>>>>>> 0401edd0bbe3e28dc02d6ad3c5248b87b381c9e6
 
 Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino una vez encontrado. Los puntos con valor 0 serán ignorados, los valores superiores serán considerados camino. Las funciones para interactuar son:
 * grid.setPathVal(x,y, val) - establece el valor val en la posición indicada.
