@@ -75,6 +75,15 @@ Hay dos partes en las que se debe insertar el código:
 
 ### API propia
 Este componente, además de relacionarse con el mundo, tiene que relacionarse con el mapa. Para simplificar esto, se tiene un objeto grid con las siguientes funciones:
+<<<<<<< HEAD
+*grid.getMap() - devuelve la imagen del mapa que se está mostrando. La imagen devuelta será una imagen de 3 canales con valores 0 y 255, donde 0 representa los obstaculos y 255 la carretera. Aunque la imagen tenga 3 canales, para la práctica servirá con usar uno sólo.
+*grid.getDestiny() - devuelve el destino seleccionado mediante la GUI como una tupla (x,y).
+*grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo, también como una tupla (x,y).
+
+La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. Los valores de esta rejilla son del tipo float. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
+*grid.getVal(x, y) - devuelve el valor en esa posición del grid. 
+*grid.setVal(x, y, val) - establece el valor val en la posición indicada.
+=======
 * grid.getMap() - devuelve la imagen del mapa que se está mostrando.
 * grid.getDestiny() - devuelve el destino seleccionado mediante la GUI.
 * grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo.
@@ -82,6 +91,7 @@ Este componente, además de relacionarse con el mundo, tiene que relacionarse co
 La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
 * grid.getVal(x,y) - devuelve el valor en esa posición del grid. 
 * grid.setVal(x,y, val) - establece el valor val en la posición indicada.
+>>>>>>> 0401edd0bbe3e28dc02d6ad3c5248b87b381c9e6
 
 Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino una vez encontrado. Los puntos con valor 0 serán ignorados, los valores superiores serán considerados camino. Las funciones para interactuar son:
 * grid.setPathVal(x,y, val) - establece el valor val en la posición indicada.
@@ -93,7 +103,8 @@ Esta clase ofrece también otra rejilla sobre la que deberá apuntarse el camino
 
 
 ## Atribuciones
-* *Copyright (C) 2016 [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) Samuel Rey (@reysam93)*
+* *Copyright (C) 2016 CC-BY-4.0 Samuel Rey (@reysam93)
+Texto original creado por Victor Arribas (@varhub) adaptado para cubrir las necesidades de esta práctica. Copyright (C) 2016 CC-BY-4.0 Victor Arribas*
 
 * *Codigo base realizado por Alberto Martín (@almartinflorido)*
 * *Código de la práctica y  mundo realizado por Samuel Rey*
