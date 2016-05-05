@@ -167,6 +167,8 @@ class Grid:
 
 	def showGrid(self):
 		self.lock.acquire()
-		nCopy = np.dot(self.grid, (1/np.amax(self.grid)))		 
+		maxVal = np.amax(self.grid)
+		if maxVal != 0:
+			nCopy = np.dot(self.grid, (1/maxVal))		 
 		cv2.imshow("Grid Field", nCopy)
 		self.lock.release()
