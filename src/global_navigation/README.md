@@ -38,6 +38,7 @@ En caso de querer ejecutarla sin script se debe:
 - Ejecutar la práctica indicándole cual es el archivo de configuración para el mapa:
     python main.py --mapConfig=taxiMap.conf --Ice.Config=teleTaxi.cfg
 
+Además, la práctica puede lanzarse sin lanzar Gazebo. Para esto, simpemente hay que ejecutarla sin el argumento --Ice.Config=teleTaxi.cfg, aunque entonces no se podrá obtener información de los sensores del vehículo, pero se podrá trabajar con la imagen para calcular el campo sin necesidad de tener Gazebo abierto.
 
 ## Cómo realizar la práctica
 Para realizar la práctica se debe editar el fichero MyAlgorithms.py e insertar en él toda la funcionalidad.
@@ -78,6 +79,7 @@ Este componente, además de relacionarse con el mundo, tiene que relacionarse co
 * grid.getMap() - devuelve la imagen del mapa que se está mostrando. La imagen devuelta será una imagen de 3 canales con valores 0 y 255, donde 0 representa los obstaculos y 255 la carretera. Aunque la imagen tenga 3 canales, para la práctica servirá con usar uno sólo.
 * grid.getDestiny() - devuelve el destino seleccionado mediante la GUI como una tupla (x,y).
 * grid.getPose() - devuelve la posición respecto al mapa, no respecto al mundo, también como una tupla (x,y).
+* gird.showGrid() - crea una ventana en la que representa los valores del campo que se le han asignado a la rejilla. Los valores más pequeños tendrán un color más cercano a negro, y se irán haciendo más claros a medida que se trate de valores más grandes. Para la representación se hace una copia del grid y se normalizan sus valores para que queden entre 0 y 1, y se representa después con cv2.imshow().
 
 La clase Grid proporciona además una rejilla, sobre la que ir apuntanto la distancia al destino en ella. Los valores de esta rejilla son del tipo float. El tamaño y las posiciones de la rejilla coinciden con el de la imagen. Para interactuar con ella:
 * grid.getVal(x, y) - devuelve el valor en esa posición del grid. 

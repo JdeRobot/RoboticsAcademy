@@ -22,6 +22,8 @@ class MyAlgorithm():
 
         #TODO
 
+        #Represent the Gradient Field in a window using cv2.imshow
+        self.grid.showGrid()
 
     """ Write in this mehtod the code necessary for going to the desired place,
         once you have generated the shorter path.

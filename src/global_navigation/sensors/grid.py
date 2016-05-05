@@ -1,6 +1,7 @@
 import threading
 import math
 import numpy as np
+import cv2
 
 class Grid:
 	def __init__(self, frame):
@@ -163,3 +164,9 @@ class Grid:
 
 	def getHeight(self):
 		return self.gHeight
+
+	def showGrid(self):
+		self.lock.acquire()
+		nCopy = np.dot(self.grid, (1/np.amax(self.grid)))		 
+		cv2.imshow("Grid Field", nCopy)
+		self.lock.release()
