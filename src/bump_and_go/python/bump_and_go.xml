@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualHFSM><SubAutomata id="1" idFather="0"><state initial="true" id="1"><posx>112</posx><posy>126</posy><name>GOING</name><idSubautomataSon>0</idSubautomataSon><code>print "GOING"
+print "angle:", self.getRobotTheta()
+print "random number:", random.random() 
+</code></state><iteration_time>100</iteration_time><variables></variables><functions>def getRobotTheta(self):
+        d = self.EncodersPrx.getPose3DData()
+        theta = math.atan2(2*(d.q0*d.q3 + d.q1*d.q2), 1-2*(d.q2*d.q2 + d.q3*d.q3))
+        return theta</functions></SubAutomata><libraries><lib>math</lib><lib>random</lib><lib>math</lib></libraries><config><iceinterface><nameinterface>Motors</nameinterface><ip>localhost</ip><port>8999</port><interface>Motors</interface></iceinterface><iceinterface><nameinterface>Encoders</nameinterface><ip>localhost</ip><port>8998</port><interface>Pose3D</interface></iceinterface><iceinterface><nameinterface>Lasers</nameinterface><ip>localhost</ip><port>8996</port><interface>Laser</interface></iceinterface></config></VisualHFSM>
