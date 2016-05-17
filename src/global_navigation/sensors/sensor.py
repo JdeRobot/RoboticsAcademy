@@ -44,7 +44,7 @@ class Sensor:
                 print 'Motors not connected'
 
             basepose3D = ic.propertyToProxy("TeleTaxi.Pose3D.Proxy")
-            self.pose3DProxy=jderobot.Pose3DPrx.checkedCast(basepose3D)
+            self.pose3DProxy = jderobot.Pose3DPrx.checkedCast(basepose3D)
             if self.pose3DProxy:
                 self.pose = jderobot.Pose3DData()
                 self.angle = self.quat2Angle(self.pose.q0, self.pose.q1, self.pose.q2, self.pose.q3)
@@ -126,17 +126,29 @@ class Sensor:
     def getPose3D(self):
         if self.pose3DProxy:
             self.lock.acquire()
-            tmp=self.pose
+            tmp = self.pose
             self.lock.release()
             return tmp
 
         return None
 
     def getRobotX(self):
-        self.encodersProxy.getPose3DData().x
+        self.lock.acquire()
+        tmp = self.pose.x
+        self.lock.release()
+        return tmp
 
     def getRobotY(self):
-        self.encodersProxy.getPose3DData().y
+        self.lock.acquire()
+        tmp = self.pose.y
+        self.lock.release()
+        return tmp
+
+    def getRobotTheta(self):
+        self.lock.acquire()
+        tmp = self.angle
+        self.lock.release()
+        return tmp        
 
     def isPlayButton(self):
         return self.playButton

@@ -169,6 +169,8 @@ class Grid:
 		self.lock.acquire()
 		maxVal = np.amax(self.grid)
 		if maxVal != 0:
-			nCopy = np.dot(self.grid, (1/maxVal))		 
+			nCopy = np.dot(self.grid, (1/maxVal))
+		else:
+			 nCopy = self.grid
 		cv2.imshow("Grid Field", nCopy)
 		self.lock.release()
