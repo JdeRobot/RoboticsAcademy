@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 #  Copyright (C) 1997-2015 JDE Developers Team
 #
