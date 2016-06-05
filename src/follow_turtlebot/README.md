@@ -5,7 +5,7 @@ In a terminal launch the gazebo simulator:
 gazebo ardrone-turtlebot.world
 
 In other terminal launch the turtlebot robot:
-introrob_qt --Ice.Config=turtlebot.cfg
+kobukiViewer --Ice.Config=turtlebot.cfg
 
 In another terminal lauch the follow_turtlebot component:
 ./follow_turtlebot.py --Ice.Config=follow_turtlebot_conf.cfg
