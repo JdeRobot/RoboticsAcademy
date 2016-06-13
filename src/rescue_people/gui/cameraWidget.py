@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1997-2015 JDE Developers Team
+#  Copyright (C) 1997-2016 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-from PyQt4 import QtGui,QtCore
 
+from PyQt4 import QtGui,QtCore
 
 class CameraWidget(QtGui.QWidget):
     IMAGE_COLS_MAX=640

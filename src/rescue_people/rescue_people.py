@@ -1,7 +1,6 @@
 #!/usr/bin/python
-
 #
-#  Copyright (C) 1997-2015 JDE Developers Team
+#  Copyright (C) 1997-2016 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,7 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
-#       Alberto Martin Florido <almartinflorido@gmail.com>
+#       Eduardo Perdices <eperdices@gsyc.es>
 #
 
 import sys
