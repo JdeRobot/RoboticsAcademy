@@ -12,7 +12,7 @@ sleep 10 # up to 20 for circuit.world
 cd ..
 [ "$1" = "GUI" ] && gzclient &
 
-python main.py --mapConfig=taxiMap.conf --Ice.Config=teleTaxi.cfg
+python glovalNavigation.py --mapConfig=taxiMap.conf --Ice.Config=teleTaxi.cfg
 
 killall gzserver
 [ "$1" = "GUI" ] && killall gzclient
