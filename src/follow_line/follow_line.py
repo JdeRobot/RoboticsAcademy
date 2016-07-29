@@ -23,26 +23,38 @@ import sys
 from PyQt4 import QtCore, QtGui
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from sensors.sensor import Sensor
+from sensors.camera import Camera
+from actuators.motors import Motors
 from sensors.threadSensor import ThreadSensor
+import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
 
 
 
 if __name__ == "__main__":
-    sensor = Sensor()
-    algorithm=MyAlgorithm(sensor)
+    #sensor = Sensor()
+    ic = EasyIce.initialize(sys.argv)
+    cameraL = Camera(ic, "FollowLine.CameraLeft")
+    cameraR = Camera(ic, "FollowLine.CameraRight")
+    motors = Motors (ic, "FollowLine.Motors")
+    algorithm=MyAlgorithm(cameraL)
 
     app = QtGui.QApplication(sys.argv)
     myGUI = MainWindow()
-    myGUI.setSensor(sensor)
+    myGUI.setCameraL(cameraL)
+    myGUI.setCameraR(cameraR)
+    myGUI.setMotors(motors)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 
-    t1 = ThreadSensor(sensor,algorithm)
+    t1 = ThreadSensor(cameraL)
     t1.daemon=True
     t1.start()
+
+    t3 = ThreadSensor(cameraR)
+    t3.daemon=True
+    t3.start()
 
 
     t2 = ThreadGUI(myGUI)
