@@ -1,4 +1,4 @@
-from sensors import sensor
+#from sensors import sensor
 import numpy as np
 import threading
 

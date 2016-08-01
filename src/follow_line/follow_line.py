@@ -23,9 +23,8 @@ import sys
 from PyQt4 import QtCore, QtGui
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from sensors.camera import Camera
+from parallelIce.cameraClient import CameraClient
 from actuators.motors import Motors
-from sensors.threadSensor import ThreadSensor
 import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
@@ -33,10 +32,9 @@ from MyAlgorithm import MyAlgorithm
 
 
 if __name__ == "__main__":
-    #sensor = Sensor()
     ic = EasyIce.initialize(sys.argv)
-    cameraL = Camera(ic, "FollowLine.CameraLeft")
-    cameraR = Camera(ic, "FollowLine.CameraRight")
+    cameraL = CameraClient(ic, "FollowLine.CameraLeft", True)
+    cameraR = CameraClient(ic, "FollowLine.CameraRight", True)
     motors = Motors (ic, "FollowLine.Motors")
     algorithm=MyAlgorithm(cameraL)
 
@@ -47,14 +45,6 @@ if __name__ == "__main__":
     myGUI.setMotors(motors)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
-
-    t1 = ThreadSensor(cameraL)
-    t1.daemon=True
-    t1.start()
-
-    t3 = ThreadSensor(cameraR)
-    t3.daemon=True
-    t3.start()
 
 
     t2 = ThreadGUI(myGUI)

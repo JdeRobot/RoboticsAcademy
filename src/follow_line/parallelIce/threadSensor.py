@@ -25,11 +25,14 @@ time_cycle = 80
 
 class ThreadSensor(threading.Thread):
 
+    #def __init__(self, sensor, stop_event):
     def __init__(self, sensor):
         self.sensor = sensor
+        #threading.Thread.__init__(self, args=stop_event)
         threading.Thread.__init__(self)
 
     def run(self):
+        #while (not stop_event.is_set()):
         while (True):
 
             start_time = datetime.now()

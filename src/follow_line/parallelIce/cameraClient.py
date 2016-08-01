@@ -14,7 +14,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
-#       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
@@ -23,6 +22,7 @@ import jderobot
 import numpy as np
 import threading
 import Ice
+from parallelIce.threadSensor import ThreadSensor
 
 
 class Camera:
@@ -54,11 +54,6 @@ class Camera:
             exit(-1)
 
     def update(self):
-        #self.lock.acquire()
-        self.updateCamera()
-        #self.lock.release()
-
-    def updateCamera(self):
         if hasattr(self,"proxy") and self.proxy:
             image = self.proxy.getImageData(self.imgFormat)
             height = image.description.height
@@ -81,3 +76,29 @@ class Camera:
             return img
 
         return None
+
+
+
+
+class CameraClient:
+    def __init__(self,ic,prefix, start = False):
+        self.camera = Camera(ic,prefix)
+
+        #self.stop_event = threading.Event()
+        #self.thread = ThreadSensor(self.camera, self.stop_event)
+        self.thread = ThreadSensor(self.camera)
+        self.thread.daemon = True
+
+        if start:
+            self.start()
+
+
+    def start(self):
+        #self.stop_event.clear()
+        self.thread.start()
+
+    #def stop(self):
+    #    self.stop_event.set()
+
+    def getImage(self):
+        return self.camera.getImage()
