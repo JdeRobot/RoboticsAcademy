@@ -84,21 +84,22 @@ class CameraClient:
     def __init__(self,ic,prefix, start = False):
         self.camera = Camera(ic,prefix)
 
-        #self.stop_event = threading.Event()
-        #self.thread = ThreadSensor(self.camera, self.stop_event)
-        self.thread = ThreadSensor(self.camera)
+        self.kill_event = threading.Event()
+        self.thread = ThreadSensor(self.camera, self.kill_event)
+        #self.thread = ThreadSensor(self.camera)
         self.thread.daemon = True
 
         if start:
             self.start()
 
-
+    # if client is stopped yo can not start again, Threading.Thread raised error
     def start(self):
-        #self.stop_event.clear()
+        self.kill_event.clear()
         self.thread.start()
 
-    #def stop(self):
-    #    self.stop_event.set()
+    # if client is stopped yo can not start again
+    def stop(self):
+        self.kill_event.set()
 
     def getImage(self):
         return self.camera.getImage()

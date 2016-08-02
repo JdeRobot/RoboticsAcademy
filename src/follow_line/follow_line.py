@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 1997-2015 JDE Developers Team
+#  Copyright (C) 1997-2016 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
+#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #       Francisco Miguel Rivas Montero <franciscomiguel.rivas@urjc.es>
 #
 
@@ -36,7 +37,7 @@ if __name__ == "__main__":
     cameraL = CameraClient(ic, "FollowLine.CameraLeft", True)
     cameraR = CameraClient(ic, "FollowLine.CameraRight", True)
     motors = Motors (ic, "FollowLine.Motors")
-    algorithm=MyAlgorithm(cameraL)
+    algorithm=MyAlgorithm(cameraL, cameraR, motors)
 
     app = QtGui.QApplication(sys.argv)
     myGUI = MainWindow()
