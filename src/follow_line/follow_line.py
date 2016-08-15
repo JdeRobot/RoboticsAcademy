@@ -25,7 +25,7 @@ from PyQt4 import QtCore, QtGui
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from parallelIce.cameraClient import CameraClient
-from actuators.motors import Motors
+from parallelIce.motors import Motors
 import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
