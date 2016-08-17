@@ -8,6 +8,7 @@ from parallelIce.cmdvel import CMDVel
 from parallelIce.extra import Extra
 from parallelIce.pose3dClient import Pose3DClient
 
+time_cycle = 80
 
 class MyAlgorithm(threading.Thread):
 

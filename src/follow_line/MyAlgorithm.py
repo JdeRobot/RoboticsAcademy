@@ -1,4 +1,3 @@
-#from sensors import sensor
 import numpy as np
 import threading
 import time
@@ -28,7 +27,7 @@ class MyAlgorithm(threading.Thread):
 
 
         # Add your code here
-        print "Runing"
+        print "Running"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
         #self.motors.setV(10)

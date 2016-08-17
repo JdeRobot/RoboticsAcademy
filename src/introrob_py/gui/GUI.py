@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1997-2015 JDE Developers Team
+#  Copyright (C) 1997-2016 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
+#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
 
@@ -100,12 +101,12 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     
     def playClicked(self):
         if self.record == True:
-            self.sensor.record(True)
+            self.extra.record(True)
         self.algorithm.play()
     
     def stopClicked(self):
         if self.record == True:
-            self.sensor.record(False)
+            self.extra.record(False)
         self.algorithm.stop()
         self.rotationDial.setValue(self.altdSlider.maximum()/2)
         self.altdSlider.setValue(self.altdSlider.maximum()/2)
