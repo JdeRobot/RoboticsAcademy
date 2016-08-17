@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1997-2015 JDE Developers Team
+#  Copyright (C) 1997-2016 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -15,6 +15,7 @@
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
+#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
 
@@ -62,11 +63,41 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.takeoff=False
         self.reset=False
       
-    def setSensor(self,sensor):
-        self.sensor=sensor
-           
-    def getSensor(self):
-        return self.sensor
+    def getCamera(self):
+        return self.camera
+
+    def setCamera(self,camera):
+        self.camera = camera
+
+    def getNavData(self):
+        return self.navdata
+
+    def setNavData(self,navdata):
+        self.navdata = navdata
+
+    def getPose3D(self):
+        return self.pose
+
+    def setPose3D(self,pose):
+        self.pose = pose
+
+    def getCMDVel(self):
+        return self.cmdvel
+
+    def setCMDVel(self,cmdvel):
+        self.cmdvel = cmdvel
+
+    def getExtra(self):
+        return self.extra
+
+    def setExtra(self,extra):
+        self.extra = extra
+
+    def setAlgorithm(self, algorithm ):
+        self.algorithm=algorithm
+
+    def getAlgorithm(self):
+        return self.algorithm
     
     def updateGUI(self):
         self.cameraWidget.imageUpdate.emit()
@@ -75,36 +106,36 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     
     def playClicked(self):
         if self.record == True:
-            self.sensor.record(True)
-        self.sensor.setPlayButton(True)
+            self.extra.record(True)
+        self.algorithm.play()
     
     def stopClicked(self):
         if self.record == True:
-            self.sensor.record(False)
-        self.sensor.setPlayButton(False)
+            self.extra.record(False)
+        self.algorithm.stop()
         self.rotationDial.setValue(self.altdSlider.maximum()/2)
         self.altdSlider.setValue(self.altdSlider.maximum()/2)
-        self.sensor.sendCMDVel(0,0,0,0,0,0)
+        self.cmdvel.sendCMDVel(0,0,0,0,0,0)
         self.teleop.stopSIG.emit()
     
     def takeOffClicked(self):
         if(self.takeoff==True):
             self.takeoffButton.setText("Take Off")
-            self.sensor.land()
+            self.extra.land()
             self.takeoff=False
         else:
             self.takeoffButton.setText("Land")    
-            self.sensor.takeoff()
+            self.extra.takeoff()
             self.takeoff=True
 
     def resetClicked(self):
         if self.reset == True:
             self.resetButton.setText("Reset")
-            self.sensor.reset()
+            self.extra.reset()
             self.reset=False
         else:
             self.resetButton.setText("Unreset")
-            self.sensor.reset()
+            self.extra.reset()
             self.reset=True
         
     def showCameraWidget(self,state):
@@ -149,7 +180,14 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def setXYValues(self,newX,newY):
         self.XValue.setText(unicode(newX))
         self.YValue.setText(unicode(newY))
-        self.sensor.setVX(-newY)
-        self.sensor.setVY(-newX)
-        self.sensor.sendVelocities()
+        self.cmdvel.setVX(-newY)
+        self.cmdvel.setVY(-newX)
+        self.cmdvel.sendVelocities()
+
+    def closeEvent(self, event):
+        self.algorithm.kill()
+        self.camera.client.stop()
+        self.navdata.stop()
+        self.pose.stop()
+        event.accept()
 
