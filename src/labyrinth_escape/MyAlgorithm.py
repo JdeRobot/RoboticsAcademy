@@ -31,14 +31,6 @@ class MyAlgorithm(threading.Thread):
         self.lock = threading.Lock()
         threading.Thread.__init__(self, args=self.stop_event)
 
-    def execute(self):
-        # Add your code here
-        tmp = self.navdata.getNavdata()
-        if tmp is not None:
-            print "State: " +str(tmp.state)
-            print "Altitude: " +str(tmp.altd)
-            print "Vehicle: " +str(tmp.vehicle)
-            print "Battery %: " +str(tmp.batteryPercent)
 
     def run (self):
 
@@ -70,5 +62,15 @@ class MyAlgorithm(threading.Thread):
 
     def kill (self):
         self.kill_event.set()
+
+
+    def execute(self):
+        # Add your code here
+        tmp = self.navdata.getNavdata()
+        if tmp is not None:
+            print "State: " +str(tmp.state)
+            print "Altitude: " +str(tmp.altd)
+            print "Vehicle: " +str(tmp.vehicle)
+            print "Battery %: " +str(tmp.batteryPercent)
 
 
