@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1997-2016 JDE Developers Team
+#  Copyright (C) 1997-2015 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,13 +16,13 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-
 from PyQt4 import QtGui, QtCore
 from gui.speedoMeter import SpeedoMeter
 from gui.attitudeIndicator import AttitudeIndicator 
 from PyQt4 import Qt
 import PyQt4.Qwt5 as Qwt
 import math
+
 
 def enumList(enum, sentinel):
     '''
@@ -122,7 +122,7 @@ class SensorsWidget(QtGui.QWidget):
         
         
     def updateSensors(self):
-        pose=self.winParent.getSensor().getPose3D()
+        pose=self.winParent.getPose3D().getPose3D()
 
         if pose != None:
             qw=pose.q0
@@ -134,7 +134,7 @@ class SensorsWidget(QtGui.QWidget):
             self.drawPitchRollValues(self.quatToPitch(qw,qx,qy,qz)*180/math.pi,self.quatToRoll(qw,qx,qy,qz)*180/math.pi)
 
 
-        navdata=self.winParent.getSensor().getNavdata()
+        navdata=self.winParent.getNavData().getNavdata()
 
         if navdata != None:
             self.battery.setValue(navdata.batteryPercent)
