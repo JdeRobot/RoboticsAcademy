@@ -1,4 +1,3 @@
-from docutils.nodes import image
 from sensors import sensor
 import numpy as np
 import threading

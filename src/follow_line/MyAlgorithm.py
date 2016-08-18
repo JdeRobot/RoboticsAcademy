@@ -18,29 +18,6 @@ class MyAlgorithm(threading.Thread):
         self.lock = threading.Lock()
         threading.Thread.__init__(self, args=self.stop_event)
 
-
-
-    def execute(self):
-        #GETTING THE IMAGES
-        imageLeft = self.cameraL.getImage()
-        imageRight = self.cameraR.getImage()
-
-
-        # Add your code here
-        print "Running"
-
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
-        #self.motors.sendVelocities()
-
-
-        #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setRightImageFiltered(imageRight)
-        self.setLeftImageFiltered(imageLeft)
-
-
-
     def setRightImageFiltered(self, image):
         self.lock.acquire()
         self.imageRight=image
@@ -92,4 +69,24 @@ class MyAlgorithm(threading.Thread):
 
     def kill (self):
         self.kill_event.set()
+
+
+    def execute(self):
+        #GETTING THE IMAGES
+        imageLeft = self.cameraL.getImage()
+        imageRight = self.cameraR.getImage()
+
+
+        # Add your code here
+        print "Running"
+
+        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
+        #self.motors.setV(10)
+        #self.motors.setW(5)
+        #self.motors.sendVelocities()
+
+
+        #SHOW THE FILTERED IMAGE ON THE GUI
+        self.setRightImageFiltered(imageRight)
+        self.setLeftImageFiltered(imageLeft)
 

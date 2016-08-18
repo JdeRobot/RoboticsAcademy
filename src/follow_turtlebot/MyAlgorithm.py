@@ -27,17 +27,6 @@ class MyAlgorithm(threading.Thread):
         self.lock = threading.Lock()
         threading.Thread.__init__(self, args=self.stop_event)
 
-    def execute(self):
-       # Add your code here
-
-        input_image = self.camera.getImage()
-        if input_image != None:
-            self.camera.setColorImage(input_image)
-            '''
-            If you want show a thresold image (black and white image)
-            self.camera.setThresoldImage(bk_image)
-            '''
-
     def run (self):
 
         self.stop_event.clear()
@@ -68,3 +57,15 @@ class MyAlgorithm(threading.Thread):
 
     def kill (self):
         self.kill_event.set()
+
+
+    def execute(self):
+       # Add your code here
+
+        input_image = self.camera.getImage()
+        if input_image != None:
+            self.camera.setColorImage(input_image)
+            '''
+            If you want show a thresold image (black and white image)
+            self.camera.setThresoldImage(bk_image)
+            '''
