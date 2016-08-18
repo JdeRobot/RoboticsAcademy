@@ -56,7 +56,7 @@ class CameraWidget(QtGui.QWidget):
         
     def updateImage(self):
 
-        img = self.winParent.getSensor().getImage()
+        img = self.winParent.getCamera().getImage()
         if img != None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QtGui.QImage.Format_RGB888);
         
