@@ -15,6 +15,7 @@
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
+#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
 from PyQt4 import QtGui,QtCore
@@ -34,7 +35,7 @@ class CameraWidget:
 
     def updateImage(self):
 
-        imgLeft = self.winParent.getSensor().getImageLeft()
+        imgLeft = self.winParent.getCameraL().getImage()
         if imgLeft != None:
             resized = cv2.resize(imgLeft,(self.IMG_WIDTH,self.IMG_HEIGHT))
             image = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
@@ -42,7 +43,7 @@ class CameraWidget:
             #self.label.resize(size)
             self.labelImageLeft.setPixmap(QtGui.QPixmap.fromImage(image))
 
-        imgRight = self.winParent.getSensor().getImageRight()
+        imgRight = self.winParent.getCameraR().getImage()
         if imgRight != None:
             resized = cv2.resize(imgRight,(self.IMG_WIDTH,self.IMG_HEIGHT))
             image = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);

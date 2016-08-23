@@ -16,29 +16,42 @@
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
 #       Eduardo Perdices <eperdices@gsyc.es>
+#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
 import sys
 from PyQt4 import QtCore, QtGui
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from sensors.sensor import Sensor
-from sensors.threadSensor import ThreadSensor
+from parallelIce.cameraClient import CameraClient
+from parallelIce.motors import Motors
+from parallelIce.pose3dClient import Pose3DClient
+from parallelIce.laserClient import LaserClient
+import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
+
+
+
 if __name__ == "__main__":
-    sensor = Sensor()
-    algorithm=MyAlgorithm(sensor)
+    ic = EasyIce.initialize(sys.argv)
+    cameraL = CameraClient(ic, "ObstacleAvoidance.CameraLeft", True)
+    cameraR = CameraClient(ic, "ObstacleAvoidance.CameraRight", True)
+    motors = Motors (ic, "ObstacleAvoidance.Motors")
+    pose3d = Pose3DClient(ic, "ObstacleAvoidance.Pose3D", True)
+    laser = LaserClient(ic, "ObstacleAvoidance.Laser", True)
+    algorithm=MyAlgorithm(cameraL, cameraR, pose3d, laser, motors)
 
     app = QtGui.QApplication(sys.argv)
     myGUI = MainWindow()
-    myGUI.setSensor(sensor)
+    myGUI.setCameraL(cameraL)
+    myGUI.setCameraR(cameraR)
+    myGUI.setMotors(motors)
+    myGUI.setPose3D(motors)
+    myGUI.setLaser(motors)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 
-    t1 = ThreadSensor(sensor,algorithm)
-    t1.daemon=True
-    t1.start()
 
     t2 = ThreadGUI(myGUI)
     t2.daemon=True
