@@ -51,6 +51,18 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
            
     def getSensor(self):
         return self.sensor
+
+    def getMotors(self):
+        return self.motors
+
+    def setMotors(self,motors):
+        self.motors=motors
+
+    def setAlgorithm(self, algorithm ):
+        self.algorithm=algorithm
+
+    def getAlgorithm(self):
+        return self.algorithm
     
     def setGrid(self, grid):
         self.grid = grid
@@ -86,20 +98,22 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
 
     def playClicked(self):
         print "play clicked"
-        self.sensor.setPlayButton(True)
+        self.algorithm.play()
     
     def stopClicked(self):
         print "Stop clicked"
-        self.sensor.setPlayButton(False)
-        self.sensor.stop()
+        self.algorithm.stop()
         self.setXYValues(0, 0)
         self.teleop.stopSIG.emit()
 
     def setXYValues(self,newW,newV):
         self.WValue.setText(unicode(newW))
         self.VValue.setText(unicode(-newV))
-        self.sensor.setV(-newV, True)
-        self.sensor.setW(newW, True)
+        myW=-newX*self.motors.getMaxW()
+        myV=-newY*self.motors.getMaxV()
+        self.motors.setV(myV)
+        self.motors.setW(myW)
+        self.motors.sendVelocities()
 
     def closeColorFilterWidget(self):
         self.colorFilter.setChecked(False)

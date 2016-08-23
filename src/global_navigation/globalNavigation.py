@@ -22,9 +22,11 @@
 
 import sys
 from MyAlgorithm import MyAlgorithm
+import easyiceconfig as EasyIce
+from parallelIce.pose3dClient import Pose3D
+from parallelIce.motors import Motors
 from sensors.sensor import Sensor
 from sensors.grid import Grid
-from sensors.threadSensor import ThreadSensor
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
 from PyQt4 import QtGui
@@ -37,26 +39,33 @@ if __name__ == '__main__':
 
     if len(sys.argv) < 2:
         print >> sys.stderr, 'ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]'
-        sys.exit(-1)
+        #sys.exit(-1)
 
-    sensor = Sensor();
+
+    ic = EasyIce.initialize(sys.argv)
+    pose = Pose3D (ic, "Introrob.Pose3D")
+    motors = Motors (ic, "FollowLine.Motors")
+
+
+
     app = QtGui.QApplication(sys.argv)
     frame = MainWindow()
-    frame.setSensor(sensor)
-    sensor.setGetPathSignal(frame.getPathSig)
+    frame.setMotors(motors)
     frame.show()
 
     grid = Grid(frame)
-    sensor.setGrid(grid)
     frame.setGrid(grid)
-    
-    algorithm=MyAlgorithm(sensor, grid)
-    t1 = ThreadSensor(sensor,algorithm)  
-    t1.daemon=True
-    t1.start()
 
+    sensor = Sensor(grid, pose)
+    frame.setSensor(sensor)
+
+    algorithm=MyAlgorithm(grid, sensor, motors)
+    frame.setAlgorithm(algorithm)
+    
+    
     t2 = ThreadGUI(frame)  
     t2.daemon=True
     t2.start()
     
     sys.exit(app.exec_()) 
+
