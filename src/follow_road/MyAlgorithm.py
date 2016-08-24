@@ -63,7 +63,7 @@ class MyAlgorithm(threading.Thread):
        # Add your code here
 
         input_image = self.camera.getImage()
-        if input_image != None:
+        if input_image is not None:
             self.camera.setColorImage(input_image)
             '''
             If you want show a thresold image (black and white image)

@@ -39,6 +39,8 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
     ic = EasyIce.initialize(sys.argv)
+    prop = ic.getProperties()
+    print prop
     cameraCli = CameraClient(ic, "Introrob.Camera", True)
     camera = CameraFilter(cameraCli)
     navdata = NavDataClient(ic, "Introrob.Navdata", True)

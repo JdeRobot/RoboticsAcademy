@@ -51,14 +51,14 @@ class ColorFilterWidget(QtGui.QWidget):
     def setColorImage(self):
         img = self.winParent.getCamera().getColorImage()
 
-        if img != None:
+        if img is not None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QtGui.QImage.Format_RGB888)
             self.imgLabelColor.setPixmap(QtGui.QPixmap.fromImage(image))
 
     def setThresoldImage(self):
         img = self.winParent.getCamera().getThresoldImage()
 
-        if img != None:
+        if img is not None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QtGui.QImage.Format_Indexed8)
             self.imgLabelBlackWhite.setPixmap(QtGui.QPixmap.fromImage(image))
         
