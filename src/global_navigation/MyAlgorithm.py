@@ -9,7 +9,7 @@ from datetime import datetime
 
 time_cycle = 80
 
-class MyAlgorithm():
+class MyAlgorithm(threading.Thread):
 
     def __init__(self, grid, sensor, motors):
         self.sensor = sensor

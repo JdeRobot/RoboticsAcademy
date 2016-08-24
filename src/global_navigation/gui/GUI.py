@@ -109,8 +109,8 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def setXYValues(self,newW,newV):
         self.WValue.setText(unicode(newW))
         self.VValue.setText(unicode(-newV))
-        myW=-newX*self.motors.getMaxW()
-        myV=-newY*self.motors.getMaxV()
+        myW=newW*self.motors.getMaxW()
+        myV=-newV*self.motors.getMaxV()
         self.motors.setV(myV)
         self.motors.setW(myW)
         self.motors.sendVelocities()

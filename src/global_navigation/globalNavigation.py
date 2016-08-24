@@ -43,8 +43,8 @@ if __name__ == '__main__':
 
 
     ic = EasyIce.initialize(sys.argv)
-    pose = Pose3D (ic, "Introrob.Pose3D")
-    motors = Motors (ic, "FollowLine.Motors")
+    pose = Pose3D (ic, "TeleTaxi.Pose3D")
+    motors = Motors (ic, "TeleTaxi.Motors")
 
 
 
@@ -56,7 +56,8 @@ if __name__ == '__main__':
     grid = Grid(frame)
     frame.setGrid(grid)
 
-    sensor = Sensor(grid, pose)
+    sensor = Sensor(grid, pose, True)
+    sensor.setGetPathSignal(frame.getPathSig)
     frame.setSensor(sensor)
 
     algorithm=MyAlgorithm(grid, sensor, motors)

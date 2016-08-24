@@ -47,8 +47,8 @@ if __name__ == "__main__":
     myGUI.setCameraL(cameraL)
     myGUI.setCameraR(cameraR)
     myGUI.setMotors(motors)
-    myGUI.setPose3D(motors)
-    myGUI.setLaser(motors)
+    myGUI.setPose3D(pose3d)
+    myGUI.setLaser(laser)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 

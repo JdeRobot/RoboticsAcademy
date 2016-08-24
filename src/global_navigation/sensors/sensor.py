@@ -23,9 +23,9 @@ from sensors.grid import Grid
 import threading
 
 
-class Sensor:
+class Sensor(threading.Thread):
 
-    def __init__(self, grid, pose3d):
+    def __init__(self, grid, pose3d, start):
         self.grid = grid
         self.pose3d = pose3d
         if self.pose3d.hasproxy():
