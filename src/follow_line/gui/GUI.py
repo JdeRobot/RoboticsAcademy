@@ -32,20 +32,33 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.camera1.updateImage()
         #self.sensorsWidget.sensorsUpdate.emit()
 
-    def getSensor(self):
-        return self.sensor
+    def getCameraL(self):
+        return self.cameraL
 
-    def setSensor(self,sensor):
-        self.sensor=sensor
+    def setCameraL(self,camera):
+        self.cameraL=camera
+
+    def getCameraR(self):
+        return self.cameraR
+
+    def setCameraR(self,camera):
+        self.cameraR=camera
+
+    def getMotors(self):
+        return self.motors
+
+    def setMotors(self,motors):
+        self.motors=motors
 
     def playClicked(self):
-        self.sensor.setPlayButton(self.pushButton.isChecked())
         if self.pushButton.isChecked():
             self.pushButton.setText('RUNNING')
             self.pushButton.setStyleSheet("background-color: green")
+            self.algorithm.play()
         else:
             self.pushButton.setText('STOPPED')
             self.pushButton.setStyleSheet("background-color: red")
+            self.algorithm.stop()
 
     def setAlgorithm(self, algorithm ):
         self.algorithm=algorithm
@@ -54,10 +67,22 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         return self.algorithm
 
     def setXYValues(self,newX,newY):
-        self.sensor.setV(-newY,True)
-        self.sensor.setW(newX,True)
+        #print ("newX: %f, newY: %f" % (newX, newY) )
+        myW=-newX*self.motors.getMaxW()
+        myV=-newY*self.motors.getMaxV()
+        self.motors.setV(myV)
+        self.motors.setW(myW)
+        self.motors.sendVelocities()
+
 
     def stopClicked(self):
-        self.sensor.setV(0)
-        self.sensor.setW(0)
+        self.motors.setV(0)
+        self.motors.setW(0)
+        self.motors.sendVelocities()
         self.teleop.returnToOrigin()
+
+    def closeEvent(self, event):
+        self.algorithm.kill()
+        self.cameraR.stop()
+        self.cameraL.stop()
+        event.accept()

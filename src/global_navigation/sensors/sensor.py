@@ -16,142 +16,57 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-import sys, traceback, Ice
-import easyiceconfig as EasyIce
-import jderobot
-import numpy as np
+
+from parallelIce.threadSensor import ThreadSensor
+from parallelIce.pose3dClient import Pose3D
+from sensors.grid import Grid
 import threading
-from math import asin, atan2, pi
 
-class Sensor:
 
-    def __init__(self):
-        self.lock = threading.Lock()
-        self.playButton=False
+class Sensor(threading.Thread):
 
-        try:
-            ic = EasyIce.initialize(sys.argv)
-            properties = ic.getProperties()
-
-            self.robot = properties.getProperty("TeleTaxi.robot")
-            print "Robot:", self.robot
-
-            motorsBase = ic.propertyToProxy("TeleTaxi.motors.Proxy")
-            self.motorsProxy = jderobot.MotorsPrx.checkedCast(motorsBase)
-            if self.motorsProxy:
-                print 'Motors connected'
-            else:
-                print 'Motors not connected'
-
-            basepose3D = ic.propertyToProxy("TeleTaxi.Pose3D.Proxy")
-            self.pose3DProxy = jderobot.Pose3DPrx.checkedCast(basepose3D)
-            if self.pose3DProxy:
-                self.pose = jderobot.Pose3DData()
-                self.angle = self.quat2Angle(self.pose.q0, self.pose.q1, self.pose.q2, self.pose.q3)
-                print "Pose3D connected"
-            else:
-                print 'Pose3D not connected'
-
-            self.maxSpeedV = 50
-            self.maxSpeedW = 20   
-
-        except:
-            traceback.print_exc()
-            exit()
-            status = 1
-
-      
-    def setGrid(self, grid):
+    def __init__(self, grid, pose3d, start):
         self.grid = grid
-        if self.pose3DProxy:
-            self.grid.initPose(self.pose.x, self.pose.y, self.angle)
+        self.pose3d = pose3d
+        if self.pose3d.hasproxy():
+            self.grid.initPose(self.pose3d.getX(), self.pose3d.getY(), self.pose3d.getYaw())
         else:
             self.grid.initPose(0, 0, 0)
 
-    def quat2Angle(self, qw, qx, qy, qz):
-        rotateZa0=2.0*(qx*qy + qw*qz)
-        rotateZa1=qw*qw + qx*qx - qy*qy - qz*qz
-        rotateZ=0.0
-        if(rotateZa0 != 0.0 and rotateZa1 != 0.0):
-            rotateZ=atan2(rotateZa0,rotateZa1)
-        return rotateZ
+        self.kill_event = threading.Event()
+        self.thread = ThreadSensor(self, self.kill_event)
+        self.thread.daemon = True
+
+        if start:
+            self.start()
+
+    # if client is stopped you can not start again, Threading.Thread raised error
+    def start(self):
+        self.kill_event.clear()
+        self.thread.start()
+
+    # if client is stopped you can not start again
+    def stop(self):
+        self.kill_event.set()
 
 
     def update(self):
-        self.lock.acquire()
-        self.updatePose()
-        self.lock.release()
+        self.pose3d.update()
+        self.grid.updatePose(self.pose3d.getX(), self.pose3d.getY(), self.pose3d.getYaw())
 
-    def updatePose(self):
-        if self.pose3DProxy:
-            self.pose = self.pose3DProxy.getPose3DData()
-            self.angle = self.quat2Angle(self.pose.q0, self.pose.q1, self.pose.q2, self.pose.q3)
-            self.grid.updatePose(self.pose.x, self.pose.y, self.angle)
-
-
-    def setV(self, v, percentage=False):
-        myV = v
-
-        if (percentage):
-            myV = myV * self.maxSpeedV
-
-        if self.motorsProxy:
-            self.motorsProxy.setV(myV)
         
     def setGetPathSignal(self, signal):
         self.getPathSig = signal
 
-    def setW(self, w, percentage=False):
-        myW = w
-
-        if (percentage):
-            myW = myW * self.maxSpeedW
-
-        if self.motorsProxy:
-            self.motorsProxy.setW(myW)
-    
-    def  getV(self):
-        if self.motorsProxy:
-            self.motorsProxy.getV()
-
-    def getW(self):
-        if self.motorsProxy:
-            self.motorsProxy.getW()   
-
-    def stop(self):
-        if self.motorsProxy:
-            self.motorsProxy.setV(0)
-            self.motorsProxy.setW(0)
 
     def getPose3D(self):
-        if self.pose3DProxy:
-            self.lock.acquire()
-            tmp = self.pose
-            self.lock.release()
-            return tmp
-
-        return None
+        return self.pose3d.getPose3D()
 
     def getRobotX(self):
-        self.lock.acquire()
-        tmp = self.pose.x
-        self.lock.release()
-        return tmp
+        return self.pose3d.getX()
 
     def getRobotY(self):
-        self.lock.acquire()
-        tmp = self.pose.y
-        self.lock.release()
-        return tmp
+        return self.pose3d.getY()
 
     def getRobotTheta(self):
-        self.lock.acquire()
-        tmp = self.angle
-        self.lock.release()
-        return tmp        
-
-    def isPlayButton(self):
-        return self.playButton
-    
-    def setPlayButton(self,value):
-        self.playButton=value
+        return self.pose3d.Yaw()    

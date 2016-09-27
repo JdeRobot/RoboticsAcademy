@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1997-2016 JDE Developers Team
+#  Copyright (C) 1997-2015 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,19 +16,13 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-
 from PyQt4 import QtGui,QtCore
+
 
 class CameraWidget(QtGui.QWidget):
     IMAGE_COLS_MAX=640
     IMAGE_ROWS_MAX=360    
-    LINX=0.3
-    LINY=0.3
-    LINZ=0.8
-    ANGZ=1.0
-    ANGY=0.0
-    ANGX=0.0    
-    
+
     imageUpdate=QtCore.pyqtSignal()
     
     def __init__(self,winParent):      
@@ -56,8 +50,8 @@ class CameraWidget(QtGui.QWidget):
         
     def updateImage(self):
 
-        img = self.winParent.getSensor().getImage()
-        if img != None:
+        img = self.winParent.getCamera().getImage()
+        if img is not None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QtGui.QImage.Format_RGB888);
         
             if img.shape[1]==self.IMAGE_COLS_MAX:
@@ -78,5 +72,5 @@ class CameraWidget(QtGui.QWidget):
         self.winParent.closeCameraWidget()
 
     def changeCamera(self):
-        self.winParent.getSensor().toggleCam()
+        self.winParent.getExtra().toggleCam()
         

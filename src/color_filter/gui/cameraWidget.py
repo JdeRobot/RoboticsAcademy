@@ -56,8 +56,8 @@ class CameraWidget(QtGui.QWidget):
         
     def updateImage(self):
 
-        img = self.winParent.getSensor().getImage()
-        if img != None:
+        img = self.winParent.getCamera().getImage()
+        if img is not None:
             image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QtGui.QImage.Format_RGB888);
         
             if img.shape[1]==self.IMAGE_COLS_MAX:
@@ -78,5 +78,5 @@ class CameraWidget(QtGui.QWidget):
         self.winParent.closeCameraWidget()
 
     def changeCamera(self):
-        self.winParent.getSensor().toggleCam()
+        self.winParent.getExtra().toggleCam()
         

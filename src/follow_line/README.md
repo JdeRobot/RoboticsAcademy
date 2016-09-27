@@ -38,7 +38,7 @@ Para realizar la práctica se debe editar el fichero MyAlgorithms.py e
 insertar la lógica de control.
 
 ### Dónde insertar el código
-[MyAlgorithm.py](MyAlgorithm.py#L22)
+[MyAlgorithm.py](MyAlgorithm.py#L74)
 ```
     def execute(self):
         #GETTING THE IMAGES
@@ -58,9 +58,9 @@ insertar la lógica de control.
 ```
 
 ### API
-* sensor.getImageLeft() - para obtener la imagen izquierda del par estéreo
-* sensor.setV() - para establecer la velocidad lineal
-* sensor.setW() - para establecer la velocidad angular
+* cameraL.getImage() - para obtener la imagen izquierda del par estéreo
+* motors.setV() - para establecer la velocidad lineal
+* motors.setW() - para establecer la velocidad angular
 * self.setRightImageFiltered() - permite visualizar una imagen de 
   depuración o con información relevante.
   Debe ser una imagen en formato RGB (Tip: np.dstack())

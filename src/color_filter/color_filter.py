@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  Copyright (C) 1997-2015 JDE Developers Team
+#  Copyright (C) 1997-2016 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -16,30 +16,50 @@
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
+#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
 import sys
 from MyAlgorithm import MyAlgorithm
-from sensors.sensor import Sensor
-from sensors.threadSensor import ThreadSensor
+import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
+from parallelIce.cameraClient import CameraClient
+from sensors.cameraFilter import CameraFilter
+from parallelIce.navDataClient import NavDataClient
+from parallelIce.cmdvel import CMDVel
+from parallelIce.extra import Extra
+from parallelIce.pose3dClient import Pose3DClient
 from gui.GUI import MainWindow
 from PyQt4 import QtGui
+
 
 import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
-    sensor = Sensor();
+    ic = EasyIce.initialize(sys.argv)
+    prop = ic.getProperties()
+    print prop
+    cameraCli = CameraClient(ic, "Introrob.Camera", True)
+    camera = CameraFilter(cameraCli)
+    navdata = NavDataClient(ic, "Introrob.Navdata", True)
+    pose = Pose3DClient(ic, "Introrob.Pose3D", True)
+    cmdvel = CMDVel(ic, "Introrob.CMDVel")
+    extra = Extra(ic, "Introrob.Extra")
+
+    algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
+
+
     app = QtGui.QApplication(sys.argv)
     frame = MainWindow()
-    frame.setSensor(sensor)
+    frame.setCamera(camera)
+    frame.setNavData(navdata)
+    frame.setPose3D(pose)
+    frame.setCMDVel(cmdvel)
+    frame.setExtra(extra)
+    frame.setAlgorithm(algorithm)
     frame.show()
-    algorithm=MyAlgorithm(sensor)
-    t1 = ThreadSensor(sensor,algorithm)  
-    t1.daemon=True
-    t1.start()
 
     t2 = ThreadGUI(frame)  
     t2.daemon=True

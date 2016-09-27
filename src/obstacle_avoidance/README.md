@@ -42,7 +42,7 @@ Para realizar la práctica se debe editar el fichero MyAlgorithms.py e
 insertar la lógica de control.
 
 ### Dónde insertar el código
-[MyAlgorithm.py](MyAlgorithm.py#L49)
+[MyAlgorithm.py](MyAlgorithm.py#L121)
 ```
     def execute(self):
         self.currentTarget=self.getNextTarget()
@@ -53,14 +53,14 @@ insertar la lógica de control.
 ```
 
 ### API
-* sensor.getRobotX() - para lbtener la posición del robot
-* sensor.getRobotY() - para lbtener la posición del robot
-* sensor.getRobotTheta() - para obtener la orientacion del robot con 
+* pose3d.getX() - para obtener la posición del robot
+* pose3d.getY() - para obtener la posición del robot
+* pose3d.getYaw() - para obtener la orientacion del robot con 
   respecto al mapa
-* sensor.getLaserData() - para obtener los datos del sensor laser
+* laser.getLaserData() - para obtener los datos del sensor laser
   se compone de 180 pares de valores: (0-180º distancia en milimetos)
-* sensor.setV() - para establecer la velocidad lineal
-* sensor.setW() - para establecer la velocidad angular
+* motors.setV() - para establecer la velocidad lineal
+* motors.setW() - para establecer la velocidad angular
 
 
 ### API propia
@@ -75,7 +75,7 @@ Para emplearlo solo se deben realizar dos acciones:
 ## Conversion de tipos
 ### Laser
 ```
-    laser_data = self.sensor.getLaserData()
+    laser_data = self.laser.getLaserData()
 
     def parse_laser_data(laser_data):
         laser = []
