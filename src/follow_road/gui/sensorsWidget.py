@@ -16,7 +16,7 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import pyqtSignal
 #from gui.speedoMeter import SpeedoMeter
 #from gui.attitudeIndicator import AttitudeIndicator 
@@ -36,43 +36,96 @@ class SensorsWidget(QWidget):
         self.initUI()
         
     def initUI(self):
+
+        self.mainLayout = QGridLayout()
+        self.horizonLayout = QVBoxLayout()
+        self.horizonData = QGridLayout()
+        self.compassLayout = QVBoxLayout()
+        self.compassData = QGridLayout()
+        self.altLayout = QVBoxLayout()
+        self.altData = QGridLayout()
         
         self.setMinimumSize(660,450)
         self.setMaximumSize(660,450)
         
         self.setWindowTitle("Sensors")
         
-        self.horizon=qfi_ADI.qfi_ADI(self)
-        self.horizon.resize(200,200)
-        self.horizon.move(60,20) 
-        #self.addWidget(self.horizon)
+        
 
        	self.pitchLabel=QLabel('Pitch:',self)
-        self.pitchLabel.move(300,140)
+        #self.pitchLabel.move(300,140)
         self.pitchValueLabel=QLabel('-180',self)
-        self.pitchValueLabel.resize(60,21)
-        self.pitchValueLabel.move(340,140)
+        self.pitchValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
+        #self.pitchValueLabel.resize(60,21)
+        #self.pitchValueLabel.move(340,140)
+
         
         self.rollLabel=QLabel('Roll:',self)
-        self.rollLabel.move(300,160)
+        #self.rollLabel.move(300,160)
         self.rollValueLabel=QLabel('180',self)
-        self.rollValueLabel.resize(60,21)
-        self.rollValueLabel.move(340,160)
+        self.rollValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
+        #self.rollValueLabel.resize(60,21)
+        #self.rollValueLabel.move(340,160)
 
-        self.compass=qfi_HSI.qfi_HSI(self)
-        self.compass.resize(120,120)
-        self.compass.move(280,10)
-        self.compass.show()
+        
 
         self.yawLabel=QLabel('Yaw:',self)
-        self.yawLabel.move(300,180)
+        #self.yawLabel.move(300,180)
         self.yawValueLabel=QLabel('45',self)
-        self.yawValueLabel.resize(60,21)
-        self.yawValueLabel.move(340,180)
+        self.yawValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
+        #self.yawValueLabel.resize(60,21)
+        #self.yawValueLabel.move(340,180)
+
+        self.altLabel=QLabel('Yaw:',self)
+        #self.yawLabel.move(300,180)
+        self.altValueLabel=QLabel('45',self)
+        self.altValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
+        #self.yawValueLabel.resize(60,21)
+        #self.yawValueLabel.move(340,180)
+
+        self.gLabel = QLabel ("\302\272", self)
+        self.mLabel = QLabel ('m', self)
+
+        hSpacer = QSpacerItem(100, 30, QSizePolicy.Ignored, QSizePolicy.Ignored)
+
+
+        self.horizonData.addItem(hSpacer,0,0,1,1, Qt.AlignLeft)
+        self.horizonData.addWidget(self.pitchLabel,0,1,Qt.AlignCenter)
+        self.horizonData.addWidget(self.pitchValueLabel,0,2,Qt.AlignCenter)
+        self.horizonData.addWidget(self.gLabel,0,3,Qt.AlignCenter)
+        self.horizonData.addItem(hSpacer,0,4,1,1, Qt.AlignRight)
+
+        self.compassData.addItem(hSpacer,0,0,1,1, Qt.AlignLeft)
+        self.compassData.addWidget(self.yawLabel,0,1,Qt.AlignCenter)
+        self.compassData.addWidget(self.yawValueLabel,0,2,Qt.AlignCenter)
+        self.compassData.addWidget(self.gLabel,0,3,Qt.AlignCenter)
+        self.compassData.addItem(hSpacer,0,4,1,1, Qt.AlignRight)
+
+        self.altData.addItem(hSpacer,0,0,1,1, Qt.AlignLeft)
+        self.altData.addWidget(self.altdLabel,0,1,Qt.AlignCenter)
+        self.altData.addWidget(self.altdValueLabel,0,2,Qt.AlignCenter)
+        self.altData.addWidget(self.mLabel,0,3,Qt.AlignCenter)
+        self.altData.addItem(hSpacer,0,4,1,1, Qt.AlignLeft)
+
 
         self.altd=qfi_ALT.qfi_ALT(self)
-        self.altd.resize(150,150)
-        self.altd.move(420,50)
+        self.altd.resize(200,200)
+        self.altLayout.addWidget(self.altd)
+        self.altLayout.addLayout(self.altData)
+        #self.altd.move(420,50)
+
+        self.compass=qfi_HSI.qfi_HSI(self)
+        self.compass.resize(200,200)
+        self.compassLayout.addWidget(self.compass)
+        self.compassLayout.addLayout(self.compassData)
+        #self.compass.move(280,10)
+
+        self.horizon=qfi_ADI.qfi_ADI(self)
+        self.horizon.resize(200,200)
+        self.horizonLayout.addWidget(self.horizon)
+        self.horizonLayout.addLayout(self.horizonData)
+        #self.horizon.move(60,20) 
+        #self.addWidget(self.horizon)
 
 
         #self.battery=Qwt.QwtThermo(self)
@@ -82,33 +135,39 @@ class SensorsWidget(QWidget):
         
         #self.battery.move(580,10)
         #self.battery.resize(56,241)
-        self.batteryLabel=QLabel('Battery (%)',self)
-        self.batteryLabel.move(580,251)
+        #self.batteryLabel=QLabel('Battery (%)',self)
+        #self.batteryLabel.move(580,251)
 
         self.velLinX=qfi_SI.qfi_SI(self)
         self.velLinX.resize(150,150)
-        self.velLinX.move(60,270)
+        #self.velLinX.move(60,270)
         self.velXLabel = QLabel('Linear X (m/s)',self)        
-        self.velXLabel.move(95,420)
+        #self.velXLabel.move(95,420)
 
         
         self.velLinY=qfi_SI.qfi_SI(self)
         self.velLinY.resize(150,150)
-        self.velLinY.move(240,270)
+        #self.velLinY.move(240,270)
         self.velYLabel = QLabel('Linear Y (m/s)',self)
-        self.velYLabel.move(275,420)             
+        #self.velYLabel.move(275,420)             
         
         self.velLinZ=qfi_SI.qfi_SI(self)
         self.velLinZ.resize(150,150)
         #self.velLinZ.setLabel("8 m/s")
-        self.velLinZ.move(420,270)
+        #self.velLinZ.move(420,270)
         self.velZLabel = QLabel('Linear Z (m/s)',self)
-        self.velZLabel.move(455,420)
+        #self.velZLabel.move(455,420)
 
-
-        self.__speed_offset = 0.8
-        self.__angle_offset = 0.05
-        self.__gradient_offset = 0.005
+        self.mainLayout.addLayout(self.horizonLayout,0,0,Qt.AlignCenter)
+        self.mainLayout.addLayout(self.compassLayout,0,1,Qt.AlignCenter)
+        self.mainLayout.addLayout(self.altLayout,0,2,Qt.AlignCenter)
+        self.mainLayout.addWidget(self.velLinX,1,0,Qt.AlignCenter)
+        self.mainLayout.addWidget(self.velLinY,1,1,Qt.AlignCenter)
+        self.mainLayout.addWidget(self.velLinZ,1,2,Qt.AlignCenter)
+        self.mainLayout.addWidget(self.velXLabel,2,0,Qt.AlignCenter)
+        self.mainLayout.addWidget(self.velYLabel,2,1,Qt.AlignCenter)
+        self.mainLayout.addWidget(self.velZLabel,2,2,Qt.AlignCenter)
+        self.setLayout(self.mainLayout);
         
         
     def updateSensors(self):
