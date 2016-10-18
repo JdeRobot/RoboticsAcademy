@@ -16,29 +16,18 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-from PyQt4 import QtGui, QtCore
-from gui.speedoMeter import SpeedoMeter
-from gui.attitudeIndicator import AttitudeIndicator 
-from PyQt4 import Qt
-import PyQt4.Qwt5 as Qwt
+from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtCore import pyqtSignal
+#from gui.speedoMeter import SpeedoMeter
+#from gui.attitudeIndicator import AttitudeIndicator 
+from PyQt5 import Qt
+from qfi import qfi_ADI, qfi_ALT, qfi_SI, qfi_HSI
 import math
 
 
-def enumList(enum, sentinel):
-    '''
-    '''
-    return [enum(i) for i in range(sentinel)]
-
-colorGroupList = enumList(
-    Qt.QPalette.ColorGroup, Qt.QPalette.NColorGroups)
-colorRoleList = enumList(
-    Qt.QPalette.ColorRole, Qt.QPalette.NColorRoles)
-handList  = enumList(
-    Qwt.QwtAnalogClock.Hand, Qwt.QwtAnalogClock.NHands)
-
-class SensorsWidget(QtGui.QWidget):
+class SensorsWidget(QWidget):
     
-    sensorsUpdate=QtCore.pyqtSignal()
+    sensorsUpdate=pyqtSignal()
     
     def __init__(self,winParent):      
         super(SensorsWidget, self).__init__()
@@ -53,66 +42,67 @@ class SensorsWidget(QtGui.QWidget):
         
         self.setWindowTitle("Sensors")
         
-        self.horizon=self.__createDial(0)
+        self.horizon=qfi_ADI.qfi_ADI(self)
         self.horizon.resize(200,200)
         self.horizon.move(60,20) 
+        #self.addWidget(self.horizon)
 
-       	self.pitchLabel=QtGui.QLabel('Pitch:',self)
+       	self.pitchLabel=QLabel('Pitch:',self)
         self.pitchLabel.move(300,140)
-        self.pitchValueLabel=QtGui.QLabel('-180',self)
+        self.pitchValueLabel=QLabel('-180',self)
         self.pitchValueLabel.resize(60,21)
         self.pitchValueLabel.move(340,140)
         
-        self.rollLabel=QtGui.QLabel('Roll:',self)
+        self.rollLabel=QLabel('Roll:',self)
         self.rollLabel.move(300,160)
-        self.rollValueLabel=QtGui.QLabel('180',self)
+        self.rollValueLabel=QLabel('180',self)
         self.rollValueLabel.resize(60,21)
         self.rollValueLabel.move(340,160)
 
-        self.compass=self.__createCompass(1)
+        self.compass=qfi_HSI.qfi_HSI(self)
         self.compass.resize(120,120)
         self.compass.move(280,10)
         self.compass.show()
 
-        self.yawLabel=QtGui.QLabel('Yaw:',self)
+        self.yawLabel=QLabel('Yaw:',self)
         self.yawLabel.move(300,180)
-        self.yawValueLabel=QtGui.QLabel('45',self)
+        self.yawValueLabel=QLabel('45',self)
         self.yawValueLabel.resize(60,21)
         self.yawValueLabel.move(340,180)
 
-        self.altd=self.__createDial(2)
+        self.altd=qfi_ALT.qfi_ALT(self)
         self.altd.resize(150,150)
         self.altd.move(420,50)
 
 
-        self.battery=Qwt.QwtThermo(self)
-        self.battery.setMaxValue(100.0)
-        self.battery.setMinValue(0.0)
-        self.battery.setPipeWidth(10)
+        #self.battery=Qwt.QwtThermo(self)
+        #self.battery.setMaxValue(100.0)
+        #self.battery.setMinValue(0.0)
+        #self.battery.setPipeWidth(10)
         
-        self.battery.move(580,10)
-        self.battery.resize(56,241)
-        self.batteryLabel=QtGui.QLabel('Battery (%)',self)
+        #self.battery.move(580,10)
+        #self.battery.resize(56,241)
+        self.batteryLabel=QLabel('Battery (%)',self)
         self.batteryLabel.move(580,251)
 
-        self.velLinX=self.__createDial(1)
+        self.velLinX=qfi_SI.qfi_SI(self)
         self.velLinX.resize(150,150)
         self.velLinX.move(60,270)
-        self.velXLabel = QtGui.QLabel('Linear X (m/s)',self)        
+        self.velXLabel = QLabel('Linear X (m/s)',self)        
         self.velXLabel.move(95,420)
 
         
-        self.velLinY=self.__createDial(1)
+        self.velLinY=qfi_SI.qfi_SI(self)
         self.velLinY.resize(150,150)
         self.velLinY.move(240,270)
-        self.velYLabel = QtGui.QLabel('Linear Y (m/s)',self)
+        self.velYLabel = QLabel('Linear Y (m/s)',self)
         self.velYLabel.move(275,420)             
         
-        self.velLinZ=self.__createDial(1)
+        self.velLinZ=qfi_SI.qfi_SI(self)
         self.velLinZ.resize(150,150)
-        self.velLinZ.setLabel("8 m/s")
+        #self.velLinZ.setLabel("8 m/s")
         self.velLinZ.move(420,270)
-        self.velZLabel = QtGui.QLabel('Linear Z (m/s)',self)
+        self.velZLabel = QLabel('Linear Z (m/s)',self)
         self.velZLabel.move(455,420)
 
 
@@ -137,26 +127,23 @@ class SensorsWidget(QtGui.QWidget):
         navdata=self.winParent.getNavData().getNavdata()
 
         if navdata != None:
-            self.battery.setValue(navdata.batteryPercent)
+            #self.battery.setValue(navdata.batteryPercent)
             self.drawVelocities(navdata.vx,navdata.vy,navdata.vz)
     
   
     def drawYawValues(self,degress):
         value="{0:.2f}".format(degress)
         self.yawValueLabel.setText(unicode(value))
-        self.compass.setValue(degress)
+        self.compass.setHeading(degress)
+        self.compass.viewUpdate.emit()
 
     def drawAltd(self, meters):
 
-        if(meters>=10 and meters<100):
-            self.altd.setValue(meters%10)
-        elif (meters>=100 and meters<1000):
-            self.altd.setValue(meters%100)          
-        else:
-            self.altd.setValue(meters)
+        self.altd.setValue(meters)
+        self.altd.viewUpdate.emit()
 
-        altLabel="{0:.0f}".format(meters)+' m'
-        self.altd.setLabel(altLabel)
+        #altLabel="{0:.0f}".format(meters)+' m'
+        #self.altd.setLabel(altLabel)
 
     def drawPitchRollValues(self,pitch,roll):
         if(pitch>0 and pitch<=90):
@@ -167,8 +154,9 @@ class SensorsWidget(QtGui.QWidget):
         else:
             result=0.0
     
-        self.horizon.setGradient(result)
-        self.horizon.setAngle(-roll)
+        self.horizon.setPitch(pitch)
+        self.horizon.setRoll(-roll)
+        self.horizon.viewUpdate.emit()
         pitchValue="{0:.2f}".format(pitch)
         rollValue="{0:.2f}".format(roll)
         self.pitchValueLabel.setText(unicode(pitchValue))
@@ -179,22 +167,25 @@ class SensorsWidget(QtGui.QWidget):
 
         vx=math.fabs(vx)
         vx/=1000.0
-        self.velLinX.setValue(vx)
+        self.velLinX.setSpeed(vx)
+        self.velLinX.viewUpdate.emit()
         vx=math.fabs(vx)
         vxLabel="{0:.0f}".format(vx)+' m/s'
-        self.velLinX.setLabel(vxLabel)
+        #self.velLinX.setLabel(vxLabel)
         
         vy=math.fabs(vy)
         vy/=1000.0
-        self.velLinY.setValue(vy)
+        self.velLinY.setSpeed(vy)
+        self.velLinY.viewUpdate.emit()
         vyLabel="{0:.0f}".format(vy)+' m/s'
-        self.velLinY.setLabel(vyLabel)
+        #self.velLinY.setLabel(vyLabel)
 
         vz=math.fabs(vz)
         vz/=1000.0
-        self.velLinZ.setValue(vz)
+        self.velLinZ.setSpeed(vz)
+        self.velLinZ.viewUpdate.emit()
         vzLabel="{0:.0f}".format(vz)+' m/s'
-        self.velLinZ.setLabel(vzLabel)
+        #self.velLinZ.setLabel(vzLabel)
         
    
     def quatToRoll(self,qw,qx,qy,qz):
@@ -231,111 +222,6 @@ class SensorsWidget(QtGui.QWidget):
         
     def closeEvent(self, event):
         self.winParent.closeSensorsWidget()
-        
-    def __createDial(self, pos):
-        dial = None
-        if pos == 0:
-            self.__ai = AttitudeIndicator(self)
-            dial = self.__ai
-        elif pos == 1:
-            self.__speedo = SpeedoMeter(self)
-            self.__speedo.setRange(0.0, 8.0)
-            self.__speedo.setLabel("0")
-            self.__speedo.setOrigin(180)
-            self.__speedo.setScaleArc(0.0,270.0)
-            self.__speedo.setScale(-1, 2, 1.0)
-            dial = self.__speedo   
-        elif pos == 2:
-            self.__speedo = SpeedoMeter(self)
-            self.__speedo.setRange(0.0, 10.0)
-            self.__speedo.setLabel("m")
-            self.__speedo.setOrigin(-90)
-            self.__speedo.setScaleArc(0.0,360.0)
-            self.__speedo.setScale(-1, 2, 1)
-            dial = self.__speedo                        
-
-        if dial:
-            dial.setReadOnly(True)
-            dial.scaleDraw().setPenWidth(3)
-            dial.setLineWidth(4)
-            dial.setFrameShadow(Qwt.QwtDial.Sunken)
-
-        return dial    
-    
-    def __createCompass(self, pos):
-
-        palette = Qt.QPalette()
-        for colorRole in colorRoleList:
-            palette.setColor(colorRole, Qt.QColor())
-
-        palette.setColor(
-            Qt.QPalette.Base,
-            self.palette().color(self.backgroundRole()).light(120))
-        palette.setColor(
-            Qt.QPalette.Foreground,
-            palette.color(Qt.QPalette.Base))
-
-        compass = Qwt.QwtCompass(self)
-        compass.setLineWidth(4)
-        if pos < 3:
-            compass.setFrameShadow(Qwt.QwtCompass.Sunken)
-        else:
-            compass.setFrameShadow(Qwt.QwtCompass.Raised)
-
-        if pos == 0:
-            compass.setLabelMap({0.0: "N",
-                                 90.0: "E",
-                                 180.0: "S",
-                                 270.0: "W"})
-            
-            rose = Qwt.QwtSimpleCompassRose(4, 1)
-            compass.setRose(rose)
-            compass.setNeedle(
-                Qwt.QwtCompassWindArrow(Qwt.QwtCompassWindArrow.Style2))
-            compass.setValue(60.0)
-        elif pos == 1:
-            compass.setLabelMap({0.0: "",
-                                 90.0: "",
-                                 180.0: "",
-                                 270.0: ""})
-            
-            compass.setScaleOptions(Qwt.QwtDial.ScaleBackbone
-                        | Qwt.QwtDial.ScaleTicks
-                        | Qwt.QwtDial.ScaleLabel)
-            compass.setScaleTicks(0, 0, 3)
-            
-            compass.setNeedle(Qwt.QwtCompassMagnetNeedle(
-                Qwt.QwtCompassMagnetNeedle.TriangleStyle,
-                Qt.Qt.white,
-                Qt.Qt.red))
-            compass.setValue(220.0)            
- 
-        newPalette = compass.palette()
-        for colorRole in colorRoleList:
-            if palette.color(colorRole).isValid():
-                for colorGroup in colorGroupList:
-                    newPalette.setColor(
-                        colorGroup, colorRole, palette.color(colorRole))
-
-        for colorGroup in colorGroupList:
-            light = newPalette.color(
-                colorGroup, Qt.QPalette.Base).light(170)
-            dark = newPalette.color(
-                colorGroup, Qt.QPalette.Base).dark(170)
-            if compass.frameShadow() == Qwt.QwtDial.Raised:
-                mid = newPalette.color(
-                    colorGroup, Qt.QPalette.Base).dark(110)
-            else:
-                mid = newPalette.color(
-                    colorGroup, Qt.QPalette.Base).light(110)
-
-            newPalette.setColor(colorGroup, Qt.QPalette.Dark, dark)
-            newPalette.setColor(colorGroup, Qt.QPalette.Mid, mid)
-            newPalette.setColor(colorGroup, Qt.QPalette.Light, light)
-
-        compass.setPalette(newPalette)
-        compass.setReadOnly(True)
-        return compass
 
         
 
