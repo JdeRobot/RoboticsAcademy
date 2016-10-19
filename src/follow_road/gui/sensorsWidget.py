@@ -17,10 +17,9 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QVBoxLayout, QSpacerItem, QSizePolicy
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal, Qt
 #from gui.speedoMeter import SpeedoMeter
 #from gui.attitudeIndicator import AttitudeIndicator 
-from PyQt5 import Qt
 from qfi import qfi_ADI, qfi_ALT, qfi_SI, qfi_HSI
 import math
 
@@ -53,38 +52,28 @@ class SensorsWidget(QWidget):
         
 
        	self.pitchLabel=QLabel('Pitch:',self)
-        #self.pitchLabel.move(300,140)
-        self.pitchValueLabel=QLabel('-180',self)
-        self.pitchValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
-        #self.pitchValueLabel.resize(60,21)
-        #self.pitchValueLabel.move(340,140)
-
+        self.pitchValueLabel=QLabel('0',self)
+        self.pitchValueLabel.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+        
         
         self.rollLabel=QLabel('Roll:',self)
-        #self.rollLabel.move(300,160)
-        self.rollValueLabel=QLabel('180',self)
-        self.rollValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
-        #self.rollValueLabel.resize(60,21)
-        #self.rollValueLabel.move(340,160)
-
+        self.rollValueLabel=QLabel('0',self)
+        self.rollValueLabel.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+        
         
 
         self.yawLabel=QLabel('Yaw:',self)
-        #self.yawLabel.move(300,180)
-        self.yawValueLabel=QLabel('45',self)
-        self.yawValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
-        #self.yawValueLabel.resize(60,21)
-        #self.yawValueLabel.move(340,180)
-
-        self.altLabel=QLabel('Yaw:',self)
-        #self.yawLabel.move(300,180)
-        self.altValueLabel=QLabel('45',self)
-        self.altValueLabel.setAlignment(Qt.AlignRight or Qt.AlignTrailing or Qt.AlignVCenter)
-        #self.yawValueLabel.resize(60,21)
-        #self.yawValueLabel.move(340,180)
-
-        self.gLabel = QLabel ("\302\272", self)
-        self.mLabel = QLabel ('m', self)
+        self.yawValueLabel=QLabel('0',self)
+        self.yawValueLabel.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+        
+        self.altLabel=QLabel('Alt:',self)
+        self.altValueLabel=QLabel('0',self)
+        self.altValueLabel.setAlignment(Qt.AlignRight | Qt.AlignTrailing | Qt.AlignVCenter)
+        
+        self.pitchgLabel = QLabel ("\272", self)
+        self.rollgLabel = QLabel ("\272", self)
+        self.yawgLabel = QLabel ("\272", self)
+        self.altmLabel = QLabel ('m', self)
 
         hSpacer = QSpacerItem(100, 30, QSizePolicy.Ignored, QSizePolicy.Ignored)
 
@@ -92,19 +81,22 @@ class SensorsWidget(QWidget):
         self.horizonData.addItem(hSpacer,0,0,1,1, Qt.AlignLeft)
         self.horizonData.addWidget(self.pitchLabel,0,1,Qt.AlignCenter)
         self.horizonData.addWidget(self.pitchValueLabel,0,2,Qt.AlignCenter)
-        self.horizonData.addWidget(self.gLabel,0,3,Qt.AlignCenter)
-        self.horizonData.addItem(hSpacer,0,4,1,1, Qt.AlignRight)
+        self.horizonData.addWidget(self.pitchgLabel,0,3,Qt.AlignCenter)
+        self.horizonData.addWidget(self.rollLabel,0,4,Qt.AlignCenter)
+        self.horizonData.addWidget(self.rollValueLabel,0,5,Qt.AlignCenter)
+        self.horizonData.addWidget(self.rollgLabel,0,6,Qt.AlignCenter)
+        self.horizonData.addItem(hSpacer,0,7,1,1, Qt.AlignRight)
 
         self.compassData.addItem(hSpacer,0,0,1,1, Qt.AlignLeft)
         self.compassData.addWidget(self.yawLabel,0,1,Qt.AlignCenter)
         self.compassData.addWidget(self.yawValueLabel,0,2,Qt.AlignCenter)
-        self.compassData.addWidget(self.gLabel,0,3,Qt.AlignCenter)
+        self.compassData.addWidget(self.yawgLabel,0,3,Qt.AlignCenter)
         self.compassData.addItem(hSpacer,0,4,1,1, Qt.AlignRight)
 
         self.altData.addItem(hSpacer,0,0,1,1, Qt.AlignLeft)
-        self.altData.addWidget(self.altdLabel,0,1,Qt.AlignCenter)
-        self.altData.addWidget(self.altdValueLabel,0,2,Qt.AlignCenter)
-        self.altData.addWidget(self.mLabel,0,3,Qt.AlignCenter)
+        self.altData.addWidget(self.altLabel,0,1,Qt.AlignCenter)
+        self.altData.addWidget(self.altValueLabel,0,2,Qt.AlignCenter)
+        self.altData.addWidget(self.altmLabel,0,3,Qt.AlignCenter)
         self.altData.addItem(hSpacer,0,4,1,1, Qt.AlignLeft)
 
 
@@ -118,15 +110,13 @@ class SensorsWidget(QWidget):
         self.compass.resize(200,200)
         self.compassLayout.addWidget(self.compass)
         self.compassLayout.addLayout(self.compassData)
-        #self.compass.move(280,10)
+        
 
         self.horizon=qfi_ADI.qfi_ADI(self)
         self.horizon.resize(200,200)
         self.horizonLayout.addWidget(self.horizon)
         self.horizonLayout.addLayout(self.horizonData)
-        #self.horizon.move(60,20) 
-        #self.addWidget(self.horizon)
-
+        
 
         #self.battery=Qwt.QwtThermo(self)
         #self.battery.setMaxValue(100.0)
@@ -192,17 +182,17 @@ class SensorsWidget(QWidget):
   
     def drawYawValues(self,degress):
         value="{0:.2f}".format(degress)
-        self.yawValueLabel.setText(unicode(value))
+        self.yawValueLabel.setText(value)
         self.compass.setHeading(degress)
         self.compass.viewUpdate.emit()
 
     def drawAltd(self, meters):
 
-        self.altd.setValue(meters)
+        self.altd.setAltitude(meters*10)
         self.altd.viewUpdate.emit()
 
-        #altLabel="{0:.0f}".format(meters)+' m'
-        #self.altd.setLabel(altLabel)
+        value="{0:.0f}".format(meters)
+        self.altValueLabel.setText(value)
 
     def drawPitchRollValues(self,pitch,roll):
         if(pitch>0 and pitch<=90):
@@ -218,8 +208,8 @@ class SensorsWidget(QWidget):
         self.horizon.viewUpdate.emit()
         pitchValue="{0:.2f}".format(pitch)
         rollValue="{0:.2f}".format(roll)
-        self.pitchValueLabel.setText(unicode(pitchValue))
-        self.rollValueLabel.setText(unicode(rollValue))
+        self.pitchValueLabel.setText(pitchValue)
+        self.rollValueLabel.setText(rollValue)
 
 
     def drawVelocities(self,vx,vy,vz):
@@ -229,22 +219,16 @@ class SensorsWidget(QWidget):
         self.velLinX.setSpeed(vx)
         self.velLinX.viewUpdate.emit()
         vx=math.fabs(vx)
-        vxLabel="{0:.0f}".format(vx)+' m/s'
-        #self.velLinX.setLabel(vxLabel)
         
         vy=math.fabs(vy)
         vy/=1000.0
         self.velLinY.setSpeed(vy)
         self.velLinY.viewUpdate.emit()
-        vyLabel="{0:.0f}".format(vy)+' m/s'
-        #self.velLinY.setLabel(vyLabel)
-
+        
         vz=math.fabs(vz)
         vz/=1000.0
         self.velLinZ.setSpeed(vz)
         self.velLinZ.viewUpdate.emit()
-        vzLabel="{0:.0f}".format(vz)+' m/s'
-        #self.velLinZ.setLabel(vzLabel)
         
    
     def quatToRoll(self,qw,qx,qy,qz):

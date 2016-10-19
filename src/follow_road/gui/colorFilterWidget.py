@@ -17,7 +17,6 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 
-from PyQt5 import QtGui,QtCore
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtGui import QImage, QPixmap
