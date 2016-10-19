@@ -168,19 +168,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
     def rotationChange(self,value):
         value=(1.0/(self.rotationDial.maximum()/2))*(value - (self.rotationDial.maximum()/2))
-        #self.rotValue.setText(unicode(value))  
+        self.rotValue.setText('%.2f' % value)  
         self.cmdvel.setYaw(value)
         self.cmdvel.sendVelocities()
 
     def altitudeChange(self,value):
         value=(1.0/(self.altdSlider.maximum()/2))*(value - (self.altdSlider.maximum()/2))
-        #self.altdValue.setText(unicode(value))
+        self.rotValue.setText('%.2f' % value)
         self.cmdvel.setVZ(value)
         self.cmdvel.sendVelocities()
 
     def setXYValues(self,newX,newY):
-        #self.XValue.setText(unicode(newX))
-        #self.YValue.setText(unicode(newY))
+        self.XValue.setText('%.2f' % newX)
+        self.YValue.setText('%.2f' % newY)
         self.cmdvel.setVX(-newY)
         self.cmdvel.setVY(-newX)
         self.cmdvel.sendVelocities()
