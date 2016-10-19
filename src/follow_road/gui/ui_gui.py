@@ -97,7 +97,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Introrob py"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Follow Road"))
         self.takeoffButton.setText(_translate("MainWindow", "Take off"))
         self.playButton.setText(_translate("MainWindow", "Play"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
