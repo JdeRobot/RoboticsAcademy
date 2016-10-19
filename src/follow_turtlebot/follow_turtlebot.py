@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 #  Copyright (C) 1997-2016 JDE Developers Team
 #
@@ -30,7 +30,7 @@ from parallelIce.cmdvel import CMDVel
 from parallelIce.extra import Extra
 from parallelIce.pose3dClient import Pose3DClient
 from gui.GUI import MainWindow
-from PyQt4 import QtGui
+from PyQt5.QtWidgets import QApplication
 
 
 import signal
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
 
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     frame = MainWindow()
     frame.setCamera(camera)
     frame.setNavData(navdata)
