@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 #
@@ -29,7 +29,7 @@ from sensors.sensor import Sensor
 from sensors.grid import Grid
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
-from PyQt4 import QtGui
+from PyQt5.QtWidgets import QApplication
 
 import signal
 
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
 
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     frame = MainWindow()
     frame.setMotors(motors)
     frame.show()

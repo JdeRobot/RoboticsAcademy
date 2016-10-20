@@ -19,17 +19,18 @@
 
 
 
-from PyQt4 import QtGui,QtCore
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
 from gui.communicator import Communicator
 from gui.mapWidget import Map
-from colorFilterWidget import ColorFilterWidget
+from gui.colorFilterWidget import ColorFilterWidget
 
-class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     
-    getPathSig = QtCore.pyqtSignal()
-    updGUI=QtCore.pyqtSignal()
+    getPathSig = pyqtSignal()
+    updGUI=pyqtSignal()
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -97,11 +98,11 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.getPathSig.emit()
 
     def playClicked(self):
-        print "play clicked"
+        print ("play clicked")
         self.algorithm.play()
     
     def stopClicked(self):
-        print "Stop clicked"
+        print ("Stop clicked")
         self.algorithm.stop()
         self.setXYValues(0, 0)
         self.teleop.stopSIG.emit()
@@ -119,7 +120,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.colorFilter.setChecked(False)
 
     def showColorFilterWidget(self, state):
-        if state == QtCore.Qt.Checked:
+        if state == Qt.Checked:
             self.colorFilterWidget.show()
         else:
             self.colorFilterWidget.close()
