@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 #  Copyright (C) 1997-2016 JDE Developers Team
 #
@@ -20,7 +20,7 @@
 #
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from parallelIce.cameraClient import CameraClient
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     laser = LaserClient(ic, "ObstacleAvoidance.Laser", True)
     algorithm=MyAlgorithm(cameraL, cameraR, pose3d, laser, motors)
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     myGUI = MainWindow()
     myGUI.setCameraL(cameraL)
     myGUI.setCameraR(cameraR)
