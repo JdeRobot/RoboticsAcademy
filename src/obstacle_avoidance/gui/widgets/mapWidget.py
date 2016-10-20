@@ -17,8 +17,7 @@
 #       Eduardo Perdices <eperdices@gsyc.es>
 #
 
-import resources_rc
-from PyQt4 import QtGui, QtCore
+#import resources_rc
 from PyQt5.QtWidgets import QWidget, QGridLayout
 from PyQt5.QtGui import QPen, QPainter
 from PyQt5.QtCore import QPoint, QPointF, pyqtSignal, Qt
