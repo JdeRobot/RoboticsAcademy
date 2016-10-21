@@ -50,7 +50,7 @@ class Map(QWidget):
                 self.originY = int(lineSplit[1])
             elif (lineSplit[0] == "angle"):
                 self.mapAngle = int(lineSplit[1]) % 360
-                print ("Grados: "+ self.mapAngle)
+                print ("Grados: "+ str(self.mapAngle))
 
 
     def initUI(self):

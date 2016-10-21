@@ -5,6 +5,6 @@
 	
 	cd ../gui
 	pyuic5 teleTaxigui.ui > ui_gui.py
-	#pyuic5 colorFilter.ui > colorFilter.py
+	pyuic5 colorFilter.ui > colorFilter.py
 	cd ..
 

@@ -38,7 +38,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
-        print >> sys.stderr, 'ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]'
+        print('ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]', file=sys.stderr)
         #sys.exit(-1)
 
 

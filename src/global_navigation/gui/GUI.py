@@ -108,8 +108,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop.stopSIG.emit()
 
     def setXYValues(self,newW,newV):
-        self.WValue.setText(unicode(newW))
-        self.VValue.setText(unicode(-newV))
+        self.WValue.setText('%.2f' % newW)
+        self.VValue.setText('%.2f' % -newV)
         myW=newW*self.motors.getMaxW()
         myV=-newV*self.motors.getMaxV()
         self.motors.setV(myV)
