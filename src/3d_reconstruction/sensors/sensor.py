@@ -4,7 +4,7 @@ import easyiceconfig as EasyIce
 import jderobot
 import numpy as np
 import threading
-from bonobo._bonobo import poa
+
 import cv2
 
 
@@ -24,7 +24,7 @@ class Sensor:
                 self.imageLeft_h= self.imageLeft.description.height
                 self.imageLeft_w = self.imageLeft.description.width
             else:
-                print 'Interface for left camera not connected'
+                print ('Interface for left camera not connected')
 
             basecameraR = ic.propertyToProxy("FollowLine.CameraRight.Proxy")
             self.cameraProxyR = jderobot.CameraPrx.checkedCast(basecameraR)
@@ -34,15 +34,15 @@ class Sensor:
                 self.imageRight_h= self.imageRight.description.height
                 self.imageRight_w = self.imageRight.description.width
             else:
-                print 'Interface for right camera not connected'
+                print ('Interface for right camera not connected')
 
 
             motorsBase = ic.propertyToProxy("FolowLine.motors.Proxy")
             self.motorsProxy = jderobot.MotorsPrx.checkedCast(motorsBase)
             if self.motorsProxy:
-                print 'Interface for motors connected'
+                print ('Interface for motors connected')
             else:
-                print 'Interface for motors not connected'
+                print ('Interface for motors not connected')
 
 
             self.maxSpeedV=1

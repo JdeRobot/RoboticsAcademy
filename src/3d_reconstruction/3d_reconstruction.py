@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 #  Copyright (C) 1997-2015 JDE Developers Team
 #
@@ -20,7 +20,7 @@
 
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from sensors.sensor import Sensor
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     sensor = Sensor()
     algorithm=MyAlgorithm(sensor)
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     myGUI = MainWindow()
     myGUI.setSensor(sensor)
     myGUI.setAlgorithm(algorithm)

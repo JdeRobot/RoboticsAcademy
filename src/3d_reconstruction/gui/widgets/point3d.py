@@ -1,11 +1,12 @@
 __author__ = 'frivas'
-from PyQt4 import QtCore, QtGui, QtOpenGL, QtXml
+from PyQt5.QtGui import QStandardItem 
+from PyQt5.QtWidgets import QMessageBox, QListWidgetItem
 
 
-class Point3D(QtGui.QListWidgetItem):
+class Point3D(QListWidgetItem):
 	"""Class representing traditional 3d point as three floating point numbers"""
 	def __init__(self,xpos=0.0,ypos=0.0,zpos=0.0):
-		QtGui.QStandardItem.__init__(self,QtCore.QString("X: "+str(xpos)+" Y: "+str(ypos)+" Z: "+str(zpos)))
+		QStandardItem.__init__(self,"X: "+str(xpos)+" Y: "+str(ypos)+" Z: "+str(zpos))
 		try:
 			self.x=float(xpos)
 			self.y=float(ypos)
@@ -13,7 +14,7 @@ class Point3D(QtGui.QListWidgetItem):
 		except ValueError:
 			#raise
 			raise ValueError("could not set point values")
-			#QtGui.QMessageBox.critical(None, "Point Error",
+			#QMessageBox.critical(None, "Point Error",
 			#			"Error updating point, point value not a real number.")
 		#self.marker=None
 
@@ -34,5 +35,5 @@ class Point3D(QtGui.QListWidgetItem):
 			self.setText(str(self))
 		except ValueError:
 			raise ValueError("could not set point values")
-			#QtGui.QMessageBox.critical(None, "Point Error",
+			#QMessageBox.critical(None, "Point Error",
       #      "Error updating point, point value not a real number.")

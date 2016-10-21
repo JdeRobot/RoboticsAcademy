@@ -118,8 +118,8 @@ class Progeo():
         a3=self.RT[2,0]*point3d[0] + self.RT[2,1]*point3d[1] + self.RT[2,2]*point3d[2] - self.RT[0,3]
         aP= np.array([a1,a2,a3],dtype=np.double)
         # a = self.RT.dot(point3d)
-        # print "aproject"
-        # print a
+        # print ("aproject")
+        # print (a)
         # aP = np.array([a[0]/a[3],a[1]/a[3],a[2]/a[3]],dtype=np.double)
         p = self.K.dot(aP)
         outPoint = np.array([p[0]/p[2],p[1]/p[2],1.0]);
