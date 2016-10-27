@@ -19,13 +19,14 @@
 
 from gui.widgets.teleopWidget import TeleopWidget
 from gui.widgets.mapWidget import MapWidget
-from PyQt4 import QtGui,QtCore
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
 
-class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
 
-    updGUI=QtCore.pyqtSignal()
+    updGUI=pyqtSignal()
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -52,8 +53,11 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.map.setCarArrow(cx, cy)
         self.map.setObstaclesArrow(ox, oy)
         self.map.setAverageArrow(ax, ay)
-        self.map.setTarget(tx, ty, self.pose3d.getX()/1000, self.pose3d.getY()/1000, self.pose3d.getYaw())
-        self.map.setLaserValues(self.laser.getLaserData())
+        if (self.pose3d):
+            self.map.setTarget(tx, ty, self.pose3d.getX()/1000, self.pose3d.getY()/1000, self.pose3d.getYaw())
+        laserdata = self.laser.getLaserData()
+        if (laserdata):
+            self.map.setLaserValues(laserdata)
         self.map.update()
 
     def getCameraL(self):

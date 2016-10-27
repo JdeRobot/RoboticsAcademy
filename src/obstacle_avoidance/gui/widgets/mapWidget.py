@@ -17,13 +17,15 @@
 #       Eduardo Perdices <eperdices@gsyc.es>
 #
 
-from resources import resources_rc
-from PyQt4 import QtGui, QtCore
+#import resources_rc
+from PyQt5.QtWidgets import QWidget, QGridLayout
+from PyQt5.QtGui import QPen, QPainter
+from PyQt5.QtCore import QPoint, QPointF, pyqtSignal, Qt
 import math
 
-class MapWidget(QtGui.QWidget):
+class MapWidget(QWidget):
 
-    stopSIG=QtCore.pyqtSignal()
+    stopSIG=pyqtSignal()
     
     def __init__(self,winParent):    
         super(MapWidget, self).__init__()
@@ -42,11 +44,11 @@ class MapWidget(QtGui.QWidget):
         self.laser = []
         
     def initUI(self):
-        layout=QtGui.QGridLayout()  
+        layout=QGridLayout()  
         self.setLayout(layout)
         self.setAutoFillBackground(True)
         p = self.palette()
-        p.setColor(self.backgroundRole(), QtCore.Qt.white)
+        p.setColor(self.backgroundRole(), Qt.white)
         self.setPalette(p)
         self.resize(300,300)
         self.setMinimumSize(300,300)
@@ -55,12 +57,12 @@ class MapWidget(QtGui.QWidget):
         _width = self.width()
         _height = self.height()
     
-        painter=QtGui.QPainter(self)
-        pen = QtGui.QPen(QtCore.Qt.blue, 2)
+        painter=QPainter(self)
+        pen = QPen(Qt.blue, 2)
         painter.setPen(pen)
     
         #Widget center
-        painter.translate(QtCore.QPoint(_width/2, _height/1.2))
+        painter.translate(QPoint(_width/2, _height/1.2))
            
         # Draw car
         self.drawCar(painter)
@@ -72,39 +74,39 @@ class MapWidget(QtGui.QWidget):
         self.drawTarget(painter, self.targetx, self.targety)
 
         # Draw arrows
-        self.drawArrow(painter, self.carx, self.cary, QtCore.Qt.green, 2)
-        self.drawArrow(painter, self.obsx, self.obsy, QtCore.Qt.red, 2)
-        self.drawArrow(painter, self.avgx, self.avgy, QtCore.Qt.black, 2)
+        self.drawArrow(painter, self.carx, self.cary, Qt.green, 2)
+        self.drawArrow(painter, self.obsx, self.obsy, Qt.red, 2)
+        self.drawArrow(painter, self.avgx, self.avgy, Qt.black, 2)
 
     def drawCar(self, painter):
         carsize = 30
         tiresize = carsize/5
 
-        pen = QtGui.QPen(QtCore.Qt.black, 1)
+        pen = QPen(Qt.black, 1)
         painter.setPen(pen)
 
         # Connectors
-        painter.drawLine(QtCore.QPointF(-carsize/5,carsize/5),QtCore.QPointF(carsize/5, carsize/5))
+        painter.drawLine(QPointF(-carsize/5,carsize/5),QPointF(carsize/5, carsize/5))
 
         # Chassis
-        painter.fillRect(-carsize/6,carsize/2,carsize/3,carsize/2,QtCore.Qt.red)
-        painter.fillRect(-carsize/16,0,carsize/8,carsize,QtCore.Qt.red)
-        painter.fillRect(-carsize/6,-carsize/24,carsize/3,carsize/12,QtCore.Qt.red)
-        painter.fillRect(-carsize/8,carsize-carsize/96,carsize/4,carsize/12,QtCore.Qt.red)
+        painter.fillRect(-carsize/6,carsize/2,carsize/3,carsize/2,Qt.red)
+        painter.fillRect(-carsize/16,0,carsize/8,carsize,Qt.red)
+        painter.fillRect(-carsize/6,-carsize/24,carsize/3,carsize/12,Qt.red)
+        painter.fillRect(-carsize/8,carsize-carsize/96,carsize/4,carsize/12,Qt.red)
 
         # Tires
-        painter.fillRect(-carsize/4,carsize/8,tiresize/2,tiresize,QtCore.Qt.black)
-        painter.fillRect(carsize/4,carsize/8,-tiresize/2,tiresize,QtCore.Qt.black)
-        painter.fillRect(-carsize/4,carsize-carsize/8,tiresize/2,tiresize,QtCore.Qt.black)
-        painter.fillRect(carsize/4,carsize-carsize/8,-tiresize/2,tiresize,QtCore.Qt.black)
+        painter.fillRect(-carsize/4,carsize/8,tiresize/2,tiresize,Qt.black)
+        painter.fillRect(carsize/4,carsize/8,-tiresize/2,tiresize,Qt.black)
+        painter.fillRect(-carsize/4,carsize-carsize/8,tiresize/2,tiresize,Qt.black)
+        painter.fillRect(carsize/4,carsize-carsize/8,-tiresize/2,tiresize,Qt.black)
 
     def drawLasel(self, painter):
-        pen = QtGui.QPen(QtCore.Qt.blue, 2)
+        pen = QPen(Qt.blue, 2)
         painter.setPen(pen)
         for d in self.laser:
             px = -d[0]*math.sin(d[1])*self.scale
             py = d[0]*math.cos(d[1])*self.scale
-            painter.drawLine(QtCore.QPointF(0,0),QtCore.QPointF(py, px))
+            painter.drawLine(QPointF(0,0),QPointF(py, px))
             
     def drawArrow(self, painter, posx, posy, color, width):
         if posx == 0.0 and posy == 0.0:
@@ -113,13 +115,13 @@ class MapWidget(QtGui.QWidget):
         _width = self.width()
         _height = self.height()
 
-        pen = QtGui.QPen(color, width)
+        pen = QPen(color, width)
         painter.setPen(pen)
 
         # Draw main line
         px = _width/2*posx/10.0
         py = _height/2*posy/10.0
-        painter.drawLine(QtCore.QPointF(0,0),QtCore.QPointF(-px, py))
+        painter.drawLine(QPointF(0,0),QPointF(-px, py))
 
         # Draw sides
         sidex = math.hypot(px, py)/5.0
@@ -138,24 +140,24 @@ class MapWidget(QtGui.QWidget):
             py1 = py - sidey * math.sin(math.pi+ang-0.5)
             px2 = px - sidex * math.cos(math.pi+ang+0.5)
             py2 = py - sidey * math.sin(math.pi+ang+0.5)    
-        painter.drawLine(QtCore.QPointF(-px, py),QtCore.QPointF(-px1, py1))
-        painter.drawLine(QtCore.QPointF(-px, py),QtCore.QPointF(-px2, py2))
+        painter.drawLine(QPointF(-px, py),QPointF(-px1, py1))
+        painter.drawLine(QPointF(-px, py),QPointF(-px2, py2))
 
     def drawTarget(self, painter, posx, posy):
-        pen = QtGui.QPen(QtCore.Qt.red, 4)
+        pen = QPen(Qt.red, 4)
         painter.setPen(pen)
 
         sx = posx - 0.25
         sy = posy - 0.25
         ex = posx + 0.25
         ey = posy + 0.25
-        painter.drawLine(QtCore.QPointF(-sx*self.scale,sy*self.scale),QtCore.QPointF(-ex*self.scale,ey*self.scale))
+        painter.drawLine(QPointF(-sx*self.scale,sy*self.scale),QPointF(-ex*self.scale,ey*self.scale))
 
         sx = posx + 0.25
         sy = posy - 0.25
         ex = posx - 0.25
         ey = posy + 0.25
-        painter.drawLine(QtCore.QPointF(-sx*self.scale,sy*self.scale),QtCore.QPointF(-ex*self.scale,ey*self.scale))
+        painter.drawLine(QPointF(-sx*self.scale,sy*self.scale),QPointF(-ex*self.scale,ey*self.scale))
 
     def setCarArrow(self, x, y):
         self.carx = x
