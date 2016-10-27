@@ -29,7 +29,7 @@ class MyAlgorithm():
         # pointInOpt=self.camLeftP.graficToOptical(pointIn)
         # point3d=self.camLeftP.backproject(pointInOpt)
         # projected1 = self.camRightP.project(point3d)
-        # print self.camRightP.opticalToGrafic(projected1)
+        # print (self.camRightP.opticalToGrafic(projected1))
 
 
 

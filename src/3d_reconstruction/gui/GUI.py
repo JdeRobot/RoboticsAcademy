@@ -4,14 +4,15 @@ __author__ = 'frivas'
 
 
 
-from PyQt4 import QtGui,QtCore
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
 import numpy
 
-class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
 
-    updGUI=QtCore.pyqtSignal()
+    updGUI=pyqtSignal()
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -25,7 +26,7 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
-        #print 'update gui'
+        #print ('update gui')
         self.camera1.updateImage()
         #self.sensorsWidget.sensorsUpdate.emit()
         #self.glWidget.update()
