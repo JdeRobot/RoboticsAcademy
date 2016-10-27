@@ -63,10 +63,10 @@ class MyAlgorithm(threading.Thread):
         # Add your code here
         tmp = self.navdata.getNavdata()
         if tmp is not None:
-            print "State: " +str(tmp.state)
-            print "Altitude: " +str(tmp.altd)
-            print "Vehicle: " +str(tmp.vehicle)
-            print "Battery %: " +str(tmp.batteryPercent)
+            print ("State: " +str(tmp.state))
+            print ("Altitude: " +str(tmp.altd))
+            print ("Vehicle: " +str(tmp.vehicle))
+            print ("Battery %: " +str(tmp.batteryPercent))
 
 
 
