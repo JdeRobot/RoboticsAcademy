@@ -78,7 +78,7 @@ class MyAlgorithm(threading.Thread):
 
 
         # Add your code here
-        print "Running"
+        print ("Running")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
         #self.motors.setV(10)

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #
 #  Copyright (C) 1997-2016 JDE Developers Team
 #
@@ -21,13 +21,13 @@
 
 
 import sys
-from PyQt4 import QtCore, QtGui
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from parallelIce.cameraClient import CameraClient
 from parallelIce.motors import Motors
 import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
+from PyQt5.QtWidgets import QApplication
 
 
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     motors = Motors (ic, "FollowLine.Motors")
     algorithm=MyAlgorithm(cameraL, cameraR, motors)
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     myGUI = MainWindow()
     myGUI.setCameraL(cameraL)
     myGUI.setCameraR(cameraR)

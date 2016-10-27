@@ -117,7 +117,7 @@
         <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset resource="../../introrob_py/resources/resources.qrc">
+        <iconset resource="../resources/resources.qrc">
          <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
        </property>
       </widget>
@@ -138,7 +138,7 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="../../introrob_py/resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
