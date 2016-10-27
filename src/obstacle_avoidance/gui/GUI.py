@@ -53,9 +53,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.map.setCarArrow(cx, cy)
         self.map.setObstaclesArrow(ox, oy)
         self.map.setAverageArrow(ax, ay)
-        pose3d = self.pose3d.getPose3D()
-        if (pose3d):
-            self.map.setTarget(tx, ty, pose3d.getX()/1000, pose3d.getY()/1000, pose3d.getYaw())
+        if (self.pose3d):
+            self.map.setTarget(tx, ty, self.pose3d.getX()/1000, self.pose3d.getY()/1000, self.pose3d.getYaw())
         laserdata = self.laser.getLaserData()
         if (laserdata):
             self.map.setLaserValues(laserdata)
