@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1997-2016 JDE Developers Team
+#  Copyright (C) 1997-2015 JDE Developers Team
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtCore
+from PyQt5 import QtCore
 class Communicator(QtCore.QObject):
     updateBW = QtCore.pyqtSignal()
