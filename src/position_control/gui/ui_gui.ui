@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Labyrinth Escape</string>
+   <string>Position Control</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="takeoffButton">
