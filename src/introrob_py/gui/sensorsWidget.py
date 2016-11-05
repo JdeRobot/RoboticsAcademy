@@ -17,6 +17,7 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 from PyQt5.QtWidgets import QWidget, QLabel, QGridLayout, QVBoxLayout, QSpacerItem, QSizePolicy
+from PyQt5 import QtCore
 from PyQt5.QtCore import pyqtSignal, Qt
 # from gui.speedoMeter import SpeedoMeter
 # from gui.attitudeIndicator import AttitudeIndicator
@@ -93,18 +94,19 @@ class SensorsWidget(QWidget):
         self.altData.addItem(hSpacer, 0, 4, 1, 1, Qt.AlignLeft)
 
         self.altd = qfi_ALT.qfi_ALT(self)
-        self.altd.resize(200, 200)
+
+        self.altd.setFixedSize(QtCore.QSize(200,200))
         self.altLayout.addWidget(self.altd)
         self.altLayout.addLayout(self.altData)
         # self.altd.move(420,50)
 
         self.compass = qfi_HSI.qfi_HSI(self)
-        self.compass.resize(200, 200)
+        self.compass.setFixedSize(QtCore.QSize(200, 200))
         self.compassLayout.addWidget(self.compass)
         self.compassLayout.addLayout(self.compassData)
 
         self.horizon = qfi_ADI.qfi_ADI(self)
-        self.horizon.resize(200, 200)
+        self.horizon.setFixedSize(QtCore.QSize(200, 200))
         self.horizonLayout.addWidget(self.horizon)
         self.horizonLayout.addLayout(self.horizonData)
 
@@ -119,20 +121,20 @@ class SensorsWidget(QWidget):
         # self.batteryLabel.move(580,251)
 
         self.velLinX = qfi_SI.qfi_SI(self)
-        self.velLinX.resize(150, 150)
+        self.velLinX.setFixedSize(QtCore.QSize(150, 150))
         # self.velLinX.move(60,270)
         self.velXLabel = QLabel('Linear X (m/s)', self)
         # self.velXLabel.move(95,420)
 
 
         self.velLinY = qfi_SI.qfi_SI(self)
-        self.velLinY.resize(150, 150)
+        self.velLinY.setFixedSize(QtCore.QSize(150, 150))
         # self.velLinY.move(240,270)
         self.velYLabel = QLabel('Linear Y (m/s)', self)
         # self.velYLabel.move(275,420)
 
         self.velLinZ = qfi_SI.qfi_SI(self)
-        self.velLinZ.resize(150, 150)
+        self.velLinZ.setFixedSize(QtCore.QSize(150, 150))
         # self.velLinZ.setLabel("8 m/s")
         # self.velLinZ.move(420,270)
         self.velZLabel = QLabel('Linear Z (m/s)', self)
