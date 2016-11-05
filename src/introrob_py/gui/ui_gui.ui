@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Introrob py</string>
+   <string>Introrob_py</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="takeoffButton">
