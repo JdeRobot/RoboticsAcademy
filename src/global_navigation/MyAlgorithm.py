@@ -58,7 +58,7 @@ class MyAlgorithm(threading.Thread):
         This method will be call when you press the Generate Path button. 
         Call to grid.setPath(path) mathod for setting the path. """
     def generatePath(self):
-        print "LOOKING FOR SHORTER PATH"
+        print ("LOOKING FOR SHORTER PATH")
         mapIm = self.grid.getMap()      
         dest = self.grid.getDestiny()   
         gridPos = self.grid.getPose()
@@ -73,7 +73,7 @@ class MyAlgorithm(threading.Thread):
         This method will be periodically called after you press the GO! button. """
     def execute(self):
         # Add your code here
-        print "GOING TO DESTINATION"
+        print ("GOING TO DESTINATION")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
         #self.motors.setV(10)

@@ -16,17 +16,19 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-from PyQt4 import QtGui,QtCore,uic
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtCore import pyqtSignal
 from sensors.colorFilterValues import ColorFilterValues
-from colorFilter import Ui_Form
+from gui.colorFilter import Ui_Form
 import cv2
 import numpy as np
 
-class ColorFilterWidget(QtGui.QWidget, Ui_Form):
+class ColorFilterWidget(QWidget, Ui_Form):
     IMAGE_COLS_MAX=320
     IMAGE_ROWS_MAX=240
 
-    imageUpdate=QtCore.pyqtSignal()
+    imageUpdate=pyqtSignal()
 
     def __init__(self,winParent):
         super(ColorFilterWidget, self).__init__()
@@ -53,10 +55,10 @@ class ColorFilterWidget(QtGui.QWidget, Ui_Form):
         img = self.winParent.grid.map
 
         if img != None:
-            image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QtGui.QImage.Format_Indexed8)
-            self.inputImage.setPixmap(QtGui.QPixmap.fromImage(image))
+            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QImage.Format_Indexed8)
+            self.inputImage.setPixmap(QPixmap.fromImage(image))
         else:
-            print "image is none"
+            print ("image is none")
 
 
     def setThresoldImage(self):
@@ -70,8 +72,8 @@ class ColorFilterWidget(QtGui.QWidget, Ui_Form):
         img = cv2.inRange(img, minVals, maxVals)
 
         if img != None:
-            image = QtGui.QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QtGui.QImage.Format_Indexed8)
-            self.outputFilterImage.setPixmap(QtGui.QPixmap.fromImage(image))
+            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QImage.Format_Indexed8)
+            self.outputFilterImage.setPixmap(QPixmap.fromImage(image))
 
 
     def getFilterValues(self):

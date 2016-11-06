@@ -4,10 +4,12 @@
 
 import sys, math
 import threading
-from PyQt4 import QtGui, QtCore
+from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtGui import QImage, QPixmap, QPainter, QPen, QBrush, QColor, QPolygon, QPolygonF,QTransform
+from PyQt5.QtCore import Qt, QPoint, QPointF
 import cv2
 
-class Map(QtGui.QWidget):
+class Map(QWidget):
     
     def __init__(self, winParent):
         super(Map, self).__init__()
@@ -48,18 +50,18 @@ class Map(QtGui.QWidget):
                 self.originY = int(lineSplit[1])
             elif (lineSplit[0] == "angle"):
                 self.mapAngle = int(lineSplit[1]) % 360
-                print "Grados:", self.mapAngle
+                print ("Grados: "+ str(self.mapAngle))
 
 
     def initUI(self):
         self.map = cv2.imread(self.mapPath, cv2.IMREAD_GRAYSCALE)
-        print self.map.shape
+        print (self.map.shape)
         self.map = cv2.resize(self.map, (400, 400))
-        image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
-        self.pixmap = QtGui.QPixmap.fromImage(image)
+        image = QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QImage.Format_Indexed8);
+        self.pixmap = QPixmap.fromImage(image)
         self.height = self.pixmap.height()
         self.width = self.pixmap.width()
-        self.mapWidget = QtGui.QLabel(self)
+        self.mapWidget = QLabel(self)
         self.mapWidget.setPixmap(self.pixmap)
         self.mapWidget.resize(self.width, self.height)
 
@@ -67,25 +69,25 @@ class Map(QtGui.QWidget):
     def mouseDoubleClickEvent(self, event):
         x = event.pos().x()
         y = event.pos().y()
-        print "Destiny: ", x, ", ", y
+        print ("Destiny: ", x, ", ", y)
         rX, rY = self.parent.grid.gridToWorld(x,y) 
-        print "WORLD: ", rX, ", ", rY
+        print ("WORLD: ", rX, ", ", rY)
         self.parent.grid.setDestiny(x, y)
         self.parent.grid.resetPath()
         self.parent.grid.resetGrid()
 
 
     def setPainterSettings(self, painter, color, width):
-        pen = QtGui.QPen(color)
+        pen = QPen(color)
         pen.setWidth(width)
-        brush = QtGui.QBrush(QtCore.Qt.SolidPattern)
-        brush.setColor(QtGui.QColor(color))
+        brush = QBrush(Qt.SolidPattern)
+        brush.setColor(QColor(color))
         painter.setPen(pen)
         painter.setBrush(brush)
 
 
     def getPainter(self, copy):
-        painter = QtGui.QPainter(copy)
+        painter = QPainter(copy)
         return painter
 
 
@@ -100,19 +102,19 @@ class Map(QtGui.QWidget):
         elif self.mapAngle >= 90 and self.mapAngle < 180:
             y = y + 5
 
-        triangle = QtGui.QPolygon()
-        triangle.append(QtCore.QPoint(x-4, y-4))
-        triangle.append(QtCore.QPoint(x+4, y-4))
-        triangle.append(QtCore.QPoint(x, y+5))
-        matrix = QtGui.QMatrix()
+        triangle = QPolygon()
+        triangle.append(QPoint(x-4, y-4))
+        triangle.append(QPoint(x+4, y-4))
+        triangle.append(QPoint(x, y+5))
+        matrix = QTransform()
         matrix.rotate(-angle + self.mapAngle)
         triangle = matrix.map(triangle)
-        center = matrix.map(QtCore.QPoint(x, y))
+        center = matrix.map(QPoint(x, y))
         xDif = x - center.x()
         yDif = y - center.y()
         triangle.translate(xDif, yDif)
 
-        self.setPainterSettings(painter, QtCore.Qt.yellow, 1)
+        self.setPainterSettings(painter, Qt.yellow, 1)
         painter.drawPolygon(triangle)
 
     
@@ -122,13 +124,13 @@ class Map(QtGui.QWidget):
 
 
     def paintPath(self, painter, path):
-        points = QtGui.QPolygonF()
+        points = QPolygonF()
         for i in range(path.shape[0]):
             for j in range(path.shape[1]):
                 if path[i][j] > 0:
-                    points.append(QtCore.QPointF(j, i))
+                    points.append(QPointF(j, i))
 
-        self.setPainterSettings(painter, QtCore.Qt.green, 2)
+        self.setPainterSettings(painter, Qt.green, 2)
         painter.drawPoints(points)
 
 
@@ -150,10 +152,10 @@ class Map(QtGui.QWidget):
         painter = self.getPainter(copy)
 
         if dest != None:
-            self.setPainterSettings(painter, QtCore.Qt.red, 3)
+            self.setPainterSettings(painter, Qt.red, 3)
             self.paintDestiny(painter, dest)
 
-        self.setPainterSettings(painter, QtCore.Qt.green, 3)
+        self.setPainterSettings(painter, Qt.green, 3)
         self.paintPath(painter, path)
 
         self.paintPosition(pos[0], pos[1], grid.getAngle(), copy, painter)
