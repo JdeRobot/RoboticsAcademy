@@ -28,5 +28,5 @@ class Beacon:
         return self.active
 
     def setActive(self,value):
-        self.active=True
+        self.active=value
 

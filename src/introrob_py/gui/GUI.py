@@ -19,153 +19,155 @@
 #
 
 
-from PyQt4 import QtGui,QtCore
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
 from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
 
-class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
-    
-    updGUI=QtCore.pyqtSignal()
+
+class MainWindow(QMainWindow, Ui_MainWindow):
+    updGUI = pyqtSignal()
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.teleop=TeleopWidget(self)
+        self.teleop = TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
 
         self.record = False
 
         self.updGUI.connect(self.updateGUI)
-        
+
         self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
-        
+
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
-        
-        self.cameraWidget=CameraWidget(self)
-        self.sensorsWidget=SensorsWidget(self)
 
-        self.cameraCommunicator=Communicator()
+        self.cameraWidget = CameraWidget(self)
+        self.sensorsWidget = SensorsWidget(self)
+
+        self.cameraCommunicator = Communicator()
         self.trackingCommunicator = Communicator()
 
         self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoffButton.clicked.connect(self.takeOffClicked)
-        self.takeoff=False
-        self.reset=False
-      
+        self.takeoff = False
+        self.reset = False
+
     def getCamera(self):
         return self.camera
 
-    def setCamera(self,camera):
+    def setCamera(self, camera):
         self.camera = camera
 
     def getNavData(self):
         return self.navdata
 
-    def setNavData(self,navdata):
+    def setNavData(self, navdata):
         self.navdata = navdata
 
     def getPose3D(self):
         return self.pose
 
-    def setPose3D(self,pose):
+    def setPose3D(self, pose):
         self.pose = pose
 
     def getCMDVel(self):
         return self.cmdvel
 
-    def setCMDVel(self,cmdvel):
+    def setCMDVel(self, cmdvel):
         self.cmdvel = cmdvel
 
     def getExtra(self):
         return self.extra
 
-    def setExtra(self,extra):
+    def setExtra(self, extra):
         self.extra = extra
 
-    def setAlgorithm(self, algorithm ):
-        self.algorithm=algorithm
+    def setAlgorithm(self, algorithm):
+        self.algorithm = algorithm
 
     def getAlgorithm(self):
         return self.algorithm
-    
+
     def updateGUI(self):
         self.cameraWidget.imageUpdate.emit()
-        self.sensorsWidget.sensorsUpdate.emit()  
-    
+        self.sensorsWidget.sensorsUpdate.emit()
+
     def playClicked(self):
         if self.record == True:
             self.extra.record(True)
         self.algorithm.play()
-    
+
     def stopClicked(self):
         if self.record == True:
             self.extra.record(False)
         self.algorithm.stop()
-        self.rotationDial.setValue(self.altdSlider.maximum()/2)
-        self.altdSlider.setValue(self.altdSlider.maximum()/2)
-        self.cmdvel.sendCMDVel(0,0,0,0,0,0)
+        self.rotationDial.setValue(self.altdSlider.maximum() / 2)
+        self.altdSlider.setValue(self.altdSlider.maximum() / 2)
+        self.cmdvel.sendCMDVel(0, 0, 0, 0, 0, 0)
         self.teleop.stopSIG.emit()
-    
+
     def takeOffClicked(self):
-        if(self.takeoff==True):
+        if (self.takeoff == True):
             self.takeoffButton.setText("Take Off")
             self.extra.land()
-            self.takeoff=False
+            self.takeoff = False
         else:
-            self.takeoffButton.setText("Land")    
+            self.takeoffButton.setText("Land")
             self.extra.takeoff()
-            self.takeoff=True
+            self.takeoff = True
 
     def resetClicked(self):
         if self.reset == True:
             self.resetButton.setText("Reset")
             self.extra.reset()
-            self.reset=False
+            self.reset = False
         else:
             self.resetButton.setText("Unreset")
             self.extra.reset()
-            self.reset=True
-        
-    def showCameraWidget(self,state):
-        if state == QtCore.Qt.Checked:
+            self.reset = True
+
+    def showCameraWidget(self, state):
+        if state == Qt.Checked:
             self.cameraWidget.show()
         else:
             self.cameraWidget.close()
-            
+
     def closeCameraWidget(self):
         self.cameraCheck.setChecked(False)
-        
-    def showSensorsWidget(self,state):
-        if state == QtCore.Qt.Checked:
-            self.sensorsWidget.show()           
+
+    def showSensorsWidget(self, state):
+        if state == Qt.Checked:
+            self.sensorsWidget.show()
         else:
-            self.sensorsWidget.close() 
+            self.sensorsWidget.close()
 
     def closeSensorsWidget(self):
         self.sensorsCheck.setChecked(False)
-    
-    def rotationChange(self,value):
-        value=(1.0/(self.rotationDial.maximum()/2))*(value - (self.rotationDial.maximum()/2))
-        self.rotValue.setText(unicode(value))  
+
+    def rotationChange(self, value):
+        value = (1.0 / (self.rotationDial.maximum() / 2)) * (value - (self.rotationDial.maximum() / 2))
+        self.rotValue.setText('%.2f' % value)
         self.cmdvel.setYaw(value)
         self.cmdvel.sendVelocities()
 
-    def altitudeChange(self,value):
-        value=(1.0/(self.altdSlider.maximum()/2))*(value - (self.altdSlider.maximum()/2))
-        self.altdValue.setText(unicode(value))
+    def altitudeChange(self, value):
+        value = (1.0 / (self.altdSlider.maximum() / 2)) * (value - (self.altdSlider.maximum() / 2))
+        self.altdValue.setText('%.2f' % value)
         self.cmdvel.setVZ(value)
         self.cmdvel.sendVelocities()
 
-    def setXYValues(self,newX,newY):
-        self.XValue.setText(unicode(newX))
-        self.YValue.setText(unicode(newY))
+    def setXYValues(self, newX, newY):
+        self.XValue.setText('%.2f' % newX)
+        self.YValue.setText('%.2f' % newY)
         self.cmdvel.setVX(-newY)
         self.cmdvel.setVY(-newX)
         self.cmdvel.sendVelocities()
