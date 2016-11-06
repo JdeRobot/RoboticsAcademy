@@ -1,7 +1,6 @@
 from sensors import sensor
 import numpy as np
 import cv2
-from parallelIce.motors import Motors
 
 import threading
 import time
@@ -11,10 +10,10 @@ time_cycle = 80
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, grid, sensor, motors):
+    def __init__(self, grid, sensor, vel):
         self.sensor = sensor
         self.grid = grid
-        self.motors = motors
+        self.vel = vel
         sensor.getPathSig.connect(self.generatePath)
 
         self.stop_event = threading.Event()
@@ -58,7 +57,7 @@ class MyAlgorithm(threading.Thread):
         This method will be call when you press the Generate Path button. 
         Call to grid.setPath(path) mathod for setting the path. """
     def generatePath(self):
-        print "LOOKING FOR SHORTER PATH"
+        print("LOOKING FOR SHORTER PATH")
         mapIm = self.grid.getMap()      
         dest = self.grid.getDestiny()   
         gridPos = self.grid.getPose()
@@ -73,9 +72,9 @@ class MyAlgorithm(threading.Thread):
         This method will be periodically called after you press the GO! button. """
     def execute(self):
         # Add your code here
-        print "GOING TO DESTINATION"
+        print("GOING TO DESTINATION")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
-        #self.motors.sendVelocities()
+        #self.vel.setV(10)
+        #self.vel.setW(5)
+        #self.vel.sendVelocities()

@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
+#       Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 
@@ -51,8 +52,9 @@ class Sensor(threading.Thread):
 
 
     def update(self):
-        self.pose3d.update()
-        self.grid.updatePose(self.pose3d.getX(), self.pose3d.getY(), self.pose3d.getYaw())
+        if self.pose3d.hasproxy():
+            self.pose3d.update()
+            self.grid.updatePose(self.pose3d.getX(), self.pose3d.getY(), self.pose3d.getYaw())
 
         
     def setGetPathSignal(self, signal):
@@ -60,13 +62,17 @@ class Sensor(threading.Thread):
 
 
     def getPose3D(self):
-        return self.pose3d.getPose3D()
+        if self.pose3d.hasproxy():
+            return self.pose3d.getPose3D()
 
     def getRobotX(self):
-        return self.pose3d.getX()
+        if self.pose3d.hasproxy():
+            return self.pose3d.getX()
 
     def getRobotY(self):
-        return self.pose3d.getY()
+        if self.pose3d.hasproxy():
+            return self.pose3d.getY()
 
     def getRobotTheta(self):
-        return self.pose3d.Yaw()    
+        if self.pose3d.hasproxy():
+            return self.pose3d.Yaw()    

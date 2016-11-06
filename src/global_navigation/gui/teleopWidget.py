@@ -15,11 +15,14 @@
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
-#
-from resources import resources_rc
-from PyQt4 import QtGui, QtCore
 
-class TeleopWidget(QtGui.QWidget):
+from resources import resources_rc
+from PyQt5 import QtGui
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QWidget, QGridLayout
+
+
+class TeleopWidget(QWidget):
 
     stopSIG=QtCore.pyqtSignal()
     
@@ -33,7 +36,7 @@ class TeleopWidget(QtGui.QWidget):
         self.initUI()
         
     def initUI(self):
-        layout=QtGui.QGridLayout()  
+        layout=QGridLayout()  
         self.setLayout(layout)
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -46,12 +49,14 @@ class TeleopWidget(QtGui.QWidget):
         self.line = QtCore.QPointF(0, 0);
         self.repaint();
     
+    
     def mouseMoveEvent(self,e):
         if e.buttons() == QtCore.Qt.LeftButton:
             x = e.x()-self.width()/2
             y = e.y()-self.height()/2
             self.line = QtCore.QPointF(x, y)
             self.repaint()
+
 
     def paintEvent(self, e):
         _width = self.width()
@@ -108,4 +113,3 @@ class TeleopWidget(QtGui.QWidget):
         #print "v: %f w: %f" % (v_normalized,w_normalized)
         self.winParent.setXYValues(w_normalized,v_normalized)
         painter.drawImage(self.line.x()-self.qimage.width()/2, self.line.y()-self.qimage.height()/2, self.qimage);
-

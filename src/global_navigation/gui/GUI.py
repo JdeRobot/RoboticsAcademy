@@ -19,22 +19,21 @@
 
 
 
-from PyQt4 import QtGui,QtCore
+from PyQt5 import QtGui,QtCore
+from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
 from gui.communicator import Communicator
 from gui.mapWidget import Map
-from colorFilterWidget import ColorFilterWidget
 
-class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     
     getPathSig = QtCore.pyqtSignal()
-    updGUI=QtCore.pyqtSignal()
+    updGUI = QtCore.pyqtSignal()
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.teleop=TeleopWidget(self)
-        self.colorFilterWidget=ColorFilterWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.map = Map(self)
         self.mapLayout.addWidget(self.map)
@@ -44,10 +43,9 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.getPathButton.clicked.connect(self.getPathClicked)
         self.playButton.clicked.connect(self.playClicked)
         self.stopButton.clicked.connect(self.stopClicked)
-        self.colorFilter.stateChanged.connect(self.showColorFilterWidget)
       
-    def setSensor(self,sensor):
-        self.sensor=sensor
+    def setSensor(self, sensor):
+        self.sensor = sensor
            
     def getSensor(self):
         return self.sensor
@@ -61,6 +59,12 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     def setAlgorithm(self, algorithm ):
         self.algorithm=algorithm
 
+    def setVelocity(self, vel):
+        self.vel = vel
+
+    def getVelocity(self):
+        return self.vel
+
     def getAlgorithm(self):
         return self.algorithm
     
@@ -70,7 +74,6 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
 
     def updateGUI(self):
         self.map.updateMap(self.grid)
-        self.colorFilterWidget.imageUpdate.emit()
     
     def width(self):
         return self.map.width
@@ -97,29 +100,19 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.getPathSig.emit()
 
     def playClicked(self):
-        print "play clicked"
+        print("Play clicked")
         self.algorithm.play()
     
     def stopClicked(self):
-        print "Stop clicked"
+        print("Stop clicked")
         self.algorithm.stop()
         self.setXYValues(0, 0)
         self.teleop.stopSIG.emit()
 
     def setXYValues(self,newW,newV):
-        self.WValue.setText(unicode(newW))
-        self.VValue.setText(unicode(-newV))
-        myW=newW*self.motors.getMaxW()
-        myV=-newV*self.motors.getMaxV()
-        self.motors.setV(myV)
-        self.motors.setW(myW)
-        self.motors.sendVelocities()
-
-    def closeColorFilterWidget(self):
-        self.colorFilter.setChecked(False)
-
-    def showColorFilterWidget(self, state):
-        if state == QtCore.Qt.Checked:
-            self.colorFilterWidget.show()
-        else:
-            self.colorFilterWidget.close()
+        self.WValue.setText(str(newW))
+        self.VValue.setText(str(-newV))
+        myW = newW * self.vel.getMaxW()
+        myV = -newV * self.vel.getMaxV()
+        self.vel.setV(myV)
+        self.vel.setW(myW)

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 #
@@ -17,56 +17,68 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
+#       Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 
 import sys
+from PyQt5.QtWidgets import QApplication
+
 from MyAlgorithm import MyAlgorithm
+from gui.threadGUI import ThreadGUI
+from gui.GUI import MainWindow
+from threadMotors import ThreadMotors
+from threadMotors import Velocity
+
 import easyiceconfig as EasyIce
 from parallelIce.pose3dClient import Pose3D
 from parallelIce.motors import Motors
 from sensors.sensor import Sensor
 from sensors.grid import Grid
-from gui.threadGUI import ThreadGUI
-from gui.GUI import MainWindow
-from PyQt4 import QtGui
 
 import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+
+def removeMapFromArgs():
+    for arg in sys.argv:
+        if (arg.split("=")[0] == "--mapConfig"):
+            sys.argv.remove(arg)
+
+
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
-        print >> sys.stderr, 'ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]'
-        #sys.exit(-1)
+        print('ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]')
+        sys.exit(-1)
 
+    app = QApplication(sys.argv)
+    frame = MainWindow()
+    grid = Grid(frame)
 
+    removeMapFromArgs()
     ic = EasyIce.initialize(sys.argv)
     pose = Pose3D (ic, "TeleTaxi.Pose3D")
     motors = Motors (ic, "TeleTaxi.Motors")
 
+    vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
 
-
-    app = QtGui.QApplication(sys.argv)
-    frame = MainWindow()
-    frame.setMotors(motors)
-    frame.show()
-
-    grid = Grid(frame)
-    frame.setGrid(grid)
-
+    frame.setVelocity(vel)
     sensor = Sensor(grid, pose, True)
     sensor.setGetPathSignal(frame.getPathSig)
+    frame.setGrid(grid)
     frame.setSensor(sensor)
-
-    algorithm=MyAlgorithm(grid, sensor, motors)
+    algorithm = MyAlgorithm(grid, sensor, vel)
     frame.setAlgorithm(algorithm)
+    frame.show()
     
-    
+    t1 = ThreadMotors(motors, vel)
+    t1.daemon = True
+    t1.start()
+
     t2 = ThreadGUI(frame)  
-    t2.daemon=True
+    t2.daemon = True
     t2.start()
     
     sys.exit(app.exec_()) 
-

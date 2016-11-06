@@ -11,8 +11,8 @@ class Grid:
 		self.pathFinded = False
 		self.map = None
 
-		self.gWidth = float(frame.width())
-		self.gHeight = float(frame.height())
+		self.gWidth = int(frame.width())
+		self.gHeight = int(frame.height())
 		self.wWidth = float(frame.worldWidth())
 		self.wHeight = float(frame.worldHeight())
 		self.origX = frame.origX()
@@ -24,7 +24,9 @@ class Grid:
 
 
 	def initPose(self, x, y, angle):
+		print("RX:", x, "RY:", y)
 		(gridX, gridY) = self.worldToGrid(x, y)
+		print("GX:", gridX, "GY:", gridY)
 		self.lock.acquire()
 		self.pos = (gridX, gridY)
 		self.initAngle = angle * 100
@@ -83,6 +85,9 @@ class Grid:
 	def updatePose(self, px, py, angle):
 		(gridX, gridY) = self.worldToGrid(px, py)
 
+		#print("REALX:", px, "REALY:",py)
+		#print("GRIDX:", gridX, "GRIDY:",gridY)
+	
 		self.lock.acquire()
 		self.pos = (gridX, gridY)
 		self.angle = angle * 100

@@ -4,10 +4,11 @@
 
 import sys, math
 import threading
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
+from PyQt5.QtWidgets import QWidget, QLabel
 import cv2
 
-class Map(QtGui.QWidget):
+class Map(QWidget):
     
     def __init__(self, winParent):
         super(Map, self).__init__()
@@ -48,18 +49,18 @@ class Map(QtGui.QWidget):
                 self.originY = int(lineSplit[1])
             elif (lineSplit[0] == "angle"):
                 self.mapAngle = int(lineSplit[1]) % 360
-                print "Grados:", self.mapAngle
+                print("Grados:", self.mapAngle)
 
 
     def initUI(self):
         self.map = cv2.imread(self.mapPath, cv2.IMREAD_GRAYSCALE)
-        print self.map.shape
+        print(self.map.shape)
         self.map = cv2.resize(self.map, (400, 400))
         image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
         self.pixmap = QtGui.QPixmap.fromImage(image)
         self.height = self.pixmap.height()
         self.width = self.pixmap.width()
-        self.mapWidget = QtGui.QLabel(self)
+        self.mapWidget = QLabel(self)
         self.mapWidget.setPixmap(self.pixmap)
         self.mapWidget.resize(self.width, self.height)
 
@@ -67,9 +68,9 @@ class Map(QtGui.QWidget):
     def mouseDoubleClickEvent(self, event):
         x = event.pos().x()
         y = event.pos().y()
-        print "Destiny: ", x, ", ", y
+        print("Destiny: ", x, ", ", y)
         rX, rY = self.parent.grid.gridToWorld(x,y) 
-        print "WORLD: ", rX, ", ", rY
+        print("WORLD: ", rX, ", ", rY)
         self.parent.grid.setDestiny(x, y)
         self.parent.grid.resetPath()
         self.parent.grid.resetGrid()
@@ -104,7 +105,7 @@ class Map(QtGui.QWidget):
         triangle.append(QtCore.QPoint(x-4, y-4))
         triangle.append(QtCore.QPoint(x+4, y-4))
         triangle.append(QtCore.QPoint(x, y+5))
-        matrix = QtGui.QMatrix()
+        matrix = QtGui.QTransform()
         matrix.rotate(-angle + self.mapAngle)
         triangle = matrix.map(triangle)
         center = matrix.map(QtCore.QPoint(x, y))
