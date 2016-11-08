@@ -83,11 +83,7 @@ class Grid:
 
 
 	def updatePose(self, px, py, angle):
-		(gridX, gridY) = self.worldToGrid(px, py)
-
-		#print("REALX:", px, "REALY:",py)
-		#print("GRIDX:", gridX, "GRIDY:",gridY)
-	
+		(gridX, gridY) = self.worldToGrid(px, py)	
 		self.lock.acquire()
 		self.pos = (gridX, gridY)
 		self.angle = angle * 100

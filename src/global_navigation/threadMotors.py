@@ -73,7 +73,6 @@ class ThreadMotors(threading.Thread):
             self.motors.setV(self.velocity.getV())
             self.motors.setW(self.velocity.getW())
             self.motors.sendVelocities()
-            print("V:", self.velocity.getV(), "W:", self.velocity.getW())
 
             finish_Time = datetime.now()
 
