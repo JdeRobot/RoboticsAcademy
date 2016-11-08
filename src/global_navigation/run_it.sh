@@ -4,7 +4,7 @@
 # Author: Victor Arribas <v.arribas.urjc@gmail.com>
 # License: GPLv3 <http://www.gnu.org/licenses/gpl-3.0.html>
 
-world=./gazebo/cityLarge.world
+world=cityLarge.world
 
 gzserver --verbose --minimal_comms $world &
 sleep 10 # up to 20 for circuit.world
