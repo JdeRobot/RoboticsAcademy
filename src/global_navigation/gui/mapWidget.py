@@ -113,7 +113,7 @@ class Map(QWidget):
         yDif = y - center.y()
         triangle.translate(xDif, yDif)
 
-        self.setPainterSettings(painter, QtCore.Qt.yellow, 1)
+        self.setPainterSettings(painter, QtCore.Qt.blue, 1)
         painter.drawPolygon(triangle)
 
     
