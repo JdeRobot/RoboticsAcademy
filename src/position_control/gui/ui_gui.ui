@@ -131,19 +131,6 @@
      <string>Sensors</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="colorFilterCheck">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>280</y>
-      <width>94</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Color filter</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="altdLabel">
     <property name="geometry">
      <rect>
@@ -303,10 +290,10 @@
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>300</y>
-      <width>61</width>
-      <height>61</height>
+      <x>570</x>
+      <y>280</y>
+      <width>81</width>
+      <height>80</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="logoLayout">
