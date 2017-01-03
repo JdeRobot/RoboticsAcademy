@@ -23,6 +23,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
+from gui.widgets.logoWidget import LogoWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -36,6 +37,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop.setVisible(True)
         self.mapLayout.addWidget(self.map)
         self.map.setVisible(True)
+
+        self.logo = LogoWidget(self, 60, 60)
+        self.runLayout.addWidget(self.logo)
+        self.logo.setVisible(True)
 
         self.pushButton.clicked.connect(self.playClicked)
         self.pushButton.setCheckable(True)
