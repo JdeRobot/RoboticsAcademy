@@ -27,6 +27,7 @@ from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
 from gui.colorFilterWidget import  ColorFilterWidget
+from gui.logoWidget import LogoWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     
@@ -37,6 +38,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop=TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
+
+
+        logoParent = self.logoLayout.parent()
+        self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
+        self.logoLayout.addWidget(self.logo)
+        self.logo.setVisible(True)
+        print (logoParent.width())
+        print (self.logo.width())
+        print (logoParent.contentsMargins().top())
 
         self.record = False
 
