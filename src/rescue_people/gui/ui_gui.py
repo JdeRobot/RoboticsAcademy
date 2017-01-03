@@ -46,6 +46,9 @@ class Ui_MainWindow(object):
         self.sensorsCheck = QtWidgets.QCheckBox(self.centralwidget)
         self.sensorsCheck.setGeometry(QtCore.QRect(540, 250, 94, 26))
         self.sensorsCheck.setObjectName("sensorsCheck")
+        self.colorFilterCheck = QtWidgets.QCheckBox(self.centralwidget)
+        self.colorFilterCheck.setGeometry(QtCore.QRect(540, 280, 94, 26))
+        self.colorFilterCheck.setObjectName("colorFilterCheck")
         self.altdLabel = QtWidgets.QLabel(self.centralwidget)
         self.altdLabel.setGeometry(QtCore.QRect(390, 340, 51, 21))
         self.altdLabel.setObjectName("altdLabel")
@@ -87,6 +90,12 @@ class Ui_MainWindow(object):
         self.resetButton = QtWidgets.QPushButton(self.centralwidget)
         self.resetButton.setGeometry(QtCore.QRect(470, 140, 161, 41))
         self.resetButton.setObjectName("resetButton")
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(590, 300, 61, 61))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.logoLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.logoLayout.setSpacing(0)
+        self.logoLayout.setObjectName("logoLayout")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -94,13 +103,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Labyrinth Escape"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Rescue People"))
         self.takeoffButton.setText(_translate("MainWindow", "Take off"))
         self.playButton.setText(_translate("MainWindow", "Play"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
         self.windowsLabel.setText(_translate("MainWindow", "Windows:"))
         self.cameraCheck.setText(_translate("MainWindow", "Camera"))
         self.sensorsCheck.setText(_translate("MainWindow", "Sensors"))
+        self.colorFilterCheck.setText(_translate("MainWindow", "Color filter"))
         self.altdLabel.setText(_translate("MainWindow", "Altitude"))
         self.rotationLabel.setText(_translate("MainWindow", "Rotation"))
         self.XLabel.setText(_translate("MainWindow", "X:"))
