@@ -25,6 +25,7 @@ from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
 from gui.communicator import Communicator
 from gui.mapWidget import Map
+from gui.logoWidget import LogoWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     
@@ -38,6 +39,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.map = Map(self)
         self.mapLayout.addWidget(self.map)
         self.teleop.setVisible(True)
+
+        self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
+        self.logoLayout.addWidget(self.logo)
+        self.logo.setVisible(True)
 
         self.updGUI.connect(self.updateGUI)
         self.getPathButton.clicked.connect(self.getPathClicked)

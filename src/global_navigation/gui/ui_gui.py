@@ -81,6 +81,12 @@ class Ui_MainWindow(object):
         self.mapLabel_2 = QtWidgets.QLabel(self.centralwidget)
         self.mapLabel_2.setGeometry(QtCore.QRect(440, 10, 121, 17))
         self.mapLabel_2.setObjectName("mapLabel_2")
+        self.verticalLayoutWidget_3 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(759, 459, 71, 71))
+        self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
+        self.logoLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
+        self.logoLayout.setSpacing(0)
+        self.logoLayout.setObjectName("logoLayout")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -88,7 +94,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Introrob py"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Global Navigation"))
         self.getPathButton.setText(_translate("MainWindow", "Generate Path"))
         self.playButton.setText(_translate("MainWindow", "GO!"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
@@ -105,4 +111,4 @@ class Ui_MainWindow(object):
         self.mapLabel.setText(_translate("MainWindow", "MAP: double click for selecting your destiny."))
         self.mapLabel_2.setText(_translate("MainWindow", "Manual controler:"))
 
-from resources import resources_rc
+import resources_rc
