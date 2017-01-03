@@ -3,11 +3,12 @@ from gui.widgets.teleopWidget import TeleopWidget
 __author__ = 'frivas'
 
 
-
+import resources_rc
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
+from gui.widgets.logoWidget import LogoWidget
 
 
 
@@ -20,6 +21,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop=TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
+        self.logo = LogoWidget(self)
+        self.logoLayout.addWidget(self.logo)
+        self.logo.setVisible(True)
+
+
 
         self.pushButton.clicked.connect(self.playClicked)
         self.pushButton.setCheckable(True)
