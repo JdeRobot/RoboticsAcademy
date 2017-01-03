@@ -40,13 +40,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop.setVisible(True)
 
 
-        logoParent = self.logoLayout.parent()
         self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
         self.logoLayout.addWidget(self.logo)
         self.logo.setVisible(True)
-        print (logoParent.width())
-        print (self.logo.width())
-        print (logoParent.contentsMargins().top())
 
         self.record = False
 
