@@ -87,6 +87,12 @@ class Ui_MainWindow(object):
         self.resetButton = QtWidgets.QPushButton(self.centralwidget)
         self.resetButton.setGeometry(QtCore.QRect(470, 140, 161, 41))
         self.resetButton.setObjectName("resetButton")
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(570, 280, 81, 80))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.logoLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.logoLayout.setSpacing(0)
+        self.logoLayout.setObjectName("logoLayout")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -94,7 +100,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Labyrinth Escape"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Cat"))
         self.takeoffButton.setText(_translate("MainWindow", "Take off"))
         self.playButton.setText(_translate("MainWindow", "Play"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
