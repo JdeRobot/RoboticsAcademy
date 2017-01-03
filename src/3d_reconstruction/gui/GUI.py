@@ -8,6 +8,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
+from gui.widgets.logoWidget import LogoWidget
 import numpy
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -24,6 +25,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updGUI.connect(self.updateGUI)
         self.camera1=CameraWidget(self)
         self.stopButton.clicked.connect(self.stopClicked)
+        self.logo = LogoWidget(self)
+        self.logoLayout.addWidget(self.logo)
+        self.logo.setVisible(True)
 
     def updateGUI(self):
         #print ('update gui')
