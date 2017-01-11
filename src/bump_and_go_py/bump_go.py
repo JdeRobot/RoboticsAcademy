@@ -43,6 +43,8 @@ if __name__ == "__main__":
 	machine.addTransition(0, 1,'obstacle < th')
 	machine.addTransition(1, 2,'obstacle > th+x')
 	machine.addTransition(2, 0,'turn x rads')
+	machine.addTransition(2, 1,'')
+
 
 	ic = EasyIce.initialize(sys.argv)
 	pose3d = Pose3DClient(ic, 'BumpGo.Pose3D')
