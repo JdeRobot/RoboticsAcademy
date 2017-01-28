@@ -324,7 +324,8 @@ class RenderArea(QWidget):
 			self.wave()'''
 
 	def stop(self):
-		self.machine.deactivateAll()
+		None
+		#self.machine.deactivateAll()
 
 
 IdRole = Qt.UserRole
