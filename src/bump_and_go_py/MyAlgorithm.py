@@ -38,20 +38,17 @@ class MyAlgorithm(threading.Thread):
                 time.sleep((time_cycle - ms) / 1000.0)
 
     def stop (self):
-        self.machine.deactivateAll()
-        self.motors.setV(0)
-        self.motors.sendVelocities()
+        self.motors.sendV(0)
+        self.motors.sendW(0)
         self.stop_event.set()
 
     def play (self):
         if self.is_alive():
             self.stop_event.clear()
-            self.machine.setStateActive(0, True)
-
         else:
             self.machine.setStateActive(0, True)
             self.start()
-
+		
     def kill (self):
         self.kill_event.set()
 
