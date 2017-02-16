@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Obstacle Avoidance</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="layoutDirection">
@@ -57,7 +57,7 @@
          <string>Stop</string>
         </property>
         <property name="icon">
-         <iconset resource="../../introrob_py/resources/resources.qrc">
+         <iconset resource="../resources/resources.qrc">
           <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
         </property>
        </widget>
@@ -124,25 +124,29 @@
          <enum>QLayout::SetMinimumSize</enum>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>15</pointsize>
-            <weight>75</weight>
-            <italic>true</italic>
-            <bold>true</bold>
-           </font>
-          </property>
-          <property name="text">
-           <string>Run my algorithm</string>
-          </property>
-         </widget>
+         <layout class="QVBoxLayout" name="runLayout">
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>15</pointsize>
+              <weight>75</weight>
+              <italic>true</italic>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Run my algorithm</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -156,14 +160,14 @@
      <x>0</x>
      <y>0</y>
      <width>936</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="../../introrob_py/resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -72,6 +72,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.horizontalLayout.setSpacing(2)
         self.horizontalLayout.setObjectName("horizontalLayout")
+        self.runLayout = QtWidgets.QVBoxLayout()
+        self.runLayout.setObjectName("runLayout")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Maximum)
         sizePolicy.setHorizontalStretch(0)
@@ -85,12 +87,13 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout.addWidget(self.pushButton)
+        self.runLayout.addWidget(self.pushButton)
+        self.horizontalLayout.addLayout(self.runLayout)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.horizontalLayout_3.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 936, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 936, 19))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -102,7 +105,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Obstacle Avoidance"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
         self.imageLeft.setText(_translate("MainWindow", "TextLabel"))
         self.label.setText(_translate("MainWindow", "Input"))

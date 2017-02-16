@@ -90,6 +90,12 @@ class Ui_MainWindow(object):
         self.resetButton = QtWidgets.QPushButton(self.centralwidget)
         self.resetButton.setGeometry(QtCore.QRect(470, 140, 161, 41))
         self.resetButton.setObjectName("resetButton")
+        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(590, 300, 71, 71))
+        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
+        self.logoLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.logoLayout.setSpacing(0)
+        self.logoLayout.setObjectName("logoLayout")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)

@@ -300,6 +300,21 @@
      <string>Reset</string>
     </property>
    </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>300</y>
+      <width>61</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="logoLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+    </layout>
+   </widget>
   </widget>
  </widget>
  <resources>

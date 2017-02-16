@@ -16,7 +16,7 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 
-from resources import resources_rc
+import resources_rc
 from PyQt5 import QtGui
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QWidget, QGridLayout

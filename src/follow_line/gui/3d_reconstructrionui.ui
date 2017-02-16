@@ -124,6 +124,17 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>660</y>
+      <width>160</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="logoLayout"/>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -131,7 +142,7 @@
      <x>0</x>
      <y>0</y>
      <width>733</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>
