@@ -3,6 +3,9 @@ import threading
 import time
 from datetime import datetime
 
+from jderobotTypes import CMDVel
+from jderobotTypes import Image
+
 time_cycle = 80
 
 class MyAlgorithm(threading.Thread):
@@ -81,12 +84,11 @@ class MyAlgorithm(threading.Thread):
         print ("Running")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
-        #self.motors.sendVelocities()
+        #self.motors.sendV(10)
+        #self.motors.sendW(5)
 
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setRightImageFiltered(imageRight)
-        self.setLeftImageFiltered(imageLeft)
+        self.setRightImageFiltered(imageRight.data)
+        self.setLeftImageFiltered(imageLeft.data)
 
