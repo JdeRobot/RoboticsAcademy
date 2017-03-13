@@ -75,4 +75,4 @@ class Sensor(threading.Thread):
 
     def getRobotTheta(self):
         if self.pose3d.hasproxy():
-            return self.pose3d.Yaw()    
+            return self.pose3d.getYaw()    
