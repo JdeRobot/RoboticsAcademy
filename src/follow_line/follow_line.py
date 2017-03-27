@@ -24,8 +24,7 @@ import sys
 from PyQt4 import QtCore, QtGui
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.cameraClient import CameraClient
-from parallelIce.motors import Motors
+import jderobotComm as comm
 import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
@@ -34,9 +33,12 @@ from MyAlgorithm import MyAlgorithm
 
 if __name__ == "__main__":
     ic = EasyIce.initialize(sys.argv)
-    cameraL = CameraClient(ic, "FollowLine.CameraLeft", True)
-    cameraR = CameraClient(ic, "FollowLine.CameraRight", True)
-    motors = Motors (ic, "FollowLine.Motors")
+
+    #starting comm
+    ic, node = comm.init(ic)
+    cameraL = comm.getCameraClient(ic, "FollowLine.CameraLeft")
+    cameraR = comm.getCameraClient(ic, "FollowLine.CameraRight")
+    motors = comm.getMotorsClient(ic, "FollowLine.Motors")
     algorithm=MyAlgorithm(cameraL, cameraR, motors)
 
     app = QtGui.QApplication(sys.argv)

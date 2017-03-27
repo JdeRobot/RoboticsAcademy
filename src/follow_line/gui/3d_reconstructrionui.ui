@@ -117,12 +117,23 @@
         <string>Stop</string>
        </property>
        <property name="icon">
-        <iconset resource="../../introrob_py/resources/resources.qrc">
+        <iconset resource="../resources/resources.qrc">
          <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
        </property>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>660</y>
+      <width>160</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="logoLayout"/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -131,14 +142,14 @@
      <x>0</x>
      <y>0</y>
      <width>733</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="../../introrob_py/resources/resources.qrc"/>
+  <include location="../resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

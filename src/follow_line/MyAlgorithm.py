@@ -3,6 +3,9 @@ import threading
 import time
 from datetime import datetime
 
+from jderobotTypes import CMDVel
+from jderobotTypes import Image
+
 time_cycle = 80
 
 class MyAlgorithm(threading.Thread):
@@ -87,6 +90,6 @@ class MyAlgorithm(threading.Thread):
 
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setRightImageFiltered(imageRight)
-        self.setLeftImageFiltered(imageLeft)
+        self.setRightImageFiltered(imageRight.data)
+        self.setLeftImageFiltered(imageLeft.data)
 
