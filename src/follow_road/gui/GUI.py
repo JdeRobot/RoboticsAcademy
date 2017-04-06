@@ -26,6 +26,7 @@ from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
 from gui.colorFilterWidget import  ColorFilterWidget
+from gui.logoWidget import LogoWidget
 
 class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
     
@@ -40,6 +41,10 @@ class MainWindow(QtGui.QMainWindow, Ui_MainWindow):
         self.record = False
 
         self.updGUI.connect(self.updateGUI)
+
+        self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
+        self.logoLayout.addWidget(self.logo)
+        self.logo.setVisible(True)
         
         self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)

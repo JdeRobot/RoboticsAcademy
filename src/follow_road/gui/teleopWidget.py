@@ -16,7 +16,7 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-from resources import resources_rc
+import resources_rc
 from PyQt4 import QtGui, QtCore
 
 class TeleopWidget(QtGui.QWidget):

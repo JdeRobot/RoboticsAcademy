@@ -1,0 +1,7 @@
+#!/bin/bash
+	cd gui
+	pyuic4 ui_gui.ui > ui_gui.py
+	cd ../resources 
+	pyrcc4 resources.qrc -o resources_rc.py
+	mv resources_rc.py ../resources_rc.py
+	cd ..

@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_gui.ui'
 #
-# Created: Sun Oct 11 12:42:26 2015
-#      by: PyQt4 UI code generator 4.10.4
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -62,7 +61,7 @@ class Ui_MainWindow(object):
         self.sensorsCheck.setGeometry(QtCore.QRect(540, 250, 94, 26))
         self.sensorsCheck.setObjectName(_fromUtf8("sensorsCheck"))
         self.colorFilterCheck = QtGui.QCheckBox(self.centralwidget)
-        self.colorFilterCheck.setGeometry(QtCore.QRect(540,280,94,26))
+        self.colorFilterCheck.setGeometry(QtCore.QRect(540, 280, 94, 26))
         self.colorFilterCheck.setObjectName(_fromUtf8("colorFilterCheck"))
         self.altdLabel = QtGui.QLabel(self.centralwidget)
         self.altdLabel.setGeometry(QtCore.QRect(390, 340, 51, 21))
@@ -71,7 +70,6 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(20, 30, 361, 301))
         self.verticalLayoutWidget.setObjectName(_fromUtf8("verticalLayoutWidget"))
         self.tlLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget)
-        self.tlLayout.setMargin(0)
         self.tlLayout.setObjectName(_fromUtf8("tlLayout"))
         self.rotationDial = QtGui.QDial(self.centralwidget)
         self.rotationDial.setGeometry(QtCore.QRect(440, 220, 50, 64))
@@ -106,13 +104,19 @@ class Ui_MainWindow(object):
         self.resetButton = QtGui.QPushButton(self.centralwidget)
         self.resetButton.setGeometry(QtCore.QRect(470, 140, 161, 41))
         self.resetButton.setObjectName(_fromUtf8("resetButton"))
+        self.verticalLayoutWidget_2 = QtGui.QWidget(self.centralwidget)
+        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(590, 300, 61, 61))
+        self.verticalLayoutWidget_2.setObjectName(_fromUtf8("verticalLayoutWidget_2"))
+        self.logoLayout = QtGui.QVBoxLayout(self.verticalLayoutWidget_2)
+        self.logoLayout.setSpacing(0)
+        self.logoLayout.setObjectName(_fromUtf8("logoLayout"))
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Introrob py", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Follow Road", None))
         self.takeoffButton.setText(_translate("MainWindow", "Take off", None))
         self.playButton.setText(_translate("MainWindow", "Play", None))
         self.stopButton.setText(_translate("MainWindow", "Stop", None))
@@ -130,5 +134,4 @@ class Ui_MainWindow(object):
         self.rotValue.setText(_translate("MainWindow", "0", None))
         self.resetButton.setText(_translate("MainWindow", "Reset", None))
 
-from resources import resources_rc
-
+import resources_rc
