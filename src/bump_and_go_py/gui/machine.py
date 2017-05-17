@@ -1,4 +1,4 @@
-from gui.state import *
+from state import *
 
 class Machine:
 
