@@ -11,7 +11,7 @@ Para lanzar el ejemplo, sigue los siguientes pasos:
 
 * Ejecución sin ver el mundo: `gzserver kobuki-simple.world`
 * Ejecución viendo el mundo: `gazebo kobuki-simple.world`
-* Ejecución del ejemplo: `python3 bump_and_go.py bumpGo.cfg`
+* Ejecución del ejemplo: `python2 bump_go.py bumpGo.cfg`
 
 Para simplificar el cierre del entorno, basta con cerrar la(s)
 ventana(s) de bump_and_go. *Ctrl+C dará problemas*.
