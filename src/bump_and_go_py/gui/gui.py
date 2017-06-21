@@ -9,9 +9,9 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
   
 import basicdrawing_rc
 
-from gui.machine import *
-from gui.state import *
-from gui.transition import *
+from machine import *
+from state import *
+from transition import *
 import math, time
   
   

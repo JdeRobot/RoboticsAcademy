@@ -1,4 +1,4 @@
-from gui.transition import *
+from transition import *
 
 class State:
 
