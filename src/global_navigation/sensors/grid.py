@@ -33,7 +33,8 @@ class Grid:
 		self.initAngle = angle * 180 / math.pi
 		self.angle = angle * 180 / math.pi
 		self.lock.release()
-		
+
+
 	def RTx(self, angle, tx, ty, tz):
 		RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
 		return RT
@@ -103,6 +104,9 @@ class Grid:
 	def setDestiny(self, x, y):
 		self.lock.acquire()
 		self.destiny = (x, y)
+		f = open("sensors/destiny.txt", "w")
+		f.write(str(self.destiny))
+		f.close()
 		self.lock.release()
 
 	def getDestiny(self):
@@ -174,4 +178,3 @@ class Grid:
 			 nCopy = self.grid
 		cv2.imshow("Grid Field", nCopy)
 		self.lock.release()
-		
