@@ -21,9 +21,9 @@ class PercentajeWidget(QWidget):
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
         self.map = cv2.resize(self.map, (500, 500))
         self.pose3d = pose3d
-        self.porcentajeCasa = 0
+        self.percentajeHouse = 0
         self.numPixels = self.calculatePixelsWhite()
-        self.numPixelsRecorridos = 0
+        self.numPixelsWalked = 0
         self.numPixelInit = 656
         
         layout = QGridLayout()
@@ -49,19 +49,19 @@ class PercentajeWidget(QWidget):
         
         timer = QTimer(self)
         timer.start(1000)
-        timer.timeout.connect(self.contadorTime)
+        timer.timeout.connect(self.accountantTime)
         
         
-    def contadorTime(self):
+    def accountantTime(self):
         if self.seconds < self.MAXseconds:
             self.updateG()
             self.seconds += 1
             if self.seconds % 100 == 0:
                 self.contSeconds += 1
-                dif = float(float(self.porcentajeCasa) - float(self.percentajePrev))
+                dif = float(float(self.percentajeHouse) - float(self.percentajePrev))
                 self.devPercentajes.append(dif)
                 self.secondsArray.append(self.contSeconds)
-                self.percentajePrev = self.porcentajeCasa
+                self.percentajePrev = self.percentajeHouse
             
             ax = self.figure.add_subplot(111)
             ax.set_xlabel('Time')
@@ -99,14 +99,14 @@ class PercentajeWidget(QWidget):
         return numPixels
 
     def calculatePercentaje(self):
-        percentaje = float(self.numPixelsRecorridos * 100) / float(self.numPixels)
+        percentaje = float(self.numPixelsWalked * 100) / float(self.numPixels)
         # If vacuum is stopped, the percentaje is zero
-        if self.numPixelsRecorridos == self.numPixelInit:
+        if self.numPixelsWalked == self.numPixelInit:
             percentaje = 0.0
         return percentaje
 
 
-    def porcentajeRecorrido(self):
+    def percentajeWalked(self):
         x = self.pose3d.getX()
         y = self.pose3d.getY()
         scale = 50
@@ -120,13 +120,13 @@ class PercentajeWidget(QWidget):
         for k in range(i_init, i_finish+1):
             for l in range(j_init, j_finish+1):
                 if (self.map[k][l] == 255):
-                    self.numPixelsRecorridos = self.numPixelsRecorridos + 1
+                    self.numPixelsWalked = self.numPixelsWalked + 1
                     self.map[k][l] = 128
 
-        self.porcentajeCasa = self.calculatePercentaje()
+        self.percentajeHouse = self.calculatePercentaje()
 
 
     def updateG(self):
-        self.porcentajeRecorrido()
+        self.percentajeWalked()
         self.update()  
         
