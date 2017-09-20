@@ -11,7 +11,6 @@ Para lanzar el ejemplo, sigue los siguientes pasos:
 * Ejecución viendo el mundo: `gazebo Vacuum.world`
 * Ejecución de la práctica y de la interfaz de usuario: `python2 vacuumCleaner.py --Ice.Config=vacuumCleaner.cfg`
 * Ejecución del evaluador automático: `python2 referee.py --Ice.Config=vacuumCleaner.cfg`
-* Ejecución de la gráfica de la derivada del porcentaje: `python2 graphicPercentaje.py --Ice.Config=vacuumCleaner.cfg`
 
 Para simplificar el cierre del entorno, basta con cerrar la(s) ventana(s) de VacuumCleaner. Ctrl+C dará problemas.
 
