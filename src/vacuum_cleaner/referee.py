@@ -17,15 +17,15 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__(parent)
         
         layout = QGridLayout()
-        self.porcentaje = porcentajeWidget(self, pose3d)
-        self.tiempoDigital = tiempoDigitalWidget(self, self.porcentaje)
-        self.tiempoAnalog = tiempoAnalogWidget(self)
-        self.mapa = mapaWidget(self, pose3d)
+        self.percentaje = percentajeWidget(self, pose3d)
+        self.timeDigital = timeDigitalWidget(self, self.percentaje)
+        self.timeAnalog = timeAnalogWidget(self)
+        self.map = mapWidget(self, pose3d)
         self.logo = logoWidget(self)
-        layout.addWidget(self.tiempoDigital,0,2)
-        layout.addWidget(self.porcentaje,0,0)
-        layout.addWidget(self.mapa,1,0)
-        layout.addWidget(self.tiempoAnalog,1,2)
+        layout.addWidget(self.timeDigital,0,2)
+        layout.addWidget(self.percentaje,0,0)
+        layout.addWidget(self.map,1,0)
+        layout.addWidget(self.timeAnalog,1,2)
         layout.addWidget(self.logo,2,2)
     
         vSpacer = QSpacerItem(50, 50, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -37,9 +37,9 @@ class MainWindow(QWidget):
         self.updGUI.connect(self.update)
 
     def update(self):
-        self.porcentaje.updateG()
-        self.mapa.updateG()
-        self.tiempoAnalog.updateG()
+        self.percentaje.updateG()
+        self.map.updateG()
+        self.timeAnalog.updateG()
 
 
 class logoWidget(QWidget):
@@ -58,13 +58,13 @@ class logoWidget(QWidget):
         self.setMinimumSize(100,100)
   
 
-class mapaWidget(QWidget):
+class mapWidget(QWidget):
     def __init__(self,winParent, pose3d):    
-        super(mapaWidget, self).__init__()
+        super(mapWidget, self).__init__()
         self.winParent=winParent
-        self.mapa = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
-        self.mapa = cv2.resize(self.mapa, (500, 500))
-        image = QtGui.QImage(self.mapa.data, self.mapa.shape[1], self.mapa.shape[0], self.mapa.shape[1], QtGui.QImage.Format_Indexed8);
+        self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
+        self.map = cv2.resize(self.map, (500, 500))
+        image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
         self.pixmap = QtGui.QPixmap.fromImage(image)
         self.height = self.pixmap.height()
         self.width = self.pixmap.width()
@@ -125,31 +125,31 @@ class mapaWidget(QWidget):
 
 
 
-class porcentajeWidget(QWidget):
+class percentajeWidget(QWidget):
     def __init__(self,winParent, pose3d):    
-        super(porcentajeWidget, self).__init__()
+        super(percentajeWidget, self).__init__()
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
         self.map = cv2.resize(self.map, (500, 500))
         self.pose3d = pose3d
-        self.porcentajeCasa = 0
+        self.percentajeHouse = 0
         self.numPixels = self.calculatePixelsWhite()
-        self.numPixelsRecorridos = 0
+        self.numPixelsWalked = 0
 
         vLayout = QVBoxLayout()
 
-        self.porcentajeRecorrido()
+        self.percentajeWalked()
 
-        self.Porcentaje = QLabel("Porcentaje: " + str(round(self.porcentajeCasa, 3)) + ' %')
+        self.Percentaje = QLabel("Percentaje: " + str(round(self.percentajeHouse, 3)) + ' %')
 
-        vLayout.addWidget(self.Porcentaje, 0)
+        vLayout.addWidget(self.Percentaje, 0)
 
         self.bar = QProgressBar()
-        self.bar.setValue(self.porcentajeCasa)
+        self.bar.setValue(self.percentajeHouse)
         st = "QProgressBar::chunk {background-color: #ff0000;}\n QProgressBar {border: 1px solid grey;border-radius: 2px;text-align: center;background: #eeeeee;}"
         self.bar.setStyleSheet(st)
         self.bar.setTextVisible(False)
-        vLayout.addWidget(self.Porcentaje, 0)
+        vLayout.addWidget(self.Percentaje, 0)
         vLayout.addWidget(self.bar, 0)
 
         vSpacer = QSpacerItem(30, 80, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -186,11 +186,11 @@ class porcentajeWidget(QWidget):
         return numPixels
 
     def calculatePercentaje(self):
-        percentaje = self.numPixelsRecorridos * 100 / self.numPixels
+        percentaje = self.numPixelsWalked * 100 / self.numPixels
         return percentaje
 
 
-    def porcentajeRecorrido(self):
+    def percentajeWalked(self):
         x = self.pose3d.getX()
         y = self.pose3d.getY()
         scale = 50
@@ -204,38 +204,38 @@ class porcentajeWidget(QWidget):
         for k in range(i_init, i_finish+1):
             for l in range(j_init, j_finish+1):
                 if (self.map[k][l] == 255):
-                    self.numPixelsRecorridos = self.numPixelsRecorridos + 1
+                    self.numPixelsWalked = self.numPixelsWalked + 1
                     self.map[k][l] = 128
 
-        self.porcentajeCasa = self.calculatePercentaje()
+        self.percentajeHouse = self.calculatePercentaje()
 
 
     def updateG(self):
-        self.porcentajeRecorrido()
-        self.Porcentaje.setText("Superficie recorrida: " + str(round(self.porcentajeCasa, 3)) + ' %')
-        self.bar.setValue(self.porcentajeCasa)
+        self.percentajeWalked()
+        self.Percentaje.setText("Percentaje: " + str(round(self.percentajeHouse, 3)) + ' %')
+        self.bar.setValue(self.percentajeHouse)
         self.update()
 
 
-class tiempoDigitalWidget(QWidget):
+class timeDigitalWidget(QWidget):
 
     time = pyqtSignal()
-    def __init__(self,winParent, porcentaje):    
-        super(tiempoDigitalWidget, self).__init__()
+    def __init__(self,winParent, percentaje):    
+        super(timeDigitalWidget, self).__init__()
         self.winParent=winParent
         self.seconds = 900
         self.pose3d = pose3d
-        self.porcentaje = porcentaje
+        self.percentaje = percentaje
         self.show = False
         self.MAX_PERCENT = 30
-        self.MAX_NOTA = 10
+        self.MAX_MARK = 10
 
         self.hLayout = QHBoxLayout()
   
-        tiempoLabel = QLabel("Tiempo")
+        timeLabel = QLabel("Time")
         self.lcd = QLCDNumber(self)
         self.lcd.setMaximumSize(100,50)
-        self.hLayout.addWidget(tiempoLabel,0)
+        self.hLayout.addWidget(timeLabel,0)
         self.hLayout.addWidget(self.lcd, 1)
 
         hSpacer = QSpacerItem(300, 30, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -262,11 +262,11 @@ class tiempoDigitalWidget(QWidget):
         # set the palette
         self.lcd.setPalette(palette)
         
-    def showNota(self):
+    def showMark(self):
         self.show = True
-        nota = self.testPorcentaje()
-        notaLabel = QLabel('Nota final: ' + str(nota))
-        self.hLayout.addWidget(notaLabel, 0) 
+        mark = self.testPercentaje()
+        markLabel = QLabel('Final mark: ' + str(mark))
+        self.hLayout.addWidget(markLabel, 0) 
         self.setLayout(self.hLayout)
 
     def printTime(self):
@@ -275,34 +275,34 @@ class tiempoDigitalWidget(QWidget):
             self.seconds -= 1
         else:
             if not self.show:
-                self.showNota()
+                self.showMark()
         self.lcd.display(self.seconds)
 
     
-    def testPorcentaje(self):
-        pCasa = self.porcentaje.calculatePercentaje()
-        notaPorc = float(pCasa) * float(self.MAX_NOTA) / float(self.MAX_PERCENT)
-        if pCasa > self.MAX_PERCENT:
-            notaPorc = 10
-        return notaPorc
+    def testPercentaje(self):
+        pHouse = self.percentaje.calculatePercentaje()
+        markPerc = float(pHouse) * float(self.MAX_MARK) / float(self.MAX_PERCENT)
+        if pHouse > self.MAX_PERCENT:
+            markPerc = 10
+        return markPerc
 
 
-class tiempoAnalogWidget(QWidget):
+class timeAnalogWidget(QWidget):
 
     time = pyqtSignal()
     def __init__(self,winParent):    
-        super(tiempoAnalogWidget, self).__init__()
+        super(timeAnalogWidget, self).__init__()
         self.winParent=winParent
         self.rectangle = QRectF(0.0, 0.0, 300.0, 300.0)
         self.angle = -pi/2
         self.angleMinutes = -pi/2
         self.seconds = 900
-        self.contador = 0
+        self.accountant = 0
         self.minutes = 0
 
         timer = QTimer(self)
         timer.start(1000)
-        timer.timeout.connect(self.contadorTime)
+        timer.timeout.connect(self.accountantTime)
 
     def drawWhiteZones(self, painter):
         self.setStyle(painter, QColor(255,255,255),QColor(255,255,255),1)
@@ -336,11 +336,11 @@ class tiempoAnalogWidget(QWidget):
         painter.drawLine(QPoint(origx,origy), QPoint(finMinutesx,finMinutesy))
         painter.drawEllipse(145,145, 10, 10)
 
-    def contadorTime(self):
-        if self.contador < self.seconds:
-            self.contador += 1
+    def accountantTime(self):
+        if self.accountant < self.seconds:
+            self.accountant += 1
             self.angle = self.angle + (6*pi/180)
-        if self.contador%60 == 0:
+        if self.accountant % 60 == 0:
             self.minutes += 1
             self.angleMinutes = self.angleMinutes + (6*pi/180)
 
