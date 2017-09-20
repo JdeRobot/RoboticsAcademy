@@ -18,17 +18,17 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__(parent)
         
         layout = QGridLayout()
-        self.quesito = quesoWidget(self, pose3d)
-        self.tiempo = tiempoWidget(self)
-        self.calidad = calidadWidget(self, laser1, laser2, laser3)
-        self.distancia = distanciaWidget(self, pose3d)
-        self.nota = notaWidget(self,pose3d, self.tiempo, self.calidad, self.distancia)
+        self.cheese = cheeseWidget(self, pose3d)
+        self.time = timeWidget(self)
+        self.quality = qualityWidget(self, laser1, laser2, laser3)
+        self.distance = distanceWidget(self, pose3d)
+        self.mark = markWidget(self,pose3d, self.time, self.quality, self.distance)
         self.logo = logoWidget(self)
-        layout.addWidget(self.quesito,1,0)
-        layout.addWidget(self.tiempo,0,0)
-        layout.addWidget(self.distancia,0,2)
-        layout.addWidget(self.calidad,1,2)
-        layout.addWidget(self.nota,0,1)
+        layout.addWidget(self.cheese,1,0)
+        layout.addWidget(self.time,0,0)
+        layout.addWidget(self.distance,0,2)
+        layout.addWidget(self.quality,1,2)
+        layout.addWidget(self.mark,0,1)
         layout.addWidget(self.logo,2,2)
     
         vSpacer = QSpacerItem(30, 50, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -40,10 +40,10 @@ class MainWindow(QWidget):
         self.updGUI.connect(self.update)
 
     def update(self):
-        self.quesito.updateG()
-        self.distancia.updateG()
-        self.calidad.updateG()
-        self.nota.updateG()
+        self.cheese.updateG()
+        self.distance.updateG()
+        self.quality.updateG()
+        self.mark.updateG()
         
 
 class logoWidget(QWidget):
@@ -62,9 +62,9 @@ class logoWidget(QWidget):
         self.setMinimumSize(100,100)
         
         
-class calidadWidget(QWidget):
+class qualityWidget(QWidget):
     def __init__(self,winParent, laser1, laser2, laser3):    
-        super(calidadWidget, self).__init__()
+        super(qualityWidget, self).__init__()
         self.winParent=winParent
         self.laser1 = laser1
         self.laser2 = laser2
@@ -73,13 +73,13 @@ class calidadWidget(QWidget):
         self.MAX_CRASH = 1000
 
         vLayout = QVBoxLayout()
-        choquesLabel = QLabel("Choques:")
+        crashLabel = QLabel("Crash:")
         self.bar = QProgressBar()
         self.bar.setValue(self.numCrash)
         st = "QProgressBar::chunk {background-color: #ff0000;}\n QProgressBar {border: 1px solid grey;border-radius: 2px;text-align: center;background: #eeeeee;}"
         self.bar.setStyleSheet(st)
         self.bar.setTextVisible(False)
-        vLayout.addWidget(choquesLabel, 0)
+        vLayout.addWidget(crashLabel, 0)
         vLayout.addWidget(self.bar, 0)
 
         vSpacer = QSpacerItem(30, 80, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -115,9 +115,9 @@ class calidadWidget(QWidget):
         self.update()
 
 
-class distanciaWidget(QWidget):
+class distanceWidget(QWidget):
     def __init__(self,winParent, pose3d):    
-        super(distanciaWidget, self).__init__()
+        super(distanceWidget, self).__init__()
         self.winParent=winParent
         self.pose3d = pose3d
         self.distFrontFinal = 0
@@ -128,10 +128,10 @@ class distanciaWidget(QWidget):
 
         self.distances()
 
-        distancesLabel = QLabel("Distancias:")
-        self.distanceFrontalLabel = QLabel("Distancia frontal: " + str(round(self.distFrontFinal, 3)) + ' m')
-        self.distanceRearLabel = QLabel("Distancia trasera: " + str(round(self.distRearFinal, 3)) + ' m')
-        self.distanceSidewalkLabel = QLabel("Distancia a la acera: " + str(round(self.distanceSidewalk, 3)) + ' m')
+        distancesLabel = QLabel("Distances:")
+        self.distanceFrontalLabel = QLabel("Front distance: " + str(round(self.distFrontFinal, 3)) + ' m')
+        self.distanceRearLabel = QLabel("Rear distance: " + str(round(self.distRearFinal, 3)) + ' m')
+        self.distanceSidewalkLabel = QLabel("Distance to the sidewalk: " + str(round(self.distanceSidewalk, 3)) + ' m')
         vLayout.addWidget(distancesLabel, 0)
         vLayout.addWidget(self.distanceFrontalLabel, 0)
         vLayout.addWidget(self.distanceRearLabel, 0)
@@ -213,7 +213,7 @@ class distanciaWidget(QWidget):
         carSize = [5.75, 2.5]
         carSizeTaxi = [4, 2]
         
-        #Poses sidewalk
+        # Poses sidewalk
         positionSideWalk_start = [-25, -4.25]
         positionSideWalk_final = [35, -4.25]
         
@@ -275,125 +275,125 @@ class distanciaWidget(QWidget):
 
     def updateG(self):
         self.distances()
-        self.distanceFrontalLabel.setText("Distancia frontal: " + str(round(self.distFrontFinal, 3)) + ' m')
-        self.distanceRearLabel.setText("Distancia trasera: " + str(round(self.distRearFinal, 3)) + ' m')
-        self.distanceSidewalkLabel.setText("Distancia a la acera: " + str(round(self.distanceSidewalk, 3)) + ' m')
+        self.distanceFrontalLabel.setText("Front distance: " + str(round(self.distFrontFinal, 3)) + ' m')
+        self.distanceRearLabel.setText("Rear distance: " + str(round(self.distRearFinal, 3)) + ' m')
+        self.distanceSidewalkLabel.setText("Distance to the sidewalk: " + str(round(self.distanceSidewalk, 3)) + ' m')
         self.update()      
    
    
         
-class notaWidget(QWidget):
-    def __init__(self,winParent,pose3d, tiempo, calidad, distancia):    
-        super(notaWidget, self).__init__()
+class markWidget(QWidget):
+    def __init__(self,winParent,pose3d, time, quality, distance):    
+        super(markWidget, self).__init__()
         self.winParent=winParent
         self.pose3d = pose3d
-        self.time = tiempo
-        self.calidad = calidad
-        self.distancia = distancia
+        self.time = time
+        self.quality = quality
+        self.distance = distance
         self.num = 0
 
         self.hLayout = QHBoxLayout()
-        self.notaLabel = ''
+        self.markLabel = ''
         
         self.button = QPushButton('Show me my mark')
-        self.button.clicked.connect(self.notaFinal)
+        self.button.clicked.connect(self.markFinal)
         self.hLayout.addWidget(self.button, 0)
         
         self.setLayout(self.hLayout) 
         
-    def notaFinal(self):
-        notaAngle = self.testAngle() * 0.025
-        notaTime = self.testTime() * 0.025
-        notaDist = self.testDistance() * 0.025
-        notaCol = self.testCollision() * 0.025
-        nota = notaAngle + notaTime + notaDist + notaCol
+    def markFinal(self):
+        markAngle = self.testAngle() * 0.025
+        markTime = self.testTime() * 0.025
+        markDist = self.testDistance() * 0.025
+        markCol = self.testCollision() * 0.025
+        mark = markAngle + markTime + markDist + markCol
         if self.num == 0:
-            self.notaLabel = QLabel('Nota final: ' + str(nota))
-            self.hLayout.addWidget(self.notaLabel, 0)
+            self.markLabel = QLabel('Final mark: ' + str(mark))
+            self.hLayout.addWidget(self.markLabel, 0)
         else:
-            self.notaLabel.setText('Nota final: ' + str(nota))
+            self.markLabel.setText('Final mark: ' + str(mark))
         self.num = self.num + 1
         
     def testAngle(self):
         yawRad = self.pose3d.getYaw()
         angle = math.degrees(yawRad) + 90
         if (angle >= 85 and angle <= 105):
-            notaAngle = 100
+            markAngle = 100
         elif (angle < 85 and angle >= 70 or angle > 105 and angle <= 120):
-            notaAngle = 80
+            markAngle = 80
         elif (angle < 70 and angle >= 60 or angle > 120 and angle <= 130):
-            notaAngle = 50
+            markAngle = 50
         else: 
-            notaAngle = 0
-        return notaAngle
+            markAngle = 0
+        return markAngle
     
     def testTime(self):
         minTime = 170
         myTime = self.time.seconds
-        notaTime = float(minTime*100)/float(myTime)
+        markTime = float(minTime*100)/float(myTime)
         if myTime < 170:
-            notaTime = 100  
-        return notaTime
+            markTime = 100  
+        return markTime
     
     def testDistance(self):
-        MyDistFront = self.distancia.distFrontFinal
-        MyDistRear = self.distancia.distRearFinal
-        MyDistSidewalk = self.distancia.distanceSidewalk
+        MyDistFront = self.distance.distFrontFinal
+        MyDistRear = self.distance.distRearFinal
+        MyDistSidewalk = self.distance.distanceSidewalk
         ideal = [7.25, -3]
         posX = self.pose3d.getX()
         posY = self.pose3d.getY()
         
         if MyDistFront >= 1.5 and MyDistFront < 3.5:
-            notaDistFront = 100
+            markDistFront = 100
         elif MyDistFront < 1.5 and MyDistFront >= 1:
-            notaDistFront = 50
+            markDistFront = 50
         else:
-            notaDistFront = 0
+            markDistFront = 0
 
         if MyDistRear >= 1.5 and MyDistRear < 3.5:
-            notaDistRear = 100
+            markDistRear = 100
         elif MyDistRear < 1.5 and MyDistRear >= 1:
-            notaDistRear = 50
+            markDistRear = 50
         else:
-            notaDistRear = 0
+            markDistRear = 0
 
         if MyDistSidewalk > 0 and MyDistSidewalk <= 0.75:
-            notaDistSidewalk = 100
+            markDistSidewalk = 100
         elif MyDistSidewalk > 0.75 and MyDistSidewalk < 1.5:
-            notaDistSidewalk = 50
+            markDistSidewalk = 50
         else:
-            notaDistSidewalk = 0
+            markDistSidewalk = 0
 
-        notaDist = float(notaDistFront+notaDistRear+notaDistSidewalk)/float(3)
-        return notaDist
+        markDist = float(markDistFront+markDistRear+markDistSidewalk)/float(3)
+        return markDist
     
     def testCollision(self):
         minCrash = 0
-        if self.calidad.numCrash == 0:
-            notaCol = 100
+        if self.quality.numCrash == 0:
+            markCol = 100
         else:
-            notaCol = float(minCrash*100)/float(self.calidad.numCrash)
-        return notaCol
+            markCol = float(minCrash*100)/float(self.quality.numCrash)
+        return markCol
 
     def updateG(self):
         self.update() 
         
              
 
-class tiempoWidget(QWidget):
+class timeWidget(QWidget):
 
     time = pyqtSignal()
     def __init__(self,winParent):    
-        super(tiempoWidget, self).__init__()
+        super(timeWidget, self).__init__()
         self.winParent=winParent
         self.seconds = 0
         
         hLayout = QHBoxLayout()
         
-        tiempoLabel = QLabel("Tiempo")
+        timeLabel = QLabel("Time")
         self.lcd = QLCDNumber(self)
         self.lcd.setMaximumSize(100,50)
-        hLayout.addWidget(tiempoLabel,0)
+        hLayout.addWidget(timeLabel,0)
         hLayout.addWidget(self.lcd, 1)
 
         hSpacer = QSpacerItem(300, 30, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -427,10 +427,10 @@ class tiempoWidget(QWidget):
 
 
 
-class quesoWidget(QWidget):
+class cheeseWidget(QWidget):
     
     def __init__(self,winParent, pose3d):    
-        super(quesoWidget, self).__init__()
+        super(cheeseWidget, self).__init__()
         self.winParent=winParent
         self.rectangle = QRectF(0.0, 0.0, 300.0, 300.0)
         self.pose3d = pose3d       
