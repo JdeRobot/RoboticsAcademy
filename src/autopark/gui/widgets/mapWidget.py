@@ -129,13 +129,13 @@ class MapWidget(QWidget):
     
     def RTLaser(self, num):
         if num == 1:
-            #Rotacion en Z / Traslacion en X
+            # Rotation Z / Traslation X
             RT = self.RTz(0, 2.79, 0, 0)
         elif num == 2:
-            #Rotacion en Z / Traslacion en X
+            # Rotation Z / Traslation X
             RT = self.RTz(pi, -2.79, 0, 0)
         else:
-            #Rotacion en Z / Traslacion en Y
+            # Rotation Z / Traslation Y
             RT = self.RTz(-pi/2, 0, -1.5, 0)
         return RT    
     
