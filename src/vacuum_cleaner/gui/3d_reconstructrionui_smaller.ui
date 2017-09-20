@@ -55,6 +55,21 @@
        </layout>
       </item>  
       <item>
+        <widget class="QCheckBox" name="percentajeCheck">
+        <property name="geometry">
+         <rect>
+          <x>540</x>
+          <y>220</y>
+          <width>94</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Percentaje Graphic</string>
+        </property>
+        </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="stopButton">
         <property name="font">
          <font>
