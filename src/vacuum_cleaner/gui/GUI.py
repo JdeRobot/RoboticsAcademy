@@ -20,14 +20,16 @@
 from gui.widgets.teleopWidget import TeleopWidget
 from gui.widgets.mapWidget import MapWidget
 from gui.widgets.mapWidget import LogoWidget
-from PyQt5.QtCore import pyqtSignal
+from gui.widgets.graphicPercentajeWidget import PercentajeWidget
+from gui.widgets.communicator import Communicator
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     updGUI=pyqtSignal()
-    def __init__(self, parent=None):
+    def __init__(self, pose3d, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.teleop=TeleopWidget(self)
@@ -39,6 +41,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.logoLayout.addWidget(self.logo)
         self.map.setVisible(True)
         self.logo.setVisible(True)
+        
+        self.percentajeCheck.stateChanged.connect(self.showPercentajeWidget)
+        self.percentajeWidget=PercentajeWidget(self, pose3d)
+        self.percentajeCommunicator=Communicator()
 
         self.pushButton.clicked.connect(self.playClicked)
         self.pushButton.setCheckable(True)
@@ -75,6 +81,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setBumper(self,bumper):
         self.bumper=bumper
+        
+    def showPercentajeWidget(self,state):
+        if state == Qt.Checked:
+            self.percentajeWidget.show()
+        else:
+            self.percentajeWidget.close()
+    
+    def closePercentajeWidget(self):
+        self.percentajeCheck.setChecked(False)
 
     def playClicked(self):
         if self.pushButton.isChecked():
