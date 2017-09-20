@@ -290,8 +290,10 @@ class notaWidget(QWidget):
         self.time = tiempo
         self.calidad = calidad
         self.distancia = distancia
+        self.num = 0
 
         self.hLayout = QHBoxLayout()
+        self.notaLabel = ''
         
         self.button = QPushButton('Show me my mark')
         self.button.clicked.connect(self.notaFinal)
@@ -305,8 +307,12 @@ class notaWidget(QWidget):
         notaDist = self.testDistance() * 0.025
         notaCol = self.testCollision() * 0.025
         nota = notaAngle + notaTime + notaDist + notaCol
-        notaLabel = QLabel('Nota final: ' + str(nota))
-        self.hLayout.addWidget(notaLabel, 0)
+        if self.num == 0:
+            self.notaLabel = QLabel('Nota final: ' + str(nota))
+            self.hLayout.addWidget(self.notaLabel, 0)
+        else:
+            self.notaLabel.setText('Nota final: ' + str(nota))
+        self.num = self.num + 1
         
     def testAngle(self):
         yawRad = self.pose3d.getYaw()
@@ -333,7 +339,10 @@ class notaWidget(QWidget):
         MyDistFront = self.distancia.distFrontFinal
         MyDistRear = self.distancia.distRearFinal
         MyDistSidewalk = self.distancia.distanceSidewalk
-
+        ideal = [7.25, -3]
+        posX = self.pose3d.getX()
+        posY = self.pose3d.getY()
+        
         if MyDistFront >= 1.5 and MyDistFront < 3.5:
             notaDistFront = 100
         elif MyDistFront < 1.5 and MyDistFront >= 1:
