@@ -81,4 +81,3 @@ class CameraWidget(QWidget):
 
     def changeCamera(self):
         self.winParent.getExtra().toggleCam()
-        
