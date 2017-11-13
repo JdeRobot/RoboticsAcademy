@@ -10,6 +10,8 @@ from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
 from gui.widgets.logoWidget import LogoWidget
 
+from jderobotTypes import CMDVel
+
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -75,17 +77,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setXYValues(self,newX,newY):
         #print ("newX: %f, newY: %f" % (newX, newY) )
+        vel = CMDVel()
         myW=-newX*self.motors.getMaxW()
         myV=-newY*self.motors.getMaxV()
-        self.motors.setV(myV)
-        self.motors.setW(myW)
-        self.motors.sendVelocities()
+        vel.vx = myV
+        vel.az = myW
+        self.motors.sendVelocities(vel)
 
 
     def stopClicked(self):
-        self.motors.setV(0)
-        self.motors.setW(0)
-        self.motors.sendVelocities()
+        vel = CMDVel()
+        self.motors.sendVelocities(vel)
         self.teleop.returnToOrigin()
 
     def closeEvent(self, event):
