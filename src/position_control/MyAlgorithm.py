@@ -81,4 +81,7 @@ class MyAlgorithm(threading.Thread):
 
     def execute(self):
         # Add your code here
+        # use: self.pose.getPose3d().x
+        #      self.pose.getPose3d().y
+        # to get the coordinates of the drone in the x,y plane
         pass
