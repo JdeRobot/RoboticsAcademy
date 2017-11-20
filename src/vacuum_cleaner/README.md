@@ -1,23 +1,23 @@
 # Vacuum Cleaner
 
-# Práctica Vacuum Cleaner
+# Vacuum Cleaner practice
 
-El objetivo de esta práctica consiste en implementar la lógica de un algoritmo de navegación para una aspiradora autónoma. El principal objetivo será recorrer la mayor superficie de una casa mediante el algoritmo programado.
+The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 
 
-## Cómo ejecutar
-Para lanzar el ejemplo, sigue los siguientes pasos:
-* Ejecución sin ver el mundo: `gzserver Vacuum.world`
-* Ejecución viendo el mundo: `gazebo Vacuum.world`
-* Ejecución de la práctica y de la interfaz de usuario: `python2 vacuumCleaner.py --Ice.Config=vacuumCleaner.cfg`
-* Ejecución del evaluador automático: `python2 referee.py --Ice.Config=vacuumCleaner.cfg`
+## How to run
+To launch the example, follow the steps below:
+* Execution without watching the world: `gzserver Vacuum.world`
+* Execution watching the world: `gazebo Vacuum.world`
+* Execution of the practice and the user interface: `python2 vacuumCleaner.py vacuumCleaner.cfg`
+* Execution of the automatic evaluator: `python2 referee.py vacuumCleaner.cfg`
 
-Para simplificar el cierre del entorno, basta con cerrar la(s) ventana(s) de VacuumCleaner. Ctrl+C dará problemas.
+To simplify the closure of the environment, simply close the VacuumCleaner window (s). Ctrl + C will give problems.
 
-## Cómo realizar la práctica
-Para realizar la práctica se debe editar el fichero MyAlgorithm.py e insertar en él la lógica de control.
+## How to do the practice
+To carry out the practice, you must edit the MyAlgorithm.py file and insert the control logic into it.
 
-### Dónde insertar el código
+### Where to insert the code
 [MyAlgorithm.py](MyAlgorithm.py#L74)
 ```
     def execute(self):
@@ -34,15 +34,15 @@ Para realizar la práctica se debe editar el fichero MyAlgorithm.py e insertar e
 
 
 ### API
-* pose3d.getYaw() - para otener la orientación del robot
-* bumper.getBumperData().state - para establecer si el robot ha chocado o no. Devuelve un 1 si el robot colisiona y un 0 si no ha chocado.
-* laser.getLaserData() - Permite obtener los datos del sensor láser, que se compone de 180 pares de valores (0-180º, distancia en milímetros). 
-* motors.sendV() - para establecer la velocidad lineal
-* motors.sendW() - para establecer la velocidad angular
+* pose3d.getYaw() - to get the orientation of the robot
+* bumper.getBumperData().state - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
+* laser.getLaserData() - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters). 
+* motors.sendV() - to set the linear speed
+* motors.sendW() - to set the angular velocity
 
-Para este ejemplo, se ha de conseguir que la aspiradora recorra el mayor porcentaje posible de la casa. La aplicación del evaluador automático (referee) medirá el porcentaje recorrido, y en función de este porcentaje, realizará la calificación del algoritmo de solución.
+For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
-## Conversion de tipos
+## Types conversion
 ### Laser
 ```
     laser_data = self.laser.getLaserData()
@@ -68,6 +68,6 @@ Para este ejemplo, se ha de conseguir que la aspiradora recorra el mayor porcent
         laser_mean = np.mean(laser_vectorized, axis=0)
 ```
 
-## Video demostrativo
+## Demonstrative video
 https://www.youtube.com/watch?v=ThTXrqTDJ_A
 

@@ -1,23 +1,24 @@
+
 # Autopark
 
-# Práctica Autopark
+# Autopark Practice
 
-El objetivo de esta práctica consiste en implementar la lógica de un algoritmo de navegación para una vehículo automático. El vehículo deberá encontrar una plaza de aparcamiento y estacionar de forma adecuada.
+The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must find a parking space and park properly.
+
+## How to run
+To launch the example, follow the steps below:
+* Execution without seeing the world: `gzserver autopark.world`
+* Execution watching the world: `gazebo autopark.world`
+* Running the practice and the user interface: `python2 autopark.py autopark.cfg`
+* Execution of the automatic evaluator: `python2 referee.py autopark.cfg`
+
+To simplify the closure of the environment, just close the Autopark window (s). Ctrl + C will give problems.
 
 
-## Cómo ejecutar
-Para lanzar el ejemplo, sigue los siguientes pasos:
-* Ejecución sin ver el mundo: `gzserver autopark.world`
-* Ejecución viendo el mundo: `gazebo autopark.world`
-* Ejecución de la práctica y de la interfaz de usuario: `python2 autopark.py --Ice.Config=autopark.cfg`
-* Ejecución del evaluador automático: `python2 referee.py --Ice.Config=autopark.cfg`
+## How to do the practice
+To carry out the practice, you must edit the MyAlgorithm.py file and insert the control logic into it.
 
-Para simplificar el cierre del entorno, basta con cerrar la(s) ventana(s) de Autopark. Ctrl+C dará problemas.
-
-## Cómo realizar la práctica
-Para realizar la práctica se debe editar el fichero MyAlgorithm.py e insertar en él la lógica de control.
-
-### Dónde insertar el código
+### Where to insert the code
 [MyAlgorithm.py](MyAlgorithm.py#L74)
 ```
     def execute(self):
@@ -34,15 +35,14 @@ Para realizar la práctica se debe editar el fichero MyAlgorithm.py e insertar e
 
 
 ### API
-* pose3d.getX() - para obtener la posición del robot
-* pose3d.getY() - para obtener la posición del
-* pose3d.getYaw() - para otener la orientación del robot
-* laser.getLaserData() - Permite obtener los datos del sensor láser, que se compone de 180 pares de valores (0-180º, distancia en milímetros).
-* motors.sendW() - para establecer la velocidad angular
-* motors.sendV() - para establecer la velocidad lineal
+* pose3d.getX() - to obtain the position of the robot
+* pose3d.getY() - to obtain the position of the robot
+* pose3d.getYaw() - to obtain the position of the robot
+* laser.getLaserData() - It allows obtaining the data of the laser sensor, which consists of 180 pairs of values (0-180º, distance in millimeters).
+* motors.sendW() - to set the angular velocity
+* motors.sendV() - to set the linear velocity
 
-Para este ejemplo, se ha de conseguir que taxi aparque correctamente en la plaza de aparcamiento libre. La aplicación del evaluador automático (referee) medirá diferentes parámetros (tiempo que tarda el taxi en aparcar, número de choques con otros coches, distancia a los vehículos), y en función de estos, realizará la calificación del algoritmo de solución.
-
+For this example, you have to get taxi to park properly in the free parking space. The application of the referee will measure different parameters (time it takes the taxi to park, number of crashes with other cars, distance to vehicles), and based on these, will perform the qualification of the solution algorithm.
 ## Conversion de tipos
 ### Laser
 ```
@@ -69,6 +69,6 @@ Para este ejemplo, se ha de conseguir que taxi aparque correctamente en la plaza
         laser_mean = np.mean(laser_vectorized, axis=0)
 ```
 
-## Video demostrativo
+## Demonstrative video (in spanish)
 https://www.youtube.com/watch?v=2SYEb3DyWEE
 

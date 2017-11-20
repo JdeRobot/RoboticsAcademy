@@ -48,11 +48,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updGUI.connect(self.updateGUI)
         
         self.cameraCheck.stateChanged.connect(self.showCameraWidget)
-        self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
+        #self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
         self.colorFilterCheck.stateChanged.connect(self.showColorFilterWidget)
         
-        self.rotationDial.valueChanged.connect(self.rotationChange)
-        self.altdSlider.valueChanged.connect(self.altitudeChange)
+        #self.rotationDial.valueChanged.connect(self.rotationChange)
+        #self.altdSlider.valueChanged.connect(self.altitudeChange)
         
         self.cameraWidget=CameraWidget(self)
         self.sensorsWidget=SensorsWidget(self)
@@ -65,7 +65,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
         self.resetButton.clicked.connect(self.resetClicked)
-        self.takeoffButton.clicked.connect(self.takeOffClicked)
+        #self.takeoffButton.clicked.connect(self.takeOffClicked)
         self.takeoff=False
         self.reset=False
       
@@ -119,8 +119,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.record == True:
             self.extra.record(False)
         self.algorithm.stop()
-        self.rotationDial.setValue(self.altdSlider.maximum()/2)
-        self.altdSlider.setValue(self.altdSlider.maximum()/2)
+        #self.rotationDial.setValue(self.altdSlider.maximum()/2)
+        #self.altdSlider.setValue(self.altdSlider.maximum()/2)
         self.cmdvel.sendCMDVel(0,0,0,0,0,0)
         self.teleop.stopSIG.emit()
     
