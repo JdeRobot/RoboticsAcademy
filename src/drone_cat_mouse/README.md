@@ -1,6 +1,7 @@
                 CAT AND MOUSE EXCERSISE
                 =======================
 
+
 The objective of this practice is to program an autonomous behavior
 for a drone that simulates the game of the cat and the mouse.
 
@@ -53,9 +54,8 @@ insert the control logic.
 
 ### API
 * cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
-* pose.getX(), pose.getY(), pose.getZ(): returns the position values ​​of the drone in space.
-* pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values ​​of the drone in space.
-* camera.getImage(): returns the image captured by the active camera of the drone (frontal or ventral).
+* pose.getX(), pose.getY(), pose.getZ(): returns the position values of the drone in space.
+* pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values of the drone in space.
 * extra.toggleCam(): changes the drone's active camera (frontal or the one below).
 * extra.takeOff(): Takeoff of the drone.
 * extra.land(): landing of the drone.
