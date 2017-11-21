@@ -57,7 +57,7 @@ class MyAlgorithm(threading.Thread):
 
     def execute(self):
         # Add your code here
-        tmp = self.navdata.getNavdata()
+        tmp = self.navdata.getNavData()
         if tmp is not None:
             print ("State: " +str(tmp.state))
             print ("Altitude: " +str(tmp.altd))

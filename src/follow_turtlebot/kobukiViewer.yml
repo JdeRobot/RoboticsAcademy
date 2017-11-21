@@ -1,0 +1,38 @@
+kobukiViewer:
+  Motors:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:tcp -h localhost -p 9001"
+    Topic: "/turtlebotROS/mobile_base/commands/velocity"
+    Name: kobukiViewerMotors
+    maxV: 3
+    maxW: 0.7
+
+  Camera1:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraL:tcp -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/TurtlebotROS/cameraL/image_raw"
+    Name: kobukiViewerCamera1
+
+  Camera2:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraR:tcp -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/TurtlebotROS/cameraR/image_raw"
+    Name: kobukiViewerCamera2
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:tcp -h localhost -p 9001"
+    Topic: "//turtlebotROS/odom"
+    Name: kobukiViewerPose3d
+
+  Laser:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:tcp -h localhost -p 9001"
+    Topic: "/turtlebotROS/laser/scan"
+    Name: kobukiViewerLaser
+
+  Vmax: 3
+  Wmax: 0.7
+NodeName: kobukiViewer

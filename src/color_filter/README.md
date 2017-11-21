@@ -21,7 +21,7 @@ Once done it, in a terminal launch cameraserver component:
 $ cameraserver cameraserver_conf.cfg
 
 In other terminal launch the color_filter component:
-$ python2 ./color_filter.py color_filter_conf.cfg
+$ python2 ./color_filter.py color_filter_conf.yml
 
 If you want to find the optimum values for your filter (in order to segment a concrete object) you can launch in other terminal the colorTuner component as follows (remember to run cameraserver tool as shown in line 20):
 
