@@ -22,6 +22,8 @@
 #
 
 import sys
+import config
+import comm
 from PyQt5.QtWidgets import QApplication
 
 from MyAlgorithm import MyAlgorithm
@@ -43,14 +45,14 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 def removeMapFromArgs():
     for arg in sys.argv:
-        if (arg.split("=")[0] == "--mapConfig"):
+        if (arg.split(".")[1] == "conf"):
             sys.argv.remove(arg)
 
 
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
-        print('ERROR: python main.py --mapConfig=[map config file] --Ice.Config=[ice file]')
+        print('ERROR: python2 globalNavigation.py [MAP CONFIG file] [YAML CONFIG file]')
         sys.exit(-1)
 
     app = QApplication(sys.argv)
@@ -58,9 +60,13 @@ if __name__ == '__main__':
     grid = Grid(frame)
 
     removeMapFromArgs()
-    ic = EasyIce.initialize(sys.argv)
-    pose = Pose3D (ic, "TeleTaxi.Pose3D")
-    motors = Motors (ic, "TeleTaxi.Motors")
+
+    cfg = config.load(sys.argv[1])
+    #starting comm
+    jdrc= comm.init(cfg, 'TeleTaxi')
+
+    motors = jdrc.getMotorsClient ("TeleTaxi.Motors")
+    pose = jdrc.getPose3dClient("TeleTaxi.Pose3D")
 
     vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
 

@@ -26,9 +26,9 @@ class Map(QWidget):
     def readConfFile(self):
         lines = None
         for arg in sys.argv:
-            splitedArg = arg.split("=")
-            if (splitedArg[0] == "--mapConfig"):
-                lines = open(splitedArg[1], "r").readlines()
+            splitedArg = arg.split(".")
+            if (splitedArg[1] == "conf"):
+                lines = open(arg, "r").readlines()
 
         if not lines:
             raise Exception("Could not read map config file")
