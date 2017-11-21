@@ -1,21 +1,19 @@
-# Práctica follow_line
+# follow_line practice
 
-El objetivo de esta práctica es realizar un control reactivo PID capaz de seguir la línea pintada en el circuito de carreras.
+The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit.
 
-## ¿Cómo ejecutar?
-Para lanzar la infraestructura de esta práctica hay que lanzar primero el simulador con el escenario oportuno:
-
+## How to execute?
+To launch the infrastructure of this practice, first launch the simulator with the appropriate scenario:
 gazebo simpleCircuit.world
 
-Despues hay que ejecutar la aplicación académica, que ya incorporará tu código
+Then you have to execute the academic application, which will incorporate your code:
+python2 ./follow_line.py FollowLineF1.yml
 
-python2 ./follow_line.py followLineF1.cfg 
+## How to do the practice?
 
-## ¿Cómo realizar la práctica?
+To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
 
-Para realizar la práctica hay que editar el fichero MyAlgorithms.py e insertar en él tu código, que dota de inteligencia al coche autónomo.
-
-### ¿Dónde insertar el código?
+### Where to insert the code?
 [MyAlgorithm.py](MyAlgorithm.py#L74)
 ```
     def execute(self):
@@ -36,15 +34,15 @@ Para realizar la práctica hay que editar el fichero MyAlgorithms.py e insertar 
 ```
 
 ### API
-* cameraL.getImage() - para obtener la imagen izquierda del par estéreo
-* motors.setV() - para establecer la velocidad lineal
-* motors.setW() - para establecer la velocidad angular
-* self.setRightImageFiltered() - permite visualizar una imagen de depuración o con información relevante. Debe ser una imagen en formato RGB (Tip: np.dstack())
+* cameraL.getImage() - to get the left image of the stereo pair
+* motors.setV() - to set the linear speed
+* motors.setW() - to set the angular velocity
+* self.setRightImageFiltered() - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
 
-## Video demostrativo
+## Demonstrative video
 https://www.youtube.com/watch?v=eNuSQN9egpA
 
-* *Codigo base realizado por Alberto Martín (@almartinflorido)*
-* *Código de la práctica realizado por Francisco Rivas (@chanfr)*
-* *Modelos y mundos de Gazebo realizados por Francisco Pérez (@fqez)*
+* *Base code made by Alberto Martín (@almartinflorido)*
+* *Code of practice performed by Francisco Rivas (@chanfr)*
+* *Gazebo models and worlds made by Francisco Pérez (@fqez)*
