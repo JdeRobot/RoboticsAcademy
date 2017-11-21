@@ -21,6 +21,8 @@
 
 
 import sys
+import config
+import comm
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from parallelIce.cameraClient import CameraClient
@@ -33,10 +35,14 @@ from PyQt5.QtWidgets import QApplication
 
 
 if __name__ == "__main__":
-    ic = EasyIce.initialize(sys.argv)
-    cameraL = CameraClient(ic, "FollowLine.CameraLeft", True)
-    cameraR = CameraClient(ic, "FollowLine.CameraRight", True)
-    motors = Motors (ic, "FollowLine.Motors")
+
+    cfg = config.load(sys.argv[1])
+    #starting comm
+    jdrc= comm.init(cfg, 'FollowLineF1')
+
+    cameraL = jdrc.getCameraClient("FollowLineF1.CameraLeft")
+    cameraR = jdrc.getCameraClient("FollowLineF1.CameraRight")
+    motors = jdrc.getMotorsClient("FollowLineF1.Motors")
     algorithm=MyAlgorithm(cameraL, cameraR, motors)
 
     app = QApplication(sys.argv)

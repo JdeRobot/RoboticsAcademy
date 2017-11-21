@@ -9,7 +9,7 @@ gazebo simpleCircuit.world
 
 Despues hay que ejecutar la aplicación académica, que ya incorporará tu código
 
-python2 follow_line.py followLineF1.cfg 
+python2 ./follow_line.py followLineF1.cfg 
 
 ## ¿Cómo realizar la práctica?
 
