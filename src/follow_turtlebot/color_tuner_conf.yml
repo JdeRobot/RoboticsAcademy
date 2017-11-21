@@ -1,0 +1,10 @@
+ColorTuner:
+
+  Camera:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Camera:tcp -h localhost -p 9000"
+    Format: RGB8
+    Topic: "/ColorTunerROS/image_raw"
+    Name: ColorTunerCamera
+
+NodeName: ColorTuner

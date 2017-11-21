@@ -5,10 +5,10 @@ In a terminal launch the gazebo simulator:
 gazebo ardrone-turtlebot.world
 
 In other terminal launch the turtlebot robot:
-kobukiViewer --Ice.Config=turtlebot.cfg
+kobukiViewer turtlebot.yml
 
 In another terminal lauch the follow_turtlebot component:
-./follow_turtlebot.py --Ice.Config=follow_turtlebot_conf.cfg
+python2 ./follow_turtlebot.py follow_turtlebot_conf.yml
 
 If you want to find the values of your color filter you can launch the colorTuner component:
-colorTuner --Ice.Config=color_tuner_conf.cfg
+colorTuner color_tuner_conf.yml
