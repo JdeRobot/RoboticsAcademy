@@ -77,15 +77,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #print ("newX: %f, newY: %f" % (newX, newY) )
         myW=-newX*self.motors.getMaxW()
         myV=-newY*self.motors.getMaxV()
-        self.motors.setV(myV)
-        self.motors.setW(myW)
-        self.motors.sendVelocities()
-
+        self.motors.sendV(myV)
+        self.motors.sendW(myW)
 
     def stopClicked(self):
-        self.motors.setV(0)
-        self.motors.setW(0)
-        self.motors.sendVelocities()
+        self.motors.sendV(0)
+        self.motors.sendW(0)
         self.teleop.returnToOrigin()
 
     def closeEvent(self, event):
