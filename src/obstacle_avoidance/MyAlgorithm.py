@@ -14,8 +14,8 @@ class MyAlgorithm(threading.Thread):
     def __init__(self, cameraL, cameraR, pose3d, laser, motors):
         self.cameraL = cameraL
         self.cameraR = cameraR
-        self.pose3d = pose3d.getPose3d()
-        self.laser = laser.hasproxy()
+        self.pose3d = pose3d
+        self.laser = laser
         self.motors = motors
 
         self.imageRight=None

@@ -45,7 +45,7 @@ if __name__ == "__main__":
     cameraL = jdrc.getCameraClient("ObstacleAvoidance.CameraLeft")
     cameraR = jdrc.getCameraClient("ObstacleAvoidance.CameraRight")
     motors = jdrc.getMotorsClient ("ObstacleAvoidance.Motors")
-    pose3d = jdrc.getPose3dClient("ObstacleAvoidance.Pose3D").getPose3d()
+    pose3d = jdrc.getPose3dClient("ObstacleAvoidance.Pose3D")
     laser = jdrc.getLaserClient("ObstacleAvoidance.Laser").hasproxy()
 
     algorithm=MyAlgorithm(cameraL, cameraR, pose3d, laser, motors)
