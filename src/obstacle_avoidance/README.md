@@ -54,9 +54,9 @@ insert the control logic.
 ```
 
 ### API
-* pose3d.x - to get the position of the robot (x coordinate)
-* pose3d.y - to obtain the position of the robot (y coordinate)
-* pose3d.yaw - to get the orientation of the robot with
+* pose3d.getPose3d().x - to get the position of the robot (x coordinate)
+* pose3d.getPose3d().y - to obtain the position of the robot (y coordinate)
+* pose3d.getPose3d().yaw - to get the orientation of the robot with
   regarding the map
 * laser.getLaserData () - to obtain laser sensor data
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
