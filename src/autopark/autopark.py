@@ -20,26 +20,29 @@
 #
 
 import sys
+import comm
+import config
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.cameraClient import CameraClient
-from parallelIce.motors import Motors
-from parallelIce.pose3dClient import Pose3DClient
-from parallelIce.laserClient import LaserClient
-import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
 
 
 
 if __name__ == "__main__":
-    ic = EasyIce.initialize(sys.argv)
-    motors = Motors (ic, "Autopark.Motors")
-    pose3d = Pose3DClient(ic, "Autopark.Pose3D", True)
-    laser1 = LaserClient(ic, "Autopark.Laser1", True)
-    laser2 = LaserClient(ic, "Autopark.Laser2", True)
-    laser3 = LaserClient(ic, "Autopark.Laser3", True)
+
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'Autopark')
+
+    motors = jdrc.getMotorsClient ("Autopark.Motors")
+    pose3d = jdrc.getPose3dClient("Autopark.Pose3D")
+    laser1 = jdrc.getLaserClient("Autopark.Laser1").hasproxy()
+    laser2 = jdrc.getLaserClient("Autopark.Laser2").hasproxy()
+    laser3 = jdrc.getLaserClient("Autopark.Laser3").hasproxy()
+
     algorithm=MyAlgorithm(pose3d, laser1, laser2, laser3, motors)
 
     app = QApplication(sys.argv)

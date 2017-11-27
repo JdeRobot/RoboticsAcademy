@@ -257,10 +257,10 @@ class MapWidget1(QWidget):
         
 
     def drawCar(self, painter):
-        pose = self.winParent.getPose3D()
-        x = pose.getX()
-        y = pose.getY()
-        yaw = pose.getYaw()
+        pose = self.winParent.getPose3D().getPose3d()
+        x = pose.x
+        y = pose.y
+        yaw = pose.yaw
 
         orig_poses = np.matrix([[x], [y], [1], [1]]) * self.scale
         final_poses = self.RTCar() * orig_poses
@@ -280,10 +280,10 @@ class MapWidget1(QWidget):
 
 
     def drawTrail(self, painter):
-        pose = self.winParent.getPose3D()
-        x = pose.getX()
-        y = pose.getY()
-        yaw = pose.getYaw()
+        pose = self.winParent.getPose3D().getPose3d()
+        x = pose.x
+        y = pose.y
+        yaw = pose.yaw
 
         orig_poses = np.matrix([[x], [y], [1], [1]]) * self.scale
         final_poses = self.RTCar() * orig_poses
