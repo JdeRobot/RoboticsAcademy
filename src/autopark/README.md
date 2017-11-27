@@ -1,5 +1,6 @@
 
-# Autopark
+                        AUTOPARK PRACTICE
+                        =================
 
 # Autopark Practice
 
@@ -7,10 +8,15 @@ The goal of this practice is to implement the logic of a navigation algorithm fo
 
 ## How to run
 To launch the example, follow the steps below:
-* Execution without seeing the world: `gzserver autopark.world`
-* Execution watching the world: `gazebo autopark.world`
-* Running the practice and the user interface: `python2 autopark.py autopark.cfg`
-* Execution of the automatic evaluator: `python2 referee.py autopark.cfg`
+1. Run Gazebo simulator:
+  * Execution without seeing the world: 
+`$ gzserver autopark.world`
+  * Execution watching the world: 
+`$ gazebo autopark.world`
+2. Running the practice and the user interface: 
+`$ python2 autopark.py autopark_conf.yml`
+3. Execution of the automatic evaluator: 
+`$ python2 referee.py referee.yml`
 
 To simplify the closure of the environment, just close the Autopark window (s). Ctrl + C will give problems.
 
@@ -35,9 +41,9 @@ To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
 
 
 ### API
-* pose3d.getX() - to obtain the position of the robot
-* pose3d.getY() - to obtain the position of the robot
-* pose3d.getYaw() - to obtain the position of the robot
+* pose3d.getPose3d().x - to obtain the position of the robot
+* pose3d.getPose3d().y - to obtain the position of the robot
+* pose3d.getPose3d().yaw - to obtain the position of the robot
 * laser.getLaserData() - It allows obtaining the data of the laser sensor, which consists of 180 pairs of values (0-180º, distance in millimeters).
 * motors.sendW() - to set the angular velocity
 * motors.sendV() - to set the linear velocity
