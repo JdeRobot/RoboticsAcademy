@@ -59,7 +59,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.map.setObstaclesArrow(ox, oy)
         self.map.setAverageArrow(ax, ay)
         if (self.pose3d):
-            self.map.setTarget(tx, ty, self.pose3d.getX()/1000, self.pose3d.getY()/1000, self.pose3d.getYaw())
+            self.map.setTarget(tx, ty, self.pose3d.getPose3d().x/1000, self.pose3d.getPose3d().y/1000, self.pose3d.getPose3d().yaw)
         laserdata = self.laser.getLaserData()
         if (laserdata):
             self.map.setLaserValues(laserdata)
@@ -114,12 +114,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setXYValues(self,newX,newY):
         myW=-newX*self.motors.getMaxW()
         myV=-newY*self.motors.getMaxV()
-        self.motors.setV(myV)
-        self.motors.setW(myW)
-        self.motors.sendVelocities()
+        self.motors.hasproxy().setV(myV)
+        self.motors.hasproxy().setW(myW)
+        #self.motors.sendVelocities(self.motors)
 
     def stopClicked(self):
-        self.motors.setV(0)
-        self.motors.setW(0)
-        self.motors.sendVelocities()
+        self.motors.hasproxy().setV(0)
+        self.motors.hasproxy().setW(0)
+        #self.motors.sendVelocities()
         self.teleop.returnToOrigin()

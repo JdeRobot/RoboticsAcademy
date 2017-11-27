@@ -1,4 +1,6 @@
 import sys, math
+import config
+import comm
 from math import pi as pi
 import numpy as np
 import cv2
@@ -88,7 +90,7 @@ class timeWidget(QWidget):
         self.lcd.setPalette(palette)
 
     def printTime(self):
-        if self.pose3d.getX() != 0 and self.pose3d.getY() != 0:
+        if self.pose3d.getPose3d().x != 0 and self.pose3d.getPose3d().y != 0:
             self.secondsDrive += 1
         self.seconds += 1
         self.lcd.display(self.seconds)
@@ -150,8 +152,8 @@ class distanceWidget(QWidget):
         return (worldX, worldY)
         
     def calculateDistancePoints(self, destiny):
-        x = self.pose3d.getX()
-        y = self.pose3d.getY()
+        x = self.pose3d.getPose3d().x
+        y = self.pose3d.getPose3d().y
         dist = math.sqrt(pow((destiny[0]- x),2) + pow((destiny[1]- y),2))
         return dist
         
@@ -209,8 +211,8 @@ class speedWidget(QWidget):
         if self.secondsBefore != self.time.seconds:
             self.secondsBefore = self.time.seconds
             km_h = float(3600) / float(1000)
-            xNow = self.pose3d.getX()
-            yNow = self.pose3d.getY()
+            xNow = self.pose3d.getPose3d().x
+            yNow = self.pose3d.getPose3d().y
             speedX = float(abs(xNow - self.pose3dBeforeX) * km_h)
             speedY = float(abs(yNow - self.pose3dBeforeY) * km_h)
             self.speed = math.sqrt(pow(speedX,2) + pow(speedY,2))
@@ -264,7 +266,7 @@ class angleWidget(QWidget):
         super(angleWidget, self).__init__()
         self.winParent=winParent
         self.pose3d = pose3d
-        self.angle = self.pose3d.getYaw()
+        self.angle = self.pose3d.getPose3d().yaw
         
         self.rect = QRect(0, 0, 150,150)
         self.startAngle = 0 * 16
@@ -288,7 +290,7 @@ class angleWidget(QWidget):
         
         
     def calculateAngle(self):
-        self.angle = self.pose3d.getYaw()
+        self.angle = self.pose3d.getPose3d().yaw
             
             
     def paintEvent(self, event):        
@@ -361,8 +363,8 @@ class markWidget(QWidget):
         markSpeed = self.markSpeed()
         found = self.checkDestination()
         if found == True:
-            xRobot = self.pose3d.getX()
-            yRobot = self.pose3d.getY()
+            xRobot = self.pose3d.getPose3d().x
+            yRobot = self.pose3d.getPose3d().y
             xdest = self.dist.destiny[0]
             ydest = self.dist.destiny[1]
             
@@ -383,8 +385,8 @@ class markWidget(QWidget):
     
     def checkDestination(self):
         found = False
-        xRobot = self.pose3d.getX()
-        yRobot = self.pose3d.getY()
+        xRobot = self.pose3d.getPose3d().x
+        yRobot = self.pose3d.getPose3d().y
         xdest = self.dist.destiny[0]
         ydest = self.dist.destiny[1]
         if (abs(xRobot)<(abs(xdest)+5) and abs(xRobot)>(abs(xdest)-5)) and (abs(yRobot)<(abs(ydest)+5) and abs(yRobot)>(abs(ydest)-5)):
@@ -400,8 +402,11 @@ class markWidget(QWidget):
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
-    ic = EasyIce.initialize(sys.argv)
-    pose3d = Pose3DClient(ic, "TeleTaxi.Pose3D", True)
+    cfg = config.load(sys.argv[1])
+    #starting comm
+    jdrc= comm.init(cfg, 'Referee')
+
+    pose3d = jdrc.getPose3dClient("Referee.Pose3D")
 
     myGUI = MainWindowReferee(pose3d)
     myGUI.show()
