@@ -58,7 +58,7 @@ class ColorFilterWidget(QWidget):
             self.imgLabelColor.setPixmap(QPixmap.fromImage(image))
 
     def setThresoldImage(self):
-        img = self.winParent.getCamera().getThresoldImage()
+        img = self.winParent.getCamera().getThresholdImage()
 
         if img is not None:
             image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QImage.Format_Indexed8)

@@ -1,4 +1,6 @@
 import sys, math
+import comm
+import config
 from math import pi as pi
 import numpy as np
 import cv2
@@ -6,9 +8,6 @@ from PyQt5.QtCore import QPoint, QRect, QSize, Qt, QPointF, QRectF, pyqtSignal, 
 from PyQt5.QtGui import (QBrush, QConicalGradient, QLinearGradient, QPainter, QPainterPath, QPalette, QPen, QPixmap, QPolygon, QRadialGradient, QColor, QTransform, QPolygonF, QKeySequence, QIcon)
 from PyQt5.QtWidgets import (QApplication, QProgressBar, QCheckBox, QComboBox, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QSpinBox, QWidget, QPushButton, QSpacerItem, QSizePolicy, QLCDNumber )
 from PyQt5 import QtGui, QtCore
-from parallelIce.pose3dClient import Pose3DClient
-from parallelIce.laserClient import LaserClient
-import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
 
 class MainWindow(QWidget):
@@ -152,7 +151,7 @@ class distanceWidget(QWidget):
         return RT
 
     def RTCar(self):
-        yaw = self.pose3d.getYaw()
+        yaw = self.pose3d.getPose3d().yaw
         RTz = self.RTz(yaw, 0, 0, 0)
         return RTz
 
@@ -231,10 +230,10 @@ class distanceWidget(QWidget):
 
         
         # Pose 3D (origin poses)
-        xFront = self.pose3d.getX() + carSizeTaxi[0]/2
-        xRear = self.pose3d.getX() - carSizeTaxi[0]/2
-        yLeft = self.pose3d.getY() + carSizeTaxi[1]/2
-        yRight = self.pose3d.getY() - carSizeTaxi[1]/2
+        xFront = self.pose3d.getPose3d().x + carSizeTaxi[0]/2
+        xRear = self.pose3d.getPose3d().x - carSizeTaxi[0]/2
+        yLeft = self.pose3d.getPose3d().y + carSizeTaxi[1]/2
+        yRight = self.pose3d.getPose3d().y - carSizeTaxi[1]/2
 
         # Final poses (Car's rotation)
         pointFrontLeft = self.RTCar() * np.matrix([[xFront], [yLeft], [1], [1]])
@@ -315,7 +314,7 @@ class markWidget(QWidget):
         self.num = self.num + 1
         
     def testAngle(self):
-        yawRad = self.pose3d.getYaw()
+        yawRad = self.pose3d.getPose3d().yaw
         angle = math.degrees(yawRad) + 90
         if (angle >= 85 and angle <= 105):
             markAngle = 100
@@ -340,8 +339,8 @@ class markWidget(QWidget):
         MyDistRear = self.distance.distRearFinal
         MyDistSidewalk = self.distance.distanceSidewalk
         ideal = [7.25, -3]
-        posX = self.pose3d.getX()
-        posY = self.pose3d.getY()
+        posX = self.pose3d.getPose3d().x
+        posY = self.pose3d.getPose3d().y
         
         if MyDistFront >= 1.5 and MyDistFront < 3.5:
             markDistFront = 100
@@ -467,7 +466,7 @@ class cheeseWidget(QWidget):
 
     def drawArrow(self, painter, angle=90):
         radius = 130
-        yawRad = self.pose3d.getYaw()
+        yawRad = self.pose3d.getPose3d().yaw
         angle = -(yawRad + pi/2) # PI/2 para centrar la aguja
         origx = self.rectangle.width() / 2
         origy = self.rectangle.height() / 2
@@ -507,11 +506,15 @@ class cheeseWidget(QWidget):
 if __name__ == "__main__":
     
     app = QApplication(sys.argv)
-    ic = EasyIce.initialize(sys.argv)
-    pose3d = Pose3DClient(ic, "Autopark.Pose3D", True)
-    laser1 = LaserClient(ic, "Autopark.Laser1", True)
-    laser2 = LaserClient(ic, "Autopark.Laser2", True)
-    laser3 = LaserClient(ic, "Autopark.Laser3", True)
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'Referee')
+
+    pose3d = jdrc.getPose3dClient("Referee.Pose3D")
+    laser1 = jdrc.getLaserClient("Referee.Laser1").hasproxy()
+    laser2 = jdrc.getLaserClient("Referee.Laser2").hasproxy()
+    laser3 = jdrc.getLaserClient("Referee.Laser3").hasproxy()
 
     myGUI = MainWindow(pose3d, laser1, laser2, laser3)
     myGUI.show()

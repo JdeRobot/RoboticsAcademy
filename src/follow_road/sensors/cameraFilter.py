@@ -27,22 +27,25 @@ class CameraFilter:
         self.lock = threading.Lock()
         self.client = camera
 
-        self.height= self.client.getHeight()
-        self.width = self.client.getWidth()
+        img = self.client.getImage()
+
+        self.height= img.height
+        self.width = img.width
+
 
         if self.client.hasproxy():
             self.trackImage = np.zeros((self.height, self.width,3), np.uint8)
             self.trackImage.shape = self.height, self.width, 3
 
-            self.thresoldImage = np.zeros((self.height,self. width,1), np.uint8)
-            self.thresoldImage.shape = self.height, self.width,
+            self.thresholdImage = np.zeros((self.height,self. width,1), np.uint8)
+            self.thresholdImage.shape = self.height, self.width,
 
         
 
     
     def getImage(self):
         self.lock.acquire()
-        img = self.client.getImage()
+        img = self.client.getImage().data
         self.lock.release()
         return img
 
@@ -63,19 +66,19 @@ class CameraFilter:
             self.trackImage.shape = image.shape
             self.lock.release()
 
-    def getThresoldImage(self):
+    def getThresholdImage(self):
         if self.client.hasproxy():
             self.lock.acquire()
             img = np.zeros((self.height, self.width,1), np.uint8)
-            img = self.thresoldImage
-            img.shape = self.thresoldImage.shape
+            img = self.thresholdImage
+            img.shape = self.thresholdImage.shape
             self.lock.release()
             return img
         return None
 
-    def setThresoldImage(self,image):
+    def setThresholdImage(self,image):
         if self.client.hasproxy():
             self.lock.acquire()
-            self.thresoldImage = image
-            self.thresoldImage.shape = image.shape
+            self.thresholdImage = image
+            self.thresholdImage.shape = image.shape
             self.lock.release()
