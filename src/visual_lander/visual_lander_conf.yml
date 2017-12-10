@@ -1,0 +1,38 @@
+VisualLander:
+
+  Camera:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Camera:tcp -h localhost -p 9000"
+    Format: RGB8
+    Topic: "/VisualLanderROS/image_raw"
+    Name: VisualLanderCamera
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:tcp -h localhost -p 9000"
+    Topic: "/VisualLanderROS/Pose3D"
+    Name: VisualLanderPose3d
+
+  CMDVel:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CMDVel:tcp -h localhost -p 9000"
+    Topic: "/VisualLanderROS/CMDVel"
+    Name: VisualLanderCMDVel
+
+  Navdata:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Navdata:tcp -h localhost -p 9000"
+    Topic: "/VisualLanderROS/Navdata"
+    Name: VisualLanderNavdata
+
+  Extra:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Extra:tcp -h localhost -p 9000"
+    Topic: "/VisualLanderROS/Extra"
+    Name: VisualLanderExtra
+
+  Xmax: 1
+  Ymax: 1
+  Zmax: 1
+  Yawmax: 1
+NodeName: VisualLander
