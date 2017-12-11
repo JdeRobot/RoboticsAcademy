@@ -58,9 +58,9 @@ class CameraWidget(QWidget):
         
     def updateImage(self):
 
-        img = self.winParent.getCamera().getImage()
+        img = self.winParent.getCamera().getImage().data
         if img is not None:
-            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QImage.Format_RGB888);
+            image = QImage(img, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QImage.Format_RGB888);
         
             if img.shape[1]==self.IMAGE_COLS_MAX:
                 x=20

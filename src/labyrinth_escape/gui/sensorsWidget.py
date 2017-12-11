@@ -161,19 +161,19 @@ class SensorsWidget(QWidget):
         
         
     def updateSensors(self):
-        pose=self.winParent.getPose3D().getPose3D()
+        pose=self.winParent.getPose3D().getPose3d()
 
         if pose != None:
-            qw=pose.q0
-            qx=pose.q1
-            qy=pose.q2
-            qz=pose.q3
+            qw=pose.q[0]
+            qx=pose.q[1]
+            qy=pose.q[2]
+            qz=pose.q[3]
             self.drawAltd(pose.z)
             self.drawYawValues(self.quatToYaw(qw,qx,qy,qz)*180/math.pi)
             self.drawPitchRollValues(self.quatToPitch(qw,qx,qy,qz)*180/math.pi,self.quatToRoll(qw,qx,qy,qz)*180/math.pi)
 
 
-        navdata=self.winParent.getNavData().getNavdata()
+        navdata=self.winParent.getNavData().getNavData()
 
         if navdata != None:
             #self.battery.setValue(navdata.batteryPercent)
