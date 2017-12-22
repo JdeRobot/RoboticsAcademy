@@ -1,4 +1,6 @@
 import sys, math
+import comm
+import config
 from math import pi as pi
 import numpy as np
 import cv2
@@ -15,7 +17,7 @@ class MainWindow(QWidget):
     updGUI=pyqtSignal()
     def __init__(self, pose3d, parent=None):
         super(MainWindow, self).__init__(parent)
-        
+
         layout = QGridLayout()
         self.percentaje = percentajeWidget(self, pose3d)
         self.timeDigital = timeDigitalWidget(self, self.percentaje)
@@ -27,10 +29,10 @@ class MainWindow(QWidget):
         layout.addWidget(self.map,1,0)
         layout.addWidget(self.timeAnalog,1,2)
         layout.addWidget(self.logo,2,2)
-    
+
         vSpacer = QSpacerItem(50, 50, QSizePolicy.Ignored, QSizePolicy.Ignored)
         layout.addItem(vSpacer,1,0)
-        
+
         self.setFixedSize(840,640);
 
         self.setLayout(layout)
@@ -56,10 +58,10 @@ class logoWidget(QWidget):
         self.mapWidget.setPixmap(self.pixmap)
         self.mapWidget.resize(self.width, self.height)
         self.setMinimumSize(100,100)
-  
+
 
 class mapWidget(QWidget):
-    def __init__(self,winParent, pose3d):    
+    def __init__(self,winParent, pose3d):
         super(mapWidget, self).__init__()
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
@@ -89,7 +91,7 @@ class mapWidget(QWidget):
 
 
     def drawCircle(self, painter, centerX, centerY):
-        yaw = self.pose3d.getYaw()
+        yaw = self.pose3d.getPose3d().yaw
         pen = QPen(Qt.blue, 2)
         painter.setPen(pen)
         brush = QtGui.QBrush(QtCore.Qt.SolidPattern)
@@ -99,8 +101,8 @@ class mapWidget(QWidget):
 
 
     def drawTrail(self, painter):
-        x = self.pose3d.getX()
-        y = self.pose3d.getY()
+        x = self.pose3d.getPose3d().x
+        y = self.pose3d.getPose3d().y
         scale = 50
 
         final_poses = self.RTVacuum() * np.matrix([[x], [y], [1], [1]]) * scale
@@ -126,7 +128,7 @@ class mapWidget(QWidget):
 
 
 class percentajeWidget(QWidget):
-    def __init__(self,winParent, pose3d):    
+    def __init__(self,winParent, pose3d):
         super(percentajeWidget, self).__init__()
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
@@ -162,11 +164,11 @@ class percentajeWidget(QWidget):
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
         return RT
-        
+
     def RTy(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
         return RT
-    
+
     def RTz(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
         return RT
@@ -191,8 +193,8 @@ class percentajeWidget(QWidget):
 
 
     def percentajeWalked(self):
-        x = self.pose3d.getX()
-        y = self.pose3d.getY()
+        x = self.pose3d.getPose3d().x
+        y = self.pose3d.getPose3d().y
         scale = 50
 
         final_poses = self.RTVacuum() * np.matrix([[x], [y], [1], [1]]) * scale
@@ -220,7 +222,7 @@ class percentajeWidget(QWidget):
 class timeDigitalWidget(QWidget):
 
     time = pyqtSignal()
-    def __init__(self,winParent, percentaje):    
+    def __init__(self,winParent, percentaje):
         super(timeDigitalWidget, self).__init__()
         self.winParent=winParent
         self.seconds = 900
@@ -231,7 +233,7 @@ class timeDigitalWidget(QWidget):
         self.MAX_MARK = 10
 
         self.hLayout = QHBoxLayout()
-  
+
         timeLabel = QLabel("Time")
         self.lcd = QLCDNumber(self)
         self.lcd.setMaximumSize(100,50)
@@ -261,16 +263,16 @@ class timeDigitalWidget(QWidget):
 
         # set the palette
         self.lcd.setPalette(palette)
-        
+
     def showMark(self):
         self.show = True
         mark = self.testPercentaje()
         markLabel = QLabel('Final mark: ' + str(mark))
-        self.hLayout.addWidget(markLabel, 0) 
+        self.hLayout.addWidget(markLabel, 0)
         self.setLayout(self.hLayout)
 
     def printTime(self):
-        
+
         if self.seconds > 0:
             self.seconds -= 1
         else:
@@ -278,7 +280,7 @@ class timeDigitalWidget(QWidget):
                 self.showMark()
         self.lcd.display(self.seconds)
 
-    
+
     def testPercentaje(self):
         pHouse = self.percentaje.calculatePercentaje()
         markPerc = float(pHouse) * float(self.MAX_MARK) / float(self.MAX_PERCENT)
@@ -290,7 +292,7 @@ class timeDigitalWidget(QWidget):
 class timeAnalogWidget(QWidget):
 
     time = pyqtSignal()
-    def __init__(self,winParent):    
+    def __init__(self,winParent):
         super(timeAnalogWidget, self).__init__()
         self.winParent=winParent
         self.rectangle = QRectF(0.0, 0.0, 300.0, 300.0)
@@ -321,7 +323,7 @@ class timeAnalogWidget(QWidget):
             self.setStyle(painter, Qt.black,Qt.black,3)
             painter.drawLine(QPoint(origx,origy), QPoint(finx,finy))
             angle = angle + (6*pi/180)
-        
+
 
     def drawArrows(self, painter):
         radius = 130
@@ -330,7 +332,7 @@ class timeAnalogWidget(QWidget):
         finx = radius * math.cos(self.angle) + origx
         finy = radius * math.sin(self.angle) + origy
         finMinutesx = radius/2 * math.cos(self.angleMinutes) + origx
-        finMinutesy = radius/2 * math.sin(self.angleMinutes) + origy 
+        finMinutesy = radius/2 * math.sin(self.angleMinutes) + origy
         self.setStyle(painter, Qt.black,Qt.black,3)
         painter.drawLine(QPoint(origx,origy), QPoint(finx,finy))
         painter.drawLine(QPoint(origx,origy), QPoint(finMinutesx,finMinutesy))
@@ -358,7 +360,7 @@ class timeAnalogWidget(QWidget):
         painter.setBrush(brush)
         painter.setPen(pen)
         painter.setRenderHint(QPainter.Antialiasing)
-      
+
     def paintEvent(self, event):
         painter = QPainter(self)
         self.drawWhiteZones(painter)
@@ -366,14 +368,18 @@ class timeAnalogWidget(QWidget):
         self.drawCLockLines(painter)
 
     def updateG(self):
-        self.update()  
-        
+        self.update()
+
 
 if __name__ == "__main__":
-    
+
     app = QApplication(sys.argv)
-    ic = EasyIce.initialize(sys.argv)
-    pose3d = Pose3DClient(ic, "VacuumCleaner.Pose3D", True)
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'Referee')
+
+    pose3d = jdrc.getPose3dClient("Referee.Pose3D")
 
     myGUI = MainWindow(pose3d)
     myGUI.show()

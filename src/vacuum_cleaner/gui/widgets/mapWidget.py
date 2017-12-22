@@ -31,15 +31,15 @@ import cv2
 class MapWidget(QWidget):
 
     stopSIG=pyqtSignal()
-    
-    def __init__(self,winParent):    
+
+    def __init__(self,winParent):
         super(MapWidget, self).__init__()
         self.winParent=winParent
         self.initUI()
         self.laser = []
         self.trail = []
-        
-    
+
+
     def initUI(self):
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
         self.map = cv2.resize(self.map, (500, 500))
@@ -70,13 +70,13 @@ class MapWidget(QWidget):
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
         return RT
-        
-    
+
+
     def RTy(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
         return RT
-    
-    
+
+
     def RTz(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
         return RT
@@ -89,13 +89,13 @@ class MapWidget(QWidget):
     def drawVacuum(self, painter):
         scale = 50
 
-        pose = self.winParent.getPose3D()
-        x = pose.getX()
-        y = pose.getY()
-        yaw = pose.getYaw()
+        pose = self.winParent.getPose3D().getPose3d()
+        x = pose.x
+        y = pose.y
+        yaw = pose.yaw
 
         final_poses = self.RTVacuum() * np.matrix([[x], [y], [1], [1]]) * scale
-        
+
         triangle = QtGui.QPolygon()
         triangle.append(QtCore.QPoint(final_poses.flat[0]-50/9, final_poses.flat[1]+50/7))
         triangle.append(QtCore.QPoint(final_poses.flat[0]+50/3, final_poses.flat[1]-10+50/7))
@@ -103,11 +103,11 @@ class MapWidget(QWidget):
         matrix = QtGui.QTransform()
         matrix.rotate(-180*yaw/pi)
         triangle = matrix.map(triangle)
-        # The center of triangle is (final_poses.flat[0]+50/9, final_poses.flat[1]+50/7) 
+        # The center of triangle is (final_poses.flat[0]+50/9, final_poses.flat[1]+50/7)
         center = matrix.map(QtCore.QPoint(final_poses.flat[0]+50/9, final_poses.flat[1]+50/7))
         xDif = final_poses.flat[0]+50/9 - center.x()
         yDif = final_poses.flat[1] +50/7- center.y()
-        
+
         triangle.translate(xDif, yDif)
 
         pen = QPen(Qt.red, 2)
@@ -125,9 +125,9 @@ class MapWidget(QWidget):
 
 
     def drawTrail(self, painter):
-        pose = self.winParent.getPose3D()
-        x = pose.getX()
-        y = pose.getY()
+        pose = self.winParent.getPose3D().getPose3d()
+        x = pose.x
+        y = pose.y
         scale = 50
 
         final_poses = self.RTVacuum() * np.matrix([[x], [y], [1], [1]]) * scale
@@ -150,17 +150,17 @@ class MapWidget(QWidget):
 
         self.mapWidget.setPixmap(copy)
         painter.end()
-        
-        
+
+
 class LogoWidget(QWidget):
     stopSIG=pyqtSignal()
-    
-    def __init__(self,winParent):    
+
+    def __init__(self,winParent):
         super(LogoWidget, self).__init__()
         self.winParent=winParent
         self.initUI()
-        
-    
+
+
     def initUI(self):
         self.logo = cv2.imread("resources/logo_jderobot1.png", cv2.IMREAD_UNCHANGED)
         self.logo = cv2.resize(self.logo, (100, 100))
@@ -174,5 +174,3 @@ class LogoWidget(QWidget):
 
         self.resize(300,300)
         self.setMinimumSize(100,100)
-
-

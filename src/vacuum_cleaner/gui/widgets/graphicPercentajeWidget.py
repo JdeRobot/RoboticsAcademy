@@ -15,7 +15,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 
 class PercentajeWidget(QWidget):
-    def __init__(self,winParent, pose3d):    
+    def __init__(self,winParent, pose3d):
         super(PercentajeWidget, self).__init__()
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
@@ -25,33 +25,33 @@ class PercentajeWidget(QWidget):
         self.numPixels = self.calculatePixelsWhite()
         self.numPixelsWalked = 0
         self.numPixelInit = 656
-        
+
         layout = QGridLayout()
-        
+
         self.seconds = 0
         self.MAXseconds = 900
         self.contSeconds = 0
         self.secondsArray = [0]
-        
+
         self.devPercentajes = [0]
         self.percentajePrev = 0
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
-        
+
         layout.addWidget(self.canvas)
-        
+
         vSpacer = QSpacerItem(30, 50, QSizePolicy.Ignored, QSizePolicy.Ignored)
         layout.addItem(vSpacer,1,0)
-        
+
         self.setFixedSize(1200,500);
-        
+
         self.setLayout(layout)
-        
+
         timer = QTimer(self)
         timer.start(1000)
         timer.timeout.connect(self.accountantTime)
-        
-        
+
+
     def accountantTime(self):
         if self.seconds < self.MAXseconds:
             self.updateG()
@@ -62,7 +62,7 @@ class PercentajeWidget(QWidget):
                 self.devPercentajes.append(dif)
                 self.secondsArray.append(self.contSeconds)
                 self.percentajePrev = self.percentajeHouse
-            
+
             ax = self.figure.add_subplot(111)
             ax.set_xlabel('Time')
             ax.set_ylabel('Percentage Derivative')
@@ -70,16 +70,16 @@ class PercentajeWidget(QWidget):
             ax.set_ylim([0, 10]);
             ax.plot(self.secondsArray, self.devPercentajes,'r')
             self.canvas.draw()
-        
+
 
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
         return RT
-        
+
     def RTy(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
         return RT
-    
+
     def RTz(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
         return RT
@@ -107,8 +107,9 @@ class PercentajeWidget(QWidget):
 
 
     def percentajeWalked(self):
-        x = self.pose3d.getX()
-        y = self.pose3d.getY()
+        pose = self.winParent.getPose3D().getPose3d()
+        x = pose.x
+        y = pose.y
         scale = 50
 
         final_poses = self.RTVacuum() * np.matrix([[x], [y], [1], [1]]) * scale
@@ -128,5 +129,4 @@ class PercentajeWidget(QWidget):
 
     def updateG(self):
         self.percentajeWalked()
-        self.update()  
-        
+        self.update()

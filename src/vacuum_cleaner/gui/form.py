@@ -82,5 +82,3 @@ class Ui_MainWindow(object):
         self.percentajeCheck.setText(_translate("MainWindow", "Percentaje Graphic"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
         self.pushButton.setText(_translate("MainWindow", "Run my algorithm"))
-
-import resources_rc

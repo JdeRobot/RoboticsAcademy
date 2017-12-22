@@ -41,7 +41,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.logoLayout.addWidget(self.logo)
         self.map.setVisible(True)
         self.logo.setVisible(True)
-        
+
         self.percentajeCheck.stateChanged.connect(self.showPercentajeWidget)
         self.percentajeWidget=PercentajeWidget(self, pose3d)
         self.percentajeCommunicator=Communicator()
@@ -81,13 +81,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setBumper(self,bumper):
         self.bumper=bumper
-        
+
     def showPercentajeWidget(self,state):
         if state == Qt.Checked:
             self.percentajeWidget.show()
         else:
             self.percentajeWidget.close()
-    
+
     def closePercentajeWidget(self):
         self.percentajeCheck.setChecked(False)
 
@@ -110,12 +110,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setXYValues(self,newX,newY):
         myW=-newX*self.motors.getMaxW()
         myV=-newY*self.motors.getMaxV()
-        self.motors.setV(myV)
-        self.motors.setW(myW)
-        self.motors.sendVelocities()
+        self.motors.sendV(myV)
+        self.motors.sendW(myW)
 
     def stopClicked(self):
-        self.motors.setV(0)
-        self.motors.setW(0)
-        self.motors.sendVelocities()
+        self.motors.sendV(0)
+        self.motors.sendW(0)
         self.teleop.returnToOrigin()
