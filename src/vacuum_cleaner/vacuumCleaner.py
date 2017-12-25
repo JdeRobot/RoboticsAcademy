@@ -1,4 +1,6 @@
 import sys
+import config
+import comm
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
@@ -9,15 +11,18 @@ from parallelIce.bumperClient import BumperClient
 import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
-
 if __name__ == "__main__":
-    ic = EasyIce.initialize(sys.argv)
-    motors = Motors (ic, "VacuumCleaner.Motors")
-    pose3d = Pose3DClient(ic, "VacuumCleaner.Pose3D", True)
-    laser = LaserClient(ic, "VacuumCleaner.Laser", True)
-    bumper = BumperClient(ic, "VacuumCleaner.Bumper", True)
-    algorithm=MyAlgorithm(pose3d, motors,laser, bumper)
 
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'VacuumCleaner')
+
+    motors = jdrc.getMotorsClient("VacuumCleaner.Motors")
+    pose3d = jdrc.getPose3dClient("VacuumCleaner.Pose3D")
+    laser = jdrc.getLaserClient("VacuumCleaner.Laser").hasproxy()
+    bumper = jdrc.getBumperClient("VacuumCleaner.Bumper")
+    algorithm=MyAlgorithm(pose3d, motors,laser, bumper)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow(pose3d)

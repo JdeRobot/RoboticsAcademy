@@ -7,10 +7,10 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 ## How to run
 To launch the example, follow the steps below:
-* Execution without watching the world: `gzserver Vacuum.world`
-* Execution watching the world: `gazebo Vacuum.world`
-* Execution of the practice and the user interface: `python2 vacuumCleaner.py vacuumCleaner.cfg`
-* Execution of the automatic evaluator: `python2 referee.py vacuumCleaner.cfg`
+* Execution without watching the world: gzserver Vacuum.world
+* Execution watching the world: gazebo Vacuum.world
+* Execution of the practice and the user interface: python2 vacuumCleaner.py vacuumCleaner_conf.yml
+* Execution of the automatic evaluator: python2 referee.py referee.yml
 
 To simplify the closure of the environment, simply close the VacuumCleaner window (s). Ctrl + C will give problems.
 
@@ -29,14 +29,14 @@ To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
         #self.motors.sendV(10)
         #self.motors.sendW(5)
         # TODO
-        
+
 ```
 
 
 ### API
-* pose3d.getYaw() - to get the orientation of the robot
+* self.pose3d.getPose3d().yaw - to get the orientation of the robot
 * bumper.getBumperData().state - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* laser.getLaserData() - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters). 
+* laser.getLaserData() - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
 * motors.sendV() - to set the linear speed
 * motors.sendW() - to set the angular velocity
 
@@ -70,4 +70,3 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 
 ## Demonstrative video
 https://www.youtube.com/watch?v=ThTXrqTDJ_A
-
