@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python /opt/jderobot/lib/python2.7/visualStates_py/visualStates.py $*
