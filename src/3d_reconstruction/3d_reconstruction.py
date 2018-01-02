@@ -86,8 +86,8 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
-    myGUI.setSensor(sensor)
     myGUI.setAlgorithm(algorithm)
+    myGUI.setSensor(sensor)
 
 
     # #create our new custom VTK Qt widget
