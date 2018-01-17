@@ -31,7 +31,7 @@ class MyAlgorithm(threading.Thread):
         self.pose = pose
         self.cmdvel = cmdvel
         self.extra = extra
-        self.image=None
+        self.input_image=None
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
@@ -39,12 +39,12 @@ class MyAlgorithm(threading.Thread):
 
     def setImageFiltered(self, image):
         self.lock.acquire()
-        self.image=image
+        self.input_image=image
         self.lock.release()
 
     def getImageFiltered(self):
         self.lock.acquire()
-        tempImage=self.image
+        tempImage=self.input_image
         self.lock.release()
         return tempImage
 
@@ -188,6 +188,9 @@ class MyAlgorithm(threading.Thread):
         input_image = self.camera.getImage().data
         global initialTime
         global initTime
+
+        # Show the Filtered_Image on the GUI
+        self.setImageFiltered(input_image)
 
         if input_image is not None:
             hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)

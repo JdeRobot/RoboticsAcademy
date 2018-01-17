@@ -25,7 +25,6 @@ import numpy as np
 
 
 class CameraWidget():
-
     IMG_WIDTH=320
     IMG_HEIGHT=240
 
@@ -43,7 +42,7 @@ class CameraWidget():
             size=QtCore.QSize(img.shape[1],img.shape[0])
             #self.label.resize(size)
             self.labelImage.setPixmap(QtGui.QPixmap.fromImage(image))
-            '''
+
         imgFiltered = self.winParent.getAlgorithm().getImageFiltered()
         if imgFiltered is not None:
             imgray2 = cv2.cvtColor(imgFiltered,cv2.COLOR_BGR2GRAY)
@@ -52,7 +51,7 @@ class CameraWidget():
             size=QtCore.QSize(imgFiltered.shape[1],imgFiltered.shape[0])
             #self.label.resize(size)
             self.labelImageFiltered.setPixmap(QtGui.QPixmap.fromImage(image))
-'''
+
     def closeEvent(self, event):
         self.winParent.closeCameraWidget()
 

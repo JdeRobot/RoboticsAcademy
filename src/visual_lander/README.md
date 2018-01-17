@@ -35,7 +35,7 @@ Where to insert the code?
         self.cmdvel.sendCMDVel(0.5,0,0,0,0,0)
 
         #SHOW THE FILTERED IMAGE ON THE GUI,
-        self.camera.setColorImage(input_image_Copy)
+        self.setImageFiltered(input_image)
 
    API
 
