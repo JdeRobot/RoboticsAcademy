@@ -1,0 +1,29 @@
+VacuumSLAM:
+
+  Motors:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:tcp -h localhost -p 9003"
+    Topic: "/VacuumSLAM/Motors"
+    Name: VacuumSLAMMotors
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:tcp -h localhost -p 9003"
+    Topic: "/VacuumSLAM/Pose3D"
+    Name: VacuumSLAMPose3d
+
+  Laser:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:tcp -h localhost -p 9003"
+    Topic: "/VacuumSLAM/Laser"
+    Name: VacuumSLAMLaser
+
+  Bumper:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Bumper:tcp -h localhost -p 9003"
+    Topic: "/VacuumSLAM/Bumper"
+    Name: VacuumSLAMBumper
+
+    maxV: 5
+    maxW: 20
+NodeName: VacuumSLAM
