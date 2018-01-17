@@ -26,7 +26,6 @@ from MyAlgorithm import MyAlgorithm
 import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
 from parallelIce.cameraClient import CameraClient
-from sensors.cameraFilter import CameraFilter
 from parallelIce.navDataClient import NavDataClient
 from parallelIce.cmdvel import CMDVel
 from parallelIce.extra import Extra
@@ -35,6 +34,7 @@ from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
 
 import signal
+
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
@@ -45,15 +45,14 @@ if __name__ == '__main__':
     #starting comm
     jdrc= comm.init(cfg, 'VisualLander')
 
-    cameraCli = jdrc.getCameraClient("VisualLander.Camera")
-    camera = CameraFilter(cameraCli)
+    camera = jdrc.getCameraClient("VisualLander.Camera")
     navdata = jdrc.getNavdataClient("VisualLander.Navdata")
     pose = jdrc.getPose3dClient("VisualLander.Pose3D")
     cmdvel = jdrc.getCMDVelClient("VisualLander.CMDVel")
     extra = jdrc.getArDroneExtraClient("VisualLander.Extra")
 
-
     algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
+
 
     app = QApplication(sys.argv)
     frame = MainWindow()
@@ -65,10 +64,8 @@ if __name__ == '__main__':
     frame.setAlgorithm(algorithm)
     frame.show()
 
-
-
     t2 = ThreadGUI(frame)
     t2.daemon=True
     t2.start()
 
-    sys.exit(app.exec_())
+sys.exit(app.exec_())
