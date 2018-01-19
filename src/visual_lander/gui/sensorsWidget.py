@@ -154,6 +154,7 @@ class SensorsWidget(QWidget):
     def updateSensors(self):
         pose = self.winParent.getPose3D().getPose3d()
 
+
         if pose != None:
             qw = pose.q[0]
             qx = pose.q[1]

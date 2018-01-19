@@ -26,8 +26,6 @@ from gui.teleopWidget import TeleopWidget
 from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
-from gui.colorFilterWidget import  ColorFilterWidget
-from gui.logoWidget import LogoWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -39,28 +37,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
 
-        self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
-        self.logoLayout.addWidget(self.logo)
-        self.logo.setVisible(True)
-
         self.record = False
-
         self.updGUI.connect(self.updateGUI)
+        self.camera1=CameraWidget(self)
 
-        self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
-        self.colorFilterCheck.stateChanged.connect(self.showColorFilterWidget)
+        self.sensorsWidget=SensorsWidget(self)
+        self.trackingCommunicator = Communicator()
 
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
-
-        self.cameraWidget=CameraWidget(self)
-        self.sensorsWidget=SensorsWidget(self)
-        self.colorFilterWidget=ColorFilterWidget(self)
-
-        self.cameraCommunicator=Communicator()
-        self.colorFilterCommunicator=Communicator()
-        self.trackingCommunicator = Communicator()
 
         self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
@@ -106,9 +92,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.algorithm
 
     def updateGUI(self):
-        self.cameraWidget.imageUpdate.emit()
+        self.camera1.updateImage()
         self.sensorsWidget.sensorsUpdate.emit()
-        self.colorFilterWidget.imageUpdate.emit()
 
     def playClicked(self):
         if self.record == True:
@@ -144,23 +129,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.extra.reset()
             self.reset=True
 
-    def showCameraWidget(self,state):
-        if state == Qt.Checked:
-            self.cameraWidget.show()
-        else:
-            self.cameraWidget.close()
-
-    def closeCameraWidget(self):
-        self.cameraCheck.setChecked(False)
-
-    def showColorFilterWidget(self,state):
-        if state == Qt.Checked:
-            self.colorFilterWidget.show()
-        else:
-            self.colorFilterWidget.close()
-
-    def closeColorFilterWidget(self):
-        self.colorFilterCheck.setChecked(False)
 
     def showSensorsWidget(self,state):
         if state == Qt.Checked:
@@ -192,7 +160,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.algorithm.kill()
-        self.camera.client.stop()
+        self.camera.stop()
         self.navdata.stop()
         self.pose.stop()
         event.accept()
