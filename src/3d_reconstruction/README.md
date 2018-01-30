@@ -1,52 +1,70 @@
-# 3D Recosntruction
+                        3D RECONSTRUCTION EXCERSISE
+                        ===========================
+In this practice, the intention is to program the necessary logic to allow kobuki
+robot to generate a 3D reconstruction of the scene that it is receiving throughout its
+left and right cameras.
 
-# Práctica 3d_reconstruction
 
-## Cómo ejecutar
-Para lanzar el ejemplo, sigue los siguientes pasos:
+////////////////////////////////////////////////////////////////////////////////
+                           E X E C U T I O N 
+////////////////////////////////////////////////////////////////////////////////
 
-* Ejecución sin ver el mundo: `gzserver reconstruccion3D.world`
-* Ejecución viendo el mundo: `gazebo reconstruccion3D.world`
-* Ejecución del visor 3D: `3DViewer 3DViewer.cfg` 
-* Ejecución del ejemplo: `python2 3d_reconstruction.py 3d_reconstruction.cfg`
+Follow these simple steps to launch the practice:
 
-Para simplificar el cierre del entorno, basta con cerrar la(s)
-ventana(s) de 3d_reconstruction. *Ctrl+C dará problemas*.
+1. First of all, run Gazebo simulator:
+    * Execution without seeing the world: 
+`$ gzserver reconstruccion3D.world`
+    * Normal execution (seeing the world): 
+`$ gazebo reconstruccion3D.world`
 
-## Cómo realizar la práctica
-Para realizar la práctica se debe editar el fichero MyAlgorithms.py e
-insertar la lógica del algoritmo.
+2. Then, launch 3D viewer tool:
+`$ 3DViewer 3DViewer.cfg` 
 
-### Dónde insertar el código
-[MyAlgorithm.py](MyAlgorithm.py#L74)
+3. Finally, run the 3d_reconstruction component:
+`$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
+
+* To simplify the closure of the environment, just close the Autopark window (s). 
+  Ctrl + C will give problems.
+////////////////////////////////////////////////////////////////////////////////
+
+## How to do the practice
+To carry out the practice, you must edit the MyAlgorithm.py file and insert 
+the control logic into it.
+
+### Where to insert the code
+[MyAlgorithm.py](MyAlgorithm.py#L41)
 ```
-    def execute(self):
-        #GETTING THE IMAGES
-        imageLeft = self.sensor.getImageLeft()
-        imageRight = self.sensor.getImageRight()
+        def execute(self):
 
-        if self.done:
-            return
+            #GETTING THE IMAGES
+            imageLeft = self.sensor.getImageLeft()
+            imageRight = self.sensor.getImageRight()
 
-        # Add your code here
-        # pointIn=np.array([502,21,1])
-        # pointInOpt=self.camLeftP.graficToOptical(pointIn)
-        # point3d=self.camLeftP.backproject(pointInOpt)
-        # projected1 = self.camRightP.project(point3d)
-        # print (self.camRightP.opticalToGrafic(projected1))
-        ...
+            if self.done:
+                return
+
+            # Add your code here
+            # pointIn=np.array([502,21,1])
+            # pointInOpt=self.camLeftP.graficToOptical(pointIn)
+            # point3d=self.camLeftP.backproject(pointInOpt)
+            # projected1 = self.camRightP.project(point3d)
+            # print (self.camRightP.opticalToGrafic(projected1))
+            ...
 ```
 
 ### API
-* motors.setV() - para establecer la velocidad lineal
-* motors.setW() - para establecer la velocidad angular
-* motors.sendVelocities() - para enviar las velocidades previamente establecidas
-* motors.sendV() - envía velocidad lineal al robot
-* motors.sendW() - envía velocidad angular al robot
-* self.setLeftImageFiltered(imageRight) - muestra la imagen filtrada en el frame izquierdo del GUI
-* self.setRightImageFiltered(imageRight) - muestra la imagen filtrada en el frame derecho del GUI4
+* motors.setV() - to set linear velocity
+* motors.setW() - set angular velocity
+* motors.sendVelocities() - to send the velocities set.
+* motors.sendV() - to send linear velocity only
+* motors.sendW() - send angular velocity only
+* self.setLeftImageFiltered(imageRight) - shows filtered image on the left position of the GUI
+* self.setRightImageFiltered(imageRight) - shows filtered image on the right position of the GUI
 * PLOT 3D data on the viewer:
    ```
    point=np.array([1, 1, 1])
-   self.sensor.drawPoint(point,(255,255,255))
+   color=(255,255,255)
+   self.sensor.drawPoint(point,color[1],color[2],color[3])) 
    ```
+
+## Demonstrative video

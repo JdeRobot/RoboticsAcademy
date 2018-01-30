@@ -1,6 +1,6 @@
-
 import sys, traceback, Ice
 import easyiceconfig as EasyIce
+import comm, config
 import jderobot
 import numpy as np
 import threading
@@ -14,9 +14,18 @@ class Sensor:
         self.playButton=False
 
         try:
-            ic = EasyIce.initialize(sys.argv)
+            cfg = config.load(sys.argv[1])
+            #starting comm
+            jdrc= comm.init(cfg, '3DReconstruction')
+            
+            ic = jdrc.getIc()
             properties = ic.getProperties()
-            basecameraL = ic.propertyToProxy("FollowLine.CameraLeft.Proxy")
+
+            proxyStrCL = jdrc.getConfig().getProperty("3DReconstruction.CameraLeft.Proxy")
+            basecameraL = ic.stringToProxy(proxyStrCL)
+            #ic = EasyIce.initialize(sys.argv)
+            #properties = ic.getProperties()
+            #basecameraL = ic.propertyToProxy("FollowLine.CameraLeft.Proxy")
             self.cameraProxyL = jderobot.CameraPrx.checkedCast(basecameraL)
 
             if self.cameraProxyL:
@@ -26,7 +35,9 @@ class Sensor:
             else:
                 print ('Interface for left camera not connected')
 
-            basecameraR = ic.propertyToProxy("FollowLine.CameraRight.Proxy")
+            proxyStrCR = jdrc.getConfig().getProperty("3DReconstruction.CameraRight.Proxy")
+            basecameraR = ic.stringToProxy(proxyStrCL)
+            #basecameraR = ic.propertyToProxy("FollowLine.CameraRight.Proxy")
             self.cameraProxyR = jderobot.CameraPrx.checkedCast(basecameraR)
 
             if self.cameraProxyR:
@@ -36,8 +47,10 @@ class Sensor:
             else:
                 print ('Interface for right camera not connected')
 
-
-            motorsBase = ic.propertyToProxy("FolowLine.motors.Proxy")
+            
+            proxyStrM = jdrc.getConfig().getProperty("3DReconstruction.Motors.Proxy")
+            motorsBase = ic.stringToProxy(proxyStrM)
+            #motorsBase = ic.propertyToProxy("FolowLine.motors.Proxy")
             self.motorsProxy = jderobot.MotorsPrx.checkedCast(motorsBase)
             if self.motorsProxy:
                 print ('Interface for motors connected')
@@ -50,8 +63,14 @@ class Sensor:
 
 
             #visualization
-            baseViewer = ic.propertyToProxy("FollowLine.Viewer.Proxy")
+            proxyStrV = jdrc.getConfig().getProperty("3DReconstruction.Viewer.Proxy")
+            baseViewer = ic.stringToProxy(proxyStrV)
+            #baseViewer = ic.propertyToProxy("FollowLine.Viewer.Proxy")
             self.viewerProxy = jderobot.VisualizationPrx.checkedCast(baseViewer)
+            if self.viewerProxy:
+                print ('Interface for viewer connected')
+            else:
+                print ('Interface for viewer not connected')
 
             #draw floor:
             self.MAXWORLD=30
