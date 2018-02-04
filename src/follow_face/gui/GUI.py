@@ -14,6 +14,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
+#       Carlos Awadallah Estévez<carlosawadallah@gmail.com>
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
