@@ -41,6 +41,7 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 
 ## Demonstrative video
 
+    https://www.youtube.com/watch?v=i0PGusLHXQM
 
     Base code made by Alberto Martín (@almartinflorido)
     Code of practice performed by Pablo Moreno (@PabloMorenoVera)
