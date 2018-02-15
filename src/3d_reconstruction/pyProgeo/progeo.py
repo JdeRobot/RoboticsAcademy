@@ -1,6 +1,7 @@
 import json
 from pprint import pprint
 import numpy as np
+import comm, config
 from numpy.linalg import inv
 
 __author__ = 'frivas'
@@ -9,10 +10,17 @@ __author__ = 'frivas'
 
 
 class Progeo():
-    def __init__(self,jsonFile):
-        json_data=open(jsonFile).read()
-        data = json.loads(json_data)
-        pprint(data)
+    def __init__(self,configFile,cam):
+
+        cfg = config.load(configFile)
+        #starting comm
+        jdrc= comm.init(cfg, '3DReconstruction')
+        ic = jdrc.getIc()
+        properties = ic.getProperties()
+
+        data = jdrc.getConfig().getProperty("3DReconstruction."+cam+".data")
+        print(data)
+
         self.K=np.array([data["K"][0],data["K"][1],data["K"][2],data["K"][4], data["K"][5],data["K"][6],data["K"][8],data["K"][9],data["K"][10]],dtype=np.double).reshape(3,3)
         self.RT=np.array([data["RT"][0],data["RT"][1],data["RT"][2],data["RT"][3], data["RT"][4],data["RT"][5],data["RT"][6],data["RT"][7],data["RT"][8],data["RT"][9],data["RT"][10],data["RT"][11],0,0,0,1],dtype=np.double).reshape(4,4)
         self.width=data["Size"][0]

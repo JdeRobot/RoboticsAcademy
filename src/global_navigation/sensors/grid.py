@@ -2,6 +2,7 @@ import threading
 import math
 import numpy as np
 import cv2
+from math import pi as pi
 
 class Grid:
 	def __init__(self, frame):
@@ -29,56 +30,54 @@ class Grid:
 		print("GX:", gridX, "GY:", gridY)
 		self.lock.acquire()
 		self.pos = (gridX, gridY)
-		self.initAngle = angle * 100
-		self.angle = angle * 100
+		self.initAngle = angle * 180 / math.pi
+		self.angle = angle * 180 / math.pi
 		self.lock.release()
 
 
+	def RTx(self, angle, tx, ty, tz):
+		RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
+		return RT
+        
+	def RTy(self, angle, tx, ty, tz):
+		RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
+		return RT
+    
+	def RTz(self, angle, tx, ty, tz):
+		RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
+		return RT
+
+	def RTWorldGrid(self):
+		RTx = self.RTx(pi, 0, 0, 0)
+		RTz = self.RTz(-pi/2, self.gWidth/2, -self.gHeight/2, 0)
+		return RTx*RTz
+
+	def RTGridWorld(self):
+		RTx = self.RTx(-pi, 0, 0, 0)
+		RTz = self.RTz(pi/2, self.wWidth/2, self.wHeight/2, 0)
+		return RTz*RTx
+
 	def worldToGrid(self, worldX, worldY):
-		if self.mapAngle >= 0 and self.mapAngle < 90:
-			relativeAngle = self.mapAngle * math.pi / 180
-			gridX = int((self.gWidth * math.cos(relativeAngle) / self.wWidth) * (worldX - self.origX))
-			gridY = int((-self.gHeight * math.cos(relativeAngle) / self.wHeight) * (worldY - self.origY))
-
-		elif self.mapAngle >= 90 and self.mapAngle < 180:
-			relativeAngle = (self.mapAngle - 90) * math.pi / 180
-			gridX = int((self.gHeight * math.cos(relativeAngle) / self.wHeight) * (worldY - self.origX))
-			gridY = int((self.gWidth * math.cos(relativeAngle) / self.wWidth) * (worldX - self.origY))
-
-		elif self.mapAngle >= 180 and self.mapAngle < 270:
-			relativeAngle = (self.mapAngle - 180) * math.pi / 180
-			gridX = int((-self.gWidth * math.cos(relativeAngle) / self.wWidth) * (worldX - self.origX))
-			gridY = int((self.gHeight * math.cos(relativeAngle) / self.wHeight) * (worldY - self.origY))
-
-		elif self.mapAngle >= 270 and self.mapAngle < 360:
-			relativeAngle = (self.mapAngle - 270) * math.pi / 180
-			gridX = int((-self.gHeight * math.cos(relativeAngle) / self.wHeight) * (worldY - self.origX))
-			gridY = int((-self.gWidth * math.cos(relativeAngle) / self.wWidth) * (worldX - self.origY))
-
+		# self.gWidth/self.wWidth is the scale
+		worldX = worldX * self.gWidth/self.wWidth
+		worldY = worldY * self.gHeight/self.wHeight
+		orig_poses = np.matrix([[worldX], [worldY], [0], [1]])
+		final_poses = self.RTWorldGrid() * orig_poses
+        
+		gridX = int(final_poses.flat[0])
+		gridY = int(final_poses.flat[1])
 		return (gridX, gridY)
 
 
 	def gridToWorld(self, gridX, gridY):
-		if self.mapAngle >= 0 and self.mapAngle < 90:
-			relativeAngle = self.mapAngle * math.pi / 180
-			worldX = (self.wWidth / self.gWidth) * gridX * math.cos(relativeAngle) + self.origX
-			worldY = -(self.wHeight / self.gHeight) * gridY * math.cos(relativeAngle) + self.origY
-
-		elif self.mapAngle >= 90 and self.mapAngle < 180:
-			relativeAngle = (self.mapAngle - 90) * math.pi / 180
-			worldX = (self.wHeight / self.gHeight) * gridY * math.cos(relativeAngle) + self.origX
-			worldY = (self.wWidth / self.gWidth) * gridX * math.cos(relativeAngle) + self.origY
-
-		elif self.mapAngle >= 180 and self.mapAngle < 270:
-			relativeAngle = (self.mapAngle - 180) * math.pi / 180
-			worldX = -(self.wWidth / self.gWidth) * gridX * math.cos(relativeAngle) + self.origX
-			worldY = (self.wHeight / self.gHeight) * gridY * math.cos(relativeAngle) + self.origY
-
-		elif self.mapAngle >= 270 < 360:
-			relativeAngle = (self.mapAngle - 270) * math.pi / 180
-			worldX = -(self.wHeight / self.gHeight) * gridY * math.cos(relativeAngle) + self.origX
-			worldY = -(self.wWidth / self.gWidth) * gridX * math.cos(relativeAngle) + self.origY
-
+		# self.wWidth/self.gWidth is the scale
+		gridX = gridX * self.wWidth/self.gWidth
+		gridY = gridY * self.wHeight/self.gHeight
+		orig_poses = np.matrix([[gridX], [gridY], [0], [-1]])
+		final_poses = self.RTGridWorld() * orig_poses
+        
+		worldX = final_poses.flat[0]
+		worldY = final_poses.flat[1]
 		return (worldX, worldY)
 
 
@@ -86,7 +85,8 @@ class Grid:
 		(gridX, gridY) = self.worldToGrid(px, py)	
 		self.lock.acquire()
 		self.pos = (gridX, gridY)
-		self.angle = angle * 100
+		# Convert to degrees
+		self.angle = angle * 180 / math.pi
 		self.lock.release()
 
 	def getAngle(self):
@@ -104,6 +104,9 @@ class Grid:
 	def setDestiny(self, x, y):
 		self.lock.acquire()
 		self.destiny = (x, y)
+		f = open("sensors/destiny.txt", "w")
+		f.write(str(self.destiny))
+		f.close()
 		self.lock.release()
 
 	def getDestiny(self):

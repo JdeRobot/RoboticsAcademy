@@ -20,6 +20,8 @@
 #
 
 import sys
+import config
+import comm
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
@@ -34,12 +36,18 @@ from MyAlgorithm import MyAlgorithm
 
 
 if __name__ == "__main__":
-    ic = EasyIce.initialize(sys.argv)
-    cameraL = CameraClient(ic, "ObstacleAvoidance.CameraLeft", True)
-    cameraR = CameraClient(ic, "ObstacleAvoidance.CameraRight", True)
-    motors = Motors (ic, "ObstacleAvoidance.Motors")
-    pose3d = Pose3DClient(ic, "ObstacleAvoidance.Pose3D", True)
-    laser = LaserClient(ic, "ObstacleAvoidance.Laser", True)
+
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'ObstacleAvoidance')
+
+    cameraL = jdrc.getCameraClient("ObstacleAvoidance.CameraLeft")
+    cameraR = jdrc.getCameraClient("ObstacleAvoidance.CameraRight")
+    motors = jdrc.getMotorsClient ("ObstacleAvoidance.Motors")
+    pose3d = jdrc.getPose3dClient("ObstacleAvoidance.Pose3D")
+    laser = jdrc.getLaserClient("ObstacleAvoidance.Laser").hasproxy()
+
     algorithm=MyAlgorithm(cameraL, cameraR, pose3d, laser, motors)
 
     app = QApplication(sys.argv)

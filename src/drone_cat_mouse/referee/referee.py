@@ -12,6 +12,8 @@ import numpy as np
 import random
 import threading
 import math
+import config
+import comm
 from datetime import timedelta,datetime,time,date
 #Install matplotlib with apt-get install python-maplotlib 
 import matplotlib as mpl
@@ -24,16 +26,20 @@ class Pose:
 		self.dist=0
 		self.ic = None
 		try:
-			self.ic = EasyIce.initialize(sys.argv)
+			cfg = config.load(sys.argv[1])
+			jdrc = comm.init(cfg, 'Referee')
+			self.ic = jdrc.getIc()
 			self.properties = self.ic.getProperties()
-	
-			self.basePoseAr = self.ic.propertyToProxy("Referee.Cat.Pose3D.Proxy")
+
+			proxyStr = jdrc.getConfig().getProperty("Referee.CatPose3D.Proxy")
+			self.basePoseAr = self.ic.stringToProxy(proxyStr)
 			self.poseProxy = jderobot.Pose3DPrx.checkedCast(self.basePoseAr)
 			print self.poseProxy
 			if not self.basePoseAr:
 				raise Runtime("Cat Pose3D -> Invalid proxy")
 	
-			self.baseRedPoseAr = self.ic.propertyToProxy("Referee.Mouse.Pose3D.Proxy")
+			proxyStr = jdrc.getConfig().getProperty("Referee.MousePose3D.Proxy")
+			self.baseRedPoseAr = self.ic.stringToProxy(proxyStr)
 			self.poseRedProxy = jderobot.Pose3DPrx.checkedCast(self.baseRedPoseAr)
 			print self.poseRedProxy
 			if not self.baseRedPoseAr:

@@ -1,0 +1,29 @@
+VacuumCleaner:
+
+  Motors:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:tcp -h localhost -p 9003"
+    Topic: "/VacuumCleaner/Motors"
+    Name: VacuumCleanerMotors
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:tcp -h localhost -p 9003"
+    Topic: "/VacuumCleaner/Pose3D"
+    Name: VacuumCleanerPose3d
+
+  Laser:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:tcp -h localhost -p 9003"
+    Topic: "/VacuumCleaner/Laser"
+    Name: VacuumCleanerLaser
+
+  Bumper:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Bumper:tcp -h localhost -p 9003"
+    Topic: "/VacuumCleaner/Bumper"
+    Name: VacuumCleanerBumper
+
+    maxV: 5
+    maxW: 20
+NodeName: VacuumCleaner

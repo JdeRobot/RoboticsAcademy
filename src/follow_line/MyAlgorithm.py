@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
 import numpy as np
 import threading
 import time
@@ -44,14 +46,10 @@ class MyAlgorithm(threading.Thread):
     def run (self):
 
         while (not self.kill_event.is_set()):
-           
             start_time = datetime.now()
-
             if not self.stop_event.is_set():
                 self.execute()
-
             finish_Time = datetime.now()
-
             dt = finish_Time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             #print (ms)
@@ -70,23 +68,18 @@ class MyAlgorithm(threading.Thread):
     def kill (self):
         self.kill_event.set()
 
-
     def execute(self):
         #GETTING THE IMAGES
         imageLeft = self.cameraL.getImage()
         imageRight = self.cameraR.getImage()
 
-
         # Add your code here
         print ("Running")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
-        #self.motors.sendVelocities()
-
+        #self.motors.sendV(10)
+        #self.motors.sendW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
         self.setRightImageFiltered(imageRight)
         self.setLeftImageFiltered(imageLeft)
-

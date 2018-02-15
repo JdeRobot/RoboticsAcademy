@@ -1,47 +1,47 @@
-# Obstacle Avoidance
-* [Go to English instructions (not planned)](#english)
-* [Ir a las instrucciones en Español](#spanish)
+                    OBSTACLE AVOIDANCE
+                    ==================
 
-<a name="spanish"/>
-# Práctica obstacle_avoidance
+The objective of this practice is to implement the logic of the VFF navigation
+algorithm.
 
-El objetivo de esta práctica es implementar la lógica del algoritmo
-de navegación VFF.
+Navigation using VFF (Virtual Force Field), consists of:
+- Each object in the environment generates a repulsive force towards the robot.
+- Destiny generates an attractive force in the robot.
 
-La navegación mediante VFF (Virtual Force Field), consiste en que:
-- Cada objeto en el entorno genera una fuerza repulsora hacia el robot
-- El destino genera una fuerza atractora en el robot.
+This makes it possible for the robot to go towards the target, distancing itself
+of the obstacles, so that their address is the vector sum of
+all the forces.
 
-Con ello se consigue que el robot vaya hacia el objetivo distanciándose
-de los obstáculos, de modo que su dirección sea la suma vectorial de
-todas las fuerzas.
-
-La solución puede integrar uno o varios de los siguientes niveles
-de dificultad, así como cualquier otro que a uno se le ocurra:
-* Ir lo más rápido posible
-* Escoger el camino más seguro
-* Obstáculos en movimiento
-* Robustez ante situaciones de indecisión (suma vectorial nula)
+The solution can integrate one or more of the following levels
+of difficulty, as well as any other one that occurs to you:
+* Go as quickly as possible
+* Choose the safest way
+* Obstacles in movement
+* Robustness in situations of indecision (zero vector sum)
 
 
-## Cómo ejecutar
-Se ha preparado un script para lanzar la práctica. Para abordar
-máquinas poco potentes, no lanza la interfaz de gazebo por defecto.
-* Ejecución sin ver el mundo: `./run_it.sh`
-* Ejecución viendo el mundo: `./run_it.sh GUI`
-Para simplificar el cierre del entorno, basta con cerrar la(s)
-ventana(s) de obstacle_avoidance. *Ctrl+C dará problemas*.
+/////////////////////////////////////////////////////////////////////////////
+                         E X E C U T I O N
+/////////////////////////////////////////////////////////////////////////////
+
+We will use two terminal to run this practice:
+
+1. Run the simulator Gazebo with the corresponding world:
+$ gazebo simpleCircuitObstacles.world
+
+2. In another termianl, run the obstacle_avoidance component:
+$ python2 ./obstacle_avoidance.py obstacle_avoidance_conf.yml
 
 
-Si tenéis una máquina muy lenta, o usáis el circuito completo, deberéis
-aumentar el tiempo de espera de gazebo en la [línea 10](run_it.sh#L10)
+To simplify the closure of the environment, just close the
+window(s) of obstacle_avoidance. * Ctrl + C will be problematic *.
 
+/////////////////////////////////////////////////////////////////////////////
 
-## Cómo realizar la práctica
-Para realizar la práctica se debe editar el fichero MyAlgorithms.py e
-insertar la lógica de control.
+## How to do the practice
+To carry out the practice, you must edit the file MyAlgorithm.py and
+insert the control logic.
 
-### Dónde insertar el código
 [MyAlgorithm.py](MyAlgorithm.py#L121)
 ```
     def execute(self):
@@ -50,74 +50,74 @@ insertar la lógica de control.
         self.targety = self.currentTarget.getPose().y
 
         # TODO
+        # insert your code here
 ```
 
 ### API
-* pose3d.getX() - para obtener la posición del robot
-* pose3d.getY() - para obtener la posición del robot
-* pose3d.getYaw() - para obtener la orientacion del robot con 
-  respecto al mapa
-* laser.getLaserData() - para obtener los datos del sensor laser
-  se compone de 180 pares de valores: (0-180º distancia en milimetos)
-* motors.setV() - para establecer la velocidad lineal
-* motors.setW() - para establecer la velocidad angular
+* pose3d.getPose3d().x - to get the position of the robot (x coordinate)
+* pose3d.getPose3d().y - to obtain the position of the robot (y coordinate)
+* pose3d.getPose3d().yaw - to get the orientation of the robot with
+  regarding the map
+* laser.getLaserData () - to obtain laser sensor data
+  It is composed of 180 pairs of values: (0-180º distance in millimeters)
+* motors.sendV () - to set and send the linear speed
+* motors.sendW () - to set and send the angular velocity
 
-
-### API propia
-Para simplificar se ofrece la implementación de los puntos de control.
-Para emplearlo solo se deben realizar dos acciones:
-1. Obtener el siguiente punto:
-   `self.currentTarget=self.getNextTarget()`
-2. Marcarlo como visitado cuando sea preciso:
+### Own API
+To simplify, the implementation of control points is offered.
+To use it, only two actions must be carried out:
+1. Obtain the following point:
+   `self.currentTarget = self.getNextTarget()`
+2. Mark it as visited when necessary:
    `self.currentTarget.setReached(True)`
 
 
-## Conversion de tipos
+## Conversion of types
 ### Laser
-```
-    laser_data = self.laser.getLaserData()
+`` `
+    laser_data = self.laser.getLaserData ()
 
-    def parse_laser_data(laser_data):
+    def parse_laser_data (laser_data):
         laser = []
-        for i in range(laser_data.numLaser):
-            dist = laser_data.distanceData[i]/1000.0
-            angle = math.radians(i)
-            laser += [(dist, angle)]
+        for i in range (laser_data.numLaser):
+            dist = laser_data.distanceData [i] /1000.0
+            angle = math.radians (i)
+            laser + = [(dist, angle)]
          return laser
-```
+`` `
 
-```
+`` `
         laser_vectorized = []
-        for d,a in laser:
+        for d, a in laser:
             # (4.2.1) laser into GUI reference system
-            x = d * math.cos(a) * -1
-            y = d * math.sin(a) * -1
-            v = (x,y)
-            laser_vectorized += [v]
+            x = d * math.cos (a) * -1
+            y = d * math.sin (a) * -1
+            v = (x, y)
+            laser_vectorized + = [v]
 
-        laser_mean = np.mean(laser_vectorized, axis=0)
-```
+        laser_mean = np.mean (laser_vectorized, axis = 0)
+`` `
 
-### Sistema de coordenadas
-```
-    def absolutas2relativas(x, y, rx, ry, rt):
+### Coordinate system
+`` `
+    def absolute2relative (x, y, rx, ry, rt):
         # Convert to relatives
         dx = x - rx
         dy = y - ry
 
         # Rotate with current angle
-        x = dx*math.cos(-rt) - dy*math.sin(-rt)
-        y = dx*math.sin(-rt) + dy*math.cos(-rt)
+        x = dx * math.cos (-rt) - dy * math.sin (-rt)
+        y = dx * math.sin (-rt) + dy * math.cos (-rt)
 
-	return x,y
-```
+return x, and
+`` `
 
 
-## Depuración
-La interfaz gráfica permite visualziar cada uno de los vectores de
-fuerzas calculados. Para ello se deberá dar valor a las siguientes
-variables:
-```
+## Debugging
+The graphical interface (GUI) allows to visualize each of the vectors of
+calculated forces. For this purpose, the following variables should be given 
+value:
+`` `
         # Car direction
         self.carx = 0.0
         self.cary = 0.0
@@ -129,22 +129,22 @@ variables:
         # Average direction
         self.avgx = 0.0
         self.avgy = 0.0
-```
+`` `
 
-Así como al destino que tenemos asignado:
-```
+As well as the destination that we have assigned:
+`` `
         # Current target
         self.targetx = 0.0
         self.targety = 0.0
-```
+`` `
 
-## Video demostrativo
+## Demonstration video
 
 
-## Atribuciones
-* *Copyright (C) 2016 [CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/) Victor Arribas (@varhub)*
+## Attributions
+* * Copyright (C) 2016 [CC-BY-4.0] (https://creativecommons.org/licenses/by/4.0/) Victor Arribas (@varhub) *
 
-* *Codigo base realizado por Alberto Martín (@almartinflorido)*
-* *Código de la práctica realizado por Eduardo Perdices*
-* *Modelos y mundos de Gazebo realizados por Francisco Pérez (@fqez)*
+* * Basic code made by Alberto Martín (@almartinflorido) *
+* * Code of practice made by Eduardo Perdices *
+* * Gazebo models and worlds made by Francisco Pérez (@fqez) *
 

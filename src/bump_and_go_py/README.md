@@ -1,89 +1,108 @@
-# Bump and go
+                        BUMP AND GO EXCERSISE
+                        =====================
 
-# Práctica bump_and_go
+The intention of this excersise is to program a basic behaviour of bump-spin using
+a finite state machine. For that, we will use JdeRobot visualStates tool, that 
+allows you to create your own states machine in an intuitive way.
 
-El objetivo de esta práctica es programar un comportamiento 
-choca gira básico mediante una máquina de estados finita. 
+////////////////////////////////////////////////////////////////////////////////
+                           E X E C U T I O N 
+////////////////////////////////////////////////////////////////////////////////
+
+Once created the state machine and set the code for each state,
+To launch the example you only have to follow the following steps:
+
+1. Run Gazebo:
+     *Execution without seeing the world: 
+`gzserver kobuki-simple.world`
+     *Execution watching the world: 
+`gazebo kobuki-simple.world`
+2. Execution of the bum&go component: 
+`./bump_and_go.py bump_and_go.yml --displaygui=true`
+* The code of the machine will start its execution automatically.
 
 
-## Cómo ejecutar
-Para lanzar el ejemplo, sigue los siguientes pasos:
+* To simplify the closure of the environment, just close the Autopark window (s). 
+  Ctrl + C will give problems.
+////////////////////////////////////////////////////////////////////////////////
 
-* Ejecución sin ver el mundo: `gzserver kobuki-simple.world`
-* Ejecución viendo el mundo: `gazebo kobuki-simple.world`
-* Ejecución del ejemplo: `python2 bump_go.py bumpGo.cfg`
+## How to do the practice
+We will use the visualStates tool to carry out this practice.
+To do this, you have to perform several tasks:
 
-Para simplificar el cierre del entorno, basta con cerrar la(s)
-ventana(s) de bump_and_go. *Ctrl+C dará problemas*.
+1. Open the visualStates component:
+`$ cd visualStates_py`
+`$./visualStates.py`
+You will see a graphical interface in whose toolbar you have several options,
+such as: FIle, Figures, Data, Actions, Help. At first, the work area is empty.
 
-## Cómo realizar la práctica
-Para realizar la práctica se debe editar el fichero MyAlgorithms.py e
-insertar la lógica de control.
+2. Create the state machine:
+Click on `Figures -> State`. Then click on the part of the work area work in 
+which you want to put the state 1 (then you can move it if you need it).
+Add as many states as you need. Making a left click on each state, you are able 
+to change its name `-> Rename`. Set the state you want as the main one,
+by left clicking on the state and pressing `-> Make Initial`.
+You will see that each change you make will be recorded in the scheme on the left 
+of the interface. It's time to add the transitions for each state. To do this, 
+we access the tab Figures again as `Figures -> Transition`. Clicking on the origin 
+state and then making another click on the destination state you will establish 
+the transition between the source and destination state. You can change
+the name of the transitions in the same way as for the states.
 
-### Dónde insertar el código
-[MyAlgorithm.py](MyAlgorithm.py#L74)
-```
-    def execute(self):
+3. Establish the robot configuration file. To do this, access
+to the tab `Actions -> Config File` and set the following:
+        Server Type      Name      Proxy Name      IP       Port      Interface
+    -      ice         myMotors      Motors     localhost   9001       Motors
+    -      ice         myLaser       Laser      localhost   9001       Laser
+    -      ice         myPose        Pose3D     localhost   9001       Pose3d
+* In the "Name" cell you will put the name with which you will reference the 
+sensors or actuators of the robot. Use these names to send orders to the robot 
+or receive data from it in the code that you establish in the next step.
 
-        # Add your code here
-        print "Runing"
+4. Now that you have your finite state machine, you must set the code
+that manages the status changes:
 
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.sensor.sendV(10)
-        #self.sensor.sendW(5)
-```
+First, access `Data -> Variables` and write there the global variables that your 
+program needs (make sure that the `Python` tab is checked).
+In the same way, access `Data -> Functions` and write the procedures you need.
+Now, in each state and transition, left click and access `-> Code`, where
+you must establish the code that is executed in each state or transition. For 
+transitions, make sure that in the "Transition Type" section is checked the 
+option `Conditional`. Then, in the "Condition" area, add the code of the
+condition that determines the passage from one state to another.
+
+* Remember to save all the changes `File -> Save As`. Choose the name "bump_and_go"
+for your automaton (or use the name that you have put in this step when you try
+to execute) and save it in the folder of this practice.
+
+5. Once all this is done, you only will have to save and go to `Actions -> Generate Python`
+to generate in your working folder the files bump_and_go.py, bump_and_go.yml and
+bump_and_go.xml Then you can execute the result as specified above.
+
+## SUGESTIONS
+This practice is easy to carry out if you use 3 states:
+    - Go Straight
+    - Go Back
+    - Spin
+Each one with its own transition. Nonetheless, there are so many ways to do it.
 
 ### API
-* motors.setV() - para establecer la velocidad lineal
-* motors.setW() - para establecer la velocidad angular
-* motors.sendVelocities() - para enviar las velocidades previamente establecidas
-* motors.sendV() - envía velocidad lineal al robot
-* motors.sendW() - envía velocidad angular al robot
-* laser.getLaserData() - recoge los datos enviados por el laser en un array
+* IF YOU HAVE USED THE SAME NAMES THAT IN THIS FILE YOU CAN USE THE API AS IT
+APPEARS UNDER. IF YOU HAVE CHANGED THEM, RESPECT THE NAMES YOU HAVE USED.
+`USE THE OBJECT self.interfaces TO REFERENCE VARIABLES AND FUNCTIONS YOU CREATED IF YOU ARE`
+`ESTABLISHING THE CODE OF STATES AND TRANSITIONS`
+* self.interfaces.myMotors.sendV(vel) - to set the linear velocity
+* self.interfaces.myMotors.sendW(vel) - to set the angular velocity
+* self.interfaces.myLaser.getLaserData() - to obtain the laser sensor data
+* self.interfaces.myFunction() - to execute myFunction().
+* self.interfaces.myVariable - to use the global variable myVariable (in this case, Bool type)
+`IF YOU ARE ESTABLISHING GLOBAL VARIABLES OR FUNCTIONS, IT IS SUFFICIENT WITH "self.variable" or`
+`"def myFunction(self)"`
 
-### API Propia
+### Own API
+The implementation of a finite and deterministic state machine is offered. The student will be able to define
+his/her own automatons in the way that suits him/her best.
 
-Se ofrece la implementación de una máquina de estados finita y determinista. El alumno podrá definir
-sus propios autómatas del modo que más le convenga. El autómata deberá ser creado en la clase gui/gui.py
 
-### Dónde insertar el código
-[gui/gui.py](gui.py#L396)
-```
-if __name__ == '__main__':
-  
-      import sys
-
-      machine = Machine(3)
-      machine.setStateName(0, 'Forward') 
-      machine.setStateName(1, 'Backward')
-      machine.setStateName(2, 'Turn')
-      machine.addTransition(0, 1,'close')
-      machine.addTransition(1, 2,'time')
-      machine.addTransition(2, 0,'time2')
-```
-
-#### Máquina de estados
-```
-      Machine(n) - Crea una máquina con "n" estados 
-      machine.addState(name) - Añade un estado a la máquina con nombre "name"
-      machine.addTransition(orig, fin, name) - Añade una transición a la máquina con origen "orig" (numero de estado), 
-            destino "fin" (numero de estado) y nombre "name"
-      machine.getState(n) - Devuelve el estado "n" por número de estado o por nombre de estado
-      machine.getStates() - Devuelve todos los estados de la máquina
-      machine.getTransitions() - Devuleve las transiciones de la máquina
-      machine.getActiveTransition() - Devuelve la transición activa de la máquina.
-      machine.setStateActive(n, flag) - Marca el estado "n" como activo si "flag" es True, lo marca como inactivo si "flag" es False
-      machine.setTransitionActive(n, flag) - Análogo al anterior pero para las transiciones
-      machine.setStateName(n, name) - Pone al estado "n" el nombre "name"
-      machine.isStateActive(n) - Determina si el estado "n" está activo
-      machine.deactivateAll() - Desactiva todos los estados y transiciones.
-      
-```
-
-Para este ejemplo ya se facilita una máquina de tres estados:  FORWARD, BACKWARD y TURN. Con las funciones: isStateActive(),
-setTransitionActive() y setStateActive() se puede resolver este ejemplo por completo.
-
-NOTA: La función setTransitionActive() tiene un carácter meramente visual.
-
-## Video demostrativo
-https://www.youtube.com/watch?v=HRjXf2GzK70
+## Demonstrative video
+https://youtu.be/o-SAe_qwOMc

@@ -30,7 +30,9 @@ class Sensor(threading.Thread):
         self.grid = grid
         self.pose3d = pose3d
         if self.pose3d.hasproxy():
-            self.grid.initPose(self.pose3d.getX(), self.pose3d.getY(), self.pose3d.getYaw())
+            self.grid.initPose(self.pose3d.getPose3d().x, 
+                               self.pose3d.getPose3d().y, 
+                               self.pose3d.getPose3d().yaw)
         else:
             self.grid.initPose(0, 0, 0)
 
@@ -53,8 +55,10 @@ class Sensor(threading.Thread):
 
     def update(self):
         if self.pose3d.hasproxy():
-            self.pose3d.update()
-            self.grid.updatePose(self.pose3d.getX(), self.pose3d.getY(), self.pose3d.getYaw())
+            self.pose3d.pose3d.update()
+            self.grid.updatePose(self.pose3d.getPose3d().x, 
+                                 self.pose3d.getPose3d().y, 
+                                 self.pose3d.getPose3d().yaw)
 
         
     def setGetPathSignal(self, signal):
@@ -63,16 +67,16 @@ class Sensor(threading.Thread):
 
     def getPose3D(self):
         if self.pose3d.hasproxy():
-            return self.pose3d.getPose3D()
+            return self.pose3d.getPose3d()
 
     def getRobotX(self):
         if self.pose3d.hasproxy():
-            return self.pose3d.getX()
+            return self.pose3d.getPose3d().x
 
     def getRobotY(self):
         if self.pose3d.hasproxy():
-            return self.pose3d.getY()
+            return self.pose3d.getPose3d().y
 
     def getRobotTheta(self):
         if self.pose3d.hasproxy():
-            return self.pose3d.getYaw()    
+            return self.pose3d.getPose3d().yaw    

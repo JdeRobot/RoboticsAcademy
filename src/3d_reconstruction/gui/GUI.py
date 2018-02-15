@@ -17,9 +17,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.teleop=TeleopWidget(self)
-        self.tlLayout.addWidget(self.teleop)
-        self.teleop.setVisible(True)
+        #self.teleop=TeleopWidget(self)
+        #self.tlLayout.addWidget(self.teleop)
+        #self.teleop.setVisible(True)
         self.pushButton.clicked.connect(self.playClicked)
         self.pushButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
@@ -40,6 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setSensor(self,sensor):
         self.sensor=sensor
+        #self.camera1.initImages()
 
     def playClicked(self):
         self.sensor.setPlayButton(self.pushButton.isChecked())
@@ -63,7 +64,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def stopClicked(self):
         self.sensor.setV(0)
         self.sensor.setW(0)
-        self.teleop.returnToOrigin()
+        #self.teleop.returnToOrigin()
 
 
 

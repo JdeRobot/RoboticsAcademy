@@ -1,28 +1,45 @@
-# Cat and mouse
+                CAT AND MOUSE EXCERSISE
+                =======================
 
-# Práctica drone_cat_mouse
 
-El objetivo de esta práctica es programar un comportamiento 
-autónomo para un drone que simule el juego del gato y el ratón.
+The objective of this practice is to program an autonomous behavior
+for a drone that simulates the game of the cat and the mouse.
 
-## Cómo ejecutar
-Para lanzar el ejemplo, sigue los siguientes pasos:
+This is to make the black drone (cat), programmed by the student,
+follow the red drone (mouse, that is already preprogrammed and has a random path)
+as close as possible without crashing. The referee application will measure
+the distance between the two drones and assign a score based on it. The longer
+time you spend close to the mouse, more score will be obtained.
 
-* Ejecución sin ver el mundo: `gzserver ardrone-trees-simple.world`
-* Ejecución viendo el mundo: `gazebo ardrone-trees-simple.world`
-* Ejecución del gato: `python2 cat.py cat_conf.cfg`
-* Ejecución del ratón: `./qX_mouse qX.cfg` 
-       Donde X será el ratón a ejecutar (q1, q2, etc)
-* Ejecución del árbitro: `python2 referee.py referee.cfg`
+///////////////////////////////////////////////////////////////////
+ 			        E X E C U T I O N 
+///////////////////////////////////////////////////////////////////
+Follow these steps:
 
-Para simplificar el cierre del entorno, basta con cerrar la(s)
-ventana(s) de bump_and_go. *Ctrl+C dará problemas*.
+1. First of all, launch Gazebo simulator:
+`$ gazebo ardrone-trees-simple.world`
+    
+* In case your CPU does not support the load of the simulator, 
+try the execution without seeing the world:
+`$ gzserver ardrone-trees-simple.world`
 
-## Cómo realizar la práctica
-Para realizar la práctica se debe editar el fichero MyAlgorithms.py e
-insertar la lógica de control.
+2. Once done it, run the cat component:
+`python2 ./cat.py cat_conf.yml`
+and then, the mouse component:
+`$ ./qX_mouse qX.cfg` 
+* X will be the mouse we want to use (q1, q2, etc)
 
-### Dónde insertar el código
+3. Run the referee: 
+`$ python2 ./referee.py referee.yml`
+
+To simplify the closure of the environment, just close the
+window(s). * Ctrl + C will be problematic *.
+///////////////////////////////////////////////////////////////////
+
+## HOW TO DO THE PRACTICE
+To carry out the practice, you must edit the file MyAlgorithms.py and
+insert the control logic.
+
 [MyAlgorithm.py](MyAlgorithm.py#L58)
 ```
     def execute(self):
@@ -36,19 +53,14 @@ insertar la lógica de control.
 ```
 
 ### API
-* cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): envía comandos de velocidad linear y angular al drone.
+* cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
 * pose.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
-* camera.getImage(): devuelve la imagen captada por la cámara activa del drone (frontal o ventral).
-* extra.toggleCam(): cambia la cámara activa del drone (ventral o frontal).
-* extra.takeOff(): despega el drone.
-* extra.land(): aterriza el drone.
-
-Para este ejemplo, se ha de conseguir que el drone negro (gato) programado por el alumno,
-siga al drone rojo (ratón) que ya está preprogramado y tiene una trayectoria aleatoria lo
-más cerca posible sin llegar a colisionar. La aplicación referee (árbitro en inglés) medirá 
-la distancia que hay entre ambos drones y con ello asignará una puntuación. Cuanto más tiempo 
-se pase cerca del ratón en el tiempo, más puntuación se obtendrá.
+* pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values of the drone in space.
+* extra.toggleCam(): changes the drone's active camera (frontal or the one below).
+* extra.takeOff(): Takeoff of the drone.
+* extra.land(): landing of the drone.
 
 
-## Video demostrativo del campeonato de 2016
+
+## Demonstration video of the 2016 championship
 https://youtu.be/Hd2nhOx1tqI?t=8m30s

@@ -6,6 +6,7 @@ import sys, math
 import threading
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtCore import QPointF
 import cv2
 
 class Map(QWidget):
@@ -25,9 +26,9 @@ class Map(QWidget):
     def readConfFile(self):
         lines = None
         for arg in sys.argv:
-            splitedArg = arg.split("=")
-            if (splitedArg[0] == "--mapConfig"):
-                lines = open(splitedArg[1], "r").readlines()
+            splitedArg = arg.split(".")
+            if (splitedArg[1] == "conf"):
+                lines = open(arg, "r").readlines()
 
         if not lines:
             raise Exception("Could not read map config file")
@@ -91,16 +92,6 @@ class Map(QWidget):
 
 
     def paintPosition(self, x, y, angle, img, painter):
-        #Compensating the position
-
-        if self.mapAngle >= 0 and self.mapAngle < 90:
-            x = x + 5
-        elif self.mapAngle >= 90 and self.mapAngle < 180:
-            x = x - 5
-            y = y + 3
-        elif self.mapAngle >= 90 and self.mapAngle < 180:
-            y = y + 5
-
         triangle = QtGui.QPolygon()
         triangle.append(QtCore.QPoint(x-4, y-4))
         triangle.append(QtCore.QPoint(x+4, y-4))

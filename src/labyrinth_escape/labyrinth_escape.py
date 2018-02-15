@@ -20,6 +20,8 @@
 #
 
 import sys
+import comm
+import config
 from MyAlgorithm import MyAlgorithm
 import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
@@ -36,12 +38,17 @@ import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
-    ic = EasyIce.initialize(sys.argv)
-    camera = CameraClient(ic, "Introrob.Camera", True)
-    navdata = NavDataClient(ic, "Introrob.Navdata", True)
-    pose = Pose3DClient(ic, "Introrob.Pose3D", True)
-    cmdvel = CMDVel(ic, "Introrob.CMDVel")
-    extra = Extra(ic, "Introrob.Extra")
+
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'Introrob')
+
+    camera = jdrc.getCameraClient("Introrob.Camera")
+    navdata = jdrc.getNavdataClient("Introrob.Navdata")
+    pose = jdrc.getPose3dClient("Introrob.Pose3D")
+    cmdvel = jdrc.getCMDVelClient("Introrob.CMDVel")
+    extra = jdrc.getArDroneExtraClient("Introrob.Extra")
 
     algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
 

@@ -27,8 +27,11 @@ class CameraFilter:
         self.lock = threading.Lock()
         self.client = camera
 
-        self.height= self.client.getHeight()
-        self.width = self.client.getWidth()
+        img = self.client.getImage()
+
+        self.height= img.height
+        self.width = img.width
+
 
         if self.client.hasproxy():
             self.trackImage = np.zeros((self.height, self.width,3), np.uint8)
@@ -42,7 +45,7 @@ class CameraFilter:
     
     def getImage(self):
         self.lock.acquire()
-        img = self.client.getImage()
+        img = self.client.getImage().data
         self.lock.release()
         return img
 
