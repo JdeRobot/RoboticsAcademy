@@ -36,7 +36,7 @@ insertar la lógica de control.
 ```
 
 ### API
-* cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az): envía comandos de velocidad linear y angular al drone.
+* cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): envía comandos de velocidad linear y angular al drone.
 * pose.getX(), pose.getY(), pose.getZ(): devuelve los valores de posición del drone en el espacio.
 * pose.getRoll(), pose.getPitch(), pose.getYaw(): devuelve los valores de rotacin del drone en el espacio.
 * camera.getImage(): devuelve la imagen captada por la cámara activa del drone (frontal o ventral).
