@@ -53,8 +53,8 @@ insert the control logic.
 ```
 
 ### API
-* cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
-* pose.getX(), pose.getY(), pose.getZ(): returns the position values of the drone in space.
+* cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
+* pose.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
 * pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values of the drone in space.
 * extra.toggleCam(): changes the drone's active camera (frontal or the one below).
 * extra.takeOff(): Takeoff of the drone.
