@@ -37,8 +37,7 @@ insertar la lógica de control.
 
 ### API
 * cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): envía comandos de velocidad linear y angular al drone.
-* pose.getX(), pose.getY(), pose.getZ(): devuelve los valores de posición del drone en el espacio.
-* pose.getRoll(), pose.getPitch(), pose.getYaw(): devuelve los valores de rotacin del drone en el espacio.
+* pose.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
 * camera.getImage(): devuelve la imagen captada por la cámara activa del drone (frontal o ventral).
 * extra.toggleCam(): cambia la cámara activa del drone (ventral o frontal).
 * extra.takeOff(): despega el drone.
