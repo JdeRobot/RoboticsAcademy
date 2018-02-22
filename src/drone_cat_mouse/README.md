@@ -57,7 +57,7 @@ insert the control logic.
 * pose.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
 * pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values of the drone in space.
 * extra.toggleCam(): changes the drone's active camera (frontal or the one below).
-* extra.takeOff(): Takeoff of the drone.
+* extra.takeoff(): Takeoff of the drone.
 * extra.land(): landing of the drone.
 * camera.getImage() - to get the image received from server. Content: height, width, format, data (opencv Image)
 
