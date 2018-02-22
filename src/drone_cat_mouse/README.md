@@ -1,4 +1,4 @@
-# CAT AND MOUSE EXCERSISE
+# CAT AND MOUSE EXCERCISE
 
 The objective of this practice is to program an autonomous behavior
 for a drone that simulates the game of the cat and the mouse.
