@@ -31,6 +31,13 @@ and then, the mouse component:
 To simplify the closure of the environment, just close the
 window(s). * Ctrl + C will be problematic *.
 
+NOTE: if you want to teleoperate the mouse, run:
+
+```
+cd ~/Academy/src/drone_cat_mouse/mice/
+uav_viewer_py mouse_cfg.yml
+```
+
 ## HOW TO DO THE PRACTICE
 To carry out the practice, you must edit the file MyAlgorithms.py and
 insert the control logic.
