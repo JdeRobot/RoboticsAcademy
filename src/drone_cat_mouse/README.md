@@ -1,6 +1,4 @@
-                CAT AND MOUSE EXCERSISE
-                =======================
-
+# CAT AND MOUSE EXCERSISE
 
 The objective of this practice is to program an autonomous behavior
 for a drone that simulates the game of the cat and the mouse.
@@ -11,9 +9,7 @@ as close as possible without crashing. The referee application will measure
 the distance between the two drones and assign a score based on it. The longer
 time you spend close to the mouse, more score will be obtained.
 
-///////////////////////////////////////////////////////////////////
- 			        E X E C U T I O N 
-///////////////////////////////////////////////////////////////////
+## E X E C U T I O N 
 Follow these steps:
 
 1. First of all, launch Gazebo simulator:
@@ -34,7 +30,6 @@ and then, the mouse component:
 
 To simplify the closure of the environment, just close the
 window(s). * Ctrl + C will be problematic *.
-///////////////////////////////////////////////////////////////////
 
 ## HOW TO DO THE PRACTICE
 To carry out the practice, you must edit the file MyAlgorithms.py and
