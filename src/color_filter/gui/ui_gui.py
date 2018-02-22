@@ -105,8 +105,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Color Filter"))
         #self.takeoffButton.setText(_translate("MainWindow", "Take off"))
-        self.playButton.setText(_translate("MainWindow", "Play"))
-        self.stopButton.setText(_translate("MainWindow", "Stop"))
+        self.playButton.setText(_translate("MainWindow", "Play Code"))
+        self.stopButton.setText(_translate("MainWindow", "Stop Code"))
         self.windowsLabel.setText(_translate("MainWindow", "Windows:"))
         self.cameraCheck.setText(_translate("MainWindow", "Camera"))
         #self.sensorsCheck.setText(_translate("MainWindow", "Sensors"))

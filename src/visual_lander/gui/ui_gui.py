@@ -124,8 +124,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Visual Lander"))
 
-        self.playButton.setText(_translate("MainWindow", "Play"))
-        self.stopButton.setText(_translate("MainWindow", "Stop"))
+        self.playButton.setText(_translate("MainWindow", "Play Code"))
+        self.stopButton.setText(_translate("MainWindow", "Stop Code"))
         self.takeoffButton.setText(_translate("MainWindow", "Take off"))
         self.resetButton.setText(_translate("MainWindow", "Reset"))
         self.windowsLabel.setText(_translate("MainWindow", "Windows:"))
