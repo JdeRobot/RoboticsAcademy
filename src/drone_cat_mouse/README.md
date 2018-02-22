@@ -59,6 +59,9 @@ insert the control logic.
 * extra.toggleCam(): changes the drone's active camera (frontal or the one below).
 * extra.takeOff(): Takeoff of the drone.
 * extra.land(): landing of the drone.
+* camera.getImage() - to get the image received from server. Content: height, width, format, data (opencv Image)
+
+Image to be processed is in *camera.getImage().data*
 
 
 
