@@ -96,8 +96,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Global Navigation"))
         self.getPathButton.setText(_translate("MainWindow", "Generate Path"))
-        self.playButton.setText(_translate("MainWindow", "GO!"))
-        self.stopButton.setText(_translate("MainWindow", "Stop"))
+        self.playButton.setText(_translate("MainWindow", "Play Code"))
+        self.stopButton.setText(_translate("MainWindow", "Stop Code"))
         self.destinyLabel.setText(_translate("MainWindow", "Destiny:"))
         self.XLabel.setText(_translate("MainWindow", "X:"))
         self.YLabel.setText(_translate("MainWindow", "Y:"))

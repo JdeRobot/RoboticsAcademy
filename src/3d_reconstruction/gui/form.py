@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Input"))
         self.imageRight.setText(_translate("MainWindow", "TextLabel"))
         self.label_2.setText(_translate("MainWindow", "Processed images"))
-        self.pushButton.setText(_translate("MainWindow", "Run my algorithm"))
-        self.stopButton.setText(_translate("MainWindow", "Stop"))
+        self.pushButton.setText(_translate("MainWindow", "Run Code"))
+        self.stopButton.setText(_translate("MainWindow", "Stop Code"))
 
 import resources_rc
