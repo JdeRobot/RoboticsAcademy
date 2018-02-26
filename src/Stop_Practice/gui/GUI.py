@@ -97,12 +97,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setXYValues(self,newX,newY):
         myW=-newX*self.motors.getMaxW()
         myV=-newY*self.motors.getMaxV()
-        self.motors.setV(myV)
-        self.motors.setW(myW)
-        self.motors.sendVelocities()
+        self.motors.sendV(myV)
+        self.motors.sendW(myW)
+        #self.motors.sendVelocities()
 
     def stopClicked(self):
-        self.motors.setV(0)
-        self.motors.setW(0)
-        self.motors.sendVelocities()
+        self.motors.sendV(0)
+        self.motors.sendW(0)
+        #self.motors.sendVelocities()
         self.teleop.returnToOrigin()

@@ -20,25 +20,32 @@
 #
 
 import sys
+import comm
+import config
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.motors import Motors
-from parallelIce.pose3dClient import Pose3DClient
-from parallelIce.cameraClient import CameraClient
-from parallelIce.laserClient import LaserClient
-import easyiceconfig as EasyIce
+#from parallelIce.motors import Motors
+#from parallelIce.pose3dClient import Pose3DClient
+#from parallelIce.cameraClient import CameraClient
+#from parallelIce.laserClient import LaserClient
+#import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
 
 
 if __name__ == "__main__":
-    ic = EasyIce.initialize(sys.argv)
-    motors = Motors (ic, "Stop.Motors")
-    pose3d = Pose3DClient(ic, "Stop.Pose3D", True)
-    cameraC = CameraClient(ic, "Stop.CameraC", True)
-    cameraL = CameraClient(ic, "Stop.CameraL", True)
-    cameraR = CameraClient(ic, "Stop.CameraR", True)
+
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'Stop')
+
+    cameraC = jdrc.getCameraClient("Stop.CameraC")
+    cameraL = jdrc.getCameraClient("Stop.CameraL")
+    cameraR = jdrc.getCameraClient("Stop.CameraR")
+    motors = jdrc.getMotorsClient ("Stop.Motors")
+    pose3d = jdrc.getPose3dClient("Stop.Pose3D")
     
     algorithm=MyAlgorithm(pose3d, cameraC, cameraL, cameraR, motors)
 
