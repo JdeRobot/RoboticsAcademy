@@ -47,22 +47,14 @@ if __name__ == '__main__':
     jdrc= comm.init(cfg, 'Introrob')
 
     cameraCli = jdrc.getCameraClient("Introrob.cameraA")
-    camera = CameraFilter(cameraCli)
-    navdata = jdrc.getNavdataClient("Introrob.Navdata")
-    pose = jdrc.getPose3dClient("Introrob.Pose3D")
-    cmdvel = jdrc.getCMDVelClient("Introrob.CMDVel")
-    extra = jdrc.getArDroneExtraClient("Introrob.Extra")    
+    camera = CameraFilter(cameraCli) 
 
-    algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
+    algorithm=MyAlgorithm(camera)
 
 
     app = QApplication(sys.argv)
     frame = MainWindow()
     frame.setCamera(camera)
-    frame.setNavData(navdata)
-    frame.setPose3D(pose)
-    frame.setCMDVel(cmdvel)
-    frame.setExtra(extra)
     frame.setAlgorithm(algorithm)
     frame.show()
 
