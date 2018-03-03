@@ -28,3 +28,8 @@ If you want to find the optimum values for your filter (in order to segment a co
 $ colorTuner color_tuner_conf.yml
 
 ///////////////////////////////////////////////////////////////////
+
+### API
+* camera.getImage() - to get the image received from server
+* camera.setColorImage(input_image) - to set color image
+* camera.setThresholdImage(bk_image) - to set Threshold image

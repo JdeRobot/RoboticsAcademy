@@ -1,6 +1,4 @@
-                CAT AND MOUSE EXCERSISE
-                =======================
-
+# CAT AND MOUSE EXCERCISE
 
 The objective of this practice is to program an autonomous behavior
 for a drone that simulates the game of the cat and the mouse.
@@ -11,9 +9,7 @@ as close as possible without crashing. The referee application will measure
 the distance between the two drones and assign a score based on it. The longer
 time you spend close to the mouse, more score will be obtained.
 
-///////////////////////////////////////////////////////////////////
- 			        E X E C U T I O N 
-///////////////////////////////////////////////////////////////////
+## E X E C U T I O N 
 Follow these steps:
 
 1. First of all, launch Gazebo simulator:
@@ -34,7 +30,13 @@ and then, the mouse component:
 
 To simplify the closure of the environment, just close the
 window(s). * Ctrl + C will be problematic *.
-///////////////////////////////////////////////////////////////////
+
+NOTE: if you want to teleoperate the mouse, run:
+
+```
+cd ~/Academy/src/drone_cat_mouse/mice/
+uav_viewer_py mouse_cfg.yml
+```
 
 ## HOW TO DO THE PRACTICE
 To carry out the practice, you must edit the file MyAlgorithms.py and
@@ -53,12 +55,15 @@ insert the control logic.
 ```
 
 ### API
-* cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
-* pose.getX(), pose.getY(), pose.getZ(): returns the position values of the drone in space.
+* cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
+* pose.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
 * pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values of the drone in space.
 * extra.toggleCam(): changes the drone's active camera (frontal or the one below).
-* extra.takeOff(): Takeoff of the drone.
+* extra.takeoff(): Takeoff of the drone.
 * extra.land(): landing of the drone.
+* camera.getImage() - to get the image received from server. Content: height, width, format, data (opencv Image)
+
+Image to be processed is in *camera.getImage().data*
 
 
 
