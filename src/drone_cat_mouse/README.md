@@ -62,6 +62,7 @@ insert the control logic.
 * extra.takeoff(): Takeoff of the drone.
 * extra.land(): landing of the drone.
 * camera.getImage() - to get the image received from server. Content: height, width, format, data (opencv Image)
+* camera.setFilteredImage(filt_image) - to set filtered image (Opencv Image)
 
 Image to be processed is in *camera.getImage().data*
 

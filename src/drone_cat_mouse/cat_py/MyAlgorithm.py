@@ -57,6 +57,10 @@ class MyAlgorithm(threading.Thread):
 
     def execute(self):
         # Add your code here
+        input_image = self.camera.getImage()
+        if input_image is not None:
+            self.camera.setFilteredImage(input_image.data)
+
         tmp = self.navdata.getNavData()
         if tmp is not None:
             print ("State: " +str(tmp.state))
