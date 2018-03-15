@@ -1,3 +1,6 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+
 import threading
 import time
 from datetime import datetime
@@ -32,7 +35,7 @@ class MyAlgorithm(threading.Thread):
         self.stop_event.clear()
 
         while (not self.kill_event.is_set()):
-           
+
             start_time = datetime.now()
 
             if not self.stop_event.is_set():
@@ -58,7 +61,6 @@ class MyAlgorithm(threading.Thread):
     def kill (self):
         self.kill_event.set()
 
-
     def execute(self):
        # Add your code here
 
@@ -67,5 +69,5 @@ class MyAlgorithm(threading.Thread):
             self.camera.setColorImage(input_image)
             '''
             If you want show a thresold image (black and white image)
-            self.camera.setThresoldImage(bk_image)
+            self.camera.setThresoldImage(input_image)
             '''
