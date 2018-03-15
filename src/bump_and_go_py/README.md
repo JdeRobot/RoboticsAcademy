@@ -54,16 +54,20 @@ the name of the transitions in the same way as for the states.
 to the tab `Actions -> Config File` and set the following:
 
 For simulated turtlebot:
-        Server Type      Name                       Topic                          Interface
-    -      ROS         myMotors      /turtlebotROS/mobile_base/commands/velocity    Motors
-    -      ROS         myLaser       /turtlebotROS/laser/scan                       Laser
-    -      ROS         myPose        /turtlebotROS/odom                             Pose3d
+
+| Server Type | Name | Topic | Interface |
+| ----- | ---- | ----- | ---- |
+| ROS | myMotors |/turtlebotROS/mobile_base/commands/velocity | Motors |
+| ROS | myLaser | /turtlebotROS/laser/scan | Laser |
+| ROS | myPose | /turtlebotROS/odom | Pose3d |
 
 For real turtlebot:
-        Server Type      Name                       Topic            Interface
-    -      ROS         myMotors      /mobile_base/commands/velocity    Motors
-    -      ROS         myLaser       /scan                             Laser
-    -      ROS         myPose        /odom                             Pose3d
+
+| Server Type | Name | Topic | Interface |
+| ----- | ---- | ----- | ---- |
+| ROS | myMotors |/mobile_base/commands/velocity | Motors |
+| ROS | myLaser | /scan | Laser |
+| ROS | myPose |/odom | Pose3d |
 
 * In the "Name" cell you will put the name with which you will reference the 
 sensors or actuators of the robot. Use these names to send orders to the robot 
