@@ -1,23 +1,45 @@
-		FOLLOW TURTLEBOT EXCERSISE
-		==========================
-In this practice, you will have to create an algorithm that makes the Drone follow a terrestrial robot (turtlebot). It is highly recommended to have previously done the color filter and position control practices, as we start off them to create a good algorithm that achieves the established objectives. 
-You will have then to combine a color filter that processes the image of the drone's camera to segment the turtlebot (which has a green rectangle on it). Once done it, the next step will be analyze the image to determine the position of the terrestrial robot with respect to that of our drone, a0nd correct its position with that information, in orther to follow it.
+# Follow turtlebot excercise
 
-///////////////////////////////////////////////////////////////////
- 			E X E C U T I O N 
-///////////////////////////////////////////////////////////////////
-We will use 3 terminal for the execution. Follow these instructions:
+## How to execute?
+In a terminal launch the gazebo simulator:
+gazebo ardrone-turtlebot.world
 
-1. In a terminal launch the gazebo simulator: gazebo ardrone-turtlebot.world
+In other terminal launch the turtlebot robot:
+kobukiViewer turtlebot.yml
 
-2. In other terminal launch the turtlebot robot: kobukiViewer turtlebot.yml
+In another terminal lauch the follow_turtlebot component:
+python2 ./follow_turtlebot.py follow_turtlebot_conf.yml
 
-3. In another terminal lauch the follow_turtlebot component: python2 ./follow_turtlebot.py follow_turtlebot_conf.yml
+If you want to find the values of your color filter you can launch the colorTuner component:
+colorTuner color_tuner_conf.yml
 
-4. If you want to find the values of your color filter you can launch the colorTuner component: colorTuner color_tuner_conf.yml
+## How to do the practice?
+To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the turtlebot robot.
 
-4'. If you want to find the optimum values for your filter (in order to segment turtlebot) you can launch in other terminal the colorTuner component as follows:
-Ensure Gazebo's world is running, so you will be able to see through ARDrone's camera the turtlebot. Once running, press "Take off" button in the GUI and place the Drone using the controller above the turtlebot. Now you are able to see it in colorTuner tool.
-$ colorTuner color_tuner_conf.yml 
+### Where to insert the code?
+[MyAlgorithm.py](MyAlgorithm.py#L62)
+```
+       # Add your code here
 
-///////////////////////////////////////////////////////////////////
+        input_image = self.camera.getImage()
+        if input_image is not None:
+            self.camera.setColorImage(input_image)
+            '''
+            If you want show a thresold image (black and white image)
+            self.camera.setThresoldImage(input_image)
+            '''
+```
+
+### API
+* cameraL.getImage() - to get the left image of the stereo pair.
+* self.camera.setThresholdImage(): If you want show a black and white image.
+* self.cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
+
+
+## Demonstrative video
+https://www.youtube.com/watch?v=uehDVlBzpmU
+
+* *Base code made by Alberto Martín (@almartinflorido)*
+* *Code of practice performed by Francisco Rivas (@chanfr)*
+* *Gazebo models and worlds made by Francisco Pérez (@fqez)*
+* *Updated code made by Pablo Moreno (@PabloMorenoVera)*

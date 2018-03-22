@@ -14,16 +14,17 @@ To launch the example you only have to follow the following steps:
 
 1. Run Gazebo:
      *Execution without seeing the world: 
-`gzserver kobuki-simple.world`
+`roslaunch kobuki-simple-ros.launch`
      *Execution watching the world: 
-`gazebo kobuki-simple.world`
+`roslaunch kobuki-simple-ros-gui.launch`
 2. Execution of the bum&go component: 
 `./bump_and_go.py bump_and_go.yml --displaygui=true`
 * The code of the machine will start its execution automatically.
 
 
-* To simplify the closure of the environment, just close the Autopark window (s). 
+* To simplify the closure of the environment, just close the window (s). 
   Ctrl + C will give problems.
+
 ////////////////////////////////////////////////////////////////////////////////
 
 ## How to do the practice
@@ -51,10 +52,23 @@ the name of the transitions in the same way as for the states.
 
 3. Establish the robot configuration file. To do this, access
 to the tab `Actions -> Config File` and set the following:
-        Server Type      Name      Proxy Name      IP       Port      Interface
-    -      ice         myMotors      Motors     localhost   9001       Motors
-    -      ice         myLaser       Laser      localhost   9001       Laser
-    -      ice         myPose        Pose3D     localhost   9001       Pose3d
+
+For simulated turtlebot:
+
+| Server Type | Name | Topic | Interface |
+| ----- | ---- | ----- | ---- |
+| ROS | myMotors |/turtlebotROS/mobile_base/commands/velocity | Motors |
+| ROS | myLaser | /turtlebotROS/laser/scan | Laser |
+| ROS | myPose | /turtlebotROS/odom | Pose3d |
+
+For real turtlebot:
+
+| Server Type | Name | Topic | Interface |
+| ----- | ---- | ----- | ---- |
+| ROS | myMotors |/mobile_base/commands/velocity | Motors |
+| ROS | myLaser | /scan | Laser |
+| ROS | myPose |/odom | Pose3d |
+
 * In the "Name" cell you will put the name with which you will reference the 
 sensors or actuators of the robot. Use these names to send orders to the robot 
 or receive data from it in the code that you establish in the next step.
@@ -105,4 +119,18 @@ his/her own automatons in the way that suits him/her best.
 
 
 ## Demonstrative video
-https://youtu.be/o-SAe_qwOMc
+https://youtu.be/o-SAe_qwOMc 
+
+##  Launch Real turtlebot
+* Install following packages:
+`sudo apt install ros-kinetic-rplidar-ros ros-kinetic-kobuki-node ros-kinetic-hokuyo-node ros-kinetic-laser-filters`
+
+* f not already in the dialout group: 
+`sudo usermod -a -G dialout $USER`
+* first, connect laser (Hokuyo has 2 wires), then turn on turtlebot and plug it.
+
+* If your Turtlebot has a Hokuyo laser use:
+`roslaunch turtlebot-hokuyo.launch`
+
+* If your Turtlebot has a rplidar laser use:
+`roslaunch turtlebot-rplidar.launch`
