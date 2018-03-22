@@ -10,10 +10,11 @@ the distance between the two drones and assign a score based on it. The longer
 time you spend close to the mouse, more score will be obtained.
 
 ## Downloading the mouse programs and their configuration
-
-`cd mice` 
-`wget http://jderobot.org/store/jmplaza/uploads/jderobot-academy/drone-catmouse/mice.tgz` 
-`tar -zxvf mice.tgz`
+```
+cd mice 
+wget http://jderobot.org/store/jmplaza/uploads/jderobot-academy/drone-catmouse/mice.tgz 
+tar -zxvf mice.tgz
+```
 
 ## E X E C U T I O N 
 Follow these steps:
