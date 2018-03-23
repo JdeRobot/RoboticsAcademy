@@ -62,8 +62,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.colorFilterCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        self.stopButton.clicked.connect(self.stopClicked)
-        self.playButton.clicked.connect(self.playClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
+        self.playstopButton.clicked.connect(self.playstopClicked)
         self.resetButton.clicked.connect(self.resetClicked)
         #self.takeoffButton.clicked.connect(self.takeOffClicked)
         self.takeoff=False
@@ -110,11 +110,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sensorsWidget.sensorsUpdate.emit()
         self.colorFilterWidget.imageUpdate.emit()
     
-    def playClicked(self):
-        if self.record == True:
-            self.extra.record(True)
-        self.algorithm.play()
-    
+    def playstopClicked(self):
+        if self.playstopButton.isChecked():
+            if self.record == True:
+                self.extra.record(True)
+            self.playstopButton.setText("Stop code")
+            self.playstopButton.setIcon(self.icon1)
+            self.algorithm.play()
+        else:
+            if self.record == True:
+                self.extra.record(False)
+            self.extra.record(False)
+            self.algorithm.stop()
+            self.playstopButton.setText("Play code")
+            self.playstopButton.setIcon(self.icon)
+            self.cmdvel.sendCMDVel(0,0,0,0,0,0)
+            self.teleop.stopSIG.emit()
     def stopClicked(self):
         if self.record == True:
             self.extra.record(False)

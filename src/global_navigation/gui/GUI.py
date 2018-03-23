@@ -46,8 +46,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.updGUI.connect(self.updateGUI)
         self.getPathButton.clicked.connect(self.getPathClicked)
-        self.playButton.clicked.connect(self.playClicked)
-        self.stopButton.clicked.connect(self.stopClicked)
+        self.playstopButton.clicked.connect(self.playstopClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
       
     def setSensor(self, sensor):
         self.sensor = sensor
@@ -104,10 +104,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def getPathClicked(self):
         self.getPathSig.emit()
 
-    def playClicked(self):
-        print("Play clicked")
-        self.algorithm.play()
-    
+    def playstopClicked(self):
+        if self.playstopButton.isChecked():
+            print("Play clicked")
+            self.playstopButton.setText("Stop code")   
+            self.playstopButton.setIcon(self.icon1) 
+            self.algorithm.play()
+        else:
+            print("Stop clicked")
+            self.playstopButton.setText("Play code")   
+            self.playstopButton.setIcon(self.icon)   
+            self.algorithm.stop()
+            self.setXYValues(0, 0)
+            self.teleop.stopSIG.emit()
+        
     def stopClicked(self):
         print("Stop clicked")
         self.algorithm.stop()
