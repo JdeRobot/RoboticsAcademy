@@ -123,7 +123,7 @@ https://youtu.be/o-SAe_qwOMc
 
 ##  Launch Real turtlebot
 * Install following packages:
-`sudo apt install ros-kinetic-rplidar-ros ros-kinetic-kobuki-node ros-kinetic-hokuyo-node ros-kinetic-laser-filters`
+`sudo apt install ros-kinetic-rplidar-ros ros-kinetic-kobuki-node ros-kinetic-urg-node ros-kinetic-laser-filters`
 
 * f not already in the dialout group: 
 `sudo usermod -a -G dialout $USER`
