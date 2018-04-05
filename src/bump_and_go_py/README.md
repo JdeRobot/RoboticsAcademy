@@ -125,9 +125,13 @@ https://youtu.be/o-SAe_qwOMc
 * Install following packages:
 `sudo apt install ros-kinetic-rplidar-ros ros-kinetic-kobuki-node ros-kinetic-urg-node ros-kinetic-laser-filters`
 
-* f not already in the dialout group: 
+* If not already in the dialout group: 
 `sudo usermod -a -G dialout $USER`
-* first, connect laser (Hokuyo has 2 wires), then turn on turtlebot and plug it.
+
+* First, connect laser (Hokuyo has 2 wires), then turn on turtlebot and plug it.
+
+* Add permissions to laser: 
+`sudo chmod 777 /dev/ttyACM0`
 
 * If your Turtlebot has a Hokuyo laser use:
 `roslaunch turtlebot-hokuyo.launch`
