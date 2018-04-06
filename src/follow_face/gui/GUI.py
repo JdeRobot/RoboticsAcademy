@@ -55,8 +55,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.segmentCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        self.stopButton.clicked.connect(self.stopClicked)
-        self.playButton.clicked.connect(self.playClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
+        self.playstopButton.clicked.connect(self.playstopClicked)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoff=False
         self.reset=False
@@ -84,10 +84,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def updateGUI(self):
         self.segmentWidget.imageUpdate.emit()
     
-    def playClicked(self):
-        self.algorithm.play()
-        self.segmentWidget.show()
-        self.segmentCheck.setChecked(True)
+    def playstopClicked(self):
+        if self.playstopButton.isChecked(): 
+            self.playstopButton.setText("Stop") 
+            self.playstopButton.setIcon(self.icon1) 
+            self.algorithm.play()
+            self.segmentWidget.show()
+            self.segmentCheck.setChecked(True)
+        else:
+            self.playstopButton.setText("Play") 
+            self.playstopButton.setIcon(self.icon) 
+            self.algorithm.stop()
+            self.teleop.stopSIG.emit()
     
     def stopClicked(self):        
         self.algorithm.stop()
