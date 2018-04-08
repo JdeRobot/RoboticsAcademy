@@ -99,27 +99,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.playstopButton.isChecked():    
             if self.record == True:
                 self.extra.record(True)
-            self.playstopButton.setText("Stop code")       
+            self.playstopButton.setText("Stop code")  
+            self.playButton.setStyleSheet("background-color: #ec7063")
             self.playstopButton.setIcon(self.icon1)  
             self.algorithm.play()
         else:
             if self.record == True:
                 self.extra.record(False)
             self.algorithm.stop()
-            self.playstopButton.setText("Play code")       
+            self.playstopButton.setText("Play code")
+            self.playButton.setStyleSheet("background-color: #7dcea0")
             self.playstopButton.setIcon(self.icon)  
             self.rotationDial.setValue(self.altdSlider.maximum()/2)
             self.altdSlider.setValue(self.altdSlider.maximum()/2)
             self.cmdvel.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
-    def stopClicked(self):
-        if self.record == True:
-            self.extra.record(False)
-        self.algorithm.stop()
-        self.rotationDial.setValue(self.altdSlider.maximum()/2)
-        self.altdSlider.setValue(self.altdSlider.maximum()/2)
-        self.cmdvel.sendCMDVel(0,0,0,0,0,0)
-        self.teleop.stopSIG.emit()
 
     def takeOffClicked(self):
         if(self.takeoff==True):
