@@ -130,7 +130,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.altdSlider.setValue(self.altdSlider.maximum()/2)
             self.cmdvel.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
-        
     
     def takeOffClicked(self):
         if(self.takeoff==True):

@@ -104,7 +104,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.playButton.setText("Play Code")
             self.algorithm.stop()
             self.teleop.stopSIG.emit()
-
     
     #def stopClicked(self):        
      #   self.algorithm.stop()

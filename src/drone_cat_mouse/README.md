@@ -9,6 +9,13 @@ as close as possible without crashing. The referee application will measure
 the distance between the two drones and assign a score based on it. The longer
 time you spend close to the mouse, more score will be obtained.
 
+## Downloading the mouse programs and their configuration
+```
+cd mice 
+wget http://jderobot.org/store/jmplaza/uploads/jderobot-academy/drone-catmouse/mice.tgz 
+tar -zxvf mice.tgz
+```
+
 ## E X E C U T I O N 
 Follow these steps:
 
@@ -21,22 +28,27 @@ try the execution without seeing the world:
 
 2. Once done it, run the cat component:
 `python2 ./cat.py cat_conf.yml`
-and then, the mouse component:
-`$ ./qX_mouse qX.cfg` 
-* X will be the mouse we want to use (q1, q2, etc)
 
-3. Run the referee: 
+3. and then, the mouse component, one of the following:
+
+* start teleoperating the mouse to refine your cat:
+```
+cd ~/Academy/src/drone_cat_mouse/mice/
+uav_viewer_py mouse_cfg.yml
+```
+* if you feel confident enough with your cat, try with an autonomous mouse (they are ordered in increasing difficulty):
+`$ ./trainning_mouse trainning.cfg` 
+* or `$ ./q1_mouse q1.cfg`
+* or `$ ./q2_mouse q2.cfg`
+
+
+4. Optionally you can run the referee too: 
 `$ python2 ./referee.py referee.yml`
 
 To simplify the closure of the environment, just close the
 window(s). * Ctrl + C will be problematic *.
 
-NOTE: if you want to teleoperate the mouse, run:
 
-```
-cd ~/Academy/src/drone_cat_mouse/mice/
-uav_viewer_py mouse_cfg.yml
-```
 
 ## HOW TO DO THE PRACTICE
 To carry out the practice, you must edit the file MyAlgorithms.py and
