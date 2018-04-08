@@ -20,6 +20,7 @@
 from gui.widgets.teleopWidget import TeleopWidget
 from gui.widgets.mapWidget import MapWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.cameraWidget import CameraWidget
@@ -42,12 +43,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.runLayout.addWidget(self.logo)
         self.logo.setVisible(True)
 
-        self.pushButton.clicked.connect(self.playClicked)
-        self.pushButton.setCheckable(True)
+        self.playButton.clicked.connect(self.playClicked)
+        self.playButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
         self.camera1=CameraWidget(self)
 
-        self.stopButton.clicked.connect(self.stopClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
         self.camera1.updateImage()
@@ -96,14 +97,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors=motors
 
     def playClicked(self):
-        if self.pushButton.isChecked():
-            self.pushButton.setText('RUNNING')
-            self.pushButton.setStyleSheet("background-color: green")
+        if self.playButton.isChecked():
+            icon = QtGui.QIcon()
+            self.playButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
             self.algorithm.play()
         else:
-            self.pushButton.setText('STOPPED')
-            self.pushButton.setStyleSheet("background-color: red")
+            icon = QtGui.QIcon()
+            self.playButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
             self.algorithm.stop()
+            self.motors.hasproxy().setV(0)
+            self.motors.hasproxy().setW(0)
+            #self.motors.sendVelocities()
+            self.teleop.returnToOrigin()
 
     def setAlgorithm(self, algorithm ):
         self.algorithm=algorithm
@@ -118,8 +127,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors.hasproxy().setW(myW)
         #self.motors.sendVelocities(self.motors)
 
-    def stopClicked(self):
-        self.motors.hasproxy().setV(0)
-        self.motors.hasproxy().setW(0)
-        #self.motors.sendVelocities()
-        self.teleop.returnToOrigin()

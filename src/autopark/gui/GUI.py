@@ -23,6 +23,7 @@ from gui.widgets.mapWidget import MapWidget
 from gui.widgets.mapWidget import MapWidget1
 from gui.widgets.mapWidget import LogoWidget
 from PyQt5.QtCore import pyqtSignal
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 
@@ -49,7 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pushButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
 
-        self.stopButton.clicked.connect(self.stopClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
         laserdata1 = self.laser1.getLaserData()
@@ -90,13 +91,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def playClicked(self):
         if self.pushButton.isChecked():
-            self.pushButton.setText('RUNNING')
-            self.pushButton.setStyleSheet("background-color: green")
+            icon = QtGui.QIcon()
+            #self.pushButton.setText("                                          Stop Code")
+            self.pushButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
             self.algorithm.play()
         else:
-            self.pushButton.setText('STOPPED')
-            self.pushButton.setStyleSheet("background-color: red")
+            icon = QtGui.QIcon()
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
+            #self.pushButton.setText("                                          Play Code")
             self.algorithm.stop()
+            self.motors.sendV(0)
+            self.motors.sendW(0)
+            #self.motors.sendVelocities()
+            self.teleop.returnToOrigin()
 
     def setAlgorithm(self, algorithm ):
         self.algorithm=algorithm
@@ -111,8 +122,4 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors.sendW(myW)
         #self.motors.sendVelocities()
 
-    def stopClicked(self):
-        self.motors.sendV(0)
-        self.motors.sendW(0)
-        #self.motors.sendVelocities()
-        self.teleop.returnToOrigin()
+        

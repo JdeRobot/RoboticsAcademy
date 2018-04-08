@@ -14,13 +14,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
-#       Carlos Awadallah Estévez<carlosawadallah@gmail.com>
+#       Carlos Awadallah Estevez<carlosawadallah@gmail.com>
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
 
 from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
@@ -56,7 +57,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.trackingCommunicator = Communicator()
 
         #self.stopButton.clicked.connect(self.stopClicked)
-        self.playstopButton.clicked.connect(self.playstopClicked)
+        self.playButton.clicked.connect(self.playClicked)
+        self.playButton.setCheckable(True)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoff=False
         self.reset=False
@@ -84,22 +86,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def updateGUI(self):
         self.segmentWidget.imageUpdate.emit()
     
-    def playstopClicked(self):
-        if self.playstopButton.isChecked(): 
-            self.playstopButton.setText("Stop") 
-            self.playstopButton.setIcon(self.icon1) 
-            self.algorithm.play()
+    def playClicked(self):
+        if self.playButton.isChecked():
             self.segmentWidget.show()
             self.segmentCheck.setChecked(True)
+            icon = QtGui.QIcon()
+            self.playButton.setText("Stop Code")
+            self.playButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.algorithm.play()
         else:
-            self.playstopButton.setText("Play") 
-            self.playstopButton.setIcon(self.icon) 
+            icon = QtGui.QIcon()
+            self.playButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.playButton.setText("Play Code")
             self.algorithm.stop()
             self.teleop.stopSIG.emit()
     
-    def stopClicked(self):        
-        self.algorithm.stop()
-        self.teleop.stopSIG.emit()
+    #def stopClicked(self):        
+     #   self.algorithm.stop()
+     #   self.teleop.stopSIG.emit()
         # ponerrrrr: self.teleop.returnToOrigin()
 
     def resetClicked(self):
