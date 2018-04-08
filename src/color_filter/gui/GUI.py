@@ -112,6 +112,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sensorsWidget.sensorsUpdate.emit()
         self.colorFilterWidget.imageUpdate.emit()
 
+
     def playClicked(self):
         if self.playButton.isChecked():
             if self.record == True:
@@ -133,6 +134,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.algorithm.stop()
             self.cmdvel.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
+
     
     def takeOffClicked(self):
         if(self.takeoff==True):

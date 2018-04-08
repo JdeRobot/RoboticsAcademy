@@ -54,16 +54,20 @@ the name of the transitions in the same way as for the states.
 to the tab `Actions -> Config File` and set the following:
 
 For simulated turtlebot:
-        Server Type      Name                       Topic                          Interface
-    -      ROS         myMotors      /turtlebotROS/mobile_base/commands/velocity    Motors
-    -      ROS         myLaser       /turtlebotROS/laser/scan                       Laser
-    -      ROS         myPose        /turtlebotROS/odom                             Pose3d
+
+| Server Type | Name | Topic | Interface |
+| ----- | ---- | ----- | ---- |
+| ROS | myMotors |/turtlebotROS/mobile_base/commands/velocity | Motors |
+| ROS | myLaser | /turtlebotROS/laser/scan | Laser |
+| ROS | myPose | /turtlebotROS/odom | Pose3d |
 
 For real turtlebot:
-        Server Type      Name                       Topic            Interface
-    -      ROS         myMotors      /mobile_base/commands/velocity    Motors
-    -      ROS         myLaser       /scan                             Laser
-    -      ROS         myPose        /odom                             Pose3d
+
+| Server Type | Name | Topic | Interface |
+| ----- | ---- | ----- | ---- |
+| ROS | myMotors |/mobile_base/commands/velocity | Motors |
+| ROS | myLaser | /scan | Laser |
+| ROS | myPose |/odom | Pose3d |
 
 * In the "Name" cell you will put the name with which you will reference the 
 sensors or actuators of the robot. Use these names to send orders to the robot 
@@ -119,11 +123,15 @@ https://youtu.be/o-SAe_qwOMc
 
 ##  Launch Real turtlebot
 * Install following packages:
-`sudo apt install ros-kinetic-rplidar-ros ros-kinetic-kobuki-node ros-kinetic-hokuyo-node ros-kinetic-laser-filters`
+`sudo apt install ros-kinetic-rplidar-ros ros-kinetic-kobuki-node ros-kinetic-urg-node ros-kinetic-laser-filters`
 
-* f not already in the dialout group: 
+* If not already in the dialout group: 
 `sudo usermod -a -G dialout $USER`
-* first, connect laser (Hokuyo has 2 wires), then turn on turtlebot and plug it.
+
+* First, connect laser (Hokuyo has 2 wires), then turn on turtlebot and plug it.
+
+* Add permissions to laser: 
+`sudo chmod 777 /dev/ttyACM0`
 
 * If your Turtlebot has a Hokuyo laser use:
 `roslaunch turtlebot-hokuyo.launch`
