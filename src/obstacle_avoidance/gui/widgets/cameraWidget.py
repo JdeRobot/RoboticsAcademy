@@ -1,6 +1,7 @@
 
 from PyQt5 import QtGui,QtCore
 import cv2
+import numpy as np
 
 
 class CameraWidget:
@@ -43,6 +44,13 @@ class CameraWidget:
             size=QtCore.QSize(imgLeftFiltered.shape[1],imgLeftFiltered.shape[0])
             #self.label.resize(size)
             self.labelImageLeftFiltered.setPixmap(QtGui.QPixmap.fromImage(image))
+        else:
+            image = np.zeros((self.IMG_WIDTH, self.IMG_HEIGHT,3), np.uint8)
+            image.shape = self.IMG_HEIGHT, self.IMG_WIDTH,3
+            blackimage = QtGui.QImage(image, image.shape[1], image.shape[0], image.shape[1]*image.shape[2], QtGui.QImage.Format_RGB888);
+            size=QtCore.QSize(image.shape[1],image.shape[0])
+            #self.label.resize(size)
+            self.labelImageLeftFiltered.setPixmap(QtGui.QPixmap.fromImage(blackimage))
 
         imgRightFiltered = self.winParent.getAlgorithm().getRightImageFiltered()
         if imgRightFiltered is not None:
@@ -51,3 +59,10 @@ class CameraWidget:
             size=QtCore.QSize(imgRightFiltered.shape[1],imgRightFiltered.shape[0])
             #self.label.resize(size)
             self.labelImageRightFiltered.setPixmap(QtGui.QPixmap.fromImage(image))
+        else:
+            image = np.zeros((self.IMG_WIDTH, self.IMG_HEIGHT,3), np.uint8)
+            image.shape = self.IMG_HEIGHT, self.IMG_WIDTH,3
+            blackimage = QtGui.QImage(image, image.shape[1], image.shape[0], image.shape[1]*image.shape[2], QtGui.QImage.Format_RGB888);
+            size=QtCore.QSize(image.shape[1],image.shape[0])
+            #self.label.resize(size)
+            self.labelImageRightFiltered.setPixmap(QtGui.QPixmap.fromImage(blackimage))

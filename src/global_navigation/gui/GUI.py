@@ -20,6 +20,7 @@
 
 
 from PyQt5 import QtGui,QtCore
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
@@ -47,7 +48,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updGUI.connect(self.updateGUI)
         self.getPathButton.clicked.connect(self.getPathClicked)
         self.playButton.clicked.connect(self.playClicked)
-        self.stopButton.clicked.connect(self.stopClicked)
+        self.playButton.setCheckable(True)
+        #self.stopButton.clicked.connect(self.stopClicked)
       
     def setSensor(self, sensor):
         self.sensor = sensor
@@ -105,14 +107,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.getPathSig.emit()
 
     def playClicked(self):
-        print("Play clicked")
-        self.algorithm.play()
-    
-    def stopClicked(self):
-        print("Stop clicked")
-        self.algorithm.stop()
-        self.setXYValues(0, 0)
-        self.teleop.stopSIG.emit()
+        if self.playButton.isChecked():
+            icon = QtGui.QIcon()
+            self.playButton.setText("Stop Code")
+            self.playButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.algorithm.play()
+        else:
+            icon = QtGui.QIcon()
+            self.playButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.playButton.setText("Play Code")
+            self.algorithm.stop()
+            self.setXYValues(0, 0)
+            self.teleop.stopSIG.emit()
 
     def setXYValues(self,newW,newV):
         self.WValue.setText(str(newW))
