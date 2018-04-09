@@ -5,22 +5,14 @@ import cv2
 import numpy as np
 
 from sensors.cameraFilter import CameraFilter
-from parallelIce.navDataClient import NavDataClient
-from parallelIce.cmdvel import CMDVel
-from parallelIce.extra import Extra
-from parallelIce.pose3dClient import Pose3DClient
 
 
 time_cycle = 80
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, camera, navdata, pose, cmdvel, extra):
+    def __init__(self, camera):
         self.camera = camera
-        self.navdata = navdata
-        self.pose = pose
-        self.cmdvel = cmdvel
-        self.extra = extra
 
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
