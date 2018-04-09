@@ -94,11 +94,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def playClicked(self):
         if self.pushButton.isChecked():
             self.pushButton.setText('RUNNING')
-            self.pushButton.setStyleSheet("background-color: green")
+            self.playButton.setStyleSheet("background-color: #ec7063")
             self.algorithm.play()
         else:
             self.pushButton.setText('STOPPED')
-            self.pushButton.setStyleSheet("background-color: red")
+            self.playButton.setStyleSheet("background-color: #7dcea0")
             self.algorithm.stop()
 
     def setAlgorithm(self, algorithm ):
