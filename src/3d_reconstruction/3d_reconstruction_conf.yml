@@ -28,7 +28,7 @@
 
   Viewer:
     Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
-    Proxy: "viewer:default -h localhost -p 9957"
+    Proxy: "viewer:default -h localhost -p 9957:ws -h localhost -p 11000"
     Topic: "/3DReconstruction/Viewer"
     Name: 3DReconstructionViewer
 
