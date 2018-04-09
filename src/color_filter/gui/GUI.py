@@ -20,6 +20,7 @@
 
 
 from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.cameraWidget import CameraWidget
@@ -51,10 +52,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.colorFilterCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        self.stopButton.clicked.connect(self.stopClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
+        self.playButton.setCheckable(True)
         #self.resetButton.clicked.connect(self.resetClicked)
-
+        #self.takeoffButton.clicked.connect(self.takeOffClicked)
+        self.takeoff=False
+      
     def getCamera(self):
         return self.camera
 
@@ -71,12 +75,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def updateGUI(self):
         self.cameraWidget.imageUpdate.emit()
         self.colorFilterWidget.imageUpdate.emit()
-    
+
+
     def playClicked(self):
-        self.algorithm.play()
-    
-    def stopClicked(self):
-        self.algorithm.stop()
+        if self.playButton.isChecked():
+            icon = QtGui.QIcon()
+            self.playButton.setText("Stop Code")
+            self.playButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.algorithm.play()
+        else:
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.playButton.setText("Play Code")
+            self.playButton.setStyleSheet("background-color: #7dcea0")
+            self.algorithm.stop()
     
         
     def showCameraWidget(self,state):

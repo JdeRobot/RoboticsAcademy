@@ -23,10 +23,10 @@ import sys
 import config
 import comm
 from MyAlgorithm import MyAlgorithm
-import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
+from sensors.cameraFilter import CameraFilter
 
 import signal
 
@@ -39,7 +39,8 @@ if __name__ == '__main__':
     #starting comm
     jdrc= comm.init(cfg, 'Introrob')
 
-    camera = jdrc.getCameraClient("Introrob.Camera")
+    cameraCli = jdrc.getCameraClient("Introrob.Camera")
+    camera = CameraFilter(cameraCli)
     navdata = jdrc.getNavdataClient("Introrob.Navdata")
     pose = jdrc.getPose3dClient("Introrob.Pose3D")
     cmdvel = jdrc.getCMDVelClient("Introrob.CMDVel")

@@ -20,6 +20,7 @@
 
 
 from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
@@ -63,8 +64,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.colorFilterCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        self.stopButton.clicked.connect(self.stopClicked)
+        #self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
+        self.playButton.setCheckable(True)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoffButton.clicked.connect(self.takeOffClicked)
         self.takeoff=False
@@ -112,18 +114,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.colorFilterWidget.imageUpdate.emit()
     
     def playClicked(self):
-        if self.record == True:
-            self.extra.record(True)
-        self.algorithm.play()
-    
-    def stopClicked(self):
-        if self.record == True:
-            self.extra.record(False)
-        self.algorithm.stop()
-        self.rotationDial.setValue(self.altdSlider.maximum()/2)
-        self.altdSlider.setValue(self.altdSlider.maximum()/2)
-        self.cmdvel.sendCMDVel(0,0,0,0,0,0)
-        self.teleop.stopSIG.emit()
+        if self.playButton.isChecked():
+            if self.record == True:
+                self.extra.record(True)
+            icon = QtGui.QIcon()
+            self.playButton.setText("Stop Code")
+            self.playButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+
+            self.algorithm.play()
+        else:
+            if self.record == True:
+                self.extra.record(False)
+            icon = QtGui.QIcon()
+            self.playButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.playButton.setText("Play Code")
+            self.algorithm.stop()
+            self.rotationDial.setValue(self.altdSlider.maximum()/2)
+            self.altdSlider.setValue(self.altdSlider.maximum()/2)
+            self.cmdvel.sendCMDVel(0,0,0,0,0,0)
+            self.teleop.stopSIG.emit()
     
     def takeOffClicked(self):
         if(self.takeoff==True):
