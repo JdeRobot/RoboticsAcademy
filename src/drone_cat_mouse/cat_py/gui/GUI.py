@@ -23,10 +23,10 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
-from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
 from gui.logoWidget import LogoWidget
+from gui.colorFilterWidget import  ColorFilterWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     
@@ -52,7 +52,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
         
-        self.cameraWidget=CameraWidget(self)
+        self.cameraWidget=ColorFilterWidget(self)
         self.sensorsWidget=SensorsWidget(self)
 
         self.cameraCommunicator=Communicator()
