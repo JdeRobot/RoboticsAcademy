@@ -17,11 +17,12 @@ Follow these simple steps to launch the practice:
     * Normal execution (seeing the world): 
 `$ gazebo reconstruccion3D.world`
 
-2. Then, launch 3D viewer tool:
-`$ 3DViewer 3DViewer.cfg` 
-
-3. Finally, run the 3d_reconstruction component:
+2. Finally, run the 3d_reconstruction component:
 `$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
+
+3. Then, launch 3D viewer tool:
+
+`$ npm start` 
 
 * To simplify the closure of the environment, just close the Autopark window (s). 
   Ctrl + C will give problems.
