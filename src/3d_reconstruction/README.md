@@ -4,6 +4,26 @@ In this practice, the intention is to program the necessary logic to allow kobuk
 robot to generate a 3D reconstruction of the scene that it is receiving throughout its
 left and right cameras.
 
+////////////////////////////////////////////////////////////////////////////////
+                        P R E P A R A T I O N
+////////////////////////////////////////////////////////////////////////////////
+Follow these simple steps:
+
+1. copy the new interface:
+```
+sudo cp interface/visualization_ice.py /opt/jderobot/lib/python2.7
+```
+
+2.Prepare 3d viewer:
+```
+sudo apt-get install nodejs
+sudo apt-get install npm
+cd 3DViewer-web
+npm install electron --save-dev --save-exact
+npm install jquery
+npm install js-yaml
+```
+
 
 ////////////////////////////////////////////////////////////////////////////////
                            E X E C U T I O N 
@@ -17,12 +37,16 @@ Follow these simple steps to launch the practice:
     * Normal execution (seeing the world): 
 `$ gazebo reconstruccion3D.world`
 
-2. Finally, run the 3d_reconstruction component:
+2. Then, run the 3d_reconstruction component:
 `$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
 
-3. Then, launch 3D viewer tool:
+2. Finally, launch 3D viewer tool:
+``` 
+cd 3DViewer-web
+npm start
 
-`$ npm start` 
+``` 
+
 
 * To simplify the closure of the environment, just close the Autopark window (s). 
   Ctrl + C will give problems.
