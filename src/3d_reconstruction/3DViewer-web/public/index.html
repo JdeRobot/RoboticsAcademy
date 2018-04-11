@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>3DViewer</title>
+	<meta charset="utf-8">
+	<script src = "js/three.js"></script>
+	<script src = "js/OrbitControls.js"></script>
+	<script src = "js/GUI.js"></script>
+	<script src = "js/3DViewer.js"></script>
+	<style>
+
+	body {
+		background-color:#58D3F7;
+	}
+
+	.createPoint{
+		color: white;
+	}
+
+	</style>
+	</head>
+	<body onload = "webGLStart()">
+		<div>
+			<button onclick="clearAll()">Restart</button>
+		<div>
+		  <div id="canvas" align = "center">
+		  </div>
+	</body>
+</html>
