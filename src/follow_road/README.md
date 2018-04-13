@@ -46,7 +46,7 @@ the control logic into it.
 ```
 
 ### API
-* self.camera.setThresholdImage(): If you want show a black and white image.
+* self.setImageFiltered(): If you want show a filtered image of the camera images.
 
 ## Demonstrative video (in spanish)
 https://youtu.be/rIkTImMyoXw
