@@ -47,15 +47,7 @@ the control logic into it.
 ```
 
 ### API
-
-* self.image = self.camera.getImage() - to get the image of the robot's camera.
-* self.camera.setThresholdImage() - If you want show a black and white image.
-* self.camera.setColorImage(trackImg) - To show a color image.
-* self.cmdvel.setVX(velx) - set linear speed of the drone.
-* self.cmdvel.setVY(vely) - set linear speed of the drone.
-* self.cmdvel.sendVelocities() - send set velocities to the drone.
-* self.cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az) - sends linear and angular speed commands to the drone.
-
+* self.camera.setThresholdImage(): If you want show a black and white image.
 
 ## Demonstrative video (in spanish)
 https://youtu.be/rIkTImMyoXw
