@@ -36,12 +36,11 @@ the control logic into it.
          def execute(self):
            # Add your code here
 
-            input_image = self.camera.getImage()
+            input_image = self.camera.getImage().data
             if input_image is not None:
-                self.camera.setColorImage(input_image)
                 '''
-                If you want show a thresold image (black and white image)
-                self.camera.setThresholdImage(bk_image)
+                If you want show a thresold image
+                self.setImageFiltered(input_image)
                 '''
         
 ```
