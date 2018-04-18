@@ -1,5 +1,4 @@
 # follow_line practice
-
 The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit.
 
 ## How to execute?
@@ -7,10 +6,9 @@ To launch the infrastructure of this practice, first launch the simulator with t
 gazebo simpleCircuit.world
 
 Then you have to execute the academic application, which will incorporate your code:
-python2 ./follow_line.py FollowLineF1.yml
+python2 ./follow_line.py follow_line_conf.yml
 
 ## How to do the practice?
-
 To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
 
 ### Where to insert the code?
@@ -18,8 +16,8 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 ```
     def execute(self):
         #GETTING THE IMAGES
-        imageLeft = self.sensor.getImageLeft()
-        imageRight = self.sensor.getImageRight()
+        imageLeft = self.sensor.getImageLeft().data
+        imageRight = self.sensor.getImageRight().data
 
         # Add your code here
         print "Runing"

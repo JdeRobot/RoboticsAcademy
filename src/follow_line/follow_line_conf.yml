@@ -7,24 +7,11 @@ FollowLineF1:
     Topic: "/FollowLineF1/image_raw"
     Name: FollowLineF1CameraLeft
 
-  CameraRight:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
-    Proxy: "cam_f1_right:tcp -h localhost -p 8994"
-    Format: RGB8
-    Topic: "/FollowLine/image_raw"
-    Name: FollowLineF1CameraRight
-
   Motors:
     Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:tcp -h localhost -p 9999"
     Topic: "/FollowLineF1/Motors"
     Name: FollowLineF1Motors
 
-  Encoders:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
-    Proxy: "Encoders:tcp -h localhost -p 8998"
-    Topic: "/FollowLineF1/Encoders"
-    Name: FollowLineF1Encoders
-    
   robot: F1
 NodeName: FollowLineF1
