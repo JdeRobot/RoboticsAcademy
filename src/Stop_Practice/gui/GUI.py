@@ -16,7 +16,7 @@
 #  Authors :
 #       Francisco Miguel Rivas Montero <franciscomiguel.rivas@urjc.es>
 #
-
+from PyQt5 import QtCore, QtGui, QtWidgets
 from gui.widgets.teleopWidget import TeleopWidget
 from gui.widgets.mapWidget import MapWidget
 from gui.widgets.mapWidget import LogoWidget
@@ -43,7 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.updGUI.connect(self.updateGUI)
         self.cameraW=CameraWidget(self)
 
-        self.stopButton.clicked.connect(self.stopClicked)
+        self.resetButton.clicked.connect(self.resetClicked)
 
     def updateGUI(self):
         self.cameraW.updateImage()
@@ -53,13 +53,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setPose3D(self,pose3d):
         self.pose3d=pose3d
-        
+
     def getCameraC(self):
         return self.cameraC
 
     def setCameraC(self,camera):
         self.cameraC=camera
-    
+
     def getCameraL(self):
         return self.cameraL
 
@@ -71,7 +71,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def setCameraR(self,camera):
         self.cameraR=camera
-    
+
     def getMotors(self):
         return self.motors
 
@@ -80,12 +80,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def playClicked(self):
         if self.pushButton.isChecked():
-            self.pushButton.setText('RUNNING')
-            self.pushButton.setStyleSheet("background-color: green")
+            icon = QtGui.QIcon()
+            self.pushButton.setText("Stop Code")
+            self.pushButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
             self.algorithm.play()
         else:
-            self.pushButton.setText('STOPPED')
-            self.pushButton.setStyleSheet("background-color: red")
+            icon = QtGui.QIcon()
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
+            self.pushButton.setText("Play Code")
             self.algorithm.stop()
 
     def setAlgorithm(self, algorithm ):
@@ -101,8 +107,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors.sendW(myW)
         #self.motors.sendVelocities()
 
-    def stopClicked(self):
+    def resetClicked(self):
         self.motors.sendV(0)
         self.motors.sendW(0)
         #self.motors.sendVelocities()
         self.teleop.returnToOrigin()
+
+    def closeEvent(self, event):
+        self.algorithm.kill()
+        self.cameraL.stop()
+        self.cameraR.stop()
+        self.cameraC.stop()
+        event.accept()
