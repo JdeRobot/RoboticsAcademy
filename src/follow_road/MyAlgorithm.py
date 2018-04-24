@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 import cv2
 import numpy as np
+import math
 
 from parallelIce.navDataClient import NavDataClient
 from parallelIce.cmdvel import CMDVel
@@ -20,8 +21,6 @@ class MyAlgorithm(threading.Thread):
         self.pose = pose
         self.cmdvel = cmdvel
         self.extra = extra
-
-        self.image=None
 
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
@@ -70,14 +69,11 @@ class MyAlgorithm(threading.Thread):
     def kill (self):
         self.kill_event.set()
 
-
     def execute(self):
-       # Add your code here
+        # Add your code here
 
         input_image = self.camera.getImage().data
         if input_image is not None:
-            self.setImageFiltered(input_image)
-            '''
-            If you want show a thresold image (black and white image)
-            self.camera.setThresholdImage(bk_image)
-            '''
+
+            #If you want show a thresold image (black and white image)
+            #self.camera.setImageFiltered(threshold_image)

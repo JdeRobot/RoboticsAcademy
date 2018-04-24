@@ -34,20 +34,11 @@ class CameraWidget(QWidget):
         self.winParent=winParent
         self.labelImage=winParent.image
         self.labelImageFiltered = winParent.imageFiltered
-        self.imageUpdate.connect(self.updateImage)
-        self.initUI()
-
+        
     def initUI(self):
 
         self.setMinimumSize(680,500)
         self.setMaximumSize(680,500)
-
-        self.setWindowTitle("Camera")
-        changeCamButton=QPushButton("Change Camera")
-        changeCamButton.resize(170,40)
-        changeCamButton.move(245,450)
-        changeCamButton.setParent(self)
-        changeCamButton.clicked.connect(self.changeCamera)
 
         self.imgLabel=QLabel(self)
         self.imgLabel.resize(640,360)
@@ -76,6 +67,3 @@ class CameraWidget(QWidget):
 
     def closeEvent(self, event):
         self.winParent.closeCameraWidget()
-
-    def changeCamera(self):
-        self.winParent.getExtra().toggleCam()

@@ -27,6 +27,7 @@ from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
 from gui.logoWidget import LogoWidget
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -37,32 +38,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop=TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
-
-
         self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
         self.logoLayout.addWidget(self.logo)
         self.logo.setVisible(True)
 
-        self.record = False
-
         self.updGUI.connect(self.updateGUI)
-
-        self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
+        self.sensorsWidget=SensorsWidget(self)
 
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
-
-        self.cameraWidget=CameraWidget(self)
-        self.sensorsWidget=SensorsWidget(self)
-
-        self.cameraCommunicator=Communicator()
-        self.trackingCommunicator = Communicator()
-
-        self.stopButton.clicked.connect(self.stopClicked)
-        self.playButton.clicked.connect(self.playClicked)
+        self.changeCamButton.clicked.connect(self.changeCamera)
+        self.pushButton.clicked.connect(self.pushClicked)
+        self.pushButton.setCheckable(True)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoffButton.clicked.connect(self.takeOffClicked)
+        self.camera1=CameraWidget(self)
+
+        self.record = False
         self.takeoff=False
         self.reset=False
 
@@ -103,22 +96,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.algorithm
 
     def updateGUI(self):
-        self.cameraWidget.imageUpdate.emit()
+        self.camera1.updateImage()
         self.sensorsWidget.sensorsUpdate.emit()
 
-    def playClicked(self):
-        if self.record == True:
-            self.extra.record(True)
-        self.algorithm.play()
+    def pushClicked(self):
+        if self.pushButton.isChecked():
+            icon = QtGui.QIcon()
+            self.pushButton.setText('Stop Code')
+            self.pushButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
+            self.algorithm.play()
+        else:
+            icon = QtGui.QIcon()
+            self.pushButton.setText('Play Code')
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
+            self.algorithm.stop()
 
-    def stopClicked(self):
-        if self.record == True:
-            self.extra.record(False)
-        self.algorithm.stop()
-        self.rotationDial.setValue(self.altdSlider.maximum()/2)
-        self.altdSlider.setValue(self.altdSlider.maximum()/2)
-        self.cmdvel.sendCMDVel(0,0,0,0,0,0)
-        self.teleop.stopSIG.emit()
+    def resetClicked(self):
+        if self.reset == True:
+            self.resetButton.setText("Reset")
+            self.extra.reset()
+            self.reset=False
+        else:
+            self.resetButton.setText("Unreset")
+            self.extra.reset()
+            self.reset=True
 
     def takeOffClicked(self):
         if(self.takeoff==True):
@@ -140,14 +145,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.extra.reset()
             self.reset=True
 
-    def showCameraWidget(self,state):
-        if state == Qt.Checked:
-            self.cameraWidget.show()
-        else:
-            self.cameraWidget.close()
-
-    def closeCameraWidget(self):
-        self.cameraCheck.setChecked(False)
+    def changeCamera(self):
+        self.extra.toggleCam()
 
     def showSensorsWidget(self,state):
         if state == Qt.Checked:
