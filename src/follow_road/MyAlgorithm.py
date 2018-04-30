@@ -22,6 +22,8 @@ class MyAlgorithm(threading.Thread):
         self.cmdvel = cmdvel
         self.extra = extra
 
+        self.image = None
+
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
@@ -75,5 +77,5 @@ class MyAlgorithm(threading.Thread):
         input_image = self.camera.getImage().data
         if input_image is not None:
 
-            #If you want show a thresold image (black and white image)
-            #self.camera.setImageFiltered(threshold_image)
+            #If you want show an image when its filtered.
+            #self.setImageFiltered(input_image)
