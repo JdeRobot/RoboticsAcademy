@@ -70,6 +70,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         myV=-newY*self.motors.getMaxV()
         self.motors.sendV(myV)
         self.motors.sendW(myW)
+        None
 
     def stopClicked(self):
         self.motors.sendV(0)
