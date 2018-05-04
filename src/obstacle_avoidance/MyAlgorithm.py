@@ -11,15 +11,10 @@ time_cycle = 80
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, cameraL, cameraR, pose3d, laser, motors):
-        self.cameraL = cameraL
-        self.cameraR = cameraR
+    def __init__(self, pose3d, laser, motors):
         self.pose3d = pose3d
         self.laser = laser
         self.motors = motors
-
-        self.imageRight=None
-        self.imageLeft=None
 
         # Car direction
         self.carx = 0.0
@@ -36,6 +31,7 @@ class MyAlgorithm(threading.Thread):
         # Current target
         self.targetx = 0.0
         self.targety = 0.0
+        self.targetid = "NaN"
 
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
@@ -53,29 +49,6 @@ class MyAlgorithm(threading.Thread):
 
         return None
 
-    def setRightImageFiltered(self, image):
-        self.lock.acquire()
-        self.imageRight=image
-        self.lock.release()
-
-
-    def setLeftImageFiltered(self, image):
-        self.lock.acquire()
-        self.imageLeft=image
-        self.lock.release()
-
-    def getRightImageFiltered(self):
-        self.lock.acquire()
-        tempImage=self.imageRight
-        self.lock.release()
-        return tempImage
-
-    def getLeftImageFiltered(self):
-        self.lock.acquire()
-        tempImage=self.imageLeft
-        self.lock.release()
-        return tempImage
-
     def getCarDirection(self):
         return (self.carx, self.cary)
 
@@ -86,7 +59,7 @@ class MyAlgorithm(threading.Thread):
         return (self.avgx, self.avgy)
 
     def getCurrentTarget(self):
-        return (self.targetx, self.targety)
+        return (self.targetx, self.targety, self.targetid)
 
     def run (self):
 
@@ -122,6 +95,20 @@ class MyAlgorithm(threading.Thread):
         self.currentTarget=self.getNextTarget()
         self.targetx = self.currentTarget.getPose().x
         self.targety = self.currentTarget.getPose().y
+        self.targetid = self.currentTarget.getId()
+        #print(self.targetx,self.targety)
 
         # TODO
+
+        # Car direction
+        self.carx = 0.0
+        self.cary = 2.0
+
+        # Obstacles direction
+        self.obsx = 2.0
+        self.obsy = 0.0
+
+        # Average direction
+        self.avgx = 2.0
+        self.avgy = 2.0
 
