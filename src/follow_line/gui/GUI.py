@@ -25,8 +25,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.logoLayout.addWidget(self.logo)
         self.logo.setVisible(True)
 
-
-
         self.pushButton.clicked.connect(self.playClicked)
         self.pushButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
@@ -37,19 +35,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def updateGUI(self):
         #print 'update gui'
         self.camera1.updateImage()
-        #self.sensorsWidget.sensorsUpdate.emit()
 
-    def getCameraL(self):
-        return self.cameraL
+    def getCamera(self):
+        return self.camera
 
-    def setCameraL(self,camera):
-        self.cameraL=camera
-
-    def getCameraR(self):
-        return self.cameraR
-
-    def setCameraR(self,camera):
-        self.cameraR=camera
+    def setCamera(self,camera):
+        self.camera=camera
 
     def getMotors(self):
         return self.motors
@@ -59,12 +50,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def playClicked(self):
         if self.pushButton.isChecked():
-            self.pushButton.setText('RUNNING')
-            self.pushButton.setStyleSheet("background-color: green")
+            self.pushButton.setText('Stop Code')
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
             self.algorithm.play()
         else:
-            self.pushButton.setText('STOPPED')
-            self.pushButton.setStyleSheet("background-color: red")
+            self.pushButton.setText('Play Code')
+            self.pushButton.setStyleSheet("background-color: #ec7063")
             self.algorithm.stop()
 
     def setAlgorithm(self, algorithm ):
@@ -87,6 +78,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.algorithm.kill()
-        self.cameraR.stop()
-        self.cameraL.stop()
+        self.camera.stop()
         event.accept()

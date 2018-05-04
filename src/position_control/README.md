@@ -16,3 +16,19 @@ $ python2 ./position_control.py position_control_conf.yml
 
 
 ///////////////////////////////////////////////////////////////////
+
+### API
+
+* self.pose.getPose3d().x - returns the position values ​​of the drone in X axis
+* self.pose.getPose3d().y - returns the position values ​​of the drone in Y axis
+* self.pose.getPose3d().roll, self.pose.getPose3d().pitch, self.pose.getPose3d().yaw: returns the rotation values ​​of the drone in space.
+* getNextBeacon() - returns the next beacon to reach
+* self.camera.getImage().data: returns the image captured by the active camera of the drone (frontal or ventral).
+* self.cmdvel.setVX(velx): set linear speed of the drone.
+* self.cmdvel.setVY(vely): set linear speed of the drone.
+* self.cmdvel.sendVelocities(): send set velocities to the drone.
+* self.cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
+* self.extra.toggleCam(): changes the drone's active camera (frontal or the one below).
+* self.extra.takeOff(): Takeoff of the drone.
+* self.extra.land(): landing of the drone.
+

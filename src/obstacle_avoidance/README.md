@@ -74,7 +74,7 @@ To use it, only two actions must be carried out:
 
 ## Conversion of types
 ### Laser
-`` `
+```
     laser_data = self.laser.getLaserData ()
 
     def parse_laser_data (laser_data):
@@ -84,9 +84,9 @@ To use it, only two actions must be carried out:
             angle = math.radians (i)
             laser + = [(dist, angle)]
          return laser
-`` `
+```
 
-`` `
+```
         laser_vectorized = []
         for d, a in laser:
             # (4.2.1) laser into GUI reference system
@@ -96,10 +96,10 @@ To use it, only two actions must be carried out:
             laser_vectorized + = [v]
 
         laser_mean = np.mean (laser_vectorized, axis = 0)
-`` `
+```
 
 ### Coordinate system
-`` `
+```
     def absolute2relative (x, y, rx, ry, rt):
         # Convert to relatives
         dx = x - rx
@@ -110,14 +110,14 @@ To use it, only two actions must be carried out:
         y = dx * math.sin (-rt) + dy * math.cos (-rt)
 
 return x, and
-`` `
+```
 
 
 ## Debugging
 The graphical interface (GUI) allows to visualize each of the vectors of
 calculated forces. For this purpose, the following variables should be given 
 value:
-`` `
+```
         # Car direction
         self.carx = 0.0
         self.cary = 0.0
@@ -129,14 +129,14 @@ value:
         # Average direction
         self.avgx = 0.0
         self.avgy = 0.0
-`` `
+```
 
 As well as the destination that we have assigned:
-`` `
+```
         # Current target
         self.targetx = 0.0
         self.targety = 0.0
-`` `
+```
 
 ## Demonstration video
 

@@ -4,7 +4,7 @@ import comm, config
 import jderobot
 import numpy as np
 import threading
-
+import pointBuffer
 import cv2
 
 
@@ -17,7 +17,7 @@ class Sensor:
             cfg = config.load(sys.argv[1])
             #starting comm
             jdrc= comm.init(cfg, '3DReconstruction')
-            
+
             ic = jdrc.getIc()
             properties = ic.getProperties()
 
@@ -36,7 +36,7 @@ class Sensor:
                 print ('Interface for left camera not connected')
 
             proxyStrCR = jdrc.getConfig().getProperty("3DReconstruction.CameraRight.Proxy")
-            basecameraR = ic.stringToProxy(proxyStrCL)
+            basecameraR = ic.stringToProxy(proxyStrCR)
             #basecameraR = ic.propertyToProxy("FollowLine.CameraRight.Proxy")
             self.cameraProxyR = jderobot.CameraPrx.checkedCast(basecameraR)
 
@@ -47,7 +47,7 @@ class Sensor:
             else:
                 print ('Interface for right camera not connected')
 
-            
+
             proxyStrM = jdrc.getConfig().getProperty("3DReconstruction.Motors.Proxy")
             motorsBase = ic.stringToProxy(proxyStrM)
             #motorsBase = ic.propertyToProxy("FolowLine.motors.Proxy")
@@ -63,14 +63,14 @@ class Sensor:
 
 
             #visualization
-            proxyStrV = jdrc.getConfig().getProperty("3DReconstruction.Viewer.Proxy")
-            baseViewer = ic.stringToProxy(proxyStrV)
+        #    proxyStrV = jdrc.getConfig().getProperty("3DReconstruction.Viewer.Proxy")
+        #    baseViewer = ic.stringToProxy(proxyStrV)
             #baseViewer = ic.propertyToProxy("FollowLine.Viewer.Proxy")
-            self.viewerProxy = jderobot.VisualizationPrx.checkedCast(baseViewer)
-            if self.viewerProxy:
-                print ('Interface for viewer connected')
-            else:
-                print ('Interface for viewer not connected')
+        #    self.viewerProxy = jderobot.VisualizationPrx.checkedCast(baseViewer)
+            #if self.viewerProxy:
+        #        print ('Interface for viewer connected')
+        #    else:
+        #        print ('Interface for viewer not connected')
 
             #draw floor:
             self.MAXWORLD=30
@@ -101,8 +101,10 @@ class Sensor:
                 seg2= jderobot.Segment()
                 seg2.fromPoint=pointJde3
                 seg2.toPoint=pointJde4
-                self.viewerProxy.drawSegment(seg1,colorJDE)
-                self.viewerProxy.drawSegment(seg2,colorJDE)
+                pointBuffer.getbufferSegment(seg1, colorJDE)
+                #self.viewerProxy.drawSegment(seg1,colorJDE)
+                pointBuffer.getbufferSegment(seg2, colorJDE)
+                #self.viewerProxy.drawSegment(seg2,colorJDE)
 
 
 
@@ -112,7 +114,7 @@ class Sensor:
             exit()
             status = 1
 
-            
+
     def update(self):
         self.lock.acquire()
         self.updateCameras()
@@ -128,7 +130,7 @@ class Sensor:
             self.imageRight = self.cameraProxyR.getImageData("RGB8")
             self.imageRight_h= self.imageRight.description.height
             self.imageRight_w = self.imageRight.description.width
-    
+
     def getImageLeft(self):
         if self.cameraProxyL:
             self.lock.acquire()
@@ -155,7 +157,7 @@ class Sensor:
 
     def isPlayButton(self):
         return self.playButton
-    
+
     def setPlayButton(self,value):
         if (value==False):
             self.setV(0)
@@ -198,4 +200,5 @@ class Sensor:
         colorJDE.r=float(color[0])
         colorJDE.g=float(color[1])
         colorJDE.b=float(color[2])
-        self.viewerProxy.drawPoint(pointJde,colorJDE)
+        pointBuffer.getbufferPoint(pointJde, colorJDE)
+        #self.viewerProxy.drawPoint(pointJde,colorJDE)
