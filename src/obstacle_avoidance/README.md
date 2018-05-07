@@ -100,16 +100,18 @@ To use it, only two actions must be carried out:
 
 ### Coordinate system
 `` `
-    def absolute2relative (x, y, rx, ry, rt):
+    def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
+        # robotx, roboty are the absolute coordinates of the robot
+	# robott is its absolute orientation
         # Convert to relatives
-        dx = x - rx
-        dy = y - ry
+        dx = x_abs - robotx
+        dy = y_abs - roboty
 
         # Rotate with current angle
-        x = dx * math.cos (-rt) - dy * math.sin (-rt)
-        y = dx * math.sin (-rt) + dy * math.cos (-rt)
+        x_rel = dx * math.cos (-robott) - dy * math.sin (-robott)
+        y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
 
-return x, and
+return x_rel, and y_rel
 `` `
 
 
