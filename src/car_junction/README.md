@@ -1,5 +1,5 @@
-                            STOP PRACTICE
-                            =============
+STOP PRACTICE
+=============
 
 The goal of this practice is to implement the logic of a navigation algorithm for 
 an automated vehicle. The vehicle must Stop at the T joint, where there is a stop 
