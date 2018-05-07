@@ -3,12 +3,7 @@ import time
 from datetime import datetime
 import signal
 import sys
-import numpy as np
-import cv2
-from math import atan2, cos, pi
 
-import cv2
-import numpy as np
 
 from parallelIce.cameraClient import CameraClient
 from parallelIce.navDataClient import NavDataClient
