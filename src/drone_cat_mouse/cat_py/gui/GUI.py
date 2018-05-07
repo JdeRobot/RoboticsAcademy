@@ -23,13 +23,15 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
+from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
 from gui.logoWidget import LogoWidget
 from gui.colorFilterWidget import  ColorFilterWidget
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    
+
     updGUI=pyqtSignal()
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -37,34 +39,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop=TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
-
         self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
         self.logoLayout.addWidget(self.logo)
         self.logo.setVisible(True)
 
-        self.record = False
-
         self.updGUI.connect(self.updateGUI)
-        
-        self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
-        
+
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
-        
+
         self.cameraWidget=ColorFilterWidget(self)
         self.sensorsWidget=SensorsWidget(self)
+        self.changeCamButton.clicked.connect(self.changeCamera)
 
-        self.cameraCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        #self.stopButton.clicked.connect(self.stopClicked)
-        self.playstopButton.clicked.connect(self.playstopClicked)
+        self.pushButton.clicked.connect(self.pushClicked)
+        self.pushButton.setCheckable(True)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoffButton.clicked.connect(self.takeOffClicked)
+        self.camera1=CameraWidget(self)
+
         self.takeoff=False
         self.reset=False
-      
+        self.record = False
+
     def getCamera(self):
         return self.camera
 
@@ -100,45 +100,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def getAlgorithm(self):
         return self.algorithm
-    
+
     def updateGUI(self):
-        self.cameraWidget.imageUpdate.emit()
-        self.sensorsWidget.sensorsUpdate.emit()  
-    
-    def playstopClicked(self):
-        
-        if self.playstopButton.isChecked():
-            if self.record == True:
-                self.extra.record(True)
-            self.playstopButton.setText("Stop code")  
-            self.playstopButton.setIcon(self.icon1)
+        self.camera1.updateImage()
+        self.sensorsWidget.sensorsUpdate.emit()
+
+    def pushClicked(self):
+        if self.pushButton.isChecked():
+            icon = QtGui.QIcon()
+            self.pushButton.setText('Stop Code')
+            self.pushButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
             self.algorithm.play()
         else:
-            if self.record == True:
-                self.extra.record(False)
+            icon = QtGui.QIcon()
+            self.pushButton.setText('Play Code')
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
             self.algorithm.stop()
-            self.playstopButton.setText("Play code") 
-            self.playstopButton.setIcon(self.icon) 
             self.rotationDial.setValue(self.altdSlider.maximum()/2)
             self.altdSlider.setValue(self.altdSlider.maximum()/2)
             self.cmdvel.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
-    def stopClicked(self):
-        if self.record == True:
-            self.extra.record(False)
-        self.algorithm.stop()
-        self.rotationDial.setValue(self.altdSlider.maximum()/2)
-        self.altdSlider.setValue(self.altdSlider.maximum()/2)
-        self.cmdvel.sendCMDVel(0,0,0,0,0,0)
-        self.teleop.stopSIG.emit()
-    
+
     def takeOffClicked(self):
         if(self.takeoff==True):
             self.takeoffButton.setText("Take Off")
             self.extra.land()
             self.takeoff=False
         else:
-            self.takeoffButton.setText("Land")    
+            self.takeoffButton.setText("Land")
             self.extra.takeoff()
             self.takeoff=True
 
@@ -151,28 +144,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.resetButton.setText("Unreset")
             self.extra.reset()
             self.reset=True
-        
-    def showCameraWidget(self,state):
-        if state == Qt.Checked:
-            self.cameraWidget.show()
-        else:
-            self.cameraWidget.close()
-            
-    def closeCameraWidget(self):
-        self.cameraCheck.setChecked(False)
-        
+            self.rotationDial.setValue(self.altdSlider.maximum()/2)
+            self.altdSlider.setValue(self.altdSlider.maximum()/2)
+            self.cmdvel.sendCMDVel(0,0,0,0,0,0)
+            self.teleop.stopSIG.emit()
+
+    def changeCamera(self):
+        self.extra.toggleCam()
+
     def showSensorsWidget(self,state):
         if state == Qt.Checked:
-            self.sensorsWidget.show()           
+            self.sensorsWidget.show()
         else:
-            self.sensorsWidget.close() 
+            self.sensorsWidget.close()
 
     def closeSensorsWidget(self):
         self.sensorsCheck.setChecked(False)
-    
+
     def rotationChange(self,value):
         value=(1.0/(self.rotationDial.maximum()/2))*(value - (self.rotationDial.maximum()/2))
-        self.rotValue.setText('%.2f' % value)  
+        self.rotValue.setText('%.2f' % value)
         self.cmdvel.setYaw(value)
         self.cmdvel.sendVelocities()
 
@@ -195,4 +186,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.navdata.stop()
         self.pose.stop()
         event.accept()
-
