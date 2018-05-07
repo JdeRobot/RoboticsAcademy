@@ -19,9 +19,11 @@
 
 #import resources_rc
 from PyQt5.QtWidgets import QWidget, QGridLayout
-from PyQt5.QtGui import QPen, QPainter
+from PyQt5.QtGui import QPen, QPainter, QColor
 from PyQt5.QtCore import QPoint, QPointF, pyqtSignal, Qt
+import numpy as np
 import math
+from math import pi as pi
 
 class MapWidget(QWidget):
 
@@ -40,6 +42,7 @@ class MapWidget(QWidget):
         self.avgy = 0.0
         self.targetx = 0.0
         self.targety = 0.0
+        self.targetid = "NaN"
         self.scale = 30.0
         self.laser = []
         
@@ -48,10 +51,22 @@ class MapWidget(QWidget):
         self.setLayout(layout)
         self.setAutoFillBackground(True)
         p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.white)
+        p.setColor(self.backgroundRole(), QColor('#0D488A'))
         self.setPalette(p)
-        self.resize(300,300)
-        self.setMinimumSize(300,300)
+        self.resize(600,600)
+        self.setMinimumSize(600,600)
+
+    def RTx(self, angle, tx, ty, tz):
+        RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
+        return RT
+        
+    def RTy(self, angle, tx, ty, tz):
+        RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
+        return RT
+    
+    def RTz(self, angle, tx, ty, tz):
+        RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
+        return RT 
         
     def paintEvent(self, e):
         _width = self.width()
@@ -62,11 +77,11 @@ class MapWidget(QWidget):
         painter.setPen(pen)
     
         #Widget center
-        painter.translate(QPoint(_width/2, _height/1.2))
+        painter.translate(QPoint(_width/2, _height/1.5))
            
         # Draw car
         self.drawCar(painter)
-
+        
         # Draw laser
         self.drawLasel(painter)
 
@@ -79,7 +94,7 @@ class MapWidget(QWidget):
         self.drawArrow(painter, self.avgx, self.avgy, Qt.black, 2)
 
     def drawCar(self, painter):
-        carsize = 30
+        carsize = 60
         tiresize = carsize/5
 
         pen = QPen(Qt.black, 1)
@@ -100,8 +115,9 @@ class MapWidget(QWidget):
         painter.fillRect(-carsize/4,carsize-carsize/8,tiresize/2,tiresize,Qt.black)
         painter.fillRect(carsize/4,carsize-carsize/8,-tiresize/2,tiresize,Qt.black)
 
+
     def drawLasel(self, painter):
-        pen = QPen(Qt.blue, 2)
+        pen = QPen(QColor('#6897BB'), 2)
         painter.setPen(pen)
         for d in self.laser:
             px = -d[0]*math.sin(d[1])*self.scale
@@ -118,16 +134,27 @@ class MapWidget(QWidget):
         pen = QPen(color, width)
         painter.setPen(pen)
 
+        # Calculate relative coordintaes of point
+        #px = _width/2*posx/10.0
+        #py = _height/2*posy/10.0
+
+        RTx = self.RTx(pi, 0, 0, 0)
+        RTz = self.RTz(pi/2, 0, 0, 0)
+        RT = RTx*RTz
+        p = RT*np.matrix([[posx], [posy], [1], [1]])
+        px = p.flat[0]*self.scale
+        py = p.flat[1]*self.scale
+
         # Draw main line
-        px = _width/2*posx/10.0
-        py = _height/2*posy/10.0
-        painter.drawLine(QPointF(0,0),QPointF(-px, py))
+        painter.drawLine(QPointF(0,0),QPointF(px, py))
+        #print("PRE: ",posx, posy)
+        #print("POST: ",px,py)
 
         # Draw sides
         sidex = math.hypot(px, py)/5.0
         sidey = math.hypot(px, py)/5.0
         if px != 0.0:
-            ang = math.atan(py/px)
+            ang = math.atan2(py,px)
         else:
             ang = math.pi/2.0
         if posx >= 0.0:
@@ -136,15 +163,18 @@ class MapWidget(QWidget):
             px2 = px + sidex * math.cos(math.pi+ang+0.5)
             py2 = py + sidey * math.sin(math.pi+ang+0.5)
         else:
-            px1 = px - sidex * math.cos(math.pi+ang-0.5)
-            py1 = py - sidey * math.sin(math.pi+ang-0.5)
-            px2 = px - sidex * math.cos(math.pi+ang+0.5)
-            py2 = py - sidey * math.sin(math.pi+ang+0.5)    
-        painter.drawLine(QPointF(-px, py),QPointF(-px1, py1))
-        painter.drawLine(QPointF(-px, py),QPointF(-px2, py2))
+            px1 = px - sidex * math.cos(ang-0.5)
+            py1 = py - sidey * math.sin(ang-0.5)
+            px2 = px - sidex * math.cos(ang+0.5)
+            py2 = py - sidey * math.sin(ang+0.5)    
+        painter.drawLine(QPointF(px, py),QPointF(px1, py1))
+        painter.drawLine(QPointF(px, py),QPointF(px2, py2))
+
+        #print(px,py)
+        #print(px1,py1)
 
     def drawTarget(self, painter, posx, posy):
-        pen = QPen(Qt.red, 4)
+        pen = QPen(Qt.yellow, 4)
         painter.setPen(pen)
 
         sx = posx - 0.25
@@ -152,6 +182,8 @@ class MapWidget(QWidget):
         ex = posx + 0.25
         ey = posy + 0.25
         painter.drawLine(QPointF(-sx*self.scale,sy*self.scale),QPointF(-ex*self.scale,ey*self.scale))
+        painter.drawText( QPoint(-sx*self.scale+3,sy*self.scale), self.targetid );
+
 
         sx = posx + 0.25
         sy = posy - 0.25
@@ -171,14 +203,18 @@ class MapWidget(QWidget):
         self.avgx = x
         self.avgy = y
 
-    def setTarget(self, x, y, rx, ry, rt):
+    def setTarget(self, x, y, rx, ry, rt, id):
         # Convert to relatives
+        # self.targetx = x - rx
+        # self.targety = y - ry
+
         dx = x - rx
         dy = y - ry
 
         # Rotate with current angle
         self.targetx = dx*math.cos(-rt) - dy*math.sin(-rt)
         self.targety = dx*math.sin(-rt) + dy*math.cos(-rt)
+        self.targetid = id
 
     def setLaserValues(self, laser):
         # Init laser array
