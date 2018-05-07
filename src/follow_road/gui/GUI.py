@@ -20,18 +20,17 @@
 
 
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.ui_gui import Ui_MainWindow
 from gui.teleopWidget import TeleopWidget
 from gui.cameraWidget import CameraWidget
 from gui.communicator import Communicator
 from gui.sensorsWidget import SensorsWidget
-from gui.colorFilterWidget import  ColorFilterWidget
 from gui.logoWidget import LogoWidget
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    
+
     updGUI=pyqtSignal()
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -39,39 +38,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.teleop=TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
-
-
         self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
         self.logoLayout.addWidget(self.logo)
         self.logo.setVisible(True)
 
-        self.record = False
-
         self.updGUI.connect(self.updateGUI)
-        
-        self.cameraCheck.stateChanged.connect(self.showCameraWidget)
         self.sensorsCheck.stateChanged.connect(self.showSensorsWidget)
-        self.colorFilterCheck.stateChanged.connect(self.showColorFilterWidget)
-        
+        self.sensorsWidget=SensorsWidget(self)
+
         self.rotationDial.valueChanged.connect(self.rotationChange)
         self.altdSlider.valueChanged.connect(self.altitudeChange)
-        
-        self.cameraWidget=CameraWidget(self)
-        self.sensorsWidget=SensorsWidget(self)
-        self.colorFilterWidget=ColorFilterWidget(self)
-
-        self.cameraCommunicator=Communicator()
-        self.colorFilterCommunicator=Communicator()
-        self.trackingCommunicator = Communicator()
-
-        #self.stopButton.clicked.connect(self.stopClicked)
-        self.playButton.clicked.connect(self.playClicked)
-        self.playButton.setCheckable(True)
+        self.changeCamButton.clicked.connect(self.changeCamera)
+        self.pushButton.clicked.connect(self.pushClicked)
+        self.pushButton.setCheckable(True)
         self.resetButton.clicked.connect(self.resetClicked)
         self.takeoffButton.clicked.connect(self.takeOffClicked)
+        self.camera1=CameraWidget(self)
+
+        self.record = False
         self.takeoff=False
         self.reset=False
-      
+
     def getCamera(self):
         return self.camera
 
@@ -107,44 +94,44 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def getAlgorithm(self):
         return self.algorithm
-    
-    def updateGUI(self):
-        self.cameraWidget.imageUpdate.emit()
-        self.sensorsWidget.sensorsUpdate.emit()
-        self.colorFilterWidget.imageUpdate.emit()
-    
-    def playClicked(self):
-        if self.playButton.isChecked():
-            if self.record == True:
-                self.extra.record(True)
-            icon = QtGui.QIcon()
-            self.playButton.setText("Stop Code")
-            self.playButton.setStyleSheet("background-color: #ec7063")
-            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.playButton.setIcon(icon)
 
+    def updateGUI(self):
+        self.camera1.updateImage()
+        self.sensorsWidget.sensorsUpdate.emit()
+
+    def pushClicked(self):
+        if self.pushButton.isChecked():
+            icon = QtGui.QIcon()
+            self.pushButton.setText('Stop Code')
+            self.pushButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.pushButton.setIcon(icon)
             self.algorithm.play()
         else:
-            if self.record == True:
-                self.extra.record(False)
             icon = QtGui.QIcon()
-            self.playButton.setStyleSheet("background-color: #7dcea0")
+            self.pushButton.setText('Play Code')
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
             icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-            self.playButton.setIcon(icon)
-            self.playButton.setText("Play Code")
+            self.pushButton.setIcon(icon)
             self.algorithm.stop()
-            self.rotationDial.setValue(self.altdSlider.maximum()/2)
-            self.altdSlider.setValue(self.altdSlider.maximum()/2)
-            self.cmdvel.sendCMDVel(0,0,0,0,0,0)
-            self.teleop.stopSIG.emit()
-    
+
+    def resetClicked(self):
+        if self.reset == True:
+            self.resetButton.setText("Reset")
+            self.extra.reset()
+            self.reset=False
+        else:
+            self.resetButton.setText("Unreset")
+            self.extra.reset()
+            self.reset=True
+
     def takeOffClicked(self):
         if(self.takeoff==True):
             self.takeoffButton.setText("Take Off")
             self.extra.land()
             self.takeoff=False
         else:
-            self.takeoffButton.setText("Land")    
+            self.takeoffButton.setText("Land")
             self.extra.takeoff()
             self.takeoff=True
 
@@ -157,37 +144,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.resetButton.setText("Unreset")
             self.extra.reset()
             self.reset=True
-        
-    def showCameraWidget(self,state):
-        if state == Qt.Checked:
-            self.cameraWidget.show()
-        else:
-            self.cameraWidget.close()
-            
-    def closeCameraWidget(self):
-        self.cameraCheck.setChecked(False)
 
-    def showColorFilterWidget(self,state):
-        if state == Qt.Checked:
-            self.colorFilterWidget.show()
-        else:
-            self.colorFilterWidget.close()
-
-    def closeColorFilterWidget(self):
-        self.colorFilterCheck.setChecked(False)
+    def changeCamera(self):
+        self.extra.toggleCam()
 
     def showSensorsWidget(self,state):
         if state == Qt.Checked:
-            self.sensorsWidget.show()           
+            self.sensorsWidget.show()
         else:
-            self.sensorsWidget.close() 
+            self.sensorsWidget.close()
 
     def closeSensorsWidget(self):
         self.sensorsCheck.setChecked(False)
-    
+
     def rotationChange(self,value):
         value=(1.0/(self.rotationDial.maximum()/2))*(value - (self.rotationDial.maximum()/2))
-        self.rotValue.setText('%.2f' % value)  
+        self.rotValue.setText('%.2f' % value)
         self.cmdvel.setYaw(value)
         self.cmdvel.sendVelocities()
 
@@ -206,8 +178,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.algorithm.kill()
-        self.camera.client.stop()
+        self.camera.stop()
         self.navdata.stop()
         self.pose.stop()
         event.accept()
-

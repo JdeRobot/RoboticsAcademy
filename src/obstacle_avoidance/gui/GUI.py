@@ -23,7 +23,6 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
-from gui.widgets.cameraWidget import CameraWidget
 from gui.widgets.logoWidget import LogoWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -40,43 +39,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.map.setVisible(True)
 
         self.logo = LogoWidget(self, 60, 60)
-        self.runLayout.addWidget(self.logo)
+        self.verticalLayout_2.addWidget(self.logo,3)
         self.logo.setVisible(True)
 
         self.playButton.clicked.connect(self.playClicked)
         self.playButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
-        self.camera1=CameraWidget(self)
 
         #self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
-        self.camera1.updateImage()
         (cx, cy) = self.algorithm.getCarDirection()
         (ox, oy) = self.algorithm.getObstaclesDirection()
         (ax, ay) = self.algorithm.getAverageDirection()
-        (tx, ty) = self.algorithm.getCurrentTarget()
+        (tx, ty, id) = self.algorithm.getCurrentTarget()
         self.map.setCarArrow(cx, cy)
         self.map.setObstaclesArrow(ox, oy)
         self.map.setAverageArrow(ax, ay)
         if (self.pose3d):
-            self.map.setTarget(tx, ty, self.pose3d.getPose3d().x/1000, self.pose3d.getPose3d().y/1000, self.pose3d.getPose3d().yaw)
+            self.map.setTarget(tx, ty, self.pose3d.getPose3d().x/1000, self.pose3d.getPose3d().y/1000, self.pose3d.getPose3d().yaw, id)
         laserdata = self.laser.getLaserData()
         if (laserdata):
             self.map.setLaserValues(laserdata)
         self.map.update()
-
-    def getCameraL(self):
-        return self.cameraL
-
-    def setCameraL(self,camera):
-        self.cameraL=camera
-
-    def getCameraR(self):
-        return self.cameraR
-
-    def setCameraR(self,camera):
-        self.cameraR=camera
 
     def getPose3D(self):
         return self.pose3d

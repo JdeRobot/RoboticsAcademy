@@ -36,7 +36,7 @@ class Sensor:
                 print ('Interface for left camera not connected')
 
             proxyStrCR = jdrc.getConfig().getProperty("3DReconstruction.CameraRight.Proxy")
-            basecameraR = ic.stringToProxy(proxyStrCL)
+            basecameraR = ic.stringToProxy(proxyStrCR)
             #basecameraR = ic.propertyToProxy("FollowLine.CameraRight.Proxy")
             self.cameraProxyR = jderobot.CameraPrx.checkedCast(basecameraR)
 

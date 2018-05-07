@@ -1,6 +1,6 @@
-# Vacuum Practice
+# Vacuum Slam
 
-# Vacuum Practice Practice
+# Vacuum Slam Practice
 
 The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 

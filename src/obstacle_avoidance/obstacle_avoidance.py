@@ -25,7 +25,6 @@ import comm
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.cameraClient import CameraClient
 from parallelIce.motors import Motors
 from parallelIce.pose3dClient import Pose3DClient
 from parallelIce.laserClient import LaserClient
@@ -42,18 +41,14 @@ if __name__ == "__main__":
     #starting comm
     jdrc= comm.init(cfg, 'ObstacleAvoidance')
 
-    cameraL = jdrc.getCameraClient("ObstacleAvoidance.CameraLeft")
-    cameraR = jdrc.getCameraClient("ObstacleAvoidance.CameraRight")
     motors = jdrc.getMotorsClient ("ObstacleAvoidance.Motors")
     pose3d = jdrc.getPose3dClient("ObstacleAvoidance.Pose3D")
     laser = jdrc.getLaserClient("ObstacleAvoidance.Laser").hasproxy()
 
-    algorithm=MyAlgorithm(cameraL, cameraR, pose3d, laser, motors)
+    algorithm=MyAlgorithm(pose3d, laser, motors)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
-    myGUI.setCameraL(cameraL)
-    myGUI.setCameraR(cameraR)
     myGUI.setMotors(motors)
     myGUI.setPose3D(pose3d)
     myGUI.setLaser(laser)

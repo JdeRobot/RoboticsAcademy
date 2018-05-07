@@ -31,24 +31,19 @@ import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 from PyQt5.QtWidgets import QApplication
 
-
-
-
 if __name__ == "__main__":
 
     cfg = config.load(sys.argv[1])
     #starting comm
     jdrc= comm.init(cfg, 'FollowLineF1')
 
-    cameraL = jdrc.getCameraClient("FollowLineF1.CameraLeft")
-    cameraR = jdrc.getCameraClient("FollowLineF1.CameraRight")
+    camera = jdrc.getCameraClient("FollowLineF1.CameraLeft")
     motors = jdrc.getMotorsClient("FollowLineF1.Motors")
-    algorithm=MyAlgorithm(cameraL, cameraR, motors)
+    algorithm=MyAlgorithm(camera, motors)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
-    myGUI.setCameraL(cameraL)
-    myGUI.setCameraR(cameraR)
+    myGUI.setCamera(camera)
     myGUI.setMotors(motors)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
