@@ -1,0 +1,38 @@
+UAVViewer:
+  Camera:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Camera:default -h localhost -p 9900"
+    Format: RGB8
+    Topic: "/IntrorobROS/image_raw"
+    Name: UAVViewerCamera
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:default -h localhost -p 9900"
+    Topic: "/IntrorobROS/Pose3D"
+    Name: UAVViewerPose3d
+
+  CMDVel:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CMDVel:tcp -h localhost -p 9900"
+    Topic: "/IntrorobROS/CMDVel"
+    Name: UAVViewerCMDVel
+
+  Navdata:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Navdata:tcp -h localhost -p 9900"
+    Topic: "/IntrorobROS/Navdata"
+    Name: UAVViewerNavdata
+
+  Extra:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Extra:tcp -h localhost -p 9900"
+    Topic: "/IntrorobROS/Extra"
+    Name: UAVViewerExtra
+
+  Xmax: 10
+  Ymax: 10
+  Zmax: 5
+  Yawmax: 1 
+
+NodeName: UAVViewer
