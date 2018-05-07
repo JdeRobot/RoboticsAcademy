@@ -101,6 +101,7 @@ To use it, only two actions must be carried out:
 ### Coordinate system
 `` `
     def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
+    
         # robotx, roboty are the absolute coordinates of the robot
 	# robott is its absolute orientation
         # Convert to relatives
