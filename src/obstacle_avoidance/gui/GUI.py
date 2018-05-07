@@ -24,6 +24,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
 from gui.widgets.logoWidget import LogoWidget
+from gui.widgets.cameraWidget import CameraWidget
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -38,17 +39,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.mapLayout.addWidget(self.map)
         self.map.setVisible(True)
 
+
+        self.verticalLayout_2.addWidget(self.stopButton,3)
+
         self.logo = LogoWidget(self, 60, 60)
-        self.verticalLayout_2.addWidget(self.logo,3)
+        self.verticalLayout_2.addWidget(self.logo,4)
         self.logo.setVisible(True)
 
         self.playButton.clicked.connect(self.playClicked)
         self.playButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
+        self.camera1=CameraWidget(self)
 
-        #self.stopButton.clicked.connect(self.stopClicked)
+        self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
+
+        print (self.width(), self.height())
+        self.camera1.updateImage()
         (cx, cy) = self.algorithm.getCarDirection()
         (ox, oy) = self.algorithm.getObstaclesDirection()
         (ax, ay) = self.algorithm.getAverageDirection()
@@ -62,6 +70,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if (laserdata):
             self.map.setLaserValues(laserdata)
         self.map.update()
+
+    def getCamera(self):
+        return self.camera
+
+    def setCamera(self,camera):
+        self.camera=camera
 
     def getPose3D(self):
         return self.pose3d
@@ -112,3 +126,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors.hasproxy().setW(myW)
         #self.motors.sendVelocities(self.motors)
 
+    def stopClicked(self):
+        self.motors.hasproxy().setV(0)
+        self.motors.hasproxy().setW(0)
+        # self.motors.sendVelocities()
+        self.teleop.returnToOrigin()
