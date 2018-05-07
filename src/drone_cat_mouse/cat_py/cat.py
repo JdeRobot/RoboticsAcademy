@@ -26,21 +26,19 @@ from MyAlgorithm import MyAlgorithm
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
-from sensors.cameraFilter import CameraFilter
 
 import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
-    
+
     cfg = config.load(sys.argv[1])
 
     #starting comm
     jdrc= comm.init(cfg, 'Introrob')
 
-    cameraCli = jdrc.getCameraClient("Introrob.Camera")
-    camera = CameraFilter(cameraCli)
+    camera = jdrc.getCameraClient("Introrob.Camera")
     navdata = jdrc.getNavdataClient("Introrob.Navdata")
     pose = jdrc.getPose3dClient("Introrob.Pose3D")
     cmdvel = jdrc.getCMDVelClient("Introrob.CMDVel")
@@ -59,11 +57,11 @@ if __name__ == '__main__':
     frame.setExtra(extra)
     frame.setAlgorithm(algorithm)
     frame.show()
-    
-    
 
-    t2 = ThreadGUI(frame)  
+
+
+    t2 = ThreadGUI(frame)
     t2.daemon=True
     t2.start()
-    
-    sys.exit(app.exec_()) 
+
+    sys.exit(app.exec_())

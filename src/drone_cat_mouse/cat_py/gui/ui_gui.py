@@ -6,14 +6,21 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QMainWindow
+from gui.teleopWidget import TeleopWidget
+from gui.cameraWidget import CameraWidget
+from gui.communicator import Communicator
+from gui.sensorsWidget import SensorsWidget
+from gui.logoWidget import LogoWidget
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(660, 370)
-        MainWindow.setMinimumSize(QtCore.QSize(660, 370))
-        MainWindow.setMaximumSize(QtCore.QSize(660, 370))
+        MainWindow.setMinimumSize(QtCore.QSize(733, 870))
+        MainWindow.setMaximumSize(QtCore.QSize(733, 870))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.takeoffButton = QtWidgets.QPushButton(self.centralwidget)
@@ -25,30 +32,20 @@ class Ui_MainWindow(object):
         self.altdSlider.setProperty("value", 49)
         self.altdSlider.setOrientation(QtCore.Qt.Vertical)
         self.altdSlider.setObjectName("altdSlider")
-        self.playstopButton = QtWidgets.QPushButton(self.centralwidget)
-        self.playstopButton.setGeometry(QtCore.QRect(500, 80, 90, 51))
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(470, 80, 161, 41))
         self.icon = QtGui.QIcon()
         self.icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.playstopButton.setIcon(self.icon)
-        self.playstopButton.setObjectName("playstopButton")
-        self.playstopButton.setObjectName("playstopButton")
-        self.playstopButton.setCheckable(True)
-        self.playstopButton.setChecked(True)
-        self.playstopButton.toggle()
-        #self.stopButton = QtWidgets.QPushButton(self.centralwidget)
-        #self.stopButton.setGeometry(QtCore.QRect(560, 80, 71, 51))
-        self.icon1 = QtGui.QIcon()
-        self.icon1.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.stopButton.setIcon(icon1)
-        #self.stopButton.setObjectName("stopButton")
+        self.pushButton.setIcon(self.icon)
+        self.pushButton.setObjectName("pushButton")
         self.windowsLabel = QtWidgets.QLabel(self.centralwidget)
         self.windowsLabel.setGeometry(QtCore.QRect(540, 190, 71, 21))
         self.windowsLabel.setObjectName("windowsLabel")
-        self.cameraCheck = QtWidgets.QCheckBox(self.centralwidget)
-        self.cameraCheck.setGeometry(QtCore.QRect(540, 220, 94, 26))
-        self.cameraCheck.setObjectName("cameraCheck")
+        self.changeCamButton = QtWidgets.QPushButton(self.centralwidget)
+        self.changeCamButton.setGeometry(QtCore.QRect(500, 250, 160, 26))
+        self.changeCamButton.setObjectName("Change Camera")
         self.sensorsCheck = QtWidgets.QCheckBox(self.centralwidget)
-        self.sensorsCheck.setGeometry(QtCore.QRect(540, 250, 94, 26))
+        self.sensorsCheck.setGeometry(QtCore.QRect(540, 210, 94, 26))
         self.sensorsCheck.setObjectName("sensorsCheck")
         self.altdLabel = QtWidgets.QLabel(self.centralwidget)
         self.altdLabel.setGeometry(QtCore.QRect(390, 340, 51, 21))
@@ -89,7 +86,7 @@ class Ui_MainWindow(object):
         self.rotValue.setAlignment(QtCore.Qt.AlignCenter)
         self.rotValue.setObjectName("rotValue")
         self.resetButton = QtWidgets.QPushButton(self.centralwidget)
-        self.resetButton.setGeometry(QtCore.QRect(470, 140, 161, 41))
+        self.resetButton.setGeometry(QtCore.QRect(470, 130, 161, 41))
         self.resetButton.setObjectName("resetButton")
         self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(570, 280, 81, 80))
@@ -99,6 +96,30 @@ class Ui_MainWindow(object):
         self.logoLayout.setObjectName("logoLayout")
         MainWindow.setCentralWidget(self.centralwidget)
 
+        self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget.setGeometry(QtCore.QRect(21, 400, 591, 411))
+        self.layoutWidget.setObjectName("layoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
+        self.image = QtWidgets.QLabel(self.layoutWidget)
+        self.image.setObjectName("image")
+        self.gridLayout.addWidget(self.image, 1, 1, 1, 1)
+        self.imageFiltered = QtWidgets.QLabel(self.layoutWidget)
+        self.imageFiltered.setText("")
+        self.imageFiltered.setObjectName("imageFiltered")
+        self.gridLayout.addWidget(self.imageFiltered, 2, 1, 1, 1)
+        self.label = QtWidgets.QLabel(self.layoutWidget)
+        self.label.setObjectName("label")
+        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
+        self.label_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_2.setObjectName("label_2")
+        self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
+        self.verticalLayout.addLayout(self.gridLayout)
+
+        MainWindow.setCentralWidget(self.centralwidget)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -106,10 +127,12 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Cat"))
         self.takeoffButton.setText(_translate("MainWindow", "Take off"))
-        self.playstopButton.setText(_translate("MainWindow", "Play Code"))
-        #self.stopButton.setText(_translate("MainWindow", "Stop Code"))
+        self.pushButton.setText(_translate("MainWindow", "Play Code"))
+        self.image.setText(_translate("MainWindow", "TextLabel"))
+        self.label.setText(_translate("MainWindow", "Input"))
+        self.label_2.setText(_translate("MainWindow", "Processed images"))
         self.windowsLabel.setText(_translate("MainWindow", "Windows:"))
-        self.cameraCheck.setText(_translate("MainWindow", "Camera"))
+        self.changeCamButton.setText(_translate("MainWindow", "Change Camera"))
         self.sensorsCheck.setText(_translate("MainWindow", "Sensors"))
         self.altdLabel.setText(_translate("MainWindow", "Altitude"))
         self.rotationLabel.setText(_translate("MainWindow", "Rotation"))
