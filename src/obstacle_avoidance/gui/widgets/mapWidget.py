@@ -174,6 +174,10 @@ class MapWidget(QWidget):
         #print(px1,py1)
 
     def drawTarget(self, painter, posx, posy):
+
+        if posx == 0.0 and posy == 0.0:
+            return        
+
         pen = QPen(Qt.yellow, 4)
         painter.setPen(pen)
 
@@ -207,6 +211,9 @@ class MapWidget(QWidget):
         # Convert to relatives
         # self.targetx = x - rx
         # self.targety = y - ry
+        if x == 0.0 and y == 0.0:
+            return        
+
 
         dx = x - rx
         dy = y - ry
