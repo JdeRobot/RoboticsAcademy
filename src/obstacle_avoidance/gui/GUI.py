@@ -54,8 +54,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
-
-        print (self.width(), self.height())
         self.camera1.updateImage()
         (cx, cy) = self.algorithm.getCarDirection()
         (ox, oy) = self.algorithm.getObstaclesDirection()
