@@ -11,12 +11,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(840, 850)
+        MainWindow.resize(860, 950)
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget.setGeometry(QtCore.QRect(90, 20, 660, 380))
+        self.layoutWidget.setGeometry(QtCore.QRect(20, 20, 820, 440))
         self.layoutWidget.setObjectName("layoutWidget")
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
@@ -28,21 +28,22 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.layoutWidget)
         self.label.setObjectName("label")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
-        self.label.setFixedSize(QtCore.QSize(320,30))
+        self.label.setMinimumSize(QtCore.QSize(400,30))
         # self.label.setStyleSheet("background-color: blue")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_2.setObjectName("label_2")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_2.setFixedSize(QtCore.QSize(320,30))
+        self.label_2.setMinimumSize(QtCore.QSize(400,30))
         # self.label_2.setStyleSheet("background-color: blue")
         self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
         self.image = QtWidgets.QLabel(self.layoutWidget)
         self.image.setObjectName("image")
+        self.image.setMinimumSize(QtCore.QSize(400,300))
         self.gridLayout.addWidget(self.image, 1, 0, 1, 1)
         self.imageFiltered = QtWidgets.QLabel(self.layoutWidget)
-        self.imageFiltered.setText("")
         self.imageFiltered.setObjectName("imageFiltered") 
+        self.imageFiltered.setMinimumSize(QtCore.QSize(400,300))
         self.gridLayout.addWidget(self.imageFiltered, 1, 1, 1, 1)
 
         #BUTTONS
@@ -66,7 +67,7 @@ class Ui_MainWindow(object):
 
 
         self.layoutWidgetMap = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidgetMap.setGeometry(QtCore.QRect(20, 420, 800, 380))
+        self.layoutWidgetMap.setGeometry(QtCore.QRect(30, 480, 800, 380))
         self.layoutWidgetMap.setObjectName("layoutWidgetMap")
 
         self.verticalLayoutMap = QtWidgets.QVBoxLayout(self.layoutWidgetMap)

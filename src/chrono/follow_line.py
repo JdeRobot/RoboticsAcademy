@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 #
 #  Copyright (C) 1997-2016 JDE Developers Team
 #
@@ -21,33 +21,27 @@
 
 
 import sys
-import config
-import comm
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.cameraClient import CameraClient
-from parallelIce.motors import Motors
-from parallelIce.pose3dClient import Pose3DClient
-import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 from PyQt5.QtWidgets import QApplication
+from interfaces.camera import ListenerCamera
+from interfaces.pose3d import ListenerPose3d
+from interfaces.motors import PublisherMotors
 
 if __name__ == "__main__":
 
-    cfg = config.load(sys.argv[1])
-    #starting comm
-    jdrc= comm.init(cfg, 'FollowLineF1')
-
-    camera = jdrc.getCameraClient("FollowLineF1.CameraLeft")
-    motors = jdrc.getMotorsClient("FollowLineF1.Motors")
-    pose3d = jdrc.getPose3dClient("FollowLineF1.Pose3D")
+    camera = ListenerCamera("/F1ROS/cameraL/image_raw")
+    motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
+    pose3d = ListenerPose3d("/F1ROS/odom")
+    pose3dphantom = ListenerPose3d("/F1ROS_phantom/odom")
     algorithm=MyAlgorithm(camera, motors, pose3d)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
     myGUI.setCamera(camera)
     myGUI.setMotors(motors)
-    myGUI.setPose3D(pose3d)
+    myGUI.setPose3D(pose3d, pose3dphantom)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 

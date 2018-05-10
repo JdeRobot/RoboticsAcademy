@@ -39,10 +39,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def updateGUI(self):
         #print 'update gui'
-        cx = self.pose3d.getPose3d().x/1000.0
-        cy = self.pose3d.getPose3d().y/1000.0
+        cx = self.pose3d.getPose3d().x
+        cy = self.pose3d.getPose3d().y
+        phx = self.pose3dphantom.getPose3d().x
+        phy = self.pose3dphantom.getPose3d().y
         # print(cx,cy)
-        self.mapW.setCarArrow(cx, cy)
+        self.mapW.setCarPos(cx, cy)
+        self.mapW.setPhantomPos(phx, phy)
         self.camera1.updateImage()
 
     def getCamera(self):
@@ -60,7 +63,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def getPose3D(self):
         return self.pose3d
 
-    def setPose3D(self,pose3d):
+    def setPose3D(self,pose3d, pose3dphantom):
+        self.pose3dphantom = pose3dphantom
         self.pose3d=pose3d
 
     def playClicked(self):

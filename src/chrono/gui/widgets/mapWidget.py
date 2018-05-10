@@ -19,7 +19,7 @@
 
 #import resources_rc
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLabel
-from PyQt5.QtGui import QPen, QPainter, QColor, QPixmap, QImage, QBrush
+from PyQt5.QtGui import QPen, QPainter, QColor, QPixmap, QImage, QBrush, QFont
 from PyQt5.QtCore import QPoint, QPointF, pyqtSignal, Qt
 import cv2
 import numpy as np
@@ -40,13 +40,8 @@ class MapWidget(QWidget):
 
         self.carx = 0.0
         self.cary = 0.0
-        self.obsx = 0.0
-        self.obsy = 0.0
-        self.avgx = 0.0
-        self.avgy = 0.0
-        self.targetx = 0.0
-        self.targety = 0.0
-        self.targetid = "NaN"
+        self.phax = 0.0
+        self.phay = 0.0
         self.scale = 4.0
         self.laser = []
         
@@ -81,17 +76,26 @@ class MapWidget(QWidget):
         RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
         return RT 
 
-    def drawCircle(self, painter, centerX, centerY):
-        pen = QPen(Qt.blue, 2)
+    def drawCircle(self, painter, centerX, centerY, color, size):
+        pen = QPen(color, size)
         painter.setPen(pen)
         brush = QBrush(Qt.SolidPattern)
         brush.setColor(QColor(Qt.blue))
         painter.setBrush(brush)
         painter.drawEllipse(centerX, centerY, 5, 5)
+
+    def drawName(self, painter, posx, posy, color, size, name):
+        pen = QPen(color, size)
+        painter.setPen(pen)
+        px1 = posx - 10
+        py1 = posy - 10
+        # painter.drawLine(QPointF(posx - 5,posy + 5), QPointF(px1,py1))
+        # painter.drawLine(QPointF(px1,py1), QPointF(px1+10,py1))
+        painter.setFont(QFont("Ubuntu Mono",12, QFont.Bold))
+        painter.drawText(QPointF(px1, py1), name)
+
         
     def paintEvent(self, e):
-        # _width = self.width()
-        # _height = self.height()
 
         copy = self.pixmap.copy()
         painter = QPainter(copy)
@@ -99,34 +103,20 @@ class MapWidget(QWidget):
         RTx = self.RTx(-pi, 0, 0, 0)
         p = RTx*np.matrix([[self.carx], [self.cary], [1], [1]])
         px = p.flat[0]*self.scale
-        py = p.flat[1]*self.scale
-        # self.drawCircle(painter,px,py)
-        
-        self.drawCircle(painter,px,py)
-        painter.drawLine(QPointF(0,0), QPointF(px,py))
+        py = p.flat[1]*self.scale        
+        self.drawCircle(painter,px,py,Qt.blue,2)
+        self.drawName(painter,px,py,Qt.blue,1, "F1")
+
+        #Draw phantom
+        p = RTx*np.matrix([[self.phax], [self.phay], [1], [1]])
+        px = p.flat[0]*self.scale
+        py = p.flat[1]*self.scale        
+        self.drawCircle(painter,px,py,Qt.black,2)
+        self.drawName(painter,px,py,Qt.black,1, "Pha")
+
         self.mapWidget.setPixmap(copy)
         painter.end()
-    
-        # painter=QPainter(self)
-        # pen = QPen(Qt.blue, 2)
-        # painter.setPen(pen)
-    
-        # #Widget center
-        # painter.translate(QPoint(_width/2, _height/1.5))
-           
-        # # Draw car
-        # self.drawCar(painter)
-        
-        # # Draw laser
-        # self.drawLasel(painter)
 
-        # # Draw target
-        # self.drawTarget(painter, self.targetx, self.targety)
-
-        # # Draw arrows
-        # self.drawArrow(painter, self.carx, self.cary, Qt.green, 2)
-        # self.drawArrow(painter, self.obsx, self.obsy, Qt.red, 2)
-        # self.drawArrow(painter, self.avgx, self.avgy, Qt.black, 2)
 
     def drawCar(self, painter):
         carsize = 60
@@ -230,33 +220,13 @@ class MapWidget(QWidget):
         ey = posy + 0.25
         painter.drawLine(QPointF(-sx*self.scale,sy*self.scale),QPointF(-ex*self.scale,ey*self.scale))
 
-    def setCarArrow(self, x, y):
+    def setCarPos(self, x, y):
         self.carx = x
         self.cary = y
 
-    def setObstaclesArrow(self, x, y):
-        self.obsx = x
-        self.obsy = y
-
-    def setAverageArrow(self, x, y):
-        self.avgx = x
-        self.avgy = y
-
-    def setTarget(self, x, y, rx, ry, rt, id):
-        # Convert to relatives
-        # self.targetx = x - rx
-        # self.targety = y - ry
-        if x == 0.0 and y == 0.0:
-            return        
-
-
-        dx = x - rx
-        dy = y - ry
-
-        # Rotate with current angle
-        self.targetx = dx*math.cos(-rt) - dy*math.sin(-rt)
-        self.targety = dx*math.sin(-rt) + dy*math.cos(-rt)
-        self.targetid = id
+    def setPhantomPos(self, x, y):
+        self.phax = x
+        self.phay = y
 
     def setLaserValues(self, laser):
         # Init laser array
