@@ -1,0 +1,23 @@
+FollowLineF1:
+
+  CameraLeft:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "cam_f1_left:tcp -h localhost -p 8995"
+    Format: RGB8
+    Topic: "/FollowLineF1/image_raw"
+    Name: FollowLineF1CameraLeft
+
+  Motors:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:tcp -h localhost -p 9999"
+    Topic: "/FollowLineF1/Motors"
+    Name: FollowLineF1Motors
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:default -h localhost -p 8998"
+    Topic: "/ObstacleAvoidance/Pose3D"
+    Name: ObstacleAvoidancePose3d
+
+  robot: F1
+NodeName: FollowLineF1
