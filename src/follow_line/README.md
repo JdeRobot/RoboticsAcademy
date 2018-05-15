@@ -1,4 +1,4 @@
-# follow_line practice
+# Follow_line practice
 The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit.
 
 ## How to execute?
@@ -11,7 +11,7 @@ python2 ./follow_line.py follow_line_conf.yml
 ## How to do the practice?
 To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
 
-### Where to insert the code?
+## Where to insert the code?
 [MyAlgorithm.py](MyAlgorithm.py#L74)
 ```
     def execute(self):
