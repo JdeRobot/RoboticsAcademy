@@ -40,7 +40,10 @@ control logic into it.
 
 
 ### API
-* self.cameraC.getImage().data, self.cameraL.getImage().data, self.cameraR.getImage().data
+* self.cameraC.getImage().data, 
+* self.cameraL.getImage().data, 
+* self.cameraR.getImage().data
+
  - to get image from center, left or right camera respectively.
 * self.pose3d.getPose3d().x - to obtain the position of the robot
 * self.pose3d.getPose3d().y - to obtain the position of the robot
