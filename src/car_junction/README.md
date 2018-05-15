@@ -51,5 +51,5 @@ control logic into it.
 ## Demonstrative video
 https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/hF2i0rdlIqE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+[Demo](https://www.youtube.com/embed/hF2i0rdlIqE)
 
