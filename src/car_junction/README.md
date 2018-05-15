@@ -18,8 +18,6 @@ To launch the example, follow the steps below:
 
 To simplify the closure of the environment, just close the Stop Component 
 window(s). Ctrl + C will give problems.
-////////////////////////////////////////////////////////////////////////////////
-
 
 ## How to do the practice
 To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
