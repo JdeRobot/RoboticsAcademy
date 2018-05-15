@@ -49,5 +49,5 @@ control logic into it.
 
 
 ## Demonstrative video
-https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE
+[Car Junction Video Demo](https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE)
 
