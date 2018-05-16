@@ -17,28 +17,26 @@
 #  Authors :
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #       Francisco Miguel Rivas Montero <franciscomiguel.rivas@urjc.es>
+#  Rosified by:
+#       Francisco Perez Salgado <f.perez475@gmail.com>
 #
 
 
+# General imports
 import sys
-import config
-import comm
+
+# Practice imports
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.cameraClient import CameraClient
-from parallelIce.motors import Motors
-import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 from PyQt5.QtWidgets import QApplication
+from interfaces.camera import ListenerCamera
+from interfaces.motors import PublisherMotors
 
 if __name__ == "__main__":
 
-    cfg = config.load(sys.argv[1])
-    #starting comm
-    jdrc= comm.init(cfg, 'FollowLineF1')
-
-    camera = jdrc.getCameraClient("FollowLineF1.CameraLeft")
-    motors = jdrc.getMotorsClient("FollowLineF1.Motors")
+    camera = ListenerCamera("/F1ROS/cameraL/image_raw")
+    motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
     algorithm=MyAlgorithm(camera, motors)
 
     app = QApplication(sys.argv)
