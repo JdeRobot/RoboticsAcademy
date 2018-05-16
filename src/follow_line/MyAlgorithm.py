@@ -69,8 +69,8 @@ class MyAlgorithm(threading.Thread):
         print "Runing"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.sensor.sendV(10)
-        #self.sensor.sendW(5)
+        #self.motors.sendV(10)
+        #self.motors.sendW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
         self.setImageFiltered(image)
