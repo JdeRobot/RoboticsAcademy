@@ -50,10 +50,10 @@
             this.g = __is.readFloat();
             this.b = __is.readFloat();
         },
-        12,
+        12, 
         true);
 
-	jderobot.RGBSegment = Slice.defineStruct(
+    jderobot.RGBSegment = Slice.defineStruct(
         function(seg, c)
         {
             this.seg = seg !== undefined ? seg : new jderobot.Segment();
@@ -72,9 +72,48 @@
         },
         36, 
         true);
+    Slice.defineSequence(jderobot, "SegmentsHelper", "jderobot.RGBSegment", true);
+    Slice.defineSequence(jderobot, "PointsHelper", "jderobot.RGBPoint", true);
 
-    	Slice.defineSequence(jderobot, "bufferPointHelper", "jderobot.RGBPoint", true);
-    	Slice.defineSequence(jderobot, "bufferSegmentHelper", "jderobot.RGBSegment", true);
+    jderobot.bufferSegments = Slice.defineStruct(
+        function(buffer, refresh)
+        {
+            this.buffer = buffer !== undefined ? buffer : null;
+            this.refresh = refresh !== undefined ? refresh : false;
+        },
+        false,
+        function(__os)
+        {
+            jderobot.SegmentsHelper.write(__os, this.buffer);
+            __os.writeBool(this.refresh);
+        },
+        function(__is)
+        {
+            this.buffer = jderobot.SegmentsHelper.read(__is);
+            this.refresh = __is.readBool();
+        },
+        2, 
+        false);
+
+    jderobot.bufferPoints = Slice.defineStruct(
+        function(buffer, refresh)
+        {
+            this.buffer = buffer !== undefined ? buffer : null;
+            this.refresh = refresh !== undefined ? refresh : false;
+        },
+        false,
+        function(__os)
+        {
+            jderobot.PointsHelper.write(__os, this.buffer);
+            __os.writeBool(this.refresh);
+        },
+        function(__is)
+        {
+            this.buffer = jderobot.PointsHelper.read(__is);
+            this.refresh = __is.readBool();
+        },
+        2, 
+        false);
 
 
     /**
@@ -93,10 +132,10 @@
 
     Slice.defineOperations(jderobot.Visualization, jderobot.VisualizationPrx,
     {
-        "drawSegment": [, , , , , , [[jderobot.Segment], [jderobot.Color]], , , , ],
-        "getSegment": [, , , , , ["jderobot.bufferSegmentHelper"], , , , , ],
-        "drawPoint": [, , , , , , [[jderobot.Point], [jderobot.Color]], , , , ],
-        "getPoints": [, , , , , ["jderobot.bufferPointHelper"], , , , , ],
+        "drawSegment": [, , , , , , [[jderobot.bufferSegments]], , , , ],
+        "getSegment": [, , , , , [jderobot.bufferSegments], , , , , ],
+        "drawPoint": [, , , , , , [[jderobot.bufferPoints]], , , , ],
+        "getPoints": [, , , , , [jderobot.bufferPoints], , , , , ],
         "clearAll": [, , , , , , , , , , ]
     });
     exports.jderobot = jderobot;

@@ -1,0 +1,10 @@
+Server: "localhost"
+Port: "11000"
+updatePoints: 1000 #miliseconds
+updateSegments: 1000 #miliseconds
+linewidth: 2 #width of the line
+pointsize: 8 #size of the point
+camera: #camera position
+  x: 100
+  y: 50
+  z: 300

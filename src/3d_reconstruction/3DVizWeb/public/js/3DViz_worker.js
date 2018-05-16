@@ -22,7 +22,7 @@ var srv;
 
 function connect(server,port){
   endpoint = "ws -h " + server + " -p " + port;
-  var proxy = ic.stringToProxy("3DViewer:" + endpoint);
+  var proxy = ic.stringToProxy("3DViz:" + endpoint);
   Promise = Prx.checkedCast(proxy).then(
       function(printer)
       {
@@ -33,15 +33,13 @@ function connect(server,port){
 
 function setPoint(point){
   srv.getPoints().then(function(data){
-    point = data;
-    self.postMessage({func:"drawPoint",points: point});
+    self.postMessage({func:"drawPoint",points: data});
   });
 }
 
 function setLine(){
   srv.getSegment().then(function(data){
-      segments = data;
-      self.postMessage(segments);
+      self.postMessage({func:"drawLine", segments: data});
   });
 }
 
@@ -71,10 +69,10 @@ onmessage = function(e) {
             break;
       case "ClearAll":
             clearAll();
+            break;
       case "setLine":
-            var seg = [];
-            var color = [];
             setLine();
+            break;
       case "setPoint":
             var point = []
             setPoint(point);
