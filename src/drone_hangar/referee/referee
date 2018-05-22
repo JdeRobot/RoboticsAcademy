@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python /usr/local/share/jderobot/python/referee/referee.py $1

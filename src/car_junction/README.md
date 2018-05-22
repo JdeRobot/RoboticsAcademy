@@ -1,13 +1,11 @@
-                            STOP PRACTICE
-                            =============
+Car Junction
+============
 
 The goal of this practice is to implement the logic of a navigation algorithm for 
 an automated vehicle. The vehicle must Stop at the T joint, where there is a stop 
 sign, wait until there are no cars and pass once the road is clear.
 
-////////////////////////////////////////////////////////////////////////////////
-                          E X E C U T I O N 
-////////////////////////////////////////////////////////////////////////////////
+## How to execute?
 
 To launch the example, follow the steps below:
 1. Run Gazebo simulator:
@@ -20,13 +18,12 @@ To launch the example, follow the steps below:
 
 To simplify the closure of the environment, just close the Stop Component 
 window(s). Ctrl + C will give problems.
-////////////////////////////////////////////////////////////////////////////////
-
 
 ## How to do the practice
 To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
 control logic into it.
 
+## Where to insert the code?
 [MyAlgorithm.py](MyAlgorithm.py#L74)
 ```
         def execute(self):
@@ -40,8 +37,10 @@ control logic into it.
 
 
 ### API
-* self.cameraC.getImage().data, self.cameraL.getImage().data, self.cameraR.getImage().data
- - to get image from center, left or right camera respectively.
+* self.cameraC.getImage().data - to get image from center camera
+* self.cameraL.getImage().data - to get image from left camera
+* self.cameraR.getImage().data - to get image from right camera
+
 * self.pose3d.getPose3d().x - to obtain the position of the robot
 * self.pose3d.getPose3d().y - to obtain the position of the robot
 * self.pose3d.getPose3d().yaw - to obtain the position of the robot
@@ -50,5 +49,5 @@ control logic into it.
 
 
 ## Demonstrative video
-https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE
+[Car Junction Video Demo](https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE)
 

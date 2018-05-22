@@ -74,7 +74,7 @@ To use it, only two actions must be carried out:
 
 ## Conversion of types
 ### Laser
-```
+`` `
     laser_data = self.laser.getLaserData ()
 
     def parse_laser_data (laser_data):
@@ -84,9 +84,9 @@ To use it, only two actions must be carried out:
             angle = math.radians (i)
             laser + = [(dist, angle)]
          return laser
-```
+`` `
 
-```
+`` `
         laser_vectorized = []
         for d, a in laser:
             # (4.2.1) laser into GUI reference system
@@ -96,28 +96,31 @@ To use it, only two actions must be carried out:
             laser_vectorized + = [v]
 
         laser_mean = np.mean (laser_vectorized, axis = 0)
-```
+`` `
 
 ### Coordinate system
-```
-    def absolute2relative (x, y, rx, ry, rt):
+`` `
+    def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
+    
+        # robotx, roboty are the absolute coordinates of the robot
+	# robott is its absolute orientation
         # Convert to relatives
-        dx = x - rx
-        dy = y - ry
+        dx = x_abs - robotx
+        dy = y_abs - roboty
 
         # Rotate with current angle
-        x = dx * math.cos (-rt) - dy * math.sin (-rt)
-        y = dx * math.sin (-rt) + dy * math.cos (-rt)
+        x_rel = dx * math.cos (-robott) - dy * math.sin (-robott)
+        y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
 
-return x, and
-```
+return x_rel, and y_rel
+`` `
 
 
 ## Debugging
 The graphical interface (GUI) allows to visualize each of the vectors of
 calculated forces. For this purpose, the following variables should be given 
 value:
-```
+`` `
         # Car direction
         self.carx = 0.0
         self.cary = 0.0
@@ -129,14 +132,14 @@ value:
         # Average direction
         self.avgx = 0.0
         self.avgy = 0.0
-```
+`` `
 
 As well as the destination that we have assigned:
-```
+`` `
         # Current target
         self.targetx = 0.0
         self.targety = 0.0
-```
+`` `
 
 ## Demonstration video
 
