@@ -65,8 +65,8 @@ class MyAlgorithm(threading.Thread):
 
     def parse_laser_data(self,laser_data):
         laser = []
-        for i in range(laser_data.numLaser):
-            dist = laser_data.distanceData[i]/1000.0
+        for i in range(180):
+            dist = laser_data.values[i]
             angle = math.radians(i)
             laser += [(dist, angle)]
         return laser
