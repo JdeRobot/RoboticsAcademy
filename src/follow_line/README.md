@@ -15,11 +15,11 @@ python2 ./follow_line.py follow_line_conf.yml
 To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
 
 ## Where to insert the code?
-[MyAlgorithm.py](MyAlgorithm.py#L69)
+[MyAlgorithm.py](MyAlgorithm.py#L87)
 ```
     def execute(self):
         #GETTING THE IMAGES
-        image = self.camera.getImage().data
+        image = self.getImage()
 
         # Add your code here
         print "Runing"
@@ -29,14 +29,14 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
         #self.motors.setW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image)
+        self.set_threshold_image(image)
 ```
 
 ### API
-* self.camera.getImage() - to get the image 
+* self.getImage() - to get the image 
 * self.motors.setV() - to set the linear speed
 * self.motors.setW() - to set the angular velocity
-* self.setImageFiltered() - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
+* self.set_threshold_image() - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
 
 ## Demonstrative video
