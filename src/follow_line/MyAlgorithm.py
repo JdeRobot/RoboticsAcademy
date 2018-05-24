@@ -1,11 +1,13 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
-
-import numpy as np
 import threading
 import time
-import cv2
 from datetime import datetime
+
+import math
+import jderobot
+import cv2
+import numpy as np
 
 time_cycle = 80
 
@@ -14,34 +16,56 @@ class MyAlgorithm(threading.Thread):
     def __init__(self, camera, motors):
         self.camera = camera
         self.motors = motors
-        self.image=None
+        self.threshold_image = np.zeros((640,360,3), np.uint8)
+        self.color_image = np.zeros((640,360,3), np.uint8)
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
+        self.threshold_image_lock = threading.Lock()
+        self.color_image_lock = threading.Lock()
         threading.Thread.__init__(self, args=self.stop_event)
-
-    def setImageFiltered(self, image):
+    
+    def getImage(self):
         self.lock.acquire()
-        self.image=image
+        img = self.camera.getImage().data
         self.lock.release()
+        return img
 
-    def getImageFiltered(self):
-        self.lock.acquire()
-        tempImage=self.image
-        self.lock.release()
-        return tempImage
+    def set_color_image (self, image):
+        img  = np.copy(image)
+        if len(img.shape) == 2:
+          img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+        self.color_image_lock.acquire()
+        self.color_image = img
+        self.color_image_lock.release()
+        
+    def get_color_image (self):
+        self.color_image_lock.acquire()
+        img = np.copy(self.color_image)
+        self.color_image_lock.release()
+        return img
+        
+    def set_threshold_image (self, image):
+        img = np.copy(image)
+        if len(img.shape) == 2:
+          img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+        self.threshold_image_lock.acquire()
+        self.threshold_image = img
+        self.threshold_image_lock.release()
+        
+    def get_threshold_image (self):
+        self.threshold_image_lock.acquire()
+        img  = np.copy(self.threshold_image)
+        self.threshold_image_lock.release()
+        return img
 
     def run (self):
 
         while (not self.kill_event.is_set()):
-
             start_time = datetime.now()
-
             if not self.stop_event.is_set():
-                self.execute()
-
+                self.algorithm()
             finish_Time = datetime.now()
-
             dt = finish_Time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             #print (ms)
@@ -60,17 +84,16 @@ class MyAlgorithm(threading.Thread):
     def kill (self):
         self.kill_event.set()
 
-
-    def execute(self):
+    def algorithm(self):
         #GETTING THE IMAGES
-        image = self.camera.getImage().data
+        image = self.getImage()
 
         # Add your code here
         print "Runing"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.sendV(10)
-        #self.motors.sendW(5)
+        #self.motors.setV(10)
+        #self.motors.setW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image)
+        self.set_threshold_image(image)
