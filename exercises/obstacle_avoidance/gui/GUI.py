@@ -106,8 +106,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
             self.playButton.setIcon(icon)
             self.algorithm.stop()
-            self.motors.hasproxy().setV(0)
-            self.motors.hasproxy().setW(0)
+            self.motors.sendV(0)
+            self.motors.sendW(0)
             #self.motors.sendVelocities()
             self.teleop.returnToOrigin()
 
@@ -120,12 +120,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setXYValues(self,newX,newY):
         myW=-newX*self.motors.getMaxW()
         myV=-newY*self.motors.getMaxV()
-        self.motors.hasproxy().setV(myV)
-        self.motors.hasproxy().setW(myW)
+        self.motors.sendV(myV)
+        self.motors.sendW(myW)
         #self.motors.sendVelocities(self.motors)
 
     def stopClicked(self):
-        self.motors.hasproxy().setV(0)
-        self.motors.hasproxy().setW(0)
+        self.motors.sendV(0)
+        self.motors.sendW(0)
         # self.motors.sendVelocities()
         self.teleop.returnToOrigin()

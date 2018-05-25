@@ -36,7 +36,7 @@ class MyAlgorithm(threading.Thread):
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
-        threading.Thread.__init__(self, args=self.stop_event)
+        threading.Thread.__init__(self, args=self.kill_event)
 
         # Init targets
         parser = Parser('targets.json')
@@ -64,7 +64,7 @@ class MyAlgorithm(threading.Thread):
     def run (self):
 
         while (not self.kill_event.is_set()):
-           
+                       
             start_time = datetime.now()
 
             if not self.stop_event.is_set():
@@ -77,6 +77,7 @@ class MyAlgorithm(threading.Thread):
             #print (ms)
             if (ms < time_cycle):
                 time.sleep((time_cycle - ms) / 1000.0)
+
 
     def stop (self):
         self.stop_event.set()
@@ -92,6 +93,7 @@ class MyAlgorithm(threading.Thread):
 
 
     def execute(self):
+        print "running"
         self.currentTarget=self.getNextTarget()
         self.targetx = self.currentTarget.getPose().x
         self.targety = self.currentTarget.getPose().y
