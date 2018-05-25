@@ -18,8 +18,7 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 
-from parallelIce.threadSensor import ThreadSensor
-from parallelIce.pose3dClient import Pose3D
+from threadSensor import ThreadSensor
 from sensors.grid import Grid
 import threading
 
@@ -29,13 +28,10 @@ class Sensor(threading.Thread):
     def __init__(self, grid, pose3d, start):
         self.grid = grid
         self.pose3d = pose3d
-        if self.pose3d.hasproxy():
-            self.grid.initPose(self.pose3d.getPose3d().x, 
-                               self.pose3d.getPose3d().y, 
-                               self.pose3d.getPose3d().yaw)
-        else:
-            self.grid.initPose(0, 0, 0)
-
+        self.grid.initPose(self.pose3d.getPose3d().x, 
+                           self.pose3d.getPose3d().y, 
+                           self.pose3d.getPose3d().yaw)
+       
         self.kill_event = threading.Event()
         self.thread = ThreadSensor(self, self.kill_event)
         self.thread.daemon = True
@@ -54,11 +50,9 @@ class Sensor(threading.Thread):
 
 
     def update(self):
-        if self.pose3d.hasproxy():
-            self.pose3d.pose3d.update()
-            self.grid.updatePose(self.pose3d.getPose3d().x, 
-                                 self.pose3d.getPose3d().y, 
-                                 self.pose3d.getPose3d().yaw)
+        self.grid.updatePose(self.pose3d.getPose3d().x, 
+                             self.pose3d.getPose3d().y, 
+                             self.pose3d.getPose3d().yaw)
 
         
     def setGetPathSignal(self, signal):
@@ -66,17 +60,13 @@ class Sensor(threading.Thread):
 
 
     def getPose3D(self):
-        if self.pose3d.hasproxy():
-            return self.pose3d.getPose3d()
+        return self.pose3d.getPose3d()
 
     def getRobotX(self):
-        if self.pose3d.hasproxy():
-            return self.pose3d.getPose3d().x
+        return self.pose3d.getPose3d().x
 
     def getRobotY(self):
-        if self.pose3d.hasproxy():
-            return self.pose3d.getPose3d().y
+        return self.pose3d.getPose3d().y
 
     def getRobotTheta(self):
-        if self.pose3d.hasproxy():
-            return self.pose3d.getPose3d().yaw    
+        return self.pose3d.getPose3d().yaw    
