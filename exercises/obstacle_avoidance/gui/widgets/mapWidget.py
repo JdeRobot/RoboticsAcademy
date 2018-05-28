@@ -45,6 +45,7 @@ class MapWidget(QWidget):
         self.targetid = "NaN"
         self.scale = 30.0
         self.laser = []
+        self.MAX_RANGE = 0
         
     def initUI(self):
         layout=QGridLayout()  
@@ -83,10 +84,10 @@ class MapWidget(QWidget):
         self.drawCar(painter)
         
         # Draw laser
-        self.drawLasel(painter)
+        self.drawLaser(painter)
 
         # Draw target
-        self.drawTarget(painter, self.targetx, self.targety)
+        self.drawTarget(painter, 1, 1)
 
         # Draw arrows
         self.drawArrow(painter, self.carx, self.cary, Qt.green, 2)
@@ -116,12 +117,17 @@ class MapWidget(QWidget):
         painter.fillRect(carsize/4,carsize-carsize/8,-tiresize/2,tiresize,Qt.black)
 
 
-    def drawLasel(self, painter):
+    def drawLaser(self, painter):
         pen = QPen(QColor('#6897BB'), 2)
         painter.setPen(pen)
+
         for d in self.laser:
-            px = -d[0]*math.sin(d[1])*self.scale
-            py = d[0]*math.cos(d[1])*self.scale
+            if d[0] > self.MAX_RANGE:
+                px = -self.MAX_RANGE*math.sin(d[1])*self.scale
+                py = self.MAX_RANGE*math.cos(d[1])*self.scale
+            else:
+                px = -d[0]*math.sin(d[1])*self.scale
+                py = d[0]*math.cos(d[1])*self.scale
             painter.drawLine(QPointF(0,0),QPointF(py, px))
             
     def drawArrow(self, painter, posx, posy, color, width):
@@ -224,13 +230,16 @@ class MapWidget(QWidget):
         self.targetid = id
 
     def setLaserValues(self, laser):
+
         # Init laser array
+        self.MAX_RANGE = laser.maxRange
+        angle = int(round(math.degrees(laser.maxAngle)))
         if len(self.laser) == 0:
-            for i in range(laser.numLaser):
+            for i in range(angle):
                 self.laser.append((0,0))
 
-        for i in range(laser.numLaser):
-            dist = laser.distanceData[i]/1000.0
+        for i in range(angle):
+            dist = laser.values[i]
             angle = math.radians(i)
             self.laser[i] = (dist, angle)
 

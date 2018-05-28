@@ -19,33 +19,24 @@
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
-import sys
-import config
-import comm
+import sys, os
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-from parallelIce.cameraClient import CameraClient 
-from parallelIce.motors import Motors
-from parallelIce.pose3dClient import Pose3DClient
-from parallelIce.laserClient import LaserClient
-import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
 
-
+from interfaces.camera import ListenerCamera
+from interfaces.pose3d import ListenerPose3d
+from interfaces.laser import ListenerLaser
+from interfaces.motors import PublisherMotors
 
 
 if __name__ == "__main__":
 
-    cfg = config.load(sys.argv[1])
-
-    #starting comm
-    jdrc= comm.init(cfg, 'ObstacleAvoidance')
-
-    camera = jdrc.getCameraClient("ObstacleAvoidance.CameraLeft")
-    motors = jdrc.getMotorsClient ("ObstacleAvoidance.Motors")
-    pose3d = jdrc.getPose3dClient("ObstacleAvoidance.Pose3D")
-    laser = jdrc.getLaserClient("ObstacleAvoidance.Laser").hasproxy()
+    camera = ListenerCamera("/F1ROS/cameraL/image_raw")
+    motors = PublisherMotors("/F1ROS/cmd_vel", 3, 0.5)
+    pose3d = ListenerPose3d("/F1ROS/odom")
+    laser = ListenerLaser("/F1ROS/laser/scan")
 
     algorithm=MyAlgorithm(pose3d, laser, motors)
 
@@ -63,5 +54,6 @@ if __name__ == "__main__":
     t2.daemon=True
     t2.start()
 
+    id = app.exec_()
+    os._exit(id)
 
-    sys.exit(app.exec_())

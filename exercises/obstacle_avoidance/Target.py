@@ -18,7 +18,6 @@
 #
 
 import sys, traceback
-import jderobot
 
 class Target:
     def __init__(self,id,pose,active=False,reached=False):
