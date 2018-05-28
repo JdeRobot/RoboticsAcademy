@@ -148,6 +148,7 @@ class Map(QWidget):
         self.setPainterSettings(painter, QtCore.Qt.green, 3)
         self.paintPath(painter, path)
 
+
         self.paintPosition(pos[0], pos[1], grid.getAngle(), copy, painter)
 
         self.mapWidget.setPixmap(copy)

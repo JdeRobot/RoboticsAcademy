@@ -22,8 +22,6 @@
 #
 
 import sys
-import config
-import comm
 from PyQt5.QtWidgets import QApplication
 
 from MyAlgorithm import MyAlgorithm
@@ -32,11 +30,12 @@ from gui.GUI import MainWindow
 from threadMotors import ThreadMotors
 from threadMotors import Velocity
 
-import easyiceconfig as EasyIce
-from parallelIce.pose3dClient import Pose3D
-from parallelIce.motors import Motors
 from sensors.sensor import Sensor
 from sensors.grid import Grid
+
+from interfaces.motors import PublisherMotors
+from interfaces.pose3d import ListenerPose3d
+
 
 import signal
 
@@ -61,12 +60,8 @@ if __name__ == '__main__':
 
     removeMapFromArgs()
 
-    cfg = config.load(sys.argv[1])
-    #starting comm
-    jdrc= comm.init(cfg, 'TeleTaxi')
-
-    motors = jdrc.getMotorsClient ("TeleTaxi.Motors")
-    pose = jdrc.getPose3dClient("TeleTaxi.Pose3D")
+    motors = PublisherMotors("/taxi_holo/cmd_vel", 4, 0.3)
+    pose = ListenerPose3d("/taxi_holo/odom")
 
     vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
 

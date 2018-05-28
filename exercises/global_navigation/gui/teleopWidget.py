@@ -18,18 +18,17 @@
 
 import resources_rc
 from PyQt5 import QtGui
-from PyQt5 import QtCore
+from PyQt5.QtCore import pyqtSignal, QPointF, Qt, QPoint
 from PyQt5.QtWidgets import QWidget, QGridLayout
-
 
 class TeleopWidget(QWidget):
 
-    stopSIG=QtCore.pyqtSignal()
+    stopSIG=pyqtSignal()
     
     def __init__(self,winParent):    
         super(TeleopWidget, self).__init__()
         self.winParent=winParent
-        self.line = QtCore.QPointF(0, 0);
+        self.line = QPointF(0, 0);
         self.qimage=QtGui.QImage()
         self.qimage.load(':images/ball.png')
         self.stopSIG.connect(self.stop)
@@ -40,23 +39,21 @@ class TeleopWidget(QWidget):
         self.setLayout(layout)
         self.setAutoFillBackground(True)
         p = self.palette()
-        p.setColor(self.backgroundRole(), QtCore.Qt.black)
+        p.setColor(self.backgroundRole(), Qt.black)
         self.setPalette(p)
         self.resize(300,300)
         self.setMinimumSize(300,300)
         
     def stop(self):
-        self.line = QtCore.QPointF(0, 0);
+        self.line = QPointF(0, 0);
         self.repaint();
     
-    
     def mouseMoveEvent(self,e):
-        if e.buttons() == QtCore.Qt.LeftButton:
+        if e.buttons() == Qt.LeftButton:
             x = e.x()-self.width()/2
             y = e.y()-self.height()/2
-            self.line = QtCore.QPointF(x, y)
+            self.line = QPointF(x, y)
             self.repaint()
-
 
     def paintEvent(self, e):
         _width = self.width()
@@ -67,47 +64,47 @@ class TeleopWidget(QWidget):
     
         painter=QtGui.QPainter(self)
     
-        pen = QtGui.QPen(QtCore.Qt.blue, width)
+        pen = QtGui.QPen(Qt.blue, width)
         painter.setPen(pen)
     
         #Centro del widget
-        painter.translate(QtCore.QPoint(_width/2, _height/2))
+        painter.translate(QPoint(_width/2, _height/2))
     
         #eje
-        painter.drawLine(QtCore.QPointF(-_width, 0),
-                QtCore.QPointF( _width, 0))
+        painter.drawLine(QPointF(-_width, 0),
+                QPointF( _width, 0))
     
-        painter.drawLine(QtCore.QPointF(0, -_height),
-                QtCore.QPointF(0, _height))
+        painter.drawLine(QPointF(0, -_height),
+                QPointF(0, _height))
     
         #con el raton
-        pen = QtGui.QPen(QtCore.Qt.red, width)
+        pen = QtGui.QPen(Qt.red, width)
         painter.setPen(pen)
 
         #Comprobamos que el raton este dentro de los limites
         if abs(self.line.x()*2) >= self.size().width():
             if self.line.x()>=0:
                 self.line.setX(self.size().width()/2)
-            elif self.line.x()<0:	
+            elif self.line.x()<0:   
                 self.line.setX((-self.size().width()/2)+1)
         
         if abs(self.line.y()*2) >= self.size().height():
             if self.line.y()>=0:
                 self.line.setY(self.size().height()/2)
-            elif self.line.y()<0:	
+            elif self.line.y()<0:   
                 self.line.setY((-self.size().height()/2)+1)
 
-        painter.drawLine(QtCore.QPointF(self.line.x(), -_height),
-                QtCore.QPointF(self.line.x(), _height))
+        painter.drawLine(QPointF(self.line.x(), -_height),
+                QPointF(self.line.x(), _height))
     
-        painter.drawLine(QtCore.QPointF(-_width, self.line.y()),
-                QtCore.QPointF( _width, self.line.y()))
+        painter.drawLine(QPointF(-_width, self.line.y()),
+                QPointF( _width, self.line.y()))
 
         #print "x: %f y: %f" % (self.line.x(), self.line.y())
 
         v_normalized = (1.0/(self.size().height()/2)) * self.line.y()
         v_normalized = float("{0:.2f}".format(v_normalized))
-        w_normalized = (1.0/(self.size().width()/2)) * self.line.x()
+        w_normalized = -(1.0/(self.size().width()/2)) * self.line.x()
         w_normalized = float("{0:.2f}".format(w_normalized))
 
         #print "v: %f w: %f" % (v_normalized,w_normalized)
