@@ -1,4 +1,4 @@
-                     GLOBAL NAVIGATION PRACTICE
+# GLOBAL NAVIGATION PRACTICE
                      ==========================
 The objective of this practice is to implement the logic of a Gradient Path 
 Planning (GPP) algorithm. Global navigation through GPP, consists of:
@@ -18,25 +18,21 @@ of difficulty, as well as any other one that occurs to you:
 * Optimize the way to find the shortest path.
 * Arrive as quickly as possible to the destination.
 
-////////////////////////////////////////////////////////////////////////////////
-                          E X E C U T I O N
-////////////////////////////////////////////////////////////////////////////////
+## E X E C U T I O N
 
 Follow these simple steps to run the practice:
-1. Launch Gazebo with (or without) GUI in one terminal:
-$ gazebo cityLarge.world # With GUI
-$ gzserver cityLarge.world # Without GUI
+1. Launch Gazebo with roslaunch
+$ roslaunch taxi-holo.launch
 
 2. Execute the practice's component indicating the configuration file for the map:
-$ python2 globalNavigation.py taxiMap.conf teleTaxi_conf.yml
+$ python2 globalNavigation.py taxiMap.conf
 
 3. Additionally, you can execute the referee component to check the efficiency 
-and effectiveness of your algorithm:
+and effectiveness of your algorithm (*NOT WORKING YET*):
 $ python2 ./referee.py referee.yml
     
 * REMEMBER: Once running, double click in any point of the map to set destination,
   then click on "Generate Path" and finally click "GO" to see the result.
-////////////////////////////////////////////////////////////////////////////////
 
 ## How to do the practice
 To carry out the practice, you must edit the file MyAlgorithm.py and insert all 
