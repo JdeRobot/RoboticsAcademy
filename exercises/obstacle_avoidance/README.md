@@ -1,5 +1,4 @@
-                    OBSTACLE AVOIDANCE
-                    ==================
+# OBSTACLE AVOIDANCE
 
 The objective of this practice is to implement the logic of the VFF navigation
 algorithm.
@@ -19,24 +18,18 @@ of difficulty, as well as any other one that occurs to you:
 * Obstacles in movement
 * Robustness in situations of indecision (zero vector sum)
 
-
-/////////////////////////////////////////////////////////////////////////////
-                         E X E C U T I O N
-/////////////////////////////////////////////////////////////////////////////
+## E X E C U T I O N
 
 We will use two terminal to run this practice:
 
 1. Run the simulator Gazebo with the corresponding world:
-$ gazebo simpleCircuitObstacles.world
+$ roslaunch f1-obstacles.launch
 
 2. In another termianl, run the obstacle_avoidance component:
-$ python2 ./obstacle_avoidance.py obstacle_avoidance_conf.yml
-
+$ python2 ./obstacle_avoidance.py
 
 To simplify the closure of the environment, just close the
 window(s) of obstacle_avoidance. * Ctrl + C will be problematic *.
-
-/////////////////////////////////////////////////////////////////////////////
 
 ## How to do the practice
 To carry out the practice, you must edit the file MyAlgorithm.py and
