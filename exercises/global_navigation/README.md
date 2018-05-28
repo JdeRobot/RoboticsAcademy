@@ -22,14 +22,20 @@ of difficulty, as well as any other one that occurs to you:
 
 Follow these simple steps to run the practice:
 1. Launch Gazebo with roslaunch
+```
 $ roslaunch taxi-holo.launch
+```
 
 2. Execute the practice's component indicating the configuration file for the map:
+```
 $ python2 globalNavigation.py taxiMap.conf
+```
 
 3. Additionally, you can execute the referee component to check the efficiency 
 and effectiveness of your algorithm (*NOT WORKING YET*):
+```
 $ python2 ./referee.py referee.yml
+```
     
 * REMEMBER: Once running, double click in any point of the map to set destination,
   then click on "Generate Path" and finally click "GO" to see the result.
