@@ -1,5 +1,5 @@
 # GLOBAL NAVIGATION PRACTICE
-                     ==========================
+
 The objective of this practice is to implement the logic of a Gradient Path 
 Planning (GPP) algorithm. Global navigation through GPP, consists of:
 
