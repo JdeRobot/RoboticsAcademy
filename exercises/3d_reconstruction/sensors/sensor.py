@@ -101,9 +101,9 @@ class Sensor:
                 seg2= jderobot.Segment()
                 seg2.fromPoint=pointJde3
                 seg2.toPoint=pointJde4
-                pointBuffer.getbufferSegment(seg1, colorJDE)
+                pointBuffer.getbufferSegment(seg1, colorJDE, True)
                 #self.viewerProxy.drawSegment(seg1,colorJDE)
-                pointBuffer.getbufferSegment(seg2, colorJDE)
+                pointBuffer.getbufferSegment(seg2, colorJDE, True)
                 #self.viewerProxy.drawSegment(seg2,colorJDE)
 
 
@@ -188,7 +188,6 @@ class Sensor:
         self.motorsProxy.setW(0)
 
     def drawPoint(self,point, color=(0,0,0)):
-
 
         pointJde= jderobot.Point()
         pointJde.x=float(point[0])/100.0

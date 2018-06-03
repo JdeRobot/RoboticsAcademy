@@ -6,24 +6,34 @@ import numpy as np
 import threading
 import sensor
 import cv2
+from random import uniform
+
+
 
 bufferpoints = []
 bufferline = []
-colorline = ""
+refresh = False
 
 class PointI(jderobot.Visualization):
     def getSegment(self, current=None):
-        rgblinelist = []
-        rgblinelist = bufferline
+        rgblinelist = jderobot.bufferSegments()
+	rgblinelist.buffer = []
+	rgblinelist.refresh = refresh
+	for i in bufferline[:]:
+            rgblinelist.buffer.append(i)
+            index = bufferline.index(i)
+            del bufferline[index]
         return rgblinelist
-        
+
     def drawPoint(self,point, color, current=None):
         print point
 
     def getPoints(self, current=None):
-        rgbpointlist = []
+        rgbpointlist = jderobot.bufferPoints()
+	rgbpointlist.buffer = []
+	rgbpointlist.refresh = refresh
         for i in bufferpoints[:]:
-            rgbpointlist.append(i)
+            rgbpointlist.buffer.append(i)
             index = bufferpoints.index(i)
             del bufferpoints[index]
         return rgbpointlist
@@ -31,21 +41,7 @@ class PointI(jderobot.Visualization):
     def clearAll(self, current=None):
         print "Clear All"
 
-
-try:
-    endpoint = "default -h localhost -p 9957:ws -h localhost -p 11000"
-    id = Ice.InitializationData()
-    ic = Ice.initialize(None, id)
-    adapter = ic.createObjectAdapterWithEndpoints("3DViewerA", endpoint)
-    object = PointI()
-    adapter.add(object, ic.stringToIdentity("3DViewer"))
-    adapter.activate()
-    #ic.waitForShutdown()
-except KeyboardInterrupt:
-	del(ic)
-	sys.exit()
-
-def getbufferSegment (seg,color):
+def getbufferSegment (seg,color,plane):
     rgbsegment = jderobot.RGBSegment()
     rgbsegment.seg = seg
     rgbsegment.c = color
@@ -60,3 +56,15 @@ def getbufferPoint(point, color):
     rgbpoint.g = color.g
     rgbpoint.b = color.b
     bufferpoints.append(rgbpoint)
+
+try:
+    endpoint = "default -h localhost -p 9957:ws -h localhost -p 11000"
+    id = Ice.InitializationData()
+    ic = Ice.initialize(None, id)
+    adapter = ic.createObjectAdapterWithEndpoints("3DVizA", endpoint)
+    object = PointI()
+    adapter.add(object, ic.stringToIdentity("3DViz"))
+    adapter.activate()
+except KeyboardInterrupt:
+	del(ic)
+	sys.exit()

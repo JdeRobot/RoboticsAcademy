@@ -47,4 +47,4 @@ var server=http.createServer(function(request,response){
 var port = 7777;
 server.listen(port);
 
-console.log('Runnig CameraViewJS on http://localhost:'+port);
+console.log('Runnig 3DViz on http://localhost:'+port);
