@@ -58,10 +58,14 @@ def getbufferPoint(point, color):
     bufferpoints.append(rgbpoint)
 
 try:
-    endpoint = "default -h localhost -p 9957:ws -h localhost -p 11000"
+    cfg = config.load(sys.argv[1])
+    jdrc= comm.init(cfg, '3DReconstruction')
+    endpoint = jdrc.getConfig().getProperty("3DReconstruction.Viewer.Endpoint")
+    proxy = jdrc.getConfig().getProperty("3DReconstruction.Viewer.Proxy")
+    refresh = jdrc.getConfig().getProperty("3DReconstruction.Viewer.Refresh")
     id = Ice.InitializationData()
     ic = Ice.initialize(None, id)
-    adapter = ic.createObjectAdapterWithEndpoints("3DVizA", endpoint)
+    adapter = ic.createObjectAdapterWithEndpoints(proxy, endpoint)
     object = PointI()
     adapter.add(object, ic.stringToIdentity("3DViz"))
     adapter.activate()

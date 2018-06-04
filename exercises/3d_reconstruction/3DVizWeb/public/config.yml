@@ -1,8 +1,8 @@
 Server: "localhost"
 Port: "11000"
-updatePoints: 1000 #miliseconds
-updateSegments: 1000 #miliseconds
-linewidth: 2 #width of the line
+updatePoints: 1000 #miliseconds to uptade the points
+updateSegments: 1000 #miliseconds to uptade the segments
+linewidth: 2 #width of the segments
 pointsize: 8 #size of the point
 camera: #camera position
   x: 100
