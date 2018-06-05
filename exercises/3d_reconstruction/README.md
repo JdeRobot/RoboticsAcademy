@@ -18,42 +18,47 @@ sudo cp interface/visualization_ice.py /opt/jderobot/lib/python2.7
 ```
 sudo apt-get install nodejs
 sudo apt-get install npm
-cd 3DViewer-web
+cd 3DVizWeb
 npm install electron --save-dev --save-exact
 npm install jquery
 npm install js-yaml
 ```
-
-
 ////////////////////////////////////////////////////////////////////////////////
-                           E X E C U T I O N 
+                           E X E C U T I O N
 ////////////////////////////////////////////////////////////////////////////////
 
 Follow these simple steps to launch the practice:
 
 1. First of all, run Gazebo simulator:
-    * Execution without seeing the world: 
+    * Execution without seeing the world:
 `$ gzserver reconstruccion3D.world`
-    * Normal execution (seeing the world): 
+    * Normal execution (seeing the world):
 `$ gazebo reconstruccion3D.world`
 
 2. Then, run the 3d_reconstruction component:
 `$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
 
-2. Finally, launch 3D viewer tool:
-``` 
-cd 3DViewer-web
+ 3. Finally, launch 3D viewer tool:
+* ```
+cd 3DVizWeb
 npm start
 
-``` 
+```
 
 
-* To simplify the closure of the environment, just close the Autopark window (s). 
+* To simplify the closure of the environment, just close the Autopark window (s).
   Ctrl + C will give problems.
+
+* To change the configuration of 3DVizWeb:
+  ```
+    Open 3DVizWeb/public/config.yml
+    Modify only the next fields (updatePoints, updateSegments, linewidth, pointsize, camera)
+  ```
+
 ////////////////////////////////////////////////////////////////////////////////
 
 ## How to do the practice
-To carry out the practice, you must edit the MyAlgorithm.py file and insert 
+To carry out the practice, you must edit the MyAlgorithm.py file and insert
 the control logic into it.
 
 ### Where to insert the code
@@ -89,7 +94,7 @@ the control logic into it.
    ```
    point=np.array([1, 1, 1])
    color=(255,255,255)
-   self.sensor.drawPoint(point,color[1],color[2],color[3])) 
+   self.sensor.drawPoint(point,color[1],color[2],color[3]))
    ```
 
 ## Demonstrative video
