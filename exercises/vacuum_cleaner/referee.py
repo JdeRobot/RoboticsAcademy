@@ -133,6 +133,8 @@ class percentajeWidget(QWidget):
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
         self.map = cv2.resize(self.map, (500, 500))
+        image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
+        self.pixmap = QtGui.QPixmap.fromImage(image)
         self.pose3d = pose3d
         self.percentajeHouse = 0
         self.numPixels = self.calculatePixelsWhite()
@@ -181,9 +183,12 @@ class percentajeWidget(QWidget):
     def calculatePixelsWhite(self):
         # Calculating the 100% of the pixels that can be traversed
         numPixels = 0
+        img = self.pixmap.toImage()
         for i in range(0, self.map.shape[1]):
             for j in range(0, self.map.shape[0]):
-                if self.map[i][j] == 255:
+                c = img.pixel(i,j)
+                color = QtGui.QColor(c).getRgbF()
+                if color == (1.0, 1.0, 1.0, 1.0):
                     numPixels = numPixels + 1
         return numPixels
 
@@ -197,6 +202,7 @@ class percentajeWidget(QWidget):
         y = self.pose3d.getPose3d().y
         scale = 50
 
+        img = self.pixmap.toImage()
         final_poses = self.RTVacuum() * np.matrix([[x], [y], [1], [1]]) * scale
 
         i_init = int(-50/4+final_poses.flat[0] + self.map.shape[1]/2)
@@ -205,10 +211,12 @@ class percentajeWidget(QWidget):
         j_finish = int(50/4+final_poses[1] + self.map.shape[0]/2)
         for k in range(i_init, i_finish+1):
             for l in range(j_init, j_finish+1):
-                if (self.map[k][l] == 255):
-                    self.numPixelsWalked = self.numPixelsWalked + 1
-                    self.map[k][l] = 128
-
+                c = img.pixel(k,l)
+                color = QtGui.QColor(c).getRgbF()
+                if color == (1.0, 1.0, 1.0, 1.0):
+                    if self.map[k][l] != 128:
+                        self.numPixelsWalked = self.numPixelsWalked + 1
+                        self.map[k][l] = 128
         self.percentajeHouse = self.calculatePercentaje()
 
 
