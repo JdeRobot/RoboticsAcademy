@@ -1,12 +1,18 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+
 import numpy as np
 import threading
 import time
 from datetime import datetime
 import jderobot
-
+import math
+import cv2
+from math import pi as pi
+import random
 
 time_cycle = 80
-        
+
 
 class MyAlgorithm(threading.Thread):
 
@@ -22,9 +28,26 @@ class MyAlgorithm(threading.Thread):
         threading.Thread.__init__(self, args=self.stop_event)
 
 
+    def parse_laser_data(self,laser_data):
+        laser = []
+        for i in range(180):
+            dist = laser_data.values[i]
+            angle = math.radians(i)
+            laser += [(dist, angle)]
+        return laser
+
+    def laser_vector(self,laser_array):
+        laser_vectorized = []
+        for d,a in laser_array:
+            x = d * math.cos(a) * -1
+            y = d * math.sin(a) * -1
+            v = (x, y)
+            laser_vectorized += [v]
+        return laser_vectorized
+
     def run (self):
         while (not self.kill_event.is_set()):
-           
+
             start_time = datetime.now()
 
             if not self.stop_event.is_set():
@@ -40,7 +63,7 @@ class MyAlgorithm(threading.Thread):
 
     def stop (self):
         self.motors.sendV(0)
-        self.motors.sendW(0)
+        self.motors.sendAZ(0)
         self.stop_event.set()
 
     def play (self):
@@ -51,16 +74,12 @@ class MyAlgorithm(threading.Thread):
 
     def kill (self):
         self.kill_event.set()
-        
 
     def execute(self):
 
-        # Add your code here
-        print "Runing"
-
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.sendV(10)
-        #self.motors.sendW(5)
-        
+        print ('Execute')
         # TODO
-        
+        print self.pose3d.getPose3d().x
+        print self.pose3d.getPose3d().y
+        # Vacuum's yaw
+        yaw = self.pose3d.getPose3d().yaw
