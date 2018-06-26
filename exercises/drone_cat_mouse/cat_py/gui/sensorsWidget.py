@@ -173,8 +173,8 @@ class SensorsWidget(QWidget):
             self.drawPitchRollValues(self.quatToPitch(qw,qx,qy,qz)*180/math.pi,self.quatToRoll(qw,qx,qy,qz)*180/math.pi)
 
 
-        navdata=self.winParent.getNavData().getNavData()
-
+        #navdata=self.winParent.getNavData().getNavData()
+        navdata = None
         if navdata != None:
             #self.battery.setValue(navdata.batteryPercent)
             self.drawVelocities(navdata.vx,navdata.vy,navdata.vz)
