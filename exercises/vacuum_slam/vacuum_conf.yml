@@ -1,29 +1,30 @@
 VacuumSLAM:
 
   Motors:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:tcp -h localhost -p 9003"
-    Topic: "/VacuumSLAM/Motors"
+    Topic: "/cmd_vel"
     Name: VacuumSLAMMotors
 
   Pose3D:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Pose3D:tcp -h localhost -p 9003"
-    Topic: "/VacuumSLAM/Pose3D"
+    Topic: "/odom"
     Name: VacuumSLAMPose3d
 
   Laser:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Laser:tcp -h localhost -p 9003"
-    Topic: "/VacuumSLAM/Laser"
+    Topic: "/laser/scan"
     Name: VacuumSLAMLaser
 
   Bumper:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Bumper:tcp -h localhost -p 9003"
-    Topic: "/VacuumSLAM/Bumper"
+    Topic: "/mobile_base/events/bumper"
     Name: VacuumSLAMBumper
 
-    maxV: 5
-    maxW: 20
-NodeName: VacuumSLAM
+  maxV: 5
+  maxW: 20
+
+  NodeName: VacuumSLAM

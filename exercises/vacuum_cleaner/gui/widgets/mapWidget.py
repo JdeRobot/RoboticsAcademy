@@ -55,16 +55,16 @@ class MapWidget(QWidget):
         self.setMinimumSize(500,500)
 
 
-    def setLaserValues(self, laser):
+    def setLaserValues(self, laser_data):
         # Init laser array
         if len(self.laser) == 0:
-            for i in range(laser.numLaser):
+            for i in range(180):
                 self.laser.append((0,0))
 
-        for i in range(laser.numLaser):
-            dist = laser.distanceData[i]/1000.0
+        for i in range(180):
+            dist = laser_data.values[i]
             angle = -math.pi/2 + math.radians(i)
-            self.laser[i] = (dist, angle)
+            self.laser += [(dist, angle)]
 
 
     def RTx(self, angle, tx, ty, tz):

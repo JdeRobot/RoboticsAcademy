@@ -25,6 +25,7 @@ from gui.widgets.communicator import Communicator
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow
 from gui.form import Ui_MainWindow
+from jderobotTypes import CMDVel
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -108,10 +109,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.algorithm
 
     def setXYValues(self,newX,newY):
-        myW=-newX*self.motors.getMaxW()
-        myV=-newY*self.motors.getMaxV()
-        self.motors.sendV(myV)
-        self.motors.sendW(myW)
+        vel = CMDVel()
+        myW=-newX*(self.motors.getMaxW())*2
+        myV=-newY*(self.motors.getMaxV())
+        vel.vx = myV
+        vel.az = myW
+        self.motors.sendVelocities(vel)
 
     def stopClicked(self):
         self.motors.sendV(0)

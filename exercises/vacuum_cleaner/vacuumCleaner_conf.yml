@@ -1,29 +1,30 @@
 VacuumCleaner:
 
   Motors:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:tcp -h localhost -p 9003"
-    Topic: "/VacuumCleaner/Motors"
+    Topic: "/cmd_vel"
     Name: VacuumCleanerMotors
 
   Pose3D:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Pose3D:tcp -h localhost -p 9003"
-    Topic: "/VacuumCleaner/Pose3D"
+    Topic: "/odom"
     Name: VacuumCleanerPose3d
 
   Laser:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Laser:tcp -h localhost -p 9003"
-    Topic: "/VacuumCleaner/Laser"
+    Topic: "/laser/scan"
     Name: VacuumCleanerLaser
 
   Bumper:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Bumper:tcp -h localhost -p 9003"
-    Topic: "/VacuumCleaner/Bumper"
+    Topic: "/mobile_base/events/bumper"
     Name: VacuumCleanerBumper
 
-    maxV: 5
-    maxW: 20
-NodeName: VacuumCleaner
+  maxV: 5
+  maxW: 20
+
+  NodeName: VacuumCleaner
