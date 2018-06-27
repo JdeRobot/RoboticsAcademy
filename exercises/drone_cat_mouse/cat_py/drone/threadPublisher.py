@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 #
 #  Copyright (C) 1997-2016 JDE Developers Team
 #
@@ -18,37 +17,30 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
+import threading
+import time
+from datetime import datetime
 
-import sys
-from MyAlgorithm import MyAlgorithm
-from gui.threadGUI import ThreadGUI
-from gui.GUI import MainWindow
-from PyQt5.QtWidgets import QApplication
-
-from drone import Drone
-
-import signal
-
-signal.signal(signal.SIGINT, signal.SIG_DFL)
-
-if __name__ == '__main__':
-
-    drone = Drone("mavros/cmd/arming", "mavros/cmd/land","mavros/set_mode",  "/mavros/setpoint_velocity/cmd_vel","/IntrorobROS/Pose3D",  "/IntrorobROS/image_raw")
+time_cycle = 80
 
 
-    algorithm=MyAlgorithm(drone)
+class ThreadPublisher(threading.Thread):
 
+    def __init__(self, pub, kill_event):
+        self.pub = pub
+        self.kill_event = kill_event
+        threading.Thread.__init__(self, args=kill_event)
 
-    app = QApplication(sys.argv)
-    frame = MainWindow()
-    frame.setDrone(drone)
-    frame.setAlgorithm(algorithm)
-    frame.show()
+    def run(self):
+        while (not self.kill_event.is_set()):
+            start_time = datetime.now()
 
+            self.pub.publish()
 
+            finish_Time = datetime.now()
 
-    t2 = ThreadGUI(frame)
-    t2.daemon=True
-    t2.start()
-
-    sys.exit(app.exec_())
+            dt = finish_Time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            #print (ms)
+            if (ms < time_cycle):
+                time.sleep((time_cycle - ms) / 1000.0)
