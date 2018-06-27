@@ -161,7 +161,7 @@ class SensorsWidget(QWidget):
         
         
     def updateSensors(self):
-        pose=self.winParent.getPose3D().getPose3d()
+        pose=self.winParent.getDrone().getPose3d()
 
         if pose != None:
             qw=pose.q[0]

@@ -33,7 +33,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
 
-    drone = Drone()
+    drone = Drone("mavros/cmd/arming", "mavros/cmd/land","mavros/set_mode",  "/mavros/setpoint_velocity/cmd_vel","/IntrorobROS/Pose3D",  "/IntrorobROS/image_raw")
 
 
     algorithm=MyAlgorithm(drone)

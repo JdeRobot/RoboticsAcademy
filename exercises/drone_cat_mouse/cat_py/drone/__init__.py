@@ -72,3 +72,7 @@ class Drone:
     def getPose3d(self):
         return self.__pose3d.getPose3d()
 
+    def stop(self):
+        self.__pose3d.stop()
+        self.__camera.stop()
+
