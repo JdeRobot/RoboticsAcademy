@@ -67,14 +67,14 @@ insert the control logic.
 ```
 
 ### API
-* cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
-* pose.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
-* pose.getRoll(), pose.getPitch(), pose.getYaw(): returns the rotation values of the drone in space.
-* extra.toggleCam(): changes the drone's active camera (frontal or the one below).
-* extra.takeoff(): Takeoff of the drone.
-* extra.land(): landing of the drone.
-* camera.getImage() - to get the image received from server. Content: height, width, format, data (opencv Image)
-* camera.setFilteredImage(filt_image) - to set filtered image (Opencv Image)
+* drone.sendCMDVel(vx,vy,vz,ax,ay,az): sends linear and angular speed commands to the drone.
+* drone.getPose3d(): returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
+* drone.getRoll(), drone.getPitch(), drone.getYaw(): returns the rotation values of the drone in space.
+* drone.toggleCam(): changes the drone's active camera (frontal or the one below).
+* drone.takeoff(): Takeoff of the drone.
+* drone.land(): landing of the drone.
+* drone.getImage() - to get the image received from server. Content: height, width, format, data (opencv Image)
+* drone.setFilteredImage(filt_image) - to set filtered image (Opencv Image)
 
 Image to be processed is in *camera.getImage().data*
 
