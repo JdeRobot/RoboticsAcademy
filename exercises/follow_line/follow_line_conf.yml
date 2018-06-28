@@ -10,7 +10,7 @@ FollowLineF1:
   Motors:
     Server: 0 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:tcp -h localhost -p 9999"
-    Topic: "/FollowLineF1/Motors"
+    Topic: "/F1ROS/Motors"
     Name: FollowLineF1Motors
 
   robot: F1
