@@ -14,9 +14,6 @@ class MyAlgorithm(threading.Thread):
     def __init__(self, drone):
         self.drone = drone
 
-        self.drone.sendCMDVel(0, 0, 0, 0, 0, 0)
-    	self.drone.takeoff()
-
         self.image = None
 
         self.stop_event = threading.Event()

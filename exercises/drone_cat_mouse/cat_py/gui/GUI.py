@@ -65,6 +65,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reset=False
         self.record = False
 
+        self.vx = 0
+        self.vy = 0
+        self.vz = 0
+        self.az = 0
+
     def getDrone(self):
         return self.drone
 
@@ -140,25 +145,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def rotationChange(self,value):
         value=(1.0/(self.rotationDial.maximum()/2))*(value - (self.rotationDial.maximum()/2))
         self.rotValue.setText('%.2f' % value)
-        self.drone.setYaw(value)
-        self.drone.sendVelocities()
+        self.az = value
+        self.drone.sendCMDVel(self.vx, self.vy,self.vz,0,0,self.az)
 
     def altitudeChange(self,value):
         value=(1.0/(self.altdSlider.maximum()/2))*(value - (self.altdSlider.maximum()/2))
         self.altdValue.setText('%.2f' % value)
-        self.drone.setVZ(value)
-        self.drone.sendVelocities()
+        self.vz = value
+        self.drone.sendCMDVel(self.vx, self.vy,self.vz,0,0,self.az)
 
     def setXYValues(self,newX,newY):
         self.XValue.setText('%.2f' % newX)
         self.YValue.setText('%.2f' % newY)
-        self.drone.setVX(-newY)
-        self.drone.setVY(-newX)
-        self.drone.sendVelocities()
+        self.vx = -newY
+        self.vy = -newX
+        self.drone.sendCMDVel(self.vx, self.vy,self.vz,0,0,self.az)
 
     def closeEvent(self, event):
         self.algorithm.kill()
-        self.drone.__camera.stop()
+        self.drone.stop()
         #self.navdata.stop()
-        self.drone.__pose.stop()
+        
         event.accept()
