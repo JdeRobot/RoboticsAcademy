@@ -7,15 +7,19 @@ import math
 
 
 class Drone:
-    def __init__(self, topicArming, topicLand, topicSetMode, topicVel, topicPose, topicCamera): 
-        self.__camera = ListenerCamera(topicCamera)
+    def __init__(self, topicArming, topicLand, topicSetMode, topicVel, topicPose, topicCameraVentral, topicCameraFrontal): 
+        self.__cameraVentral = ListenerCamera(topicCameraVentral)
+        self.__cameraFrontal = ListenerCamera(topicCameraFrontal)
         self.__extra = PublisherExtra(topicArming, topicLand, topicSetMode)
         self.__cmdvel = PublisherCMDVel(topicVel)
         self.__pose3d = ListenerPose3d(topicPose)
 
 
-    def getImage(self):
-        return self.__camera.getImage()
+    def getImageVentral(self):
+        return self.__cameraVentral.getImage()
+
+    def getImageFrontal(self):
+        return self.__cameraFrontal.getImage()
     
     def takeoff(self):
         self.__extra.arming()
@@ -49,5 +53,6 @@ class Drone:
 
     def stop(self):
         self.__pose3d.stop()
-        self.__camera.stop()
+        self.__cameraVentral.stop()
+        self.__cameraFrontal.stop()
 

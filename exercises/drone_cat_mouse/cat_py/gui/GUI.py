@@ -51,7 +51,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.cameraWidget=ColorFilterWidget(self)
         self.sensorsWidget=SensorsWidget(self)
-        self.changeCamButton.clicked.connect(self.changeCamera)
 
         self.trackingCommunicator = Communicator()
 
@@ -129,9 +128,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.altdSlider.setValue(self.altdSlider.maximum()/2)
             self.drone.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
-
-    def changeCamera(self):
-        self.drone.toggleCam()
 
     def showSensorsWidget(self,state):
         if state == Qt.Checked:
