@@ -17,37 +17,73 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
+#       Carlos Awadallah Estevez <carlosawadallah@gmail.com>
 #
 
 import sys
-import config
-import comm
+import yaml
+
+from Camera.threadcamera import ThreadCamera
 from MyAlgorithm import MyAlgorithm
-import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
-#from parallelIce.cameraClient import CameraClient
-from sensors.cameraFilter import CameraFilter
-#from parallelIce.navDataClient import NavDataClient
-#from parallelIce.cmdvel import CMDVel
-#from parallelIce.extra import Extra
-#from parallelIce.pose3dClient import Pose3DClient
 from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
-
 
 import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+def selectVideoSource(cfg):
+    """
+    @param cfg: configuration
+    @return cam: selected camera
+    @raise SystemExit in case of unsupported video source
+    """
+    source = cfg['Introrob']['Source']
+    if source.lower() == 'local':
+        from Camera.local_camera import Camera
+        cam_idx = cfg['Introrob']['Local']['DeviceNo']
+        print('  Chosen source: local camera (index %d)' % (cam_idx))
+        cam = Camera(cam_idx)
+    elif source.lower() == 'video':
+        from Camera.local_video import Camera
+        video_path = cfg['Introrob']['Video']['Path']
+        print('  Chosen source: local video (%s)' % (video_path))
+        cam = Camera(video_path)
+    elif source.lower() == 'stream':
+        # comm already prints the source technology (ICE/ROS)
+        import comm
+        import config
+        cfg = config.load(sys.argv[1])
+        jdrc = comm.init(cfg, 'Introrob')
+        proxy = jdrc.getCameraClient('Introrob.Stream')
+        from Camera.stream_camera import Camera
+        cam = Camera(proxy)
+    else:
+        raise SystemExit(('%s not supported! Supported source: Local, Video, Stream') % (source))
+
+    return cam
+
+
+def readConfig():
+    try:
+        with open(sys.argv[1], 'r') as stream:
+            return yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
+        raise SystemExit('Error: Cannot read/parse YML file. Check YAML syntax.')
+    except:
+        raise SystemExit('\n\tUsage: python2 color_filter.py color_filter_conf.yml\n')
+
+
 if __name__ == '__main__':
 
-    cfg = config.load(sys.argv[1])
+    cfg = readConfig()
+    camera = selectVideoSource(cfg)
 
-    #starting comm
-    jdrc= comm.init(cfg, 'Introrob')
-
-    cameraCli = jdrc.getCameraClient("Introrob.cameraA")
-    camera = CameraFilter(cameraCli) 
+    # Threading the camera...
+    t_cam = ThreadCamera(camera)
+    t_cam.start()
 
     algorithm=MyAlgorithm(camera)
 
