@@ -33,10 +33,10 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 ```
 
 ### API
-* self.getImage() - to get the image 
-* self.motors.setV() - to set the linear speed
-* self.motors.setW() - to set the angular velocity
-* self.set_threshold_image() - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
+* `self.getImage()` - to get the image 
+* `self.motors.setV()` - to set the linear speed
+* `self.motors.setW()` - to set the angular velocity
+* `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
 
 ## Demonstrative video
