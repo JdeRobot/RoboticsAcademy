@@ -25,8 +25,7 @@ class CameraWidget:
 
         #print the filtered images
 
-        # imgFiltered = self.winParent.getAlgorithm().getImageFiltered()
-        imgFiltered = self.winParent.getCamera().getImage().data
+        imgFiltered = self.winParent.getAlgorithm().getImageFiltered()
         if imgFiltered is not None:
             resized = cv2.resize(imgFiltered,(self.IMG_WIDTH,self.IMG_HEIGHT))
             image = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);

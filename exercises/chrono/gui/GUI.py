@@ -12,7 +12,6 @@ from gui.widgets.logoWidget import LogoWidget
 from gui.widgets.mapWidget import MapWidget
 
 
-
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     updGUI=pyqtSignal()
@@ -27,15 +26,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #self.logoLayout.addWidget(self.logo)
         #self.logo.setVisible(True)
 
-        #self.pushButton.clicked.connect(self.playClicked)
-        #self.pushButton.setCheckable(True)
+        self.pushButton.clicked.connect(self.playClicked)
+        self.pushButton.setCheckable(True)
         self.updGUI.connect(self.updateGUI)
         self.camera1=CameraWidget(self)
         self.mapW = MapWidget(self)
         self.verticalLayoutMap.addWidget(self.mapW)
         print(self.mapW.width(), self.mapW.height())
 
-        #self.stopButton.clicked.connect(self.stopClicked)
+        self.stopButton.clicked.connect(self.stopClicked)
 
     def updateGUI(self):
         #print 'update gui'
@@ -70,11 +69,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def playClicked(self):
         if self.pushButton.isChecked():
             self.pushButton.setText('Stop Code')
-            self.pushButton.setStyleSheet("background-color: #7dcea0")
+            self.pushButton.setStyleSheet("background-color: #ec7063")
             self.algorithm.play()
         else:
             self.pushButton.setText('Play Code')
-            self.pushButton.setStyleSheet("background-color: #ec7063")
+            self.pushButton.setStyleSheet("background-color: #7dcea0")
             self.algorithm.stop()
 
     def setAlgorithm(self, algorithm ):
@@ -93,7 +92,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def stopClicked(self):
         self.motors.sendV(0)
         self.motors.sendW(0)
-        self.teleop.returnToOrigin()
+        #self.teleop.returnToOrigin()
 
     def closeEvent(self, event):
         self.algorithm.kill()
