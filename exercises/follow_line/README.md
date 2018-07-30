@@ -12,7 +12,7 @@ python2 ./follow_line.py follow_line_conf.yml
 ```
 
 ## How to do the practice?
-To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
+To carry out the practice, you have to edit the file `MyAlgorithms.py` and insert in it your code, which gives intelligence to the autonomous car.
 
 ## Where to insert the code?
 [MyAlgorithm.py](MyAlgorithm.py#L87)
