@@ -1,20 +1,22 @@
-                        3D RECONSTRUCTION EXCERSISE
-                        ===========================
+# 3D RECONSTRUCTION EXCERSISE
+                        
 In this practice, the intention is to program the necessary logic to allow kobuki
 robot to generate a 3D reconstruction of the scene that it is receiving throughout its
 left and right cameras.
 
-////////////////////////////////////////////////////////////////////////////////
-                        P R E P A R A T I O N
-////////////////////////////////////////////////////////////////////////////////
+
+
+# P R E P A R A T I O N
 Follow these simple steps:
 
 1. copy the new interface:
+
 ```
 sudo cp interface/visualization_ice.py /opt/jderobot/lib/python2.7
 ```
 
 2.Prepare 3d viewer:
+
 ```
 sudo apt-get install nodejs
 sudo apt-get install npm
@@ -23,9 +25,9 @@ npm install electron --save-dev --save-exact
 npm install jquery
 npm install js-yaml
 ```
-////////////////////////////////////////////////////////////////////////////////
-                           E X E C U T I O N
-////////////////////////////////////////////////////////////////////////////////
+
+# E X E C U T I O N
+
 
 Follow these simple steps to launch the practice:
 
@@ -55,7 +57,8 @@ npm start
     Modify only the next fields (updatePoints, updateSegments, linewidth, pointsize, camera)
   ```
 
-////////////////////////////////////////////////////////////////////////////////
+---------
+
 
 ## How to do the practice
 To carry out the practice, you must edit the MyAlgorithm.py file and insert
