@@ -7,7 +7,7 @@ For the realization of the practice, you are provided of a framework written in 
 
 ## EXECUTION
 
-First of all, ensure you have put the correct path in the configuraton file (cameraserver_conf.cfg) to the video over you want to apply the filter, and comment the line that access your local camera. This is:
+First of all, ensure you have put the correct path in the configuraton file (`cameraserver_conf.cfg`) to the video over you want to apply the filter, and comment the line that access your local camera. This is:
 
 ```
 [EXAMPLE]
