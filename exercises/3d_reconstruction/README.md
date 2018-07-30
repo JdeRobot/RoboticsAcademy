@@ -93,8 +93,8 @@ the control logic into it.
 
 * PLOT 3D data on the viewer:
    ```
-   point=np.array([1, 1, 1])
-   color=(255,255,255)
+   point = np.array([1, 1, 1])
+   color = (255,255,255)
    self.sensor.drawPoint(point,color[1],color[2],color[3]))
    ```
 
