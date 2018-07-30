@@ -40,7 +40,8 @@ The way to make it run is the following:
     Error cam Open
     !! 12/14/17 11:56:54.213 error: communicator not destroyed during global destruc
     ```
-try: `$ sudo chmod 777 /dev/ttyUSB0` and retry step 2.
+    
+*try: `$ sudo chmod 777 /dev/ttyUSB0` and retry step 2.*
 
 ------------
 
