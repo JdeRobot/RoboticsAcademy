@@ -51,7 +51,8 @@ If your system has a local camera, make sure that in the file "`usb_cam-test.lau
 you put the correct path to the camera connected by usb (`/dev/video1`). Otherwise, 
 put the default route (`/dev/video0`). This is:
 
-`[usb_cam-test.lauch](usb_cam-test.lauch#L3)`
+[usb_cam-test.lauch](usb_cam-test.lauch#L3)
+
 ```
     <param name="video_device" value="/dev/video0" />
 or
