@@ -2,7 +2,7 @@
                         
 
 In this practice, the intention is to use your knowledge in image processing to 
-segment the faces of people and follow them through a camera connected by USB to 
+**segment the faces of people and follow them** through a camera connected by USB to 
 your computer. For this, you must have the right hardware (Sony model EVI d100p),
 and then implement the logic that performs the segmentation of a face and an 
 algorithm that collects that data and transforms it into orders for the camera's 
@@ -11,7 +11,7 @@ actuators, which must follow the movement of the person.
 
 ## EXECUTION
 
-* Note that to make this component run, you need a image provider (a camera) 
+Note that to make this component run, you need a image provider (a camera) 
 connected to an USB port and listening at the ports you want to bind, namely, 
 properly configured (through .cfg and .yml files). So first you have to run both 
 usb cam and evi cam and then run the follow_face component.
