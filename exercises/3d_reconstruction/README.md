@@ -6,7 +6,7 @@ left and right cameras.
 
 
 
-## P R E P A R A T I O N
+## PREPARATION
 Follow these simple steps:
 
 1. copy the new interface:
@@ -14,7 +14,6 @@ Follow these simple steps:
 ```
 sudo cp interface/visualization_ice.py /opt/jderobot/lib/python2.7
 ```
-
 2.Prepare 3d viewer:
 
 ```
@@ -26,7 +25,7 @@ npm install jquery
 npm install js-yaml
 ```
 
-## E X E C U T I O N
+## EXECUTION
 
 
 Follow these simple steps to launch the practice:
@@ -38,14 +37,13 @@ Follow these simple steps to launch the practice:
         `$ gazebo reconstruccion3D.world`
 
 2. Then, run the 3d_reconstruction component:
-`$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
+    `$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
 
 3. Finally, launch 3D viewer tool:
-```
-cd 3DVizWeb
-npm start
-
-```
+    ```
+    cd 3DVizWeb
+    npm start
+    ```
 
 
 * To simplify the closure of the environment, just close the Autopark window (s).
@@ -61,7 +59,7 @@ npm start
 
 
 ## How to do the practice
-To carry out the practice, you must edit the MyAlgorithm.py file and insert
+To carry out the practice, you must edit the `MyAlgorithm.py` file and insert
 the control logic into it.
 
 ### Where to insert the code?
