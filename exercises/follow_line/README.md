@@ -40,7 +40,7 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 
 
 ## Demonstrative video
-https://www.youtube.com/watch?v=eNuSQN9egpA
+[Video](https://www.youtube.com/watch?v=eNuSQN9egpA)
 
 * *Base code made by Alberto Martín (@almartinflorido)*
 * *Code of practice performed by Francisco Rivas (@chanfr)*
