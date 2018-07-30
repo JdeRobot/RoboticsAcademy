@@ -118,8 +118,8 @@ coordinates and returns a tuple with the equivalent coordinates in the map: (gri
 
 
 ## Demonstration video
-[Video 1](https://www.youtube.com/watch?v=zUtK6seVL5g)
-[Video 2](https://www.youtube.com/watch?v=q6G6BHqljP4)
+* [Video 1](https://www.youtube.com/watch?v=zUtK6seVL5g)
+* [Video 2](https://www.youtube.com/watch?v=q6G6BHqljP4)
 
 
 ## Attributions
