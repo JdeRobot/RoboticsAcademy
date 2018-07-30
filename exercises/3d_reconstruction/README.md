@@ -10,12 +10,11 @@ left and right cameras.
 Follow these simple steps:
 
 1. copy the new interface:
-
 ```
 sudo cp interface/visualization_ice.py /opt/jderobot/lib/python2.7
 ```
-2.Prepare 3d viewer:
 
+2.Prepare 3d viewer:
 ```
 sudo apt-get install nodejs
 sudo apt-get install npm
