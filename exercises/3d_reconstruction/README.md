@@ -35,7 +35,7 @@ Follow these simple steps to launch the practice:
         `$ gzserver reconstruccion3D.world`
     * Normal execution (seeing the world):
         `$ gazebo reconstruccion3D.world`
-
+        
 2. Then, run the 3d_reconstruction component:
     `$ python2 3d_reconstruction.py 3d_reconstruction_conf.yml`
 
@@ -45,15 +45,14 @@ Follow these simple steps to launch the practice:
     npm start
     ```
 
-
 * To simplify the closure of the environment, just close the Autopark window (s).
-  Ctrl + C will give problems.
+  `Ctrl + C` will give problems.
 
-* To change the configuration of 3DVizWeb:
-  ```
+* To change the configuration of `3DVizWeb`:
+    ```
     Open 3DVizWeb/public/config.yml
     Modify only the next fields (updatePoints, updateSegments, linewidth, pointsize, camera)
-  ```
+    ```
 
 ---------
 
