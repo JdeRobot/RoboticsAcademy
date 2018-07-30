@@ -29,7 +29,7 @@ We will use two terminal to run this practice:
     `$ python2 ./obstacle_avoidance.py`
 
 To simplify the closure of the environment, just close the
-window(s) of obstacle_avoidance. * `Ctrl + C` will be problematic *.
+window(s) of obstacle_avoidance. *`Ctrl + C` will be problematic*.
 
 ## How to do the practice
 To carry out the practice, you must edit the file `MyAlgorithm.py` and
