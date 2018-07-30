@@ -38,7 +38,7 @@ $ colorTuner color_tuner_conf.ym
 
 -------
 
-### API
+## API
 * `camera.getImage()` - to get the image received from server
 * `camera.setColorImage(input_image)` - to set color image
 * `camera.setThresholdImage(bk_image)` - to set Threshold image
