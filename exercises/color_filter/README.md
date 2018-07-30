@@ -18,7 +18,6 @@ CameraSrv.Camera.0.Uri = /home/username/Desktop/pelota_roja.avi
 
 . . .
 
-
 ```
 
 Once done it, in a terminal launch cameraserver component:
@@ -37,7 +36,7 @@ If you want to find the optimum values for your filter (in order to segment a co
 $ colorTuner color_tuner_conf.ym
 ```
 
-///////////////////////////////////////////////////////////////////
+-------
 
 ### API
 * `camera.getImage()` - to get the image received from server
