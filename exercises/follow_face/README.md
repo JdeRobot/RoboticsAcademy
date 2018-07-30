@@ -30,9 +30,9 @@ The way to make it run is the following:
 
     `$ python2 ./follow_face.py follow_face_conf.yml`
 
-* To simplify the closure of the environment, just close the Autopark window (s). 
-  `Ctrl + C` will give problems.
-** If you obtain the following output in step 2
+*To simplify the closure of the environment, just close the Autopark window (s). 
+  `Ctrl + C` will give problems.*
+*If you obtain the following output in step 2*
 
     ```
     [Info] loaded Ice.Config file: evicam_driver.cfg
@@ -50,7 +50,7 @@ If your system has a local camera, make sure that in the file "`usb_cam-test.lau
 you put the correct path to the camera connected by usb (`/dev/video1`). Otherwise, 
 put the default route (`/dev/video0`). This is:
 
-[usb_cam-test.lauch](usb_cam-test.lauch#L3)
+`[usb_cam-test.lauch](usb_cam-test.lauch#L3)`
 ```
     <param name="video_device" value="/dev/video0" />
 or
