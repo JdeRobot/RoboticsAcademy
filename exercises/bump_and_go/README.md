@@ -1,39 +1,36 @@
-                        BUMP AND GO EXCERSISE
-                        =====================
+# BUMP AND GO EXCERSISE
 
 The intention of this excersise is to program a basic behaviour of bump-spin using
-a finite state machine. For that, we will use JdeRobot visualStates tool, that 
+a finite state machine. For that, we will use **JdeRobot visualStates tool**, that 
 allows you to create your own states machine in an intuitive way.
 
-////////////////////////////////////////////////////////////////////////////////
-                           E X E C U T I O N 
-////////////////////////////////////////////////////////////////////////////////
+
+# EXECUTION
 
 Once created the state machine and set the code for each state,
 To launch the example you only have to follow the following steps:
 
 1. Run Gazebo:
-     *Execution without seeing the world: 
-`roslaunch kobuki-simple-ros.launch`
-     *Execution watching the world: 
-`roslaunch kobuki-simple-ros-gui.launch`
+     * Execution without seeing the world: 
+         `roslaunch kobuki-simple-ros.launch`
+     * Execution watching the world: 
+         `roslaunch kobuki-simple-ros-gui.launch`
 2. Execution of the bum&go component: 
-`./bump_and_go.py bump_and_go.yml --displaygui=true`
+    `./bump_and_go.py bump_and_go.yml --displaygui=true`
 * The code of the machine will start its execution automatically.
 
 
-* To simplify the closure of the environment, just close the window (s). 
-  Ctrl + C will give problems.
+*To simplify the closure of the environment, just close the window (s). 
+  `Ctrl + C` will give problems.
 
-////////////////////////////////////////////////////////////////////////////////
 
 ## How to do the practice
 We will use the visualStates tool to carry out this practice.
 To do this, you have to perform several tasks:
 
 1. Open the visualStates component:
-`$ cd visualStates_py`
-`$./visualStates.py`
+    `$ cd visualStates_py`
+    `$./visualStates.py`
 You will see a graphical interface in whose toolbar you have several options,
 such as: FIle, Figures, Data, Actions, Help. At first, the work area is empty.
 
@@ -93,6 +90,7 @@ to execute) and save it in the folder of this practice.
 to generate in your working folder the files bump_and_go.py, bump_and_go.yml and
 bump_and_go.xml Then you can execute the result as specified above.
 
+
 ## SUGESTIONS
 This practice is easy to carry out if you use 3 states:
     - Go Straight
@@ -100,26 +98,28 @@ This practice is easy to carry out if you use 3 states:
     - Spin
 Each one with its own transition. Nonetheless, there are so many ways to do it.
 
-### API
+
+## API
 * IF YOU HAVE USED THE SAME NAMES THAT IN THIS FILE YOU CAN USE THE API AS IT
 APPEARS UNDER. IF YOU HAVE CHANGED THEM, RESPECT THE NAMES YOU HAVE USED.
 `USE THE OBJECT self.interfaces TO REFERENCE VARIABLES AND FUNCTIONS YOU CREATED IF YOU ARE`
 `ESTABLISHING THE CODE OF STATES AND TRANSITIONS`
-* self.interfaces.myMotors.sendV(vel) - to set the linear velocity
-* self.interfaces.myMotors.sendW(vel) - to set the angular velocity
-* self.interfaces.myLaser.getLaserData() - to obtain the laser sensor data
-* self.interfaces.myFunction() - to execute myFunction().
-* self.interfaces.myVariable - to use the global variable myVariable (in this case, Bool type)
-`IF YOU ARE ESTABLISHING GLOBAL VARIABLES OR FUNCTIONS, IT IS SUFFICIENT WITH "self.variable" or`
-`"def myFunction(self)"`
+* `self.interfaces.myMotors.sendV(vel)` - to set the linear velocity
+* `self.interfaces.myMotors.sendW(vel)` - to set the angular velocity
+* `self.interfaces.myLaser.getLaserData()` - to obtain the laser sensor data
+* `self.interfaces.myFunction()` - to execute myFunction().
+* `self.interfaces.myVariable` - to use the global variable myVariable (in this case, Bool type)
+*IF YOU ARE ESTABLISHING GLOBAL VARIABLES OR FUNCTIONS, IT IS SUFFICIENT WITH"* `self.variable`" or `"def myFunction(self)"`
 
-### Own API
+
+## Own API
 The implementation of a finite and deterministic state machine is offered. The student will be able to define
 his/her own automatons in the way that suits him/her best.
 
 
 ## Demonstrative video
-https://youtu.be/o-SAe_qwOMc 
+[Video](https://youtu.be/o-SAe_qwOMc)
+
 
 ##  Launch Real turtlebot
 * Install following packages:
