@@ -27,3 +27,7 @@ For this practice a world has been designed for the Gazebo simulator. This world
 * `self.extra.toggleCam()`: changes the drone's active camera (frontal or the one below).
 * `self.extra.takeOff()`: Takeoff of the drone.
 * `self.extra.land()`: landing of the drone.
+
+
+## Demonstrative Video
+[Video](https://www.youtube.com/watch?v=ZfGN53v56AI)
