@@ -32,12 +32,12 @@ control logic into it.
 [MyAlgorithm.py](MyAlgorithm.py#L74)
 
 ```
-    def execute(self):
+def execute(self):
         
-        # Add your code here
-        print "Runing"
-        # Getting the images
-        input_image = self.cameraC.getImage().data      
+    # Add your code here
+    print "Runing"
+    # Getting the images
+    input_image = self.cameraC.getImage().data      
 ```
 
 
@@ -49,6 +49,7 @@ control logic into it.
 * `self.pose3d.getPose3d().x` - to obtain the position of the robot
 * `self.pose3d.getPose3d().y` - to obtain the position of the robot
 * `self.pose3d.getPose3d().yaw` - to obtain the position of the robot
+
 * `self.motors.sendW()` - to set the angular velocity
 * `self.motors.sendV()` - to set the linear velocity
 
