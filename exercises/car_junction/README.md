@@ -5,27 +5,25 @@ an automated vehicle. The vehicle must Stop at the T joint, where there is a sto
 sign, wait until there are no cars and pass once the road is clear.
 
 ## How to execute?
-
 To launch the example, follow the steps below:
-1. Run Gazebo simulator:
- * Execution without seeing the world: 
- 
-`$ gzserver stop.world`
 
- * Execution watching the world: 
- 
-    `$ gazebo stop.world`
+1. Run Gazebo simulator:
+    * Execution **without** seeing the world:  `$ gzserver stop.world`
+
+     * Execution **watching** the world:  `$ gazebo stop.world`
 
 2. Running the practice and the user interface: 
 
-`$ python2 ./stop.py stop_conf.yml`
+        `$ python2 ./stop.py stop_conf.yml`
 
 To simplify the closure of the environment, just close the Stop Component 
 window(s). *Ctrl + C will give problems*.
 
+
 ## How to do the practice
 To carry out the practice, you must edit the `MyAlgorithm.py` file and insert the 
 control logic into it.
+
 
 ## Where to insert the code?
 
