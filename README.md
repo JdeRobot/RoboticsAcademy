@@ -25,12 +25,9 @@ There are exercises about drone programming, about computer vision, about mobile
 *Last updated: July 31th, 2018*
 
 
-
 ### Software Infraestructure: Ubuntu/Debian
 
 The programming environment is composed of the (a) Gazebo simulator, (b) ROS middleware and (c) the Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Kinetic and JdeRobot-Academy (2018-06-06) releases. Follow the next steps to have the environment up and running, ready to use.
-
-
 
 ### Installation                             
 
@@ -46,8 +43,6 @@ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 ```
 
-
-
 ##### Step Two: Add the lastest Gazebo sources:
 
  Add the lastest Gazebo sources:
@@ -60,8 +55,6 @@ sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable lsb
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 67170598AF249743
 ```
 
-
-
 ##### Step Three: Install the packages
 
 Install the packages
@@ -71,8 +64,6 @@ sudo apt-get install ros-kinetic-desktop-full
 sudo apt-get install gazebo7
 sudo apt install jderobot-gazebo-assets
 ```
-
-
 
 ### Install the JdeRobot-Academy software
 
@@ -85,12 +76,9 @@ sudo apt install jderobot-gazebo-assets
 On the directory of each exercise you will find particular directions to launch the simulated scenario and the academic node where you should write your code.
 
 
-
 ## Software Infraestructure: Windows(x64)
 
-The programming environment is composed of the (a) *Docker* with *Gazebo* simulator, (b) *JdeRobot* *middleware* for *Python* and (c) the *TeachingRobotics* package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use *Gazebo-7.4.0*, *JdeRobot-5.4.1* and TeachingRobotics-0.1.0 releases. *JdeRobot* Docker includes the Gazebo plugins, models and configuration files to simulate the robot used in the exercises. Follow the next four steps to have the environment up and running, ready to use.
-
-​             
+The programming environment is composed of the (a) *Docker* with *Gazebo* simulator, (b) *JdeRobot* *middleware* for *Python* and (c) the *TeachingRobotics* package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use *Gazebo-7.4.0*, *JdeRobot-5.4.1* and TeachingRobotics-0.1.0 releases. *JdeRobot* Docker includes the Gazebo plugins, models and configuration files to simulate the robot used in the exercises. Follow the next four steps to have the environment up and running, ready to use.        
 
 #### Installation
 
@@ -100,8 +88,6 @@ The programming environment is composed of the (a) *Docker* with *Gazebo* simula
 * Download Docker:
     * <a href="https://download.docker.com/win/stable/InstallDocker.msi">Windows 10 x64 proffesional or enterprise</a>
     * <a href="http://www.docker.com/products/docker-toolbox">Other Windows x64</a>
-
-
 
 ##### Open `CMD` or powershell and upgrade pip
 
@@ -133,7 +119,6 @@ git clone https://github.com/jderobot/academy.git
 
 *Note: Github repositories are located in Documents\GitHub*
 
- 
 
 ## Run Exercises
 
@@ -152,6 +137,3 @@ python [practice_file][config_file]
 ```
 
 You can watch a [video demonstration](https://www.youtube.com/embed/v00TCr-aSWM).
-
-
-
