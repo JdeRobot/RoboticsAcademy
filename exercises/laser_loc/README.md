@@ -37,10 +37,9 @@ If you wanted, you could use `__init__` method (MyAlgorithm.py#L21) to initialli
 your own variables.
 
 
-### API
+## API
 
-
-USE:
+Use:
 
 * `self.sensors.motors.sendVelocities(vel)` - to send velocities where vel is:
     * use: `vel = CMDVel()` to buil a vel object
