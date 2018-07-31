@@ -6,11 +6,11 @@ The objective of this practice is to perform a PID reactive control capable of f
 
 To launch the infrastructure of this practice, first launch the simulator with the appropriate scenario:
 
-    `$ roslaunch f1-chrono.launch`
+`$ roslaunch f1-chrono.launch`
 
 Then you have to execute the academic application, which will incorporate your code:
 
-    `$ python2 chrono.py`
+`$ python2 chrono.py`
 
 ## How to do the practice?
 To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
