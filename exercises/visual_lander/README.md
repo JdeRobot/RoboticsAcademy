@@ -1,5 +1,3 @@
-# Visual lander
-
 # Visual lander practice
 
 The objective of this practice is to develop an algorithm that visualize a beacon and land on it.
