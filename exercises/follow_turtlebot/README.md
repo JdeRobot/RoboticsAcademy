@@ -3,17 +3,21 @@
 The exercise consists of following a robot on the ground using a drone. The movements described by the ground robot will have to be followed by the air robot.
 
 ## How to execute?
-In a terminal launch the gazebo simulator:
-`gazebo ardrone-turtlebot.world`
+* In a terminal launch the gazebo simulator:
 
-In other terminal launch the turtlebot robot:
-`kobukiViewer turtlebot.yml`
+    `gazebo ardrone-turtlebot.world`
 
-In another terminal lauch the follow_turtlebot component:
-`python2 ./follow_turtlebot.py follow_turtlebot_conf.yml`
+* In other terminal launch the turtlebot robot:
 
-If you want to find the values of your color filter you can launch the colorTuner component:
-`colorTuner color_tuner_conf.yml`
+    `kobukiViewer turtlebot.yml`
+
+* In another terminal lauch the follow_turtlebot component:
+
+    `python2 ./follow_turtlebot.py follow_turtlebot_conf.yml`
+
+* If you want to find the values of your color filter you can launch the colorTuner component:
+
+    `colorTuner color_tuner_conf.yml`
 
 ## How to do the practice?
 To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the turtlebot robot.
