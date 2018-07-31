@@ -74,6 +74,6 @@ This practice has some methods and variables that will be of great help to solve
 * *Copyright (C) 2016 CC-BY-4.0 Carlos Awadallah (@cawadall)*
 
 *Authors:*
-    * *Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>*
-    * *Carlos Awadallah Estévez <carlosawadallah@gmail.com>*
+* *Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>*
+* *Carlos Awadallah Estévez <carlosawadallah@gmail.com>*
 
