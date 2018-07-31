@@ -6,7 +6,7 @@ For this practice a world has been designed for the Gazebo simulator. This world
 
 ## EXECUTION
 
-I* n a terminal launch the gazebo simulator:
+* In a terminal launch the gazebo simulator:
 `$ gazebo ardrone-beacons.world`
 
 * In other terminal launch the position_control component with your algorithm:
