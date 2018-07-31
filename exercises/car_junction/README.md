@@ -14,7 +14,9 @@ To launch the example, follow the steps below:
 
 2. Running the practice and the user interface: 
 
-        `$ python2 ./stop.py stop_conf.yml`
+```
+$ python2 ./stop.py stop_conf.yml
+```
 
 To simplify the closure of the environment, just close the Stop Component 
 window(s). *Ctrl + C will give problems*.
