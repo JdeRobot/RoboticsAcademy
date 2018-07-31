@@ -1,8 +1,6 @@
 # JdeRobot-Academy: Learn Robotics and Computer Vision 
 
-
-[TOC]
-
+## Introduction
 
 JdeRobot-Academy is an **open source** collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. The students program their solutions in **Python language**. Each exercise is composed of :
 
