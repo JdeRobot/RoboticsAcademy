@@ -1,5 +1,7 @@
 # Follow turtlebot excercise
 
+The exercise consists of following a robot on the ground using a drone. The movements described by the ground robot will have to be followed by the air robot.
+
 ## How to execute?
 In a terminal launch the gazebo simulator:
 `gazebo ardrone-turtlebot.world`
