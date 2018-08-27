@@ -40,9 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #print 'update gui'
         cx = self.pose3d.getPose3d().x
         cy = self.pose3d.getPose3d().y
-        phx = self.pose3dphantom.getPose3d().x
-        phy = self.pose3dphantom.getPose3d().y
-        # print(cx,cy)
+        phx, phy = self.algorithm.synchronize()
         self.mapW.setCarPos(cx, cy)
         self.mapW.setPhantomPos(phx, phy)
         self.camera1.updateImage()
