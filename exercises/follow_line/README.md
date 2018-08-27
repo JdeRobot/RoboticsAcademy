@@ -12,7 +12,7 @@ python2 ./follow_line.py follow_line_conf.yml
 ```
 
 ## How to do the practice?
-To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
+To carry out the practice, you have to edit the file `MyAlgorithms.py` and insert in it your code, which gives intelligence to the autonomous car.
 
 ## Where to insert the code?
 [MyAlgorithm.py](MyAlgorithm.py#L87)
@@ -33,14 +33,14 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 ```
 
 ### API
-* self.getImage() - to get the image 
-* self.motors.setV() - to set the linear speed
-* self.motors.setW() - to set the angular velocity
-* self.set_threshold_image() - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
+* `self.getImage()` - to get the image 
+* `self.motors.setV()` - to set the linear speed
+* `self.motors.setW()` - to set the angular velocity
+* `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
 
 ## Demonstrative video
-https://www.youtube.com/watch?v=eNuSQN9egpA
+[Video](https://www.youtube.com/watch?v=eNuSQN9egpA)
 
 * *Base code made by Alberto Martín (@almartinflorido)*
 * *Code of practice performed by Francisco Rivas (@chanfr)*
