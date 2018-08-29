@@ -9,12 +9,27 @@ from Parser import Parser
 
 time_cycle = 80
 
+def absolutas2relativas(x, y, rx, ry, rt):
+    # Convert to relatives
+    dx = x - rx
+    dy = y - ry
+
+    # Rotate with current angle
+    x = dx*math.cos(-rt) - dy*math.sin(-rt)
+    y = dx*math.sin(-rt) + dy*math.cos(-rt)
+
+    return x,y
+
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, pose3d, laser, motors):
+    def __init__(self, camera, pose3d, laser, motors):
+        self.camera = camera
         self.pose3d = pose3d
         self.laser = laser
         self.motors = motors
+
+        self.imageRight=None
+        self.imageLeft=None
 
         # Car direction
         self.carx = 0.0
@@ -36,11 +51,20 @@ class MyAlgorithm(threading.Thread):
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
-        threading.Thread.__init__(self, args=self.kill_event)
+        threading.Thread.__init__(self, args=self.stop_event)
 
         # Init targets
         parser = Parser('targets.json')
         self.targets = parser.getTargets()
+
+    def parse_laser_data(self,laser_data):
+        laser = []
+        for i in range(180):
+            dist = laser_data.values[i]
+            angle = math.radians(i)
+            laser += [(dist, angle)]
+        return laser
+
 
     def getNextTarget(self):
         for target in self.targets:
@@ -48,6 +72,29 @@ class MyAlgorithm(threading.Thread):
                 return target
 
         return None
+
+    def setRightImageFiltered(self, image):
+        self.lock.acquire()
+        self.imageRight=image
+        self.lock.release()
+
+
+    def setLeftImageFiltered(self, image):
+        self.lock.acquire()
+        self.imageLeft=image
+        self.lock.release()
+
+    def getRightImageFiltered(self):
+        self.lock.acquire()
+        tempImage=self.imageRight
+        self.lock.release()
+        return tempImage
+
+    def getLeftImageFiltered(self):
+        self.lock.acquire()
+        tempImage=self.imageLeft
+        self.lock.release()
+        return tempImage
 
     def getCarDirection(self):
         return (self.carx, self.cary)
@@ -64,7 +111,7 @@ class MyAlgorithm(threading.Thread):
     def run (self):
 
         while (not self.kill_event.is_set()):
-                       
+
             start_time = datetime.now()
 
             if not self.stop_event.is_set():
@@ -77,7 +124,6 @@ class MyAlgorithm(threading.Thread):
             #print (ms)
             if (ms < time_cycle):
                 time.sleep((time_cycle - ms) / 1000.0)
-
 
     def stop (self):
         self.stop_event.set()
@@ -98,8 +144,9 @@ class MyAlgorithm(threading.Thread):
         self.targetx = self.currentTarget.getPose().x
         self.targety = self.currentTarget.getPose().y
         self.targetid = self.currentTarget.getId()
-        #print(self.targetx,self.targety)
+	#print(self.targetx,self.targety)
 
+        # TODO
         # TODO
 
         # Car direction
@@ -112,5 +159,4 @@ class MyAlgorithm(threading.Thread):
 
         # Average direction
         self.avgx = 2.0
-        self.avgy = 2.0
-
+	self.avgy = 2.0

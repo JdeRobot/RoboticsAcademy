@@ -38,7 +38,7 @@ if __name__ == "__main__":
     pose3d = ListenerPose3d("/F1ROS/odom")
     laser = ListenerLaser("/F1ROS/laser/scan")
 
-    algorithm=MyAlgorithm(pose3d, laser, motors)
+    algorithm=MyAlgorithm(camera, pose3d, laser, motors)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
@@ -56,4 +56,3 @@ if __name__ == "__main__":
 
     id = app.exec_()
     os._exit(id)
-
