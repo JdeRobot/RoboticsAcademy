@@ -64,7 +64,7 @@ class ColorFilterWidget(QWidget):
         changeCamButton.clicked.connect(self.changeCamera)
 
     def setColorImage(self):
-        img = self.winParent.getCamera().getColorImage()
+        img = self.winParent.getDrone().getImage().data
 
         if img is not None:
             image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
@@ -81,7 +81,7 @@ class ColorFilterWidget(QWidget):
             self.imgLabelColor.move(x,y)
 
     def setFilteredImage(self):
-        img = self.winParent.getCamera().getFilteredImage()
+        img = self.winParent.getAlgorithm().getFilteredImage()
 
         if img is not None:
             image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
@@ -99,7 +99,6 @@ class ColorFilterWidget(QWidget):
             self.imgLabelFiltered.move(x,y)
         
     def updateImage(self):
-        self.winParent.getCamera().updateImage()
         self.setColorImage()
         self.setFilteredImage()
         
@@ -107,4 +106,4 @@ class ColorFilterWidget(QWidget):
         self.winParent.closeCameraWidget()
 
     def changeCamera(self):
-        self.winParent.getExtra().toggleCam()
+        self.winParent.getDrone().toggleCam()

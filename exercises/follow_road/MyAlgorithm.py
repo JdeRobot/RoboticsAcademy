@@ -13,6 +13,10 @@ from parallelIce.pose3dClient import Pose3DClient
 
 time_cycle = 80
 
+hmin = 20
+smin= 0
+vmin= 0
+
 class MyAlgorithm(threading.Thread):
 
     def __init__(self, camera, navdata, pose, cmdvel, extra):
@@ -22,7 +26,13 @@ class MyAlgorithm(threading.Thread):
         self.cmdvel = cmdvel
         self.extra = extra
 
-        self.image = None
+        self.minError=10
+        self.prev_section=0
+
+        self.height = 240
+        self.width = 320
+
+        self.image=None
 
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
@@ -72,10 +82,14 @@ class MyAlgorithm(threading.Thread):
         self.kill_event.set()
 
     def execute(self):
-        # Add your code here
-
         input_image = self.camera.getImage().data
         if input_image is not None:
+            # Add your code here
+            img = np.copy(input_image)
 
-            #If you want show an image when its filtered.
-            #self.setImageFiltered(input_image)
+            self.setImageFiltered(img)
+            '''
+            If you want show a thresold image (black and white image)
+            self.camera.setThresholdImage(bk_image)
+            '''
+
