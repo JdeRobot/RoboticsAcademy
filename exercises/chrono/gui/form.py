@@ -11,12 +11,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(860, 950)
+        MainWindow.resize(860, 1000)
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget.setGeometry(QtCore.QRect(20, 20, 820, 440))
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 820, 440))
         self.layoutWidget.setObjectName("layoutWidget")
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
@@ -29,20 +29,18 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setMinimumSize(QtCore.QSize(400,30))
-        # self.label.setStyleSheet("background-color: blue")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
         self.label_2 = QtWidgets.QLabel(self.layoutWidget)
         self.label_2.setObjectName("label_2")
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2.setMinimumSize(QtCore.QSize(400,30))
-        # self.label_2.setStyleSheet("background-color: blue")
         self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
         self.image = QtWidgets.QLabel(self.layoutWidget)
         self.image.setObjectName("image")
         self.image.setMinimumSize(QtCore.QSize(400,300))
         self.gridLayout.addWidget(self.image, 1, 0, 1, 1)
         self.imageFiltered = QtWidgets.QLabel(self.layoutWidget)
-        self.imageFiltered.setObjectName("imageFiltered") 
+        self.imageFiltered.setObjectName("imageFiltered")
         self.imageFiltered.setMinimumSize(QtCore.QSize(400,300))
         self.gridLayout.addWidget(self.imageFiltered, 1, 1, 1, 1)
 
@@ -59,15 +57,14 @@ class Ui_MainWindow(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("resources/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stopButton.setIcon(icon)
-        self.stopButton.setIconSize(QtCore.QSize(165,35))        
+        self.stopButton.setIconSize(QtCore.QSize(165,35))
         self.stopButton.setObjectName("stopButton")
         self.gridLayout.addWidget(self.stopButton, 2, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
 
-
-
+        #MAP
         self.layoutWidgetMap = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidgetMap.setGeometry(QtCore.QRect(30, 480, 800, 380))
+        self.layoutWidgetMap.setGeometry(QtCore.QRect(10, 450, 800, 380))
         self.layoutWidgetMap.setObjectName("layoutWidgetMap")
 
         self.verticalLayoutMap = QtWidgets.QVBoxLayout(self.layoutWidgetMap)
@@ -76,60 +73,51 @@ class Ui_MainWindow(object):
         self.mapLabel = QtWidgets.QLabel(self.layoutWidgetMap)
         self.mapLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.mapLabel.setFixedSize(QtCore.QSize(800,30))
-        # self.mapLabel.setStyleSheet("background-color: orange")
         self.verticalLayoutMap.addWidget(self.mapLabel)
 
-        
         pixmap = QtGui.QPixmap("/home/fran/Pictures/aa.jpg")
         self.image.setPixmap(pixmap)
         self.imageFiltered.setPixmap(pixmap)
-        #self.image.show()
-        # verticalSpacer = QtWidgets.QSpacerItem(20, 500, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
 
-        
+        #CHRONO
+        self.layoutWidgetChrono = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidgetChrono.setGeometry(QtCore.QRect(50, 820, 750, 250))
+        self.layoutWidgetChrono.setObjectName("layoutWidgetChrono")
 
-        # self.verticalLayout.addLayout(self.horizontalLayout)
-        # self.layoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        # self.layoutWidget1.setGeometry(QtCore.QRect(140, 440, 331, 381))
-        # self.layoutWidget1.setObjectName("layoutWidget1")
-        
-        #self.verticalLayout.addItem(verticalSpacer)
+        self.verticalLayoutChrono = QtWidgets.QVBoxLayout(self.layoutWidgetChrono)
+        self.verticalLayoutChrono.setObjectName("verticalLayoutChrono")
+        self.gridLayoutChrono = QtWidgets.QGridLayout()
+        self.gridLayoutChrono.setObjectName("gridLayoutChrono")
 
-        # self.horizontalLayout = QtWidgets.QHBoxLayout()
-        # self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label_chrono_1 = QtWidgets.QLabel(self.layoutWidgetChrono)
+        self.label_chrono_1.setObjectName("label_chrono_1")
+        self.label_chrono_1.setStyleSheet("font-weight:800; color: blue")
+        self.label_chrono_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_chrono_1.setMinimumSize(QtCore.QSize(50,10))
+        self.gridLayoutChrono.addWidget(self.label_chrono_1, 0, 0, 1, 1)
+        self.chrono_1 = QtWidgets.QLabel(self.layoutWidgetChrono)
+        self.chrono_1.setObjectName("Chrono 1")
+        self.chrono_1.setStyleSheet("font-weight:500; color: blue")
+        self.chrono_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.chrono_1.setMinimumSize(QtCore.QSize(50,50))
+        self.gridLayoutChrono.addWidget(self.chrono_1, 1, 0, 1, 1)
+        self.label_chrono_2 = QtWidgets.QLabel(self.layoutWidgetChrono)
+        self.label_chrono_2.setObjectName("label_chrono_2")
+        self.label_chrono_2.setStyleSheet("font-weight:800; color: blue")
+        self.label_chrono_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_chrono_2.setMinimumSize(QtCore.QSize(50,10))
+        self.gridLayoutChrono.addWidget(self.label_chrono_2, 0, 1, 1, 1)
+        self.chrono_2 = QtWidgets.QLabel(self.layoutWidgetChrono)
+        self.chrono_2.setObjectName("Chrono 2")
+        self.chrono_2.setStyleSheet("font-weight:500; color: blue")
+        self.chrono_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.chrono_2.setMinimumSize(QtCore.QSize(50,50))
+        self.gridLayoutChrono.addWidget(self.chrono_2, 1, 1, 1, 1)
 
-        # self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.layoutWidget1)
-        # self.verticalLayout_2.setObjectName("verticalLayout_2")
-        # self.tlLayout = QtWidgets.QVBoxLayout()
-        # self.tlLayout.setObjectName("tlLayout")
-        # self.verticalLayout_2.addLayout(self.tlLayout)
-        # self.stopButton = QtWidgets.QPushButton(self.layoutWidget1)
-        # font = QtGui.QFont()
-        # font.setPointSize(15)
-        # font.setBold(True)
-        # font.setWeight(75)
-        # self.stopButton.setFont(font)
-        # icon = QtGui.QIcon()
-        # icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # self.stopButton.setIcon(icon)
-        # self.stopButton.setObjectName("stopButton")
-        # self.verticalLayout_2.addWidget(self.stopButton)
-        # self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        # self.verticalLayoutWidget.setGeometry(QtCore.QRect(570, 660, 160, 171))
-        # self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        # self.logoLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        # self.logoLayout.setObjectName("logoLayout")
+        self.verticalLayoutChrono.addLayout(self.gridLayoutChrono)
 
         MainWindow.setCentralWidget(self.centralwidget)
-        # self.menubar = QtWidgets.QMenuBar(MainWindow)
-        # self.menubar.setGeometry(QtCore.QRect(0, 0, 733, 19))
-        # self.menubar.setObjectName("menubar")
-        # MainWindow.setMenuBar(self.menubar)
-        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        # self.statusbar.setObjectName("statusbar")
-        # MainWindow.setStatusBar(self.statusbar)
         self.retranslateUi(MainWindow)
-        # QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -140,6 +128,8 @@ class Ui_MainWindow(object):
         self.pushButton.setText(_translate("MainWindow", "Play Code"))
         self.stopButton.setText(_translate("MainWindow", "Stop Vehicle"))
         self.mapLabel.setText(_translate("MainWindow", "Map"))
+        self.label_chrono_1.setText(_translate("MainWindow", "Chronometer"))
+        self.label_chrono_2.setText(_translate("MainWindow", "Best lap"))
 
 
 
