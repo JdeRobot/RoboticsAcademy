@@ -65,6 +65,9 @@ class MyAlgorithm(threading.Thread):
 
         else:
             return float(posx), float(posy)
+        
+    def getImage(self):
+        return self.camera.getImage().data
 
     def setImageFiltered(self, image):
         self.lock.acquire()
@@ -123,7 +126,7 @@ class MyAlgorithm(threading.Thread):
     def execute(self):
         global sim_time
         #GETTING THE IMAGES
-        input_image = self.camera.getImage().data
+        input_image = self.getImage()
 
         sim_time = rospy.Time.from_sec(rospy.get_time()).to_sec()
 
