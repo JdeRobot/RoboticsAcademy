@@ -123,7 +123,7 @@ class MyAlgorithm(threading.Thread):
 
     def kill (self):
         self.kill_event.set()
-        print("Endind the record.")
+        print("Ending the record.")
         #rec_1 = subprocess.Popen("rosnode kill /best_lap", shell=True)
 
     def execute(self):
@@ -135,6 +135,7 @@ class MyAlgorithm(threading.Thread):
 
         if input_image is not None:
             #ADD YOUR CODE HERE
+            pass
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image_HSV_filtered_Mask)
+        self.setImageFiltered(input_image)
