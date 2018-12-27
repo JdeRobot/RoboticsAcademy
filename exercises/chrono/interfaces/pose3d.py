@@ -2,11 +2,10 @@ import rospy
 from nav_msgs.msg import Odometry
 import threading
 from math import asin, atan2, pi
-from jderobotTypes import Pose3d
 
 def quat2Yaw(qw, qx, qy, qz):
     '''
-    Translates from Quaternion to Yaw. 
+    Translates from Quaternion to Yaw.
 
     @param qw,qx,qy,qz: Quaternion values
 
@@ -24,7 +23,7 @@ def quat2Yaw(qw, qx, qy, qz):
 
 def quat2Pitch(qw, qx, qy, qz):
     '''
-    Translates from Quaternion to Pitch. 
+    Translates from Quaternion to Pitch.
 
     @param qw,qx,qy,qz: Quaternion values
 
@@ -47,7 +46,7 @@ def quat2Pitch(qw, qx, qy, qz):
 
 def quat2Roll (qw, qx, qy, qz):
     '''
-    Translates from Quaternion to Roll. 
+    Translates from Quaternion to Roll.
 
     @param qw,qx,qy,qz: Quaternion values
 
@@ -67,7 +66,7 @@ def quat2Roll (qw, qx, qy, qz):
 
 def odometry2Pose3D(odom):
     '''
-    Translates from ROS Odometry to JderobotTypes Pose3d. 
+    Translates from ROS Odometry to JderobotTypes Pose3d.
 
     @param odom: ROS Odometry to translate
 
@@ -91,6 +90,27 @@ def odometry2Pose3D(odom):
 
     return pose
 
+class Pose3d ():
+
+    def __init__(self):
+
+        self.x = 0 # X coord [meters]
+        self.y = 0 # Y coord [meters]
+        self.z = 0 # Z coord [meters]
+        self.h = 1 # H param
+        self.yaw = 0 #Yaw angle[rads]
+        self.pitch = 0 # Pitch angle[rads]
+        self.roll = 0 # Roll angle[rads]
+        self.q = [0,0,0,0] # Quaternion
+        self.timeStamp = 0 # Time stamp [s]
+
+
+    def __str__(self):
+        s = "Pose3D: {\n   x: " + str(self.x) + "\n   Y: " + str(self.y)
+        s = s + "\n   Z: " + str(self.z) + "\n   H: " + str(self.h)
+        s = s + "\n   Yaw: " + str(self.yaw) + "\n   Pitch: " + str(self.pitch) + "\n   Roll: " + str(self.roll)
+        s = s + "\n   quaternion: " + str(self.q) + "\n   timeStamp: " + str(self.timeStamp)  + "\n}"
+        return s
 
 class ListenerPose3d:
     '''
@@ -101,7 +121,7 @@ class ListenerPose3d:
         ListenerPose3d Constructor.
 
         @param topic: ROS topic to subscribe
-        
+
         @type topic: String
 
         '''
@@ -110,13 +130,13 @@ class ListenerPose3d:
         self.sub = None
         self.lock = threading.Lock()
         self.start()
- 
+
     def __callback (self, odom):
         '''
-        Callback function to receive and save Pose3d. 
+        Callback function to receive and save Pose3d.
 
         @param odom: ROS Odometry received
-        
+
         @type odom: Odometry
 
         '''
@@ -125,7 +145,7 @@ class ListenerPose3d:
         self.lock.acquire()
         self.data = pose
         self.lock.release()
-        
+
     def stop(self):
         '''
         Stops (Unregisters) the client.
@@ -139,10 +159,10 @@ class ListenerPose3d:
 
         '''
         self.sub = rospy.Subscriber(self.topic, Odometry, self.__callback)
-        
+
     def getPose3d(self):
         '''
-        Returns last Pose3d. 
+        Returns last Pose3d.
 
         @return last JdeRobotTypes Pose3d saved
 
@@ -150,7 +170,5 @@ class ListenerPose3d:
         self.lock.acquire()
         pose = self.data
         self.lock.release()
-        
+
         return pose
-
-

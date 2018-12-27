@@ -133,46 +133,82 @@ class MyAlgorithm(threading.Thread):
 
         sim_time = rospy.Time.from_sec(rospy.get_time()).to_sec()
 
+        # RGB model change to HSV
         if input_image is not None:
-            image_HSV = cv2.cvtColor(input_image, cv2.COLOR_RGB2HSV)
+            image_HSV = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
-            #Treshold image
-            value_min_HSV = np.array([0, 150, 0])
+            # Minimum and maximum values ​​of the red
+            value_min_HSV = np.array([0, 100, 0])
             value_max_HSV = np.array([180, 255, 255])
+
+            # Filtering images
             image_HSV_filtered = cv2.inRange(image_HSV, value_min_HSV, value_max_HSV)
 
-            #Filtered image
+
+            # Creating a mask with only the pixels within the range of red
             image_HSV_filtered_Mask = np.dstack((image_HSV_filtered, image_HSV_filtered, image_HSV_filtered))
 
-            imgray = cv2.cvtColor(image_HSV_filtered_Mask, cv2.COLOR_BGR2GRAY)
-            ret, thresh = cv2.threshold(imgray, 127, 255, 0)
-            _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            cv2.drawContours(image_HSV_filtered_Mask, contours, -1, (0,255,0), 3)
 
-            area = []
-            for pic, contour in enumerate(contours):
-                area.append(cv2.contourArea(contour))
-            if len(area) > 1:
-                if area[0] < area[1]:
-                    M = cv2.moments(contours[1])
-                else:
-                    M = cv2.moments(contours[0])
+            # Shape gives us the number of rows and columns of an image
+            size = image.shape
+            rows = size[0]
+            columns = size[1]
+
+
+            #  Looking for pixels that change of tone
+            position_pixel_left = []
+            position_pixel_right  = []
+
+            for i in range(0, columns-1):
+                value = image_HSV_filtered[365, i] - image_HSV_filtered[365, i-1]
+                if(value != 0):
+                    if (value == 255):
+                        position_pixel_left.append(i)
+                    else:
+                        position_pixel_right.append(i-1)
+
+
+            # Calculating the intermediate position of the road
+            if ((len(position_pixel_left) != 0) and (len(position_pixel_right) != 0)):
+                position_middle = (position_pixel_left[0] + position_pixel_right[0]) / 2
+            elif ((len(position_pixel_left) != 0) and (len(position_pixel_right) == 0)):
+                position_middle = (position_pixel_left[0] + columns) / 2
+            elif ((len(position_pixel_left) == 0) and (len(position_pixel_right) != 0)):
+                position_middle = (0 + position_pixel_right[0]) / 2
             else:
-                M = cv2.moments(contours[0])
+                position_pixel_right.append(1000)
+                position_pixel_left.append(1000)
+                position_middle = (position_pixel_left[0] + position_pixel_right[0])/ 2
 
-            if int(M['m00']) != 0:
-                self.cx = int(M['m10']/M['m00'])
-                self.cy = int(M['m01']/M['m00'])
 
-            cv2.circle(image_HSV_filtered_Mask, (self.cx, self.cy), 7, np.array([255, 0, 0]), -1)
+            # Calculating the desviation
+            desviation = position_middle - (columns/2)
+            #print (" desviation    ", desviation)
 
-            print("cx: " + str(self.cx))
-            if self.cx < 50:
-                self.motors.sendV(1.5)
+            sim_time = float(self.pose.getPose3d().timeStamp)
+
+            #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
+            if (desviation == 0):
+                 self.motors.sendV(3)
+            elif (position_pixel_right[0] == 1000):
+                 self.motors.sendW(-0.0000035)
+            elif ((abs(desviation)) < 85):
+                 if ((abs(desviation)) < 31):
+                     self.motors.sendV(3)
+                 else:
+                     self.motors.sendV(1)
+                 self.motors.sendW(-0.000045 * desviation)
+            elif ((abs(desviation)) < 150):
+                 if ((abs(desviation)) < 120):
+                     self.motors.sendV(1)
+                 else:
+                     self.motors.sendV(1)
+                 self.motors.sendW(-0.00045 * desviation)
             else:
-                self.motors.sendV(3.5)
+                 self.motors.sendV(1)
+                 self.motors.sendW(-0.0055 * desviation)
 
-            self.motors.sendW((153-int(self.cx))*0.01)
 
-        #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image_HSV_filtered_Mask)
+
+            #SHOW THE FILTERED IMAGE ON THE GUI
+            self.setImageFiltered(image_HSV_filtered_Mask)
