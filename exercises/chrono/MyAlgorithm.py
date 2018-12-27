@@ -134,45 +134,7 @@ class MyAlgorithm(threading.Thread):
         sim_time = rospy.Time.from_sec(rospy.get_time()).to_sec()
 
         if input_image is not None:
-            image_HSV = cv2.cvtColor(input_image, cv2.COLOR_RGB2HSV)
+            # ADD YOUR CODE HERE
 
-            #Treshold image
-            value_min_HSV = np.array([0, 150, 0])
-            value_max_HSV = np.array([180, 255, 255])
-            image_HSV_filtered = cv2.inRange(image_HSV, value_min_HSV, value_max_HSV)
-
-            #Filtered image
-            image_HSV_filtered_Mask = np.dstack((image_HSV_filtered, image_HSV_filtered, image_HSV_filtered))
-
-            imgray = cv2.cvtColor(image_HSV_filtered_Mask, cv2.COLOR_BGR2GRAY)
-            ret, thresh = cv2.threshold(imgray, 127, 255, 0)
-            _, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            cv2.drawContours(image_HSV_filtered_Mask, contours, -1, (0,255,0), 3)
-
-            area = []
-            for pic, contour in enumerate(contours):
-                area.append(cv2.contourArea(contour))
-            if len(area) > 1:
-                if area[0] < area[1]:
-                    M = cv2.moments(contours[1])
-                else:
-                    M = cv2.moments(contours[0])
-            else:
-                M = cv2.moments(contours[0])
-
-            if int(M['m00']) != 0:
-                self.cx = int(M['m10']/M['m00'])
-                self.cy = int(M['m01']/M['m00'])
-
-            cv2.circle(image_HSV_filtered_Mask, (self.cx, self.cy), 7, np.array([255, 0, 0]), -1)
-
-            print("cx: " + str(self.cx))
-            if self.cx < 50:
-                self.motors.sendV(1.5)
-            else:
-                self.motors.sendV(3.5)
-
-            self.motors.sendW((153-int(self.cx))*0.01)
-
-        #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image_HSV_filtered_Mask)
+            #SHOW THE FILTERED IMAGE ON THE GUI
+            self.setImageFiltered(image_HSV_filtered_Mask)
