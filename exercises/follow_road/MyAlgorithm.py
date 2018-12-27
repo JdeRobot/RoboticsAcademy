@@ -5,50 +5,45 @@ import cv2
 import numpy as np
 import math
 
-from parallelIce.navDataClient import NavDataClient
-from parallelIce.cmdvel import CMDVel
-from parallelIce.extra import Extra
-from parallelIce.pose3dClient import Pose3DClient
-
-
 time_cycle = 80
-
-hmin = 20
-smin= 0
-vmin= 0
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, camera, navdata, pose, cmdvel, extra):
-        self.camera = camera
-        self.navdata = navdata
-        self.pose = pose
-        self.cmdvel = cmdvel
-        self.extra = extra
-
-        self.minError=10
-        self.prev_section=0
+    def __init__(self, drone):
+        self.drone = drone
 
         self.height = 240
         self.width = 320
 
-        self.image=None
+        self.imageV=None
+        self.imageF =None
 
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
         threading.Thread.__init__(self, args=self.stop_event)
 
-    def setImageFiltered(self, image):
+    def setImageFilteredVentral(self, image):
         self.lock.acquire()
-        self.image=image
+        self.imageV=image
         self.lock.release()
 
-    def getImageFiltered(self):
+    def getImageFilteredVentral(self):
         self.lock.acquire()
-        tempImage=self.image
+        tempImageV=self.imageV
         self.lock.release()
-        return tempImage
+        return tempImageV
+
+    def setImageFilteredFrontal(self, image):
+        self.lock.acquire()
+        self.imageF=image
+        self.lock.release()
+
+    def getImageFilteredFrontal(self):
+        self.lock.acquire()
+        tempImageF=self.imageF
+        self.lock.release()
+        return tempImageF
 
     def run (self):
 
@@ -65,7 +60,6 @@ class MyAlgorithm(threading.Thread):
 
             dt = finish_Time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            #print (ms)
             if (ms < time_cycle):
                 time.sleep((time_cycle - ms) / 1000.0)
 
@@ -82,14 +76,16 @@ class MyAlgorithm(threading.Thread):
         self.kill_event.set()
 
     def execute(self):
-        input_image = self.camera.getImage().data
-        if input_image is not None:
-            # Add your code here
-            img = np.copy(input_image)
+        # Add your code here
+        input_imageV = self.drone.getImageVentral().data
+        input_imageF = self.drone.getImageFrontal().data
 
-            self.setImageFiltered(img)
-            '''
-            If you want show a thresold image (black and white image)
-            self.camera.setThresholdImage(bk_image)
-            '''
+        if input_imageV is not None:
 
+                #printing the filtered image
+                self.setImageFilteredVentral(input_imageV)
+
+        if input_imageF is not None:
+
+            #printing the filtered image
+            self.setImageFilteredFrontal(input_imageF)

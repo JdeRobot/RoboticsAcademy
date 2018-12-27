@@ -20,12 +20,14 @@
 #
 
 import sys
-import comm
-import config
+#import comm
+#import config
 from MyAlgorithm import MyAlgorithm
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
+
+from drone import Drone
 
 
 import signal
@@ -34,30 +36,15 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
 
-    #self.drone = DroneWrapper("mavros/cmd/arming", "mavros/cmd/land","mavros/set_mode",  "/mavros/setpoint_velocity/cmd_vel","/mavros/local_position/odom",  "/solo/cam_ventral/image_raw", "/solo/cam_frontal/image_raw")
-    #self.algorithm=MyAlgorithm(self.drone)
+    #drone = Drone("mavros/cmd/arming", "mavros/cmd/land", "mavros/cmd/takeoff", "mavros/set_mode", "/mavros/setpoint_velocity/cmd_vel", "/mavros/local_position/odom", "/solo/cam_ventral/image_raw", "/solo/cam_frontal/image_raw")
+    drone = Drone("mavros/cmd/arming", "mavros/cmd/land", "mavros/cmd/takeoff", "mavros/set_mode", "/mavros/setpoint_raw/local", "/mavros/local_position/odom", "/iris_fpv_cam/cam_ventral/image_raw", "/iris_fpv_cam/cam_frontal/image_raw")
 
-    cfg = config.load(sys.argv[1])
-
-    #starting comm
-    jdrc= comm.init(cfg, 'Introrob')
-
-    camera = jdrc.getCameraClient("Introrob.Camera")
-    navdata = jdrc.getNavdataClient("Introrob.Navdata")
-    pose = jdrc.getPose3dClient("Introrob.Pose3D")
-    cmdvel = jdrc.getCMDVelClient("Introrob.CMDVel")
-    extra = jdrc.getArDroneExtraClient("Introrob.Extra")
-
-    algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
+    algorithm=MyAlgorithm(drone)
 
 
     app = QApplication(sys.argv)
     frame = MainWindow()
-    frame.setCamera(camera)
-    frame.setNavData(navdata)
-    frame.setPose3D(pose)
-    frame.setCMDVel(cmdvel)
-    frame.setExtra(extra)
+    frame.setDrone(drone)
     frame.setAlgorithm(algorithm)
     frame.show()
 

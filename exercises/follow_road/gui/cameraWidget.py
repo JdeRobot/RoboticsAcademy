@@ -31,10 +31,13 @@ class CameraWidget(QWidget):
 
     def __init__(self,winParent):
         super(CameraWidget, self).__init__()
-        self.winParent=winParent
-        self.labelImage=winParent.image
-        self.labelImageFiltered = winParent.imageFiltered
-        
+        self.winParent = winParent
+        self.labelImageVentral = winParent.imageVentral
+        self.labelImageFrontal = winParent.imageFrontal
+        self.labelImageFilteredVentral = winParent.imageFilteredVentral
+        self.labelImageFilteredFrontal = winParent.imageFilteredFrontal
+        self.initUI()
+
     def initUI(self):
 
         self.setMinimumSize(680,500)
@@ -47,23 +50,39 @@ class CameraWidget(QWidget):
 
     def updateImage(self):
 
-        img = self.winParent.getCamera().getImage().data
-        if img is not  None:
-            resized = cv2.resize(img,(self.IMG_WIDTH,self.IMG_HEIGHT))
-            image = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
-            size=QtCore.QSize(img.shape[1],img.shape[0])
+        imgV = self.winParent.getDrone().getImageVentral().data
+        if imgV is not  None:
+            resized = cv2.resize(imgV,(self.IMG_WIDTH,self.IMG_HEIGHT))
+            imageV = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
+            size=QtCore.QSize(imgV.shape[1],imgV.shape[0])
             #self.label.resize(size)
-            self.labelImage.setPixmap(QtGui.QPixmap.fromImage(image))
+            self.labelImageVentral.setPixmap(QtGui.QPixmap.fromImage(imageV))
+
+        imgF = self.winParent.getDrone().getImageFrontal().data
+        if imgF is not  None:
+            resized = cv2.resize(imgF,(self.IMG_WIDTH,self.IMG_HEIGHT))
+            imageF = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
+            size=QtCore.QSize(imgF.shape[1],imgF.shape[0])
+            #self.label.resize(size)
+            self.labelImageFrontal.setPixmap(QtGui.QPixmap.fromImage(imageF))
 
         #print the filtered images
 
-        imgFiltered = self.winParent.getAlgorithm().getImageFiltered()
-        if imgFiltered is not None:
-            resized = cv2.resize(imgFiltered,(self.IMG_WIDTH,self.IMG_HEIGHT))
-            image = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
-            size=QtCore.QSize(imgFiltered.shape[1],imgFiltered.shape[0])
+        imgFilteredV = self.winParent.getAlgorithm().getImageFilteredVentral()
+        if imgFilteredV is not None:
+            resized = cv2.resize(imgFilteredV,(self.IMG_WIDTH,self.IMG_HEIGHT))
+            imageV = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
+            size=QtCore.QSize(imgFilteredV.shape[1],imgFilteredV.shape[0])
             #self.label.resize(size)
-            self.labelImageFiltered.setPixmap(QtGui.QPixmap.fromImage(image))
+            self.labelImageFilteredVentral.setPixmap(QtGui.QPixmap.fromImage(imageV))
+
+        imgFilteredF = self.winParent.getAlgorithm().getImageFilteredFrontal()
+        if imgFilteredF is not None:
+            resized = cv2.resize(imgFilteredF,(self.IMG_WIDTH,self.IMG_HEIGHT))
+            imageF = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
+            size=QtCore.QSize(imgFilteredF.shape[1],imgFilteredF.shape[0])
+            #self.label.resize(size)
+            self.labelImageFilteredFrontal.setPixmap(QtGui.QPixmap.fromImage(imageF))
 
     def closeEvent(self, event):
         self.winParent.closeCameraWidget()
