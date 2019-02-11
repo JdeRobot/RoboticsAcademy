@@ -1,0 +1,17 @@
+FollowLineTurtlebot:
+
+  Camera:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "cam_f1_left:tcp -h localhost -p 8995"
+    Format: RGB8
+    Topic: "/Turtlebot/image_raw"
+    Name: FollowLineTurtlebotCameraLeft
+
+  Motors:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:tcp -h localhost -p 9999"
+    Topic: "/Turtlebot/Motors"
+    Name: FollowLineTurtlebotMotors
+
+  robot: Turtlebot
+  NodeName: FollowLineTurtlebot
