@@ -13,7 +13,6 @@ import rosbag
 from decimal import Decimal, ROUND_HALF_EVEN
 
 time_cycle = 80
-#cursor = 0.0
 sim_time = 0.0
 initime = 0.0
 posx = -59.25
@@ -66,6 +65,12 @@ class MyAlgorithm(threading.Thread):
         else:
             return float(posx), float(posy)
 
+    def getImage(self):
+        self.lock.acquire()
+        img = self.camera.getImage().data
+        self.lock.release()
+        return img
+
     def setImageFiltered(self, image):
         self.lock.acquire()
         self.image=image
@@ -95,7 +100,6 @@ class MyAlgorithm(threading.Thread):
 
             dt = finish_Time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            #print (ms)
             if (ms < time_cycle):
                 time.sleep((time_cycle - ms) / 1000.0)
 
@@ -123,12 +127,10 @@ class MyAlgorithm(threading.Thread):
     def execute(self):
         global sim_time
         #GETTING THE IMAGES
-        input_image = self.camera.getImage().data
+        input_image = self.getImage()
 
         sim_time = rospy.Time.from_sec(rospy.get_time()).to_sec()
 
         if input_image is not None:
-            #ADD YOUR CODE HERE
-
-        #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image_HSV_filtered_Mask)
+            #SHOW THE FILTERED IMAGE ON THE GUI
+            self.setImageFiltered(input_image)
