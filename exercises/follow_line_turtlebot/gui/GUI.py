@@ -57,6 +57,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.pushButton.setText('Play Code')
             self.pushButton.setStyleSheet("background-color: #ec7063")
             self.algorithm.stop()
+            self.motors.sendV(0)
+            self.motors.sendW(0)
 
     def setAlgorithm(self, algorithm ):
         self.algorithm=algorithm

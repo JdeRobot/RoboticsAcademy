@@ -24,7 +24,6 @@
 
 # General imports
 import sys
-import comm
 import config
 
 # Practice imports
