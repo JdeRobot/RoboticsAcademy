@@ -35,11 +35,94 @@ To carry out the practice, you have to edit the file `MyAlgorithm.py` and insert
 
 ```
 
-### API
+## API
 * `self.getImage()` - to get the image 
 * `self.motors.setV()` - to set the linear speed
 * `self.motors.setW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
+
+## Real Follow Line using Turtlebot in Docker
+
+### 1. Prepare Enviroment
+#### 1.1 Install Docker
+
+```bash
+sudo apt-get update
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+    
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+Add user to docker group
+```bash
+sudo gpasswd -a ${USER} docker
+```
+Now, **logout or reboot PC**
+
+#### 1.2. Download academy exercises
+
+```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy.git
+```
+
+#### 1.3. Download Docker Image
+
+This may take a few minutes
+
+```bash
+docker pull jderobot/exercises:turtlebot
+```
+### 2. Running Exercise
+
+#### 2.1. Share x-server
+
+With this command, we share the display between the docker and your local pc.
+
+```bash
+xhost +local:docker
+```
+The console will return the following message:
+
+```bash
+non-network local connections being added to access control list
+```
+
+
+#### 2.2. Run Driver
+
+Turn on turtlebot and connect it and xtion to the PC. 
+
+Then, run following to start docker container:
+
+```bash
+docker run -ti --name follow_line --rm --privileged -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/ttyUSB0:/dev/kobuki -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /dev/serial:/dev/serial -v /dev/bus/usb:/dev/bus/usb -v $HOME/RoboticsAcademy:/root/RoboticsAcademy jderobot/exercises:turtlebot
+```
+```
+roslaunch turtlebot-xtion.launch
+```
+#### 2.3. Run Node
+
+Open another terminal and execute.
+
+```bash
+docker exec -ti follow_line bash
+cd /root/RoboticsAcademy/exercises/follow_line_turtlebot
+python follow_line_turtlebot.py follow_line_turtlebot_conf.yml
+```
+
+### 3. Editing code
+Use any editor in **your** PC and then restart the node.
 
 ## Credits
 * *Base code made by Alberto Martín (@almartinflorido)*
