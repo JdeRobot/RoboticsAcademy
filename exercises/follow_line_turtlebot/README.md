@@ -85,6 +85,19 @@ docker pull jderobot/exercises:turtlebot
 ```
 ### 2. Running Exercise
 
+#### 2.1. Run Driver
+
+Turn on turtlebot and connect it and xtion to the PC. 
+
+Then, run following to start docker container:
+
+```bash
+docker run -ti --name follow_line --rm --privileged -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/ttyUSB0:/dev/kobuki -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /dev/serial:/dev/serial -v /dev/bus/usb:/dev/bus/usb -v $HOME/RoboticsAcademy:/root/RoboticsAcademy jderobot/exercises:turtlebot
+```
+```
+roslaunch turtlebot-xtion.launch
+```
+
 #### 2.1. Share x-server
 
 With this command, we share the display between the docker and your local pc.
@@ -98,19 +111,6 @@ The console will return the following message:
 non-network local connections being added to access control list
 ```
 
-
-#### 2.2. Run Driver
-
-Turn on turtlebot and connect it and xtion to the PC. 
-
-Then, run following to start docker container:
-
-```bash
-docker run -ti --name follow_line --rm --privileged -e DISPLAY -e QT_X11_NO_MITSHM=1 -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/ttyUSB0:/dev/kobuki -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v /dev/serial:/dev/serial -v /dev/bus/usb:/dev/bus/usb -v $HOME/RoboticsAcademy:/root/RoboticsAcademy jderobot/exercises:turtlebot
-```
-```
-roslaunch turtlebot-xtion.launch
-```
 #### 2.3. Run Node
 
 Open another terminal and execute.
