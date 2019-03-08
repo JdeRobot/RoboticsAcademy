@@ -40,6 +40,9 @@ if __name__ == "__main__":
 
     robot = cfg.getProperty("FollowLineTurtlebot.Robot")
 
+    maxv = cfg.getPropertyWithDefault("FollowLineTurtlebot.MaxV", 2)
+    maxw = cfg.getPropertyWithDefault("FollowLineTurtlebot.MaxV", 0.3)
+
     if (robot == "simkobuki"):
         cam_path = cfg.getProperty("FollowLineTurtlebot.SimCameraPath")
         mot_path = cfg.getProperty("FollowLineTurtlebot.SimMotorsPath")
@@ -49,7 +52,7 @@ if __name__ == "__main__":
         mot_path = cfg.getProperty("FollowLineTurtlebot.RealMotorsPath")
 
     camera = ListenerCamera(cam_path)
-    motors = PublisherMotors(mot_path, 4, 0.3)
+    motors = PublisherMotors(mot_path, maxv, maxw)
 
     algorithm=MyAlgorithm(camera, motors)
 
