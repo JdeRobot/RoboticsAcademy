@@ -23,10 +23,15 @@ of difficulty, as well as any other one that occurs to you:
 We will use two terminal to run this practice:
 
 1. Run the simulator Gazebo with the corresponding world:
-    `$ roslaunch f1-obstacles.launch`
+1a. With real Turtlebot, you'll need two nodes:
+    `$ roslaunch /opt/jderobot/share/jderobot/gazebo/launch/turtlebot-rplidar.launch`
+    `$ roslaunch kobuki_node minimal.launch --screen`
+
+1b. With simulated Turtlebot, you'll need only one node:
+    `$ roslaunch /opt/jderobot/share/jderobot/gazebo/launch/kobuki-simple-ros.launch`
 
 2. In another termianl, run the obstacle_avoidance component:
-    `$ python2 ./obstacle_avoidance.py`
+    `$ python2 obstacle_avoidance.py obstacle_avoidance_conf.yml`
 
 To simplify the closure of the environment, just close the
 window(s) of obstacle_avoidance. *`Ctrl + C` will be problematic*.
@@ -145,4 +150,5 @@ As well as the destination that we have assigned:
 * *Basic code made by Alberto Martín (@almartinflorido)*
 * *Code of practice made by Eduardo Perdices*
 * *Gazebo models and worlds made by Francisco Pérez (@fqez)*
+* *Adapted to Turtlebot by Julio Vega (julio.vega@urjc.es)*
 

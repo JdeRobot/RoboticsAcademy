@@ -1,0 +1,32 @@
+#-------------------------------------------------------------------------------
+Archivo: Kinect.txt
+Contenido: receta para instalarse los drivers y usar la Kinect V1 con ROS
+Autor: Julio Vega
+#-------------------------------------------------------------------------------
+
+1) Instalar drivers del Sensor Kinect:
+================================================================================
+git clone git://github.com/ph4m/SensorKinect.git
+cd SensorKinect/Platform/Linux/CreateRedist
+sudo chmod +x RedistMaker
+./RedistMaker
+cd ../Redist/Sensor-Bin-Linux-x64-v*
+sudo ./install.sh
+
+2) Instalar manejador OpenNI de la cámara:
+================================================================================
+sudo apt-get install ros-kinetic-openni-camera ros-kinetic-openni-launch
+
+3) Ver qué identificador de dispositivo tiene asociado (en mi caso el 2):
+================================================================================
+lsusb
+
+4) Lanzar ROS OpenNI especificando el device:
+================================================================================
+roslaunch openni_launch openni.launch device_id:=#2
+
+5) Lanzar visualizador rviz en otro terminal:
+================================================================================
+rosrun rviz rviz
+
+Aquí hemos de añadir (botón "Add") a mano izquierda el tipo "PointCloud2" y especificar el topic ROS que vierte los puntos en profundidad (ver qué topic ha lanzado roslaunch), en mi caso es "/camera/depth_points". Asimismo, especificamos el parámetro "Color transformation" como "Axis color".
