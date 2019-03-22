@@ -80,10 +80,6 @@ class MyAlgorithm(threading.Thread):
     def execute(self):
 
         # TODO
-        print("Runing")
 
         # Getting the images
         input_image = self.cameraC.getImage().data
-        self.motors.sendL(-2)
-
-

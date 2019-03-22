@@ -1,53 +1,26 @@
 #!/usr/bin/python3
-#
-#  Copyright (C) 1997-2016 JDE Developers Team
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#  You should have received a copy of the GNU General Public License
-#  along with this program.  If not, see http://www.gnu.org/licenses/.
-#  Authors :
-#       Eduardo Perdices <eperdices@gsyc.es>
-#       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
-#
 
+# General imports
 import sys
-import comm
-import config
-from PyQt5.QtWidgets import QApplication
+
+# Practice imports
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
-#from parallelIce.motors import Motors
-#from parallelIce.pose3dClient import Pose3DClient
-#from parallelIce.cameraClient import CameraClient
-#from parallelIce.laserClient import LaserClient
-#import easyiceconfig as EasyIce
 from MyAlgorithm import MyAlgorithm
-
-
+from PyQt5.QtWidgets import QApplication
+from interfaces.camera import ListenerCamera
+from interfaces.motors import PublisherMotors
+from interfaces.pose3d import ListenerPose3d
 
 if __name__ == "__main__":
 
-    cfg = config.load(sys.argv[1])
+    cameraC = ListenerCamera("/opel/cameraC/image_raw")
+    cameraL = ListenerCamera("/opel/cameraL/image_raw")
+    cameraR = ListenerCamera("/opel/cameraR/image_raw")
+    motors = PublisherMotors("/opel/cmd_vel", 4, 0.3)
+    pose3d = ListenerPose3d("/opel/odom")
 
-    #starting comm
-    jdrc= comm.init(cfg, 'Stop')
-
-    cameraC = jdrc.getCameraClient("Stop.CameraC")
-    cameraL = jdrc.getCameraClient("Stop.CameraL")
-    cameraR = jdrc.getCameraClient("Stop.CameraR")
-    motors = jdrc.getMotorsClient ("Stop.Motors")
-    pose3d = jdrc.getPose3dClient("Stop.Pose3D")
-    
-    algorithm=MyAlgorithm(pose3d, cameraC, cameraL, cameraR, motors)
+    algorithm = MyAlgorithm(pose3d, cameraC, cameraL, cameraR, motors)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
@@ -58,7 +31,6 @@ if __name__ == "__main__":
     myGUI.setPose3D(pose3d)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
-
 
     t2 = ThreadGUI(myGUI)
     t2.daemon=True

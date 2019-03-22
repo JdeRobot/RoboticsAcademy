@@ -7,23 +7,15 @@ sign, wait until there are no cars and pass once the road is clear.
 ## How to execute?
 To launch the example, follow the steps below:
 
-0. Source the gazebo setups:
-
-```
-source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
-source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
-```
-
 1. Run Gazebo simulator:
+    * Execution **without** seeing the world:  `$ gzserver stop.world`
 
-```
-roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_junction.launch
-```
+     * Execution **watching** the world:  `$ gazebo stop.world`
 
 2. Running the practice and the user interface: 
 
 ```
-$ python2 ./stop.py
+$ python2 ./stop.py stop_conf.yml
 ```
 
 To simplify the closure of the environment, just close the Stop Component 
@@ -59,8 +51,9 @@ def execute(self):
 * `self.pose3d.getPose3d().yaw` - to obtain the position of the robot
 
 * `self.motors.sendW()` - to set the angular velocity
-* `self.motors.sendL()` - to set the linear velocity (with negative sign (I'll fix it))
+* `self.motors.sendV()` - to set the linear velocity
 
 
 ## Demonstrative video
 [Car Junction Video Demo](https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE)
+
