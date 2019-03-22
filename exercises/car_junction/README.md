@@ -10,14 +10,14 @@ To launch the example, follow the steps below:
 0. Source the gazebo setups:
 
 ```
-source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
-source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+$ source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
+$ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 ```
 
 1. Run Gazebo simulator:
 
 ```
-roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_junction.launch
+$ roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_junction.launch
 ```
 
 2. Running the practice and the user interface: 
