@@ -43,7 +43,7 @@ control logic into it.
 def execute(self):
         
     # Add your code here
-    print "Runing"
+    print "Running"
     # Getting the images
     input_image = self.cameraC.getImage().data      
 ```
@@ -59,7 +59,7 @@ def execute(self):
 * `self.pose3d.getPose3d().yaw` - to obtain the position of the robot
 
 * `self.motors.sendW()` - to set the angular velocity
-* `self.motors.sendL()` - to set the linear velocity (with negative sign (I'll fix it))
+* `self.motors.sendV()` - to set the linear velocity
 
 
 ## Demonstrative video

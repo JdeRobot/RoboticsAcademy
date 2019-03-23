@@ -20,6 +20,12 @@ if __name__ == "__main__":
     motors = PublisherMotors("/opel/cmd_vel", 4, 0.3)
     pose3d = ListenerPose3d("/opel/odom")
 
+    motorsDummy1 = PublisherMotors("/dummy1/cmd_vel", 4, 0.3)
+    motorsDummy2 = PublisherMotors("/dummy2/cmd_vel", 4, 0.3)
+
+    motorsDummy1.sendV(2.5)
+    motorsDummy2.sendV(3)
+
     algorithm = MyAlgorithm(pose3d, cameraC, cameraL, cameraR, motors)
 
     app = QApplication(sys.argv)
