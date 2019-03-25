@@ -86,14 +86,55 @@ class MyAlgorithm(threading.Thread):
 
     def algorithm(self):
         #GETTING THE IMAGES
-        image = self.getImage()
+        img= self.getImage()
+        
+            # Add your code here
+           
+	    height, width, channels = img.shape
+        kernel = np.ones((5,5),np.uint8)	
+        
+        image = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-        # Add your code here
-        print "Runing"
+        #defining range for mask1
+        lower_red = np.array([0,100,20],np.uint8) 
+        upper_red = np.array([10,255,255],np.uint8)
+
+        #defining range for mask2
+        lower_red1 = np.array([170,100,20],np.uint8)
+        upper_red1 = np.array([180,255,255],np.uint8)
+
+        mask1 = cv2.inRange(hsv, lower_red,upper_red)
+        mask2 = cv2.inRange(hsv, lower_red1,upper_red1)
+
+        mask = mask1|mask2
+        #Edge detection approach
+    #	edges = cv2.Canny(mask, 75, 150)
+    #	lines = cv2.HoughLinesP(edges, 1, np.pi/180, 50, maxLineGap=50)
+    #        if lines is not None:
+    #	    for line in lines:
+    #	        x1, y1, x2, y2 = line[0]
+    #	        cv2.line(image, (x1, y1), (x2, y2), (0, 255, 0), 5)
+
+        # Bitwise-AND mask and original image
+        res = cv2.bitwise_or(image,image, mask= mask)
+    #	opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+        # Calculate centroid of the blob of binary image using ImageMoments
+        m = cv2.moments(mask, False)
+        try:
+            cx, cy = m['m10']/m['m00'], m['m01']/m['m00']
+        except ZeroDivisionError:
+            cy, cx = height/2, width/2
+        # Drawing centroid in the resultant image
+        cv2.circle(res,(int(cx), int(cy)), 10,(0,0,255),-1)
+
+        #Error/difference between line to be followed and current path for proportional controller
+        error_x = cx - width / 2;
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
-
+        self.motors.sendV(5)
+        self.motors.sendW(-error_x / 100)
+        print "Runing"
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.set_threshold_image(image)
+        self.set_threshold_image(res)        
+       
