@@ -1,3 +1,4 @@
+
 #!/usr/bin/python3
 #
 #  Copyright (C) 1997-2016 JDE Developers Team
@@ -19,23 +20,29 @@
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
-import sys, os
-
+import sys
+import comm
+import config
+from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from MyAlgorithm import MyAlgorithm
-from PyQt5.QtWidgets import QApplication
-from interfaces.laser import ListenerLaser
-from interfaces.motors import PublisherMotors
-from interfaces.pose3d import ListenerPose3d
+
+
+
 
 if __name__ == "__main__":
 
-    motors = PublisherMotors("/taxi_holo_laser/cmd_vel", 20, 0.5)
-    pose3d = ListenerPose3d("/taxi_holo_laser/odom")
-    laser1 = ListenerLaser("/taxi_holo_laser/laser1/scan")
-    laser2 = ListenerLaser("/taxi_holo_laser/laser2/scan")
-    laser3 = ListenerLaser("/taxi_holo_laser/laser3/scan")
+    cfg = config.load(sys.argv[1])
+
+    #starting comm
+    jdrc= comm.init(cfg, 'Autopark')
+
+    motors = jdrc.getMotorsClient ("Autopark.Motors")
+    pose3d = jdrc.getPose3dClient("Autopark.Pose3D")
+    laser1 = jdrc.getLaserClient("Autopark.Laser1").hasproxy()
+    laser2 = jdrc.getLaserClient("Autopark.Laser2").hasproxy()
+    laser3 = jdrc.getLaserClient("Autopark.Laser3").hasproxy()
 
     algorithm=MyAlgorithm(pose3d, laser1, laser2, laser3, motors)
 
@@ -55,5 +62,4 @@ if __name__ == "__main__":
     t2.start()
 
 
-    id = app.exec_()
-    os._exit(id)
+    sys.exit(app.exec_())

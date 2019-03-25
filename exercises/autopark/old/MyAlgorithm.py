@@ -22,7 +22,7 @@ class MyAlgorithm(threading.Thread):
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
-        threading.Thread.__init__(self, args=self.kill_event)
+        threading.Thread.__init__(self, args=self.stop_event)
 
 
     def run (self):
@@ -61,10 +61,10 @@ class MyAlgorithm(threading.Thread):
     def execute(self):
     
         # Add your code here
-        print("Runing")
+        print "Runing"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        # self.motors.sendV(10)
+        #self.motors.sendV(10)
         #self.motors.sendW(5)
         
         # TODO
