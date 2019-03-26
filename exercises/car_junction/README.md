@@ -23,7 +23,7 @@ $ roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_junction.launch
 2. Running the practice and the user interface: 
 
 ```
-$ python2 ./stop.py
+$ python2 ./stop.py stop_conf.yml
 ```
 
 To simplify the closure of the environment, just close the Stop Component 
