@@ -97,4 +97,3 @@ class MyAlgorithm(threading.Thread):
 
         #SHOW THE FILTERED IMAGE ON THE GUI
         self.set_threshold_image(image)       
-       
