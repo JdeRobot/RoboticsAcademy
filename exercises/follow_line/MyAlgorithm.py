@@ -96,4 +96,4 @@ class MyAlgorithm(threading.Thread):
         #self.motors.setW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.set_threshold_image(image)    
+        self.set_threshold_image(image)
