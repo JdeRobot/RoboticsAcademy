@@ -7,10 +7,18 @@ sign, wait until there are no cars and pass once the road is clear.
 ## How to execute?
 To launch the example, follow the steps below:
 
-1. Run Gazebo simulator:
-    * Execution **without** seeing the world:  `$ gzserver stop.world`
+0. Source the gazebo setups:
 
-     * Execution **watching** the world:  `$ gazebo stop.world`
+```
+$ source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
+$ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+```
+
+1. Run Gazebo simulator:
+
+```
+$ roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_junction.launch
+```
 
 2. Running the practice and the user interface: 
 
@@ -35,7 +43,7 @@ control logic into it.
 def execute(self):
         
     # Add your code here
-    print "Runing"
+    print "Running"
     # Getting the images
     input_image = self.cameraC.getImage().data      
 ```
@@ -56,4 +64,3 @@ def execute(self):
 
 ## Demonstrative video
 [Car Junction Video Demo](https://www.youtube.com/watch?time_continue=13&v=hF2i0rdlIqE)
-
