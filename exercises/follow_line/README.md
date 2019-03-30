@@ -3,6 +3,8 @@ The objective of this practice is to perform a PID reactive control capable of f
 
 ## How to execute?
 To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
+
+
 ```
 source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
 ```
@@ -11,9 +13,27 @@ source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
 source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 ```
 
+or add them directly to your bashrc to run automatically whenver you open a terminal:
+
 ```
-roslaunch /opt/jderobot/share/jderobot/gazebo/launch/f1_1_simplecircuit.launch world:=/opt/jderobot/share/jderobot/gazebo/worlds/f1_1_simplecircuit.world
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' > ~/.bashrc
 ```
+
+```
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' > ~/.bashrc
+```
+
+```
+source ~/.bashrc
+```
+
+Launch Gazebo with the f1_simple_circuit world through the command 
+
+```
+roslaunch ./launch/simple_line_follower_ros.launch
+```
+
+
 Then you have to execute the academic application, which will incorporate your code:
 ```
 python2 ./follow_line.py follow_line_conf.yml
