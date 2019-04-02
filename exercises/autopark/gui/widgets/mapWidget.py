@@ -31,8 +31,8 @@ from math import pi as pi
 class MapWidget(QWidget):
 
     stopSIG=pyqtSignal()
-    
-    def __init__(self,winParent):    
+
+    def __init__(self,winParent):
         super(MapWidget, self).__init__()
         self.winParent=winParent
         self.initUI()
@@ -40,10 +40,10 @@ class MapWidget(QWidget):
         self.laser1 = []
         self.laser2 = []
         self.laser3 = []
-        
-    
+
+
     def initUI(self):
-        layout=QGridLayout() 
+        layout=QGridLayout()
         self.setLayout(layout)
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -51,16 +51,16 @@ class MapWidget(QWidget):
         self.setPalette(p)
         self.resize(300,300)
         self.setMinimumSize(500,300)
-        
-    
+
+
     def paintEvent(self, e):
         _width = self.width()
         _height = self.height()
-    
+
         painter=QPainter(self)
         pen = QPen(Qt.black, 2)
         painter.setPen(pen)
-    
+
         #Widget center
         painter.translate(QPoint(_width/2, _height/2))
 
@@ -86,11 +86,11 @@ class MapWidget(QWidget):
         RT1 = np.matrix([[0],[0],[0],[1]])
         RT2 = np.matrix([[200],[0],[0],[1]])
         RT3 = np.matrix([[0],[200],[0],[1]])
-        
+
         RT4 = RTx  * RTz * RT1
         RT5 = RTx  * RTz * RT2
         RT6 = RTx  * RTz * RT3
-        
+
         pen = QPen(Qt.red, 2)
         painter.setPen(pen)
         painter.drawLine(QPointF(RT4.flat[0],RT4.flat[1]),QPointF(RT5.flat[0],RT5.flat[1]))
@@ -98,7 +98,7 @@ class MapWidget(QWidget):
         painter.setPen(pen)
         painter.drawLine(QPointF(RT4.flat[0],RT4.flat[1]),QPointF(RT6.flat[0],RT6.flat[1]))
 
-    
+
     def drawCar(self, painter):
         carsize = 40
 
@@ -110,23 +110,23 @@ class MapWidget(QWidget):
         painter.fillRect(carsize/2,-carsize,-carsize/5,2*carsize/5,Qt.black)
         painter.fillRect(-carsize/2,carsize-2*carsize/5,carsize/5,2*carsize/5,Qt.black)
         painter.fillRect(carsize/2,carsize-2*carsize/5,-carsize/5,2*carsize/5,Qt.black)
-              
-    
+
+
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
         return RT
-        
-    
+
+
     def RTy(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
         return RT
-    
-    
+
+
     def RTz(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
-        return RT   
+        return RT
 
-    
+
     def RTLaser(self, num):
         if num == 1:
             # Rotation Z / Traslation X
@@ -137,22 +137,22 @@ class MapWidget(QWidget):
         else:
             # Rotation Z / Traslation Y
             RT = self.RTz(-pi/2, 0, -1.5, 0)
-        return RT    
-    
-    
+        return RT
+
+
     def coordLaser(self, dist, angle):
-        coord = [0,0] 
+        coord = [0,0]
         coord[0] = dist * math.cos(angle)
         coord[1] = dist * math.sin(angle)
         return coord
 
-    
+
     def RTCar(self):
         RTx = self.RTx(pi, 0, 0, 0)
         RTz = self.RTz(pi/2, 0, 0, 0)
         return RTx*RTz
 
-    
+
     def drawLaser(self, num, painter, color, laser):
         pen = QPen(color, 2)
         painter.setPen(pen)
@@ -169,7 +169,7 @@ class MapWidget(QWidget):
             final_poses = self.RTCar() * final_poses1
             painter.drawLine(QPointF(RTFinalLaser.flat[0],RTFinalLaser.flat[1]),QPointF(final_poses.flat[0], final_poses.flat[1]))
 
-   
+
     def setLaserValues(self, num, laser):
         # Init laser array
         if num == 1:
@@ -178,31 +178,31 @@ class MapWidget(QWidget):
             laserX = self.laser2
         else:
             laserX = self.laser3
-                
+
         if len(laserX) == 0:
-            for i in range(laser.numLaser):
+            for i in range(len(laser.values)):
                 laserX.append((0,0))
 
-        for i in range(laser.numLaser):
-            dist = laser.distanceData[i]/1000.0
+        for i in range(len(laser.values)):
+            dist = laser.values[i]/1000.0
             angle = -math.pi/2 + math.radians(i)
             laserX[i] = (dist, angle)
-            
-            
+
+
 class MapWidget1(QWidget):
 
     stopSIG=pyqtSignal()
-    
-    def __init__(self,winParent):    
+
+    def __init__(self,winParent):
         super(MapWidget1, self).__init__()
         self.winParent=winParent
         self.initUI()
         self.scale = 12.0
         self.trail = []
-        
-        
+
+
     def initUI(self):
-        layout=QGridLayout() 
+        layout=QGridLayout()
         self.setLayout(layout)
         self.setAutoFillBackground(True)
         p = self.palette()
@@ -210,29 +210,29 @@ class MapWidget1(QWidget):
         self.setPalette(p)
         self.resize(300,300)
         self.setMinimumSize(500,300)
-        
-        
+
+
     def paintEvent(self, e):
         _width = self.width()
         _height = self.height()
-        
+
         painter2=QPainter(self)
         pen = QPen(Qt.green, 2)
         painter2.setPen(pen)
 
         # Widget center
         painter2.translate(QPoint(_width/2, _height/2))
-        
+
         # Draw obstacles
         self.drawObstacles(painter2)
 
         # Draw ideal position
         self.drawIdeal(painter2)
-    
+
         painter=QPainter(self)
         pen = QPen(Qt.black, 2)
         painter.setPen(pen)
-    
+
         # Widget center
         painter.translate(QPoint(_width/2, _height/2))
 
@@ -241,20 +241,20 @@ class MapWidget1(QWidget):
 
         painter1=QPainter(self)
         pen = QPen(Qt.red, 2)
-        painter1.setPen(pen) 
-               
+        painter1.setPen(pen)
+
         # Widget center
         painter1.translate(QPoint(_width/2, _height/2))
 
         # Draw the car's way
         self.drawTrail(painter1)
-        
+
 
     def RTCar(self):
         RTx = self.RTx(pi, 0, 0, 0)
         RTz = self.RTz(pi/2, 0, 0, 0)
-        return RTx*RTz     
-        
+        return RTx*RTz
+
 
     def drawCar(self, painter):
         pose = self.winParent.getPose3D().getPose3d()
@@ -268,7 +268,7 @@ class MapWidget1(QWidget):
         carsize = 25
         painter.translate(QPoint(final_poses[0],final_poses[1]))
         painter.rotate(-180*yaw/pi)
-        
+
         # Chassis
         painter.fillRect(-carsize/2, -carsize,carsize,2*carsize,Qt.yellow)
 
@@ -287,7 +287,7 @@ class MapWidget1(QWidget):
 
         orig_poses = np.matrix([[x], [y], [1], [1]]) * self.scale
         final_poses = self.RTCar() * orig_poses
-        
+
         if len(self.trail) < 300:
             self.trail.append([final_poses.flat[0], final_poses.flat[1]])
         else:
@@ -297,7 +297,7 @@ class MapWidget1(QWidget):
 
         for i in range(0, len(self.trail)):
             painter.drawPoint(self.trail[i][0], self.trail[i][1])
-            
+
 
     def drawObstacles(self, painter):
         carsize = 30
@@ -318,7 +318,7 @@ class MapWidget1(QWidget):
         orig_poses4 = np.matrix([[14], [-3], [1], [1]]) * self.scale
         final_poses4 = self.RTCar() * orig_poses4
         painter.fillRect(-carsize/2+final_poses4.flat[0], -carsize+final_poses4.flat[1], carsize, 2*carsize, Qt.black)
-        
+
         # Sidewalk 1
         orig_poses5 = np.matrix([[5], [9], [1], [1]]) * self.scale
         final_poses5 = self.RTCar() * orig_poses5
@@ -344,26 +344,26 @@ class MapWidget1(QWidget):
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], [0, math.sin(angle), math.cos(angle), tz], [0,0,0,1]])
         return RT
-        
+
     def RTy(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty], [-math.sin(angle), 0, math.cos(angle), tz], [0,0,0,1]])
         return RT
-    
+
     def RTz(self, angle, tx, ty, tz):
         RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
-        return RT 
-        
-        
-        
+        return RT
+
+
+
 class LogoWidget(QWidget):
     stopSIG=pyqtSignal()
-    
-    def __init__(self,winParent):    
+
+    def __init__(self,winParent):
         super(LogoWidget, self).__init__()
         self.winParent=winParent
         self.initUI()
-        
-    
+
+
     def initUI(self):
         self.logo = cv2.imread("resources/logo_jderobot1.png",cv2.IMREAD_UNCHANGED)
         self.logo = cv2.resize(self.logo, (100, 100))
@@ -377,4 +377,3 @@ class LogoWidget(QWidget):
 
         self.resize(300,300)
         self.setMinimumSize(100,100)
-

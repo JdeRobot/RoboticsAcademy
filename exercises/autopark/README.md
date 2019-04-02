@@ -5,13 +5,11 @@ The goal of this practice is to implement the logic of a navigation algorithm fo
 ## How to run
 To launch the example, follow the steps below:
 1. Run Gazebo simulator:
-    * Execution without seeing the world: 
-       `$ gzserver autopark.world`
-    * Execution watching the world: 
+    * Execution watching the world:
        `$ gazebo autopark.world`
-2. Running the practice and the user interface: 
+2. Running the practice and the user interface:
      `$ python2 autopark.py autopark_conf.yml`
-3. Execution of the automatic evaluator: 
+3. Execution of the automatic evaluator:
      `$ python2 referee.py referee.yml`
 
 To simplify the closure of the environment, just close the Autopark window (s). *`Ctrl + C` will give problems.*
@@ -31,7 +29,7 @@ To carry out the practice, you must edit the `MyAlgorithm.py` file and insert th
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
         #self.motors.sendV(10)
         #self.motors.sendW(5)
-        
+
         # TODO
 ```
 
@@ -75,4 +73,3 @@ For this example, you have to get taxi to park properly in the free parking spac
 
 ## Demonstrative video (in spanish)
 [Video](https://www.youtube.com/watch?v=2SYEb3DyWEE)
-

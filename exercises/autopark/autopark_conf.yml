@@ -1,36 +1,37 @@
 Autopark:
 
   Motors:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:default -h localhost -p 9999"
-    Topic: "/Autopark/Motors"
+    Topic: "/taxi_holo_laser/cmd_vel"
     Name: AutoparkMotors
     maxV: 250
     maxW: 20
 
   Pose3D:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Pose3D:default -h localhost -p 9989"
-    Topic: "/Autopark/Pose3D"
+    Topic: "/taxi_holo_laser/odom"
     Name: AutoparkPose3d
 
   Laser1:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Laser:default -h localhost -p 8996"
-    Topic: "/Autopark/Laser1"
+    Topic: "/taxi_holo_laser/laser1/scan"
     Name: AutoparkLaser1
 
   Laser2:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Laser:default -h localhost -p 8997"
-    Topic: "/Autopark/Laser2"
+    Topic: "/taxi_holo_laser/laser2/scan"
     Name: AutoparkLaser2
 
   Laser3:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Laser:default -h localhost -p 8998"
-    Topic: "/Autopark/Laser3"
+    Topic: "/taxi_holo_laser/laser3/scan"
     Name: AutoparkLaser3
 
-  
+  NodeName: Autopark
+
 NodeName: Autopark

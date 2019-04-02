@@ -37,11 +37,11 @@ if __name__ == "__main__":
     #starting comm
     jdrc= comm.init(cfg, 'Autopark')
 
-    motors = jdrc.getMotorsClient ("Autopark.Motors")
+    motors = jdrc.getMotorsClient("Autopark.Motors")
     pose3d = jdrc.getPose3dClient("Autopark.Pose3D")
-    laser1 = jdrc.getLaserClient("Autopark.Laser1").hasproxy()
-    laser2 = jdrc.getLaserClient("Autopark.Laser2").hasproxy()
-    laser3 = jdrc.getLaserClient("Autopark.Laser3").hasproxy()
+    laser1 = jdrc.getLaserClient("Autopark.Laser1")
+    laser2 = jdrc.getLaserClient("Autopark.Laser2")
+    laser3 = jdrc.getLaserClient("Autopark.Laser3")
 
     algorithm=MyAlgorithm(pose3d, laser1, laser2, laser3, motors)
 
