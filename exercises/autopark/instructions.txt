@@ -1,5 +1,0 @@
-source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
-source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
-
-roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_parking.launch
-
