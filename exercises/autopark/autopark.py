@@ -44,7 +44,7 @@ if __name__ == "__main__":
         maxW = 0.5
         print ("Autopark.Motors"+".maxW not provided, the default value is used: "+ repr(maxW))
 
-    maxV = cfg.getPropertyWithDefault("Autopark.Motors"+".maxV", 20)
+    maxV = cfg.getPropertyWithDefault("Autopark.Motors"+".maxV", 5)
     if not maxV:
         maxV = 5
         print ("Autopark.Motors"+".maxV not provided, the default value is used: "+ repr(maxV))
