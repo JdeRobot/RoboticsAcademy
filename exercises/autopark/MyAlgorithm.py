@@ -64,7 +64,7 @@ class MyAlgorithm(threading.Thread):
         print("Runing")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        # self.motors.sendV(10)
+        #self.motors.sendV(10)
         #self.motors.sendW(5)
         
         # TODO

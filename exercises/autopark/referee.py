@@ -3,8 +3,8 @@ import comm
 import config
 
 import rospy
-from interfaces.laser import ListenerLaser
-from interfaces.pose3d import ListenerPose3d
+# from interfaces.laser import ListenerLaser
+# from interfaces.pose3d import ListenerPose3d
 
 from math import pi as pi
 import numpy as np
@@ -511,20 +511,15 @@ class cheeseWidget(QWidget):
 
 if __name__ == "__main__":
     
-    app = QApplication(sys.argv)
-    # cfg = config.load(sys.argv[1])
-
+    app = QApplication(sys.argv)   
     cfg = config.load(sys.argv[1])
-    ymlNode = cfg.getProperty('Referee')
-    node = rospy.init_node(ymlNode["NodeName"], anonymous=True)
 
-    #starting comm
-    # jdrc= comm.init(cfg, 'Referee')
-
-    pose3d = ListenerPose3d("/taxi_holo_laser/odom")
-    laser1 = ListenerLaser("/taxi_holo_laser/laser1/scan")
-    laser2 = ListenerLaser("/taxi_holo_laser/laser2/scan")
-    laser3 = ListenerLaser("/taxi_holo_laser/laser3/scan")
+    # starting comm
+    jdrc= comm.init(cfg, 'Referee')
+    pose3d = jdrc.getPose3dClient("Referee.Pose3D")
+    laser1 = jdrc.getLaserClient("Referee.Laser1")
+    laser2 = jdrc.getLaserClient("Referee.Laser2")
+    laser3 = jdrc.getLaserClient("Referee.Laser3")
 
     myGUI = MainWindow(pose3d, laser1, laser2, laser3)
     myGUI.show()
