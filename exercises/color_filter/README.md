@@ -22,9 +22,11 @@ If the selected vide source is 'Stream', you must do the following:
 
 First of all, ensure you have put the correct path in the configuraton file (cameraserver_conf.cfg) 
 to the video over you want to apply the filter, and comment the line that access your local camera. This is:
+
 [EXAMPLE]
+
 CameraSrv.Camera.0.Uri = /home/username/Desktop/pelota_roja.avi
-# CameraSrv.Camera.0.Uri=0
+#CameraSrv.Camera.0.Uri=0
 
 
 Once done it, in a terminal launch cameraserver component (ICE driver):
