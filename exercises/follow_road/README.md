@@ -13,7 +13,7 @@ end of the road.
 Follow these simple steps to launch this practice:
 
 1. In a terminal launch the gazebo simulator:
-`$ gazebo road_drone_textures.world`
+`$ gazebo  quadrotor_1_roadtextures.world`
 
 2. In other terminal lauch the follow_road component:
 `$ python2 ./follow_road.py follow_road_conf.yml`
