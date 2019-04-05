@@ -34,6 +34,9 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
 
+    #self.drone = DroneWrapper("mavros/cmd/arming", "mavros/cmd/land","mavros/set_mode",  "/mavros/setpoint_velocity/cmd_vel","/mavros/local_position/odom",  "/solo/cam_ventral/image_raw", "/solo/cam_frontal/image_raw")
+    #self.algorithm=MyAlgorithm(self.drone)
+
     cfg = config.load(sys.argv[1])
 
     #starting comm

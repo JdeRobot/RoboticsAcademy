@@ -1,0 +1,16 @@
+{
+  "name": "3DViz",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "js-yaml": "^3.10.0",
+    "require": "^2.4.20"
+  },
+  "devDependencies": {
+    "electron": "^1.7.10",
+    "ice": "^3.7.0"
+  }
+}

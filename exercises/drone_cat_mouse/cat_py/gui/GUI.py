@@ -65,35 +65,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reset=False
         self.record = False
 
-    def getCamera(self):
-        return self.camera
+    def getDrone(self):
+        return self.drone
 
-    def setCamera(self,camera):
-        self.camera = camera
-
-    def getNavData(self):
-        return self.navdata
-
-    def setNavData(self,navdata):
-        self.navdata = navdata
-
-    def getPose3D(self):
-        return self.pose
-
-    def setPose3D(self,pose):
-        self.pose = pose
-
-    def getCMDVel(self):
-        return self.cmdvel
-
-    def setCMDVel(self,cmdvel):
-        self.cmdvel = cmdvel
-
-    def getExtra(self):
-        return self.extra
-
-    def setExtra(self,extra):
-        self.extra = extra
+    def setDrone(self,drone):
+        self.drone = drone
 
     def setAlgorithm(self, algorithm ):
         self.algorithm=algorithm
@@ -122,35 +98,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.algorithm.stop()
             self.rotationDial.setValue(self.altdSlider.maximum()/2)
             self.altdSlider.setValue(self.altdSlider.maximum()/2)
-            self.cmdvel.sendCMDVel(0,0,0,0,0,0)
+            self.drone.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
 
     def takeOffClicked(self):
         if(self.takeoff==True):
             self.takeoffButton.setText("Take Off")
-            self.extra.land()
+            self.drone.land()
             self.takeoff=False
         else:
             self.takeoffButton.setText("Land")
-            self.extra.takeoff()
+            self.drone.takeoff()
             self.takeoff=True
 
     def resetClicked(self):
         if self.reset == True:
             self.resetButton.setText("Reset")
-            self.extra.reset()
+            self.drone.reset()
             self.reset=False
         else:
             self.resetButton.setText("Unreset")
-            self.extra.reset()
+            self.drone.reset()
             self.reset=True
             self.rotationDial.setValue(self.altdSlider.maximum()/2)
             self.altdSlider.setValue(self.altdSlider.maximum()/2)
-            self.cmdvel.sendCMDVel(0,0,0,0,0,0)
+            self.drone.sendCMDVel(0,0,0,0,0,0)
             self.teleop.stopSIG.emit()
 
     def changeCamera(self):
-        self.extra.toggleCam()
+        self.drone.toggleCam()
 
     def showSensorsWidget(self,state):
         if state == Qt.Checked:
@@ -164,25 +140,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def rotationChange(self,value):
         value=(1.0/(self.rotationDial.maximum()/2))*(value - (self.rotationDial.maximum()/2))
         self.rotValue.setText('%.2f' % value)
-        self.cmdvel.setYaw(value)
-        self.cmdvel.sendVelocities()
+        self.drone.setYaw(value)
+        self.drone.sendVelocities()
 
     def altitudeChange(self,value):
         value=(1.0/(self.altdSlider.maximum()/2))*(value - (self.altdSlider.maximum()/2))
         self.altdValue.setText('%.2f' % value)
-        self.cmdvel.setVZ(value)
-        self.cmdvel.sendVelocities()
+        self.drone.setVZ(value)
+        self.drone.sendVelocities()
 
     def setXYValues(self,newX,newY):
         self.XValue.setText('%.2f' % newX)
         self.YValue.setText('%.2f' % newY)
-        self.cmdvel.setVX(-newY)
-        self.cmdvel.setVY(-newX)
-        self.cmdvel.sendVelocities()
+        self.drone.setVX(-newY)
+        self.drone.setVY(-newX)
+        self.drone.sendVelocities()
 
     def closeEvent(self, event):
         self.algorithm.kill()
-        self.camera.stop()
-        self.navdata.stop()
-        self.pose.stop()
+        self.drone.__camera.stop()
+        #self.navdata.stop()
+        self.drone.__pose.stop()
         event.accept()

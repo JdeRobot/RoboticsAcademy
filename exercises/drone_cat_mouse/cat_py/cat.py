@@ -20,12 +20,12 @@
 #
 
 import sys
-import config
-import comm
 from MyAlgorithm import MyAlgorithm
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
+
+from drone import Drone
 
 import signal
 
@@ -33,28 +33,15 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 if __name__ == '__main__':
 
-    cfg = config.load(sys.argv[1])
-
-    #starting comm
-    jdrc= comm.init(cfg, 'Introrob')
-
-    camera = jdrc.getCameraClient("Introrob.Camera")
-    navdata = jdrc.getNavdataClient("Introrob.Navdata")
-    pose = jdrc.getPose3dClient("Introrob.Pose3D")
-    cmdvel = jdrc.getCMDVelClient("Introrob.CMDVel")
-    extra = jdrc.getArDroneExtraClient("Introrob.Extra")
+    drone = Drone("mavros/cmd/arming", "mavros/cmd/land","mavros/set_mode",  "/mavros/setpoint_velocity/cmd_vel","/IntrorobROS/Pose3D",  "/IntrorobROS/image_raw")
 
 
-    algorithm=MyAlgorithm(camera, navdata, pose, cmdvel, extra)
+    algorithm=MyAlgorithm(drone)
 
 
     app = QApplication(sys.argv)
     frame = MainWindow()
-    frame.setCamera(camera)
-    frame.setNavData(navdata)
-    frame.setPose3D(pose)
-    frame.setCMDVel(cmdvel)
-    frame.setExtra(extra)
+    frame.setDrone(drone)
     frame.setAlgorithm(algorithm)
     frame.show()
 

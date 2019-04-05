@@ -4,13 +4,6 @@ from datetime import datetime
 import signal
 import sys
 
-
-from parallelIce.cameraClient import CameraClient
-from parallelIce.navDataClient import NavDataClient
-from parallelIce.cmdvel import CMDVel
-from parallelIce.extra import Extra
-from parallelIce.pose3dClient import Pose3DClient
-
 time_cycle = 80
 
 def nothing(x):
@@ -18,15 +11,11 @@ def nothing(x):
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, camera, navdata, pose, cmdvel, extra):
-        self.camera = camera
-        self.navdata = navdata
-        self.pose = pose
-        self.cmdvel = cmdvel
-        self.extra = extra
+    def __init__(self, drone):
+        self.drone = drone
 
-        self.cmdvel.sendCMDVel(0, 0, 0, 0, 0, 0)
-    	self.extra.takeoff()
+        self.drone.sendCMDVel(0, 0, 0, 0, 0, 0)
+    	self.drone.takeoff()
 
         self.image = None
 
@@ -81,7 +70,7 @@ class MyAlgorithm(threading.Thread):
 	#Add your code here
 	
 	#To get the camera images
-    	droneImage = self.camera.getImage().data
+    	droneImage = self.drone.getImage().data
 	
 	#Te set the filtered images on the GUI
 	#self.setImageFiltered(image_filtered)
