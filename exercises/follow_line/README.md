@@ -53,8 +53,8 @@ To carry out the practice, you have to edit the file `MyAlgorithms.py` and inser
         print "Runing"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
+        #self.motors.sendV(10)
+        #self.motors.sendW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
         self.set_threshold_image(image)
@@ -62,8 +62,8 @@ To carry out the practice, you have to edit the file `MyAlgorithms.py` and inser
 
 ### API
 * `self.getImage()` - to get the image 
-* `self.motors.setV()` - to set the linear speed
-* `self.motors.setW()` - to set the angular velocity
+* `self.motors.sendV()` - to set the linear speed
+* `self.motors.sendW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
 

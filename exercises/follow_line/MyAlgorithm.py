@@ -92,8 +92,8 @@ class MyAlgorithm(threading.Thread):
         print "Runing"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.setV(10)
-        #self.motors.setW(5)
+        #self.motors.sendV(10)
+        #self.motors.sendW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
         self.set_threshold_image(image)
