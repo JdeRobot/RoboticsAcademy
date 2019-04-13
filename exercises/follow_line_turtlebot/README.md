@@ -4,7 +4,7 @@ The objective of this practice is to perform a PID reactive control capable of f
 ## How to execute?
 To launch the infrastructure of this practice, first launch the simulator with the appropriate scenario:
 ```
-roslaunch /opt/jderobot/share/jderobot/gazebo/launch/turtlebot-xtion-followline.launch
+roslaunch /opt/jderobot/share/jderobot/gazebo/launch/kobuki_1_followlinextion.launch
 ```
 Then you have to execute the academic application, which will incorporate your code:
 ```
