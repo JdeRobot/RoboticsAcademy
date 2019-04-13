@@ -19,29 +19,25 @@
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 
-import sys
+import sys, os, config
+import rospy
 import comm
-import config
-from PyQt5.QtWidgets import QApplication
+
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
 from MyAlgorithm import MyAlgorithm
-
-
-
+from PyQt5.QtWidgets import QApplication
 
 if __name__ == "__main__":
 
     cfg = config.load(sys.argv[1])
 
-    #starting comm
     jdrc= comm.init(cfg, 'Autopark')
-
-    motors = jdrc.getMotorsClient ("Autopark.Motors")
+    motors = jdrc.getMotorsClient("Autopark.Motors")
     pose3d = jdrc.getPose3dClient("Autopark.Pose3D")
-    laser1 = jdrc.getLaserClient("Autopark.Laser1").hasproxy()
-    laser2 = jdrc.getLaserClient("Autopark.Laser2").hasproxy()
-    laser3 = jdrc.getLaserClient("Autopark.Laser3").hasproxy()
+    laser1 = jdrc.getLaserClient("Autopark.Laser1")
+    laser2 = jdrc.getLaserClient("Autopark.Laser2")
+    laser3 = jdrc.getLaserClient("Autopark.Laser3")
 
     algorithm=MyAlgorithm(pose3d, laser1, laser2, laser3, motors)
 
@@ -61,4 +57,5 @@ if __name__ == "__main__":
     t2.start()
 
 
-    sys.exit(app.exec_())
+    id = app.exec_()
+    os._exit(id)

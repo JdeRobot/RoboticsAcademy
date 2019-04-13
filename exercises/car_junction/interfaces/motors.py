@@ -27,7 +27,7 @@ class CMDVel ():
         self.vy = 0 # vel in y[m/s]
         self.vz = 0 # vel in z[m/s]
         self.ax = 0 # angular vel in X axis [rad/s]
-        self.ay = 0 # angular vel in X axis [rad/s]
+        self.ay = 0 # angular vel in Y axis [rad/s]
         self.az = 0 # angular vel in Z axis [rad/s] (use this for W in wheeled robots)
         self.timeStamp = 0 # Time stamp [s]
 
@@ -48,8 +48,7 @@ class PublisherMotors:
 
         self.topic = topic
         self.data = CMDVel()
-        self.pub = rospy.Publisher(self.topic, Twist, queue_size=1)
-        rospy.init_node("FollowLineF1")
+        self.pub = self.pub = rospy.Publisher(self.topic, Twist, queue_size=1)
         self.lock = threading.Lock()
 
         self.kill_event = threading.Event()
@@ -102,16 +101,20 @@ class PublisherMotors:
 
         self.sendAZ(w)
 
+    # There were troubles with sending velocities to the cars. For some reasons, the directions were inversed
+    # This is obviously not the best way to cope with this problem, but for now it works.
+    # I will try fix, after I read more about cmdVel and Twists in ROS
+
     def sendVX(self, vx):
 
         self.lock.acquire()
-        self.data.vx = vx
+        self.data.vy = -vx
         self.lock.release()
 
     def sendVY(self, vy):
 
         self.lock.acquire()
-        self.data.vy = vy
+        self.data.vx = -vy
         self.lock.release()
 
     def sendAZ(self, az):

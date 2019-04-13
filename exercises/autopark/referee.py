@@ -1,6 +1,11 @@
 import sys, math
 import comm
 import config
+
+import rospy
+# from interfaces.laser import ListenerLaser
+# from interfaces.pose3d import ListenerPose3d
+
 from math import pi as pi
 import numpy as np
 import cv2
@@ -89,12 +94,13 @@ class qualityWidget(QWidget):
         
     def get_laser_distance(self, laser):
         DIST = 15
-        maxAngle = 180
+        # maxAngle = 180
         crash = False
-        for i in range(0, maxAngle+1):
-            # Distance in millimeters, we change to cm
-            laserI = float(laser.distanceData[i])/float(10)
+        for i in range(len(laser.values)):
+            # Distance in meters, we change to cm
+            laserI = float(laser.values[i])*float(100)
             if i != 0 and i != 180:
+                # print(laserI)
                 if laserI <= DIST:
                     crash = True
         return crash
@@ -505,16 +511,15 @@ class cheeseWidget(QWidget):
 
 if __name__ == "__main__":
     
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv)   
     cfg = config.load(sys.argv[1])
 
-    #starting comm
+    # starting comm
     jdrc= comm.init(cfg, 'Referee')
-
     pose3d = jdrc.getPose3dClient("Referee.Pose3D")
-    laser1 = jdrc.getLaserClient("Referee.Laser1").hasproxy()
-    laser2 = jdrc.getLaserClient("Referee.Laser2").hasproxy()
-    laser3 = jdrc.getLaserClient("Referee.Laser3").hasproxy()
+    laser1 = jdrc.getLaserClient("Referee.Laser1")
+    laser2 = jdrc.getLaserClient("Referee.Laser2")
+    laser3 = jdrc.getLaserClient("Referee.Laser3")
 
     myGUI = MainWindow(pose3d, laser1, laser2, laser3)
     myGUI.show()

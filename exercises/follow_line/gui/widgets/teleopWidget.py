@@ -45,7 +45,7 @@ class TeleopWidget(QWidget):
         self.setMinimumSize(300,300)
         
     def stop(self):
-        self.line = QPointF(0, 0);
+        self.line = QPointF(0, 0)
         self.repaint();
     
     def mouseMoveEvent(self,e):
@@ -116,5 +116,5 @@ class TeleopWidget(QWidget):
 
         #print "v: %f w: %f" % (v_normalized,w_normalized)
         self.winParent.setXYValues(w_normalized,v_normalized)
-        painter.drawImage(self.line.x()-self.qimage.width()/2, self.line.y()-self.qimage.height()/2, self.qimage);
+        painter.drawImage(self.line.x()-self.qimage.width()/2, self.line.y()-self.qimage.height()/2, self.qimage)
 

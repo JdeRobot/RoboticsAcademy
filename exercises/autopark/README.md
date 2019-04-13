@@ -4,15 +4,31 @@ The goal of this practice is to implement the logic of a navigation algorithm fo
 
 ## How to run
 To launch the example, follow the steps below:
+
+0. Source the gazebo setups:
+
+```
+$ source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
+$ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+```
+
 1. Run Gazebo simulator:
-    * Execution without seeing the world: 
-       `$ gzserver autopark.world`
-    * Execution watching the world: 
-       `$ gazebo autopark.world`
+
+```
+$ roslaunch /opt/jderobot/share/jderobot/gazebo/launch/car_1_parking.launch
+```
+
 2. Running the practice and the user interface: 
-     `$ python2 autopark.py autopark_conf.yml`
+
+```
+$ python2 autopark.py autopark_conf.yml
+```
+
 3. Execution of the automatic evaluator: 
-     `$ python2 referee.py referee.yml`
+
+```
+$ python2 referee.py referee.yml
+```
 
 To simplify the closure of the environment, just close the Autopark window (s). *`Ctrl + C` will give problems.*
 
