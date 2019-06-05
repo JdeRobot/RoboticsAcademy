@@ -47,7 +47,7 @@ class CameraWidget(QWidget):
 
     def updateImage(self):
 
-        img = self.winParent.getDrone().getImage().data
+        img = self.winParent.getDrone().getImageFrontal().data
         if img is not  None:
             resized = cv2.resize(img,(self.IMG_WIDTH,self.IMG_HEIGHT))
             image = QtGui.QImage(resized.data, resized.shape[1], resized.shape[0], resized.shape[1]*resized.shape[2], QtGui.QImage.Format_RGB888);
