@@ -77,8 +77,6 @@ class Map(QWidget):
         self.parent.grid.resetGrid()
         self.parent.setDestinyXYValues("{0:.2f}".format(rX),"{0:.2f}".format(rY))
 
-
-
     def setPainterSettings(self, painter, color, width):
         pen = QtGui.QPen(color)
         pen.setWidth(width)
@@ -152,6 +150,9 @@ class Map(QWidget):
 
 
         self.paintPosition(pos[0], pos[1], grid.getAngle(), copy, painter)
+        # Update current position varibales on map
+        rX, rY = self.parent.grid.gridToWorld(pos[0], pos[1]) 
+        self.parent.setPositionXYValues("{0:.2f}".format(rX),"{0:.2f}".format(rY))
 
         self.mapWidget.setPixmap(copy)
         self.lock.release()

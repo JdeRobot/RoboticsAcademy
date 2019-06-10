@@ -8,7 +8,6 @@ from datetime import datetime
 
 time_cycle = 80
 
-
 def clearscreen(numlines=10):
     """Clear the console.
     numlines is an optional argument used only as a fall-back.
@@ -23,7 +22,6 @@ def clearscreen(numlines=10):
     else:
         # Fallback for other operating systems.
         print '\n' * numlines
-
 
 class MyAlgorithm(threading.Thread):
 

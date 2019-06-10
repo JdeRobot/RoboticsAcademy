@@ -17,9 +17,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
 #  Authors :
-#       Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
-#       Alberto Martin Florido <almartinflorido@gmail.com>
-#
+#       Arsalan Akhter <arsalanakhter.wpi AT gmail DOT com>
+#       Shyngyskhan Abilkassov <s.abilkassov AT gmail DOT com>
 
 import sys, os, config
 import rospy
@@ -30,8 +29,8 @@ from gui.threadGUI import ThreadGUI
 from MyAlgorithm import MyAlgorithm
 from PyQt5.QtWidgets import QApplication
 
-from threadMotors import ThreadMotors
-from threadMotors import Velocity
+from sensors.threadMotors import ThreadMotors
+from sensors.threadMotors import Velocity
 from sensors.sensor import Sensor
 from sensors.grid import Grid
 
@@ -51,7 +50,6 @@ if __name__ == '__main__':
         print('ERROR: python2 globalNavigation.py [MAP CONFIG file] [YAML CONFIG file]')
         sys.exit(-1)
 
-
     cfg = config.load(sys.argv[2])
     jdrc= comm.init(cfg, 'Amazon')
     motors = jdrc.getMotorsClient("Amazon.Motors")
@@ -63,8 +61,6 @@ if __name__ == '__main__':
 
     grid = Grid(myGUI)
     
-    # motors = PublisherMotors("/amazon_warehouse_robot/cmd_vel", 0.5, 0.1)
-    # pose = ListenerPose3d("/amazon_warehouse_robot/odom")
     vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
     sensor = Sensor(grid, pose3d, True)
     sensor.setGetPathSignal(myGUI.getPathSig)

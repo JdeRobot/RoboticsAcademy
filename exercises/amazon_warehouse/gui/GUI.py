@@ -17,8 +17,6 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Samuel Rey Escudero <samuel.rey.escudero@gmail.com>
 
-
-
 from PyQt5 import QtGui,QtCore
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow
@@ -179,6 +177,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.algorithm.setGotoPointFlag(self.playButton.isChecked())
         # self.algorithm.gotoPoint()
 
-    def setDestinyXYValues(self,newX,newY):
+    def setDestinyXYValues(self, newX, newY):
         self.XValue.setText(str(newX))
         self.YValue.setText(str(newY))
+
+    def setPositionXYValues(self, newX, newY):
+        self.VValue.setText(str(newX))
+        self.WValue.setText(str(newY))

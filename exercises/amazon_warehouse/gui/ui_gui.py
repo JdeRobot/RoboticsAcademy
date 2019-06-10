@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'teleTaxigui.ui'
+# Form implementation generated from reading ui file '.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -140,12 +140,12 @@ class Ui_MainWindow(object):
         self.XLabel.setText(_translate("MainWindow", "X:"))
         self.YLabel.setText(_translate("MainWindow", "Y:"))
         self.positionLabel.setText(_translate("MainWindow", "Position:"))
-        self.VLabel.setText(_translate("MainWindow", "V:"))
+        self.VLabel.setText(_translate("MainWindow", "X:"))
         self.XValue.setText(_translate("MainWindow", "0"))
         self.VValue.setText(_translate("MainWindow", "0"))
         self.YValue.setText(_translate("MainWindow", "0"))
         self.WValue.setText(_translate("MainWindow", "0"))
-        self.WLabel.setText(_translate("MainWindow", "W:"))
+        self.WLabel.setText(_translate("MainWindow", "Y:"))
         self.mapLabel.setText(_translate("MainWindow", "MAP: double click to select your destination."))
         self.mapLabel_2.setText(_translate("MainWindow", "Manual controller:"))
         self.Plannerlabel.setText(_translate("MainWindow", "planner"))
