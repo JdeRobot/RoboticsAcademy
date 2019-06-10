@@ -132,11 +132,11 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Global Navigation"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Amazon Warehouse"))
         self.getPathButton.setText(_translate("MainWindow", "Generate Path"))
         self.playButton.setText(_translate("MainWindow", "GO!"))
         self.stopButton.setText(_translate("MainWindow", "Stop"))
-        self.destinyLabel.setText(_translate("MainWindow", "Destiny:"))
+        self.destinyLabel.setText(_translate("MainWindow", "Destination:"))
         self.XLabel.setText(_translate("MainWindow", "X:"))
         self.YLabel.setText(_translate("MainWindow", "Y:"))
         self.positionLabel.setText(_translate("MainWindow", "Position:"))
@@ -146,8 +146,8 @@ class Ui_MainWindow(object):
         self.YValue.setText(_translate("MainWindow", "0"))
         self.WValue.setText(_translate("MainWindow", "0"))
         self.WLabel.setText(_translate("MainWindow", "W:"))
-        self.mapLabel.setText(_translate("MainWindow", "MAP: double click for selecting your destiny."))
-        self.mapLabel_2.setText(_translate("MainWindow", "Manual controler:"))
+        self.mapLabel.setText(_translate("MainWindow", "MAP: double click to select your destination."))
+        self.mapLabel_2.setText(_translate("MainWindow", "Manual controller:"))
         self.Plannerlabel.setText(_translate("MainWindow", "planner"))
         self.RunTimeLabel.setText(_translate("MainWindow", "runtime"))
         self.liftDropButton.setText(_translate("MainWindow", "Lift/Drop"))

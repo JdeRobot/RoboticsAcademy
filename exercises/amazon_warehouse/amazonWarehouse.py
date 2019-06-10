@@ -30,13 +30,10 @@ from gui.threadGUI import ThreadGUI
 from MyAlgorithm import MyAlgorithm
 from PyQt5.QtWidgets import QApplication
 
-
-# from threadMotors import ThreadMotors
-# from threadMotors import Velocity
-# from sensors.sensor import Sensor
-# from sensors.grid import Grid
-# from interfaces.motors import PublisherMotors		
-# from interfaces.pose3d import ListenerPose3d
+from threadMotors import ThreadMotors
+from threadMotors import Velocity
+from sensors.sensor import Sensor
+from sensors.grid import Grid
 
 # import signal
 
@@ -61,15 +58,15 @@ if __name__ == '__main__':
     pose3d = jdrc.getPose3dClient("Amazon.Pose3D")
     laser = jdrc.getLaserClient("Amazon.Laser")
 
-    app = QApplication(sys.argv) 
+    app = QApplication(sys.argv)
     myGUI = MainWindow()
 
     grid = Grid(myGUI)
     
-    motors = PublisherMotors("/amazon_warehouse_robot/cmd_vel", 0.5, 0.1)
-    pose = ListenerPose3d("/amazon_warehouse_robot/odom")
+    # motors = PublisherMotors("/amazon_warehouse_robot/cmd_vel", 0.5, 0.1)
+    # pose = ListenerPose3d("/amazon_warehouse_robot/odom")
     vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
-    sensor = Sensor(grid, pose, True)
+    sensor = Sensor(grid, pose3d, True)
     sensor.setGetPathSignal(myGUI.getPathSig)
     
     myGUI.setVelocity(vel)

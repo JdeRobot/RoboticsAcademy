@@ -3,7 +3,7 @@
 source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
 source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 
-python2 NavigationOmpl.py amazonMap.conf 
+python2 amazonWarehouse.py amazonMap.conf amazonConf.yml
 
 rosrun gmapping slam_gmapping scan:=/amazon_warehouse_robot/laser/scan _base_frame:=amazon_warehouse_robot/base _odom_frame:=amazon_warehouse_robot/odom angularUpdate:=0.0 linearUpdate:=0.0
 
