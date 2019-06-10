@@ -67,6 +67,10 @@ class MyAlgorithm(threading.Thread):
     def kill (self):
         self.kill_event.set()
 
+    def gotoPoint(self):
+        print("Go to point pressed")
+        # additinal debugging method
+
     """ Write in this method the code necessary for looking for the shorter
         path to the desired destiny.
         The destiny is chosen in the GUI, making double click in the map.

@@ -174,8 +174,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print ('Platform Dropped!')
 
     def gotoPointExecute(self):
-        self.algorithm.setGotoPointFlag(self.playButton.isChecked())
-        # self.algorithm.gotoPoint()
+        self.algorithm.gotoPoint()
 
     def setDestinyXYValues(self, newX, newY):
         self.XValue.setText(str(newX))
