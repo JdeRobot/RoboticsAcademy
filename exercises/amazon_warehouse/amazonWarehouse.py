@@ -68,7 +68,7 @@ if __name__ == '__main__':
     myGUI.setVelocity(vel)
     myGUI.setGrid(grid)
     myGUI.setSensor(sensor)
-    algorithm = MyAlgorithm(grid, sensor, vel)
+    algorithm = MyAlgorithm(grid, sensor, vel, laser)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 

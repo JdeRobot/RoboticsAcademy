@@ -25,10 +25,11 @@ def clearscreen(numlines=10):
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, grid, sensor, vel):
+    def __init__(self, grid, sensor, vel, laser):
         self.sensor = sensor
         self.grid = grid
         self.vel = vel
+        self.laser = laser
         sensor.getPathSig.connect(self.generatePath)
 
         self.stop_event = threading.Event()
@@ -77,7 +78,7 @@ class MyAlgorithm(threading.Thread):
         dest = self.grid.getDestiny()
         gridPos = self.grid.getPose()
 
-        #TODO
+        # TODO
 
         #Represent the Gradient Field in a window using cv2.imshow
         self.grid.showGrid()
@@ -87,12 +88,14 @@ class MyAlgorithm(threading.Thread):
         once you have generated the shorter path.
         This method will be periodically called after you press the GO! button. """
     def execute(self):
-	# Add your code here
-        print("GOING TO DESTINATION")
+	    # Add your code here
+        print("Running")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
         self.vel.setV(0.2)
         self.vel.setW(0.1)
-        #self.vel.sendVelocities()
+
         #self.sensor.getRobotTheta()
 	    #self.sensor.getRobotY()
+
+	    # TODO
