@@ -91,7 +91,7 @@ class MyAlgorithm(threading.Thread):
         print("GOING TO DESTINATION")
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        self.vel.setV(0.1)
+        self.vel.setV(0.2)
         self.vel.setW(0.1)
         #self.vel.sendVelocities()
         #self.sensor.getRobotTheta()
