@@ -14,6 +14,10 @@ To launch the exercise, simply use the following command from this directory:
 
 `roslaunch rqt_follow_road follow_road.launch solution_file_name:=$PWD/my_solution.py`
 
+As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. This is used after launching the previous command in a seperate terminal as follows:
+
+`colorTuner colorTuner.conf`
+
 ## Solution
 
 To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
@@ -39,8 +43,8 @@ def execute(event):
 * set_image_threshed(cv2_image): If you want to show a thresholded image in the GUI
 * drone.get_frontal_image() : Returns the latest image from the frontal camera as a cv2_image
 * drone.get_ventral_image() : Returns the latest image from the ventral camera as a cv2_image
-* drone.get_position(): Returns the position of the drone as a Point
-* drone.get_orientation(): Returns the roll, pitch and yaw of the drone as a Vector3
+* drone.get_position(): Returns the position of the drone as a [Point]
+* drone.get_orientation(): Returns the roll, pitch and yaw of the drone as a [Vector3]
 * drone.get_roll(): Returns the roll of the drone
 * drone.get_pitch(): Returns the pitch of the drone
 * drone.get_yaw(): Returns the yaw of the drone
