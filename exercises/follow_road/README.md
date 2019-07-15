@@ -12,7 +12,7 @@ As this is a drones exercise, you will need to additionally install the `jderobo
 
 To launch the exercise, simply use the following command from this directory:
 
-`roslaunch rqt_follow_road follow_road.launch solution_file_name:=$PWD/my_solution.py`
+`roslaunch follow_road.launch`
 
 As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. This is used after launching the previous command in a seperate terminal as follows:
 
