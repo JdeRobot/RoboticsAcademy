@@ -6,7 +6,7 @@ The goal of this exercise is to implement the logic that allows a quadcopter to 
 
 ## Requirements
 
-As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. This can be done easily by `sudo apt install jderobot-drones`.
+As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. Work is currently underway to simply this to something of the sort `sudo apt install jderobot-drones`, but for now, please follow the instructions available in the [drones directory](https://github.com/JdeRobot/drones).
 
 ## Execution
 
