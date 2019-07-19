@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <include file="$(find rqt_drone_teleop)/launch/drone_teleop.launch">
-        <arg name="world_name" value="/opt/jderobot/share/jderobot/gazebo/worlds/iris_1_roadtexturesROS.world"/>
+        <arg name="world_name" value="$(find jderobot_assets)/worlds/iris_follow_road.world"/>
         <arg name="solution_file_name" value="$(eval env('PWD') + '/my_solution.py')"/>
     </include>
 </launch>
