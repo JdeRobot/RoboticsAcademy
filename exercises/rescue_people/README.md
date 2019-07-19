@@ -17,7 +17,7 @@ To launch the exercise, simply use the following command from this directory:
 ## Solution
 
 To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
-[my_solution.py](my_solution.py#L49)
+[my_solution.py](my_solution.py#L51)
 
 ```python
 def execute(event):
