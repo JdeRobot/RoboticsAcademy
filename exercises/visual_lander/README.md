@@ -1,49 +1,51 @@
-# Visual lander practice
+# Visual Lander Exercise
 
-The objective of this practice is to develop an algorithm that visualize a beacon and land on it.
+## Goal
 
+The goal of this exercise is to implement the logic that allows a quadrotor to visualize a beacon and land on it.
 
-## How to launch the practice
+## Requirements
 
-To launch the infrastructure of this practice, first launch the simulator with the appropriate scenario: gazebo landing.world
+As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. Work is currently underway to simply this to something of the sort `sudo apt install jderobot-drones`, but for now, please follow the instructions available in the [drones directory](https://github.com/JdeRobot/drones).
 
-Then you have to execute the academic application, which will incorporate your code: 
+## Execution
 
-`$ python2 ./visual_lander.py visual_lander_conf.yml`
+To launch the exercise, simply use the following command from this directory:
 
+`roslaunch visual_lander.launch`
 
-## How to do the practice?
+## Solution
 
-To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the autonomous car.
+To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
+[my_solution.py](my_solution.py#L49)
 
+```python
+def execute(event):
+  global drone
+  img_frontal = drone.get_frontal_image()
+  img_ventral = drone.get_ventral_image()
+  # Both the above images are cv2 images
+  ################# Insert your code here #################################
 
-## Where to insert the code?
+  set_image_filtered(img_frontal)
+  set_image_threshed(img_ventral)
 
-  `MyAlgorithm.py`
-
-```
-    def execute(self):
-        #GETTING THE IMAGES
-        input_image = self.camera.getImage().data
-
-        # Add your code here
-        print "Runing"
-
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        self.cmdvel.sendCMDVel(0.5,0,0,0,0,0)
-
-        #SHOW THE FILTERED IMAGE ON THE GUI,
-        self.setImageFiltered(input_image)
+#########################################################################
 ```
 
+## API
 
-### API
+* `set_image_filtered(cv2_image)`: If you want to show a filtered image of the camera images in the GUI
+* `set_image_threshed(cv2_image)`: If you want to show a thresholded image in the GUI
+* `drone.get_frontal_image()` : Returns the latest image from the frontal camera as a cv2_image
+* `drone.get_ventral_image()` : Returns the latest image from the ventral camera as a cv2_image
+* `drone.get_position()`: Returns the position of the drone as a numpy array [x, y, z]
+* `drone.get_orientation()`: Returns the roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw]
+* `drone.get_roll()`: Returns the roll of the drone
+* `drone.get_pitch()`: Returns the pitch of the drone
+* `drone.get_yaw()`: Returns the yaw of the drone
+* `drone.set_cmd_vel(vx, vy, vz, az)`: Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
 
-* `camera.getImage()` - to get the image of the drone
-* `self.setImageFiltered()` - allows you to view a debug image or with relevant information. It must be an image in RGB format.
+## Demonstrative video
 
-## Demonstrative [video](https://www.youtube.com/watch?v=i0PGusLHXQM)
-
-* *Base code made by Alberto Martín (@almartinflorido)*
-* *Code of practice performed by Pablo Moreno (@PabloMorenoVera)*
-* *Gazebo models and worlds made by Francisco Pérez y Pablo Moreno (@fqez, @PabloMorenoVera)*
+https://www.youtube.com/watch?v=i0PGusLHXQM
