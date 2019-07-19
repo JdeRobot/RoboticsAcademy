@@ -4,6 +4,8 @@
 
 The goal of this exercise is to implement the logic that allows a quadrotor to follow a road. In order to do this, you will have to establish a color filter to segment road lines and then develop an algorithm to follow them until the end of the road.
 
+![World](../../docs/follow_road.jpg)
+
 ## Requirements
 
 As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. Work is currently underway to simply this to something of the sort `sudo apt install jderobot-drones`, but for now, please follow the instructions available in the [drones directory](https://github.com/JdeRobot/drones).
@@ -14,14 +16,14 @@ To launch the exercise, simply use the following command from this directory:
 
 `roslaunch follow_road.launch`
 
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. This is used after launching the previous command in a seperate terminal as follows:
+As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a seperate terminal as follows:
 
 `colorTuner colorTuner.conf`
 
 ## Solution
 
 To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
-[my_solution.py](my_solution.py#L49)
+[my_solution.py](my_solution.py#L46)
 
 ```python
 def execute(event):
@@ -34,7 +36,7 @@ def execute(event):
   set_image_filtered(img_frontal)
   set_image_threshed(img_ventral)
 
-#########################################################################
+  #########################################################################
 ```
 
 ## API

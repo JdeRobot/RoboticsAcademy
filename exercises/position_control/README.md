@@ -6,7 +6,7 @@ The goal of this exercise is to implement a local navigation algorithm through t
 
 For this exercise, a world has been desined in gazebo that contains the Iris quadrotor and 5 beacons arranged in a cross. The task is to program the drone to follow the route as given in the picture below.
 
-![Route](route.png)
+![Route](../../docs/position_control.png)
 
 ## Requirements
 

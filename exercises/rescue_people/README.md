@@ -4,6 +4,8 @@
 
 The goal of this exercise is to implement the logic that allows a quadrotor to recognize the faces of lost people and save their locations in order to perform a subsequent rescue maneuver.
 
+![World](../../docs/rescue_people.jpg)
+
 ## Requirements
 
 As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. Work is currently underway to simply this to something of the sort `sudo apt install jderobot-drones`, but for now, please follow the instructions available in the [drones directory](https://github.com/JdeRobot/drones).
@@ -17,7 +19,7 @@ To launch the exercise, simply use the following command from this directory:
 ## Solution
 
 To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
-[my_solution.py](my_solution.py#L51)
+[my_solution.py](my_solution.py#L48)
 
 ```python
 def execute(event):
@@ -48,4 +50,4 @@ def execute(event):
 
 ## Demonstrative video
 
-https://youtu.be/rIkTImMyoXw
+http://jderobot.org/store/jmplaza/uploads/teaching/curso-drones/rescue_people.ogv
