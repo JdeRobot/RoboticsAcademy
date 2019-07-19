@@ -20,7 +20,7 @@
 #       Arsalan Akhter <arsalanakhter.wpi AT gmail DOT com>
 #       Shyngyskhan Abilkassov <s.abilkassov AT gmail DOT com>
 
-import sys, os, config
+import sys
 import rospy
 import comm
 
@@ -34,6 +34,9 @@ from sensors.threadMotors import Velocity
 from sensors.sensor import Sensor
 from sensors.grid import Grid
 
+from interfaces.path import ListenerPath
+from interfaces.moveBaseClient import MoveBaseClient
+from interfaces.threadGoalSender import ThreadGoalSender
 # import signal
 
 # signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -56,11 +59,18 @@ if __name__ == '__main__':
     pose3d = jdrc.getPose3dClient("Amazon.Pose3D")
     laser = jdrc.getLaserClient("Amazon.Laser")
 
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv) 
     myGUI = MainWindow()
 
     grid = Grid(myGUI)
     
+    motors = PublisherMotors("/amazon_warehouse_robot/teleop", 0.5, 0.25)
+    pose3d = ListenerPose3d("/amazon_warehouse_robot/odom")
+
+    pathListener = ListenerPath("/move_base/NavfnROS/plan")
+    # goalPublisher = PublisherGoal("/move_base/current_goal")
+    moveBaseClient = MoveBaseClient()
+
     vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
     sensor = Sensor(grid, pose3d, True)
     sensor.setGetPathSignal(myGUI.getPathSig)
@@ -68,7 +78,7 @@ if __name__ == '__main__':
     myGUI.setVelocity(vel)
     myGUI.setGrid(grid)
     myGUI.setSensor(sensor)
-    algorithm = MyAlgorithm(grid, sensor, vel, laser)
+    algorithm = MyAlgorithm(grid, sensor, vel, pathListener, moveBaseClient)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 
