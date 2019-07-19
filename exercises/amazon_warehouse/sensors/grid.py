@@ -126,7 +126,7 @@ class Grid:
 
 	def setPathVal(self, x, y, val):
 		self.lock.acquire()
-		print self.path.shape
+		# print self.path.shape
 		self.path[y][x] = val
 		self.lock.release()
 

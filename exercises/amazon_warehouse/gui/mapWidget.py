@@ -161,3 +161,4 @@ class Map(QWidget):
         self.lastPos = pos
         self.lastDest = dest
         grid.pathFinded = False
+        
