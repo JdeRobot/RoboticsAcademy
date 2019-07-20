@@ -122,3 +122,5 @@ class MyAlgorithm(threading.Thread):
 
         # LIFT PALLET
         self.liftDropExecute()
+
+        # TO DO
