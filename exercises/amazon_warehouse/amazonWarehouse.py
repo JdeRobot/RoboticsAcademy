@@ -36,15 +36,11 @@ from sensors.grid import Grid
 
 from interfaces.path import ListenerPath
 from interfaces.moveBaseClient import MoveBaseClient
-# import signal
-
-# signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 def removeMapFromArgs():
     for arg in sys.argv:
         if (arg.split(".")[1] == "conf"):
             sys.argv.remove(arg)
-
 
 if __name__ == '__main__':
 
