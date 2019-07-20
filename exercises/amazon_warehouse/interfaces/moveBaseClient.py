@@ -23,7 +23,6 @@ from tf.transformations import quaternion_from_euler
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 import threading
-from .threadGoalSender import ThreadGoalSender
 
 import rospy
 from std_srvs.srv import Empty

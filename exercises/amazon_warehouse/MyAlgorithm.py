@@ -2,9 +2,14 @@ import numpy as np
 import cv2
 import math
 
+import sys
+
 import threading
 import time
 from datetime import datetime
+import yaml
+import rospy
+from std_msgs.msg import Float32
 
 time_cycle = 80
 
@@ -25,12 +30,18 @@ def clearscreen(numlines=10):
 
 class MyAlgorithm(threading.Thread):
 
-    def __init__(self, grid, sensor, vel, laser):
+    def __init__(self, grid, sensor, vel, pathListener, moveBaseClient):
         self.sensor = sensor
         self.grid = grid
         self.vel = vel
-        self.laser = laser
-        sensor.getPathSig.connect(self.generatePath)
+        self.path = pathListener
+        sensor.getPathSig.connect(self.sendGoal)
+        # Coordinates for all pallets in a map in world frame. Please use these to approximate center of pallet.
+        self.palettesList = yaml.load(open('./pallets_coords.yaml'))["coords"]
+        self.jointForce = 0
+        self.pub = rospy.Publisher('amazon_warehouse_robot/joint_cmd', Float32, queue_size=10)
+        self.client = moveBaseClient
+        self.pickNewPalletPressed = False
 
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
@@ -67,39 +78,47 @@ class MyAlgorithm(threading.Thread):
     def kill (self):
         self.kill_event.set()
 
-    def gotoPoint(self):
-        print("Go to point pressed")
-        # additinal debugging method
+    def liftDropExecute(self):
+        if self.jointForce != 25:
+            self.jointForce = 25
+            self.pub.publish(self.jointForce)
+            print ('Platform Lifted!')
+        else:
+            self.jointForce = 0
+            self.pub.publish(self.jointForce)
+            print ('Platform Dropped!')
 
-    """ Write in this method the code necessary for looking for the shorter
-        path to the desired destiny.
+    """ Write in this method the code for drawing path. """
+    def drawPath(self):
+        print("Drawing path")
+        #  Use self.path.getPath()
+
+    """ This method will set pickNewPalletPressed == True when the Store 
+        New Pallet button is pressed. """
+    def setNewPalletFlag(self, isPressed):
+        print("Pick new pallet button pressed")
+        self.pickNewPalletPressed = isPressed
+
+    """ Write in this method the code necessary to go to the desired pallet.
         The destiny is chosen in the GUI, making double click in the map.
-        This method will be call when you press the Generate Path button.
-        Call to grid.setPath(path) method for setting the path. """
-    def generatePath(self, list):
-        print("LOOKING FOR SHORTER PATH")
-        mapIm = self.grid.getMap()
-        dest = self.grid.getDestiny()
-        gridPos = self.grid.getPose()
+        This method will be call when you press the Send Goal button. """
+    def sendGoal(self, list):
+        print("EXECUTING GOAL")
+        # Get destination after double click on map
+        # destiny = self.grid.getDestiny()
 
-        # TODO
+        # HOW TO SEND GOAL TO A ROBOT
+        # Before sending goal to the robot, don't forget to 
+        # change it to the world frame
+        dest = self.grid.gridToWorld(24, 151)
+        self.client.sendGoalToClient(dest[0], dest[1])
 
-        #Represent the Gradient Field in a window using cv2.imshow
-        self.grid.showGrid()
-
-
-    """ Write in this method the code necessary for going to the desired place,
-        once you have generated the shorter path.
-        This method will be periodically called after you press the GO! button. """
+    """ Write in this method the code necessary for controlling the main 
+        functionality of the robot. This method will be periodically 
+        called after you press the GO! button. """
     def execute(self):
-	    # Add your code here
+        # Add your code here
         print("Running")
 
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        self.vel.setV(0.2)
-        self.vel.setW(0.1)
-
-        #self.sensor.getRobotTheta()
-	    #self.sensor.getRobotY()
-
-	    # TODO
+        # LIFT PALLET
+        self.liftDropExecute()
