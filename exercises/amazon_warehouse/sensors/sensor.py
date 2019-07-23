@@ -18,8 +18,6 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 
-#from parallelIce.threadSensor import ThreadSensor
-#from parallelIce.pose3dClient import Pose3D
 from threadSensor import ThreadSensor
 from sensors.grid import Grid
 import threading

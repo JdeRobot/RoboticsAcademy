@@ -20,7 +20,7 @@
 #       Arsalan Akhter <arsalanakhter.wpi AT gmail DOT com>
 #       Shyngyskhan Abilkassov <s.abilkassov AT gmail DOT com>
 
-import sys, os, config
+import sys, config
 import rospy
 import comm
 
@@ -34,15 +34,13 @@ from sensors.threadMotors import Velocity
 from sensors.sensor import Sensor
 from sensors.grid import Grid
 
-# import signal
-
-# signal.signal(signal.SIGINT, signal.SIG_DFL)
+from interfaces.path import ListenerPath
+from interfaces.moveBaseClient import MoveBaseClient
 
 def removeMapFromArgs():
     for arg in sys.argv:
         if (arg.split(".")[1] == "conf"):
             sys.argv.remove(arg)
-
 
 if __name__ == '__main__':
 
@@ -55,12 +53,14 @@ if __name__ == '__main__':
     motors = jdrc.getMotorsClient("Amazon.Motors")
     pose3d = jdrc.getPose3dClient("Amazon.Pose3D")
     laser = jdrc.getLaserClient("Amazon.Laser")
+    pathListener = ListenerPath("/move_base/NavfnROS/plan")
+    moveBaseClient = MoveBaseClient()
 
-    app = QApplication(sys.argv)
+    app = QApplication(sys.argv) 
     myGUI = MainWindow()
 
     grid = Grid(myGUI)
-    
+
     vel = Velocity(0, 0, motors.getMaxV(), motors.getMaxW())
     sensor = Sensor(grid, pose3d, True)
     sensor.setGetPathSignal(myGUI.getPathSig)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     myGUI.setVelocity(vel)
     myGUI.setGrid(grid)
     myGUI.setSensor(sensor)
-    algorithm = MyAlgorithm(grid, sensor, vel, laser)
+    algorithm = MyAlgorithm(grid, sensor, vel, pathListener, moveBaseClient)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 
