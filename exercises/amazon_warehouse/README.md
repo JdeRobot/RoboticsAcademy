@@ -5,25 +5,30 @@ The goal of this practice is to implement the logic of a pick, navigate and plac
 ## How to run
 To launch the example, follow the steps below:
 
-0. Source the gazebo setups:
+0. Add following packages if you don't have them already:
+```
+$ sudo wget https://raw.githubusercontent.com/tu-darmstadt-ros-pkg/hector_localization/catkin/hector_pose_estimation/hector_pose_estimation_nodelets.xml -P /opt/ros/kinetic/share/hector_pose_estimation/
+$ sudo apt-get install ros-kinetic-navigation
+```
+
+1. Source the gazebo setups:
 
 ```
 $ source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
 $ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 ```
 
-1. Run Gazebo simulator:
+2. Run Gazebo simulator:
 
 ```
 $ cd launch
 $ ROS_HOME=`pwd` roslaunch amazonrobot_1_warehouse.launch 
 ```
 
-2. Navigate to exercise folder and run the practice and the user interface: 
+3. Navigate to exercise folder and run the practice and the user interface: 
 
 ```
 $ python2 amazonWarehouse.py amazonMap.conf amazonConf.yml
-
 ```
 
 To simplify the closure of the environment, just close the Amazon window (s). *`Ctrl + C` will give problems.*
@@ -55,6 +60,6 @@ To carry out the practice, you must edit the `MyAlgorithm.py` file and insert th
 
 For this example, you have to get the robot autonomously navigate in warehouse environment.
 
-## Demonstrative video on initialization and running
+## Demonstrative video of completed solution
 [Video](https://www.youtube.com/watch?v=SjvxiyvfyUg)
 
