@@ -1,94 +1,57 @@
-# CAT AND MOUSE EXCERCISE
+# Drone Hangar Exercise
 
-The objective of this practice is to program an autonomous behavior
-for a drone that simulates the game of the cat and the mouse.
+## Goal
 
-This is to make the black drone (cat), programmed by the student,
-follow the red drone (mouse, that is already preprogrammed and has a random path)
-as close as possible without crashing. However, the cat must
-escape from an hangar with mobile obstacles without colliding first.
-The referee application will measure the distance between the two drones and assign a score based on it. 
-The longer time you spend close to the mouse, more score will be obtained.
+The goal of this exercise is to implement the logic that allows a quadrotor to escape a hangar filled with moving obstacles.
 
+![World](../../docs/drone_hangar.jpg)
 
-## Downloading the mouse programs and their configuration
+## Requirements
 
-```
-cd mice 
-wget http://jderobot.org/store/jmplaza/uploads/jderobot-academy/drone-catmouse/mice.tgz 
-tar -zxvf mice.tgz
-```
+As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. Work is currently underway to simply this to something of the sort `sudo apt install jderobot-drones`, but for now, please follow the instructions available in the [drones directory](https://github.com/JdeRobot/drones).
 
-## EXECUTION
-Follow these steps:
+## Execution
 
-1. First of all, launch Gazebo simulator:
+To launch the exercise, simply use the following command from this directory:
 
-`$ gazebo gymkhana.world`
-    
-* In case your CPU does not support the load of the simulator, 
-try the execution without seeing the world:
+`roslaunch drone_hangar.launch`
 
-`$ gzserver gymkhana-simple.world`
+As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a seperate terminal as follows:
 
-2. Once done it, run the cat component:
+`colorTuner colorTuner.conf`
 
-`python2 ./cat.py cat_conf.yml`
+## Solution
 
-3. and then, the mouse component, one of the following:
+To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
+[my_solution.py](my_solution.py#L46)
 
-* start teleoperating the mouse to refine your cat:
+```python
+def execute(event):
+  global drone
+  img_frontal = drone.get_frontal_image()
+  img_ventral = drone.get_ventral_image()
+  # Both the above images are cv2 images
+  ################# Insert your code here #################################
 
-```
-cd ~/Academy/src/drone_hangar/mice/
-uav_viewer_py mouse_cfg.yml
-```
-* if you feel confident enough with your cat, try with an autonomous mouse (they are ordered in increasing difficulty):
-`$ ./trainning_mouse trainning.cfg` 
-* or `$ ./q1_mouse q1.cfg`
-* or `$ ./q2_mouse q2.cfg`
+  set_image_filtered(img_frontal)
+  set_image_threshed(img_ventral)
 
-
-4. Optionally you can run the referee too: 
-
-`$ python2 ./referee.py referee.yml`
-
-To simplify the closure of the environment, just close the
-window(s). *Ctrl + C will be problematic*.
-
-
-
-## HOW TO DO THE PRACTICE
-
-To carry out the practice, you must edit the file `MyAlgorithms.py` and
-insert the control logic.
-
-[MyAlgorithm.py](MyAlgorithm.py#L58)
-
-```
-    def execute(self):
-        # Add your code here
-        tmp = self.navdata.getNavdata()
-        if tmp is not None:
-            print ("State: " +str(tmp.state))
-            print ("Altitude: " +str(tmp.altd))
-            print ("Vehicle: " +str(tmp.vehicle))
-            print ("Battery %: " +str(tmp.batteryPercent))
+  #########################################################################
 ```
 
-### API
-* `cmdvel.sendCMDVel(vx,vy,vz,ax,ay,az)`: sends linear and angular speed commands to the drone.
-* `pose.getPose3d()`: returns the position and rotation values of the drone in space. Content: x, y, z, h, yaw, pitch, roll, q (quaternion)
-* `pose.getRoll()`, `pose.getPitch()`, `pose.getYaw()`: returns the rotation values of the drone in space.
-* `extra.toggleCam()`: changes the drone's active camera (frontal or the one below).
-* `extra.takeoff()`: Takeoff of the drone.
-* `extra.land()`: landing of the drone.
-* `camera.getImage()` - to get the image received from server. Content: height, width, format, data (opencv Image)
-* `camera.setFilteredImage(filt_image)` - to set filtered image (Opencv Image)
+## API
 
-Image to be processed is in *camera.getImage().data*
+* `set_image_filtered(cv2_image)`: If you want to show a filtered image of the camera images in the GUI
+* `set_image_threshed(cv2_image)`: If you want to show a thresholded image in the GUI
+* `drone.get_frontal_image()` : Returns the latest image from the frontal camera as a cv2_image
+* `drone.get_ventral_image()` : Returns the latest image from the ventral camera as a cv2_image
+* `drone.get_position()`: Returns the position of the drone as a numpy array [x, y, z]
+* `drone.get_orientation()`: Returns the roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw]
+* `drone.get_roll()`: Returns the roll of the drone
+* `drone.get_pitch()`: Returns the pitch of the drone
+* `drone.get_yaw()`: Returns the yaw of the drone
+* `drone.set_cmd_vel(vx, vy, vz, az)`: Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
 
+## Demonstrative video (in spanish)
 
-
-## Demonstration video of the 2016 championship
-[Video](https://youtu.be/Hd2nhOx1tqI?t=8m30s)
+https://youtu.be/Hd2nhOx1tqI?t=8m30s
