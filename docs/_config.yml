@@ -108,7 +108,7 @@ analytics:
 # Site Author
 author:
   name             : "JdeRobot"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/images/logo.png"
   bio              : "Learn Robotics and Computer Vision with JdeRobot."
   location         : #"Somewhere"
   email            :
