@@ -1,4 +1,5 @@
 # main links
 main:
-    - title: "Installation and use"
+  - title: "Installation and use"
     url: /installation/
+
