@@ -1,5 +1,51 @@
 # JdeRobot-Academy: Learn Robotics and Computer Vision 
 
+## Status
+
+Available exercises and its status:
+
+|      Category       |        Exercise         |     Status     |      Robot       | Infrastructure | Solution |  Theory  | Language |
+| :-----------------: | :---------------------: | :------------: | :--------------: | :------------: | :------: | :------: | :------: |
+|                     | 3D Reconstruction       | **Production** |      Camera      |    **DONE**    | **DONE** | **DONE** |  Python  |
+|       Vision        | Color Filter            | **Production** |      Camera      |    **DONE**    | **DONE** | **DONE** |  Python  |
+|                     | FollowFace              | **Production** |  Sony Evi d100p  |    **DONE**    | **DONE** | **DONE** |  Python  |
+| :-----------------: | :---------------------: | :------------: | :--------------: | :------------: | :------: | :------: | :------: |
+|                     | Bump&Go                 | **Production** | TurtleBot        | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Amazon Warehouse        | Prototype      | AmazonBot        | **DONE**       | WIP      |  Review  |  Python  |
+|   Mobile Robots     | Follow Line Turtlebot   | **Production** | TurtleBot        | **DONE**       | ?        | **DONE** |  Python  |
+|                     | Laser Loc               | **Production** | Roomba           | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Vacuum Cleaner          | **Production** | Roomba           | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Vacuum SLAM             | **Production** | Roomba           | **DONE**       | **DONE** | **DONE** |  Python  |
+| :-----------------: | :---------------------: | :------------: | :--------------: | :------------: | :------: | :------: | :------: |
+|                     | Autopark                | **Production** | TaxiHolo         | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Cross Roads with Stop   | **Production** | Opel             | **DONE**       | **DONE** | **DONE** |  Python  |
+|   Autonomous Cars   | Qualifying F1           | WIP            | F1               | WIP            | WIP      | Review   |  Python  |
+|                     | Global Navigation (GPP) | **Production** | TaxiHolo         | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Obstacle Avoidance (VFF)| **Production** | F1               | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Follow Line             | **Production** | F1               | **DONE**       | **DONE** | **DONE** |  Python  |
+| :-----------------: | :---------------------: | :------------: | :--------------: | :------------: | :------: | :------: | :------: |
+|                     | Drone Hangar            | Prototype      | Drone            | WIP            | WIP      | **DONE** |  Python  |
+|                     | Follow Road             | **Production** | Drone            | **DONE**       | ?        | **DONE** |  Python  |
+|                     | Follow Turtlebot        | **Production** | Drone            | **DONE**       | ?        | **DONE** |  Python  |
+|                     | Drone Cat Mouse         | **Production** | Drone            | **DONE**       | **DONE** | **DONE** |  Python  |
+|       Drones        | Labyrinth Escape        | **Production** | Drone            | **DONE**       | ?        | **DONE** |  Python  |
+|                     | Position Control        | **Production** | Drone            | **DONE**       | **DONE** | **DONE** |  Python  |
+|                     | Rescue People           | **Production** | Drone            | **DONE**       | Review   | **DONE** |  Python  |
+|                     | Visual Lander           | ?              | Drone            | **DONE**       | ?        | Review   |  Python  |
+|                     | Path Planning and Navigation in 3D | **Prototype** | Drone  | **DONE**       | ?        | ?        |  Python  |
+| :-----------------: | :---------------------: | :------------: | :--------------: | :------------: | :------: | :------: | :------: |
+|  Industrial Robots  | Look and Push           | ?              | Robotic Arm      | ?              | ?        | ?        |  Python  |
+
+
+
+
+
+
+
+
+
+
+
 ## Introduction
 
 JdeRobot-Academy is an **open source** collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. The students program their solutions in **Python language**. Each exercise is composed of :
@@ -17,8 +63,6 @@ For execution the student launches Gazebo with certain configuration file (speci
 [![http://jderobot.org/store/jmplaza/uploads/jderobot-academy/vff-f1.png](http://img.youtube.com/vi/ID7qaEcIu4k/0.jpg)](http://www.youtube.com/watch?v=ID7qaEcIu4k "Obstacle Avoidance exercise in JdeRobot-Academy")
 
 There are exercises about drone programming, about computer vision, about mobile robots, about autonomous cars, etc..  In the JdeRobotFoundation we are improving the quality of the existing exercises and creating a few exercises more. We are also working in a webserver to code and [run the exercises from the web browser](https://www.youtube.com/watch?v=bTwt6W8vCGQ) but that is a ongoing project yet.
-
-
 
 ## Installation Guide
 
