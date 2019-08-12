@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="world_name" default="$(find jderobot_assets)/worlds/iris_position_control.world"/>
+    <arg name="world" default="$(find jderobot_assets)/worlds/iris_position_control.world"/>
     <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
 
     <include file="$(find drone_wrapper)/launch/mavros_px4_sitl.launch">
-        <arg name="world_name" value="$(arg world_name)"/>
+        <arg name="world" value="$(arg world)"/>
     </include>
     
     <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
