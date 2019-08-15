@@ -23,14 +23,15 @@ from tf.transformations import quaternion_from_euler
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 import threading
+from .threadGoalSender import ThreadGoalSender
 
 import rospy
 from std_srvs.srv import Empty
 
 ## Use this if after moving pallet, there are obstacles left on costmaps, which prevent proper movement after moving and dropping pallet
 def clearCostmaps():
-    rospy.wait_for_service('/move_base/clear_costmaps')
-    clear_costmaps = rospy.ServiceProxy('/move_base/clear_costmaps', Empty)
+    rospy.wait_for_service('/amazon_warehouse_robot/move_base/clear_costmaps')
+    clear_costmaps = rospy.ServiceProxy('/amazon_warehouse_robot/move_base/clear_costmaps', Empty)
 
     try:
         print("Clearing costmap")
@@ -40,7 +41,7 @@ def clearCostmaps():
 
 class MoveBaseClient():
     def __init__(self):
-        self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+        self.client = actionlib.SimpleActionClient('/amazon_warehouse_robot/move_base', MoveBaseAction)
         self.client.wait_for_server()
         self.data = [0, 0]
         self.goal = None
