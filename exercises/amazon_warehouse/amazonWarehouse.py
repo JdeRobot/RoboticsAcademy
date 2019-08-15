@@ -53,7 +53,7 @@ if __name__ == '__main__':
     motors = jdrc.getMotorsClient("Amazon.Motors")
     pose3d = jdrc.getPose3dClient("Amazon.Pose3D")
     laser = jdrc.getLaserClient("Amazon.Laser")
-    pathListener = ListenerPath("/move_base/NavfnROS/plan")
+    pathListener = ListenerPath("/amazon_warehouse_robot/move_base/NavfnROS/plan")
     moveBaseClient = MoveBaseClient()
 
     app = QApplication(sys.argv) 

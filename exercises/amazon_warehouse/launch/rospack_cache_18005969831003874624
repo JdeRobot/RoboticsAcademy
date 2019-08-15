@@ -1,7 +1,6 @@
-#ROS_PACKAGE_PATH=/home/robot/catkin_ws/src:/home/robot/ros_ws/src:/opt/ros/kinetic/share
+#ROS_PACKAGE_PATH=/home/robot/ros_ws/src:/opt/ros/kinetic/share
 /opt/ros/kinetic/share/tf2_py
 /opt/ros/kinetic/share/rqt_tf_tree
-/opt/ros/kinetic/share/rostest
 /opt/ros/kinetic/share/ecl_errors
 /opt/ros/kinetic/share/rocon_app_manager
 /opt/ros/kinetic/share/pcl_conversions
@@ -37,6 +36,7 @@
 /opt/ros/kinetic/share/collada_parser
 /opt/ros/kinetic/share/kobuki_ftdi
 /opt/ros/kinetic/share/pr2_controller_interface
+/opt/ros/kinetic/share/bfl
 /opt/ros/kinetic/share/rocon_hub_client
 /opt/ros/kinetic/share/ecl_containers
 /opt/ros/kinetic/share/python_qt_binding
@@ -53,6 +53,9 @@
 /opt/ros/kinetic/share/rosgraph
 /opt/ros/kinetic/share/rqt_robot_steering
 /opt/ros/kinetic/share/rqt_topic
+/opt/ros/kinetic/share/fake_localization
+/opt/ros/kinetic/share/rostest
+/opt/ros/kinetic/share/robot_pose_ekf
 /opt/ros/kinetic/share/robot_state_publisher
 /opt/ros/kinetic/share/rosbag_storage
 /opt/ros/kinetic/share/rocon_std_msgs
@@ -74,7 +77,6 @@
 /opt/ros/kinetic/share/bond
 /opt/ros/kinetic/share/openslam_gmapping
 /opt/ros/kinetic/share/rqt_joint_trajectory_controller
-/opt/ros/kinetic/share/roscreate
 /opt/ros/kinetic/share/diagnostic_updater
 /opt/ros/kinetic/share/kobuki_msgs
 /opt/ros/kinetic/share/app_manager
@@ -215,8 +217,11 @@
 /opt/ros/kinetic/share/qt_gui_py_common
 /opt/ros/kinetic/share/compressed_image_transport
 /opt/ros/kinetic/share/resource_retriever
+/opt/ros/kinetic/share/roscreate
+/opt/ros/kinetic/share/dwa_local_planner
 /opt/ros/kinetic/share/std_capabilities
 /opt/ros/kinetic/share/geometric_shapes
+/opt/ros/kinetic/share/move_slow_and_clear
 /opt/ros/kinetic/share/eigen_conversions
 /opt/ros/kinetic/share/std_msgs
 /opt/ros/kinetic/share/rocon_semantic_version
@@ -246,6 +251,7 @@
 /opt/ros/kinetic/share/rqt_publisher
 /opt/ros/kinetic/share/dynamic_reconfigure
 /opt/ros/kinetic/share/kobuki_gazebo
+/opt/ros/kinetic/share/carrot_planner
 /opt/ros/kinetic/share/cv_bridge
 /opt/ros/kinetic/share/theora_image_transport
 /opt/ros/kinetic/share/rqt_image_view
@@ -380,6 +386,9 @@
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_2/minimal_robot_description
 /opt/ros/kinetic/share/pr2_msgs
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_1/example_parameter_server
+/opt/ros/kinetic/share/rqt_console
+/opt/ros/kinetic/share/rosbag
+/home/robot/ros_ws/src/learning_ros_kinetic/Part_1/example_action_server
 /opt/ros/kinetic/share/urg_c
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_5/pt5_models
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_1/example_ros_msg
@@ -388,6 +397,7 @@
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_1/example_ros_service
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_1/using_a_ros_library
 /opt/ros/kinetic/share/turtle_actionlib
+/opt/ros/kinetic/share/global_planner
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_5/irb140/irb140_control
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_1/creating_a_ros_library
 /opt/ros/kinetic/share/image_transport
@@ -459,6 +469,7 @@
 /home/robot/ros_ws/src/learning_ros_external_pkgs_kinetic/baxter_simulator/baxter_sim_controllers
 /opt/ros/kinetic/share/voxel_grid
 /home/robot/ros_ws/src/learning_ros_external_pkgs_kinetic/baxter_simulator/baxter_sim_kinematics
+/home/robot/ros_ws/src/learning_ros_external_pkgs_kinetic/baxter_simulator/baxter_sim_hardware
 /opt/ros/kinetic/share/mavros_msgs
 /opt/ros/kinetic/share/gencpp
 /home/robot/ros_ws/src/learning_ros_kinetic/Part_4/odom_tf
@@ -470,12 +481,3 @@
 /opt/ros/kinetic/share/shape_msgs
 /home/robot/ros_ws/src/learning_ros_external_pkgs_kinetic/rviz_plugin_selected_points_topic
 /home/robot/ros_ws/src/learning_ros_external_pkgs_kinetic/catkin_simple
-/home/robot/catkin_ws/src/mpc_4x4
-/home/robot/ros_ws/src/learning_ros_external_pkgs_kinetic/baxter_simulator/baxter_sim_hardware
-/home/robot/catkin_ws/src/mobile_robot
-/opt/ros/kinetic/share/rqt_console
-/opt/ros/kinetic/share/rosbag
-/home/robot/ros_ws/src/learning_ros_kinetic/Part_1/example_action_server
-/home/robot/catkin_ws/src/autonomous_truck
-/home/robot/catkin_ws/src/amazon_navigation
-/home/robot/catkin_ws/src/webots_ros

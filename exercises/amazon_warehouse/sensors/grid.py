@@ -113,9 +113,9 @@ class Grid:
 	def setDestiny(self, x, y):
 		self.lock.acquire()
 		self.destiny = (x, y)
-		f = open("sensors/destiny.txt", "w")
-		f.write(str(self.destiny))
-		f.close()
+		# f = open("sensors/destiny.txt", "w")
+		# f.write(str(self.destiny))
+		# f.close()
 		self.lock.release()
 
 	def getDestiny(self):
