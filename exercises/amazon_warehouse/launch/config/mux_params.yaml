@@ -11,7 +11,7 @@
 
 subscribers:
   - name:        "Navigation Stack"
-    topic:       "/move_base/cmd_vel"
+    topic:       "/amazon_warehouse_robot/move_base/cmd_vel"
     timeout:     0.5
     priority:    2
     
