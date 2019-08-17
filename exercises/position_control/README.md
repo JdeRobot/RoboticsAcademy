@@ -10,7 +10,13 @@ For this exercise, a world has been desined in gazebo that contains the Iris qua
 
 ## Requirements
 
-As this is a drones exercise, you will need to additionally install the `jderobot-drones` package. Work is currently underway to simply this to something of the sort `sudo apt install jderobot-drones`, but for now, please follow the instructions available in the [drones directory](https://github.com/JdeRobot/drones).
+As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
+
+```bash
+sudo apt-get install ros-kinetic-dronewrapper ros-kinetic-rqt-drone-teleop ros-kinetic-jderobot-assets
+```
+
+There is an additional dependancy on MAVROS and PX4 that we are in the process of simplifying, however at the moment just use the script provided [here](https://github.com/JdeRobot/drones/blob/master/mavros_px4_sitl_installation.sh)
 
 ## Execution
 
