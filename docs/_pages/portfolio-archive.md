@@ -2,7 +2,7 @@
 title: Exercises
 layout: collection
 permalink: /portfolio/
-collection: portfolio
+collection: 
 entries_layout: grid
 classes: wide
 ---
