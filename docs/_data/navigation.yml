@@ -2,4 +2,5 @@
 main:
   - title: "Installation and use"
     url: /installation/
-
+  - title: "Collections"
+    url: /collection-archive/
