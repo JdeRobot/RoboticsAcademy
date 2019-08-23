@@ -2,11 +2,11 @@
 title: "Visual follow-line behavior on a Formula1"
 excerpt: "The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit."
 header:
-  image: images/f1.png
-  teaser: images/f1-th.png
+  image: /images/f1.png
+  teaser: /images/f1.png
 gallery:
   - url: /images/circuit_f1.png
-    image_path: images/circuit_f1-th.png
+    image_path: images/circuit_f1.png
     alt: "placeholder image 1"
 youtubeId: eNuSQN9egpA
 ---
