@@ -13,7 +13,7 @@ In this exercise, the cat quadrotor is to be programmed by the student to follow
 As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
 
 ```bash
-sudo apt-get install ros-kinetic-dronewrapper ros-kinetic-rqt-drone-teleop ros-kinetic-jderobot-assets
+sudo apt-get install ros-kinetic-drone-wrapper ros-kinetic-rqt-drone-teleop ros-kinetic-drone-wrapper
 ```
 
 There is an additional dependancy on MAVROS and PX4 that we are in the process of simplifying, however at the moment just use the script provided [here](https://github.com/JdeRobot/drones/blob/master/mavros_px4_sitl_installation.sh)
