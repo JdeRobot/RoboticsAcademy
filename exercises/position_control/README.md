@@ -22,7 +22,7 @@ There is an additional dependancy on MAVROS and PX4 that we are in the process o
 
 To launch the exercise, simply use the following command from this directory:
 
-`roslaunch visual_lander.launch`
+`roslaunch position_control.launch`
 
 ## Solution
 
