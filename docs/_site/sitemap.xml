@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>http://localhost:4000/portfolio/3D-Reconstruction/</loc>
+<lastmod>2019-08-26T20:41:52+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/portfolio/Amazon-Warehouse/</loc>
+<lastmod>2019-08-26T20:41:52+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/portfolio/Color-Filter/</loc>
+<lastmod>2019-08-26T20:41:52+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/portfolio/Follow-Face/</loc>
+<lastmod>2019-08-26T20:41:52+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/portfolio/Follow-Line/</loc>
+<lastmod>2019-08-26T20:41:52+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/portfolio/Obstacle-Avoidance/</loc>
+<lastmod>2019-08-26T20:41:52+02:00</lastmod>
+</url>
+<url>
+<loc>http://localhost:4000/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/installation/</loc>
+</url>
+<url>
+<loc>http://localhost:4000/</loc>
+</url>
+</urlset>
