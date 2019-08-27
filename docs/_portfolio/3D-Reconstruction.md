@@ -15,3 +15,5 @@ In this practice, the intention is to program the necessary logic to allow kobuk
 
 {% include gallery caption="3D Reconstruction." %}
 
+{% include youtubePlayer.html id=page.youtubeId %}
+
