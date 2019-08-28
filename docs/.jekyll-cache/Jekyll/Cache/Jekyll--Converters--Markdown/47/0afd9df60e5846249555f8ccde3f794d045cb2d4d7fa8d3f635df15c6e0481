@@ -1,0 +1,22 @@
+I"w<p>The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must Stop at the T joint, where there is a stop sign, wait until there are no cars and pass once the road is clear.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/images/car_junction.png">
+        <img src="/images/car_junction.png" alt="placeholder image 1" />
+      </a>
+    
+  
+  
+    <figcaption>Car Junction.
+</figcaption>
+  
+</figure>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/hF2i0rdlIqE" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

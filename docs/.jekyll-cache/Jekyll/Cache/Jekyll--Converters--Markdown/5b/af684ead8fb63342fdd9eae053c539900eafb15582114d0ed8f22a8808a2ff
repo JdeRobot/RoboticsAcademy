@@ -1,0 +1,24 @@
+I"~<p>The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/images/circuit_f1.png">
+        <img src="/images/circuit_f1.png" alt="placeholder image 1" />
+      </a>
+    
+  
+  
+    <figcaption>Racing circuit.
+</figcaption>
+  
+</figure>
+
+<p>The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.</p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/eNuSQN9egpA" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

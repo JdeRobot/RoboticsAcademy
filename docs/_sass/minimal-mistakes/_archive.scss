@@ -22,7 +22,10 @@
   position: relative;
   padding: 25px;
   border-style: solid;
-  border-radius: 6px;
+  border-width: 2px;
+  border-radius: 4px;
+  height: 400px;
+  width: auto;
 
   a {
     position: relative;
@@ -173,7 +176,7 @@
   @include breakpoint($medium) {
     margin-left: 0; /* override margin*/
     margin-right: 0; /* override margin*/
-    width: span(3 of 12);
+    width: span(4 of 12);
 
     &:nth-child(2n + 1) {
       clear: none;
@@ -224,7 +227,7 @@
     }
 
     @include breakpoint($medium) {
-      max-height: 120px;
+      max-height: 200px; /*default: 120*/
     }
   }
 }

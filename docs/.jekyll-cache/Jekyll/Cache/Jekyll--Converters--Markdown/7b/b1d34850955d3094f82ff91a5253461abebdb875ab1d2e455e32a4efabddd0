@@ -1,0 +1,22 @@
+I"-<p>The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must find a parking space and park properly.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/images/autoparking.png">
+        <img src="/images/autoparking.png" alt="placeholder image 1" />
+      </a>
+    
+  
+  
+    <figcaption>Autoparking.
+</figcaption>
+  
+</figure>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/BpHSDrFqpVk" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

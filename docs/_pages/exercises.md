@@ -1,7 +1,7 @@
 ---
 title: Exercises
 layout: collection
-permalink: /
+permalink: /exercises/
 collection: portfolio
 entries_layout: grid
 classes: wide
