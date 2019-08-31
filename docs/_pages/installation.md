@@ -2,6 +2,9 @@
 permalink: /installation/
 title: "Installation and use"
 
+sidebar:
+  nav: "docs"
+
 toc: true
 toc_label: "TOC installation"
 toc_icon: "cog"

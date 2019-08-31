@@ -30,12 +30,12 @@ Robotics Academy uses ROS and Gazebo as underlying infrastructure for the exerci
 
 Just play with Robotics Academy at [its WebIDE](https://unibotics.org/), it is free :-)
 
-This spring it is going to be used in a [Greek competition 2019](http://icsdweb.aegean.gr/project/aegeanrobotics/web/programarobot/) at the [University of the Aegean](http://samosweb.aegean.gr/), Greece. 
+This spring it is going to be used in a <a href="http://icsdweb.aegean.gr/project/aegeanrobotics/web/programarobot/" target="_blank">Greek competition</a> 2019 at the <a href="http://samosweb.aegean.gr" target="_blank">University of the Aegean</a>, Greece. 
 
 
 ## Local installation on Linux machines
 
-The programming framework is composed of the Gazebo simulator, ROS middleware and the Robotics Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Kinetic and JdeRobot-Academy (20180606) releases. Follow the [installation recipe](https://github.com/JdeRobot/RoboticsAcademy/blob/master/README.md) in the github repository to get the framework up and running, ready to use on your computer. 
+The programming framework is composed of the Gazebo simulator, ROS middleware and the Robotics Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Kinetic and JdeRobot-Academy (20180606) releases. Follow the <a href="/installation" target="_blank">installation recipe</a> in the github repository to get the framework up and running, ready to use on your computer. 
 
 
 ## Local installation on Windows machines

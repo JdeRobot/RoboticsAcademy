@@ -1,4 +1,4 @@
-I" <p>JdeRobot-Academy is an open source collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. The students program their solutions in Python language. Each exercise is composed of :</p>
+I"›<p>JdeRobot-Academy is an open source collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. The students program their solutions in Python language. Each exercise is composed of :</p>
 
 <ol>
   <li>Gazebo configuration files,</li>
@@ -24,11 +24,11 @@
 
 <p>Just play with Robotics Academy at <a href="https://unibotics.org/">its WebIDE</a>, it is free :-)</p>
 
-<p>This spring it is going to be used in a <a href="http://icsdweb.aegean.gr/project/aegeanrobotics/web/programarobot/">Greek competition 2019</a> at the <a href="http://samosweb.aegean.gr/">University of the Aegean</a>, Greece.</p>
+<p>This spring it is going to be used in a <a href="http://icsdweb.aegean.gr/project/aegeanrobotics/web/programarobot/" target="_blank">Greek competition</a> 2019 at the <a href="http://samosweb.aegean.gr" target="_blank">University of the Aegean</a>, Greece.</p>
 
 <h2 id="local-installation-on-linux-machines">Local installation on Linux machines</h2>
 
-<p>The programming framework is composed of the Gazebo simulator, ROS middleware and the Robotics Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Kinetic and JdeRobot-Academy (20180606) releases. Follow the <a href="https://github.com/JdeRobot/RoboticsAcademy/blob/master/README.md">installation recipe</a> in the github repository to get the framework up and running, ready to use on your computer.</p>
+<p>The programming framework is composed of the Gazebo simulator, ROS middleware and the Robotics Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Kinetic and JdeRobot-Academy (20180606) releases. Follow the <a href="/installation" target="_blank">installation recipe</a> in the github repository to get the framework up and running, ready to use on your computer.</p>
 
 <h2 id="local-installation-on-windows-machines">Local installation on Windows machines</h2>
 

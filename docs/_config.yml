@@ -106,28 +106,28 @@ analytics:
 
 
 # Site Author
-author:
-  name             : "JdeRobot"
-  avatar           : "/images/logo.png"
-  bio              : "Learn Robotics and Computer Vision with JdeRobot."
-  location         : #"Somewhere"
-  email            :
-  links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      # url: mailto:your.name@email.com
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/unibotics"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/JdeRobot/RoboticsAcademy"
-    - label: "Youtube"
-      icon: "fab fa-fw fa-youtube"
-      url: "https://www.youtube.com/channel/UCS9IvIytJNqQqImT99g-d6g"
+#author:
+#  name             : "JdeRobot"
+#  avatar           : "/images/logo.png"
+#  bio              : "Learn Robotics and Computer Vision with JdeRobot."
+#  location         : #"Somewhere"
+#  email            :
+#  links:
+#    - label: "Email"
+#      icon: "fas fa-fw fa-envelope-square"
+#      # url: mailto:your.name@email.com
+#    - label: "Jderobot"
+#      icon: "fas fa-fw fa-link"
+#      url: "https://jderobot.org"
+#    - label: "Twitter"
+#      icon: "fab fa-fw fa-twitter-square"
+#      url: "https://twitter.com/unibotics"
+#    - label: "GitHub"
+#      icon: "fab fa-fw fa-github"
+#      url: "https://github.com/JdeRobot/RoboticsAcademy"
+#    - label: "Youtube"
+#      icon: "fab fa-fw fa-youtube"
+#      url: "https://www.youtube.com/channel/UCS9IvIytJNqQqImT99g-d6g"
 
 # Site Footer
 footer:

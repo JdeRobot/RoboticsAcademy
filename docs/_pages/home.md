@@ -14,16 +14,18 @@ feature_row:
     alt: "Exercises"
     title: "Exercises"
     excerpt: "Take a look at the list of exercises available, under development or future."
-    url: "/docs/configuration/"
+    url: "/exercises/"
     btn_class: "btn--primary"
     btn_label: "Learn more"
+
   - image_path: /assets/images/cover/cover_column_2.png
     alt: "fully responsive"
     title: "Contribute"
     excerpt: "Contribute with new exercises. For more information go to the following site."
-    url: "/docs/layouts/"
+    url: "/contribute/"
     btn_class: "btn--primary"
     btn_label: "Learn more"
+
   - image_path: /assets/images/cover/cover_column_3.png
     alt: "100% free"
     title: "More information"
