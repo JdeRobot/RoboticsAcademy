@@ -6,7 +6,7 @@ header:
   overlay_image: /assets/images/cover/test_header_shear_3.png
   actions:
     - label: "<i class='fas fa-download'></i> Install now"
-      url: "/docs/quick-start-guide/"
+      url: "/installation/"
 excerpt: 
   Learn Robotics and Computer Vision
 feature_row:
@@ -28,7 +28,7 @@ feature_row:
     alt: "100% free"
     title: "More information"
     excerpt: "Find out more about the requirements and objectives of the project."
-    url: "/docs/license/"
+    url: "/about/"
     btn_class: "btn--primary"
     btn_label: "Learn more"   
 youTube_id: ID7qaEcIu4k
