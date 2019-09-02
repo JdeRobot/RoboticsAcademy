@@ -1,6 +1,6 @@
 ---
-permalink: /collection/
-title: "Exercise Collection"
+permalink: /status/
+title: "Exercise Collection Status"
 
 sidebar:
   nav: "docs"
@@ -10,10 +10,9 @@ toc_label: "TOC collection"
 toc_icon: "cog"
 ---
 
-## Status
 Available exercises and its status:
 
-### Visión
+### Vision
 
 |        Exercise         |     Status     |      Robot       | Infrastructure | Solution |  Theory  | Language |
 | :---------------------: | :------------: | :--------------: | :------------: | :------: | :------: | :------: |

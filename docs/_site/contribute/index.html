@@ -264,7 +264,15 @@
             
             
 
-            <li><a href="/collection/" class="">Collection</a></li>
+            <li><a href="/exercises/" class="">Collection</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/status/" class="">Status</a></li>
           
         </ul>
         
@@ -367,19 +375,43 @@
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC installation</h4></header>
               <ul class="toc__menu">
   <li><a href="#where-do-i-attach-the-information">Where do I attach the information?</a></li>
-  <li><a href="#images-policy">Images policy</a></li>
   <li><a href="#name-policy">Name policy</a></li>
+  <li><a href="#images-policy">Images policy</a></li>
 </ul>
             </nav>
           </aside>
         
-        <p><a href="/students/student_1/" target="_blank">Test student 1</a></p>
+        <p>This section describes the steps to include an exercise in the Robotics-Academy documentation.</p>
+
+<p>The objective of having documentation in this format is to simplify the developer having to add information from their software, speeding up the process and showing results that fit the structure of Robotics-Academy.</p>
 
 <h2 id="where-do-i-attach-the-information">Where do I attach the information?</h2>
 
-<h2 id="images-policy">Images policy</h2>
+<p>By default, the information added to the documentation is split in two:</p>
+
+<ul>
+  <li>A <code class="highlighter-rouge">.md</code> file with the description of the exercise, steps for execution, comments, etc.</li>
+  <li>A folder with resources. Typically images and videos that are associated to the exercise.</li>
+</ul>
+
+<p>The file with the information is placed in the path: <code class="highlighter-rouge">/_portfolio/</code> with the name of the exercise and with Markdown extension (<code class="highlighter-rouge">.md</code>).</p>
+
+<p>The images associated to this file with the information are stored in the path: <code class="highlighter-rouge">/assets/images/exercises/&lt;exercise_name&gt;/</code></p>
 
 <h2 id="name-policy">Name policy</h2>
+
+<p>The name policy is simple:</p>
+
+<p>All file names attached to the documentation will be <strong>lowercase</strong> and spaces will be replaced by <strong>underscore</strong> (“<code class="highlighter-rouge">_</code>”) using ASCII characters.</p>
+
+<h2 id="images-policy">Images policy</h2>
+
+<p>In order to maintain coherence between all the exercises, it is necessary to distinguish between one image and the rest. This is the image shown in the set of exercises.</p>
+
+<p>The image name policy is <code class="highlighter-rouge">&lt;exercise_name&gt;_teaser</code>. Note how it has to end in <code class="highlighter-rouge">_teaser</code>.</p>
+
+<p>The rest of the images have no name restriction. When in doubt, they are named as the exercise and with a number behind them.</p>
+
 
         
       </section>

@@ -15,7 +15,10 @@ docs:
   - title: Exercises
     children:
       - title: "Collection"
-        url: /collection/
+        url: /exercises/
+      - title: "Status"
+        url: /status/
+      
 
   - title: "Contribute"
     children:
