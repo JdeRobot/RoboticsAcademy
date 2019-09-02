@@ -1,0 +1,56 @@
+I"L<p>The objective of this practice is to implement the logic of the VFF navigation algorithm.</p>
+
+<p>Navigation using VFF (Virtual Force Field), consists of:</p>
+
+<ul>
+  <li>
+    <p>Each object in the environment generates a repulsive force towards the robot.</p>
+  </li>
+  <li>
+    <p>Destiny generates an attractive force in the robot.</p>
+  </li>
+</ul>
+
+<p>This makes it possible for the robot to go towards the target, distancing itself of the obstacles, so that their address is the vector sum of all the forces.</p>
+
+<p><img src="/assets/images/exercises/obstacle_avoidance/obstacle_avoidance.png" width="100%" height="60%" /></p>
+
+<figure class="half ">
+  
+    
+      <img src="" alt="" />
+    
+  
+    
+      <img src="" alt="" />
+    
+  
+  
+    <figcaption>Obstacle Avoidance.
+</figcaption>
+  
+</figure>
+
+<p>The solution can integrate one or more of the following levels of difficulty, as well as any other one that occurs to you:</p>
+
+<ul>
+  <li>
+    <p>Go as quickly as possible</p>
+  </li>
+  <li>
+    <p>Choose the safest way</p>
+  </li>
+  <li>
+    <p>Obstacles in movement</p>
+  </li>
+  <li>
+    <p>Robustness in situations of indecision (zero vector sum)</p>
+  </li>
+</ul>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/5SVkvfKPi_s" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

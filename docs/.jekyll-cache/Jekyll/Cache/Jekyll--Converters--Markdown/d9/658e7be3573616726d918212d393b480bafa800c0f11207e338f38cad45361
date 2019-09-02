@@ -1,0 +1,24 @@
+I"%<p>In this practice, the intention is to use your knowledge in image processing to segment the faces of people and follow them through a camera connected by USB to your computer. For this, you must have the right hardware (Sony model EVI d100p), and then implement the logic that performs the segmentation of a face and an algorithm that collects that data and transforms it into orders for the camera’s actuators, which must follow the movement of the person.</p>
+
+<figure class="half ">
+  
+    
+      <img src="" alt="" />
+    
+  
+    
+      <img src="" alt="" />
+    
+  
+  
+    <figcaption>Follow face.
+</figcaption>
+  
+</figure>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/vlbqVoVIzvU" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

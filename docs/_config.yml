@@ -12,20 +12,20 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "air"
 
 # Site Settings
 #locale                   : "en-US"
 title                    : "Robotics-Academy"
 title_separator          : "-"
-subtitle                 : # site tagline that appears below site title in masthead
+subtitle                 : Powered by JdeRobot
 name                     : "JdeRobot"
 description              : "Learn Robotics and Computer Vision with JdeRobot."
 url                      : # the base hostname & protocol for your site e.g. "http://jderobot.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "RoboticsAcademy"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+logo                     : /assets/images/logo.png
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -106,28 +106,28 @@ analytics:
 
 
 # Site Author
-author:
-  name             : "JdeRobot"
-  avatar           : "/images/logo.png"
-  bio              : "Learn Robotics and Computer Vision with JdeRobot."
-  location         : #"Somewhere"
-  email            :
-  links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      # url: mailto:your.name@email.com
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/unibotics"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/JdeRobot/RoboticsAcademy"
-    - label: "Youtube"
-      icon: "fab fa-fw fa-youtube"
-      url: "https://www.youtube.com/channel/UCS9IvIytJNqQqImT99g-d6g"
+#author:
+#  name             : "JdeRobot"
+#  avatar           : "/images/logo.png"
+#  bio              : "Learn Robotics and Computer Vision with JdeRobot."
+#  location         : #"Somewhere"
+#  email            :
+#  links:
+#    - label: "Email"
+#      icon: "fas fa-fw fa-envelope-square"
+#      # url: mailto:your.name@email.com
+#    - label: "Jderobot"
+#      icon: "fas fa-fw fa-link"
+#      url: "https://jderobot.org"
+#    - label: "Twitter"
+#      icon: "fab fa-fw fa-twitter-square"
+#      url: "https://twitter.com/unibotics"
+#    - label: "GitHub"
+#      icon: "fab fa-fw fa-github"
+#      url: "https://github.com/JdeRobot/RoboticsAcademy"
+#    - label: "Youtube"
+#      icon: "fab fa-fw fa-youtube"
+#      url: "https://www.youtube.com/channel/UCS9IvIytJNqQqImT99g-d6g"
 
 # Site Footer
 footer:

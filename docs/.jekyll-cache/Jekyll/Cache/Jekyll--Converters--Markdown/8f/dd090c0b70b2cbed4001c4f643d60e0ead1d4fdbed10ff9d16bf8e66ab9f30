@@ -1,0 +1,92 @@
+I"	<p>The objective of this practice is to implement the logic of a Gradient Path Planning (GPP) algorithm. Global navigation through GPP, consists of:</p>
+
+<p><img src="/assets/images/exercises/global_navigation/taxi.png" width="100%" height="60%" /></p>
+
+<figure class="half ">
+  
+    
+      <img src="" alt="" />
+    
+  
+    
+      <img src="" alt="" />
+    
+  
+  
+    <figcaption>Taxi.
+</figcaption>
+  
+</figure>
+
+<ul>
+  <li>
+    <p>Selected a destination, the GPP algorithm is responsible for finding the shortest path to it, avoiding, in the case of this practice, everything that is not road.</p>
+  </li>
+  <li>
+    <p>Once the path has been selected, the logic necessary to follow this path and reach the objective must be implemented in the robot.</p>
+  </li>
+</ul>
+
+<p>With this, it is possible for the robot to go to the marked destination autonomously and following the shortest path.</p>
+
+<p><img src="/assets/images/exercises/global_navigation/global_navigation.png" width="100%" height="60%" /></p>
+
+<figure class="half ">
+  
+    
+      <img src="" alt="" />
+    
+  
+    
+      <img src="" alt="" />
+    
+  
+  
+    <figcaption>Global navigation of a TeleTaxi with GPP.
+</figcaption>
+  
+</figure>
+
+<p>The solution can integrate one or more of the following levels of difficulty, as well as any other one that occurs to you:</p>
+
+<ul>
+  <li>
+    <p>Reach the goal.</p>
+  </li>
+  <li>
+    <p>Optimize the way to find the shortest path.</p>
+  </li>
+  <li>
+    <p>Arrive as quickly as possible to the destination.</p>
+  </li>
+</ul>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/zUtK6seVL5g" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<p><br /></p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/q6G6BHqljP4" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<p><br /></p>
+
+<p>Global Navigation teletaxi with OMPL:</p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/itTbU4uLwfE" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<p><br /></p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/zcS4X-ZO68U" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

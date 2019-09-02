@@ -20,9 +20,8 @@
 
 .archive__item {
   position: relative;
-  padding: 25px;
-  border-style: solid;
-  border-radius: 6px;
+  height: auto;
+  width: auto;
 
   a {
     position: relative;
@@ -224,7 +223,7 @@
     }
 
     @include breakpoint($medium) {
-      max-height: 120px;
+      max-height: 200px; /*default: 120*/
     }
   }
 }
