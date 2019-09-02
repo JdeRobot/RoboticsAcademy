@@ -1,0 +1,11 @@
+I"c<p>The objective of this practice is to implement the autonomous robot navigation and pick-and-place logic in warehouse.</p>
+
+<p><img src="/assets/images/exercises/amazon_warehouse/amazon_warehouse.png" width="100%" height="60%" /></p>
+
+<p>The students program an Amazon robot to navigate to the seleceted pallet, pick it, and deliver to the required zone. After completion of the task, go the charging area, and wait for the next tasks.</p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/T1-6Y4ulEnQ" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+:ET

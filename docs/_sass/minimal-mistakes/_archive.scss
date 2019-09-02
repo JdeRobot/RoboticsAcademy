@@ -20,10 +20,6 @@
 
 .archive__item {
   position: relative;
-  padding: 25px;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 4px;
   height: auto;
   width: auto;
 
@@ -176,7 +172,7 @@
   @include breakpoint($medium) {
     margin-left: 0; /* override margin*/
     margin-right: 0; /* override margin*/
-    width: span(4 of 12);
+    width: span(3 of 12);
 
     &:nth-child(2n + 1) {
       clear: none;

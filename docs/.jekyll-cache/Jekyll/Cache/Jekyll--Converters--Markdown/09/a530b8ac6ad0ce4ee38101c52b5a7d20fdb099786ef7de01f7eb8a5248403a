@@ -1,0 +1,11 @@
+I"F<ul class="toc__menu">
+  <li><a href="#ubuntudebian">Ubuntu/Debian</a></li>
+  <li><a href="#windowsx64">Windows(x64)</a>
+    <ul>
+      <li><a href="#prerequisites">Prerequisites</a></li>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#run-exercises">Run Exercises</a></li>
+    </ul>
+  </li>
+</ul>
+:ET

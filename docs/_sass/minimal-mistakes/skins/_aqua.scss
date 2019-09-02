@@ -10,7 +10,7 @@ $light-gray                 : mix(#fff, $gray, 50%) !default;
 $lighter-gray               : mix(#fff, $gray, 90%) !default;
 
 $body-color                 : #fff !default;
-$background-color           : #f0fff0 !default;
+$background-color           : #ffffff !default; // default #f0fff0
 $code-background-color      : $lighter-gray !default;
 $code-background-color-dark : $light-gray !default;
 $text-color                 : $dark-gray !default;

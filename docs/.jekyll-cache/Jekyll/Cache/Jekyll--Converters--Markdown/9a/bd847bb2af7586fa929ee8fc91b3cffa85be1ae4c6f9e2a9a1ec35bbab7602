@@ -1,0 +1,22 @@
+I"‘<p>In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction">
+        <img src="/assets/images/exercises/3d_reconstruction" alt="3d reconstruction" />
+      </a>
+    
+  
+  
+    <figcaption>/assets/images/exercises/3d_reconstruction/.
+</figcaption>
+  
+</figure>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/r_xrY5-whmc" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+:ET

@@ -1,0 +1,318 @@
+I""2<p>Available exercises and its status:</p>
+
+<h2 id="visión">Visión</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Exercise</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: center">Robot</th>
+      <th style="text-align: center">Infrastructure</th>
+      <th style="text-align: center">Solution</th>
+      <th style="text-align: center">Theory</th>
+      <th style="text-align: center">Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">3D Reconstruction</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Camera</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Color Filter</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Camera</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">FollowFace</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Sony Evi d100p</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="mobile-robots">Mobile Robots</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Exercise</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: center">Robot</th>
+      <th style="text-align: center">Infrastructure</th>
+      <th style="text-align: center">Solution</th>
+      <th style="text-align: center">Theory</th>
+      <th style="text-align: center">Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Bump&amp;Go</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">TurtleBot</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Amazon Warehouse</td>
+      <td style="text-align: center">Prototype</td>
+      <td style="text-align: center">AmazonBot</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">WIP</td>
+      <td style="text-align: center">Review</td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Follow Line Turtlebot</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">TurtleBot</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Laser Loc</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Roomba</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Vacuum Cleaner</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Roomba</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Vacuum SLAM</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Roomba</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="autonomous-cars">Autonomous Cars</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Exercise</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: center">Robot</th>
+      <th style="text-align: center">Infrastructure</th>
+      <th style="text-align: center">Solution</th>
+      <th style="text-align: center">Theory</th>
+      <th style="text-align: center">Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Autopark</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">TaxiHolo</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Cross Roads with Stop</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Opel</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Qualifying F1</td>
+      <td style="text-align: center">WIP</td>
+      <td style="text-align: center">F1</td>
+      <td style="text-align: center">WIP</td>
+      <td style="text-align: center">WIP</td>
+      <td style="text-align: center">Review</td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Global Navigation (GPP)</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">TaxiHolo</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Obstacle Avoidance (VFF)</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">F1</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Follow Line</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">F1</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="drones">Drones</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Exercise</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: center">Robot</th>
+      <th style="text-align: center">Infrastructure</th>
+      <th style="text-align: center">Solution</th>
+      <th style="text-align: center">Theory</th>
+      <th style="text-align: center">Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Drone Hangar</td>
+      <td style="text-align: center">Prototype</td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center">WIP</td>
+      <td style="text-align: center">WIP</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Follow Road</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Follow Turtlebot</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Drone Cat Mouse</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Labyrinth Escape</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Position Control</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Rescue People</td>
+      <td style="text-align: center"><strong>Production</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Review</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Visual Lander</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Review</td>
+      <td style="text-align: center">Python</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Path Planning and Navigation in 3D</td>
+      <td style="text-align: center"><strong>Prototype</strong></td>
+      <td style="text-align: center">Drone</td>
+      <td style="text-align: center"><strong>DONE</strong></td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Python</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="industrial-robots">Industrial Robots</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Exercise</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: center">Robot</th>
+      <th style="text-align: center">Infrastructure</th>
+      <th style="text-align: center">Solution</th>
+      <th style="text-align: center">Theory</th>
+      <th style="text-align: center">Language</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Look and Push</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Robotic Arm</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">?</td>
+      <td style="text-align: center">Python</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET
