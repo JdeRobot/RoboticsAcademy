@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="world" default="$(find jderobot_assets)/worlds/iris_rescue_people.world"/>
+    <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
+
+    <include file="$(find drone_wrapper)/launch/mavros_px4_sitl.launch">
+        <arg name="world" value="$(arg world)"/>
+        <arg name="x" value="10"/>
+        <arg name="z" value="0.5"/>
+    </include>
+    
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
+    <node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>
+</launch> 
