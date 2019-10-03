@@ -96,7 +96,28 @@ sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable lsb
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 67170598AF249743
 ```
 
-##### Step Three: Install the packages
+##### Step Three: Add JdeRobot sources
+
+Add the JdeRobot sources. For Ubuntu Xenial(16.04):
+
+```bash
+sudo sh -c 'cat<<EOF>/etc/apt/sources.list.d/jderobot.list
+# for ubuntu 16.04 LTS (64 bit)
+
+deb [arch=amd64] http://wiki.jderobot.org/apt bionic main
+EOF'
+```
+
+```bash
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 24E521A4
+```
+
+##### Step Four: Update repositories and Install the packages
+
+Update the repositories
+```bash
+sudo apt update
+```
 
 Install the packages
 
@@ -178,3 +199,4 @@ python [practice_file][config_file]
 ```
 
 You can watch a [video demonstration](https://www.youtube.com/embed/v00TCr-aSWM).
+
