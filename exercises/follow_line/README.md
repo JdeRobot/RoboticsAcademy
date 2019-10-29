@@ -73,6 +73,15 @@ PID Control is the main fundamental behind this exercise. To understand PID Cont
 A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforseen errors.
 ![Control System](./../../docs/assets/images/exercises/follow_line/Theory/ControlSystems.jpg)
 
+### Types of Control System
+#### Open Loop Control System
+A control system in which the control action is completley independent of the output of the system. A manual control system is on Open Loop System.
+
+#### Closed Loop Control System
+A control system in which the ouput has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing a feedback.
+![Types of Control Systems](./../../docs/assets/images/exercises/follow_line/Theory/TypesofControlSystems.jpg)
+
+### PID Control
 
 ## Demonstrative video
 [Video](https://www.youtube.com/watch?v=eNuSQN9egpA)
