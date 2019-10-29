@@ -66,6 +66,12 @@ To carry out the practice, you have to edit the file `MyAlgorithms.py` and inser
 * `self.motors.sendW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
+## Theory
+PID Control is the main fundamental behind this exercise. To understand PID Control, let us first understand what is Control in general.
+
+### Control System
+A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforseen errors.
+![Control System](./../docs/assets/images/exercises/follow_line/Theory/ControlSystems.jpg)
 
 ## Demonstrative video
 [Video](https://www.youtube.com/watch?v=eNuSQN9egpA)
