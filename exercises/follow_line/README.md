@@ -71,6 +71,7 @@ PID Control is the main fundamental behind this exercise. To understand PID Cont
 
 ### Control System
 A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforseen errors.
+
 ![Control System](./../../docs/assets/images/exercises/follow_line/Theory/ControlSystems.jpg)
 
 ### Types of Control System
@@ -79,6 +80,7 @@ A control system in which the control action is completley independent of the ou
 
 #### Closed Loop Control System
 A control system in which the ouput has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing a feedback.
+
 ![Types of Control Systems](./../../docs/assets/images/exercises/follow_line/Theory/TypesofControlSystems.jpg)
 
 ### PID Control
@@ -90,6 +92,7 @@ Proportional Controller gives an output which is proportional to the current err
 Integral Controller provides a necessary action to eliminate the offset error which is accumalted by the P Controller.It integrates the error over a period of time until the error value reaches to zero.
 #### Derivative
 Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
+
 ![PID Control Equation](./../../docs/assets/images/exercises/follow_line/Theory/PID.png)
 
 #### Tuning Methods
@@ -100,15 +103,23 @@ In order for the PID equation to work, we need to determine the constants of the
 
 ## References
 For a more practical explanation, have a look at the following links:
+
 [Link1](https://accautomation.ca/tag/pid-control-car-analogy/)
+
 [Link2](https://www.youtube.com/watch?v=UR0hOmjaHp0)
 
-Some other references
+Some other references:
+
 https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/
+
 https://en.wikipedia.org/wiki/PID_controller
+
 https://www.elprocus.com/the-working-of-a-pid-controller/
+
 https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm
+
 https://instrumentationtools.com/open-loop-and-closed-loop-animation/
+
 https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/
 
 ## Demonstrative video
