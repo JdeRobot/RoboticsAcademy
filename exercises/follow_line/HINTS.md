@@ -33,3 +33,5 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 #### References
 Refer to the ![Theory](./THEORY.md) for more details
+
+![Discrete Calculus](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)
