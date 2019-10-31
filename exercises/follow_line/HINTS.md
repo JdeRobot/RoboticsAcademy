@@ -24,7 +24,9 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 #### Illustrations
 ![](./../../docs/assets/images/exercises/follow_line/oscillations.gif) 
+
 *Unstable Oscillations*
 
 ![](./../../docs/assets/images/exercises/follow_line/slowresponse.gif)
+
 *Slow Response*
