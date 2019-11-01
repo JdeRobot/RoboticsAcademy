@@ -24,7 +24,7 @@ The objective of this practice is to perform a PID reactive control capable of f
 {% include gallery caption="Model." %}
 
 
-The students program a Formula1 car in a race circuit to follow the red line in the middle of the road. 
+The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.
 
 {% include youtubePlayer.html id=page.youtubeId %}
 

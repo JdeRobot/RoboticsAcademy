@@ -23,11 +23,11 @@ This is an intersting way to see the effect of Derivative on the Control. For th
 This is the complete implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, to the present output. While dealing with discrete outputs, we can acheive this using *accumalated error*. Then, comes the task of adjustment of gain constants till we get our desired result.
 
 #### Illustrations
-![](./../../docs/assets/images/exercises/follow_line/oscillations.gif) 
+![](./assets/exercises/follow_line/oscillations.gif) 
 
 *Unstable Oscillations*
 
-![](./../../docs/assets/images/exercises/follow_line/slowresponse.gif)
+![](./assets/exercises/follow_line/slowresponse.gif)
 
 *Slow Response*
 

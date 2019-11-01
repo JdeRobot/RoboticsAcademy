@@ -4,7 +4,7 @@ PID Control is the main fundamental behind this exercise. To understand PID Cont
 ### Control System
 A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforseen errors.
 
-![Control System](./../../docs/assets/images/exercises/follow_line/Theory/ControlSystems.jpg)
+![Control System](./assets/exercises/follow_line/Theory/ControlSystems.jpg)
 
 ### Types of Control System
 #### Open Loop Control System
@@ -13,7 +13,7 @@ A control system in which the control action is completley independent of the ou
 #### Closed Loop Control System
 A control system in which the ouput has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing a feedback.
 
-![Types of Control Systems](./../../docs/assets/images/exercises/follow_line/Theory/TypesofControlSystems.jpg)
+![Types of Control Systems](./assets/exercises/follow_line/Theory/TypesofControlSystems.jpg)
 
 ### PID Control
 A control loop mechanism employing feedback. A PID Controller continously calculates an error value as the difference between desired output and the current output and applies a correction based on proporional, integral and derivative terms(denoted by P, I, D respectively).
@@ -25,7 +25,7 @@ Integral Controller provides a necessary action to eliminate the offset error wh
 #### Derivative
 Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
 
-![PID Control Equation](./../../docs/assets/images/exercises/follow_line/Theory/PID.png)
+![PID Control Equation](./assets/exercises/follow_line/Theory/PID.png)
 
 #### Tuning Methods
 In order for the PID equation to work, we need to determine the constants of the equation. There are 3 constants called the gains of the equation. We have 2 main tuning methods for this.
