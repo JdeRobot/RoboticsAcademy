@@ -14,13 +14,13 @@ youtubeId: eNuSQN9egpA
 
 The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit.
 
-<img src="/docs/assets/images/exercises/follow_line/formula1_circuit.png" width="100%" height="60%">
+<img src="/RoboticsAcademy/assets/images/exercises/follow_line/formula1_circuit.png" width="100%" height="60%">
 {% include gallery caption="Racing circuit." %}
 
-<img src="/docs/assets/images/exercises/follow_line/formula1.png" width="100%" height="60%">
+<img src="/RoboticsAcademy/assets/images/exercises/follow_line/formula1.png" width="100%" height="60%">
 {% include gallery caption="First Person." %}
 
-<img src="/docs/assets/images/exercises/follow_line/formula1_2.png" width="100%" height="60%">
+<img src="/RoboticsAcademy/assets/images/exercises/follow_line/formula1_2.png" width="100%" height="60%">
 {% include gallery caption="Model." %}
 
 
