@@ -6,7 +6,7 @@ header:
   teaser: /assets/images/exercises/follow_line/formula1_teaser.png
 
 gallery:
-    image_path: /docs/assets/images/exercises/follow_line/formula1_circuit.png
+    image_path: /assets/images/exercises/follow_line/formula1_circuit.png
     alt: "Follow Line"
 
 youtubeId: eNuSQN9egpA
