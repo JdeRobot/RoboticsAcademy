@@ -40,7 +40,7 @@ var store = [{
         "url": "http://localhost:4000/portfolio/follow_face/",
         "teaser":"http://localhost:4000/assets/images/exercises/follow_face/follow_face_teaser.png"},{
         "title": "Visual follow-line",
-        "excerpt":"The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit.                                                                                                                          Gallery       The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.            ","categories": [],
+        "excerpt":"Objective The objective of this practice is to perform a PID reactive control capable of following the line painted on the racing circuit. Gallery The students program a Formula1 car in a race circuit to follow the red line in the middle of the road. How to execute? To launch...","categories": [],
         "tags": [],
         "url": "http://localhost:4000/portfolio/follow_line/",
         "teaser":"http://localhost:4000/assets/images/exercises/follow_line/formula1_teaser.png"},{
