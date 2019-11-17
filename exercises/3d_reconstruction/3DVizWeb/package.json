@@ -10,7 +10,7 @@
     "require": "^2.4.20"
   },
   "devDependencies": {
-    "electron": "^1.7.10",
+    "electron": "^1.8.8",
     "ice": "^3.7.0"
   }
 }
