@@ -31,7 +31,7 @@
 
 
 
-  <meta property="article:published_time" content="2019-11-15T08:00:33+05:30">
+  <meta property="article:published_time" content="2019-11-17T09:18:46+05:30">
 
 
 
@@ -185,7 +185,7 @@
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Visual follow-line">
     <meta itemprop="description" content="Following the line painted on the racing circuit.">
-    <meta itemprop="datePublished" content="November 15, 2019">
+    <meta itemprop="datePublished" content="November 17, 2019">
     
 
     <div class="page__inner-wrap">
@@ -249,6 +249,11 @@
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">source</span> ~/.bashrc
+</code></pre></div></div>
+
+<p>Navigate to the follow_line directory</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>exercises/follow_line
 </code></pre></div></div>
 
 <p>Launch Gazebo with the f1_simple_circuit world through the command</p>
@@ -317,12 +322,14 @@
 
 <p><img src="http://localhost:4000/assets/images/exercises/follow_line/PID.png" alt="PID Control Equation" /></p>
 
-<h4 id="tuning-methods">Tuning Methods</h4>
+<h3 id="tuning-methods">Tuning Methods</h3>
 <p>In order for the PID equation to work, we need to determine the constants of the equation. There are 3 constants called the gains of the equation. We have 2 main tuning methods for this.</p>
 
-<p><strong>Trial and Error</strong>: It is a simple method of PID controller tuning. While system or controller is working, we can tune the controller. In this method, first we have to set Ki and Kd values to zero and increase proportional term (Kp) until system reaches to oscillating behavior. Once it is oscillating, adjust Ki (Integral term) so that oscillations stops and finally adjust D to get fast response.</p>
+<h4 id="trial-and-error">Trial and Error</h4>
+<p>It is a simple method of PID controller tuning. While system or controller is working, we can tune the controller. In this method, first we have to set Ki and Kd values to zero and increase proportional term (Kp) until system reaches to oscillating behavior. Once it is oscillating, adjust Ki (Integral term) so that oscillations stops and finally adjust D to get fast response.</p>
 
-<p><strong>Zeigler Nichols method</strong>: Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are continuous cycling method and damped oscillation method. Procedures for both methods are same but oscillation behavior is different. In this, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased till system oscillates at constant amplitude.</p>
+<h4 id="zeigler-nichols-method">Zeigler Nichols method</h4>
+<p>Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are continuous cycling method and damped oscillation method. Procedures for both methods are same but oscillation behavior is different. In this, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased till system oscillates at constant amplitude.</p>
 
 <h3 id="real-life-example">Real Life Example</h3>
 
@@ -330,7 +337,7 @@
 <a href="https://www.youtube.com/watch?v=UR0hOmjaHp0">2</a></p>
 
 <h2 id="hints">Hints</h2>
-<p>Simple hints provided to help you solve the follow_line exercise. Please note that the <strong>full solution has not been provided.</strong></p>
+<p>Simple hints provided to help you solve the follow_line exercise.</p>
 
 <h3 id="detecting-the-line-to-follow">Detecting the Line to Follow</h3>
 <p>The first task of the assignment is to detect the line to be followed. This can be achieved easily by <strong>filtering the color of the line</strong> from the image and applying basic image processing to find the point or line to follow, or in Control terms our <em>Set Point</em>. Refer to these links for more information:</p>
@@ -387,7 +394,7 @@
 
 
         
-          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-11-15T08:00:33+05:30">November 15, 2019</time></p>
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-11-17T09:18:46+05:30">November 17, 2019</time></p>
         
       </footer>
 

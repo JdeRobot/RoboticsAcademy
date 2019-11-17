@@ -56,6 +56,12 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' > ~/.ba
 source ~/.bashrc
 ```
 
+Navigate to the follow_line directory
+
+```bash
+cd exercises/follow_line
+```
+
 Launch Gazebo with the f1_simple_circuit world through the command 
 
 ```bash
@@ -126,12 +132,14 @@ Derivative Controller gives an output depending upon the rate of change or error
 
 ![PID Control Equation]({{ site.url }}/assets/images/exercises/follow_line/PID.png)
 
-#### Tuning Methods
+### Tuning Methods
 In order for the PID equation to work, we need to determine the constants of the equation. There are 3 constants called the gains of the equation. We have 2 main tuning methods for this.
 
-**Trial and Error**: It is a simple method of PID controller tuning. While system or controller is working, we can tune the controller. In this method, first we have to set Ki and Kd values to zero and increase proportional term (Kp) until system reaches to oscillating behavior. Once it is oscillating, adjust Ki (Integral term) so that oscillations stops and finally adjust D to get fast response.
+#### Trial and Error
+It is a simple method of PID controller tuning. While system or controller is working, we can tune the controller. In this method, first we have to set Ki and Kd values to zero and increase proportional term (Kp) until system reaches to oscillating behavior. Once it is oscillating, adjust Ki (Integral term) so that oscillations stops and finally adjust D to get fast response.
 
-**Zeigler Nichols method**: Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are continuous cycling method and damped oscillation method. Procedures for both methods are same but oscillation behavior is different. In this, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased till system oscillates at constant amplitude.
+#### Zeigler Nichols method
+Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are continuous cycling method and damped oscillation method. Procedures for both methods are same but oscillation behavior is different. In this, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased till system oscillates at constant amplitude.
 
 ### Real Life Example
 
@@ -139,7 +147,7 @@ In order for the PID equation to work, we need to determine the constants of the
 [2](https://www.youtube.com/watch?v=UR0hOmjaHp0)
 
 ## Hints
-Simple hints provided to help you solve the follow_line exercise. Please note that the **full solution has not been provided.**
+Simple hints provided to help you solve the follow_line exercise.
 
 ### Detecting the Line to Follow
 The first task of the assignment is to detect the line to be followed. This can be achieved easily by **filtering the color of the line** from the image and applying basic image processing to find the point or line to follow, or in Control terms our *Set Point*. Refer to these links for more information:
