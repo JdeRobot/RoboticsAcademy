@@ -6,7 +6,7 @@
     "start": "electron ."
   },
   "dependencies": {
-    "js-yaml": "^3.10.0",
+    "js-yaml": "^3.13.1",
     "require": "^2.4.20"
   },
   "devDependencies": {
