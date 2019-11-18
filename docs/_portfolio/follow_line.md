@@ -109,7 +109,7 @@ PID Control is the main fundamental behind this exercise. To understand PID Cont
 ### Control System
 A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforseen errors.
 
-![Control System]({{ site.url }}/assets/images/exercises/follow_line/ControlSystems.jpg)
+![Control System]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/ControlSystems.jpg)
 
 ### Types of Control System
 #### Open Loop Control System
@@ -118,7 +118,7 @@ A control system in which the control action is completley independent of the ou
 #### Closed Loop Control System
 A control system in which the ouput has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing a feedback.
 
-![Types of Control Systems]({{ site.url }}/assets/images/exercises/follow_line/TypesofControlSystems.jpg)
+![Types of Control Systems]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/TypesofControlSystems.jpg)
 
 ### PID Control
 A control loop mechanism employing feedback. A PID Controller continously calculates an error value as the difference between desired output and the current output and applies a correction based on proporional, integral and derivative terms(denoted by P, I, D respectively).
@@ -130,7 +130,7 @@ Integral Controller provides a necessary action to eliminate the offset error wh
 #### Derivative
 Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
 
-![PID Control Equation]({{ site.url }}/assets/images/exercises/follow_line/PID.png)
+![PID Control Equation]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/PID.png)
 
 ### Tuning Methods
 In order for the PID equation to work, we need to determine the constants of the equation. There are 3 constants called the gains of the equation. We have 2 main tuning methods for this.
@@ -169,11 +169,11 @@ This is an intersting way to see the effect of Derivative on the Control. For th
 This is the complete implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, to the present output. While dealing with discrete outputs, we can acheive this using *accumalated error*. Then, comes the task of adjustment of gain constants till we get our desired result.
 
 ### Illustrations
-![Unstable Oscillations]({{site.url}}/assets/images/exercises/follow_line/oscillations.gif) 
+![Unstable Oscillations]({{site.url}}/RoboticsAcademy/assets/images/exercises/follow_line/oscillations.gif) 
 
 *Unstable Oscillations*
 
-![Slow Response]({{site.url}}/assets/images/exercises/follow_line/slowresponse.gif)
+![Slow Response]({{site.url}}/RoboticsAcademy/assets/images/exercises/follow_line/slowresponse.gif)
 
 *Slow Response*
 
