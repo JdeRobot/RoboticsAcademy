@@ -1,32 +1,27 @@
-import sys, traceback
-import jderobot
+#!/usr/bin/env python
 
 
 class Beacon:
-    def __init__(self,id,pose,active=False,reached=False):
-        self.id=id
-        self.pose=pose
-        self.active=active
-        self.reached=reached
+    def __init__(self, id, pose, active=False, reached=False):
+        self.id = id
+        self.pose = pose
+        self.active = active
+        self.reached = reached
 
-    def getPose(self):
+    def get_pose(self):
         return self.pose
 
-    def getId(self):
+    def get_id(self):
         return self.id
 
-    def getPose(self):
-        return self.pose
-
-    def isReached(self):
+    def is_reached(self):
         return self.reached
 
-    def setReached(self,value):
-        self.reached=value
+    def set_reached(self, value):
+        self.reached = value
 
-    def isActive(self):
+    def is_active(self):
         return self.active
 
-    def setActive(self,value):
-        self.active=value
-
+    def set_active(self, value):
+        self.active = value

@@ -1,57 +1,59 @@
-# RESCUE PEOPLE EXCERSISE
+# Rescue People Exercise
 
-The intention of this practice is to implement the logic that allows a quadricopter
-to reognize recognize lost people (faces of people) and save their position on 
-the map, in order to perform a subsequent rescue maneuver.
+## Goal
 
+The goal of this exercise is to implement the logic that allows a quadrotor to recognize the faces of lost people and save their locations in order to perform a subsequent rescue maneuver.
 
-## EXECUTION
+![World](../../docs/rescue_people.jpg)
 
-Follow these simple steps to launch this practice:
+## Requirements
 
-1. In the first terminal launch gazebo as follows:
+As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
 
-    `$ gazebo ArDrone_rescue-people.world`
-
-2. Them, in other terminal launch the rescue people component:
-
-    `$ python2 ./rescue_people.py rescue_people_conf.yml`
-
-
-## How to do the practice
-
-To carry out the practice, you must edit the `MyAlgorithm.py` file and insert 
-the control logic into it.
-
-## Where to insert the code
-
-[MyAlgorithm.py](MyAlgorithm.py#L62)
-
+```bash
+sudo apt-get install ros-kinetic-drone-wrapper ros-kinetic-rqt-drone-teleop ros-kinetic-jderobot-assets
 ```
-    def execute(self):
-         # Add your code here
-         tmp = self.navdata.getNavData()
-         if tmp is not None:
-             print ("State: " +str(tmp.state))
-             print ("Altitude: " +str(tmp.altd))
-             print ("Vehicle: " +str(tmp.vehicle))
-             print ("Battery %: " +str(tmp.batteryPercent))     
+
+There is an additional dependancy on MAVROS and PX4 that we are in the process of simplifying, however at the moment just use the script provided [here](https://github.com/JdeRobot/drones/blob/master/mavros_px4_sitl_installation.sh)
+
+## Execution
+
+To launch the exercise, simply use the following command from this directory:
+
+`roslaunch rescue_people.launch`
+
+## Solution
+
+To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
+[my_solution.py](my_solution.py#L48)
+
+```python
+def execute(event):
+  global drone
+  img_frontal = drone.get_frontal_image()
+  img_ventral = drone.get_ventral_image()
+  # Both the above images are cv2 images
+  ################# Insert your code here #################################
+
+  set_image_filtered(img_frontal)
+  set_image_threshed(img_ventral)
+
+#########################################################################
 ```
 
 ## API
-* `self.camera.setThresholdImage()`: If you want show a black and white image.
-* `self.camera.getImage().data`: returns the image captured by the active camera of the drone (frontal or ventral).
-* `self.cmdvel.setVX(velx)`: set linear speed of the drone.
-* `self.cmdvel.setVY(vely)`: set linear speed of the drone.
-* `self.cmdvel.sendVelocities()`: send set velocities to the drone.
-* `self.cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az)`: sends linear and angular speed commands to the drone.
-* `self.pose.getPose3d().x`, `self.pose.getPose3d().y`, `self.pose.getPose3d().z`: returns the position values ​​of the drone in space.
-* `self.pose.getPose3d().roll`, `self.pose.getPose3d().pitch`, `self.pose.getPose3d().yaw`: returns the rotation values ​​of the drone in space.
-* `self.extra.toggleCam()`: changes the drone's active camera (frontal or the one below).
-* `self.extra.takeOff()`: Takeoff of the drone.
-* `self.extra.land()`: landing of the drone.
 
-## Demonstrative video (in spanish)
+* `set_image_filtered(cv2_image)`: If you want to show a filtered image of the camera images in the GUI
+* `set_image_threshed(cv2_image)`: If you want to show a thresholded image in the GUI
+* `drone.get_frontal_image()` : Returns the latest image from the frontal camera as a cv2_image
+* `drone.get_ventral_image()` : Returns the latest image from the ventral camera as a cv2_image
+* `drone.get_position()`: Returns the position of the drone as a numpy array [x, y, z]
+* `drone.get_orientation()`: Returns the roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw]
+* `drone.get_roll()`: Returns the roll of the drone
+* `drone.get_pitch()`: Returns the pitch of the drone
+* `drone.get_yaw()`: Returns the yaw of the drone
+* `drone.set_cmd_vel(vx, vy, vz, az)`: Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
 
-[Video](https://youtu.be/rIkTImMyoXw)
+## Demonstrative video
 
+http://jderobot.org/store/jmplaza/uploads/teaching/curso-drones/rescue_people.ogv

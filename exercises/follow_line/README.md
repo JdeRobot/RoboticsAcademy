@@ -66,6 +66,8 @@ To carry out the practice, you have to edit the file `MyAlgorithms.py` and inser
 * `self.motors.sendW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
 
+## Theory and Hints
+[Theory](THEORY.md) and [Hints](HINTS.md)
 
 ## Demonstrative video
 [Video](https://www.youtube.com/watch?v=eNuSQN9egpA)

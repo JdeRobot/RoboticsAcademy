@@ -1,51 +1,65 @@
-# Follow turtlebot excercise
+# Follow Turtlebot Exercise
 
-The exercise consists of following a robot on the ground using a drone. The movements described by the ground robot will have to be followed by the air robot.
+## Goal
 
-## How to execute?
-* In a terminal launch the gazebo simulator:
+The goal of this exercise is to implement the logic that allows a quadrotor to follow a turtlebot on the ground by following the movements made by it.
 
-    `gazebo ardrone-turtlebot.world`
+![World](../../docs/follow_turtlebot.jpg)
 
-* In other terminal launch the turtlebot robot:
+## Requirements
 
-    `kobukiViewer turtlebot.yml`
+As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
 
-* In another terminal lauch the follow_turtlebot component:
-
-    `python2 ./follow_turtlebot.py follow_turtlebot_conf.yml`
-
-* If you want to find the values of your color filter you can launch the colorTuner component:
-
-    `colorTuner color_tuner_conf.yml`
-
-## How to do the practice?
-To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which gives intelligence to the turtlebot robot.
-
-## Where to insert the code?
-[MyAlgorithm.py](MyAlgorithm.py#L62)
+```bash
+sudo apt-get install ros-kinetic-drone-wrapper ros-kinetic-rqt-drone-teleop ros-kinetic-jderobot-assets
 ```
-    # Add your code here
 
-    input_image = self.camera.getImage()
-    if input_image is not None:
-        self.camera.setColorImage(input_image)
-        '''
-        If you want show a thresold image (black and white image)
-        self.camera.setThresoldImage(input_image)
-        '''
+There is an additional dependancy on MAVROS and PX4 that we are in the process of simplifying, however at the moment just use the script provided [here](https://github.com/JdeRobot/drones/blob/master/mavros_px4_sitl_installation.sh)
+
+Apart from these, as this exercise also requires a ground robot, you will need the `rqt_ground_robot_teleop` package. We are in the process of making it available through `apt-get` however until that is available, the best method for it would be to [clone it](https://github.com/JdeRobot/ground_robots) into your catkin_ws.
+
+## Execution
+
+To launch the exercise, simply use the following command from this directory:
+
+`roslaunch follow_turtlebot.launch`
+
+As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a seperate terminal as follows:
+
+`colorTuner colorTuner.conf`
+
+## Solution
+
+To solve the exercise, you must edit the my_solution.py file and insert the control logic into it. Your code is to be entered in the `execute` function between the `Insert your code here` comments.
+[my_solution.py](my_solution.py#L46)
+
+```python
+def execute(event):
+  global drone
+  img_frontal = drone.get_frontal_image()
+  img_ventral = drone.get_ventral_image()
+  # Both the above images are cv2 images
+  ################# Insert your code here #################################
+
+  set_image_filtered(img_frontal)
+  set_image_threshed(img_ventral)
+
+  #########################################################################
 ```
 
 ## API
-* `cameraL.getImage()` - to get the left image of the stereo pair.
-* `self.camera.setThresholdImage()`: If you want show a black and white image.
-* `self.cmdvel.sendCMDVel(self,vx,vy,vz,ax,ay,az)`: sends linear and angular speed commands to the drone.
 
+* `set_image_filtered(cv2_image)`: If you want to show a filtered image of the camera images in the GUI
+* `set_image_threshed(cv2_image)`: If you want to show a thresholded image in the GUI
+* `drone.get_frontal_image()` : Returns the latest image from the frontal camera as a cv2_image
+* `drone.get_ventral_image()` : Returns the latest image from the ventral camera as a cv2_image
+* `drone.get_position()`: Returns the position of the drone as a numpy array [x, y, z]
+* `drone.get_orientation()`: Returns the roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw]
+* `drone.get_roll()`: Returns the roll of the drone
+* `drone.get_pitch()`: Returns the pitch of the drone
+* `drone.get_yaw()`: Returns the yaw of the drone
+* `drone.set_cmd_vel(vx, vy, vz, az)`: Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
 
-## Demonstrative video
-[Video](https://www.youtube.com/watch?v=uehDVlBzpmU)
+## Demonstrative video (in spanish)
 
-* *Base code made by Alberto Martín (@almartinflorido)*
-* *Code of practice performed by Francisco Rivas (@chanfr)*
-* *Gazebo models and worlds made by Francisco Pérez (@fqez)*
-* *Updated code made by Pablo Moreno (@PabloMorenoVera)*
+https://www.youtube.com/watch?v=uehDVlBzpmU
