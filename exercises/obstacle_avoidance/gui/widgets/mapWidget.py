@@ -87,7 +87,7 @@ class MapWidget(QWidget):
         self.drawLaser(painter)
 
         # Draw target
-        self.drawTarget(painter, 1, 1)
+        self.drawTarget(painter, self.targetx, self.targety)
 
         # Draw arrows
         self.drawArrow(painter, self.carx, self.cary, Qt.green, 2)
@@ -139,13 +139,12 @@ class MapWidget(QWidget):
 
         pen = QPen(color, width)
         painter.setPen(pen)
-
         # Calculate relative coordintaes of point
         #px = _width/2*posx/10.0
         #py = _height/2*posy/10.0
 
         RTx = self.RTx(pi, 0, 0, 0)
-        RTz = self.RTz(pi/2, 0, 0, 0)
+        RTz = self.RTz(0, 0, 0, 0)
         RT = RTx*RTz
         p = RT*np.matrix([[posx], [posy], [1], [1]])
         px = p.flat[0]*self.scale
@@ -163,12 +162,19 @@ class MapWidget(QWidget):
             ang = math.atan2(py,px)
         else:
             ang = math.pi/2.0
-        if posx >= 0.0:
+        if posx > 0.0:
             px1 = px + sidex * math.cos(math.pi+ang-0.5)
             py1 = py + sidey * math.sin(math.pi+ang-0.5)
             px2 = px + sidex * math.cos(math.pi+ang+0.5)
             py2 = py + sidey * math.sin(math.pi+ang+0.5)
-        else:
+
+	elif posx == 0.0:
+            px1 = px + sidex * math.cos(ang-0.5)
+            py1 = py + sidey * math.sin(ang-0.5)
+            px2 = px + sidex * math.cos(ang+0.5)
+            py2 = py + sidey * math.sin(ang+0.5)       
+
+	else:
             px1 = px - sidex * math.cos(ang-0.5)
             py1 = py - sidey * math.sin(ang-0.5)
             px2 = px - sidex * math.cos(ang+0.5)
@@ -180,7 +186,6 @@ class MapWidget(QWidget):
         #print(px1,py1)
 
     def drawTarget(self, painter, posx, posy):
-
         if posx == 0.0 and posy == 0.0:
             return        
 
@@ -191,15 +196,15 @@ class MapWidget(QWidget):
         sy = posy - 0.25
         ex = posx + 0.25
         ey = posy + 0.25
-        painter.drawLine(QPointF(-sx*self.scale,sy*self.scale),QPointF(-ex*self.scale,ey*self.scale))
-        painter.drawText( QPoint(-sx*self.scale+3,sy*self.scale), self.targetid );
+        painter.drawLine(QPointF(sy*self.scale,sx*self.scale),QPointF(ey*self.scale,ex*self.scale))
+        painter.drawText( QPoint(sy*self.scale+3,sx*self.scale), self.targetid );
 
 
         sx = posx + 0.25
         sy = posy - 0.25
         ex = posx - 0.25
         ey = posy + 0.25
-        painter.drawLine(QPointF(-sx*self.scale,sy*self.scale),QPointF(-ex*self.scale,ey*self.scale))
+        painter.drawLine(QPointF(sy*self.scale,sx*self.scale),QPointF(ey*self.scale,ex*self.scale))
 
     def setCarArrow(self, x, y):
         self.carx = x
@@ -215,14 +220,13 @@ class MapWidget(QWidget):
 
     def setTarget(self, x, y, rx, ry, rt, id):
         # Convert to relatives
-        # self.targetx = x - rx
-        # self.targety = y - ry
+        #self.targetx = x - rx
+        #self.targety = y - ry
         if x == 0.0 and y == 0.0:
             return        
 
-
-        dx = x - rx
-        dy = y - ry
+        dx = rx - x
+        dy = ry - y
 
         # Rotate with current angle
         self.targetx = dx*math.cos(-rt) - dy*math.sin(-rt)
