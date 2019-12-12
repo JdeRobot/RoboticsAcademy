@@ -20,6 +20,7 @@ of difficulty, as well as any other one that occurs to you:
 
 ## EXECUTION
 
+### For the TurtleBot based exercise
 We will use two terminal to run this practice:
 
 1. Run the simulator Gazebo with the corresponding world:
@@ -35,6 +36,21 @@ We will use two terminal to run this practice:
 
 To simplify the closure of the environment, just close the
 window(s) of obstacle_avoidance. *`Ctrl + C` will be problematic*.
+
+### For the Formula1 based exercise
+
+1. For the infrastructure of the exercise, launch Gazebo with the f1_simple_circuitobstacles world through the command 
+
+```
+roslaunch ./launch/obstacle_avoidance_f1.launch
+```
+
+
+2. Then you have to execute the academic application, which will incorporate your code:
+```
+python ./obstacle_avoidance_f1.py obstacle_avoidance_conf_f1.yml
+```
+
 
 ## How to do the practice
 To carry out the practice, you must edit the file `MyAlgorithm.py` and
@@ -142,7 +158,8 @@ As well as the destination that we have assigned:
 ```
 
 ## Demonstration video
-
+[Video1](https://www.youtube.com/watch?v=5SVkvfKPi_s)
+[Video2](https://www.youtube.com/watch?v=MtxzNFUYPKo)
 
 ## Attributions
 
