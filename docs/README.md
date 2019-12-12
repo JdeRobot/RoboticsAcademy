@@ -39,12 +39,7 @@ If in the process of building the server there is a dependency problem, for exam
 
 ## Notes for exercise cards.
 
-- Header Images size: 1920x400 px
-
-
-## Contrib
-
-
+- Teaser Images size: multiple of 600x400px
 
 
 ## FAQ
