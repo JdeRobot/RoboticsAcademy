@@ -159,7 +159,11 @@ As well as the destination that we have assigned:
 
 ## Demonstration video
 [Video1](https://www.youtube.com/watch?v=5SVkvfKPi_s)
+
 [Video2](https://www.youtube.com/watch?v=MtxzNFUYPKo)
+
+## Theory and Hints
+[Theory](THEORY.md) and [Hints](HINTS.md)
 
 ## Attributions
 
