@@ -4,20 +4,20 @@ This exercise requires us to implement a local navigation algorithm called Virtu
 ### Navigation
 Robot Navigation involves all the related tasks and algorithms required to take a robot from point A to point B **autonomously** without making any collisions. It is a very well studied topic in Mobile Robotics, comprising volumes of books! The problem of Navigation is broken down into the following subproblems:
 
-	* **Localisation**: The robot needs to know where it is.
-	* **Collision Avoidance**: The robot needs to detect and avoid obstacles
-	* **Mapping**: The robot needs to remember its surroundings
-	* **Planning**: The robot needs to be able to plan a route to the point B
-	* **Explore**: The robot needs to be able to explore new terrain
+* **Localisation**: The robot needs to know where it is.
+* **Collision Avoidance**: The robot needs to detect and avoid obstacles
+* **Mapping**: The robot needs to remember its surroundings
+* **Planning**: The robot needs to be able to plan a route to the point B
+* **Explore**: The robot needs to be able to explore new terrain
 
 ![Robot Navigation Problems](./assets/robot-navigation-problems.png)
 
 Some of the ways to achieve the task of Navigation are as follows:
 
-	* **Vision Based**: Computer Vision algorithms and optical sensors, like LIDAR sensors are used for Vision Based Navigation.
-	* **Inertial Navigation**: Airborne robots use [inertial sensors](https://en.wikipedia.org/wiki/Inertial_measurement_unit) for Navigation
-	* **Acoustic Navigation**: Underwater robots use SONAR based Navigation Systems
-	* **Radio Navigation**: Navigation used RADAR technology.
+* **Vision Based**: Computer Vision algorithms and optical sensors, like LIDAR sensors are used for Vision Based Navigation.
+* **Inertial Navigation**: Airborne robots use [inertial sensors](https://en.wikipedia.org/wiki/Inertial_measurement_unit) for Navigation
+* **Acoustic Navigation**: Underwater robots use SONAR based Navigation Systems
+* **Radio Navigation**: Navigation used RADAR technology.
 
 
 The problem of Path Planning in Navigation is dealt in 2 ways, which are Global Navigation and Local Navigation
@@ -47,7 +47,6 @@ There are a few problems related to this algorithm:
 This algorithm improves over the Virtual Force Field Algorithm, by using a data structure called the Polar Histogram. The robot maintains a histogram grid of the  instantaneous sensor values received. Then, based on the threshold value set by the programmer, the program detects minimas(vallies) in the polar histogram. The angle corresponding to these values are then followed by the robot.
 
 ![VFH](./assets/vfh.gif)
-![VFH](./assets/vfh1.gif)
 
 **Note**: The exercise only requires us to implement Virtual Force Field Algorithm
 	
