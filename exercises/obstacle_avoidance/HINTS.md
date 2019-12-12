@@ -36,6 +36,7 @@ Also, please note that this is **not the only solution** to this problem. We may
 *Without applying the rotation matrix*
 
 ![](./assets/oscillations.gif)
+
 *Oscillation Problem in Narrow Corridors*
 
 ### Problems with LIDAR
