@@ -28,12 +28,14 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 ### Illustrations
 ![](./assets/with_rotation.gif)
+
 *On applying the rotation matrix*
 
-![](./assets/witout_rotation.gif)
+![](./assets/without_rotation.gif)
+
 *Without applying the rotation matrix*
 
-![]()
+![](./assets/oscillations.gif)
 *Oscillation Problem in Narrow Corridors*
 
 ### Problems with LIDAR
