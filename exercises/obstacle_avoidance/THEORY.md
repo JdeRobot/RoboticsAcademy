@@ -30,16 +30,18 @@ Once the global path is decided, it is broken down into suitable waypoints. The 
 
 ### Virtual Force Field Algorithm
 The Virtual Force Field Algorithm works in the following steps:
-	* The robot assigns an attractive vector to the waypoint that points towards the waypoint.
-	* The robot assigns a repulsive vector to the obstacle according to its sensor readings that points away from the waypoint. This is done by summing all the vectors that are translated from the sensor readings.
-	* The robot follows the vector obtained by summing the target and obstacle vector.
+
+* The robot assigns an attractive vector to the waypoint that points towards the waypoint.
+* The robot assigns a repulsive vector to the obstacle according to its sensor readings that points away from the waypoint. This is done by summing all the vectors that are translated from the sensor readings.
+* The robot follows the vector obtained by summing the target and obstacle vector.
 
 ![VFF](./assets/vff.png)
 
 #### Drawbacks
 There are a few problems related to this algorithm:
-	* The robot tends to oscillate in narrow corridors, that is when the robot receives an obstacle vector simultaneously from opposite sides.
-	* The robot may not be able to enter narrow corridors in the first place!
+
+* The robot tends to oscillate in narrow corridors, that is when the robot receives an obstacle vector simultaneously from opposite sides.
+* The robot may not be able to enter narrow corridors in the first place!
 
 ![Drawbacks](./assets/drawbacks.png)
 
