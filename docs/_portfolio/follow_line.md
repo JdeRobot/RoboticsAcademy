@@ -35,10 +35,6 @@ To launch the infrastructure of this practice, first set up the gazebo sources, 
 
 
 ```bash
-source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
-```
-
-```bash
 source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 ```
 
