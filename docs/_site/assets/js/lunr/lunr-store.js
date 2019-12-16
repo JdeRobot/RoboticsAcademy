@@ -50,7 +50,7 @@ var store = [{
         "url": "http://localhost:4000/portfolio/global_navigation/",
         "teaser":"http://localhost:4000/assets/images/exercises/global_navigation/global_navigation_teaser.png"},{
         "title": "Local navigation with VFF",
-        "excerpt":"The objective of this practice is to implement the logic of the VFF navigation algorithm. Navigation using VFF (Virtual Force Field), consists of: Each object in the environment generates a repulsive force towards the robot. Destiny generates an attractive force in the robot. This makes it possible for the robot...","categories": [],
+        "excerpt":"Objective The objective of this practice is to implement the logic of the VFF navigation algorithm. Navigation using VFF (Virtual Force Field), consists of: Each object in the environment generates a repulsive force towards the robot. Destiny generates an attractive force in the robot. This makes it possible for the...","categories": [],
         "tags": [],
         "url": "http://localhost:4000/portfolio/obstacle_avoidance/",
         "teaser":"http://localhost:4000/assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser.png"},{
