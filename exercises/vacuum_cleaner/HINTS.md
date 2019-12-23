@@ -18,7 +18,7 @@ Once the direction has been decided, we move in that direction. This is the simp
 A word of caution though, whenever we have a change of state, we have to give a sleep duration to the robot to give it time to reset the commands given to it. [Illustrations](#Illustrations) section describes a visual representation.
 
 ### Spiral Movement
-Using the physical formula \[v = r \cdot \omega\] (See [references](#References) for more details). In order to increase \[r], we can either increase \[v] or decrease \[\omega\], while keeping the other parameter constant. Experimentally, increasing \[v] has a better effect than decreasing \[\omega\]. Refer to [illustrations](#Illustrations)
+Using the physical formula **v = r . &omega;** (See [references](#References) for more details). In order to increase **r**, we can either increase **v** or decrease **&omega;**, while keeping the other parameter constant. Experimentally, increasing **v** has a better effect than decreasing **&omega;**. Refer to [illustrations](#Illustrations)
 
 ### Analysis
 Being such a simple algorithm, it is not expected to work all the time. The maximum accuracy we got was 80% and that too only once!
@@ -34,11 +34,11 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ![](./assets/reduce_omega.gif)
 
-*Effect of reducing \[\omega\] to generate spiral*
+*Effect of reducing **&omega;** to generate spiral*
 
-![](./assets/increase_v.gif)
+![](./assets/increasing_v.gif)
 
-*Effect of increasing \[v] to generate spiral*
+*Effect of increasing **v** to generate spiral*
 
 #### References
 Refer to the ![Theory](./THEORY.md) for more details
