@@ -68,7 +68,7 @@ There are exercises about drone programming, about computer vision, about mobile
 
 ### Software Infraestructure: Ubuntu/Debian
 
-The programming environment is composed of the (a) Gazebo simulator, (b) ROS middleware and (c) the Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Medloci and JdeRobot-Academy with Ubuntu 18.04 (2018-06-06) releases. Follow the next steps to have the environment up and running, ready to use.
+The programming environment is composed of the (a) Gazebo simulator, (b) ROS middleware and (c) the Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Medloci and JdeRobot-Academy with (2018-06-06) releases Ubuntu 18.04.3 . Follow the next steps to have the environment up and running, ready to use.
 
 ### Installation                             
 
