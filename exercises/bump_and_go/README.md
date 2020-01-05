@@ -3,6 +3,7 @@
 The intention of this excersise is to program a basic behaviour of bump-spin using
 a finite state machine. For that, we will use **JdeRobot visualStates tool**, that 
 allows you to create your own states machine in an intuitive way.
+You can read more about visualStates [here](https://jderobot.github.io/VisualStates/)
 
 
 # EXECUTION

@@ -39,7 +39,7 @@ class Interfaces:
         return Interfaces.interfaces
 
     @staticmethod
-    def getRosMessageTypes(rosDir = '/opt/ros/kinetic'):
+    def getRosMessageTypes(rosDir = '/opt/ros/melodic'):
         messageDir = rosDir + '/include'
         allContents = os.listdir(messageDir)
         messages = []
