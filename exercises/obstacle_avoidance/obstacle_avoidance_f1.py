@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
 	app = QApplication(sys.argv)
 	myGUI = MainWindow()
-	#myGUI.setCamera(camera)
+	myGUI.setCamera(camera)
 	myGUI.setMotors(motors)
 	myGUI.setPose3D(pose3d)
 	myGUI.setLaser(laser)
