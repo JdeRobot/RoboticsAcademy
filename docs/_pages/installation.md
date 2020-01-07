@@ -50,7 +50,7 @@ Follow the next steps to have the environment up and running, ready to use.
     Install the following packages:
 
     ```bash
-    sudo apt-get install ros-kinetic-desktop-full
+    sudo apt-get install ros-melodic-desktop-full
     sudo apt-get install gazebo7
     sudo apt install jderobot-gazebo-assets
     ```
