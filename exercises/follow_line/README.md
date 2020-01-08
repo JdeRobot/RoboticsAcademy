@@ -16,11 +16,11 @@ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 or add them directly to your bashrc to run automatically whenver you open a terminal:
 
 ```
-echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' > ~/.bashrc
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' >> ~/.bashrc
 ```
 
 ```
-echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' > ~/.bashrc
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.bashrc
 ```
 
 ```
@@ -45,7 +45,7 @@ To carry out the practice, you have to edit the file `MyAlgorithms.py` and inser
 ## Where to insert the code?
 [MyAlgorithm.py](MyAlgorithm.py#L87)
 ```
-    def execute(self):
+    def algorithm(self):
         #GETTING THE IMAGES
         image = self.getImage()
 
