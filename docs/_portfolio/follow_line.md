@@ -76,7 +76,7 @@ To carry out the practice, you have to edit the file `MyAlgorithms.py` and inser
 ## Where to insert the code?
 In the `MyAlgorithm.py` file,
 ```python
-    def algorithm(self):
+    def execute(self):
         #GETTING THE IMAGES
         image = self.getImage()
 
