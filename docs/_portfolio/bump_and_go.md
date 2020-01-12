@@ -30,7 +30,7 @@ There is a Kobuki robot inside a labyrinth or scenario. The robot will go front 
 <br/>
 
 
-Using the [JdeRobot tool VisualStates](https://jderobot.org/index.php/Tools#VisualStates) the solution works like this. The tool's detailed manual can be found [here](https://jderobot.org/VisualStates). 
+Using the JdeRobot [VisualStates tool](https://jderobot.github.io/VisualStates) the solution works like this. The tool's detailed manual, installation instructions, etc. can be found [here](https://jderobot.github.io/VisualStates). 
 
 {% include youtubePlayer.html id=page.youtubeId3 %}
 
