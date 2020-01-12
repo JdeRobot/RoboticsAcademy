@@ -1,6 +1,6 @@
 ---
 title: "Global navigation of a TeleTaxi"
-excerpt: "Logic of a Gradient Path Planning (GPP) algorithm."
+excerpt: "(Update pending) Global path planning for autonomous navigation (Gradient Path Planning algorithm)."
 
 header:
   image: /assets/images/exercises/global_navigation/global_navigation.png

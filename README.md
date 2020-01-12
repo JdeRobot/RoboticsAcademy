@@ -1,6 +1,64 @@
-# JdeRobot-Academy: Learn Robotics and Computer Vision 
+# JdeRobot Academy: Learn Robotics and Computer Vision 
 
-## Status
+
+JdeRobot Academy is an **open source** collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. Its latest documentation (including installation recipes, current available exercises and illustrative videos) is on its <a href="https://jderobot.github.io/RoboticsAcademy">webpage</a>.
+
+If you are a contributor, please note that we use GitHub Pages and a Jekyll theme (MinimalMistakes) for Academy web page. Feel free to install locally Jekyll so you can test your changes before submitting your pull-request. Here you are the directions for it:
+
+
+# Jekyll Local Installation
+
+## Prerequisites
+
+### Installing Ruby on Ubuntu
+
+First of all, we need to install all the dependencies typing:
+
+```bash
+sudo apt-get install ruby-full build-essential zlib1g-dev
+```
+
+After that, we need to set up a gem installation directory for your user account. The following commands will add environment variables to your `~/.bashrc` file to configure the gem installation path. Run them now:
+
+```bash
+echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc
+echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc
+echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Finally, we install Jekyll:
+
+```bash
+gem install jekyll bundler
+```
+
+Notice that we don't use the `root` user :-)
+
+## Running Jekyll Serve
+
+By default, the Jekyll server is launched with the following command (which is the one indicated on your website).
+
+```bash
+bundle exec jekyll serve
+```
+
+If in the process of building the server there is a dependency problem, for example, there is a missing library to install, it is **necessary to delete** the `Gemfile.lock` file so that it is rebuilt with the installed dependency. This list of dependencies is found in the `Gemfile` file (in Python it would be equivalent to the `requirements.txt` file) and the version of each of the installed gems (packages) is specified. Having a list of dependencies is important for future updates as well as knowing the libraries needed to run the server. Once the `Gemfile.lock` file is deleted, the command shown above is launched again and the dependency errors should end.
+
+## Notes for exercise cards.
+
+- Teaser Images size: multiple of 600x400px
+
+
+## FAQ
+
+- Error building Jekyll server: 
+
+```bash
+jekyll build --incremental --verbose
+```
+
+# Development status of the exercises
 
 Available exercises and its status:
 
@@ -42,161 +100,4 @@ Available exercises and its status:
 
 
 
-
-
-
-
-## Introduction
-
-JdeRobot-Academy is an **open source** collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. The students program their solutions in **Python language**. Each exercise is composed of :
-
-1. Gazebo configuration files,
-2. A ROS node that hosts the student's code, 
-3. A file with instructions, hints, etc.. 
-4. The student solution itself. 
-
-1, 2, and 3 are already provided, the student has to develop her code on a separate file which already has a **template**. The student may use there an existing simple *Python* *API* to access to sensor readings and actuator commands_ (**HAL API**) and she may use an existing simple *Python* API for Graphical User Interface and debugging_ (**GUI API**). To develop her solution the student has to edit that template file and add her
-code, using her favorite text editor.
-
-For execution the student launches Gazebo with certain configuration file (specifying the robot and the simulated scenario for that exercise) and launches the ROS node hosting her code. On that code lies the intelligence of the robot to solve the exercise. For instance, check the recent solution of one degree student here for the local navigation exercise:
-
-[![http://jderobot.org/store/jmplaza/uploads/jderobot-academy/vff-f1.png](http://img.youtube.com/vi/ID7qaEcIu4k/0.jpg)](http://www.youtube.com/watch?v=ID7qaEcIu4k "Obstacle Avoidance exercise in JdeRobot-Academy")
-
-There are exercises about drone programming, about computer vision, about mobile robots, about autonomous cars, etc..  In the JdeRobotFoundation we are improving the quality of the existing exercises and creating a few exercises more. We are also working in a webserver to code and [run the exercises from the web browser](https://www.youtube.com/watch?v=bTwt6W8vCGQ) but that is a ongoing project yet.
-
-## Installation Guide
-
-### Software Infraestructure: Ubuntu/Debian
-
-The programming environment is composed of the (a) Gazebo simulator, (b) ROS middleware and (c) the Academy package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use Gazebo-7.4.0, ROS Kinetic and JdeRobot-Academy (2018-06-06) releases. Follow the next steps to have the environment up and running, ready to use.
-
-### Installation                             
-
-##### Step One: Install ROS framework
-
-Add the lastest ROS sources:
-
-```Bash
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-```
-
-```bash
-sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
-```
-
-##### Step Two: Add the lastest Gazebo sources:
-
- Add the lastest Gazebo sources:
-
-```bash
-sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable lsb_release -cs main" > /etc/apt/sources.list.d/gazebo-stable.list'
-```
-
-```bash
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 67170598AF249743
-```
-
-##### Step Three: Add JdeRobot sources
-
-Add the JdeRobot sources. For Ubuntu Xenial(16.04):
-
-```bash
-sudo sh -c 'cat<<EOF>/etc/apt/sources.list.d/jderobot.list
-# for ubuntu 16.04 LTS (64 bit)
-
-deb [arch=amd64] http://wiki.jderobot.org/apt bionic main
-EOF'
-```
-
-```bash
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 24E521A4
-```
-
-##### Step Four: Update repositories and Install the packages
-
-Update the repositories
-```bash
-sudo apt update
-```
-
-Install the packages
-
-```bash
-sudo apt-get install ros-kinetic-desktop-full
-sudo apt-get install gazebo7
-sudo apt install jderobot-gazebo-assets
-```
-
-### Install the JdeRobot-Academy software
-
-  Once you have JdeRobot installed in your system, you can download and install the Academy software. To do so, you must:
-
-```bash
- git clone https://github.com/JdeRobot/Academy.git
-```
-
-On the directory of each exercise you will find particular directions to launch the simulated scenario and the academic node where you should write your code.
-
-
-## Software Infraestructure: Windows(x64)
-
-The programming environment is composed of the (a) *Docker* with *Gazebo* simulator, (b) *JdeRobot* *middleware* for *Python* and (c) the *TeachingRobotics* package. All this software is open source so there are alternative ways to install all of them directly from the source code. Currently we use *Gazebo-7.4.0*, *JdeRobot-5.4.1* and TeachingRobotics-0.1.0 releases. *JdeRobot* Docker includes the Gazebo plugins, models and configuration files to simulate the robot used in the exercises. Follow the next four steps to have the environment up and running, ready to use.        
-
-#### Installation
-
-* Install checked `env` variables (Is possible that you need restart to run the PATH). You can <a href="https://www.python.org/ftp/python/3.5.2/python-3.5.2-amd64.exe">download here</a>.
-* Download qt 5.7. <a href="http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-windows-x86-msvc2015_64-5.7.0.exe">Here</a>.
-* Download github Desktop from <a href="https://desktop.github.com/">here</a>.
-* Download Docker:
-    * <a href="https://download.docker.com/win/stable/InstallDocker.msi">Windows 10 x64 proffesional or enterprise</a>
-    * <a href="http://www.docker.com/products/docker-toolbox">Other Windows x64</a>
-
-##### Open `CMD` or powershell and upgrade pip
-
-```bash
-python -m pip install --upgrade pip
-```
-
-##### Install depencencies:
-
-```bash
-pip3 install numpy zeroc-ice
-pip3 install pyqt5
-pip3 install opencv-python
-```
-
-##### Install JdeRobot Python:
-
-```bash
-pip3 install http://jderobot.org/store/aitormf/uploads/windows/JdeRobot-0.1.0-py3-none-any.whl
-```
-
-##### Download the Academy software
-
-With git Shell clone the repository as in Linux and run the exercices with CMD o powershell
-
-```
-git clone https://github.com/jderobot/academy.git
-```
-
-*Note: Github repositories are located in Documents\GitHub*
-
-
-## Run Exercises
-
-Open Kinematics of Docker and push "Docker cli".
-
-Run the docker passing the world to use (the first time docker image is downloaded):
-
-```bash
-docker run -tiP --rm -p 7681:7681 jderobot/jderobot world [world_name]
-```
-
-With CMD or PowerShell go to practice directory in Academy and run it:
-
-```bash
-python [practice_file][config_file]
-```
-
-You can watch a [video demonstration](https://www.youtube.com/embed/v00TCr-aSWM).
 
