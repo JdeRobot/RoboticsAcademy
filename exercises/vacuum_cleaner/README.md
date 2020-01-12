@@ -85,6 +85,10 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
         return laser_mean
 ```
 
+## Theory and Hints
+[Theory](THEORY.md) and [Hints](HINTS.md)
+
+
 ## Demonstrative video
 
 [Video](https://www.youtube.com/watch?v=ThTXrqTDJ_A)
