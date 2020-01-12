@@ -1,6 +1,6 @@
 ---
 title: "Amazon Warehouse"
-excerpt: "Autonomous navigation and pick-and-place logic."
+excerpt: "(Update pending) Autonomous navigation and pick-and-place logic."
 
 header:
   image: /assets/images/exercises/amazon_warehouse/amazon_warehouse.png

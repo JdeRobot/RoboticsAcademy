@@ -1,6 +1,6 @@
 ---
 title: "Color Filter"
-excerpt: "Develop a color filter that allow us to segment some object in the image."
+excerpt: "(Update pending) Develop a color filter that allow us to segment some object in the image."
 
 header:
   image: /assets/images/exercises/color_filter/color_filter_teaser.png

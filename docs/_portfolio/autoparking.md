@@ -1,6 +1,6 @@
 ---
 title: "Autoparking"
-excerpt: "Logic of a navigation algorithm for an automated vehicle."
+excerpt: "(Update pending) Logic of a navigation algorithm for an automated vehicle."
 
 header:
   image: /assets/images/exercises/autoparking/autoparking.png
