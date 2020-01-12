@@ -55,7 +55,7 @@ Starting from the destination cell, the robot can map it's path one cell at a ti
 
 *Visibility Error*
 
-But, sometimes due to close proximity to corner, the robot may collide with it. To avoid the occurence of any such event, we may also consider dilation techniques, since the map used is a binary image. **Dilation** is a **Morphology Function** that expands the shapes present in the input image. Refer to this [link](https://homepages.inf.ed.ac.uk/rbf/HIPR2/dilate.htm) for more information on dilation.
+But, sometimes due to close proximity to corner, the robot may collide with it. To avoid the occurence of any such event, we may also consider dilation techniques, since the map used is a binary image. **Erosion** is a **Morphology Function** that erodes away the boundaries of foreground object(white is the object in foreground). Refer to this [link](https://homepages.inf.ed.ac.uk/rbf/HIPR2/erode.htm) for more information on erosion.
 
 ![Morphological Operations](https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTzn6m8Kkpb9OUy-mv70GpKRmsd3hySZBJZH8n5y-OLO4jBq9mW)
 
