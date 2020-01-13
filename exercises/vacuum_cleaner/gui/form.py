@@ -34,10 +34,10 @@ class Ui_MainWindow(object):
         self.logoLayout.setObjectName("logoLayout")
         self.horizontalLayout_2.addLayout(self.logoLayout)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
-        self.percentajeCheck = QtWidgets.QCheckBox(self.centralwidget)
-        self.percentajeCheck.setGeometry(QtCore.QRect(540, 220, 94, 26))
-        self.percentajeCheck.setObjectName("percentajeCheck")
-        self.verticalLayout_2.addWidget(self.percentajeCheck)
+        self.percentageCheck = QtWidgets.QCheckBox(self.centralwidget)
+        self.percentageCheck.setGeometry(QtCore.QRect(540, 220, 94, 26))
+        self.percentageCheck.setObjectName("percentageCheck")
+        self.verticalLayout_2.addWidget(self.percentageCheck)
         self.stopButton = QtWidgets.QPushButton(self.centralwidget)
         font = QtGui.QFont()
         font.setPointSize(15)
@@ -79,6 +79,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.percentajeCheck.setText(_translate("MainWindow", "Percentaje Graphic"))
+        self.percentageCheck.setText(_translate("MainWindow", "Percentage Graphic"))
         self.stopButton.setText(_translate("MainWindow", "Stop Code"))
         self.pushButton.setText(_translate("MainWindow", "Run my algorithm"))

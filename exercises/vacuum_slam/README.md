@@ -31,6 +31,8 @@ To carry out the practice, you must edit the MyAlgorithms.py file and insert all
 ```
 
 ### API
+* `self.pose3d.getPose3d().x` - to get the X coordinate of the robot
+* `self.pose3d.getPose3d().y` - to get the Y coordinate of the robot
 * `self.pose3d.getPose3d().yaw` - to get the orientation of the robot
 * `self.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `self.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
@@ -71,4 +73,10 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
         return laser_mean
 ```
 
+## Theory and Hints
+[Theory](THEORY.md) and [Hints](HINTS.md)
+
+
 ## Demonstration video
+
+![Video](https://www.youtube.com/watch?v=NE6KoQ6JbaE&t=18s)

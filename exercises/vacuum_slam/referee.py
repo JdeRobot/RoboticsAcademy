@@ -230,7 +230,7 @@ class porcentajeWidget(QWidget):
 
     def updateG(self):
         self.porcentajeRecorrido()
-        self.Porcentaje.setText("Superficie recorrida: " + str(round(self.porcentajeCasa, 3)) + ' %')
+        self.Porcentaje.setText("Surface Covered: " + str(round(self.porcentajeCasa, 3)) + ' %')
         self.bar.setValue(self.porcentajeCasa)
         self.update()
 
@@ -250,7 +250,7 @@ class tiempoDigitalWidget(QWidget):
 
         self.hLayout = QHBoxLayout()
 
-        tiempoLabel = QLabel("Tiempo")
+        tiempoLabel = QLabel("Time")
         self.lcd = QLCDNumber(self)
         self.lcd.setMaximumSize(100,50)
         self.hLayout.addWidget(tiempoLabel,0)
@@ -283,7 +283,7 @@ class tiempoDigitalWidget(QWidget):
     def showNota(self):
         self.show = True
         nota = self.testPorcentaje()
-        notaLabel = QLabel('Nota final: ' + str(nota))
+        notaLabel = QLabel('Final Score: ' + str(nota))
         self.hLayout.addWidget(notaLabel, 0)
         self.setLayout(self.hLayout)
 

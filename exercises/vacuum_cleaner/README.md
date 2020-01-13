@@ -89,6 +89,7 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 ## Theory and Hints
 [Theory](THEORY.md) and [Hints](HINTS.md)
 
+
 ## Demonstrative video
 
 [Video](https://www.youtube.com/watch?v=ThTXrqTDJ_A)

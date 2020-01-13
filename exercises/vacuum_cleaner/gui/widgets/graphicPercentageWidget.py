@@ -14,14 +14,14 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 
-class PercentajeWidget(QWidget):
+class PercentageWidget(QWidget):
     def __init__(self,winParent, pose3d):
-        super(PercentajeWidget, self).__init__()
+        super(PercentageWidget, self).__init__()
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
         self.map = cv2.resize(self.map, (500, 500))
         self.pose3d = pose3d
-        self.percentajeHouse = 0
+        self.percentageHouse = 0
         self.numPixels = self.calculatePixelsWhite()
         self.numPixelsWalked = 0
         self.numPixelInit = 656
@@ -33,8 +33,8 @@ class PercentajeWidget(QWidget):
         self.contSeconds = 0
         self.secondsArray = [0]
 
-        self.devPercentajes = [0]
-        self.percentajePrev = 0
+        self.devPercentages = [0]
+        self.percentagePrev = 0
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
 
@@ -58,17 +58,17 @@ class PercentajeWidget(QWidget):
             self.seconds += 1
             if self.seconds % 100 == 0:
                 self.contSeconds += 1
-                dif = float(float(self.percentajeHouse) - float(self.percentajePrev))
-                self.devPercentajes.append(dif)
+                dif = float(float(self.percentageHouse) - float(self.percentagePrev))
+                self.devPercentages.append(dif)
                 self.secondsArray.append(self.contSeconds)
-                self.percentajePrev = self.percentajeHouse
+                self.percentagePrev = self.percentageHouse
 
             ax = self.figure.add_subplot(111)
             ax.set_xlabel('Time')
             ax.set_ylabel('Percentage Derivative')
             ax.set_xlim([0, 9]);
             ax.set_ylim([0, 10]);
-            ax.plot(self.secondsArray, self.devPercentajes,'r')
+            ax.plot(self.secondsArray, self.devPercentages,'r')
             self.canvas.draw()
 
 
@@ -98,15 +98,15 @@ class PercentajeWidget(QWidget):
                     numPixels = numPixels + 1
         return numPixels
 
-    def calculatePercentaje(self):
-        percentaje = float(self.numPixelsWalked * 100) / float(self.numPixels)
-        # If vacuum is stopped, the percentaje is zero
+    def calculatePercentage(self):
+        percentage = float(self.numPixelsWalked * 100) / float(self.numPixels)
+        # If vacuum is stopped, the percentage is zero
         if self.numPixelsWalked == self.numPixelInit:
-            percentaje = 0.0
-        return percentaje
+            percentage = 0.0
+        return percentage
 
 
-    def percentajeWalked(self):
+    def percentageWalked(self):
         pose = self.winParent.getPose3D().getPose3d()
         x = pose.x
         y = pose.y
@@ -124,9 +124,9 @@ class PercentajeWidget(QWidget):
                     self.numPixelsWalked = self.numPixelsWalked + 1
                     self.map[k][l] = 128
 
-        self.percentajeHouse = self.calculatePercentaje()
+        self.percentageHouse = self.calculatePercentage()
 
 
     def updateG(self):
-        self.percentajeWalked()
+        self.percentageWalked()
         self.update()

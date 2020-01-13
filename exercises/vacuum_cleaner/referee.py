@@ -24,13 +24,13 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__(parent)
 
         layout = QGridLayout()
-        self.percentaje = percentajeWidget(self, pose3d)
-        self.timeDigital = timeDigitalWidget(self, self.percentaje)
+        self.Percentage = PercentageWidget(self, pose3d)
+        self.timeDigital = timeDigitalWidget(self, self.Percentage)
         self.timeAnalog = timeAnalogWidget(self)
         self.map = mapWidget(self, pose3d)
         self.logo = logoWidget(self)
         layout.addWidget(self.timeDigital,0,2)
-        layout.addWidget(self.percentaje,0,0)
+        layout.addWidget(self.Percentage,0,0)
         layout.addWidget(self.map,1,0)
         layout.addWidget(self.timeAnalog,1,2)
         layout.addWidget(self.logo,2,2)
@@ -44,7 +44,7 @@ class MainWindow(QWidget):
         self.updGUI.connect(self.update)
 
     def update(self):
-        self.percentaje.updateG()
+        self.Percentage.updateG()
         self.map.updateG()
         self.timeAnalog.updateG()
 
@@ -132,33 +132,33 @@ class mapWidget(QWidget):
 
 
 
-class percentajeWidget(QWidget):
+class PercentageWidget(QWidget):
     def __init__(self,winParent, pose3d):
-        super(percentajeWidget, self).__init__()
+        super(PercentageWidget, self).__init__()
         self.winParent=winParent
         self.map = cv2.imread("resources/images/mapgrannyannie.png", cv2.IMREAD_GRAYSCALE)
         self.map = cv2.resize(self.map, (500, 500))
         image = QtGui.QImage(self.map.data, self.map.shape[1], self.map.shape[0], self.map.shape[1], QtGui.QImage.Format_Indexed8);
         self.pixmap = QtGui.QPixmap.fromImage(image)
         self.pose3d = pose3d
-        self.percentajeHouse = 0
+        self.PercentageHouse = 0
         self.numPixels = self.calculatePixelsWhite()
         self.numPixelsWalked = 0
 
         vLayout = QVBoxLayout()
 
-        self.percentajeWalked()
+        self.PercentageWalked()
 
-        self.Percentaje = QLabel("Percentaje: " + str(round(self.percentajeHouse, 3)) + ' %')
+        self.Percentage = QLabel("Percentage: " + str(round(self.PercentageHouse, 3)) + ' %')
 
-        vLayout.addWidget(self.Percentaje, 0)
+        vLayout.addWidget(self.Percentage, 0)
 
         self.bar = QProgressBar()
-        self.bar.setValue(self.percentajeHouse)
+        self.bar.setValue(self.PercentageHouse)
         st = "QProgressBar::chunk {background-color: #ff0000;}\n QProgressBar {border: 1px solid grey;border-radius: 2px;text-align: center;background: #eeeeee;}"
         self.bar.setStyleSheet(st)
         self.bar.setTextVisible(False)
-        vLayout.addWidget(self.Percentaje, 0)
+        vLayout.addWidget(self.Percentage, 0)
         vLayout.addWidget(self.bar, 0)
 
         vSpacer = QSpacerItem(30, 80, QSizePolicy.Ignored, QSizePolicy.Ignored)
@@ -197,12 +197,12 @@ class percentajeWidget(QWidget):
                     numPixels = numPixels + 1
         return numPixels
 
-    def calculatePercentaje(self):
-        percentaje = self.numPixelsWalked * 100 / self.numPixels
-        return percentaje
+    def calculatePercentage(self):
+        Percentage = self.numPixelsWalked * 100 / self.numPixels
+        return Percentage
 
 
-    def percentajeWalked(self):
+    def PercentageWalked(self):
         x = self.pose3d.getPose3d().x
         y = self.pose3d.getPose3d().y
         scale = 50
@@ -222,25 +222,25 @@ class percentajeWidget(QWidget):
                     if self.map[k][l] != 128:
                         self.numPixelsWalked = self.numPixelsWalked + 1
                         self.map[k][l] = 128
-        self.percentajeHouse = self.calculatePercentaje()
+        self.PercentageHouse = self.calculatePercentage()
 
 
     def updateG(self):
-        self.percentajeWalked()
-        self.Percentaje.setText("Percentaje: " + str(round(self.percentajeHouse, 3)) + ' %')
-        self.bar.setValue(self.percentajeHouse)
+        self.PercentageWalked()
+        self.Percentage.setText("Percentage: " + str(round(self.PercentageHouse, 3)) + ' %')
+        self.bar.setValue(self.PercentageHouse)
         self.update()
 
 
 class timeDigitalWidget(QWidget):
 
     time = pyqtSignal()
-    def __init__(self,winParent, percentaje):
+    def __init__(self,winParent, Percentage):
         super(timeDigitalWidget, self).__init__()
         self.winParent=winParent
         self.seconds = 900
         self.pose3d = pose3d
-        self.percentaje = percentaje
+        self.Percentage = Percentage
         self.show = False
         self.MAX_PERCENT = 30
         self.MAX_MARK = 10
@@ -279,7 +279,7 @@ class timeDigitalWidget(QWidget):
 
     def showMark(self):
         self.show = True
-        mark = self.testPercentaje()
+        mark = self.testPercentage()
         markLabel = QLabel('Final mark: ' + str(mark))
         self.hLayout.addWidget(markLabel, 0)
         self.setLayout(self.hLayout)
@@ -294,8 +294,8 @@ class timeDigitalWidget(QWidget):
         self.lcd.display(self.seconds)
 
 
-    def testPercentaje(self):
-        pHouse = self.percentaje.calculatePercentaje()
+    def testPercentage(self):
+        pHouse = self.Percentage.calculatePercentage()
         markPerc = float(pHouse) * float(self.MAX_MARK) / float(self.MAX_PERCENT)
         if pHouse > self.MAX_PERCENT:
             markPerc = 10
