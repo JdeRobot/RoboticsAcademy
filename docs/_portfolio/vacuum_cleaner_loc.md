@@ -99,8 +99,6 @@ def laser_vector(laser):
     return laser_mean
 ```
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/increasing_v.gif)
-
 ## Demonstration video
 
 A reference solution
