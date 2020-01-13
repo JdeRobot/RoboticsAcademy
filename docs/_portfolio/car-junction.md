@@ -1,6 +1,6 @@
 ---
 title: "Car Junction"
-excerpt: "Automated vehicle must stop and pass once the road is clear."
+excerpt: "(Update pending) Automated vehicle must stop and pass once the road is clear."
 
 header:
   image: /assets/images/exercises/car_junction/car_junction.png

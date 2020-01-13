@@ -1,14 +1,14 @@
 ---
-title: Autoloc Laser
-excerpt: "Robot self-localization using particle filter and laser sensor"
+title: Laser-based localization
+excerpt: "(Update pending) Robot self-localization using particle filter and laser sensor"
 
 header:
-  image: /assets/images/exercises/autoloc_laser/autoloc.png
-  teaser: /assets/images/exercises/autoloc_laser/autoloc_teaser.png
+  image: /assets/images/exercises/laser_loc/autoloc.png
+  teaser: /assets/images/exercises/laser_loc/autoloc_teaser.png
 
 gallery:
-    image_path: /assets/images/exercises/autoloc_laser/autoloc.png
-    alt: "Autoloc Laser"
+    image_path: /assets/images/exercises/laser_loc/autoloc.png
+    alt: "Laser-based Localization"
 
 youtubeId: DUj5upA6bJw
 ---

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python @CMAKE_INSTALL_PREFIX@/lib/python2.7/visualStates_py/visualStates.py $*

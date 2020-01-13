@@ -1,6 +1,6 @@
 ---
 title: "Qualifying Formula1"
-excerpt: "Complete a lap to the Nürburgring circuit as fast as it can."
+excerpt: "(Update pending) Complete a lap to the Nürburgring circuit as fast as it can."
 
 header:
   image: /assets/images/exercises/qualifying_formula/chrono.png

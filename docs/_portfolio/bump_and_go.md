@@ -1,6 +1,6 @@
 ---
 title: "Bump and go"
-excerpt: "Basic behaviour of bump-spin using a finite state machine."
+excerpt: "(Update pending) Basic behaviour of bump-spin using a finite state machine."
 
 header:
   image: /assets/images/exercises/bump_and_go/bump_and_go.png
@@ -15,7 +15,7 @@ youtubeId2: Yon6yKY5oqk
 youtubeId3: zA7jN7ZR2sk
 ---
 
-The intention of this excersise is to program a basic behaviour of bump-spin using a finite state machine. For that, we will use JdeRobot visualStates tool, that allows you to create your own states machine in an intuitive way.
+The intention of this excersise is to program a basic behavior of bump-spin using a Finite State Machine. For that, we will use the VisualStates tool, that allows you to create your own states machine in an intuitive way.
 
 There is a Kobuki robot inside a labyrinth or scenario. The robot will go front until it gets close to an obstacle. The it will go back, turn a random angle and go front again repeating the process. This exercise aims to show the power of automata when building robot behavior.
 
@@ -30,7 +30,7 @@ There is a Kobuki robot inside a labyrinth or scenario. The robot will go front 
 <br/>
 
 
-Using the [JdeRobot tool VisualStates](https://jderobot.org/index.php/Tools#VisualStates) the solution works like this. The tool's detailed manual can be found [here](https://jderobot.org/VisualStates). 
+Using the JdeRobot [VisualStates tool](https://jderobot.github.io/VisualStates) the solution works like this. The tool's detailed manual, installation instructions, etc. can be found [here](https://jderobot.github.io/VisualStates). 
 
 {% include youtubePlayer.html id=page.youtubeId3 %}
 

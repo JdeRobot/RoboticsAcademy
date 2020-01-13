@@ -1,15 +1,16 @@
-# Vacuum Cleaner
-
+# Vacuum_Cleaner practice
 The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 
 
 ## How to run
 To launch the example, follow the steps below:
-1. Execution without watching the world: 
+1. Enable Kobuki_msgs:
+`$ sudo apt-get install ros-melodic-kobuki-msgs`
+2. Execution without watching the world: 
 `$ roslaunch vacuum_cleaner.launch`
-2. Execution of the practice and the user interface: 
+3. Execution of the practice and the user interface: 
 `$ python2 vacuumCleaner.py vacuumCleaner_conf.yml`
-3. Execution of the automatic evaluator: 
+4. Execution of the automatic evaluator: 
 `$ python2 referee.py referee.yml`
 
 To simplify the closure of the environment, simply close the VacuumCleaner window(s). *Ctrl + C will give problems*.

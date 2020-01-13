@@ -1,6 +1,6 @@
 ---
 title: "3D Reconstruction"
-excerpt: "Reconstruct a 3D scene from a stereo pair."
+excerpt: "(Update pending) Reconstruct a 3D scene from a stereo pair."
 header:
   image: /assets/images/exercises/3d_reconstruction/3d_reconstruction.png
   teaser: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
