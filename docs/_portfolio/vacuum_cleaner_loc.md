@@ -11,6 +11,11 @@ gallery:
     alt: "Vacuum"
 
 youtubeId: NE6KoQ6JbaE
+
+toc: true
+toc_label: "TOC Vacuum Cleaner with Localization"
+toc_icon: "cog"
+
 ---
 
 The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum cleaner by making use of the location of the robot. The robot is equipped with a map and knows it's current location in it. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
