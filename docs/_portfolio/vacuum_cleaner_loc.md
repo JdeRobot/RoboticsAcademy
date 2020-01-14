@@ -145,7 +145,7 @@ In order to carry out the inverse operation of 3D to 2D, we can simply multiply,
 ### Coverage and Decomposition
 After the robot is localized in it's environment, we can employ decomposition techniques in our algorithm, to deal with the actual coverage of the surroundings. There are lot of [decomposition techniques](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf) available for our use. The Decomposition Algorithm, decomposes the map into seperate segments, which our robot can cover one by one. Decomposition can be directly related to **Graph Theory**, where the segments are taken as nodes and the edges connecting nodes depict that the adjacent segments share a common boundary. The robot can path plan to the nearest node and then start the sweeping again! Most of the details regarding decomposition would be implementation
 
-![Decomposition and Graph Theory]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/adj_graph.png)
+![Decomposition and Graph Theory]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/adj_graph.png)
 
 *Adjacency Graph*
 
@@ -160,7 +160,7 @@ If a straight line exists between two points, and the line does not pass over ob
 
 Starting from the destination cell, the robot can map it's path one cell at a time, while keeping visibility as a reference, until it reaches the current cell, the robot is present in. Once, the plan has been decided the robot can follow that path and reach it's destination.
 
-![Error of Obstacles]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/error.png)
+![Error of Obstacles]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/error.png)
 
 *Visibility Error*
 
@@ -214,11 +214,11 @@ One trick to adjust the speed and direction of motion is to keep the next 3 cell
 As a final note, quite a lot of tips and tricks regarding implementation have been discussed in this page. This is a tough exercise, which may take **quite a lot of time** to solve. The main objective of the exercise is to cover a **significant area of the house**, without taking time into consideration.
 
 ### Illustrations
-![Grid Based]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/grid.gif)
+![Grid Based]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/grid.gif)
 
 *Grid Based Approach*
 
-![PID Based]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/pid.gif)
+![PID Based]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/pid.gif)
 
 *PID Based(without grid) Approach*
 
