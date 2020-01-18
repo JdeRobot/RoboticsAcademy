@@ -11,7 +11,6 @@ toc_icon: "cog"
 ---
 
 
-
 Robotics-Academy currently supports Linux and Windows operating systems (using docker). Below are the steps for installing the software.
 
 ## Ubuntu/Debian

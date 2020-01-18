@@ -1,9 +1,17 @@
 ---
-title: "VISUAL FOLLOW LINE"
-excerpt: "Following the line painted on the racing circuit."
-header:
-  image: /assets/images/exercises/follow_line/formula1.png
-  teaser: /assets/images/exercises/follow_line/formula1_teaser.png
+permalink: /exercises/follow_line/
+title: "Visual Follow Line"
+
+sidebar:
+  nav: "docs"
+
+toc: true
+toc_label: "TOC Visual Follow Line"
+toc_icon: "cog"
+
+<!--- layout: archive --->
+
+<!--- classes: wide --->
 
 gallery:
   - url: /assets/images/exercises/follow_line/formula1_circuit.png
@@ -20,11 +28,6 @@ gallery:
     title: "Model."
 
 youtubeId: eNuSQN9egpA
-
-
-toc: true
-toc_label: "TOC Visual Follow Line"
-toc_icon: "cog"
 
 ---
 
