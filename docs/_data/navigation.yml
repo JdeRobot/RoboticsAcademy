@@ -4,8 +4,14 @@ main:
   - title: "Exercises"
     url: /exercises/
 
-  - title: "Installation and use"
+  - title: "Installation"
     url: /installation/
+
+  - title: "Web release"
+    url: https://academy.jderobot.org
+
+  - title: "Forum"
+    url: https://academy.jderobot.org/forum
 
   - title: About
     url: /about/
@@ -13,27 +19,20 @@ main:
 
 docs:
   - title: Exercises
+    url: /exercises/MobileRobots
     children:
-      - title: "Collection"
-        url: /exercises/
-      - title: "Status"
-        url: /status/
-      
+      - title: Autonomous Cars
+        url: /exercises/AutonomousCars/AutonomousCars.md
+      - title: Mobile Robots
+        url: /exercises/MobileRobots 
+      - title: Drones
+        url: /exercises/Drones/
+      - title: Computer Vision
+        url: /exercises/ComputerVision/
 
   - title: "Contribute"
     children:
       - title: "How to contribute"
         url: /contribute/
-
-  - title: "Installation"
-    children:
-      - title: "Ubuntu/Debian"
-        url: /installation/#ubuntudebian/
-
-      - title: "Windows (x64)"
-        url: /installation/#windowsx64
-
-  - title: "About"
-    children:
-      - title: "Unibotics"
-        url: https://unibotics.org  
+      - title: "Status"
+        url: /status/
