@@ -13,8 +13,8 @@ main:
   - title: "Forum"
     url: https://academy.jderobot.org/forum
 
-  - title: About
-    url: /about/
+#  - title: About
+#    url: /about/
 
 
 docs:
@@ -22,13 +22,13 @@ docs:
     url: /exercises/MobileRobots
     children:
       - title: Autonomous Cars
-        url: /exercises/AutonomousCars/AutonomousCars.md
+        url: /exercises/AutonomousCars
       - title: Mobile Robots
         url: /exercises/MobileRobots 
       - title: Drones
-        url: /exercises/Drones/
+        url: /exercises/Drones
       - title: Computer Vision
-        url: /exercises/ComputerVision/
+        url: /exercises/ComputerVision
 
   - title: "Contribute"
     children:
@@ -36,3 +36,5 @@ docs:
         url: /contribute/
       - title: "Status"
         url: /status/
+      - title: "Coming soon"
+        url: /exercises/comingsoon
