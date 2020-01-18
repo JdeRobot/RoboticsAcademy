@@ -1,5 +1,5 @@
 ---
-permalink: /exercises
+permalink: /exercises/
 title: "JdeRobot Academy exercises"
 
 sidebar:
