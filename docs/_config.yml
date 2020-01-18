@@ -20,7 +20,7 @@ title                    : "Robotics-Academy"
 title_separator          : "-"
 subtitle                 : Powered by JdeRobot
 name                     : "JdeRobot"
-description              : "Learn Robotics and Computer Vision with JdeRobot."
+description              : "Learn Robotics and Computer Vision with JdeRobot"
 url                      : # the base hostname & protocol for your site e.g. "http://jderobot.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "RoboticsAcademy"
@@ -116,25 +116,25 @@ analytics:
 #    - label: "Email"
 #      icon: "fas fa-fw fa-envelope-square"
 #      # url: mailto:your.name@email.com
-#    - label: "Jderobot"
+#    - label: "JdeRobot"
 #      icon: "fas fa-fw fa-link"
 #      url: "https://jderobot.org"
 #    - label: "Twitter"
 #      icon: "fab fa-fw fa-twitter-square"
-#      url: "https://twitter.com/unibotics"
+#      url: "https://twitter.com/jderobot"
 #    - label: "GitHub"
 #      icon: "fab fa-fw fa-github"
 #      url: "https://github.com/JdeRobot/RoboticsAcademy"
 #    - label: "Youtube"
 #      icon: "fab fa-fw fa-youtube"
-#      url: "https://www.youtube.com/channel/UCS9IvIytJNqQqImT99g-d6g"
+#      url: "https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ"
 
 # Site Footer
 footer:
   links:
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/unibotics"
+      url: "https://twitter.com/jdeobot"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/JdeRobot/RoboticsAcademy"
@@ -143,7 +143,7 @@ footer:
       # url:
     - label: "Youtube"
       icon: "fab fa-fw fa-youtube"
-      url: "https://www.youtube.com/channel/UCS9IvIytJNqQqImT99g-d6g"
+      url: "https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ"
 
 
 # Reading Files

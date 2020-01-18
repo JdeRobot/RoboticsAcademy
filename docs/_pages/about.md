@@ -18,7 +18,7 @@ Robotics Academy uses ROS and Gazebo as underlying infrastructure for the exerci
 
 ## Use it from your web browser with no installation
 
-Just play with Robotics Academy at [its WebIDE](https://unibotics.org/), it is free :-)
+Just play with Robotics Academy at [its WebIDE](https://academy.jderobot.org/), it is free :-)
 
 This spring it is going to be used in a <a href="http://icsdweb.aegean.gr/project/aegeanrobotics/web/programarobot/" target="_blank">Greek competition</a> 2019 at the <a href="http://samosweb.aegean.gr" target="_blank">University of the Aegean</a>, Greece. 
 
