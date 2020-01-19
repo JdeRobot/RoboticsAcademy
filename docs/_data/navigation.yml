@@ -19,7 +19,7 @@ main:
 
 docs:
   - title: Exercises
-    url: /exercises/MobileRobots
+    url: /exercises/
     children:
       - title: Autonomous Cars
         url: /exercises/AutonomousCars
