@@ -31,7 +31,8 @@ youtubeId: eNuSQN9egpA
 
 ---
 
-# Goal 
+# Goal
+
 The goal of this exercise is to perform a PID reactive control capable of following the line painted on the racing circuit.
 
 {% include gallery caption="Gallery" %}
@@ -41,6 +42,7 @@ The students program a Formula1 car in a race circuit to follow the red line in 
 
 
 # Installation 
+
 To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
 
 
