@@ -30,7 +30,7 @@ feature_row:
     alt: "100% free"
     title: "Web release"
     excerpt: "Use JdeRobot Academy from your browser, no installation required"
-    url: https://unibotics.org
+    url: https://academy.jderobot.org/web/login
     btn_class: "btn--primary"
     btn_label: "Learn more"
 
