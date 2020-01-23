@@ -26,6 +26,22 @@ gallery:
     image_path: /assets/images/exercises/follow_line/formula1_2.png
     alt: "Model."
     title: "Model."
+  - url: /assets/images/exercises/follow_line/formula1_2.png
+    image_path: /assets/images/exercises/follow_line/formula1_2.png
+    alt: "Model."
+    title: "Model."
+  
+gifs:
+  - url: /assets/images/exercises/follow_line/oscillations.gif
+    image_path: /assets/images/exercises/follow_line/oscillations.gif
+    alt: "examples"
+    title: "examples"
+  - url: /assets/images/exercises/follow_line/slowresponse.gif
+    image_path: /assets/images/exercises/follow_line/slowresponse.gif
+    alt: "examples"
+    title: "examples"
+  
+
 
 youtubeId: eNuSQN9egpA
 
@@ -37,14 +53,11 @@ The goal of this exercise is to perform a PID reactive control capable of follow
 
 {% include gallery caption="Gallery" %}
 
-
 The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.
-
 
 # Installation 
 
 To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
-
 
 ```bash
 source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
@@ -64,35 +77,34 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' > ~/.ba
 source ~/.bashrc
 ```
 
-
 # How to perform the exercise?
 To carry out the exercise, you have to edit the file `MyAlgorithms.py` and insert in it your code, which gives intelligence to the autonomous car.
 
 ## Where to insert the code?
 In the `MyAlgorithm.py` file,
+
 ```python
-    def execute(self):
-        #GETTING THE IMAGES
-        image = self.getImage()
+def execute(self):
+    #GETTING THE IMAGES
+    image = self.getImage()
 
-        # Add your code here
-        print "Runing"
+    # Add your code here
+    print "Runing"
 
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.sendV(10)
-        #self.motors.sendW(5)
+    #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
+    #self.motors.sendV(10)
+    #self.motors.sendW(5)
 
-        #SHOW THE FILTERED IMAGE ON THE GUI
-        self.set_threshold_image(image)
+    #SHOW THE FILTERED IMAGE ON THE GUI
+    self.set_threshold_image(image)
 ```
 
 ## Application Programming Interface
-* `self.getImage()` - to get the image 
+
+* `self.getImage()` - to get the image
 * `self.motors.sendV()` - to set the linear speed
 * `self.motors.sendW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
-
-
 
 # How to run your solution?
 
@@ -108,16 +120,18 @@ Launch Gazebo with the f1_simple_circuit world through the command
 roslaunch ./launch/simple_line_follower_ros.launch
 ```
 
-
 Then you have to execute the academic application, which will incorporate your code:
+
 ```bash
 python2 ./follow_line.py follow_line_conf.yml
 ```
 
 # Theory
+
 PID Control is the main fundamental behind this exercise. To understand PID Control, let us first understand what is Control in general.
 
 ## Control System
+
 A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforseen errors.
 
 ![Control System]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/ControlSystems.jpg)
@@ -180,13 +194,10 @@ This is an intersting way to see the effect of Derivative on the Control. For th
 This is the complete implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, to the present output. While dealing with discrete outputs, we can acheive this using *accumalated error*. Then, comes the task of adjustment of gain constants till we get our desired result.
 
 ## Illustrations
-![Unstable Oscillations]({{site.url}}/RoboticsAcademy/assets/images/exercises/follow_line/oscillations.gif) 
 
-*Unstable Oscillations*
 
-![Slow Response]({{site.url}}/RoboticsAcademy/assets/images/exercises/follow_line/slowresponse.gif)
+{% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %}
 
-*Slow Response*
 
 # Demonstrative Video
 
@@ -201,4 +212,3 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 [5](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)
 [6](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)
 [7](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)
-
