@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/MobileRobots/
+permalink: /exercises/mobile_robots_section
 title: "Mobile Robots exercises"
 
 sidebar:
@@ -17,9 +17,9 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
-  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
-    alt: "Localized Vacuum Cleaner"
-    title: "Localized Vacuum Cleaner"
+  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
+    alt: "Vacuum Cleaner Loc"
+    title: "Vacuum Cleaner Loc"
     excerpt: "Navigation algorithm for an autonomous vacuum with localization"
     url: "/exercises/MobileRobots/vacuum_cleaner_loc"
     btn_class: "btn--primary"

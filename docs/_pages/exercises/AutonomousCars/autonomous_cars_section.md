@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/AutonomousCars/
+permalink: /exercises/autonomous_cars_section
 title: "Autonomous Cars exercises"
 
 sidebar:
@@ -17,9 +17,9 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
-  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_gallery.png
-    alt: "Local navigation, obstacle avoidance"
-    title: "Local navigation, obstacle avoidance"
+  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser.png
+    alt: "Obstacle avoidance"
+    title: "Obstacle avoidance"
     excerpt: "Virtual Force Field navigation algorithm using a F1 race car"
     url: "/exercises/obstacle_avoidance"
     btn_class: "btn--primary"
@@ -31,5 +31,3 @@ feature_row:
 
 
 {% include feature_row %}
-
-
