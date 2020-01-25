@@ -14,18 +14,18 @@ toc_icon: "cog"
 Robotics-Academy currently supports **Linux** operating system. These installation instructions have been prepared for Ubuntu Linux 18.04 (LTS). Don't install everything listed here, just follow the directions on the Academy exercise you want to perform. For instance, not all the specific infrastructure packages are required for every exercise, and they can be large packages.
 
 1. *Generic infrastucture*
-+ required
-+ ROS middleware, Gazebo simulator, JdeRobot-base, JdeRobot-assets
-2. *Specific infrastructure*
-+ optional, depends on the exercise
-+ Some exercises require also additional software pieces such as OpenCV, MoveIt!, MavROS, PX4, VisualStates, OpenMotionPlanningLibrary, etc. 
-3. *JdeRobot Academy source code*
-+ required
-+ Academy includes templates for the exercises
+    - Required
+    - ROS middleware, Gazebo simulator, JdeRobot-base, JdeRobot-assets
 
+2. *Specific infrastructure*
+    - Optional, depends on the exercise
+    - Some exercises require also additional software pieces such as OpenCV, MoveIt!, MavROS, PX4, VisualStates, OpenMotionPlanningLibrary, etc.
+
+3. *JdeRobot Academy source code*
+    - Required
+    - Academy includes templates for the exercises
 
 # Generic infrastructure
-
 
 ## ROS Middleware
 
@@ -36,6 +36,7 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
     ```bash
     sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
     ```
+
     ```bash
     sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
     ```
@@ -45,7 +46,7 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
     ```bash
     sudo apt-get install ros-melodic-desktop-full
     ```
-    
+
 ## Gazebo simulator
 
 Supported release is Gazebo-9. It can be easily installed from official Debian packages, maintained by OpenRobotics organization. You can safely ignore this step as Gazebo-9 will be automatically installed with ROS Melodic package.
