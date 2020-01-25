@@ -22,13 +22,13 @@ docs:
     url: /exercises/
     children:
       - title: Autonomous Cars
-        url: /exercises/AutonomousCars
+        url: /exercises/autonomous_cars_section
       - title: Mobile Robots
-        url: /exercises/MobileRobots 
+        url: /exercises/mobile_robots_section
       - title: Drones
-        url: /exercises/Drones
+        url: /exercises/drones_section
       - title: Computer Vision
-        url: /exercises/ComputerVision
+        url: /exercises/computer_vision_section
 
   - title: "Contribute"
     children:
@@ -36,5 +36,11 @@ docs:
         url: /contribute/
       - title: "Status"
         url: /status/
-      - title: "Coming soon"
-        url: /exercises/comingsoon
+  - title: "Web Release"
+    children:
+    - title: "Academy Web"
+      url: https://unibotics.org/main_page
+  - title: "Forum"
+    children:
+    - title: "Forum"
+      url: https://developers.unibotics.org/
