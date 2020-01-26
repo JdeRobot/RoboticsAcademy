@@ -193,7 +193,6 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 {% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %}
 
-## 
 
 # Demonstrative Video
 
