@@ -26,10 +26,6 @@ gallery:
     image_path: /assets/images/exercises/follow_line/formula1_2.png
     alt: "Model."
     title: "Model."
-  - url: /assets/images/exercises/follow_line/formula1_2.png
-    image_path: /assets/images/exercises/follow_line/formula1_2.png
-    alt: "Model."
-    title: "Model."
   
 gifs:
   - url: /assets/images/exercises/follow_line/oscillations.gif
@@ -195,13 +191,22 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 ## Illustrations
 
-
 {% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %}
 
+## 
 
 # Demonstrative Video
 
 {% include youtubePlayer.html id=page.youtubeId %}
+
+# Contributors
+
+- *Base code made by [Alberto Martín](https://github.com/almartinflorido)*
+- *Code of practice performed by [Francisco Rivas](https://github.com/chanfr)*
+- *Gazebo models and worlds made by [Francisco Pérez](https://github.com/fqez)*
+- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna) and [Pankhuri Vanjani](https://github.com/pankhurivanjani)*
+- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
 
 # References
 
