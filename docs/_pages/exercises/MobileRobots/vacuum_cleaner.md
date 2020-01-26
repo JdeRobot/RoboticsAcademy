@@ -211,6 +211,12 @@ One possible solution is to implement the logic of a navigation algorithm for an
 
 <br/>
 
+# Contributors
+- *Basic code and code of practice made by [Vanessa Fernandez](https://github.com/vmartinezf)*
+- *Improvements [Carlos Awadallah](https://github.com/cawadall)*
+- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna)*
+- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
 <!--
 Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.
 

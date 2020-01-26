@@ -305,8 +305,17 @@ Also, please note that this is **not the only solution** to this problem. We may
 ## Demonstrative Video
 
 {% include youtubePlayer.html id=page.youtubeId %}
-	
-### References
+
+
+# Contributors
+- *Basic code made by [Alberto Martín](https://github.com/almartinflorido) and Victor Arribas*
+- *Code of practice made by Eduardo Perdices (eperdices@gsyc.es)*
+- *Gazebo models and worlds made by [Francisco Pérez](https://github.com/fqez)*
+- *Adapted to Turtlebot by Julio Vega (julio.vega@urjc.es)*
+- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna)*
+- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
+# References
 [1](http://www-personal.umich.edu/~johannb/vff&vfh.htm)
 [2](https://en.wikibooks.org/wiki/Robotics/Navigation)
 [3](https://en.wikipedia.org/wiki/Robot_navigation)
@@ -317,5 +326,3 @@ Also, please note that this is **not the only solution** to this problem. We may
 [8](https://www.mathsisfun.com/algebra/vectors.html)
 [9](https://matthew-brett.github.io/teaching/rotation_2d.html)
  
-
-

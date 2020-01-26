@@ -230,6 +230,12 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 
 *PID Based(without grid) Approach*
 
+# Contributors
+- *Basic code and code of practice made by [Vanessa Fernandez](https://github.com/vmartinezf)*
+- *Improvements [Carlos Awadallah](https://github.com/cawadall)*
+- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna)*
+- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
 ## References
 The major credit for this coverage algorithm goes to [Jose Sir](https://github.com/jmplaza) and his student [Irene](https://github.com/ilope236).
 
