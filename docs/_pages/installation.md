@@ -80,7 +80,7 @@ It contains ROS drivers not included in the official ROS packages.
     deb [arch=amd64] http://wiki.jderobot.org/apt bionic main
     EOF'
     ```
-   
+
 2. Get and add the public key from the JdeRobot repository
 
     ```bash
@@ -106,6 +106,7 @@ Supported release is 6.0.0
 It contains Gazebo world files and configuration files required for the Academy exercises.
 
 1. Install JdeRobot-assets
+
     ```bash
     sudo apt install jderobot-gazebo-assets
     ```
@@ -115,7 +116,123 @@ It contains Gazebo world files and configuration files required for the Academy 
 
 ## OpenCV
 ## MavROS
+
+1. Install ROS Melodic, MAVROS and extras
+
+    ```bash
+    sudo apt-get install ros-melodic-mavros ros-melodic-mavros-extras
+    ```
+
+
 ## PX4
+
+Install previous dependencies:
+
+1. Download and install GeographicLib
+
+    ```bash
+    wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+    ./install_geographiclib_datasets.sh
+    ```
+
+2. Remove modemmanager
+
+    ```bash
+    sudo apt-get remove modemmanager
+    ```
+
+3. Install common dependencies
+
+    ```bash
+    sudo apt-get update -y
+    sudo apt-get install git zip qtcreator cmake \
+        build-essential genromfs ninja-build exiftool -y
+    ```
+
+4. Install xxd
+
+    ```bash
+    which xxd || sudo apt install xxd -y || sudo apt-get install vim-common --no-install-recommends -y
+    ```
+
+5. Install required python packages
+
+    ```bash
+    sudo apt-get install python-argparse \
+        python-empy python-toml python-numpy python-yaml \
+        python-dev python-pip -y
+    sudo -H pip install --upgrade pip
+    sudo -H pip install pandas jinja2 pyserial cerberus
+    sudo -H pip install pyulog
+    ```
+
+6. Install ninja
+
+    ```bash
+    sudo apt-get install ninja-build -y
+    ```
+
+7. Get FastRTPS and FastCDR
+
+    ```bash
+    wget https://www.eprosima.com/index.php/component/ars/repository/eprosima-fast-rtps/eprosima-fast-rtps-1-7-1/eprosima_fastrtps-1-7-1-linux-tar-gz -O eprosima_fastrtps-1-7-1-linux.tar.gz
+    tar -xzf eprosima_fastrtps-1-7-1-linux.tar.gz eProsima_FastRTPS-1.7.1-Linux/
+    tar -xzf eprosima_fastrtps-1-7-1-linux.tar.gz requiredcomponents
+    tar -xzf requiredcomponents/eProsima_FastCDR-1.0.8-Linux.tar.gz
+    ```
+
+8. Build FastRTPS and FastCDR
+
+    ```bash
+    (cd eProsima_FastCDR-1.0.8-Linux && ./configure --libdir=/usr/lib && make -j2 && sudo make install)
+    (cd eProsima_FastRTPS-1.7.1-Linux && ./configure --libdir=/usr/lib && make -j2 && sudo make install)
+    rm -rf requiredcomponents eprosima_fastrtps-1-7-1-linux.tar.gz
+    ```
+
+9. Install catkin tools
+
+    ```bash
+    sudo apt-get install python-catkin-tools
+    ```
+
+10. Set up catkin workspace
+
+    ```bash
+    mkdir -p catkin_ws/src
+    cd catkin_ws/src
+    git clone https://github.com/PX4/Firmware.git
+    cd Firmware
+    git submodule update --init --recursive
+    cd ..
+    ln -s Firmware/Tools/sitl_gazebo mavlink_sitl_gazebo
+    cd ..
+    ```
+
+11. Update ROS dependencies
+
+    ```bash
+    rosdep update
+    rosdep check --from-paths . --ignore-src --rosdistro melodic
+    rosdep install --from-paths . --ignore-src --rosdistro melodic -y
+    ```
+
+12. Build catkin (make sure to be at /catkin_ws)
+
+    ```bash
+    catkin build
+    ```
+
+13. Export environment variables
+
+    ```bash
+    echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
+    echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
+    echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:/opt/ros/melodic/share/jderobot_assets/models' >> ~/.bashrc
+
+    source ~/.bashrc
+    ```
+
+
 ## MoveIt!
 
 
