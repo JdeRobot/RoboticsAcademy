@@ -36,7 +36,7 @@ As this is a drones exercise, you will need to additionally install the `jderobo
 sudo apt-get install ros-melodic-drone-wrapper ros-melodic-rqt-drone-teleop ros-melodic-jderobot-assets
 ```
 
-There is an additional dependancy on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/installation/#specific-infrastructure).
+There is an additional dependancy on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
 ## How to run
 
@@ -101,7 +101,5 @@ Simple hints provided to help you solve the follow_road exercise. Please note th
 <br/>
 
 # Contributors
-- *Basic code made by [Nikhil Khedekar](https://github.com/nkhedekar)*
-- *Code of practice performed by [Nikhil Khedekar](https://github.com/nkhedekar)*
-- *Gazebo models and worlds made by [Nikhil Khedekar](https://github.com/nkhedekar)*
-- *Documentation and review: [Nikhil Khedekar](https://github.com/nkhedekar) and [Pedro Arias](https://github.com/pariaspe)*
+- *Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).* 
+- *Maintained by [Pedro Arias](https://github.com/pariaspe).*
