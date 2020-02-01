@@ -7,8 +7,8 @@ To launch the example, follow the steps below:
 
 0. Add following packages if you don't have them already:
 ```
-$ sudo wget https://raw.githubusercontent.com/tu-darmstadt-ros-pkg/hector_localization/catkin/hector_pose_estimation/hector_pose_estimation_nodelets.xml -P /opt/ros/kinetic/share/hector_pose_estimation/
-$ sudo apt-get install ros-kinetic-navigation
+$ sudo wget https://raw.githubusercontent.com/tu-darmstadt-ros-pkg/hector_localization/catkin/hector_pose_estimation/hector_pose_estimation_nodelets.xml -P /opt/ros/melodic/share/hector_pose_estimation/
+$ sudo apt-get install ros-melodic-navigation
 ```
 
 1. Source the gazebo setups:
