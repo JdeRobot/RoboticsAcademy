@@ -49,6 +49,7 @@ if __name__ == '__main__':
         sys.exit(-1)
 
     cfg = config.load(sys.argv[2])
+    
     jdrc= comm.init(cfg, 'Amazon')
     motors = jdrc.getMotorsClient("Amazon.Motors")
     pose3d = jdrc.getPose3dClient("Amazon.Pose3D")

@@ -3,10 +3,10 @@ Amazon:
   Motors:
     Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:default -h localhost -p 9999"
-    Topic: "/amazon_warehouse_robot/cmd_vel"
+    Topic: "/amazon_warehouse_robot/teleop"
     Name: AmazonMotors
     maxV: 0.5
-    maxW: 0.1
+    maxW: 0.25
 
   Pose3D:
     Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
