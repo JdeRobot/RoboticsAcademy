@@ -26,6 +26,7 @@
     args="0 0 0 0 0 0 /map /amazon_warehouse_robot/odom 20" />
 
   <!-- Multiplexer is used to choose one controller at a time -->
+  <!-- The only publisher at /amazon_warehouse/cmd_vel -->
   <node pkg="nodelet" type="nodelet" name="nodelet_manager" args="manager"/>
   <node pkg="nodelet" type="nodelet" name="cmd_vel_mux" args="load yocs_cmd_vel_mux/CmdVelMuxNodelet nodelet_manager">
     <remap from="/cmd_vel_mux/output/cmd_vel"           to="/amazon_warehouse_robot/cmd_vel" />
