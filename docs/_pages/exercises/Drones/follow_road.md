@@ -9,13 +9,9 @@ toc: true
 toc_label: "TOC Follow Road"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
-
 gallery:
-  - url: /assets/images/exercises/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road.jpg
+  - url: /assets/images/exercises/follow_road/follow_road.jpg
+    image_path: /assets/images/exercises/follow_road/follow_road.jpg
     alt: "Follow Road."
     title: "Follow Road."
 

@@ -10,4 +10,4 @@ classes: wide
 
 ---
 
-Coming soon.
+Coming soon :-)

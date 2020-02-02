@@ -8,7 +8,7 @@ sidebar:
 classes: wide
 
 feature_row:
-  - image_path: /assets/images/exercises/follow_road.jpg
+  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
     title: "Follow Road"
     excerpt: "Quadrotor logic to follow a road."
