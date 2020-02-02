@@ -28,17 +28,17 @@ gifs:
   - url: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
     image_path: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
     alt: "examples"
-    title: "examples"
+    title: "On applying the rotation matrix"
   - url: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
     image_path: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
     alt: "examples"
-    title: "examples"
+    title: "Without applying the rotation matrix"
 
 gifs2:
   - url: /assets/images/exercises/obstacle_avoidance/oscillations.gif
     image_path: /assets/images/exercises/obstacle_avoidance/oscillations.gif
     alt: "examples"
-    title: "examples"
+    title: "Oscillation Problem in Narrow Corridors"
 
 
 youtubeId: 5SVkvfKPi_s
