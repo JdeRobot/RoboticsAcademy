@@ -115,6 +115,14 @@ It contains Gazebo world files and configuration files required for the Academy 
 # Specific infrastructure
 
 ## OpenCV
+
+You can install OpenCV in several ways:
+
+- Installing from the [PyPi repository](https://pypi.org/project/opencv-python/).
+- Compiling it from its [source code](https://docs.opencv.org/3.4.1/d2/de6/tutorial_py_setup_in_ubuntu.html).
+
+For more information, visit the [official repository](https://github.com/opencv/opencv).
+
 ## MavROS
 
 1. Install ROS Melodic, MAVROS and extras
