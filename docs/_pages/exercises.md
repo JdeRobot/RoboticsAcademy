@@ -49,7 +49,7 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
     
-  - image_path: /assets/images/exercises/labyrinth_escape.jpg
+  - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape_teaser.jpg
     alt: "Labyrinth Escape"
     title: "Labyrinth Escape"
     excerpt: "Escape from a labyrinth through visual signals."
@@ -57,7 +57,7 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
     
-  - image_path: /assets/images/exercises/position_control.png
+  - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
     title: "Position Control"
     excerpt: "Local navigation algorithm through the use of a PID controller."
@@ -65,7 +65,7 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
     
-  - image_path: /assets/images/exercises/rescue_people.jpg
+  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
     alt: "Rescue People"
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
@@ -73,7 +73,7 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
     
-  - image_path: /assets/images/exercises/drone_hangar.jpg
+  - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
     alt: "Drone Hangar"
     title: "Drone Hangar"
     excerpt: "Escape from a hangar filled with moving obstacles."
