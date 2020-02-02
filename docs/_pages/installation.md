@@ -75,10 +75,7 @@ It contains ROS drivers not included in the official ROS packages.
 1. Add the latest JdeRobot-base source
 
     ```bash
-    sudo sh -c 'cat<<EOF>/etc/apt/sources.list.d/jderobot.list
-
-    deb [arch=amd64] http://wiki.jderobot.org/apt bionic main
-    EOF'
+    sudo sh -c 'echo "deb [arch=amd64] http://wiki.jderobot.org `lsb_release -cs` main" > /etc/apt/sources.list.d/jderobot.list'
     ```
 
 2. Get and add the public key from the JdeRobot repository
@@ -115,6 +112,14 @@ It contains Gazebo world files and configuration files required for the Academy 
 # Specific infrastructure
 
 ## OpenCV
+
+You can install OpenCV in several ways:
+
+- Installing from the [PyPi repository](https://pypi.org/project/opencv-python/).
+- Compiling it from its [source code](https://docs.opencv.org/3.4.1/d2/de6/tutorial_py_setup_in_ubuntu.html).
+
+For more information, visit the [official repository](https://github.com/opencv/opencv).
+
 ## MavROS
 
 1. Install ROS Melodic, MAVROS and extras

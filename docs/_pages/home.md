@@ -50,3 +50,12 @@ For execution the student launches Gazebo with certain configuration file (speci
 {% include feature_row %}
 
 {% include video id="ID7qaEcIu4k" provider="youtube" %}
+
+
+## Sponsors
+
+<figure class="third">
+    <a href="https://www.urjc.es/" target="_blank"><img src="/assets/images/cover/logoURJC.jpg" style="width:400px;"></a>
+    <a href="https://github.com/RoboticsLabURJC" target="_blank"><img src="/assets/images/cover/peloto.png" style="width:400px;"></a>
+    <a href="https://jderobot.github.io/" target="_blank"><img src="/assets/images/cover/logo.png" style="width:400px;"></a>
+</figure>

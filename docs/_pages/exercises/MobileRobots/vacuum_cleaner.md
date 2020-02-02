@@ -9,9 +9,6 @@ toc: true
 toc_label: "TOC Vacuum Cleaner"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
 
 gallery:
     image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
@@ -181,7 +178,7 @@ Once the direction has been decided, we move in that direction. This is the simp
 A word of caution though, whenever we have a change of state, we have to give a sleep duration to the robot to give it time to reset the commands given to it. [Illustrations](#Illustrations) section describes a visual representation.
 
 ### Spiral Movement
-Using the physical formula **v = r . &omega;** (See [references](#References) for more details). In order to increase **r**, we can either increase **v** or decrease **&omega;**, while keeping the other parameter constant. Experimentally, increasing **v** has a better effect than decreasing **&omega;**. Refer to [illustrations](#Illustrations)
+Using the physical formula $v = r·\omega$ (See [references](#References) for more details). In order to increase $r$, we can either increase $v$ or decrease $\omega$, while keeping the other parameter constant. Experimentally, increasing $v$ has a better effect than decreasing $\omega$. Refer to [illustrations](#Illustrations).
 
 ### Analysis
 Being such a simple algorithm, it is not expected to work all the time. The maximum accuracy we got was 80% and that too only once!
@@ -197,11 +194,11 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/reduce_omega.gif)
 
-*Effect of reducing **&omega;** to generate spiral*
+*Effect of reducing $\omega$ to generate spiral*
 
 ![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/increasing_v.gif)
 
-*Effect of increasing **v** to generate spiral*
+*Effect of increasing $v$ to generate spiral*
 
 
 One possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum without autolocation.
@@ -212,14 +209,11 @@ One possible solution is to implement the logic of a navigation algorithm for an
 <br/>
 
 # Contributors
-- *Basic code and code of practice made by [Vanessa Fernandez](https://github.com/vmartinezf)*
-- *Improvements [Carlos Awadallah](https://github.com/cawadall)*
-- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna)*
-- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
+- Authors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
+- Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 <!--
 Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.
-
 {% include youtubePlayer.html id=page.youtubeId2 %}
-
 -->

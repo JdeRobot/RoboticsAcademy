@@ -9,10 +9,6 @@ toc: true
 toc_label: "TOC Labyrinth Escape"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
-
 gallery:
   - url: /assets/images/exercises/labyrinth_escape.jpg
     image_path: /assets/images/exercises/labyrinth_escape.jpg
@@ -93,5 +89,5 @@ Simple hints provided to help you solve the labyrinth_escape exercise. Please no
 <br/>
 
 # Contributors
-- *Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).* 
-- *Maintained by [Pedro Arias](https://github.com/pariaspe).*
+- Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe). 
+- Maintained by [Pedro Arias](https://github.com/pariaspe).

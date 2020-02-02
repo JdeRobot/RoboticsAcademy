@@ -200,12 +200,8 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 # Contributors
 
-- *Base code made by [Alberto Martín](https://github.com/almartinflorido)*
-- *Code of practice performed by [Francisco Rivas](https://github.com/chanfr)*
-- *Gazebo models and worlds made by [Francisco Pérez](https://github.com/fqez)*
-- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna) and [Pankhuri Vanjani](https://github.com/pankhurivanjani)*
-- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
-
+- Authors: , [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
+- Maintaied by [Pankhuri Vanjani](https://github.com/pankhurivanjani) and [Sakshay Mahna](https://github.com/SakshayMahna).
 
 # References
 

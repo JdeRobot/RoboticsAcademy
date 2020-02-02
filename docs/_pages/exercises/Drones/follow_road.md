@@ -9,13 +9,9 @@ toc: true
 toc_label: "TOC Follow Road"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
-
 gallery:
-  - url: /assets/images/exercises/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road.jpg
+  - url: /assets/images/exercises/follow_road/follow_road.jpg
+    image_path: /assets/images/exercises/follow_road/follow_road.jpg
     alt: "Follow Road."
     title: "Follow Road."
 
@@ -101,5 +97,5 @@ Simple hints provided to help you solve the follow_road exercise. Please note th
 <br/>
 
 # Contributors
-- *Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).* 
-- *Maintained by [Pedro Arias](https://github.com/pariaspe).*
+- Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
+- Maintained by [Pedro Arias](https://github.com/pariaspe).

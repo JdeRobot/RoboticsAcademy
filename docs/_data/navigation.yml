@@ -36,11 +36,3 @@ docs:
         url: /contribute/
       - title: "Status"
         url: /status/
-  - title: "Web Release"
-    children:
-    - title: "Academy Web"
-      url: https://unibotics.org/main_page
-  - title: "Forum"
-    children:
-    - title: "Forum"
-      url: https://developers.unibotics.org/

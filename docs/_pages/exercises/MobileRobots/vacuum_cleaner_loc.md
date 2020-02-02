@@ -231,13 +231,12 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 *PID Based(without grid) Approach*
 
 # Contributors
-- *Basic code and code of practice made by [Vanessa Fernandez](https://github.com/vmartinezf)*
-- *Improvements [Carlos Awadallah](https://github.com/cawadall)*
-- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna)*
-- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
+- Authors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
+- Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References
-The major credit for this coverage algorithm goes to [Jose Sir](https://github.com/jmplaza) and his student [Irene](https://github.com/ilope236).
+The major credit for this coverage algorithm goes to [Jose María Cañas](https://github.com/jmplaza) and his student [Irene Lope](https://github.com/ilope236).
 
 [1](https://onlinelibrary.wiley.com/doi/full/10.1002/047134608X.W8318)
 [2](https://en.wikipedia.org/wiki/Transformation_(function))
