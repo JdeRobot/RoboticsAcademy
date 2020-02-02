@@ -24,6 +24,23 @@ gallery:
     image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_interface.png
     alt: "Interface"
 
+gifs:
+  - url: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
+    image_path: /assets/images/exercises/obstacle_avoidance/with_rotation.gif
+    alt: "examples"
+    title: "examples"
+  - url: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
+    image_path: /assets/images/exercises/obstacle_avoidance/without_rotation.gif
+    alt: "examples"
+    title: "examples"
+
+gifs2:
+  - url: /assets/images/exercises/obstacle_avoidance/oscillations.gif
+    image_path: /assets/images/exercises/obstacle_avoidance/oscillations.gif
+    alt: "examples"
+    title: "examples"
+
+
 youtubeId: 5SVkvfKPi_s
 ---
 ## Objective
@@ -252,8 +269,6 @@ There are a few problems related to this algorithm:
 
 ![Drawbacks]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/drawbacks.png)
 
-
-
 ### Virtual Force Histogram Algorithm
 This algorithm improves over the Virtual Force Field Algorithm, by using a data structure called the Polar Histogram. The robot maintains a histogram grid of the  instantaneous sensor values received. Then, based on the threshold value set by the programmer, the program detects minimas(vallies) in the polar histogram. The angle corresponding to these values are then followed by the robot.
 
@@ -290,30 +305,20 @@ A simple observation reveals that we are required to **keep moving forward** for
 Also, please note that this is **not the only solution** to this problem. We may also add an offset vector in the direction of motion of the car to cancel the effect of the redundant component.
 
 ### Illustrations
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/with_rotation.gif)
 
-*On applying the rotation matrix*
+{% include gallery id="gifs" caption="On applying the rotation matrix (left) - Without applying the rotation matrix (right)" %}
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/without_rotation.gif)
-
-*Without applying the rotation matrix*
-
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/oscillations.gif)
-
-*Oscillation Problem in Narrow Corridors*
+{% include gallery id="gifs2" caption="Oscillation Problem in Narrow Corridors" %}
 
 ## Demonstrative Video
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
-
 # Contributors
-- *Basic code made by [Alberto Martín](https://github.com/almartinflorido) and Victor Arribas*
-- *Code of practice made by Eduardo Perdices (eperdices@gsyc.es)*
-- *Gazebo models and worlds made by [Francisco Pérez](https://github.com/fqez)*
-- *Adapted to Turtlebot by Julio Vega (julio.vega@urjc.es)*
-- *Documentation and review: [Sakshay Mahna](https://github.com/SakshayMahna)*
-- *Style and structure review: [Nacho Arranz](https://github.com/igarag)*
+
+- Authors: [Alberto Martín](https://github.com/almartinflorido), [Eduardo Perdices](eperdices@gsyc.es), [Francisco Pérez](https://github.com/fqez), Victor Arribas, [Julio Vega](julio.vega@urjc.es), [Nacho Arranz](https://github.com/igarag).
+- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
+
 
 # References
 [1](http://www-personal.umich.edu/~johannb/vff&vfh.htm)
