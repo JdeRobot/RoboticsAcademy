@@ -85,7 +85,6 @@ def execute(event):
 * `drone.get_yaw()` - Returns the yaw of the drone
 * `drone.set_cmd_vel(vx, vy, vz, az)` - Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
 
-
 ## Theory
 **Comming soon.**
 
@@ -99,5 +98,5 @@ Simple hints provided to help you solve the follow_road exercise. Please note th
 <br/>
 
 # Contributors
-- *Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).* 
-- *Maintained by [Pedro Arias](https://github.com/pariaspe).*
+- Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
+- Maintained by [Pedro Arias](https://github.com/pariaspe).
