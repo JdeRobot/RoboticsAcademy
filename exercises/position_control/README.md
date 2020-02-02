@@ -1,3 +1,3 @@
 # Position Control
 
-[Information about the exercise on the documentation website]({{ site.url }}/RoboticsAcademy/exercises/Drones/position_control).
+[Information about the exercise on the documentation website](https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control).
