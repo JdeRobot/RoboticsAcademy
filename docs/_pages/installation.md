@@ -75,10 +75,7 @@ It contains ROS drivers not included in the official ROS packages.
 1. Add the latest JdeRobot-base source
 
     ```bash
-    sudo sh -c 'cat<<EOF>/etc/apt/sources.list.d/jderobot.list
-
-    deb [arch=amd64] http://wiki.jderobot.org/apt bionic main
-    EOF'
+    sudo sh -c 'echo "deb [arch=amd64] `http://wiki.jderobot.org lsb_release -cs` main" > /etc/apt/sources.list.d/jderobot.list'
     ```
 
 2. Get and add the public key from the JdeRobot repository
