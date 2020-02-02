@@ -1,26 +1,28 @@
 ---
-permalink: /exercises/Drones/follow_road
-title: "Follow Road"
+permalink: /exercises/Drones/drone_hangar
+title: "Drone Hangar"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Follow Road"
+toc_label: "TOC Drone Hangar"
 toc_icon: "cog"
 
-gallery:
-  - url: /assets/images/exercises/follow_road/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road/follow_road.jpg
-    alt: "Follow Road."
-    title: "Follow Road."
+<!--- layout: archive --->
 
-youtubeId: KLDX4OPTL_c
+<!--- classes: wide --->
+
+gallery:
+  - url: /assets/images/exercises/drone_hangar.jpg
+    image_path: /assets/images/exercises/drone_hangar.jpg
+    alt: "Drone Hangar."
+    title: "Drone Hangar."
+
+youtubeId: c9y89vZVkjg
 ---
 
-The goal of this exercise is to implement the logic that allows a quadrotor to follow a road. In order to do this, you will have to establish a color filter to segment road lines and then develop an algorithm to follow them until the end of the road.
-
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/cloud.png" width="100%" height="60%"> -->
+The goal of this exercise is to implement the logic that allows a quadrotor to escape a hangar filled with moving obstacles.
 
 {% include gallery caption="Gallery." %}
 
@@ -97,5 +99,5 @@ Simple hints provided to help you solve the follow_road exercise. Please note th
 <br/>
 
 # Contributors
-- Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
-- Maintained by [Pedro Arias](https://github.com/pariaspe).
+- *Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).* 
+- *Maintained by [Pedro Arias](https://github.com/pariaspe).*
