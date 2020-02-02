@@ -27,6 +27,11 @@ gem install jekyll bundler
 
 Notice that we don't use the `root` user :-)
 
+
+### Installing Ruby and Jekyll on Mac OS X
+
+Follow the Jekyll [page installation guide](https://jekyllrb.com/docs/installation/macos/).
+
 ## Running Jekyll Serve
 
 By default, the Jekyll server is launched with the following command (which is the one indicated on your website).
