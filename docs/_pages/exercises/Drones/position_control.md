@@ -1,12 +1,12 @@
 ---
-permalink: /exercises/Drones/follow_road
-title: "Follow Road"
+permalink: /exercises/Drones/position_control
+title: "Position Control"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Follow Road"
+toc_label: "TOC Position Control"
 toc_icon: "cog"
 
 <!--- layout: archive --->
@@ -14,17 +14,17 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road.jpg
-    alt: "Follow Road."
-    title: "Follow Road."
+  - url: /assets/images/exercises/position_control.png
+    image_path: /assets/images/exercises/position_control.png
+    alt: "Position Control."
+    title: "Position Control."
 
-youtubeId: KLDX4OPTL_c
+youtubeId: ZfGN53v56AI
 ---
 
-The goal of this exercise is to implement the logic that allows a quadrotor to follow a road. In order to do this, you will have to establish a color filter to segment road lines and then develop an algorithm to follow them until the end of the road.
+The goal of this exercise is to implement a local navigation algorithm through the use of a PID controller.
 
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/cloud.png" width="100%" height="60%"> -->
+For this exercise, a world has been designed in gazebo that contains the Iris quadrotor and 5 beacons arranged in a cross. The task is to program the drone to follow the route as given in the picture below.
 
 {% include gallery caption="Gallery." %}
 
@@ -43,13 +43,7 @@ There is an additional dependency on MAVROS and PX4 that you can fulfill followi
 To launch the exercise, simply use the following command from this directory:
 
 ```bash
-roslaunch follow_road.launch
-```
-
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a separate terminal as follows:
-
-```bash
-colorTuner colorTuner.conf
+roslaunch position_control.launch
 ```
 
 ## How to do the practice

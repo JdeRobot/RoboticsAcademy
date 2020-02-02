@@ -1,12 +1,12 @@
 ---
-permalink: /exercises/Drones/follow_road
-title: "Follow Road"
+permalink: /exercises/Drones/rescue_people
+title: "Rescue People"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Follow Road"
+toc_label: "TOC Rescue People"
 toc_icon: "cog"
 
 <!--- layout: archive --->
@@ -14,17 +14,15 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road.jpg
-    alt: "Follow Road."
-    title: "Follow Road."
+  - url: /assets/images/exercises/rescue_people.jpg
+    image_path: /assets/images/exercises/rescue_people.jpg
+    alt: "Rescue People."
+    title: "Rescue People."
 
-youtubeId: KLDX4OPTL_c
+youtubeId: c0heCUeDm7I
 ---
 
-The goal of this exercise is to implement the logic that allows a quadrotor to follow a road. In order to do this, you will have to establish a color filter to segment road lines and then develop an algorithm to follow them until the end of the road.
-
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/cloud.png" width="100%" height="60%"> -->
+The goal of this exercise is to implement the logic that allows a quadrotor to recognize the faces of lost people and save their locations in order to perform a subsequent rescue maneuver.
 
 {% include gallery caption="Gallery." %}
 
@@ -43,13 +41,7 @@ There is an additional dependency on MAVROS and PX4 that you can fulfill followi
 To launch the exercise, simply use the following command from this directory:
 
 ```bash
-roslaunch follow_road.launch
-```
-
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a separate terminal as follows:
-
-```bash
-colorTuner colorTuner.conf
+roslaunch rescue_people.launch
 ```
 
 ## How to do the practice
