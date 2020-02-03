@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/drone_hangar.jpg
-    image_path: /assets/images/exercises/drone_hangar.jpg
+  - url: /assets/images/exercises/drone_hangar/drone_hangar.jpg
+    image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar."
     title: "Drone Hangar."
 

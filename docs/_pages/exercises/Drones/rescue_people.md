@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/rescue_people.jpg
-    image_path: /assets/images/exercises/rescue_people.jpg
+  - url: /assets/images/exercises/rescue_people/rescue_people.jpg
+    image_path: /assets/images/exercises/rescue_people/rescue_people.jpg
     alt: "Rescue People."
     title: "Rescue People."
 

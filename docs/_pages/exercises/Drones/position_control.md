@@ -10,8 +10,8 @@ toc_label: "TOC Position Control"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/position_control.png
-    image_path: /assets/images/exercises/position_control.png
+  - url: /assets/images/exercises/position_control/position_control.png
+    image_path: /assets/images/exercises/position_control/position_control.png
     alt: "Position Control."
     title: "Position Control."
 
