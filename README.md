@@ -9,4 +9,4 @@ If you are a contributor, please note that we use GitHub Pages and a Jekyll them
 
 ## How to contribute?
 
-Take a look at the [contribute section](https://github.com/igarag/Academy/blob/master/CONTRIBUTE.md) to join this project.
+Take a look at the [contribute section](https://github.com/JdeRobot/RoboticsAcademy/wiki/Contribute) to join this project.
