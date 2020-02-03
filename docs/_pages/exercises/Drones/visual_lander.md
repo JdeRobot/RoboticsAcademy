@@ -10,8 +10,8 @@ toc_label: "TOC Visual Lander"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/sandbox/visual_lander.jpg
-    image_path: /assets/images/exercises/sandbox/visual_lander.jpg
+  - url: /assets/images/exercises/visual_lander/visual_lander.jpg
+    image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
     alt: "Visual Lander."
     title: "Visual Lander."
 
