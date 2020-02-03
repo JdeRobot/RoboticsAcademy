@@ -10,8 +10,8 @@ toc_label: "TOC Labyrinth Escape"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/labyrinth_escape.jpg
-    image_path: /assets/images/exercises/labyrinth_escape.jpg
+  - url: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
+    image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
     alt: "Labyrinth Escape."
     title: "Labyrinth Escape."
 

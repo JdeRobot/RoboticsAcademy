@@ -80,6 +80,14 @@ feature_row:
     url: "/exercises/Drones/drone_hangar"
     btn_class: "btn--primary"
     btn_label: "Go!"
+    
+  - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
+    alt: "Visual Lander"
+    title: "Visual Lander"
+    excerpt: "Visualization of a beacon and land on it."
+    url: "/exercises/Drones/visual_lander"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
 ---
 
 

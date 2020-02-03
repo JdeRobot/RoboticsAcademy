@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/rescue_people.jpg
-    image_path: /assets/images/exercises/rescue_people.jpg
+  - url: /assets/images/exercises/rescue_people/rescue_people.jpg
+    image_path: /assets/images/exercises/rescue_people/rescue_people.jpg
     alt: "Rescue People."
     title: "Rescue People."
 
@@ -84,7 +84,7 @@ def execute(event):
 **Comming soon.**
 
 ## Hints
-Simple hints provided to help you solve the follow_road exercise. Please note that the **full solution has not been provided.**
+Simple hints provided to help you solve the rescue_people exercise. Please note that the **full solution has not been provided.**
 
 **Comming soon.**
 

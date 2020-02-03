@@ -10,8 +10,8 @@ toc_label: "TOC Position Control"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/position_control.png
-    image_path: /assets/images/exercises/position_control.png
+  - url: /assets/images/exercises/position_control/position_control.png
+    image_path: /assets/images/exercises/position_control/position_control.png
     alt: "Position Control."
     title: "Position Control."
 
@@ -82,7 +82,7 @@ def execute(event):
 **Comming soon.**
 
 ## Hints
-Simple hints provided to help you solve the follow_road exercise. Please note that the **full solution has not been provided.**
+Simple hints provided to help you solve the position_control exercise. Please note that the **full solution has not been provided.**
 
 **Comming soon.**
 

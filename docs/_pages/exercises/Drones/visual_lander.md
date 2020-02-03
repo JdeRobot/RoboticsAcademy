@@ -1,28 +1,24 @@
 ---
-permalink: /exercises/Drones/drone_hangar
-title: "Drone Hangar"
+permalink: /exercises/Drones/visual_lander
+title: "Visual Lander"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Drone Hangar"
+toc_label: "TOC Visual Lander"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
-
 gallery:
-  - url: /assets/images/exercises/drone_hangar/drone_hangar.jpg
-    image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
-    alt: "Drone Hangar."
-    title: "Drone Hangar."
+  - url: /assets/images/exercises/visual_lander/visual_lander.jpg
+    image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
+    alt: "Visual Lander."
+    title: "Visual Lander."
 
-youtubeId: c9y89vZVkjg
+youtubeId: i0PGusLHXQM
 ---
 
-The goal of this exercise is to implement the logic that allows a quadrotor to escape a hangar filled with moving obstacles.
+The goal of this exercise is to implement the logic that allows a quadrotor to visualize a beacon and land on it.
 
 {% include gallery caption="Gallery." %}
 
@@ -36,18 +32,14 @@ sudo apt-get install ros-melodic-drone-wrapper ros-melodic-rqt-drone-teleop ros-
 
 There is an additional dependency on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
+Apart from these, as this exercise also requires a ground robot, you will need the `rqt_ground_robot_teleop` package. We are in the process of making it available through `apt-get` however until that is available, the best method for it would be to [clone it](https://github.com/JdeRobot/ground_robots) into your catkin_ws.
+
 ## How to run
 
 To launch the exercise, simply use the following command from this directory:
 
 ```bash
 roslaunch follow_road.launch
-```
-
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a separate terminal as follows:
-
-```bash
-colorTuner colorTuner.conf
 ```
 
 ## How to do the practice
@@ -85,11 +77,12 @@ def execute(event):
 * `drone.get_yaw()` - Returns the yaw of the drone
 * `drone.set_cmd_vel(vx, vy, vz, az)` - Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
 
+
 ## Theory
 **Comming soon.**
 
 ## Hints
-Simple hints provided to help you solve the drone_hangar exercise. Please note that the **full solution has not been provided.**
+Simple hints provided to help you solve the visual_lander exercise. Please note that the **full solution has not been provided.**
 
 **Comming soon.**
 
