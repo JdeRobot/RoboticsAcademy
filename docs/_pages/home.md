@@ -28,9 +28,9 @@ feature_row:
 
   - image_path: /assets/images/cover/cover_column_3.png
     alt: "100% free"
-    title: "Web release"
+    title: "Web release (beta)"
     excerpt: "Use JdeRobot Academy from your browser, no installation required"
-    url: https://academy.jderobot.org/web/login
+    url: "/webrelease"
     btn_class: "btn--primary"
     btn_label: "Learn more"
 
