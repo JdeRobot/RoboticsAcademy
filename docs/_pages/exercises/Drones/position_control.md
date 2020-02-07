@@ -15,7 +15,8 @@ gallery:
     alt: "Position Control."
     title: "Position Control."
 
-youtubeId: ZfGN53v56AI
+youtubeId1: ZfGN53v56AI
+youtubeId2: L1suayB3vVA
 ---
 
 The goal of this exercise is to implement a local navigation algorithm through the use of a PID controller.
@@ -94,7 +95,7 @@ Simple hints provided to help you solve the position_control exercise. Please no
 
 **Comming soon.**
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 <br/>
 
