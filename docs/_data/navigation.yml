@@ -8,7 +8,7 @@ main:
     url: /installation/
 
   - title: "Web release"
-    url: /webrelease/
+    url: /webrelease
 
   - title: "Forum"
     url: https://academy.jderobot.org/forum
