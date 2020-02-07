@@ -10,7 +10,7 @@ classes: wide
 ---
 
 
-JdeRobot Academy is also available as an **open-access web page**. This way you can enjoy it from the web browser on your favourite Operating System (Linux, Window, MacOs...). No installation is required when using the _online_ JdeRobot Academy.
+JdeRobot Academy is also available as an **open-access web page**. This way you can enjoy it from the web browser on your favourite Operating System (Linux, Windows, MacOs...). No installation is required when using the _online_ JdeRobot Academy.
 
 **It is supported by a server cluster at the Universidad Rey Juan Carlos** (Madrid, Spain). The computing power of the cluster is bounded and there is a maximum of simultaneous users supported. When such limit is reached the web page will suggest you to play with the _native release_ of JdeRobot Academy, which can run on your computer and it is easy to install. 
 
@@ -19,7 +19,7 @@ JdeRobot Academy is also available as an **open-access web page**. This way you 
 -->
 
 <figure class="align-center" style="text-align: center">
-    <a href="https://academy.jderobot.org/web/login" target="_blank"><img src="/assets/images/cover/play-logo.png" style="width:100px;"></a>
+    <a href="https://academy.jderobot.org/web/login" target="_blank"><img src="{{ site.url }}{{ site.baseurl }}/assets/images/cover/play-logo.png" style="width:100px;"></a>
 </figure>
 
 
