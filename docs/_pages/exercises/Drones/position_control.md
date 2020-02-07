@@ -76,6 +76,14 @@ def execute(event):
 * `drone.get_pitch()` - Returns the pitch of the drone
 * `drone.get_yaw()` - Returns the yaw of the drone
 * `drone.set_cmd_vel(vx, vy, vz, az)` - Commands the linear velocity of the drone in the x, y and z directions and the angular velocity in z in its body fixed frame
+* `init_beacons()` - Initializes the beacons
+* `get_next_beacon()` - Returns the next beacon to be visited
+* `beacon.get_pose()` - Returns pose of the beacon
+* `beacon.get_id()` - Returns id of the beacon
+* `beacon.is_reached()` - Returns reached of the beacon
+* `beacon.set_reached(value)` - Sets reached parameter of a beacon
+* `beacon.is_active()` - Returns active of the beacon
+* `beacon.set_active(value)` - Sets active parameter of a beacon
 
 
 ## Theory
