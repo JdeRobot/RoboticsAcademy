@@ -29,29 +29,37 @@ The objective of this practice is to implement the logic of a navigation algorit
 ## How to run
 
 1. Enable Kobuki_msgs:
+
 ```bash
 sudo apt-get install ros-melodic-kobuki-msgs
 ```
+
 1. Execution watching the world: 
+
 ```bash
 roslaunch vacuum_slam.launch
 ```
+
 2. Execution of the practice and the user interface: 
+
 ```bash
 python2 vacuum.py vacuum_conf.yml
 ```
+
 3. Execution of the automatic evaluator: 
+
 ```bash
 python2 referee.py vacuum_conf.yml
 ```
 
 To simplify the closure of the environment, simply close the VacuumCleaner window (s). *Ctrl + C will give problems*.
 
-
 ## How to do the practice
+
 To carry out the practice, you must edit the MyAlgorithms.py file and insert all the functionality in it.
 
-### Where to insert the code
+## Where to insert the code
+
 [MyAlgorithm.py](MyAlgorithm.py#L81)
 ```python
 def execute(self):
@@ -64,7 +72,8 @@ def execute(self):
     #self.motors.sendW(5)
 ```
 
-### API
+## API
+
 * `self.pose3d.getPose3d().x` - to get the X coordinate of the robot
 * `self.pose3d.getPose3d().y` - to get the Y coordinate of the robot
 * `self.pose3d.getPose3d().yaw` - to get the orientation of the robot
@@ -81,6 +90,7 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 ## Types conversion
 
 ### Laser
+
 ```python
 laser_data = self.laser.getLaserData()
 
@@ -111,7 +121,7 @@ def laser_vector(laser):
 
 A reference solution
 
-<br/>
+------
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
@@ -124,16 +134,20 @@ As the problem may have multiple solutions, only the theory behind the reference
 #### Transformation Matrices
 In simple terms, transformation is an invertible function that maps a set _X_ to itself. Geometrically, it moves a point to some other location in some space. Algebraically, all the transformations can be mapped using matrix representation. In order to apply transformation on a point, we multiply the point with the specific transformation matrix to get the new location. Some important transformations are:
 
-##### Translation
+- **Translation**
+
 Translation of Euclidean Space(2D or 3D world) moves every point by a fixed distance in the same direction
 
-##### Rotation
+- **Rotation**
+
 Rotation spins the object around a fixed point, known as center of rotation.
 
-##### Scaling
+- **Scaling**
+
 Scaling enlarges or diminishes objects, by a certain given scale factor.
 
-##### Shear
+- **Shear**
+
 Shear rotates one axis so that the axes are no longer perpendicular.
 
 In order to apply multiple transformations all at the same time, we use the concept of **Transformation Matrix** which enables us to multiply a single matrix for all the operations at once!
@@ -202,16 +216,16 @@ In the context of this exercise,
 ### Checking for Points
 Defining different points simplifies the algorithm as well!
 
-#### Return Points
+- **Return Points**
 Return Points can be checked while the robot is in zigzag motion. Empty cells near the robot can be classified as return points. The list of Return Points has to be kept dynamic in order to insert and pop the points whenever required.
 
-#### Critical Points
+- **Critical Points**
 Critical Points can be classified whenever our robot is stuck around Obstacles or Virtual Obstacles and cannot move any further.
 
-### Checking for Arrival of Cell
+- **Checking for Arrival of Cell**
 Considering various offset errors in the real world(consider simulation to be real world as well!). Arrival of the robot in a particular cell should be considered within a margin of error, otherwise the robot may start oscillating, in the search of a cell on which it can never arrive.
 
-### Efficient Turning and Straight Motion
+- **Efficient Turning and Straight Motion**
 One trick to adjust the speed and direction of motion is to keep the next 3 cells of the robot which are in it's direction of motion under consideration.
 
 - **All 3 cells are free** Make the robot move at maximum speed
@@ -221,7 +235,7 @@ One trick to adjust the speed and direction of motion is to keep the next 3 cell
 
 As a final note, quite a lot of tips and tricks regarding implementation have been discussed in this page. This is a tough exercise, which may take **quite a lot of time** to solve. The main objective of the exercise is to cover a **significant area of the house**, without taking time into consideration.
 
-### Illustrations
+## Illustrations
 ![Grid Based]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/grid.gif)
 
 *Grid Based Approach*
@@ -230,9 +244,9 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 
 *PID Based(without grid) Approach*
 
-# Contributors
+## Contributors
 
-- Authors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
+- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
 - Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References
@@ -246,4 +260,3 @@ The major credit for this coverage algorithm goes to [Jose María Cañas](https:
 [6](https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-irene_lope-2018.pdf)
 
 One of the best [video series on Linear Algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)
-

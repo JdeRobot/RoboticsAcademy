@@ -32,7 +32,10 @@ docs:
 
   - title: "Contribute"
     children:
-      - title: "How to contribute"
-        url: /contribute/
       - title: "Status"
         url: /status/
+      - title: "Coming soon"
+        url: /coming_soon/
+      - title: "How to contribute"
+        url: /contribute/
+
