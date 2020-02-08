@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/drone_hangar.jpg
-    image_path: /assets/images/exercises/drone_hangar.jpg
+  - url: /assets/images/exercises/drone_hangar/drone_hangar.jpg
+    image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar."
     title: "Drone Hangar."
 
@@ -89,7 +89,7 @@ def execute(event):
 **Comming soon.**
 
 ## Hints
-Simple hints provided to help you solve the follow_road exercise. Please note that the **full solution has not been provided.**
+Simple hints provided to help you solve the drone_hangar exercise. Please note that the **full solution has not been provided.**
 
 **Comming soon.**
 
