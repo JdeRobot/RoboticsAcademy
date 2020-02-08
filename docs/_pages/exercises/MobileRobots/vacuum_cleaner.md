@@ -210,7 +210,7 @@ One possible solution is to implement the logic of a navigation algorithm for an
 
 # Contributors
 
-- Authors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
+- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
 - Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 <!--

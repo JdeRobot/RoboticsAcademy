@@ -91,5 +91,5 @@ Simple hints provided to help you solve the follow_road exercise. Please note th
 <br/>
 
 # Contributors
-- Authors: [Nikhil Khedekar](https://github.com/nkhedekar), [Jose Maria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
+- Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [Jose Maria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
 - Maintained by [Pedro Arias](https://github.com/pariaspe).

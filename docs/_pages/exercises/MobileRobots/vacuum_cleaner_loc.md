@@ -232,7 +232,7 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 
 # Contributors
 
-- Authors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
+- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
 - Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References

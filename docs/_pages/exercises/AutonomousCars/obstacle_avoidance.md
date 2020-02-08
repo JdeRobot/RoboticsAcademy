@@ -314,7 +314,7 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 # Contributors
 
-- Authors: [Alberto Martín](https://github.com/almartinflorido), [Eduardo Perdices](eperdices@gsyc.es), [Francisco Pérez](https://github.com/fqez), Victor Arribas, [Julio Vega](julio.vega@urjc.es), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Nacho Arranz](https://github.com/igarag).
+- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Eduardo Perdices](eperdices@gsyc.es), [Francisco Pérez](https://github.com/fqez), Victor Arribas, [Julio Vega](julio.vega@urjc.es), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Nacho Arranz](https://github.com/igarag).
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 
