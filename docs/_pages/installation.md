@@ -25,7 +25,7 @@ Robotics-Academy currently supports **Linux** operating system. These installati
     - Required
     - Academy includes templates for the exercises
 
-# Generic infrastructure
+## Generic infrastructure
 
 ## ROS Middleware
 
@@ -96,7 +96,6 @@ It contains ROS drivers not included in the official ROS packages.
     sudo apt install jderobot
     ```
 
-
 ## JdeRobot/assets
 
 Supported release is 6.0.0
@@ -108,8 +107,7 @@ It contains Gazebo world files and configuration files required for the Academy 
     sudo apt install jderobot-gazebo-assets
     ```
 
-
-# Specific infrastructure
+## Specific infrastructure
 
 ## OpenCV
 
@@ -237,11 +235,9 @@ Install previous dependencies:
     source ~/.bashrc
     ```
 
-
 ## MoveIt!
 
-
-# Academy source code
+## Academy source code
 
 Once you have generic and specific infrastructure installed in your system, you can download and install the JdeRobot Academy software.
 
