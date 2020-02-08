@@ -17,7 +17,7 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
-  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser.png
+  - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
     alt: "Obstacle avoidance"
     title: "Obstacle avoidance"
     excerpt: "Local navigation. Virtual Force Field navigation algorithm using a F1."
