@@ -62,11 +62,11 @@ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
 or add them directly to your bashrc to run automatically whenever you open a terminal:
 
 ```bash
-echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' > ~/.bashrc
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' >> ~/.bashrc
 ```
 
 ```bash
-echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' > ~/.bashrc
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.bashrc
 ```
 
 ```bash
