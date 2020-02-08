@@ -45,9 +45,11 @@ python2 referee.py referee.yml
 To simplify the closure of the environment, simply close the VacuumCleaner window(s). *Ctrl + C will give problems*.
 
 ## How to do the practice
+
 To carry out the practice, you must edit the MyAlgorithm.py file and insert the control logic into it.
 
-### Where to insert the code
+## Where to insert the code
+
 MyAlgorithm.py
 
 ```python
@@ -74,8 +76,8 @@ self.motors.sendAZ(vel.az)
 self.motors.sendV(vel.vx)
 ```
 
+## API
 
-### API
 * `self.pose3d.getPose3d().yaw` - to get the orientation of the robot
 * `self.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `self.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
@@ -87,8 +89,10 @@ self.motors.sendV(vel.vx)
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
-## Types conversion
-### Laser
+### Types conversion
+
+- **Laser**
+
 ```python
 laser_data = self.laser.getLaserData()
 
@@ -116,52 +120,68 @@ return laser_mean
 ```
 
 ## Theory
+
 Implementation of navigation algorithms for an autonomous vacuum is the basic requirement for this exercise. The main objective is to cover the largest area of a house. First, let us understand what is Coverage Algorithms.
 
 ### Coverage Algorithms
+
 Coverage Path Planning is an important area of research in Path Planning for robotics, which involves finding a path that passes through every reachable position in its environment. In this exercise, We are using a very basic coverage algorithm called Random Exploration.
 
 ![Coverage Algorithms]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/exp.gif)
 
-### Analyzing Coverage Algorithms
+## Analyzing Coverage Algorithms
+
 ### Classification
 Coverage algorithms are divided into two categories.
-#### Offline coverage
+
+- **Offline coverage**
 use fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.
 
-#### Online Coverage
-uses real-time measurements and decisions to cover the entire area. The Sensor-based approach is included in this category.
+- **Online Coverage**
+
+Uses real-time measurements and decisions to cover the entire area. The Sensor-based approach is included in this category.
 
 ### Base Movement
+
 The problem of coverage involves two standard basic motions, which are used as a base for other complex coverage algorithms.
-#### Spiral Motion
+
+- **Spiral Motion**
+
 The robot follows an increasing circle/square pattern.
 
 ![Base Movement Spiral]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/spiral.gif)
 
-#### Boustrophedon Motion
+- **Boustrophedon Motion**
+
 The robot follows an S-shaped pattern.
 
 ![Base Movement Boustrophedon]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/boustrophedon.gif)
 
 ### Analysis of Coverage Algorithms
+
 Any coverage algorithm is analyzed using the given criterion.
-#### Environment Decomposition
+
+- **Environment Decomposition**
 This involves dividing the area into smaller parts.
 
-#### Sweep Direction
+- **Sweep Direction**
+
 This influences the optimality of generated paths for each sub-region by adjusting the duration, speed, and direction of each sweep.
 
-#### Optimal Backtracking
+- **Optimal Backtracking**
+
 This involves the plan to move from one small subregion to another. The coverage is said to be complete when there is no point left to backtrack.
 
 ### Supplements
+
 Usually, coverage algorithms generate a linear, piecewise path composed of straight lines and sharp turns. This path is difficult for other autonomous drones like Underwater Vehicles, Aerial Vehicles and some Ground Vehicles difficult to follow. Path Smoothening is applied to these paths to effectively implement the algorithm.
 
 ## Hints
+
 Simple hints provided to help you solve the vacuum_cleaner exercise. Please note that the **full solution has not been provided.**
 
 ### Random Angle Generation
+
 The most important task is the generation of a random angle. There are 2 ways to achieve it.
 
 - **Random Duration**: By keeping the angular_velocity fixed, the duration of the turn can be randomized, in order to point the robot towards a random direction.
@@ -170,20 +190,24 @@ The most important task is the generation of a random angle. There are 2 ways to
 
 Among both the methods, Random Duration would be a preferable one as the Random Angle requires precision, which requires PID to be achieved successfully.
 
-Also, in order to acheive better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```. 
+Also, in order to acheive better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```.
 
 ### Dash Movement
+
 Once the direction has been decided, we move in that direction. This is the simplest part, we have to send velocity command to the robot, until a collision is detected.
 
 A word of caution though, whenever we have a change of state, we have to give a sleep duration to the robot to give it time to reset the commands given to it. [Illustrations](#Illustrations) section describes a visual representation.
 
 ### Spiral Movement
+
 Using the physical formula $v = r·\omega$ (See [references](#References) for more details). In order to increase $r$, we can either increase $v$ or decrease $\omega$, while keeping the other parameter constant. Experimentally, increasing $v$ has a better effect than decreasing $\omega$. Refer to [illustrations](#Illustrations).
 
 ### Analysis
+
 Being such a simple algorithm, it is not expected to work all the time. The maximum accuracy we got was 80% and that too only once!
 
 ### Illustrations
+
 ![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/without_duration.gif) 
 
 *Without applying a sleep duration the previous rotation command still has effect on the go straight command*
@@ -208,7 +232,7 @@ One possible solution is to implement the logic of a navigation algorithm for an
 
 <br/>
 
-# Contributors
+## Contributors
 
 - Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
 - Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).

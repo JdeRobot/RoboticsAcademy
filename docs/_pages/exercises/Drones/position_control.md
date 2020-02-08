@@ -47,7 +47,8 @@ roslaunch position_control.launch
 
 To solve the exercise, you must edit the `my_solution.py` file and insert the control logic into it.
 
-### Where to insert the code
+## Where to insert the code
+
 Your code has to be entered in the `execute` function between the `Insert your code` here comments.
 
 my_solution.py
@@ -66,7 +67,8 @@ def execute(event):
   #########################################################################
 ```
 
-### API
+## API
+
 * `set_image_filtered(cv2_image)` - If you want to show a filtered image of the camera images in the GUI
 * `set_image_threshed(cv2_image)` - If you want to show a thresholded image in the GUI
 * `drone.get_frontal_image()` - Returns the latest image from the frontal camera as a cv2_image
@@ -86,19 +88,21 @@ def execute(event):
 * `beacon.is_active()` - Returns active of the beacon
 * `beacon.set_active(value)` - Sets active parameter of a beacon
 
-
 ## Theory
+
 **Comming soon.**
 
 ## Hints
+
 Simple hints provided to help you solve the position_control exercise. Please note that the **full solution has not been provided.**
 
 **Comming soon.**
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-<br/>
+------
 
-# Contributors
+## Contributors
+
 - Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [Jose Maria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
 - Maintained by [Pedro Arias](https://github.com/pariaspe).

@@ -312,13 +312,12 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
-# Contributors
+## Contributors
 
 - Contributors: [Alberto Martín](https://github.com/almartinflorido), [Eduardo Perdices](eperdices@gsyc.es), [Francisco Pérez](https://github.com/fqez), Victor Arribas, [Julio Vega](julio.vega@urjc.es), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Nacho Arranz](https://github.com/igarag).
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
-
-# References
+## References
 [1](http://www-personal.umich.edu/~johannb/vff&vfh.htm)
 [2](https://en.wikibooks.org/wiki/Robotics/Navigation)
 [3](https://en.wikipedia.org/wiki/Robot_navigation)
