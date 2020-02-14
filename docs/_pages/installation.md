@@ -49,8 +49,9 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
 
 ## Gazebo simulator
 
-Supported release is Gazebo-9. It can be easily installed from official Debian packages, maintained by OpenRobotics organization. You can safely ignore this step as Gazebo-9 will be automatically installed with ROS Melodic package.
+Supported release is Gazebo-9. It can be easily installed from official Debian packages, maintained by OpenRobotics organization. You can safely ignore this step as Gazebo-9 will be automatically installed with ROS Melodic package (described in the [previous step](/RoboticsAcademy/installation/#ros-middleware)).
 
+<!--
 1. Add the lastest Gazebo source:
 
     ```bash
@@ -66,8 +67,9 @@ Supported release is Gazebo-9. It can be easily installed from official Debian p
     ```bash
     sudo apt-get install gazebo9
     ```
+-->
 
-## JdeRobot/base
+## JdeRobot-base
 
 Supported release is 6.0.0.
 It contains ROS drivers not included in the official ROS packages.
@@ -96,7 +98,7 @@ It contains ROS drivers not included in the official ROS packages.
     sudo apt install jderobot
     ```
 
-## JdeRobot/assets
+## JdeRobot-assets
 
 Supported release is 6.0.0
 It contains Gazebo world files and configuration files required for the Academy exercises.
