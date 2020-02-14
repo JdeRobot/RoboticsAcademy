@@ -38,13 +38,14 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
     ```
 
     ```bash
-    sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
     ```
+<!-- sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116 -->
 
 2. Install the official ROS Melodic Debian package
 
     ```bash
-    sudo apt-get install ros-melodic-desktop-full
+    sudo apt install ros-melodic-desktop-full
     ```
 
 ## Gazebo simulator
@@ -65,7 +66,7 @@ Supported release is Gazebo-9. It can be easily installed from official Debian p
 2. Install the official Gazebo package:
 
     ```bash
-    sudo apt-get install gazebo9
+    sudo apt install gazebo9
     ```
 -->
 
@@ -92,7 +93,7 @@ It contains ROS drivers not included in the official ROS packages.
     sudo apt update
     ```
 
-4. Install JdeRobot
+4. Install JdeRobot-base
 
     ```bash
     sudo apt install jderobot
@@ -100,14 +101,21 @@ It contains ROS drivers not included in the official ROS packages.
 
 ## JdeRobot-assets
 
-Supported release is 6.0.0
+Supported release is 6.0.2
 It contains Gazebo world files and configuration files required for the Academy exercises.
 
-1. Install JdeRobot-assets
+1. Install jderobot-assets debian package
 
     ```bash
-    sudo apt install jderobot-gazebo-assets
+    sudo apt install jderobot-assets
     ```
+
+2. Install jderobot-assets ROS package
+
+    ```bash
+    sudo apt install ros-melodic-jderobot-assets
+    ```
+
 
 ## Specific infrastructure
 
@@ -125,7 +133,7 @@ For more information, visit the [official repository](https://github.com/opencv/
 1. Install ROS Melodic, MAVROS and extras
 
     ```bash
-    sudo apt-get install ros-melodic-mavros ros-melodic-mavros-extras
+    sudo apt install ros-melodic-mavros ros-melodic-mavros-extras
     ```
 
 
@@ -143,27 +151,27 @@ Install previous dependencies:
 2. Remove modemmanager
 
     ```bash
-    sudo apt-get remove modemmanager
+    sudo apt remove modemmanager
     ```
 
 3. Install common dependencies
 
     ```bash
-    sudo apt-get update -y
-    sudo apt-get install git zip qtcreator cmake \
+    sudo apt update -y
+    sudo apt install git zip qtcreator cmake \
         build-essential genromfs ninja-build exiftool -y
     ```
 
 4. Install xxd
 
     ```bash
-    which xxd || sudo apt install xxd -y || sudo apt-get install vim-common --no-install-recommends -y
+    which xxd || sudo apt install xxd -y || sudo apt install vim-common --no-install-recommends -y
     ```
 
 5. Install required python packages
 
     ```bash
-    sudo apt-get install python-argparse \
+    sudo apt install python-argparse \
         python-empy python-toml python-numpy python-yaml \
         python-dev python-pip -y
     sudo -H pip install --upgrade pip
@@ -174,7 +182,7 @@ Install previous dependencies:
 6. Install ninja
 
     ```bash
-    sudo apt-get install ninja-build -y
+    sudo apt install ninja-build -y
     ```
 
 7. Get FastRTPS and FastCDR
@@ -197,7 +205,7 @@ Install previous dependencies:
 9. Install catkin tools
 
     ```bash
-    sudo apt-get install python-catkin-tools
+    sudo apt install python-catkin-tools
     ```
 
 10. Set up catkin workspace
