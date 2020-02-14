@@ -1,4 +1,3 @@
-<br/>
 ---
 permalink: /exercises/Drones/follow_road
 title: "Follow Road"
