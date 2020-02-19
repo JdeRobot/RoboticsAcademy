@@ -25,7 +25,7 @@ Robotics-Academy currently supports **Linux** operating system. These installati
     - Required
     - Academy includes templates for the exercises
 
-## Generic infrastructure
+# Generic infrastructure
 
 ## ROS Middleware
 
@@ -117,7 +117,7 @@ It contains Gazebo world files and configuration files required for the Academy 
     ```
 
 
-## Specific infrastructure
+# Specific infrastructure
 
 ## OpenCV
 
@@ -247,7 +247,7 @@ Install previous dependencies:
 
 ## MoveIt!
 
-## Academy source code
+# Academy source code
 
 Once you have generic and specific infrastructure installed in your system, you can download and install the JdeRobot Academy software.
 
@@ -289,7 +289,7 @@ Follow the next four steps to have the environment up and running, ready to use.
     python -m pip install --upgrade pip
     ```
 
-2. Install depencencies.
+2. Install dependencies.
 
     Install the following depencencies
 
