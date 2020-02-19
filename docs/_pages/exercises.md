@@ -27,7 +27,7 @@ feature_row:
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
-    title: "Global Navigation of a TeleTaxi"
+    title: "Global Navigation"
     excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
     url: "/exercises/global_navigation"
     btn_class: "btn--primary"
@@ -84,12 +84,12 @@ feature_row:
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
     title: "Follow Turtlebot"
-    excerpt: "Follow a turtlebot on the ground."
+    excerpt: "Follow a turtlebot on the ground using a camera."
     url: "/exercises/Drones/follow_turtlebot"
     btn_class: "btn--primary"
     btn_label: "Go!"
     
-  - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
+  - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar"
     title: "Drone Hangar"
     excerpt: "Escape from a hangar filled with moving obstacles."
