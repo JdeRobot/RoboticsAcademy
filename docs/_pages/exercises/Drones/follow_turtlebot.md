@@ -1,26 +1,24 @@
 ---
-permalink: /exercises/Drones/follow_road
-title: "Follow Road"
+permalink: /exercises/Drones/follow_turtlebot
+title: "Follow Turtlebot"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Follow Road"
+toc_label: "TOC Follow Turtlebot"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/follow_road/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road/follow_road.jpg
-    alt: "Follow Road."
-    title: "Follow Road."
+  - url: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    alt: "Follow Turtlebot."
+    title: "Follow Turtlebot."
 
-youtubeId: KLDX4OPTL_c
+youtubeId: uehDVlBzpmU
 ---
 
-The goal of this exercise is to implement the logic that allows a quadrotor to follow a road. In order to do this, you will have to establish a color filter to segment road lines and then develop an algorithm to follow them until the end of the road.
-
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/cloud.png" width="100%" height="60%"> -->
+The goal of this exercise is to implement the logic that allows a quadrotor to follow a turtlebot on the ground by following the movements made by it.
 
 {% include gallery caption="Gallery." %}
 
@@ -34,18 +32,14 @@ sudo apt-get install ros-melodic-drone-wrapper ros-melodic-rqt-drone-teleop ros-
 
 There is an additional dependency on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
+Apart from these, as this exercise also requires a ground robot, you will need the `rqt_ground_robot_teleop` package. We are in the process of making it available through `apt-get` however until that is available, the best method for it would be to [clone it](https://github.com/JdeRobot/ground_robots) into your catkin_ws.
+
 ## How to run
 
 To launch the exercise, simply use the following command from this directory:
 
 ```bash
-roslaunch follow_road.launch
-```
-
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a separate terminal as follows:
-
-```bash
-colorTuner colorTuner.conf
+roslaunch follow_turtlebot.launch
 ```
 
 ## How to do the practice

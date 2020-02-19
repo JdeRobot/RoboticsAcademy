@@ -25,6 +25,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
+    alt: "Global Navigation"
+    title: "Global Navigation of a TeleTaxi"
+    excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
+    url: "/exercises/global_navigation"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
     alt: "Vacuum Cleaner"
     title: "Vacuum Cleaner"
@@ -72,6 +80,14 @@ feature_row:
     url: "/exercises/Drones/rescue_people"
     btn_class: "btn--primary"
     btn_label: "Go!"
+  
+  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    alt: "Follow Turtlebot"
+    title: "Follow Turtlebot"
+    excerpt: "Follow a turtlebot on the ground."
+    url: "/exercises/Drones/follow_turtlebot"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
     
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
     alt: "Drone Hangar"
@@ -86,6 +102,14 @@ feature_row:
     title: "Visual Lander"
     excerpt: "Visualization of a beacon and land on it."
     url: "/exercises/Drones/visual_lander"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+    
+  - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
+    alt: "Drone Cat and Mouse"
+    title: "Drone Cat and Mouse"
+    excerpt: "Game of cat and mouse with two quadrotors."
+    url: "/exercises/Drones/drone_cat_mouse"
     btn_class: "btn--primary"
     btn_label: "Go!"
 ---

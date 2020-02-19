@@ -1,26 +1,27 @@
 ---
-permalink: /exercises/Drones/follow_road
-title: "Follow Road"
+permalink: /exercises/Drones/drone_cat_mouse
+title: "Drone Cat and Mouse"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Follow Road"
+toc_label: "TOC Drone Cat and Mouse"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/follow_road/follow_road.jpg
-    image_path: /assets/images/exercises/follow_road/follow_road.jpg
-    alt: "Follow Road."
-    title: "Follow Road."
+  - url: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
+    image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
+    alt: "Drone Cat and Mouse."
+    title: "Drone Cat and Mouse."
 
-youtubeId: KLDX4OPTL_c
+youtubeId: Hd2nhOx1tqI?t=510
+youtubeId1: ykbw1kv6Cgw
 ---
 
-The goal of this exercise is to implement the logic that allows a quadrotor to follow a road. In order to do this, you will have to establish a color filter to segment road lines and then develop an algorithm to follow them until the end of the road.
+The goal of this exercise is to implement the logic that allows a quadrotor to play a game of cat and mouse with a second quadrotor.
 
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/cloud.png" width="100%" height="60%"> -->
+In this exercise, the cat quadrotor has to be programmed by the student to follow the mouse quadrotor (which is preprogrammed and moves randomly) as close as possible without crashing. The refree application will measure the distance between the two drones and will assign a score based on the time spent by the drones close to each other.
 
 {% include gallery caption="Gallery." %}
 
@@ -39,13 +40,7 @@ There is an additional dependency on MAVROS and PX4 that you can fulfill followi
 To launch the exercise, simply use the following command from this directory:
 
 ```bash
-roslaunch follow_road.launch
-```
-
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a separate terminal as follows:
-
-```bash
-colorTuner colorTuner.conf
+roslaunch drone_cat_mouse.launch
 ```
 
 ## How to do the practice
