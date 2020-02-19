@@ -25,6 +25,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
+    alt: "Global Navigation"
+    title: "Global Navigation of a TeleTaxi"
+    excerpt: "Navigating a Tele Taxi autonomously"
+    url: "/exercises/global_navigation"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 ---
 
 
