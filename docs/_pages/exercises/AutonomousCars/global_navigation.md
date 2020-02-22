@@ -38,6 +38,64 @@ gifs:
     alt: "examples"
     title: "examples"
 
+potential:
+  - url: /assets/images/exercises/global_navigation/potential_drop.png
+    image_path: /assets/images/exercises/global_navigation/potential_drop.png
+    alt: "Potential Drop"
+    title: "Potential Drop"
+
+  - url: /assets/images/exercises/global_navigation/potential_well.png
+    image_path: /assets/images/exercises/global_navigation/potential_well.png
+    alt: "Potential Well"
+    title: "Potential Well"
+
+  - url: /assets/images/exercises/global_navigation/potential_wall.png
+    image_path: /assets/images/exercises/global_navigation/potential_wall.png
+    alt: "Potential Wall"
+    title: "Potential Wall"
+
+  - url: /assets/images/exercises/global_navigation/total_potential.png
+    image_path: /assets/images/exercises/global_navigation/total_potential.png
+    alt: "Total Potential"
+    title: "Total Potential"
+
+Probability_Roadmap:
+  - url: /assets/images/exercises/global_navigation/pr1.png
+    image_path: /assets/images/exercises/global_navigation/pr1.png
+    alt: "Step1"
+    title: "Step1"
+
+  - url: /assets/images/exercises/global_navigation/pr2.png
+    image_path: /assets/images/exercises/global_navigation/pr2.png
+    alt: "Step2"
+    title: "Step2"
+
+  - url: /assets/images/exercises/global_navigation/pr3.png
+    image_path: /assets/images/exercises/global_navigation/pr3.png
+    alt: "Step3"
+    title: "Step3"
+
+  - url: /assets/images/exercises/global_navigation/pr4.png
+    image_path: /assets/images/exercises/global_navigation/pr4.png
+    alt: "Step4"
+    title: "Step4"
+
+TreeBasedPlanner:
+  - url: /assets/images/exercises/global_navigation/tr1.png
+    image_path: /assets/images/exercises/global_navigation/tr1.png
+    alt: "Step1"
+    title: "Step1"
+
+  - url: /assets/images/exercises/global_navigation/tr2.png
+    image_path: /assets/images/exercises/global_navigation/tr2.png
+    alt: "Step2"
+    title: "Step2"
+
+  - url: /assets/images/exercises/global_navigation/tr3.png
+    image_path: /assets/images/exercises/global_navigation/tr3.png
+    alt: "Step3"
+    title: "Step3"
+
 youtubeId1: zUtK6seVL5g
 youtubeId2: q6G6BHqljP4
 youtubeId3: itTbU4uLwfE
@@ -194,21 +252,7 @@ There are mainly 2 methods to solve the exercise, **Gradient Path Planning**, **
 ### Gradient Path Planning
 One such method for Motion Planning is Gradient Path Planning. GPP works on the principle of potential fields. The obstacles in the path serve as potential wall to the path planner, and the target serve as potential well. By combining all the potential walls and wells, a path is constructed as a downward slope. The robot follows that path to reach it's destination.
 
-![Potential Drop]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/potential_drop.png)
-
-*Potential Drop*
-
-![Potential Well]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/potential_well.png)
-
-*Potential Well*
-
-![Potential Wall]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/potential_wall.png)
-
-*Potential Wall*
-
-![Total Potential Field]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/total_potential.png)
-
-*Total Potential Field*
+{% include gallery id="potential" caption="Various illustrations based on potential" %}
 
 Gradient Path Planning can be implemented using Brushfire Algorithm or Wave Front Algorithm. Next section explains the working of Wave Front Algorithm.
 
@@ -240,22 +284,13 @@ Sampling based Path Planning employs sampling of the state space of the robot in
 
 These methods work by randomly sampling points in the **workspace**. Once the desired number of samples are obtained, the roadmap is constructed by connecting the random samples to form edges. On the resulting graph formed, any shortest path algorithm (A*, Dijkstra, BFS) is applied to get our resulting path.
 
-![Figure1]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/pr1.png)
-![Figure2]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/pr2.png)
-![Figure3]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/pr3.png)
-![Figure4]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/pr4.png)
-
-*Probabilistic Roadmap*
+{% include gallery id="Probability_Roadmap" caption="Probabilistic Roadmap" %}
 
 #### Tree Based Planner
 
 Tree Based Planners are very similar to Probabilistic Roadmaps, except for the fact that there are no cycles involved in tree based planners. There are a variety of tree based planners, like RRT, EST, SBL and KPIECE. These algorithms work heuristically, working from the root node, a tree (a graph without cycles) is constructed.
 
-![Figure1]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/tr1.png)
-![Figure2]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/tr2.png)
-![Figure3]({{ site.url }}/RoboticsAcademy/assets/images/exercises/global_navigation/tr3.png)
-
-*Tree Based Planner*
+{% include gallery id="TreeBasedPlanner" caption="Tree Based Planner" %}
 
 ## Hints
 
