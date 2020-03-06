@@ -131,4 +131,4 @@ class MyAlgorithm(threading.Thread):
             #ADD YOUR CODE HERE
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image_HSV_filtered_Mask)
+            self.setImageFiltered(image_HSV_filtered_Mask)
