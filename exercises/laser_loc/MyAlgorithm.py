@@ -83,7 +83,6 @@ class MyAlgorithm(threading.Thread):
         self.gui.map1.tLaser = laser
 
     def execute(self):
-
-        # TODO
+        pass
+        #TODO
         # Add your code here
-        
