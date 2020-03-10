@@ -124,15 +124,15 @@ To simplify the closure of the environment, just close the Amazon window (s). *`
 
 ## Theory
 
-ROS Navigation Stack forms the backbone of this exericise. The navigation stack is quite simple on a conceptual level. It takes information from odometry and sensor streams and outputs velocity commands to move the base. The most difficult part of ROS Navigation Stack is configuring it to work with the robot, which has been taken care of, leaving the student with only using the Simple Action Client. Let's cover all these concepts one by one:
+ROS Navigation Stack forms the backbone of this exericise. The navigation stack is quite simple on a conceptual level. It takes information from odometry and sensor streams and outputs velocity commands to robot controller. The most difficult part of ROS Navigation Stack is configuring it to work with the robot, which has been taken care of, leaving the student with only using the Simple Action Client. Let's cover all these concepts one by one:
 
 ### Navigation Stack
 
-At its core, the nav stack system allows a ROS enabled robot to move about the world to a specified goal position efficiently, without hitting the obstacles on its way. It integrates information from the map, localization system, sensors and odometry to plan a good path from the current position to the goal position, and then follows it to the best of robot's ability.
+At its core, the navigation stack system allows a ROS enabled robot to move about the world to a specified goal position efficiently, without hitting the obstacles on its way. It integrates information from the map, localization system, sensors and odometry to plan a good path from the current position to the goal position, and then follows it to the best of robot's ability.
 
 The basic steps in its working are:
 
-1. A navigation goal is sent to the nav stack. This is done using an action call with a goal of type *MoveBaseGoal*, which specifies a goal pose(position and orientation) in some coordinate frame(commonly called the *map* frame).
+1. A navigation goal is sent to the navigation stack. This is done using an action call with a goal of type *MoveBaseGoal*, which specifies a goal pose (position and orientation) in some coordinate frame (commonly called the *map* frame).
 
 2. The nav stack uses a path planning algorithm in the *global planner* to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/global_navigation/). More about it over there!
 
@@ -149,7 +149,7 @@ ROS Services provide a way to execute synchronous remote procedure calls; callin
 
 ROS Actions provide a way to execute asynchronous remote procedure calls. Similar to the request and response of a service, an action uses a *goal* to initiate a behaviour and sends the *result* when the behaviour is complete. But the action further uses *feedback* to provide updates on the behaviour's progress toward the goal and also allows for goals to be cancelled. 
 
-Hence, services are handy for simple get/set instructions like querying status and managing configuration, they don't work well when we need to initiate a long running task, like navigation. For which actions are used!
+Hence, services are handy for simple get/set instructions like querying status and managing configuration, they don't work well when we need to initiate a long running task like navigation. This is exactly where actions can be used.
 
 {% include gallery id="theory" caption="Theory" %}
 
@@ -160,7 +160,7 @@ The main problem in this exercise is to correctly identify the goal and send it 
 
 ### Locations
 
-* The locations of the pellets to be stored are already present in the `pellets_coords.yaml` file
+* The locations of the pallets to be stored are already present in the `pallets_coords.yaml` file
 * The boundaries for *Pick-up room* are: `(x > 310) and (y > 125) and (y < 185)`
 * The boundaries for *Charging Point* are : `(y > 255) and (x < 315) and (x > 85)`
 
