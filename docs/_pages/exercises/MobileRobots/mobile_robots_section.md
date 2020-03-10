@@ -25,6 +25,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
+    alt: "Amazon Warehouse"
+    title: "Amazon Warehouse"
+    excerpt: "Autonomous navigation and pick-and-place logic"
+    url: "/exercises/MobileRobots/amazon_warehouse"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 ---
 
 
