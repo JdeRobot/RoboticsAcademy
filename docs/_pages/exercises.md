@@ -13,7 +13,7 @@ feature_row:
     alt: "Follow Line Formula1"
     title: "Follow Line"
     excerpt: "Complete a lap following the line painted on the racing circuit."
-    url: "/exercises/follow_line/"
+    url: "/exercises/AutonomousCars/follow_line/"
     btn_class: "btn--primary"
     btn_label: "Go!"
 
@@ -21,7 +21,7 @@ feature_row:
     alt: "Obstacle avoidance"
     title: "Obstacle avoidance"
     excerpt: "Local navigation. Virtual Force Field navigation algorithm using a F1."
-    url: "/exercises/obstacle_avoidance"
+    url: "/exercises/AutonomousCars/obstacle_avoidance"
     btn_class: "btn--primary"
     btn_label: "Go!"
 
@@ -29,7 +29,7 @@ feature_row:
     alt: "Global Navigation"
     title: "Global Navigation"
     excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
-    url: "/exercises/global_navigation"
+    url: "/exercises/AutonomousCars/global_navigation"
     btn_class: "btn--primary"
     btn_label: "Go!"
 
@@ -46,6 +46,14 @@ feature_row:
     title: "Vacuum Cleaner Loc"
     excerpt: "Navigation algorithm for an autonomous vacuum with localization."
     url: "/exercises/MobileRobots/vacuum_cleaner_loc"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
+  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
+    alt: "Amazon Warehouse"
+    title: "Amazon Warehouse"
+    excerpt: "Autonomous navigation and pick-and-place logic"
+    url: "/exercises/MobileRobots/amazon_warehouse"
     btn_class: "btn--primary"
     btn_label: "Go!"
 

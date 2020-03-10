@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/global_navigation/
+permalink: /exercises/AutonomousCars/global_navigation/
 title: "Global Navigation using TeleTaxi"
 
 sidebar:

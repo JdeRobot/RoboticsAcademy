@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/follow_line/
+permalink: /exercises/AutonomousCars/follow_line/
 title: "Visual Follow Line"
 
 sidebar:

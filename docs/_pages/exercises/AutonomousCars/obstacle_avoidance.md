@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/obstacle_avoidance
+permalink: /exercises/AutonomousCars/obstacle_avoidance
 title: "Local navigation with VFF"
 
 sidebar:
