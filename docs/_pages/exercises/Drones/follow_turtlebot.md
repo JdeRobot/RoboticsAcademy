@@ -22,7 +22,8 @@ The goal of this exercise is to implement the logic that allows a quadrotor to f
 
 {% include gallery caption="Gallery." %}
 
-## Requirements
+## Installation
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
 
 As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
 
@@ -33,6 +34,26 @@ sudo apt-get install ros-melodic-drone-wrapper ros-melodic-rqt-drone-teleop ros-
 There is an additional dependency on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
 Apart from these, as this exercise also requires a ground robot, you will need the `rqt_ground_robot_teleop` package. We are in the process of making it available through `apt-get` however until that is available, the best method for it would be to [clone it](https://github.com/JdeRobot/ground_robots) into your catkin_ws.
+
+To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
+
+```bash
+source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+```
+
+or add them directly to your bashrc to run automatically whenever you open a terminal:
+
+```bash
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' >> ~/.bashrc
+```
+
+```bash
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
 
 ## How to run
 

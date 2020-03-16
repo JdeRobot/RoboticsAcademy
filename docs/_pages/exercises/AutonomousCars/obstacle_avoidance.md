@@ -67,9 +67,10 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Robustness in situations of indecision (zero vector sum)
 
-## How to Execute?
-To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
+## Installation
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
 
+To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
 
 ```bash
 source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
@@ -92,6 +93,8 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' > ~/.ba
 ```bash
 source ~/.bashrc
 ```
+
+## How to run your solution?
 
 Navigate to the obstacle_avoidance directory
 

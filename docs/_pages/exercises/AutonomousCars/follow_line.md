@@ -52,6 +52,7 @@ The goal of this exercise is to perform a PID reactive control capable of follow
 The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.
 
 ## Installation 
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
 
 To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
 
@@ -71,6 +72,26 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.b
 
 ```bash
 source ~/.bashrc
+```
+
+## How to run your solution?
+
+Navigate to the follow_line directory
+
+```bash
+cd exercises/follow_line
+```
+
+Launch Gazebo with the f1_simple_circuit world through the command 
+
+```bash
+roslaunch ./launch/simple_line_follower_ros.launch
+```
+
+Then you have to execute the academic application, which will incorporate your code:
+
+```bash
+python2 ./follow_line.py follow_line_conf.yml
 ```
 
 ## How to perform the exercise?
@@ -101,26 +122,6 @@ def execute(self):
 * `self.motors.sendV()` - to set the linear speed
 * `self.motors.sendW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
-
-## How to run your solution?
-
-Navigate to the follow_line directory
-
-```bash
-cd exercises/follow_line
-```
-
-Launch Gazebo with the f1_simple_circuit world through the command 
-
-```bash
-roslaunch ./launch/simple_line_follower_ros.launch
-```
-
-Then you have to execute the academic application, which will incorporate your code:
-
-```bash
-python2 ./follow_line.py follow_line_conf.yml
-```
 
 ## Theory
 
