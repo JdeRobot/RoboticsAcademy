@@ -49,6 +49,7 @@ The objective of this practice is to implement the autonomous robot navigation a
 The students program an Amazon robot to navigate to the seleceted pallet, pick it, and deliver to the required zone. After completion of the task, go the charging area, and wait for the next tasks.
 
 ## Installation
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
 
 Add following packages if you don't have them already:
 
@@ -79,6 +80,23 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.b
 source ~/.bashrc
 ```
 
+## How to run your solution?
+
+Run Gazebo simulator:
+
+```bash
+cd launch
+ROS_HOME=`pwd` roslaunch amazonrobot_1_warehouse.launch 
+```
+
+Navigate to exercise folder and run the practice and the user interface: 
+
+```bash
+python2 amazonWarehouse.py amazonMap.conf amazonConf.yml
+```
+
+To simplify the closure of the environment, just close the Amazon window (s). *`Ctrl + C` will give problems.*
+
 ## How to do the practice
 To carry out the practice, you must edit the `MyAlgorithm.py` file and insert the control logic into it.
 
@@ -103,24 +121,6 @@ MyAlgorithm.py
 * `self.path.getPath()` - to obtain the path to the current goal
 * `self.liftDropExecute()` - to lift or drop pallet
 * `clearCostmaps()` - to clear costmaps after moving with pallet
-
-
-## How to run your solution?
-
-Run Gazebo simulator:
-
-```bash
-cd launch
-ROS_HOME=`pwd` roslaunch amazonrobot_1_warehouse.launch 
-```
-
-Navigate to exercise folder and run the practice and the user interface: 
-
-```bash
-python2 amazonWarehouse.py amazonMap.conf amazonConf.yml
-```
-
-To simplify the closure of the environment, just close the Amazon window (s). *`Ctrl + C` will give problems.*
 
 ## Theory
 

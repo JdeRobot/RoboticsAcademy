@@ -146,6 +146,25 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.b
 source ~/.bashrc
 ```
 
+## How to run your solution
+
+Navigate to the global_navigation directory
+
+```bash
+cd exercises/global_navigation
+```
+
+Launch Gazebo with the tele_taxi world through the command 
+
+```bash
+roslaunch ./launch/tele_taxi.launch
+```
+
+Execute the practice's component indicating the configuration file for the map:
+```bash
+python2 globalNavigation.py taxiMap.conf
+```
+
 ## How to do the practice
 To carry out the practice, you must edit the file MyAlgorithm.py and insert all the functionality in it.
 
@@ -221,25 +240,6 @@ map coordinates and vice versa:
 of the map and returns a tuple with the equivalent coordinates in the world: (worldX, worldY)
 * `worldToGrid(worldX, worldY)` - receives the x and y components of the world 
 coordinates and returns a tuple with the equivalent coordinates in the map: (gridX, gridY)
-
-## How to run your solution
-
-Navigate to the global_navigation directory
-
-```bash
-cd exercises/global_navigation
-```
-
-Launch Gazebo with the tele_taxi world through the command 
-
-```bash
-roslaunch ./launch/tele_taxi.launch
-```
-
-Execute the practice's component indicating the configuration file for the map:
-```bash
-python2 globalNavigation.py taxiMap.conf
-```
     
 **REMEMBER**: Once running, double click in any point of the map to set destination, then click on "Generate Path" and finally click "GO" to see the result.
 

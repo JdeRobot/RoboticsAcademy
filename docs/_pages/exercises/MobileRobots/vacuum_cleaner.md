@@ -23,21 +23,46 @@ The objective of this practice is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
-## How to run
+## Installation 
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
 
-1. Enable Kobuki_msgs:
+Enable Kobuki_msgs:
+
 ```bash
 sudo apt-get install ros-melodic-kobuki-msgs
 ```
-2. Execution without watching the world: 
+
+To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
+
+```bash
+source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+```
+
+or add them directly to your bashrc to run automatically whenever you open a terminal:
+
+```bash
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' >> ~/.bashrc
+```
+
+```bash
+echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
+
+## How to run
+
+1. Execution without watching the world: 
 ```bash
 roslaunch vacuum_cleaner.launch
 ```
-3. Execution of the practice and the user interface: 
+2. Execution of the practice and the user interface: 
 ```bash
 python2 vacuumCleaner.py vacuumCleaner_conf.yml
 ```
-4. Execution of the automatic evaluator:
+3. Execution of the automatic evaluator:
 ```bash
 python2 referee.py referee.yml
 ```
