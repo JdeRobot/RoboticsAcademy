@@ -44,9 +44,9 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
 
 
 2. Update the repositories
-  ```bash
-  sudo apt update
-  ```
+    ```bash
+    sudo apt update
+    ```
 
 3. Install the official ROS Melodic Debian package
 
