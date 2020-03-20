@@ -1,20 +1,10 @@
-Introrob:
+Color_Filter:
 
-  Source: Video # Local (local camera), Video (local file), Stream (ROS/ICE)
-
-  Local:
-    DeviceNo: 0 # Device number for the desired webcam
-    Server: 0
-
-  Video:
-    Path: "/home/username/pelotas_roja_azul.avi"
-    Server: 0
-
-  Stream:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
-    Proxy: "cameraA:tcp -h localhost -p 9999"
+  Camera:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "cameraA:default -h localhost -p 9999"
+    Topic: "/videoopencv/image_raw"
     Format: RGB8
-    Topic: "/IntrorobROS/image_raw"
-    Name: IntrorobCamera
+    Name: ColorFilterCamera
     
-NodeName: Introrob
+  NodeName: Color_Filter

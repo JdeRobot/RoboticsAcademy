@@ -22,8 +22,11 @@
 
 import sys
 import yaml
+import comm
+import config
 
-from Camera.threadcamera import ThreadCamera
+from Camera.cameraSegment import CameraSegment
+
 from MyAlgorithm import MyAlgorithm
 from gui.threadGUI import ThreadGUI
 from gui.GUI import MainWindow
@@ -33,64 +36,31 @@ import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-def selectVideoSource(cfg):
-    """
-    @param cfg: configuration
-    @return cam: selected camera
-    @raise SystemExit in case of unsupported video source
-    """
-    source = cfg['Introrob']['Source']
-    if source.lower() == 'local':
-        from Camera.local_camera import Camera
-        cam_idx = cfg['Introrob']['Local']['DeviceNo']
-        print('  Chosen source: local camera (index %d)' % (cam_idx))
-        cam = Camera(cam_idx)
-    elif source.lower() == 'video':
-        from Camera.local_video import Camera
-        video_path = cfg['Introrob']['Video']['Path']
-        print('  Chosen source: local video (%s)' % (video_path))
-        cam = Camera(video_path)
-    elif source.lower() == 'stream':
-        # comm already prints the source technology (ICE/ROS)
-        import comm
-        import config
-        cfg = config.load(sys.argv[1])
-        jdrc = comm.init(cfg, 'Introrob')
-        proxy = jdrc.getCameraClient('Introrob.Stream')
-        from Camera.stream_camera import Camera
-        cam = Camera(proxy)
-    else:
-        raise SystemExit(('%s not supported! Supported source: Local, Video, Stream') % (source))
 
-    return cam
-
-
-def readConfig():
-    try:
-        with open(sys.argv[1], 'r') as stream:
-            return yaml.safe_load(stream)
-    except yaml.YAMLError as exc:
-        print(exc)
-        raise SystemExit('Error: Cannot read/parse YML file. Check YAML syntax.')
-    except:
-        raise SystemExit('\n\tUsage: python2 color_filter.py color_filter_conf.yml\n')
+def getCamera(cfg):
+    cfg = config.load(sys.argv[1])
+    jdrc = comm.init(cfg, 'Color_Filter')
+    proxy = jdrc.getCameraClient('Color_Filter')
+    from Camera.cameraSegment import CameraSegment
+    cam = CameraSegment(proxy)
+    return cam 
 
 
 if __name__ == '__main__':
 
-    cfg = readConfig()
-    camera = selectVideoSource(cfg)
+    cfg = config.load(sys.argv[1])
+    #print(cfg)
+    jdrc= comm.init(cfg, 'Color_Filter')
+
+    cameraCli = jdrc.getCameraClient("Color_Filter.Camera")
+    camera = CameraSegment(cameraCli)
 
     # Threading the camera...
-    t_cam = ThreadCamera(camera)
-    t_cam.start()
-
     algorithm=MyAlgorithm(camera)
 
-
     app = QApplication(sys.argv)
-    frame = MainWindow()
-    frame.setCamera(camera)
+    frame = MainWindow(camera)
+    # frame.setCamera(camera)
     frame.setAlgorithm(algorithm)
     frame.show()
 

@@ -31,9 +31,11 @@ from gui.logoWidget import LogoWidget
 class MainWindow(QMainWindow, Ui_MainWindow):
     
     updGUI=pyqtSignal()
-    def __init__(self, parent=None):
+    def __init__(self, camera, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+
+        self.camera = camera
 
         self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
         self.logoLayout.addWidget(self.logo)
