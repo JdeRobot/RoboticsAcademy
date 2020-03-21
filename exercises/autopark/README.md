@@ -9,7 +9,7 @@ To launch the example, follow the steps below:
 
 ```
 $ source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh
-$ source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+$ source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh
 ```
 
 1. Run Gazebo simulator:

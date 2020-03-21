@@ -38,7 +38,7 @@ sudo apt-get install ros-melodic-kobuki-msgs
 To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
 
 ```bash
-source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh
+source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh
 ```
 
 or add them directly to your bashrc to run automatically whenever you open a terminal:
@@ -48,7 +48,7 @@ echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' >> ~/.bashrc
 ```
 
 ```bash
-echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-assets-setup.sh' >> ~/.bashrc
+echo 'source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh' >> ~/.bashrc
 ```
 
 ```bash
