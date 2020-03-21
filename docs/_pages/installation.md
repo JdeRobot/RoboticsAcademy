@@ -78,7 +78,7 @@ Supported release is Gazebo-9. It can be easily installed from official Debian p
 
 ## JdeRobot-base
 
-Supported release is 6.0.0.
+Supported release is 6.1.0.
 It contains ROS drivers not included in the official ROS packages.
 
 1. Add the latest JdeRobot-base source
@@ -107,7 +107,7 @@ It contains ROS drivers not included in the official ROS packages.
 
 ## JdeRobot-assets
 
-Supported release is 6.0.2
+Supported release is 6.1.0
 It contains Gazebo world files and configuration files required for the Academy exercises.
 
 1. Install jderobot-assets debian package
