@@ -16,15 +16,13 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QLabel
+import cv2
+from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QGroupBox, QCheckBox
 from PyQt5.QtGui import QImage, QPixmap
+from gui.detectorWidget import DetectorWidget
 
-class ColorFilterWidget(QWidget):
-    IMAGE_COLS_MAX=640
-    IMAGE_ROWS_MAX=360
-    
+class ColorFilterWidget(QWidget):    
     imageUpdate=pyqtSignal()
     
     def __init__(self,winParent):      
@@ -32,41 +30,74 @@ class ColorFilterWidget(QWidget):
         self.winParent=winParent
         self.imageUpdate.connect(self.updateImage)
         self.initUI()
-        
+        self.detectorGUI = DetectorWidget(self)
+        self.detectorGUI.hide()
+
     def initUI(self):
 
         self.setWindowTitle("Color filter")
 
-        self.setMinimumSize(1340,400)
-        self.setMaximumSize(1340,400)
+        vlayout = QVBoxLayout(self)
 
-        self.imgLabelColor=QLabel(self)
-        self.imgLabelColor.resize(self.IMAGE_COLS_MAX,self.IMAGE_ROWS_MAX)
-        self.imgLabelColor.move(20,20)
-        self.imgLabelColor.show()
 
-        self.imgLabelBlackWhite=QLabel(self)
-        self.imgLabelBlackWhite.resize(self.IMAGE_COLS_MAX,self.IMAGE_ROWS_MAX)
-        self.imgLabelBlackWhite.move(40 + self.IMAGE_COLS_MAX,20)
-        self.imgLabelBlackWhite.show()
+        groupbox = QGroupBox()
+        hlayout = QHBoxLayout()
+        hlayout.setAlignment(Qt.AlignCenter)
+
+        self.imgLabelColor = QLabel()
+        self.imgLabelColor.setFixedSize(640, 360)
+        
+        hlayout.addWidget(self.imgLabelColor)
+
+        #hlayout.addStretch()
+
+        self.imgLabelBlackWhite = QLabel()
+        self.imgLabelBlackWhite.setFixedSize(640, 360)
+
+        hlayout.addWidget(self.imgLabelBlackWhite)
+        
+        groupbox.setLayout(hlayout)
+        vlayout.addWidget(groupbox)
+        vlayout.addSpacing(25)
+
+
+        drophlayout = QHBoxLayout()
+
+        drophlayout.setAlignment(Qt.AlignCenter)
+        self.detectbutton = QCheckBox("Detector")
+        self.detectbutton.toggled.connect(self.detectcheck)
+
+        drophlayout.addWidget(self.detectbutton)
+
+        vlayout.addLayout(drophlayout)
+
+
+    def detectcheck(self):
+        if self.detectbutton.isChecked() == True:
+            self.detectorGUI.show()
+        else:
+            self.detectorGUI.hide()
 
     def setColorImage(self):
         img = self.winParent.getCamera().getColorImage()
-
         if img is not None:
             image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
             self.imgLabelColor.setPixmap(QPixmap.fromImage(image))
 
     def setThresholdImage(self):
         img = self.winParent.getCamera().getThresholdImage()
-
         if img is not None:
-            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QImage.Format_Indexed8)
+            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
             self.imgLabelBlackWhite.setPixmap(QPixmap.fromImage(image))
         
     def updateImage(self):
         self.setColorImage()
         self.setThresholdImage()
-        
+        self.detectorGUI.imageUpdate.emit()
+
     def closeEvent(self, event):
+        self.closeDetectorWidget()
         self.winParent.closeColorFilterWidget()
+
+    def closeDetectorWidget(self):
+        self.detectbutton.setChecked(False)

@@ -1,10 +1,8 @@
-import threading
-import time
-from datetime import datetime
 import cv2
+import time
+import threading
 import numpy as np
-
-from sensors.cameraFilter import CameraFilter
+from datetime import datetime
 
 
 time_cycle = 80
@@ -57,7 +55,16 @@ class MyAlgorithm(threading.Thread):
         input_image = self.camera.getImage()
         if input_image is not None:
             self.camera.setColorImage(input_image)
-            '''
+            
+            """
             If you want show a threshold image (black and white image)
-            self.camera.setThresholdImage(bk_image)
-            '''
+            self.camera.setThresholdImage(bw_image)
+            
+            If you want to show the detected image
+            self.camera.setDetectImage(detect_image)
+
+            If you want to access the current value of slider 
+            for example say in RGB space if you want minimum value set of R scale use `self.camera.RGB_R_min_out`
+            
+            If you want to check the color space selected use `self.camera.currDropdown`
+            """
