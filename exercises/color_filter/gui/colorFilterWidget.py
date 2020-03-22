@@ -16,15 +16,13 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
-
+import cv2
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QHBoxLayout, QVBoxLayout, QGroupBox, QComboBox
+from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QHBoxLayout, QVBoxLayout, QGroupBox, QComboBox, QPushButton, QFrame, QCheckBox
 from PyQt5.QtGui import QImage, QPixmap
+from gui.detectorWidget import DetectorWidget
 
-class ColorFilterWidget(QWidget):
-    IMAGE_COLS_MAX=640
-    IMAGE_ROWS_MAX=360
-    
+class ColorFilterWidget(QWidget):    
     imageUpdate=pyqtSignal()
     
     def __init__(self,winParent):      
@@ -32,7 +30,9 @@ class ColorFilterWidget(QWidget):
         self.winParent=winParent
         self.imageUpdate.connect(self.updateImage)
         self.initUI()
-        
+        self.detectorGUI = DetectorWidget(self)
+        self.detectorGUI.hide()
+
     def initUI(self):
 
         self.setWindowTitle("Color filter")
@@ -43,14 +43,14 @@ class ColorFilterWidget(QWidget):
         groupbox = QGroupBox()
         hlayout = QHBoxLayout()
 
-        self.imgLabelColor=QLabel()
+        self.imgLabelColor = QLabel()
         self.imgLabelColor.setFixedSize(640, 360)
         
         hlayout.addWidget(self.imgLabelColor)
 
         #hlayout.addStretch()
 
-        self.imgLabelBlackWhite=QLabel()
+        self.imgLabelBlackWhite = QLabel()
         self.imgLabelBlackWhite.setFixedSize(640, 360)
 
         hlayout.addWidget(self.imgLabelBlackWhite)
@@ -59,52 +59,77 @@ class ColorFilterWidget(QWidget):
         vlayout.addWidget(groupbox)
         vlayout.addSpacing(25)
 
+
+        drophlayout = QHBoxLayout()
+
         self.dropdown = QComboBox()
         self.dropdown.addItems(["None", "RGB", "HSV"])
         setattr(self.winParent.getCamera(), 'currDropdown', self.dropdown.currentText())
         self.dropdown.currentIndexChanged.connect(self.dropchange)
 
-        vlayout.addWidget(self.dropdown)
+        self.dropdown.resize(self.dropdown.sizeHint())
 
-        self.rgbgroupbox = QGroupBox()
-        rvlayout = QVBoxLayout(self)
+        drophlayout.addWidget(self.dropdown)
 
-        rvlayout.addLayout(self.createSlider("RGB_R_min"))
-        rvlayout.addLayout(self.createSlider("RGB_G_min"))
-        rvlayout.addLayout(self.createSlider("RGB_B_min"))
-        rvlayout.addLayout(self.createSlider("RGB_R_max"))
-        rvlayout.addLayout(self.createSlider("RGB_G_max"))
-        rvlayout.addLayout(self.createSlider("RGB_B_max"))
+        self.detectbutton = QCheckBox("Detector")
+        self.detectbutton.toggled.connect(self.detectcheck)
 
-        self.rgbgroupbox.setLayout(rvlayout)
-        vlayout.addWidget(self.rgbgroupbox)
+        drophlayout.addSpacing(250)
+        drophlayout.addWidget(self.detectbutton)
+
+        vlayout.addLayout(drophlayout)
+
+        
+        for color in ["HSV", "RGB"]:
+            scolor = color.lower()
+            setattr(self, scolor+"frame", QFrame(self))
+            setattr(self, scolor+"hlayout", QHBoxLayout())
+            setattr(self, scolor+"groupbox", QGroupBox())
+
+            getattr(self, scolor+"groupbox").setLayout(self.givecolorlayout(color))
+            getattr(self, scolor+"hlayout").addWidget(getattr(self, scolor+"groupbox"))
+            
+            button = QPushButton("Reset", self)
+            button.clicked.connect(self.resetwrapper(color))
+            getattr(self, scolor+"hlayout").addWidget(button)
+            getattr(self, scolor+"frame").setLayout(getattr(self, scolor+"hlayout"))
+            vlayout.addWidget(getattr(self, scolor+"frame"))
+            getattr(self, scolor+"frame").hide()
 
 
-        self.hsvgroupbox = QGroupBox()
-        rvlayout = QVBoxLayout(self)
+    def detectcheck(self):
+        if self.detectbutton.isChecked() == True:
+            self.detectorGUI.show()
+        else:
+            self.detectorGUI.hide()
 
-        rvlayout.addLayout(self.createSlider("HSV_H_min"))
-        rvlayout.addLayout(self.createSlider("HSV_S_min"))
-        rvlayout.addLayout(self.createSlider("HSV_V_min"))
-        rvlayout.addLayout(self.createSlider("HSV_H_max"))
-        rvlayout.addLayout(self.createSlider("HSV_S_max"))
-        rvlayout.addLayout(self.createSlider("HSV_V_max"))
 
-        self.hsvgroupbox.setLayout(rvlayout)
-        vlayout.addWidget(self.hsvgroupbox)
+    def givecolorlayout(self, color):
+        rvlayout = QVBoxLayout()
+        for c in color:
+            for mm in ["min", "max"]:
+                rvlayout.addLayout(self.createSlider(color + "_" + c + "_" + mm))
 
-        self.rgbgroupbox.hide()
-        self.hsvgroupbox.hide()
+        return rvlayout
 
+    def resetwrapper(self, name):
+        mymin = "0" #if "RGB" in name else (if )"0"
+        def lambdafunc():
+            for space in name[:3]:
+                for mm in ["min", "max"]:
+                    getattr(self, "%s_slider"%(name+"_"+space+"_"+mm)).setValue(int(mymin)) ; 
+                    getattr(self, "%s_out"%(name+"_"+space+"_"+mm)).setText(mymin) ; 
+                    getattr(self.winParent.getCamera(), "%s_out"%(name+"_"+space+"_"+mm), int(mymin))
+        return lambdafunc
 
 
     def dropchange(self, index):
         currDropdown = self.dropdown.currentText()
         setattr(self.winParent.getCamera(), 'currDropdown', self.dropdown.currentText())
-        self.rgbgroupbox.hide()
-        self.hsvgroupbox.hide()
+        self.rgbframe.hide()
+        self.hsvframe.hide()
         if currDropdown != "None":
-            getattr(self, "%sgroupbox"%(currDropdown.lower())).show()
+            getattr(self, "%sframe"%(currDropdown.lower())).show()
 
     def createSlider(self, name):
         mymin = "0" #if "RGB" in name else (if )"0"
@@ -119,14 +144,13 @@ class ColorFilterWidget(QWidget):
         getattr(self, "%s_slider"%(name)).setMaximum(int(mymax))
         getattr(self, "%s_slider"%(name)).setTickPosition(QSlider.TicksBelow)
         getattr(self, "%s_slider"%(name)).setTickInterval(20)
-        getattr(self, "%s_slider"%(name)).setValue(int(mymin) if "min" in name else int(mymax))
-
+        getattr(self, "%s_slider"%(name)).setValue(int(mymin))
 
         getattr(self, "%s_slider"%(name)).valueChanged.connect(self.funcwrapper(name))   
         hlayout.addWidget(getattr(self, "%s_slider"%(name)))
 
-        setattr(self, "%s_out"%(name), QLabel(mymin) if "min" in name else QLabel(mymax))
-        setattr(self.winParent.getCamera(), "%s_out"%(name), mymin if "min" in name else mymax)
+        setattr(self, "%s_out"%(name), QLabel(mymin))
+        setattr(self.winParent.getCamera(), "%s_out"%(name), int(mymin))
         hlayout.addWidget(getattr(self, "%s_out"%(name)))
 
         return hlayout
@@ -140,21 +164,24 @@ class ColorFilterWidget(QWidget):
 
     def setColorImage(self):
         img = self.winParent.getCamera().getColorImage()
-
         if img is not None:
             image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
             self.imgLabelColor.setPixmap(QPixmap.fromImage(image))
 
     def setThresholdImage(self):
         img = self.winParent.getCamera().getThresholdImage()
-
         if img is not None:
-            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1], QImage.Format_Grayscale8)
+            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
             self.imgLabelBlackWhite.setPixmap(QPixmap.fromImage(image))
         
     def updateImage(self):
         self.setColorImage()
         self.setThresholdImage()
-        
+        self.detectorGUI.imageUpdate.emit()
+
     def closeEvent(self, event):
+        self.closeDetectorWidget()
         self.winParent.closeColorFilterWidget()
+
+    def closeDetectorWidget(self):
+        self.detectbutton.setChecked(False)

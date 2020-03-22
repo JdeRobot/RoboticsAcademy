@@ -4,13 +4,13 @@
         <!-- node name and ros graph name -->
         <arg name="camera_name" value="videoopencv" />
         <!-- means video device 0, /dev/video0 -->
-        <arg name="video_stream_provider" value="0" />
+        <arg name="video_stream_provider" value="/home/naman/Downloads/pelotas_roja_azul.avi" />
         <!-- set camera fps to (if the device allows) -->
         <arg name="set_camera_fps" value="30"/>
         <!-- set buffer queue size of frame capturing to -->
         <arg name="buffer_queue_size" value="100" />
         <!-- throttling the querying of frames to -->
-        <arg name="fps" value="30" />
+        <arg name="fps" value="10" />
         <!-- setting frame_id -->
         <arg name="frame_id" value="webcam" />
         <!-- camera info loading, take care as it needs the "file:///" at the start , e.g.:

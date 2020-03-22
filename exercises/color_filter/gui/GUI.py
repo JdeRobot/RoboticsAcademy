@@ -54,12 +54,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.colorFilterCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        #self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
         self.playButton.setCheckable(True)
-        #self.resetButton.clicked.connect(self.resetClicked)
-        #self.takeoffButton.clicked.connect(self.takeOffClicked)
-        self.takeoff=False
       
     def getCamera(self):
         return self.camera
@@ -117,6 +113,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.algorithm.kill()
+        self.colorFilterWidget.closeEvent(event)
+        self.closeColorFilterWidget()
+        self.closeCameraWidget()
         self.camera.client.stop()
         event.accept()
 

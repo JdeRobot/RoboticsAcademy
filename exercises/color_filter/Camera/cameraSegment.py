@@ -18,6 +18,7 @@
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
 #
 import numpy as np
+import cv2
 import threading
 from parallelIce.cameraClient import CameraClient
 
@@ -37,12 +38,16 @@ class CameraSegment:
             self.trackImage = np.zeros((self.height, self.width,3), np.uint8)
             self.trackImage.shape = self.height, self.width, 3
 
+            self.detectImage = np.zeros((self.height, self.width,3), np.uint8)
+            self.detectImage.shape = self.height, self.width, 3
+
             self.thresholdImage = np.zeros((self.height,self. width,3), np.uint8)
             self.thresholdImage.shape = self.height, self.width, 3
     
     def getImage(self):
         self.lock.acquire()
         img = self.client.getImage().data
+        img = cv2.resize(img, (640, 360))
         self.lock.release()
         return img
 
@@ -61,6 +66,23 @@ class CameraSegment:
             self.lock.acquire()
             self.trackImage = image
             self.trackImage.shape = image.shape
+            self.lock.release()
+
+    def getDetectImage(self):
+        if self.client.hasproxy():
+            self.lock.acquire()
+            img = np.zeros((self.height, self.width,3), np.uint8)
+            img = self.detectImage
+            img.shape = self.detectImage.shape
+            self.lock.release()
+            return img
+        return None
+
+    def setDetectImage(self,image):
+        if self.client.hasproxy():
+            self.lock.acquire()
+            self.detectImage = image
+            self.detectImage.shape = image.shape
             self.lock.release()
 
     def getThresholdImage(self):
