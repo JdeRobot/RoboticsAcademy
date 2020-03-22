@@ -18,7 +18,7 @@
 #
 
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QHBoxLayout, QVBoxLayout, QGroupBox, QComboBox, QPushButton, QFrame, QCheckBox
+from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtGui import QImage, QPixmap
 
 class DetectorWidget(QWidget):
