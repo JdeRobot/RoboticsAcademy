@@ -20,7 +20,7 @@
 from gui.widgets.teleopWidget import TeleopWidget
 from gui.widgets.mapWidget import MapWidget
 from gui.widgets.mapWidget import LogoWidget
-from gui.widgets.graphicPercentajeWidget import PercentajeWidget
+from gui.widgets.graphicPercentageWidget import PercentageWidget
 from gui.widgets.communicator import Communicator
 from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import QMainWindow
@@ -43,9 +43,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.map.setVisible(True)
         self.logo.setVisible(True)
 
-        self.percentajeCheck.stateChanged.connect(self.showPercentajeWidget)
-        self.percentajeWidget=PercentajeWidget(self, pose3d)
-        self.percentajeCommunicator=Communicator()
+        self.percentageCheck.stateChanged.connect(self.showPercentageWidget)
+        self.percentageWidget=PercentageWidget(self, pose3d)
+        self.percentageCommunicator=Communicator()
 
         self.pushButton.clicked.connect(self.playClicked)
         self.pushButton.setCheckable(True)
@@ -83,14 +83,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def setBumper(self,bumper):
         self.bumper=bumper
 
-    def showPercentajeWidget(self,state):
+    def showPercentageWidget(self,state):
         if state == Qt.Checked:
-            self.percentajeWidget.show()
+            self.percentageWidget.show()
         else:
-            self.percentajeWidget.close()
+            self.percentageWidget.close()
 
-    def closePercentajeWidget(self):
-        self.percentajeCheck.setChecked(False)
+    def closePercentageWidget(self):
+        self.percentageCheck.setChecked(False)
 
     def playClicked(self):
         if self.pushButton.isChecked():
@@ -120,3 +120,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors.sendV(0)
         self.motors.sendW(0)
         self.teleop.returnToOrigin()
+
+    def closeEvent(self, event):
+        self.algorithm.kill()
+        event.accept()

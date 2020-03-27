@@ -1,0 +1,23 @@
+# Configuration for subscribers to cmd_vel sources. 
+# Typically automatic controllers should have the minimum priority
+#
+#
+# Individual subscriber configuration:
+#   name:           Source name
+#   topic:          The topic that provides cmd_vel messages
+#   timeout:        Time in seconds without incoming messages to consider this topic inactive
+#   priority:       Priority: an UNIQUE unsigned integer from 0 (lowest) to MAX_INT 
+#   short_desc:     Short description (optional)
+
+subscribers:
+  - name:        "Navigation Stack"
+    topic:       "/amazon_warehouse_robot/move_base/cmd_vel"
+    timeout:     0.5
+    priority:    2
+    
+  - name:        "Teleop"
+    topic:       "/amazon_warehouse_robot/teleop"
+    timeout:     0.1
+    priority:    1
+    
+publisher:       "/amazon_warehouse_robot/cmd_vel"

@@ -31,9 +31,11 @@ from gui.logoWidget import LogoWidget
 class MainWindow(QMainWindow, Ui_MainWindow):
     
     updGUI=pyqtSignal()
-    def __init__(self, parent=None):
+    def __init__(self, camera, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
+
+        self.camera = camera
 
         self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
         self.logoLayout.addWidget(self.logo)
@@ -52,12 +54,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.colorFilterCommunicator=Communicator()
         self.trackingCommunicator = Communicator()
 
-        #self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
         self.playButton.setCheckable(True)
-        #self.resetButton.clicked.connect(self.resetClicked)
-        #self.takeoffButton.clicked.connect(self.takeOffClicked)
-        self.takeoff=False
       
     def getCamera(self):
         return self.camera
@@ -115,6 +113,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.algorithm.kill()
+        self.colorFilterWidget.closeEvent(event)
+        self.closeColorFilterWidget()
+        self.closeCameraWidget()
         self.camera.client.stop()
         event.accept()
 

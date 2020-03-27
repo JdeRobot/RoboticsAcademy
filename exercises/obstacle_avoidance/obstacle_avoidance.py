@@ -14,12 +14,16 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see http://www.gnu.org/licenses/.
-#  Authors :
+#  Authors:
 #       Eduardo Perdices <eperdices@gsyc.es>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
+#  Adapted to Kobuki/Turtlebot by:
+#       Julio Vega <julio.vega@urjc.es>
 #
 
 import sys, os
+import comm
+import config
 from PyQt5.QtWidgets import QApplication
 from gui.GUI import MainWindow
 from gui.threadGUI import ThreadGUI
@@ -30,13 +34,26 @@ from interfaces.pose3d import ListenerPose3d
 from interfaces.laser import ListenerLaser
 from interfaces.motors import PublisherMotors
 
-
 if __name__ == "__main__":
+    cfg = config.load(sys.argv[1])
+    robot = cfg.getProperty("ObstacleAvoidance.Robot")
 
-    camera = ListenerCamera("/F1ROS/cameraL/image_raw")
-    motors = PublisherMotors("/F1ROS/cmd_vel", 3, 0.5)
-    pose3d = ListenerPose3d("/F1ROS/odom")
-    laser = ListenerLaser("/F1ROS/laser/scan")
+    if (robot == "simkobuki"):
+        cam_path = cfg.getProperty("ObstacleAvoidance.SimCameraPath")
+        mot_path = cfg.getProperty("ObstacleAvoidance.SimMotorsPath")
+        odo_path = cfg.getProperty("ObstacleAvoidance.SimPose3DPath")
+        las_path = cfg.getProperty("ObstacleAvoidance.SimLaserPath")
+
+    else: # realkobuki
+        cam_path = cfg.getProperty("ObstacleAvoidance.RealCameraPath")
+        mot_path = cfg.getProperty("ObstacleAvoidance.RealMotorsPath")
+        odo_path = cfg.getProperty("ObstacleAvoidance.RealPose3DPath")
+        las_path = cfg.getProperty("ObstacleAvoidance.RealLaserPath")
+
+    camera = ListenerCamera(cam_path)
+    motors = PublisherMotors(mot_path, 4, 0.3)
+    pose3d = ListenerPose3d(odo_path)
+    laser = ListenerLaser(las_path)
 
     algorithm=MyAlgorithm(pose3d, laser, motors)
 
@@ -48,7 +65,6 @@ if __name__ == "__main__":
     myGUI.setLaser(laser)
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
-
 
     t2 = ThreadGUI(myGUI)
     t2.daemon=True

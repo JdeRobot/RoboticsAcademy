@@ -1,0 +1,14 @@
+FollowLineTurtlebot:
+
+  Robot: realkobuki # realkobuki
+
+  SimMotorsPath: cmd_vel_mux/input/teleop
+  SimCameraPath: camera/rgb/image_raw
+
+  RealMotorsPath: mobile_base/commands/velocity
+  RealCameraPath: camera/rgb/image_raw
+
+  MaxV: 0.5
+  MaxW: 0.3
+
+  NodeName: FollowLineTurtlebot

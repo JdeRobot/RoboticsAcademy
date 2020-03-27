@@ -36,11 +36,11 @@ class MapWidget(QWidget):
         super(MapWidget, self).__init__()
         self.winParent=winParent
         self.initUI()
+
         self.scale = 15.0
         self.laser1 = []
         self.laser2 = []
-        self.laser3 = []
-        
+        self.laser3 = []        
     
     def initUI(self):
         layout=QGridLayout() 
@@ -151,24 +151,22 @@ class MapWidget(QWidget):
         RTx = self.RTx(pi, 0, 0, 0)
         RTz = self.RTz(pi/2, 0, 0, 0)
         return RTx*RTz
-
-    
+        
     def drawLaser(self, num, painter, color, laser):
         pen = QPen(color, 2)
         painter.setPen(pen)
         RT = self.RTLaser(num)
         RTOrigLaser = np.matrix([[0],[0],[0],[1]]) * self.scale
-        RTFinalLaser1 = RT * RTOrigLaser
-        RTFinalLaser = self.RTCar() * RTFinalLaser1
-        for d in laser:
-            dist = d[0]
-            angle = d[1]
+        RTFinalLaser1 = RT*RTOrigLaser
+        RTFinalLaser =  self.RTCar()*RTFinalLaser1
+        for d in range(0,len(laser)):
+            dist = laser[d][0]
+            angle = laser[d][1]
             coord = self.coordLaser(dist,angle)
             orig_poses = np.matrix([[coord[0]], [coord[1]], [1], [1]]) * self.scale
-            final_poses1 = RT * orig_poses
-            final_poses = self.RTCar() * final_poses1
+            final_poses1 = RT*orig_poses
+            final_poses = self.RTCar()*final_poses1
             painter.drawLine(QPointF(RTFinalLaser.flat[0],RTFinalLaser.flat[1]),QPointF(final_poses.flat[0], final_poses.flat[1]))
-
    
     def setLaserValues(self, num, laser):
         # Init laser array
@@ -178,15 +176,18 @@ class MapWidget(QWidget):
             laserX = self.laser2
         else:
             laserX = self.laser3
-                
+     
         if len(laserX) == 0:
-            for i in range(laser.numLaser):
+            for i in range(len(laser.values)):
                 laserX.append((0,0))
 
-        for i in range(laser.numLaser):
-            dist = laser.distanceData[i]/1000.0
+        for i in range(len(laser.values)):
+            dist = laser.values[i]
             angle = -math.pi/2 + math.radians(i)
-            laserX[i] = (dist, angle)
+            if (dist >= 10000):
+                laserX[i] = (laser.maxRange, angle)
+            else:
+                laserX[i] = (dist, angle)
             
             
 class MapWidget1(QWidget):
@@ -377,4 +378,3 @@ class LogoWidget(QWidget):
 
         self.resize(300,300)
         self.setMinimumSize(100,100)
-

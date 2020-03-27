@@ -1,10 +1,10 @@
-Introrob:
+Color_Filter:
 
-  cameraA:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
-    Proxy: "cameraA:tcp -h localhost -p 9999"
+  Camera:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "cameraA:default -h localhost -p 9999"
+    Topic: "/videoopencv/image_raw"
     Format: RGB8
-    Topic: "/IntrorobROS/image_raw"
-    Name: IntrorobCamera
+    Name: ColorFilterCamera
     
-NodeName: Introrob
+  NodeName: Color_Filter

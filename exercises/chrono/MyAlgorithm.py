@@ -10,13 +10,17 @@ import subprocess
 import rospy
 import time
 import rosbag
+from decimal import Decimal, ROUND_HALF_EVEN
 
 time_cycle = 80
-sync_time = 0.0
+#cursor = 0.0
 sim_time = 0.0
 initime = 0.0
-posx = -58.6536031326
-posy = 28.2358310717
+posx = -59.25
+posy = 28.6
+bag = rosbag.Bag('2018-07-19-12-10-02.bag')
+rep_duration = str(bag).split('duration:    ')[1].split()[1][1:-2]
+rep_start = str(bag).split('start:       ')[1].split(' ')[4].split()[0][1:-1]
 
 class MyAlgorithm(threading.Thread):
 
@@ -27,37 +31,40 @@ class MyAlgorithm(threading.Thread):
         self.image=None
         self.carx = 0.0
         self.cary = 0.0
+        self.cx = 0
+        self.cy = 0
         self.stop_event = threading.Event()
         self.kill_event = threading.Event()
         self.lock = threading.Lock()
         threading.Thread.__init__(self, args=self.stop_event)
 
+    def get_duration(self):
+        rep_duration_min = int(rep_duration)/60
+        rep_duration_seg = int(rep_duration)%60
+        return str(rep_duration_min) + ":" + str(rep_duration_seg) + " min"
+
+    def get_initime(self):
+        return initime
+
     def synchronize(self):
-        global posx, posy, sync_time
+        global posx, posy, cursor
 
-        real_time = sim_time - initime
-        if initime != 0.0 :
-            bag = rosbag.Bag('2018-08-24-12-48-46.bag')
-            for (topic,msg,t) in bag.read_messages():
-                try:
-                    posx = str(msg).split('x: ')[1].split()[0]
-                    posy = str(msg).split('y: ')[1].split()[0]
-
-                    t = float(str(t)) * 1e-9
-
-                    print(t,real_time)
-                    #print(str(sync_time) + ": " + str(t) + " || " + str(real_time) + ";; " + str(sim_time) + ";; " + str(initime))
-
-                    if sync_time < t:
-                        sync_time = t
-                        if real_time < t:
-                            return float(posx), float(posy)
-
-                except IndexError:
-                    pass
+        t_sim_unif = sim_time - initime + float(rep_start)
+        if initime != 0.0 and t_sim_unif != 0.0:
+            for (topic,msg,t) in bag.read_messages(start_time=rospy.Time(t_sim_unif-0.05)):
+                t = t.to_sec()
+                if t_sim_unif > t:
+                    try:
+                        posx = str(msg).split('x: ')[1].split()[0]
+                        posy = str(msg).split('y: ')[1].split()[0]
+                        return float(posx), float(posy)
+                    except IndexError:
+                        pass
+                else:
+                    return float(posx), float(posy)
 
         else:
-            return posx, posy
+            return float(posx), float(posy)
 
     def setImageFiltered(self, image):
         self.lock.acquire()
@@ -98,114 +105,30 @@ class MyAlgorithm(threading.Thread):
         self.motors.sendW(0)
 
     def play (self):
-        global initime, bag
-
+        global initime
         if self.is_alive():
             self.stop_event.clear()
         else:
-            initime = float(rospy.get_time())
+            initime = rospy.Time.from_sec(rospy.get_time()).to_sec()
             self.start()
             #Start the recording
+            print("Starting the record.")
             #rec = subprocess.Popen("rosbag record record rosout tf /F1ROS/odom /topic __name:=best_lap", shell=True)
-            #rep = subprocess.Popen("rosbag play -r 0.10 2018-08-24-12-48-46.bag /F1ROS/odom:=/F1ROS_phantom/odom", shell=True)
-            #rep = subprocess.Popen("rosbag play 2018-08-24-12-48-46.bag /F1ROS/odom:=/F1ROS_phantom/odom", shell=True)
 
     def kill (self):
         self.kill_event.set()
+        print("Endind the record.")
         #rec_1 = subprocess.Popen("rosnode kill /best_lap", shell=True)
-        #rep_1 = subprocess.Popen("rosnode list | grep /play_* | xargs rosnode kill")
 
     def execute(self):
         global sim_time
         #GETTING THE IMAGES
-        image = self.camera.getImage().data
+        input_image = self.camera.getImage().data
 
+        sim_time = rospy.Time.from_sec(rospy.get_time()).to_sec()
 
-        # Add your code here
-        #print "Runing"
-
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.sensor.sendV(10)
-        #self.sensor.sendW(5)
+        if input_image is not None:
+            #ADD YOUR CODE HERE
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        #self.setImageFiltered(image)
-
-        # RGB model change to HSV
-        image_HSV = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
-
-        # Minimum and maximum values ​​of the red
-        value_min_HSV = np.array([0, 100, 0])
-        value_max_HSV = np.array([180, 255, 255])
-
-        # Filtering images
-        image_HSV_filtered = cv2.inRange(image_HSV, value_min_HSV, value_max_HSV)
-
-
-        # Creating a mask with only the pixels within the range of red
-        image_HSV_filtered_Mask = np.dstack((image_HSV_filtered, image_HSV_filtered, image_HSV_filtered))
-
-
-        # Shape gives us the number of rows and columns of an image
-        size = image.shape
-        rows = size[0]
-        columns = size[1]
-
-
-        #  Looking for pixels that change of tone
-        position_pixel_left = []
-        position_pixel_right  = []
-
-        for i in range(0, columns-1):
-            value = image_HSV_filtered[365, i] - image_HSV_filtered[365, i-1]
-            if(value != 0):
-                if (value == 255):
-                    position_pixel_left.append(i)
-                else:
-                    position_pixel_right.append(i-1)
-
-
-        # Calculating the intermediate position of the road
-        if ((len(position_pixel_left) != 0) and (len(position_pixel_right) != 0)):
-            position_middle = (position_pixel_left[0] + position_pixel_right[0]) / 2
-        elif ((len(position_pixel_left) != 0) and (len(position_pixel_right) == 0)):
-            position_middle = (position_pixel_left[0] + columns) / 2
-        elif ((len(position_pixel_left) == 0) and (len(position_pixel_right) != 0)):
-            position_middle = (0 + position_pixel_right[0]) / 2
-        else:
-            position_pixel_right.append(1000)
-            position_pixel_left.append(1000)
-            position_middle = (position_pixel_left[0] + position_pixel_right[0])/ 2
-
-
-        # Calculating the desviation
-        desviation = position_middle - (columns/2)
-        #print (" desviation    ", desviation)
-
-        sim_time = float(self.pose.getPose3d().timeStamp)
-
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        if (desviation == 0):
-             self.motors.sendV(3)
-        elif (position_pixel_right[0] == 1000):
-             self.motors.sendW(-0.0000035)
-        elif ((abs(desviation)) < 85):
-             if ((abs(desviation)) < 31):
-                 self.motors.sendV(3)
-             else:
-                 self.motors.sendV(1)
-             self.motors.sendW(-0.000045 * desviation)
-        elif ((abs(desviation)) < 150):
-             if ((abs(desviation)) < 120):
-                 self.motors.sendV(1)
-             else:
-                 self.motors.sendV(1)
-             self.motors.sendW(-0.00045 * desviation)
-        else:
-             self.motors.sendV(1)
-             self.motors.sendW(-0.0055 * desviation)
-
-
-
-        #SHOW THE FILTERED IMAGE ON THE GUI
-        self.setImageFiltered(image_HSV_filtered_Mask)
+            self.setImageFiltered(image_HSV_filtered_Mask)

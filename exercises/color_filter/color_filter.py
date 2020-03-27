@@ -17,44 +17,50 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Aitor Martinez Fernandez <aitor.martinez.fernandez@gmail.com>
+#       Carlos Awadallah Estevez <carlosawadallah@gmail.com>
 #
 
 import sys
-import config
+import yaml
 import comm
+import config
+
+from Camera.cameraSegment import CameraSegment
+
 from MyAlgorithm import MyAlgorithm
-import easyiceconfig as EasyIce
 from gui.threadGUI import ThreadGUI
-#from parallelIce.cameraClient import CameraClient
-from sensors.cameraFilter import CameraFilter
-#from parallelIce.navDataClient import NavDataClient
-#from parallelIce.cmdvel import CMDVel
-#from parallelIce.extra import Extra
-#from parallelIce.pose3dClient import Pose3DClient
 from gui.GUI import MainWindow
 from PyQt5.QtWidgets import QApplication
-
 
 import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
+
+def getCamera(cfg):
+    cfg = config.load(sys.argv[1])
+    jdrc = comm.init(cfg, 'Color_Filter')
+    proxy = jdrc.getCameraClient('Color_Filter')
+    from Camera.cameraSegment import CameraSegment
+    cam = CameraSegment(proxy)
+    return cam 
+
+
 if __name__ == '__main__':
 
     cfg = config.load(sys.argv[1])
+    #print(cfg)
+    jdrc= comm.init(cfg, 'Color_Filter')
 
-    #starting comm
-    jdrc= comm.init(cfg, 'Introrob')
+    cameraCli = jdrc.getCameraClient("Color_Filter.Camera")
+    camera = CameraSegment(cameraCli)
 
-    cameraCli = jdrc.getCameraClient("Introrob.cameraA")
-    camera = CameraFilter(cameraCli) 
-
+    # Threading the camera...
     algorithm=MyAlgorithm(camera)
 
-
     app = QApplication(sys.argv)
-    frame = MainWindow()
-    frame.setCamera(camera)
+    frame = MainWindow(camera)
+    # frame.setCamera(camera)
     frame.setAlgorithm(algorithm)
     frame.show()
 

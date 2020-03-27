@@ -1,39 +1,38 @@
 Stop:
 
   CameraC:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "cam_opel_center:default -h localhost -p 8995"
     Format: RGB8
-    Topic: "/Stop/cameraC/image_raw"
+    Topic: "/opel/cameraC/image_raw"
     Name: StopCameraC
 
   CameraL:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "cam_opel_left:default -h localhost -p 8996"
     Format: RGB8
-    Topic: "/Stop/cameraL/image_raw"
+    Topic: "/opel/cameraL/image_raw"
     Name: StopCameraL
 
   CameraR:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "cam_opel_right:default -h localhost -p 8997"
     Format: RGB8
-    Topic: "/Stop/cameraR/image_raw"
+    Topic: "/opel/cameraR/image_raw"
     Name: StopCameraR
 
-  
   Motors:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Motors:default -h localhost -p 9999"
-    Topic: "/Stop/Motorsy"
+    Topic: "/opel/cmd_vel"
     Name: StopMotors
     maxV: 250
     maxW: 20
 
   Pose3D:
-    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
     Proxy: "Pose3D:default -h localhost -p 9989"
-    Topic: "/Stop/Pose3d"
+    Topic: "/opel/odom"
     Name: StopPose3D
 
-NodeName: Stop
+  NodeName: Stop
