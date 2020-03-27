@@ -119,7 +119,8 @@ It contains ROS drivers not included in the official ROS packages.
     ```
 
 5. Source the environment variables:
-    ```bash 
+    ```bash
+    echo "source /opt/jderobot/setup.bash" >> ~/.bashrc 
     source ~/.bashrc    
     ```
 
@@ -142,6 +143,7 @@ It contains Gazebo world files and configuration files required for the Academy 
 
 3. Source the environment variables:
     ```bash 
+    echo "source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh" >> ~/.bashrc
     source ~/.bashrc    
     ```
 
