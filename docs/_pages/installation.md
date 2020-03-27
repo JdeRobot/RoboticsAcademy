@@ -59,7 +59,14 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
     echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
     source ~/.bashrc
     ```    
-
+5. Dependencies for building packages
+    ```bash  
+   sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential  
+   sudo apt install python-rosdep  
+   sudo rosdep init  
+   rosdep update  
+    ```
+For more information, refer [ros wiki](http://wiki.ros.org/)
 ## Gazebo simulator
 
 Supported release is Gazebo-9. It can be easily installed from official Debian packages, maintained by OpenRobotics organization. You can safely ignore this step as Gazebo-9 will be automatically installed with ROS Melodic package (described in the [previous step](/RoboticsAcademy/installation/#ros-middleware)).
