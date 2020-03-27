@@ -62,7 +62,6 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
 5. Dependencies for building packages
     ```bash  
    sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential  
-   sudo apt install python-rosdep  
    sudo rosdep init  
    rosdep update  
     ```
