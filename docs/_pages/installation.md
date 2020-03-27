@@ -53,6 +53,11 @@ Supported release is ROS-Melodic. It can be easily installed from official Debia
     ```bash
     sudo apt install ros-melodic-desktop-full
     ```
+4. Environment setup
+    ```bash
+    echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+    source ~/.bashrc
+    ```    
 
 ## Gazebo simulator
 
