@@ -134,9 +134,9 @@ The basic steps in its working are:
 
 1. A navigation goal is sent to the navigation stack. This is done using an action call with a goal of type *MoveBaseGoal*, which specifies a goal pose (position and orientation) in some coordinate frame (commonly called the *map* frame).
 
-2. The nav stack uses a path planning algorithm in the *global planner* to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/global_navigation/). More about it over there!
+2. The nav stack uses a path planning algorithm in the *global planner* to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/). More about it over there!
 
-3. This path is passed to the *local planner*, which tries to drive the robot along the path. The local planner uses information from the sensors in order to avoid obstacles that appear in front of the robot but that are not in the map, such as people. **If the local planner gets stuck and cannot make progress, it can ask the global planner to make a new plan and then attempt to follow that.** Local Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/obstacle_avoidance). More about it over there!
+3. This path is passed to the *local planner*, which tries to drive the robot along the path. The local planner uses information from the sensors in order to avoid obstacles that appear in front of the robot but that are not in the map, such as people. **If the local planner gets stuck and cannot make progress, it can ask the global planner to make a new plan and then attempt to follow that.** Local Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance). More about it over there!
 
 4. When the robot gets close to the goal pose, the action terminates and we're done.
 
