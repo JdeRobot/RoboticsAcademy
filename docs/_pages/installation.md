@@ -118,6 +118,12 @@ It contains ROS drivers not included in the official ROS packages.
     sudo apt install jderobot
     ```
 
+5. Source the environment variables:
+    ```bash
+    echo "source /opt/jderobot/setup.bash" >> ~/.bashrc 
+    source ~/.bashrc    
+    ```
+
 ## JdeRobot-assets
 
 Supported release is 6.1.0
@@ -135,6 +141,11 @@ It contains Gazebo world files and configuration files required for the Academy 
     sudo apt install ros-melodic-jderobot-assets
     ```
 
+3. Source the environment variables:
+    ```bash 
+    echo "source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh" >> ~/.bashrc
+    source ~/.bashrc    
+    ```
 
 # Specific infrastructure
 
