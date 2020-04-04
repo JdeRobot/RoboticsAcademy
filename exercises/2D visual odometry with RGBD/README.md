@@ -5,15 +5,14 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
 ## How to Run:
 To launch the exercise, follow the steps below:
 
-* **Download** the rosbag file from the TUM RGBD dataset.( <https://vision.in.tum.de/rgbd/dataset/freiburg2/rgbd_dataset_freiburg2_pioneer_slam.bag> ) or a truncated version of the same file from here ( <https://drive.google.com/file/d/1H3hRQZcNgOlyKMoAPSVcPDnoBLexWCDx/view?usp=sharing> )
-
+* **Download** the rosbag file from here. (https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing)
 * **Requirements** - (install these packages before proceeding).
     
-    ROS  --- <http://wiki.ros.org/kinetic/Installation/Ubuntu>
+    ROS  --- <http://wiki.ros.org/melodic/Installation/Ubuntu>
     
-	rosbag --- ```sudo apt-get install python-rosbag```
-	
-	pyqtgraph  --- ```sudo pip install pyqtgraph```
+    pyqtgraph  --- ```sudo pip install pyqtgraph```
+
+    configparser --- ```sudo pip install configparser```
 
 
 * **Place** the rosbag file in the same directory as of this exercise and replace the name of the rosbag file in the **'visual_odometry.cfg'** or mention the full path of the rosbag file.
@@ -27,13 +26,13 @@ To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
 [MyAlgorithm.py](MyAlgorithm.py#L93)
 ```
     def execute(self):
-		# demo code (replace with your code )
+        # demo code (replace with your code )
         print ("Runing")
 
-		#Getting sensor data 
+        #Getting sensor data 
         data = self.getReadings( 'color_img' , 'depth_img' )
 
-		#color image 
+        #color image 
         color_image = data.color_img 
 
         #depth image 
@@ -107,7 +106,7 @@ Let's assume that the user only wants the data from 'color_img' , 'depth_img' an
 
     ay = data.accelerometer['y']
 
-    ‘ay’ is essentially zero.
+    ‘az’ is essentially zero(since it is a 2D odometry).
 
 * For more details about the dataset refer to the original page of the TUM RGBD dataset <https://vision.in.tum.de/data/datasets/rgbd-dataset/file_formats#ros_bag>.
 
