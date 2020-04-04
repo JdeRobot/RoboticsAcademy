@@ -142,9 +142,10 @@ It contains Gazebo world files and configuration files required for the Academy 
     ```
 
 3. Source the environment variables:
-    ```bash 
+    ```bash
+    echo "source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh" >> ~/.bashrc
     echo "source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh" >> ~/.bashrc
-    source ~/.bashrc    
+    source ~/.bashrc
     ```
 
 # Specific infrastructure

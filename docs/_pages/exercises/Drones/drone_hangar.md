@@ -27,7 +27,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to e
 {% include gallery caption="Gallery." %}
 
 ## Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
 As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
 
