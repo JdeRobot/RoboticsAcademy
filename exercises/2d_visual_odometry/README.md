@@ -1,6 +1,6 @@
 
-# 2D RGBD Visual Odometry.
-The objective of this exercise is to implement the logic of a RGBD visual odometry algorithm. The performance/accuracy of the users' algorithm will be shown on the GUI of the exercise.
+# 2D Visual Odometry.
+The objective of this exercise is to implement the logic of a RGBD (RGB + Depth) visual odometry algorithm. The performance/accuracy of the users' algorithm will be shown on the GUI of the exercise.
 
 ## How to Run:
 To launch the exercise, follow the steps below:
