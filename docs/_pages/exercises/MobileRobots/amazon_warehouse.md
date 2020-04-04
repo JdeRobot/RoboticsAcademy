@@ -49,7 +49,7 @@ The objective of this practice is to implement the autonomous robot navigation a
 The students program an Amazon robot to navigate to the seleceted pallet, pick it, and deliver to the required zone. After completion of the task, go the charging area, and wait for the next tasks.
 
 ## Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
 Add following packages if you don't have them already:
 
@@ -58,26 +58,6 @@ sudo wget https://raw.githubusercontent.com/tu-darmstadt-ros-pkg/hector_localiza
 sudo apt-get install ros-melodic-kobuki-msgs
 sudo apt-get install ros-melodic-yocs-cmd-vel-mux
 sudo apt-get install ros-melodic-navigation
-```
-
-To launch the infrastructure of this practice, first set up the gazebo sources, then launch the simulator with the appropriate scenario:
-
-```bash
-source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh
-```
-
-or add them directly to your bashrc to run automatically whenever you open a terminal:
-
-```bash
-echo 'source /opt/jderobot/share/jderobot/gazebo/gazebo-setup.sh' >> ~/.bashrc
-```
-
-```bash
-echo 'source /opt/jderobot/share/jderobot/gazebo/assets-setup.sh' >> ~/.bashrc
-```
-
-```bash
-source ~/.bashrc
 ```
 
 ## How to run your solution?
@@ -134,9 +114,9 @@ The basic steps in its working are:
 
 1. A navigation goal is sent to the navigation stack. This is done using an action call with a goal of type *MoveBaseGoal*, which specifies a goal pose (position and orientation) in some coordinate frame (commonly called the *map* frame).
 
-2. The nav stack uses a path planning algorithm in the *global planner* to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/global_navigation/). More about it over there!
+2. The nav stack uses a path planning algorithm in the *global planner* to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/). More about it over there!
 
-3. This path is passed to the *local planner*, which tries to drive the robot along the path. The local planner uses information from the sensors in order to avoid obstacles that appear in front of the robot but that are not in the map, such as people. **If the local planner gets stuck and cannot make progress, it can ask the global planner to make a new plan and then attempt to follow that.** Local Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/obstacle_avoidance). More about it over there!
+3. This path is passed to the *local planner*, which tries to drive the robot along the path. The local planner uses information from the sensors in order to avoid obstacles that appear in front of the robot but that are not in the map, such as people. **If the local planner gets stuck and cannot make progress, it can ask the global planner to make a new plan and then attempt to follow that.** Local Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance). More about it over there!
 
 4. When the robot gets close to the goal pose, the action terminates and we're done.
 

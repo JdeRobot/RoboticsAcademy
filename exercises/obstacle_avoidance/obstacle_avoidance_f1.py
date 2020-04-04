@@ -36,12 +36,12 @@ from interfaces.motors import PublisherMotors
 if __name__ == "__main__":
 	cfg = config.load(sys.argv[1])
 		
-	cam_path = cfg.getProperty("ObstacleAvoidance.CameraPath")
+	#cam_path = cfg.getProperty("ObstacleAvoidance.CameraPath")
 	mot_path = cfg.getProperty("ObstacleAvoidance.MotorsPath")
 	odo_path = cfg.getProperty("ObstacleAvoidance.Pose3DPath")
 	las_path = cfg.getProperty("ObstacleAvoidance.LaserPath")
 
-	camera = ListenerCamera(cam_path)
+	#camera = ListenerCamera(cam_path)
 	motors = PublisherMotors(mot_path, 4, 0.3)
 	pose3d = ListenerPose3d(odo_path)
 	laser = ListenerLaser(las_path)
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
 	app = QApplication(sys.argv)
 	myGUI = MainWindow()
-	myGUI.setCamera(camera)
+	#myGUI.setCamera(camera)
 	myGUI.setMotors(motors)
 	myGUI.setPose3D(pose3d)
 	myGUI.setLaser(laser)
