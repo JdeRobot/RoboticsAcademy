@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>877</height>
+    <width>733</width>
+    <height>870</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,35 +94,13 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>20</x>
       <y>440</y>
-      <width>331</width>
+      <width>531</width>
       <height>381</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <layout class="QVBoxLayout" name="tlLayout"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="stopButton">
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Stop</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../resources/resources.qrc">
-         <normaloff>:/images/stop.png</normaloff>:/images/stop.png</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <layout class="QVBoxLayout" name="graphicLayout"/>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
@@ -141,8 +119,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>695</width>
-     <height>19</height>
+     <width>733</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

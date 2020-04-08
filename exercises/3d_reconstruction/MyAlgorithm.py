@@ -1,75 +1,80 @@
-# -*- coding: utf-8 -*-
-
-import sys
-from docutils.nodes import image
-from sensors import sensor
-import numpy as np
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
 import threading
-from pyProgeo.progeo import Progeo
+import time
+import sys
+from datetime import datetime
+
+import math
 import cv2
+import numpy as np
 
+from interfaces.camera import ListenerParameters
 
-class MyAlgorithm():
+time_cycle = 80
 
-    def __init__(self, sensor):
-        self.sensor = sensor
-        self.imageRight=np.zeros((320,240,3), np.uint8)
-        self.imageLeft=np.zeros((320,240,3), np.uint8)
-        self.lock = threading.Lock()
+class MyAlgorithm(threading.Thread):
 
-        print("Left Camera Configuration File:")
-        self.camLeftP=Progeo(sys.argv[1], "CamACalibration")
-        print("Rigth Camera Configuration File:")
-        self.camRightP=Progeo(sys.argv[1], "CamBCalibration")
-
-        self.done=False
-
-        self.counter=0
-
-    def setRightImageFiltered(self, image):
-        self.lock.acquire()
-        size=image.shape
-        if len(size) == 2:
-            image=cv2.cvtColor(image,cv2.COLOR_GRAY2BGR)
-        self.imageRight=image
-        self.lock.release()
-
-
-    def setLeftImageFiltered(self, image):
-        self.lock.acquire()
-        size=image.shape
-        if len(size) == 2:
-            image=cv2.cvtColor(image,cv2.COLOR_GRAY2BGR)
-        self.imageLeft=image
-        self.lock.release()
-
-    def execute(self):
-      
-        #OBTENCIÓN DE IMÁGENES
-        imageLeft = self.sensor.getImageLeft()
-        imageRight = self.sensor.getImageRight()
+    def __init__(self, cameraL, cameraR, point):
+        self.cameraL = cameraL
+        self.cameraR = cameraR
+        self.point = point
+        self.threshold_image = np.zeros((640,360,3), np.uint8)
+        self.color_image = np.zeros((640,360,3), np.uint8)
         
-        if self.done:
-            return
+        print("Left Camera Configuration File:")
+        self.camLeftP = ListenerParameters(sys.argv[1], "CamACalibration")
+        print("Right Camera Configuration File:")
+        self.camRightP = ListenerParameters(sys.argv[1], "CamBCalibration")
+        
+        self.stop_event = threading.Event()
+        self.kill_event = threading.Event()
+        self.lock = threading.Lock()
+        self.threshold_image_lock = threading.Lock()
+        self.color_image_lock = threading.Lock()
+        threading.Thread.__init__(self, args=self.stop_event)
+    
+    def getImage(self, lr):
+        self.lock.acquire()
+        if(lr == 'left'):
+        	img = self.cameraL.getImage().data
+        elif(lr == 'right'):
+        	img = self.cameraR.getImage().data
+        else:
+        	print("Invalid camera")
+        	exit()
+        self.lock.release()
+        return img
 
+    def run (self):
+	self.algorithm()
 
+    def stop (self):
+        self.stop_event.set()
+
+    def play (self):
+        if self.is_alive():
+            self.stop_event.clear()
+        else:
+            self.start()
+
+    def kill (self):
+        self.kill_event.set()
+
+    def algorithm(self):
+        #GETTING THE IMAGES
+        image = self.getImage('right')
+        #print(image.shape)
+        #cv2.imshow('a', image)
+	for i in range(3):
+		self.point.plotPoint([1.0, 0.0, i], [1.0, 0.0, 0.0])
+		time.sleep(5)
         # Add your code here
-        # pointIn=np.array([502,21,1])
-        # pointInOpt=self.camLeftP.graficToOptical(pointIn)
-        # point3d=self.camLeftP.backproject(pointInOpt)
-        # projected1 = self.camRightP.project(point3d)
-        # print (self.camRightP.opticalToGrafic(projected1))
+        print "Runing"
 
         #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.sensor.setV(10)
-        #self.sensor.setW(5)
-
+        #self.motors.sendV(10)
+        #self.motors.sendW(5)
 
         #SHOW THE FILTERED IMAGE ON THE GUI
-        # self.setRightImageFiltered(imageRight)
-        # self.setLeftImageFiltered(imageLeft)
-
-        #PLOT 3D data on the viewer
-        #point=np.array([1, 1, 1])
-        #self.sensor.drawPoint(point,(255,255,255))
-
+       	#self.set_threshold_image(image)

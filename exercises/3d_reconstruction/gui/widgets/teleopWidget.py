@@ -17,7 +17,7 @@
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #
 import resources_rc
-from PyQt5.QtGui import QImage, QPainter, QPen
+from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal, QPointF, Qt, QPoint
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
@@ -29,7 +29,7 @@ class TeleopWidget(QWidget):
         super(TeleopWidget, self).__init__()
         self.winParent=winParent
         self.line = QPointF(0, 0);
-        self.qimage=QImage()
+        self.qimage=QtGui.QImage()
         self.qimage.load(':images/ball.png')
         self.stopSIG.connect(self.stop)
         self.initUI()
@@ -45,7 +45,7 @@ class TeleopWidget(QWidget):
         self.setMinimumSize(300,300)
         
     def stop(self):
-        self.line = QPointF(0, 0);
+        self.line = QPointF(0, 0)
         self.repaint();
     
     def mouseMoveEvent(self,e):
@@ -55,6 +55,13 @@ class TeleopWidget(QWidget):
             self.line = QPointF(x, y)
             self.repaint()
 
+
+    def returnToOrigin(self):
+        x = 0
+        y = 0
+        self.line = QPointF(x, y)
+        self.repaint()
+
     def paintEvent(self, e):
         _width = self.width()
         _height = self.height()
@@ -62,9 +69,9 @@ class TeleopWidget(QWidget):
     
         width = 2
     
-        painter=QPainter(self)
+        painter=QtGui.QPainter(self)
     
-        pen = QPen(Qt.blue, width)
+        pen = QtGui.QPen(Qt.blue, width)
         painter.setPen(pen)
     
         #Centro del widget
@@ -78,7 +85,7 @@ class TeleopWidget(QWidget):
                 QPointF(0, _height))
     
         #con el raton
-        pen = QPen(Qt.red, width)
+        pen = QtGui.QPen(Qt.red, width)
         painter.setPen(pen)
 
         #Comprobamos que el raton este dentro de los limites
@@ -109,5 +116,5 @@ class TeleopWidget(QWidget):
 
         #print "v: %f w: %f" % (v_normalized,w_normalized)
         self.winParent.setXYValues(w_normalized,v_normalized)
-        painter.drawImage(self.line.x()-self.qimage.width()/2, self.line.y()-self.qimage.height()/2, self.qimage);
+        painter.drawImage(self.line.x()-self.qimage.width()/2, self.line.y()-self.qimage.height()/2, self.qimage)
 
