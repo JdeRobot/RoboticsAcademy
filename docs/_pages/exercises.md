@@ -56,6 +56,14 @@ feature_row:
     url: "/exercises/MobileRobots/amazon_warehouse"
     btn_class: "btn--primary"
     btn_label: "Go!"
+    
+  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
+    alt: "Drone Gymkhana"
+    title: "Drone Gymkhana"
+    excerpt: "Learn about different drone controls and drone infrastructure."
+    url: "/exercises/Drones/drone_gymkhana"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
