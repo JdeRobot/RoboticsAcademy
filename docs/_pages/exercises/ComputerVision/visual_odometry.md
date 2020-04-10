@@ -161,6 +161,7 @@ Here is a flowchart explaining the step-by-step process for implementing an visu
 More detailed deliberation on visual odometry is provided here.
 
 1) [https://sites.google.com/site/scarabotix/tutorial-on-visual-odometry/](https://sites.google.com/site/scarabotix/tutorial-on-visual-odometry/)
+
 2) [http://www.cs.toronto.edu/~urtasun/courses/CSC2541/03_odometry.pdf](http://www.cs.toronto.edu/~urtasun/courses/CSC2541/03_odometry.pdf)
 
 ## Hint
