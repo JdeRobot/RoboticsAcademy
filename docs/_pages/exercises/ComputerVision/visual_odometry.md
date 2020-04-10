@@ -167,10 +167,15 @@ More detailed deliberation on visual odometry is provided here.
 
 ## Hint
 1) Detect features from the first available RGB image using FAST algorithm.
+
 2) Track the detected features in the next available RGB image using Lucas-Kanade Optical Flow Algorithm.
+
 3) Create the 3D pointcloud (of the tracked/detected feature points) of the latest two available RGB image with the help of their depth image . 
+
 4) Estimate the motion between two consecutive 3D pointclouds.
+
 5) Concatenate the Rotation and Translational information to obtain the predicted path. 
+
 
 Following research paper can be used as a reference:
 [Visual Odometry and Mapping for Autonomous Flight Using an RGB-D Camera](https://link.springer.com/chapter/10.1007/978-3-319-29363-9_14)

@@ -13,7 +13,7 @@ feature_row:
     alt: "Visual Odometry"
     title: "Visual Odometry"
     excerpt: "Solving the Visual Odometry problem in a given dataset"
-    url: "/exercises/Drones/visual_odometry"
+    url: "/exercises/ComputerVision/visual_odometry"
     btn_class: "btn--primary"
     btn_label: "Go!"
 
