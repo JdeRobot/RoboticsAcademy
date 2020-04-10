@@ -39,8 +39,6 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
 
 * **Requirements** - (install these packages before proceeding).
     
-    ROS  --- <http://wiki.ros.org/melodic/Installation/Ubuntu>
-    
     pyqtgraph  --- ```sudo pip install pyqtgraph```
 
     configparser --- ```sudo pip install configparser```
@@ -50,7 +48,7 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
 
 To launch the exercise, follow the steps below:
 
-* **Download** the rosbag file from here. (https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing)
+* **Download** the rosbag file from here. [https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing](https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing)
 
 * **Place** the rosbag file in the same directory as of this exercise and replace the name of the rosbag file in the **'visual_odometry.cfg'** or mention the full path of the rosbag file.
 
