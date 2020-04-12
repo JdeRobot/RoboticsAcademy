@@ -22,11 +22,11 @@ Depending on the way you want to obtain the video, you must specify the selected
 source in the configuration file (color_filter_conf.cfg), and the required paremeters for that source. 
 Once done it, if you have selected either 'Local' or 'Video', follow the next step:
 
-First, launch the ROS Server. Open the terminal with the directory of *color_filter* in the exercises folder and \run this command. 
+First, launch the ROS Server. Open the terminal with the directory set to *color_filter* in the exercises folder and run this command. 
 
 ` $ roslaunch color_filter.launch`
 
-The above command opens the stream and starts publishing it.
+The above command opens the videostream and starts publishing it.
 Next, ensuring you have written a workable code in MyAlogirthm.py file, run the following command.
 
 `$ python2 ./color_filter.py color_filter_conf.yml`
@@ -53,5 +53,9 @@ In other terminal launch the color_filter component:
 
 ## API
 * `camera.getImage()` - to get the image received from server
+* `camera.getColorImage()`
 * `camera.setColorImage(input_image)` - to set color image
+* `camera.getDetectImage()`
 * `camera.setThresholdImage(bk_image)` - to set Threshold image
+* `getDetectImage()
+* `setDetectImage()`
