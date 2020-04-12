@@ -53,9 +53,9 @@ In other terminal launch the color_filter component:
 
 ## API
 * `camera.getImage()` - to get the image received from server
-* `camera.getColorImage()`
 * `camera.setColorImage(input_image)` - to set color image
-* `camera.getDetectImage()`
+* `camera.getColorImage()` - get the image color image
 * `camera.setThresholdImage(bk_image)` - to set Threshold image
-* `getDetectImage()`
-* `setDetectImage()`
+* `camera.getDetectImage()` - to get the Thresold image
+* `setDetectImage()` - set the final processed image to be displayed on the detector window 
+* `getDetectImage()` - get the detected image
