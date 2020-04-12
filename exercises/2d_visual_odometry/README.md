@@ -2,13 +2,14 @@
 # 2D Visual Odometry.
 The objective of this exercise is to implement the logic of a RGBD (RGB + Depth) visual odometry algorithm. The performance/accuracy of the users' algorithm will be shown on the GUI of the exercise.
 
+[Exercise Documentation Website](https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/visual_odometry)
+
 ## How to Run:
 To launch the exercise, follow the steps below:
 
-* **Download** the rosbag file from here. (https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing)
+* **Download** the rosbag file from here. (http://wiki.jderobot.org/store/slam-datasets/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag)
 * **Requirements** - (install these packages before proceeding).
     
-    ROS  --- <http://wiki.ros.org/melodic/Installation/Ubuntu>
     
     pyqtgraph  --- ```sudo pip install pyqtgraph```
 
@@ -113,7 +114,7 @@ Let's assume that the user only wants the data from 'color_img' , 'depth_img' an
 ## Demonstration video:
 
 
-[https://www.youtube.com/watch?v=OqtmgNGzEZM](https://www.youtube.com/watch?v=OqtmgNGzEZM)
+[https://www.youtube.com/watch?v=HUFOadsCSRo](https://www.youtube.com/watch?v=HUFOadsCSRo)
 
 *Author:*
 * *Debrup Datta <dattadebrup@gmail.com>* 
