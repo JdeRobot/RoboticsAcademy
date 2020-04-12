@@ -24,6 +24,13 @@ source in the configuration file (color_filter_conf.yml), and the required parem
 Once done it, if you have selected either 'Local' or 'Video', follow the next step:
 
 ## How to execute?
+### Set the video stream provider
+Edit the video_stream_provider argument in the color_filter.launch file according to your choice of video stream.
+You can use any input that OpenCV on your system accepts, e.g.:
+- Video devices that appear in linux as /dev/videoX, e.g.: USB webcams appearing as /dev/video0
+- Video streamings, e.g.: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov
+- Video files, i.e., anything that you can play, e.g.: myvideo.avi
+For camera we can continue with the value of this argument set to "0".
 
 Launch the ROS Server. Open the terminal with the directory set to *color_filter* in the exercises folder and run the command. 
 
