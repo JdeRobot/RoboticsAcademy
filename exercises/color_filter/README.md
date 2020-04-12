@@ -25,7 +25,7 @@ Once done it, if you have selected either 'Local' or 'Video', follow the next st
 
 ## How to execute?
 
-First, launch the ROS Server. Open the terminal with the directory set to *color_filter* in the exercises folder and run this command. 
+Launch the ROS Server. Open the terminal with the directory set to *color_filter* in the exercises folder and run the command. 
 
 ` $ roslaunch color_filter.launch`
 
@@ -53,7 +53,22 @@ In other terminal launch the color_filter component:
 `$ python2 ./color_filter.py color_filter_conf.yml`
 -->
 
--------
+## How to do the practice?
+
+To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which enables the detection of a specific color and displays it in the GUI using the APIs given below.
+
+## Where to insert the code?
+[MyAlgorithm.py](MyAlgorithm.py)
+
+```
+    def execute(self):
+       # Add your code here
+
+        input_image = self.camera.getImage()
+        if input_image is not None:
+            self.camera.setColorImage(input_image)
+```
+
 
 ## API
 * `camera.getImage()` - to get the image received from server
