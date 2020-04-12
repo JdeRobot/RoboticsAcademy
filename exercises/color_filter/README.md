@@ -83,8 +83,8 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 ## API
 * `camera.getImage()` - to get the image received from server
 * `camera.setColorImage(input_image)` - to set color image
-* `camera.getColorImage()` - get the image color image
+* `camera.getColorImage()` - to get the image color image
 * `camera.setThresholdImage(bk_image)` - to set Threshold image
 * `camera.getDetectImage()` - to get the Thresold image
-* `setDetectImage()` - set the final processed image to be displayed on the detector window 
-* `getDetectImage()` - get the detected image
+* `setDetectImage()` - to set the final processed image to be displayed in the detector window 
+* `getDetectImage()` - to get the detected image
