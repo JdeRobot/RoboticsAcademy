@@ -27,7 +27,7 @@ rgbd:
     alt: "RGBD"
     title: "RGBD"
 
-youtubeId: OqtmgNGzEZM
+youtubeId: HUFOadsCSRo
 ---
 
 The objective of this exercise is to implement the logic of a RGBD visual odometry algorithm. The performance/accuracy of the users' algorithm will be shown on the GUI of the exercise.
@@ -48,7 +48,7 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
 
 To launch the exercise, follow the steps below:
 
-* **Download** the rosbag file from here. [https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing](https://drive.google.com/file/d/1usWxfFrjCqm8JZEsOsJjGBp8Gszme8fH/view?usp=sharing)
+* **Download** the rosbag file from here. [http://wiki.jderobot.org/store/slam-datasets/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag](http://wiki.jderobot.org/store/slam-datasets/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag)
 
 * **Place** the rosbag file in the same directory as of this exercise and replace the name of the rosbag file in the **'visual_odometry.cfg'** or mention the full path of the rosbag file.
 
@@ -165,6 +165,10 @@ More detailed deliberation on visual odometry is provided here.
 2) [http://www.cs.toronto.edu/~urtasun/courses/CSC2541/03_odometry.pdf](http://www.cs.toronto.edu/~urtasun/courses/CSC2541/03_odometry.pdf)
 
 ## Hint
+
+
+Simple hints provided to help you solve the exercise. Please note that the **following hint is only a suggestive approach. Any other algorithm to solve the exercise is acceptable.**
+
 1) Detect features from the first available RGB image using FAST algorithm.
 
 2) Track the detected features in the next available RGB image using Lucas-Kanade Optical Flow Algorithm.
@@ -186,3 +190,5 @@ Following research paper can be used as a reference:
 ## Contributors
 
 - Contributors: [Debrup Datta](https://github.com/dattadebrup), [Jose María Cañas](https://github.com/jmplaza)
+
+- Maintained by [Debrup Datta](https://github.com/dattadebrup). 
