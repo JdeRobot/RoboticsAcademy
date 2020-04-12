@@ -1,4 +1,4 @@
-# COLOR FILTER EXCERCISE
+# Color Filter Exercise
 		
 In this practice the intention is to develop a color filter that allow us to segment some object in the image. You will have to get in contact with RGB and HSV color spaces, and *OpenCV* (*Python*) library.
 
