@@ -33,7 +33,7 @@ You can use any input that OpenCV on your system accepts, e.g.:
 
 For camera we can continue with the value of this argument set to "0".
 
-We also provide you with an example video that you can start the exercise with. This is the [Link](http://wiki.jderobot.org/store/amartinflorido/uploads/curso/pelotas_roja_azul.avi) to the video. Download it to your local system and accordingly update the value of video_stream_provider argument(in line 7 of color_filter.launch) in the launch file. For example, < *arg name="video_stream_provider" value="~/Downloads/pelotas_roja_azul.avi"* />
+We also provide you with an example video that you can start the exercise with. This is the [Link](http://wiki.jderobot.org/store/amartinflorido/uploads/curso/pelotas_roja_azul.avi) to the video. Download it to your local system and accordingly update the value of video_stream_provider argument(in line 7 of color_filter.launch) in the launch file. For example, < *arg name="video_stream_provider" value="/home/<user>/Downloads/pelotas_roja_azul.avi"* />
 
 Launch the ROS Server. Open the terminal with the directory set to *color_filter* in the exercises folder and run the command. 
 
