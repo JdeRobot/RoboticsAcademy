@@ -77,7 +77,10 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
         input_image = self.camera.getImage()
         if input_image is not None:
             self.camera.setColorImage(input_image)
+	  
 ```
+## GUI
+![GUI_Demo](gui_demo.png)
 
 
 ## API
