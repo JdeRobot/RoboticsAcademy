@@ -80,6 +80,7 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 	  
 ```
 ## GUI
+*Detecting and tracking the blue ball*
 ![GUI_Demo](gui_demo.png)
 
 
