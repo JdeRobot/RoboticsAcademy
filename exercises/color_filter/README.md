@@ -30,7 +30,7 @@ Launch the ROS Server. Open the terminal with the directory set to *color_filter
 ` $ roslaunch color_filter.launch`
 
 The above command opens the videostream and starts publishing it.
-Next, ensuring you have written a workable code in MyAlogirthm.py file, run the following command.
+Next, ensuring you have written a workable code in MyAlogrithm.py file, run the following command in a new terminal.
 
 `$ python2 ./color_filter.py color_filter_conf.yml`
 
