@@ -57,5 +57,5 @@ In other terminal launch the color_filter component:
 * `camera.setColorImage(input_image)` - to set color image
 * `camera.getDetectImage()`
 * `camera.setThresholdImage(bk_image)` - to set Threshold image
-* `getDetectImage()
+* `getDetectImage()`
 * `setDetectImage()`
