@@ -128,6 +128,15 @@ feature_row:
     url: "/exercises/ComputerVision/visual_odometry"
     btn_class: "btn--primary"
     btn_label: "Go!"
+
+  - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
+    alt: "3D Reconstruction"
+    title: "3D Reconstruction"
+    excerpt: "Reconstruct a 3D scene from a stereo pair"
+    url: "/exercises/ComputerVision/3d_reconstruction"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 ---
 
 

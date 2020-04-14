@@ -63,18 +63,10 @@ class MyAlgorithm(threading.Thread):
 
     def algorithm(self):
         #GETTING THE IMAGES
-        image = self.getImage('right')
-        #print(image.shape)
-        #cv2.imshow('a', image)
-	for i in range(3):
-		self.point.plotPoint([1.0, 0.0, i], [1.0, 0.0, 0.0])
-		time.sleep(5)
-        # Add your code here
-        print "Runing"
+        # imageR = self.getImage('right')
+	# imageL = self.getImage('left')
 
-        #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-        #self.motors.sendV(10)
-        #self.motors.sendW(5)
-
-        #SHOW THE FILTERED IMAGE ON THE GUI
-       	#self.set_threshold_image(image)
+        #EXAMPLE OF HOW TO PLOT A RED COLORED POINT
+	# position = [1.0, 0.0, 0.0]	X, Y, Z
+	# color = [1.0, 0.0, 0.0]	R, G, B
+        # self.point.plotPoint(position, color) 
