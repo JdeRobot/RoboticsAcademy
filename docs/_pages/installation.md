@@ -208,6 +208,7 @@ Install previous dependencies:
     sudo -H pip install --upgrade pip
     sudo -H pip install pandas jinja2 pyserial cerberus
     sudo -H pip install pyulog
+    sudo -H pip install packaging
     ```
 
 6. Install ninja
