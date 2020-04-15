@@ -36,7 +36,22 @@ gifs:
     image_path: /assets/images/exercises/follow_line/slowresponse.gif
     alt: "examples"
     title: "examples"
-  
+
+pid:
+  - url: /assets/images/exercises/follow_line/ControlSystems.jpg
+    image_path: assets/images/exercises/follow_line/ControlSystems.jpg
+    alt: "Control Systems"
+    title: "Control Systems"
+
+  - url: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
+    image_path: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
+    alt: "Types of Control Systems"
+    title: "Types of Control Systems"
+
+  - url: /assets/images/exercises/follow_line/PID.png
+    image_path: /assets/images/exercises/follow_line/PID.png
+    alt: "PID"
+    title: "PID"
 
 
 youtubeId: eNuSQN9egpA
@@ -111,16 +126,12 @@ PID Control is the main fundamental behind this exercise. To understand PID Cont
 
 A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforeseen errors.
 
-![Control System]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/ControlSystems.jpg)
-
 ### Types of Control System
 #### Open Loop Control System
 A control system in which the control action is completeley independent of the output of the system. A manual control system is on Open Loop System.
 
 #### Closed Loop Control System
 A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
-
-![Types of Control Systems]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/TypesofControlSystems.jpg)
 
 ### PID Control
 A control loop mechanism employing feedback. A PID Controller continuously calculates an error value as the difference between desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
@@ -137,9 +148,9 @@ Integral Controller provides a necessary action to eliminate the offset error wh
 
 Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
 
-![PID Control Equation]({{ site.url }}/RoboticsAcademy/assets/images/exercises/follow_line/PID.png)
+{% include gallery id="pid" caption="Control Systems and PID" %}
 
-- **Tuning Methods**
+### Tuning Methods
 
 In order for the PID equation to work, we need to determine the constants of the equation. There are 3 constants called the gains of the equation. We have 2 main tuning methods for this.
 
