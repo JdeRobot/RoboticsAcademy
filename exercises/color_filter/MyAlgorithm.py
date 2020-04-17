@@ -51,10 +51,39 @@ class MyAlgorithm(threading.Thread):
 
     def execute(self):
        # Add your code here
-
         input_image = self.camera.getImage()
+        self.camera.setColorImage(input_image)
+        
         if input_image is not None:
-            self.camera.setColorImage(input_image)
+            
+
+            
+            hsv = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
+
+            lower_range = np.array([0,60,60])
+            upper_range = np.array([40,255,255])
+          
+            Y=cv2.cvtColor(input_image,cv2.COLOR_BGR2HSV)
+            x = cv2.cvtColor(Y,cv2.COLOR_HSV2BGR)
+            mask = cv2.inRange(hsv, lower_range, upper_range)
+            
+            backtorgb = cv2.cvtColor(mask,cv2.COLOR_GRAY2RGB)
+
+            
+            self.camera.setThresholdImage(backtorgb)
+
+            bluecnts = cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)[-2]
+
+            if len(bluecnts)>0:
+                blue_area = max(bluecnts, key=cv2.contourArea)
+                (xg,yg,wg,hg) = cv2.boundingRect(blue_area)
+                cv2.rectangle(x,(xg,yg),(xg+wg, yg+hg),(0,255,0),2)
+
+
+            
+            
+            
+            self.camera.setDetectImage(x)
             
             """
             If you want show a threshold image (black and white image)
