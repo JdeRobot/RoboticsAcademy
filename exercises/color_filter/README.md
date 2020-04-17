@@ -100,7 +100,7 @@ This exercise is focused on implementing color filter and tracking a color coded
 Color spaces are a way to represent the color channels present in the image that gives the image that particular hue. There are several different color spaces and each has its own significance.
 Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc.
 
-![color space](resources/colorspace.png)
+![color space](resources/colorspace.jpg)
 
 **BGR color space**: OpenCV’s default color space is RGB. However, it actually stores color in the BGR format. It is an additive color model where the different intensities of Blue, Green and Red give different shades of color.
 
