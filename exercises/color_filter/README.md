@@ -25,7 +25,7 @@ Once done it, if you have selected either 'Local' or 'Video', follow the next st
 
 ## How to execute?
 ### Set the video stream provider
-Edit the video_stream_provider argument in the color_filter.launch file according to your choice of video stream.
+Edit the video_stream_provider argument in the [color_filter.launch](color_filter.launch) file according to your choice of video stream.
 You can use any input that OpenCV on your system accepts, e.g.:
 - Video devices that appear in linux as /dev/videoX, e.g.: USB webcams appearing as /dev/video0
 - Video streamings, e.g.: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov
