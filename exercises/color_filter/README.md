@@ -1,6 +1,6 @@
 # Color Filter Exercise
 		
-In this practice the intention is to develop a color filter that allow us to segment some object in the image. You will have to get in contact with RGB and HSV color spaces, and *OpenCV* (*Python*) library.
+In this practice the intention is to develop a color filter that allow us to segment some object in the image. You will have to get in contact with RGB and HSV color spaces, and *OpenCV* (*Python*) library.*Theory for the same is provided below*
 
 For the exercise, we will need a node to publish the video stream. The *video_stream_opencv* package contains this node.
 Add this packages if you don’t have it already:
