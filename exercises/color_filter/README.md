@@ -98,7 +98,7 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 This exercise is focused on implementing color filter and tracking a color coded object of choice.
 ### Color Space
 Color spaces are a way to represent the color channels present in the image that gives the image that particular hue. There are several different color spaces and each has its own significance.
-Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc.
+Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc. In the figure below, a)RGB Color Space and b) HSV color space can be visualized.
 
 ![color space](resources/colorspace.jpg)
 
