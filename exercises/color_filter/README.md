@@ -92,3 +92,18 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 * `camera.getDetectImage()` - to get the Thresold image
 * `setDetectImage()` - to set the final processed image to be displayed in the detector window 
 * `getDetectImage()` - to get the detected image
+
+
+## Theory
+This exercise is focused on implementing color filter and tracking a color coded object of choice.
+### Color Space
+Color spaces are a way to represent the color channels present in the image that gives the image that particular hue. There are several different color spaces and each has its own significance.
+Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc.
+
+![color space](resources/colorspace.png)
+
+**BGR color space**: OpenCV’s default color space is RGB. However, it actually stores color in the BGR format. It is an additive color model where the different intensities of Blue, Green and Red give different shades of color.
+
+**HSV color space**: It stores color information in a cylindrical representation of RGB color points. It attempts to depict the colors as perceived by the human eye. Hue value varies from 0-179, Saturation value varies from 0-255 and Value value varies from 0-255. It is mostly used for color segmentation purpose.
+
+**CMYK color space**: Unlike, RGB it is a subtractive color space. The CMYK model works by partially or entirely masking colors on a lighter, usually white, background. The ink reduces the light that would otherwise be reflected. Such a model is called subtractive because inks “subtract” the colors red, green and blue from white light. White light minus red leaves cyan, white light minus green leaves magenta, and white light minus blue leaves yellow.
