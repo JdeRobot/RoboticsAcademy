@@ -83,6 +83,8 @@ To carry out the practice, you have to edit the file MyAlgorithms.py and insert 
 *Detecting and tracking the blue ball*
 ![GUI_Demo](resources/guidemo.png)
 
+#### [Video Demonstration](https://youtu.be/gzALLE2jlRI)
+
 
 ## API
 * `camera.getImage()` - to get the image received from server
