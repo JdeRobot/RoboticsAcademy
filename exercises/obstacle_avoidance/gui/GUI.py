@@ -59,9 +59,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         (ox, oy) = self.algorithm.getObstaclesDirection()
         (ax, ay) = self.algorithm.getAverageDirection()
         (tx, ty, id) = self.algorithm.getCurrentTarget()
-        self.map.setCarArrow(cx, cy)
-        self.map.setObstaclesArrow(ox, oy)
-        self.map.setAverageArrow(ax, ay)
+        self.map.setCarArrow(-cy, cx)
+        self.map.setObstaclesArrow(-oy, ox)
+        self.map.setAverageArrow(-ay, ax)
         if (self.pose3d):
             self.map.setTarget(tx, ty, self.pose3d.getPose3d().x, self.pose3d.getPose3d().y, self.pose3d.getPose3d().yaw, id)
         laserdata = self.laser.getLaserData()
