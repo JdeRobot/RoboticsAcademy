@@ -69,4 +69,6 @@ class MyAlgorithm(threading.Thread):
         #EXAMPLE OF HOW TO PLOT A RED COLORED POINT
 	# position = [1.0, 0.0, 0.0]	X, Y, Z
 	# color = [1.0, 0.0, 0.0]	R, G, B
-        # self.point.plotPoint(position, color) 
+        # self.point.plotPoint(position, color)
+        
+        pass

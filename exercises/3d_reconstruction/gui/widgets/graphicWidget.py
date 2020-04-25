@@ -15,7 +15,7 @@ class GroundGraphics(object):
     def __init__(self, length, width):
         self.len = length
         self.w = width
-        self.res = 15
+        self.res = 10
         self.n_sq = self.res ** 2
         self.n_vert = 6 * self.n_sq
 
@@ -51,13 +51,8 @@ class GroundGraphics(object):
             gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
             gl.glVertexPointer(3, gl.GL_FLOAT, self.vert_stride, self.vert_vbo)
             
-            gl.glColor3f(1.0, 1.0, 1.0)
+            gl.glColor3f(0.0, 0.0, 0.0)
             gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_LINE)
-
-            gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.n_vert)
-
-            gl.glColor3f(0.5, 0.5, 0.5)
-            gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_FILL)
 
             gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.n_vert)
 
@@ -75,15 +70,38 @@ class PointGraphic(object):
     
     def __init__(self):
         self.sphere = GLU.gluNewQuadric()
-        GLU.gluQuadricNormals(self.sphere, GLU.GLU_SMOOTH)
-        GLU.gluQuadricTexture(self.sphere, gl.GL_TRUE)
+        GLU.gluQuadricNormals(self.sphere, GLU.GLU_NONE)
+        GLU.gluQuadricTexture(self.sphere, gl.GL_FALSE)
 
-    def render(self, start, color, radius=0.03):
+    def render(self, vertex, radius=0.05):
         gl.glPushMatrix()
-	gl.glColor3f(*color)
-        gl.glTranslatef(*start)
-        GLU.gluSphere(self.sphere, radius, 10, 10)
-        gl.glPopMatrix()
+        vert_vbo = vbo.VBO(np.reshape(vertex, (1, -1), order='C').astype(np.float32))
+	#color_vbo = vbo.VBO(np.reshape(vertex[:, 3:], (1, -1), order='C').astype(np.float32))
+        
+        try:
+        	vert_vbo.bind()
+        	#color_vbo.bind()
+        	
+        	gl.glEnableClientState(gl.GL_VERTEX_ARRAY)
+        	gl.glEnableClientState(gl.GL_COLOR_ARRAY)
+        	
+        	gl.glVertexPointer(3, gl.GL_FLOAT, 4 * 6, vert_vbo)
+        	gl.glColorPointer(3, gl.GL_FLOAT, 4 * 6, vert_vbo + 12)
+        	
+        	#gl.glColor3f(0.0, 0.0, 0.0)
+        	gl.glPolygonMode(gl.GL_FRONT_AND_BACK, gl.GL_POINT)
+        	gl.glDrawArrays(gl.GL_POINTS, 0, len(vertex) * 12)
+        	
+        except Exception as e:
+        	print(e)
+        	
+        finally:
+        	vert_vbo.unbind()
+        	gl.glDisableClientState(gl.GL_VERTEX_ARRAY)
+        	gl.glDisable(gl.GL_COLOR_ARRAY)
+        	
+        	gl.glPopMatrix()
+        	
 
 class GLWidget(QtOpenGL.QGLWidget):
     def __init__(self, parent=None):
@@ -91,13 +109,14 @@ class GLWidget(QtOpenGL.QGLWidget):
         QtOpenGL.QGLWidget.__init__(self, parent)
 
 	self.points = []
+	self.col = 0
 	self.setMouseTracking(False)
 
     def initializeGL(self):
         self.qglClearColor(QtGui.QColor(100, 100, 100))
         gl.glEnable(gl.GL_DEPTH_TEST)
         self.initGeometry()
-        self.ground_graphics = GroundGraphics(length=15.0, width=15.0)
+        self.ground_graphics = GroundGraphics(length=25.0, width=25.0)
 
         self.eye_r = 20.0
         self.eye_th = 1.0
@@ -128,8 +147,7 @@ class GLWidget(QtOpenGL.QGLWidget):
         self.accumulate_points()
 	self.plot_point()
         #self.origin_axes_graphics.render(np.identity(3), np.zeros(3))
-        #self.point_graphics.render(np.array([1.0, 0.0, 1.0]), np.array([1.0, 0.0, 0.0]))
-        #self.point_graphics.render(np.array([0.0, 0.0, 0.0]), np.array([0.0, 1.0, 0.0]))
+        #self.point_graphics.render(np.array([[0.0, 1.0, 0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 0.0, 1.0, 0.0]]))
 
     
     def accumulate_points(self):
@@ -139,8 +157,9 @@ class GLWidget(QtOpenGL.QGLWidget):
     
     
     def plot_point(self):
-	for point in self.points:
-    		self.point_graphics.render(np.array(point[:3]), np.array(point[3:]))
+    	# Should be the only loop running
+    	if(len(self.points) != 0):
+    		self.point_graphics.render(np.array(self.points))
     
     def update_view(self):
         self.eye_pos = np.array([self.eye_r*np.sin(self.eye_phi)*np.cos(self.eye_th),
