@@ -15,7 +15,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget.setGeometry(QtCore.QRect(21, 17, 591, 411))
+        self.layoutWidget.setGeometry(QtCore.QRect(21, 0, 670, 400))
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         #self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -49,7 +49,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.pushButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.layoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget1.setGeometry(QtCore.QRect(50, 440, 520, 370))
+        self.layoutWidget1.setGeometry(QtCore.QRect(21, 400, 550, 500))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.graphicLayout = QtWidgets.QVBoxLayout(self.layoutWidget1)
         #self.graphicLayout.setContentsMargins(0, 0, 0, 0)
@@ -81,8 +81,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.image.setText(_translate("MainWindow", "TextLabel"))
-        self.label.setText(_translate("MainWindow", "Camera image"))
-        self.label_2.setText(_translate("MainWindow", "Processed image"))
+        self.label.setText(_translate("MainWindow", "Left Image"))
+        self.label_2.setText(_translate("MainWindow", "Right Image"))
         self.pushButton.setText(_translate("MainWindow", "Play Code"))
         self.resetButton.setText(_translate("MainWindow", "Reset View"))
 

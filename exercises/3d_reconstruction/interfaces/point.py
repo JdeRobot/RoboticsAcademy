@@ -64,6 +64,7 @@ class PublisherPoint:
 	def plotPoint(self, position, color):
 		self.lock.acquire()
 		self.point.data = position + color
+		rospy.sleep(1)
 		self.lock.release()
 		
 		
