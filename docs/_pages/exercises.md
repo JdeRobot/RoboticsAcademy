@@ -136,7 +136,14 @@ feature_row:
     url: "/exercises/ComputerVision/3d_reconstruction"
     btn_class: "btn--primary"
     btn_label: "Go!"
-
+    
+  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
+    alt: "Color Filter"
+    title: "Color Filter"
+    excerpt: "Develop a color filter to segment some object in the image and track it"
+    url: "/exercises/ComputerVision/color_filter"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
 ---
 
 
