@@ -51,7 +51,7 @@ illustrations:
 
 
 youtubeId1: 11pxsE__DPw
-youtubeId2: mupCmGHqFnw
+youtubeId2: cAqfb6qJvwI
 ---
 
 In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.
