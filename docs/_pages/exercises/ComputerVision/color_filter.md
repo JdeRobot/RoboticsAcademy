@@ -152,6 +152,14 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 
 [Contour Features](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html)
 
+## Contributors
+
+- Contributors: [Carlos Awadallah](https://github.com/cawadall), [Naman Jain](https://github.com/Naman-ntc), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Nemath Ahmed](https://github.com/nemathahmed)
+- Maintaied by [Nemath Ahmed](https://github.com/nemathahmed)
+
+
+
+
 
 ## References
 [[1]](https://www.geeksforgeeks.org/color-spaces-in-opencv-python/) [[2]](https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/) [[3]](https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/) [[4]](https://opencv-python-tutroals.readthedocs.io/en/latest/index.html) [[5]](https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp) [[6]](https://realpython.com/python-opencv-color-spaces/)
