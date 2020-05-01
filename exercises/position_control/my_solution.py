@@ -45,7 +45,7 @@ def gui_play_stop_cb(msg):
 		if code_live_flag:
 			code_live_flag = False
 			code_live_timer.shutdown()
-		
+
 def gui_twist_cb(msg):
 	global drone
 	drone.set_cmd_vel(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)

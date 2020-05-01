@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
-    <arg name="mouse_file_name" default="$(eval env('PWD') + '/teleoperated_mouse.py')"/>
+    <!--<arg name="mouse_file_name" default="$(eval env('PWD') + '/teleoperated_mouse.py')"/> -->
 
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
@@ -50,8 +50,8 @@
     </group>
 
     <group ns="mouse">
-        <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
-        <node name="mouse_wrapper" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg mouse_file_name)"/>
+        <!--<node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="-perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
+        <node name="mouse_wrapper" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg mouse_file_name)"/> -->
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="1"/>
         <arg name="fcu_url" default="udp://:14541@localhost:14581"/>
