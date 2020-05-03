@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         vlayout_inner = QVBoxLayout()
         vlayout_inner.setContentsMargins(0,0,0,0)
         vlayout_inner.setAlignment(Qt.AlignCenter)
-        text1 = "Raw Video"
+        text1 = "Live Video Stream"
         window_1_label = QLabel()
         window_1_label.setAlignment(Qt.AlignCenter)
         window_1_label.setText(text1)
@@ -111,17 +111,9 @@ class Ui_MainWindow(object):
         # Row 2 Col 2
         groupbox_2_2 = QGroupBox()
         self.v3_layout = QVBoxLayout()
-        self.v3_layout.setAlignment(Qt.AlignHCenter)
-        self.v3_layout.addSpacing(10)
-        text4 = 'Live Video Stream'
-        text4_label = QLabel()
-        text4_label.setAlignment(Qt.AlignCenter)
-        text4_label.setText(text4)
-        self.v3_layout.addWidget(text4_label)
-        self.camimgLabel = QLabel(self)
-        self.camimgLabel.setMaximumSize(200, 150)
-        self.v3_layout.addWidget(self.camimgLabel, 40)
-        self.v3_layout.setAlignment(Qt.AlignHCenter)
+        self.v3_layout.setAlignment(Qt.AlignCenter)
+        self.v3_layout.addSpacing(30)
+        self.v3_layout.setAlignment(Qt.AlignCenter)
         self.centralwidget = QtWidgets.QWidget()
         self.playButton = QtWidgets.QPushButton(self.centralwidget)
         self.playButton.setFixedSize(QSize(200, 100))
@@ -129,10 +121,10 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap(":/images/play.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.playButton.setObjectName("playButton")
-        self.v3_layout.addWidget(self.playButton, 40)
+        self.v3_layout.addWidget(self.playButton, 60)
         self.logo = LogoWidget(self, 200, 100)
         self.logo.setVisible(True)
-        self.v3_layout.addWidget(self.logo, 20)
+        self.v3_layout.addWidget(self.logo, 40)
         groupbox_2_2.setLayout(self.v3_layout)
         h_3layout.addWidget(groupbox_2_2, 25)
         groupbox_2.setLayout(h_3layout)
@@ -185,7 +177,7 @@ class Ui_MainWindow(object):
         event.accept()
 
     def setColorImage(self):
-        img = self.getCamera().getColorImage()
+        img = self.camera.getImage()
 
         if img is not None:
             image = QImage(
@@ -209,27 +201,11 @@ class Ui_MainWindow(object):
             self.detectedImage.setPixmap(QPixmap.fromImage(image1))
 
     def updateImage(self):
-        self.setColorImage()
+        
         self.setThresholdImage()
         self.setDetectImage()
 
     def updateCamImage(self):
+        self.setColorImage()
+        
 
-        img = self.camera.getImage()
-        if img is not None:
-            image = QImage(
-                img.data, img.shape[1], img.shape[0], img.shape[1]*img.shape[2], QImage.Format_RGB888)
-
-            if img.shape[1] == self.IMAGE_COLS_MAX:
-                x = 20
-            else:
-                x = (self.IMAGE_COLS_MAX+20)/2-(img.shape[1]/2)
-            if img.shape[0] == self.IMAGE_ROWS_MAX:
-                y = 40
-            else:
-                y = (self.IMAGE_ROWS_MAX+40)/2-(img.shape[0]/2)
-            image = image.scaled(200, 100)
-            size=QSize(300,150)
-            self.camimgLabel.move(x, y)
-            self.camimgLabel.resize(size)
-            self.camimgLabel.setPixmap(QPixmap.fromImage(image))

@@ -20,7 +20,7 @@
 import numpy as np
 import cv2
 import threading
-from parallelIce.cameraClient import CameraClient
+
 import imutils
 
 class CameraSegment:
