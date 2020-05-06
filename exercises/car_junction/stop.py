@@ -82,12 +82,12 @@ if __name__ == "__main__":
     cameraR = ListenerCamera(topicCameraR)
     # cameraR = ListenerCamera("/opel/cameraR/image_raw")
 
-    print("Starting movement of dummy cars")
-    motorsDummy1 = PublisherMotors("/dummy1/cmd_vel", 4, 0.3)
-    motorsDummy2 = PublisherMotors("/dummy2/cmd_vel", 4, 0.3)
+    # print("Starting movement of dummy cars")
+    # motorsDummy1 = PublisherMotors("/dummy1/cmd_vel", 4, 0.3)
+    # motorsDummy2 = PublisherMotors("/dummy2/cmd_vel", 4, 0.3)
 
-    motorsDummy1.sendV(2.5)
-    motorsDummy2.sendV(3)
+    # motorsDummy1.sendV(2.5)
+    # motorsDummy2.sendV(3)
 
     algorithm = MyAlgorithm(pose3d, cameraC, cameraL, cameraR, motors)
 
