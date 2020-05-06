@@ -57,8 +57,7 @@ illustrations:
     title: "Wrong Lane"
 
 
-youtubeId1: hF2i0rdlIqE
-youtubeId2: 4WIi2cpaLDA
+youtubeId: 4WIi2cpaLDA
 ---
 
 ## Goal
@@ -159,13 +158,11 @@ The stop sign is of a very particular red color, which clearly stands out in the
 ### Turning
 Turning is a challenging part of this exercise. The parameters have to be tuned in a specific way to carry out the turn, and then the control should be passed to the follow road method in order to continue with the task. The physical equation given above can simplify the process of setting the parameters.
 
-### Illustrations
+## Illustrations
 
 {% include gallery id="illustrations" caption="Illustrations" %}
 
-{% include youtubePlayer.html id=page.youtubeId1 %}
-*Reference Solution 1*
+## Reference Solution
 
+{% include youtubePlayer.html id=page.youtubeId %}
 
-{% include youtubePlayer.html id=page.youtubeId2 %}
-*Reference Solution 2*
