@@ -20,7 +20,8 @@
 import numpy as np
 import cv2
 import threading
-from parallelIce.cameraClient import CameraClient
+
+import imutils
 
 class CameraSegment:
 
@@ -47,7 +48,7 @@ class CameraSegment:
     def getImage(self):
         self.lock.acquire()
         img = self.client.getImage().data
-        img = cv2.resize(img, (640, 360))
+        img = imutils.resize(img, height=360)
         self.lock.release()
         return img
 

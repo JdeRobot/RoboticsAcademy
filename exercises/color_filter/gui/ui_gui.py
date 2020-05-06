@@ -6,119 +6,206 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import resources_rc
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSignal, Qt, QSize
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QGroupBox, QCheckBox
+from PyQt5.QtGui import QImage, QPixmap
+
+from gui.communicator import Communicator
+from gui.logoWidget import LogoWidget
+
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(300, 340)
-        MainWindow.setMinimumSize(QtCore.QSize(280, 250))
-        MainWindow.setMaximumSize(QtCore.QSize(280, 250))
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        #self.takeoffButton = QtWidgets.QPushButton(self.centralwidget)
-        #self.takeoffButton.setGeometry(QtCore.QRect(470, 30, 161, 41))
-        #self.takeoffButton.setObjectName("takeoffButton")
-        #self.altdSlider = QtWidgets.QSlider(self.centralwidget)
-        #self.altdSlider.setGeometry(QtCore.QRect(400, 30, 19, 311))
-        #self.altdSlider.setMaximum(100)
-        #self.altdSlider.setProperty("value", 49)
-        #self.altdSlider.setOrientation(QtCore.Qt.Vertical)
-        #self.altdSlider.setObjectName("altdSlider")
+    IMAGE_COLS_MAX = 640
+    IMAGE_ROWS_MAX = 360
+    LINX = 0.3
+    LINY = 0.3
+    LINZ = 0.8
+    ANGZ = 1.0
+    ANGY = 0.0
+    ANGX = 0.0
+
+    def setupUI(self, MainWindow):
+        ## All GUI components of the main window are built here
+
+        self.setWindowTitle("Color filter")
+
+        # VerticalLayout with 2 rows
+        vlayout = QVBoxLayout(MainWindow)
+        vlayout.setSpacing(0)
+        
+        vlayout.setContentsMargins(0,0,0,0)
+        # Row 1
+        groupbox_1 = QGroupBox()
+        groupbox_1.setContentsMargins(0,0,0,0)
+        hlayout = QHBoxLayout()
+        hlayout.setContentsMargins(0,0,0,0)
+        
+        hlayout.setAlignment(Qt.AlignCenter)
+
+        # Row 1 Col 1
+        groupbox_1_1 = QGroupBox()
+        vlayout_inner = QVBoxLayout()
+        vlayout_inner.setContentsMargins(0,0,0,0)
+        vlayout_inner.setAlignment(Qt.AlignCenter)
+        text1 = "Live Video Stream"
+        window_1_label = QLabel()
+        window_1_label.setAlignment(Qt.AlignCenter)
+        window_1_label.setText(text1)
+        vlayout_inner.addWidget(window_1_label)
+        self.imgLabelColor = QLabel()
+        self.imgLabelColor.setFixedSize(640, 360)
+        self.imgLabelColor.setAlignment(Qt.AlignCenter)
+        vlayout_inner.addWidget(self.imgLabelColor)
+        groupbox_1_1.setLayout(vlayout_inner)
+        hlayout.addWidget(groupbox_1_1)
+
+        # Row 1 Col 2
+
+        groupbox_1_2 = QGroupBox()
+        vlayout_inner = QVBoxLayout()
+        vlayout_inner.setContentsMargins(0,0,0,0)
+        vlayout_inner.setAlignment(Qt.AlignCenter)
+        text2 = "Output after thresholding"
+        window_2_label = QLabel()
+        window_2_label.setAlignment(Qt.AlignCenter)
+        window_2_label.setText(text2)
+        vlayout_inner.addWidget(window_2_label)
+        self.imgLabelBlackWhite = QLabel()
+        self.imgLabelBlackWhite.setAlignment(Qt.AlignCenter)
+        self.imgLabelBlackWhite.setFixedSize(640, 360)
+        vlayout_inner.addWidget(self.imgLabelBlackWhite)
+        groupbox_1_2.setLayout(vlayout_inner)
+        hlayout.addWidget(groupbox_1_2)
+        groupbox_1.setLayout(hlayout)
+        vlayout.addWidget(groupbox_1)
+
+        
+        # ROW 2
+
+        groupbox_2 = QGroupBox()
+        groupbox_2.setContentsMargins(0,0,0,0)
+        h_3layout = QHBoxLayout()
+        h_3layout.setContentsMargins(0,0,0,0)
+
+        # Row 2 Col 1
+
+        groupbox_2_1 = QGroupBox()
+        
+        h2layout = QVBoxLayout()
+        h2layout.setAlignment(Qt.AlignCenter)
+        text3 = 'Final Processed Image'
+        window_3_label = QLabel()
+        window_3_label.setAlignment(Qt.AlignCenter)
+        window_3_label.setText(text3)
+        h2layout.addWidget(window_3_label)
+        self.detectedImage = QLabel()
+        self.detectedImage.setAlignment(Qt.AlignCenter)
+        self.detectedImage.setFixedSize(640, 360)
+        h2layout.addWidget(self.detectedImage)
+        groupbox_2_1.setLayout(h2layout)
+        h_3layout.addWidget(groupbox_2_1, 75)
+
+        # Row 2 Col 2
+        groupbox_2_2 = QGroupBox()
+        self.v3_layout = QVBoxLayout()
+        self.v3_layout.setAlignment(Qt.AlignCenter)
+        self.v3_layout.addSpacing(30)
+        self.v3_layout.setAlignment(Qt.AlignCenter)
+        self.centralwidget = QtWidgets.QWidget()
         self.playButton = QtWidgets.QPushButton(self.centralwidget)
-        self.playButton.setGeometry(QtCore.QRect(50, 20, 181, 75))
+        self.playButton.setFixedSize(QSize(200, 100))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.playButton.setIcon(icon)
+        icon.addPixmap(QtGui.QPixmap(":/images/play.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.playButton.setObjectName("playButton")
-        #self.stopButton = QtWidgets.QPushButton(self.centralwidget)
-        #self.stopButton.setGeometry(QtCore.QRect(520, 50, 111, 75))
-        #icon1 = QtGui.QIcon()
-        #icon1.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.stopButton.setIcon(icon1)
-        #self.stopButton.setObjectName("stopButton")
-        self.windowsLabel = QtWidgets.QLabel(self.centralwidget)
-        self.windowsLabel.setGeometry(QtCore.QRect(110, 110, 71, 21))
-        self.windowsLabel.setObjectName("windowsLabel")
-        self.cameraCheck = QtWidgets.QCheckBox(self.centralwidget)
-        self.cameraCheck.setGeometry(QtCore.QRect(100, 130, 100, 26))
-        self.cameraCheck.setObjectName("cameraCheck")
-        #self.sensorsCheck = QtWidgets.QCheckBox(self.centralwidget)
-        #self.sensorsCheck.setGeometry(QtCore.QRect(480, 250, 100, 26))
-        #self.sensorsCheck.setObjectName("sensorsCheck")
-        self.colorFilterCheck = QtWidgets.QCheckBox(self.centralwidget)
-        self.colorFilterCheck.setGeometry(QtCore.QRect(100, 155, 100, 26))
-        self.colorFilterCheck.setObjectName("colorFilterCheck")
-        #self.altdLabel = QtWidgets.QLabel(self.centralwidget)
-        #self.altdLabel.setGeometry(QtCore.QRect(390, 340, 51, 21))
-        #self.altdLabel.setObjectName("altdLabel")
-        #self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        #self.verticalLayoutWidget.setGeometry(QtCore.QRect(20, 30, 361, 301))
-        #self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        #self.tlLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        #self.tlLayout.setObjectName("tlLayout")
-        #self.rotationDial = QtWidgets.QDial(self.centralwidget)
-        #self.rotationDial.setGeometry(QtCore.QRect(440, 220, 50, 64))
-        #self.rotationDial.setMaximum(100)
-        #self.rotationDial.setProperty("value", 49)
-        #self.rotationDial.setObjectName("rotationDial")
-        #self.rotationLabel = QtWidgets.QLabel(self.centralwidget)
-        #self.rotationLabel.setGeometry(QtCore.QRect(440, 280, 65, 21))
-        #self.rotationLabel.setObjectName("rotationLabel")
-        #self.XLabel = QtWidgets.QLabel(self.centralwidget)
-        #self.XLabel.setGeometry(QtCore.QRect(115, 340, 21, 21))
-        #self.XLabel.setObjectName("XLabel")
-        #self.YLabel = QtWidgets.QLabel(self.centralwidget)
-        #self.YLabel.setGeometry(QtCore.QRect(225, 340, 21, 21))
-        #self.YLabel.setObjectName("YLabel")
-        #self.XValue = QtWidgets.QLabel(self.centralwidget)
-        #self.XValue.setGeometry(QtCore.QRect(135, 340, 41, 21))
-        #self.XValue.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        #self.XValue.setObjectName("XValue")
-        #self.YValue = QtWidgets.QLabel(self.centralwidget)
-        #self.YValue.setGeometry(QtCore.QRect(245, 340, 41, 21))
-        #self.YValue.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        #self.YValue.setObjectName("YValue")
-        #self.altdValue = QtWidgets.QLabel(self.centralwidget)
-        #self.altdValue.setGeometry(QtCore.QRect(390, 10, 41, 21))
-        #self.altdValue.setAlignment(QtCore.Qt.AlignCenter)
-        #self.altdValue.setObjectName("altdValue")
-        #self.rotValue = QtWidgets.QLabel(self.centralwidget)
-        #self.rotValue.setGeometry(QtCore.QRect(445, 200, 41, 21))
-        #self.rotValue.setAlignment(QtCore.Qt.AlignCenter)
-        #self.rotValue.setObjectName("rotValue")
-        #self.resetButton = QtWidgets.QPushButton(self.centralwidget)
-        #self.resetButton.setGeometry(QtCore.QRect(55, 110, 161, 41))
-        #self.resetButton.setObjectName("resetButton")
-        self.verticalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget_2.setGeometry(QtCore.QRect(200, 165, 71, 71))
-        self.verticalLayoutWidget_2.setObjectName("verticalLayoutWidget_2")
-        self.logoLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_2)
-        self.logoLayout.setSpacing(0)
-        self.logoLayout.setObjectName("logoLayout")
-        MainWindow.setCentralWidget(self.centralwidget)
+        self.v3_layout.addWidget(self.playButton, 60)
+        self.logo = LogoWidget(self, 200, 100)
+        self.logo.setVisible(True)
+        self.v3_layout.addWidget(self.logo, 40)
+        groupbox_2_2.setLayout(self.v3_layout)
+        h_3layout.addWidget(groupbox_2_2, 25)
+        groupbox_2.setLayout(h_3layout)
+        vlayout.addWidget(groupbox_2)
+       
+        icon = QtGui.QIcon()
+
+        self.playButton.setIcon(icon)
 
         self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Color Filter"))
-        #self.takeoffButton.setText(_translate("MainWindow", "Take off"))
         self.playButton.setText(_translate("MainWindow", "Play Code"))
-        #self.stopButton.setText(_translate("MainWindow", "Stop Code"))
-        self.windowsLabel.setText(_translate("MainWindow", "Windows:"))
-        self.cameraCheck.setText(_translate("MainWindow", "Camera"))
-        #self.sensorsCheck.setText(_translate("MainWindow", "Sensors"))
-        self.colorFilterCheck.setText(_translate("MainWindow", "Color filter"))
-        #self.altdLabel.setText(_translate("MainWindow", "Altitude"))
-        #self.rotationLabel.setText(_translate("MainWindow", "Rotation"))
-        #self.XLabel.setText(_translate("MainWindow", "X:"))
-        #self.YLabel.setText(_translate("MainWindow", "Y:"))
-        #self.XValue.setText(_translate("MainWindow", "0"))
-        #self.YValue.setText(_translate("MainWindow", "0"))
-        #self.altdValue.setText(_translate("MainWindow", "0"))
-        #self.rotValue.setText(_translate("MainWindow", "0"))
-        #self.resetButton.setText(_translate("MainWindow", "Reset"))
 
-import resources_rc
+    def getCamera(self):
+        return self.camera
+
+    def setCamera(self, camera):
+        self.camera = camera
+
+    def setAlgorithm(self, algorithm):
+        self.algorithm = algorithm
+
+    def getAlgorithm(self):
+        return self.algorithm
+
+    def playClicked(self):
+        if self.playButton.isChecked():
+            icon = QtGui.QIcon()
+            self.playButton.setText("Stop Code")
+            self.playButton.setStyleSheet("background-color: #ec7063")
+            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"),
+                           QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.algorithm.play()
+        else:
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/images/play.png"),
+                           QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.playButton.setIcon(icon)
+            self.playButton.setText("Play Code")
+            self.playButton.setStyleSheet("background-color: #7dcea0")
+            self.algorithm.stop()
+
+    def closeEvent(self, event):
+        self.algorithm.kill()
+        self.camera.client.stop()
+
+        event.accept()
+
+    def setColorImage(self):
+        img = self.camera.getImage()
+
+        if img is not None:
+            image = QImage(
+                img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
+
+            self.imgLabelColor.setPixmap(QPixmap.fromImage(image))
+
+    def setThresholdImage(self):
+        img = self.getCamera().getThresholdImage()
+        if img is not None:
+            image = QImage(
+                img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
+            self.imgLabelBlackWhite.setPixmap(QPixmap.fromImage(image))
+
+    def setDetectImage(self):
+        img = self.getCamera().getDetectImage()
+        if img is not None:
+            image = QImage(
+                img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
+            image1 = image.scaledToHeight(360)
+            self.detectedImage.setPixmap(QPixmap.fromImage(image1))
+
+    def updateImage(self):
+        
+        self.setThresholdImage()
+        self.setDetectImage()
+
+    def updateCamImage(self):
+        self.setColorImage()
+        
+
