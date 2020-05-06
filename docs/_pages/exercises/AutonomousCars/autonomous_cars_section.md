@@ -33,6 +33,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
+    alt: "Car Junction"
+    title: "Car Junction"
+    excerpt: "Automated vehicle must stop and pass once the road is clear"
+    url: "/exercises/AutonomousCars/car_junction"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 ---
 
 

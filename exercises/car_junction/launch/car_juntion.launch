@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<launch>
+  <include file="/opt/jderobot/share/jderobot/gazebo/launch/car_1_junction.launch">
+  </include>
+</launch>
