@@ -17,7 +17,7 @@ gallery:
     image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png
     alt: "Vacuum"
 
-youtubeId: NE6KoQ6JbaE
+youtubeId: I967nzeSSZg
 
 ---
 
