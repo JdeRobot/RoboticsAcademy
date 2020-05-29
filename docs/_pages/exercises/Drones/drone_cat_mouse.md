@@ -44,6 +44,15 @@ To launch the exercise, simply use the following command from this directory:
 roslaunch drone_cat_mouse.launch
 ```
 
+Once the exercise is launched, you can launch the autonomous mouse by running in another command line:
+```bash
+roslaunch autonomous_mouse.launch mouse:=0
+```
+
+As you can see, there are **several mice available** with different paths. Up to today, there are 4 different mice. You can launch them by modifying the `mouse` argument from `0` to `3`. Notice that the difficulty increases with the number of the selected mouse. Thus, mouse 0 will be the easiest to follow and mouse 3 the most difficult. 
+
+Notice too that you can restart and change the mouse without shutting down the exercise. You just need to shut down the mouse launched and relaunch the new one after the drone have returned to home and landed.
+
 ## How to do the practice
 
 To solve the exercise, you must edit the `my_solution.py` file and insert the control logic into it.
