@@ -36,6 +36,12 @@ sudo apt-get install ros-melodic-drone-wrapper ros-melodic-rqt-drone-teleop ros-
 
 There is an additional dependency on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
+Finally, due to the use of two drones you have to install `xmlstarlet`:
+
+```bash
+sudo apt-get install -y xmlstarlet
+```
+
 ## How to run
 
 To launch the exercise, simply use the following command from this directory:
