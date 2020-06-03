@@ -3,6 +3,8 @@
 import rospy
 import numpy as np
 import cv2
+import math
+from math import pi
 from drone_wrapper import DroneWrapper
 from std_msgs.msg import Bool, Float64
 from sensor_msgs.msg import Image
@@ -37,16 +39,26 @@ def set_image_filtered(img):
 def set_image_threshed(img):
 	gui_threshed_img_pub.publish(drone.bridge.cv2_to_imgmsg(img))
 
+################# Build your position control function here #####################
+
+def position_control():
+	global drone
+	# Insert your code here
+ 
+#################################################################################
+
 def execute(event):
 	global drone
-	img_frontal = drone.get_frontal_image()
-	img_ventral = drone.get_ventral_image()
-	# Both the above images are cv2 images
+
 	################# Insert your code here #################################
 
-	set_image_filtered(img_frontal)
-	set_image_threshed(img_ventral)
-
+	# Waypoint list  
+	waypoint_list = []
+	
+	# Navigation using position control. Same tolerance for all
+	for waypoint in waypoint_list:
+	    position_control()
+			
 	#########################################################################
 
 if __name__ == "__main__":
