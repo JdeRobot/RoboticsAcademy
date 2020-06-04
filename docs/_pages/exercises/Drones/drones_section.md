@@ -11,7 +11,7 @@ feature_row:
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
     title: "Drone Gymkhana"
-    excerpt: "Learn about different drone controls and drone infrastructure."
+    excerpt: "Learn to control a drone and complete the gymkhana!"
     url: "/exercises/Drones/drone_gymkhana"
     btn_class: "btn--primary"
     btn_label: "Go!"
