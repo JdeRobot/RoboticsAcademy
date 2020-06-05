@@ -51,11 +51,10 @@ def execute(event):
 	global drone
 
 	################# Insert your code here #################################
-
 	# Waypoint list  
 	waypoint_list = []
 	
-	# Navigation using position control. Same tolerance for all
+	# Navigation using position control
 	for waypoint in waypoint_list:
 	    position_control()
 			

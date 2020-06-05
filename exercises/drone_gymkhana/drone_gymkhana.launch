@@ -10,7 +10,7 @@
         <arg name="Y" value="0"/>
     </include>
     
-    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find jderobot_assets)/perspectives/drone_teleop_vel.perspective"/>
 
     <node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>
 </launch> 
