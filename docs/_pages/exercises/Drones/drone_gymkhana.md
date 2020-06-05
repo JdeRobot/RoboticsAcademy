@@ -149,11 +149,24 @@ There are several ways of solving this exercise, that differ in the approach and
 1. **Time-based open loop control:** The easiest alternative, recommended just for testing purposes. If you command the drone using the non-blocking API function `drone.set_cmd_pos(x, y, z, yaw)` and wait long enough (using, for example, `rospy.sleep(time_in_sec)`), the drone will surely reach its destination. However, this is not recommended, as we don't get confirmation of arrival at the given target location.
 2. **Closed loop position control**: Based on getting the current drone position, comparing it with the target position, and executing the position or velocity API control functions till the geometric distance between current and target 3D positions is within certain *tolerance*  (which can also be passed to the blocking as input parameter)
 
+### How do I get the waypoint coordinates?
+
+You can try to fly your drone manually using the teleoperator included in the GUI to check each waypoint position in space (x, y, z). Once you have your waypoint list you'll pass each target point to the blocking position control function to complete the gymkhana course. 
+
+To give you some initial references, each leg in the squared course is 16 m long, and the position of the numbered cubes at the corners are:
+
+1. **CUBE 1:** Located at (x, y) = (8, 8) m
+2. **CUBE 2:** Located at (x, y) = (8, -8) m
+3. **CUBE 3:** Located at (x, y) = (-8, -8) m
+4. **CUBE 4:** Located at (x, y) = (-8, 8) m
+
+The takeoff pad is located at (x, y) = (0, 0) m. The dimensions of all cubes are 1 x 1 x 1 m.
+
 ### Directional control. How should drone yaw be handled? 
 
 If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but what's not the best way of flying a drone.
 
-In this exercise, we want you to try programming your drone to travel to the target destinations similarly to how a fixed-wing aircraft would do, namely **nose forward**.  Then, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
+In this exercise, we want you to try programming your drone to travel towards each waypoint similarly to how a fixed-wing aircraft would do, namely **nose forward**.  Then, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
 
 If you know your current position and your target one, you can easily compute the direction (yaw angle) the drone must be turned to by applying some elementary geometry. Probably both `math.sqrt()` and `math.atan2()` Python functions will be very useful for you here. 
 
