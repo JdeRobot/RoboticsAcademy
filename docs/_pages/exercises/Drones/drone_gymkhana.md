@@ -47,7 +47,7 @@ sudo apt-get install ros-melodic-jderobot-drones
 
 ## How to run the exercise
 
-To launch the exercise, open a terminal window, navigate to the drone_gymkhana exercise folder and execute the following roslaunch command:
+To launch the exercise, open a terminal window, navigate to the [drone_gymkhana exercise folder](https://github.com/JdeRobot/RoboticsAcademy/tree/master/exercises/drone_gymkhana) and execute the following roslaunch command:
 
 ```bash
 roslaunch drone_gymkhana.launch
