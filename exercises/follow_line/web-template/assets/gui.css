@@ -1,0 +1,11 @@
+#canvas_container{
+	float: left;
+	width: 30%;
+	height: 575px;
+}
+
+#gui_canvas {
+	margin-left: 20%;
+    height: 300px;
+    width: 80%;
+}
