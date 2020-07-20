@@ -245,11 +245,7 @@ Install previous dependencies:
     ```bash
     mkdir -p catkin_ws/src
     cd catkin_ws/src
-    git clone https://github.com/PX4/Firmware.git
-    cd Firmware
-    git submodule update --init --recursive
-    cd ..
-    ln -s Firmware/Tools/sitl_gazebo mavlink_sitl_gazebo
+    git clone https://github.com/PX4/Firmware.git --init --recursive
     cd ..
     ```
 
@@ -273,6 +269,11 @@ Install previous dependencies:
     echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
     echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
     echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:/opt/ros/melodic/share/jderobot_assets/models' >> ~/.bashrc
+    
+    echo 'export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/catkin_ws/src/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/catkin_ws/src/Firmware/Tools/sitl_gazebo/models' >> ~/.bashrc
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/catkin_ws/src/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/catkin_ws/src/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
 
     source ~/.bashrc
     ```
