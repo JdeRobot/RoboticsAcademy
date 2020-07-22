@@ -4,7 +4,7 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var websocket_gui = new WebSocket('ws://127.0.0.1:2303/'),
+var websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/"),
     canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     image = new Image();

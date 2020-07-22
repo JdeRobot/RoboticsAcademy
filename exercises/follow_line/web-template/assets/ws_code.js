@@ -11,7 +11,7 @@ stop_button.style.cursor = "not-allowed";
 var frequency = "0";
 
 //WebSocket for Code
-var websocket_code = new WebSocket("ws://127.0.0.1:1905/");
+var websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 websocket_code.onopen = function(event){
     alert("[open] Connection established!");
@@ -32,7 +32,7 @@ function submitCode(){
     python_code = "#code\n" + python_code
     
     // Get the debug level and add header
-    var debug_level = document.querySelector('input[name = "debug"]').value;
+	var debug_level = document.querySelector('input[name = "debug"]').value;
     python_code = "#dbug" + debug_level + python_code
     
     // Add freqeuncy header
