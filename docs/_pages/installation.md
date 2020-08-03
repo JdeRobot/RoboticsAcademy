@@ -322,7 +322,22 @@ Once you have generic and specific infrastructure installed in your system, you 
     ```bash
     docker inspect robotics_academy
     ```
+    If you are running Docker Desktop in Windows, the IP will usually be "localhost".
+    
 9. Launch the index.html web-page with any browser.
+
+10. If while running the exercise you only get a black screen you need to stop the container and start it again (docker container start docker_academy). Instead of carrying out steps 4 and 6 run the following instructions first.
+    ```bash
+    docker exec -it docker_academy bash
+    distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+    curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+    apt-get update && sudo apt-get install -y nvidia-container-toolkit
+    apt-get install xvfb
+    Xvfb :1 -screen 0 1600x1200x16 & export Display=:1.0
+    ```
+    Then run everything from step 4 to step 9.
+
 <!---
 
 # Installation on Windows(x64)  DEPRECATED
