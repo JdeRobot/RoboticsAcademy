@@ -283,12 +283,46 @@ Install previous dependencies:
 
 Once you have generic and specific infrastructure installed in your system, you can download and install the JdeRobot Academy software.
 
-1. Clone the Academy software repository
+1. Clone the Academy software repository.
 
     ```bash
     git clone https://github.com/JdeRobot/Academy.git
     ```
 
+## Docker installation
+1. Clone the [RoboticsAcademy](https://github.com/JdeRobot/RoboticsAcademy) repository.
+	```bash
+    	    git clone https://github.com/JdeRobot/Academy.git
+         ```
+2. Run the docker container.
+	 ```bash
+    	   docker run -it --name=docker_academy -p 2303:2303 -p 1905:1905 jderobot/web-templates:follow_line
+         ```
+3. Once inside de container bash run.
+	```bash
+    	   cd follow_line
+    	   . screen.sh
+         ```
+4. Then, launch the headless simulation of the exercise (Inside the docker bash).
+ 	```bash
+    	   roslaunch ./launch/simple_line_follower_ros.launch
+         ```
+5. The last instruction runs a process that must not be stopped. To carry out the last step we need to open the container bash in another terminal window.
+	```bash
+    	   docker exec -it docker_academy bash
+         ```
+6. Lastly, to complete the docker setup we must run host.py inside the docker.
+	```bash
+    	   cd follow_line
+    	   python host.py 0.0.0.0
+         ```
+7. The last instruction will run indefinetly too. Now we go to our local machine (where we have cloned the RoboticsAcademy repository). We need to navigate to RoboticsAcademy/exercises/follow_line/web-templates.
+
+8. Inside assets\websocket_address.js we need to change the variable websocket_address to the IP where our docker container is running. To check the ip:
+	```bash
+    	   docker inspect robotics_academy
+         ```
+9. Launch the index.html web-page with any browser.
 <!---
 
 # Installation on Windows(x64)  DEPRECATED
