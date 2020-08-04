@@ -11,13 +11,15 @@ import logging
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, console):
+    def __init__(self, host, console):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'canvas': None,'image': '', 'shape': []}
         self.server = None
         self.client = None
         
+        self.host = host
+
         self.payload_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
@@ -62,7 +64,7 @@ class GUI:
     
     # Activate the server
     def run_server(self):
-        self.server = WebsocketServer(port=2303, host="127.0.0.1")
+        self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.console.prompt)
         self.server.run_forever()
@@ -73,7 +75,7 @@ class GUI:
 class ThreadGUI(threading.Thread):
 	def __init__(self, gui):
 		self.gui = gui
-		self.time_cycle = 50
+		self.time_cycle = 200
 		threading.Thread.__init__(self)
 		
 	def run(self):

@@ -1,3 +1,7 @@
+// Set the src of iframe tag
+document.getElementById("gzweb").setAttribute(
+	"src", "http://" + websocket_address + ":8080")
+
 // To decode the image string we will receive from server
 function decode_utf8(s){
     return decodeURIComponent(escape(s))
