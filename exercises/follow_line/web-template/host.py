@@ -33,10 +33,11 @@ class Template:
                 
         self.server = None
         self.client = None
+        self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
-        self.gui = gui.GUI(self.console)
+        self.gui = gui.GUI(self.host, self.console)
         self.hal = hal.HAL()
      
     # Function for saving   
@@ -261,7 +262,7 @@ class Template:
     	print(client, 'closed')
     	
     def run_server(self):
-    	self.server = WebsocketServer(port=1905, host="127.0.0.1")
+    	self.server = WebsocketServer(port=1905, host=self.host)
     	self.server.set_fn_new_client(self.connected)
     	self.server.set_fn_client_left(self.handle_close)
     	self.server.set_fn_message_received(self.handle)
