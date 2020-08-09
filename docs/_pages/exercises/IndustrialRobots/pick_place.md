@@ -84,14 +84,14 @@ catkin build
 Export environment variables
 ```bash
 echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
-echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:'$PWD'/src/IndustrialRobotics/industrial_robot/models' >> ~/.bashrc
+echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:'$PWD'/src/IndustrialRobotics/assets/models' >> ~/.bashrc
 source ~/.bashrc
 ```
 
 ## How to run the exercise
-To launch the exercise, open a terminal windows, navigate to the ROS workspace which contains Industrial Robot folder and execute following command:
+To launch the exercise, open a terminal windows, navigate to `pick_place` folder inside `exercise` folder and execute following command:
 ```bash
-roslaunch industrial_robot pick_place_basic.launch 
+roslaunch pick_place.launch 
 ```
 Two different windows will pop up:
 - **Gazebo simulator**: A warehouse environment with a industrial robot(robot arm and gripper), multiple objects, a conveyor and two boxes will be shown in Gazebo.
@@ -112,7 +112,7 @@ Two different windows will pop up:
 
 {% include gallery id="robot_teleop" caption="Robot teleoperator GUI" %}
 
-Then open a new terminal window, navigate to `exercise` folder and execute following command:
+Then open a new terminal window, navigate to `pick_place` folder inside `exercise` folder and execute following command:
 ```bash
 python MyAlgorithm.py
 ```
@@ -157,7 +157,6 @@ def myalgorithm(self, stopevent, pauseevent):
 
     ####################################################
 
-
 ```  
 Multiple APIs can be used to implement your algorithm. They are provided in Pick_Place class, so you should allways add "self.pick_place." as a prefix to following introduced APIs in your algorithm.
 
@@ -165,7 +164,7 @@ Multiple APIs can be used to implement your algorithm. They are provided in Pick
 ### Environment Information
 * `get_object_list()` - Return the name list of all objects.
 * `get_object_pose(object_name)` - Return the pose of the object.
-* `get_object_info(object_name)` - Return the pose, height, eidth, length, shape, color of the object in order.
+* `get_object_info(object_name)` - Return the pose, height, width, length, shape, color of the object in order.
 * `get_target_list()` - Return the name list of all targets.
 * `get_target_position(target_name)` - Return the position of target where we are going to place the objects.
 
@@ -194,7 +193,7 @@ Multiple APIs can be used to implement your algorithm. They are provided in Pick
     - `length` is the offset length from the your desired gripper position to robot tool center. When you input grasping pose, you are specifying the pose of the desired gripper position. The default value is 0, which means you are specifying the pose of the tool center of the robot arm when the robot is grasping the object.
 
 The default minimum grasp distance and desired distance are set to be 0.2(m) and 0.1(m). The default approach direction is set to be (0, 0, -0.5). You can keep them or modify them with following functions:
-* `set_grasp_distance(min_distance, desired_distance)` - Set the minmum distance and desired distance the gripper translates before and after grasping.
+* `set_grasp_distance(min_distance, desired_distance)` - Set the minimum distance and desired distance the gripper translates before and after grasping.
 * `set_grasp_direction(x, y, z)` - Set the direction of the gripper approach translation before grasping. Retreat translation distance will set to be the opposite direction of the approach direction.
 
 ### Pick and Place
