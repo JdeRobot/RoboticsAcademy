@@ -7,6 +7,8 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 
+from lap import Lap
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
@@ -25,6 +27,9 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.console = console
         t.start()
+        
+        # Create the lap object
+        self.lap = Lap("/F1ROS/odom")
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
@@ -57,8 +62,15 @@ class GUI:
         message = "#img" + json.dumps(self.payload)
         self.payload_lock.release()
         
+        lapped = self.lap.check_threshold()
+        lap_message = ""
+        if(lapped != None):
+        	lap_message = "#lap" + str(lapped)
+        
         try:
             self.server.send_message(self.client, message)
+            if(lap_message != ""):
+            	self.server.send_message(self.client, lap_message)
         except:
             pass
     
