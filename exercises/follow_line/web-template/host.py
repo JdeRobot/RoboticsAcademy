@@ -147,6 +147,9 @@ class Template:
             # The Python exec function
             # Run the sequential part
             exec(sequential_code, {"gui": gui, "hal": hal, "time": time}, reference_environment)
+            
+            # Start the lap counter now!(Only for line_follower exercise)
+            self.gui.lap.start_time = datetime.now()
 
             # Run the iterative part inside template
             # and keep the check for flag

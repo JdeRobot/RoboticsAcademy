@@ -1,6 +1,6 @@
 // Set the src of iframe tag
-document.getElementById("gzweb").setAttribute(
-	"src", "http://" + websocket_address + ":8080")
+//document.getElementById("gzweb").setAttribute(
+//	"src", "http://" + websocket_address + ":8080")
 
 // To decode the image string we will receive from server
 function decode_utf8(s){
@@ -12,6 +12,9 @@ var websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/"),
     canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     image = new Image();
+    
+// Lap time DOM
+var lap_time_display = document.getElementById("lap_time");
 
 websocket_gui.onopen = function(event){
     alert("[open] Connection established!");
@@ -52,6 +55,11 @@ websocket_gui.onmessage = function(event){
 		image.src = "data:image/jpeg;base64," + source;
 
 		websocket_gui.send("Image Displayed!")
+	}
+	
+	else if(operation == "#lap"){
+		var lap_time = event.data.substring(4, );
+		lap_time_display.textContent = lap_time;
 	}
 	
 	else if(operation == "#cop"){
