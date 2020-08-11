@@ -30,6 +30,8 @@ docs:
         url: /exercises/drones_section
       - title: Computer Vision
         url: /exercises/computer_vision_section
+      - title: Industrial Robots
+        url: /exercises/industrial_robots_section
 
   - title: "Contribute"
     children:
