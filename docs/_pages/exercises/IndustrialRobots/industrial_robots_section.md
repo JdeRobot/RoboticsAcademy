@@ -17,6 +17,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
+    alt: "Machine Vision"
+    title: "Machine Vision"
+    excerpt: "Detect object and obstacle with kinect camera"
+    url: "/exercises/IndustrialRobots/machine_vision"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 --- 
 
 
