@@ -22,3 +22,10 @@
 #lap_time{
 	padding-left: 10%;
 }
+
+#birds-eye{
+	margin-top: 15px;
+	background: url("./img/map.jpg");
+	height: 350px;
+	width: 340px;
+}

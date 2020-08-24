@@ -62,6 +62,16 @@ websocket_gui.onmessage = function(event){
 		lap_time_display.textContent = lap_time;
 	}
 	
+	else if(operation == "#map"){
+		// To slice off the ()
+		var pose = event.data.substring(5, event.data.length - 1);
+		var content = pose.split(',').map(function(item) {
+			return parseFloat(item);
+		})
+		console.log(content)
+		drawCircle(content[0], content[1]);
+	}
+	
 	else if(operation == "#cop"){
 		// Set the value of command
 		var command_input = event.data.substring(4, );

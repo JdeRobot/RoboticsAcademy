@@ -7,7 +7,10 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 
+from interfaces.pose3d import ListenerPose3d
+
 from lap import Lap
+from map import Map
 
 # Graphical User Interface Class
 class GUI:
@@ -29,7 +32,9 @@ class GUI:
         t.start()
         
         # Create the lap object
-        self.lap = Lap("/F1ROS/odom")
+        pose3d_object = ListenerPose3d("/F1ROS/odom")
+        self.lap = Lap(pose3d_object)
+        self.map = Map(pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
@@ -66,9 +71,13 @@ class GUI:
         lap_message = ""
         if(lapped != None):
         	lap_message = "#lap" + str(lapped)
+        	
+        pos_message = str(self.map.getFormulaCoordinates())
+        pos_message = "#map" + pos_message
         
         try:
             self.server.send_message(self.client, message)
+            self.server.send_message(self.client, pos_message)
             if(lap_message != ""):
             	self.server.send_message(self.client, lap_message)
         except:
