@@ -28,7 +28,7 @@ gallery:
     alt: "MultiRobot2"
     title: "MultiRobot2"
 
-youtubeId: 7j4q2LjMep8
+youtubeId: wmAeoyiUyh4
 ---
 
 This exercise leverages the single robot amazon warehouse exercise to demonstrate a multi-robot collaboration and task planning in warehouse scenario.

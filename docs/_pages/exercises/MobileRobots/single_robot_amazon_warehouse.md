@@ -33,7 +33,7 @@ theory:
     alt: "Setting Pose 2"
     title: "Setting Pose 2"
 
-youtubeId: NkmzPogmVMo
+youtubeId: xmHCwA0NgjM
 ---
 
 This exercise tries to recreate an automated warehouse environment (just like amazon warehouse) and introduces you to many concepts regarding navigation of robots in ROS2. By the end of this exercise, you will be able to understand and leverage Navigation 2 stack for Amazon Robot to perform a pick and place autonomously.  
