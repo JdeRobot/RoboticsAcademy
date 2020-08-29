@@ -57,11 +57,11 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
-  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
-    alt: "Amazon Warehouse"
-    title: "Amazon Warehouse"
-    excerpt: "Autonomous navigation and pick-and-place logic"
-    url: "/exercises/MobileRobots/amazon_warehouse"
+  - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
+    alt: "Single Robot Amazon Warehouse (ROS2)"
+    title: "Single Robot Amazon Warehouse (ROS2)"
+    excerpt: "Autonomous navigation and pick-and-place logic in ROS2"
+    url: "/exercises/MobileRobots/single_robot_amazon_warehouse"
     btn_class: "btn--primary"
     btn_label: "Go!"
     
