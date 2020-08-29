@@ -33,6 +33,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/multi_robot_amazon_warehouse/multi_robot_amazon_warehouse_teaser.png
+    alt: "Multi Robot Amazon Warehouse (ROS2)"
+    title: "Multi Robot Amazon Warehouse (ROS2)"
+    excerpt: "Multi robot warehouse planning in ROS2"
+    url: "/exercises/MobileRobots/multi_robot_amazon_warehouse"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 ---
 
 

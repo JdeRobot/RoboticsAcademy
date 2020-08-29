@@ -289,6 +289,10 @@ Following action servers might be useful:
 
 ***Have fun!***
 
+## Contributors
+    
+[Shreyas Gokhale](https://theroboticsclub.github.io/colab-gsoc2020-Shreyas_Gokhale/about/)
+
 ## References
 
 [1]	“astarNilsson.pdf.” Accessed: Mar. 26, 2020. [Online]. Available: https://www.cs.auckland.ac.nz/courses/compsci709s2c/resources/Mike.d/astarNilsson.pdf.
