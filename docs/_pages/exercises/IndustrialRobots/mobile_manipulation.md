@@ -25,12 +25,18 @@ robot_teleop:
     alt: "Robot Teleoperator"
     title: "Robot Teleoperator"
 
-youtubeId: dQTE766uFIY
+neobotix_logo:
+  - url: /assets/images/exercises/mobile_manipulation/Neobotix_Logo.jpg
+    image_path: /assets/images/exercises/mobile_manipulation/Neobotix_Logo.jpg
+    alt: "Robot Teleoperator"
+    title: "Robot Teleoperator"
+
+youtubeId: 0oNY_UHu2cU
 ---
 
 The goal of this exercise is to practice integrating navigation and manipulation. You will need to use a mobile manipulator(AGV+robot arm+gripper) to pick objects on one conveyor and place them on three other conveyors.
 
-The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-robots.com/homepage). They provides a set of ROS simulation packages and tutorials to test their mobile robot and mobile manipulators in ROS[1]. The MMO-500 is one of them, combineing the omnidirectional robot MPO-500 with a light-weight robot arm UR10. The navigation part of this robot is based on their provided packages.
+The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-robots.com/homepage). They provides a set of ROS simulation packages and tutorials to test their mobile robot and mobile manipulators[1]. The MMO-500 is one of them, combining the omnidirectional robot MPO-500 with a light-weight robot arm UR10. The navigation part of this exercise is based on their provided packages.
 
 {% include gallery caption="Gallery." %}
 
@@ -246,3 +252,5 @@ Following three errors can be ignored in the beginning, but if it keep spawning 
 
 ## References
 [1] https://docs.neobotix.de/display/ROSSim/ROS-Simulation
+{% include gallery id="neobotix_logo"%}
+Thanks for Neobotix engineer Pradheep Krishna Muthukrishnan Padmanabhan's help with setting up the simulation package from Neobotix.
