@@ -25,6 +25,14 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
+  - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
+    alt: "Mobile Manipulation"
+    title: "Mobile Manipulation"
+    excerpt: "Pick and place with mobile manipulator"
+    url: "/exercises/IndustrialRobots/mobile_manipulation"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
 --- 
 
 
