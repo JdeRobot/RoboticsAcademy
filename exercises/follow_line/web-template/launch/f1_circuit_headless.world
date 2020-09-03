@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+  	<physics type='ode'>
+  		<max_step_size>0.005</max_step_size>
+	</physics>
+    <scene>
+      <grid>false</grid>
+    </scene>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+      <name>sun_1</name>
+      <pose>0 0 1 0 0 0</pose>
+    </include>
+    <include>
+	    <uri>model://pista_simple</uri>
+	    <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://f1</uri>
+      <pose>53.462 -10.734 0.004 0 0 -1.57</pose>
+    </include>
+
+  </world>
+</sdf>
