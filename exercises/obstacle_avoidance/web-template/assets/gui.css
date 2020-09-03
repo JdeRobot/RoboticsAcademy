@@ -23,9 +23,9 @@
 	padding-left: 10%;
 }
 
-#birds-eye{
+#local-map{
 	margin-top: 15px;
-	background: url("./img/map.jpg");
-	height: 350px;
-	width: 340px;
+	background: #0D488A;
+	height: 420px;
+	width: 400px;
 }
