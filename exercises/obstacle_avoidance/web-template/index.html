@@ -23,10 +23,15 @@
         <div id="code_container">
         
         <div id="editor"># Enter sequential code!
-
+from gui import GUI
+from hal import HAL
 
 while True:
     # Enter iterative code!
+    currentTarget = GUI.map.getNextTarget()
+    GUI.targetx = currentTarget.getPose().x
+    GUI.targety = currentTarget.getPose().y
+        
         </div>
         
         </div>
