@@ -63,13 +63,9 @@ websocket_gui.onmessage = function(event){
 	}
 	
 	else if(operation == "#map"){
-		// To slice off the ()
-		var pose = event.data.substring(5, event.data.length - 1);
-		var content = pose.split(',').map(function(item) {
-			return parseFloat(item);
-		})
-		console.log(content)
-		drawCircle(content[0], content[1]);
+		// Retrieve the data
+		var data = JSON.parse(event.data.substring(4, ));
+		paintEvent(data.target, data.car, data.obstacle, data.average, data.laser, data.max_range);
 	}
 	
 	else if(operation == "#cop"){

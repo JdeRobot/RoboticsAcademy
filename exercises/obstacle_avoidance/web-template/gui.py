@@ -8,8 +8,10 @@ from websocket_server import WebsocketServer
 import logging
 
 from interfaces.pose3d import ListenerPose3d
+from interfaces.laser import ListenerLaser
 
 from lap import Lap
+from map import Map
 
 # Graphical User Interface Class
 class GUI:
@@ -33,6 +35,10 @@ class GUI:
         # Create the lap object
         pose3d_object = ListenerPose3d("/F1ROS/odom")
         self.lap = Lap(pose3d_object)
+        
+        # Create the map object
+        laser_object = ListenerLaser("/F1ROS/laser/scan")
+        self.map = Map(laser_object, pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
@@ -69,11 +75,15 @@ class GUI:
         lap_message = ""
         if(lapped != None):
         	lap_message = "#lap" + str(lapped)
+        	
+        	
+        map_message = self.map.get_json_data()
         
         try:
             self.server.send_message(self.client, message)
             if(lap_message != ""):
             	self.server.send_message(self.client, lap_message)
+            self.server.send_message(self.client, map_message)
         except:
             pass
     
