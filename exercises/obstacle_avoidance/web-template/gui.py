@@ -32,13 +32,13 @@ class GUI:
         self.console = console
         t.start()
         
-        # Create the lap object
-        pose3d_object = ListenerPose3d("/F1ROS/odom")
-        self.lap = Lap(pose3d_object)
-        
         # Create the map object
         laser_object = ListenerLaser("/F1ROS/laser/scan")
+        pose3d_object = ListenerPose3d("/F1ROS/odom")
         self.map = Map(laser_object, pose3d_object)
+        
+        # Create the lap object
+        self.lap = Lap(self.map)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation

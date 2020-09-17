@@ -183,6 +183,7 @@ class Template:
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
+            self.console.print(exc_type)
             self.console.print(exc_value)
             
     # Function to measure the frequency of iterations

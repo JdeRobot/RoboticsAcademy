@@ -75,14 +75,17 @@ class Map:
 	def setTarget(self, x, y, rx, ry, rt):
 		# Convert to relatives
 		if x == 0.0 and y == 0.0:
-			pass
+			return (0, 0)
 			
 		dx = rx - x
 		dy = ry - y
 
 		# Rotate with the current angle
-		tx = dx*math.cos(-rt) - dy*math.sin(-rt)
-		ty = dx*math.sin(-rt) + dy*math.cos(-rt)
+		ty = dx*math.cos(-rt) - dy*math.sin(-rt)
+		tx = dx*math.sin(-rt) + dy*math.cos(-rt)
+		
+		ty = (120 +  20 * ty)
+		tx = (146.5 + 7 * tx)
 
 		return (tx, ty)
     
