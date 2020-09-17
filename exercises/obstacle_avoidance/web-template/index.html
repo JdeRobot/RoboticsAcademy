@@ -23,10 +23,15 @@
         <div id="code_container">
         
         <div id="editor"># Enter sequential code!
-
+from gui import GUI
+from hal import HAL
 
 while True:
     # Enter iterative code!
+    currentTarget = GUI.map.getNextTarget()
+    GUI.map.targetx = currentTarget.getPose().x
+    GUI.map.targety = currentTarget.getPose().y
+        
         </div>
         
         </div>
@@ -80,7 +85,7 @@ while True:
 			<h3 id="lap_heading">Lap Time</h3>
 			<h4 id="lap_time"></h4>
 			
-			<canvas id="birds-eye"></canvas>
+			<canvas id="local-map"></canvas>
         </div>
         </div>
         
@@ -99,6 +104,7 @@ while True:
 	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/map_view.js" type="text/javascript" charset="utf-8"></script>
     <script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
     <script src="assets/console.js" type="text/javascript" charset="utf-8"></script>
 

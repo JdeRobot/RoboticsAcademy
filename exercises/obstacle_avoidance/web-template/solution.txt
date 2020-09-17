@@ -1,0 +1,75 @@
+# Enter sequential code!
+from gui import GUI
+from hal import HAL
+import math
+
+def checkTarget(targetx, targety, posx, posy):
+    if(abs(targetx - posx) <= 1 and abs(targety - posy) <= 3):
+        return 1
+    else:
+        return 0
+
+while True:
+    # Enter iterative code!
+    currentTarget = GUI.map.getNextTarget()
+    posx = HAL.pose3d.getPose3d().x
+    posy = HAL.pose3d.getPose3d().y
+    
+    if(currentTarget != None):
+        GUI.map.targetx = currentTarget.getPose().x
+        GUI.map.targety = currentTarget.getPose().y
+        GUI.map.targetid = currentTarget.getId()
+    else:
+        GUI.map.targetx = 0
+        GUI.map.targety = 0
+        GUI.map.targetid = 'NaN'
+    
+    k_obstacle = 0.6
+    k_car = 0.2
+    k_target = -0.2
+    
+    unit_angle = (HAL.laser.getLaserData().maxAngle - HAL.laser.getLaserData().minAngle)
+    unit_angle = unit_angle / len(HAL.laser.getLaserData().values)
+    unit_range = 1/(HAL.laser.getLaserData().maxRange - HAL.laser.getLaserData().minRange)
+    
+    target_vector = [k_target * (GUI.map.targetx - posx), k_target * (GUI.map.targety - posy)]
+    rot_angle = (-1) * (HAL.pose3d.getPose3d().yaw + math.pi/2)
+    target_vector = [target_vector[0] * math.cos(rot_angle) - target_vector[1] * math.sin(rot_angle), target_vector[0] * math.sin(rot_angle) + target_vector[1] * math.cos(rot_angle)]
+    
+    obstacle_vector = [0, 0]
+    angle = 180
+    
+    for r in HAL.laser.getLaserData().values:
+        obstacle_vector[0] += k_obstacle * (10/r) *  math.cos(math.radians(angle))
+        
+        angle -= 1
+        
+    if(abs(obstacle_vector[0]) > 12):
+        obstacle_vector[0] = 12 *(abs(obstacle_vector[0])/obstacle_vector[0])
+        
+    car_vector = [0, 0]
+    running = checkTarget(GUI.map.targetx, GUI.map.targety, posx, posy)
+    
+    if(running == 1):
+        currentTarget.setReached(True)
+    
+    if(currentTarget == None):
+        HAL.motors.sendV(0)
+        HAL.motors.sendW(0)
+        
+    else:
+        HAL.motors.sendV(1.5)
+        
+        car_vector[0] = k_car * (target_vector[0] + obstacle_vector[0])
+        car_vector[1] = k_car * (target_vector[1] + obstacle_vector[1])
+        
+        k_angle = -0.3
+        HAL.motors.sendW(k_angle * (car_vector[0]))
+        
+        GUI.map.carx = car_vector[0]
+        GUI.map.cary = car_vector[1]
+        GUI.map.obsx = obstacle_vector[0]
+        GUI.map.obsy = obstacle_vector[1]
+        GUI.map.avgx = target_vector[0]
+        GUI.map.avgy = target_vector[1]
+        

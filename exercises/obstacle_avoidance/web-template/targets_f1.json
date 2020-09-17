@@ -1,7 +1,7 @@
 {
 "targets": [
     {"name": "target01", "x": 0,    "y": -30},
-    {"name": "target02", "x": -6,   "y": -40},
+    {"name": "target02", "x": -6,   "y": -41},
     {"name": "target03", "x": -14,  "y": -31},
     {"name": "target04", "x": -16,  "y": -13},
     {"name": "target05", "x": -55,  "y": -12},

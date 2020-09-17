@@ -6,6 +6,8 @@ from datetime import datetime
 
 from interfaces.camera import ListenerCamera
 from interfaces.motors import PublisherMotors
+from interfaces.pose3d import ListenerPose3d
+from interfaces.laser import ListenerLaser
 
 # Hardware Abstraction Layer
 class HAL:
@@ -18,6 +20,8 @@ class HAL:
     	self.image = None
     	self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
     	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
+    	self.pose3d = ListenerPose3d("/F1ROS/odom")
+    	self.laser = ListenerLaser("/F1ROS/laser/scan")
     	self.camera_lock = threading.Lock()
     	
     # Explicit initialization functions

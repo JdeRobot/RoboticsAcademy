@@ -13,13 +13,13 @@
 	<pose>-53.46 11.50 0 0 0 0</pose>
     </include>
     <include>
-      <uri>model://f1</uri>
+      <uri>model://f1_renault_laser</uri>
       <pose>0.04 0.68 0 0 0 -1.57</pose>
     </include>
     <include>
       <uri>model://f1_dummy</uri>
       <name>f1_dummy_1</name>
-      <pose>0 -33 0 0 0 0</pose>
+      <pose>-0.1 -33 0 0 0 0</pose>
     </include>
 	<include>
       <uri>model://f1_dummy</uri>
@@ -64,7 +64,7 @@
     <include>
       <uri>model://f1_dummy</uri>
       <name>f1_dummy_10</name>
-      <pose>-4 59 0 0 0 0.785</pose>
+      <pose>-3.5 59 0 0 0 0.785</pose>
     </include>
     <include>
       <uri>model://f1_dummy</uri>
