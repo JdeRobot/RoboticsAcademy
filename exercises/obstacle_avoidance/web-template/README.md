@@ -1,3 +1,5 @@
+# Obstacle Avoidance Exercise
+
 ## Setup
 - Clone the [Robotics Academy](https://github.com/JdeRobot/RoboticsAcademy) repository on Local Machine
 
