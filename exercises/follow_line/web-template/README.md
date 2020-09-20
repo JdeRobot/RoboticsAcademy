@@ -10,11 +10,11 @@
 ## Run with docker container
 
 - Jderobot already has created docker image available from [docker hub here](https://hub.docker.com/r/jderobot/robotics-academy/).
--Follow the instructions line by line to run the exercise.
+- Follow the instructions line by line to run the exercise.
 
 ## Run without docker container
 
--All the generic and specific infrastructures including required libraries need to be installed already on your machine as stated on the [academy webpage here](http://jderobot.github.io/RoboticsAcademy/installation/).
+- All the generic and specific infrastructures including required libraries need to be installed already on your machine as stated on the [academy webpage here](http://jderobot.github.io/RoboticsAcademy/installation/).
 
 - Navigate to web-template directory
 
