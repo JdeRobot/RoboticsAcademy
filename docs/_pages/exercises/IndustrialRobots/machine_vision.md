@@ -80,7 +80,7 @@ cd catkin_ws/src
 ```
 after pull request to the industrial robot repo
 ```bash
-git clone https://github.com/JdeRobot/IndustrialRobotics.git -b pick_place_basic
+git clone https://github.com/JdeRobot/IndustrialRobotics.git -b melodic_devel
 cd ..
 ```
 Update ROS dependencies
@@ -149,7 +149,7 @@ def get_object_position(self, object_name):
     return position
     ####################################################
 
-def myalgorithm(self, stopevent, pauseevent):
+def myalgorithm(self):
 	############## Insert your code here ###############
     self.build_map()
 

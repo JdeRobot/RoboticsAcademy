@@ -57,7 +57,7 @@ cd catkin_ws/src
 ```
 after pull request to the industrial robot repo
 ```bash
-git clone https://github.com/JdeRobot/IndustrialRobotics.git -b pick_place_basic
+git clone https://github.com/JdeRobot/IndustrialRobotics.git -b melodic_devel
 cd ..
 ```
 Update ROS dependencies
@@ -221,7 +221,7 @@ The poses of objects and obstacles in the world frame are known and assumed to b
 
 ### Why does the gripper cannot stably grasp and release the object?
 We are using gazebo_grasp_fix plugin for this exercise and the Pick Place exercise which compute the force vector between fingers to check collision and distance between object and fingers to decide whether release the object. It is because Gazebo cannot well simulates manipulation behavior. JUst keep in mind that though you might see the object shaking when the gripper is graspping it in simulation, it can usually success in the same condition in real world.
-The input `position` for pickup() and place() function are both the position for the end of the gripper in releasing mode. The output position of get_object_position() is the position of the center of the object. Therefore, because when the gripper is grasping, final end point position will change, please remember to tune the input position to pick and place. In addition, grasping sphere is the most 
+The input `position` for pickup() and place() function are both the position for the end of the gripper in releasing mode. The output position of get_object_position() is the position of the center of the object. Therefore, because when the gripper is grasping, final end point position will change, please remember to tune the input position to pick and place. In addition, sphere is the most difficult to grasp. Cylinder and box are easier if you use proper parameters.
 
 ### Why does the mobile robot sometimes stops for a while after reaching the goal pose?
 When the mobile robot doesn't reach a pose within tolerance range of goal pose, it might stops for a while to check if it can improve its pose.

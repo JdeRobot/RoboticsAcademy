@@ -53,7 +53,7 @@ class Algorithm:
         self.pick_place.send_message("move to "+target_name)
         ####################################################
 
-    def myalgorithm(self, stopevent, pauseevent):
+    def myalgorithm(self):
         ############## Insert your code here ###############
         # Move the robot arm back to home as a start
         self.pick_place.back_to_home()

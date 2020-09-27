@@ -56,7 +56,7 @@ class Algorithm:
         return position
         ####################################################
 
-    def myalgorithm(self, stopevent, pauseevent):
+    def myalgorithm(self):
         ############## Insert your code here ###############
         self.build_map()
 
