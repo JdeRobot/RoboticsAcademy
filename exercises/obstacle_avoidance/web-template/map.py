@@ -111,6 +111,8 @@ class Map:
 			for i in range(angle):
 				dist = 20 * self.laser.values[i]
 				angle = math.radians(i)
+				if(dist == float("inf")):
+					dist = 20 * self.laser.maxRange
 				laser[i] = (dist, angle)
 						
 		return laser, 20 * self.laser.maxRange

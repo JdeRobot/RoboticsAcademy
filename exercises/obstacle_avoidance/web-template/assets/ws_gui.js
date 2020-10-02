@@ -65,7 +65,6 @@ websocket_gui.onmessage = function(event){
 	else if(operation == "#map"){
 		// Retrieve the data
 		var data = JSON.parse(event.data.substring(4, ));
-		//console.log(data);
 		paintEvent(data.target, data.car, data.obstacle, data.average, data.laser, data.max_range);
 	}
 	
