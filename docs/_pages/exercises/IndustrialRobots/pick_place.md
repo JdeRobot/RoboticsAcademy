@@ -68,7 +68,7 @@ cd catkin_ws/src
 ```
 after pull request to the industrial robot repo
 ```bash
-git clone https://github.com/JdeRobot/IndustrialRobotics.git -b pick_place_basic
+git clone https://github.com/JdeRobot/IndustrialRobotics.git -b melodic_devel
 cd ..
 ```
 Update ROS dependencies
@@ -122,7 +122,7 @@ You can start running the algorithm with the start button when you see `You can 
 To solve the exercise, you must edit the MyAlgorithm.py file and insert control logic in myalgorithm() function.
 
 ```python
-def myalgorithm(self, stopevent, pauseevent):
+def myalgorithm(self):
 	############## Insert your code here ###############
     # Move the robot back to home as a start
     self.pick_place.back_to_home()
