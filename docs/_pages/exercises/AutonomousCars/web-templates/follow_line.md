@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/AutonomousCars/follow_line/
+permalink: /exercises/AutonomousCars/web-templates/follow_line/
 title: "Visual Follow Line"
 
 sidebar:
@@ -54,15 +54,15 @@ pid:
     title: "PID"
 
 
-youtubeId: eNuSQN9egpA
+youtubeId: gHZVESBcgKE
 
 ---
 ## Select Version
 
 Currently, there are 2 versions of running this exercise:
 
-- ROSNode Templates(This page)
-- [Web based Templates](./../web-templates/follow_line)
+- [ROSNode Templates](./../../follow_line)
+- Web based Templates(This page)
 
 Select one of the version and follow the respective instructions
 
@@ -75,56 +75,131 @@ The goal of this exercise is to perform a PID reactive control capable of follow
 The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.
 
 ## Installation 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-## How to run your solution?
-
-Navigate to the follow_line directory
+Clone the Robotics Academy repository on your local machine
 
 ```bash
-cd exercises/follow_line
+git clone https://github.com/JdeRobot/RoboticsAcademy
 ```
 
-Launch Gazebo with the f1_simple_circuit world through the command 
+Download [Docker](https://docs.docker.com/get-docker/)
+
+Pull the Robotics Academy Docker Image
 
 ```bash
-roslaunch ./launch/simple_line_follower_ros.launch
-```
-
-Then you have to execute the academic application, which will incorporate your code:
-
-```bash
-python2 ./follow_line.py follow_line_conf.yml
+docker pull jderobot/robotics-academy
 ```
 
 ## How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithms.py` and insert in it your code, which gives intelligence to the autonomous car.
+Start a new docker container of the image
+
+```bash
+docker run -it --name=docker_academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 jderobot/robotics-academy
+```
+
+Update the RoboticsAcademy and CustomRobots repository
+
+```bash
+# Updating the Robotics Academy Repo
+cd RoboticsAcademy && git pull origin master
+
+# Updating the Custom Robots Repo
+cd /opt/jderobot/CustomRobots && git pull origin melodic-devel
+```
+
+Update the models repository
+
+```bash
+cd /gzweb
+npm run deploy --- -m
+```
+
+Navigate the web templates based follow_line exercise(inside the docker bash)
+
+```bash
+cd /RoboticsAcademy/exercises/follow_line/web-template/
+```
+
+Launch the headless simulation of the exercise(inside the docker bash)
+
+```bash
+roslaunch ./launch/simple_line_follower_ros_headless.launch
+```
+
+The last instruction runs a process that must not be stopped. To carry out the next steps we need to open the container bash in another terminal window
+
+```bash
+docker exec -it docker_academy bash
+```
+
+Launch the Gzweb client to enable the Gazebo Simulation to be viewed outside the container. After this instruction, the Gazebo world can be viewed in the native machine's browser from the IP address of the Docker with 8080 as the port
+
+```bash
+cd gzweb
+npm start -p 8080
+```
+
+The last instruction will also keep on running. To execute the last step we open a new container bash in another terminal window
+
+```bash
+docker exec -it docker_academy bash
+```
+
+Determine the IP address with which the container is communicating with the native machine. The list of hosts can be found by the following command. Generally, the IP address is `172.17.0.x`
+
+```bash
+cat /etc/hosts
+```
+
+Navigate to the exercise folder
+
+```bash
+cd RoboticsAcademy/exercises/follow_line/web-template
+```
+
+Run the academy application
+
+```bash
+python host.py <IP address found above>
+```
+
+The last instruction will run indefinetly too. On our local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/follow_line/web-template`
+
+Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected.
+
+Launch the `index.html` web-page.
+
+### Debugging
+If while running the exercise you only get a black screen you need to stop the container and start it again (docker container start docker_academy). Try using the following instructions:
+
+```bash
+docker exec -it docker_academy bash
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
+curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
+apt-get update && sudo apt-get install -y nvidia-container-toolkit
+apt-get install xvfb
+Xvfb :1 -screen 0 1600x1200x16 & export Display=:1.0
+```
 
 ### Where to insert the code?
-In the `MyAlgorithm.py` file,
+In the launced webpage, type your code in the text editor,
 
 ```python
-def execute(self):
-    #GETTING THE IMAGES
-    image = self.getImage()
+# Enter sequential code!
 
-    # Add your code here
-    print "Runing"
 
-    #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-    #self.motors.sendV(10)
-    #self.motors.sendW(5)
-
-    #SHOW THE FILTERED IMAGE ON THE GUI
-    self.set_threshold_image(image)
+while True:
+    # Enter iterative code!
 ```
 
 ### Application Programming Interface
 
-* `self.getImage()` - to get the image
-* `self.motors.sendV()` - to set the linear speed
-* `self.motors.sendW()` - to set the angular velocity
-* `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
+* `from hal import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from gui import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getImage()` - to get the image
+* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.motors.sendW()` - to set the angular velocity
+* `GUI.showImage()` - allows you to view a debug image or with relevant information
 
 ## Theory
 
