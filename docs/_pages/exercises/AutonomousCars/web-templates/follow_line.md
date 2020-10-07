@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/AutonomousCars/web-templates/follow_line/
+permalink: exercises/AutonomousCars/web-templates/follow_line/
 title: "Visual Follow Line"
 
 sidebar:
