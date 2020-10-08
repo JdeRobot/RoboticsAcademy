@@ -16,13 +16,27 @@
 
 - All the generic and specific infrastructures including required libraries need to be installed already on your machine as stated on the [academy webpage here](http://jderobot.github.io/RoboticsAcademy/installation/).
 
-- Navigate to web-template directory
+### Clone CustomRobots repo and load models from it
 
 ```bash
-cd /RoboticsAcademy/exercises/follow_line/web-template
+cd /opt/jderobot
+git clone https://github.com/JdeRobot/CustomRobots.git
 ```
 
-- Launch the gazebo simulation
+- Export Gazebo environment variables
+
+```bash
+cd CustomRobots/f1
+export GAZEBO_MODEL_PATH=$PWD
+```
+
+```bash
+cd && cd /RoboticsAcademy/exercises/follow_line/web-template/launch
+export GAZEBO_RESOURCE_PATH=$PWD
+cd ..
+```
+
+### Launch the gazebo simulation
 
 ```bash
 roslaunch ./launch/simple_line_follower_ros.launch
