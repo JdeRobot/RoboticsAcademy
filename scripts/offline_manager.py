@@ -95,6 +95,7 @@ async def hello(websocket, path):
             host_cmd = instructions[data["exercise"]]["instructions_host"]
             host_thread = DockerThread(host_cmd)
             host_thread.start()
+            await websocket.send("OPENED")
         elif command == "resume":
             print("RESUME SIMULATIOn")
             cmd = "/opt/ros/melodic/bin/rosservice call gazebo/unpause_physics"
@@ -116,10 +117,9 @@ async def hello(websocket, path):
         else:
             print("ALL KILED")
             await kill_simulation()
+            await websocket.send("KILLED")
 
         greeting = f"Hello {name}!"
-
-        await websocket.send("Done")
         #print(f"> {greeting}")
 
 start_server = websockets.serve(hello, ip_address, 8765)
