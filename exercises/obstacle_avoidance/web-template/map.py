@@ -1,6 +1,7 @@
 from Parser import Parser
 import json
 import math
+import os
 import numpy as np
 from interfaces.laser import ListenerLaser
 
@@ -24,7 +25,8 @@ class Map:
 		self.targetid = "Nan"
 
 		# Init targets
-		parser = Parser("targets_f1.json")
+		directory = os.path.dirname(os.path.realpath(__file__))
+		parser = Parser(directory + "/targets_f1.json")
 		self.targets = parser.getTargets()
 
 		# Define the object used for
