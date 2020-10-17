@@ -7,8 +7,10 @@ ws_manager.onopen = function(event){
 }
 
 ws_manager.onmessage = function(event){
-    if(event.data == "OPENED"){
-        declare_code();
-        declare_gui();
-    }
+    console.log(event.data);
 }
+
+setTimeout(function(){
+    declare_code();
+    declare_gui();
+}, 10000);
