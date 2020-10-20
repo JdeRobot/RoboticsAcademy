@@ -237,7 +237,8 @@ class Template:
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
         if(message == "#pong"):
-        	return
+            self.server.send_message(self.client, "#ping")
+            return
         
         try:
             # Once received turn the reload flag up and send it to execute_thread function
@@ -255,6 +256,8 @@ class Template:
     	t = gui.ThreadGUI(self.gui)
     	t.daemon = True
     	t.start()
+
+        self.server.send_message(self.client, "#ping")
     	
     	print(client, 'connected')
     	
