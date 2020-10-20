@@ -238,7 +238,7 @@ class Template:
     def handle(self, client, server, message):
         if(message == "#pong"):
             self.server.send_message(self.client, "#ping")
-        	return
+            return
         
         try:
             # Once received turn the reload flag up and send it to execute_thread function
