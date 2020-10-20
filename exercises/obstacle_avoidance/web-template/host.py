@@ -237,6 +237,7 @@ class Template:
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
         if(message == "#pong"):
+            self.server.send_message(self.client, "#ping")
         	return
         
         try:
@@ -255,6 +256,8 @@ class Template:
     	t = gui.ThreadGUI(self.gui)
     	t.daemon = True
     	t.start()
+
+        self.server.send_message(self.client, "#ping")
     	
     	print(client, 'connected')
     	
