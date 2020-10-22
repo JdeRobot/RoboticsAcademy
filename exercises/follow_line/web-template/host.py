@@ -37,8 +37,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
-        self.gui = gui.GUI(self.host, self.console)
-        self.hal = hal.HAL()
+        #self.gui = gui.GUI(self.host, self.console)
+        #self.hal = hal.HAL()
      
     # Function for saving   
     def save_code(self, source_code):
