@@ -133,7 +133,7 @@ class Template:
     # The process function
     def process_code(self, source_code):
         # Reference Environment for the exec() function
-        reference_environment = {'GUI': self.gui, 'HAL': self.hal, 'console': self.console, 'print': print_function}
+        reference_environment = {'HOST_ADDRESS': self.host, 'console': self.console, 'print': print_function}
         iterative_code, sequential_code, debug_level = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -156,8 +156,8 @@ class Template:
                 
                 # A few changes in the reference environment, to
                 # allow usage of the initialized API
-                reference_environment["GUI"] = self.gui
-                reference_environment["HAL"] = self.hal
+                #reference_environment["GUI"] = self.gui
+                #reference_environment["HAL"] = self.hal
                 # Execute the iterative portion
                 exec(iterative_code, reference_environment)
 

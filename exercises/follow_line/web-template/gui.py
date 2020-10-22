@@ -39,9 +39,10 @@ class GUI:
     # Explicit initialization function
     # Class method, so user can call it without instantiation
     @classmethod
-    def initGUI(self):
+    def initGUI(cls, host, console):
         # self.payload = {'image': '', 'shape': []}
-        pass
+        new_instance = cls(host, console)
+        return new_instance
 
     # Function for student to call
     # Encodes the image as a JSON string and sends through the WS
