@@ -37,8 +37,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
-        #self.gui = gui.GUI(self.host, self.console)
-        #self.hal = hal.HAL()
+        self.gui = gui.GUI(self.host, self.console)
+        self.hal = hal.HAL()
      
     # Function for saving   
     def save_code(self, source_code):
@@ -146,6 +146,7 @@ class Template:
         try:
             # The Python exec function
             # Run the sequential part
+            self.modify_modules()
             exec(sequential_code, {"gui": gui, "hal": hal, "time": time}, reference_environment)
 
             # Run the iterative part inside template
@@ -156,8 +157,8 @@ class Template:
                 
                 # A few changes in the reference environment, to
                 # allow usage of the initialized API
-                #reference_environment["GUI"] = self.gui
-                #reference_environment["HAL"] = self.hal
+                # reference_environment["GUI"] = self.gui
+                # reference_environment["HAL"] = self.hal
                 # Execute the iterative portion
                 exec(iterative_code, reference_environment)
 
@@ -184,6 +185,13 @@ class Template:
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             self.console.print(exc_value)
+
+    # Function to modify the modules for use in ACE Editor
+    def modify_modules(self):
+        # Make changes to the module that is going to be
+        # passed to the exec function dictionary
+        hal.HAL = self.hal
+        gui.GUI = self.gui
             
     # Function to measure the frequency of iterations
     def measure_frequency(self):
