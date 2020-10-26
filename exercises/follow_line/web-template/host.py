@@ -10,6 +10,7 @@ import sys
 from datetime import datetime
 import re
 import traceback
+import imp
 
 import rospy
 from std_srvs.srv import Empty
@@ -146,8 +147,8 @@ class Template:
         try:
             # The Python exec function
             # Run the sequential part
-            self.modify_modules()
-            exec(sequential_code, {"gui": gui, "hal": hal, "time": time}, reference_environment)
+            gui_module, hal_module = self.generate_modules()
+            exec(sequential_code, {"gui": gui_module, "hal": hal_module, "time": time}, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag
@@ -186,12 +187,17 @@ class Template:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             self.console.print(exc_value)
 
-    # Function to modify the modules for use in ACE Editor
-    def modify_modules(self):
-        # Make changes to the module that is going to be
-        # passed to the exec function dictionary
-        hal.HAL = self.hal
-        gui.GUI = self.gui
+    # Function to generate the modules for use in ACE Editor
+    def generate_modules(self):
+        # Define HAL module
+        hal_module = imp.new_module("hal")
+        hal_module.HAL = self.hal
+
+        # Define GUI module
+        gui_module = imp.new_module("gui")
+        gui_module.GUI = self.gui
+
+        return gui_module, hal_module
             
     # Function to measure the frequency of iterations
     def measure_frequency(self):
