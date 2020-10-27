@@ -14,6 +14,7 @@ import imp
 
 import rospy
 from std_srvs.srv import Empty
+import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
@@ -192,10 +193,17 @@ class Template:
         # Define HAL module
         hal_module = imp.new_module("hal")
         hal_module.HAL = self.hal
+        hal_module.cv2 = cv2
+        hal_module.datetime = datetime
 
         # Define GUI module
         gui_module = imp.new_module("gui")
         gui_module.GUI = self.gui
+        gui_module.cv2 = cv2
+        gui_module.datetime = datetime
+
+        sys.modules["hal"] = hal_module
+        sys.modules["gui"] = gui_module
 
         return gui_module, hal_module
             
