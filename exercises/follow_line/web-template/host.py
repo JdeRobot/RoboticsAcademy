@@ -15,8 +15,8 @@ import imp
 import rospy
 from std_srvs.srv import Empty
 
-import gui
-import hal
+from gui import GUI, ThreadGUI
+from hal import HAL
 import console
 
 class Template:
@@ -38,8 +38,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
-        self.gui = gui.GUI(self.host, self.console)
-        self.hal = hal.HAL()
+        self.gui = GUI(self.host, self.console)
+        self.hal = HAL()
      
     # Function for saving   
     def save_code(self, source_code):
@@ -134,7 +134,7 @@ class Template:
     # The process function
     def process_code(self, source_code):
         # Reference Environment for the exec() function
-        reference_environment = {'HOST_ADDRESS': self.host, 'console': self.console, 'print': print_function}
+        reference_environment = {'console': self.console, 'print': print_function}
         iterative_code, sequential_code, debug_level = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -266,7 +266,7 @@ class Template:
     def connected(self, client, server):
     	self.client = client
     	# Start the GUI update thread
-    	t = gui.ThreadGUI(self.gui)
+    	t = ThreadGUI(self.gui)
     	t.daemon = True
     	t.start()
 
