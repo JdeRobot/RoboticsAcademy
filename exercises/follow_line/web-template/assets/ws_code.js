@@ -75,9 +75,9 @@ function stopCode(){
 // Function to save the code
 function saveCode(){
 	// Get the code from editor and add header
+	
 	var python_code = editor.getValue();
 	python_code = "#save" + python_code;
-	
 	console.log("Code Sent! Check terminal for more information!");
 	websocket_code.send(python_code)
 }
