@@ -157,8 +157,6 @@ class Template:
             	self.server.send_message(self.client, "#pingRunning")
                 start_time = datetime.now()
                 
-                # A few changes in the reference environment, to
-                # allow usage of the initialized API
                 # Execute the iterative portion
                 exec(iterative_code, reference_environment)
 
@@ -196,6 +194,9 @@ class Template:
         gui_module = imp.new_module("GUI")
         gui_module.GUI = self.gui
 
+        # Adding modules to system
+        # Protip: The names should be different from
+        # other modules, otherwise some errors
         sys.modules["HAL"] = hal_module
         sys.modules["GUI"] = gui_module
 
