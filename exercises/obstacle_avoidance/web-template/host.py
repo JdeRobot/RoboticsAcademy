@@ -147,7 +147,7 @@ class Template:
         try:
             # The Python exec function
             # Run the sequential part
-            gui_module, hal_module = self.generate_modules
+            gui_module, hal_module = self.generate_modules()
             exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
 
             # Run the iterative part inside template
