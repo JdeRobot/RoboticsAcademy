@@ -54,9 +54,18 @@ pid:
     title: "PID"
 
 
-youtubeId: eNuSQN9egpA
+youtubeId1: eNuSQN9egpA
+youtubeId2: gHZVESBcgKE
 
 ---
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates(Current Release)
+
+The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -66,33 +75,70 @@ The goal of this exercise is to perform a PID reactive control capable of follow
 
 The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.
 
-## Installation 
+## Instructions for Web Templates
+This is the prefered way for running the exercise.
+
+### Installation 
+- Clone the Robotics Academy repository on your local machine
+
+	```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy
+	```
+
+- Download [Docker](https://docs.docker.com/get-docker/)
+
+- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.2)
+
+	```bash
+docker pull jderobot/robotics-academy:0.2.2
+	```
+
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background
+
+	```bash
+docker run -it --name=docker-academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:0.2.2 python3.8 manager.py
+	```
+
+- On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/follow_line/web-template`
+
+- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
+
+- Launch the `index.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+
+- The exercise can be used after the alert.
+
+**Where to insert the code?**
+
+In the launced webpage, type your code in the text editor,
+
+```python
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+**Application Programming Interface**
+
+* `from hal import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from gui import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getImage()` - to get the image
+* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.motors.sendW()` - to set the angular velocity
+* `GUI.showImage()` - allows you to view a debug image or with relevant information
+
+## Instructions for ROSNode Templates
+
+### Installation 
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
-## How to run your solution?
-
-Navigate to the follow_line directory
-
-```bash
-cd exercises/follow_line
-```
-
-Launch Gazebo with the f1_simple_circuit world through the command 
-
-```bash
-roslaunch ./launch/simple_line_follower_ros.launch
-```
-
-Then you have to execute the academic application, which will incorporate your code:
-
-```bash
-python2 ./follow_line.py follow_line_conf.yml
-```
-
-## How to perform the exercise?
+### How to perform the exercise?
 To carry out the exercise, you have to edit the file `MyAlgorithms.py` and insert in it your code, which gives intelligence to the autonomous car.
 
-### Where to insert the code?
+**Where to insert the code?**
+
 In the `MyAlgorithm.py` file,
 
 ```python
@@ -111,12 +157,32 @@ def execute(self):
     self.set_threshold_image(image)
 ```
 
-### Application Programming Interface
+**Application Programming Interface**
 
 * `self.getImage()` - to get the image
 * `self.motors.sendV()` - to set the linear speed
 * `self.motors.sendW()` - to set the angular velocity
 * `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
+
+### How to run your solution?
+
+- Navigate to the follow_line directory
+
+	```bash
+cd exercises/follow_line
+	```
+
+- Launch Gazebo with the f1_simple_circuit world through the command 
+
+	```bash
+roslaunch ./launch/simple_line_follower_ros.launch
+	```
+
+- Then you have to execute the academic application, which will incorporate your code:
+
+	```bash
+python2 ./follow_line.py follow_line_conf.yml
+	```
 
 ## Theory
 
@@ -196,7 +262,13 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 ## Demonstrative Video
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+*This solution is an illustration for the ROSNode Templates*
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
+*This solution is an illustration for the Web Templates*
 
 ## Contributors
 

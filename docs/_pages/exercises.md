@@ -57,11 +57,19 @@ feature_row:
     btn_class: "btn--primary"
     btn_label: "Go!"
 
-  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
-    alt: "Amazon Warehouse"
-    title: "Amazon Warehouse"
-    excerpt: "Autonomous navigation and pick-and-place logic"
-    url: "/exercises/MobileRobots/amazon_warehouse"
+  - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
+    alt: "Single Robot Amazon Warehouse (ROS2)"
+    title: "Single Robot Amazon Warehouse (ROS2)"
+    excerpt: "Autonomous navigation and pick-and-place logic in ROS2"
+    url: "/exercises/MobileRobots/single_robot_amazon_warehouse"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
+  - image_path: /assets/images/exercises/multi_robot_amazon_warehouse/multi_robot_amazon_warehouse_teaser.png
+    alt: "Multi Robot Amazon Warehouse (ROS2)"
+    title: "Multi Robot Amazon Warehouse (ROS2)"
+    excerpt: "Multi robot warehouse planning in ROS2"
+    url: "/exercises/MobileRobots/multi_robot_amazon_warehouse"
     btn_class: "btn--primary"
     btn_label: "Go!"
     
@@ -158,6 +166,30 @@ feature_row:
     title: "Color Filter"
     excerpt: "Develop a color filter to segment some object in the image and track it"
     url: "/exercises/ComputerVision/color_filter"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
+  - image_path: /assets/images/exercises/pick_place/pick_place_teaser.png
+    alt: "Pick and Place"
+    title: "Pick and Place"
+    excerpt: "Pick and place with industrial robot arm and mechanical gripper"
+    url: "/exercises/IndustrialRobots/pick_place"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
+  - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
+    alt: "Machine Vision"
+    title: "Machine Vision"
+    excerpt: "Detect object and obstacle with kinect camera"
+    url: "/exercises/IndustrialRobots/machine_vision"
+    btn_class: "btn--primary"
+    btn_label: "Go!"
+
+  - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
+    alt: "Mobile Manipulation"
+    title: "Mobile Manipulation"
+    excerpt: "Pick and place with mobile manipulator"
+    url: "/exercises/IndustrialRobots/mobile_manipulation"
     btn_class: "btn--primary"
     btn_label: "Go!"
 ---

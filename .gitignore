@@ -88,3 +88,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+.idea/
+
+docs/.jekyll-cache/

@@ -10,12 +10,14 @@ import sys
 from datetime import datetime
 import re
 import traceback
+import imp
 
 import rospy
 from std_srvs.srv import Empty
+import cv2
 
-import gui
-import hal
+from gui import GUI, ThreadGUI
+from hal import HAL
 import console
 
 class Template:
@@ -33,11 +35,12 @@ class Template:
                 
         self.server = None
         self.client = None
+        self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
-        self.gui = gui.GUI(self.console)
-        self.hal = hal.HAL()
+        self.gui = GUI(self.host, self.console)
+        self.hal = HAL()
      
     # Function for saving   
     def save_code(self, source_code):
@@ -132,7 +135,7 @@ class Template:
     # The process function
     def process_code(self, source_code):
         # Reference Environment for the exec() function
-        reference_environment = {'GUI': self.gui, 'HAL': self.hal, 'console': self.console, 'print': print_function}
+        reference_environment = {'console': self.console, 'print': print_function}
         iterative_code, sequential_code, debug_level = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -145,7 +148,8 @@ class Template:
         try:
             # The Python exec function
             # Run the sequential part
-            exec(sequential_code, {"gui": gui, "hal": hal, "time": time}, reference_environment)
+            gui_module, hal_module = self.generate_modules()
+            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag
@@ -153,10 +157,6 @@ class Template:
             	self.server.send_message(self.client, "#pingRunning")
                 start_time = datetime.now()
                 
-                # A few changes in the reference environment, to
-                # allow usage of the initialized API
-                reference_environment["GUI"] = self.gui
-                reference_environment["HAL"] = self.hal
                 # Execute the iterative portion
                 exec(iterative_code, reference_environment)
 
@@ -183,6 +183,24 @@ class Template:
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             self.console.print(exc_value)
+
+    # Function to generate the modules for use in ACE Editor
+    def generate_modules(self):
+        # Define HAL module
+        hal_module = imp.new_module("HAL")
+        hal_module.HAL = self.hal
+
+        # Define GUI module
+        gui_module = imp.new_module("GUI")
+        gui_module.GUI = self.gui
+
+        # Adding modules to system
+        # Protip: The names should be different from
+        # other modules, otherwise some errors
+        sys.modules["HAL"] = hal_module
+        sys.modules["GUI"] = gui_module
+
+        return gui_module, hal_module
             
     # Function to measure the frequency of iterations
     def measure_frequency(self):
@@ -235,7 +253,8 @@ class Template:
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
         if(message == "#pong"):
-        	return
+            self.server.send_message(self.client, "#ping")
+            return
         
         try:
             # Once received turn the reload flag up and send it to execute_thread function
@@ -250,9 +269,12 @@ class Template:
     def connected(self, client, server):
     	self.client = client
     	# Start the GUI update thread
-    	t = gui.ThreadGUI(self.gui)
+    	t = ThreadGUI(self.gui)
     	t.daemon = True
     	t.start()
+
+        # Initialize the ping message
+        self.server.send_message(self.client, "#ping")
     	
     	print(client, 'connected')
     	
@@ -261,7 +283,7 @@ class Template:
     	print(client, 'closed')
     	
     def run_server(self):
-    	self.server = WebsocketServer(port=1905, host="127.0.0.1")
+    	self.server = WebsocketServer(port=1905, host=self.host)
     	self.server.set_fn_new_client(self.connected)
     	self.server.set_fn_client_left(self.handle_close)
     	self.server.set_fn_message_received(self.handle)

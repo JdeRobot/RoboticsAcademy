@@ -23,8 +23,9 @@ class HAL:
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
     @classmethod
-    def initRobot(self):
-        pass
+    def initRobot(cls):
+        new_instance = cls()
+        return new_instance
     
     # Get Image from ROS Driver Camera
     def getImage(self):

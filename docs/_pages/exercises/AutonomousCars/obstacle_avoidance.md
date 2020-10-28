@@ -41,8 +41,18 @@ gifs2:
     title: "Oscillation Problem in Narrow Corridors"
 
 
-youtubeId: 5SVkvfKPi_s
+youtubeId1: 5SVkvfKPi_s
+youtubeId2: wVJJ9ndY2aY
 ---
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates(Current Release)
+
+The instructions for both of them are provided as follows.
+
 ## Objective
 
 The objective of this practice is to implement the logic of the VFF navigation algorithm.
@@ -67,10 +77,111 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Robustness in situations of indecision (zero vector sum)
 
-## Installation
+## Instructions for Web Templates
+This is the preffered way to run the exercise.
+
+### Installation
+
+- Clone the Robotics Academy repository on your local machine
+
+	```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy
+	```
+
+- Download [Docker](https://docs.docker.com/get-docker/)
+
+- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.2)
+
+	```bash
+docker pull jderobot/robotics-academy:0.2.2
+	```
+	
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background
+
+	```bash
+docker run -it --name=docker-academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:0.2.2 python3.8 manager.py
+	```
+
+- On the local machine navigate to the obstacle_avoidance exercise which is: `RoboticsAcademy/exercises/obstacle_avoidance/web-template`
+
+- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
+
+- Launch the `index.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+
+- The exercise can be used after the alert.
+
+**Where to insert the code?**
+
+In the launced webpage, type your code in the text editor,
+
+```python
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+**Application Programming Interface**
+
+* `from hal import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from gui import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.pose3d.getPose3d().x` - to get the position of the robot (x coordinate)
+* `HAL.pose3d.getPose3d().y` - to obtain the position of the robot (y coordinate)
+* `HAL.pose3d.getPose3d().yaw` - to get the orientation of the robot with
+  regarding the map
+* `HAL.laser.getLaserData()` - to obtain laser sensor data
+  It is composed of 180 pairs of values: (0-180º distance in millimeters)
+* `HAL.getImage()` - to get the image
+* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.motors.sendW()` - to set the angular velocity
+* `GUI.showImage()` - allows you to view a debug image or with relevant information
+
+**Own API**
+
+To simplify, the implementation of control points is offered.
+To use it, only two actions must be carried out:
+1. Obtain the following point:
+
+   `currentTarget = GUI.map.getNextTarget()`
+2. Mark it as visited when necessary:
+
+   `currentTarget.setReached(True)`
+   
+**Debugging**
+
+The graphical interface (GUI) allows to visualize each of the vectors of
+calculated forces. For this purpose, the following variables should be given 
+value:
+```python
+# Car direction
+GUI.map.carx = 0.0
+GUI.map.cary = 0.0
+
+# Obstacles direction
+GUI.map.obsx = 0.0
+GUI.map.obsy = 0.0
+
+# Average direction
+GUI.map.avgx = 0.0
+GUI.map.avgy = 0.0
+```
+
+As well as the destination that we have assigned:
+```python
+# Current target
+GUI.map.targetx = 0.0
+GUI.map.targety = 0.0
+```
+
+
+## Instructions for ROSNode Templates
+
+### Installation
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
-## How to run your solution?
+### How to run your solution?
 
 Navigate to the obstacle_avoidance directory
 
@@ -90,7 +201,7 @@ Then you have to execute the academic application, which will incorporate your c
 python ./obstacle_avoidance_f1.py obstacle_avoidance_conf_f1.yml
 ```
 
-## How to do the practice
+### How to do the practice
 To carry out the practice, you must edit the file `MyAlgorithm.py` and
 insert the control logic.
 
@@ -104,7 +215,8 @@ def execute(self):
   # insert your code here
 ```
 
-### API
+**API**
+
 * `pose3d.getPose3d().x` - to get the position of the robot (x coordinate)
 * `pose3d.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `pose3d.getPose3d().yaw` - to get the orientation of the robot with
@@ -114,7 +226,8 @@ def execute(self):
 * `motors.sendV()` - to set and send the linear speed
 * `motors.sendW()` - to set and send the angular velocity
 
-### Own API
+**Own API**
+
 To simplify, the implementation of control points is offered.
 To use it, only two actions must be carried out:
 1. Obtain the following point:
@@ -123,9 +236,9 @@ To use it, only two actions must be carried out:
    `self.currentTarget.setReached(True)`
 
 
-## Conversion of types
+### Conversion of types
 
-### Laser
+**Laser**
 
 ```python
     laser_data = self.laser.getLaserData ()
@@ -151,7 +264,8 @@ for d, a in laser:
 laser_mean = np.mean (laser_vectorized, axis = 0)
 ```
 
-### Coordinate system
+**Coordinate system**
+
 ```python
 def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
 
@@ -169,7 +283,7 @@ return x_rel, and y_rel
 ```
 
 
-## Debugging
+### Debugging
 The graphical interface (GUI) allows to visualize each of the vectors of
 calculated forces. For this purpose, the following variables should be given 
 value:
@@ -289,7 +403,13 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 ## Demonstrative Video
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+*This solution is an illustration for the ROSNode Templates*
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
+*This solution is an illustration for the Web Templates*
 
 ## Contributors
 

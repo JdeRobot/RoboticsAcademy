@@ -11,18 +11,37 @@ stop_button.style.cursor = "not-allowed";
 var frequency = "0";
 
 //WebSocket for Code
-var websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
+var websocket_code;
+function declare_code(){
+	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
-websocket_code.onopen = function(event){
-    alert("[open] Connection established!");
-}
-websocket_code.onclose = function(event){
-    if(event.wasClean){
-        alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-    }
-    else{
-        alert("[close] Connection closed!");
-    }
+	websocket_code.onopen = function(event){
+		alert("[open] Connection established!");
+	}
+	websocket_code.onclose = function(event){
+		if(event.wasClean){
+			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+		}
+		else{
+			alert("[close] Connection closed!");
+		}
+	}
+
+	websocket_code.onmessage = function(event){
+		var source_code = event.data;
+		operation = source_code.substring(0, 5);
+		
+		if(operation == "#load"){
+			editor.setValue(source_code.substring(5,));
+		}
+		else if(operation == "#freq"){
+			frequency = source_code.substring(5,);
+			document.querySelector('#ideal_frequency').value = frequency;
+		}
+		else if(operation == "#ping"){
+			websocket_code.send("#pong")
+		}
+	};
 }
 
 // Function that sends/submits the code!
@@ -82,20 +101,4 @@ function resetSim(){
 function frequencyUpdate(vol) {
 	document.querySelector('#frequency').value = vol;
 }
-
-websocket_code.onmessage = function(event){
-	var source_code = event.data;
-	operation = source_code.substring(0, 5);
-	
-	if(operation == "#load"){
-		editor.setValue(source_code.substring(5,));
-	}
-	else if(operation == "#freq"){
-		frequency = source_code.substring(5,);
-		document.querySelector('#ideal_frequency').value = frequency;
-	}
-	else if(operation == "#ping"){
-		websocket_code.send("#pong")
-	}
-};
 

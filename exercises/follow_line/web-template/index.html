@@ -23,7 +23,8 @@
         <div id="code_container">
         
         <div id="editor"># Enter sequential code!
-
+from GUI import GUI
+from HAL import HAL
 
 while True:
     # Enter iterative code!
@@ -76,7 +77,12 @@ while True:
         </div>
         <!-- Canvas -->
         <div id="canvas_container">
-        	<canvas id="gui_canvas"></canvas>
+			<canvas id="gui_canvas"></canvas>
+			<!--<iframe src="" id="gzweb"></iframe>-->
+			<h3 id="lap_heading">Lap Time</h3>
+			<h4 id="lap_time"></h4>
+			
+			<canvas id="birds-eye"></canvas>
         </div>
         </div>
         
@@ -92,11 +98,13 @@ while True:
         
     </body>
 
-    <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
-    <script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/console.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/local_functions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/birds_eye.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/console.js" type="text/javascript" charset="utf-8"></script>
 
 </html>

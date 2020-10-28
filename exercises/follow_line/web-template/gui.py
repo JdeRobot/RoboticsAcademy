@@ -7,29 +7,42 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 
+from interfaces.pose3d import ListenerPose3d
+
+from lap import Lap
+from map import Map
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, console):
+    def __init__(self, host, console):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'canvas': None,'image': '', 'shape': []}
         self.server = None
         self.client = None
         
+        self.host = host
+
         self.payload_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
         self.console = console
         t.start()
+        
+        # Create the lap object
+        pose3d_object = ListenerPose3d("/F1ROS/odom")
+        self.lap = Lap(pose3d_object)
+        self.map = Map(pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
     @classmethod
-    def initGUI(self):
+    def initGUI(cls, host, console):
         # self.payload = {'image': '', 'shape': []}
-        pass
+        new_instance = cls(host, console)
+        return new_instance
 
     # Function for student to call
     # Encodes the image as a JSON string and sends through the WS
@@ -55,14 +68,25 @@ class GUI:
         message = "#img" + json.dumps(self.payload)
         self.payload_lock.release()
         
+        lapped = self.lap.check_threshold()
+        lap_message = ""
+        if(lapped != None):
+        	lap_message = "#lap" + str(lapped)
+        	
+        pos_message = str(self.map.getFormulaCoordinates())
+        pos_message = "#map" + pos_message
+        
         try:
             self.server.send_message(self.client, message)
+            self.server.send_message(self.client, pos_message)
+            if(lap_message != ""):
+            	self.server.send_message(self.client, lap_message)
         except:
             pass
     
     # Activate the server
     def run_server(self):
-        self.server = WebsocketServer(port=2303, host="127.0.0.1")
+        self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.console.prompt)
         self.server.run_forever()
@@ -73,7 +97,7 @@ class GUI:
 class ThreadGUI(threading.Thread):
 	def __init__(self, gui):
 		self.gui = gui
-		self.time_cycle = 50
+		self.time_cycle = 200
 		threading.Thread.__init__(self)
 		
 	def run(self):
