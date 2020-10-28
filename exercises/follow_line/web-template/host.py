@@ -149,7 +149,7 @@ class Template:
             # The Python exec function
             # Run the sequential part
             gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, {"gui": gui_module, "hal": hal_module, "time": time}, reference_environment)
+            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag
@@ -159,8 +159,6 @@ class Template:
                 
                 # A few changes in the reference environment, to
                 # allow usage of the initialized API
-                # reference_environment["GUI"] = self.gui
-                # reference_environment["HAL"] = self.hal
                 # Execute the iterative portion
                 exec(iterative_code, reference_environment)
 
@@ -191,19 +189,15 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = imp.new_module("hal")
+        hal_module = imp.new_module("HAL")
         hal_module.HAL = self.hal
-        hal_module.cv2 = cv2
-        hal_module.datetime = datetime
 
         # Define GUI module
-        gui_module = imp.new_module("gui")
+        gui_module = imp.new_module("GUI")
         gui_module.GUI = self.gui
-        gui_module.cv2 = cv2
-        gui_module.datetime = datetime
 
-        sys.modules["hal"] = hal_module
-        sys.modules["gui"] = gui_module
+        sys.modules["HAL"] = hal_module
+        sys.modules["GUI"] = gui_module
 
         return gui_module, hal_module
             
