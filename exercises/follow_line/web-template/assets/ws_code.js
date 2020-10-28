@@ -1,22 +1,3 @@
-// Load code part
-
-const realFileBtn = document.getElementById("real-file");
-const customBtn = document.getElementById("load");
-const editorele = ace.edit("editor");
-customBtn.addEventListener("click", function(){
-	realFileBtn.click();
-});
-realFileBtn.addEventListener("change", function() {
-	if (realFileBtn.value) {
-		var fr = new FileReader();
-		fr.onload = function(){
-			editorele.setValue(fr.result, 1);
-		}
-		fr.readAsText(this.files[0]);
-	
-	} 
-});
-    	
 //Editor Part
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
@@ -70,26 +51,6 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
     websocket_code.send(stop_code);
-}
-
-// Function to save the code locally
-function saveCodeLocally(){
-	var python_code = editor.getValue();
-	var blob = new Blob([python_code], {type: "text/plain; charset=utf-8"});
-	if (window.navigator.msSaveOROpenBlob)
-		window.navigator.msSaveOrOpenBlob(blob, "follow_line.py");
-	else{
-		var a = document.createElement("a"),
-		url = URL.createObjectURL(blob);
-		a.href = url;
-		a.download = "follow_line.py";
-		document.body.appendChild(a);
-		a.click()
-		setTimeout(function(){
-			document.body.removeChild(a);
-			window.URL.revokeObjectURL(url);
-		}, 0);
-	}
 }
 
 // Function to save the code
