@@ -89,17 +89,17 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 
 - Download [Docker](https://docs.docker.com/get-docker/)
 
-- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.2)
+- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.3)
 
 	```bash
-docker pull jderobot/robotics-academy:0.2.2
+docker pull jderobot/robotics-academy:0.2.3
 	```
 	
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it --name=docker-academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:0.2.2 python3.8 manager.py
+docker run -it --name=docker-academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:0.2.3 python3.8 manager.py
 	```
 
 - On the local machine navigate to the obstacle_avoidance exercise which is: `RoboticsAcademy/exercises/obstacle_avoidance/web-template`
