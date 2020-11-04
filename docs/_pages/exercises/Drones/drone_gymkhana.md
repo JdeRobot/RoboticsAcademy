@@ -45,7 +45,7 @@ And finally, install our ROS metapackage for controlling drones, called `jderobo
 sudo apt-get install ros-melodic-jderobot-drones
 ```
 
-## How to run the exercise
+## How can I run the exercise?
 
 To launch the exercise, open a terminal window, navigate to the [drone_gymkhana exercise folder](https://github.com/JdeRobot/RoboticsAcademy/tree/master/exercises/drone_gymkhana) and execute the following roslaunch command:
 
@@ -114,15 +114,15 @@ You must assume your drone has already took off from the central green pad and i
 
 The three following drone control functions are *non-blocking*, i.e. each time you send a new command to the aircraft it immediately discards the previous control command. 
 
-### 1. Position control
+#### 1. Position control
 
 * `drone.set_cmd_pos(x, y, z, yaw)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle* (in rad) taking as reference the first takeoff point (map frame)
 
-### 2. Velocity control
+#### 2. Velocity control
 
 * `drone.set_cmd_vel(vx, vy, vz, yaw_rate)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate* (rad/s) in its body fixed frame
 
-### 3. Mixed control
+#### 3. Mixed control
 
 * `drone.set_cmd_mix(vx, vy, z, yaw_rate)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate* (in rad/s) 
 
