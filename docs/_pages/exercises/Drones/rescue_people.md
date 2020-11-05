@@ -123,6 +123,10 @@ Besides using the buttons at the drone teleoperator GUI, taking off and landing 
 
 Simple hints provided to help you solve the rescue_people exercise. Please note that the **full solution has not been provided.**
 
+### Face detection
+
+You can use the Face Detection using Haar Cascades from opencv [[1]](https://docs.opencv.org/4.5.0/db/d28/tutorial_cascade_classifier.html).
+
 ### Directional control. How should drone yaw be handled? 
 
 If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but what's not the best way of flying a drone.
