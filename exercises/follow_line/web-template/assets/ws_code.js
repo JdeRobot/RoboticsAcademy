@@ -95,6 +95,7 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
+	submitCode();
 }
 
 // Function for range slider

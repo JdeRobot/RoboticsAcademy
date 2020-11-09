@@ -90,6 +90,11 @@ class GUI:
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.console.prompt)
         self.server.run_forever()
+
+    # Function to reset
+    def reset_gui(self):
+        self.lap.reset()
+        self.map.reset()
         
 
 # This class decouples the user thread

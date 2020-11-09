@@ -73,8 +73,9 @@ class Template:
     		return "", "", 1
     		
     	elif(source_code[:5] == "#rest"):
-    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
     		reset_simulation()
+            self.gui.reset_gui()
     		return "", "", 1
     		
     	else:
