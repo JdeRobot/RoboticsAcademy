@@ -65,7 +65,7 @@ class Lap:
 		self.lap_rest = True
 		self.buffer = False
 
-		self.pause = False
+		self.pause_condition = False
 		self.pause_time = 0
 
 	# Function to pause
