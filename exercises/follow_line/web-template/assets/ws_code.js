@@ -8,7 +8,10 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
-var frequency = "0";
+// running variable for psuedo decoupling 
+// Play/Pause from Reset
+var frequency = "0",
+	running = false;
 
 //WebSocket for Code
 var websocket_code;
@@ -62,14 +65,18 @@ function submitCode(){
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
-    stop_button.style.cursor = "default";
+	stop_button.style.cursor = "default";
+	
+	running = true;
 }
 
 // Function that send/submits an empty string
 function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
-    websocket_code.send(stop_code);
+	websocket_code.send(stop_code);
+	
+	running = false;
 }
 
 // Function to save the code
@@ -95,7 +102,9 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
-	submitCode();
+	if(running == true){
+		submitCode();
+	}
 }
 
 // Function for range slider

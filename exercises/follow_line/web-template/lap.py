@@ -12,12 +12,7 @@ class Lap:
 		self.threshold_pitch = [-0.001, 0.001]
 		self.threshold_yaw = [-1.9, -1.4]
 		
-		self.start_time = 0
-		self.lap_time = 0
-		
-		self.lap_rest = True
-		self.buffer = False
-		self.pause = False
+		self.reset()
 		
 	# Function to check for threshold
 	def check_threshold(self):
@@ -28,7 +23,7 @@ class Lap:
 							pose3d.z > self.threshold_z[0] and pose3d.z < self.threshold_z[1]
 		
 		# Variable for pause
-		if(self.pause == False):
+		if(self.pause_condition == False):
 			# Running condition to calculate the current time
 			if(self.start_time != 0 and self.lap_rest == False):
 				self.lap_time = datetime.now() - self.start_time
@@ -53,6 +48,7 @@ class Lap:
 			# and finish time are calculated to be the same
 			if(threshold_crossed == False and self.buffer == True):
 				self.buffer = False
+
 			
 		return self.lap_time
 					
@@ -68,7 +64,23 @@ class Lap:
 
 		self.lap_rest = True
 		self.buffer = False
+
 		self.pause = False
+		self.pause_time = 0
+
+	# Function to pause
+	def pause(self):
+		self.pause_condition = True
+		self.pause_time = self.lap_time
+
+	# Function to unpause
+	def unpause(self):
+		# To enable unpause button to be used again and again
+		if(self.pause_condition == True):
+			# Overall subtract from lap_time, the time we have been paused
+			self.lap_time = self.lap_time - (datetime.now() - self.pause_time)
+
+		self.pause_condition = False
 		   
 		   
 		   

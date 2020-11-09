@@ -94,6 +94,11 @@ class Template:
         		source_code = source_code[5]
     		
     		source_code = self.debug_parse(source_code, debug_level)
+            # If we have a pause
+            if(source_code == ""):
+                self.gui.lap.pause()
+            else:
+                self.gui.lap.unpause()
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
     		return iterative_code, sequential_code, debug_level
 			
