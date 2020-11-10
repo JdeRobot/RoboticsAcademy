@@ -42,15 +42,3 @@ function saveCodeLocally(){
 		}, 0);
 	}
 }
-
-// Function to reset
-function resetLocally(){
-	localStorage.setItem("code", editor.getValue());
-	location.reload();
-}
-
-// Modify the window onload function
-window.onload = function(){
-	code = localStorage.getItem("code");
-	editor.setValue(code);
-}
