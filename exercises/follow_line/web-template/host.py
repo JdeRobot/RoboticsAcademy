@@ -91,7 +91,7 @@ class Template:
         		source_code = source_code[5:]
         	except:
         		debug_level = 1
-        		source_code = source_code[5]
+        		source_code = ""
     		
     		source_code = self.debug_parse(source_code, debug_level)
     		# Pause and unpause
