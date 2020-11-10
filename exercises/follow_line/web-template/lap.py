@@ -15,6 +15,7 @@ class Lap:
 		self.reset()
 		
 	# Function to check for threshold
+	# And incrementing the running time
 	def check_threshold(self):
 		pose3d = self.pose3d.getPose3d()
 		
@@ -26,12 +27,17 @@ class Lap:
 		if(self.pause_condition == False):
 			# Running condition to calculate the current time
 			if(self.start_time != 0 and self.lap_rest == False):
-				self.lap_time = datetime.now() - self.start_time
+				if(self.lap_time == 0):
+					self.lap_time = datetime.now() - self.start_time
+				else:
+					self.lap_time += datetime.now() - self.start_time
+
+				self.start_time = datetime.now()
 			
 			# Final condition after the lap is complete
 			if(threshold_crossed == True and self.lap_rest == False and self.buffer == False):
 				finish_time = datetime.now()
-				self.lap_time = finish_time - self.start_time
+				self.lap_time += finish_time - self.start_time
 				self.start_time = finish_time
 				self.lap_rest = True
 				self.buffer = False
@@ -66,19 +72,17 @@ class Lap:
 		self.buffer = False
 
 		self.pause_condition = False
-		self.pause_time = 0
 
 	# Function to pause
 	def pause(self):
 		self.pause_condition = True
-		self.pause_time = self.lap_time
 
 	# Function to unpause
 	def unpause(self):
 		# To enable unpause button to be used again and again
 		if(self.pause_condition == True):
 			# Overall subtract from lap_time, the time we have been paused
-			self.lap_time = self.lap_time - (datetime.now() - self.pause_time)
+			self.start_time = datetime.now()
 
 		self.pause_condition = False
 		   
