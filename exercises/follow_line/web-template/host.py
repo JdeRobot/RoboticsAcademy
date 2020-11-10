@@ -194,13 +194,11 @@ class Template:
     def generate_modules(self):
         # Define HAL module
         hal_module = imp.new_module("HAL")
-        # Add the relevant functions
-        hal_module.HAL.getImage = self.hal.getImage
+        hal_module.HAL = self.hal
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
-        # Add the relevant functions
-        gui_module.GUI.showImage = self.gui.showImage
+        gui_module.GUI = self.gui
 
         # Adding modules to system
         # Protip: The names should be different from
