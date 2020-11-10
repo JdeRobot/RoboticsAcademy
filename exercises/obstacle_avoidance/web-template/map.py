@@ -72,6 +72,11 @@ class Map:
 				return target
 
 		return None
+
+    # Function to reset target information
+	def reset(self):
+		for target in self.targets:
+			target.setReached(False)
         
     # Interpret the Target values
 	def setTarget(self, x, y, rx, ry, rt):

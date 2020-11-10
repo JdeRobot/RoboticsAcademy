@@ -72,8 +72,9 @@ class Template:
     		return "", "", 1
     		
     	elif(source_code[:5] == "#rest"):
-    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
     		reset_simulation()
+            self.gui.reset_gui()
     		return "", "", 1
     		
     	else:
@@ -89,9 +90,14 @@ class Template:
         		source_code = source_code[5:]
         	except:
         		debug_level = 1
-        		source_code = source_code[5]
+        		source_code = ""
     		
     		source_code = self.debug_parse(source_code, debug_level)
+            # Pause and unpause
+    		if(source_code == ""):
+    		    self.gui.lap.pause()
+    		else:
+    		    self.gui.lap.unpause()
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
     		return iterative_code, sequential_code, debug_level
 			
