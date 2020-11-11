@@ -206,7 +206,8 @@ class Template:
     def generate_modules(self):
         # Define HAL module
         hal_module = imp.new_module("HAL")
-        hal_module.HAL = object()
+        hal_module.HAL = imp.new_module("HAL")
+        hal_module.HAL.motors = imp.new_module("motors")
 
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
@@ -215,7 +216,7 @@ class Template:
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
-        gui_module.GUI = object()
+        gui_module.GUI = imp.new_module("GUI")
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
