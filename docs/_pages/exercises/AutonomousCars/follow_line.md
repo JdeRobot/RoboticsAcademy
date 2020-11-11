@@ -86,17 +86,17 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 
 - Download [Docker](https://docs.docker.com/get-docker/)
 
-- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.3)
+- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.5)
 
 	```bash
-docker pull jderobot/robotics-academy:0.2.3
+docker pull jderobot/robotics-academy:0.2.5
 	```
 
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it --name=docker-academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:0.2.3 python3.8 manager.py
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:0.2.5 python3.8 manager.py
 	```
 
 - On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/follow_line/web-template`
@@ -112,6 +112,8 @@ docker run -it --name=docker-academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1
 In the launced webpage, type your code in the text editor,
 
 ```python
+from GUI import GUI
+from HAL import HAL
 # Enter sequential code!
 
 
@@ -133,8 +135,8 @@ while True:
 
 **Application Programming Interface**
 
-* `from hal import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from gui import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image
 * `HAL.motors.sendV()` - to set the linear speed
 * `HAL.motors.sendW()` - to set the angular velocity
