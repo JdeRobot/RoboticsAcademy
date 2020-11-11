@@ -71,10 +71,23 @@ class Template:
     		self.server.send_message(self.client, source_code)
     
     		return "", "", 1
+
+        elif(source_code[:5] == "#resu"):
+                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+                restart_simulation()
+
+                return "", "", 1
+
+        elif(source_code[:5] == "#paus"):
+                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+                pause_simulation()
+
+                return "", "", 1
     		
     	elif(source_code[:5] == "#rest"):
-    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
     		reset_simulation()
+    		self.gui.reset_gui()
     		return "", "", 1
     		
     	else:
@@ -90,9 +103,14 @@ class Template:
         		source_code = source_code[5:]
         	except:
         		debug_level = 1
-        		source_code = source_code[5]
+        		source_code = ""
     		
     		source_code = self.debug_parse(source_code, debug_level)
+    		# Pause and unpause
+    		if(source_code == ""):
+    		    self.gui.lap.pause()
+    		else:
+    		    self.gui.lap.unpause()
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
     		return iterative_code, sequential_code, debug_level
 			
@@ -188,11 +206,20 @@ class Template:
     def generate_modules(self):
         # Define HAL module
         hal_module = imp.new_module("HAL")
-        hal_module.HAL = self.hal
+        hal_module.HAL = imp.new_module("HAL")
+        hal_module.HAL.motors = imp.new_module("motors")
+
+        # Add HAL functions
+        hal_module.HAL.getImage = self.hal.getImage
+        hal_module.HAL.motors.sendV = self.hal.motors.sendV
+        hal_module.HAL.motors.sendW = self.hal.motors.sendW
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
-        gui_module.GUI = self.gui
+        gui_module.GUI = imp.new_module("GUI")
+
+        # Add GUI functions
+        gui_module.GUI.showImage = self.gui.showImage
 
         # Adding modules to system
         # Protip: The names should be different from

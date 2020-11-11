@@ -59,7 +59,7 @@ class GUI:
     # Function to get the client
     # Called when a new client is received
     def get_client(self, client, server):
-    	self.client = client
+        self.client = client
         self.console.set_websocket(self.server, self.client)
         
     # Update the gui
@@ -71,8 +71,8 @@ class GUI:
         lapped = self.lap.check_threshold()
         lap_message = ""
         if(lapped != None):
-        	lap_message = "#lap" + str(lapped)
-        	
+            lap_message = "#lap" + str(lapped)
+            
         pos_message = str(self.map.getFormulaCoordinates())
         pos_message = "#map" + pos_message
         
@@ -80,7 +80,7 @@ class GUI:
             self.server.send_message(self.client, message)
             self.server.send_message(self.client, pos_message)
             if(lap_message != ""):
-            	self.server.send_message(self.client, lap_message)
+                self.server.send_message(self.client, lap_message)
         except:
             pass
     
@@ -90,24 +90,29 @@ class GUI:
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.console.prompt)
         self.server.run_forever()
+
+    # Function to reset
+    def reset_gui(self):
+        self.lap.reset()
+        self.map.reset()
         
 
 # This class decouples the user thread
 # and the GUI update thread
 class ThreadGUI(threading.Thread):
-	def __init__(self, gui):
-		self.gui = gui
-		self.time_cycle = 200
-		threading.Thread.__init__(self)
-		
-	def run(self):
-		while(True):
-			start_time = datetime.now()
-			self.gui.update_gui()
-			
-			finish_time = datetime.now()
-			
-			dt = finish_time - start_time
-			ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-			if(ms < self.time_cycle):
-				time.sleep((self.time_cycle-ms) / 1000.0)
+    def __init__(self, gui):
+        self.gui = gui
+        self.time_cycle = 200
+        threading.Thread.__init__(self)
+        
+    def run(self):
+        while(True):
+            start_time = datetime.now()
+            self.gui.update_gui()
+            
+            finish_time = datetime.now()
+            
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            if(ms < self.time_cycle):
+                time.sleep((self.time_cycle-ms) / 1000.0)

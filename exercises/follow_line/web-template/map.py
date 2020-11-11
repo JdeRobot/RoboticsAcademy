@@ -39,4 +39,9 @@ class Map:
 		x = scale_x * x + offset_x
 		
 		return x, y
+
+	# Function to reset
+	def reset(self):
+		# Nothing to do, service takes care!
+		pass
 	
