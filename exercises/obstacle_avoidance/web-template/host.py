@@ -70,6 +70,18 @@ class Template:
     		self.server.send_message(self.client, source_code)
     
     		return "", "", 1
+
+        elif(source_code[:5] == "#resu"):
+                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+                restart_simulation()
+
+                return "", "", 1
+                
+        elif(source_code[:5] == "#paus"):
+                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+                pause_simulation()
+
+                return "", "", 1
     		
     	elif(source_code[:5] == "#rest"):
     		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
@@ -194,11 +206,21 @@ class Template:
     def generate_modules(self):
         # Define HAL module
         hal_module = imp.new_module("HAL")
-        hal_module.HAL = self.hal
+        hal_module.HAL = object()
+
+        # Add HAL functions
+        hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
+        hal_module.HAL.getLaserData = self.hal.laser.getLaserData
+        hal_module.HAL.getImage = self.hal.getImage
+        hal_module.HAL.motors.sendV = self.hal.motors.sendV
+        hal_module.HAL.motors.sendW = self.hal.motors.sendW
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
-        gui_module.GUI = self.gui
+        gui_module.GUI = object()
+
+        # Add GUI functions
+        gui_module.GUI.showImage = self.gui.showImage
 
         # Adding modules to system
         # Protip: The names should be different from
