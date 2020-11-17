@@ -86,10 +86,10 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 
 - Download [Docker](https://docs.docker.com/get-docker/)
 
-- Pull the current distribution of Robotics Academy Docker Image(The one at the time of writing is 0.2.5)
+- Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:0.2.5
+docker pull jderobot/robotics-academy
 	```
 
 ### How to perform the exercise?
