@@ -1,0 +1,167 @@
+body{
+    background-color: whitesmoke;
+}
+
+.navigation-bar{
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    margin-bottom: 20px;
+    font-family: -apple-system,BlinkMacSystemFont,"Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.navigation-bar p{
+	line-height: 0.5;
+}
+
+.navigation-bar .header{
+	padding-top: 1px;
+	padding-left: 10px;
+}
+
+.logo{
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+    margin-right: 2%;
+}
+
+#editor {
+    border: 1px solid lightgray;
+    height: 500px;
+    width: 100%;
+}
+
+#Control ul{
+	list-style-type: none;
+	overflow: hidden;
+}
+
+#Control ul > li{
+	display: inline-block;
+	text-align: center;
+}
+
+#Control img{
+	height: 30px;
+}
+
+#submit {
+	width: 80px;
+    height: 50px;
+    border: none;
+    background-color: whitesmoke;
+}
+
+#stop {
+    width: 80px;
+    height: 50px;
+    border: none;
+    background-color: whitesmoke;
+}
+
+#save {
+    width: 80px;
+    height: 50px;
+    border: none;
+    background-color: whitesmoke;
+}
+
+#load {
+    width: 80px;
+    height: 50px;
+    border: none;
+    background-color: whitesmoke;
+}
+
+#reset {
+	width: 80px;
+	height: 50px;
+	border: none;
+	background-color: whitesmoke;
+}
+
+#Frequency input[type=range]{
+	width: 100px;
+	height:20px;
+}
+
+th, td{
+	padding-left: 45px;
+}
+
+td{
+	text-align: center;
+}
+
+table{
+	border-spacing: 5px;
+}
+
+#Debug{
+	margin-left: 10%;
+	float: left;
+}
+
+#Debug input{
+	float: left;
+}
+
+#Debug ul{
+	list-style-type: none;
+}
+
+#Debug li{
+	line-height: 3;
+	border: 1px;
+}
+
+#Debug img{
+	width: 30px;
+}
+
+.debug-slider{
+	background: #d3d3d3;
+	-webkit-transform: rotate(-90deg);
+	margin-top: 45%;
+	width: 175px;
+	outline: none;
+}
+
+.debug-slider::-webkit-slider-runnable-track{
+	width: 100%;
+	border: none;
+	border-radius: 5px;
+}
+
+.debug-slider::-webkit-slider-thumb{
+	border: none;
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+}
+
+.debug-slider:focus{
+	outline: none;
+}
+
+.debug-labels{
+	float: left;
+	padding-left: 0;
+}
+
+.debug-labels li{
+	margin-bottom: 0px;
+}
+
+#code_container{
+	float: left;
+	width: 40%;
+}
+
+#control_container{
+	float: left;
+	width: 30%;
+}
