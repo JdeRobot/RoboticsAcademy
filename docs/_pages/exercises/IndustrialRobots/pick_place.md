@@ -95,11 +95,11 @@ roslaunch pick_place.launch
 ```
 Two different windows will pop up:
 - **Gazebo simulator**: A warehouse environment with a industrial robot(robot arm and gripper), multiple objects, a conveyor and two boxes will be shown in Gazebo.
-- **Industrial robot teleoperator**: A GUI which provideds following functionalities:
+- **Industrial robot teleoperator**: A GUI which provides following functionalities:
     - A Forward Kinematics teleoperator providing sliders to change the angle of each joint of the robot arm and the gripper. The limits of each joints are shown in the two sides of the slider. The true angle of the joints are shown in the text box beside the sliders.
     - An Inverse Kinematics teleoperator allowing users to set the desired end effector pose. 
         - Plan button can plan the trajectory to the desired pose
-        - Excute button can make the robot execute the planned trajectory
+        - Execute button can make the robot execute the planned trajectory
         - Plan & Execute button is the integration of last two buttons
         - Stop button allows users to stop the robot
         - Back to home button can make the robot move back to home pose
@@ -218,7 +218,7 @@ When you are specifying the pose of the end effector to grasp or place the objec
 Even if your specified position of the end effector is inside the workspace, if the orientation is not properly set, you are actually requiring other joints to move out of their workspaces. 
 
 ### Position and Orientation
-In 3D space, a rigid body has six degrees of freedom. Its pose can be fully described by position, translations in three axies(x, y, z) from origin and orientation, rotation relative to reference frame. Position can be easily descirbe with (X, Y, Z) when coordinate frame is given. In our exercise, the reference frame is the robot frame with origin in its bottom center, x-axis pointing forward, y-axis pointing leftward and z-axis pointing upward. 
+In 3D space, a rigid body has six degrees of freedom. Its pose can be fully described by position, translations in three axis(x, y, z) from origin and orientation, rotation relative to reference frame. Position can be easily describe with (X, Y, Z) when coordinate frame is given. In our exercise, the reference frame is the robot frame with origin in its bottom center, x-axis pointing forward, y-axis pointing leftward and z-axis pointing upward. 
 
 By contrast, orientation is harder to describe. There are many different methods to describe orientation in 3D including rotation matrix, rotation vector, euler angle, quaternion. If you want to understand more about them and has linear algebra background, have a look of [this page](https://en.wikibooks.org/wiki/Robotics_Kinematics_and_Dynamics/Description_of_Position_and_Orientation). To finish this exercise, you only need to understand part of euler angle. 
 
@@ -232,7 +232,7 @@ When you use the inverse kinematic tool in GUI, sometimes you will see that the 
 
 ### Forward Kinematics and Inverse Kinematics
 Forward kinematics is given the value of each joints, to find the pose of the end effector. The pose is unique.  
-Inverse kinematics is given the pose of the end effector, to find possible joints value and trajectory to move from start state to goal state. There are usully multiple solutions.
+Inverse kinematics is given the pose of the end effector, to find possible joints value and trajectory to move from start state to goal state. There are usually multiple solutions.
 
 ## Hints
 

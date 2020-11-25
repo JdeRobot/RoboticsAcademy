@@ -45,7 +45,7 @@ This practice allows to obtain the video stream from 3 different sources:
 - A local file (Video)
 - Or through an ICE or ROS video driver (Stream)
 Depending on the way you want to obtain the video, you must specify the selected video
-source in the configuration file (color_filter_conf.yml), and the required paremeters for that source. 
+source in the configuration file (color_filter_conf.yml), and the required parameters for that source. 
 Once done it, if you have selected either 'Local' or 'Video', follow the next step:
 
 ## How to execute?
@@ -65,7 +65,7 @@ You can use any input that OpenCV on your system accepts, e.g.:
 
 For camera we can continue with the value of this argument set to "0".
 
-We also provide you with an example video that you can start the exercise with. This is the [Link](http://wiki.jderobot.org/store/amartinflorido/uploads/curso/pelotas_roja_azul.avi) to the video. Download it to your local system and accordingly update the value of video_stream_provider argument in the launch file to absoulte path of the video fille. For example,in `color_filter.launch`
+We also provide you with an example video that you can start the exercise with. This is the [Link](http://wiki.jderobot.org/store/amartinflorido/uploads/curso/pelotas_roja_azul.avi) to the video. Download it to your local system and accordingly update the value of video_stream_provider argument in the launch file to absolute path of the video fille. For example,in `color_filter.launch`
 
 ```
 <arg name="video_stream_provider" value="/home/<user>/Downloads/pelotas_roja_azul.avi"/>.
@@ -155,7 +155,7 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 ## Contributors
 
 - Contributors: [Carlos Awadallah](https://github.com/cawadall), [Naman Jain](https://github.com/Naman-ntc), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Nemath Ahmed](https://github.com/nemathahmed)
-- Maintaied by [Nemath Ahmed](https://github.com/nemathahmed)
+- Maintained by [Nemath Ahmed](https://github.com/nemathahmed)
 
 
 

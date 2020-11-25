@@ -81,7 +81,7 @@ python2 ./3d_reconstruction.py 3d_reconstruction_conf.yml
 ```
 
 ## How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which reconstructs 3d points from the two stero views.
+To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which reconstructs 3d points from the two stereo views.
 
 ### Where to insert the code?
 In the `MyAlgorithm.py` file,
@@ -110,7 +110,7 @@ def algorithm(self):
 **Keyboard based**: Arrow keys to move around the environment. W and S keys to zoom in or out
 
 ## Theory
-In computer vision and computer graphics, [3D reconstruction](https://en.wikipedia.org/wiki/3D_reconstruction) is the process of determining an object's 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be acheived as follows:
+In computer vision and computer graphics, [3D reconstruction](https://en.wikipedia.org/wiki/3D_reconstruction) is the process of determining an object's 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be achieved as follows:
 
 - **Hardware Based**: Hardware based approach requires us to utilize the hardware specific to the reconstruction task. Use of structured light, laser range finder, depth gauge and radiometric methods are some examples.
 
@@ -173,7 +173,7 @@ Simple hints provided to help you solve the 3d_reconstruction exercise. The **Op
 Using the exercise API, we can easily retrieve the images. Also, after getting the images, it is a good idea to perform **bilateral filtering** on the images, because there are some extra details that need not be included during the 3d reconstruction. Check out the illustrations for the effects of performing the bilateral filtering.
 
 ### Calculating Correspondences
-OpenCV already has built-in correlation filters which can be called through `matchTemplate()`. Take care of the extreme cases like edges and corners.
+OpenCV already has built-in correlation filters which can be called through `matchTemplate()`. Take care of extreme cases like edges and corners.
 
 One good observation is that the points on left will have correspondence in the left part and the points on right will have correspondence in the right part. Using this observation, we can easily speed up the calculation of correspondence.
 

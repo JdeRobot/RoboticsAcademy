@@ -58,7 +58,7 @@ yellow_cylinder_filter:
 youtubeId: LHq4ZA2lGxQ
 ---
 
-The goal of this exercise is to learn how to use vision to assist industrial robot by detecting known objects and unknown obstcles. You will need to complete pick and place task using a robot arm and vacuum gripper. Two kinect camera, one fixed to the world and another one fixed to the robot end effector, will be provided. The shape, size and color of the objects are known, but the pose of them and the situation of obstacles in surrounding environment need to be found using two cameras.
+The goal of this exercise is to learn how to use vision to assist industrial robot by detecting known objects and unknown obstacles. You will need to complete pick and place task using a robot arm and vacuum gripper. Two kinect camera, one fixed to the world and another one fixed to the robot end effector, will be provided. The shape, size and color of the objects are known, but the pose of them and the situation of obstacles in surrounding environment need to be found using two cameras.
 
 {% include gallery caption="Gallery." %}
 
@@ -101,18 +101,18 @@ source ~/.bashrc
 ```
 
 ## How to run the exercise
-TO launch the exercise, open a terminal windows, navigate to navigate to `machine_vision` folder inside `exercises` folder and execute following command:
+TO launch the exercise, open a terminal windows, navigate to `machine_vision` folder inside `exercises` folder and execute following command:
 ```bash
 roslaunch machine_vision.launch 
 ```
 Three different windows will pop up:
 - **Gazebo simulator**: A warehouse environment with a industrial robot(robot arm and gripper), multiple objects, two kinect cameras, a conveyor, a table and a box will be shown in Gazebo.
 - **Rviz**: Robot arm, cameras, model of objects, the pointcloud of fixed camera and the octomap build from the pointcloud of camera on robot will be shown in Rviz.
-- **Industrial robot teleoperator**: A GUI which provideds following functionalities:
+- **Industrial robot teleoperator**: A GUI which provides following functionalities:
     - A Forward Kinematics teleoperator providing sliders to change the angle of each joint of the robot arm and the gripper. The limits of each joints are shown in the two sides of the slider. The true angle of the joints are shown in the text box beside the sliders.
     - An Inverse Kinematics teleoperator allowing users to set the desired end effector pose. 
         - Plan button can plan the trajectory to the desired pose
-        - Excute button can make the robot execute the planned trajectory
+        - Execute button can make the robot execute the planned trajectory
         - Plan & Execute button is the integration of last two buttons
         - Stop button allows users to stop the robot
         - Back to home button can make the robot move back to home pose
@@ -123,7 +123,7 @@ Three different windows will pop up:
         - One button to Respawn all objects in Gazebo and Rviz
         - An info box showing the status of the main code("start" or "stop")
     - Camera viewer
-        - Two combo boxs to choose image topics to show in below image windows
+        - Two combo boxes to choose image topics to show in below image windows
         - Two image windows to show chosen image topics
 
 {% include gallery id="robot_teleop" caption="Robot teleoperator GUI" %}
@@ -186,13 +186,13 @@ def myalgorithm(self):
 
 
 ```  
-Multiple APIs can be used to implement your algorithm. They are provided in Pick_Place class, so you should allways add "self.pick_place." as a prefix to following introduced APIs in your algorithm.
+Multiple APIs can be used to implement your algorithm. They are provided in Pick_Place class, so you should always add "self.pick_place." as a prefix to following introduced APIs in your algorithm.
 
 ## API
 ### Detect Object
 * `start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin)` - Start color filter for given `color` with RGB range for this `color`. Two messages, `$(color)_filter`(pointcloud) and `$(color)_filtered_image`(RGB image), will be published until stopping with `stop_color_filter` function. Range of RGB value is [0, 255]
 * `stop_color_filter(color)` - Stop the color filter for given `color`.
-* `start_shape_filter(color, shape, radius)` - Start the shape filter to detect one set of pointcloud that can represent the input `shape` and has a smaller than input `radius` size from color filtered poindcloud. If the filter can detect a possible shape from pointcloud, two messages, `$(color)_$(shape)`(pointcloud) and `$(color)_$(shape)_image`(depth image), will be published until stopping with `stop_shape_filter` function. A frame called `$(color)_$(shape)` will be added in tf tree. The origin of the frame is the center of prediected sphere center of a point in the center axis of predicted cylinder. The unit of radius is meter(m)
+* `start_shape_filter(color, shape, radius)` - Start the shape filter to detect one set of pointcloud that can represent the input `shape` and has a smaller than input `radius` size from color filtered pointcloud. If the filter can detect a possible shape from pointcloud, two messages, `$(color)_$(shape)`(pointcloud) and `$(color)_$(shape)_image`(depth image), will be published until stopping with `stop_shape_filter` function. A frame called `$(color)_$(shape)` will be added in tf tree. The origin of the frame is the center of predicted sphere center of a point in the center axis of predicted cylinder. The unit of radius is meter(m)
 * `stop_shape_filter(color, shape)` - Stop the shape filter.
 * `get_object_position(color, shape)` - If a frame named with `$(color)_$(shape)` exists in tf tree, output is the transformation from this frame to world frame. If not, output is None.
 
@@ -216,15 +216,15 @@ Multiple APIs can be used to implement your algorithm. They are provided in Pick
 * `gripper_release()` - Turn off the vacuum gripper.
 
 ### Pick and Place
-* `pickup(object_name, position[, distance])` - Command the industrial robot to pick up the object by moving the end effextor to given position. Distance is the distance the robot arm will move in z axis before and after grasping objects.
-* `place(object_name, position[, distance])` - Command the industrial robot to place the object by moving the end effextor to given position. Distance is the distance the robot arm will move in z axis before and after placing objects.
+* `pickup(object_name, position[, distance])` - Command the industrial robot to pick up the object by moving the end effector to given position. Distance is the distance the robot arm will move in z axis before and after grasping objects.
+* `place(object_name, position[, distance])` - Command the industrial robot to place the object by moving the end effector to given position. Distance is the distance the robot arm will move in z axis before and after placing objects.
 
 ## Theory
 
 ### Object Detection
 In this exercise, object detectors are implemented based on [Point Cloud Library(PCL)](https://pointclouds.org/). It is an opensource point cloud processing library. There are multiple methods to detect the pose of known objects with vision. The method we choose here is fully based on pointcloud.
 
-Assume that we only know the color, size and shape(sphere or cylinder) of the object we want to pick. Firstly, a color filter will filter out all points that are not inside chosen RGB range. Secondly, a shape segmentation will be done to find points that have the highest possibility to be a part of chosen shape and size. Some parameters about this possible shape will also be provided by the segmentation filter. With these informations, we are able to find the position of sphere or cylinder.
+Assume that we only know the color, size and shape(sphere or cylinder) of the object we want to pick. Firstly, a color filter will filter out all points that are not inside chosen RGB range. Secondly, a shape segmentation will be done to find points that have the highest possibility to be a part of chosen shape and size. Some parameters about this possible shape will also be provided by the segmentation filter. With these information, we are able to find the position of sphere or cylinder.
 
 ### Obstacle Detection and Avoidance
 In `Pick and Place` exercise, we have introduced that objects in planning scene will be considered as obstacles when doing motion planning to avoid collision. Obstacles are known and added into planning scene in that exercise, but what if we have no information about the surrounding environment? Obstacle detection will be necessary. 
@@ -234,14 +234,14 @@ Obstacle detection can be done using many different sensors. What we use in this
 ## Hints
 
 ### How to write buildmap() function:
-The pointcloud from the camera fixed to the robot will be automatically monitored `occupancy_map_monitor/PointCloudOctomapUpdater` to update the planning scene, so what you have to do is move the robot around and make sure that the camera fixed to the robot can take image of all surrounding environent inside robot workspace.
+The pointcloud from the camera fixed to the robot will be automatically monitored `occupancy_map_monitor/PointCloudOctomapUpdater` to update the planning scene, so what you have to do is move the robot around and make sure that the camera fixed to the robot can take image of all surrounding environment inside robot workspace.
 
 ### How to write get_object_position() function:
 1. Get the color, shape and size of the object.
 2. Choose RGB range for the color filter and start it. Check the color filter result with image viewer or Rviz and tune parameters to get better result.
 3. Choose the radius for the shape filter and start it. Check the shape filter result and tune parameters to get better result.
 4. Check the position output from `get_object_position` API. 
-5. Return the position of detected object when getting a relaticely stable object position.
+5. Return the position of detected object when getting a relatively stable object position.
 
 **Note:** Please remember to stop the color filter and shape filter after getting the object position. If too many filters are running at the same time, you might not be able to get a stable result.
 

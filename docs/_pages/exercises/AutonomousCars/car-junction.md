@@ -138,7 +138,7 @@ Motion detection is the process of detecting a change in the position of an obje
 ### Control
 We require the use of control mechanisms in order to make the Car follow the road and take turns.
 
-**PID** is an excellent control algorithm which works by calculating the error and making adjustments to keep the error as minimum as possible. A very simple example would be, in case of a quadcopter that is required to maintain a particular height: If the height of the quadcopter is extremely far away from the required height(very high or very low), the quadcopter has to make large adjustments in it's rotor speed. If the height is near the required value, the quadcopter has to make small adjustements. [This video](https://youtu.be/LSNVHkeDx-g?t=479) illustrates the concept very well.
+**PID** is an excellent control algorithm which works by calculating the error and making adjustments to keep the error as minimum as possible. A very simple example would be, in case of a quadcopter that is required to maintain a particular height: If the height of the quadcopter is extremely far away from the required height(very high or very low), the quadcopter has to make large adjustments in it's rotor speed. If the height is near the required value, the quadcopter has to make small adjustments. [This video](https://youtu.be/LSNVHkeDx-g?t=479) illustrates the concept very well.
 
 [Follow Line](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/) is an exercise based completely on the concept of PID.
 

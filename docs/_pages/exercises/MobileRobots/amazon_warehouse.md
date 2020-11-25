@@ -104,7 +104,7 @@ MyAlgorithm.py
 
 ## Theory
 
-ROS Navigation Stack forms the backbone of this exericise. The navigation stack is quite simple on a conceptual level. It takes information from odometry and sensor streams and outputs velocity commands to robot controller. The most difficult part of ROS Navigation Stack is configuring it to work with the robot, which has been taken care of, leaving the student with only using the Simple Action Client. Let's cover all these concepts one by one:
+ROS Navigation Stack forms the backbone of this exercise. The navigation stack is quite simple on a conceptual level. It takes information from odometry and sensor streams and outputs velocity commands to robot controller. The most difficult part of ROS Navigation Stack is configuring it to work with the robot, which has been taken care of, leaving the student with only using the Simple Action Client. Let's cover all these concepts one by one:
 
 ### Navigation Stack
 
