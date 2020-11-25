@@ -53,7 +53,7 @@ function declare_gui(){
 			var content = pose.split(',').map(function(item) {
 				return parseFloat(item);
 			})
-			drawCircle(content[0], content[1]);
+			drawCircle(content[0], content[1], content[2], content[3]);
 		}
 		
 		else if(operation == "#cop"){

@@ -66,7 +66,9 @@ class GUI:
         message = "#img" + json.dumps(self.payload)
         self.payload_lock.release()
             
-        pos_message = str(self.map.getRobotCoordinates())
+        pos_message = self.map.getRobotCoordinates()
+        ang_message = self.map.getRobotAngle()
+        pos_message = str(pos_message + ang_message)
         pos_message = "#map" + pos_message
         
         try:

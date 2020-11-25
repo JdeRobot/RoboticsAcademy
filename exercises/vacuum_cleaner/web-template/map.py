@@ -22,12 +22,11 @@ class Map:
 						[0, 0, 1, tz], [0, 0, 0, 1]])
 		return RT
 		
-	def RTFormula(self):
+	def RTVacuum(self):
 		RTz = self.RTz(pi/2, 50, 70, 0)
 		return RTz
 		
 	def getRobotCoordinates(self):
-		
 		pose = self.pose3d.getPose3d()
 		x = pose.x
 		y = pose.y
@@ -39,6 +38,15 @@ class Map:
 		x = scale_x * x + offset_x
 		
 		return x, y
+
+	def getRobotAngle(self):
+		pose = self.pose3d.getPose3d()
+		rt = pose.yaw
+
+		ty = math.cos(-rt) - math.sin(-rt)
+		tx = math.sin(-rt) + math.cos(-rt)
+
+		return tx, ty
 
 	# Function to reset
 	def reset(self):
