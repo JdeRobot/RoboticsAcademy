@@ -168,7 +168,7 @@ In our case we need to map a 3D Point in gazebo, to a 2D matrix map of our house
 In order to carry out the inverse operation of 3D to 2D, we can simply multiply, the pixel vector with the inverse of the transformation matrix to get the gazebo vector. The inverse of the matrix exists because the **mapping is invertible** and we **do not care about the z coordinate of the environment**, implying that each point in gazebo corresponds to a single point in the map.
 
 ### Coverage and Decomposition
-After the robot is localized in it's environment, we can employ decomposition techniques in our algorithm, to deal with the actual coverage of the surroundings. There are lot of [decomposition techniques](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf) available for our use. The Decomposition Algorithm, decomposes the map into seperate segments, which our robot can cover one by one. Decomposition can be directly related to **Graph Theory**, where the segments are taken as nodes and the edges connecting nodes depict that the adjacent segments share a common boundary. The robot can path plan to the nearest node and then start the sweeping again! Most of the details regarding decomposition would be implementation
+After the robot is localized in it's environment, we can employ decomposition techniques in our algorithm, to deal with the actual coverage of the surroundings. There are lot of [decomposition techniques](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf) available for our use. The Decomposition Algorithm, decomposes the map into separate segments, which our robot can cover one by one. Decomposition can be directly related to **Graph Theory**, where the segments are taken as nodes and the edges connecting nodes depict that the adjacent segments share a common boundary. The robot can path plan to the nearest node and then start the sweeping again! Most of the details regarding decomposition would be implementation
 
 ![Decomposition and Graph Theory]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/adj_graph.png)
 
@@ -189,7 +189,7 @@ Starting from the destination cell, the robot can map it's path one cell at a ti
 
 *Visibility Error*
 
-But, sometimes due to close proximity to corner, the robot may collide with it. To avoid the occurence of any such event, we may also consider dilation techniques, since the map used is a binary image. **Erosion** is a **Morphology Function** that erodes away the boundaries of foreground object(white is the object in foreground). Refer to this [link](https://homepages.inf.ed.ac.uk/rbf/HIPR2/erode.htm) for more information on erosion.
+But, sometimes due to close proximity to corner, the robot may collide with it. To avoid the occurrence of any such event, we may also consider dilation techniques, since the map used is a binary image. **Erosion** is a **Morphology Function** that erodes away the boundaries of foreground object(white is the object in foreground). Refer to this [link](https://homepages.inf.ed.ac.uk/rbf/HIPR2/erode.htm) for more information on erosion.
 
 ![Morphological Operations](https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTzn6m8Kkpb9OUy-mv70GpKRmsd3hySZBJZH8n5y-OLO4jBq9mW)
 
@@ -208,7 +208,7 @@ The second task is to come up with a **transformation matrix**, that would conve
 Once we get **specific positions** on our map. Using the dimensions of our vacuum cleaner, we can generate grid cells around those points. The size of vacuum cleaner can be taken as 16x16 pixel units. Take it as an exercise to calculate it on your own!
 
 ### Obstacles and Color Coding
-Taking the map as a grayscale image, we can apply **color coding** to the map as well. It is convenient to seperate **Obstacles**, **Virtual Obstacles**, **Return Points** and **Critical Points**
+Taking the map as a grayscale image, we can apply **color coding** to the map as well. It is convenient to separate **Obstacles**, **Virtual Obstacles**, **Return Points** and **Critical Points**
 
 In the context of this exercise,
 - **Obstacles**: The obstacles in our map that our robot cannot go over
@@ -220,7 +220,7 @@ In the context of this exercise,
 Defining different points simplifies the algorithm as well!
 
 - **Return Points**
-Return Points can be checked while the robot is in zigzag motion. Empty cells near the robot can be classified as return points. The list of Return Points has to be kept dynamic in order to insert and pop the points whenever required.
+Return Points can be checked while the robot is in zig-zag motion. Empty cells near the robot can be classified as return points. The list of Return Points has to be kept dynamic in order to insert and pop the points whenever required.
 
 - **Critical Points**
 Critical Points can be classified whenever our robot is stuck around Obstacles or Virtual Obstacles and cannot move any further.
@@ -250,7 +250,7 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 ## Contributors
 
 - Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://gsyc.urjc.es/jmplaza/), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
-- Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
+- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References
 The major credit for this coverage algorithm goes to [Jose María Cañas](https://github.com/jmplaza) and his student [Irene Lope](https://github.com/ilope236).

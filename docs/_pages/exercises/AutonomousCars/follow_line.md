@@ -72,10 +72,10 @@ The goal of this exercise is to perform a PID reactive control capable of follow
 
 {% include gallery caption="Gallery" %}
 
-The students program a Formula1 car in a race circuit to follow the red line in the middle of the road.
+The students will program a Formula1 car in a race circuit to follow the red line in the middle of the road.
 
 ## Instructions for Web Templates
-This is the prefered way for running the exercise.
+This is the preferred way for running the exercise.
 
 ### Installation 
 - Clone the Robotics Academy repository on your local machine
@@ -109,7 +109,7 @@ docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 
 
 **Where to insert the code?**
 
-In the launced webpage, type your code in the text editor,
+In the launched webpage, type your code in the text editor,
 
 ```python
 from GUI import GUI
@@ -207,7 +207,7 @@ A system of devices or set of devices, that manages, commands, directs or regula
 
 ### Types of Control System
 #### Open Loop Control System
-A control system in which the control action is completeley independent of the output of the system. A manual control system is on Open Loop System.
+A control system in which the control action is completely independent of the output of the system. A manual control system is on Open Loop System.
 
 #### Closed Loop Control System
 A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
@@ -286,7 +286,7 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 ## Contributors
 
 - Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
-- Maintaied by [Pankhuri Vanjani](https://github.com/pankhurivanjani) and [Sakshay Mahna](https://github.com/SakshayMahna).
+- Maintained by [Pankhuri Vanjani](https://github.com/pankhurivanjani) and [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References
 

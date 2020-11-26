@@ -78,7 +78,7 @@ source ~/.bashrc
 ```
 
 ## How to run the exercise
-Tp launch the exercise, open a terminal windows, navigate to navigate to `mobile_manipulation` folder inside `exercises` folder and execute following command:
+Tp launch the exercise, open a terminal windows, navigate to`mobile_manipulation` folder inside `exercises` folder and execute following command:
 ```bash
 roslaunch mobile_manipulation.launch 
 ```
@@ -91,11 +91,11 @@ When you see `You can start planning now!`, open a new terminal window, navigate
 roslaunch mobile_manipulation_gui.launch 
 ```
 The mobile manipulator teleoperator GUI will pop up and objects will be spawned in Gazebo.
-- **mobile manipulator teleoperator**: A GUI which provideds following functionalities:
+- **mobile manipulator teleoperator**: A GUI which provides following functionalities:
     - A Forward Kinematics teleoperator providing sliders to change the angle of each joint of the robot arm and the gripper. The limits of each joints are shown in the two sides of the slider. The true angle of the joints are shown in the text box beside the sliders.
     - An Inverse Kinematics teleoperator allowing users to set the desired end effector pose. 
         - Plan button can plan the trajectory to the desired pose
-        - Excute button can make the robot execute the planned trajectory
+        - Execute button can make the robot execute the planned trajectory
         - Plan & Execute button is the integration of last two buttons
         - Stop button allows users to stop the robot
         - Back to home button can make the robot move back to home pose
@@ -155,7 +155,7 @@ def myalgorithm(self, stopevent, pauseevent):
 - `self.client.send_goal_to_client(pose)` - send the goal pose to move_base client.
 - `self.client.get_result_from_client()` - get navigation result from client. If the result is `True`, navigation is finished.
 
-Following APIs are provided in Pick_Place class, so you should allways add "self.pick_place." as a prefix to following introduced APIs in your algorithm.
+Following APIs are provided in Pick_Place class, so you should always add "self.pick_place." as a prefix to following introduced APIs in your algorithm.
 ### Environment Information
 * `get_object_list()` - Return the name list of all objects.
 * `get_object_info(object_name)` - Return the height, width, length, shape, color of the object in order.
@@ -185,7 +185,7 @@ Following APIs are provided in Pick_Place class, so you should allways add "self
 
 ### Pick and Place
 * `pickup(object_name, position, width[, distance = 0.12])` - Command the industrial robot to pick up the object by moving the end effextor to given position. Width is the goal gripper joint value. Distance is the distance the robot arm will move in z axis before and after grasping objects.
-* `place(object_name, position[, width = -0.2, distance = 0.12])` - Command the industrial robot to place the object by moving the end effextor to given position. Width is the goal gripper joint value. Distance is the distance the robot arm will move in z axis before and after placing objects.
+* `place(object_name, position[, width = -0.2, distance = 0.12])` - Command the industrial robot to place the object by moving the end effector to given position. Width is the goal gripper joint value. Distance is the distance the robot arm will move in z axis before and after placing objects.
 
 ## Theory
 
@@ -205,7 +205,7 @@ Manipulation part is implemented by following steps.
     - Spawn the model of objects and conveyor into planning scene.
     - Move to some distance above the object, move down and grasp the object.
     - Delete the model of objects and conveyor in planning scene.
-4. **Move to place position**: Move robot arm to home position with the object in the gripper and move the mobile robot to the target postion.
+4. **Move to place position**: Move robot arm to home position with the object in the gripper and move the mobile robot to the target position.
 5. **Place object**
     - Move the robot arm to home position for pick and place task.
     - Get robot pose from `/odom` topic and transform the place target position from world frame to robot frame.
@@ -217,10 +217,10 @@ Manipulation part is implemented by following steps.
 
 ### How to get the object pose and pick it up?
 Motion planning for the robot arm is done by MoveIt in robot arm frame, so we need to know where are the objects we are going to grasp and where are obstacles and goal position to place objects.
-The poses of objects and obstacles in the world frame are known and assumed to be fixed until the objects are picked up. The robot pose and transformation between the base link of mobile manipulator and the base link of robot arm are also available, so the poses of objects and obstacles in robot arm frame can be computed. This part is implemented implicitly in API and available in get_object_position() and get_target_position(), but you still need to add objects and objects into planning scene before picking or placeing and clean them before mobile robot moving to next position in the world.
+The poses of objects and obstacles in the world frame are known and assumed to be fixed until the objects are picked up. The robot pose and transformation between the base link of mobile manipulator and the base link of robot arm are also available, so the poses of objects and obstacles in robot arm frame can be computed. This part is implemented implicitly in API and available in get_object_position() and get_target_position(), but you still need to add objects and objects into planning scene before picking or placing and clean them before mobile robot moving to next position in the world.
 
 ### Why does the gripper cannot stably grasp and release the object?
-We are using gazebo_grasp_fix plugin for this exercise and the Pick Place exercise which compute the force vector between fingers to check collision and distance between object and fingers to decide whether release the object. It is because Gazebo cannot well simulates manipulation behavior. JUst keep in mind that though you might see the object shaking when the gripper is graspping it in simulation, it can usually success in the same condition in real world.
+We are using gazebo_grasp_fix plugin for this exercise and the Pick Place exercise which compute the force vector between fingers to check collision and distance between object and fingers to decide whether release the object. It is because Gazebo cannot well simulates manipulation behavior. JUst keep in mind that though you might see the object shaking when the gripper is grasping it in simulation, it can usually success in the same condition in real world.
 The input `position` for pickup() and place() function are both the position for the end of the gripper in releasing mode. The output position of get_object_position() is the position of the center of the object. Therefore, because when the gripper is grasping, final end point position will change, please remember to tune the input position to pick and place. In addition, sphere is the most difficult to grasp. Cylinder and box are easier if you use proper parameters.
 
 ### Why does the mobile robot sometimes stops for a while after reaching the goal pose?

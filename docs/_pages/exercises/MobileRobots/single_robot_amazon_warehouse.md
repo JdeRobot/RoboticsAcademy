@@ -159,7 +159,7 @@ ros2 launch amazon_robot_bringup amazon_robot_in_aws_world.py
 When you launch the docker via docker-compose, it fetches everything needed and runs `amazon_robot_in_aws_world.py` launch file (`amazon_robot_bringup/bringup/launch`).  To make it easier, everything is organised from our bringup directory. This file, launches other files and nodes and so on. In the end you will see the familiar RViz and Gazebo Windows. It will take a while to load, have some patience 😅. Finally, once everything is ready, localize our robot in approximate position of the map.
 
 
-Click on `2D Pose estimate` button and estimate our pose on the map. Approximate is fine. This will initialize our nav stack. Then, click on `waypoint mode` and estimate the pose again. Usually, this initalizes the waypoint tool but as we have overloaded this nav button, it will initialize our plugin.  Then, set your pickup and dropoff points using `Navigation Goal` button and click on `Start Navigation`
+Click on `2D Pose estimate` button and estimate our pose on the map. Approximate is fine. This will initialize our nav stack. Then, click on `waypoint mode` and estimate the pose again. Usually, this initializes the waypoint tool but as we have overloaded this nav button, it will initialize our plugin.  Then, set your pickup and dropoff points using `Navigation Goal` button and click on `Start Navigation`
 
 
 ![Setting Pose](/assets/images/exercises/single_robot_amazon_warehouse/setting_pose.gif)
@@ -203,7 +203,7 @@ If you already have some experience with ROS1, I'd suggest to read these 2 excel
 
 ### Navigation 2
 
-Navigation2 or nav2 is the successor of the navigation stack in ROS1 for ROS2 and it is build completely from ground up, with many added features. Navigation2 also uses Behavior trees instead of the FSMs used in `move_base` and they are much more intuitive and modern way of handling navigation tasks. `move_base` itself is no longer used and insteady many different parts combine make the core of navigation 2.
+Navigation2 or nav2 is the successor of the navigation stack in ROS1 for ROS2 and it is build completely from ground up, with many added features. Navigation2 also uses Behavior trees instead of the FSMs used in `move_base` and they are much more intuitive and modern way of handling navigation tasks. `move_base` itself is no longer used and instead many different parts combine make the core of navigation 2.
 
 Navigation2 already has an [up to date and extensive documentation](https://navigation.ros.org/) and a [really nicely written paper](https://arxiv.org/abs/2003.00368), which you should definitely read. But if you are a video person, I'd advise watching the minutes of ROS working group meeting to get it started quickly.
 
