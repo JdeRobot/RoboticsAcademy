@@ -95,7 +95,7 @@ To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
 * ```depth_img_t = data.depth_img_t``` - to get the timestamp of the Depth image.
 
 
-**Similiarly ,** to get the readings of other sensors the required sensors name has to be mentioned while calling ```data = self.getReadings()```  seperated by commas (,). 
+**Similarly ,** to get the readings of other sensors the required sensors name has to be mentioned while calling ```data = self.getReadings()```  separated by commas (,). 
 
 
 ```data.color_img``` - for RGB color image and ```data.color_img_t``` for its timestamp.
@@ -112,12 +112,12 @@ To carry out the practice, you must edit the MyAlgorithm.py file and insert the 
 (You can mention as many as sensors names during calling the ```data = self.getReadings()``` method).
 
 * ```self.set_processed_image(color_img)```  - to set the processed RGB image to be shown on the GUI.
-* ```self.set_predicted_pose(x,y,timestamp)```  - to set the position and timestamp of the predicte pose by the algorithm ( x and y should be floating point number.)
+* ```self.set_predicted_pose(x,y,timestamp)```  - to set the position and timestamp of the predict pose by the algorithm ( x and y should be floating point number.)
 * ```self.set_predicted_path(path)```  - to set predicted path at once /or reset the previously set predicted poses at once ---- path should be Nx2 (numpy array or python list) [x,y]. _(optional)_
 
-**How does datas from multiple sensors are read and provided to the users by the ```self.getReadings()``` method?**
+**How does data from multiple sensors are read and provided to the users by the ```self.getReadings()``` method?**
 
-Let's assume that the user only wants the data from 'color_img' , 'depth_img' and 'scan' sensors. So the user will call the method like this ```data = self.getReadings('color_img' , 'depth_img','scan')``` . Internally the program then starts to read the messages ROSbag file chronologically and if any of the above mentioned sensor topic is found , the topic data gets stored in its respective attribute.The program continues to read the topics in ROSbag file sequentially until all the sensor datas required by the user are read and stored in its respective attributes. And since the data frequency of different sensors are different so while reading the sensor datas sequentially the latest data from a particular sensor will override it's previous value.
+Let's assume that the user only wants the data from 'color_img' , 'depth_img' and 'scan' sensors. So the user will call the method like this ```data = self.getReadings('color_img' , 'depth_img','scan')``` . Internally the program then starts to read the messages ROSbag file chronologically and if any of the above mentioned sensor topic is found , the topic data gets stored in its respective attribute.The program continues to read the topics in ROSbag file sequentially until all the sensor data required by the user are read and stored in its respective attributes. And since the data frequency of different sensors are different so while reading the sensor data sequentially the latest data from a particular sensor will override it's previous value.
 
 **REMEMBER :** By this method only the sensor name mentioned while calling this method will have the sensor data . e.g. - In the above example (```data = self.getReadings('color_img' , 'depth_img','scan')``` ) only ```data.color_img``` , ```data.depth_img``` and ```data.scan``` will contain its' respective sensor data and other attributes like ```data.accelerometer``` and ```data.orientation``` will contain ```NoneType``` data.
 

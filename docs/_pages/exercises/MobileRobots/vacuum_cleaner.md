@@ -195,7 +195,7 @@ The most important task is the generation of a random angle. There are 2 ways to
 
 Among both the methods, Random Duration would be a preferable one as the Random Angle requires precision, which requires PID to be achieved successfully.
 
-Also, in order to acheive better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```.
+Also, in order to achieve better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```.
 
 ### Dash Movement
 
@@ -240,7 +240,7 @@ One possible solution is to implement the logic of a navigation algorithm for an
 ## Contributors
 
 - Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
-- Maintaied by [Sakshay Mahna](https://github.com/SakshayMahna).
+- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 <!--
 Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.

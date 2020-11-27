@@ -77,7 +77,7 @@ The solution can integrate one or more of the following levels of difficulty, as
 * Robustness in situations of indecision (zero vector sum)
 
 ## Instructions for Web Templates
-This is the preffered way to run the exercise.
+This is the preferred way to run the exercise.
 
 ### Installation
 
@@ -112,7 +112,7 @@ docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 
 
 **Where to insert the code?**
 
-In the launced webpage, type your code in the text editor,
+In the launched webpage, type your code in the text editor,
 
 ```python
 from GUI import GUI
@@ -333,7 +333,7 @@ Robot Navigation involves all the related tasks and algorithms required to take 
 * **Localisation**: The robot needs to know where it is.
 * **Collision Avoidance**: The robot needs to detect and avoid obstacles
 * **Mapping**: The robot needs to remember its surroundings
-* **Planning**: The robot needs to be able to plan a route to the point B
+* **Planning**: The robot needs to be able to plan a route to point B
 * **Explore**: The robot needs to be able to explore new terrain
 
 ![Robot Navigation Problems]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/robot-navigation-problems.png)
@@ -349,7 +349,7 @@ Some of the ways to achieve the task of Navigation are as follows:
 The problem of Path Planning in Navigation is dealt in 2 ways, which are Global Navigation and Local Navigation
 
 ### Global Navigation
-Global Navigation involves the use of a map of the enviorment to plan a path from a point A to point B. The optimality of the path is decided based on the length of the path, the time taken to reach the target, using permanent roads etc. Global Positioning System(GPS) is one such example of Global Navigation. The algorithms used behind such systems may include [Dijkstra](https://www.youtube.com/watch?v=GazC3A4OQTE), Best First or [A*](https://www.youtube.com/watch?v=ySN5Wnu88nE) etc.
+Global Navigation involves the use of a map of the environment to plan a path from point A to point B. The optimality of the path is decided based on the length of the path, the time taken to reach the target, using permanent roads etc. Global Positioning System(GPS) is one such example of Global Navigation. The algorithms used behind such systems may include [Dijkstra](https://www.youtube.com/watch?v=GazC3A4OQTE), Best First or [A*](https://www.youtube.com/watch?v=ySN5Wnu88nE) etc.
 
 
 ### Local Navigation
@@ -377,7 +377,7 @@ There are a few problems related to this algorithm:
 ![Drawbacks]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/drawbacks.png)
 
 ### Virtual Force Histogram Algorithm
-This algorithm improves over the Virtual Force Field Algorithm, by using a data structure called the Polar Histogram. The robot maintains a histogram grid of the  instantaneous sensor values received. Then, based on the threshold value set by the programmer, the program detects minimas(vallies) in the polar histogram. The angle corresponding to these values are then followed by the robot.
+This algorithm improves over the Virtual Force Field Algorithm, by using a data structure called the Polar Histogram. The robot maintains a histogram grid of the  instantaneous sensor values received. Then, based on the threshold value set by the programmer, the program detects minimas(valleys) in the polar histogram. The angle corresponding to these values are then followed by the robot.
 
 ![VFH]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/vfh.gif)
 
@@ -392,12 +392,12 @@ First of all, we need to generate the 3 required vectors, that are the **Target 
 ### Target Vector
 The target vector can be easily obtained by subtracting the position of the car from the position of the next waypoint.
 
-In order to implement this on the GUI interface of the exercise, in addition to the vector obtained by subtracting, we need to apply a rotation to the vector as well. The purpose of rotation is to keep the target vector always in the direction of the waypoint and not in front of the car. You may try seeing this in your own implementation, or refer to the the [illustrations](#Illustrations) 
+In order to implement this on the GUI interface of the exercise, in addition to the vector obtained by subtracting, we need to apply a rotation to the vector as well. The purpose of rotation is to keep the target vector always in the direction of the waypoint and not in front of the car. You may try seeing this in your own implementation, or refer to the [illustrations](#Illustrations) 
 
 Refer to this [webpage](https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions) to know about the exact mathematical details of the implementation.
 
 ### Obstacle Vector
-The obstacle vector is to be calculated from the sensor readings we obtain from the surroundings of the robot. Each obstacle in front of the car, is going to provide a repulsive vector, which we will add to obtain the resultant repulsive vector. Assign a repulsive vector, for each of the 180 sensor readings. The magnitude of the repulsive vector is inversly proportional to the magnitude of the sensor reading. Once, all the repulsive vectors are obtained they are all added, to get the resultant.
+The obstacle vector is to be calculated from the sensor readings we obtain from the surroundings of the robot. Each obstacle in front of the car, is going to provide a repulsive vector, which we will add to obtain the resultant repulsive vector. Assign a repulsive vector, for each of the 180 sensor readings. The magnitude of the repulsive vector is inversely proportional to the magnitude of the sensor reading. Once, all the repulsive vectors are obtained they are all added, to get the resultant.
 
 **Note**: There is a catch in this case, you may notice that most of the time in our implementation of the exercise we get an obstacle vector which is almost always pointing opposite to the direction in which we are supposed to head. This is a problem, as adding this vector directly to the target vector, would give a resultant which is more or less, quite not we expect. Hence, there is some trick we need to apply to solve this problem.
 
