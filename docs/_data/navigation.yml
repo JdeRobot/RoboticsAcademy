@@ -11,7 +11,8 @@ main:
     url: /webrelease
 
   - title: "Forum"
-    url: https://developers.unibotics.org
+    url: https://forum.unibotics.org
+#    url: https://developers.unibotics.org
 #    url: https://academy.jderobot.org/forum
 
 #  - title: About

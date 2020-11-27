@@ -13,7 +13,7 @@ feature_row:
   - image_path: /assets/images/cover/cover_column_1.png
     alt: "Exercises"
     title: "Exercises"
-    excerpt: "Learn and play by performing the Academy's many exercises"
+    excerpt: "Learn and play by performing the RoboticsAcademy's many exercises"
     url: "/exercises/"
     btn_class: "btn--primary"
     btn_label: "Learn more"
@@ -21,7 +21,7 @@ feature_row:
   - image_path: /assets/images/cover/cover_column_2.png
     alt: "fully responsive"
     title: "Installation"
-    excerpt: "Installation instructions for Academy native release in Linux"
+    excerpt: "Installation instructions for RoboticsAcademy native release in Linux"
     url: "/installation"
     btn_class: "btn--primary"
     btn_label: "Learn more"
@@ -29,7 +29,7 @@ feature_row:
   - image_path: /assets/images/cover/cover_column_3.png
     alt: "100% free"
     title: "Web release (beta)"
-    excerpt: "Use JdeRobot Academy from your browser, no installation required"
+    excerpt: "Use RoboticsAcademy from your browser, no installation required"
     url: "/webrelease"
     btn_class: "btn--primary"
     btn_label: "Learn more"
