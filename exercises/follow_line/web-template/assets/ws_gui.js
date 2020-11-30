@@ -38,8 +38,6 @@ function declare_gui(){
 			canvas.height = shape[0];
 
 			image.src = "data:image/jpeg;base64," + source;
-
-			websocket_gui.send("Image Displayed!")
 		}
 		
 		else if(operation == "#lap"){
@@ -73,6 +71,8 @@ function declare_gui(){
 			// Focus on the next line
 			command.focus();
 		}
+		
+		websocket_gui.send("Received!")
 	}
 }
 

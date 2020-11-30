@@ -62,17 +62,13 @@ class GUI:
         
     # Update the gui
     def update_gui(self):
-        self.payload_lock.acquire()
-        message = "#img" + json.dumps(self.payload)
-        self.payload_lock.release()
-            
         pos_message = self.map.getRobotCoordinates()
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         pos_message = "#map" + pos_message
         
         try:
-            self.server.send_message(self.client, message)
+            #self.server.send_message(self.client, message)
             self.server.send_message(self.client, pos_message)
         except:
             pass

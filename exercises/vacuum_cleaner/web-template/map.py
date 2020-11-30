@@ -31,10 +31,10 @@ class Map:
 		x = pose.x
 		y = pose.y
 		
-		scale_y = 1.25; offset_y = 77
+		scale_y = 13; offset_y = 70
 		y = scale_y * y + offset_y
 		
-		scale_x = -2.6; offset_x = 151
+		scale_x = -30; offset_x = 175
 		x = scale_x * x + offset_x
 		
 		return x, y

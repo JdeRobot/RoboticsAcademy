@@ -161,6 +161,7 @@ class Template:
         
         # Whatever the code is, first step is to just stop!
         self.hal.motors.sendV(0)
+        self.hal.motors.sendW(0)
 
         try:
             # The Python exec function

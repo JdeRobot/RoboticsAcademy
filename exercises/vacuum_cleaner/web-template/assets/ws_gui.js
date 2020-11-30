@@ -28,23 +28,10 @@ function declare_gui(){
 	// What to do when a message from server is received
 	websocket_gui.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
-
-		if(operation == "#img"){
-			var data = JSON.parse(event.data.substring(4, )),
-				source = decode_utf8(data.image),
-				shape = data.shape;
-
-			canvas.width = shape[1];
-			canvas.height = shape[0];
-
-			image.src = "data:image/jpeg;base64," + source;
-
-			websocket_gui.send("Image Displayed!")
-		}
 		
-		else if(operation == "#lap"){
+		if(operation == "#lap"){
 			var lap_time = event.data.substring(4, );
-			lap_time_display.textContent = lap_time;
+			//lap_time_display.textContent = lap_time;
 		}
 		
 		else if(operation == "#map"){
@@ -53,7 +40,7 @@ function declare_gui(){
 			var content = pose.split(',').map(function(item) {
 				return parseFloat(item);
 			})
-			drawCircle(content[0], content[1], content[2], content[3]);
+			draw(content[0], content[1], content[2], content[3]);
 		}
 		
 		else if(operation == "#cop"){
@@ -73,6 +60,8 @@ function declare_gui(){
 			// Focus on the next line
 			command.focus();
 		}
+		
+		websocket_gui.send("Received!");
 	}
 }
 

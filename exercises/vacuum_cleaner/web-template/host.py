@@ -106,11 +106,6 @@ class Template:
         		source_code = ""
     		
     		source_code = self.debug_parse(source_code, debug_level)
-    		# Pause and unpause
-    		if(source_code == ""):
-    		    self.gui.lap.pause()
-    		else:
-    		    self.gui.lap.unpause()
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
     		return iterative_code, sequential_code, debug_level
 			
@@ -162,6 +157,7 @@ class Template:
         
         # Whatever the code is, first step is to just stop!
         self.hal.motors.sendV(0)
+        self.hal.motors.sendW(0)
 
         try:
             # The Python exec function
