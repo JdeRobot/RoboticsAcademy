@@ -23,7 +23,16 @@ instructions = {
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/host.py 0.0.0.0"
     },
-
+    "vacuum_cleaner": {
+        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/host.py 0.0.0.0"
+    },
+    "vacuum_cleaner_loc": {
+        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/host.py 0.0.0.0"
+    },
 }
 
 def export_gazebo(exercise):
