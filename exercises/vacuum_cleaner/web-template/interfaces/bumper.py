@@ -1,5 +1,4 @@
 import sys
-import config
 import math
 import rospy
 import threading
