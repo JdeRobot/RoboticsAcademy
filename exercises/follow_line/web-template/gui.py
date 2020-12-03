@@ -16,19 +16,21 @@ from map import Map
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console):
+    def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'canvas': None,'image': '', 'shape': []}
+        self.show_image = False
         self.server = None
         self.client = None
         
         self.host = host
 
-        self.payload_lock = threading.Lock()
+        self.show_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
         self.console = console
+        self.hal = hal
         t.start()
         
         # Create the lap object
@@ -44,17 +46,23 @@ class GUI:
         new_instance = cls(host, console)
         return new_instance
 
-    # Function for student to call
+    # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
-    def showImage(self, image):
-        shape = image.shape
+    def payloadImage(self):
+    	image = self.hal.getImage()
+    	
+    	shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
         
-        self.payload_lock.acquire()
         self.payload['image'] = encoded_image.decode('utf-8')
         self.payload['shape'] = shape
-        self.payload_lock.release()
+    
+    # Function for student to call
+    def showImage(self):
+    	self.show_lock.acquire()
+    	self.show_image = True
+    	self.show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
@@ -64,9 +72,8 @@ class GUI:
         
     # Update the gui
     def update_gui(self):
-        self.payload_lock.acquire()
+    	self.payloadImage()
         message = "#img" + json.dumps(self.payload)
-        self.payload_lock.release()
         
         lapped = self.lap.check_threshold()
         lap_message = ""

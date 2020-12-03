@@ -18,7 +18,11 @@ class HAL:
     	self.image = None
     	self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
     	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
-    	self.camera_lock = threading.Lock()
+    	
+    	self.image_lock = threading.Lock()
+    	
+    	t = threading.Thread(target=self.update_readings)
+    	t.start()
     	
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -29,8 +33,15 @@ class HAL:
     
     # Get Image from ROS Driver Camera
     def getImage(self):
-        self.camera_lock.acquire()
-        self.image = self.camera.getImage().data
-        self.camera_lock.release()
+        self.image_lock.acquire()
+        image = self.image
+        self.image_lock.release()
         
-        return self.image
+        return image
+        
+    # Threading Function to keep the sensor readings updated
+    def update_readings(self):
+    	while True:
+			self.image_lock.acquire()
+			self.image = self.camera.getImage().data
+			self.image_lock.release()
