@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagem
 # Get the Custom Robot Repository
 # and set the environment variables
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/JdeRobot/CustomRobots.git && cd CustomRobots && git checkout melodic-devel && git pull origin melodic-devel
-ENV GAZEBO_MODEL_PATH=/opt/jderobot/CustomRobots/f1;/opt/jderobot/CustomRobots/roomba_robot
+ENV GAZEBO_MODEL_PATH=/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot
 
 # GzWeb
 # https://answers.gazebosim.org//question/15807/node-gyp-build-errors-while-trying-to-install-gzweb/
