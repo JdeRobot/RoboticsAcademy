@@ -23,6 +23,10 @@ RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
 ENV GAZEBO_RESOURCE_PATH=/RoboticsAcademy/exercises/follow_line/web-template/launch
 
+# Certain Dependencies for Exercises
+# Vacuum Cleaner Exercise
+RUN apt-get install ros-melodic-kobuki-msgs         
+
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc
