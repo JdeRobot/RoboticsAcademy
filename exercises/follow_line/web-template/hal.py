@@ -20,6 +20,7 @@ class HAL:
     	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
     	
     	self.image_lock = threading.Lock()
+    	self.time_cycle = 100
     	
     	t = threading.Thread(target=self.update_readings)
     	t.start()
@@ -42,6 +43,16 @@ class HAL:
     # Threading Function to keep the sensor readings updated
     def update_readings(self):
     	while True:
+			start_time = datetime.now()
+
 			self.image_lock.acquire()
 			self.image = self.camera.getImage().data
 			self.image_lock.release()
+
+			finish_time = datetime.now()
+			dt = finish_time - start_time
+			ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+
+			if(ms < self.time_cycle):
+				time.sleep((self.time_cycle-ms) / 1000.0)
+			

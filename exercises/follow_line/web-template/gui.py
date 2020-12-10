@@ -19,7 +19,7 @@ class GUI:
     def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'canvas': None,'image': '', 'shape': []}
+        self.payload = {'image': '','lap': '', 'map': ''}
         self.show_image = False
         self.server = None
         self.client = None
@@ -27,6 +27,9 @@ class GUI:
         self.host = host
 
         self.show_lock = threading.Lock()
+        
+        self.acknowledge = False
+        self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
         self.console = console
@@ -55,8 +58,11 @@ class GUI:
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
         
-        self.payload['image'] = encoded_image.decode('utf-8')
-        self.payload['shape'] = shape
+        payload = {}
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
+        
+        return payload
     
     # Function for student to call
     def showImage(self):
@@ -70,32 +76,55 @@ class GUI:
         self.client = client
         self.console.set_websocket(self.server, self.client)
         
+    # Function to get value of Acknowledge
+    def get_acknowledge(self):
+        self.acknowledge_lock.acquire()
+        acknowledge = self.acknowledge
+        self.acknowledge_lock.release()
+        
+        return acknowledge
+        
+    # Function to get value of Acknowledge
+    def set_acknowledge(self, value):
+        self.acknowledge_lock.acquire()
+        self.acknowledge = value
+        self.acknowledge_lock.release()
+        
     # Update the gui
     def update_gui(self):
-    	self.payloadImage()
-        message = "#img" + json.dumps(self.payload)
+    	payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
         
         lapped = self.lap.check_threshold()
-        lap_message = ""
+        self.payload["lap"] = ""
         if(lapped != None):
-            lap_message = "#lap" + str(lapped)
+            self.payload["lap"] = str(lapped)
             
         pos_message = str(self.map.getFormulaCoordinates())
-        pos_message = "#map" + pos_message
+        self.payload["map"] = pos_message
         
         try:
+            message = "#gui" + json.dumps(self.payload)
             self.server.send_message(self.client, message)
-            self.server.send_message(self.client, pos_message)
-            if(lap_message != ""):
-                self.server.send_message(self.client, lap_message)
         except:
             pass
+            
+    # Function to read the message from websocket
+    # Gets called when there is an incoming message from the client
+    def get_message(self, client, server, message):
+		# Acknowledge Message for GUI Thread
+		if(message[:4] == "#ack"):
+			self.set_acknowledge(True)
+			
+		# Message for Console
+		elif(message[:4] == "#con"):
+			self.console.prompt(message)
     
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
-        self.server.set_fn_message_received(self.console.prompt)
+        self.server.set_fn_message_received(self.get_message)
         self.server.run_forever()
 
     # Function to reset
@@ -109,13 +138,19 @@ class GUI:
 class ThreadGUI(threading.Thread):
     def __init__(self, gui):
         self.gui = gui
-        self.time_cycle = 200
+        self.time_cycle = 250
         threading.Thread.__init__(self)
         
     def run(self):
         while(True):
             start_time = datetime.now()
             self.gui.update_gui()
+            acknowledge_message = self.gui.get_acknowledge()
+            
+            while(acknowledge_message == False):
+            	acknowledge_message = self.gui.get_acknowledge()
+            	
+            self.gui.set_acknowledge(False)
             
             finish_time = datetime.now()
             
