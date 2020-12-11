@@ -6,7 +6,7 @@ import cv2
 from drone_wrapper import DroneWrapper
 from std_msgs.msg import Bool, Float64
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Pose
 
 code_live_flag = False
 
@@ -31,6 +31,10 @@ def gui_twist_cb(msg):
 	global drone
 	drone.set_cmd_vel(msg.linear.x, msg.linear.y, msg.linear.z, msg.angular.z)
 
+def gui_pose_cb(msg):
+	global drone
+	drone.set_cmd_pos(x=msg.position.x, y=msg.position.y, z=msg.position.z)
+
 def set_image_filtered(img):
 	gui_filtered_img_pub.publish(drone.bridge.cv2_to_imgmsg(img))
 
@@ -54,6 +58,7 @@ if __name__ == "__main__":
 	rospy.Subscriber('gui/takeoff_land', Bool, gui_takeoff_cb)
 	rospy.Subscriber('gui/play_stop', Bool, gui_play_stop_cb)
 	rospy.Subscriber('gui/twist', Twist, gui_twist_cb)
+	rospy.Subscriber('gui/pose', Pose, gui_pose_cb)
 	gui_filtered_img_pub = rospy.Publisher('interface/filtered_img', Image, queue_size = 1)
 	gui_threshed_img_pub = rospy.Publisher('interface/threshed_img', Image, queue_size = 1)
 	code_live_flag = False
