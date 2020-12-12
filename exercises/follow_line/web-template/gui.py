@@ -138,7 +138,7 @@ class GUI:
 class ThreadGUI(threading.Thread):
     def __init__(self, gui):
         self.gui = gui
-        self.time_cycle = 250
+        self.time_cycle = 50
         threading.Thread.__init__(self)
         
     def run(self):
