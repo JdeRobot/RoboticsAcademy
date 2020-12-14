@@ -78,6 +78,12 @@ class GUI:
     	self.show_image = True
     	self.show_lock.release()
 
+    # Function for student to call
+    def stopImage(self):
+    	self.show_lock.acquire()
+    	self.show_image = False
+    	self.show_lock.release()
+
     # Function to get the client
     # Called when a new client is received
     def get_client(self, client, server):
