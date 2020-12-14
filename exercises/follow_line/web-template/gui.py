@@ -52,17 +52,15 @@ class GUI:
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        payload = {}
+        payload = {'image': '', 'shape': ''}
 
         self.show_lock.acquire()
         show_image = self.show_image
         self.show_lock.release()
-        
+
         if(show_image == False):
             return payload
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
     	image = self.hal.getImage()
     	
     	shape = image.shape
