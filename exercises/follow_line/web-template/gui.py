@@ -20,12 +20,12 @@ class GUI:
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': '','lap': '', 'map': ''}
-        self.show_image = False
         self.server = None
         self.client = None
         
         self.host = host
 
+        self.show_image = False
         self.show_lock = threading.Lock()
         
         self.acknowledge = False
@@ -61,6 +61,10 @@ class GUI:
         payload = {}
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+
+        self.show_lock.acquire()
+        self.show_image = False
+        self.show_lock.release()
         
         return payload
     
