@@ -61,10 +61,6 @@ class GUI:
         payload = {}
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
-        self.show_lock.acquire()
-        self.show_image = False
-        self.show_lock.release()
         
         return payload
     

@@ -97,6 +97,6 @@ image.onload = function(){
 
 // Request Animation Frame to remove the flickers
 function update_image(){
-	//window.requestAnimationFrame(update_image);
+	window.requestAnimationFrame(update_image);
 	context.drawImage(image, 0, 0);
 }
