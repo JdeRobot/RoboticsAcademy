@@ -69,7 +69,7 @@ class GUI:
         return payload
     
     # Function for student to call
-    def showImage(self):
+    def showImage(self, image):
     	self.show_lock.acquire()
     	self.show_image = True
     	self.show_lock.release()
