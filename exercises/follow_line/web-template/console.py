@@ -39,7 +39,7 @@ class Console:
 	
 	# Function to read the message from websocket
 	# Gets called when there is an incoming message from the client
-	def prompt(self, client, server, message):
+	def prompt(self, message):
 		# Input from console
 		source_code = message
 
