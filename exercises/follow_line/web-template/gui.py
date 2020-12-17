@@ -117,11 +117,8 @@ class GUI:
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
         
-        try:
-            message = "#gui" + json.dumps(self.payload)
-            self.server.send_message(self.client, message)
-        except:
-            pass
+        message = "#gui" + json.dumps(self.payload)
+        self.server.send_message(self.client, message)
             
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
@@ -156,6 +153,9 @@ class ThreadGUI(threading.Thread):
         threading.Thread.__init__(self)
         
     def run(self):
+    	while(self.gui.client == None):
+    		pass
+    
         while(True):
             start_time = datetime.now()
             self.gui.update_gui()
