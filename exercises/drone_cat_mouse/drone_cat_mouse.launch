@@ -6,7 +6,7 @@
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
-    <arg name="world" default="$(find jderobot_assets)/worlds/iris_drone_cat_mouse.world"/>
+    <arg name="world" default="$(eval env('PWD') + '/drone_cat_mouse.world')"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>

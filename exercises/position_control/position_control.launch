@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="world" default="$(find jderobot_assets)/worlds/iris_position_control.world"/>
+    <arg name="world" default="$(eval env('PWD') + '/position_control.world')"/>
     <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
 
     <include file="$(find drone_wrapper)/launch/mavros_px4_sitl.launch">

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="world_name" default="$(find jderobot_assets)/worlds/iris_drone_hangar.world"/>
+    <arg name="world" default="$(eval env('PWD') + '/drone_hangar.world')"/>
     <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
 
     <include file="$(find drone_wrapper)/launch/mavros_px4_sitl.launch">
-        <arg name="world" value="$(arg world_name)"/>
+        <arg name="world" value="$(arg world)"/>
         <arg name="y" value="9.5"/>
         <arg name="z" value="0.1"/>
         <arg name="Y" value="-1.57"/>
