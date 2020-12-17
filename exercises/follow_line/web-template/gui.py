@@ -20,12 +20,12 @@ class GUI:
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': '','lap': '', 'map': ''}
-        self.show_image = False
         self.server = None
         self.client = None
         
         self.host = host
 
+        self.show_image = False
         self.show_lock = threading.Lock()
         
         self.acknowledge = False
@@ -52,22 +52,36 @@ class GUI:
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
+        payload = {'image': '', 'shape': ''}
+
+        self.show_lock.acquire()
+        show_image = self.show_image
+        self.show_lock.release()
+
+        if(show_image == False):
+            return payload
+
     	image = self.hal.getImage()
     	
     	shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
         
-        payload = {}
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
         
         return payload
     
     # Function for student to call
-    def showImage(self):
+    def showImage(self, image):
     	self.show_lock.acquire()
     	self.show_image = True
+    	self.show_lock.release()
+
+    # Function for student to call
+    def stopImage(self):
+    	self.show_lock.acquire()
+    	self.show_image = False
     	self.show_lock.release()
 
     # Function to get the client
@@ -138,7 +152,7 @@ class GUI:
 class ThreadGUI(threading.Thread):
     def __init__(self, gui):
         self.gui = gui
-        self.time_cycle = 250
+        self.time_cycle = 50
         threading.Thread.__init__(self)
         
     def run(self):
