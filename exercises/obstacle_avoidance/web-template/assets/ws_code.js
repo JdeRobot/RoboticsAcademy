@@ -12,7 +12,7 @@ var frequency = "0";
 
 //WebSocket for Code
 var websocket_code;
-function declare_code(){
+function declare_code(websocket_address){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){

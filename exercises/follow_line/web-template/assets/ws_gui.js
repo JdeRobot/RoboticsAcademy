@@ -10,7 +10,7 @@ function decode_utf8(s){
 // Websocket and other variables for image display
 var websocket_gui, animation_id;
 
-function declare_gui(){
+function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
