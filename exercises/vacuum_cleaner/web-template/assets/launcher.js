@@ -11,6 +11,6 @@ ws_manager.onmessage = function(event){
 }
 
 setTimeout(function(){
-    declare_code();
-    declare_gui();
+    declare_code(websocket_address);
+    declare_gui(websocket_address);
 }, 10000);

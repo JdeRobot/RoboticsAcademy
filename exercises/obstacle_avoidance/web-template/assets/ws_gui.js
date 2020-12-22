@@ -16,7 +16,7 @@ var canvas = document.getElementById("gui_canvas"),
 var lap_time_display = document.getElementById("lap_time");
 
 var websocket_gui;
-function declare_gui(){
+function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
