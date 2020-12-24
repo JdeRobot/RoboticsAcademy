@@ -15,10 +15,11 @@
 			<uri>model://grass_plane</uri>
 		</include>
 
-		<include>
+		<!--<include>
 			<uri>model://house_3</uri>
 			<pose>3 6.43 0 0 0 0</pose>
 		</include>
+		-->
 
 		<include>
 			<uri>model://polaris_ranger_ev</uri>
