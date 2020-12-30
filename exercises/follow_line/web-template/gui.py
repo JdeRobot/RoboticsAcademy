@@ -135,6 +135,8 @@ class GUI:
 		# Acknowledge Message for GUI Thread
 		if(message[:4] == "#ack"):
 			self.set_acknowledge(True)
+			frequency = float(message[4:])
+			self.time_frequency = frequency
             frequency = float(message[4:])
             self.time_frequency = frequency
 			
