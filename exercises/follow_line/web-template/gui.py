@@ -128,7 +128,7 @@ class GUI:
             ideal_frequency = round(1000 / measured_cycle, 0)
         except ZeroDivisionError:
             ideal_frequency = 0
-        self.payload["frequency"] = str(ideal_frequency)
+        self.payload["frequency"] = str(int(ideal_frequency))
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
