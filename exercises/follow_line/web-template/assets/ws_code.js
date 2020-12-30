@@ -39,7 +39,7 @@ function declare_code(websocket_address){
 		}
 		else if(operation == "#freq"){
 			frequency = source_code.substring(5,);
-			document.querySelector('#ideal_frequency').value = frequency;
+			document.querySelector('#ideal_code_frequency').value = frequency;
 		}
 		else if(operation == "#ping"){
 			websocket_code.send("#pong")
@@ -58,7 +58,7 @@ function submitCode(){
     python_code = "#dbug" + debug_level + python_code
     
     // Add freqeuncy header
-    python_code = "#freq" + document.querySelector('#frequency').value + "\n" + python_code;
+    python_code = "#freq" + document.querySelector('#code_frequency').value + "\n" + python_code;
     
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
@@ -108,7 +108,7 @@ function resetSim(){
 }
 
 // Function for range slider
-function frequencyUpdate(vol) {
-	document.querySelector('#frequency').value = vol;
+function codefrequencyUpdate(vol) {
+	document.querySelector('#code_frequency').value = vol;
 }
 

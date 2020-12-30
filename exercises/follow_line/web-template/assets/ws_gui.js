@@ -8,7 +8,7 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var websocket_gui, animation_id;
+var websocket_gui;
 
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
@@ -58,9 +58,15 @@ function declare_gui(websocket_address){
 				return parseFloat(item);
 			})
 			drawCircle(content[0], content[1]);
+
+			// Parse the measured GUI frequency
+			frequency = data.frequency;
+			document.querySelector("#ideal_gui_frequency").value = frequency;
 			
 			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
+			// Along with gui frequency
+			gui_frequency = document.querySelector('#gui_frequency').value
+			websocket_gui.send("#ack" + gui_frequency);
 		}
 		
 		else if(operation == "#cop"){
@@ -82,6 +88,11 @@ function declare_gui(websocket_address){
 		}
 		
 	}
+}
+
+// Function for range slider
+function guifrequencyUpdate(vol) {
+	document.querySelector('#gui_frequency').value = vol;
 }
 
 var canvas = document.getElementById("gui_canvas"),
