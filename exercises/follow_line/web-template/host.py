@@ -93,14 +93,9 @@ class Template:
     	else:
     		# Get the frequency of operation, convert to time_cycle and strip
     		try:
-        		partition = source_code[5:].partition("\n")
-        		frequency = partition[0]
-        		frequency = float(frequency)
-        		self.time_cycle = 1000.0 / frequency
-        		source_code = partition[2]
         		# Get the debug level and strip the debug part
         		debug_level = int(source_code[5])
-        		source_code = source_code[5:]
+        		source_code = source_code[10:]
         	except:
         		debug_level = 1
         		source_code = ""
@@ -174,7 +169,6 @@ class Template:
             # Run the iterative part inside template
             # and keep the check for flag
             while self.reload == False:
-            	self.server.send_message(self.client, "#pingRunning")
                 start_time = datetime.now()
                 
                 # Execute the iterative portion
@@ -281,7 +275,9 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if(message == "#pong"):
+        if(message[:5] == "#freq"):
+            frequency = float(message[5:])
+            self.time_cycle = 1000.0 / frequency
             self.server.send_message(self.client, "#ping")
             return
         
@@ -299,7 +295,6 @@ class Template:
     	self.client = client
     	# Start the GUI update thread
     	t = ThreadGUI(self.gui)
-    	t.daemon = True
     	t.start()
 
         # Initialize the ping message

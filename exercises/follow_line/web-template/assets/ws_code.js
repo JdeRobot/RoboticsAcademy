@@ -41,9 +41,10 @@ function declare_code(websocket_address){
 			frequency = source_code.substring(5,);
 			document.querySelector('#ideal_code_frequency').value = frequency;
 		}
-		else if(operation == "#ping"){
-			websocket_code.send("#pong")
-		}
+		
+		// Send the acknowledgment message along with frequency
+		code_frequency = document.querySelector('#code_frequency').value
+		websocket_code.send("#freq" + code_frequency)
 	};
 }
 
@@ -56,9 +57,6 @@ function submitCode(){
     // Get the debug level and add header
 	var debug_level = document.querySelector('input[name = "debug"]').value;
     python_code = "#dbug" + debug_level + python_code
-    
-    // Add freqeuncy header
-    python_code = "#freq" + document.querySelector('#code_frequency').value + "\n" + python_code;
     
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
