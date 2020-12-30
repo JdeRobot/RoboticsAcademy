@@ -95,7 +95,7 @@ class Template:
     		try:
         		# Get the debug level and strip the debug part
         		debug_level = int(source_code[5])
-        		source_code = source_code[10:]
+        		source_code = source_code[12:]
         	except:
         		debug_level = 1
         		source_code = ""
