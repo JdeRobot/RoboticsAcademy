@@ -124,7 +124,10 @@ class GUI:
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
 
-        ideal_frequency = round(1000 / measured_cycle, 2)
+        try:
+            ideal_frequency = round(1000 / measured_cycle, 2)
+        except ZeroDivisionError:
+            ideal_frequency = 0
         self.payload["frequency"] = str(ideal_frequency)
         
         message = "#gui" + json.dumps(self.payload)
