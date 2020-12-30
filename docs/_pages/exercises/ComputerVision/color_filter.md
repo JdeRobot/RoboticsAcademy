@@ -9,6 +9,10 @@ toc: true
 toc_label: "TOC Color Filter"
 toc_icon: "cog"
 
+<!--- layout: archive --->
+
+<!--- classes: wide --->
+
 gallery:
   - url: /assets/images/exercises/color_filter/color_filter_teaser.png
     image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
@@ -24,11 +28,95 @@ colorspace:
 youtubeId1: gzALLE2jlRI
 
 ---
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates (Current Release)
+
+The instructions for both of them are provided as follows.
+
+
+## Goal
+
 In this practice the intention is to develop a color filter that allow us to segment some object in the image. You will have to get in contact with RGB and HSV color spaces, and *OpenCV* (*Python*) library.
 
 {% include gallery caption="Tracking the blue ball" %}
 
-## Installation
+
+## Instructions for Web Templates
+This is the preferred way for running the exercise.
+
+### Installation 
+- Clone the Robotics Academy repository on your local machine
+
+	```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy
+	```
+
+- Download [Docker](https://docs.docker.com/get-docker/)
+
+- Pull the current distribution of Robotics Academy Docker Image
+
+	```bash
+docker pull jderobot/robotics-academy
+	```
+
+
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background
+
+	```bash
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 1831:1831 jderobot/robotics-academy python3.8 manager.py
+	```
+
+- On the local machine navigate to the color_filter exercise which is: `RoboticsAcademy/exercises/color_filter/web-template`
+
+- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
+
+- Launch the `index.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+
+- The exercise can be used after the alert.
+
+
+**Where to insert the code?**
+
+In the launched webpage, type your code in the text editor,
+
+```python
+from GUI import GUI
+from WEBRTC import WebrtcFrame
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+
+### Using the Interface
+
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).
+
+* **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the image. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+
+**Application Programming Interface**
+
+* `from WEBRTC import WebrtcFrame` - to import the WEBRTC library class. This class contains the functions that sends and receives information to and from the webcam.
+* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `WebrtcFrame.getImage()` - to get the image
+* `GUI.showImage()` - allows you to view a debug image or with relevant information
+
+
+
+## Instructions for ROSNode Templates
+
+### Installation
 
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
@@ -40,6 +128,44 @@ $ sudo apt install ros-melodic-video-stream-opencv
 ```
 
 
+### How to perform the exercise?
+
+To carry out the practice, you have to edit the file `MyAlgorithms.py` and insert in it your code, which enables the detection of a specific color and displays it in the GUI using the APIs given below.
+
+**Where to insert the code?**
+
+In the `MyAlgorithm.py` file,
+
+```python
+def execute(self):
+   # Add your code here
+
+    input_image = self.camera.getImage()
+    if input_image is not None:
+        self.camera.setColorImage(input_image)
+	  
+```
+
+
+**Application Programming Interface**
+* `camera.getImage()` - to get the image received from server
+* `camera.setColorImage(input_image)` - to set color image
+* `camera.getColorImage()` - to get the color image
+* `camera.setThresholdImage(bk_image)` - to set Threshold image
+* `camera.getDetectImage()` - to get the Thresold image
+* `setDetectImage()` - to set the final detected(processed) image
+* `getDetectImage()` - to get the detected image
+
+
+
+### How to run your solution?
+
+- Navigate to the color_filter directory
+
+	```bash
+cd exercises/color_filter
+	```
+
 This practice allows to obtain the video stream from 3 different sources:
 - From a local camera (Local)
 - A local file (Video)
@@ -48,15 +174,9 @@ Depending on the way you want to obtain the video, you must specify the selected
 source in the configuration file (color_filter_conf.yml), and the required parameters for that source. 
 Once done it, if you have selected either 'Local' or 'Video', follow the next step:
 
-## How to execute?
 
-Navigate to Color Filter exercise
+**Set the video stream provider**
 
-```
-cd exercises/color_filter
-```
-
-### Set the video stream provider
 Edit the video_stream_provider argument in the `color_filter.launch` file according to your choice of video stream.
 You can use any input that OpenCV on your system accepts, e.g.:
 - Video devices that appear in linux as /dev/videoX, e.g.: USB webcams appearing as /dev/video0
@@ -87,39 +207,10 @@ $ python2 ./color_filter.py color_filter_conf.yml
 ```
 
 
-## How to perform the exercise?
-
-To carry out the practice, you have to edit the file MyAlgorithms.py and insert in it your code, which enables the detection of a specific color and displays it in the GUI using the APIs given below.
-
-### Where to insert the code?
-`MyAlgorithm.py`
-
-```
-    def execute(self):
-       # Add your code here
-
-        input_image = self.camera.getImage()
-        if input_image is not None:
-            self.camera.setColorImage(input_image)
-	  
-```
-
-
-### API
-* `camera.getImage()` - to get the image received from server
-* `camera.setColorImage(input_image)` - to set color image
-* `camera.getColorImage()` - to get the color image
-* `camera.setThresholdImage(bk_image)` - to set Threshold image
-* `camera.getDetectImage()` - to get the Thresold image
-* `setDetectImage()` - to set the final detected(processed) image
-* `getDetectImage()` - to get the detected image
-
-
-## Reference Video
-{% include youtubePlayer.html id=page.youtubeId1 %}
 
 ## Theory
 This exercise is focused on implementing color filter and tracking a color coded object of choice.
+
 ### Color Space
 Color spaces are a way to represent the color channels present in the image that gives the image that particular hue. There are several different color spaces and each has its own significance.
 Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc. In the figure below, a)RGB Color Space and b) HSV color space can be visualized.
@@ -152,6 +243,14 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 
 [Contour Features](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html)
 
+
+## Demonstrative Video
+
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+*This solution is an illustration for the ROSNode Templates*
+
+
 ## Contributors
 
 - Contributors: [Carlos Awadallah](https://github.com/cawadall), [Naman Jain](https://github.com/Naman-ntc), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Nemath Ahmed](https://github.com/nemathahmed)
@@ -159,9 +258,13 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 
 
 
-
-
 ## References
-[[1]](https://www.geeksforgeeks.org/color-spaces-in-opencv-python/) [[2]](https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/) [[3]](https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/) [[4]](https://opencv-python-tutroals.readthedocs.io/en/latest/index.html) [[5]](https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp) [[6]](https://realpython.com/python-opencv-color-spaces/)
+
+[1](https://www.geeksforgeeks.org/color-spaces-in-opencv-python/) 
+[2](https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/) 
+[3](https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/)
+[4](https://opencv-python-tutroals.readthedocs.io/en/latest/index.html)
+[5](https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp)
+[6](https://realpython.com/python-opencv-color-spaces/)
 
 
