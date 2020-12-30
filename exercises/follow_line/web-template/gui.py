@@ -125,7 +125,7 @@ class GUI:
         self.payload["map"] = pos_message
 
         try:
-            ideal_frequency = round(1000 / measured_cycle, 2)
+            ideal_frequency = round(1000 / measured_cycle, 0)
         except ZeroDivisionError:
             ideal_frequency = 0
         self.payload["frequency"] = str(ideal_frequency)
