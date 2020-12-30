@@ -112,7 +112,7 @@ class GUI:
         self.acknowledge_lock.release()
         
     # Update the gui
-    def update_gui(self, measured_frequency):
+    def update_gui(self, measured_cycle):
     	payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
         
@@ -124,7 +124,8 @@ class GUI:
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
 
-        self.payload["frequency"] = measured_frequency
+        ideal_frequency = round(1000 / measured_cycle, 2)
+        self.payload["frequency"] = str(ideal_frequency)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
