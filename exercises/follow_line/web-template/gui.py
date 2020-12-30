@@ -137,8 +137,6 @@ class GUI:
 			self.set_acknowledge(True)
 			frequency = float(message[4:])
 			self.time_frequency = frequency
-            frequency = float(message[4:])
-            self.time_frequency = frequency
 			
 		# Message for Console
 		elif(message[:4] == "#con"):
