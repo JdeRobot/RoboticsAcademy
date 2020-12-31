@@ -25,8 +25,10 @@ class GUI:
         
         self.host = host
 
-        self.show_image = False
-        self.show_lock = threading.Lock()
+        # Image variables
+        self.image_to_be_shown = None
+        self.image_to_be_shown_updated = False
+        self.image_show_lock = threading.Lock()
         
         self.acknowledge = False
         self.time_frequency = 12.5
@@ -53,16 +55,16 @@ class GUI:
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
+        self.image_show_lock.acquire()
+        image_to_be_shown_updated = self.image_to_be_shown_updated
+        image_to_be_shown = self.image_to_be_shown
+        self.image_show_lock.release()
+
+        image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
 
-        self.show_lock.acquire()
-        show_image = self.show_image
-        self.show_lock.release()
-
-        if(show_image == False):
+        if(image_to_be_shown_updated == False):
             return payload
-
-    	image = self.hal.getImage()
     	
     	shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
@@ -70,20 +72,19 @@ class GUI:
         
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
         
         return payload
     
     # Function for student to call
     def showImage(self, image):
-    	self.show_lock.acquire()
-    	self.show_image = True
-    	self.show_lock.release()
-
-    # Function for student to call
-    def stopImage(self):
-    	self.show_lock.acquire()
-    	self.show_image = False
-    	self.show_lock.release()
+    	self.image_show_lock.acquire()
+    	self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+    	self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
@@ -125,10 +126,10 @@ class GUI:
         self.payload["map"] = pos_message
 
         try:
-            ideal_frequency = round(1000 / measured_cycle, 0)
+            ideal_frequency = round(1000 / measured_cycle, 1)
         except ZeroDivisionError:
             ideal_frequency = 0
-        self.payload["frequency"] = str(int(ideal_frequency))
+        self.payload["frequency"] = str(ideal_frequency)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
