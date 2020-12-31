@@ -56,9 +56,10 @@ class GUI:
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
         image = self.image_to_be_shown
+        image_show = self.image_to_be_shown_updated
         payload = {'image': '', 'shape': ''}
 
-        if(image == None):
+        if(image_show == False):
             return payload
     	
     	shape = image.shape
@@ -73,6 +74,7 @@ class GUI:
     # Function for student to call
     def showImage(self, image):
         self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
 
     # Function to get the client
     # Called when a new client is received
