@@ -55,15 +55,10 @@ class GUI:
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
-
-        image = image_to_be_shown
+        image = self.image_to_be_shown
         payload = {'image': '', 'shape': ''}
 
-        if(image_to_be_shown_updated == False):
+        if(image == None):
             return payload
     	
     	shape = image.shape
@@ -72,19 +67,12 @@ class GUI:
         
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
         
         return payload
     
     # Function for student to call
     def showImage(self, image):
-    	self.image_show_lock.acquire()
-    	self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-    	self.image_show_lock.release()
+        self.image_to_be_shown = image
 
     # Function to get the client
     # Called when a new client is received
