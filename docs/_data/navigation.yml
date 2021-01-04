@@ -7,8 +7,8 @@ main:
   - title: "Installation"
     url: /installation/
 
-  - title: "Web release"
-    url: /webrelease
+#  - title: "Web release"
+#    url: /webrelease
 
   - title: "Forum"
     url: https://forum.unibotics.org
@@ -23,9 +23,9 @@ docs:
   - title: Exercises
     url: /exercises/
     children:
-      - title: Autonomous Cars
+      - title: Autonomous Driving
         url: /exercises/autonomous_cars_section
-      - title: Mobile Robots
+      - title: Service Robots
         url: /exercises/mobile_robots_section
       - title: Drones
         url: /exercises/drones_section
@@ -36,10 +36,10 @@ docs:
 
   - title: "Contribute"
     children:
-      - title: "Status"
-        url: /status/
-      - title: "Coming soon"
-        url: /coming_soon/
+#      - title: "Status"
+#        url: /status/
+      - title: "Roadmap"
+        url: /roadmap/
       - title: "How to contribute"
         url: /contribute/
 
