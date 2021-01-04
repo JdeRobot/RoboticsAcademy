@@ -1,6 +1,6 @@
 ---
 permalink: /exercises/autonomous_cars_section
-title: "Autonomous Cars exercises"
+title: "Autonomous Driving exercises"
 
 sidebar:
   nav: "docs"

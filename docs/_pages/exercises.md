@@ -192,6 +192,7 @@ feature_row:
     url: "/exercises/IndustrialRobots/mobile_manipulation"
     btn_class: "btn--danger"
     btn_label: "Prototype"
+
 ---
 
 
