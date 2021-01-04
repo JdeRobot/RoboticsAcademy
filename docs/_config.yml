@@ -18,7 +18,7 @@ minimal_mistakes_skin    : "air"
 #locale                   : "en-US"
 title                    : "Robotics-Academy"
 title_separator          : "-"
-subtitle                 : Powered by JdeRobot Organization
+subtitle                 : "By JdeRobot organization"
 name                     : "JdeRobot"
 description              : "Learn Robotics and Computer Vision with JdeRobot"
 url                      : # the base hostname & protocol for your site e.g. "http://jderobot.github.io"

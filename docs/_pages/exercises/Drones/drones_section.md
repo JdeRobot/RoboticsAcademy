@@ -13,7 +13,7 @@ feature_row:
     title: "Drone Gymkhana"
     excerpt: "Learn to control a drone and complete the gymkhana!"
     url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
@@ -21,7 +21,7 @@ feature_row:
     title: "Follow Road"
     excerpt: "Follow a road through color filter segmentation."
     url: "/exercises/Drones/follow_road"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape_teaser.jpg
@@ -29,7 +29,7 @@ feature_row:
     title: "Labyrinth Escape"
     excerpt: "Escape from a labyrinth through visual signals."
     url: "/exercises/Drones/labyrinth_escape"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
@@ -37,7 +37,7 @@ feature_row:
     title: "Position Control"
     excerpt: "Local navigation algorithm through the use of a PID controller."
     url: "/exercises/Drones/position_control"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
@@ -45,7 +45,7 @@ feature_row:
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
     url: "/exercises/Drones/rescue_people"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
@@ -53,7 +53,7 @@ feature_row:
     title: "Follow Turtlebot"
     excerpt: "Follow a turtlebot on the ground."
     url: "/exercises/Drones/follow_turtlebot"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
@@ -61,7 +61,7 @@ feature_row:
     title: "Drone Hangar"
     excerpt: "Escape from a hangar filled with moving obstacles."
     url: "/exercises/Drones/drone_hangar"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
@@ -69,7 +69,7 @@ feature_row:
     title: "Visual Lander"
     excerpt: "Visualization of a beacon and land on it."
     url: "/exercises/Drones/visual_lander"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
     
   - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
@@ -77,7 +77,7 @@ feature_row:
     title: "Drone Cat and Mouse"
     excerpt: "Game of cat and mouse with two quadrotors."
     url: "/exercises/Drones/drone_cat_mouse"
-    btn_class: "btn--primary"
+    btn_class: "btn--inverse"
     btn_label: "Go!"
 ---
 

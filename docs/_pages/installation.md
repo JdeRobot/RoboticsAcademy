@@ -10,8 +10,14 @@ toc_label: "TOC installation"
 toc_icon: "cog"
 ---
 
+**Robotics-Academy (2.3 release)** supports Linux (Ubuntu 18.04, 20.04 and other distributions), MacOS and Windows. The installation has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics-Academy Docker Image. The users of this release should:
 
-Robotics-Academy currently supports **Linux** operating system. These installation instructions have been prepared for Ubuntu Linux 18.04 (LTS). Don't install everything listed here, just follow the directions on the Academy exercise you want to perform. For instance, not all the specific infrastructure packages are required for every exercise, and they can be large packages.
+1. Install the [RADI (Robotics-Academy Docker Image)](https://hub.docker.com/r/jderobot/robotics-academy/tags) on their machines
+2. Copy the [Robotics-Academy source code repository](/installation/#robotics-academy-source-code) on their machines. 
+
+Enjoy :-)
+
+**Robotics-Academy (both 2.1 and 2.0 releases)** currently supports Linux operating system. These installation instructions have been prepared for Ubuntu Linux 18.04 (LTS). Don't install everything listed here, just follow the directions on the Academy exercise you want to perform. For instance, not all the specific infrastructure packages are required for every exercise, and they can be large packages.
 
 1. *Generic infrastucture*
     - Required
@@ -21,9 +27,9 @@ Robotics-Academy currently supports **Linux** operating system. These installati
     - Optional, depends on the exercise
     - Some exercises require also additional software pieces such as OpenCV, MoveIt!, MavROS, PX4, VisualStates, OpenMotionPlanningLibrary, Turtlebot2, etc.
 
-3. *JdeRobot Academy source code*
+3. *Robotics-Academy source code*
     - Required
-    - Academy includes templates for the exercises
+    - Robotics-Academy includes templates for the exercises
 
 # Generic infrastructure
 
@@ -375,7 +381,7 @@ roslaunch rplidar_ros view_rplidar.launch
 
 ## MoveIt!
 
-# Academy source code
+# Robotics-Academy source code
 
 Once you have generic and specific infrastructure installed in your system, you can download and install the JdeRobot Academy software.
 
