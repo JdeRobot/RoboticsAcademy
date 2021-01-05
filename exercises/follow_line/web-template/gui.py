@@ -19,16 +19,19 @@ class GUI:
     def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '','lap': '', 'map': ''}
+        self.payload = {'image': '','lap': '', 'map': '', 'frequency': ''}
         self.server = None
         self.client = None
         
         self.host = host
 
-        self.show_image = False
-        self.show_lock = threading.Lock()
+        # Image variables
+        self.image_to_be_shown = None
+        self.image_to_be_shown_updated = False
+        self.image_show_lock = threading.Lock()
         
         self.acknowledge = False
+        self.time_frequency = 12.5
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
@@ -52,16 +55,16 @@ class GUI:
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
+        self.image_show_lock.acquire()
+        image_to_be_shown_updated = self.image_to_be_shown_updated
+        image_to_be_shown = self.image_to_be_shown
+        self.image_show_lock.release()
+
+        image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
 
-        self.show_lock.acquire()
-        show_image = self.show_image
-        self.show_lock.release()
-
-        if(show_image == False):
+        if(image_to_be_shown_updated == False):
             return payload
-
-    	image = self.hal.getImage()
     	
     	shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
@@ -69,20 +72,19 @@ class GUI:
         
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
         
         return payload
     
     # Function for student to call
     def showImage(self, image):
-    	self.show_lock.acquire()
-    	self.show_image = True
-    	self.show_lock.release()
-
-    # Function for student to call
-    def stopImage(self):
-    	self.show_lock.acquire()
-    	self.show_image = False
-    	self.show_lock.release()
+    	self.image_show_lock.acquire()
+    	self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+    	self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
@@ -97,6 +99,12 @@ class GUI:
         self.acknowledge_lock.release()
         
         return acknowledge
+
+    # Function to get value of Acknowledge
+    def get_frequency(self):
+        frequency = self.time_frequency
+        
+        return frequency
         
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
@@ -105,7 +113,7 @@ class GUI:
         self.acknowledge_lock.release()
         
     # Update the gui
-    def update_gui(self):
+    def update_gui(self, measured_cycle):
     	payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
         
@@ -116,6 +124,12 @@ class GUI:
             
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
+
+        try:
+            ideal_frequency = round(1000 / measured_cycle, 1)
+        except ZeroDivisionError:
+            ideal_frequency = 0
+        self.payload["frequency"] = str(ideal_frequency)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -126,6 +140,8 @@ class GUI:
 		# Acknowledge Message for GUI Thread
 		if(message[:4] == "#ack"):
 			self.set_acknowledge(True)
+			frequency = float(message[4:])
+			self.time_frequency = frequency
 			
 		# Message for Console
 		elif(message[:4] == "#con"):
@@ -146,19 +162,59 @@ class GUI:
 
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI(threading.Thread):
+class ThreadGUI:
     def __init__(self, gui):
         self.gui = gui
+
+        # Time variables
         self.time_cycle = 50
-        threading.Thread.__init__(self)
-        
+        self.ideal_cycle = 50
+        self.iteration_counter = 0
+
+    # Function to start the execution of threads
+    def start(self):
+        self.measure_thread = threading.Thread(target=self.measure_thread)
+        self.thread = threading.Thread(target=self.run)
+
+        self.measure_thread.start()
+        self.thread.start()
+
+        print("GUI Thread Started!")
+
+    # The measuring thread to measure frequency
+    def measure_thread(self):
+        while(self.gui.client == None):
+            pass
+
+        previous_time = datetime.now()
+        while(True):
+            # Sleep for 2 seconds
+            time.sleep(2)
+
+            # Measure the current time and subtract from previous time to get real time interval
+            current_time = datetime.now()
+            dt = current_time - previous_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            previous_time = current_time
+
+            # Get the time period
+            try:
+                # Division by zero
+                self.ideal_cycle = ms / self.iteration_counter
+            except:
+                self.ideal_cycle = 0
+
+            # Reset the counter
+            self.iteration_counter = 0
+
+    # The main thread of execution
     def run(self):
     	while(self.gui.client == None):
     		pass
     
         while(True):
             start_time = datetime.now()
-            self.gui.update_gui()
+            self.gui.update_gui(self.ideal_cycle)
             acknowledge_message = self.gui.get_acknowledge()
             
             while(acknowledge_message == False):
@@ -166,7 +222,11 @@ class ThreadGUI(threading.Thread):
             	
             self.gui.set_acknowledge(False)
             
+            frequency = self.gui.get_frequency()
+            self.time_cycle = 1000.0 / frequency
+            
             finish_time = datetime.now()
+            self.iteration_counter = self.iteration_counter + 1
             
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0

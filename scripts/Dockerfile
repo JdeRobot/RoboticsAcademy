@@ -5,7 +5,7 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
-RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial cmake build-essential
+RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial cmake build-essential wget
 
 # Get the Custom Robot Repository
 # and set the environment variables
