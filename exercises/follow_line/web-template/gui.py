@@ -19,7 +19,7 @@ class GUI:
     def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '','lap': '', 'map': '', 'frequency': ''}
+        self.payload = {'image': '','lap': '', 'map': '', 'text_buffer': '', 'frequency': ''}
         self.server = None
         self.client = None
         
@@ -114,22 +114,30 @@ class GUI:
         
     # Update the gui
     def update_gui(self, measured_cycle):
-    	payload = self.payloadImage()
+        # Payload Image Message
+        payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
         
+        # Payload Lap Message
         lapped = self.lap.check_threshold()
         self.payload["lap"] = ""
         if(lapped != None):
             self.payload["lap"] = str(lapped)
             
+        # Payload Map Message
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
 
+        # Payload Frequency Message
         try:
             ideal_frequency = round(1000 / measured_cycle, 1)
         except ZeroDivisionError:
             ideal_frequency = 0
         self.payload["frequency"] = str(ideal_frequency)
+
+        # Payload Console Messages
+        message_buffer = self.console.get_text_to_be_displayed()
+        self.payload["text_buffer"] = str(message_buffer)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
