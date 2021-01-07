@@ -30,7 +30,12 @@ RUN apt-get install ros-melodic-kobuki-msgs
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc
-RUN echo 'export Xvfb :0 -screen 0 1024x768x16 &> /dev/null' >> ~/.bashrc
+
+# Install and run XDummy XServer
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get -y install xserver-xorg-video-dummy x11-apps
+RUN wget https://xpra.org/xorg.conf
+RUN Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0 &
 RUN echo 'export DISPLAY=:0' >> ~/.bashrc
 
 # websocket server dependency
