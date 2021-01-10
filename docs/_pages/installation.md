@@ -165,14 +165,74 @@ You can install OpenCV in several ways:
 
 For more information, visit the [official repository](https://github.com/opencv/opencv).
 
+## JdeRobot-drones
+
+Source installation (recommended):
+
+1. Install catkin tools
+
+    ```bash
+    sudo apt install python-catkin-tools
+    ```
+
+2. Set up catkin workspace
+
+    ```bash
+    mkdir -p ~/catkin_ws/src
+    cd ~/catkin_ws
+    catkin init
+    echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc # points roscd dir
+    reset
+    ```
+    
+3. Get jderobot-drones ros pkg
+
+    ```bash
+    cd && mkdir repos && cd repos
+    git clone https://github.com/JdeRobot/drones.git
+    ```
+    
+4. Link drone source to catkin_ws
+
+    ```bash
+    roscd
+    ln -s ~/repos/drones/drone_wrapper .
+    ln -s ~/repos/drones/drone_assets .
+    ln -s ~/repos/drones/rqt_drone_teleop .
+    ```
+
+5. Update ros dependencies
+
+    ```bash
+    roscd
+    rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y
+    ```
+
+6. Build 
+
+    ```bash
+    roscd && catkin build
+    ```
+    
+7. Export environment variables
+
+    ```bash
+        roscd
+        echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
+        echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
+        echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:~/repos/drones/drone_assets/models' >> ~/.bashrc
+        source ~/.bashrc
+    ```
+
 ## MavROS
 
-1. Install ROS Melodic, MAVROS and extras
+Binary installation:
+
+1. Install ROS Melodic MAVROS and extras (v1.5.0-1)
 
     ```bash
     sudo apt install ros-melodic-mavros ros-melodic-mavros-extras
     ```
-
 
 ## PX4
 
@@ -240,47 +300,41 @@ Install previous dependencies:
     rm -rf requiredcomponents eprosima_fastrtps-1-7-1-linux.tar.gz
     ```
 
-9. Install catkin tools
+PX4 source installation:
+1. Get PX4 source (v1.11.3)
 
     ```bash
-    sudo apt install python-catkin-tools
+        cd ~/repos
+        git clone https://github.com/PX4/Firmware.git
+        cd Firmware && git checkout v1.11.3
+        git checkout -b v1.11.3
     ```
 
-10. Set up catkin workspace
+2. Build PX4
 
     ```bash
-    mkdir -p catkin_ws/src
-    cd catkin_ws/src
-    git clone https://github.com/PX4/Firmware.git
-    cd Firmware
-    git submodule update --init --recursive
-    cd ..
-    ln -s Firmware/Tools/sitl_gazebo mavlink_sitl_gazebo
-    cd ..
+        cd ~/repos/Firmware
+        DONT_RUN=1 make px4_sitl_default gazebo
     ```
 
-11. Update ROS dependencies
+3. Export environment variables
 
     ```bash
-    rosdep update
-    rosdep check --from-paths . --ignore-src --rosdistro melodic
-    rosdep install --from-paths . --ignore-src --rosdistro melodic -y
+        echo 'export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+        echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/repos/Firmware/Tools/sitl_gazebo/models' >> ~/.bashrc
+        echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    
+        echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware' >> ~/.bashrc
+        echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
+    
+        source ~/.bashrc
     ```
 
-12. Build catkin (make sure to be at /catkin_ws)
+4. Try PX4 (optional)
 
     ```bash
-    catkin build
-    ```
-
-13. Export environment variables
-
-    ```bash
-    echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
-    echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
-    echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:/opt/ros/melodic/share/jderobot_assets/models' >> ~/.bashrc
-
-    source ~/.bashrc
+        roslaunch px4 mavros_posix_sitl.launch
+        pxh> commander arm # when launching finishes
     ```
 
 ## Real Turtlebot2 on ROS Melodic
