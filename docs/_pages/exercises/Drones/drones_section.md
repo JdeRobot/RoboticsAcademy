@@ -77,8 +77,8 @@ feature_row:
     title: "Drone Cat and Mouse"
     excerpt: "Game of cat and mouse with two quadrotors."
     url: "/exercises/Drones/drone_cat_mouse"
-    btn_class: "btn--inverse"
-    btn_label: "Go!"
+    btn_class: "btn--info"
+    btn_label: "2.1"
 ---
 
 
