@@ -16,7 +16,7 @@
 		</include>
 
 		<include>
-			<uri>model://logo_JdeRobot</uri>
+			<uri>model://logoJdeRobot</uri>
 			<pose>-5.4041 0.171664 0 0 -0 0</pose>
 		</include>
 
