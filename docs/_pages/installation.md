@@ -195,7 +195,7 @@ Source installation (recommended):
 4. Link drone source to catkin_ws
 
     ```bash
-    roscd
+    roscd && cd src
     ln -s ~/repos/drones/drone_wrapper .
     ln -s ~/repos/drones/drone_assets .
     ln -s ~/repos/drones/rqt_drone_teleop .
