@@ -1,11 +1,28 @@
-FROM osrf/ros:melodic-desktop-full
+FROM nvidia/cudagl:11.1-base-ubuntu18.04
+
+# Setup NON INTERACTIVE ENVIRONMENT
+ENV DEBIAN_FRONTEND noninteractive
+
+# Download Utilities
+RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial mesa-utils cmake cmake-curses-gui build-essential wget git ssh
+
+# Register ROS package sources
+ENV UBUNTU_RELEASE=bionic
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $UBUNTU_RELEASE main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
+# Install ROS
+RUN apt-get update && apt-get install -y ros-melodic-desktop-full
+RUN rosdep init
+
+# Nvidia Container Runtime
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+
 ENV NVIDIA_VISIBLE_DEVICES \
     ${NVIDIA_VISIBLE_DEVICES:-all}
 
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
-
-RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial cmake build-essential wget
 
 # Get the Custom Robot Repository
 # and set the environment variables
