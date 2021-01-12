@@ -81,15 +81,14 @@
       <!-- Code Editor -->
       <!-- Along with buttons -->
       <div id="code_container">
-
       <div id="editor">from GUI import GUI
-      from HAL import HAL
-      # Enter sequential code!
+from HAL import HAL
+# Enter sequential code!
 
+while True:
+    # Enter iterative code!
+        </div>
 
-      while True:
-      # Enter iterative code!
-      </div>
 
       </div>
       </div>
@@ -124,7 +123,7 @@
     </div>
     </div>
 
-      <iframe id="iframeGzweb" style="display:none;" src="http://127.0.0.1:8080" width="100%" height="50%" ></iframe>
+      <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
       <script type="text/javascript">
       function changeconsole(){
         var console_display = document.getElementById('console').style.display
@@ -136,6 +135,7 @@
         }
       }
       function changegzweb(){
+        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
         var display = document.getElementById('iframeGzweb').style.display
         console.log(display)
         if (display == "none" || display == "none" ) {
@@ -158,7 +158,7 @@
 
 	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
   	<script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/local_functions.js" type="text/javascript" charset="utf-8"></script>
