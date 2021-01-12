@@ -13,6 +13,7 @@ RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E
 
 # Install ROS
 RUN apt-get update && apt-get install -y ros-melodic-desktop-full
+RUN apt install -y python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
 RUN rosdep init
 
 # Nvidia Container Runtime
