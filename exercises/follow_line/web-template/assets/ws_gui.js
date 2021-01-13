@@ -62,19 +62,21 @@ function declare_gui(websocket_address){
 			// Parse the measured GUI frequency
 			frequency = data.frequency;
 			document.querySelector("#ideal_gui_frequency").value = frequency;
+
+			// Parse the Console messages
+			messages = JSON.parse(data.text_buffer);
+			// Loop through the messages and print them on the console
+			for(message of messages){
+				// Set value of command
+				command.value = message
+				// Go to next command line
+				next_command()
+			}
 			
 			// Send the Acknowledgment Message
 			// Along with gui frequency
 			gui_frequency = document.querySelector('#gui_frequency').value
 			websocket_gui.send("#ack" + gui_frequency);
-		}
-		
-		else if(operation == "#cop"){
-			// Set the value of command
-			var command_input = event.data.substring(4, );
-			command.value = command_input;
-			// Go to next command line
-			next_command();
 		}
 		
 		else if(operation == "#cor"){
