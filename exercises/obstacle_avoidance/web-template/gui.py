@@ -33,7 +33,7 @@ class GUI:
 
         self.acknowledge = False
         self.time_frequency = 12.5
-        self.acknowledge_lock = threading.lock()
+        self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
         self.console = console
