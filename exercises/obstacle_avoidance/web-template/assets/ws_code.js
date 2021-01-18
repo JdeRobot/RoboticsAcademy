@@ -41,7 +41,7 @@ function declare_code(websocket_address){
 		}
 		
 		// Send the acknowledgement message along with frequency
-		code_frequency = document.querySelector('#code_frequency');
+		code_frequency = document.querySelector('#code_frequency').value;
 		websocket_code.send("#freq" + code_frequency);
 	};
 }
