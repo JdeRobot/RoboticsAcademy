@@ -182,7 +182,7 @@ Source installation (recommended):
     cd ~/catkin_ws
     catkin init
     echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc # points roscd dir
-    reset
+    source ~/.bashrc
     ```
     
 3. Get jderobot-drones ros pkg
@@ -205,7 +205,8 @@ Source installation (recommended):
 
     ```bash
     roscd
-    rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y
+    rosdep init  # needs to be called ONLY once after installation. sudo might be required
+    rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y  #sudo might be required
     ```
 
 6. Build 
@@ -242,7 +243,8 @@ Install previous dependencies:
 
     ```bash
     wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
-    ./install_geographiclib_datasets.sh
+    chmod +x install_geographiclib_datasets.sh
+    sudo ./install_geographiclib_datasets.sh
     ```
 
 2. Remove modemmanager
