@@ -181,7 +181,7 @@ class ThreadGUI:
         # Time variables
 		self.time_cycle = 50
         self.ideal_cycle = 50
-		self.iteration_counter = 0
+        self.iteration_counter = 0
 
     # Function to start the execution of threads
     def start(self):
