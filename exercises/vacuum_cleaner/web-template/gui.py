@@ -72,7 +72,7 @@ class GUI:
         self.acknowledge_lock.release()
    
     # Update the gui
-    def update_gui(self):
+    def update_gui(self, measured_cycle):
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
         ang_message = self.map.getRobotAngle()
