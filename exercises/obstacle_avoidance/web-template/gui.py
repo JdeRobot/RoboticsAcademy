@@ -175,11 +175,11 @@ class GUI:
 # This class decouples the user thread
 # and the GUI update thread
 class ThreadGUI:
-	def __init__(self, gui):
-		self.gui = gui
+    def __init__(self, gui):
+        self.gui = gui
 
         # Time variables
-		self.time_cycle = 50
+        self.time_cycle = 50
         self.ideal_cycle = 50
         self.iteration_counter = 0
 
