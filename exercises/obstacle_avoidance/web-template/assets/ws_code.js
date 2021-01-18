@@ -104,7 +104,7 @@ function resetSim(){
 }
 
 // Function for range slider
-function frequencyUpdate(vol) {
+function codefrequencyUpdate(vol) {
 	document.querySelector('#code_frequency').value = vol;
 }
 
