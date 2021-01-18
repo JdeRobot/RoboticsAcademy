@@ -54,6 +54,10 @@ function declare_gui(websocket_address){
 			var map_data = JSON.parse(data.map);
 			paintEvent(map_data.target, map_data.car, map_data.obstacle, map_data.average, map_data.laser, map_data.max_range);
 
+			// Parse the measured GUI frequency
+			frequency = data.frequency;
+			document.querySelector("#ideal_gui_frequency").value = frequency;
+
 			// Parse the Console messages
 			messages = JSON.parse(data.text_buffer);
 			// Loop through the messages and print them on the console
