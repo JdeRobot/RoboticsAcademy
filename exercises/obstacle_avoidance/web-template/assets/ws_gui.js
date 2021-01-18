@@ -83,8 +83,6 @@ function declare_gui(websocket_address){
 			// Focus on the next line
 			command.focus();
 		}
-		
-		websocket_gui.send("Received!");
 	};
 }
 
