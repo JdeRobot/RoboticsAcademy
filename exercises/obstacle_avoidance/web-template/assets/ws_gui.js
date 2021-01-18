@@ -8,13 +8,6 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var canvas = document.getElementById("gui_canvas"),
-    context = canvas.getContext('2d');
-    image = new Image();
-    
-// Lap time DOM
-var lap_time_display = document.getElementById("lap_time");
-
 var websocket_gui;
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
@@ -36,34 +29,45 @@ function declare_gui(websocket_address){
 	websocket_gui.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
 
-		if(operation == "#img"){
-			var data = JSON.parse(event.data.substring(4, )),
-				source = decode_utf8(data.image),
-				shape = data.shape;
-
-			canvas.width = shape[1];
-			canvas.height = shape[0];
-
-			image.src = "data:image/jpeg;base64," + source;
-		}
-		
-		else if(operation == "#lap"){
-			var lap_time = event.data.substring(4, );
-			lap_time_display.textContent = lap_time;
-		}
-		
-		else if(operation == "#map"){
-			// Retrieve the data
+		if(operation == "#gui"){
+			// Parse the entire Object
 			var data = JSON.parse(event.data.substring(4, ));
-			paintEvent(data.target, data.car, data.obstacle, data.average, data.laser, data.max_range);
-		}
-		
-		else if(operation == "#cop"){
-			// Set the value of command
-			var command_input = event.data.substring(4, );
-			command.value = command_input;
-			// Go to next command line
-			next_command();
+
+			// Parse the image data
+			var image_data = JSON.parse(data.image),
+				source = decode_utf8(image_data.image),
+				shape = image_data.shape;
+
+			if(source != ""){
+				image.src = "data:image/jpeg;base64," + source;
+				canvas.width = shape[1];
+				canvas.height = shape[0];
+			}
+
+			// Parse the Lap data
+			var lap_time = data.lap;
+			if(lap_time != ""){
+				lap_time_display.textContent = lap_time;
+			}
+
+			// Parse the Map data
+			var map_data = JSON.parse(data.map);
+			paintEvent(map_data.target, map_data.car, map_data.obstacle, map_data.average, map_data.laser, map_data.max_range);
+
+			// Parse the Console messages
+			messages = JSON.parse(data.text_buffer);
+			// Loop through the messages and print them on the console
+			for(message of messages){
+				// Set value of command
+				command.value = message;
+				// Go to next command line
+				next_command();
+			}
+
+			// Send the Acknowledgement Message
+			// Along with gui frequency
+			gui_frequency = document.querySelector('#gui_frequency').value;
+			websocket_gui.send("#ack" + gui_frequency);
 		}
 		
 		else if(operation == "#cor"){
@@ -79,6 +83,18 @@ function declare_gui(websocket_address){
 		websocket_gui.send("Received!");
 	};
 }
+
+// Function for range slider
+function guifrequencyUpdate(vol) {
+	document.querySelector('#gui_frequency').value = vol;
+}
+
+var canvas = document.getElementById("gui_canvas"),
+    context = canvas.getContext('2d');
+    image = new Image();
+    
+// Lap time DOM
+var lap_time_display = document.getElementById("lap_time");
 
 // For image object
 image.onload = function(){
