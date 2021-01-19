@@ -8,7 +8,8 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
-var frequency = "0";
+var frequency = "0",
+	running = false;
 
 //WebSocket for Code
 var websocket_code;
@@ -36,11 +37,12 @@ function declare_code(websocket_address){
 		}
 		else if(operation == "#freq"){
 			frequency = source_code.substring(5,);
-			document.querySelector('#ideal_frequency').value = frequency;
+			document.querySelector('#ideal_code_frequency').value = frequency;
 		}
-		else if(operation == "#ping"){
-			websocket_code.send("#pong")
-		}
+		
+		// Send the acknowledgement message along with frequency
+		code_frequency = document.querySelector('#code_frequency').value;
+		websocket_code.send("#freq" + code_frequency);
 	};
 }
 
@@ -54,22 +56,23 @@ function submitCode(){
 	var debug_level = document.querySelector('input[name = "debug"]').value;
     python_code = "#dbug" + debug_level + python_code
     
-    // Add freqeuncy header
-    python_code = "#freq" + document.querySelector('#frequency').value + "\n" + python_code;
-    
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
-    stop_button.style.cursor = "default";
+	stop_button.style.cursor = "default";
+	
+	running = true;
 }
 
 // Function that send/submits an empty string
 function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
-    websocket_code.send(stop_code);
+	websocket_code.send(stop_code);
+	
+	running = false
 }
 
 // Function to save the code
@@ -95,10 +98,13 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
+	if(running == true){
+		submitCode();
+	}
 }
 
 // Function for range slider
-function frequencyUpdate(vol) {
-	document.querySelector('#frequency').value = vol;
+function codefrequencyUpdate(vol) {
+	document.querySelector('#code_frequency').value = vol;
 }
 
