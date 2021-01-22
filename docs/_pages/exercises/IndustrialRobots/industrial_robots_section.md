@@ -15,7 +15,9 @@ feature_row:
     excerpt: "Pick and place with industrial robot arm and mechanical gripper"
     url: "/exercises/IndustrialRobots/pick_place"
     btn_class: "btn--danger"
-    btn_label: "Prototype"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    version: "v.prototype"
 
   - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
     alt: "Machine Vision"
@@ -23,7 +25,9 @@ feature_row:
     excerpt: "Detect object and obstacle with kinect camera"
     url: "/exercises/IndustrialRobots/machine_vision"
     btn_class: "btn--danger"
-    btn_label: "Prototype"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    version: "v.prototype"
 
   - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
     alt: "Mobile Manipulation"
@@ -31,7 +35,9 @@ feature_row:
     excerpt: "Pick and place with mobile manipulator"
     url: "/exercises/IndustrialRobots/mobile_manipulation"
     btn_class: "btn--danger"
-    btn_label: "Prototype"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    version: "v.prototype"
 
 --- 
 
