@@ -42,8 +42,15 @@
             </div>
           {% endif %}
 
+          
+
           {% if f.url %}
-            <p><a href="{{ f_url }}" class="btn {{ f.btn_class }}">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a></p>
+            <p>
+              <a href="{{ f_url }}" class="btn {{ f.btn_class }}">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>
+              {% if f.version %}
+                <i style="font-size: 12px">{{ f.version | default: site.data.ui-text[site.locale].more_label | default:  }}</i>
+              {% endif %}
+            </p>
           {% endif %}
         </div>
       </div>
