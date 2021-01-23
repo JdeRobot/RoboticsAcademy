@@ -59,10 +59,6 @@ function declare_gui(websocket_address){
 			})
 			drawCircle(content[0], content[1]);
 
-			// Parse the measured GUI frequency
-			frequency = data.frequency;
-			document.querySelector("#ideal_gui_frequency").value = frequency;
-
 			// Parse the Console messages
 			messages = JSON.parse(data.text_buffer);
 			// Loop through the messages and print them on the console
@@ -74,9 +70,7 @@ function declare_gui(websocket_address){
 			}
 			
 			// Send the Acknowledgment Message
-			// Along with gui frequency
-			gui_frequency = document.querySelector('#gui_frequency').value
-			websocket_gui.send("#ack" + gui_frequency);
+			websocket_gui.send("#ack");
 		}
 		
 		else if(operation == "#cor"){
@@ -90,11 +84,6 @@ function declare_gui(websocket_address){
 		}
 		
 	}
-}
-
-// Function for range slider
-function guifrequencyUpdate(vol) {
-	document.querySelector('#gui_frequency').value = vol;
 }
 
 var canvas = document.getElementById("gui_canvas"),
