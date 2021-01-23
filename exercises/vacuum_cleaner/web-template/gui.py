@@ -18,14 +18,13 @@ class GUI:
     def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'map': '', 'text_buffer': '', 'frequency': ''}
+        self.payload = {'map': '', 'text_buffer': ''}
         self.server = None
         self.client = None
         
         self.host = host
 
         self.acknowledge = False
-        self.time_frequency = 12.5
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
@@ -58,12 +57,6 @@ class GUI:
         self.acknowledge_lock.release()
         
         return acknowledge
-
-    # Function to get value of Acknowledge
-    def get_frequency(self):
-        frequency = self.time_frequency
-        
-        return frequency
         
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
@@ -72,19 +65,12 @@ class GUI:
         self.acknowledge_lock.release()
    
     # Update the gui
-    def update_gui(self, measured_cycle):
+    def update_gui(self):
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message   
-
-        # Payload Frequency Message
-        try:
-            ideal_frequency = round(1000 / measured_cycle, 1)
-        except ZeroDivisionError:
-            ideal_frequency = 0
-        self.payload["frequency"] = str(ideal_frequency)
 
         # Payload Console Messages
         message_buffer = self.console.get_text_to_be_displayed()
@@ -99,8 +85,6 @@ class GUI:
 		# Acknowledge Message for GUI Thread
 		if(message[:4] == "#ack"):
 			self.set_acknowledge(True)
-			frequency = float(message[4:])
-			self.time_frequency = frequency
 			
 		# Message for Console
 		elif(message[:4] == "#con"):
@@ -172,16 +156,13 @@ class ThreadGUI:
     
         while(True):
             start_time = datetime.now()
-            self.gui.update_gui(self.ideal_cycle)
+            self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
             
             while(acknowledge_message == False):
             	acknowledge_message = self.gui.get_acknowledge()
             	
             self.gui.set_acknowledge(False)
-            
-            frequency = self.gui.get_frequency()
-            self.time_cycle = 1000.0 / frequency
             
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
