@@ -109,8 +109,8 @@ class ThreadGUI:
         self.gui = gui
 
         # Time variables
-        self.time_cycle = 50
-        self.ideal_cycle = 50
+        self.time_cycle = 80
+        self.ideal_cycle = 80
         self.iteration_counter = 0
 
     # Function to start the execution of threads
