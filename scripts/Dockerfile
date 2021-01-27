@@ -8,6 +8,9 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
 # Setup NON INTERACTIVE ENVIRONMENT
 ENV DEBIAN_FRONTEND noninteractive
 
+# Setup X11 Volume
+VOLUME /tmp/.X11-unix:/tmp/.X11-unix:rw
+
 RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial cmake build-essential wget
 
 # Get the Custom Robot Repository
@@ -46,6 +49,10 @@ RUN pip install websocket_server
 COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
+
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+ENV PATH /usr/local/nvidia/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
 EXPOSE 2303
 EXPOSE 1905
