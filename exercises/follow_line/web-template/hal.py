@@ -30,4 +30,9 @@ class HAL:
     def getImage(self):
         image = self.camera.getImage().data
         return image
+
+    # Reset HAL
+    def resetHAL(self):
+        self.motors.sendV(0)
+        self.motors.sendW(0)
 			
