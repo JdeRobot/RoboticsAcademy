@@ -159,6 +159,9 @@ class BrainProcess(multiprocessing.Process):
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[self.source_code, ])
 
+        self.thread.start()
+        self.measure_thread.start()
+
     # Function to parse the code
     # A few assumptions: 
     # 1. The user always passes sequential and iterative codes
