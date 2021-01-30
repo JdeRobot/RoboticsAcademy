@@ -31,8 +31,8 @@ class Template:
         self.frequency_message = {'brain': '', 'gui': ''}
                 
         # Shared variables
-        self.time_cycle = multiprocessing.Value('i', 80)
-        self.ideal_cycle = multiprocessing.Value('i', 80)
+        self.time_cycle = multiprocessing.Value('d', 80)
+        self.ideal_cycle = multiprocessing.Value('d', 80)
         self.reload = multiprocessing.Value('i', 0)
         
         self.server = None
