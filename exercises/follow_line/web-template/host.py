@@ -73,8 +73,7 @@ class Template:
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if(self.brain_process != None):
-            while self.brain_process.is_alive():
-                self.brain_process.join()
+            self.brain_process.kill()
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload.value = 0
