@@ -51,7 +51,7 @@ class Template:
         
         with self.ideal_cycle.get_lock():
             try:
-                brain_frequency = round(1000 / self.ideal_cycle, 1)
+                brain_frequency = round(1000 / self.ideal_cycle.value, 1)
             except ZeroDivisionError:
                 brain_frequency = 0
 
@@ -91,7 +91,7 @@ class Template:
         # Set brain frequency
         frequency = float(frequency_message["brain"])
         with self.time_cycle.get_lock():
-            self.time_cycle = 1000.0 / frequency
+            self.time_cycle.value = 1000.0 / frequency
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
@@ -259,9 +259,9 @@ class BrainProcess(multiprocessing.Process):
             # Run the iterative part inside template
             # and keep the check for flag
             with self.reload.get_lock():
-                reload = self.reload
+                reload = self.reload.value
 
-            while reload.value == 0:
+            while reload == 0:
                 start_time = datetime.now()
                 
                 # Execute the iterative portion
@@ -282,13 +282,13 @@ class BrainProcess(multiprocessing.Process):
             	# If it's less put to sleep
             	# If it's more no problem as such, but we can change it!
                 with self.time_cycle.get_lock():
-                    time_cycle = self.time_cycle
+                    time_cycle = self.time_cycle.value
 
                 if(ms < time_cycle):
                     time.sleep((time_cycle - ms) / 1000.0)
 
                 with self.reload.get_lock():
-                    reload = self.reload
+                    reload = self.reload.value
 
             print("Current Process Joined!")
 
@@ -329,9 +329,9 @@ class BrainProcess(multiprocessing.Process):
         previous_time = datetime.now()
         # An infinite loop
         with self.reload.get_lock():
-            reload = self.reload
+            reload = self.reload.value
 
-        while reload.value == 0:
+        while reload == 0:
             # Sleep for 2 seconds
             time.sleep(2)
             
@@ -345,12 +345,16 @@ class BrainProcess(multiprocessing.Process):
             with self.ideal_cycle.get_lock():
                 try:
                     # Division by zero
-                    self.ideal_cycle = ms / self.iteration_counter
+                    self.ideal_cycle.value = ms / self.iteration_counter
                 except:
-                    self.ideal_cycle = 0
+                    self.ideal_cycle.value = 0
             
             # Reset the counter
             self.iteration_counter = 0
+
+            # Update reload variable
+            with self.reload.get_lock():
+                reload = self.reload.value
 
 # Execute!
 if __name__ == "__main__":
