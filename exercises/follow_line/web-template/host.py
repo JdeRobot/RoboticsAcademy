@@ -73,16 +73,18 @@ class Template:
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if(self.brain_process != None):
+            self.brain_process.join()
             while self.brain_process.is_alive():
                 pass
 
         # Turn the flag down, the iteration has successfully stopped!
-        self.reload.value = 0
+        with self.reload.get_lock():
+            self.reload.value = 0
         # New process execution
         self.brain_process = BrainProcess(source_code, self.gui, self.hal, self.console,
                                           self.reload, self.time_cycle, self.ideal_cycle)
         self.brain_process.start()
-        print("New Thread Started!")
+        print("New Process Started!")
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
