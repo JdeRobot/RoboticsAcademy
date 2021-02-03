@@ -19,7 +19,7 @@ class GUI:
     def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '','lap': '', 'map': '', 'text_buffer': ''}
+        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':'', 'text_buffer': ''}
         self.server = None
         self.client = None
         
@@ -120,6 +120,14 @@ class GUI:
         # Payload Map Message
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
+	
+	# Payload V Message
+        v_message = str(self.hal.motors.data.vx)
+        self.payload["v"] = v_message
+	
+	# Payload W Message
+        w_message = str(self.hal.motors.data.az)
+        self.payload["w"] = w_message
 
         # Payload Console Messages
         message_buffer = self.console.get_text_to_be_displayed()
@@ -138,7 +146,8 @@ class GUI:
 		# Message for Console
 		elif(message[:4] == "#con"):
 			self.console.prompt(message)
-    
+
+
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
