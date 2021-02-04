@@ -74,6 +74,7 @@ class Template:
         # The thread will die when the coming iteration reads the flag
         if(self.brain_process != None):
             self.brain_process.stop()
+            self.brain_process.join()
             print("Process Joined!")
 
         # Turn the flag down, the iteration has successfully stopped!
@@ -167,7 +168,6 @@ class BrainProcess(multiprocessing.Process):
         self.thread.join()
         self.measure_thread.join()
         print("Threads Joined!")
-        self.join()
 
     # Function to parse the code
     # A few assumptions: 
