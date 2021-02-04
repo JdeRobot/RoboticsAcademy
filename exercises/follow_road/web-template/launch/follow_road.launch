@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="world" default="$(eval env('PWD') + '/follow_road.world')"/>
+    <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
+	<arg name="perspective" default="$(find rqt_drone_teleop)/perspectives/drone_teleop_vel_cam.perspective"/>
+	<!-- <arg name="iris_config" default="$(eval env('PWD') + '/iris.yml')"/> --> <!-- LOCAL IRIS SETTING -->
+
+    <!-- MAVROS posix SITL environment launch script -->
+    <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
+    <!-- vehicle pose -->
+    <arg name="x" default="8"/>
+    <arg name="y" default="0.3"/>
+    <arg name="z" default="1.57"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <!-- vehicle model and world -->
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="iris"/>
+    <arg name="model" default="iris_dual_cam"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/empty.world"/>
+    <arg name="sdf" default="$(find drone_assets)/models/$(arg model)/$(arg model).sdf"/>
+	<!-- PX4 param config -->
+	<arg name="config" default="$(find drone_wrapper)/launch/basic_config.yml"/>
+
+	<!-- gazebo configs -->
+    <arg name="gui" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="true"/>
+    <arg name="paused" default="false"/>
+	<arg name="headless" default="true"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="respawn_gazebo" default="false"/>
+    <!-- MAVROS configs -->
+    <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
+    <arg name="respawn_mavros" default="false"/>
+    <!-- PX4 configs -->
+    <arg name="interactive" default="true"/>
+    <!-- PX4 SITL and Gazebo -->
+    <include file="$(find px4)/launch/posix_sitl.launch">
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="z" value="$(arg z)"/>
+        <arg name="R" value="$(arg R)"/>
+        <arg name="P" value="$(arg P)"/>
+        <arg name="Y" value="$(arg Y)"/>
+        <arg name="world" value="$(arg world)"/>
+        <arg name="vehicle" value="$(arg vehicle)"/>
+        <arg name="sdf" value="$(arg sdf)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="interactive" value="$(arg interactive)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
+		<arg name="headless" value="$(arg headless)"/>
+		<arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+    <!-- MAVROS -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <!-- GCS link is provided by SITL -->
+        <arg name="gcs_url" value=""/>
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+    </include>
+	<!-- PX4 param configuration -->
+	<node name="my_params" pkg="drone_wrapper" type="load_parameters" args="$(arg config)"/>
+
+    <!--<node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="-perspective-file $(arg perspective)"/>-->
+    <!--<node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>-->
+</launch>
