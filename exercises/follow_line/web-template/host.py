@@ -74,8 +74,6 @@ class Template:
         # The thread will die when the coming iteration reads the flag
         if(self.brain_process != None):
             self.brain_process.join()
-            while self.brain_process.is_alive():
-                pass
 
         # Turn the flag down, the iteration has successfully stopped!
         with self.reload.get_lock():
