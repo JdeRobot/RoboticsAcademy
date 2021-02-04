@@ -73,8 +73,7 @@ class Template:
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if(self.brain_process != None):
-            self.brain_process.terminate()
-            self.brain_process.join()
+            self.brain_process.stop()
 
         # Turn the flag down, the iteration has successfully stopped!
         with self.reload.get_lock():
@@ -162,6 +161,11 @@ class BrainProcess(multiprocessing.Process):
 
         self.thread.start()
         self.measure_thread.start()
+
+    def stop(self):
+        self.thread.join()
+        self.measure_thread.join()
+        self.join()
 
     # Function to parse the code
     # A few assumptions: 
