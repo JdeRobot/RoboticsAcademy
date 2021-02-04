@@ -74,6 +74,7 @@ class Template:
         # The thread will die when the coming iteration reads the flag
         if(self.brain_process != None):
             self.brain_process.stop()
+            print("Process Joined!")
 
         # Turn the flag down, the iteration has successfully stopped!
         with self.reload.get_lock():
@@ -165,6 +166,7 @@ class BrainProcess(multiprocessing.Process):
     def stop(self):
         self.thread.join()
         self.measure_thread.join()
+        print("Threads Joined!")
         self.join()
 
     # Function to parse the code
@@ -298,7 +300,7 @@ class BrainProcess(multiprocessing.Process):
                 with self.reload.get_lock():
                     reload = self.reload.value
 
-            print("Current Process Joined!")
+            print("Brain Thread Joined!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
@@ -363,6 +365,8 @@ class BrainProcess(multiprocessing.Process):
             # Update reload variable
             with self.reload.get_lock():
                 reload = self.reload.value
+
+        print("Measuring Thread Joined!")
 
 # Execute!
 if __name__ == "__main__":
