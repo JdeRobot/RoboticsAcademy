@@ -1,7 +1,7 @@
 import json
 import cv2
 import base64
-import threading
+import multiprocessing
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
@@ -28,10 +28,10 @@ class GUI:
         # Image variables
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        self.image_show_lock = multiprocessing.Lock()
         
         self.acknowledge = False
-        self.acknowledge_lock = threading.Lock()
+        self.acknowledge_lock = multiprocessing.Lock()
         
         # Take the console object to set the same websocket and client
         self.console = console
@@ -154,13 +154,13 @@ class GUI:
 
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI:
-    def __init__(self, gui):
+class ProcessGUI:
+    def __init__(self, gui, time_cycle, ideal_cycle):
         self.gui = gui
 
         # Time variables
-        self.time_cycle = 80
-        self.ideal_cycle = 80
+        self.time_cycle = time_cycle
+        self.ideal_cycle = ideal_cycle
         self.iteration_counter = 0
 
     # Function to start the execution of threads
@@ -190,11 +190,12 @@ class ThreadGUI:
             previous_time = current_time
 
             # Get the time period
-            try:
-                # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
-            except:
-                self.ideal_cycle = 0
+            with self.ideal_cycle.get_lock():
+                try:
+                    # Division by zero
+                    self.ideal_cycle.value = ms / self.iteration_counter
+                except:
+                    self.ideal_cycle.value = 0
 
             # Reset the counter
             self.iteration_counter = 0
@@ -216,8 +217,11 @@ class ThreadGUI:
             
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
+
+            with self.time_cycle.get_lock():
+                time_cycle = self.time_cycle.value
             
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.time_cycle):
-                time.sleep((self.time_cycle-ms) / 1000.0)
+            if(ms < time_cycle):
+                time.sleep((time_cycle-ms) / 1000.0)

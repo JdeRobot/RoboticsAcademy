@@ -18,7 +18,7 @@ import rospy
 from std_srvs.srv import Empty
 import cv2
 
-from gui import GUI, ThreadGUI
+from gui import GUI, ProcessGUI
 from hal import HAL
 import console
 
@@ -34,6 +34,9 @@ class Template:
         self.time_cycle = multiprocessing.Value('d', 80)
         self.ideal_cycle = multiprocessing.Value('d', 80)
         self.reload = multiprocessing.Value('i', 0)
+        # Shared GUI Variables
+        self.gui_time_cycle = multiprocessing.Value('d', 80)
+        self.gui_ideal_cycle = multiprocessing.Value('d', 80)
         
         self.server = None
         self.client = None
@@ -55,10 +58,11 @@ class Template:
             except ZeroDivisionError:
                 brain_frequency = 0
 
-        try:
-            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
-        except ZeroDivisionError:
-            gui_frequency = 0
+        with self.gui_ideal_cycle.get_lock():
+            try:
+                gui_frequency = round(1000 / self.gui_ideal_cycle.value, 1)
+            except ZeroDivisionError:
+                gui_frequency = 0
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
@@ -96,7 +100,8 @@ class Template:
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.time_cycle = 1000.0 / frequency
+        with self.gui_time_cycle.get_lock():
+            self.gui_time_cycle.value = 1000.0 / frequency
 
         return
 
@@ -120,7 +125,7 @@ class Template:
     def connected(self, client, server):
     	self.client = client
     	# Start the GUI update thread
-    	self.thread_gui = ThreadGUI(self.gui)
+    	self.thread_gui = ProcessGUI(self.gui, self.gui_time_cycle, self.gui_ideal_cycle)
     	self.thread_gui.start()
 
         # Initialize the ping message
