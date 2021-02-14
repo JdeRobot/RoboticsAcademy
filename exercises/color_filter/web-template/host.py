@@ -33,7 +33,6 @@ class Template:
 
         self.server = None
         self.client = None
-
         self.host = sys.argv[1]
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
@@ -74,14 +73,9 @@ class Template:
         else:
             # Get the frequency of operation, convert to time_cycle and strip
             try:
-                partition = source_code[5:].partition("\n")
-                frequency = partition[0]
-                frequency = float(frequency)
-                self.time_cycle = 1000.0 / frequency
-                source_code = partition[2]
-                # Get the debug level and strip the debug part
+        		# Get the debug level and strip the debug part
                 debug_level = int(source_code[5])
-                source_code = source_code[5:]
+                source_code = source_code[12:]
             except:
                 debug_level = 1
                 source_code = ""
@@ -147,7 +141,6 @@ class Template:
             # Run the iterative part inside template
             # and keep the check for flag
             while self.reload == False:
-                self.server.send_message(self.client, "#pingRunning")
                 start_time = datetime.now()
 
                 # Execute the iterative portion
@@ -174,7 +167,7 @@ class Template:
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(exc_value)
+            self.console.print(str(exc_value))
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
@@ -226,7 +219,7 @@ class Template:
 
             # Send to client
             try:
-                self.server.send_message(self.client, "#freq" + str(round(1000 / self.ideal_cycle, 2)))
+                self.server.send_message(self.client, "#freq" + str(round(1000 / self.ideal_cycle, 1)))
             except ZeroDivisionError:
                 self.server.send_message(self.client, "#freq" + str(0))
 
@@ -250,7 +243,9 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if(message == "#pong"):
+        if(message[:5] == "#freq"):
+            frequency = float(message[5:])
+            self.time_cycle = 1000.0 / frequency
             self.server.send_message(self.client, "#ping")
             return
 
@@ -268,7 +263,6 @@ class Template:
         self.client = client
         # Start the GUI update thread
         t = ThreadGUI(self.gui)
-        t.daemon = True
         t.start()
 
         # Initialize the ping message

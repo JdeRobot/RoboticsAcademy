@@ -23,32 +23,45 @@ function declare_gui(){
             alert("[close] Connection closed!");
         }
     }
-
+	
     // What to do when a message from server is received
     websocket_gui.onmessage = function(event){
         var operation = event.data.substring(0, 4);
 
-        if(operation == "#img"){
-            var data = JSON.parse(event.data.substring(4, )),
-                source = decode_utf8(data.image),
-                shape = data.shape;
+        if(operation == "#gui"){
+			// Parse the entire Object
+			var data = JSON.parse(event.data.substring(4, ));
+			
+			// Parse the Image Data
+			var image_data = JSON.parse(data.image),
+				source = decode_utf8(image_data.image),
+				shape = image_data.shape;
+			
+			if(source != ""){
+				image.src = "data:image/jpeg;base64," + source;
+				canvas.width = shape[1];
+				canvas.height = shape[0];
+			}
+			// Parse the measured GUI frequency
+			frequency = data.frequency;
+			document.querySelector("#ideal_gui_frequency").value = frequency;
 
-            canvas.width = shape[1];
-            canvas.height = shape[0];
-
-            image.src = "data:image/jpeg;base64," + source;
-
-            websocket_gui.send("Image Displayed!")
+			// Parse the Console messages
+			//messages = data.text_buffer;
+			messages = JSON.parse(data.text_buffer);
+			// Loop through the messages and print them on the console
+			for(message of messages){
+				// Set value of command
+				command.value = message
+				// Go to next command line
+				next_command()
+			}
+			// Send the Acknowledgment Message
+			// Along with gui frequency
+			gui_frequency = document.querySelector('#gui_frequency').value
+			websocket_gui.send("#ack" + gui_frequency);
+			
         }
-
-        else if(operation == "#cop"){
-            // Set the value of command
-            var command_input = event.data.substring(4, );
-            command.value = command_input;
-            // Go to next command line
-            next_command();
-        }
-
         else if(operation == "#cor"){
             // Set the value of command
             var command_input = event.data.substring(4, );
@@ -58,12 +71,21 @@ function declare_gui(){
             // Focus on the next line
             command.focus();
         }
+
+		
     }
 }
+
+// Function for range slider
+function guifrequencyUpdate(vol) {
+	document.querySelector('#gui_frequency').value = vol;
+}
+
 
 var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     image = new Image();
+    
 
 // For image object
 image.onload = function(){
@@ -72,6 +94,7 @@ image.onload = function(){
 
 // Request Animation Frame to remove the flickers
 function update_image(){
-    window.requestAnimationFrame(update_image);
-    context.drawImage(image, 0, 0);
+	window.requestAnimationFrame(update_image);
+	context.drawImage(image, 0, 0);
 }
+

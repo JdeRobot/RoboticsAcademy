@@ -8,9 +8,11 @@ var streaming = false;
 var cameraStream = null;
 var vc = null;
 
-var width = 320;
+var width = 320
 var src = null;
-
+var ack= true;
+var last_img = null;
+var last_img_no_send = false;
 //WebSocket for Code
 var websocket_webrtcframe;
 
@@ -42,6 +44,14 @@ function declare_webrtcframe(){
         }
         else if(operation == "#ping"){
             websocket_webrtcframe.send("#pong")
+        }
+		else if(operation == "#ack"){
+			if(last_img_no_send == true)
+			{
+				last_img_no_send = false;
+				send_image(last_img);
+			}else
+				ack = true;
         }
     };
 }
@@ -117,27 +127,29 @@ function encode_utf8(s){
     return encodeURI((s))
 }
 
-function send_image(){
-/*console.log('image width: ' + src.cols + '\n' +
-            'image height: ' + src.rows + '\n' +
-            'image size: ' + src.size().width + '*' + src.size().height + '\n' +
-            'image depth: ' + src.depth() + '\n' +
-            'image channels ' + src.channels() + '\n' +
-            'image type: ' + src.type() + '\n'+
-            'image data: ' + src.data + '\n');*/
-	let dst = new cv.Mat(240, 320, cv.CV_8UC3);
-	cv.cvtColor(src, dst, cv.COLOR_BGRA2BGR);
-	
-    img = encode_utf8(dst.data);
+function send_image(image){
+	let dst2 = new cv.Mat(240, 320, cv.CV_8UC3);
+	cv.cvtColor(image, dst2, cv.COLOR_BGRA2BGR);
+    img = encode_utf8(dst2.data);
 
     websocket_webrtcframe.send(img);
-	dst.delete();
+	dst2.delete();
 }
 
 function startSendImage(){
     setInterval(function(){
         if (streaming != null){
-            send_image();
+			if(ack == true)
+            {
+				send_image(src);
+				ack = false;
+			}else
+			{
+				last_img = src;
+				last_img_no_send = true;
+			}
         }
-    }, 300);
+    }, 100);
+
 }
+

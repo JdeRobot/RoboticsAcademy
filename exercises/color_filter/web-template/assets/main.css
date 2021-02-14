@@ -1,167 +1,148 @@
-body{
-    background-color: whitesmoke;
+
+#right{
+  padding-left:1px;
+  padding-top:5px;
+  background-color: #ddd;
+}
+
+time{
+    margin-left: 10px;
+}
+
+#visual_buttons{
+  margin-left: inherit;
+}
+
+#editor{
+    border: 1px solid lightgray;
+    height: 500px;
+    width: 95%;
+
 }
 
 .navigation-bar{
     width: 100%;
-    height: 80px;
+    height: 30px;
     background-color: white;
-    margin-bottom: 20px;
+    margin-bottom: 2px;
     font-family: -apple-system,BlinkMacSystemFont,"Roboto","Segoe UI","Helvetica Neue","Lucida Grande",Arial,sans-serif;
     font-weight: bold;
-    font-size: 20px;
-}
-
-.navigation-bar p{
-	line-height: 0.5;
+    font-size: 15px;
 }
 
 .navigation-bar .header{
-	padding-top: 1px;
-	padding-left: 10px;
+    padding-top: 2px;
+    padding-left: 0px;
 }
 
 .logo{
     display: inline-block;
     vertical-align: top;
-    height: 100%;
+    height: 80%;
     margin-right: 2%;
+    padding-top: 2px;
 }
 
-#editor {
-    border: 1px solid lightgray;
-    height: 500px;
-    width: 100%;
+#Control{
+  text-align: center;
+  align-items: center;
+  display: inline-block;
+  margin-bottom: 30px;
+}
+.btn_img{
+    height: 25px;
+}
+img{
+    height: 25px;
 }
 
-#Control ul{
-	list-style-type: none;
-	overflow: hidden;
-}
-
-#Control ul > li{
-	display: inline-block;
-	text-align: center;
-}
-
-#Control img{
-	height: 30px;
-}
-
-#submit {
-	width: 80px;
-    height: 50px;
-    border: none;
-    background-color: whitesmoke;
-}
-
-#stop {
+#submit{
+  font-size: 12px;
     width: 80px;
-    height: 50px;
+    height: 40px;
     border: none;
     background-color: whitesmoke;
+    margin-bottom: 10px;
 }
 
-#save {
+#stop{
+   font-size: 12px;
     width: 80px;
-    height: 50px;
+    height: 40px;
     border: none;
     background-color: whitesmoke;
+margin-bottom: 10px;
+
 }
 
-#load {
+#save{
+  font-size: 12px;
     width: 80px;
-    height: 50px;
+    height: 40px;
     border: none;
     background-color: whitesmoke;
+    margin-bottom: 10px;
 }
 
-#reset {
-	width: 80px;
-	height: 50px;
-	border: none;
-	background-color: whitesmoke;
+#load{
+  font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+
 }
 
-#Frequency input[type=range]{
-	width: 100px;
-	height:20px;
+#reset{
+
+  font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+margin-bottom: 10px;
+
+}
+
+#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover{
+    border: 1.5px solid transparent;
+    -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
+    -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
+    border-image: linear-gradient(to right, #3acfd5 0%, #3a4ed5 100%);
+    border-image-slice: 1;
+}
+
+#console_btn{
+    font-size: 10px;
+    width: 80px;
+    height: 45px;
+    border:2px solid black;
+    background-color: white;
+    margin-left: 10px;
+
+}
+
+#console_btn:hover{
+    border: 2px solid transparent;
+    -moz-border-image: -moz-linear-gradient(bottom, whitesmoke 0%, #000 100%);
+    -webkit-border-image: -webkit-linear-gradient(bottom, whitesmoke 0%, #000 100%);
+    border-image: linear-gradient(to bottom, whitesmoke 0%,  #000 100%);
+    border-image-slice: 1;
+}
+
+#terminalimg {
+    float: left;
+    height: 20px;
+    margin-left: 10px;
 }
 
 th, td{
-	padding-left: 45px;
+    padding-left: 10px;
+}
+#frecuency_control{
+  margin-left: 5%;
 }
 
-td{
-	text-align: center;
-}
-
-table{
-	border-spacing: 5px;
-}
-
-#Debug{
-	margin-left: 10%;
-	float: left;
-}
-
-#Debug input{
-	float: left;
-}
-
-#Debug ul{
-	list-style-type: none;
-}
-
-#Debug li{
-	line-height: 3;
-	border: 1px;
-}
-
-#Debug img{
-	width: 30px;
-}
-
-.debug-slider{
-	background: #d3d3d3;
-	-webkit-transform: rotate(-90deg);
-	margin-top: 45%;
-	width: 175px;
-	outline: none;
-}
-
-.debug-slider::-webkit-slider-runnable-track{
-	width: 100%;
-	border: none;
-	border-radius: 5px;
-}
-
-.debug-slider::-webkit-slider-thumb{
-	border: none;
-	height: 16px;
-	width: 16px;
-	border-radius: 50%;
-}
-
-.debug-slider:focus{
-	outline: none;
-}
-
-.debug-labels{
-	float: left;
-	padding-left: 0;
-}
-
-.debug-labels li{
-	margin-bottom: 0px;
-}
-
-#code_container{
-	float: left;
-	width: 40%;
-}
-
-#control_container{
-	float: left;
-	width: 30%;
+.debug{
+ padding-left: 7%;
 }

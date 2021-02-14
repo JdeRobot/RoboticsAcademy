@@ -2,7 +2,6 @@ import threading
 import cv2
 import numpy as np
 from websocket_server import WebsocketServer
-from gui import GUI
 
 # WebRTC Frame Class
 class WebrtcFrame:
@@ -38,11 +37,11 @@ class WebrtcFrame:
             # Once received turn the reload flag up and send it to execute_thread function
             message_array=np.fromstring(message, dtype=int, sep=',')
             message_array.resize(240,320,3)
-            frame_bgr = np.uint8(message_array)
+            frame_int64 = message_array
+            frame_bgr = np.uint8(frame_int64)
             self.frame_rgb = cv2.cvtColor(frame_bgr ,cv2.COLOR_BGR2RGB)
+            self.server.send_message(self.client, "#ack")
             self.reload = True
-
-            #self.execute_thread(frame)
         except:
             pass
 

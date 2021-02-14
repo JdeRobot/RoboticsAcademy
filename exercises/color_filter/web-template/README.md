@@ -17,12 +17,6 @@
 - All the generic and specific infrastructures including required libraries need to be installed already on your machine as stated on the [academy webpage here](http://jderobot.github.io/RoboticsAcademy/installation/).
 
 
-### Launch the gazebo simulation
-
-```bash
-roslaunch ./launch/simple_line_follower_ros.launch
-```
-
 - Determine your machine dns server IP address which is generally in the form of **127.0.0.xx for Linux machine** by running this command
 
 ```bash
