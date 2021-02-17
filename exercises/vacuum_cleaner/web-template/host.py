@@ -9,6 +9,7 @@ import threading
 import sys
 from datetime import datetime
 import re
+import json
 import traceback
 import imp
 
@@ -32,6 +33,7 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
+        self.frequency_message = {'brain': '', 'gui': ''}
                 
         self.server = None
         self.client = None
@@ -39,8 +41,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
-        self.gui = GUI(self.host, self.console)
         self.hal = HAL()
+        self.gui = GUI(self.host, self.console, self.hal)
      
     # Function for saving   
     def save_code(self, source_code):
@@ -93,14 +95,9 @@ class Template:
     	else:
     		# Get the frequency of operation, convert to time_cycle and strip
     		try:
-        		partition = source_code[5:].partition("\n")
-        		frequency = partition[0]
-        		frequency = float(frequency)
-        		self.time_cycle = 1000.0 / frequency
-        		source_code = partition[2]
         		# Get the debug level and strip the debug part
         		debug_level = int(source_code[5])
-        		source_code = source_code[5:]
+        		source_code = source_code[12:]
         	except:
         		debug_level = 1
         		source_code = ""
@@ -168,7 +165,6 @@ class Template:
             # Run the iterative part inside template
             # and keep the check for flag
             while self.reload == False:
-            	self.server.send_message(self.client, "#pingRunning")
                 start_time = datetime.now()
                 
                 # Execute the iterative portion
@@ -251,10 +247,27 @@ class Template:
             self.iteration_counter = 0
             
             # Send to client
-            try:
-            	self.server.send_message(self.client, "#freq" + str(round(1000 / self.ideal_cycle, 2)))
-            except ZeroDivisionError:
-            	self.server.send_message(self.client, "#freq" + str(0))
+            self.send_frequency_message()
+
+    # Function to generate and send frequency messages
+    def send_frequency_message(self):
+        # This function generates and sends frequency measures of the brain and gui
+        brain_frequency = 0; gui_frequency = 0
+        try:
+            brain_frequency = round(1000 / self.ideal_cycle, 1)
+        except ZeroDivisionError:
+            brain_frequency = 0
+
+        try:
+            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+        except ZeroDivisionError:
+            gui_frequency = 0
+
+        self.frequency_message["brain"] = brain_frequency
+        self.frequency_message["gui"] = gui_frequency
+
+        message = "#freq" + json.dumps(self.frequency_message)
+        self.server.send_message(self.client, message)
     
     # Function to maintain thread execution
     def execute_thread(self, source_code):
@@ -273,11 +286,26 @@ class Template:
         self.measure_thread.start()
         print("New Thread Started!")
 
+    # Function to read and set frequency from incoming message
+    def read_frequency_message(self, message):
+        frequency_message = json.loads(message)
+
+        # Set brain frequency
+        frequency = float(frequency_message["brain"])
+        self.time_cycle = 1000.0 / frequency
+
+        # Set gui frequency
+        frequency = float(frequency_message["gui"])
+        self.thread_gui.time_cycle = 1000.0 / frequency
+
+        return
+
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if(message == "#pong"):
-            self.server.send_message(self.client, "#ping")
+        if(message[:5] == "#freq"):
+            frequency_message = message[5:]
+            self.read_frequency_message(frequency_message)
             return
         
         try:
@@ -293,12 +321,11 @@ class Template:
     def connected(self, client, server):
     	self.client = client
     	# Start the GUI update thread
-    	t = ThreadGUI(self.gui)
-    	t.daemon = True
-    	t.start()
+    	self.thread_gui = ThreadGUI(self.gui)
+    	self.thread_gui.start()
 
         # Initialize the ping message
-        self.server.send_message(self.client, "#ping")
+        self.send_frequency_message()
     	
     	print(client, 'connected')
     	

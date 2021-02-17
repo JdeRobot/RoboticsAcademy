@@ -49,7 +49,7 @@ class Map:
 		self.payload["laser"], self.payload["max_range"] = self.setLaserValues()
 		#self.payload["max_range"] = self.laser.maxRange
 
-		message = "#map" + json.dumps(self.payload)
+		message = json.dumps(self.payload)
 		return message
     	
 	def RTx(self, angle, tx, ty, tz):

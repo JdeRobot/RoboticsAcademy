@@ -26,17 +26,19 @@ In this exercise, the cat quadrotor has to be programmed by the student to follo
 {% include gallery caption="Gallery." %}
 
 ## Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy. You won't need jderobot-base and jderobot-base, so you can skip those steps.
 
+<!--
 As this is a drones exercise, you will need to additionally install the `jderobot-assets`, `dronewrapper` and `rqt_drone_teleop` packages. These can be installed as
 
 ```bash
 sudo apt-get install ros-melodic-drone-wrapper ros-melodic-rqt-drone-teleop ros-melodic-jderobot-assets
 ```
+-->
 
-There is an additional dependency on MAVROS and PX4 that you can fulfill following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
+However, there are some additional dependencies. Install **JdeRobot-drones**, **MAVROS** and **PX4** following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
-Finally, due to the use of two drones you have to install `xmlstarlet`:
+Finally, install `xmlstarlet`:
 
 ```bash
 sudo apt-get install -y xmlstarlet
