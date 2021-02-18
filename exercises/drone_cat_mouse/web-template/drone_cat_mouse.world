@@ -6,7 +6,7 @@
 		</include>
 
 		<include>
-			<uri>model://grass_plane</uri>
+			<uri>model://ground_plane</uri>
 		</include>
 
 		<scene>
