@@ -218,10 +218,13 @@ ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/Firmware/Tools/sitl_gazebo/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/Firmware/build/px4_sitl_default/build_gazebo"
 
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware' >> ~/.bashrc
-RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
+RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
 
 # Drone-cat-mouse
 RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
+
+# Update gzweb models (duplicated?)
+RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
 
 EXPOSE 2303
 EXPOSE 1905
