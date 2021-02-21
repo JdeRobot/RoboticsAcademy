@@ -1,0 +1,33 @@
+
+/* Button */
+
+.button {
+ position: relative;
+ left: 5px;
+ top: 70px;
+ display: block;
+ border: solid black;
+ border-width: 1 10px;
+ border-radius: 0;
+ background: whitesmoke;
+ font-size: 18px;
+ cursor: pointer;
+ margin: -60px auto 15px;
+ padding: 10px;
+ 
+}
+
+.button1 {
+ color: black;
+}
+ 
+.button1:hover {
+ 
+ border: solid transparent;
+ color:  #e7e7e7;
+ 
+}
+
+
+
+
