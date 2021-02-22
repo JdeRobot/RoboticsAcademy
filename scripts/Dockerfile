@@ -7,6 +7,7 @@ ENV NVIDIA_DRIVER_CAPABILITIES \
 
 RUN apt-get update && apt-get install -y xvfb libjansson-dev libboost-dev imagemagick libtinyxml-dev mercurial cmake build-essential wget
 
+
 # Get the Custom Robot Repository
 # and set the environment variables
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/JdeRobot/CustomRobots.git && cd CustomRobots && git checkout melodic-devel && git pull origin melodic-devel
@@ -40,9 +41,24 @@ COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
 
+# Color filter with camera
+RUN /bin/bash -c "source /opt/ros/melodic/setup.bash"
+RUN apt install -y python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
+RUN rosdep update
+RUN /bin/bash -c "source /opt/ros/melodic/setup.bash"
+
+RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && \
+                  mkdir -p ~/catkin_ws/src && \
+                  cd ~/catkin_ws/ && \
+                  catkin_make  && \
+                  source devel/setup.bash"
+
+RUN /bin/bash -c "cd ~/catkin_ws/src && catkin_create_pkg cv_basics image_transport cv_bridge sensor_msgs rospy roscpp std_msgs"
+
 EXPOSE 2303
 EXPOSE 1905
 EXPOSE 8080
 EXPOSE 7681
 EXPOSE 8765
+EXPOSE 1831
 
