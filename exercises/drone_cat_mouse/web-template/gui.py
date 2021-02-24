@@ -7,10 +7,6 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 
-from interfaces.pose3d import ListenerPose3d
-
-from lap import Lap
-from map import Map
 
 # Graphical User Interface Class
 class GUI:
@@ -19,7 +15,7 @@ class GUI:
     def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '','lap': '', 'map': '', 'text_buffer': ''}
+        self.payload = {'image': '', 'text_buffer': ''}
         self.server = None
         self.client = None
         
@@ -37,11 +33,6 @@ class GUI:
         self.console = console
         self.hal = hal
         t.start()
-        
-        # Create the lap object
-        pose3d_object = ListenerPose3d("/F1ROS/odom")
-        self.lap = Lap(pose3d_object)
-        self.map = Map(pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
@@ -62,10 +53,10 @@ class GUI:
         image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
 
-        if(image_to_be_shown_updated == False):
+        if not image_to_be_shown_updated:
             return payload
-    	
-    	shape = image.shape
+
+        shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
         
@@ -80,10 +71,10 @@ class GUI:
     
     # Function for student to call
     def showImage(self, image):
-    	self.image_show_lock.acquire()
-    	self.image_to_be_shown = image
+        self.image_show_lock.acquire()
+        self.image_to_be_shown = image
         self.image_to_be_shown_updated = True
-    	self.image_show_lock.release()
+        self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
@@ -110,16 +101,6 @@ class GUI:
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        
-        # Payload Lap Message
-        lapped = self.lap.check_threshold()
-        self.payload["lap"] = ""
-        if(lapped != None):
-            self.payload["lap"] = str(lapped)
-            
-        # Payload Map Message
-        pos_message = str(self.map.getFormulaCoordinates())
-        self.payload["map"] = pos_message
 
         # Payload Console Messages
         message_buffer = self.console.get_text_to_be_displayed()
@@ -131,13 +112,12 @@ class GUI:
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
-		# Acknowledge Message for GUI Thread
-		if(message[:4] == "#ack"):
-			self.set_acknowledge(True)
-			
-		# Message for Console
-		elif(message[:4] == "#con"):
-			self.console.prompt(message)
+        # Acknowledge Message for GUI Thread
+        if message[:4] == "#ack":
+            self.set_acknowledge(True)
+            # Message for Console
+        elif message[:4] == "#con":
+            self.console.prompt(message)
     
     # Activate the server
     def run_server(self):
@@ -148,8 +128,7 @@ class GUI:
 
     # Function to reset
     def reset_gui(self):
-        self.lap.reset()
-        self.map.reset()
+        pass
         
 
 # This class decouples the user thread
@@ -175,11 +154,11 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while(self.gui.client == None):
+        while self.gui.client is None:
             pass
 
         previous_time = datetime.now()
-        while(True):
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -201,17 +180,17 @@ class ThreadGUI:
 
     # The main thread of execution
     def run(self):
-    	while(self.gui.client == None):
-    		pass
+        while self.gui.client is None:
+            pass
     
-        while(True):
+        while True:
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
             
-            while(acknowledge_message == False):
-            	acknowledge_message = self.gui.get_acknowledge()
-            	
+            while not acknowledge_message:
+                acknowledge_message = self.gui.get_acknowledge()
+
             self.gui.set_acknowledge(False)
             
             finish_time = datetime.now()
@@ -219,5 +198,5 @@ class ThreadGUI:
             
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.time_cycle):
+            if ms < self.time_cycle:
                 time.sleep((self.time_cycle-ms) / 1000.0)

@@ -45,20 +45,6 @@ function declare_gui(websocket_address){
 				canvas.height = shape[0];
 			}
 
-			// Parse the Lap data
-			var lap_time = data.lap;
-			if(lap_time != ""){
-				lap_time_display.textContent = lap_time;
-			}
-			
-			// Parse the Map data
-			// Slice off ( and )
-			var pose = data.map.substring(1, data.map.length - 1);	
-			var content = pose.split(',').map(function(item){
-				return parseFloat(item);
-			})
-			drawCircle(content[0], content[1]);
-
 			// Parse the Console messages
 			messages = JSON.parse(data.text_buffer);
 			// Loop through the messages and print them on the console
@@ -89,9 +75,6 @@ function declare_gui(websocket_address){
 var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     image = new Image();
-    
-// Lap time DOM
-var lap_time_display = document.getElementById("lap_time");
 
 // For image object
 image.onload = function(){
