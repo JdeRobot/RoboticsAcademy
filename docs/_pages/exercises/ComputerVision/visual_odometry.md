@@ -48,7 +48,7 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
 
 To launch the exercise, follow the steps below:
 
-* **Download** the rosbag file from here. [http://wiki.jderobot.org/store/slam-datasets/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag](http://wiki.jderobot.org/store/slam-datasets/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag)
+* **Download** the rosbag file from here. [https://gsyc.urjc.es/jmplaza/slam/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag](https://gsyc.urjc.es/jmplaza/slam/rgbd_dataset_freiburg2_pioneer_slam_truncated.bag)
 
 * **Place** the rosbag file in the same directory as of this exercise and replace the name of the rosbag file in the **'visual_odometry.cfg'** or mention the full path of the rosbag file.
 

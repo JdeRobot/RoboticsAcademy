@@ -5,6 +5,12 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
+# Setup NON INTERACTIVE ENVIRONMENT
+ENV DEBIAN_FRONTEND noninteractive
+
+# Setup X11 Volume
+VOLUME /tmp/.X11-unix:/tmp/.X11-unix:rw
+
 # BASE
 RUN apt-get update && apt-get -y --quiet install \
         libjansson-dev \
@@ -217,7 +223,11 @@ RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc
-RUN echo 'export Xvfb :0 -screen 0 1024x768x16 &> /dev/null' >> ~/.bashrc
+
+# Install and run XDummy XServer
+RUN apt-get update && apt-get -y install xserver-xorg-video-dummy x11-apps
+RUN wget https://xpra.org/xorg.conf
+RUN Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0 &
 RUN echo 'export DISPLAY=:0' >> ~/.bashrc
 
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware' >> ~/.bashrc
@@ -229,6 +239,10 @@ RUN pip install websocket_server
 COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
+
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+ENV PATH /usr/local/nvidia/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
 EXPOSE 2303
 EXPOSE 1905
