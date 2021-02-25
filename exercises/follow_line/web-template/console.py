@@ -16,7 +16,7 @@ class Console:
 	
 	# Function to send text to psuedo console
 	def print(self, text):
-		self.text_to_be_displayed_buffer.append(text)
+		self.text_to_be_displayed_buffer.append(str(text))
 		print(text)
 
 	# Function to flush the text buffer
