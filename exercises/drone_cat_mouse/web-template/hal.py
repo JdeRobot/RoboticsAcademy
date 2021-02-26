@@ -6,9 +6,6 @@ from datetime import datetime
 
 from drone_wrapper import DroneWrapper
 
-# from interfaces.camera import ListenerCamera
-# from interfaces.motors import PublisherMotors
-
 
 # Hardware Abstraction Layer
 class HAL:
@@ -19,7 +16,7 @@ class HAL:
         rospy.init_node("HAL")
     
         self.image = None
-        self.drone = DroneWrapper()
+        self.drone = DroneWrapper(name="rqt", ns="cat/")
         # self.camera = ListenerCamera("/cat/drone_wrapper/cam_frontal/image_raw")
         # self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
         # self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
@@ -32,6 +29,13 @@ class HAL:
         return new_instance
     
     # Get Image from ROS Driver Camera
-    def getImage(self):
-        image = self.camera.getImage().data
+    def getFrontalImage(self):
+        image = self.drone.get_frontal_image()
         return image
+
+    def getVentralImage(self):
+        image = self.drone.get_ventral_image()
+        return image
+
+    def takeoff(self):
+        self.drone.takeoff()

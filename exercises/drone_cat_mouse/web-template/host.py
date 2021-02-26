@@ -151,10 +151,6 @@ class Template:
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
-        
-        # Whatever the code is, first step is to just stop!
-        # motors# self.hal.motors.sendV(0)
-        # motors# self.hal.motors.sendW(0)
 
         try:
             # The Python exec function
@@ -197,11 +193,15 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        # motors# hal_module = imp.new_module("HAL")
-        # motors# hal_module.HAL = imp.new_module("HAL")
+        hal_module = imp.new_module("HAL")
+        hal_module.HAL = imp.new_module("HAL")
+        # hal_module.drone = imp.new_module("drone")
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
         # Add HAL functions
+        hal_module.HAL.getFrontalImage = self.hal.getFrontalImage
+        hal_module.HAL.getVentralImage = self.hal.getVentralImage
+        hal_module.HAL.takeoff = self.hal.takeoff
         # motors# hal_module.HAL.getImage = self.hal.getImage
         # motors# hal_module.HAL.motors.sendV = self.hal.motors.sendV
         # motors# hal_module.HAL.motors.sendW = self.hal.motors.sendW
@@ -216,11 +216,10 @@ class Template:
         # Adding modules to system
         # Protip: The names should be different from
         # other modules, otherwise some errors
-        # motors# sys.modules["HAL"] = hal_module
+        sys.modules["HAL"] = hal_module
         sys.modules["GUI"] = gui_module
 
-        # motors# return gui_module, hal_module
-        return gui_module
+        return gui_module, hal_module
 
     # Function to measure the frequency of iterations
     def measure_frequency(self):
