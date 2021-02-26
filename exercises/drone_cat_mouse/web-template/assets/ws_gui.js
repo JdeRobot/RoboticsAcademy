@@ -58,6 +58,35 @@ function declare_gui(websocket_address){
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
 		}
+
+		if(operation == "#gui-left"){
+			// Parse the entire Object
+			var data = JSON.parse(event.data.substring(9, ));
+
+			// Parse the Image Data
+			var image_data = JSON.parse(data.image),
+				source = decode_utf8(image_data.image),
+				shape = image_data.shape;
+
+			if(source != ""){
+				image_left.src = "data:image/jpeg;base64," + source;
+				canvas_left.width = shape[1];
+				canvas_left.height = shape[0];
+			}
+
+			// Parse the Console messages
+			messages = JSON.parse(data.text_buffer);
+			// Loop through the messages and print them on the console
+			for(message of messages){
+				// Set value of command
+				command.value = message
+				// Go to next command line
+				next_command()
+			}
+
+			// Send the Acknowledgment Message
+			websocket_gui.send("#ack");
+		}
 		
 		else if(operation == "#cor"){
 			// Set the value of command
@@ -72,17 +101,31 @@ function declare_gui(websocket_address){
 	}
 }
 
-var canvas = document.getElementById("gui_canvas"),
+var canvas = document.getElementById("gui_canvas_right"),
     context = canvas.getContext('2d');
     image = new Image();
+    canvas_left = document.getElementById("gui_canvas_left"),
+    context_left = canvas_left.getContext('2d')
+    image_left = new Image();
 
 // For image object
 image.onload = function(){
     update_image();
 }
 
+// For image object
+image_left.onload = function(){
+    update_left_image();
+}
+
 // Request Animation Frame to remove the flickers
 function update_image(){
 	window.requestAnimationFrame(update_image);
 	context.drawImage(image, 0, 0);
+}
+
+// Request Animation Frame to remove the flickers
+function update_left_image(){
+	window.requestAnimationFrame(update_image);
+	context.drawImage(left_image, 0, 0);
 }

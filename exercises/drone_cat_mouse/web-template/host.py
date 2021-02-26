@@ -212,6 +212,7 @@ class Template:
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
+        gui_module.GUI.showLeftImage = self.gui.showLeftImage
 
         # Adding modules to system
         # Protip: The names should be different from
