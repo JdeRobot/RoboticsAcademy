@@ -74,7 +74,7 @@ class GUI:
 
         # Payload Console Messages
         message_buffer = self.console.get_text_to_be_displayed()
-        self.payload["text_buffer"] = str(message_buffer)
+        self.payload["text_buffer"] = json.dumps(message_buffer)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
