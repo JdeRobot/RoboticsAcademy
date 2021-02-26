@@ -199,8 +199,8 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/J
 
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/RoboticsAcademy/exercises/follow_line/web-template/launch"
-ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/Firmware/Tools/sitl_gazebo/models"
+ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/Firmware/build/px4_sitl_default/build_gazebo"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/Firmware/Tools/sitl_gazebo/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/Firmware/build/px4_sitl_default/build_gazebo"
 
 # GzWeb
