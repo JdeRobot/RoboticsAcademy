@@ -91,18 +91,14 @@ class RosConsumer:
       # Convert ROS Image message to OpenCV image
       current_frame = br.imgmsg_to_cv2(data)
 
-      shape = current_frame.shape
-      frame = cv2.imencode('.JPEG', current_frame)[1]
-      encoded_image = base64.b64encode(frame)
+      _, im_arr = cv2.imencode('.jpg', current_frame)  # im_arr: image in Numpy one-dim array format.
+      im_bytes = im_arr.tobytes()
+      im_b64 = base64.b64encode(im_bytes)
 
-      payload = {'image': '', 'shape': ''}
-      payload['image'] = encoded_image.decode("utf-8")
-      payload['shape'] = shape
-      payload["image"] = json.dumps(payload)
-
-      message = "#gui" + json.dumps(payload)
-      self.server.send_message(self.client, message)
-
+      try:
+        self.server.send_message(self.client, im_b64)
+      except:
+          pass
     def receive_message(self):
 
       # Tells rospy the name of the node.
@@ -116,8 +112,6 @@ class RosConsumer:
       # spin() simply keeps python from exiting until this node is stopped
       rospy.spin()
 
-      # Close down the video stream when done
-      cv2.destroyAllWindows()
 
 if __name__ == '__main__':
   ros =  RosConsumer("0.0.0.0")

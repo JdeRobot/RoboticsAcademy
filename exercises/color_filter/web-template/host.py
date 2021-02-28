@@ -11,11 +11,11 @@ from datetime import datetime
 import re
 import traceback
 import imp
-
+import signal
 import cv2
-
+import os
 from gui import GUI, ThreadGUI
-from webrtc_frame import WebrtcFrame
+import subprocess
 import console
 
 class Template:
@@ -37,8 +37,9 @@ class Template:
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
         self.console = console.Console()
+        self.exercice = subprocess.Popen(["python", "consumer.py"], stdout=subprocess.PIPE, preexec_fn=os.setsid)
+
         self.gui = GUI(self.host, self.console)
-        self.webrtc = WebrtcFrame(self.host)
 
     # Function for saving
     def save_code(self, source_code):
@@ -135,8 +136,8 @@ class Template:
         try:
             # The Python exec function
             # Run the sequential part
-            gui_module, webrtc_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "WEBRTC": webrtc_module, "time": time}, reference_environment)
+            gui_module = self.generate_modules()
+            exec(sequential_code, {"GUI": gui_module, "time": time}, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag
@@ -177,22 +178,14 @@ class Template:
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
-
-        # Define WebRtc module
-        webrtc_module = imp.new_module("WEBRTC")
-        webrtc_module.WebrtcFrame = imp.new_module("WEBRTC")
-
-        # Add WebRTC functions
-        webrtc_module.WebrtcFrame.getImage = self.webrtc.getImage
+        gui_module.GUI.getImage = self.gui.getImage
 
         # Adding modules to system
         # Protip: The names should be different from
         # other modules, otherwise some errors
         sys.modules["GUI"] = gui_module
-        sys.modules["WEBRTC"] = webrtc_module
 
-        return gui_module, webrtc_module
-
+        return gui_module
     # Function to measure the frequency of iterations
     def measure_frequency(self):
         previous_time = datetime.now()
@@ -272,6 +265,7 @@ class Template:
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
+        os.killpg(os.getpgid(self.exercice.pid), signal.SIGKILL)
         print(client, 'closed')
 
     def run_server(self):

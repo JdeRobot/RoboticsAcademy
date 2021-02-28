@@ -12,7 +12,6 @@ function declare_gui(){
 
     websocket_gui.onopen = function(event){
         alert("[open] Connection established!");
-        startStreaming();
     }
 
     websocket_gui.onclose = function(event){
