@@ -29,7 +29,7 @@ function declare_gui(websocket_address){
 	// What to do when a message from server is received
 	websocket_gui.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
-		
+
 		if(operation == "#gui"){
 			// Parse the entire Object
 			var data = JSON.parse(event.data.substring(4, ));
@@ -59,9 +59,9 @@ function declare_gui(websocket_address){
 			websocket_gui.send("#ack");
 		}
 
-		if(operation == "#gui-left"){
+		if(operation == "#gul"){
 			// Parse the entire Object
-			var data = JSON.parse(event.data.substring(9, ));
+			var data = JSON.parse(event.data.substring(4, ));
 
 			// Parse the Image Data
 			var image_data = JSON.parse(data.image),
@@ -104,7 +104,7 @@ function declare_gui(websocket_address){
 var canvas = document.getElementById("gui_canvas_right"),
     context = canvas.getContext('2d');
     image = new Image();
-    canvas_left = document.getElementById("gui_canvas_left"),
+var canvas_left = document.getElementById("gui_canvas_left"),
     context_left = canvas_left.getContext('2d')
     image_left = new Image();
 
@@ -126,6 +126,6 @@ function update_image(){
 
 // Request Animation Frame to remove the flickers
 function update_left_image(){
-	window.requestAnimationFrame(update_image);
-	context.drawImage(left_image, 0, 0);
+	window.requestAnimationFrame(update_left_image);
+	context_left.drawImage(image_left, 0, 0);
 }

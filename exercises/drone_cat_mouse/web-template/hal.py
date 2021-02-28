@@ -17,9 +17,6 @@ class HAL:
     
         self.image = None
         self.drone = DroneWrapper(name="rqt", ns="cat/")
-        # self.camera = ListenerCamera("/cat/drone_wrapper/cam_frontal/image_raw")
-        # self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
-        # self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -31,11 +28,13 @@ class HAL:
     # Get Image from ROS Driver Camera
     def getFrontalImage(self):
         image = self.drone.get_frontal_image()
-        return image
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return image_rgb
 
     def getVentralImage(self):
         image = self.drone.get_ventral_image()
-        return image
+        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return image_rgb
 
     def takeoff(self):
         self.drone.takeoff()

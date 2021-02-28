@@ -156,7 +156,7 @@ class GUI:
         message_buffer = self.console.get_text_to_be_displayed()
         self.left_payload["text_buffer"] = str(message_buffer)
 
-        message = "#gui-left" + json.dumps(self.left_payload)
+        message = "#gul" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
             
     # Function to read the message from websocket
