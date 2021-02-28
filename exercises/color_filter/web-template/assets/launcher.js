@@ -1,4 +1,4 @@
-/*ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
+ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
 exercise = "color_filter"
 
 ws_manager.onopen = function(event){
@@ -8,7 +8,7 @@ ws_manager.onopen = function(event){
 
 ws_manager.onmessage = function(event){
     console.log(event.data);
-}*/
+}
 
 setTimeout(function(){
     declare_code();
