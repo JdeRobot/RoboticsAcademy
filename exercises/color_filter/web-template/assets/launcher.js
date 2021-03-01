@@ -13,5 +13,4 @@ ws_manager.onmessage = function(event){
 setTimeout(function(){
     declare_code();
     declare_gui();
-    declare_webrtcframe();
 }, 10000);

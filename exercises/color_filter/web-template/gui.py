@@ -35,8 +35,7 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.console = console
         t.start()
-        time.sleep(10)
-        self.receiveImg = ReceiveImage(self.host)
+        self.receiveImg = ReceiveImage()
 
 
     # Explicit initialization function
@@ -75,7 +74,8 @@ class GUI:
         return payload
 
     def getImage(self):
-        return  self.receiveImg.image
+        img = self.receiveImg.getImage()
+        return img
     # Function for student to call
     def showImage(self, image):
     	self.image_show_lock.acquire()
