@@ -201,10 +201,19 @@ class Template:
         # Add HAL functions
         hal_module.HAL.getFrontalImage = self.hal.getFrontalImage
         hal_module.HAL.getVentralImage = self.hal.getVentralImage
+        hal_module.HAL.get_position = self.hal.get_position
+        hal_module.HAL.get_velocity = self.hal.get_velocity
+        hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
+        hal_module.HAL.get_orientation = self.hal.get_orientation
+        hal_module.HAL.get_roll = self.hal.get_roll
+        hal_module.HAL.get_pitch = self.hal.get_pitch
+        hal_module.HAL.get_yaw = self.hal.get_yaw
+        hal_module.HAL.get_landed_state = self.hal.get_landed_state
+        hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
+        hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
+        hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
         hal_module.HAL.takeoff = self.hal.takeoff
-        # motors# hal_module.HAL.getImage = self.hal.getImage
-        # motors# hal_module.HAL.motors.sendV = self.hal.motors.sendV
-        # motors# hal_module.HAL.motors.sendW = self.hal.motors.sendW
+        hal_module.HAL.land = self.hal.land
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
