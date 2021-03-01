@@ -74,8 +74,8 @@ class GUI:
         return payload
 
     def getImage(self):
-        img = self.receiveImg.getImage()
-        return img
+        return self.receiveImg.getImage()
+
     # Function for student to call
     def showImage(self, image):
     	self.image_show_lock.acquire()
