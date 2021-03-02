@@ -1,5 +1,5 @@
 ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
-exercise = "color_filter"
+exercise = "color_filter_webrtc"
 
 ws_manager.onopen = function(event){
     ws_manager.send(JSON.stringify({"command": "exit", "exercise": ""}));
