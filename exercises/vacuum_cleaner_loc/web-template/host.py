@@ -192,7 +192,7 @@ class Template:
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(exc_value)
+            self.console.print(str(exc_value))
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
@@ -246,9 +246,6 @@ class Template:
             
             # Reset the counter
             self.iteration_counter = 0
-            
-            # Send to client
-            self.send_frequency_message()
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
@@ -309,6 +306,7 @@ class Template:
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            self.send_frequency_message()
             return
         
         try:

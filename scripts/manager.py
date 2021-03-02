@@ -90,7 +90,7 @@ async def hello(websocket, path):
         command = data["command"]
         if command == "open":
             print("> Starting simulation")
-            xvfb_cmd = "/usr/bin/Xvfb :0 -screen 0 1024x768x16"
+            xvfb_cmd = "/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0"
             xvfb_thread = DockerThread(xvfb_cmd)
             xvfb_thread.start()
             roslaunch_cmd = ros_instructions(data["exercise"])

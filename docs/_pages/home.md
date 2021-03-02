@@ -40,7 +40,7 @@ feature_row:
     alt: "100% free"
     title: "Forum"
     excerpt: "Receive support, show your results and help others at the community forum"
-    url: "https://forum.unibotics.org"
+    url: "https://forum.jderobot.org/c/english/roboticsacademy"
 #    url: "/webrelease"
     btn_class: "btn--primary"
     btn_label: "Go!"
