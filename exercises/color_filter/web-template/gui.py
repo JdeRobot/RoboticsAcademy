@@ -5,7 +5,7 @@ import threading
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
-from receive_img import ReceiveImage
+from consumer_img import ConsumerImage
 
 import logging
 
@@ -35,8 +35,7 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.console = console
         t.start()
-        time.sleep(10)
-        self.receiveImg = ReceiveImage(self.host)
+        self.receiveImg = ConsumerImage()
 
 
     # Explicit initialization function
@@ -75,7 +74,8 @@ class GUI:
         return payload
 
     def getImage(self):
-        return  self.receiveImg.image
+        return self.receiveImg.getImage()
+
     # Function for student to call
     def showImage(self, image):
     	self.image_show_lock.acquire()

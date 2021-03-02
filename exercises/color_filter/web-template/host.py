@@ -11,9 +11,7 @@ from datetime import datetime
 import re
 import traceback
 import imp
-import signal
 import cv2
-import os
 from gui import GUI, ThreadGUI
 import subprocess
 import console
@@ -37,8 +35,6 @@ class Template:
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
         self.console = console.Console()
-        self.exercice = subprocess.Popen(["python", "consumer.py"], stdout=subprocess.PIPE, preexec_fn=os.setsid)
-
         self.gui = GUI(self.host, self.console)
 
     # Function for saving
@@ -265,7 +261,6 @@ class Template:
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-        os.killpg(os.getpgid(self.exercice.pid), signal.SIGKILL)
         print(client, 'closed')
 
     def run_server(self):
