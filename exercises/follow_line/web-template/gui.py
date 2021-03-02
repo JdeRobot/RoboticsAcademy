@@ -5,6 +5,7 @@ import threading
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
+import multiprocessing
 import logging
 
 from interfaces.pose3d import ListenerPose3d
@@ -30,9 +31,6 @@ class GUI:
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
         
-        self.acknowledge = False
-        self.acknowledge_lock = threading.Lock()
-        
         # Take the console object to set the same websocket and client
         self.console = console
         self.hal = hal
@@ -42,6 +40,11 @@ class GUI:
         pose3d_object = ListenerPose3d("/F1ROS/odom")
         self.lap = Lap(pose3d_object)
         self.map = Map(pose3d_object)
+
+        # Event objects for multiprocessing
+        self.ack_event = multiprocessing.Event()
+        self.cli_event = multiprocessing.Event()
+        self.upd_event = multiprocessing.Event()
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
@@ -90,20 +93,7 @@ class GUI:
     def get_client(self, client, server):
         self.client = client
         self.console.set_websocket(self.server, self.client)
-        
-    # Function to get value of Acknowledge
-    def get_acknowledge(self):
-        self.acknowledge_lock.acquire()
-        acknowledge = self.acknowledge
-        self.acknowledge_lock.release()
-        
-        return acknowledge
-        
-    # Function to get value of Acknowledge
-    def set_acknowledge(self, value):
-        self.acknowledge_lock.acquire()
-        self.acknowledge = value
-        self.acknowledge_lock.release()
+        self.cli_event.set()
         
     # Update the gui
     def update_gui(self):
@@ -120,12 +110,12 @@ class GUI:
         # Payload Map Message
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
-	
-	# Payload V Message
+
+        # Payload V Message
         v_message = str(self.hal.motors.data.vx)
         self.payload["v"] = v_message
-	
-	# Payload W Message
+
+        # Payload W Message
         w_message = str(self.hal.motors.data.az)
         self.payload["w"] = w_message
 
@@ -139,14 +129,14 @@ class GUI:
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
-		# Acknowledge Message for GUI Thread
-		if(message[:4] == "#ack"):
-			self.set_acknowledge(True)
-			
-		# Message for Console
-		elif(message[:4] == "#con"):
-			self.console.prompt(message)
-
+        # Acknowledge Message for GUI Thread
+        if(message[:4] == "#ack"):
+            # Set acknowledgement flag
+            self.ack_event.set()
+            
+        # Message for Console
+        elif(message[:4] == "#con"):
+            self.console.prompt(message)
 
     # Activate the server
     def run_server(self):
@@ -159,34 +149,61 @@ class GUI:
     def reset_gui(self):
         self.lap.reset()
         self.map.reset()
+
+    # Thread function for pipe communication with GUI process
+    def start_event_thread(self):
+        thread = threading.Thread(target=self.event_thread)
+        thread.start()
+
+        # Return event objects
+        return self.ack_event, self.cli_event, self.upd_event
+
+    # The event thread for pipe
+    def event_thread(self):
+        # Thread Loop to wait for update_gui event
+        while True:
+            self.upd_event.wait()
+            if(self.upd_event.is_set()):
+                self.update_gui()
+                self.upd_event.clear()
+
         
 
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI:
-    def __init__(self, gui):
-        self.gui = gui
+class ThreadGUI(multiprocessing.Process):
+    def __init__(self, events, ideal_cycle, time_cycle):
+        super(ThreadGUI, self).__init__()
+
+        # Events
+        self.ack_event = events[0]
+        self.cli_event = events[1]
+        self.upd_event = events[2]
+
+        self.exit_signal = multiprocessing.Event()
 
         # Time variables
-        self.time_cycle = 80
-        self.ideal_cycle = 80
+        self.time_cycle = time_cycle
+        self.ideal_cycle = ideal_cycle
         self.iteration_counter = 0
 
     # Function to start the execution of threads
-    def start(self):
+    def run(self):
+        # Wait for client before starting
+        self.cli_event.wait()
+
         self.measure_thread = threading.Thread(target=self.measure_thread)
-        self.thread = threading.Thread(target=self.run)
+        self.thread = threading.Thread(target=self.run_gui)
 
         self.measure_thread.start()
         self.thread.start()
 
         print("GUI Thread Started!")
 
+        self.exit_signal.wait()
+
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while(self.gui.client == None):
-            pass
-
         previous_time = datetime.now()
         while(True):
             # Sleep for 2 seconds
@@ -201,32 +218,36 @@ class ThreadGUI:
             # Get the time period
             try:
                 # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
+                with self.ideal_cycle.get_lock():
+                    self.ideal_cycle.value = ms / self.iteration_counter
             except:
-                self.ideal_cycle = 0
+                with self.ideal_cycle.get_lock():
+                    self.ideal_cycle.value = 0
 
             # Reset the counter
             self.iteration_counter = 0
 
     # The main thread of execution
-    def run(self):
-    	while(self.gui.client == None):
-    		pass
-    
+    def run_gui(self):
         while(True):
             start_time = datetime.now()
-            self.gui.update_gui()
-            acknowledge_message = self.gui.get_acknowledge()
-            
-            while(acknowledge_message == False):
-            	acknowledge_message = self.gui.get_acknowledge()
-            	
-            self.gui.set_acknowledge(False)
+            # Send update signal
+            self.upd_event.set()
+
+            # Wait for acknowldege signal
+            self.ack_event.wait()
+            self.ack_event.clear()
             
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
             
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.time_cycle):
-                time.sleep((self.time_cycle-ms) / 1000.0)
+            
+            with self.time_cycle.get_lock():
+                time_cycle = self.time_cycle.value
+
+            if(ms < time_cycle):
+                time.sleep((time_cycle-ms) / 1000.0)
+
+        self.exit_signal.set()

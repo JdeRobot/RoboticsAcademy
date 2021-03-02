@@ -6,6 +6,7 @@ from websocket_server import WebsocketServer
 import logging
 import time
 import threading
+import multiprocessing
 import sys
 from datetime import datetime
 import re
@@ -34,6 +35,10 @@ class Template:
         self.ideal_cycle = 80
         self.iteration_counter = 0
         self.frequency_message = {'brain': '', 'gui': ''}
+
+        # GUI variables
+        self.gui_time_cycle = multiprocessing.Value('d', 80)
+        self.gui_ideal_cycle = multiprocessing.Value('d', 80)
                 
         self.server = None
         self.client = None
@@ -260,7 +265,8 @@ class Template:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+            with self.gui_ideal_cycle.get_lock():
+                gui_frequency = round(1000 / self.gui_ideal_cycle.value, 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -297,7 +303,8 @@ class Template:
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.time_cycle = 1000.0 / frequency
+        with self.gui_time_cycle.get_lock():
+            self.gui_time_cycle.value = 1000.0 / frequency
 
         return
 
@@ -324,7 +331,8 @@ class Template:
     def connected(self, client, server):
     	self.client = client
     	# Start the GUI update thread
-    	self.thread_gui = ThreadGUI(self.gui)
+        events = self.gui.start_event_thread()
+    	self.thread_gui = ThreadGUI(events, self.gui_ideal_cycle, self.gui_time_cycle)
     	self.thread_gui.start()
 
         # Initialize the ping message
