@@ -51,6 +51,13 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 docker pull jderobot/robotics-academy
 	```
 
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+#### Enable GPU Acceleration (For advanced users)
+- For Linux machines, GPU acceleration can be enabled by downloading Nvidia Container Runtime, as given [here](https://github.com/NVIDIA/nvidia-container-runtime)
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
+
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background
 
@@ -88,7 +95,7 @@ while True:
 
 * **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
 
 **Application Programming Interface**
 
@@ -210,8 +217,6 @@ Implementation of navigation algorithms for an autonomous vacuum is the basic re
 ### Coverage Algorithms
 
 Coverage Path Planning is an important area of research in Path Planning for robotics, which involves finding a path that passes through every reachable position in its environment. In this exercise, We are using a very basic coverage algorithm called Random Exploration.
-
-![Coverage Algorithms]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/exp.gif)
 
 ## Analyzing Coverage Algorithms
 

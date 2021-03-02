@@ -7,6 +7,7 @@ class Console:
 	# Initialize the websocket and client
 	def __init__(self):
 		self.lock = threading.Lock()
+		self.text_to_be_displayed_buffer = []
 		
 	# Function to set the websocket data
 	def set_websocket(self, websocket, client):
@@ -15,9 +16,14 @@ class Console:
 	
 	# Function to send text to psuedo console
 	def print(self, text):
-		message = "#cop" + str(text)
+		self.text_to_be_displayed_buffer.append(str(text))
 		print(text)
-		self.server.send_message(self.client, message)
+
+	# Function to flush the text buffer
+	def get_text_to_be_displayed(self):
+		buffer = self.text_to_be_displayed_buffer
+		self.text_to_be_displayed_buffer = []
+		return buffer
 
 	# Function to read from psuedo console
 	def read(self, text):

@@ -2,11 +2,12 @@
 <launch>
     <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
     <!--<arg name="mouse_file_name" default="$(eval env('PWD') + '/teleoperated_mouse.py')"/> -->
+    <arg name="perspective" default="$(find rqt_drone_teleop)/perspectives/drone_teleop_vel_cam.perspective"/>
 
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
-    <arg name="world" default="$(find jderobot_assets)/worlds/iris_drone_cat_mouse.world"/>
+    <arg name="world" default="$(eval env('PWD') + '/drone_cat_mouse.world')"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -26,7 +27,7 @@
     <rosparam command="load" file="$(eval env('PWD') + '/drone_cat_mouse.yaml')" />
 
     <group ns="cat">
-        <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
+        <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(arg perspective)"/>
         <node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="0"/>
@@ -50,7 +51,7 @@
     </group>
 
     <group ns="mouse">
-        <!--<node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="-perspective-file $(find jderobot_assets)/perspectives/drone_teleop.perspective"/>
+        <!--<node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="-perspective-file $(arg perspective)"/>
         <node name="mouse_wrapper" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg mouse_file_name)"/> -->
         <!-- MAVROS and vehicle configs -->
         <arg name="ID" value="1"/>
