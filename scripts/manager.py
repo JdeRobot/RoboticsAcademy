@@ -33,6 +33,12 @@ instructions = {
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/host.py 0.0.0.0"
     },
+    "color_filter": {
+        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/host.py 0.0.0.0"
+    },
+    "color_filter_webrtc": {
+        "instructions_host": "python /RoboticsAcademy/exercises/color_filter_webrtc/web-template/host.py 0.0.0.0"
+    }
 }
 
 def export_gazebo(exercise):
@@ -93,13 +99,14 @@ async def hello(websocket, path):
             xvfb_cmd = "/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0"
             xvfb_thread = DockerThread(xvfb_cmd)
             xvfb_thread.start()
-            roslaunch_cmd = ros_instructions(data["exercise"])
-            roslaunch_thread = DockerThread(roslaunch_cmd)
-            roslaunch_thread.start()
-            time.sleep(5)
-            gzweb_cmd = 'cd /gzweb; npm start -p 8080'
-            gzweb_thread = DockerThread(gzweb_cmd)
-            gzweb_thread.start()
+            if not ("color_filter" in data["exercise"]):
+                roslaunch_cmd = ros_instructions(data["exercise"])
+                roslaunch_thread = DockerThread(roslaunch_cmd)
+                roslaunch_thread.start()
+                time.sleep(5)
+                gzweb_cmd = 'cd /gzweb; npm start -p 8080'
+                gzweb_thread = DockerThread(gzweb_cmd)
+                gzweb_thread.start()
             host_cmd = instructions[data["exercise"]]["instructions_host"]
             host_thread = DockerThread(host_cmd)
             host_thread.start()
