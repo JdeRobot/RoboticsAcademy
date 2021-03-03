@@ -3,6 +3,7 @@ import cv2
 import base64
 import threading
 import time
+import numpy as np
 from datetime import datetime
 from websocket_server import WebsocketServer
 import multiprocessing

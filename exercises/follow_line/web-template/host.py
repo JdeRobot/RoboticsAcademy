@@ -21,19 +21,20 @@ import cv2
 from gui import GUI, ThreadGUI
 from hal import HAL
 import console
+from brain import BrainProcess
 
 class Template:
     # Initialize class variables
     # self.time_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
-        self.thread = None
-        self.reload = False
+        self.brain_process = None
+        self.reload = multiprocessing.Event()
         
         # Time variables
-        self.time_cycle = 80
-        self.ideal_cycle = 80
-        self.iteration_counter = 0
+        self.brain_time_cycle = multiprocessing.Value('d', 80)
+        self.brain_ideal_cycle = multiprocessing.Value('d', 80)
+
         self.frequency_message = {'brain': '', 'gui': ''}
 
         # GUI variables
@@ -48,7 +49,7 @@ class Template:
         self.console = console.Console()
         self.hal = HAL()
         self.gui = GUI(self.host, self.console, self.hal)
-     
+        
     # Function for saving   
     def save_code(self, source_code):
     	with open('code/academy.py', 'w') as code_file:
@@ -71,31 +72,31 @@ class Template:
     		source_code = source_code[5:]
     		self.save_code(source_code)
     		
-    		return "", "", 1
+    		return "", ""
     	
     	elif(source_code[:5] == "#load"):
     		source_code = source_code + self.load_code()
     		self.server.send_message(self.client, source_code)
     
-    		return "", "", 1
+    		return "", ""
 
         elif(source_code[:5] == "#resu"):
                 restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
                 restart_simulation()
 
-                return "", "", 1
+                return "", ""
 
         elif(source_code[:5] == "#paus"):
                 pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
                 pause_simulation()
 
-                return "", "", 1
+                return "", ""
     		
     	elif(source_code[:5] == "#rest"):
     		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
     		reset_simulation()
     		self.gui.reset_gui()
-    		return "", "", 1
+    		return "", ""
     		
     	else:
     		# Get the frequency of operation, convert to time_cycle and strip
@@ -114,7 +115,8 @@ class Template:
     		else:
     		    self.gui.lap.unpause()
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-    		return iterative_code, sequential_code, debug_level
+
+    		return iterative_code, sequential_code
 			
         
     # Function to parse code according to the debugging level
@@ -150,117 +152,81 @@ class Template:
             iterative_code = ""
             
         return sequential_code, iterative_code
+    
+    # Function to maintain thread execution
+    def execute_thread(self, source_code):
+        # Keep checking until the thread is alive
+        # The thread will die when the coming iteration reads the flag
+        if(self.brain_process != None):
+            while self.brain_process.is_alive():
+                pass
 
+        # Turn the flag down, the iteration has successfully stopped!
+        self.reload.clear()
+        # New thread execution
+        code = self.parse_code(source_code)
+        pipes = self.start_pipe_thread()
+        self.brain_process = BrainProcess(code, pipes, self.brain_ideal_cycle,
+                                          self.brain_time_cycle, self.reload)
+        self.brain_process.start()
+        print("New Brain Process Started!")
 
-    # The process function
-    def process_code(self, source_code):
-        # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
-        iterative_code, sequential_code, debug_level = self.parse_code(source_code)
-        
-        # print("The debug level is " + str(debug_level)
-        # print(sequential_code)
-        # print(iterative_code)
-        
-        # Whatever the code is, first step is to just stop!
-        self.hal.motors.sendV(0)
-        self.hal.motors.sendW(0)
+    def start_pipe_thread(self):
+        # Start multiprocessing pipes
+        console_pipe1, console_pipe2 = multiprocessing.Pipe()
+        hal_pipe1, hal_pipe2 = multiprocessing.Pipe()
+        gui_pipe1, gui_pipe2 = multiprocessing.Pipe()
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
+        # Start pipe threads
+        console_thread = threading.Thread(target=self.pipe_thread, args=(console_pipe1, self.reload, ))
+        hal_thread = threading.Thread(target=self.pipe_thread, args=(hal_pipe1, self.reload, ))
+        gui_thread = threading.Thread(target=self.pipe_thread, args=(gui_pipe1, self.reload, ))
 
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while self.reload == False:
-                start_time = datetime.now()
-                
-                # Execute the iterative portion
-                exec(iterative_code, reference_environment)
+        console_thread.start(); hal_thread.start(); gui_thread.start()
 
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-                
-                # Keep updating the iteration counter
-                if(iterative_code == ""):
-                	self.iteration_counter = 0
-                else:
-                	self.iteration_counter = self.iteration_counter + 1
-            
-            	# The code should be run for atleast the target time step
-            	# If it's less put to sleep
-            	# If it's more no problem as such, but we can change it!
-                if(ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+        return console_pipe2, hal_pipe2, gui_pipe2
 
-            print("Current Thread Joined!")
-
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
-
-    # Function to generate the modules for use in ACE Editor
-    def generate_modules(self):
-        # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
-        hal_module.HAL.motors = imp.new_module("motors")
-
-        # Add HAL functions
-        hal_module.HAL.getImage = self.hal.getImage
-        hal_module.HAL.motors.sendV = self.hal.motors.sendV
-        hal_module.HAL.motors.sendW = self.hal.motors.sendW
-
-        # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
-
-        # Add GUI functions
-        gui_module.GUI.showImage = self.gui.showImage
-
-        # Adding modules to system
-        # Protip: The names should be different from
-        # other modules, otherwise some errors
-        sys.modules["HAL"] = hal_module
-        sys.modules["GUI"] = gui_module
-
-        return gui_module, hal_module
-            
-    # Function to measure the frequency of iterations
-    def measure_frequency(self):
-        previous_time = datetime.now()
-        # An infinite loop
-        while self.reload == False:
-            # Sleep for 2 seconds
-            time.sleep(2)
-            
-            # Measure the current time and subtract from the previous time to get real time interval
-            current_time = datetime.now()
-            dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            previous_time = current_time
-            
-            # Get the time period
+    def pipe_thread(self, pipe, reload_event):
+        while not reload_event.is_set():
             try:
-            	# Division by zero
-            	self.ideal_cycle = ms / self.iteration_counter
-            except:
-            	self.ideal_cycle = 0
-            
-            # Reset the counter
-            self.iteration_counter = 0
+                command = pipe.recv()
+
+                # Exception for showImage()
+                if(command == "self.gui.showImage()"):
+                    image = pipe.recv()
+                    ret_obj = self.gui.showImage(image)
+                # Otherwise
+                else:
+                    exec("ret_obj = " + command)
+                pipe.send(ret_obj)
+            except EOFError:
+                pass
+
+        pipe.close()
+
+    # Function to read and set frequency from incoming message
+    def read_frequency_message(self, message):
+        frequency_message = json.loads(message)
+
+        # Set brain frequency
+        frequency = float(frequency_message["brain"])
+        with self.brain_time_cycle.get_lock():
+            self.brain_time_cycle.value = 1000.0 / frequency
+
+        # Set gui frequency
+        frequency = float(frequency_message["gui"])
+        with self.gui_time_cycle.get_lock():
+            self.gui_time_cycle.value = 1000.0 / frequency
+
+        return
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
         brain_frequency = 0; gui_frequency = 0
         try:
-            brain_frequency = round(1000 / self.ideal_cycle, 1)
+            with self.brain_ideal_cycle.get_lock():
+                brain_frequency = round(1000 / self.brain_ideal_cycle.value, 1)
         except ZeroDivisionError:
             brain_frequency = 0
 
@@ -275,38 +241,6 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
-    
-    # Function to maintain thread execution
-    def execute_thread(self, source_code):
-        # Keep checking until the thread is alive
-        # The thread will die when the coming iteration reads the flag
-        if(self.thread != None):
-            while self.thread.is_alive() or self.measure_thread.is_alive():
-                pass
-
-        # Turn the flag down, the iteration has successfully stopped!
-        self.reload = False
-        # New thread execution
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.thread = threading.Thread(target=self.process_code, args=[source_code])
-        self.thread.start()
-        self.measure_thread.start()
-        print("New Thread Started!")
-
-    # Function to read and set frequency from incoming message
-    def read_frequency_message(self, message):
-        frequency_message = json.loads(message)
-
-        # Set brain frequency
-        frequency = float(frequency_message["brain"])
-        self.time_cycle = 1000.0 / frequency
-
-        # Set gui frequency
-        frequency = float(frequency_message["gui"])
-        with self.gui_time_cycle.get_lock():
-            self.gui_time_cycle.value = 1000.0 / frequency
-
-        return
 
 
     # The websocket function
@@ -322,7 +256,7 @@ class Template:
             # Once received turn the reload flag up and send it to execute_thread function
             code = message
             # print(repr(code))
-            self.reload = True
+            self.reload.set()
             self.execute_thread(code)
         except:
             pass
