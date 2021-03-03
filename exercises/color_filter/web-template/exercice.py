@@ -13,7 +13,7 @@ import traceback
 import imp
 import cv2
 from gui import GUI, ThreadGUI
-import subprocess
+from hal import HAL
 import console
 
 class Template:
@@ -35,6 +35,7 @@ class Template:
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
         self.console = console.Console()
+        self.hal = HAL()
         self.gui = GUI(self.host, self.console)
 
     # Function for saving
@@ -132,8 +133,8 @@ class Template:
         try:
             # The Python exec function
             # Run the sequential part
-            gui_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "time": time}, reference_environment)
+            gui_module, hal_module = self.generate_modules()
+            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag
@@ -168,10 +169,15 @@ class Template:
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
+        # Define HAL module
+        hal_module = imp.new_module("HAL")
+        hal_module.HAL = imp.new_module("HAL")
+        # Add HAL functions
+        hal_module.HAL.getImage = self.hal.getImage
+
         # Define GUI module
         gui_module = imp.new_module("GUI")
         gui_module.GUI = imp.new_module("GUI")
-
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
         gui_module.GUI.getImage = self.gui.getImage
@@ -179,9 +185,10 @@ class Template:
         # Adding modules to system
         # Protip: The names should be different from
         # other modules, otherwise some errors
+        sys.modules["HAL"] = hal_module
         sys.modules["GUI"] = gui_module
 
-        return gui_module
+        return gui_module, hal_module
     # Function to measure the frequency of iterations
     def measure_frequency(self):
         previous_time = datetime.now()
