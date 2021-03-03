@@ -51,31 +51,30 @@ This is the preferred way for running the exercise.
 ### Installation 
 - Clone the Robotics Academy repository on your local machine
 
-	```bash
+```bash
 git clone https://github.com/JdeRobot/RoboticsAcademy
-	```
+```
 
 - Download [Docker](https://docs.docker.com/get-docker/)
 
 - Pull the current distribution of Robotics Academy Docker Image
 
-	```bash
+```bash
 docker pull jderobot/robotics-academy
-	```
-
+```
 
 ### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background
+- Start a new docker container of the image and keep it running in the background. It is necessary to map the port where the camera is located to the docker container.   
 
-	```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 1831:1831 jderobot/robotics-academy python3.8 manager.py
-	```
+```bash
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 --device /dev/vide0:/dev/video0 jderobot/robotics-academy python3.8 manager.py   
+```   
 
 - On the local machine navigate to the color_filter exercise which is: `RoboticsAcademy/exercises/color_filter/web-template`
 
 - Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
 
-- Launch the `index.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+- Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
 
 - The exercise can be used after the alert.
 
@@ -86,7 +85,7 @@ In the launched webpage, type your code in the text editor,
 
 ```python
 from GUI import GUI
-from WEBRTC import WebrtcFrame
+from HAL import HAL
 # Enter sequential code!
 
 
@@ -107,9 +106,9 @@ while True:
 
 **Application Programming Interface**
 
-* `from WEBRTC import WebrtcFrame` - to import the WEBRTC library class. This class contains the functions that sends and receives information to and from the webcam.
+* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
 * `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `WebrtcFrame.getImage()` - to get the image
+* `HAL.getImage()` - to get the image
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 
 
