@@ -34,7 +34,7 @@ instructions = {
         "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/host.py 0.0.0.0"
     },
     "color_filter": {
-        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercice.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
     },
 }
 
