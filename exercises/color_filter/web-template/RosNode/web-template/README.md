@@ -16,6 +16,25 @@
 
 - All the generic and specific infrastructures including required libraries need to be installed already on your machine as stated on the [academy webpage here](http://jderobot.github.io/RoboticsAcademy/installation/).
 
+- Requirements to create the RosNode
+    - Create a New ROS Package
+        ~~~
+            cd ~/catkin_ws/src 
+            catkin_create_pkg cv_basics image_transport cv_bridge sensor_msgs rospy roscpp std_msgs
+        ~~~  
+    - Create the Image Publisher Node 
+        ~~~
+            cd ~/catkin_ws/src
+            roscd cv_basics
+            mkdir scripts
+            cp <exercice>/launch/webcam_pub.py  ~/catkin_ws/src/cv_basics/scripts
+            mkdir launch
+            cp <exercice>/launch/cv_basics_py.launch  ~/catkin_ws/src/cv_basics/scripts/
+        ~~~  
+    - Launch the node
+        ~~~
+            roslaunch cv_basics cv_basics_py.launch
+        ~~~ 
 
 - Determine your machine dns server IP address which is generally in the form of **127.0.0.xx for Linux machine** by running this command
 
@@ -28,10 +47,10 @@ cat /etc/resolv.conf
 - Start the host application along with the same IP address which is used for connection.
 
 ```bash
-python host.py 127.0.0.xx
+python exercise.py 127.0.0.xx
 ```
 
-- Open the browser template from `index.html`
+- Open the browser template from `exercise.html`
 
 - The page should says **[open]Connection established!**.Means it is working as expected.
 

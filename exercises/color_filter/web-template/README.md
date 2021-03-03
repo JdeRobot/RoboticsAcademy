@@ -11,6 +11,7 @@
 
 - Jderobot already has created docker image available from [docker hub here](https://hub.docker.com/r/jderobot/robotics-academy/).
 - Follow the instructions line by line to run the exercise.
+- It is necessary to map the port where the camera is located to the docker container 
 
 ## Run without docker container
 

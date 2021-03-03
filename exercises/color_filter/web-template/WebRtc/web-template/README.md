@@ -28,10 +28,10 @@ cat /etc/resolv.conf
 - Start the host application along with the same IP address which is used for connection.
 
 ```bash
-python host.py 127.0.0.xx
+python exercise.py 127.0.0.xx
 ```
 
-- Open the browser template from `index.html`
+- Open the browser template from `exercise.html`
 
 - The page should says **[open]Connection established!**.Means it is working as expected.
 
