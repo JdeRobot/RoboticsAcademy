@@ -26,6 +26,7 @@ colorspace:
     title: "color space"
 
 youtubeId1: gzALLE2jlRI
+youtubeId2: Fv9s99IEIvc
 
 ---
 ## Versions to run the exercise
@@ -93,7 +94,6 @@ while True:
     # Enter iterative code!
 ```
 
-
 ### Using the Interface
 
 * **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).
@@ -111,6 +111,11 @@ while True:
 * `HAL.getImage()` - to get the image
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 
+### Demonstrative Video with Web Template
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
+*This solution is an illustration for the ROSNode Templates*
 
 
 ## Instructions for ROSNode Templates
@@ -205,7 +210,11 @@ Next, ensuring you have written a workable code in `MyAlogrithm.py` file, run th
 $ python2 ./color_filter.py color_filter_conf.yml
 ```
 
+### Demonstrative Video
 
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+*This solution is an illustration for the ROSNode Templates*
 
 ## Theory
 This exercise is focused on implementing color filter and tracking a color coded object of choice.
@@ -242,12 +251,6 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 
 [Contour Features](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html)
 
-
-## Demonstrative Video
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-*This solution is an illustration for the ROSNode Templates*
 
 
 ## Contributors
