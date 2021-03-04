@@ -151,7 +151,7 @@ class GUI:
         self.lap.reset()
         self.map.reset()
 
-    # Thread function for pipe communication with GUI process
+    # Thread function for event communication with GUIProcess
     def start_event_thread(self):
         thread = threading.Thread(target=self.event_thread)
         thread.start()
@@ -159,7 +159,7 @@ class GUI:
         # Return event objects
         return self.ack_event, self.cli_event, self.upd_event
 
-    # The event thread for pipe
+    # The event thread
     def event_thread(self):
         # Thread Loop to wait for update_gui event
         while True:
@@ -172,9 +172,9 @@ class GUI:
 
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI(multiprocessing.Process):
+class ProcessGUI(multiprocessing.Process):
     def __init__(self, events, ideal_cycle, time_cycle):
-        super(ThreadGUI, self).__init__()
+        super(ProcessGUI, self).__init__()
 
         # Events
         self.ack_event = events[0]
@@ -199,7 +199,7 @@ class ThreadGUI(multiprocessing.Process):
         self.measure_thread.start()
         self.thread.start()
 
-        print("GUI Thread Started!")
+        print("GUI Process Started!")
 
         self.exit_signal.wait()
 

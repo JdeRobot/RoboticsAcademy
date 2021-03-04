@@ -17,6 +17,7 @@ import cv2
 
 from user_functions import ConsoleFunctions, GUIFunctions, HALFunctions
 
+# The brain process class
 class BrainProcess(multiprocessing.Process):
     def __init__(self, code, pipes, ideal_cycle, time_cycle, exit_signal):
         super(BrainProcess, self).__init__()
@@ -40,14 +41,16 @@ class BrainProcess(multiprocessing.Process):
         self.sequential_code = code[1]
         self.iterative_code = code[0]
 
+    # Function to run to start the process
     def run(self):
+        # Two threads for running and measuring
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code)
 
         self.measure_thread.start()
         self.thread.start()
 
-        print("Brain Thread Started!")
+        print("Brain Process Started!")
 
         self.exit_signal.wait()
 
@@ -105,7 +108,7 @@ class BrainProcess(multiprocessing.Process):
                 if(ms < time_cycle):
                     time.sleep((time_cycle - ms) / 1000.0)
 
-            print("Current Thread Joined!")
+            print("Current Brain Thread Joined!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:

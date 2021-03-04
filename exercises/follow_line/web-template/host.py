@@ -18,7 +18,7 @@ import rospy
 from std_srvs.srv import Empty
 import cv2
 
-from gui import GUI, ThreadGUI
+from gui import GUI, ProcessGUI
 from hal import HAL
 import console
 from brain import BrainProcess
@@ -171,6 +171,7 @@ class Template:
         self.brain_process.start()
         print("New Brain Process Started!")
 
+    # Function to start pipe thread for communication with BrainProcess
     def start_pipe_thread(self):
         # Start multiprocessing pipes
         console_pipe1, console_pipe2 = multiprocessing.Pipe()
@@ -186,6 +187,7 @@ class Template:
 
         return console_pipe2, hal_pipe2, gui_pipe2
 
+    # The thread function for communication
     def pipe_thread(self, pipe, reload_event):
         while not reload_event.is_set():
             try:
@@ -266,8 +268,8 @@ class Template:
     	self.client = client
     	# Start the GUI update thread
         events = self.gui.start_event_thread()
-    	self.thread_gui = ThreadGUI(events, self.gui_ideal_cycle, self.gui_time_cycle)
-    	self.thread_gui.start()
+    	self.process_gui = ProcessGUI(events, self.gui_ideal_cycle, self.gui_time_cycle)
+    	self.process_gui.start()
 
         # Initialize the ping message
         self.send_frequency_message()

@@ -72,6 +72,7 @@ class GUIFunctions(UserFunctions):
     def showImage(self, image):
         execution_string = "self.gui.showImage()"
         self.send(execution_string)
+        # An exception of sending 2 times
         self.send(image)
         ret_obj = self.recv()
 
