@@ -65,7 +65,7 @@ class HAL:
         return yaw
 
     def get_landed_state(self):
-        state = self.drone.get_landed_stated()
+        state = self.drone.get_landed_state()
         return state
 
     def set_cmd_pos(self, x, y, z, yaw):
