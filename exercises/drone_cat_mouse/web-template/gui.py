@@ -168,6 +168,9 @@ class GUI:
             # Message for Console
         elif message[:4] == "#con":
             self.console.prompt(message)
+        elif message[:4] == "#mou":
+            print("mouse parsed")
+            self.hal.start_mouse(int(message[4:5]))
     
     # Activate the server
     def run_server(self):

@@ -101,6 +101,14 @@ function declare_gui(websocket_address){
 	}
 }
 
+	// Function to start mouse
+function startmouse(){
+    // Send message to initiate start mouse
+    var message = "#mou" + document.getElementById('mouse').value;
+    console.log("Message sent: " + message);
+    websocket_gui.send(message);
+}
+
 var canvas = document.getElementById("gui_canvas_right"),
     context = canvas.getContext('2d');
     image = new Image();
