@@ -10,6 +10,7 @@ import multiprocessing
 import logging
 
 from interfaces.pose3d import ListenerPose3d
+from shared.image import SharedImage
 
 from lap import Lap
 from map import Map
@@ -27,10 +28,8 @@ class GUI:
         
         self.host = host
 
-        # Image variables
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        # Image variable
+        self.shared_image = SharedImage()
         
         # Take the console object to set the same websocket and client
         self.console = console
@@ -47,27 +46,11 @@ class GUI:
         self.cli_event = multiprocessing.Event()
         self.upd_event = multiprocessing.Event()
 
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initGUI(cls, host, console):
-        # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host, console)
-        return new_instance
-
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
-
-        image = image_to_be_shown
+        image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-
-        if(image_to_be_shown_updated == False):
-            return payload
     	
     	shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
@@ -75,19 +58,8 @@ class GUI:
         
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
         
         return payload
-    
-    # Function for student to call
-    def showImage(self, image):
-    	self.image_show_lock.acquire()
-    	self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-    	self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received

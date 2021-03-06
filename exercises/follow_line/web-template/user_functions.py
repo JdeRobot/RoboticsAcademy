@@ -1,4 +1,5 @@
 from __future__ import print_function
+from shared.image import SharedImage
 
 # Base class for user functions
 class UserFunctions(object):
@@ -64,16 +65,13 @@ class HALFunctions(UserFunctions):
         return ret_obj
 
 # Define GUI functions
-class GUIFunctions(UserFunctions):
-    def __init__(self, gui_pipe):
-        super(GUIFunctions, self).__init__(gui_pipe)
+class GUIFunctions:
+    def __init__(self):
+        # Initialize image variable
+        self.shared_image = SharedImage()
 
     # Show image function
     def showImage(self, image):
-        execution_string = "self.gui.showImage()"
-        self.send(execution_string)
-        # An exception of sending 2 times
-        self.send(image)
-        ret_obj = self.recv()
-
-        return ret_obj
+        # Check for a None image objec
+        if(image.size != 0):
+            self.shared_image.add(image)
