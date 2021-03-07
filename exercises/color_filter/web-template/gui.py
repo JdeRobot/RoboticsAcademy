@@ -12,11 +12,11 @@ import logging
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console):
+    def __init__(self, host, console, hal):
         t = threading.Thread(target=self.run_server)
 
 
-        self.payload = {'image': '', 'shape': [], 'text_buffer': '', 'frequency': ''}
+        self.payload = {'image': '', 'shape': [], 'text_buffer': ''}
         self.server = None
         self.client = None
 
@@ -32,6 +32,7 @@ class GUI:
 
         # Take the console object to set the same websocket and client
         self.console = console
+        self.hal = hal
         t.start()
 
 
@@ -56,7 +57,7 @@ class GUI:
 
         if(image_to_be_shown_updated == False):
             return payload
-    	
+
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
@@ -98,7 +99,7 @@ class GUI:
         self.acknowledge_lock.release()
 
     # Update the gui
-    def update_gui(self, measured_cycle):
+    def update_gui(self):
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
@@ -134,8 +135,8 @@ class ThreadGUI(threading.Thread):
     def __init__(self, gui):
         self.gui = gui
         # Time variables
-        self.time_cycle = 50
-        self.ideal_cycle = 50
+        self.time_cycle = 80
+        self.ideal_cycle = 90
         self.iteration_counter = 0
 
     # Function to start the execution of threads

@@ -38,13 +38,12 @@ function declare_code(){
 			editor.setValue(source_code.substring(5,));
 		}
 		else if(operation == "#freq"){
-			frequency = source_code.substring(5,);
-			document.querySelector('#ideal_code_frequency').value = frequency;
+			var frequency_message = JSON.parse(source_code.substring(5,));
+			// Parse GUI and Brain frequencies
+			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
 		}
-		/*else if(operation == "#ping"){
-			websocket_code.send("#pong")
-		}*/
+
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
