@@ -41,12 +41,8 @@ function declare_gui(){
 				canvas.width = shape[1];
 				canvas.height = shape[0];
 			}
-			// Parse the measured GUI frequency
-			frequency = data.frequency;
-			document.querySelector("#ideal_gui_frequency").value = frequency;
 
 			// Parse the Console messages
-			//messages = data.text_buffer;
 			messages = JSON.parse(data.text_buffer);
 			// Loop through the messages and print them on the console
 			for(message of messages){
@@ -56,9 +52,7 @@ function declare_gui(){
 				next_command()
 			}
 			// Send the Acknowledgment Message
-			// Along with gui frequency
-			gui_frequency = document.querySelector('#gui_frequency').value
-			websocket_gui.send("#ack" + gui_frequency);
+			websocket_gui.send("#ack");
 			
         }
         else if(operation == "#cor"){
@@ -74,12 +68,6 @@ function declare_gui(){
 		
     }
 }
-
-// Function for range slider
-function guifrequencyUpdate(vol) {
-	document.querySelector('#gui_frequency').value = vol;
-}
-
 
 var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');

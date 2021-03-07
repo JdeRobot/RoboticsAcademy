@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from websocket_server import WebsocketServer
 import logging
+import json
 import time
 import threading
 import sys
@@ -218,7 +219,25 @@ class Template:
                 self.server.send_message(self.client, "#freq" + str(round(1000 / self.ideal_cycle, 1)))
             except ZeroDivisionError:
                 self.server.send_message(self.client, "#freq" + str(0))
+    # Function to generate and send frequency messages
+    def send_frequency_message(self):
+        # This function generates and sends frequency measures of the brain and gui
+        brain_frequency = 0; gui_frequency = 0
+        try:
+            brain_frequency = round(1000 / self.ideal_cycle, 1)
+        except ZeroDivisionError:
+            brain_frequency = 0
 
+        try:
+            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+        except ZeroDivisionError:
+            gui_frequency = 0
+
+        self.frequency_message["brain"] = brain_frequency
+        self.frequency_message["gui"] = gui_frequency
+
+        message = "#freq" + json.dumps(self.frequency_message)
+        self.server.send_message(self.client, message)
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive

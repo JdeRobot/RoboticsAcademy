@@ -40,13 +40,16 @@ function declare_code(){
 		else if(operation == "#freq"){
 			frequency = source_code.substring(5,);
 			document.querySelector('#ideal_code_frequency').value = frequency;
+			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
 		}
 		/*else if(operation == "#ping"){
 			websocket_code.send("#pong")
 		}*/
 		// Send the acknowledgment message along with frequency
-		code_frequency = document.querySelector('#code_frequency').value
-		websocket_code.send("#freq" + code_frequency)
+		code_frequency = document.querySelector('#code_frequency').value;
+		gui_frequency = document.querySelector('#gui_frequency').value;
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
 }
 
@@ -100,4 +103,8 @@ function loadCode(){
 // Function for range slider
 function codefrequencyUpdate(vol) {
 	document.querySelector('#code_frequency').value = vol;
+}
+// Function for range slider
+function guifrequencyUpdate(vol) {
+	document.querySelector('#gui_frequency').value = vol;
 }
