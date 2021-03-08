@@ -18,7 +18,7 @@ class HAL:
     
         self.image = None
         self.cat = DroneWrapper(name="rqt", ns="cat/")
-        self.mouse = DroneWrapper(ns="/mouse")
+        self.mouse = DroneWrapper(name="rqt", ns="mouse/")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
