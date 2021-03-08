@@ -33,17 +33,25 @@ instructions = {
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/host.py 0.0.0.0"
     },
+    "drone_cat_mouse": {
+        "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
+    },
 }
+
 
 def export_gazebo(exercise):
     gazebo_path = GAZEBO_RESOURCE_PATH + instructions[exercise]["gazebo_path"] + ";"
     return gazebo_path
 
+
 def ros_instructions(exercise):
     roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:;export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
                       'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
                       '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo9:$GAZEBO_RESOURCE_PATH; export ' \
-                      'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;'
+                      'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+                      'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
     roslaunch_cmd = roslaunch_cmd + export_gazebo(exercise)
     for instruction in instructions[exercise]["instructions_ros"]:
         roslaunch_cmd = roslaunch_cmd + instruction + ";"
@@ -69,6 +77,7 @@ async def kill_simulation():
     """cmd_py = "pkill -9 -f python"
     os.popen(cmd_py)"""
 
+
 class DockerThread(threading.Thread):
     def __init__(self, cmd):
         threading.Thread.__init__(self)
@@ -80,9 +89,8 @@ class DockerThread(threading.Thread):
         print(out)
         
 
-    
 async def hello(websocket, path):
-    #name = await websocket.recv()
+    # name = await websocket.recv()
     print(websocket)
     async for name in websocket:
         print(name)
@@ -128,7 +136,7 @@ async def hello(websocket, path):
         greeting = f"Hello {name}!"
 
         await websocket.send("Done")
-        #print(f"> {greeting}")
+        # print(f"> {greeting}")
 
 start_server = websockets.serve(hello, "0.0.0.0", 8765)
 
