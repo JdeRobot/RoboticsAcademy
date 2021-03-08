@@ -192,6 +192,7 @@ RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
 	&& cd /Firmware \
 	&& DONT_RUN=1 make px4_sitl_default gazebo
 
+
 # Get the Custom Robot Repository
 # and set the environment variables
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/JdeRobot/CustomRobots.git \
@@ -240,9 +241,32 @@ COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
 
+#
+# TEMPORAL: waiting to ros melodic pkg sync
+#
+
+RUN apt-get install -y python-catkin-tools
+
+RUN rm -rf /catkin_ws
+RUN mkdir -p /catkin_ws/src
+RUN cd /catkin_ws && catkin init
+RUN echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc
+
+RUN git clone https://github.com/JdeRobot/drones.git
+RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
+
+RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y
+
+RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /catkin_ws; catkin build'
+
+#
+# END TEMPORAL
+#
+
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
 
 EXPOSE 2303
 EXPOSE 1905
