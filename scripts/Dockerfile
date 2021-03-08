@@ -192,6 +192,7 @@ RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
 	&& cd /Firmware \
 	&& DONT_RUN=1 make px4_sitl_default gazebo
 
+
 # Get the Custom Robot Repository
 # and set the environment variables
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/JdeRobot/CustomRobots.git \
@@ -265,6 +266,7 @@ RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /catkin_ws; catkin build'
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
 
 EXPOSE 2303
 EXPOSE 1905
