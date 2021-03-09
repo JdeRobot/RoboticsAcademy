@@ -199,15 +199,15 @@ feature_row:
     version_label: "btn--inverse"
     version: "--"
     
-  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
+  - image_path: /assets/images/exercises/color_filter/color_filter_teaser_web_template.png
     alt: "Color Filter"
     title: "Color Filter"
     excerpt: "Develop a color filter to segment some object in the image and track it"
     url: "/exercises/ComputerVision/color_filter"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--inverse"
-    version: "--"
+    version_label: "btn--success"
+    version: "v2.3"
 
   - image_path: /assets/images/exercises/pick_place/pick_place_teaser.png
     alt: "Pick and Place"

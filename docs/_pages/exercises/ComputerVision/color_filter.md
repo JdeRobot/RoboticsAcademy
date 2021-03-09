@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/color_filter/color_filter_teaser.png
-    image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
+  - url: /assets/images/exercises/color_filter/color_filter_teaser_web_template.png
+    image_path: /assets/images/exercises/color_filter/color_filter_teaser_web_template.png
     alt: "Color Filter"
     title: "Color Filter"
 
