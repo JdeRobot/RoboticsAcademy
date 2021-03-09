@@ -72,6 +72,4 @@ class GUIFunctions:
 
     # Show image function
     def showImage(self, image):
-        # Check for a None image objec
-        if(image.size != 0):
-            self.shared_image.add(image)
+        self.shared_image.add(image)

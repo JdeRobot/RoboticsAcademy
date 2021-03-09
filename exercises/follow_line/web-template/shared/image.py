@@ -42,7 +42,7 @@ class SharedImage:
     def get(self):
         # Define metadata
         metadata = MD()
-
+        
         # Get metadata from the shared region
         self.image_lock.acquire()
         md_buf[:] = self.md_buf
@@ -87,7 +87,7 @@ class SharedImage:
         # Send the meta data and image to shared regions
         self.image_lock.acquire()
         memmove(md_buf, addressof(metadata), sizeof(metadata))
-        self.md_buf[:] = bytes(md_buf)
+        self.md_buf[:] = md_buf[:]
         self.shm_buf[:] = image.tobytes()
         self.image_lock.release()
 
