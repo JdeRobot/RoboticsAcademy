@@ -1,32 +1,32 @@
 #canvas_container{
-	float: left;
-	width: 30%;
-	height: 575px;
+    float: left;
+    width: 50%;
+    height: 500px;
 }
 
 #gui_canvas {
-	margin-left: 20%;
-    height: 300px;
-    width: 80%;
+    height: 350px;
+    width: 400px;
 }
 
+
 #gzweb{
-	height: 40%;
-	width:100%;
+    height: 40%;
+    width:100%;
 }
 
 #lap_heading{
-	padding-left: 10%;
+    padding-left: 10%;
 }
 
 #lap_time{
-	padding-left: 10%;
+    padding-left: 10%;
 }
 
 #birds-eye{
-	margin-top: 15px;
-	background: url("./img/map.png");
-	background-size: cover;
-	height: 450px;
-	width: 450px;
+    margin-top: 15px;
+    background: url("./img/map.png");
+    background-size: cover;
+    height: 350px;
+    width: 340px;
 }

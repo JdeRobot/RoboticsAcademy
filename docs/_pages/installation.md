@@ -10,8 +10,14 @@ toc_label: "TOC installation"
 toc_icon: "cog"
 ---
 
+**Robotics-Academy (2.3 release)** supports Linux (Ubuntu 18.04, 20.04 and other distributions), MacOS and Windows. The installation has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics-Academy Docker Image. The users of this release should:
 
-Robotics-Academy currently supports **Linux** operating system. These installation instructions have been prepared for Ubuntu Linux 18.04 (LTS). Don't install everything listed here, just follow the directions on the Academy exercise you want to perform. For instance, not all the specific infrastructure packages are required for every exercise, and they can be large packages.
+1. Install the [RADI (Robotics-Academy Docker Image)](https://hub.docker.com/r/jderobot/robotics-academy/tags) on their machines
+2. Copy the [Robotics-Academy source code repository](https://jderobot.github.io/RoboticsAcademy/installation/#robotics-academy-source-code) on their machines. 
+
+Enjoy :-)
+
+**Robotics-Academy (both 2.1 and 2.0 releases)** currently supports Linux operating system. These installation instructions have been prepared for Ubuntu Linux 18.04 (LTS). Don't install everything listed here, just follow the directions on the Academy exercise you want to perform. For instance, not all the specific infrastructure packages are required for every exercise, and they can be large packages.
 
 1. *Generic infrastucture*
     - Required
@@ -21,9 +27,9 @@ Robotics-Academy currently supports **Linux** operating system. These installati
     - Optional, depends on the exercise
     - Some exercises require also additional software pieces such as OpenCV, MoveIt!, MavROS, PX4, VisualStates, OpenMotionPlanningLibrary, Turtlebot2, etc.
 
-3. *JdeRobot Academy source code*
+3. *Robotics-Academy source code*
     - Required
-    - Academy includes templates for the exercises
+    - Robotics-Academy includes templates for the exercises
 
 # Generic infrastructure
 
@@ -159,14 +165,81 @@ You can install OpenCV in several ways:
 
 For more information, visit the [official repository](https://github.com/opencv/opencv).
 
+## JdeRobot-drones
+
+A. Binary installation (recommended)
+
+```bash
+sudo apt-get install ros-melodic-jderobot-drones
+```
+
+B. Source installation:
+
+1. Install catkin tools
+
+    ```bash
+    sudo apt install python-catkin-tools
+    ```
+
+2. Set up catkin workspace
+
+    ```bash
+    mkdir -p ~/catkin_ws/src
+    cd ~/catkin_ws
+    catkin init
+    echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc # points roscd dir
+    source ~/.bashrc
+    ```
+    
+3. Get jderobot-drones ros pkg
+
+    ```bash
+    cd && mkdir -p repos && cd repos
+    git clone https://github.com/JdeRobot/drones.git
+    ```
+    
+4. Link drone source to catkin_ws
+
+    ```bash
+    roscd && cd src
+    ln -s ~/repos/drones/drone_wrapper .
+    ln -s ~/repos/drones/drone_assets .
+    ln -s ~/repos/drones/rqt_drone_teleop .
+    ```
+
+5. Update ros dependencies
+
+    ```bash
+    roscd
+    rosdep init  # needs to be called ONLY once after installation. sudo might be required
+    rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y  #sudo might be required
+    ```
+
+6. Build 
+
+    ```bash
+    roscd && catkin build
+    ```
+    
+7. Export environment variables
+
+    ```bash
+    roscd
+    echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
+    echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
+    echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:~/repos/drones/drone_assets/models' >> ~/.bashrc
+    source ~/.bashrc
+    ```
+
 ## MavROS
 
-1. Install ROS Melodic, MAVROS and extras
+Binary installation:
+
+1. Install ROS Melodic MAVROS and extras (v1.5.0-1)
 
     ```bash
     sudo apt install ros-melodic-mavros ros-melodic-mavros-extras
     ```
-
 
 ## PX4
 
@@ -176,7 +249,8 @@ Install previous dependencies:
 
     ```bash
     wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
-    ./install_geographiclib_datasets.sh
+    chmod +x install_geographiclib_datasets.sh
+    sudo ./install_geographiclib_datasets.sh
     ```
 
 2. Remove modemmanager
@@ -189,8 +263,9 @@ Install previous dependencies:
 
     ```bash
     sudo apt update -y
-    sudo apt install git zip qtcreator cmake \
-        build-essential genromfs ninja-build exiftool -y
+    sudo apt-get install git zip qtcreator cmake \
+       build-essential genromfs ninja-build exiftool \
+       python-pip python-dev -y
     ```
 
 4. Install xxd
@@ -201,14 +276,29 @@ Install previous dependencies:
 
 5. Install required python packages
 
+    Install Python 3 pip build dependencies first
+
     ```bash
-    sudo apt install python-argparse \
-        python-empy python-toml python-numpy python-yaml \
-        python-dev python-pip -y
-    sudo -H pip install --upgrade pip
-    sudo -H pip install pandas jinja2 pyserial cerberus
-    sudo -H pip install pyulog
-    sudo -H pip install packaging
+    sudo pip3 install wheel setuptools
+    ```
+    
+    Python 3 dependencies installed by pip
+
+    ```bash
+    sudo pip3 install argparse argcomplete coverage cerberus empy jinja2 \
+                    matplotlib==3.0.* numpy nunavut packaging pkgconfig pyros-genmsg pyulog \
+                    pyyaml requests serial six toml psutil pyulog wheel
+    ```
+
+    Install everything again for Python 2 because we could not get Firmware to compile using catkin without it.
+
+    ```bash
+    sudo pip install --upgrade pip 
+    sudo pip install wheel setuptools
+    sudo pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage \
+        empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments pymavlink \
+        packaging pyros-genmsg pyulog pyyaml requests rosdep rospkg serial six toml \
+        pandas pyserial
     ```
 
 6. Install ninja
@@ -234,47 +324,41 @@ Install previous dependencies:
     rm -rf requiredcomponents eprosima_fastrtps-1-7-1-linux.tar.gz
     ```
 
-9. Install catkin tools
+PX4 source installation:
+1. Get PX4 source (v1.11.3)
 
     ```bash
-    sudo apt install python-catkin-tools
-    ```
-
-10. Set up catkin workspace
-
-    ```bash
-    mkdir -p catkin_ws/src
-    cd catkin_ws/src
+    cd && mkdir -p repos && cd repos
     git clone https://github.com/PX4/Firmware.git
-    cd Firmware
-    git submodule update --init --recursive
-    cd ..
-    ln -s Firmware/Tools/sitl_gazebo mavlink_sitl_gazebo
-    cd ..
+    cd Firmware && git checkout v1.11.3
+    git checkout -b v1.11.3
     ```
 
-11. Update ROS dependencies
+2. Build PX4
 
     ```bash
-    rosdep update
-    rosdep check --from-paths . --ignore-src --rosdistro melodic
-    rosdep install --from-paths . --ignore-src --rosdistro melodic -y
+    cd ~/repos/Firmware
+    DONT_RUN=1 make px4_sitl_default gazebo
     ```
 
-12. Build catkin (make sure to be at /catkin_ws)
+3. Export environment variables
 
     ```bash
-    catkin build
-    ```
-
-13. Export environment variables
-
-    ```bash
-    echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
-    echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
-    echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:/opt/ros/melodic/share/jderobot_assets/models' >> ~/.bashrc
-
+    echo 'export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/repos/Firmware/Tools/sitl_gazebo/models' >> ~/.bashrc
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    
+    echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware' >> ~/.bashrc
+    echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
+    
     source ~/.bashrc
+    ```
+
+4. Try PX4 (optional)
+
+    ```bash
+    roslaunch px4 mavros_posix_sitl.launch
+    pxh> commander arm # when launching finishes
     ```
 
 ## Real Turtlebot2 on ROS Melodic
@@ -375,7 +459,7 @@ roslaunch rplidar_ros view_rplidar.launch
 
 ## MoveIt!
 
-# Academy source code
+# Robotics-Academy source code
 
 Once you have generic and specific infrastructure installed in your system, you can download and install the JdeRobot Academy software.
 

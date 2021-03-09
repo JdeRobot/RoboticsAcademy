@@ -29,26 +29,31 @@ function declare_gui(websocket_address){
 	websocket_gui.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
 		
-		if(operation == "#lap"){
-			var lap_time = event.data.substring(4, );
-			//lap_time_display.textContent = lap_time;
-		}
-		
-		else if(operation == "#map"){
-			// To slice off the ()
-			var pose = event.data.substring(5, event.data.length - 1);
+		if(operation == "#gui"){
+			// Parse the entire Object
+			var data = JSON.parse(event.data.substring(4, ));
+
+			// Parse the Map data
+			// Slice off ( and )
+			var pose = data.map.substring(1, data.map.length - 1);
 			var content = pose.split(',').map(function(item) {
 				return parseFloat(item);
 			})
 			draw(content[0], content[1], content[2], content[3]);
-		}
-		
-		else if(operation == "#cop"){
-			// Set the value of command
-			var command_input = event.data.substring(4, );
-			command.value = command_input;
-			// Go to next command line
-			next_command();
+
+			// Parse the Console messages
+			messages = JSON.parse(data.text_buffer);
+			// Loop through the messages and print them on the console
+			for(message of messages){
+				// Set value of command
+				command.value = message
+				// Go to next command line
+				next_command()
+			}
+
+
+			// Send the Acknowledgment Message
+			websocket_gui.send("#ack");
 		}
 		
 		else if(operation == "#cor"){
@@ -61,9 +66,9 @@ function declare_gui(websocket_address){
 			command.focus();
 		}
 		
-		websocket_gui.send("Received!");
 	}
 }
+
 
 // Image Display Configuration
 
