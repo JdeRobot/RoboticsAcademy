@@ -43,7 +43,7 @@ The instructions for both of them are provided as follows.
 
 In this practice the intention is to develop a color filter that allow us to segment some object in the image. You will have to get in contact with RGB and HSV color spaces, and *OpenCV* (*Python*) library.
 
-{% include gallery caption="Tracking the blue ball" %}
+{% include gallery caption="Tracking example" %}
 
 
 ## Instructions for Web Templates
