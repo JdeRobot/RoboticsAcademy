@@ -115,7 +115,6 @@ while True:
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-*This solution is an illustration for the ROSNode Templates*
 
 
 ## Instructions for ROSNode Templates
@@ -210,11 +209,10 @@ Next, ensuring you have written a workable code in `MyAlogrithm.py` file, run th
 $ python2 ./color_filter.py color_filter_conf.yml
 ```
 
-### Demonstrative Video
+### Demonstrative Video with ROSNode Templates
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-*This solution is an illustration for the ROSNode Templates*
 
 ## Theory
 This exercise is focused on implementing color filter and tracking a color coded object of choice.
