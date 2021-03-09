@@ -199,7 +199,7 @@ feature_row:
     version_label: "btn--inverse"
     version: "--"
     
-  - image_path: /assets/images/exercises/color_filter/color_filter_teaser_web_template.png
+  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
     alt: "Color Filter"
     title: "Color Filter"
     excerpt: "Develop a color filter to segment some object in the image and track it"
