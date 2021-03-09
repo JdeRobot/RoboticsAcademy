@@ -165,9 +165,9 @@ def execute(self):
 
 - Navigate to the color_filter directory
 
-	```bash
+```bash
 cd exercises/color_filter
-	```
+```
 
 This practice allows to obtain the video stream from 3 different sources:
 - From a local camera (Local)
@@ -253,7 +253,7 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 
 ## Contributors
 
-- Contributors: [Carlos Awadallah](https://github.com/cawadall), [Naman Jain](https://github.com/Naman-ntc), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Nemath Ahmed](https://github.com/nemathahmed)
+- Contributors: [Carlos Awadallah](https://github.com/cawadall), [Naman Jain](https://github.com/Naman-ntc), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Nemath Ahmed](https://github.com/nemathahmed), [Vanessa Fernández](https://github.com/vmartinezf), [Jessica Fernández](https://github.com/jessiffmm), [David Valladares](https://github.com/dvalladaresv)
 - Maintained by [Nemath Ahmed](https://github.com/nemathahmed)
 
 
