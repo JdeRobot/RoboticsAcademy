@@ -85,11 +85,11 @@ class GUI:
         self.payload["map"] = pos_message
 
         # Payload V Message
-        v_message = str(self.hal.motors.data.vx)
+        v_message = str(self.hal.getV())
         self.payload["v"] = v_message
 
         # Payload W Message
-        w_message = str(self.hal.motors.data.az)
+        w_message = str(self.hal.getW())
         self.payload["w"] = w_message
 
         # Payload Console Messages

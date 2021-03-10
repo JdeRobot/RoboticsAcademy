@@ -1,5 +1,6 @@
 from __future__ import print_function
 from shared.image import SharedImage
+from shared.value import SharedValue
 
 # Base class for user functions
 class UserFunctions(object):
@@ -39,6 +40,8 @@ class HALFunctions:
     def __init__(self):
         # Initialize image variable
         self.shared_image = SharedImage("halimage")
+        self.shared_v = SharedValue("velocity")
+        self.shared_w = SharedValue("angular")
 
     # Get image function
     def getImage(self):
@@ -47,11 +50,11 @@ class HALFunctions:
 
     # Send velocity function
     def sendV(self, velocity):
-        pass
+        self.shared_v.add(velocity)
 
     # Send angular velocity function
     def sendW(self, angular):
-        pass
+        self.shared_w.add(angular)
 
 # Define GUI functions
 class GUIFunctions:
