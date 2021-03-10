@@ -35,40 +35,29 @@ class ConsoleFunctions(UserFunctions):
         return ret_obj
 
 # Define HAL functions
-class HALFunctions(UserFunctions):
-    def __init__(self, hal_pipe):
-        # Initialize the pipe
-        super(HALFunctions, self).__init__(hal_pipe)
+class HALFunctions:
+    def __init__(self):
+        # Initialize image variable
+        self.shared_image = SharedImage("halimage")
 
     # Get image function
     def getImage(self):
-        execution_string = "self.hal.getImage()"
-        self.send(execution_string)
-        ret_obj = self.recv()
-
-        return ret_obj
+        image = self.shared_image.get()
+        return image
 
     # Send velocity function
     def sendV(self, velocity):
-        execution_string = "self.hal.motors.sendV(%f)" % velocity
-        self.send(execution_string)
-        ret_obj = self.recv()
-
-        return ret_obj
+        pass
 
     # Send angular velocity function
     def sendW(self, angular):
-        execution_string = "self.hal.motors.sendW(%f)" % angular
-        self.send(execution_string)
-        ret_obj = self.recv()
-
-        return ret_obj
+        pass
 
 # Define GUI functions
 class GUIFunctions:
     def __init__(self):
         # Initialize image variable
-        self.shared_image = SharedImage()
+        self.shared_image = SharedImage("guiimage")
 
     # Show image function
     def showImage(self, image):

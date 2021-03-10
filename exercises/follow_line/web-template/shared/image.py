@@ -9,14 +9,14 @@ from structure_img import MD
 md_buf = create_string_buffer(sizeof(MD))
 
 class SharedImage:
-    def __init__(self):
+    def __init__(self, name):
         # Initialize variables for memory regions and buffers and Semaphore
         self.shm_buf = None; self.shm_region = None
         self.md_buf = None; self.md_region = None
         self.image_lock = None
 
-        self.shm_name = "image"; self.md_name = "image-meta"
-        self.image_lock_name = "image"
+        self.shm_name = name; self.md_name = name + "-meta"
+        self.image_lock_name = name
 
         # Initialize or retreive metadata memory region
         try:
@@ -42,7 +42,7 @@ class SharedImage:
     def get(self):
         # Define metadata
         metadata = MD()
-        
+
         # Get metadata from the shared region
         self.image_lock.acquire()
         md_buf[:] = self.md_buf
@@ -94,12 +94,13 @@ class SharedImage:
     # Destructor function to unlink and disconnect
     def __del__(self):
         self.image_lock.acquire()
-
         self.md_buf.close()
-        unlink_shared_memory(self.md_name)
 
-        self.shm_buf.close()
-        unlink_shared_memory(self.shm_name)
+        try:
+            unlink_shared_memory(self.md_name)
+            unlink_shared_memory(self.shm_name)
+        except ExistentialError:
+            pass
 
         self.image_lock.release()
         self.image_lock.close()

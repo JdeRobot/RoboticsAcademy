@@ -6,6 +6,7 @@ from datetime import datetime
 
 from interfaces.camera import ListenerCamera
 from interfaces.motors import PublisherMotors
+from shared.image import SharedImage
 
 # Hardware Abstraction Layer
 class HAL:
@@ -15,7 +16,7 @@ class HAL:
     def __init__(self):
     	rospy.init_node("HAL")
     
-    	self.image = None
+    	self.shared_image = SharedImage("halimage")
     	self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
     	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
     	
@@ -29,5 +30,5 @@ class HAL:
     # Get Image from ROS Driver Camera
     def getImage(self):
         image = self.camera.getImage().data
-        return image
+        self.shared_image.add(image)
 			

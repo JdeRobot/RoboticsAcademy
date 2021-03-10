@@ -29,7 +29,7 @@ class GUI:
         self.host = host
 
         # Image variable
-        self.shared_image = SharedImage()
+        self.shared_image = SharedImage("guiimage")
         
         # Take the console object to set the same websocket and client
         self.console = console

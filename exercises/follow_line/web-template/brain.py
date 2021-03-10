@@ -27,7 +27,7 @@ class BrainProcess(multiprocessing.Process):
 
         # Function definitions for users to use
         self.console = ConsoleFunctions(pipes[0])
-        self.hal = HALFunctions(pipes[1])
+        self.hal = HALFunctions()
         self.gui = GUIFunctions()
 
         # Time variables
@@ -56,7 +56,6 @@ class BrainProcess(multiprocessing.Process):
 
         # Close pipe connections
         self.console.close()
-        self.hal.close()
 
     # The process function
     def process_code(self):
