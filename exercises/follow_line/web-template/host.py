@@ -270,6 +270,7 @@ class Template:
         events = self.gui.start_event_thread()
     	self.process_gui = ProcessGUI(events, self.gui_ideal_cycle, self.gui_time_cycle)
     	self.process_gui.start()
+        self.hal.start_thread()
 
         # Initialize the ping message
         self.send_frequency_message()

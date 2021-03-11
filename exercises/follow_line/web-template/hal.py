@@ -28,7 +28,6 @@ class HAL:
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
-        self.thread.start()
     	
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -36,6 +35,10 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
+
+    # Function to start the update thread
+    def start_thread(self):
+        self.thread.start()
     
     # Get Image from ROS Driver Camera
     def getImage(self):
