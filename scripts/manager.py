@@ -23,17 +23,17 @@ instructions = {
     "obstacle_avoidance": {
         "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/host.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner": {
         "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/host.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner_loc": {
         "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/host.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
     },
     "color_filter": {
         "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
@@ -89,11 +89,8 @@ def start_vnc():
 
 
 async def kill_simulation():
-    # Temporarily keeping both host.py and exercise.py
-    cmd_gzweb = "pkill -9 -f host.py"
+    cmd_gzweb = "pkill -9 -f exercise.py"
     os.popen(cmd_gzweb)
-    cmd_exercise = "pkill -9 -f exercise.py"
-    os.popen(cmd_exercise)
     cmd_host = "pkill -9 -f node"
     os.popen(cmd_host)
     cmd_host = "pkill -9 -f gzserver"
