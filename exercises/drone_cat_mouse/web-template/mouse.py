@@ -5,8 +5,6 @@ from drone_wrapper import DroneWrapper
 
 class Mouse:
     def __init__(self):
-        rospy.init_node("Mouse")
-
         self.mouse = DroneWrapper(name="rqt", ns="mouse/")
 
     # Explicit initialization functions
