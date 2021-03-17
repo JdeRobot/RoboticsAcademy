@@ -104,6 +104,14 @@ margin-bottom: 10px;
 
 }
 
+#connection{
+  font-size: 12px;
+    width: 100px;
+    height: 40px;
+    background-color: lightcoral;
+margin-bottom: 10px;
+}
+
 #reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);

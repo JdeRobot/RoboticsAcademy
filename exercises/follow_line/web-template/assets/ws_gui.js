@@ -15,6 +15,11 @@ function declare_gui(websocket_address){
 
 	websocket_gui.onopen = function(event){
 		alert("[open] Connection established!");
+		connected_gui = true;
+		if (connected_code && connected_gui){
+			connection_button.textContent = "Disconnect";
+			connection_button.style.backgroundColor = 'whitesmoke';
+		}
 	}
 	
 	websocket_gui.onclose = function(event){
@@ -23,6 +28,11 @@ function declare_gui(websocket_address){
 		}
 		else{
 			alert("[close] Connection closed!");
+		}
+		connected_gui = false;
+		if (!connected_code && !connected_gui){
+			connection_button.textContent = "Connect";
+			connection_button.style.backgroundColor = 'whitesmoke';	
 		}
 	}
 

@@ -8,6 +8,51 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
+var connected_code = false;
+var connected_gui = false;
+var setup_completed = false;
+
+var connection_button = document.getElementById("connection");
+connection_button.onmouseover = function(event){
+	if (connected_code && connected_gui){
+		connection_button.textContent = "Disconnect";
+		connection_button.style.backgroundColor = 'whitesmoke';
+	}
+	else{
+		connection_button.textContent = "Connect";
+		connection_button.style.backgroundColor = 'whitesmoke';
+	}
+}
+
+connection_button.onmouseout = function(event){
+	if (connected_code && connected_gui){
+		connection_button.textContent = "Connected";
+		connection_button.style.backgroundColor = 'lightgreen';
+	}
+	else{
+		connection_button.textContent = "Disconnected";
+		connection_button.style.backgroundColor = 'lightcoral';
+
+	}
+}
+
+//
+connection_button.onclick = function(event){
+	if (!setup_completed){
+		alert("Please wait for the socket to be connected!!");
+	}
+	else if(connected_code && connected_gui){
+
+		websocket_code.close(1000, "Disconnect button click");
+		websocket_gui.close(1000, "Disconnect button click");
+	}
+	else{
+		
+		declare_code(websocket_address);
+		declare_gui(websocket_address);			
+	}
+}
+
 // running variable for psuedo decoupling 
 // Play/Pause from Reset
 var frequency = "0",
@@ -16,10 +61,17 @@ var frequency = "0",
 //WebSocket for Code
 var websocket_code;
 function declare_code(websocket_address){
-	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
+	
+	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");	
 
 	websocket_code.onopen = function(event){
 		alert("[open] Connection established!");
+		connected_code = true;
+		if (connected_code && connected_gui){
+			connection_button.textContent = "Disconnect";
+			connection_button.style.backgroundColor = 'whitesmoke';
+		}
+
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
@@ -27,6 +79,11 @@ function declare_code(websocket_address){
 		}
 		else{
 			alert("[close] Connection closed!");
+		}
+		connected_code = false;
+		if (!connected_code && !connected_gui){
+			connection_button.textContent = "Connect";
+			connection_button.style.backgroundColor = 'whitesmoke';	
 		}
 	}
 
