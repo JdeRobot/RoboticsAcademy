@@ -86,11 +86,6 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 
 - Download [Docker](https://docs.docker.com/get-docker/)
 
-- Install [novnc](https://github.com/novnc/noVNC)
-  ```bash
-sudo snap install novnc
-  ```
-
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
@@ -108,7 +103,7 @@ docker pull jderobot/robotics-academy
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 5900:5900 jderobot/robotics-academy python3.8 manager.py
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 jderobot/robotics-academy python3.8 manager.py
 	```
 
 - On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/follow_line/web-template`
@@ -117,11 +112,7 @@ docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 
 
 - Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
 
-- Launch `novnc` from terminal. The port 5900 is to be specified for 'vnc' since it's mapped to the docker container's port 5900
-  ```bash
-  sudo novnc --vnc localhost:5900
-  ```
-  Open the URL shown on the terminal once the command executes, to see the gazebo window.
+- To view Gazebo simulation, open `http://localhost:6080/vnc.html` in browser and click on 'Connect'
 
 - The exercise can be used after the alert.
 
