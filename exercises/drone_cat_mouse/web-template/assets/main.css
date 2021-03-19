@@ -146,6 +146,21 @@ margin-bottom: 10px;
     border-image-slice: 1;
 }
 
+#mouse_takeoff_btn{
+    margin-left: 10%;
+    border:1 solid whitesmoke;
+}
+
+#mouse_btn{
+    margin-left: 2%;
+    border:1 solid whitesmoke;
+}
+
+#mouse_land_btn{
+    margin-left: 2%;
+    border:1 solid whitesmoke;
+}
+
 #terminalimg {
     float: left;
     height: 20px;
