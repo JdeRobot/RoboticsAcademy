@@ -86,6 +86,11 @@ def start_vnc():
     x11vnc_thread = DockerThread(x11vnc_cmd)
     x11vnc_thread.start()
 
+    # Start noVNC with default port 6080 listening to VNC server on 5900
+    novnc_cmd = "/noVNC/utils/launch.sh"
+    novnc_thread = DockerThread(novnc_cmd)
+    novnc_thread.start()
+
 
 
 async def kill_simulation():
@@ -105,6 +110,8 @@ async def kill_simulation():
     os.popen(cmd_rosout)
     cmd_x11vnc = "pkill -9 -f x11vnc"
     os.popen(cmd_x11vnc)
+    cmd_novnc = "pkill -9 -f launch.sh"
+    os.popen(cmd_novnc)
     """cmd_py = "pkill -9 -f python"
     os.popen(cmd_py)"""
 
