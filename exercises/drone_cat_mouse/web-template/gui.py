@@ -171,7 +171,11 @@ class GUI:
             self.console.prompt(message)
         elif message[:4] == "#mou":
             self.mouse.start_mouse(int(message[4:5]))
-    
+        elif message[:4] == "#tak":
+            self.mouse.takeoff()
+        elif message[:4] == "#lan":
+            self.mouse.land()
+
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)

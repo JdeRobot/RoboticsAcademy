@@ -15,11 +15,15 @@ class Mouse:
         new_instance = cls()
         return new_instance
 
-    def start_mouse(self, path_level):
+    def takeoff(self):
         self.mouse.takeoff(h=5)
 
+    def start_mouse(self, path_level):
         self.thread = threading.Thread(target=self.autonomous_mouse, args=[path_level])
         self.thread.start()
+
+    def land(self):
+        self.mouse.land()
 
     def autonomous_mouse(self, path_level):
         while True:
