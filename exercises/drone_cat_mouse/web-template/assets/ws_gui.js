@@ -101,10 +101,26 @@ function declare_gui(websocket_address){
 	}
 }
 
-	// Function to start mouse
+// Function to start mouse
 function startmouse(){
     // Send message to initiate start mouse
     var message = "#mou" + document.getElementById('mouse').value;
+    console.log("Message sent: " + message);
+    websocket_gui.send(message);
+}
+
+// Function to takeoff mouse
+function takeoffmouse(){
+    // Send message to initiate start mouse
+    var message = "#tak";
+    console.log("Message sent: " + message);
+    websocket_gui.send(message);
+}
+
+// Function to land mouse
+function landmouse(){
+    // Send message to initiate start mouse
+    var message = "#lan";
     console.log("Message sent: " + message);
     websocket_gui.send(message);
 }
