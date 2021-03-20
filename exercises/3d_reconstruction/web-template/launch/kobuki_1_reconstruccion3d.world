@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<sdf version="1.3">
+  <world name="default">
+    <include>
+        <uri>model://ground_plane_sincolor</uri>
+    </include>
+    <include>
+        <uri>model://sun</uri>
+    </include>
+    <light name='point_light1' type='point'>
+      <pose frame=''>-3.0 -2.0 4.0 0 0 0</pose>
+    </light>
+    <light name='point_light2' type='point'>
+      <pose frame=''>-3.0 2.0 4.0 0 0 0</pose>
+    </light>
+
+    <!-- Pioneer2dx model -->
+    <include>
+      <uri>model://turtlebotROS</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+        <!-- Duck -->
+    <include>
+      <uri>model://duck</uri>
+       <pose>4.7 3 0  1.57 0 1.57</pose>
+    </include>
+
+        <!-- Cereales -->
+    <include>
+      <uri>model://cereales</uri>
+       <pose>5.3 2.3 0 0 0 0</pose>
+    </include>
+
+            <!-- Blocks -->
+    <include>
+      <uri>model://blocks</uri>
+       <pose>4.66 -4 0 0 0 1.57</pose>
+    </include>
+
+    <!-- charactersMario -->
+    <include>
+      <uri>model://charactersMario</uri>
+       <pose>4.1 0.5 0 0 0 -1.57</pose>
+    </include>
+
+
+<!--
+ 	<model name="toys">
+ 	<static>true</static>
+      <link name="body3">
+           <pose>2 2 0  0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <mesh><uri>Untitled/models/characters2.dae</uri>
+            <scale>0.01 0.01 0.01</scale></mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+ 	<model name="toys">
+ 	<static>true</static>
+      <link name="body3">
+           <pose>0 0 0  0 0 0</pose>
+        <visual name="visual">
+          <geometry>
+            <mesh><uri>toysseb/toysseb.dae</uri>
+            <scale>10 10 10</scale></mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    -->
+
+
+  	<!--
+    <model name="box">
+        	<static>true</static>
+		<link name="body2">
+	       <pose>3 -1.4 0  1.57 0 0</pose>
+
+ 		<collision name='collision'>
+          <geometry>
+            <mesh>
+            	<uri>caja/caja.dae</uri>
+		        <scale>10 10 10</scale>
+	        </mesh>
+          </geometry>
+		</collision>
+
+		    <visual name="visual">
+		      <geometry>
+		        <mesh><uri>caja/caja.dae</uri>
+		        <scale>10 10 10</scale></mesh>
+		      </geometry>
+		    </visual>
+		  </link>
+      </model>
+
+      -->
+  </world>
+</sdf>
