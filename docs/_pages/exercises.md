@@ -29,25 +29,15 @@ feature_row:
     version_label: "btn--success"
     version: "v2.3"
 
-  - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
-    alt: "Global Navigation"
-    title: "Global Navigation"
-    excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
-    url: "/exercises/AutonomousCars/global_navigation"
+  - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
+    alt: "Drone Cat and Mouse"
+    title: "Drone Cat and Mouse"
+    excerpt: "Game of cat and mouse with two quadrotors."
+    url: "/exercises/Drones/drone_cat_mouse"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.0"
-
-  - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
-    alt: "Car Junction"
-    title: "Car Junction"
-    excerpt: "Car Junction. Automated vehicle must stop and pass once the road is clear."
-    url: "/exercises/AutonomousCars/car_junction"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
-    version: "v2.0"
+    version_label: "btn--success"
+    version: "v2.3"
 
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
     alt: "Vacuum Cleaner"
@@ -68,6 +58,36 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     version: "v2.3"
+
+  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
+    alt: "Color Filter"
+    title: "Color Filter"
+    excerpt: "Develop a color filter to segment some object in the image and track it"
+    url: "/exercises/ComputerVision/color_filter"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+
+  - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
+    alt: "Global Navigation"
+    title: "Global Navigation"
+    excerpt: "Global Navigation. Navigating a Tele Taxi autonomously."
+    url: "/exercises/AutonomousCars/global_navigation"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--info"
+    version: "v2.0"
+
+  - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
+    alt: "Car Junction"
+    title: "Car Junction"
+    excerpt: "Car Junction. Automated vehicle must stop and pass once the road is clear."
+    url: "/exercises/AutonomousCars/car_junction"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    version: "v2.0"
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
@@ -169,16 +189,6 @@ feature_row:
     version_label: "btn--info"
     version: "v2.1"
     
-  - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
-    alt: "Drone Cat and Mouse"
-    title: "Drone Cat and Mouse"
-    excerpt: "Game of cat and mouse with two quadrotors."
-    url: "/exercises/Drones/drone_cat_mouse"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-
   - image_path: /assets/images/exercises/visual_odometry/vo.png
     alt: "Visual Odometry"
     title: "Visual Odometry"
@@ -199,16 +209,6 @@ feature_row:
     version_label: "btn--inverse"
     version: "--"
     
-  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
-    alt: "Color Filter"
-    title: "Color Filter"
-    excerpt: "Develop a color filter to segment some object in the image and track it"
-    url: "/exercises/ComputerVision/color_filter"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
-    version: "v2.3"
-
   - image_path: /assets/images/exercises/pick_place/pick_place_teaser.png
     alt: "Pick and Place"
     title: "Pick and Place"
