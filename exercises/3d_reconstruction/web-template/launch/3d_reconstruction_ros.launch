@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->

@@ -1,6 +1,6 @@
 import rospy
 from sensor_msgs.msg import Image as ImageROS
-import config
+import yaml
 import threading
 from math import pi as PI
 import cv2
@@ -51,13 +51,14 @@ class Image:
 class ListenerParameters:
     def __init__(self,configFile,cam):
 
-        cfg = config.load(configFile)
+        f = open("/RoboticsAcademy/exercises/3d_reconstruction/web-template/" + configFile, "r")
+        cfg = yaml.load(f)
         #starting comm
         #jdrc= comm.init(cfg, '3DReconstruction')
         #ic = jdrc.getIc()
         #properties = ic.getProperties()
 
-        data = cfg.getProperty("3DReconstruction."+cam+".data")
+        data = cfg["3DReconstruction"][cam]["data"]
         print(data)
 
         self.K=np.array([data["K"][0],data["K"][1],data["K"][2],data["K"][4], data["K"][5],data["K"][6],data["K"][8],data["K"][9],data["K"][10]],dtype=np.double).reshape(3,3)
