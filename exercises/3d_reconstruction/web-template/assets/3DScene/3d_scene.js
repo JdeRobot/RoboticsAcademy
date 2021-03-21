@@ -1,9 +1,9 @@
-
 var camera, scene, renderer, controls;
 var axes, grid, particles;
 var rotationx = 0.0;
 var rotationy = 0.0;
 var toDegrees = 180/Math.PI;
+
 
 function init() {
 	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -46,11 +46,12 @@ function animate() {
 
 function addPoint (point){
 	var geometry = new THREE.Geometry();
-	geometry.vertices.push( new THREE.Vector3(point.x,point.z,point.y));
-
+	geometry.vertices.push( new THREE.Vector3(point.x,point.y,point.z));
+	
 	var material = new THREE.PointsMaterial( { size: config.pointsize, sizeAttenuation: false} );
-	material.color.setRGB( point.r, point.g, point.b);
+	material.color.setRGB( point.r/255, point.g/255, point.b/255);
 	var particles = new THREE.Points( geometry, material );
+	particles.position.set(point.x, point.y, point.z);
 	particles.name ="points";
 	scene.add( particles );
 }
@@ -178,7 +179,7 @@ function addSphere (point){
 	var sphere = new THREE.Mesh(geometry, material);
 	sphere.position.set(point.x, point.y, point.z);
 	scene.add(sphere);
-
+  
 }
 
 function reset_scene3d (){
@@ -197,3 +198,4 @@ function webGLStart (){
 	animate();
 	addAxis();
 }
+
