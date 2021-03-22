@@ -212,7 +212,7 @@ RUN git clone https://github.com/osrf/gzweb.git
 RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master && git checkout issue_731
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master && git checkout issue_731_docker
 
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
