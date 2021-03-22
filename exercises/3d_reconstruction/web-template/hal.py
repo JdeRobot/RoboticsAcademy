@@ -95,7 +95,7 @@ class HAL:
 
 
     def project3DScene(self,point3d):
-        phi = 135
+        phi = 90
         tetha = 0
         alpha = -90
         cos_phi = math.cos(math.radians(phi))
@@ -104,9 +104,10 @@ class HAL:
         sin_tetha = math.sin(math.radians(tetha))
         cos_alpha = math.cos(math.radians(alpha))
         sin_alpha = math.sin(math.radians(alpha))
-        px = (cos_phi*cos_tetha)*point3d[0] + (sin_phi*sin_alpha - cos_phi*sin_tetha*cos_alpha)*point3d[1] + (cos_phi*sin_tetha*sin_alpha + sin_phi*cos_alpha)*point3d[2]
-        py = sin_tetha*point3d[0] + (cos_tetha*cos_alpha)*point3d[1] + (-cos_tetha*sin_alpha)*point3d[2]
-        pz = (-sin_phi*cos_tetha)*point3d[0] + (sin_phi*sin_tetha*cos_alpha + cos_phi*sin_alpha)*point3d[1] + (cos_phi*cos_alpha - sin_phi*sin_tetha*sin_alpha)*point3d[2] 
+        px = ((cos_phi*cos_tetha)*point3d[0] + (sin_phi*sin_alpha - cos_phi*sin_tetha*cos_alpha)*point3d[1] + (cos_phi*sin_tetha*sin_alpha + sin_phi*cos_alpha)*point3d[2])/100.0
+        py = (sin_tetha*point3d[0] + (cos_tetha*cos_alpha)*point3d[1] + (-cos_tetha*sin_alpha)*point3d[2])/100.0 + 12 
+        pz = ((-sin_phi*cos_tetha)*point3d[0] + (sin_phi*sin_tetha*cos_alpha + cos_phi*sin_alpha)*point3d[1] + (cos_phi*cos_alpha - sin_phi*sin_tetha*sin_alpha)*point3d[2])/100.0
+        
         outPoint = np.array([px,py,pz]);
         return outPoint
 

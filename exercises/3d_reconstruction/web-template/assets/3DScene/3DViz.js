@@ -23,8 +23,8 @@ try{
 	config.updatePoints= 10
 	config.updateSegments= 10
 	config.linewidth= 2
-	config.pointsize= 2
-	config.spheresize= 0.3
+	config.pointsize= 1.5
+	config.spheresize= 0.35
 	config.camera = {}
 	config.camera.x = 100
 	config.camera.y = 50

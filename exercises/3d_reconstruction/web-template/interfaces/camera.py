@@ -70,7 +70,7 @@ class ListenerParameters:
     def backproject(self, point2d):
         myin_h=self.K[0,0]
         myin_x=point2d[0]*self.K[0,0]/point2d[2]
-        myin_y=point2d[1]*self.K[1,1]/point2d[2]
+        myin_y=point2d[1]*self.K[0,0]/point2d[2]
 
         ik11=(1./self.K[0,0])
         ik12=-self.K[0,1]/(self.K[0,0]*self.K[1,1])

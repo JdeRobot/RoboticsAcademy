@@ -117,23 +117,21 @@ var canvas = document.getElementById("gui_canvas"),
 
 // For image object
 image1.onload = function(){
-    //update_image();
+    update_image();
 }
 
 // For image object
 image2.onload = function(){
-    //update_image();
+    update_image();
 }
 
 // Request Animation Frame to remove the flickers
 function update_image(){
-    //window.requestAnimationFrame(update_image);
     context.drawImage(image1, 0, 0,320, 240);
     context.drawImage(image2, 320, 0,320, 240);
     if (paint_matching == true)
     {
         paintMatching();
-
     }
 }
 
@@ -149,7 +147,7 @@ function paintPoints(points_received)
         point.r = points_received[i][3];
         point.g = points_received[i][4];
         point.b = points_received[i][5];
-        addSphere(point);
+		addPoint(point);
     }
 }
 
@@ -181,10 +179,10 @@ function paintMatching()
 
     for (var i = 0; i < matching_history.length; i++)
     {
-        matching.x1 = matching_history[i][0];
-        matching.y1 = matching_history[i][1];
-        matching.x2 = matching_history[i][2];
-        matching.y2 = matching_history[i][3];
+        matching.x1 = matching_history[i][0]/2;
+        matching.y1 = matching_history[i][1]/2;
+        matching.x2 = matching_history[i][2]/2;
+        matching.y2 = matching_history[i][3]/2;
         matching.color = matching_history_color[i];
 
         line_matching_image(matching);
