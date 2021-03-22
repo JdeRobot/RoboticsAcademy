@@ -51,7 +51,7 @@ class Image:
 class ListenerParameters:
     def __init__(self,configFile,cam):
 
-        f = open( configFile, "r")
+        f = open("/home/vant/Documentos/Robotics_Academy/RoboticsAcademy/exercises/3d_reconstruction/web-template/" + configFile, "r")
         cfg = yaml.load(f)
         #starting comm
         #jdrc= comm.init(cfg, '3DReconstruction')
