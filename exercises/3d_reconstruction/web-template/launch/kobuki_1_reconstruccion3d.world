@@ -16,7 +16,7 @@
 
     <!-- Pioneer2dx model -->
     <include>
-      <uri>model://turtlebotROS</uri>
+      <uri>model://f1</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
 
