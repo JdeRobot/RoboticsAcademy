@@ -16,7 +16,7 @@ class GUI:
         t = threading.Thread(target=self.run_server)
 
 
-        self.payload = {'image1': '', 'shape1': [], 'image2': '', 'shape2': [], 'text_buffer': '', 'frequency': '', 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image1': '', 'shape1': [], 'image2': '', 'shape2': [], 'text_buffer': '', 'point': '', 'matching': '', 'paint_matching':''}
         self.server = None
         self.client = None
 
@@ -29,7 +29,6 @@ class GUI:
         self.image_show_lock = threading.Lock()
 
         self.acknowledge = False
-        self.time_frequency = 12.5
         self.acknowledge_lock = threading.Lock()
 
         self.point_to_save = []
@@ -137,12 +136,6 @@ class GUI:
 
         self.payload["image1"] = json.dumps(payload1)
         self.payload["image2"] = json.dumps(payload2)
-        # Payload Frequency Message
-        try:
-            ideal_frequency = round(1000 / measured_cycle, 1)
-        except ZeroDivisionError:
-            ideal_frequency = 0
-        self.payload["frequency"] = str(ideal_frequency)
 
         # Payload Point Message
         length_point_send = len(self.point_to_send)
@@ -165,6 +158,7 @@ class GUI:
         # Payload Console Messages
         message_buffer = self.console.get_text_to_be_displayed()
         self.payload["text_buffer"] = json.dumps(message_buffer)
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
@@ -174,8 +168,6 @@ class GUI:
         # Acknowledge Message for GUI Thread
         if(message[:4] == "#ack"):
             self.set_acknowledge(True)
-            frequency = float(message[4:])
-            self.time_frequency = frequency
 
         # Message for Console
         elif(message[:4] == "#con"):
@@ -246,8 +238,8 @@ class ThreadGUI(threading.Thread):
     def __init__(self, gui):
         self.gui = gui
         # Time variables
-        self.time_cycle = 50
-        self.ideal_cycle = 50
+        self.time_cycle = 80
+        self.ideal_cycle = 80
         self.iteration_counter = 0
 
     # Function to start the execution of threads
@@ -293,7 +285,7 @@ class ThreadGUI(threading.Thread):
 
         while(True):
             start_time = datetime.now()
-            self.gui.update_gui(self.ideal_cycle)
+            self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
             while(acknowledge_message == False):
@@ -301,8 +293,6 @@ class ThreadGUI(threading.Thread):
 
             self.gui.set_acknowledge(False)
 
-            frequency = self.gui.get_frequency()
-            self.time_cycle = 1000.0 / frequency
 
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1

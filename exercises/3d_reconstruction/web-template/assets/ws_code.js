@@ -15,7 +15,7 @@ var frequency = "0",
 
 //WebSocket for Code
 var websocket_code;
-function declare_code(){
+function declare_code(websocket_address){
     websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
     websocket_code.onopen = function(event){
@@ -38,15 +38,16 @@ function declare_code(){
             editor.setValue(source_code.substring(5,));
         }
         else if(operation == "#freq"){
-            frequency = source_code.substring(5,);
-            document.querySelector('#ideal_code_frequency').value = frequency;
+            var frequency_message = JSON.parse(source_code.substring(5,));
+			// Parse GUI and Brain frequencies
+			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
+			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
         }
-        /*else if(operation == "#ping"){
-            websocket_code.send("#pong")
-        }*/
         // Send the acknowledgment message along with frequency
-        code_frequency = document.querySelector('#code_frequency').value
-        websocket_code.send("#freq" + code_frequency)
+        code_frequency = document.querySelector('#code_frequency').value;
+		gui_frequency = document.querySelector('#gui_frequency').value;
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		websocket_code.send("#freq" + JSON.stringify(frequency_message));
     };
 }
 
@@ -110,4 +111,9 @@ function resetSim(){
 // Function for range slider
 function codefrequencyUpdate(vol) {
     document.querySelector('#code_frequency').value = vol;
+}
+
+// Function for range slider
+function guifrequencyUpdate(vol) {
+	document.querySelector('#gui_frequency').value = vol;
 }

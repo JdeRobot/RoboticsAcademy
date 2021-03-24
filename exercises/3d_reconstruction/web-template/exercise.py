@@ -21,6 +21,7 @@ from gui import GUI, ThreadGUI
 from hal import HAL
 import console
 
+
 class Template:
     # Initialize class variables
     # self.time_cycle to run an execution for atleast 1 second
@@ -33,6 +34,7 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
+        self.frequency_message = {'brain': '', 'gui': ''}
 
         self.server = None
         self.client = None
@@ -61,21 +63,35 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         # Check for save/load
-        if(source_code[:5] == "#save"):
+        if (source_code[:5] == "#save"):
             source_code = source_code[5:]
             self.save_code(source_code)
 
             return "", "", 1
 
-        elif(source_code[:5] == "#load"):
+        elif (source_code[:5] == "#load"):
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
 
             return "", "", 1
 
-        elif(source_code[:5] == "#rest"):
+
+        elif (source_code[:5] == "#resu"):
+            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation()
+
+            return "", "", 1
+
+        elif (source_code[:5] == "#paus"):
+            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation()
+
+            return "", "", 1
+
+        elif (source_code[:5] == "#rest"):
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             reset_simulation()
+            self.gui.reset_gui()
             return "", "", 1
 
         else:
@@ -88,15 +104,13 @@ class Template:
                 debug_level = 1
                 source_code = ""
 
-                source_code = self.debug_parse(source_code, debug_level)
-
+            source_code = self.debug_parse(source_code, debug_level)
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
             return iterative_code, sequential_code, debug_level
 
-
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
-        if(debug_level == 1):
+        if (debug_level == 1):
             # If debug level is 0, then all the GUI operations should not be called
             source_code = re.sub(r'GUI\..*', '', source_code)
 
@@ -128,7 +142,6 @@ class Template:
 
         return sequential_code, iterative_code
 
-
     # The process function
     def process_code(self, source_code):
         # Reference Environment for the exec() function
@@ -138,7 +151,6 @@ class Template:
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
-
 
         try:
             # The Python exec function
@@ -160,14 +172,14 @@ class Template:
                 ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
                 # Keep updating the iteration counter
-                if(iterative_code == ""):
+                if (iterative_code == ""):
                     self.iteration_counter = 0
                 else:
                     self.iteration_counter = self.iteration_counter + 1
 
                 # The code should be run for atleast the target time step
                 # If it's less put to sleep
-                if(ms < self.time_cycle):
+                if (ms < self.time_cycle):
                     time.sleep((self.time_cycle - ms) / 1000.0)
 
             print("Current Thread Joined!")
@@ -235,17 +247,32 @@ class Template:
             # Reset the counter
             self.iteration_counter = 0
 
-            # Send to client
-            try:
-                self.server.send_message(self.client, "#freq" + str(round(1000 / self.ideal_cycle, 1)))
-            except ZeroDivisionError:
-                self.server.send_message(self.client, "#freq" + str(0))
+    # Function to generate and send frequency messages
+    def send_frequency_message(self):
+        # This function generates and sends frequency measures of the brain and gui
+        brain_frequency = 0;
+        gui_frequency = 0
+        try:
+            brain_frequency = round(1000 / self.ideal_cycle, 1)
+        except ZeroDivisionError:
+            brain_frequency = 0
+
+        try:
+            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+        except ZeroDivisionError:
+            gui_frequency = 0
+
+        self.frequency_message["brain"] = brain_frequency
+        self.frequency_message["gui"] = gui_frequency
+
+        message = "#freq" + json.dumps(self.frequency_message)
+        self.server.send_message(self.client, message)
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if(self.thread != None):
+        if (self.thread != None):
             while self.thread.is_alive() or self.measure_thread.is_alive():
                 pass
 
@@ -258,13 +285,27 @@ class Template:
         self.measure_thread.start()
         print("New Thread Started!")
 
+    # Function to read and set frequency from incoming message
+    def read_frequency_message(self, message):
+        frequency_message = json.loads(message)
+
+        # Set brain frequency
+        frequency = float(frequency_message["brain"])
+        self.time_cycle = 1000.0 / frequency
+
+        # Set gui frequency
+        frequency = float(frequency_message["gui"])
+        self.thread_gui.time_cycle = 1000.0 / frequency
+
+        return
+
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if(message[:5] == "#freq"):
-            frequency = float(message[5:])
-            self.time_cycle = 1000.0 / frequency
-            self.server.send_message(self.client, "#ping")
+        if (message[:5] == "#freq"):
+            frequency_message = message[5:]
+            self.read_frequency_message(frequency_message)
+            self.send_frequency_message()
             return
 
         try:
@@ -280,11 +321,11 @@ class Template:
     def connected(self, client, server):
         self.client = client
         # Start the GUI update thread
-        t = ThreadGUI(self.gui)
-        t.start()
+        self.thread_gui = ThreadGUI(self.gui)
+        self.thread_gui.start()
 
-        # Initialize the ping message
-        self.server.send_message(self.client, "#ping")
+        # Initialize the frequency message
+        self.send_frequency_message()
 
         print(client, 'connected')
 
