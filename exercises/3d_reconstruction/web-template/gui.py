@@ -130,7 +130,7 @@ class GUI:
         self.acknowledge_lock.release()
 
     # Update the gui
-    def update_gui(self, measured_cycle):
+    def update_gui(self):
         # Payload Image Message
         payload1, payload2 = self.payloadImage()
 
