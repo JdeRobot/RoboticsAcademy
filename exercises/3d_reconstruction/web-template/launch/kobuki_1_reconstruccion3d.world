@@ -8,10 +8,10 @@
         <uri>model://sun</uri>
     </include>
     <light name='point_light1' type='spot'>
-      <pose>-3.0 2.0 4.0 0 0 0</pose>
+      <pose>-3.0 2.0 2.0 0 0 0</pose>
     </light>
     <light name='point_light2' type='spot'>
-      <pose>3.0 2.0 4.0 0 0 0</pose>
+      <pose>-3.0 2.0 2.0 0 0 0</pose>
     </light>
     <!-- Pioneer2dx model -->
     <include>
