@@ -26,12 +26,12 @@ class HAL:
         return new_instance
     
     # Get Image from ROS Driver Camera
-    def getFrontalImage(self):
+    def get_frontal_image(self):
         image = self.cat.get_frontal_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
 
-    def getVentralImage(self):
+    def get_ventral_image(self):
         image = self.cat.get_ventral_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
