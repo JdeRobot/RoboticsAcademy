@@ -33,7 +33,7 @@ class Mouse:
 
     def stop_mouse(self):
         self.thread.stop()
-        self.mouse.set_cmd_mix(vx=0, vy=0, z=self.mouse.get_position()[2], yaw_rate=0)
+        self.mouse.set_cmd_mix(vx=0, vy=0, z=self.mouse.get_position()[2], az=0)
 
     def reset_mouse(self):
         self.thread.stop()
