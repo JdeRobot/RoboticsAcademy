@@ -171,10 +171,10 @@ class GUI:
             self.console.prompt(message)
         elif message[:4] == "#mou":
             self.mouse.start_mouse(int(message[4:5]))
-        elif message[:4] == "#tak":
-            self.mouse.takeoff()
-        elif message[:4] == "#lan":
-            self.mouse.land()
+        elif message[:4] == "#stp":
+            self.mouse.stop_mouse()
+        elif message[:4] == "#rst":
+            self.mouse.reset_mouse()
 
     # Activate the server
     def run_server(self):
