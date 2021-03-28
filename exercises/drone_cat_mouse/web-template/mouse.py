@@ -3,6 +3,7 @@ import rospy
 
 from drone_wrapper import DroneWrapper
 from interfaces.autonomous_mouse import path_obfuscated
+from interfaces.threadStoppable import StoppableThread
 from gazebo_msgs.srv import GetModelState
 from gazebo_msgs.msg import ModelState
 
@@ -23,18 +24,18 @@ class Mouse:
 
     def start_mouse(self, path_level):
         self.takeoff()
-        self.thread = threading.Thread(target=self.autonomous_mouse, args=[path_level])
+        self.thread = StoppableThread(target=self.autonomous_mouse, args=[path_level])
         self.thread.start()
 
     def land(self):
         self.mouse.land()
 
     def stop_mouse(self):
-        self.thread.join()
+        self.thread.stop()
         self.mouse.set_cmd_mix(z=self.mouse.get_position()[2])
 
     def reset_mouse(self):
-        self.thread.join()
+        self.thread.stop()
         self.mouse.land()
 
         reset_state = rospy.ServiceProxy('/gazebo/set_model_state', GetModelState)
