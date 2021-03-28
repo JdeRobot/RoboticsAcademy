@@ -22,6 +22,7 @@ class Mouse:
         self.mouse.takeoff(h=5)
 
     def start_mouse(self, path_level):
+        self.takeoff()
         self.thread = threading.Thread(target=self.autonomous_mouse, args=[path_level])
         self.thread.start()
 
