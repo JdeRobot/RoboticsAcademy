@@ -9,6 +9,12 @@
 			<uri>model://grass_plane</uri>
 		</include>
 
+		<include>
+			<name>logo</name>
+			<uri>model://logoJdeRobot</uri>
+			<pose>0 -4 0 0 0 0</pose>
+		</include>
+
 		<scene>
 			<sky>
 				<clouds>

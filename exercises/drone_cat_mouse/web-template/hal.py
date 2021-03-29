@@ -5,7 +5,6 @@ import time
 from datetime import datetime
 
 from drone_wrapper import DroneWrapper
-from interfaces.autonomous_mouse import path_obfuscated
 
 
 # Hardware Abstraction Layer
@@ -18,7 +17,6 @@ class HAL:
     
         self.image = None
         self.cat = DroneWrapper(name="rqt", ns="cat/")
-        self.mouse = DroneWrapper(name="rqt", ns="mouse/")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -26,27 +24,14 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
-
-    def start_mouse(self, path_level):
-        print("MOUSE", path_level)
-        self.mouse.takeoff(h=5)
-
-        # while True:
-        #     v = path_obfuscated(path_level)
-        #     if v is not None:
-        #         vx, vy, vz, yaw = v
-        #         self.mouse.set_cmd_vel(vx, vy, vz, yaw)
-        #     else:
-        #         print("[Mouse] Path {} not available".format(path_level))
-        #         break
     
     # Get Image from ROS Driver Camera
-    def getFrontalImage(self):
+    def get_frontal_image(self):
         image = self.cat.get_frontal_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
 
-    def getVentralImage(self):
+    def get_ventral_image(self):
         image = self.cat.get_ventral_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
