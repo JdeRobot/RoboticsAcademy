@@ -92,6 +92,15 @@ margin-bottom: 10px;
     background-color: whitesmoke;
 
 }
+#connect{
+    font-size: 12px;
+     width: 80px;
+     height: 40px;
+     border: none;
+     background-color: whitesmoke;
+ margin-bottom: 10px;
+ 
+ }
 
 #reset{
 

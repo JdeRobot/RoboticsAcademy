@@ -12,16 +12,23 @@ var websocket_gui, operation, data;
 var image_data, source, shape;
 var lap_time, pose, content;
 var command_input;
+async function ws_disconnect_gui(){
+	await websocket_gui.close(1000,'user dis')
+	console.log('disconnected_gui')
+	btn_state--;
+}
 
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
 		alert("[open] Connection established!");
+		btn_state++;
+		document.getElementById('connect').disabled = false;
+		document.getElementById('connect').innerText = 'disconnect';
 	}
 	
 	websocket_gui.onclose = function(event){
-		radiConect.contentWindow.postMessage('down', '*');
 		if(event.wasClean){
 			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
@@ -33,7 +40,7 @@ function declare_gui(websocket_address){
 	// What to do when a message from server is received
 	websocket_gui.onmessage = function(event){
 		operation = event.data.substring(0, 4);
-		radiConect.contentWindow.postMessage('up', '*');
+		
 		if(operation == "#gui"){
 			// Parse the entire Object
 			data = JSON.parse(event.data.substring(4, ));

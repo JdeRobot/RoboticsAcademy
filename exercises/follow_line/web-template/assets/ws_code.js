@@ -12,7 +12,11 @@ stop_button.style.cursor = "not-allowed";
 // Play/Pause from Reset
 var frequency = "0",
 	running = false;
-
+async function ws_disconnect_code(){
+	await websocket_code.close(1000,'user dis')
+	console.log('disconnected_code')
+	btn_state--;
+}
 //WebSocket for Code
 var websocket_code;
 function declare_code(websocket_address){
@@ -20,6 +24,7 @@ function declare_code(websocket_address){
 
 	websocket_code.onopen = function(event){
 		alert("[open] Connection established!");
+		btn_state++;
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
