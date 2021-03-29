@@ -43,6 +43,12 @@ instructions = {
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
     },
+    "3dreconstruction": {
+        "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
+        "instructions_ros": [
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
+    },
 }
 
 
