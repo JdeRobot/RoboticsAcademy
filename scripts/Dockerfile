@@ -211,6 +211,16 @@ RUN apt-get install -y nodejs
 RUN git clone https://github.com/osrf/gzweb.git
 RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
 
+# VNC
+RUN apt-get -y install x11vnc
+
+RUN git clone https://github.com/novnc/noVNC.git &&\
+	cd noVNC/utils &&\
+	git checkout tags/v1.2.0 &&\ 
+	git clone https://github.com/novnc/websockify websockify &&\
+	cd websockify &&\
+	git checkout tags/v0.9.0
+
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
 
@@ -252,3 +262,5 @@ EXPOSE 7681
 EXPOSE 8765
 # Port by WebRtc
 EXPOSE 1831
+# Port for noVNC
+EXPOSE 6080
