@@ -11,13 +11,18 @@
     </head>
 
     <body>
-        <!-- Navigation Bar -->
-        <nav class="navigation-bar">
-            <img class="logo" src="assets/img/logo.jpg" align="left">
-            <div class="header">
-                <p>Robotics Academy by JdeRobot</p>
-            </div>
-        </nav>
+        <!-- Extends base.html to initiate the connection to the RADI -->
+        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="5%" name="data" frameBorder="0" scrolling="no"></iframe>
+        <script>
+            var radiConect = document.getElementById('radiConect')
+            radiConect.contentWindow.postMessage('message', '*');
+            window.onmessage = function(event){
+                if (event.data == 'start') {
+                    console.log
+                    startSim()
+                }
+            };
+        </script>
         <div class="content">
 
             <div class="split a">
