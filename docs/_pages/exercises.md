@@ -68,7 +68,17 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     version: "v2.3"
-
+    
+  - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
+    alt: "3D Reconstruction"
+    title: "3D Reconstruction"
+    excerpt: "Reconstruct a 3D scene from a stereo pair"
+    url: "/exercises/ComputerVision/3d_reconstruction"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    version: "v2.3"
+    
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
     title: "Global Navigation"
@@ -194,16 +204,6 @@ feature_row:
     title: "Visual Odometry"
     excerpt: "Solving the Visual Odometry problem in a given dataset"
     url: "/exercises/ComputerVision/visual_odometry"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
-    version: "--"
-
-  - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
-    alt: "3D Reconstruction"
-    title: "3D Reconstruction"
-    excerpt: "Reconstruct a 3D scene from a stereo pair"
-    url: "/exercises/ComputerVision/3d_reconstruction"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"

@@ -52,6 +52,7 @@ illustrations:
 
 youtubeId1: 11pxsE__DPw
 youtubeId2: cAqfb6qJvwI
+youtubeId3: jGNEKli8Y3g
 ---
 
 ## Versions to run the exercise
@@ -152,6 +153,8 @@ while True:
 * `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
 * `GUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
 
+### Example video with web template
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 ## Instructions for ROSNode Templates
 
@@ -207,6 +210,11 @@ Then you have to execute the academic application, which will incorporate your c
 ```bash
 python2 ./3d_reconstruction.py 3d_reconstruction_conf.yml
 ```
+### Example video with ROSNode Templates
+
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Theory
 In computer vision and computer graphics, [3D reconstruction](https://en.wikipedia.org/wiki/3D_reconstruction) is the process of determining an object's 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be achieved as follows:
@@ -286,13 +294,6 @@ Due to varied implementations of users, the user may have to **adjust the scale 
 ### Illustrations
 
 {% include gallery id="illustrations" caption="Illustrations" %}
-
-## Demonstrative Video
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
-*This solution is an illustration for the ROSNode Templates*
 
 
 ## Contributors
