@@ -201,8 +201,8 @@ class Template:
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
         # Add HAL functions
-        hal_module.HAL.getFrontalImage = self.hal.getFrontalImage
-        hal_module.HAL.getVentralImage = self.hal.getVentralImage
+        hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
+        hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
         hal_module.HAL.get_position = self.hal.get_position
         hal_module.HAL.get_velocity = self.hal.get_velocity
         hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
