@@ -19,6 +19,7 @@ function declare_gui(){
     }
 
     websocket_gui.onclose = function(event){
+        radiConect.contentWindow.postMessage('down', '*');
         if(event.wasClean){
             alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
         }
@@ -30,7 +31,7 @@ function declare_gui(){
     // What to do when a message from server is received
     websocket_gui.onmessage = function(event){
         var operation = event.data.substring(0, 4);
-
+        radiConect.contentWindow.postMessage('up', '*');
         if(operation == "#gui"){
             // Parse the entire Object
             var data = JSON.parse(event.data.substring(4, ));
