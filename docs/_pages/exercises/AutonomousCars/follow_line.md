@@ -112,8 +112,6 @@ docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 
 
 - Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
 
-- To view Gazebo simulation, open `http://localhost:6080/vnc.html` in browser and click on 'Connect'
-
 - The exercise can be used after the alert.
 
 **Where to insert the code?**

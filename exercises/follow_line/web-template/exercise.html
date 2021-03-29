@@ -94,6 +94,7 @@ while True:
 <div class="split b">
 
   <div id="visual_buttons" class="row no-gutters">
+  <button id="gzweb_btn" type="button" onclick="changegzweb()"><img id="gzimg" src="./assets/img/gzweb_btn.png"></button>
   <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="./assets/img/terminal-solid.svg"> Console</button>
   <div id="lap_heading">Lap Time <img src="./assets/img/stopwatch-solid.svg"><span id="lap_time"></span> </div>
 
@@ -118,7 +119,7 @@ while True:
       </ul>
     </div>
     </div>
-
+    <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
       <script type="text/javascript">
       function changeconsole(){
         var console_display = document.getElementById('console').style.display
@@ -127,6 +128,16 @@ while True:
           document.getElementById('console').style.display = 'block';
         } else{
           document.getElementById('console').style.display = 'none';
+        }
+      }
+      function changegzweb(){
+        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true")
+        var display = document.getElementById('iframeGzweb').style.display
+        console.log(display)
+        if (display == "none" || display == "none" ) {
+          document.getElementById('iframeGzweb').style.display = 'block';
+        } else{
+          document.getElementById('iframeGzweb').style.display = 'none';
         }
       }
       </script>
