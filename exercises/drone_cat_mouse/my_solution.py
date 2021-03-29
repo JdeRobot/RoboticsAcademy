@@ -21,16 +21,19 @@ def gui_play_stop_cb(msg):
 			code_live_flag = False
 			code_live_timer.shutdown()
 
+
 def set_image_filtered(img):
-	gui_filtered_img_pub.publish(drone.bridge.cv2_to_imgmsg(img))
+	gui_filtered_img_pub.publish(HAL.bridge.cv2_to_imgmsg(img))
+
 
 def set_image_threshed(img):
-	gui_threshed_img_pub.publish(drone.bridge.cv2_to_imgmsg(img))
+	gui_threshed_img_pub.publish(HAL.bridge.cv2_to_imgmsg(img))
+
 
 def execute(event):
-	global drone
-	img_frontal = drone.get_frontal_image()
-	img_ventral = drone.get_ventral_image()
+	global HAL
+	img_frontal = HAL.get_frontal_image()
+	img_ventral = HAL.get_ventral_image()
 	# Both the above images are cv2 images
 	################# Insert your code here #################################
 
@@ -39,8 +42,9 @@ def execute(event):
 
 	#########################################################################
 
+
 if __name__ == "__main__":
-	drone = DroneWrapper()
+	HAL = DroneWrapper()  # Hardware Abstraction Layer aka the drone
 	rospy.Subscriber('gui/play_stop', Bool, gui_play_stop_cb)
 	gui_filtered_img_pub = rospy.Publisher('interface/filtered_img', Image, queue_size = 1)
 	gui_threshed_img_pub = rospy.Publisher('interface/threshed_img', Image, queue_size = 1)

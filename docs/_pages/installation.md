@@ -194,7 +194,7 @@ B. Source installation:
 3. Get jderobot-drones ros pkg
 
     ```bash
-    cd && mkdir -p repos && cd repos
+    cd ~ && mkdir -p repos && cd repos
     git clone https://github.com/JdeRobot/drones.git
     ```
     
@@ -320,6 +320,7 @@ Install previous dependencies:
 
     ```bash
     (cd eProsima_FastCDR-1.0.8-Linux && ./configure --libdir=/usr/lib && make -j2 && sudo make install)
+    cd ..
     (cd eProsima_FastRTPS-1.7.1-Linux && ./configure --libdir=/usr/lib && make -j2 && sudo make install)
     rm -rf requiredcomponents eprosima_fastrtps-1-7-1-linux.tar.gz
     ```
@@ -328,7 +329,7 @@ PX4 source installation:
 1. Get PX4 source (v1.11.3)
 
     ```bash
-    cd && mkdir -p repos && cd repos
+    cd ~ && mkdir -p repos && cd repos
     git clone https://github.com/PX4/Firmware.git
     cd Firmware && git checkout v1.11.3
     git checkout -b v1.11.3
