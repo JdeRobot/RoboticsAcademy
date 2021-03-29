@@ -201,7 +201,7 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/J
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 
 # GzWeb
@@ -211,9 +211,18 @@ RUN apt-get install -y nodejs
 RUN git clone https://github.com/osrf/gzweb.git
 RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
 
+# VNC
+RUN apt-get -y install x11vnc
+
+RUN git clone https://github.com/novnc/noVNC.git &&\
+	cd noVNC/utils &&\
+	git checkout tags/v1.2.0 &&\ 
+	git clone https://github.com/novnc/websockify websockify &&\
+	cd websockify &&\
+	git checkout tags/v0.9.0
+
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
-
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
 RUN apt-get -y --quiet install ros-melodic-kobuki-msgs
@@ -252,3 +261,5 @@ EXPOSE 7681
 EXPOSE 8765
 # Port by WebRtc
 EXPOSE 1831
+# Port for noVNC
+EXPOSE 6080
