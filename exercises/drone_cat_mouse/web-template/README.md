@@ -16,42 +16,23 @@ There are two ways to run the exercise using web-template. Either one way is fin
 
 ## How to launch the exercise?
 
-### First execution only
-- Build or pull the docker image.
+- Make sure to have pulled (or built) the last version of the docker image.
+```bash
+docker pull jderobot/robotics-academy
+```
+
+### User launching
+
 - Open a terminal and run:
 ```bash
-docker run -it --name=docker_academy -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 jderobot/robotics-academy:drones-beta
-npm run deploy --- -m local
-exit
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:drones-beta python3.8 manager.py
 ```
 
-- Add jderobot-drones by source (provisional):
-```bash
-docker exec -it docker_academy bash
+- Open `exercise.html` on you web browser.
 
-apt-get install python-catkin-tools
- 
-mkdir -p /catkin_ws/src
-cd /catkin_ws
-catkin init
-echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc # points roscd dir
-source ~/.bashrc
+- The page should says **[open]Connection established!**. Means it is working as expected.
 
-git clone https://github.com/JdeRobot/drones.git
-roscd && cd src
-ln -s /drones/drone_wrapper .
-
-roscd
-rosdep init  # needs to be called ONLY once after installation. sudo might be required
-rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y  #sudo might be required
-
-roscd && catkin build
-
-exit
-```
-
-
-### All the executions
+### Developer launching
 - Open a terminal and run:
 ```bash
 docker exec -it docker_academy bash
@@ -73,7 +54,6 @@ cd /gzweb && npm start -p 8080
 ```bash
 docker exec -it docker_academy bash
 
-source /catkin_ws/devel/setup.bash
 python /RoboticsAcademy/exercises/drone_cat_mouse/web_template/exercise.py 0.0.0.0
 ```
 

@@ -201,7 +201,7 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/J
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/Firmware/Tools/sitl_gazebo/models"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 
 # GzWeb
@@ -241,32 +241,9 @@ COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
 
-#
-# TEMPORAL: waiting to ros melodic pkg sync
-#
-
-RUN apt-get install -y python-catkin-tools
-
-RUN rm -rf /catkin_ws
-RUN mkdir -p /catkin_ws/src
-RUN cd /catkin_ws && catkin init
-RUN echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc
-
-RUN git clone https://github.com/JdeRobot/drones.git
-RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
-
-RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y
-
-RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /catkin_ws; catkin build'
-
-#
-# END TEMPORAL
-#
-
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
-
 
 EXPOSE 2303
 EXPOSE 1905
