@@ -51,15 +51,15 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 ```
 
 ### How can I run the exercise?
-Start a new docker container of the image and keep it running in the background:
+- Start a new docker container of the image and keep it running in the background:
 
 ```bash
 docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:drones-beta python3.8 manager.py
 ```
 
-Go to *RoboticsAcademy/exercises/drone_cat_mouse/web-template* and open `exercise.html` on you web browser.
+- Go to *RoboticsAcademy/exercises/drone_cat_mouse/web-template* and open `exercise.html` on you web browser.
 
-The page should says **[open]Connection established!**. Means it is working as expected.
+- Click on the 'connect' button . Wait for some time until an alert appears with the message `Connection Established` and the button turns green displaying 'connected'. 
 
 ### How should I solve the exercise?
 The launched webpage contains several widgets that will help you to solve the exercise.

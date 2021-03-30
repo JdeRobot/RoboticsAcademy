@@ -110,7 +110,8 @@ docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 
 
 - Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
 
-- Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+- Launch the `exercise.html` web-page. Click on the 'connect' button . Wait for some time until an alert appears with the message `Connection Established` and the button turns green displaying 'connected'. 
+ 
 
 - The exercise can be used after the alert.
 
