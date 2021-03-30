@@ -102,7 +102,7 @@ docker pull jderobot/robotics-academy
 docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy python3.8 manager.py
 	```
 
-- On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/3d_reconstruction/web-template`
+- On the local machine navigate to the 3d_reconstruction exercise which is: `RoboticsAcademy/exercises/3d_reconstruction/web-template`
 
 - Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
 
@@ -213,6 +213,7 @@ python2 ./3d_reconstruction.py 3d_reconstruction_conf.yml
 ### Example video with ROSNode Templates
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
+
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
