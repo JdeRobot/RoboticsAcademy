@@ -52,16 +52,147 @@ illustrations:
 
 youtubeId1: 11pxsE__DPw
 youtubeId2: cAqfb6qJvwI
+youtubeId3: jGNEKli8Y3g
 ---
+
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates(Current Release)
+
+The instructions for both of them are provided as follows.
+
+## Goal
 
 In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.
 
 {% include gallery caption="Scene to reconstruct" %}
 
-## Installation
+## Instructions for Web Templates
+This is the preferred way for running the exercise.
+
+### Installation 
+- Clone the Robotics Academy repository on your local machine
+
+	```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy
+	```
+
+- Download [Docker](https://docs.docker.com/get-docker/)
+
+- Pull the current distribution of Robotics Academy Docker Image
+
+	```bash
+docker pull jderobot/robotics-academy
+	```
+
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+#### Enable GPU Acceleration (For advanced users)
+- For Linux machines, GPU acceleration can be enabled by downloading Nvidia Container Runtime, as given [here](https://github.com/NVIDIA/nvidia-container-runtime)
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
+
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background
+
+	```bash
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy python3.8 manager.py
+	```
+
+- On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/3d_reconstruction/web-template`
+
+- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
+
+- Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+
+- The exercise can be used after the alert.
+
+**Where to insert the code?**
+
+In the launched webpage, type your code in the text editor,
+
+```python
+from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+### Using the Interface
+
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).
+
+* **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+
+**Application Programming Interface**
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getImage('left')` - to get the left image
+* `HAL.getImage('right')` - to get the right image
+* `HAL.getCameraPosition('left')` - to get the left camera position from ROS Driver Camera
+* `HAL.getCameraPosition('right')` - to get the right camera position from ROS Driver Camera
+* `HAL.graficToOptical('left', point2d)` - to transform the Coordinate System to the Camera System
+* `HAL.backproject('left', point2d)` - to backprojects the 2D Point into 3D Space
+* `HAL.project('left', point3d)` - to backprojects a 3D Point onto an Image
+* `HAL.opticalToGrafic('left', point2d)` - to get Image Coordinates
+* `HAL.project3DScene(point3d)` - to backprojects a 3D Point
+* `GUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
+* `GUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
+* `GUI.ClearAllPoints()` - to clear the 3D visor
+* `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
+* `GUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
+
+### Example video with web template
+{% include youtubePlayer.html id=page.youtubeId3 %}
+
+## Instructions for ROSNode Templates
+
+### Installation
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
-## How to run your solution?
+### How to perform the exercise?
+To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which reconstructs 3d points from the two stereo views.
+
+**Where to insert the code?**
+In the `MyAlgorithm.py` file,
+
+```python
+def algorithm(self):
+	#GETTING THE IMAGES
+	# imageR = self.getImage('right')
+	# imageL = self.getImage('left')
+
+	#EXAMPLE OF HOW TO PLOT A RED COLORED POINT
+	# position = [1.0, 0.0, 0.0]	X, Y, Z
+	# color = [1.0, 0.0, 0.0]	R, G, B
+	# self.point.plotPoint(position, color) 
+```
+
+**Application Programming Interface**
+
+* `self.getImage('left')` - to get the left image
+* `self.getImage('right')` - to get the right image
+* `self.point.PlotPoint(position, color)` - to plot the point in the 3d tool
+
+
+**Navigating the GUI Interface**
+
+**Mouse based**: Hold and drag to move around the environment. Scroll to zoom in or out
+
+**Keyboard based**: Arrow keys to move around the environment. W and S keys to zoom in or out
+
+### How to run your solution?
 Navigate to the 3d_reconstruction directory
 
 ```bash
@@ -79,35 +210,11 @@ Then you have to execute the academic application, which will incorporate your c
 ```bash
 python2 ./3d_reconstruction.py 3d_reconstruction_conf.yml
 ```
+### Example video with ROSNode Templates
 
-## How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which reconstructs 3d points from the two stereo views.
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
-### Where to insert the code?
-In the `MyAlgorithm.py` file,
-
-```python
-def algorithm(self):
-	#GETTING THE IMAGES
-	# imageR = self.getImage('right')
-	# imageL = self.getImage('left')
-
-	#EXAMPLE OF HOW TO PLOT A RED COLORED POINT
-	# position = [1.0, 0.0, 0.0]	X, Y, Z
-	# color = [1.0, 0.0, 0.0]	R, G, B
-	# self.point.plotPoint(position, color) 
-```
-
-### Application Programming Interface
-
-* `self.getImage('left')` - to get the left image
-* `self.getImage('right')` - to get the right image
-* `self.point.PlotPoint(position, color)` - to plot the point in the 3d tool
-
-### Navigating the GUI Interface
-**Mouse based**: Hold and drag to move around the environment. Scroll to zoom in or out
-
-**Keyboard based**: Arrow keys to move around the environment. W and S keys to zoom in or out
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Theory
 In computer vision and computer graphics, [3D reconstruction](https://en.wikipedia.org/wiki/3D_reconstruction) is the process of determining an object's 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be achieved as follows:
@@ -184,13 +291,24 @@ Keep in mind the difference between simple 3D coordinates and homogenous 4D coor
 
 Due to varied implementations of users, the user may have to **adjust the scale and offset of the triangulated points** in order to make them visible and representable in the GUI interface. Downscaling the 3D coordinate vector by a value between 500 to 1000 works well. Also an offset of 0 to 8 works good.
 
-## Illustrations
+### Illustrations
 
 {% include gallery id="illustrations" caption="Illustrations" %}
 
-## Template for Exercise
-{% include youtubePlayer.html id=page.youtubeId1 %}
 
-## Reference Solution
-{% include youtubePlayer.html id=page.youtubeId2 %}
+## Contributors
+
+- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
+- Maintained by [Jessica Fernández](https://github.com/jessiffmm), [Vanessa Fernández](https://github.com/vmartinezf) and [David Valladares](https://github.com/dvalladaresv).
+
+## References
+
+[1](https://www.researchgate.net/publication/330183516_3D_Computer_Vision_Stereo_and_3D_Reconstruction_from_Disparity)
+[2](https://www.iitr.ac.in/departments/MA/uploads/Stereo-updated.pdf)
+[3](https://www.cs.auckland.ac.nz/courses/compsci773s1c/lectures/CS773S1C-3DReconstruction.pdf)
+[4](https://cs.nyu.edu/~fergus/teaching/vision/9_10_Stereo.pdf)
+[5](https://mil.ufl.edu/nechyba/www/eel6562/course_materials/t9.3d_vision/lecture_multiview1x2.pdf)
+[6](https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/)
+[7](https://medium.com/@dc.aihub/3d-reconstruction-with-stereo-images-part-1-camera-calibration-d86f750a1ade)
+
 
