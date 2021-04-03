@@ -1,0 +1,3 @@
+cat:
+  cam_frontal_topic: '/iris/cam_frontal/image_raw'
+  cam_ventral_topic: '/iris/cam_ventral/image_raw'

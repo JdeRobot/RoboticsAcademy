@@ -49,6 +49,11 @@ instructions = {
             "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
     },
+    "follow_turtlebot": {
+        "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
+    },
 }
 
 
