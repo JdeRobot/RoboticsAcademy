@@ -68,7 +68,7 @@ cd catkin_ws/src
 ```
 after pull request to the industrial robot repo
 ```bash
-git clone https://github.com/JdeRobot/IndustrialRobotics.git -b melodic_devel
+git clone https://github.com/JdeRobot/IndustrialRobots.git -b melodic_devel
 cd ..
 ```
 Update ROS dependencies
@@ -84,7 +84,7 @@ catkin build
 Export environment variables
 ```bash
 echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
-echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:'$PWD'/src/IndustrialRobotics/assets/models' >> ~/.bashrc
+echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:'$PWD'/src/IndustrialRobots/assets/models' >> ~/.bashrc
 source ~/.bashrc
 ```
 
