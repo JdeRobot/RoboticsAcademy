@@ -180,6 +180,31 @@
                 <a href="exercises/color_filter/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
+        <div class="card">
+            <div class="multimedia" onmouseover="SetVideo_3d_reconstruction()" onmouseout="SetImg_3d_reconstruction()">
+                <img id="img_3d_reconstruction" class="card-img-top" style="width:250px" src="exercises/assets/img/3d_reconstruction_teaser.png" alt="Card image cap">
+                <iframe id="video_3d_reconstruction" class="card-img-top" style="height:170px; display:none;"  src="https://www.youtube.com/embed/jGNEKli8Y3g?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+                <script type="text/javascript">
+                    var img_3d_reconstruction = document.getElementById("img_3d_reconstruction")
+                    var video_3d_reconstruction = document.getElementById("video_3d_reconstruction")
+                    function SetVideo_3d_reconstruction(){
+                        video_3d_reconstruction.style.display ="block"
+                        img_3d_reconstruction.style.display= "none"
+                    }
+                    function SetImg_3d_reconstruction(){
+                        video_3d_reconstruction.style.display ="none"
+                        img_3d_reconstruction.style.display= "block"
+                    }
+                </script>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">3d-Reconstruction</h5>
+                <p class="card-text">Reconstruct a 3D scene from a stereo pair.</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="exercises/3d_reconstruction/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+            </div>
+        </div>
 
 
     </div>
