@@ -7,6 +7,11 @@
 	</physics>
     <scene>
       <grid>false</grid>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
     </scene>
     <!-- A global light source -->
     <include>
