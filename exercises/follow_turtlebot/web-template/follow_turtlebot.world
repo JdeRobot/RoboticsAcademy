@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
     <world name='default'>
-
+    	<gui fullscreen=1></gui>
      	<include>
       		<uri>model://sun</uri>
     	</include>
@@ -32,73 +32,6 @@
 	      	<real_time_update_rate>250</real_time_update_rate>
 	      	<magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
 	    </physics>
-
-	    <model name="colored_plate">
-		    <pose>0 3 0.155 0 0 0</pose>
-		    <link name="link1">
-		    	<gravity>false</gravity>
-			    <inertial>
-			    	<!--mass of roombaROS = 2.234-->
-			        <mass>1.0</mass>
-			        <inertia>
-				        <ixx>0.74</ixx>        <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
-				        <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
-				        <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
-				        <iyy>0.0</iyy>         <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
-				        <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
-				        <izz>0.74</izz>        <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
-			        </inertia>
-			    </inertial>
-
-			    <collision name="collision">
-			        <geometry>
-			  		    <box>
-			            	<size>0.28 0.28 0.005</size>
-			            </box>
-			        </geometry>
-			        <surface>
-			            <friction>
-			             	<ode>
-				                <mu>0.0</mu>
-				                <mu2>0.0</mu2>
-			              	</ode>
-			            </friction>
-		          	</surface>
-		    	</collision>
-			    <visual name="visual">
-			        <geometry>
-			            <box>
-			             	<size>0.28 0.28 0.005</size>
-			            </box>
-			        </geometry>
-			        <material>
-			            <script>
-			                <name>Gazebo/Green</name>
-			                <uri>file://media/materials/scripts/gazebo.material</uri>
-			            </script>
-			        </material>
-			    </visual>
-		    </link>
-  		
-		    <include>
-		        <uri>model://roombaROS</uri>
-		        <pose>0 0 -0.155 0 0 0</pose>
-			</include>
-
-			<joint name="joint" type="fixed">
-				<parent>link1</parent>
-		        <child>roombaROS::base</child>
-			</joint>
-
-	  		<plugin name="random" filename="libRandomVelocityPlugin.so">
-	        	<link>link1</link>
-		        <initial_velocity>0 0 0</initial_velocity>
-		        <velocity_factor>0.2</velocity_factor>
-		        <update_period>7</update_period>
-		        <min_z>0</min_z>
-		        <max_z>0</max_z>
-	      	</plugin>
-	    </model>
 
     </world>
 </sdf>
