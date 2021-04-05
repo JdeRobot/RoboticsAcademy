@@ -4,8 +4,9 @@ function startSim() {
     exercise = "vacuum_cleaner_loc"
 
     ws_manager.onopen = function (event) {
+        var size = get_novnc_size();
         ws_manager.send(JSON.stringify({"command": "exit", "exercise": ""}));
-        ws_manager.send(JSON.stringify({"command": "open", "exercise": exercise}));
+        ws_manager.send(JSON.stringify({"command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString()}));
     }
 
     ws_manager.onmessage = function (event) {

@@ -18,13 +18,6 @@ class HAL:
     	self.image = None
     	self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
     	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
-    	
-    # Explicit initialization functions
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initRobot(cls):
-        new_instance = cls()
-        return new_instance
     
     # Get Image from ROS Driver Camera
     def getImage(self):

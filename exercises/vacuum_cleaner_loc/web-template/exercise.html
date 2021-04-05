@@ -138,7 +138,7 @@ while True:
         }
       }
       function changegzweb(){
-        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
+        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
         var display = document.getElementById('iframeGzweb').style.display
         console.log(display)
         if (display == "none" || display == "none" ) {
@@ -161,6 +161,7 @@ while True:
    
 
 	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../assets/js/utils.js"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
