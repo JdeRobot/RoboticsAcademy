@@ -115,6 +115,8 @@ async def kill_simulation():
     os.popen(cmd_host)
     cmd_host = "pkill -9 -f gzserver"
     os.popen(cmd_host)
+    cmd_client = "pkill -9 -f gzclient"
+    os.popen(cmd_client)
     cmd_ros = "pkill -9 -f roslaunch"
     os.popen(cmd_ros)
     cmd_rosout = "pkill -9 -f rosout"
