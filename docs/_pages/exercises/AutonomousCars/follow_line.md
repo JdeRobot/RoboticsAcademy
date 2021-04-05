@@ -138,7 +138,7 @@ while True:
 
 * **Lap Time**: The lap timer starts once the Robot car, moves beyond some point on the race track.
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
 
 **Application Programming Interface**
 
