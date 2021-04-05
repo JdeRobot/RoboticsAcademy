@@ -221,6 +221,9 @@ RUN git clone https://github.com/novnc/noVNC.git &&\
 	cd websockify &&\
 	git checkout tags/v0.9.0
 
+# Console
+RUN apt-get install xterm
+
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
 # Certain Dependencies for Exercises

@@ -88,7 +88,7 @@ def start_gzclient(exercise, width, height):
 
 def start_console(width, height):
     # Write display config and start the console
-    width = int(width) / 10; height = int(height) / 20
+    width = int(width) / 10; height = int(height) / 18
     console_cmd = f"export DISPLAY=:1;"
     console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
 
