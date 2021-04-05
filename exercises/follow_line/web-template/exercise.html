@@ -114,19 +114,11 @@ while True:
     <h4 id="lap_time"></h4>-->
   </div>
 
-    <div id="console" style="display:none;">
-        <!-- Console -->
-        <div id="Console" class="container">
-      <ul>
-        <li class="Console-item">
-          <input value=">>" class="terminal" readonly><input class="command">
-        </li>
-      </ul>
-    </div>
-    </div>
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
     <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
       <script type="text/javascript">
       function changeconsole(){
+        document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
         var console_display = document.getElementById('console').style.display
         console.log(console_display)
         if (console_display == "none" || console_display == "none" ) {
@@ -136,7 +128,7 @@ while True:
         }
       }
       function changegzweb(){
-        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true")
+        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
         var display = document.getElementById('iframeGzweb').style.display
         console.log(display)
         if (display == "none" || display == "none" ) {

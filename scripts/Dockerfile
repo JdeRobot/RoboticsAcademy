@@ -221,6 +221,9 @@ RUN git clone https://github.com/novnc/noVNC.git &&\
 	cd websockify &&\
 	git checkout tags/v0.9.0
 
+# Console
+RUN apt-get install xterm
+
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
 # Certain Dependencies for Exercises
@@ -259,6 +262,7 @@ EXPOSE 1905
 EXPOSE 8080
 EXPOSE 7681
 EXPOSE 8765
+EXPOSE 1108
 # Port by WebRtc
 EXPOSE 1831
 # Port for noVNC

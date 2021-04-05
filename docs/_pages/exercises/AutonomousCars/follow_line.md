@@ -103,7 +103,7 @@ docker pull jderobot/robotics-academy
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 jderobot/robotics-academy python3.8 manager.py
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy python3.8 manager.py
 	```
 
 - On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/follow_line/web-template`
@@ -138,7 +138,7 @@ while True:
 
 * **Lap Time**: The lap timer starts once the Robot car, moves beyond some point on the race track.
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
 
 **Application Programming Interface**
 

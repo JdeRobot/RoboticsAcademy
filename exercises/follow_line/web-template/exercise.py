@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-
-from __future__ import print_function
-
 from websocket_server import WebsocketServer
 import logging
 import time
@@ -19,7 +16,6 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-import console
 
 class Template:
     # Initialize class variables
@@ -39,10 +35,9 @@ class Template:
         self.client = None
         self.host = sys.argv[1]
 
-        # Initialize the GUI, HAL and Console behind the scenes
-        self.console = console.Console()
+        # Initialize the GUI, HAL behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
      
     # Function for saving   
     def save_code(self, source_code):
@@ -150,7 +145,7 @@ class Template:
     # The process function
     def process_code(self, source_code):
         # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
+        reference_environment = {}
         iterative_code, sequential_code, debug_level = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -161,43 +156,43 @@ class Template:
         self.hal.motors.sendV(0)
         self.hal.motors.sendW(0)
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
 
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while self.reload == False:
-                start_time = datetime.now()
-                
-                # Execute the iterative portion
-                exec(iterative_code, reference_environment)
-
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-                
-                # Keep updating the iteration counter
-                if(iterative_code == ""):
-                	self.iteration_counter = 0
-                else:
-                	self.iteration_counter = self.iteration_counter + 1
+        # Redirect the information to console
+        sys.stderr = open('/dev/pts/1', 'w')
+        sys.stdout = open('/dev/pts/1', 'w')
+        
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            start_time = datetime.now()
             
-            	# The code should be run for atleast the target time step
-            	# If it's less put to sleep
-            	# If it's more no problem as such, but we can change it!
-                if(ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
 
-            print("Current Thread Joined!")
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            
+            # Keep updating the iteration counter
+            if(iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
+        
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            # If it's more no problem as such, but we can change it!
+            if(ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
 
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
+        sys.stderr.close()
+        sys.stdout.close()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
