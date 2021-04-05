@@ -103,27 +103,42 @@ function declare_gui(websocket_address){
 }
 
 // Function to start mouse
+var playmouse_locked = false;
 function playmouse(){
-    // Send message to initiate start mouse
-    var message = "#mou" + document.getElementById('mouse').value;
-    console.log("Message sent: " + message);
-    websocket_gui.send(message);
+	if (playmouse_locked == false){
+		playmouse_locked = true;
+	    // Send message to initiate start mouse
+	    var message = "#mou" + document.getElementById('mouse').value;
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    playmouse_locked = false;
+	}
 }
 
 // Function to takeoff mouse
+var stopmouse_locked = false;
 function stopmouse(){
-    // Send message to initiate start mouse
-    var message = "#stp";
-    console.log("Message sent: " + message);
-    websocket_gui.send(message);
+	if (stopmouse_locked == false){
+		stopmouse_locked = true;
+	    // Send message to initiate start mouse
+	    var message = "#stp";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    stopmouse_locked = false;
+	}
 }
 
 // Function to land mouse
+var resetmouse_locked = false;
 function resetmouse(){
-    // Send message to initiate start mouse
-    var message = "#rst";
-    console.log("Message sent: " + message);
-    websocket_gui.send(message);
+	if (resetmouse_locked == false){
+		resetmouse_locked = true;
+	    // Send message to initiate start mouse
+	    var message = "#rst";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    resetmouse_locked = false;
+	}
 }
 
 var canvas = document.getElementById("gui_canvas_right"),
