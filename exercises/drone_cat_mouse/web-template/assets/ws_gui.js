@@ -103,41 +103,38 @@ function declare_gui(websocket_address){
 }
 
 // Function to start mouse
-var playmouse_locked = false;
+var playmouse_old_timestamp = 0;
 function playmouse(){
-	if (playmouse_locked == false){
-		playmouse_locked = true;
+	if(playmouse_old_timestamp == 0 || playmouse_old_timestamp + 2000 < (new Date).getTime()){
 	    // Send message to initiate start mouse
 	    var message = "#mou" + document.getElementById('mouse').value;
 	    console.log("Message sent: " + message);
 	    websocket_gui.send(message);
-	    playmouse_locked = false;
+	    playmouse_old_timestamp = (new Date).getTime();
 	}
 }
 
 // Function to takeoff mouse
-var stopmouse_locked = false;
+var stopmouse_old_timestamp = 0;
 function stopmouse(){
-	if (stopmouse_locked == false){
-		stopmouse_locked = true;
+	if(stopmouse_old_timestamp == 0 || stopmouse_old_timestamp + 2000 < (new Date).getTime()){
 	    // Send message to initiate start mouse
 	    var message = "#stp";
 	    console.log("Message sent: " + message);
 	    websocket_gui.send(message);
-	    stopmouse_locked = false;
+	    stopmouse_old_timestamp = (new Date).getTime();
 	}
 }
 
 // Function to land mouse
-var resetmouse_locked = false;
+var resetmouse_old_timestamp = 0;
 function resetmouse(){
-	if (resetmouse_locked == false){
-		resetmouse_locked = true;
+	if(resetmouse_old_timestamp == 0 || resetmouse_old_timestamp + 2000 < (new Date).getTime()){
 	    // Send message to initiate start mouse
 	    var message = "#rst";
 	    console.log("Message sent: " + message);
 	    websocket_gui.send(message);
-	    resetmouse_locked = false;
+	    resetmouse_old_timestamp = (new Date).getTime();
 	}
 }
 
