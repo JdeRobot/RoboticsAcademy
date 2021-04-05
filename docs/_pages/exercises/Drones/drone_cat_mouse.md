@@ -54,7 +54,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Start a new docker container of the image and keep it running in the background:
 
 ```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:drones-beta python3.8 manager.py
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 jderobot/robotics-academy:drones-beta python3.8 manager.py
 ```
 
 - Go to *RoboticsAcademy/exercises/drone_cat_mouse/web-template* and open `exercise.html` on you web browser.
