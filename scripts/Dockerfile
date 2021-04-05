@@ -222,7 +222,7 @@ RUN git clone https://github.com/novnc/noVNC.git &&\
 	git checkout tags/v0.9.0
 
 # Console
-RUN apt-get install xterm
+RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
