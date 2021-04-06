@@ -66,6 +66,7 @@ function declare_gui(websocket_address){
 			// Parse the Console messages
 			messages = JSON.parse(data.text_buffer);
 			// Loop through the messages and print them on the console
+			const command  ='';
 			for(message of messages){
 				// Set value of command
 				command.value = message
