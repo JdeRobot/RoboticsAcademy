@@ -236,12 +236,11 @@ RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
 
 # Follow Turtlebot exercise
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-		ros-melodic-turtlebot3
+	ros-$ROS_DISTRO-turtlebot3-description
 
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc
-RUN echo 'export TURTLEBOT3_MODEL=waffle_pi' >> ~/.bashrc
 
 # Install and run XDummy XServer
 RUN apt-get update && apt-get -y install xserver-xorg-video-dummy x11-apps
