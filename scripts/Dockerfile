@@ -67,32 +67,6 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
-# Turtlebot3 dependencies
-RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-		ros-melodic-joy ros-melodic-teleop-twist-joy \
-		ros-melodic-teleop-twist-keyboard ros-melodic-laser-proc \
-		ros-melodic-rgbd-launch \
-		ros-melodic-depthimage-to-laserscan \   
-		ros-melodic-rosserial-arduino \
-		ros-melodic-rosserial-python \
-		ros-melodic-rosserial-server \
-		ros-melodic-rosserial-client \ 
-		ros-melodic-rosserial-msgs \
-		ros-melodic-amcl ros-melodic-map-server \ 
-		ros-melodic-move-base ros-melodic-urdf \
-		ros-melodic-xacro \
-		ros-melodic-compressed-image-transport \ 
-		ros-melodic-rqt* \
-		ros-melodic-gmapping \ 
-		ros-melodic-navigation \
-		ros-melodic-interactive-markers \
-
-# Turtlebot3
-RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-		ros-melodic-dynamixel-sdk \
-		ros-melodic-turtlebot3-msgs \ 
-		ros-melodic-turtlebot3 \
-
 RUN which xxd || apt install xxd -y || apt install vim-common --no-install-recommends -y
 
 # gtest
@@ -252,12 +226,17 @@ RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
+
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
 RUN apt-get -y --quiet install ros-melodic-kobuki-msgs
 
 # Drone-cat-mouse
 RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
+
+# Follow Turtlebot exercise
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+		ros-melodic-turtlebot3
 
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
