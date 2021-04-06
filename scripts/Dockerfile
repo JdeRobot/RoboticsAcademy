@@ -226,12 +226,17 @@ RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
+
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
 RUN apt-get -y --quiet install ros-melodic-kobuki-msgs
 
 # Drone-cat-mouse
 RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
+
+# Follow Turtlebot exercise
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+	ros-$ROS_DISTRO-turtlebot3-description
 
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
