@@ -89,9 +89,9 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 
 # Turtlebot3
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-		ros-melodic-dynamixel-sdk 
-		ros-melodic-turtlebot3-msgs 
-		ros-melodic-turtlebot3
+		ros-melodic-dynamixel-sdk \
+		ros-melodic-turtlebot3-msgs \ 
+		ros-melodic-turtlebot3 \
 
 RUN which xxd || apt install xxd -y || apt install vim-common --no-install-recommends -y
 
