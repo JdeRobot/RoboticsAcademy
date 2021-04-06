@@ -16,6 +16,7 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
+from console import start_console, close_console
 
 class Template:
     # Initialize class variables
@@ -144,6 +145,9 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
+        # Redirect the information to console
+        start_console()
+
         # Reference Environment for the exec() function
         reference_environment = {}
         iterative_code, sequential_code, debug_level = self.parse_code(source_code)
@@ -160,10 +164,6 @@ class Template:
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
         exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
-
-        # Redirect the information to console
-        sys.stderr = open('/dev/pts/1', 'w')
-        sys.stdout = open('/dev/pts/1', 'w')
         
         # Run the iterative part inside template
         # and keep the check for flag
@@ -190,8 +190,7 @@ class Template:
             if(ms < self.time_cycle):
                 time.sleep((self.time_cycle - ms) / 1000.0)
 
-        sys.stderr.close()
-        sys.stdout.close()
+        close_console()
         print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
@@ -280,7 +279,6 @@ class Template:
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
         self.measure_thread.start()
-        print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
