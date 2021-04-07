@@ -18,6 +18,16 @@ feature_row:
     version_label: "btn--success"
     version: "v2.3"
     
+  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    alt: "Follow Turtlebot"
+    title: "Follow Turtlebot"
+    excerpt: "Follow a turtlebot on the ground."
+    url: "/exercises/Drones/follow_turtlebot"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
     title: "Drone Gymkhana"
@@ -63,16 +73,6 @@ feature_row:
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
     url: "/exercises/Drones/rescue_people"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
-    alt: "Follow Turtlebot"
-    title: "Follow Turtlebot"
-    excerpt: "Follow a turtlebot on the ground."
-    url: "/exercises/Drones/follow_turtlebot"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"
