@@ -1,4 +1,4 @@
-# Drone Cat Mouse Exercise using WebTemplates
+# Follow Turtlebot Exercise using WebTemplates
 
 There are two ways to run the exercise using web-template. Either one way is fine.
 
@@ -39,8 +39,8 @@ docker exec -it docker_academy bash
 
 Xvfb :1 -screen 0 1600x1200x16  &
 export DISPLAY=:1.0
-cd /RoboticsAcademy/exercises/drone_cat_mouse/web-template
-roslaunch launch/drone_cat_mouse.launch
+cd /RoboticsAcademy/exercises/follow_turtlebot/web-template
+roslaunch launch/follow_turtlebot.launch
 ```
 
 - Open a terminal and run:
@@ -54,7 +54,7 @@ cd /gzweb && npm start -p 8080
 ```bash
 docker exec -it docker_academy bash
 
-python /RoboticsAcademy/exercises/drone_cat_mouse/web_template/exercise.py 0.0.0.0
+python /RoboticsAcademy/exercises/follow_turtlebot/web_template/exercise.py 0.0.0.0
 ```
 
 - Determine your machine dns server IP address which is generally in the form of **127.0.0.xx for Linux machine** by running this command:
