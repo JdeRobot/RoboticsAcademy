@@ -18,4 +18,4 @@ For users of Robotics Academy, follow the instructions given on this [link](http
 
 ### Python Files
 
-`host.py` is the main Python file to run the exercise
+`exercise.py` is the main Python file to run the exercise

@@ -180,7 +180,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6B
 RUN pip install wheel setuptools
 RUN pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage \
     empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments pymavlink \
-    packaging pyros-genmsg pyulog pyyaml requests rosdep rospkg serial six toml
+    packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml
 
 # bootstrap rosdep
 # RUN rosdep init && rosdep update
@@ -199,10 +199,10 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/J
     && cd CustomRobots && git checkout melodic-devel && git pull origin melodic-devel
 
 ## Setting env vars
-ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/RoboticsAcademy/exercises/follow_line/web-template/launch"
-ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/Firmware/Tools/sitl_gazebo/models"
-ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/Firmware/build/px4_sitl_default/build_gazebo"
+ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
+ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models"
+ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 
 # GzWeb
 # https://answers.gazebosim.org//question/15807/node-gyp-build-errors-while-trying-to-install-gzweb/
@@ -210,6 +210,19 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 RUN apt-get install -y nodejs
 RUN git clone https://github.com/osrf/gzweb.git
 RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
+
+# VNC
+RUN apt-get -y install x11vnc
+
+RUN git clone https://github.com/novnc/noVNC.git &&\
+	cd noVNC/utils &&\
+	git checkout tags/v1.2.0 &&\ 
+	git clone https://github.com/novnc/websockify websockify &&\
+	cd websockify &&\
+	git checkout tags/v0.9.0
+
+# Console
+RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
@@ -220,6 +233,10 @@ RUN apt-get -y --quiet install ros-melodic-kobuki-msgs
 
 # Drone-cat-mouse
 RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
+
+# Follow Turtlebot exercise
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+	ros-$ROS_DISTRO-turtlebot3-description
 
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
@@ -241,37 +258,17 @@ COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
 
-#
-# TEMPORAL: waiting to ros melodic pkg sync
-#
-
-RUN apt-get install -y python-catkin-tools
-
-RUN rm -rf /catkin_ws
-RUN mkdir -p /catkin_ws/src
-RUN cd /catkin_ws && catkin init
-RUN echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc
-
-RUN git clone https://github.com/JdeRobot/drones.git
-RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
-
-RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y
-
-RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /catkin_ws; catkin build'
-
-#
-# END TEMPORAL
-#
-
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
-
 
 EXPOSE 2303
 EXPOSE 1905
 EXPOSE 8080
 EXPOSE 7681
 EXPOSE 8765
+EXPOSE 1108
 # Port by WebRtc
 EXPOSE 1831
+# Port for noVNC
+EXPOSE 6080

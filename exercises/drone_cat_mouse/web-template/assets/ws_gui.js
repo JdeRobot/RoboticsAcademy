@@ -18,6 +18,7 @@ function declare_gui(websocket_address){
 	}
 	
 	websocket_gui.onclose = function(event){
+		radiConect.contentWindow.postMessage('down', '*');
 		if(event.wasClean){
 			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
@@ -29,7 +30,7 @@ function declare_gui(websocket_address){
 	// What to do when a message from server is received
 	websocket_gui.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
-
+		radiConect.contentWindow.postMessage('up', '*');
 		if(operation == "#gui"){
 			// Parse the entire Object
 			var data = JSON.parse(event.data.substring(4, ));
@@ -101,12 +102,40 @@ function declare_gui(websocket_address){
 	}
 }
 
-	// Function to start mouse
-function startmouse(){
-    // Send message to initiate start mouse
-    var message = "#mou" + document.getElementById('mouse').value;
-    console.log("Message sent: " + message);
-    websocket_gui.send(message);
+// Function to start mouse
+var playmouse_old_timestamp = 0;
+function playmouse(){
+	if(playmouse_old_timestamp == 0 || playmouse_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start mouse
+	    var message = "#mou" + document.getElementById('mouse').value;
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    playmouse_old_timestamp = (new Date).getTime();
+	}
+}
+
+// Function to takeoff mouse
+var stopmouse_old_timestamp = 0;
+function stopmouse(){
+	if(stopmouse_old_timestamp == 0 || stopmouse_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start mouse
+	    var message = "#stp";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    stopmouse_old_timestamp = (new Date).getTime();
+	}
+}
+
+// Function to land mouse
+var resetmouse_old_timestamp = 0;
+function resetmouse(){
+	if(resetmouse_old_timestamp == 0 || resetmouse_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start mouse
+	    var message = "#rst";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    resetmouse_old_timestamp = (new Date).getTime();
+	}
 }
 
 var canvas = document.getElementById("gui_canvas_right"),

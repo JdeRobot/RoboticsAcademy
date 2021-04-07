@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<robot name="turtlebot3_waffle_pi_colored_plate" 
+    xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Included URDF Files -->
+    <xacro:include filename="$(find turtlebot3_description)/urdf/turtlebot3_waffle_pi.urdf.xacro" />
+
+    <material name="green1">
+        <color rgba="0.0 0.8 0.0 1.0"/>
+    </material>
+
+    <link name="colored_plate">
+        <visual>
+            <geometry>
+                <box size="0.28 0.28 0.005"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="-0.05 0 0.145" />
+            <material name="green1" />
+        </visual>
+    </link>
+
+    <gazebo reference="colored_plate">
+        <material>Gazebo/Green</material>
+    </gazebo>
+
+    <joint name="base_to_colored_plate" type="fixed">
+        <parent link="base_link"/>
+        <child link="colored_plate"/>
+    </joint>
+
+</robot>

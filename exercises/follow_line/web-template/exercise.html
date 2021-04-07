@@ -10,13 +10,18 @@
     </head>
 
     <body>
-        <!-- Navigation Bar -->
-        <nav class="navigation-bar">
-            <img class="logo" src="assets/img/logo.jpg" align="left">
-            <div class="header">
-		        <p>Robotics Academy by JdeRobot</p>
-		    </div>
-        </nav>
+        <!-- Extends base.html to initiate the connection to the RADI -->
+        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="5%" name="data" frameBorder="0" scrolling="no"></iframe>
+        <script>
+            var radiConect = document.getElementById('radiConect')
+            radiConect.contentWindow.postMessage('message', '*');
+            window.onmessage = function(event){
+                if (event.data == 'start') {
+                    console.log
+                    startSim()
+                }
+            };
+        </script>
         <div class="content">
 
             <div class="split a">
@@ -109,20 +114,11 @@ while True:
     <h4 id="lap_time"></h4>-->
   </div>
 
-    <div id="console" style="display:none;">
-        <!-- Console -->
-        <div id="Console" class="container">
-      <ul>
-        <li class="Console-item">
-          <input value=">>" class="terminal" readonly><input class="command">
-        </li>
-      </ul>
-    </div>
-    </div>
-
-      <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
+    <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
       <script type="text/javascript">
       function changeconsole(){
+        document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
         var console_display = document.getElementById('console').style.display
         console.log(console_display)
         if (console_display == "none" || console_display == "none" ) {
@@ -132,7 +128,7 @@ while True:
         }
       }
       function changegzweb(){
-        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
+        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
         var display = document.getElementById('iframeGzweb').style.display
         console.log(display)
         if (display == "none" || display == "none" ) {
@@ -154,6 +150,7 @@ while True:
     </body>
 
 	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../assets/js/utils.js"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
   	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>

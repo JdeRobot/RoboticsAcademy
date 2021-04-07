@@ -12,7 +12,7 @@ import logging
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal):
+    def __init__(self, host, console, hal, mouse):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': '', 'text_buffer': ''}
@@ -37,6 +37,7 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.console = console
         self.hal = hal
+        self.mouse = mouse
         t.start()
 
     # Explicit initialization function
@@ -169,9 +170,12 @@ class GUI:
         elif message[:4] == "#con":
             self.console.prompt(message)
         elif message[:4] == "#mou":
-            print("mouse parsed")
-            self.hal.start_mouse(int(message[4:5]))
-    
+            self.mouse.start_mouse(int(message[4:5]))
+        elif message[:4] == "#stp":
+            self.mouse.stop_mouse()
+        elif message[:4] == "#rst":
+            self.mouse.reset_mouse()
+
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)

@@ -10,13 +10,18 @@
     </head>
 
     <body>
-        <!-- Navigation Bar -->
-        <nav class="navigation-bar">
-            <img class="logo" src="assets/img/logo.jpg" align="left">
-            <div class="header">
-		        <p>Robotics Academy by JdeRobot</p>
-		    </div>
-        </nav>
+        <!-- Extends base.html to initiate the connection to the RADI -->
+        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="5%" name="data" frameBorder="0" scrolling="no"></iframe>
+        <script>
+            var radiConect = document.getElementById('radiConect')
+            radiConect.contentWindow.postMessage('message', '*');
+            window.onmessage = function(event){
+                if (event.data == 'start') {
+                    console.log
+                    startSim()
+                }
+            };
+        </script>
         <div class="content">
             <div class="split a">
                 <div id="Control" class="container" >
@@ -89,14 +94,17 @@ while True:
                 <div id="visual_buttons" class="row no-gutters">
                     <button id="gzweb_btn" type="button" onclick="changegzweb()"><img id="gzimg" src="./assets/img/gzweb_btn.png"></button>
                     <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="./assets/img/terminal-solid.svg"> Console</button>
-                    <hr style="width: 1px; height: 10px; display: inline-block;">
-                    <button id="mouse_btn" type="button" onclick="startmouse()">Launch Mouse</button>
+
+                    <button id="mouse_play_btn" type="button" onclick="playmouse()">Play Mouse</button>
                     <select name="mouse" id="mouse">
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
+                    <button id="mouse_stop_btn" type="button" onclick="stopmouse()">Pause Mouse</button>
+                    <button id="mouse_reset_btn" type="button" onclick="resetmouse()">Reset Mouse</button>
+
                 </div>
 
                  <div id="visual">
@@ -126,7 +134,7 @@ while True:
                         }
                      }
                      function changegzweb(){
-                        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
+                        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
                         var display = document.getElementById('iframeGzweb').style.display
                         console.log(display)
                         if (display == "none" || display == "none" ) {
@@ -149,6 +157,7 @@ while True:
     </body>
 
 	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../assets/js/utils.js"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
   	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
