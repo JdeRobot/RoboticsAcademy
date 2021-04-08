@@ -12,6 +12,22 @@
 			<uri>model://ground_plane</uri>
 		</include>
 
+		<!-- Sky -->
+		<scene>
+		    <sky>
+		        <clouds>
+		            <speed>12</speed>
+		        </clouds>
+		    </sky>
+		</scene>
+
+        <!-- JdeRobot Logo -->
+        <include>
+            <name>logo</name>
+            <uri>model://logoJdeRobot</uri>
+            <pose>0 -4 0 0 0 0</pose>
+        </include>
+
 		<!-- Gazebo required specifications -->
 		<physics name='default_physics' default='0' type='ode'>
 			<gravity>0 0 -9.8066</gravity>

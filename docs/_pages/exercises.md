@@ -69,6 +69,16 @@ feature_row:
     version_label: "btn--success"
     version: "v2.3"
     
+  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    alt: "Follow Turtlebot"
+    title: "Follow Turtlebot"
+    excerpt: "Follow a turtlebot on the ground using a camera."
+    url: "/exercises/Drones/follow_turtlebot"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+
   - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
     alt: "3D Reconstruction"
     title: "3D Reconstruction"
@@ -78,7 +88,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     version: "v2.3"
-    
+
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
     title: "Global Navigation"
@@ -164,16 +174,6 @@ feature_row:
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
     url: "/exercises/Drones/rescue_people"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-  
-  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
-    alt: "Follow Turtlebot"
-    title: "Follow Turtlebot"
-    excerpt: "Follow a turtlebot on the ground using a camera."
-    url: "/exercises/Drones/follow_turtlebot"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"
