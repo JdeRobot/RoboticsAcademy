@@ -24,9 +24,6 @@ To launch the exercise, simply use the following command from this directory:
 
 `roslaunch follow_turtlebot.launch`
 
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a seperate terminal as follows:
-
-`colorTuner colorTuner.conf`
 
 ## Solution
 

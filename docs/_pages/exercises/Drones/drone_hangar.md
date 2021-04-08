@@ -45,11 +45,6 @@ To launch the exercise, simply use the following command from this directory:
 roslaunch follow_road.launch
 ```
 
-As an easy way to find the values for the color filtering, you can use the colorTuner tool provided in your jderobot installation. After launching the previous command, launch the `colorTuner` in a separate terminal as follows:
-
-```bash
-colorTuner colorTuner.conf
-```
 
 ## How should I solve the exercise?
 
