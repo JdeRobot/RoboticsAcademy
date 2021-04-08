@@ -2,13 +2,25 @@
 <sdf version="1.5">
     <world name='default'>
     	<gui fullscreen=1></gui>
+
+    	<!-- A global light source -->
      	<include>
       		<uri>model://sun</uri>
     	</include>
 
+    	<!-- Ground -->
     	<include>
       		<uri>model://ground_plane</uri>
     	</include>
+
+		<!-- Sky -->
+		<scene>
+		    <sky>
+		        <clouds>
+		            <speed>12</speed>
+		        </clouds>
+		    </sky>
+		</scene>
 
 	    <!-- Gazebo required specifications -->
 	    <physics name='default_physics' default='0' type='ode'>
