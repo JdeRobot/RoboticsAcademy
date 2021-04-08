@@ -45,10 +45,9 @@ class Template:
         self.client = None
         self.host = sys.argv[1]
 
-        # Initialize the GUI, HAL and Console behind the scenes
-        self.console = console.Console()
+        # Initialize the GUI and HAL behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
         
     # Function for saving   
     def save_code(self, source_code):
@@ -165,46 +164,10 @@ class Template:
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
-        pipes = self.start_pipe_thread()
-        self.brain_process = BrainProcess(code, pipes, self.brain_ideal_cycle,
+        self.brain_process = BrainProcess(code, self.brain_ideal_cycle,
                                           self.brain_time_cycle, self.reload)
         self.brain_process.start()
         print("New Brain Process Started!")
-
-    # Function to start pipe thread for communication with BrainProcess
-    def start_pipe_thread(self):
-        # Start multiprocessing pipes
-        console_pipe1, console_pipe2 = multiprocessing.Pipe()
-        hal_pipe1, hal_pipe2 = multiprocessing.Pipe()
-        gui_pipe1, gui_pipe2 = multiprocessing.Pipe()
-
-        # Start pipe threads
-        console_thread = threading.Thread(target=self.pipe_thread, args=(console_pipe1, self.reload, ))
-        hal_thread = threading.Thread(target=self.pipe_thread, args=(hal_pipe1, self.reload, ))
-        gui_thread = threading.Thread(target=self.pipe_thread, args=(gui_pipe1, self.reload, ))
-
-        console_thread.start(); hal_thread.start(); gui_thread.start()
-
-        return console_pipe2, hal_pipe2, gui_pipe2
-
-    # The thread function for communication
-    def pipe_thread(self, pipe, reload_event):
-        while not reload_event.is_set():
-            try:
-                command = pipe.recv()
-
-                # Exception for showImage()
-                if(command == "self.gui.showImage()"):
-                    image = pipe.recv()
-                    ret_obj = self.gui.showImage(image)
-                # Otherwise
-                else:
-                    exec("ret_obj = " + command)
-                pipe.send(ret_obj)
-            except EOFError:
-                pass
-
-        pipe.close()
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):

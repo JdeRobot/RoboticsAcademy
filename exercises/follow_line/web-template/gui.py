@@ -19,10 +19,10 @@ from map import Map
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal):
+    def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':'', 'text_buffer': ''}
+        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
         self.server = None
         self.client = None
         
@@ -31,8 +31,7 @@ class GUI:
         # Image variable
         self.shared_image = SharedImage("guiimage")
         
-        # Take the console object to set the same websocket and client
-        self.console = console
+        # Get HAL object
         self.hal = hal
         t.start()
         
@@ -65,7 +64,6 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        self.console.set_websocket(self.server, self.client)
         self.cli_event.set()
         
     # Update the gui
@@ -91,10 +89,6 @@ class GUI:
         # Payload W Message
         w_message = str(self.hal.getW())
         self.payload["w"] = w_message
-
-        # Payload Console Messages
-        message_buffer = self.console.get_text_to_be_displayed()
-        self.payload["text_buffer"] = json.dumps(message_buffer)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -106,10 +100,6 @@ class GUI:
         if(message[:4] == "#ack"):
             # Set acknowledgement flag
             self.ack_event.set()
-            
-        # Message for Console
-        elif(message[:4] == "#con"):
-            self.console.prompt(message)
 
     # Activate the server
     def run_server(self):

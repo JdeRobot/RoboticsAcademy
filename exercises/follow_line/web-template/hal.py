@@ -28,13 +28,6 @@ class HAL:
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
-    	
-    # Explicit initialization functions
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initRobot(cls):
-        new_instance = cls()
-        return new_instance
 
     # Function to start the update thread
     def start_thread(self):
