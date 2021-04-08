@@ -49,7 +49,7 @@ class SharedValue:
         self.value_lock.release()
 
     # Destructor function to unlink and disconnect
-    def __del__(self):
+    def close(self):
         self.value_lock.acquire()
         self.shm_buf.close()
 

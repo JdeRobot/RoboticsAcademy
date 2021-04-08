@@ -167,7 +167,6 @@ class Template:
         self.brain_process = BrainProcess(code, self.brain_ideal_cycle,
                                           self.brain_time_cycle, self.reload)
         self.brain_process.start()
-        print("New Brain Process Started!")
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):

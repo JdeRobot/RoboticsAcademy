@@ -92,7 +92,7 @@ class SharedImage:
         self.image_lock.release()
 
     # Destructor function to unlink and disconnect
-    def __del__(self):
+    def close(self):
         self.image_lock.acquire()
         self.md_buf.close()
 

@@ -63,6 +63,12 @@ class HAL:
         self.setV()
         self.setW()
 
+    # Destructor function to close all fds
+    def __del__(self):
+        self.shared_image.close()
+        self.shared_v.close()
+        self.shared_w.close()
+
 class ThreadHAL(threading.Thread):
     def __init__(self, update_function):
         super(ThreadHAL, self).__init__()

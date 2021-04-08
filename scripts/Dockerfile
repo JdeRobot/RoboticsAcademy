@@ -253,7 +253,7 @@ RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware/Tools/sitl_gazebo'
 
 # websocket server dependency
 RUN apt-get update && apt-get install -y python2.7 python-pip
-RUN pip install websocket_server
+RUN pip install websocket_server posix-ipc
 COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
