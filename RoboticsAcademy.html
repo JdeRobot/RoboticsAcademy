@@ -205,6 +205,31 @@
                 <a href="exercises/3d_reconstruction/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
+        <div class="card">
+            <div class="multimedia" onmouseover="SetVideo_follow_turtlebot()" onmouseout="SetImg_follow_turtlebot()">
+                <img id="img_follow_turtlebot" class="card-img-top" style="width:250px" src="exercises/assets/img/follow_turtlebot_teaser.jpg" alt="Card image cap">
+                <iframe id="video_follow_turtlebot" class="card-img-top" style="height:170px; display:none;"  src="https://www.youtube.com/embed/uehDVlBzpmU?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+                <script type="text/javascript">
+                    var img_follow_turtlebot = document.getElementById("img_follow_turtlebot")
+                    var video_follow_turtlebot = document.getElementById("video_follow_turtlebot")
+                    function SetVideo_follow_turtlebot(){
+                        video_follow_turtlebot.style.display ="block"
+                        img_follow_turtlebot.style.display= "none"
+                    }
+                    function SetImg_follow_turtlebot(){
+                        video_follow_turtlebot.style.display ="none"
+                        img_follow_turtlebot.style.display= "block"
+                    }
+                </script>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Follow Turtlebot</h5>
+                <p class="card-text">Follow a turtlebot on the ground using a camera.</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="exercises/follow_turtlebot/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+            </div>
+        </div>
 
 
     </div>
