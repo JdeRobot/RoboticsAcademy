@@ -1,8 +1,0 @@
-ObstacleAvoidance:
-
-  MotorsPath: F1ROS/cmd_vel
-  CameraPath: F1ROS/cameraL/image_raw
-  Pose3DPath: F1ROS/odom
-  LaserPath: F1ROS/laser/scan
-
-  NodeName: ObstacleAvoidance
