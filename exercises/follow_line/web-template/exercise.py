@@ -3,6 +3,7 @@ from websocket_server import WebsocketServer
 import logging
 import time
 import threading
+import subprocess
 import sys
 from datetime import datetime
 import re
@@ -31,6 +32,9 @@ class Template:
         self.ideal_cycle = 80
         self.iteration_counter = 0
         self.frequency_message = {'brain': '', 'gui': ''}
+        # Gazebo statistics variables
+        self.real_time_factor = 0
+        self.stats_message = {'rtf': ''}
                 
         self.server = None
         self.client = None
@@ -294,6 +298,25 @@ class Template:
 
         return
 
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args=["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed 
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(',')]
+                self.real_time_factor = stats_list[0]
+
+    def send_stats_message(self):
+        self.stats_message["rtf"] = self.real_time_factor
+        message = "#stat" + json.dumps(self.stats_message)
+        self.server.send_message(self.client, message)
 
     # The websocket function
     # Gets called when there is an incoming message from the client
@@ -302,6 +325,9 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
+            return
+        elif(message[:5] == "#stat"):
+            self.send_stats_message()
             return
         
         try:
@@ -320,8 +346,13 @@ class Template:
     	self.thread_gui = ThreadGUI(self.gui)
     	self.thread_gui.start()
 
+        # Start the real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
+
         # Initialize the ping message
         self.send_frequency_message()
+        self.send_stats_message()
     	
     	print(client, 'connected')
     	
