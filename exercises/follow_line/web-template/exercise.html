@@ -58,22 +58,6 @@
             <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output></td>
           </tr>
           <tr>
-            <td>Debug-Level</td>
-            <td ><input  id="slide" type="range" min="1" max="4" steps="1" value="2" name="debug" class="debug-slider"></td>
-            <ul class="debug-labels">
-            <th><p id="slidernum">2</p>
-              <script type="text/javascript">
-                var slide = document.getElementById('slide'),
-                sliderDiv = document.getElementById("slidernum");
-
-                slide.onchange = function() {
-                  sliderDiv.innerHTML = this.value;
-                }
-              </script>
-            </th>
-            </ul>
-          </tr>
-          <tr>
             <td>RTF</td>
             <td/>
             <td><output id="real_time_factor">0</output></td>
