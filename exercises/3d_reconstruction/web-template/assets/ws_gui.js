@@ -69,29 +69,10 @@ function declare_gui(){
             paint_matching = data.paint_matching;
 
 
-            // Parse the Console messages
-            messages = JSON.parse(data.text_buffer);
-            // Loop through the messages and print them on the console
-            for(message of messages){
-                // Set value of command
-                command.value = message
-                // Go to next command line
-                next_command()
-            }
             // Send the Acknowledgment Message
             websocket_gui.send("#ack" + gui_frequency);
 
-        }
-        else if(operation == "#cor"){
-            // Set the value of command
-            var command_input = event.data.substring(4, );
-            command.value = command_input;
-            // Go to next command line
-            next_command();
-            // Focus on the next line
-            command.focus();
-        }
-        else if(operation == "#res"){
+        }else if(operation == "#res"){
             // Set the value of command
             reset_scene3d();
             reset_matching();

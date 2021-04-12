@@ -12,11 +12,11 @@ import numpy as np
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal):
+    def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
 
-        self.payload = {'image1': '', 'shape1': [], 'image2': '', 'shape2': [], 'text_buffer': '', 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image1': '', 'shape1': [], 'image2': '', 'shape2': [], 'point': '', 'matching': '', 'paint_matching':''}
         self.server = None
         self.client = None
 
@@ -38,19 +38,11 @@ class GUI:
         self.duplicate_matching = False
         self.matching_to_send = []
         self.paint_matching = False
-        # Take the console object to set the same websocket and client
-        self.console = console
+
+        # Get HAL object
         self.hal = hal
         t.start()
 
-
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initGUI(cls, host, console):
-        # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host, console)
-        return new_instance
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -106,7 +98,6 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        self.console.set_websocket(self.server, self.client)
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -116,11 +107,6 @@ class GUI:
 
         return acknowledge
 
-    # Function to get value of Acknowledge
-    def get_frequency(self):
-        frequency = self.time_frequency
-
-        return frequency
 
 
     # Function to get value of Acknowledge
@@ -155,9 +141,6 @@ class GUI:
         del self.matching_to_send[0:length_matching_send]
 
         self.payload["paint_matching"] = self.paint_matching
-        # Payload Console Messages
-        message_buffer = self.console.get_text_to_be_displayed()
-        self.payload["text_buffer"] = json.dumps(message_buffer)
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -169,9 +152,6 @@ class GUI:
         if(message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-        # Message for Console
-        elif(message[:4] == "#con"):
-            self.console.prompt(message)
 
     # Activate the server
     def run_server(self):

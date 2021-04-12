@@ -43,6 +43,7 @@ function declare_code(websocket_address){
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
         }
+
         // Send the acknowledgment message along with frequency
         code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
@@ -78,7 +79,6 @@ function stopCode(){
     websocket_code.send(stop_code);
 
     running = false;
-
 }
 
 // Function to save the code
@@ -101,6 +101,7 @@ function loadCode(){
 
 // Function to command the simulation to reset
 function resetSim(){
+    // Send message to initiate reset
     var message = "#rest"
     websocket_code.send(message)
     if(running == true){
