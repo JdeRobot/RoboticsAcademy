@@ -31,11 +31,9 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
-        # Gazebo statistics variables
         self.real_time_factor = 0
-        self.stats_message = {'rtf': ''}
-                
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        
         self.server = None
         self.client = None
         self.host = sys.argv[1]
@@ -264,6 +262,7 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
@@ -313,11 +312,6 @@ class Template:
                 stats_list = [x.strip() for x in line.split(',')]
                 self.real_time_factor = stats_list[0]
 
-    def send_stats_message(self):
-        self.stats_message["rtf"] = self.real_time_factor
-        message = "#stat" + json.dumps(self.stats_message)
-        self.server.send_message(self.client, message)
-
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
@@ -325,9 +319,6 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
-            return
-        elif(message[:5] == "#stat"):
-            self.send_stats_message()
             return
         
         try:
@@ -352,7 +343,6 @@ class Template:
 
         # Initialize the ping message
         self.send_frequency_message()
-        self.send_stats_message()
     	
     	print(client, 'connected')
     	
