@@ -7,11 +7,29 @@
     <include>
         <uri>model://sun</uri>
     </include>
-    <light name='point_light1' type='spot'>
-      <pose>-3.0 2.0 2.0 0 0 0</pose>
+    <light name='point_light1' type='point'>
+      <pose>-2.0 2.0 4.0 0 0 0</pose>
+      <diffuse>0 1 0 1</diffuse>
+      <specular>.1 .1 .1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <linear>0.2</linear>
+        <constant>0.8</constant>
+        <quadratic>0.01</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
     </light>
-    <light name='point_light2' type='spot'>
-      <pose>-3.0 -2.0 2.0 0 0 0</pose>
+    <light name='point_light2' type='point'>
+      <pose>-2.0 -2.0 4.0 0 0 0</pose>
+      <diffuse>0 1 0 1</diffuse>
+      <specular>.1 .1 .1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <linear>0.2</linear>
+        <constant>0.8</constant>
+        <quadratic>0.01</quadratic>
+      </attenuation>
+      <cast_shadows>false</cast_shadows>
     </light>
     <!-- Pioneer2dx model -->
     <include>
