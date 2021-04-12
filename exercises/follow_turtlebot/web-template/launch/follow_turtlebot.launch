@@ -30,6 +30,8 @@
     <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
     <!-- PX4 SITL and vehicle spawn -->
     <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+        <arg name="x" default="3"/>
+        <arg name="y" default="1"/>
         <arg name="vehicle" value="$(arg vehicle)"/>
         <arg name="model" value="iris_dual_cam"/>
         <arg name="model_name" value="iris"/>
