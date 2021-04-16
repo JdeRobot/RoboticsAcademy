@@ -35,48 +35,36 @@
               </div>
 
             <li id="frecuency_control" style="list-style: none; display:block; text-align:center; font-weight:bold;" ><div id="Frequency" class="container">
-		        <!-- Source http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input -->
-		        <table>
-		        	<tr><strong>
-						<th>Name</th>
-						<th>Slider</th>
-						<th>Frequency Measure</th>
-          </strong>
-					</tr>
-					<tr>
-						<td>Brain</td>
-						<td><input type="range" min="1" max="30" value="12.5" id="fader"
-							step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
-						<td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>GUI</td>
-						<td><input type="range" min="1" max="30" value="12" id="fader"
-							step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
-						<td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output></td>
-					</tr>
+            <!-- Source http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input -->
+            <table>
           <tr>
-        <th >Debug-Level</th>
-        <td ><input  id="slide" type="range" min="1" max="4" steps="1" value="2" name="debug" class="debug-slider">
-        <ul class="debug-labels">
-        <th><p id="slidernum">2</p>
-              <script type="text/javascript">
-                var slide = document.getElementById('slide'),
-                sliderDiv = document.getElementById("slidernum");
-
-                slide.onchange = function() {
-                  sliderDiv.innerHTML = this.value;
-                }
-              </script>
-            </ul>
-
-            </td>
-            </th>
+            <strong>
+              <th>Name</th>
+              <th>Slider</th>
+              <th>Frequency Measure</th>
+            </strong>
+          </tr>
+          <tr>
+            <td>Brain</td>
+            <td><input type="range" min="1" max="30" value="12.5" id="fader"
+              step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
+            <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>GUI</td>
+            <td><input type="range" min="1" max="30" value="12" id="fader"
+              step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
+            <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output></td>
+          </tr>
+          <tr>
+            <td>RTF</td>
+            <td/>
+            <td><output id="real_time_factor">0</output></td>
           </tr>
 
-				</table>
-			</div></li>
+        </table>
+      </div></li>
 
 
       <div id="code-control">
@@ -138,7 +126,7 @@ while True:
         }
       }
       </script>
-</div>
+  </div>
 </div>
 <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 <script>
@@ -149,14 +137,14 @@ while True:
 </script>
     </body>
 
-	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../../assets/js/utils.js"></script>
-	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
-  	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
-  	<script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/local_functions.js" type="text/javascript" charset="utf-8"></script>
-  	<script src="assets/birds_eye.js" type="text/javascript" charset="utf-8"></script>
-  	<script src="assets/console.js" type="text/javascript" charset="utf-8"></script>
+  <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../assets/js/utils.js"></script>
+  <script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/local_functions.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/birds_eye.js" type="text/javascript" charset="utf-8"></script>
+  <script src="assets/console.js" type="text/javascript" charset="utf-8"></script>
 
 </html>
