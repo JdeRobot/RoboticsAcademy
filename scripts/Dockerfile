@@ -191,14 +191,13 @@ RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
 
 # Get the Custom Robot Repository
 # and set the environment variables
-# TODO: Check out $ROS_DISTRO branch 
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/JdeRobot/CustomRobots.git \
-    && cd CustomRobots && git checkout melodic-devel && git pull origin melodic-devel
+    && cd CustomRobots && git checkout $ROS_DISTRO-devel && git pull origin $ROS_DISTRO-devel
 
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/Firmware/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1/models:/Firmware/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 
 # GzWeb
