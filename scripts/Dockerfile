@@ -238,8 +238,6 @@ RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	ros-$ROS_DISTRO-turtlebot3-description
 
-# Follow_Road
-RUN apt-get -y --quiet --no-install-recommends install ros-$ROS_DISTRO-drone-wrapper ros-$ROS_DISTRO-rqt-drone-teleop ros-$ROS_DISTRO-jderobot-drones ros-$ROS_DISTRO-rqt-ground-robot-teleop ros-$ROS_DISTRO-drone-assets
 
 
 # Put the other commands in bashrc file
