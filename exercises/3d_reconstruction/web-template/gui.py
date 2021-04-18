@@ -58,7 +58,7 @@ class GUI:
 
         shape = image.shape
 
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        #image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
 
@@ -123,7 +123,6 @@ class GUI:
         self.payload["paint_matching"] = self.paint_matching
 
         message = "#gui" + json.dumps(self.payload)
-        print("Payload Enviando el gui")
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
@@ -189,6 +188,8 @@ class GUI:
         self.matching_to_send = []
         self.server.send_message(self.client, "#res")
 
+    def reset_gui(self):
+        self.ClearAllPoints()
 
 # This class decouples the user thread
 # and the GUI update thread

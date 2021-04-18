@@ -9,10 +9,8 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var websocket_gui, operation, data;
-var image_data, source, shape;
-var lap_time, pose, content;
-var command_input;
+var websocket_gui;
+
 function declare_gui(){
     websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
@@ -32,21 +30,21 @@ function declare_gui(){
 
     // What to do when a message from server is received
     websocket_gui.onmessage = function(event){
-        operation = event.data.substring(0, 4);
+        var operation = event.data.substring(0, 4);
         radiConect.contentWindow.postMessage('up', '*');
         if(operation == "#gui"){
             // Parse the entire Object
-			data = JSON.parse(event.data.substring(4, ));
-			// Parse the Image Data
-			image_data = JSON.parse(data.image);
-			source = decode_utf8(image_data.image);
-			shape = image_data.shape;
+            var data = JSON.parse(event.data.substring(4, ));
+            // Parse the Image Data
+            var image_data = JSON.parse(data.image),
+                source = decode_utf8(image_data.image),
+                shape = image_data.shape;
 
-			if(source != ""){
-				canvas.src = "data:image/jpeg;base64," + source;
-				canvas.width = shape[1];
-				canvas.height = shape[0];
-			}
+            if(source != ""){
+                console.log("ENTRO")
+                image.src = "data:image/jpeg;base64," + source;
+                update_image();
+            }
 
             var point = JSON.parse(data.point);
             if(point != "")
@@ -61,9 +59,10 @@ function declare_gui(){
             }
 
             paint_matching = data.paint_matching;
-            console.log("ENVIO ACK")
+
+
             // Send the Acknowledgment Message
-            websocket_gui.send("#ack" + gui_frequency);
+            websocket_gui.send("#ack");
 
         }else if(operation == "#res"){
             // Set the value of command
@@ -74,7 +73,28 @@ function declare_gui(){
 }
 
 
-var canvas = document.getElementById("gui_canvas");
+var canvas = document.getElementById("gui_canvas"),
+    context = canvas.getContext('2d');
+    canvas.height = 240;
+    canvas.width = 650;
+    image = new Image();
+
+
+// For image object
+image.onload = function(){
+    update_image();
+}
+
+
+
+// Request Animation Frame to remove the flickers
+function update_image(){
+    context.drawImage(image, 0, 0,320, 240);
+    if (paint_matching == true)
+    {
+        paintMatching();
+    }
+}
 
 function paintPoints(points_received)
 {
@@ -143,6 +163,6 @@ function SetMatching(matching_received)
 function reset_matching (){
     matching_history = [];
     matching_history_color = [];
-    context.drawImage(image1, 0, 0,320, 240);
-    context.drawImage(image2, 320, 0,320, 240);
+    context.drawImage(image, 0, 0,320, 240);
+    //context.drawImage(image2, 320, 0,320, 240);
 }
