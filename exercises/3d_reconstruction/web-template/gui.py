@@ -47,6 +47,7 @@ class GUI:
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
+        print("PayloadImage")
         self.image_show_lock.acquire()
         image_to_be_shown_updated = self.image_to_be_shown_updated
         image1_to_be_shown = self.image1_to_be_shown
@@ -54,6 +55,8 @@ class GUI:
         self.image_show_lock.release()
 
         image1 = image1_to_be_shown
+
+        print(image1)
         payload1 = {'image1': '', 'shape1': ''}
         image2 = image2_to_be_shown
         payload2 = {'image2': '', 'shape2': ''}
@@ -88,7 +91,9 @@ class GUI:
         self.paint_matching = paint_matching
         if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
             self.image_show_lock.acquire()
+            print("LLAMANDO A LA FUNCION")
             self.image1_to_be_shown = image1
+            print("Pintando imagen 1  ",image1)
             self.image2_to_be_shown = image2
             self.image_to_be_shown_updated = True
             self.image_show_lock.release()
