@@ -146,6 +146,21 @@ margin-bottom: 10px;
     border-image-slice: 1;
 }
 
+#turtlebot_stop_btn{
+    margin-left: 2%;
+    border:1 solid whitesmoke;
+}
+
+#turtlebot_play_btn{
+    margin-left: 10%;
+    border:1 solid whitesmoke;
+}
+
+#turtlebot_reset_btn{
+    margin-left: 2%;
+    border:1 solid whitesmoke;
+}
+
 #visual{
     margin: 2%;
 }

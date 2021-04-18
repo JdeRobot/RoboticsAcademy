@@ -30,6 +30,8 @@
     <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
     <!-- PX4 SITL and vehicle spawn -->
     <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+        <arg name="x" default="3"/>
+        <arg name="y" default="1"/>
         <arg name="vehicle" value="$(arg vehicle)"/>
         <arg name="model" value="iris_dual_cam"/>
         <arg name="model_name" value="iris"/>
@@ -47,7 +49,7 @@
 
     <!-- turtlebot_with_colored_plate -->
     <arg name="x_pos" default="0.0"/>
-    <arg name="y_pos" default="3.0"/>
+    <arg name="y_pos" default="0.0"/>
     <arg name="z_pos" default="0.0"/>
     <param name="robot_description" command="$(find xacro)/xacro /RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/turtlebot3_waffle_pi_colored_plate.xacro" />
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3 -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
