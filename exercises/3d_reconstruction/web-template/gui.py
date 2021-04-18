@@ -130,9 +130,9 @@ class GUI:
         length_point_send = len(self.point_to_send)
 
         if (length_point_send != 0):
-            if (length_point_send > 20):
-                self.payload["point"] = json.dumps(self.point_to_send[0:20])
-                del self.point_to_send[0:20]
+            if (length_point_send > 100):
+                self.payload["point"] = json.dumps(self.point_to_send[0:100])
+                del self.point_to_send[0:100]
             else:
                 self.payload["point"] = json.dumps(self.point_to_send)
                 del self.point_to_send[0:length_point_send]
