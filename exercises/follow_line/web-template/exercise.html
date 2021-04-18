@@ -41,21 +41,21 @@
             <strong>
               <th>Name</th>
               <th>Slider</th>
-              <th>Frequency Measure</th>
+              <th>measured/desired</th>
             </strong>
           </tr>
           <tr>
-            <td>Brain</td>
+            <td>Brain Frequency</td>
             <td><input type="range" min="1" max="30" value="12.5" id="fader"
               step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
-            <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output></td>
+            <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5 Hz</output></td>
             <td></td>
           </tr>
           <tr>
-            <td>GUI</td>
+            <td>GUI Frequency</td>
             <td><input type="range" min="1" max="30" value="12" id="fader"
               step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
-            <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output></td>
+            <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5 Hz</output></td>
           </tr>
           <tr>
             <td>RTF</td>
