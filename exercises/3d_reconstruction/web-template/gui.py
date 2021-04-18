@@ -56,7 +56,7 @@ class GUI:
 
         image1 = image1_to_be_shown
 
-        print(image1)
+
         payload1 = {'image1': '', 'shape1': ''}
         image2 = image2_to_be_shown
         payload2 = {'image2': '', 'shape2': ''}
@@ -79,6 +79,10 @@ class GUI:
 
         payload2['image2'] = encoded_image2.decode('utf-8')
         payload2['shape2'] = shape2
+        print("PINTANDO LOS PAYLOAD")
+        print(payload1)
+        print(payload2)
+        print("FINALIZANDO DE PINTAR LOS PAYLOAD")
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
@@ -122,6 +126,7 @@ class GUI:
 
     # Update the gui
     def update_gui(self):
+        print("ESTOY ENTRANDO EN UPDATE GUI")
         # Payload Image Message
         payload1, payload2 = self.payloadImage()
 
