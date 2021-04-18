@@ -80,14 +80,12 @@ class GUI:
         payload2['image2'] = encoded_image2.decode('utf-8')
         payload2['shape2'] = shape2
         print("PINTANDO LOS PAYLOAD")
-        print(payload1)
-        print(payload2)
         print("FINALIZANDO DE PINTAR LOS PAYLOAD")
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
-
+        print("DEVOLVER LA FUNCION")
         return payload1,payload2
 
     # Function for student to call
@@ -126,16 +124,16 @@ class GUI:
 
     # Update the gui
     def update_gui(self):
-        print("ESTOY ENTRANDO EN UPDATE GUI")
+
         # Payload Image Message
         payload1, payload2 = self.payloadImage()
-
+        print("ESTOY ENTRANDO EN UPDATE GUI")
         self.payload["image1"] = json.dumps(payload1)
         self.payload["image2"] = json.dumps(payload2)
 
         # Payload Point Message
         length_point_send = len(self.point_to_send)
-
+        print("Payload Point Message")
         if (length_point_send != 0):
             if (length_point_send > 20):
                 self.payload["point"] = json.dumps(self.point_to_send[0:20])
@@ -151,7 +149,7 @@ class GUI:
         del self.matching_to_send[0:length_matching_send]
 
         self.payload["paint_matching"] = self.paint_matching
-
+        print("Payload Enviando el gui")
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
