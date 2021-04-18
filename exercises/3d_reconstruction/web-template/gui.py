@@ -16,7 +16,7 @@ class GUI:
         t = threading.Thread(target=self.run_server)
 
 
-        self.payload = {'image1': '', 'shape1': [], 'image2': '', 'shape2': [], 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'paint_matching':''}
         self.server = None
         self.client = None
 
@@ -65,7 +65,7 @@ class GUI:
             return payload1,payload2
 
         shape1 = image1.shape
-        image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
+        #image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
         frame1 = cv2.imencode('.JPEG', image1)[1]
         encoded_image1 = base64.b64encode(frame1)
 
@@ -73,7 +73,7 @@ class GUI:
         payload1['shape1'] = shape1
 
         shape2 = image2.shape
-        image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)
+        #image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)
         frame2 = cv2.imencode('.JPEG', image2)[1]
         encoded_image2 = base64.b64encode(frame2)
 
@@ -89,14 +89,12 @@ class GUI:
     # Function for student to call
     def showImages(self, image1, image2, paint_matching):
         self.paint_matching = paint_matching
-        if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
-            self.image_show_lock.acquire()
-            print("LLAMANDO A LA FUNCION")
-            self.image1_to_be_shown = image1
-            print("Pintando imagen 1  ",image1)
-            self.image2_to_be_shown = image2
-            self.image_to_be_shown_updated = True
-            self.image_show_lock.release()
+        #if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
+        self.image_show_lock.acquire()
+        self.image1_to_be_shown = image1
+        self.image2_to_be_shown = image2
+        self.image_to_be_shown_updated = True
+        self.image_show_lock.release()
 
 
     # Function to get the client
@@ -215,6 +213,8 @@ class GUI:
         self.matching_to_send = []
         self.server.send_message(self.client, "#res")
 
+    def reset_gui(self):
+        self.ClearAllPoints()
 
 
 # This class decouples the user thread

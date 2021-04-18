@@ -73,7 +73,7 @@ function declare_gui(){
 
 
             // Send the Acknowledgment Message
-            websocket_gui.send("#ack" + gui_frequency);
+            websocket_gui.send("#ack");
 
         }else if(operation == "#res"){
             // Set the value of command
