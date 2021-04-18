@@ -149,8 +149,8 @@ class GUI:
         del self.matching_to_send[0:length_matching_send]
 
         self.payload["paint_matching"] = self.paint_matching
-        print("Payload Enviando el gui")
         message = "#gui" + json.dumps(self.payload)
+        print("Payload Enviando el gui")
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket

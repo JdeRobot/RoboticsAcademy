@@ -35,6 +35,7 @@ function declare_gui(){
         if(operation == "#gui"){
             // Parse the entire Object
             var data = JSON.parse(event.data.substring(4, ));
+            console.log(data)
             // Parse the Image Data
             var image_data1 = JSON.parse(data.image1),
                 source = decode_utf8(image_data1.image1),
