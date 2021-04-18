@@ -11,7 +11,7 @@
 
     <body>
         <!-- Extends base.html to initiate the connection to the RADI -->
-        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="5%" name="data" frameBorder="0" scrolling="no"></iframe>
+        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="6%" name="data" frameBorder="0" scrolling="no"></iframe>
         <script>
             var radiConect = document.getElementById('radiConect')
             radiConect.contentWindow.postMessage('message', '*');
@@ -39,20 +39,20 @@
                         <tr><strong>
                             <th>Name</th>
                             <th>Slider</th>
-                            <th>Frequency Measure</th>
+                            <th>Measured/Desired</th>
                         </strong></tr>
                         <tr>
-                            <td>Brain</td>
+                            <td>Brain Frequency</td>
                             <td><input type="range" min="1" max="30" value="12.5" id="fader"
                                 step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
-                            <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output></td>
+                            <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5 Hz</output></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>GUI</td>
+                            <td>GUI Frequency</td>
                             <td><input type="range" min="1" max="30" value="12" id="fader"
                                 step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
-                            <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output></td>
+                            <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5 Hz</output></td>
                         </tr>
                         <tr>
                             <th >Debug-Level</th>
