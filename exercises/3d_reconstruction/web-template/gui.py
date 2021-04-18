@@ -214,7 +214,7 @@ class GUI:
 
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI(threading.Thread):
+class ThreadGUI:
     def __init__(self, gui):
         self.gui = gui
         # Time variables
