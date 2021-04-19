@@ -119,6 +119,15 @@ class Template:
             iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
+            # Duplicate function definitions from the sequential part to the iterative part (solves scope errors)
+            funcHeaderMatches = re.finditer(r'def.*:\n', sequential_code)  # Find all headers
+            for funcHeaderMatch in funcHeaderMatches:
+                funcBodyEnd = re.search(r'\n\S', sequential_code[funcHeaderMatch.end():])
+                if funcBodyEnd is None:
+                    iterative_code = sequential_code[funcHeaderMatch.start():] + "\n" + iterative_code
+                else:
+                    iterative_code = sequential_code[funcHeaderMatch.start():funcHeaderMatch.end() + funcBodyEnd.start()] + "\n" + iterative_code
+
         except:
             sequential_code = source_code
             iterative_code = ""
