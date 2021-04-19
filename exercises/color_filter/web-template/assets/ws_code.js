@@ -13,7 +13,7 @@ stop_button.style.cursor = "not-allowed";
 var frequency = "0",
 	running = false;
 
-//WebSocket for Code
+//Code for Websocket
 var websocket_code;
 function declare_code(){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
