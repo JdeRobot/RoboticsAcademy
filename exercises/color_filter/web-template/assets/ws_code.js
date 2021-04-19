@@ -81,24 +81,6 @@ function stopCode(){
 	running = false;
 }
 
-// Function to save the code
-function saveCode(){
-	// Get the code from editor and add header
-
-	var python_code = editor.getValue();
-	python_code = "#save" + python_code;
-	console.log("Code Sent! Check terminal for more information!");
-	websocket_code.send(python_code)
-}
-
-// Function to load the code
-function loadCode(){
-	// Send message to initiate load message
-	var message = "#load";
-	websocket_code.send(message);
-
-}
-
 // Function for range slider
 function codefrequencyUpdate(vol) {
 	document.querySelector('#code_frequency').value = vol;
