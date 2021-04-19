@@ -78,11 +78,11 @@ class GUI:
 
         payload2['image2'] = encoded_image2.decode('utf-8')
         payload2['shape2'] = shape2
-        print("LLEGO AQUI")
+
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
-
+        print("LLEGO AQUI")
         return payload1,payload2
 
     # Function for student to call
