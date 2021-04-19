@@ -46,6 +46,10 @@ Secondly, clone the Robotics Academy repository on your local machine:
 ```bash
 git clone https://github.com/JdeRobot/RoboticsAcademy
 ```
+#### Enable GPU Acceleration (For advanced users)
+- For Linux machines, GPU acceleration can be enabled by downloading Nvidia Container Runtime, as given [here](https://github.com/NVIDIA/nvidia-container-runtime)
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
 
 ### How can I run the exercise?
 - Start a new docker container of the image and keep it running in the background:
