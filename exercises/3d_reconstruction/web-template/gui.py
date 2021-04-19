@@ -64,7 +64,7 @@ class GUI:
             return payload1,payload2
 
         shape1 = image1.shape
-        image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
+        #image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
         frame1 = cv2.imencode('.JPEG', image1)[1]
         encoded_image1 = base64.b64encode(frame1)
 
@@ -72,13 +72,13 @@ class GUI:
         payload1['shape1'] = shape1
 
         shape2 = image2.shape
-        image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)
+        #image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)
         frame2 = cv2.imencode('.JPEG', image2)[1]
         encoded_image2 = base64.b64encode(frame2)
 
         payload2['image2'] = encoded_image2.decode('utf-8')
         payload2['shape2'] = shape2
-
+        print("LLEGO AQUI")
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
