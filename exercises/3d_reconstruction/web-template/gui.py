@@ -8,6 +8,7 @@ from websocket_server import WebsocketServer
 import logging
 import numpy as np
 
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
@@ -15,21 +16,16 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-
-        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image': '', 'point': '', 'matching': '', 'paint_matching': ''}
         self.server = None
         self.client = None
 
         self.host = host
 
         # Image variables
-        self.image1_to_be_shown = None
-        self.image1_to_be_shown_updated = False
-        self.image1_show_lock = threading.Lock()
-
-        self.image2_to_be_shown = None
-        self.image2_to_be_shown_updated = False
-        self.image2_show_lock = threading.Lock()
+        self.image_to_be_shown = None
+        self.image_to_be_shown_updated = False
+        self.image_show_lock = threading.Lock()
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -46,74 +42,39 @@ class GUI:
         self.hal = hal
         t.start()
 
-
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
+        self.image_show_lock.acquire()
+        image_to_be_shown_updated = self.image_to_be_shown_updated
+        image_to_be_shown = self.image_to_be_shown
+        self.image_show_lock.release()
 
-        self.image1_show_lock.acquire()
-        image1_to_be_shown_updated = self.image1_to_be_shown_updated
-        image1_to_be_shown = self.image1_to_be_shown
-        self.image1_show_lock.release()
-        image1 = image1_to_be_shown
-        payload1 = {'image1': '', 'shape1': ''}
+        image = image_to_be_shown
+        payload = {'image': '', 'shape': ''}
 
+        if (image_to_be_shown_updated == False):
+            return payload
 
+        shape = image.shape
+        frame = cv2.imencode('.JPEG', image)[1]
+        encoded_image = base64.b64encode(frame)
 
-        self.image2_show_lock.acquire()
-        image2_to_be_shown_updated = self.image2_to_be_shown_updated
-        image2_to_be_shown = self.image2_to_be_shown
-        self.image2_show_lock.release()
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
 
-        image2 = image2_to_be_shown
-        payload2 = {'image2': '', 'shape2': ''}
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
 
-        if(image1_to_be_shown_updated == False and image2_to_be_shown_updated):
-            return payload1, payload2
-
-        shape1 = image1.shape
-        image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
-        frame1 = cv2.imencode('.JPEG', image1)[1]
-        encoded_image1 = base64.b64encode(frame1)
-
-        payload1['image1'] = encoded_image1.decode('utf-8')
-        payload1['shape1'] = shape1
-
-        shape2 = image2.shape
-        image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)
-        frame2 = cv2.imencode('.JPEG', image2)[1]
-        encoded_image2 = base64.b64encode(frame2)
-
-        payload2['image2'] = encoded_image2.decode('utf-8')
-        payload2['shape2'] = shape2
-
-        self.image1_show_lock.acquire()
-        self.image1_to_be_shown_updated = False
-        self.image1_show_lock.release()
-
-        self.image2_show_lock.acquire()
-        self.image2_to_be_shown_updated = False
-        self.image2_show_lock.release()
-
-        print("LLEGO AQUI")
-        return payload1, payload2
+        return payload
 
     # Function for student to call
-    def showImages(self, image1, image2, paint_matching):
-        self.paint_matching = paint_matching
-        # Image 1
-        self.image1_show_lock.acquire()
-        self.image1_to_be_shown = image1
-        self.image1_to_be_shown_updated = True
-        self.image1_show_lock.release()
-        # Image 2
-        self.image2_show_lock.acquire()
-        self.image2_to_be_shown = image2
-        self.image2_to_be_shown_updated = True
-        self.image2_show_lock.release()
-
-
-
+    def showImage(self, image):
+        self.image_show_lock.acquire()
+        self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+        self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
@@ -128,8 +89,6 @@ class GUI:
 
         return acknowledge
 
-
-
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
@@ -139,10 +98,8 @@ class GUI:
     # Update the gui
     def update_gui(self):
         # Payload Image Message
-        payload1, payload2 = self.payloadImage()
-
-        self.payload["image1"] = json.dumps(payload1)
-        self.payload["image2"] = json.dumps(payload2)
+        payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
 
         # Payload Point Message
         length_point_send = len(self.point_to_send)
@@ -170,9 +127,8 @@ class GUI:
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if(message[:4] == "#ack"):
+        if (message[:4] == "#ack"):
             self.set_acknowledge(True)
-
 
     # Activate the server
     def run_server(self):
@@ -185,7 +141,7 @@ class GUI:
     def ShowNewPoints(self, points):
         duplicate_point = False
         for i in range(0, len(points)):
-            for j in range (0, len(self.point_to_save)):
+            for j in range(0, len(self.point_to_save)):
                 if (self.point_to_save[j] == points[i]):
                     duplicate_point = True
             if (duplicate_point == False):
@@ -198,7 +154,7 @@ class GUI:
     def ShowAllPoints(self, points):
         number_equal_points = 0
         for i in range(0, len(points)):
-            for j in range (0, len(self.point_to_save)):
+            for j in range(0, len(self.point_to_save)):
                 if (self.point_to_save[j] == points[i]):
                     number_equal_points += 1
 
@@ -216,7 +172,6 @@ class GUI:
             if ((self.matching_to_save[i] == matching) == True):
                 self.duplicate_matching = True
 
-
         if (self.duplicate_matching == False):
             self.matching_to_save.append(matching)
             self.matching_to_send.append(matching)
@@ -225,7 +180,7 @@ class GUI:
 
     # Function to reset
     def ClearAllPoints(self):
-        self.point_to_save =[]
+        self.point_to_save = []
         self.point_to_send = []
         self.matching_to_save = []
         self.matching_to_send = []
@@ -257,11 +212,11 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while(self.gui.client == None):
+        while (self.gui.client == None):
             pass
 
         previous_time = datetime.now()
-        while(True):
+        while (True):
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -281,26 +236,24 @@ class ThreadGUI:
             # Reset the counter
             self.iteration_counter = 0
 
-
     def run(self):
-        while(self.gui.client == None):
+        while (self.gui.client == None):
             pass
 
-        while(True):
+        while (True):
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
-            while(acknowledge_message == False):
+            while (acknowledge_message == False):
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
-
 
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
 
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.time_cycle):
-                time.sleep((self.time_cycle-ms) / 1000.0)
+            if (ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
