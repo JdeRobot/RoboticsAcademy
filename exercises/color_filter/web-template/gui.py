@@ -92,7 +92,7 @@ class GUI:
         
         return acknowledge
 
-    # Function to get value of Acknowledge
+    # Function to set value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
