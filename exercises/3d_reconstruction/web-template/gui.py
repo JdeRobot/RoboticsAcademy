@@ -16,7 +16,7 @@ class GUI:
         t = threading.Thread(target=self.run_server)
 
 
-        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image1': '','shape1': '', 'image2': '','shape2': '', 'point': '', 'matching': '', 'paint_matching':''}
         self.server = None
         self.client = None
 

@@ -39,11 +39,7 @@ function declare_gui(){
             var image_data1 = JSON.parse(data.image1),
                 source = decode_utf8(image_data1.image1),
                 shape = image_data1.shape;
-            console.log(image_data1)
-            console.log(source)
             if(source != ""){
-                console.log("ENTRO")
-
                 image1.src = "data:image1/jpeg;base64," + source;
                 update_image();
             }
