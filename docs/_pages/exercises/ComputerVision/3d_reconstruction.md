@@ -99,12 +99,10 @@ docker pull jderobot/robotics-academy
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy python3.8 manager.py
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy python3.8 manager.py
 	```
 
 - On the local machine navigate to the 3d_reconstruction exercise which is: `RoboticsAcademy/exercises/3d_reconstruction/web-template`
-
-- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
 
 - Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
 
@@ -151,7 +149,7 @@ while True:
 * `GUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
 * `GUI.ClearAllPoints()` - to clear the 3D visor
 * `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
-* `GUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
+* `GUI.showImage(image)` - allows you to view a debug image    
 
 ### Example video with web template
 {% include youtubePlayer.html id=page.youtubeId3 %}

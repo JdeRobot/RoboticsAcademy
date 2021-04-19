@@ -36,21 +36,12 @@ function declare_gui(){
             // Parse the entire Object
             var data = JSON.parse(event.data.substring(4, ));
             // Parse the Image Data
-            var image_data1 = JSON.parse(data.image1),
-                source = decode_utf8(image_data1.image1),
-                shape = image_data1.shape;
+
+            var image_data1 = JSON.parse(data.image),
+                source = decode_utf8(image_data1.image)
 
             if(source != ""){
-                image1.src = "data:image1/jpeg;base64," + source;
-                update_image();
-            }
-            // Parse the Image Data
-            var image_data2 = JSON.parse(data.image2),
-                source = decode_utf8(image_data2.image2),
-                shape = image_data2.shape;
-
-            if(source != ""){
-                image2.src = "data:image2/jpeg;base64," + source;
+                image.src = "data:image/jpeg;base64," + source;
                 update_image();
             }
 
@@ -67,31 +58,12 @@ function declare_gui(){
             }
 
             paint_matching = data.paint_matching;
-
-
-            // Parse the Console messages
-            messages = JSON.parse(data.text_buffer);
-            // Loop through the messages and print them on the console
-            for(message of messages){
-                // Set value of command
-                command.value = message
-                // Go to next command line
-                next_command()
-            }
             // Send the Acknowledgment Message
-            websocket_gui.send("#ack" + gui_frequency);
+            websocket_gui.send("#ack");
 
-        }
-        else if(operation == "#cor"){
-            // Set the value of command
-            var command_input = event.data.substring(4, );
-            command.value = command_input;
-            // Go to next command line
-            next_command();
-            // Focus on the next line
-            command.focus();
-        }
-        else if(operation == "#res"){
+
+
+        }else if(operation == "#res"){
             // Set the value of command
             reset_scene3d();
             reset_matching();
@@ -104,28 +76,19 @@ var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     canvas.height = 240;
     canvas.width = 650;
-    image1 = new Image();
-    image2 = new Image();
+    image = new Image();
 
 
 // For image object
-image1.onload = function(){
+image.onload = function(){
     update_image();
 }
 
-// For image object
-image2.onload = function(){
-    update_image();
-}
+
 
 // Request Animation Frame to remove the flickers
 function update_image(){
-    context.drawImage(image1, 0, 0,320, 240);
-    context.drawImage(image2, 320, 0,320, 240);
-    if (paint_matching == true)
-    {
-        paintMatching();
-    }
+    context.drawImage(image, 0, 0,320, 240);
 }
 
 function paintPoints(points_received)

@@ -8,23 +8,22 @@ from websocket_server import WebsocketServer
 import logging
 import numpy as np
 
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal):
+    def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-
-        self.payload = {'image1': '', 'shape1': [], 'image2': '', 'shape2': [], 'text_buffer': '', 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image': '', 'point': '', 'matching': '', 'paint_matching': ''}
         self.server = None
         self.client = None
 
         self.host = host
 
         # Image variables
-        self.image1_to_be_shown = None
-        self.image2_to_be_shown = None
+        self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
@@ -38,75 +37,49 @@ class GUI:
         self.duplicate_matching = False
         self.matching_to_send = []
         self.paint_matching = False
-        # Take the console object to set the same websocket and client
-        self.console = console
+
+        # Get HAL object
         self.hal = hal
         t.start()
-
-
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initGUI(cls, host, console):
-        # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host, console)
-        return new_instance
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
         self.image_show_lock.acquire()
         image_to_be_shown_updated = self.image_to_be_shown_updated
-        image1_to_be_shown = self.image1_to_be_shown
-        image2_to_be_shown = self.image2_to_be_shown
+        image_to_be_shown = self.image_to_be_shown
         self.image_show_lock.release()
 
-        image1 = image1_to_be_shown
-        payload1 = {'image1': '', 'shape1': ''}
-        image2 = image2_to_be_shown
-        payload2 = {'image2': '', 'shape2': ''}
+        image = image_to_be_shown
+        payload = {'image': '', 'shape': ''}
 
-        if(image_to_be_shown_updated == False):
-            return payload1,payload2
+        if (image_to_be_shown_updated == False):
+            return payload
 
-        shape1 = image1.shape
-        image1 = cv2.cvtColor(image1, cv2.COLOR_RGB2BGR)
-        frame1 = cv2.imencode('.JPEG', image1)[1]
-        encoded_image1 = base64.b64encode(frame1)
+        shape = image.shape
+        frame = cv2.imencode('.JPEG', cv2.cvtColor(image, cv2.COLOR_RGB2BGR))[1]
+        encoded_image = base64.b64encode(frame)
 
-        payload1['image1'] = encoded_image1.decode('utf-8')
-        payload1['shape1'] = shape1
-
-        shape2 = image2.shape
-        image2 = cv2.cvtColor(image2, cv2.COLOR_RGB2BGR)
-        frame2 = cv2.imencode('.JPEG', image2)[1]
-        encoded_image2 = base64.b64encode(frame2)
-
-        payload2['image2'] = encoded_image2.decode('utf-8')
-        payload2['shape2'] = shape2
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
 
-        return payload1,payload2
+        return payload
 
     # Function for student to call
-    def showImages(self, image1, image2, paint_matching):
-        self.paint_matching = paint_matching
-        if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
-            self.image_show_lock.acquire()
-            self.image1_to_be_shown = image1
-            self.image2_to_be_shown = image2
-            self.image_to_be_shown_updated = True
-            self.image_show_lock.release()
-
+    def showImage(self, image):
+        self.image_show_lock.acquire()
+        self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+        self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        self.console.set_websocket(self.server, self.client)
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -117,13 +90,6 @@ class GUI:
         return acknowledge
 
     # Function to get value of Acknowledge
-    def get_frequency(self):
-        frequency = self.time_frequency
-
-        return frequency
-
-
-    # Function to get value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
@@ -132,18 +98,16 @@ class GUI:
     # Update the gui
     def update_gui(self):
         # Payload Image Message
-        payload1, payload2 = self.payloadImage()
-
-        self.payload["image1"] = json.dumps(payload1)
-        self.payload["image2"] = json.dumps(payload2)
+        payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
 
         # Payload Point Message
         length_point_send = len(self.point_to_send)
 
         if (length_point_send != 0):
-            if (length_point_send > 20):
-                self.payload["point"] = json.dumps(self.point_to_send[0:20])
-                del self.point_to_send[0:20]
+            if (length_point_send > 100):
+                self.payload["point"] = json.dumps(self.point_to_send[0:100])
+                del self.point_to_send[0:100]
             else:
                 self.payload["point"] = json.dumps(self.point_to_send)
                 del self.point_to_send[0:length_point_send]
@@ -155,9 +119,6 @@ class GUI:
         del self.matching_to_send[0:length_matching_send]
 
         self.payload["paint_matching"] = self.paint_matching
-        # Payload Console Messages
-        message_buffer = self.console.get_text_to_be_displayed()
-        self.payload["text_buffer"] = json.dumps(message_buffer)
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -166,12 +127,8 @@ class GUI:
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if(message[:4] == "#ack"):
+        if (message[:4] == "#ack"):
             self.set_acknowledge(True)
-
-        # Message for Console
-        elif(message[:4] == "#con"):
-            self.console.prompt(message)
 
     # Activate the server
     def run_server(self):
@@ -184,7 +141,7 @@ class GUI:
     def ShowNewPoints(self, points):
         duplicate_point = False
         for i in range(0, len(points)):
-            for j in range (0, len(self.point_to_save)):
+            for j in range(0, len(self.point_to_save)):
                 if (self.point_to_save[j] == points[i]):
                     duplicate_point = True
             if (duplicate_point == False):
@@ -197,7 +154,7 @@ class GUI:
     def ShowAllPoints(self, points):
         number_equal_points = 0
         for i in range(0, len(points)):
-            for j in range (0, len(self.point_to_save)):
+            for j in range(0, len(self.point_to_save)):
                 if (self.point_to_save[j] == points[i]):
                     number_equal_points += 1
 
@@ -215,7 +172,6 @@ class GUI:
             if ((self.matching_to_save[i] == matching) == True):
                 self.duplicate_matching = True
 
-
         if (self.duplicate_matching == False):
             self.matching_to_save.append(matching)
             self.matching_to_send.append(matching)
@@ -224,17 +180,19 @@ class GUI:
 
     # Function to reset
     def ClearAllPoints(self):
-        self.point_to_save =[]
+        self.point_to_save = []
         self.point_to_send = []
         self.matching_to_save = []
         self.matching_to_send = []
         self.server.send_message(self.client, "#res")
 
+    def reset_gui(self):
+        self.ClearAllPoints()
 
 
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI(threading.Thread):
+class ThreadGUI:
     def __init__(self, gui):
         self.gui = gui
         # Time variables
@@ -254,11 +212,11 @@ class ThreadGUI(threading.Thread):
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while(self.gui.client == None):
+        while (self.gui.client == None):
             pass
 
         previous_time = datetime.now()
-        while(True):
+        while (True):
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -278,26 +236,24 @@ class ThreadGUI(threading.Thread):
             # Reset the counter
             self.iteration_counter = 0
 
-
     def run(self):
-        while(self.gui.client == None):
+        while (self.gui.client == None):
             pass
 
-        while(True):
+        while (True):
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
-            while(acknowledge_message == False):
+            while (acknowledge_message == False):
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
-
 
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
 
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.time_cycle):
-                time.sleep((self.time_cycle-ms) / 1000.0)
+            if (ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)

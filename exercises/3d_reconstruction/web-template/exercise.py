@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-
-from __future__ import print_function
-
 from websocket_server import WebsocketServer
 import logging
 import time
@@ -19,7 +16,7 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-import console
+from console import start_console, close_console
 
 
 class Template:
@@ -41,9 +38,8 @@ class Template:
         self.host = sys.argv[1]
 
         # Initialize the GUI and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
 
     # Function for saving
     def save_code(self, source_code):
@@ -75,7 +71,6 @@ class Template:
 
             return "", "", 1
 
-
         elif (source_code[:5] == "#resu"):
             restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
             restart_simulation()
@@ -96,17 +91,9 @@ class Template:
 
         else:
             # Get the frequency of operation, convert to time_cycle and strip
-            try:
-                # Get the debug level and strip the debug part
-                debug_level = int(source_code[5])
-                source_code = source_code[12:]
-            except:
-                debug_level = 1
-                source_code = ""
 
-            source_code = self.debug_parse(source_code, debug_level)
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-            return iterative_code, sequential_code, debug_level
+            return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
@@ -144,50 +131,48 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
+        # Redirect the information to console
+        start_console()
+
         # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
-        iterative_code, sequential_code, debug_level = self.parse_code(source_code)
+        reference_environment = {}
+        iterative_code, sequential_code = self.parse_code(source_code)
 
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
 
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while self.reload == False:
-                start_time = datetime.now()
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            start_time = datetime.now()
 
-                # Execute the iterative portion
-                exec(iterative_code, reference_environment)
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
 
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
-                # Keep updating the iteration counter
-                if (iterative_code == ""):
-                    self.iteration_counter = 0
-                else:
-                    self.iteration_counter = self.iteration_counter + 1
+            # Keep updating the iteration counter
+            if (iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
 
-                # The code should be run for atleast the target time step
-                # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            if (ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
 
-            print("Current Thread Joined!")
-
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
+        close_console()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
@@ -209,7 +194,7 @@ class Template:
         gui_module.GUI = imp.new_module("GUI")
 
         # Add GUI functions
-        gui_module.GUI.showImages = self.gui.showImages
+        gui_module.GUI.showImage = self.gui.showImage
         gui_module.GUI.ShowNewPoints = self.gui.ShowNewPoints
         gui_module.GUI.ShowAllPoints = self.gui.ShowAllPoints
         gui_module.GUI.showImageMatching = self.gui.showImageMatching
@@ -250,7 +235,7 @@ class Template:
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0;
+        brain_frequency = 0
         gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.ideal_cycle, 1)
