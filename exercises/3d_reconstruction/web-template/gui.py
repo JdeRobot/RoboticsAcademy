@@ -16,7 +16,7 @@ class GUI:
         t = threading.Thread(target=self.run_server)
 
 
-        self.payload = {'image1': '','shape1': '', 'image2': '','shape2': '', 'point': '', 'matching': '', 'paint_matching':''}
+        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'paint_matching':''}
         self.server = None
         self.client = None
 
@@ -24,9 +24,12 @@ class GUI:
 
         # Image variables
         self.image1_to_be_shown = None
+        self.image1_to_be_shown_updated = False
+        self.image1_show_lock = threading.Lock()
+
         self.image2_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        self.image2_to_be_shown_updated = False
+        self.image2_show_lock = threading.Lock()
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -48,19 +51,24 @@ class GUI:
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
 
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
+        self.image1_show_lock.acquire()
+        image1_to_be_shown_updated = self.image1_to_be_shown_updated
         image1_to_be_shown = self.image1_to_be_shown
-        image2_to_be_shown = self.image2_to_be_shown
-        self.image_show_lock.release()
-
+        self.image1_show_lock.release()
         image1 = image1_to_be_shown
-
         payload1 = {'image1': '', 'shape1': ''}
+
+
+
+        self.image2_show_lock.acquire()
+        image2_to_be_shown_updated = self.image2_to_be_shown_updated
+        image2_to_be_shown = self.image2_to_be_shown
+        self.image2_show_lock.release()
+
         image2 = image2_to_be_shown
         payload2 = {'image2': '', 'shape2': ''}
 
-        if(image_to_be_shown_updated == False):
+        if(image1_to_be_shown_updated == False and image2_to_be_shown_updated):
             return payload1, payload2
 
         shape1 = image1.shape
@@ -79,20 +87,32 @@ class GUI:
         payload2['image2'] = encoded_image2.decode('utf-8')
         payload2['shape2'] = shape2
 
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
+        self.image1_show_lock.acquire()
+        self.image1_to_be_shown_updated = False
+        self.image1_show_lock.release()
+
+        self.image2_show_lock.acquire()
+        self.image2_to_be_shown_updated = False
+        self.image2_show_lock.release()
+
         print("LLEGO AQUI")
-        return payload1,payload2
+        return payload1, payload2
 
     # Function for student to call
     def showImages(self, image1, image2, paint_matching):
         self.paint_matching = paint_matching
-        self.image_show_lock.acquire()
+        # Image 1
+        self.image1_show_lock.acquire()
         self.image1_to_be_shown = image1
+        self.image1_to_be_shown_updated = True
+        self.image1_show_lock.release()
+        # Image 2
+        self.image2_show_lock.acquire()
         self.image2_to_be_shown = image2
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+        self.image2_to_be_shown_updated = True
+        self.image2_show_lock.release()
+
+
 
 
     # Function to get the client
