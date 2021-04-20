@@ -119,15 +119,6 @@ class Template:
             iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
-            # Duplicate function definitions from the sequential part to the iterative part (solves scope errors)
-            funcHeaderMatches = re.finditer(r'def.*:\n', sequential_code)  # Find all headers
-            for funcHeaderMatch in funcHeaderMatches:
-                funcBodyEnd = re.search(r'\n\S', sequential_code[funcHeaderMatch.end():])
-                if funcBodyEnd is None:
-                    iterative_code = sequential_code[funcHeaderMatch.start():] + "\n" + iterative_code
-                else:
-                    iterative_code = sequential_code[funcHeaderMatch.start():funcHeaderMatch.end() + funcBodyEnd.start()] + "\n" + iterative_code
-
         except:
             sequential_code = source_code
             iterative_code = ""
@@ -141,7 +132,6 @@ class Template:
         start_console()
 
         # Reference Environment for the exec() function
-        reference_environment = {}
         iterative_code, sequential_code = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -155,7 +145,8 @@ class Template:
         # The Python exec function
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
-        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, reference_environment)
         
         # Run the iterative part inside template
         # and keep the check for flag
