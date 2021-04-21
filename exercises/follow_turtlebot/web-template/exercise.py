@@ -64,20 +64,7 @@ class Template:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-        # Check for save/load
-        if source_code[:5] == "#save":
-            source_code = source_code[5:]
-            self.save_code(source_code)
-
-            return "", "", 1
-
-        elif source_code[:5] == "#load":
-            source_code = source_code + self.load_code()
-            self.server.send_message(self.client, source_code)
-    
-            return "", "", 1
-
-        elif source_code[:5] == "#resu":
+        if source_code[:5] == "#resu":
                 restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
                 restart_simulation()
 
