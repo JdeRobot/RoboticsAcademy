@@ -146,7 +146,6 @@ class ProcessGUI(multiprocessing.Process):
         super(ProcessGUI, self).__init__()
 
         self.host = sys.argv[1]
-        self.exit_signal = multiprocessing.Event()
 
         # Time variables
         self.time_cycle = SharedValue("gui_time_cycle")
@@ -158,6 +157,7 @@ class ProcessGUI(multiprocessing.Process):
         # Events
         self.ack_event = self.gui.ack_event
         self.cli_event = self.gui.cli_event
+        self.exit_signal = multiprocessing.Event()
 
     # Function to start the execution of threads
     def run(self):

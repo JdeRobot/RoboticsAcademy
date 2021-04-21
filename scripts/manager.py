@@ -112,7 +112,17 @@ def start_vnc(display, internal_port, external_port):
     novnc_thread = DockerThread(novnc_cmd)
     novnc_thread.start()
 
+def start_exercise(exercise):
+    host_cmd = instructions[exercise]["instructions_host"]
+    host_thread = DockerThread(host_cmd)
+    host_thread.start()
 
+    try:
+        gui_cmd = instructions[exercise]["instructions_gui"]
+        gui_thread = DockerThread(gui_cmd)
+        gui_thread.start()
+    except KeyError:
+        pass
 
 async def kill_simulation():
     cmd_gzweb = "pkill -9 -f exercise.py"
@@ -173,13 +183,8 @@ async def hello(websocket, path):
             console_xserver_thread = DockerThread(console_xserver_cmd)
             console_xserver_thread.start()
 
-            host_cmd = instructions[data["exercise"]]["instructions_host"]
-            host_thread = DockerThread(host_cmd)
-            host_thread.start()
-
-            gui_cmd = instructions[data["exercise"]]["instructions_gui"]
-            gui_thread = DockerThread(gui_cmd)
-            gui_thread.start()
+            # Start the exercise
+            start_exercise(data["exercise"])
 
             if not ("color_filter" in data["exercise"]):
                 roslaunch_cmd = ros_instructions(data["exercise"])
