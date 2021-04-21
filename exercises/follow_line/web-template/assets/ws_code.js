@@ -64,6 +64,7 @@ function submitCode(){
     
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
+	unpause_lap();
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
@@ -77,6 +78,7 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
+	pause_lap();
 	
 	running = false;
 }
@@ -104,6 +106,8 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
+	reset_gui();
+
 	if(running == true){
 		submitCode();
 	}

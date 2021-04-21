@@ -16,9 +16,11 @@ import cv2
 from user_functions import GUIFunctions, HALFunctions
 from console import start_console, close_console
 
+from shared.value import SharedValue
+
 # The brain process class
 class BrainProcess(multiprocessing.Process):
-    def __init__(self, code, ideal_cycle, time_cycle, exit_signal):
+    def __init__(self, code, exit_signal):
         super(BrainProcess, self).__init__()
 
         # Initialize exit signal
@@ -29,8 +31,8 @@ class BrainProcess(multiprocessing.Process):
         self.gui = GUIFunctions()
 
         # Time variables
-        self.time_cycle = time_cycle
-        self.ideal_cycle = ideal_cycle
+        self.time_cycle = SharedValue('brain_time_cycle')
+        self.ideal_cycle = SharedValue('brain_ideal_cycle')
         self.iteration_counter = 0
 
         # Get the sequential and iterative code
@@ -97,8 +99,7 @@ class BrainProcess(multiprocessing.Process):
             # The code should be run for atleast the target time step
             # If it's less put to sleep
             # If it's more no problem as such, but we can change it!
-            with self.time_cycle.get_lock():
-                time_cycle = self.time_cycle.value
+            time_cycle = self.time_cycle.get()
 
             if(ms < time_cycle):
                 time.sleep((time_cycle - ms) / 1000.0)
@@ -151,11 +152,9 @@ class BrainProcess(multiprocessing.Process):
             # Get the time period
             try:
             	# Division by zero
-                with self.time_cycle.get_lock():
-            	    self.ideal_cycle.value = ms / self.iteration_counter
+            	self.ideal_cycle.add(ms / self.iteration_counter)
             except:
-                with self.time_cycle.get_lock():
-            	    self.ideal_cycle.value = 0
+            	self.ideal_cycle.add(0)
             
             # Reset the counter
             self.iteration_counter = 0

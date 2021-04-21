@@ -18,9 +18,9 @@ import rospy
 from std_srvs.srv import Empty
 import cv2
 
-from gui import GUI, ProcessGUI
+from shared.value import SharedValue
+
 from hal import HAL
-import console
 from brain import BrainProcess
 
 class Template:
@@ -32,14 +32,14 @@ class Template:
         self.reload = multiprocessing.Event()
         
         # Time variables
-        self.brain_time_cycle = multiprocessing.Value('d', 80)
-        self.brain_ideal_cycle = multiprocessing.Value('d', 80)
+        self.brain_time_cycle = SharedValue('brain_time_cycle')
+        self.brain_ideal_cycle = SharedValue('brain_ideal_cycle')
 
         self.frequency_message = {'brain': '', 'gui': ''}
 
         # GUI variables
-        self.gui_time_cycle = multiprocessing.Value('d', 80)
-        self.gui_ideal_cycle = multiprocessing.Value('d', 80)
+        self.gui_time_cycle = SharedValue('gui_time_cycle')
+        self.gui_ideal_cycle = SharedValue('gui_ideal_cycle')
                 
         self.server = None
         self.client = None
@@ -47,7 +47,6 @@ class Template:
 
         # Initialize the GUI and HAL behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
         
     # Function for saving   
     def save_code(self, source_code):
@@ -94,7 +93,6 @@ class Template:
     	elif(source_code[:5] == "#rest"):
     		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
     		reset_simulation()
-    		self.gui.reset_gui()
     		return "", ""
     		
     	else:
@@ -108,11 +106,6 @@ class Template:
         		source_code = ""
     		
     		source_code = self.debug_parse(source_code, debug_level)
-    		# Pause and unpause
-    		if(source_code == ""):
-    		    self.gui.lap.pause()
-    		else:
-    		    self.gui.lap.unpause()
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
 
     		return iterative_code, sequential_code
@@ -164,8 +157,7 @@ class Template:
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
-        self.brain_process = BrainProcess(code, self.brain_ideal_cycle,
-                                          self.brain_time_cycle, self.reload)
+        self.brain_process = BrainProcess(code, self.reload)
         self.brain_process.start()
 
     # Function to read and set frequency from incoming message
@@ -174,13 +166,11 @@ class Template:
 
         # Set brain frequency
         frequency = float(frequency_message["brain"])
-        with self.brain_time_cycle.get_lock():
-            self.brain_time_cycle.value = 1000.0 / frequency
+        self.brain_time_cycle.add(1000.0 / frequency)
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        with self.gui_time_cycle.get_lock():
-            self.gui_time_cycle.value = 1000.0 / frequency
+        self.gui_time_cycle.add(1000.0 / frequency)
 
         return
 
@@ -189,14 +179,12 @@ class Template:
         # This function generates and sends frequency measures of the brain and gui
         brain_frequency = 0; gui_frequency = 0
         try:
-            with self.brain_ideal_cycle.get_lock():
-                brain_frequency = round(1000 / self.brain_ideal_cycle.value, 1)
+            brain_frequency = round(1000 / self.brain_ideal_cycle.get(), 1)
         except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            with self.gui_ideal_cycle.get_lock():
-                gui_frequency = round(1000 / self.gui_ideal_cycle.value, 1)
+            gui_frequency = round(1000 / self.gui_ideal_cycle.get(), 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -228,10 +216,7 @@ class Template:
     # Function that gets called when the server is connected
     def connected(self, client, server):
     	self.client = client
-    	# Start the GUI update thread
-        events = self.gui.start_event_thread()
-    	self.process_gui = ProcessGUI(events, self.gui_ideal_cycle, self.gui_time_cycle)
-    	self.process_gui.start()
+    	# Start the HAL update thread
         self.hal.start_thread()
 
         # Initialize the ping message

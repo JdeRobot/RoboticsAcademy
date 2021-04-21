@@ -18,7 +18,8 @@ instructions = {
     "follow_line": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_line/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
     },
     "obstacle_avoidance": {
         "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
@@ -116,6 +117,8 @@ def start_vnc(display, internal_port, external_port):
 async def kill_simulation():
     cmd_gzweb = "pkill -9 -f exercise.py"
     os.popen(cmd_gzweb)
+    cmd_gui = "pkill -9 -f gui.py"
+    os.popen(cmd_gui)
     cmd_host = "pkill -9 -f node"
     os.popen(cmd_host)
     cmd_host = "pkill -9 -f gzserver"
@@ -173,6 +176,10 @@ async def hello(websocket, path):
             host_cmd = instructions[data["exercise"]]["instructions_host"]
             host_thread = DockerThread(host_cmd)
             host_thread.start()
+
+            gui_cmd = instructions[data["exercise"]]["instructions_gui"]
+            gui_thread = DockerThread(gui_cmd)
+            gui_thread.start()
 
             if not ("color_filter" in data["exercise"]):
                 roslaunch_cmd = ros_instructions(data["exercise"])

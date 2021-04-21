@@ -1,5 +1,7 @@
 import json
+import rospy
 import cv2
+import sys
 import base64
 import threading
 import time
@@ -11,6 +13,8 @@ import logging
 
 from interfaces.pose3d import ListenerPose3d
 from shared.image import SharedImage
+from shared.image import SharedImage
+from shared.value import SharedValue
 
 from lap import Lap
 from map import Map
@@ -19,9 +23,9 @@ from map import Map
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal):
-        t = threading.Thread(target=self.run_server)
-        
+    def __init__(self, host):
+        rospy.init_node("GUI")
+
         self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
         self.server = None
         self.client = None
@@ -31,9 +35,9 @@ class GUI:
         # Image variable
         self.shared_image = SharedImage("guiimage")
         
-        # Get HAL object
-        self.hal = hal
-        t.start()
+        # Get HAL variables
+        self.shared_v = SharedValue("velocity")
+        self.shared_w = SharedValue("angular")
         
         # Create the lap object
         pose3d_object = ListenerPose3d("/F1ROS/odom")
@@ -43,7 +47,10 @@ class GUI:
         # Event objects for multiprocessing
         self.ack_event = multiprocessing.Event()
         self.cli_event = multiprocessing.Event()
-        self.upd_event = multiprocessing.Event()
+
+        # Start server thread
+        t = threading.Thread(target=self.run_server)
+        t.start()
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -65,6 +72,8 @@ class GUI:
     def get_client(self, client, server):
         self.client = client
         self.cli_event.set()
+
+        print(client, 'connected')
         
     # Update the gui
     def update_gui(self):
@@ -83,11 +92,11 @@ class GUI:
         self.payload["map"] = pos_message
 
         # Payload V Message
-        v_message = str(self.hal.getV())
+        v_message = str(self.shared_v.get())
         self.payload["v"] = v_message
 
         # Payload W Message
-        w_message = str(self.hal.getW())
+        w_message = str(self.shared_w.get())
         self.payload["w"] = w_message
         
         message = "#gui" + json.dumps(self.payload)
@@ -100,12 +109,27 @@ class GUI:
         if(message[:4] == "#ack"):
             # Set acknowledgement flag
             self.ack_event.set()
+        # Pause message
+        elif(message[:5] == "#paus"):
+            self.lap.pause()
+        # Unpause message
+        elif(message[:5] == "#resu"):
+            self.lap.unpause()
+        # Reset message
+        elif(message[:5] == "#rest"):
+            self.reset_gui()
+
+    	
+    # Function that gets called when the connected closes
+    def handle_close(self, client, server):
+        print(client, 'closed')
 
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
+        self.server.set_fn_client_left(self.handle_close)
         self.server.run_forever()
 
     # Function to reset
@@ -113,45 +137,34 @@ class GUI:
         self.lap.reset()
         self.map.reset()
 
-    # Thread function for event communication with GUIProcess
-    def start_event_thread(self):
-        thread = threading.Thread(target=self.event_thread)
-        thread.start()
-
-        # Return event objects
-        return self.ack_event, self.cli_event, self.upd_event
-
-    # The event thread
-    def event_thread(self):
-        # Thread Loop to wait for update_gui event
-        while True:
-            self.upd_event.wait()
-            if(self.upd_event.is_set()):
-                self.update_gui()
-                self.upd_event.clear()
-
         
 
 # This class decouples the user thread
 # and the GUI update thread
 class ProcessGUI(multiprocessing.Process):
-    def __init__(self, events, ideal_cycle, time_cycle):
+    def __init__(self):
         super(ProcessGUI, self).__init__()
 
-        # Events
-        self.ack_event = events[0]
-        self.cli_event = events[1]
-        self.upd_event = events[2]
-
+        self.host = sys.argv[1]
         self.exit_signal = multiprocessing.Event()
 
         # Time variables
-        self.time_cycle = time_cycle
-        self.ideal_cycle = ideal_cycle
+        self.time_cycle = SharedValue("gui_time_cycle")
+        self.ideal_cycle = SharedValue("gui_ideal_cycle")
         self.iteration_counter = 0
+
+    # Function to initialize events
+    def initialize_events(self):
+        # Events
+        self.ack_event = self.gui.ack_event
+        self.cli_event = self.gui.cli_event
 
     # Function to start the execution of threads
     def run(self):
+        # Initialize GUI
+        self.gui = GUI(self.host)
+        self.initialize_events()
+
         # Wait for client before starting
         self.cli_event.wait()
 
@@ -181,11 +194,9 @@ class ProcessGUI(multiprocessing.Process):
             # Get the time period
             try:
                 # Division by zero
-                with self.ideal_cycle.get_lock():
-                    self.ideal_cycle.value = ms / self.iteration_counter
+                self.ideal_cycle.add(ms / self.iteration_counter)
             except:
-                with self.ideal_cycle.get_lock():
-                    self.ideal_cycle.value = 0
+                self.ideal_cycle.add(0)
 
             # Reset the counter
             self.iteration_counter = 0
@@ -195,7 +206,7 @@ class ProcessGUI(multiprocessing.Process):
         while(True):
             start_time = datetime.now()
             # Send update signal
-            self.upd_event.set()
+            self.gui.update_gui()
 
             # Wait for acknowldege signal
             self.ack_event.wait()
@@ -207,10 +218,24 @@ class ProcessGUI(multiprocessing.Process):
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             
-            with self.time_cycle.get_lock():
-                time_cycle = self.time_cycle.value
+            time_cycle = self.time_cycle.get()
 
             if(ms < time_cycle):
                 time.sleep((time_cycle-ms) / 1000.0)
 
         self.exit_signal.set()
+
+    # Functions to handle auxillary GUI functions
+    def reset_gui():
+        self.gui.reset_gui()
+    
+    def lap_pause():
+        self.gui.lap.pause()
+    
+    def lap_unpause():
+        self.gui.lap.unpause()
+
+
+if __name__ == "__main__":
+    gui = ProcessGUI()
+    gui.start()
