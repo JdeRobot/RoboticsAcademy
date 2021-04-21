@@ -57,9 +57,6 @@ class GUI:
             return payload
 
         shape = image.shape
-        if image.ndim == 3:
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
 
