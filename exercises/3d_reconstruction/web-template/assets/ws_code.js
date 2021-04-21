@@ -53,23 +53,20 @@ function declare_code(websocket_address){
 }
 
 // Function that sends/submits the code!
+// Function that sends/submits the code!
 function submitCode(){
-    // Get the code from editor and add headers
+	// Get the code from editor and add headers
     var python_code = editor.getValue();
     python_code = "#code\n" + python_code
-
-    // Get the debug level and add header
-    var debug_level = document.querySelector('input[name = "debug"]').value;
-    python_code = "#dbug" + debug_level + python_code
 
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
-    stop_button.style.cursor = "default";
+	stop_button.style.cursor = "default";
 
-    running = true;
+	running = true;
 }
 
 // Function that send/submits an empty string
