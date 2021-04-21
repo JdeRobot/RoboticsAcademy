@@ -57,6 +57,8 @@ class GUI:
             return payload
 
         shape = image.shape
+        print("PINTANDO LA DIMENSION DE LA IMAGEN ")
+        print(image.shape)
         frame = cv2.imencode('.JPEG', cv2.cvtColor(image, cv2.COLOR_RGB2BGR))[1]
         encoded_image = base64.b64encode(frame)
 
