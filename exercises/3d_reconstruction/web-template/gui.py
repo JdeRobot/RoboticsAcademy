@@ -57,8 +57,6 @@ class GUI:
             return payload
 
         shape = image.shape
-        print("PINTANDO LA DIMENSION DE LA IMAGEN ")
-        print(image.shape)
         if image.ndim == 3:
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
