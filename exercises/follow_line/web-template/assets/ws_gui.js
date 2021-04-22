@@ -74,3 +74,16 @@ var canvas = document.getElementById("gui_canvas");
     
 // Lap time DOM
 var lap_time_display = document.getElementById("lap_time");
+
+// Utility Functions
+function pause_lap(){
+	websocket_gui.send("#paus");
+}
+
+function unpause_lap(){
+	websocket_gui.send("#resu");
+}
+
+function reset_gui(){
+	websocket_gui.send("#rest");
+}

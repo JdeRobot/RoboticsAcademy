@@ -52,6 +52,7 @@ function declare_code(websocket_address){
 		code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
 		real_time_factor = document.querySelector('#real_time_factor').value;
+    
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
@@ -65,6 +66,7 @@ function submitCode(){
     
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
+	unpause_lap();
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
@@ -78,6 +80,7 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
+	pause_lap();
 	
 	running = false;
 }
@@ -87,6 +90,8 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
+	reset_gui();
+
 	if(running == true){
 		submitCode();
 	}
