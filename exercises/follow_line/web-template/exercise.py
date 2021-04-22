@@ -7,6 +7,7 @@ import logging
 import time
 import threading
 import multiprocessing
+import subprocess
 import sys
 from datetime import datetime
 import re
@@ -34,8 +35,9 @@ class Template:
         # Time variables
         self.brain_time_cycle = SharedValue('brain_time_cycle')
         self.brain_ideal_cycle = SharedValue('brain_ideal_cycle')
+        self.real_time_factor = 0
 
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
 
         # GUI variables
         self.gui_time_cycle = SharedValue('gui_time_cycle')
@@ -96,28 +98,8 @@ class Template:
     		return "", ""
     		
     	else:
-    		# Get the frequency of operation, convert to time_cycle and strip
-    		try:
-        		# Get the debug level and strip the debug part
-        		debug_level = int(source_code[5])
-        		source_code = source_code[12:]
-        	except:
-        		debug_level = 1
-        		source_code = ""
-    		
-    		source_code = self.debug_parse(source_code, debug_level)
     		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-
     		return iterative_code, sequential_code
-			
-        
-    # Function to parse code according to the debugging level
-    def debug_parse(self, source_code, debug_level):
-    	if(debug_level == 1):
-    		# If debug level is 0, then all the GUI operations should not be called
-    		source_code = re.sub(r'GUI\..*', '', source_code)
-    		
-    	return source_code
     
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -157,6 +139,9 @@ class Template:
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
+        if code[0] == "" and code[1] == "":
+            return
+            
         self.brain_process = BrainProcess(code, self.reload)
         self.brain_process.start()
 
@@ -174,6 +159,22 @@ class Template:
 
         return
 
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args=["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed 
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(',')]
+                self.real_time_factor = stats_list[0]     
+
+
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
@@ -190,6 +191,7 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
@@ -218,6 +220,10 @@ class Template:
     	self.client = client
     	# Start the HAL update thread
         self.hal.start_thread()
+
+        # Start real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
 
         # Initialize the ping message
         self.send_frequency_message()

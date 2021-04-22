@@ -63,7 +63,6 @@ class BrainProcess(multiprocessing.Process):
         reference_environment = {}
         iterative_code, sequential_code = self.iterative_code, self.sequential_code
         
-        # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
         
@@ -75,7 +74,8 @@ class BrainProcess(multiprocessing.Process):
         # The Python exec function
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
-        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module}, reference_environment)
+        if sequential_code != "":
+            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module}, reference_environment)
 
         # Run the iterative part inside template
         # and keep the check for flag
@@ -83,7 +83,8 @@ class BrainProcess(multiprocessing.Process):
             start_time = datetime.now()
             
             # Execute the iterative portion
-            exec(iterative_code, reference_environment)
+            if iterative_code != "":
+                exec(iterative_code, reference_environment)
 
             # Template specifics to run!
             finish_time = datetime.now()
