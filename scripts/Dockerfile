@@ -177,16 +177,19 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6B
 
 # Install everything again for Python 2 because we could not get Firmware
 # to compile using catkin without it.
+ENV PIP_DEFAULT_TIMEOUT=1000
 RUN pip install wheel setuptools
-RUN pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage \
-    empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments pymavlink \
-    packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml
+RUN pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage 
+RUN pip install packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml
+RUN pip install empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments 
+RUN pip install pymavlink 
 
 # bootstrap rosdep
 # RUN rosdep init && rosdep update
 RUN rosdep update
 
 ## PX4 src
+RUN apt-get update
 RUN apt upgrade -y --quiet --no-install-recommends libignition-math2
 RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
 	&& cd /Firmware \

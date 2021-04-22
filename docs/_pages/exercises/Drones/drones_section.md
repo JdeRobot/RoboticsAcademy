@@ -8,6 +8,26 @@ sidebar:
 classes: wide
 
 feature_row:
+  - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
+    alt: "Drone Cat and Mouse"
+    title: "Drone Cat and Mouse"
+    excerpt: "Game of cat and mouse with two quadrotors."
+    url: "/exercises/Drones/drone_cat_mouse"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+    
+  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    alt: "Follow Turtlebot"
+    title: "Follow Turtlebot"
+    excerpt: "Follow a turtlebot on the ground."
+    url: "/exercises/Drones/follow_turtlebot"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
     title: "Drone Gymkhana"
@@ -58,16 +78,6 @@ feature_row:
     version_label: "btn--info"
     version: "v2.1"
     
-  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
-    alt: "Follow Turtlebot"
-    title: "Follow Turtlebot"
-    excerpt: "Follow a turtlebot on the ground."
-    url: "/exercises/Drones/follow_turtlebot"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
     alt: "Drone Hangar"
     title: "Drone Hangar"
@@ -83,16 +93,6 @@ feature_row:
     title: "Visual Lander"
     excerpt: "Visualization of a beacon and land on it."
     url: "/exercises/Drones/visual_lander"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
-    alt: "Drone Cat and Mouse"
-    title: "Drone Cat and Mouse"
-    excerpt: "Game of cat and mouse with two quadrotors."
-    url: "/exercises/Drones/drone_cat_mouse"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"

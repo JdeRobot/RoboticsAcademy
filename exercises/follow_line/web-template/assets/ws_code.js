@@ -42,7 +42,8 @@ function declare_code(websocket_address){
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
-			document.querySelector("#real_time_factor").value = frequency_message.rtf;
+			// Parse real time factor
+			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
 		
 		// The acknowledgement messages invoke the python server to send further
@@ -50,7 +51,8 @@ function declare_code(websocket_address){
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
-		real_time_factor = document.querySelector("#real_time_factor").value;
+		real_time_factor = document.querySelector('#real_time_factor').value;
+    
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
@@ -81,24 +83,6 @@ function stopCode(){
 	pause_lap();
 	
 	running = false;
-}
-
-// Function to save the code
-function saveCode(){
-	// Get the code from editor and add header
-	
-	var python_code = editor.getValue();
-	python_code = "#save" + python_code;
-	console.log("Code Sent! Check terminal for more information!");
-	websocket_code.send(python_code)
-}
-
-// Function to load the code
-function loadCode(){
-	// Send message to initiate load message
-	var message = "#load";
-	websocket_code.send(message);
-	
 }
 
 // Function to command the simulation to reset

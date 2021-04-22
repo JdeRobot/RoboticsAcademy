@@ -5,7 +5,7 @@
 
 JdeRobot Academy is an **open source** collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. Its latest documentation (including installation recipes, current available exercises and illustrative videos) is on its <a href="https://jderobot.github.io/RoboticsAcademy">webpage</a>.
 
-If you are a contributor, please note that we use GitHub Pages and a Jekyll theme (MinimalMistakes) for Academy web page. Feel free to install Jekyll locally, so that, you can test your changes before submitting your pull-request. The directions are as follows:
+If you are a contributor, please note that we use GitHub Pages and a Jekyll theme (MinimalMistakes) for Academy web page. Feel free to install Jekyll locally, so that, you can test your changes before submitting your pull-request.
 
 ## How to contribute?
 

@@ -8,7 +8,10 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var websocket_gui;
+var websocket_gui, operation, data;
+var pose, content;
+var command_input;
+
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
@@ -17,6 +20,7 @@ function declare_gui(websocket_address){
 	}
 	
 	websocket_gui.onclose = function(event){
+		radiConect.contentWindow.postMessage('down', '*');
 		if(event.wasClean){
 			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
@@ -27,16 +31,16 @@ function declare_gui(websocket_address){
 
 	// What to do when a message from server is received
 	websocket_gui.onmessage = function(event){
-		var operation = event.data.substring(0, 4);
-		
+		operation = event.data.substring(0, 4);
+		radiConect.contentWindow.postMessage('up', '*');
 		if(operation == "#gui"){
 			// Parse the entire Object
-			var data = JSON.parse(event.data.substring(4, ));
+			data = JSON.parse(event.data.substring(4, ));
 
 			// Parse the Map data
 			// Slice off ( and )
-			var pose = data.map.substring(1, data.map.length - 1);
-			var content = pose.split(',').map(function(item) {
+			pose = data.map.substring(1, data.map.length - 1);
+			content = pose.split(',').map(function(item) {
 				return parseFloat(item);
 			})
 			draw(content[0], content[1], content[2], content[3]);
@@ -58,7 +62,7 @@ function declare_gui(websocket_address){
 		
 		else if(operation == "#cor"){
 			// Set the value of command
-			var command_input = event.data.substring(4, );
+			command_input = event.data.substring(4, );
 			command.value = command_input;
 			// Go to next command line
 			next_command();

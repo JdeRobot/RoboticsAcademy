@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-
-from __future__ import print_function
-
 from websocket_server import WebsocketServer
 import logging
 import time

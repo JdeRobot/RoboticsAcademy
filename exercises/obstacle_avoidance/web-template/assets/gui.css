@@ -5,8 +5,11 @@
 }
 
 #gui_canvas {
-    height: 350px;
+    padding-top: 15px;
+    padding-right: 10px;
+    height: 400px;
     width: 400px;
+    float: left;
 }
 
 

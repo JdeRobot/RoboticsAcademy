@@ -167,7 +167,13 @@ For more information, visit the [official repository](https://github.com/opencv/
 
 ## JdeRobot-drones
 
-Source installation (recommended):
+A. Binary installation (recommended)
+
+```bash
+sudo apt-get install ros-melodic-jderobot-drones
+```
+
+B. Source installation:
 
 1. Install catkin tools
 
@@ -188,7 +194,7 @@ Source installation (recommended):
 3. Get jderobot-drones ros pkg
 
     ```bash
-    cd && mkdir repos && cd repos
+    cd ~ && mkdir -p repos && cd repos
     git clone https://github.com/JdeRobot/drones.git
     ```
     
@@ -218,11 +224,11 @@ Source installation (recommended):
 7. Export environment variables
 
     ```bash
-        roscd
-        echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
-        echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
-        echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:~/repos/drones/drone_assets/models' >> ~/.bashrc
-        source ~/.bashrc
+    roscd
+    echo 'source '$PWD'/devel/setup.bash' >> ~/.bashrc
+    echo 'export GAZEBO_RESOURCE_PATH=${GAZEBO_RESOURCE_PATH}:/usr/share/gazebo-9' >> ~/.bashrc
+    echo 'export GAZEBO_MODEL_PATH=${GAZEBO_MODEL_PATH}:~/repos/drones/drone_assets/models' >> ~/.bashrc
+    source ~/.bashrc
     ```
 
 ## MavROS
@@ -257,8 +263,9 @@ Install previous dependencies:
 
     ```bash
     sudo apt update -y
-    sudo apt install git zip qtcreator cmake \
-        build-essential genromfs ninja-build exiftool -y
+    sudo apt-get install git zip qtcreator cmake \
+       build-essential genromfs ninja-build exiftool \
+       python-pip python-dev -y
     ```
 
 4. Install xxd
@@ -269,14 +276,29 @@ Install previous dependencies:
 
 5. Install required python packages
 
+    Install Python 3 pip build dependencies first
+
     ```bash
-    sudo apt install python-argparse \
-        python-empy python-toml python-numpy python-yaml \
-        python-dev python-pip -y
-    sudo -H pip install --upgrade pip
-    sudo -H pip install pandas jinja2 pyserial cerberus
-    sudo -H pip install pyulog
-    sudo -H pip install packaging
+    sudo pip3 install wheel setuptools
+    ```
+    
+    Python 3 dependencies installed by pip
+
+    ```bash
+    sudo pip3 install argparse argcomplete coverage cerberus empy jinja2 \
+                    matplotlib==3.0.* numpy nunavut packaging pkgconfig pyros-genmsg pyulog \
+                    pyyaml requests serial six toml psutil pyulog wheel
+    ```
+
+    Install everything again for Python 2 because we could not get Firmware to compile using catkin without it.
+
+    ```bash
+    sudo pip install --upgrade pip 
+    sudo pip install wheel setuptools
+    sudo pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage \
+        empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments pymavlink \
+        packaging pyros-genmsg pyulog pyyaml requests rosdep rospkg serial six toml \
+        pandas pyserial
     ```
 
 6. Install ninja
@@ -298,6 +320,7 @@ Install previous dependencies:
 
     ```bash
     (cd eProsima_FastCDR-1.0.8-Linux && ./configure --libdir=/usr/lib && make -j2 && sudo make install)
+    cd ..
     (cd eProsima_FastRTPS-1.7.1-Linux && ./configure --libdir=/usr/lib && make -j2 && sudo make install)
     rm -rf requiredcomponents eprosima_fastrtps-1-7-1-linux.tar.gz
     ```
@@ -306,37 +329,37 @@ PX4 source installation:
 1. Get PX4 source (v1.11.3)
 
     ```bash
-        cd ~/repos
-        git clone https://github.com/PX4/Firmware.git
-        cd Firmware && git checkout v1.11.3
-        git checkout -b v1.11.3
+    cd ~ && mkdir -p repos && cd repos
+    git clone https://github.com/PX4/Firmware.git
+    cd Firmware && git checkout v1.11.3
+    git checkout -b v1.11.3
     ```
 
 2. Build PX4
 
     ```bash
-        cd ~/repos/Firmware
-        DONT_RUN=1 make px4_sitl_default gazebo
+    cd ~/repos/Firmware
+    DONT_RUN=1 make px4_sitl_default gazebo
     ```
 
 3. Export environment variables
 
     ```bash
-        echo 'export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
-        echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/repos/Firmware/Tools/sitl_gazebo/models' >> ~/.bashrc
-        echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    echo 'export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
+    echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:~/repos/Firmware/Tools/sitl_gazebo/models' >> ~/.bashrc
+    echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/repos/Firmware/build/px4_sitl_default/build_gazebo' >> ~/.bashrc
     
-        echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware' >> ~/.bashrc
-        echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
+    echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware' >> ~/.bashrc
+    echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/repos/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
     
-        source ~/.bashrc
+    source ~/.bashrc
     ```
 
 4. Try PX4 (optional)
 
     ```bash
-        roslaunch px4 mavros_posix_sitl.launch
-        pxh> commander arm # when launching finishes
+    roslaunch px4 mavros_posix_sitl.launch
+    pxh> commander arm # when launching finishes
     ```
 
 ## Real Turtlebot2 on ROS Melodic

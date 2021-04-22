@@ -4,6 +4,11 @@
 
 For users of Robotics Academy, follow the instructions given on this [link](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/)
 
+Note: For Windows users running the exercise through the web template, the websocket_address would be the IP address of the **vEthernet adapter(WSL)**. This can be found through the following command at the command prompt:
+```
+ipconfig/all
+```
+
 ## Dependencies
 
 [F1 models](https://github.com/JdeRobot/CustomRobots/tree/melodic-devel/f1) from CustomRobots repository
@@ -18,4 +23,4 @@ For users of Robotics Academy, follow the instructions given on this [link](http
 
 ### Python Files
 
-`host.py` is the main Python file to run the exercise
+`exercise.py` is the main Python file to run the exercise
