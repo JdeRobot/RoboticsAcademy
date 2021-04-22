@@ -43,6 +43,7 @@ function declare_code(websocket_address){
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
         }
+
         // Send the acknowledgment message along with frequency
         code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
@@ -52,23 +53,20 @@ function declare_code(websocket_address){
 }
 
 // Function that sends/submits the code!
+// Function that sends/submits the code!
 function submitCode(){
-    // Get the code from editor and add headers
+	// Get the code from editor and add headers
     var python_code = editor.getValue();
     python_code = "#code\n" + python_code
-
-    // Get the debug level and add header
-    var debug_level = document.querySelector('input[name = "debug"]').value;
-    python_code = "#dbug" + debug_level + python_code
 
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
-    stop_button.style.cursor = "default";
+	stop_button.style.cursor = "default";
 
-    running = true;
+	running = true;
 }
 
 // Function that send/submits an empty string
@@ -78,7 +76,6 @@ function stopCode(){
     websocket_code.send(stop_code);
 
     running = false;
-
 }
 
 // Function to save the code
@@ -101,6 +98,7 @@ function loadCode(){
 
 // Function to command the simulation to reset
 function resetSim(){
+    // Send message to initiate reset
     var message = "#rest"
     websocket_code.send(message)
     if(running == true){

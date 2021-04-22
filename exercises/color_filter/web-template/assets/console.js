@@ -68,6 +68,6 @@ python_console.addEventListener("keyup", function(event){
 
 // Execute a function when clicked
 python_console.addEventListener("click", function(event){
-	// Focus on the input that should current be active
+	// Focus on the input that should currently be active
 	command.focus();
 })
