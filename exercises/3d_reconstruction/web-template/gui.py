@@ -16,7 +16,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image': '', 'point': '', 'matching': '', 'paint_matching': ''}
+        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'paint_matching': ''}
         self.server = None
         self.client = None
 
@@ -58,7 +58,7 @@ class GUI:
         payload2 = {'image2': '', 'shape2': ''}
 
         if(image_to_be_shown_updated == False):
-            return payload1,payload2
+            return payload1, payload2
 
         shape1 = image1.shape
         frame1 = cv2.imencode('.JPEG', image1)[1]
