@@ -11,6 +11,7 @@ h4{
     height: 200px;
     color: white;
     overflow: scroll;
+    margin-bottom: 1%;
 }
 
 #Console ul{
