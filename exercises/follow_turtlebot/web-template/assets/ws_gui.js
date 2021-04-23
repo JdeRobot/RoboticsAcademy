@@ -44,18 +44,18 @@ function declare_gui(websocket_address){
 				image.src = "data:image/jpeg;base64," + source;
 				canvas.width = shape[1];
 				canvas.height = shape[0];
-			}
-
+			} 
+			
 			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
+			messages = JSON.parse(data.text_buffer.replace(/'/g, '"'));
 			// Loop through the messages and print them on the console
 			for(message of messages){
 				// Set value of command
 				command.value = message
 				// Go to next command line
 				next_command()
-			}
-			
+				}
+
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
 		}
@@ -76,7 +76,7 @@ function declare_gui(websocket_address){
 			}
 
 			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
+			messages = JSON.parse(data.text_buffer.replace(/'/g, '"'));
 			// Loop through the messages and print them on the console
 			for(message of messages){
 				// Set value of command
