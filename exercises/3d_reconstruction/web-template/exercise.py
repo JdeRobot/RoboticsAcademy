@@ -194,7 +194,7 @@ class Template:
         gui_module.GUI = imp.new_module("GUI")
 
         # Add GUI functions
-        gui_module.GUI.showImage = self.gui.showImage
+        gui_module.GUI.showImages = self.gui.showImages
         gui_module.GUI.ShowNewPoints = self.gui.ShowNewPoints
         gui_module.GUI.ShowAllPoints = self.gui.ShowAllPoints
         gui_module.GUI.showImageMatching = self.gui.showImageMatching
