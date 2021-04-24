@@ -16,7 +16,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'paint_matching': ''}
+        self.payload = {'image1': '', 'image2': '', 'point': '', 'matching': '', 'p_match': 'false'}
         self.server = None
         self.client = None
 
@@ -37,7 +37,7 @@ class GUI:
         self.matching_to_save = []
         self.duplicate_matching = False
         self.matching_to_send = []
-        self.paint_matching = False
+        self.paint_matching = "false"
 
         self.prueba1 = ""
         self.prueba2 = ""
@@ -64,12 +64,12 @@ class GUI:
         if(image_to_be_shown_updated == False):
             return payload1, payload2
 
-        image1 = cv2.resize(image1, (0, 0), fx=0.20, fy=0.20)
+        image1 = cv2.resize(image1, (0, 0), fx=0.50, fy=0.50)
         frame1 = cv2.imencode('.JPEG', image1)[1]
         encoded_image1 = base64.b64encode(frame1)
         payload1['image1'] = encoded_image1.decode('utf-8')
 
-        image2 = cv2.resize(image2, (0, 0), fx=0.20, fy=0.20)
+        image2 = cv2.resize(image2, (0, 0), fx=0.50, fy=0.50)
         frame2 = cv2.imencode('.JPEG', image2)[1]
         encoded_image2 = base64.b64encode(frame2)
         payload2['image2'] = encoded_image2.decode('utf-8')
@@ -82,6 +82,10 @@ class GUI:
     # Function for student to call
     def showImages(self, image1, image2, paint_matching):
         self.paint_matching = paint_matching
+        if paint_matching:
+            self.paint_matching = "true"
+        else:
+            self.paint_matching = "false"
         if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
             self.image_show_lock.acquire()
             self.image1_to_be_shown = image1
@@ -129,7 +133,7 @@ class GUI:
         self.payload["matching"] = json.dumps(self.matching_to_send)
         del self.matching_to_send[0:length_matching_send]
 
-        self.payload["paint_matching"] = self.paint_matching
+        self.payload["p_match"] = self.paint_matching
 
 
         # Payload Point Message
