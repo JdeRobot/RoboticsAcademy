@@ -65,12 +65,9 @@ function declare_gui(){
             {
                 SetMatching(matching);
             }
-            console.log(data.p_match)
             paint_matching = data.p_match;
             // Send the Acknowledgment Message
             websocket_gui.send("#ack");
-
-
 
         }else if(operation == "#res"){
             // Set the value of command

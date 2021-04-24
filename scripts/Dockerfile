@@ -228,7 +228,7 @@ RUN git clone https://github.com/novnc/noVNC.git &&\
 RUN apt-get -y install xterm
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master && git checkout issue-881 && git pull origin issue-881 && git pull origin issue-881 && git pull origin issue-881 && git pull origin issue-881 && git pull origin issue-881 && git pull origin issue-881 && git pull origin issue-881 && git pull origin issue-881
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
 
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
