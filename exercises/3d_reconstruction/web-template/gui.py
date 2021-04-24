@@ -64,12 +64,12 @@ class GUI:
         if(image_to_be_shown_updated == False):
             return payload1, payload2
 
-        image1 = cv2.resize(image1, (0, 0), fx=0.50, fy=0.50)
+        image1 = cv2.resize(image1, (0, 0), fx=0.20, fy=0.20)
         frame1 = cv2.imencode('.JPEG', image1)[1]
         encoded_image1 = base64.b64encode(frame1)
         payload1['image1'] = encoded_image1.decode('utf-8')
 
-        image2 = cv2.resize(image2, (0, 0), fx=0.50, fy=0.50)
+        image2 = cv2.resize(image2, (0, 0), fx=0.20, fy=0.20)
         frame2 = cv2.imencode('.JPEG', image2)[1]
         encoded_image2 = base64.b64encode(frame2)
         payload2['image2'] = encoded_image2.decode('utf-8')
@@ -134,11 +134,6 @@ class GUI:
 
         # Payload Point Message
         message = "#gui" + json.dumps(self.payload)
-
-        if self.prueba1 != "" and self.prueba2 != "":
-            self.prueba1 = ""
-            self.prueba2 = ""
-            print("LISTO PARA ENVIAR")
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
