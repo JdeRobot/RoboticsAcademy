@@ -137,10 +137,14 @@ class GUI:
 
         self.payload["paint_matching"] = self.paint_matching
 
-        if self.prueba1 != "" and self.prueba2 != "":
-            print("ENTRO EM UPDATE GUI CON IMAGEN")
+
         # Payload Point Message
         message = "#gui" + json.dumps(self.payload)
+
+        if self.prueba1 != "" and self.prueba2 != "":
+            self.prueba1 = ""
+            self.prueba2 = ""
+            print("LISTO PARA ENVIAR")
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
