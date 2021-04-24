@@ -10,8 +10,7 @@ stop_button.style.cursor = "not-allowed";
 
 // running variable for psuedo decoupling 
 // Play/Pause from Reset
-var frequency = "0",
-	running = false;
+var frequency = "0";
 
 //WebSocket for Code
 var websocket_code;
@@ -68,8 +67,6 @@ function submitCode(){
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
 	stop_button.style.cursor = "default";
-	
-	running = true;
 }
 
 // Function that send/submits an empty string
@@ -77,26 +74,6 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-	
-	running = false;
-}
-
-// Function to save the code
-function saveCode(){
-	// Get the code from editor and add header
-	
-	var python_code = editor.getValue();
-	python_code = "#save" + python_code;
-	console.log("Code Sent! Check terminal for more information!");
-	websocket_code.send(python_code)
-}
-
-// Function to load the code
-function loadCode(){
-	// Send message to initiate load message
-	var message = "#load";
-	websocket_code.send(message);
-	
 }
 
 // Function to command the simulation to reset
@@ -104,9 +81,6 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
-	if(running == true){
-		submitCode();
-	}
 }
 
 // Function for range slider
