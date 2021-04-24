@@ -76,6 +76,8 @@ class GUI:
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
         print("Antes de enviar el payload")
+        print(payload1)
+        print(payload2)
         return payload1, payload2
 
     # Function for student to call
@@ -113,8 +115,6 @@ class GUI:
         payload1, payload2 = self.payloadImage()
         self.payload["image1"] = json.dumps(payload1)
         self.payload["image2"] = json.dumps(payload2)
-
-        # Payload Point Message
         length_point_send = len(self.point_to_send)
 
         if (length_point_send != 0):
@@ -133,6 +133,9 @@ class GUI:
 
         self.payload["paint_matching"] = self.paint_matching
 
+        if self.payload["image1"]["image1"] != "":
+            print("ENTRO EM UPDATE GUI CON IMAGEN")
+        # Payload Point Message
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
