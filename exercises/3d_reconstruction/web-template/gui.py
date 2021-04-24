@@ -39,6 +39,8 @@ class GUI:
         self.matching_to_send = []
         self.paint_matching = False
 
+        self.prueba1 = ""
+        self.prueba2 = ""
         # Get HAL object
         self.hal = hal
         t.start()
@@ -53,8 +55,10 @@ class GUI:
         self.image_show_lock.release()
 
         image1 = image1_to_be_shown
+        self.prueba1 = image1
         payload1 = {'image1': '', 'shape1': ''}
         image2 = image2_to_be_shown
+        self.prueba2 = image2
         payload2 = {'image2': '', 'shape2': ''}
 
         if(image_to_be_shown_updated == False):
@@ -133,7 +137,7 @@ class GUI:
 
         self.payload["paint_matching"] = self.paint_matching
 
-        if self.payload["image1"]["image1"] != "":
+        if self.prueba1 != "" and self.prueba2 != "":
             print("ENTRO EM UPDATE GUI CON IMAGEN")
         # Payload Point Message
         message = "#gui" + json.dumps(self.payload)
