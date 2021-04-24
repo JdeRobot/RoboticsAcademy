@@ -72,6 +72,10 @@ class GUI:
         payload2['image2'] = encoded_image2.decode('utf-8')
         payload2['shape2'] = shape2
 
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
+
         return payload1, payload2
 
     # Function for student to call
@@ -83,6 +87,7 @@ class GUI:
             self.image2_to_be_shown = image2
             self.image_to_be_shown_updated = True
             self.image_show_lock.release()
+        print("HE LLAMADO AL showImages")
 
     # Function to get the client
     # Called when a new client is received
