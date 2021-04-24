@@ -75,7 +75,7 @@ class GUI:
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
-
+        print("Antes de enviar el payload")
         return payload1, payload2
 
     # Function for student to call
@@ -87,7 +87,7 @@ class GUI:
             self.image2_to_be_shown = image2
             self.image_to_be_shown_updated = True
             self.image_show_lock.release()
-        print("HE LLAMADO AL showImages")
+            print("HE LLAMADO AL showImages")
 
     # Function to get the client
     # Called when a new client is received
