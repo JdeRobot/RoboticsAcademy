@@ -149,7 +149,7 @@ while True:
 * `GUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
 * `GUI.ClearAllPoints()` - to clear the 3D visor
 * `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
-* `GUI.showImage(image)` - allows you to view a debug image    
+* `GUI.showImage(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information       
 
 **3D Viewer**
 
