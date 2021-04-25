@@ -12,7 +12,7 @@
 
     <body>
         <!-- Extends base.html to initiate the connection to the RADI -->
-        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="5%" name="data" frameBorder="0" scrolling="no"></iframe>
+        <iframe id="radiConect" type="text/html" src="../../assets/base.html" width="100%" height="6%" name="data" frameBorder="0" scrolling="no"></iframe>
         <script>
             var radiConect = document.getElementById('radiConect')
             radiConect.contentWindow.postMessage('message', '*');
@@ -41,21 +41,21 @@
                     <tr><strong>
                         <th>Name</th>
                         <th>Slider</th>
-                        <th>Frequency Measure</th>
+                        <th>Measured/Desired</th>
           </strong>
                     </tr>
                     <tr>
-                        <td>Brain</td>
+                        <td>Brain Frequency</td>
                         <td><input type="range" min="1" max="30" value="12.5" id="fader"
                             step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
-                        <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output></td>
+                        <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output> Hz</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td>GUI</td>
+                        <td>GUI Frequency</td>
                         <td><input type="range" min="1" max="30" value="12" id="fader"
                             step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
-                        <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output></td>
+                        <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output> Hz</td>
                     </tr>
           <tr>
         <th >Debug-Level</th>
@@ -111,25 +111,15 @@ while True:
             <div id="canvas" align = "center">
         </div>
     </body>
-    <!-- Canvas -->
     <canvas id="gui_canvas"></canvas>
     <!--<iframe src="" id="gzweb"></iframe-->
   </div>
 
-    <div id="console" style="display:none;">
-        <!-- Console -->
-        <div id="Console" class="container">
-      <ul>
-        <li class="Console-item">
-          <input value=">>" class="terminal" readonly><input class="command">
-        </li>
-      </ul>
-    </div>
-    </div>
-
+      <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
       <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
       <script type="text/javascript">
       function changeconsole(){
+        document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
         var console_display = document.getElementById('console').style.display
         console.log(console_display)
         if (console_display == "none" || console_display == "none" ) {
@@ -139,7 +129,7 @@ while True:
         }
       }
       function changegzweb(){
-        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
+        document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
         var display = document.getElementById('iframeGzweb').style.display
         console.log(display)
         if (display == "none" || display == "none" ) {
@@ -160,6 +150,7 @@ while True:
 </script>
     <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
     <script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../assets/js/utils.js"></script>
     <script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
     <script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
     <script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>

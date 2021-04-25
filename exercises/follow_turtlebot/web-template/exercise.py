@@ -19,6 +19,7 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
+from turtlebot import Turtlebot
 import console
 
 
@@ -43,7 +44,8 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.console = console.Console()
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.turtlebot = Turtlebot()
+        self.gui = GUI(self.host, self.console, self.hal, self.turtlebot)
 
     # Function for saving   
     def save_code(self, source_code):

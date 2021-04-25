@@ -12,7 +12,7 @@ import logging
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal):
+    def __init__(self, host, console, hal, turtlebot):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': '', 'text_buffer': ''}
@@ -37,6 +37,7 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.console = console
         self.hal = hal
+        self.turtlebot = turtlebot
         t.start()
 
     # Explicit initialization function
@@ -168,6 +169,12 @@ class GUI:
             # Message for Console
         elif message[:4] == "#con":
             self.console.prompt(message)
+        elif message[:4] == "#tur":
+            self.turtlebot.start_turtlebot()
+        elif message[:4] == "#stp":
+            self.turtlebot.stop_turtlebot()
+        elif message[:4] == "#rst":
+            self.turtlebot.reset_turtlebot()
 
 
     # Activate the server
