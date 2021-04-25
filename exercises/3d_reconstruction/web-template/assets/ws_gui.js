@@ -65,7 +65,11 @@ function declare_gui(){
             {
                 SetMatching(matching);
             }
-            paint_matching = data.p_match;
+            // Paint Maching
+            paint_matching = data.p_match
+            if (paint_matching === "T") {
+                paintMatching();
+            }
             // Send the Acknowledgment Message
             websocket_gui.send("#ack");
 
@@ -99,9 +103,6 @@ image2.onload = function(){
 function update_image(){
     context.drawImage(image1, 0, 0,320, 240);
     context.drawImage(image2, 320, 0,320, 240);
-    if (paint_matching === "T") {
-        paintMatching();
-    }
 }
 
 function paintPoints(points_received)
