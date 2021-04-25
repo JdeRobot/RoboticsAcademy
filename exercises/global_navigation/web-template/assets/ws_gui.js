@@ -33,61 +33,34 @@ function declare_gui(websocket_address){
 	websocket_gui.onmessage = function(event){
 		operation = event.data.substring(0, 4);
            
-		if(operation == "#gui"){
+		if(operation === "#gui"){
 			// Parse the entire Object
 			data = JSON.parse(event.data.substring(4, ));
-                        //Parse array data and call generathPath function
-                        array = JSON.parse(data.array);
-                        generatePath(array);
-                        //Parse encoded image data and decode it
-                        image_data = JSON.parse(data.image),
+			//Parse array data and call generathPath function
+			array = JSON.parse(data.array);
+			generatePath(array);
+			//Parse encoded image data and decode it
+			image_data = JSON.parse(data.image),
 			source = decode_utf8(image_data.image),
 			shape = image_data.shape;
 			
-			if(source != ""){
+			if(source !== ""){
 				canvas.src = "data:image/png;base64," + source;
 				canvas.width = shape[1];
 				canvas.height = shape[0];
 			}
                  
-                        // Parse the Map data
+			// Parse the Map data
 			// Slice off ( and )
 			pose = data.map.substring(1, data.map.length - 1);
 			content = pose.split(',').map(function(item) {
 				return parseFloat(item);
 			})
 			draw(content[0], content[1], content[2], content[3]);
-			// Parse the Console messages
-                        //console.log(data.text_buffer);
-                        text = data.text_buffer
-                        if(text.substring(1,2) == "("){
-                             text = text.replace("(","[");
-                             text = text.replace(")","]");
-                             console.log(text)
-                        }
-         
-			messages = JSON.parse(text);
-			// Loop through the messages and print them on the console
-			for(message of messages){
-				// Set value of command
-				command.value = message
-				// Go to next command line
-				next_command()
-			}
 
 
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
-		}
-		
-		else if(operation == "#cor"){
-			// Set the value of command
-			command_input = event.data.substring(4, );
-			command.value = command_input;
-			// Go to next command line
-			next_command();
-			// Focus on the next line
-			command.focus();
 		}
          	
 	}
@@ -101,7 +74,7 @@ function pickLoc(){
 }
 
 
-var canvas = document.getElementById("gui_canvas"),
+var canvas = document.getElementById("gui_canvas");
     
     
 
