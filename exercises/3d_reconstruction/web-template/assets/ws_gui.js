@@ -10,7 +10,7 @@ function decode_utf8(s){
 
 // Websocket and other variables for image display
 var websocket_gui;
-
+var image_data1, image_data2, source1, source2
 function declare_gui(){
     websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
@@ -34,34 +34,44 @@ function declare_gui(){
         radiConect.contentWindow.postMessage('up', '*');
         if(operation == "#gui"){
             // Parse the entire Object
+
             var data = JSON.parse(event.data.substring(4, ));
             // Parse the Image Data
 
-            var image_data1 = JSON.parse(data.image),
-                source = decode_utf8(image_data1.image)
+            image_data1 = JSON.parse(data.img1)
+            source1 = decode_utf8(image_data1.img)
 
-            if(source != ""){
-                image.src = "data:image/jpeg;base64," + source;
+            if(source1 !== ""){
+                image1.src = "data:image1/jpeg;base64," + source1;
+                update_image();
+            }
+            // Parse the Image Data
+            image_data2 = JSON.parse(data.img2)
+            source2 = decode_utf8(image_data2.img)
+
+            if(source2 !== ""){
+                image2.src = "data:image2/jpeg;base64," + source2;
                 update_image();
             }
 
-            var point = JSON.parse(data.point);
+            var point = JSON.parse(data.pts);
             if(point != "")
             {
                 paintPoints(point);
             }
-            var matching = JSON.parse(data.matching);
+            var matching = JSON.parse(data.match);
 
             if(matching != "")
             {
                 SetMatching(matching);
             }
-
-            paint_matching = data.paint_matching;
+            // Paint Maching
+            paint_matching = data.p_match
+            if (paint_matching === "T") {
+                paintMatching();
+            }
             // Send the Acknowledgment Message
             websocket_gui.send("#ack");
-
-
 
         }else if(operation == "#res"){
             // Set the value of command
@@ -76,19 +86,23 @@ var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     canvas.height = 240;
     canvas.width = 650;
-    image = new Image();
+    image1 = new Image();
+    image2 = new Image();
 
 
 // For image object
-image.onload = function(){
+image1.onload = function(){
     update_image();
 }
 
-
+image2.onload = function(){
+    update_image();
+}
 
 // Request Animation Frame to remove the flickers
 function update_image(){
-    context.drawImage(image, 0, 0,320, 240);
+    context.drawImage(image1, 0, 0,320, 240);
+    context.drawImage(image2, 320, 0,320, 240);
 }
 
 function paintPoints(points_received)

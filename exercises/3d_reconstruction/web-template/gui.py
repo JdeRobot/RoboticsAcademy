@@ -16,14 +16,15 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image': '', 'point': '', 'matching': '', 'paint_matching': ''}
+        self.payload = {'img1': '', 'img2': '', 'pts': '', 'match': '', 'p_match': 'F'}
         self.server = None
         self.client = None
 
         self.host = host
 
         # Image variables
-        self.image_to_be_shown = None
+        self.image1_to_be_shown = None
+        self.image2_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
@@ -36,7 +37,8 @@ class GUI:
         self.matching_to_save = []
         self.duplicate_matching = False
         self.matching_to_send = []
-        self.paint_matching = False
+        self.paint_matching = "F"
+
 
         # Get HAL object
         self.hal = hal
@@ -47,34 +49,46 @@ class GUI:
     def payloadImage(self):
         self.image_show_lock.acquire()
         image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
+        image1_to_be_shown = self.image1_to_be_shown
+        image2_to_be_shown = self.image2_to_be_shown
         self.image_show_lock.release()
 
-        image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        image1 = image1_to_be_shown
+        payload1 = {'img': ''}
+        image2 = image2_to_be_shown
+        payload2 = {'img': ''}
 
-        if (image_to_be_shown_updated == False):
-            return payload
+        if(image_to_be_shown_updated == False):
+            return payload1, payload2
 
-        shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
-        encoded_image = base64.b64encode(frame)
+        image1 = cv2.resize(image1, (0, 0), fx=0.50, fy=0.50)
+        frame1 = cv2.imencode('.JPEG', image1)[1]
+        encoded_image1 = base64.b64encode(frame1)
+        payload1['img'] = encoded_image1.decode('utf-8')
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        image2 = cv2.resize(image2, (0, 0), fx=0.50, fy=0.50)
+        frame2 = cv2.imencode('.JPEG', image2)[1]
+        encoded_image2 = base64.b64encode(frame2)
+        payload2['img'] = encoded_image2.decode('utf-8')
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
-
-        return payload
+        return payload1, payload2
 
     # Function for student to call
-    def showImage(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+    def showImages(self, image1, image2, paint_matching):
+        self.paint_matching = paint_matching
+        if paint_matching:
+            self.paint_matching = "T"
+        else:
+            self.paint_matching = "F"
+        if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
+            self.image_show_lock.acquire()
+            self.image1_to_be_shown = image1
+            self.image2_to_be_shown = image2
+            self.image_to_be_shown_updated = True
+            self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
@@ -97,29 +111,29 @@ class GUI:
 
     # Update the gui
     def update_gui(self):
-        # Payload Image Message
-        payload = self.payloadImage()
-        self.payload["image"] = json.dumps(payload)
-
-        # Payload Point Message
+        payload1, payload2 = self.payloadImage()
+        self.payload["img1"] = json.dumps(payload1)
+        self.payload["img2"] = json.dumps(payload2)
         length_point_send = len(self.point_to_send)
 
         if (length_point_send != 0):
             if (length_point_send > 100):
-                self.payload["point"] = json.dumps(self.point_to_send[0:100])
+                self.payload["pts"] = json.dumps(self.point_to_send[0:100])
                 del self.point_to_send[0:100]
             else:
-                self.payload["point"] = json.dumps(self.point_to_send)
+                self.payload["pts"] = json.dumps(self.point_to_send)
                 del self.point_to_send[0:length_point_send]
         else:
-            self.payload["point"] = json.dumps([])
+            self.payload["pts"] = json.dumps([])
 
         length_matching_send = len(self.matching_to_send)
-        self.payload["matching"] = json.dumps(self.matching_to_send)
+        self.payload["match"] = json.dumps(self.matching_to_send)
         del self.matching_to_send[0:length_matching_send]
 
-        self.payload["paint_matching"] = self.paint_matching
+        self.payload["p_match"] = self.paint_matching
 
+
+        # Payload Point Message
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
