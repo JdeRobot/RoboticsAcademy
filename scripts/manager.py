@@ -55,6 +55,12 @@ instructions = {
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
     },
+    "global_navigation": {
+        "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
+        "instructions_ros": [
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
+    },
     "follow_road": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
