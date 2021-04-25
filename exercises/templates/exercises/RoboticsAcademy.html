@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-type" content="text/html" charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href='exercises/assets/img/logo.ico' sizes="32x32">
+    <link rel="icon" href="{% static 'exercises/assets/img/logo.ico' %}" sizes="32x32">
     <title>RoboticsAcademy</title>
     <!-- Bootstrap 3.3.7 from local -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -16,22 +17,23 @@
     <!--Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <!--CSS Main -->
-    <link rel="stylesheet" type="text/css" href='exercises/assets/css/main.css'>
+    <link rel="stylesheet" type="text/css" href="{% static 'exercises/assets/css/main.css' %}">
 
 </head>
 <body>
 <!-- Navigation Bar -->
 <nav class="navigation-bar">
-    <img class="logo" src="exercises/assets/img/logo.png" align="left">
+    <img class="logo" src="{% static 'exercises/assets/img/logo.png' %}" align="left">
     <div class="header">
         <p>Robotics Academy by JdeRobot</p>
     </div>
 </nav>
+<!-- 
 <div class="container col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1" style="margin-bottom: 50px">
     <div class="card-deck">
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_follow_line()" onmouseout="SetImg_follow_line()">
-                <img id="img_follow_line" class="card-img-top" style="width:250px" src="exercises/assets/img/formula1_teaser.png" alt="Card image cap">
+                <img id="img_follow_line" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/formula1_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_follow_line" class="card-img-top" style="height:170px; display:none;" src="https://www.youtube.com/embed/4yKM3EuEv_g?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_follow_line = document.getElementById("img_follow_line")
@@ -51,12 +53,12 @@
                 <p class="card-text">The goal of this exercise is to perform a PID reactive control capable of following the line painted on the racing circuit.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/follow_line/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/follow_line/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_obstacle_avoidance()" onmouseout="SetImg_obstacle_avoidance()">
-                <img id="img_obstacle_avoidance" class="card-img-top" style="width:250px" src="exercises/assets/img/obstacle_avoidance_teaser.png" alt="Card image cap">
+                <img id="img_obstacle_avoidance" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/obstacle_avoidance_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_obstacle_avoidance" class="card-img-top" style="height:170px; display:none;" src="https://www.youtube.com/embed/wVJJ9ndY2aY?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_obstacle_avoidance = document.getElementById("img_obstacle_avoidance")
@@ -76,13 +78,13 @@
                 <p class="card-text">Local navigation. Virtual Force Field navigation algorithm using a F1.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/obstacle_avoidance/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/obstacle_avoidance/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_drone_cat_mouse()" onmouseout="SetImg_drone_cat_mouse()">
 
-                <img id="img_drone_cat_mouse" class="card-img-top" style="width:250px" src="exercises/assets/img/drone_cat_mouse_teaser.png" alt="Card image cap">
+                <img id="img_drone_cat_mouse" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/drone_cat_mouse_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_drone_cat_mouse" class="card-img-top" style="height:170px; display:none;" src="https://www.youtube.com/embed/LIB1xCeXgf4?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_drone_cat_mouse = document.getElementById("img_drone_cat_mouse")
@@ -102,12 +104,12 @@
                 <p class="card-text">Game of cat and mouse with two quadrotors.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/drone_cat_mouse/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/drone_cat_mouse/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_vacuum_cleaner()" onmouseout="SetImg_vacuum_cleaner()">
-                <img id="img_vacuum_cleaner" class="card-img-top" style="width:250px" src="exercises/assets/img/vacuum_cleaner_teaser.png" alt="Card image cap">
+                <img id="img_vacuum_cleaner" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/vacuum_cleaner_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_vacuum_cleaner" class="card-img-top" style="height:170px; display:none;" src="https://www.youtube.com/embed/Xcy84DhVjrY?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_vacuum_cleaner = document.getElementById("img_vacuum_cleaner")
@@ -127,12 +129,12 @@
                 <p class="card-text">Navigation algorithm for an autonomous vacuum.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/vacuum_cleaner/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/vacuum_cleaner/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_vacuum_cleaner_loc()" onmouseout="SetImg_vacuum_cleaner_loc()">
-                <img id="img_vacuum_cleaner_loc" class="card-img-top" style="width:250px" src="exercises/assets/img/vacuum_cleaner_loc_teaser.png" alt="Card image cap">
+                <img id="img_vacuum_cleaner_loc" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/vacuum_cleaner_loc_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_vacuum_cleaner_loc" class="card-img-top" style="height:170px; display:none;" src="https://www.youtube.com/embed/mT5PkgtDLDg?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_vacuum_cleaner_loc = document.getElementById("img_vacuum_cleaner_loc")
@@ -152,12 +154,12 @@
                 <p class="card-text">Foraging algorithm for an autonomous vacuum with good localization.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/vacuum_cleaner_loc/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/vacuum_cleaner_loc/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_color_filter()" onmouseout="SetImg_color_filter()">
-                <img id="img_color_filter" class="card-img-top" style="width:250px" src="exercises/assets/img/color_filter_teaser.png" alt="Card image cap">
+                <img id="img_color_filter" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/color_filter_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_color_filter" class="card-img-top" style="height:170px; display:none;"  src="https://www.youtube.com/embed/Fv9s99IEIvc?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_color_filter = document.getElementById("img_color_filter")
@@ -177,12 +179,12 @@
                 <p class="card-text">Develop a color filter to segment some object in the image and track it.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/color_filter/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/color_filter/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_3d_reconstruction()" onmouseout="SetImg_3d_reconstruction()">
-                <img id="img_3d_reconstruction" class="card-img-top" style="width:250px" src="exercises/assets/img/3d_reconstruction_teaser.png" alt="Card image cap">
+                <img id="img_3d_reconstruction" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/3d_reconstruction_teaser.png' %}" alt="Card image cap">
                 <iframe id="video_3d_reconstruction" class="card-img-top" style="height:170px; display:none;"  src="https://www.youtube.com/embed/jGNEKli8Y3g?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_3d_reconstruction = document.getElementById("img_3d_reconstruction")
@@ -202,12 +204,12 @@
                 <p class="card-text">Reconstruct a 3D scene from a stereo pair.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/3d_reconstruction/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/3d_reconstruction/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
         <div class="card">
             <div class="multimedia" onmouseover="SetVideo_follow_turtlebot()" onmouseout="SetImg_follow_turtlebot()">
-                <img id="img_follow_turtlebot" class="card-img-top" style="width:250px" src="exercises/assets/img/follow_turtlebot_teaser.jpg" alt="Card image cap">
+                <img id="img_follow_turtlebot" class="card-img-top" style="width:250px" src="{% static 'exercises/assets/img/follow_turtlebot_teaser.jpg' %}" alt="Card image cap">
                 <iframe id="video_follow_turtlebot" class="card-img-top" style="height:170px; display:none;"  src="https://www.youtube.com/embed/uehDVlBzpmU?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
                 <script type="text/javascript">
                     var img_follow_turtlebot = document.getElementById("img_follow_turtlebot")
@@ -227,14 +229,50 @@
                 <p class="card-text">Follow a turtlebot on the ground using a camera.</p>
             </div>
             <div class="card-footer text-center">
-                <a href="exercises/follow_turtlebot/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                <a href="{% static 'exercises/follow_turtlebot/web-template/exercise.html' %}" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
 
 
     </div>
 
-</div>
+</div> -->
+            <!-- TEST AUTOMATED EXERCISE LOADING -->
+            <div class="container col-xs-12 col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1" style="margin-bottom: 50px">
+                <div class="card-deck">
+                 {% for exercise in exercises %}
+                 <div class="card">
+                 <div class="multimedia" onmouseover="SetVideo_{{exercise.exercise_id}}()" onmouseout="SetImg_{{exercise.exercise_id}}()">
+                     <img id="img_{{exercise.exercise_id}}"  class="card-img-top" style="width:250px" src="{% static '' %}exercises/assets/img/{{exercise.exercise_id}}_teaser.png" alt="Card image cap">
+                     <video id="video_{{exercise.exercise_id}}" class="card-img-top" style="height:170px; display:none;" autoplay muted loop>
+                     <source src="#" type="video/mp4">
+                     </video>
+                     <script type="text/javascript">
+                       var img_{{exercise.exercise_id}} = document.getElementById("img_{{exercise.exercise_id}}")
+                       var video_{{exercise.exercise_id}} = document.getElementById("video_{{exercise.exercise_id}}")
+                       function SetVideo_{{exercise.exercise_id}}(){
+                        video_{{exercise.exercise_id}}.style.display ="block"
+                        img_{{exercise.exercise_id}}.style.display= "none"
+                        }
+                        function SetImg_{{exercise.exercise_id}}(){
+                          video_{{exercise.exercise_id}}.style.display ="none"
+                          img_{{exercise.exercise_id}}.style.display= "block"
+                         }
+                     </script>
+                   </div>
+                   <div class="card-body">
+                     <h5 class="card-title">{{exercise.name}}</h5>
+                     <p class="card-text">{{exercise.description}}</p>
+                   </div>
+                   <div class="card-footer text-center">
+                      <a href="{% static '' %}exercises/{{exercise.exercise_id }}/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                   </div>
+                  </div>
+                 {% endfor %}
+                </div>
+   
+            </div>
+            <!-- END TEST AUTOMATED EXERCISE LOADING -->
 
 </body>
 </html>
