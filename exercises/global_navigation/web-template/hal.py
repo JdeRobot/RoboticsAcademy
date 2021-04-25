@@ -14,18 +14,10 @@ class HAL:
     IMG_HEIGHT = 240
     
     def __init__(self):
-    	rospy.init_node("HAL")
+        rospy.init_node("HAL")
 
         self.pose3d = ListenerPose3d("/taxi_holo/odom")
-    	self.motors = PublisherMotors("/taxi_holo/cmd_vel", 4, 0.3)
-    	self.camera_lock = threading.Lock()
-    	
-    # Explicit initialization functions
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initRobot(cls):
-        new_instance = cls()
-        return new_instance
-    
+        self.motors = PublisherMotors("/taxi_holo/cmd_vel", 4, 0.3)
+        self.camera_lock = threading.Lock()
   
 
