@@ -47,7 +47,7 @@ function declare_gui(websocket_address){
 			}
 
 			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
+			messages = JSON.parse(data.text_buffer.replace(/'/g, '"'));
 			// Loop through the messages and print them on the console
 			for(message of messages){
 				// Set value of command
@@ -76,7 +76,7 @@ function declare_gui(websocket_address){
 			}
 
 			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
+			messages = JSON.parse(data.text_buffer.replace(/'/g, '"'));
 			// Loop through the messages and print them on the console
 			for(message of messages){
 				// Set value of command

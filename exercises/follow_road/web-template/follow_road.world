@@ -29,21 +29,22 @@
         <include>
             <name>logo</name>
             <uri>model://logoJdeRobot</uri>
-            <pose>-3 -8 0 0 0 0</pose>
+            <pose>-6 -8 0 0 0 0</pose>
         </include>
 
 
 
 
 		<include>
-			<uri>model://house_3</uri>
-			<pose>3 6.43 0 0 0 0</pose>
+			<uri>model://gas_station</uri>
+			<pose>1 6.43 0 0 0 0</pose>
 		</include>
 
 		<!-- <include>
 			<uri>model://house_4</uri>
 			<pose>-19 -12.57 0 0 0 1.55</pose>
-		</include> -->
+		</include>
+		 -->
 		
 
 		<include>
@@ -66,30 +67,33 @@
 		
 
 		<include>
+			<name>lampost1</name>
 			<uri>model://lamp_post</uri>
 			<pose>5 13 0 0 0 0</pose>
 		</include>
 
-		<!-- <include>
+		<include>
+			<name>lampost2</name>
 			<uri>model://lamp_post</uri>
 			<pose>-4 13 0 0 0 0</pose>
-		</include> -->
+		</include>
 
 		<road name="my_road">
 			<width>3</width>
-			<point>10 0 0.01</point>
-			<point>10 3 0.01</point>
-			<point>10 8 0.01</point>
-			<point>9 10 0.01</point>
-			<point>7 11 0.01</point>
-			<point>-7 11 0.01</point>
-			<point>-9 10 0.01</point>
-			<point>-10 8 0.01</point>
-			<point>-10 6 0.01</point>
-			<point>-10 3 0.01</point>
-			<point>-10 0 0.01</point>
-			<point>-11 -2 0.01</point>
-			<point>-13 -3 0.01</point>
+			<point>15 0 0.01</point>
+			<point>15 5 0.01</point>
+			<point>15 10 0.01</point>
+			<point>15 13 0.01</point>
+			<point>14 15 0.01</point>
+			<point>12 16 0.01</point>
+			<point>-12 16 0.01</point>
+			<point>-14 15 0.01</point>
+			<point>-15 12 0.01</point>
+			<point>-15 6 0.01</point>
+			<point>-15 3 0.01</point>
+			<point>-15 0 0.01</point>
+			<point>-16 -2 0.01</point>
+			<point>-17 -3 0.01</point>
 			<point>-27 -3 0.01</point>
 			<point>-28 -4 0.01</point>
 			<point>-28 -6 0.01</point>
@@ -109,20 +113,20 @@
 			<point>-6 -22 0.01</point>
 			<point>-3 -22 0.01</point>
 			<point>0 -22 0.01</point>
-			<point>3 -22 0.01</point>
 			<point>6 -22 0.01</point>
-			<point>7 -22 0.01</point>
-			<point>8 -21 0.01</point>
-			<point>9 -20 0.01</point>
-			<point>10 -19 0.01</point>
-			<point>10 -18 0.01</point>
-			<point>10 -17 0.01</point>
-			<point>10 -15 0.01</point>
-			<point>10 -12 0.01</point>
-			<point>10 -9 0.01</point>
-			<point>10 -6 0.01</point>
-			<point>10 -3 0.01</point>
-			<point>10 0 0.01</point>
+			<point>10 -22 0.01</point>
+			<point>12 -22 0.01</point>
+			<point>13 -21 0.01</point>
+			<point>14 -20 0.01</point>
+			<point>15 -19 0.01</point>
+			<point>15 -18 0.01</point>
+			<point>15 -17 0.01</point>
+			<point>15 -15 0.01</point>
+			<point>15 -12 0.01</point>
+			<point>15 -9 0.01</point>
+			<point>15 -6 0.01</point>
+			<point>15 -3 0.01</point>
+			<point>15 0 0.01</point>
 		</road>
 
 		<!-- Gazebo required specifications -->

@@ -31,7 +31,7 @@
     <!-- PX4 SITL and vehicle spawn -->
     <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
         <!-- vehicle pose -->
-        <arg name="x" value="9.96"/>
+        <arg name="x" value="14.96"/>
         <arg name="z" value="0.3"/>
         <arg name="Y" value="1.57"/>
         <arg name="vehicle" value="$(arg vehicle)"/>

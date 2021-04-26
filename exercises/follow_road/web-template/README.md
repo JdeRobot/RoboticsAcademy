@@ -30,31 +30,47 @@ docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 
 
 - Open `exercise.html` on you web browser.
 
-- The page should says **[open]Connection established!**. Means it is working as expected.
+- The page should says **[open]Connection established!**. Means it is working as expected. Then the exercise can be solved.
 
 ### Developer launching
 - Open a terminal and run:
 ```bash
 docker exec -it docker_academy bash
 
+Xvfb :0 -screen 0 1600x1200x16  &
 Xvfb :1 -screen 0 1600x1200x16  &
-export DISPLAY=:1.0
-cd /RoboticsAcademy/exercises/follow_road/web-template
-roslaunch launch/follow_road.launch
+
+roslaunch /RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch
 ```
 
 - Open a terminal and run:
 ```bash
 docker exec -it docker_academy bash
 
-cd /gzweb && npm start -p 8080
+x11vnc -display :0 -nopw -forever -xkb -bg -rfbport 5900
+/noVNC/utils/launch.sh --listen 6080 --vnc localhost:5900
 ```
 
 - Open a terminal and run:
 ```bash
 docker exec -it docker_academy bash
 
-python /RoboticsAcademy/exercises/follow_road/web_template/exercise.py 0.0.0.0
+x11vnc -display :1 -nopw -forever -xkb -bg -rfbport 5901
+/noVNC/utils/launch.sh --listen 1108 --vnc localhost:5901
+```
+
+- Open a terminal and run:
+```bash
+docker exec -it docker_academy bash
+
+gzclient --verbose
+```
+
+- Open a terminal and run:
+```bash
+docker exec -it docker_academy bash
+
+python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0
 ```
 
 - Determine your machine dns server IP address which is generally in the form of **127.0.0.xx for Linux machine** by running this command:
@@ -66,8 +82,8 @@ cat /etc/resolv.conf
 
 - Inside `assets/websocket_address.js` file, change the **variable websocket_address** to the IP address found with the above command.
 
-- Open `exercise.html` on you web browser.
+- Open `exercise.html` on you web browser. Click on the box next to **Dev** at the top-right corner. Click the connect button and kindly wait for some time until an alert appears with the message Connection Established and button displays connected.
 
-- The page should says **[open]Connection established!**. Means it is working as expected.
+- The page should says **[open]Connection established!**. Means it is working as expected. Then the exercise can be solved.
 
 **__NOTE:__**  If you get **socket.error: [Errno 99] Cannot assign requested address** error,you need to check and pass the correct IP address.
