@@ -26,9 +26,9 @@ try{
 	config.pointsize= 1.5
 	config.spheresize= 0.35
 	config.camera = {}
-	config.camera.x = 100
-	config.camera.y = 50
-	config.camera.z = 300
+	config.camera.x = 20
+	config.camera.y = 5
+	config.camera.z = 220
 
 }
 

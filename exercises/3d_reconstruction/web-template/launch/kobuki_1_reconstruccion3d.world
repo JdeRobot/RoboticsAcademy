@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<sdf version="1.5">
+<sdf version="1.3">
   <world name="default">
+  	<gui fullscreen=1></gui>
     <include>
         <uri>model://ground_plane_sincolor</uri>
     </include>
@@ -8,47 +9,30 @@
         <uri>model://sun</uri>
     </include>
     <light name='point_light1' type='point'>
-      <pose>-2.0 2.0 4.0 0 0 0</pose>
-      <diffuse>0 1 0 1</diffuse>
-      <specular>.1 .1 .1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <linear>0.2</linear>
-        <constant>0.8</constant>
-        <quadratic>0.01</quadratic>
-      </attenuation>
-      <cast_shadows>false</cast_shadows>
+      <pose frame=''>2.3 -0.25 1 0 0 0</pose>
     </light>
     <light name='point_light2' type='point'>
-      <pose>-2.0 -2.0 4.0 0 0 0</pose>
-      <diffuse>0 1 0 1</diffuse>
-      <specular>.1 .1 .1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <linear>0.2</linear>
-        <constant>0.8</constant>
-        <quadratic>0.01</quadratic>
-      </attenuation>
-      <cast_shadows>false</cast_shadows>
+      <pose frame=''>2.3 0.25 1 0 0 0</pose>
     </light>
+    
     <!-- Pioneer2dx model -->
     <include>
       <uri>model://turtlebotROS</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
-
+    
         <!-- Duck -->
     <include>
       <uri>model://duck</uri>
        <pose>4.7 3 0  1.57 0 1.57</pose>
     </include>
-
+    
         <!-- Cereales -->
     <include>
       <uri>model://cereales</uri>
        <pose>5.3 2.3 0 0 0 0</pose>
     </include>
-
+    
             <!-- Blocks -->
     <include>
       <uri>model://blocks</uri>
@@ -63,6 +47,7 @@
 
 
 <!--
+
  	<model name="toys">
  	<static>true</static>
       <link name="body3">
@@ -75,6 +60,7 @@
         </visual>
       </link>
     </model>
+
  	<model name="toys">
  	<static>true</static>
       <link name="body3">
@@ -87,16 +73,16 @@
         </visual>
       </link>
     </model>
-
+    
     -->
 
 
   	<!--
-    <model name="box">
+    <model name="box">  
         	<static>true</static>
 		<link name="body2">
 	       <pose>3 -1.4 0  1.57 0 0</pose>
-
+	       
  		<collision name='collision'>
           <geometry>
             <mesh>
@@ -105,7 +91,7 @@
 	        </mesh>
           </geometry>
 		</collision>
-
+	       
 		    <visual name="visual">
 		      <geometry>
 		        <mesh><uri>caja/caja.dae</uri>
@@ -114,7 +100,8 @@
 		    </visual>
 		  </link>
       </model>
-
+      
       -->
+    
   </world>
 </sdf>

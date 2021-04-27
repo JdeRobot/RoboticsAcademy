@@ -44,18 +44,18 @@ function declare_gui(websocket_address){
 				image.src = "data:image/jpeg;base64," + source;
 				canvas.width = shape[1];
 				canvas.height = shape[0];
-			}
-
+			} 
+			
 			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
+			messages = JSON.parse(data.text_buffer.replace(/'/g, '"'));
 			// Loop through the messages and print them on the console
 			for(message of messages){
 				// Set value of command
 				command.value = message
 				// Go to next command line
 				next_command()
-			}
-			
+				}
+
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
 		}
@@ -76,7 +76,7 @@ function declare_gui(websocket_address){
 			}
 
 			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
+			messages = JSON.parse(data.text_buffer.replace(/'/g, '"'));
 			// Loop through the messages and print them on the console
 			for(message of messages){
 				// Set value of command
@@ -99,6 +99,42 @@ function declare_gui(websocket_address){
 			command.focus();
 		}
 		
+	}
+}
+
+// Function to start turtlebot
+var playturtlebot_old_timestamp = 0;
+function playturtlebot(){
+	if(playturtlebot_old_timestamp == 0 || playturtlebot_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start turtlebot
+	    var message = "#tur";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    playturtlebot_old_timestamp = (new Date).getTime();
+	}
+}
+
+// Function to takeoff turtlebot
+var stopturtlebot_old_timestamp = 0;
+function stopturtlebot(){
+	if(stopturtlebot_old_timestamp == 0 || stopturtlebot_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start turtlebot
+	    var message = "#stp";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    stopturtlebot_old_timestamp = (new Date).getTime();
+	}
+}
+
+// Function to land turtlebot
+var resetturtlebot_old_timestamp = 0;
+function resetturtlebot(){
+	if(resetturtlebot_old_timestamp == 0 || resetturtlebot_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start turtlebot
+	    var message = "#rst";
+	    console.log("Message sent: " + message);
+	    websocket_gui.send(message);
+	    resetturtlebot_old_timestamp = (new Date).getTime();
 	}
 }
 

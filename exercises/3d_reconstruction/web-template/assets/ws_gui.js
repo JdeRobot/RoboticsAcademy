@@ -10,7 +10,7 @@ function decode_utf8(s){
 
 // Websocket and other variables for image display
 var websocket_gui;
-
+var image_data1, image_data2, source1, source2
 function declare_gui(){
     websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
@@ -34,64 +34,46 @@ function declare_gui(){
         radiConect.contentWindow.postMessage('up', '*');
         if(operation == "#gui"){
             // Parse the entire Object
+
             var data = JSON.parse(event.data.substring(4, ));
             // Parse the Image Data
-            var image_data1 = JSON.parse(data.image1),
-                source = decode_utf8(image_data1.image1),
-                shape = image_data1.shape;
 
-            if(source != ""){
-                image1.src = "data:image1/jpeg;base64," + source;
+            image_data1 = JSON.parse(data.img1)
+            source1 = decode_utf8(image_data1.img)
+
+            if(source1 !== ""){
+                image1.src = "data:image1/jpeg;base64," + source1;
                 update_image();
             }
             // Parse the Image Data
-            var image_data2 = JSON.parse(data.image2),
-                source = decode_utf8(image_data2.image2),
-                shape = image_data2.shape;
+            image_data2 = JSON.parse(data.img2)
+            source2 = decode_utf8(image_data2.img)
 
-            if(source != ""){
-                image2.src = "data:image2/jpeg;base64," + source;
+            if(source2 !== ""){
+                image2.src = "data:image2/jpeg;base64," + source2;
                 update_image();
             }
 
-            var point = JSON.parse(data.point);
+            var point = JSON.parse(data.pts);
             if(point != "")
             {
                 paintPoints(point);
             }
-            var matching = JSON.parse(data.matching);
+            var matching = JSON.parse(data.match);
 
             if(matching != "")
             {
                 SetMatching(matching);
             }
-
-            paint_matching = data.paint_matching;
-
-
-            // Parse the Console messages
-            messages = JSON.parse(data.text_buffer);
-            // Loop through the messages and print them on the console
-            for(message of messages){
-                // Set value of command
-                command.value = message
-                // Go to next command line
-                next_command()
+            // Paint Maching
+            paint_matching = data.p_match
+            if (paint_matching === "T") {
+                paintMatching();
             }
             // Send the Acknowledgment Message
-            websocket_gui.send("#ack" + gui_frequency);
+            websocket_gui.send("#ack");
 
-        }
-        else if(operation == "#cor"){
-            // Set the value of command
-            var command_input = event.data.substring(4, );
-            command.value = command_input;
-            // Go to next command line
-            next_command();
-            // Focus on the next line
-            command.focus();
-        }
-        else if(operation == "#res"){
+        }else if(operation == "#res"){
             // Set the value of command
             reset_scene3d();
             reset_matching();
@@ -113,7 +95,6 @@ image1.onload = function(){
     update_image();
 }
 
-// For image object
 image2.onload = function(){
     update_image();
 }
@@ -122,10 +103,6 @@ image2.onload = function(){
 function update_image(){
     context.drawImage(image1, 0, 0,320, 240);
     context.drawImage(image2, 320, 0,320, 240);
-    if (paint_matching == true)
-    {
-        paintMatching();
-    }
 }
 
 function paintPoints(points_received)

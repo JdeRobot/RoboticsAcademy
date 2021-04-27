@@ -99,12 +99,10 @@ docker pull jderobot/robotics-academy
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy python3.8 manager.py
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy python3.8 manager.py
 	```
 
 - On the local machine navigate to the 3d_reconstruction exercise which is: `RoboticsAcademy/exercises/3d_reconstruction/web-template`
-
-- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
 
 - Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
 
@@ -142,16 +140,30 @@ while True:
 * `HAL.getImage('right')` - to get the right image
 * `HAL.getCameraPosition('left')` - to get the left camera position from ROS Driver Camera
 * `HAL.getCameraPosition('right')` - to get the right camera position from ROS Driver Camera
-* `HAL.graficToOptical('left', point2d)` - to transform the Coordinate System to the Camera System
-* `HAL.backproject('left', point2d)` - to backprojects the 2D Point into 3D Space
-* `HAL.project('left', point3d)` - to backprojects a 3D Point onto an Image
-* `HAL.opticalToGrafic('left', point2d)` - to get Image Coordinates
-* `HAL.project3DScene(point3d)` - to backprojects a 3D Point
+* `HAL.graficToOptical('left', point2d)` -  to transform the Image Coordinate System to the Camera System
+* `HAL.backproject('left', point2d)` - to backprojects the 2D Image Point into 3D Point Space
+* `HAL.project('left', point3d)` - to backprojects a 3D Point Space into the 2D Image Point
+* `HAL.opticalToGrafic('left', point2d)` - to transform the Camera System to the Image Coordinate System
+* `HAL.project3DScene(point3d)` - to transform 3D Point Space after triangulation to the 3D Point Viewer
 * `GUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
 * `GUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
 * `GUI.ClearAllPoints()` - to clear the 3D visor
 * `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
-* `GUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information
+* `GUI.showImage(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information       
+
+**3D Viewer**
+
+**Mouse**
+
+* **Mouse wheel**: if it is rotated forward, the zoom will increase. If it is rotated backwards, it will zoom out.
+* **Right mouse button**: if it is held down and the mouse is dragged, the content of the window will move in the same direction.
+* **Left mouse button**: if it is held down and the mouse is dragged, the content of the window will rotate in the same direction.
+
+**Keyboard**
+
+* **Direction keys and Numerical keypad**: the content of the window will move in the same direction of the key.
+* **Minus keys**: if it is held down, it will zoom out.
+* **Plus keys**: if it is held down, the zoom will increase.
 
 ### Example video with web template
 {% include youtubePlayer.html id=page.youtubeId3 %}
