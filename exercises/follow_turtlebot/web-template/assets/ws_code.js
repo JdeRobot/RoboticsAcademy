@@ -60,13 +60,20 @@ function submitCode(){
     // Get the debug level and add header
 	var debug_level = document.querySelector('input[name = "debug"]').value;
     python_code = "#dbug" + debug_level + python_code
-    
+
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
 
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
 	stop_button.style.cursor = "default";
+
+	// Clean console messages
+	command_number = 0;
+	while (command_list.childNodes.length > 1) {
+		var command_to_delete = document.getElementsByClassName("Console-item")[0];
+		command_to_delete.remove();
+	}
 }
 
 // Function that send/submits an empty string
@@ -79,8 +86,8 @@ function stopCode(){
 // Function to command the simulation to reset
 function resetSim(){
 	// Send message to initiate reset
-	var message = "#rest"
-	websocket_code.send(message)
+	var message = "#rest";
+	websocket_code.send(message);
 }
 
 // Function for range slider

@@ -68,9 +68,9 @@ class Template:
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             reset_simulation()
             self.gui.reset_gui()
-            self.hal.land()
+            if self.hal.get_landed_state() == 2: self.hal.land()
             self.turtlebot.reset_turtlebot()
-            
+
             return "", "", 1
 
         else:
@@ -124,8 +124,6 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
-        # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
         iterative_code, sequential_code, debug_level = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -136,7 +134,9 @@ class Template:
             # The Python exec function
             # Run the sequential part
             gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
+            # Reference Environment for the exec() function
+            reference_environment = {'console': self.console, 'print': print_function, 'GUI': gui_module, 'HAL': hal_module}
+            exec(sequential_code, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag

@@ -16,7 +16,8 @@ class Console:
 	
 	# Function to send text to psuedo console
 	def print(self, text):
-		self.text_to_be_displayed_buffer.append(text)
+		# Remove all single and double quotes from text
+		self.text_to_be_displayed_buffer.append(str(text).replace("'","").replace('"',''))
 		print(text)
 
 	# Function to flush the text buffer
