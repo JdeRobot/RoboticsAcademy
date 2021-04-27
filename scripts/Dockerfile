@@ -241,6 +241,8 @@ RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	ros-$ROS_DISTRO-turtlebot3-description
 
+
+
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc

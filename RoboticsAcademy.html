@@ -230,6 +230,31 @@
                 <a href="exercises/follow_turtlebot/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
             </div>
         </div>
+        <div class="card">
+            <div class="multimedia" onmouseover="SetVideo_follow_road()" onmouseout="SetImg_follow_road()">
+                <img id="img_follow_road" class="card-img-top" style="width:250px" src="exercises/assets/img/follow_road_teaser.png" alt="Card image cap">
+                <iframe id="video_follow_road" class="card-img-top" style="height:170px; display:none;"  src="https://www.youtube.com/embed/KLDX4OPTL_c?start=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+                <script type="text/javascript">
+                    var img_follow_road = document.getElementById("img_follow_road")
+                    var video_follow_road = document.getElementById("video_follow_road")
+                    function SetVideo_follow_road(){
+                        video_follow_road.style.display ="block"
+                        img_follow_road.style.display= "none"
+                    }
+                    function SetImg_follow_road(){
+                        video_follow_road.style.display ="none"
+                        img_follow_road.style.display= "block"
+                    }
+                </script>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Follow Road</h5>
+                <p class="card-text">Follow a road through color filter segmentation.</p>
+            </div>
+            <div class="card-footer text-center">
+                <a href="exercises/follow_road/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+            </div>
+        </div>
 
 
     </div>
