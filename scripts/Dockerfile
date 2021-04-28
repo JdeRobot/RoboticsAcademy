@@ -265,6 +265,13 @@ LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
+# django to serve the exercises
+RUN pip3 install django
+
+# execute permissions to start.sh
+COPY start.sh /start.sh
+RUN chmod 755 /start.sh
+
 EXPOSE 2303
 EXPOSE 1905
 EXPOSE 8080
