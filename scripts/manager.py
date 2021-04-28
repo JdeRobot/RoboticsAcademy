@@ -12,7 +12,7 @@ import json
 
 GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH:"
 DISPLAY = ":0"
-GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "drone_cat_mouse","3dreconstruction", "follow_turtlebot", "global_navigation"])
+GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
 
 instructions = {
     "follow_line": {
@@ -60,6 +60,11 @@ instructions = {
         "instructions_ros": [
             "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
+    },
+    "follow_road": {
+        "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
 }
 
