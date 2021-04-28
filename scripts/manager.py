@@ -22,7 +22,7 @@ instructions = {
         "instructions_gui": "python /RoboticsAcademy/exercises/static/exercises/follow_line/web-template/gui.py 0.0.0.0"
     },
     "obstacle_avoidance": {
-        "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
     },
@@ -62,9 +62,9 @@ instructions = {
         "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
     },
     "follow_road": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
 }
 
