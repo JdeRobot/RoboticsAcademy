@@ -60,7 +60,6 @@ class BrainProcess(multiprocessing.Process):
         start_console()
 
         # Reference Environment for the exec() function
-        reference_environment = {}
         iterative_code, sequential_code = self.iterative_code, self.sequential_code
         
         # print(sequential_code)
@@ -75,7 +74,8 @@ class BrainProcess(multiprocessing.Process):
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
         if sequential_code != "":
-            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module}, reference_environment)
+            reference_environment = {"GUI": gui_module, "HAL": hal_module}
+            exec(sequential_code, reference_environment)
 
         # Run the iterative part inside template
         # and keep the check for flag
