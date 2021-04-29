@@ -219,7 +219,7 @@ RUN git clone https://github.com/novnc/noVNC.git &&\
 RUN apt-get -y install xterm
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git checkout noetic && git pull origin noetic
 
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
