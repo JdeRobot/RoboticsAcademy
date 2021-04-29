@@ -45,8 +45,8 @@ feature_row:
     url: "/exercises/Drones/follow_road"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
+    version_label: "btn--success"
+    version: "v2.3"
     
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape_teaser.jpg
     alt: "Labyrinth Escape"
