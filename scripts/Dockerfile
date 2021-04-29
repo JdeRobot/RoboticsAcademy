@@ -229,6 +229,8 @@ RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+
 
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
@@ -266,6 +268,13 @@ RUN python3.8 -m pip install websockets asyncio
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
+# django to serve the exercises
+RUN pip3 install django
+
+# execute permissions to start.sh
+COPY start.sh /start.sh
+RUN chmod 755 /start.sh
 
 EXPOSE 2303
 EXPOSE 1905
