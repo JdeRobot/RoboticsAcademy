@@ -16,55 +16,55 @@ GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner",
 
 instructions = {
     "follow_line": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_line/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_line/web-template/exercise.py 0.0.0.0",
-        "instructions_gui": "python /RoboticsAcademy/exercises/static/exercises/follow_line/web-template/gui.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/follow_line/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
     },
     "obstacle_avoidance": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner_loc": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
     },
     "color_filter": {
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/color_filter/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
     },
     "drone_cat_mouse": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
     },
     "3dreconstruction": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
     },
     "follow_turtlebot": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
     },
     "global_navigation": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
     },
     "follow_road": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch/follow_road.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_road/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
 }
 
