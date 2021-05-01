@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.3">
   <world name="default">
+    <gui fullscreen=1></gui>
     <include>
         <uri>model://ground_plane_sincolor</uri>
     </include>
