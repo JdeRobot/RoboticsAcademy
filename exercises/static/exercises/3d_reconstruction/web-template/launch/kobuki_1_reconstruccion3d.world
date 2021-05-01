@@ -8,23 +8,23 @@
         <uri>model://sun</uri>
     </include>
     <light name='point_light1' type='point'>
-      <pose frame=''>2.3 -0.5 1 0 0 0</pose>
+      <pose frame=''>2.3 -2 1 0 0 0</pose>
       <diffuse>1 1 1 1</diffuse>
       <specular>0.1 0.1 0.1 1</specular>
       <direction>0 0 -1</direction>
       <attenuation>
-        <linear>0.3</linear>
+        <linear>0.5</linear>
         <constant>0.0</constant>
         <quadratic>0.0</quadratic>
       </attenuation>
     </light>
     <light name='point_light2' type='point'>
-      <pose frame=''>2.3 0.5 1 0 0 0</pose>
+      <pose frame=''>2.3 2 1 0 0 0</pose>
       <diffuse>1 1 1 1</diffuse>
       <specular>0.1 0.1 0.1 1</specular>
       <direction>0 0 -1</direction>
       <attenuation>
-        <linear>0.3</linear>
+        <linear>0.4</linear>
         <constant>0.0</constant>
         <quadratic>0.0</quadratic>
       </attenuation>
