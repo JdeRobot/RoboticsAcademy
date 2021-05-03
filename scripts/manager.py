@@ -16,55 +16,55 @@ GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner",
 
 instructions = {
     "follow_line": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_line/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
-        "instructions_gui": "python /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_line/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_line/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python /RoboticsAcademy/exercises/static/exercises/follow_line/web-template/gui.py 0.0.0.0"
     },
     "obstacle_avoidance": {
-        "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner": {
-        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner_loc": {
-        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
     },
     "color_filter": {
-        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/color_filter/web-template/exercise.py 0.0.0.0"
     },
     "drone_cat_mouse": {
-        "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
     },
     "3dreconstruction": {
-        "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
     },
     "follow_turtlebot": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
     },
     "global_navigation": {
-        "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
     },
     "follow_road": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
 }
 
@@ -103,6 +103,10 @@ def start_gzclient(exercise, width, height):
     gzclient_thread = DockerThread(gzclient_cmd)
     gzclient_thread.start()
 
+def stop_gzclient():
+    cmd_client = "pkill -9 -f gzclient"
+    os.popen(cmd_client)
+
 def start_console(width, height):
     # Write display config and start the console
     width = int(width) / 10; height = int(height) / 18
@@ -111,6 +115,10 @@ def start_console(width, height):
 
     console_thread = DockerThread(console_cmd)
     console_thread.start()
+
+def stop_console():
+    cmd_console = "pkill -9 -f tilda"
+    os.popen(cmd_console)
 
 def start_vnc(display, internal_port, external_port):
     # Start VNC server without password, forever running in background
@@ -181,6 +189,7 @@ async def hello(websocket, path):
     print(websocket)
     async for name in websocket:
         print(name)
+        message = "Done"
         data = json.loads(name)
         command = data["command"]
         if command == "open":
@@ -208,11 +217,6 @@ async def hello(websocket, path):
                     start_vnc(DISPLAY, 5900, 6080)
                     start_vnc(":1", 5901, 1108)
 
-                    # Start gazebo client
-                    width = data.get("width", 1920)
-                    height = data.get("height", 1080)
-                    start_gzclient(data["exercise"], width, height)
-                    start_console(width, height)
                 else:
                     gzweb_cmd = 'cd /gzweb; npm start -p 8080'
                     gzweb_thread = DockerThread(gzweb_cmd)
@@ -235,13 +239,30 @@ async def hello(websocket, path):
             cmd = "/opt/ros/melodic/bin/rosservice call gazebo/reset_simulation"
             rosservice_thread = DockerThread(cmd)
             rosservice_thread.start()
+        elif command == "start-gzclient":
+            # Start gazebo client
+            width = data.get("width", 1920)
+            height = data.get("height", 1080)
+            start_gzclient(data["exercise"], width, height)
+            message = "Done #start-gzclient"
+        elif command == 'stop-gzclient':
+            stop_gzclient()
+            message = "Done #stop-gzclient"
+        elif command == "start-console":
+            width = data.get("width", 1920)
+            height = data.get("height", 1080)
+            start_console(width, height)
+            message = "Done #start-console"
+        elif command == "stop-console":
+            stop_console()
+            message = "Done #stop-console"
         else:
             print("ALL KILED")
             await kill_simulation()
 
         greeting = f"Hello {name}!"
 
-        await websocket.send("Done")
+        await websocket.send(message)
         # print(f"> {greeting}")
 
 start_server = websockets.serve(hello, "0.0.0.0", 8765)
