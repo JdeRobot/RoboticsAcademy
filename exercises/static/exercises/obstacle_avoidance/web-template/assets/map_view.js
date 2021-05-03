@@ -12,12 +12,12 @@ function paintEvent(target, car, obs, avg, laser, max_range){
 	drawLaser(laser, max_range);
 	
 	// Draw target
-	drawTarget(target[0], target[1]);
+	drawTarget(target[0] , target[1]);
 	
 	// Draw arrows
-	drawArrow(car[0], car[1], "#7CFC00");
-	drawArrow(obs[0], obs[1], "#DC143C");
-	drawArrow(avg[0], avg[1], "#000000");
+	drawArrow(-car[1] , car[0] , "#7CFC00");
+	drawArrow(-obs[1] , obs[0] , "#DC143C");
+	drawArrow(-avg[1] , avg[0], "#000000");
 }
 
 function drawCar(){
