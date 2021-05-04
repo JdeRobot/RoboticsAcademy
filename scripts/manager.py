@@ -58,7 +58,7 @@ instructions = {
     "global_navigation": {
         "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/tele_taxi.launch"],
+            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/taxiholo_1_citylarge_headless.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
     },
     "follow_road": {
