@@ -10,3 +10,11 @@ If you are a contributor, please note that we use GitHub Pages and a Jekyll them
 ## How to contribute?
 
 Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcademy/contribute/) to join this project.
+
+## For developers
+
+To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions. Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
+1)  Run ```python3.8 manage.py runserver```.
+2)  Access http://127.0.0.1:8000/admin/ on a browser and log in with "user" and "pass".
+3)  Click on "add exercise" and fill the fields: exercise id (folder name), name (name to display), state, language and description (description to display). Save and exit.
+4)  Commit db.sqlite3 changes.
