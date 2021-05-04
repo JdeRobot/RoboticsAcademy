@@ -28,21 +28,21 @@ feature_row:
     version_label: "btn--success"
     version: "v2.3"
 
-  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
-    alt: "Drone Gymkhana"
-    title: "Drone Gymkhana"
-    excerpt: "Learn to control a drone and complete the gymkhana!"
-    url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
     title: "Follow Road"
     excerpt: "Follow a road through color filter segmentation."
     url: "/exercises/Drones/follow_road"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"    
+
+  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
+    alt: "Drone Gymkhana"
+    title: "Drone Gymkhana"
+    excerpt: "Learn to control a drone and complete the gymkhana!"
+    url: "/exercises/Drones/drone_gymkhana"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"

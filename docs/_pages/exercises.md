@@ -89,6 +89,16 @@ feature_row:
     version_label: "btn--inverse"
     version: "v2.3"
 
+  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
+    alt: "Follow Road"
+    title: "Follow Road"
+    excerpt: "Follow a road through color filter segmentation."
+    url: "/exercises/Drones/follow_road"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
     title: "Global Navigation"
@@ -134,16 +144,6 @@ feature_row:
     title: "Drone Gymkhana"
     excerpt: "Learn about different drone controls and drone infrastructure."
     url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-
-  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
-    alt: "Follow Road"
-    title: "Follow Road"
-    excerpt: "Follow a road through color filter segmentation."
-    url: "/exercises/Drones/follow_road"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"
