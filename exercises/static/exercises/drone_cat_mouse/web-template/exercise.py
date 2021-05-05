@@ -20,8 +20,7 @@ import cv2
 from gui import GUI, ThreadGUI
 from hal import HAL
 from mouse import Mouse
-import console
-
+from console import start_console, close_console
 
 class Template:
     # Initialize class variables
@@ -42,10 +41,9 @@ class Template:
         self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
         self.mouse = Mouse()
-        self.gui = GUI(self.host, self.console, self.hal, self.mouse)
+        self.gui = GUI(self.host, self.hal, self.mouse)
 
     # Function for saving   
     def save_code(self, source_code):
@@ -69,31 +67,31 @@ class Template:
             source_code = source_code[5:]
             self.save_code(source_code)
 
-            return "", "", 1
+            return "", ""
 
         elif source_code[:5] == "#load":
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
     
-            return "", "", 1
+            return "", ""
 
         elif source_code[:5] == "#resu":
                 restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
                 restart_simulation()
 
-                return "", "", 1
+                return "", ""
 
         elif source_code[:5] == "#paus":
                 pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
                 pause_simulation()
 
-                return "", "", 1
+                return "", ""
 
         elif source_code[:5] == "#rest":
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             reset_simulation()
             self.gui.reset_gui()
-            return "", "", 1
+            return "", ""
 
         else:
             # Get the frequency of operation, convert to time_cycle and strip
@@ -108,7 +106,7 @@ class Template:
             source_code = self.debug_parse(source_code, debug_level)
             # Pause and unpause
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-            return iterative_code, sequential_code, debug_level
+            return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
@@ -146,51 +144,47 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
-        # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
-        iterative_code, sequential_code, debug_level = self.parse_code(source_code)
-        
+        # Redirect the information to console
+        start_console()
+
+        iterative_code, sequential_code = self.parse_code(source_code)
+
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, reference_environment)
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, reference_environment)
 
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while not self.reload:
-                start_time = datetime.now()
-                
-                # Execute the iterative portion
-                exec(iterative_code, reference_environment)
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            start_time = datetime.now()
 
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-                
-                # Keep updating the iteration counter
-                if iterative_code == "":
-                    self.iteration_counter = 0
-                else:
-                    self.iteration_counter = self.iteration_counter + 1
-            
-                # The code should be run for at least the target time step
-                # If it's less put to sleep
-                # If it's more no problem as such, but we can change it!
-                if ms < self.time_cycle:
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
 
-            print("Current Thread Joined!")
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(exc_value)
+            # Keep updating the iteration counter
+            if (iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
+
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            if (ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
+
+        close_console()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
