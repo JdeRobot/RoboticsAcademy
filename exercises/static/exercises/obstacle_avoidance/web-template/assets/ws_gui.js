@@ -59,29 +59,10 @@ function declare_gui(websocket_address){
 			map_data = JSON.parse(data.map);
 			paintEvent(map_data.target, map_data.car, map_data.obstacle, map_data.average, map_data.laser, map_data.max_range);
 
-			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
-			// Loop through the messages and print them on the console
-			for(message of messages){
-				// Set value of command
-				command.value = message;
-				// Go to next command line
-				next_command();
-			}
-
 			// Send the Acknowledgement Message
 			websocket_gui.send("#ack");
 		}
-		
-		else if(operation == "#cor"){
-			// Set the value of command
-			command_input = event.data.substring(4, );
-			command.value = command_input;
-			// Go to next command line
-			next_command();
-			// Focus on the next line
-			command.focus();
-		}
+	
 	};
 }
 

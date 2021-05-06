@@ -114,22 +114,14 @@ while True:
     <canvas id="gui_canvas"></canvas>
   </div>
 
-    <div id="console" style="display:none;">
-        <!-- Console -->
-        <div id="Console" class="container">
-      <ul>
-        <li class="Console-item">
-          <input value=">>" class="terminal" readonly><input class="command">
-        </li>
-      </ul>
-    </div>
-    </div>
+  <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
 
       <script type="text/javascript">
       function changeconsole(){
-        var console_display = document.getElementById('console').style.display
-        console.log(console_display)
-        if (console_display == "none" || console_display == "none" ) {
+        document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+        var console_display = document.getElementById('console').style.display;
+        console.log(console_display);
+        if (console_display == "none") {
           document.getElementById('console').style.display = 'block';
         } else{
           document.getElementById('console').style.display = 'none';
@@ -149,11 +141,11 @@ while True:
     </body>
     <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
 	<script src="ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../assets/js/utils.js"></script>
 	<script src="assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
   	<script src="assets/launcher.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
   	<script src="assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="assets/local_functions.js" type="text/javascript" charset="utf-8"></script>
-  	<script src="assets/console.js" type="text/javascript" charset="utf-8"></script>
 
 </html>

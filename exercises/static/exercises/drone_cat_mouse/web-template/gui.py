@@ -12,11 +12,11 @@ import logging
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal, mouse):
+    def __init__(self, host, hal, mouse):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '', 'text_buffer': ''}
-        self.left_payload = {'image': '', 'text_buffer': ''}
+        self.payload = {'image': ''}
+        self.left_payload = {'image': ''}
         self.server = None
         self.client = None
         
@@ -35,7 +35,6 @@ class GUI:
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
-        self.console = console
         self.hal = hal
         self.mouse = mouse
         t.start()
@@ -43,9 +42,9 @@ class GUI:
     # Explicit initialization function
     # Class method, so user can call it without instantiation
     @classmethod
-    def initGUI(cls, host, console):
+    def initGUI(cls, host):
         # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host, console)
+        new_instance = cls(host)
         return new_instance
 
     # Function to prepare image payload
@@ -120,7 +119,6 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        self.console.set_websocket(self.server, self.client)
         
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -141,10 +139,6 @@ class GUI:
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-
-        # Payload Console Messages
-        message_buffer = self.console.get_text_to_be_displayed()
-        self.payload["text_buffer"] = str(message_buffer)
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -152,10 +146,6 @@ class GUI:
         # Payload Left Image Message
         left_payload = self.payloadLeftImage()
         self.left_payload["image"] = json.dumps(left_payload)
-
-        # Payload Console Messages
-        message_buffer = self.console.get_text_to_be_displayed()
-        self.left_payload["text_buffer"] = str(message_buffer)
 
         message = "#gul" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
@@ -166,9 +156,6 @@ class GUI:
         # Acknowledge Message for GUI Thread
         if message[:4] == "#ack":
             self.set_acknowledge(True)
-            # Message for Console
-        elif message[:4] == "#con":
-            self.console.prompt(message)
         elif message[:4] == "#mou":
             self.mouse.start_mouse(int(message[4:5]))
         elif message[:4] == "#stp":

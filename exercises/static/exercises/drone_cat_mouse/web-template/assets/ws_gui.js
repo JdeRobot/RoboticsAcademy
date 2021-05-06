@@ -45,16 +45,6 @@ function declare_gui(websocket_address){
 				canvas.width = shape[1];
 				canvas.height = shape[0];
 			}
-
-			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
-			// Loop through the messages and print them on the console
-			for(message of messages){
-				// Set value of command
-				command.value = message
-				// Go to next command line
-				next_command()
-			}
 			
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
@@ -75,28 +65,8 @@ function declare_gui(websocket_address){
 				canvas_left.height = shape[0];
 			}
 
-			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
-			// Loop through the messages and print them on the console
-			for(message of messages){
-				// Set value of command
-				command.value = message
-				// Go to next command line
-				next_command()
-			}
-
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
-		}
-		
-		else if(operation == "#cor"){
-			// Set the value of command
-			var command_input = event.data.substring(4, );
-			command.value = command_input;
-			// Go to next command line
-			next_command();
-			// Focus on the next line
-			command.focus();
 		}
 		
 	}

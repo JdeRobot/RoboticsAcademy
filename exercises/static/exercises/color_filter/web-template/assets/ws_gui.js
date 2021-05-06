@@ -15,7 +15,6 @@ function declare_gui(){
     }
 
     websocket_gui.onclose = function(event){
-        <!-- Connecting Closed -->
         radiConect.contentWindow.postMessage('down', '*');
         if(event.wasClean){
             alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
@@ -28,7 +27,6 @@ function declare_gui(){
     // What to do when a message from server is received
     websocket_gui.onmessage = function(event){
         var operation = event.data.substring(0, 4);
-        <!-- Connecting Up -->
         radiConect.contentWindow.postMessage('up', '*');
         if(operation == "#gui"){
 			// Parse the entire Object
@@ -45,27 +43,9 @@ function declare_gui(){
 				canvas.height = shape[0];
 			}
 
-			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
-			// Loop through the messages and print them on the console
-			for(message of messages){
-				// Set value of command
-				command.value = message
-				// Go to next command line
-				next_command()
-			}
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
 			
-        }
-        else if(operation == "#cor"){
-            // Set the value of command
-            var command_input = event.data.substring(4, );
-            command.value = command_input;
-            // Go to next command line
-            next_command();
-            // Focus on the next line
-            command.focus();
         }
 
 		

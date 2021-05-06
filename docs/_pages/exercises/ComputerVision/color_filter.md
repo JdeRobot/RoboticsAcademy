@@ -69,7 +69,7 @@ docker pull jderobot/robotics-academy
 - For ubuntu: The port to map will be in /dev/videoX , you should check the number where your camera is connected. For exaple /dev/video0
 
 ```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 --device /dev/video0:/dev/video0 jderobot/robotics-academy python3.8 manager.py   
+docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy python3.8 manager.py   
 ```   
 - For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this [documentation](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468) for it.
 
