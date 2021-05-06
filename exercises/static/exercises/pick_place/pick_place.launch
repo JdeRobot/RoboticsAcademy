@@ -1,0 +1,65 @@
+<launch>
+
+<!-- PARTE 1: LANZAR MUNDO VACÍO EN GAZEBO + IRB 120 + TF + CONTROL INTERFACE -->
+  <arg name="paused" default="false" doc="Start gazebo in paused mode" />
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+
+  <!-- remap topics to conform to ROS-I specifications -->
+  <remap from="/arm_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
+  <remap from="/arm_controller/state" to="/feedback_states" />
+  <remap from="/arm_controller/command" to="/joint_path_command"/>
+
+  <!-- startup simulated world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(eval env('PWD') + '/warehouse.world')"/>
+    <arg name="gui" value="true"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find irb120_robotiq85_gazebo)/urdf/irb120_robotiq85_macro.xacro'"/>
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model irb120_robotiq85 -z 0.9" respawn="false" output="screen" />
+  <!-- <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model irb120_robotiq85 -x -0.2 -y -0.65 -z 0.81 -Y -1.57" respawn="false" output="screen" /> -->
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" />
+
+  <!-- ROS CONTROL INTERFACE init and start Gazebo plugins -->
+
+    <!-- load the joint state controller (just reads joint positions) for arm and gripper-->
+  <rosparam file="$(find irb120_robotiq85_gazebo)/config/joint_state_controller.yaml" command="load" />
+  <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn joint_state_controller" />
+
+  <!-- load the IRB120 controller (command interface) -->
+  <rosparam file="$(find irb120_robotiq85_gazebo)/config/irb120_arm_controller.yaml" command="load" />
+  <node name="abb_irb120_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" />
+
+  <!-- Fake Calibration for gripper -->
+  <node pkg="rostopic" type="rostopic" name="fake_joint_calibration"
+        args="pub /calibrated std_msgs/Bool true" />
+  
+  <!-- load the GRIPPER controller (command interface) -->
+  <rosparam file="$(find irb120_robotiq85_gazebo)/config/robotiq_gripper_controller.yaml" command="load"/> 
+  <node name="robotiq_gripper_controller_spawner" pkg="controller_manager" type="spawner" args="gripper_controller" />
+
+  <!-- launch rviz to check TF data -->
+  <!-- <node type="rviz" name="rviz" pkg="rviz" args="-d $(find irb120_robotiq85_gazebo)/rviz/irb120.rviz" /> -->
+
+  <!-- MOVEIT: LAUNCH MOVEIT_COMMANDER from CONFIG PACKAGE -->
+
+  <!-- Run the main MoveIt! executable  -->
+  <include file="$(find irb120_robotiq85_moveit_config)/launch/move_group.launch">
+    <arg name="info" value="true"/>
+  </include>
+
+  <!-- Spawn GUI-->
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find rqt_industrial_robot)/kinematics.perspective"/>
+
+</launch>

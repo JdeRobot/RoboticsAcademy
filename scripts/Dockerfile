@@ -177,16 +177,19 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6B
 
 # Install everything again for Python 2 because we could not get Firmware
 # to compile using catkin without it.
+ENV PIP_DEFAULT_TIMEOUT=1000
 RUN pip install wheel setuptools
-RUN pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage \
-    empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments pymavlink \
-    packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml
+RUN pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage 
+RUN pip install packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml
+RUN pip install empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments 
+RUN pip install pymavlink 
 
 # bootstrap rosdep
 # RUN rosdep init && rosdep update
 RUN rosdep update
 
 ## PX4 src
+RUN apt-get update
 RUN apt upgrade -y --quiet --no-install-recommends libignition-math2
 RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
 	&& cd /Firmware \
@@ -201,7 +204,7 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/J
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models:/opt/ros/melodic/share/drone_assets/urdf"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 
 # GzWeb
@@ -226,6 +229,8 @@ RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+
 
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
@@ -237,6 +242,8 @@ RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
 # Follow Turtlebot exercise
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	ros-$ROS_DISTRO-turtlebot3-description
+
+
 
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
@@ -253,7 +260,7 @@ RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware/Tools/sitl_gazebo'
 
 # websocket server dependency
 RUN apt-get update && apt-get install -y python2.7 python-pip
-RUN pip install websocket_server
+RUN pip install websocket_server posix-ipc
 COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
@@ -261,6 +268,13 @@ RUN python3.8 -m pip install websockets asyncio
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
+# django to serve the exercises
+RUN pip3 install django
+
+# execute permissions to start.sh
+COPY start.sh /start.sh
+RUN chmod 755 /start.sh
 
 EXPOSE 2303
 EXPOSE 1905

@@ -1,0 +1,10 @@
+cat:
+  cam_frontal_topic: '/iris/cam_frontal/image_raw'
+  cam_ventral_topic: '/iris/cam_ventral/image_raw'
+mouse:
+  cam_frontal_topic: '/none/cam_frontal/image_raw'
+  cam_ventral_topic: '/none/cam_ventral/image_raw'
+  Xmax: 10
+  Ymax: 10
+  Zmax: 5
+  Yawmax: 1

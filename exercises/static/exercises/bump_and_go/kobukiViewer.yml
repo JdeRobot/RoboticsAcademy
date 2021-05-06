@@ -1,0 +1,37 @@
+kobukiViewer:
+  Motors:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:default -h localhost -p 9999"
+    Topic: "/mobile_base/commands/velocity"
+    Name: kobukiViewerMotors
+    maxV: 3
+    maxW: 0.7
+
+  Camera1:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraL:default -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/camera/rgb/image_raw"
+    Name: kobukiViewerCamera1
+
+  Camera2:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraR:default -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/camera/rgb/image_raw"
+    Name: kobukiViewerCamera2
+
+  Pose3D:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:default -h localhost -p 9001"
+    Topic: "/odom"
+    Name: kobukiViewerPose3d
+
+  Laser:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:default -h localhost -p 9001"
+    Topic: "/scan"
+    Name: kobukiViewerLaser
+  Vmax: 3
+  Wmax: 0.7
+  NodeName: kobukiViewer

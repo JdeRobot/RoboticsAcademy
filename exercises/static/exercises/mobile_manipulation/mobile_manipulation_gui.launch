@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <arg name="debug" default="false"/>
+  <arg name="rviz" default="false"/>
+
+  <!-- Launch moveit -->
+  <!-- <include file="$(find neo_mmo_500)/launch/move_group.launch">
+    <arg name="debug" default="$(arg debug)" />
+  </include> -->
+
+  <!-- RVIZ -->
+  <arg name="config" value="navigation"/>
+  <group if="$(arg rviz)">
+    <arg name="rvizconfig" default="$(find neo_simulation)/config/mmo_500/rviz/$(arg config)_config.rviz" />
+	  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+  </group>
+
+   <!-- Spawn GUI-->
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find rqt_industrial_robot)/mobile_manipulator.perspective"/>
+
+</launch>
