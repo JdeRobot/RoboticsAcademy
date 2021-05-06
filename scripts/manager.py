@@ -12,7 +12,7 @@ import json
 
 GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH:"
 DISPLAY = ":0"
-GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
+GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
 
 instructions = {
     "follow_line": {
@@ -217,6 +217,11 @@ async def hello(websocket, path):
                     gzweb_cmd = 'cd /gzweb; npm start -p 8080'
                     gzweb_thread = DockerThread(gzweb_cmd)
                     gzweb_thread.start()
+            else:
+                if (data["exercise"] in GZCLIENT_EXERCISES):
+                    start_vnc(":1", 5900, 1108)
+                    start_console(1920, 1080)
+
         elif command == "resume":
             print("RESUME SIMULATIOn")
             cmd = "/opt/ros/melodic/bin/rosservice call gazebo/unpause_physics"
