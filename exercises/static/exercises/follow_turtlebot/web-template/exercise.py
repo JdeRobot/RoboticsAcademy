@@ -20,7 +20,7 @@ import cv2
 from gui import GUI, ThreadGUI
 from hal import HAL
 from turtlebot import Turtlebot
-import console
+from console import start_console, close_console
 
 
 class Template:
@@ -42,10 +42,9 @@ class Template:
         self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
         self.turtlebot = Turtlebot()
-        self.gui = GUI(self.host, self.console, self.hal, self.turtlebot)
+        self.gui = GUI(self.host, self.hal, self.turtlebot)
 
     # Function to parse the code
     # A few assumptions: 
@@ -124,9 +123,10 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
-        # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
-        iterative_code, sequential_code, debug_level = self.parse_code(source_code)
+        # Redirect the information to console
+        start_console()
+
+        iterative_code, sequential_code, debug_code_level = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
@@ -136,13 +136,14 @@ class Template:
             # The Python exec function
             # Run the sequential part
             gui_module, hal_module = self.generate_modules()
+            reference_environment = {"GUI": gui_module, "HAL": hal_module}
             exec(sequential_code, reference_environment)
 
             # Run the iterative part inside template
             # and keep the check for flag
-            while not self.reload:
+            while self.reload == False:
                 start_time = datetime.now()
-                
+
                 # Execute the iterative portion
                 exec(iterative_code, reference_environment)
 
@@ -150,25 +151,24 @@ class Template:
                 finish_time = datetime.now()
                 dt = finish_time - start_time
                 ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-                
+
                 # Keep updating the iteration counter
-                if iterative_code == "":
+                if (iterative_code == ""):
                     self.iteration_counter = 0
                 else:
                     self.iteration_counter = self.iteration_counter + 1
-            
-                # The code should be run for at least the target time step
+
+                # The code should be run for atleast the target time step
                 # If it's less put to sleep
-                # If it's more no problem as such, but we can change it!
-                if ms < self.time_cycle:
+                if (ms < self.time_cycle):
                     time.sleep((self.time_cycle - ms) / 1000.0)
 
+            close_console()
             print("Current Thread Joined!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(exc_value)
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
