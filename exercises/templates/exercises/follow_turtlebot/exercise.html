@@ -33,18 +33,12 @@ while True:
         <canvas id="gui_canvas_left"></canvas>
         <canvas id="gui_canvas_right"></canvas>
     </div>
-    <div id="console" style="display:none;">
-        <!-- Console -->
-        <div id="Console" class="container">
-            <ul><li class="Console-item">
-                <input value=">>" class="terminal" readonly><input class="command">
-            </li></ul>
-        </div>
-    </div>
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
     <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
     <script type="text/javascript">
-        function changeconsole(){
+        function changeconsole(){            
             var console_display = document.getElementById('console').style.display
+            document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
             console.log(console_display)
             if (console_display == "none" || console_display == "none" ) {
                 document.getElementById('console').style.display = 'block';
@@ -81,6 +75,5 @@ while True:
 <script src="{% static 'exercises/follow_turtlebot/web-template/assets/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/follow_turtlebot/web-template/assets/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/follow_turtlebot/web-template/assets/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/follow_turtlebot/web-template/assets/console.js' %}" type="text/javascript" charset="utf-8"></script>
 
 {% endblock %}
