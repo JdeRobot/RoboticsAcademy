@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<div id="code-control">
+    <!-- Code Editor -->
+    <!-- Along with buttons -->
+    <div id="code_container">
+        <div id="editor">from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="split b">
+    <div id="visual_buttons" class="row no-gutters">
+        <button id="gzweb_btn" type="button" onclick="changegzweb()"><img id="gzimg" src="{% static 'exercises/follow_turtlebot/web-template/assets/img/gzweb_btn.png' %}"></button>
+        <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/follow_turtlebot/web-template/assets/img/terminal-solid.svg' %}"> Console</button>
+        <button id="turtlebot_play_btn" type="button" onclick="playturtlebot()">Play Turtlebot</button>
+        <button id="turtlebot_stop_btn" type="button" onclick="stopturtlebot()">Pause Turtlebot</button>
+        <button id="turtlebot_reset_btn" type="button" onclick="resetturtlebot()">Reset Turtlebot</button>
+        <label><input id ="dev_mode_checkbox" type="checkbox" />Dev</label>
+    </div>
+    <div id="visual">
+        <!-- Canvas -->
+        <canvas id="gui_canvas_left"></canvas>
+        <canvas id="gui_canvas_right"></canvas>
+    </div>
+    <div id="console" style="display:none;">
+        <!-- Console -->
+        <div id="Console" class="container">
+            <ul><li class="Console-item">
+                <input value=">>" class="terminal" readonly><input class="command">
+            </li></ul>
+        </div>
+    </div>
+    <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    <script type="text/javascript">
+        function changeconsole(){
+            var console_display = document.getElementById('console').style.display
+            console.log(console_display)
+            if (console_display == "none" || console_display == "none" ) {
+                document.getElementById('console').style.display = 'block';
+            } else{
+                document.getElementById('console').style.display = 'none';
+            }
+        }
+        function changegzweb(){
+            document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
+            var display = document.getElementById('iframeGzweb').style.display
+            console.log(display)
+            if (display == "none" || display == "none" ) {
+                document.getElementById('iframeGzweb').style.display = 'block';
+            } else{
+                document.getElementById('iframeGzweb').style.display = 'none';
+            }
+        }
+    </script>
+</div>
+</div>
+
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+    Split(['.a', '.b'], {
+        gutterSize: 3,
+        sizes: [50,50]
+    });
+</script>
+
+<script src="{% static 'exercises/follow_turtlebot/web-template/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/follow_turtlebot/web-template/assets/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/utils.js' %}"></script>
+<script src="{% static 'exercises/follow_turtlebot/web-template/assets/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/follow_turtlebot/web-template/assets/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/follow_turtlebot/web-template/assets/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/follow_turtlebot/web-template/assets/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/follow_turtlebot/web-template/assets/console.js' %}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
