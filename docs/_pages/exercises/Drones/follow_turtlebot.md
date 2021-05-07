@@ -54,13 +54,13 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 ### How can I run the exercise?
 - Start a new docker container of the image and keep it running in the background:
 
-```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 jderobot/robotics-academy python3.8 manager.py
-```
+	```bash
+docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
+	```
 
-- Go to *RoboticsAcademy/exercises/follow_turtlebot/web-template* and open `exercise.html` on you web browser.
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Launch the `exercise.html` web-page. Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
 
 ### How should I solve the exercise?
 The launched webpage contains several widgets that will help you to solve the exercise.

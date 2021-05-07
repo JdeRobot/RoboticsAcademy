@@ -98,13 +98,13 @@ docker pull jderobot/robotics-academy
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background
 
-	```bash
-docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy python3.8 manager.py
+		```bash
+docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
 	```
 
-- On the local machine navigate to the 3d_reconstruction exercise which is: `RoboticsAcademy/exercises/3d_reconstruction/web-template`
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Launch the `exercise.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
 
 - The exercise can be used after the alert.
 
