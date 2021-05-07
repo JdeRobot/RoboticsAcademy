@@ -24,13 +24,15 @@ docker pull jderobot/robotics-academy
 ### User launching
 
 - Open a terminal and run:
-```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 jderobot/robotics-academy python3.8 manager.py
-```
+	```bash
+docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
+	```
 
-- Open `exercise.html` on you web browser.
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- The page should says **[open]Connection established!**. Means it is working as expected. Then the exercise can be solved.
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
+
+- The exercise can be used after the alert.
 
 ### Developer launching
 - Open a terminal and run:
