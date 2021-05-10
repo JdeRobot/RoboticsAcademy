@@ -67,7 +67,7 @@ class Template:
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             reset_simulation()
             self.gui.reset_gui()
-            self.hal.land()
+            if self.hal.get_landed_state() ==2 : self.hal.land()
             self.turtlebot.reset_turtlebot()
             
             return "", "", 1
