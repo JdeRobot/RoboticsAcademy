@@ -54,16 +54,16 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         if source_code[:5] == "#resu":
-                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-                restart_simulation()
+            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation()
 
-                return "", ""
+            return "", ""
 
         elif source_code[:5] == "#paus":
-                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-                pause_simulation()
+            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation()
 
-                return "", ""
+            return "", ""
 
         elif source_code[:5] == "#rest":
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
@@ -115,43 +115,38 @@ class Template:
         # print(sequential_code)
         # print(iterative_code)
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            reference_environment = {"GUI": gui_module, "HAL": hal_module}
-            exec(sequential_code, reference_environment)
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, reference_environment)
 
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while self.reload == False:
-                start_time = datetime.now()
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            start_time = datetime.now()
 
-                # Execute the iterative portion
-                exec(iterative_code, reference_environment)
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
 
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
-                # Keep updating the iteration counter
-                if (iterative_code == ""):
-                    self.iteration_counter = 0
-                else:
-                    self.iteration_counter = self.iteration_counter + 1
+            # Keep updating the iteration counter
+            if (iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
 
-                # The code should be run for atleast the target time step
-                # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            if (ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
 
-            close_console()
-            print("Current Thread Joined!")
-
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
+        close_console()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):

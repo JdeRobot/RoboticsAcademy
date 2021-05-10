@@ -39,7 +39,7 @@ while True:
             var console_display = document.getElementById('console').style.display
             document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
             console.log(console_display)
-            if (console_display == "none" || console_display == "none" ) {
+            if (console_display == "none") {
                 document.getElementById('console').style.display = 'block';
             } else{
                 document.getElementById('console').style.display = 'none';
@@ -49,7 +49,7 @@ while True:
             document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
             var display = document.getElementById('iframeGzweb').style.display
             console.log(display)
-            if (display == "none" || display == "none" ) {
+            if (display == "none") {
                 document.getElementById('iframeGzweb').style.display = 'block';
             } else{
                 document.getElementById('iframeGzweb').style.display = 'none';
