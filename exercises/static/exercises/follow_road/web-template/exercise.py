@@ -6,6 +6,7 @@ from websocket_server import WebsocketServer
 import logging
 import time
 import threading
+import subprocess
 import sys
 from datetime import datetime
 import re
@@ -19,7 +20,7 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-import console
+from console import start_console, close_console
 
 
 class Template:
@@ -34,16 +35,16 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
                 
         self.server = None
         self.client = None
         self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
 
     
 
@@ -53,45 +54,28 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         if source_code[:5] == "#resu":
-                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-                restart_simulation()
+            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation()
 
-                return "", "", 1
+            return "", ""
 
         elif source_code[:5] == "#paus":
-                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-                pause_simulation()
+            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation()
 
-                return "", "", 1
+            return "", ""
 
         elif source_code[:5] == "#rest":
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             reset_simulation()
             self.gui.reset_gui()
-            return "", "", 1
+            if self.hal.get_landed_state() ==2 : self.hal.land()
+            return "", ""
 
         else:
-            # Get the frequency of operation, convert to time_cycle and strip
-            try:
-                # Get the debug level and strip the debug part
-                debug_level = int(source_code[5])
-                source_code = source_code[12:]
-            except Exception:
-                debug_level = 1
-                source_code = ""
-
-            source_code = self.debug_parse(source_code, debug_level)
             # Pause and unpause
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-            return iterative_code, sequential_code, debug_level
-
-    # Function to parse code according to the debugging level
-    def debug_parse(self, source_code, debug_level):
-        if debug_level == 1:
-            # If debug level is 0, then all the GUI operations should not be called
-            source_code = re.sub(r'GUI\..*', '', source_code)
-
-        return source_code
+            return iterative_code, sequential_code
     
     # Function to separate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -121,51 +105,46 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
-        # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
-        iterative_code, sequential_code, debug_level = self.parse_code(source_code)
+        # Redirect the information to console
+        start_console()
+
+        iterative_code, sequential_code = self.parse_code(source_code)
         
-        # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, reference_environment)
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, reference_environment)
 
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while not self.reload:
-                start_time = datetime.now()
-                
-                # Execute the iterative portion
-                exec(iterative_code, reference_environment)
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            start_time = datetime.now()
 
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-                
-                # Keep updating the iteration counter
-                if iterative_code == "":
-                    self.iteration_counter = 0
-                else:
-                    self.iteration_counter = self.iteration_counter + 1
-            
-                # The code should be run for at least the target time step
-                # If it's less put to sleep
-                # If it's more no problem as such, but we can change it!
-                if ms < self.time_cycle:
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
 
-            print("Current Thread Joined!")
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(exc_value)
+            # Keep updating the iteration counter
+            if (iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
+
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            if (ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
+
+        close_console()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
@@ -251,10 +230,26 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
-    
+
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args=["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed 
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(',')]
+                self.real_time_factor = stats_list[0]
+
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
@@ -309,6 +304,11 @@ class Template:
         # Start the GUI update thread
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
+
+
+        # Start the real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
 
         # Initialize the ping message
         self.send_frequency_message()

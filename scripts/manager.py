@@ -62,9 +62,9 @@ instructions = {
         "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
     },
     "follow_road": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/static/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
 }
 
