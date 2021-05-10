@@ -41,12 +41,15 @@ function declare_code(websocket_address){
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
+			// Parse real time factor
+			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
 		
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
-		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		real_time_factor = document.querySelector('#real_time_factor').value;
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
 }
@@ -56,10 +59,6 @@ function submitCode(){
 	// Get the code from editor and add headers
     var python_code = editor.getValue();
     python_code = "#code\n" + python_code
-    
-    // Get the debug level and add header
-	var debug_level = document.querySelector('input[name = "debug"]').value;
-    python_code = "#dbug" + debug_level + python_code
     
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
