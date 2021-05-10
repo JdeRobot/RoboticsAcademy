@@ -3,7 +3,7 @@
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="iris"/>
-    <arg name="world" default="/RoboticsAcademy/exercises/drone_cat_mouse/web-template/drone_cat_mouse.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/drone_cat_mouse.world"/>
     <!--<arg name="world" default="$(eval env('PWD') + '/drone_cat_mouse.world')"/>-->
 
     <!-- gazebo configs -->
@@ -25,7 +25,7 @@
 		<arg name="use_sim_time" value="$(arg use_sim_time)"/>
     </include>
 
-    <rosparam command="load" file="/RoboticsAcademy/exercises/drone_cat_mouse/drone_cat_mouse.yaml" />
+    <rosparam command="load" file="/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/drone_cat_mouse.yaml" />
     <!--<rosparam command="load" file="$(eval env('PWD') + '/drone_cat_mouse.yaml')" />-->
 
     <group ns="cat">
