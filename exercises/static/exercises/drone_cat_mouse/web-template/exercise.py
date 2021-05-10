@@ -6,6 +6,7 @@ from websocket_server import WebsocketServer
 import logging
 import time
 import threading
+import subprocess
 import sys
 from datetime import datetime
 import re
@@ -34,7 +35,8 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
                 
         self.server = None
         self.client = None
@@ -62,20 +64,7 @@ class Template:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-        # Check for save/load
-        if source_code[:5] == "#save":
-            source_code = source_code[5:]
-            self.save_code(source_code)
-
-            return "", ""
-
-        elif source_code[:5] == "#load":
-            source_code = source_code + self.load_code()
-            self.server.send_message(self.client, source_code)
-    
-            return "", ""
-
-        elif source_code[:5] == "#resu":
+        if source_code[:5] == "#resu":
                 restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
                 restart_simulation()
 
@@ -96,27 +85,9 @@ class Template:
             return "", ""
 
         else:
-            # Get the frequency of operation, convert to time_cycle and strip
-            try:
-                # Get the debug level and strip the debug part
-                debug_level = int(source_code[5])
-                source_code = source_code[12:]
-            except Exception:
-                debug_level = 1
-                source_code = ""
-
-            source_code = self.debug_parse(source_code, debug_level)
             # Pause and unpause
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
             return iterative_code, sequential_code
-
-    # Function to parse code according to the debugging level
-    def debug_parse(self, source_code, debug_level):
-        if debug_level == 1:
-            # If debug level is 0, then all the GUI operations should not be called
-            source_code = re.sub(r'GUI\..*', '', source_code)
-
-        return source_code
     
     # Function to separate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -151,7 +122,6 @@ class Template:
 
         iterative_code, sequential_code = self.parse_code(source_code)
 
-        # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
 
@@ -272,10 +242,26 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
-    
+
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args=["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed 
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(',')]
+                self.real_time_factor = stats_list[0]
+
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
@@ -331,6 +317,10 @@ class Template:
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
 
+        # Start the real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
+    
         # Initialize the ping message
         self.send_frequency_message()
 
