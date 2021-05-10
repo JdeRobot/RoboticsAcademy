@@ -24,9 +24,9 @@ docker pull jderobot/robotics-academy
 ### User launching
 
 - Open a terminal and run:
-	```bash
+```bash
 docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
-	```
+```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
@@ -40,10 +40,17 @@ docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 
 ```bash
 docker exec -it docker_academy bash
 
+python3 RoboticsAcademy/manage.py runserver 0.0.0.0:8000
+```
+
+- Open a terminal and run:
+```bash
+docker exec -it docker_academy bash
+
 Xvfb :0 -screen 0 1600x1200x16  &
 Xvfb :1 -screen 0 1600x1200x16  &
 
-roslaunch /RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch
+roslaunch /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch
 ```
 
 - Open a terminal and run:
@@ -73,20 +80,11 @@ gzclient --verbose
 ```bash
 docker exec -it docker_academy bash
 
-python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0
+python /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0
 ```
 
-- Determine your machine dns server IP address which is generally in the form of **127.0.0.xx for Linux machine** by running this command:
-```bash
-docker exec -it docker_academy bash
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-cat /etc/resolv.conf
-```
-
-- Inside `assets/websocket_address.js` file, change the **variable websocket_address** to the IP address found with the above command.
-
-- Launch the exercise.html web-page. Click on the box next to **Dev** at the top-right corner. Click the connect button and wait for some time until an alert appears with the message Connection Established and button displays connected.
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
 
 - The exercise can be used after the alert.
-
-**__NOTE:__**  If you get **socket.error: [Errno 99] Cannot assign requested address** error,you need to check and pass the correct IP address.
