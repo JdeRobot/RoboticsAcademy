@@ -10,8 +10,7 @@ stop_button.style.cursor = "not-allowed";
 
 // running variable for psuedo decoupling 
 // Play/Pause from Reset
-var frequency = "0",
-	running = false;
+var frequency = "0";
 
 //WebSocket for Code
 var websocket_code;
@@ -69,7 +68,6 @@ function submitCode(){
     stop_button.style.opacity = "1.0";
 	stop_button.style.cursor = "default";
 	
-	running = true;
 }
 
 // Function that send/submits an empty string
@@ -78,7 +76,6 @@ function stopCode(){
     console.log("Message sent!");
 	websocket_code.send(stop_code);
 	
-	running = false;
 }
 
 // Function to save the code
@@ -104,9 +101,6 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
-	if(running == true){
-		submitCode();
-	}
 }
 
 // Function for range slider

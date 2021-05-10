@@ -91,6 +91,8 @@ class Template:
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             reset_simulation()
             self.gui.reset_gui()
+            if self.hal.get_landed_state() ==2 : self.hal.land()
+            
             return "", ""
 
         else:
