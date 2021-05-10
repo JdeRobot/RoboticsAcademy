@@ -60,19 +60,24 @@ function declare_code(websocket_address){
 
 // Function that sends/submits the code!
 function submitCode(){
-	// Get the code from editor and add headers
-    var python_code = editor.getValue();
-    python_code = "#code\n" + python_code
-    
-    console.log("Code Sent! Check terminal for more information!");
-    websocket_code.send(python_code);
-	unpause_lap();
+	try {
+		// Get the code from editor and add headers
+		var python_code = editor.getValue();
+		python_code = "#code\n" + python_code
+		
+		websocket_code.send(python_code);
+		console.log("Code Sent! Check terminal for more information!");
+		unpause_lap();
 
-    stop_button.disabled = false;
-    stop_button.style.opacity = "1.0";
-	stop_button.style.cursor = "default";
-	
-	running = true;
+		stop_button.disabled = false;
+		stop_button.style.opacity = "1.0";
+		stop_button.style.cursor = "default";
+
+		running = true;
+	}
+	catch {
+		alert("Connection must be established before sending the code.")
+	}
 }
 
 // Function that send/submits an empty string
