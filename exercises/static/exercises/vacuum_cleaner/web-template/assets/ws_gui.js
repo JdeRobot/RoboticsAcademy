@@ -16,7 +16,8 @@ function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
-		alert("[open] Connection established!");
+		if (websocket_code.readyState == 1)
+			alert("[open] Connection established!");
 	}
 	
 	websocket_gui.onclose = function(event){
