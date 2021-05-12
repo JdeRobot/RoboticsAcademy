@@ -1,19 +1,3 @@
-# Follow Road Exercise using WebTemplates
-
-There are two ways to run the exercise using web-template. Either one way is fine.
-
-- Run the exercise with docker container
-- Run it without container
-
-## Run with docker container
-
-- Jderobot already has created docker image available from [docker hub here](https://hub.docker.com/r/jderobot/robotics-academy/).
-- Follow the instructions line by line to run the exercise.
-
-## Run without docker container
-
-- All the generic and specific infrastructures including required libraries need to be installed already on your machine as stated on the [academy webpage here](http://jderobot.github.io/RoboticsAcademy/installation/).
-
 ## How to launch the exercise?
 
 - Make sure to have pulled (or built) the last version of the docker image.
