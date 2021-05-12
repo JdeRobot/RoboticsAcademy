@@ -17,10 +17,10 @@ from map import Map
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, console, hal):
+    def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': '', 'lap': '', 'map': '', 'text_buffer': ''}
+        self.payload = {'image': '', 'lap': '', 'map': ''}
         self.server = None
         self.client = None
         
@@ -35,7 +35,6 @@ class GUI:
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
-        self.console = console
         self.hal = hal
         t.start()
         
@@ -92,7 +91,6 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        self.console.set_websocket(self.server, self.client)
         
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -124,10 +122,6 @@ class GUI:
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
 
-        # Payload Console Messages
-        message_buffer = self.console.get_text_to_be_displayed()
-        self.payload["text_buffer"] = json.dumps(message_buffer)
-
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
@@ -137,10 +131,6 @@ class GUI:
 		# Acknowledge Message for GUI Thread
 		if(message[:4] == "#ack"):
 			self.set_acknowledge(True)
-			
-		# Message for Console
-		elif(message[:4] == "#con"):
-			self.console.prompt(message)
     
     # Activate the server
     def run_server(self):

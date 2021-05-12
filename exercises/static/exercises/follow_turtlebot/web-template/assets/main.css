@@ -192,37 +192,3 @@ th, td{
 .debug{
  padding-left: 7%;
 }
-
-label {
-	background: #eee;
-	margin-left: 2%;
-	font-size: 15px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-    padding-top: 1%;
-    padding-left: 1%;
-    padding-right: 1%;
-	display: inline-block;
-}
-
-label:hover {
-	background: #F8F8F8;
-	cursor: pointer;
-}
-
-#dev_mode_checkbox{
-    margin-right: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 15px;
-    height: 15px;
-    cursor: pointer;
-    position: relative;
-    top: 3px;
-}
-
-#dev_mode_checkbox:checked{
-    background-color: #409fd6;
-    background: #409fd6 url("data:image/gif;base64,R0lGODlhCwAKAIABAP////3cnSH5BAEKAAEALAAAAAALAAoAAAIUjH+AC73WHIsw0UCjglraO20PNhYAOw==") 3px 3px no-repeat;
-}

@@ -56,7 +56,7 @@
                      <p class="card-text">{{exercise.description}}</p>
                    </div>
                    <div class="card-footer text-center">
-                      <a href="{% static '' %}exercises/{{exercise.exercise_id }}/web-template/exercise.html" class="btn btn-primary">Go to exercise</a>
+                      <a href="{% url 'load_exercise' exercise.exercise_id %}" class="btn btn-primary">Go to exercise</a>
                    </div>
                   </div>
                  {% endfor %}

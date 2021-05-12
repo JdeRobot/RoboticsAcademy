@@ -9,4 +9,4 @@ def index(request):
 
 def load_exercise(request, exercise_id):
 	context = { "exercise": str(exercise_id) }
-	return HttpResponse(template.render(context, request))    
+	return render(request, 'exercises/' + exercise_id + '/exercise.html', context)
