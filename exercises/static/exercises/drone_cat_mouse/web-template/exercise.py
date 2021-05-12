@@ -47,18 +47,6 @@ class Template:
         self.mouse = Mouse()
         self.gui = GUI(self.host, self.hal, self.mouse)
 
-    # Function for saving   
-    def save_code(self, source_code):
-        with open('code/academy.py', 'w') as code_file:
-            code_file.write(source_code)
-    
-    # Function for loading		
-    def load_code(self):
-        with open('code/academy.py', 'r') as code_file:
-            source_code = code_file.read()
-
-        return source_code
-
     # Function to parse the code
     # A few assumptions: 
     # 1. The user always passes sequential and iterative codes
