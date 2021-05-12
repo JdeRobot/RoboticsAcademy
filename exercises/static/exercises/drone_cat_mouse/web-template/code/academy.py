@@ -1,8 +1,8 @@
 # Enter sequential code!
-from gui import GUI
-from hal import HAL
+from GUI import GUI
+from HAL import HAL
 
 while True:
     # Enter iterative code!
-    img = HAL.getImage()
+    img = HAL.get_ventral_image()
     GUI.showImage(img)

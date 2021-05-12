@@ -77,7 +77,7 @@ class HAL:
     def set_cmd_mix(self, vx, vy, z, yaw_rate):
         self.drone.set_cmd_mix(vx, vy, z, yaw_rate)
 
-    def takeoff(self, h=5):
+    def takeoff(self, h=3):
         self.drone.takeoff(h)
 
     def land(self):

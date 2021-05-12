@@ -10,8 +10,7 @@ stop_button.style.cursor = "not-allowed";
 
 // running variable for psuedo decoupling 
 // Play/Pause from Reset
-var frequency = "0",
-	running = false;
+var frequency = "0";
 
 //WebSocket for Code
 var websocket_code;
@@ -43,12 +42,15 @@ function declare_code(websocket_address){
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
+			// Parse real time factor
+			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
 		
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
-		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		real_time_factor = document.querySelector('#real_time_factor').value;
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
 }
@@ -60,10 +62,6 @@ function submitCode(){
 		var python_code = editor.getValue();
 		python_code = "#code\n" + python_code
 		
-		// Get the debug level and add header
-		var debug_level = document.querySelector('input[name = "debug"]').value;
-		python_code = "#dbug" + debug_level + python_code
-		
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
 
@@ -71,7 +69,6 @@ function submitCode(){
 		stop_button.style.opacity = "1.0";
 		stop_button.style.cursor = "default";
 		
-		running = true;
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
@@ -84,25 +81,6 @@ function stopCode(){
     console.log("Message sent!");
 	websocket_code.send(stop_code);
 	
-	running = false;
-}
-
-// Function to save the code
-function saveCode(){
-	// Get the code from editor and add header
-	
-	var python_code = editor.getValue();
-	python_code = "#save" + python_code;
-	console.log("Code Sent! Check terminal for more information!");
-	websocket_code.send(python_code)
-}
-
-// Function to load the code
-function loadCode(){
-	// Send message to initiate load message
-	var message = "#load";
-	websocket_code.send(message);
-	
 }
 
 // Function to command the simulation to reset
@@ -110,9 +88,6 @@ function resetSim(){
 	// Send message to initiate reset
 	var message = "#rest"
 	websocket_code.send(message)
-	if(running == true){
-		submitCode();
-	}
 }
 
 // Function for range slider
