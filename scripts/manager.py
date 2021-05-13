@@ -67,7 +67,7 @@ instructions = {
         "instructions_host": "python3 /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
     "dl_digit_classifier": {
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/dl_digit_classifier/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/dl_digit_classifier/web-template/exercise.py 0.0.0.0"
     },
 }
 
