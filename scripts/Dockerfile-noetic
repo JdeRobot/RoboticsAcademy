@@ -197,7 +197,7 @@ RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.11.3 \
 RUN rm -rf /catkin_ws
 RUN mkdir -p /catkin_ws/src
 RUN cd /catkin_ws && catkin init
-RUN echo 'export ROS_WORKSPACE=~/catkin_ws' >> ~/.bashrc
+RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
 
 RUN git clone https://github.com/JdeRobot/drones.git && cd drones && git checkout noetic-devel
 RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
@@ -229,14 +229,17 @@ RUN apt-get -y install x11vnc
 
 RUN git clone https://github.com/novnc/noVNC.git &&\
 	cd noVNC/utils &&\
-	git checkout tags/v1.2.0 &&\ 
-	git clone https://github.com/novnc/websockify websockify
+	git checkout tags/v1.2.0 &&\
+	git clone https://github.com/novnc/websockify websockify &&\
+	cd websockify &&\
+	git checkout tags/v0.9.0
 
 # Console
 RUN apt-get -y install xterm
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git checkout noetic && git pull origin noetic
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # Certain Dependencies for Exercises
 # Vacuum Cleaner Exercise
@@ -261,17 +264,23 @@ RUN echo 'export DISPLAY=:0' >> ~/.bashrc
 
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/PX4-Autopilot' >> ~/.bashrc
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/PX4-Autopilot/Tools/sitl_gazebo' >> ~/.bashrc
+RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/catkin_ws/src/drone_wrapper' >> ~/.bashrc
 
 # websocket server dependency
-# RUN apt-get update && apt-get install -y python2.7 python-pip
 RUN pip3 install websocket_server
 COPY manager.py /manager.py
-# RUN apt-get install -y python3.8 python3-pip
 RUN pip3 install websockets asyncio
 
 LABEL com.nvidia.volumes.needed="nvidia_driver"
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
+# django to serve the exercises
+RUN pip3 install django
+
+# execute permissions to start.sh
+COPY start.sh /start.sh
+RUN chmod 755 /start.sh
 
 EXPOSE 2303
 EXPOSE 1905
