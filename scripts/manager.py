@@ -13,7 +13,6 @@ import json
 GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH:"
 DISPLAY = ":0"
 GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
-ROS_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
 
 instructions = {
     "follow_line": {
@@ -201,7 +200,7 @@ async def hello(websocket, path):
             # Start the exercise
             start_exercise(data["exercise"])
 
-            if (data["exercise"] in ROS_EXERCISES):
+            if data["exercise"] not in ["color_filter", "dl_digit_classifier"]:
                 roslaunch_cmd = ros_instructions(data["exercise"])
                 roslaunch_thread = DockerThread(roslaunch_cmd)
                 roslaunch_thread.start()
