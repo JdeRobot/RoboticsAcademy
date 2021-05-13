@@ -10,61 +10,61 @@ import time
 import json
 
 
-GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH:"
+GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH:"
 DISPLAY = ":0"
 GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
 
 instructions = {
     "follow_line": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_line/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
-        "instructions_gui": "python /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
     },
     "obstacle_avoidance": {
         "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner": {
         "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner_loc": {
         "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
     },
     "color_filter": {
-        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
     },
     "drone_cat_mouse": {
         "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
     },
     "3dreconstruction": {
         "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
+            "/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
     },
     "follow_turtlebot": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
     },
     "global_navigation": {
         "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
         "instructions_ros": [
-            "/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/taxiholo_1_citylarge_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
+            "/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/taxiholo_1_citylarge_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
     },
     "follow_road": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
 }
 
@@ -75,11 +75,11 @@ def export_gazebo(exercise):
 
 
 def ros_instructions(exercise):
-    roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
-                      'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
-                      '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
-                      'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                      'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
+    roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share; chmod +x /opt/ros/noetic/bin/rosmaster;export ' \
+                      'PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages; chmod +x /opt/ros/noetic/bin/roslaunch ; cd ' \
+                      '/; export ROS_ROOT=/opt/ros/noetic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export ' \
+                      'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+                      'export ROS_PACKAGE_PATH=/opt/ros/noetic/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper;'
     roslaunch_cmd = roslaunch_cmd + export_gazebo(exercise)
     for instruction in instructions[exercise]["instructions_ros"]:
         roslaunch_cmd = roslaunch_cmd + instruction + ";"
@@ -161,7 +161,7 @@ async def kill_simulation():
     os.popen(cmd_novnc)
     cmd_console = "pkill -9 -f tilda"
     os.popen(cmd_console)
-    """cmd_py = "pkill -9 -f python"
+    """cmd_py = "pkill -9 -f python3"
     os.popen(cmd_py)"""
 
 
