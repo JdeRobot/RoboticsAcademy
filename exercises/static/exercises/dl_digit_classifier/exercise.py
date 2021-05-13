@@ -253,7 +253,8 @@ class Template:
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-        os.remove(self.aux_model_fname)  # remove temporary model file when closing
+        if os.path.isfile(self.aux_model_fname):
+            os.remove(self.aux_model_fname)  # remove temporary model file when closing
         print(client, 'closed')
 
     def run_server(self):
