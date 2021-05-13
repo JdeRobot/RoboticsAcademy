@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 from websocket_server import WebsocketServer
-import logging
 import time
 import threading
 import subprocess
@@ -11,17 +10,16 @@ import sys
 from datetime import datetime
 import re
 import json
-import traceback
-import imp
+import importlib
 
 import rospy
 from std_srvs.srv import Empty
-import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
 from mouse import Mouse
 from console import start_console, close_console
+
 
 class Template:
     # Initialize class variables
@@ -149,8 +147,8 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
+        hal_module = importlib.new_module("HAL")
+        hal_module.HAL = importlib.new_module("HAL")
         # hal_module.drone = imp.new_module("drone")
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
@@ -172,8 +170,8 @@ class Template:
         hal_module.HAL.land = self.hal.land
 
         # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = importlib.new_module("GUI")
+        gui_module.GUI = importlib.new_module("GUI")
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage

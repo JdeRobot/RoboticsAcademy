@@ -1,8 +1,5 @@
 import rospy
 import cv2
-import threading
-import time
-from datetime import datetime
 
 from drone_wrapper import DroneWrapper
 
