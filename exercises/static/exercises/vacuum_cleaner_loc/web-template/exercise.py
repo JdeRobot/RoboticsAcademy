@@ -201,6 +201,7 @@ class Template:
         hal_module.HAL.motors.sendV = self.hal.motors.sendV
         hal_module.HAL.motors.sendW = self.hal.motors.sendW
         hal_module.HAL.laser = self.hal.laser
+        hal_module.HAL.getLaserData = self.hal.laser.getLaserData
         hal_module.HAL.bumper = self.hal.bumper
 
         # Define GUI module
