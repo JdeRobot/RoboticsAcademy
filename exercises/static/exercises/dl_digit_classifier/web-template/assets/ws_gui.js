@@ -12,13 +12,16 @@ function declare_gui() {
     websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
     websocket_gui.onopen = function (event) {
-        alert("[open] Connection established!");
+        if (websocket_code.readyState == 1)
+            alert("[open] Connection established!");
     }
 
     websocket_gui.onclose = function (event) {
-        if (event.wasClean) {
+        radiConect.contentWindow.postMessage('down', '*');
+        if(event.wasClean){
             alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
-        } else {
+        }
+        else{
             alert("[close] Connection closed!");
         }
     }
@@ -26,7 +29,7 @@ function declare_gui() {
     // What to do when a message from server is received
     websocket_gui.onmessage = function (event) {
         var operation = event.data.substring(0, 4);
-
+        radiConect.contentWindow.postMessage('up', '*');
         if (operation == "#gui") {
             // Parse the entire Object
             var data = JSON.parse(event.data.substring(4,));
@@ -76,7 +79,7 @@ function declare_gui() {
 
 var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
-image = new Image();
+    image = new Image();
 
 // For image object
 image.onload = function () {
