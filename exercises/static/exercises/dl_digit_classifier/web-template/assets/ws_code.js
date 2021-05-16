@@ -48,7 +48,7 @@ function declare_code(){
 }
 
 // Function that sends/submits the code!
-function submitModel(){
+function submitCode(){
 	var input = document.getElementById("dl_model");
 	var fReader = new FileReader();
 	fReader.readAsDataURL(input.files[0]);
@@ -66,7 +66,7 @@ function submitModel(){
 }
 
 // Function that send/submits an empty string
-function stopInference(){
+function stopCode(){
     var stop_inference = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_inference);
