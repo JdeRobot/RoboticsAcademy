@@ -158,22 +158,20 @@ def execute(self):
     print "Runing"
 
     #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-    #self.motors.sendV(10)
-    #self.motors.sendW(5)
+    #HAL.motors.sendV(10)
+    #HAL.motors.sendW(5)
 ```
 
 ### API
 
-* `self.pose3d.getPose3d().x` - to get the X coordinate of the robot
-* `self.pose3d.getPose3d().y` - to get the Y coordinate of the robot
-* `self.pose3d.getPose3d().yaw` - to get the orientation of the robot
-* `self.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `self.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `laser.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `self.motors.sendVelocities(vel)` - to set linear and angular velocity. Object 'vel' must be a CMDVel():
-    - `vel` = CMDVel()
-    - `vel.vx` = v - linear velocity
-    - `vel.az` = w - angular velocity
+* `HAL.getPose3d().x` - to get the X coordinate of the robot
+* `HAL.getPose3d().y` - to get the Y coordinate of the robot
+* `HAL.getPose3d().yaw` - to get the orientation of the robot
+* `HAL.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
+* `HAL.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
+* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
+* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.motors.sendW()` - to set the angular velocity
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
@@ -182,7 +180,7 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 **Laser**
 
 ```python
-laser_data = self.laser.getLaserData()
+laser_data = HAL.getLaserData()
 
 def parse_laser_data(laser_data):
     laser = []
