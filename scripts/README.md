@@ -2,6 +2,17 @@
 
 Build your own docker image to start simulations
 
+## Installation
+
+First you need to build the image. Then, you need to run a container.
+
+```
+git clone https://github.com/JdeRobot/RoboticsAcademy.git
+cd scripts
+./build.sh <tag>
+docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:<tag> ./start.sh
+```
+
 ## Structure of Image
 
 The image contains the following:
@@ -17,17 +28,6 @@ The image contains the following:
 
 The exercise runs using the CustomRobots directory as a dependency. The Gazebo simulation's visual view is provided by Gzweb.
 
-
-## Installation
-
-First you need to build the image. Then, you need to run a container.
-
-```
-git clone https://github.com/JdeRobot/RoboticsAcademy.git
-cd scripts
-docker build -t image-name .
-docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
-```
 
 ## Manager Script
 The `manager.py` script runs exercises by following the steps:
