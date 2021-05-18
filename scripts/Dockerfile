@@ -1,27 +1,114 @@
-FROM osrf/ros:melodic-desktop-full
-ENV NVIDIA_VISIBLE_DEVICES \
-    ${NVIDIA_VISIBLE_DEVICES:-all}
+# FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
+FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu18.04
 
-ENV NVIDIA_DRIVER_CAPABILITIES \
-    ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
+ARG VIRTUALGL_VERSION=2.6.80
+ARG TURBOVNC_VERSION=2.2.80
 
-# Setup NON INTERACTIVE ENVIRONMENT
-ENV DEBIAN_FRONTEND noninteractive
+# Make all NVIDIA GPUS visible
+ARG NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES all
 
-# Setup X11 Volume
-VOLUME /tmp/.X11-unix:/tmp/.X11-unix:rw
+# Supress interactive menu while installing keyboard-configuration
+ARG DEBIAN_FRONTEND=noninteractive
 
-# BASE
-RUN apt-get update && apt-get -y --quiet install \
-        libjansson-dev \
-        libboost-dev \
-        imagemagick \
-        libtinyxml-dev \
-        mercurial \
-        build-essential
+#---------------------------------------------------------------------
+# Install Linux stuff
+#---------------------------------------------------------------------
+# Install locales to prevent errors
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y locales && \
+    rm -rf /var/lib/apt/lists/* && \
+    locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
+# Install desktop and tools
+RUN apt-get update && apt-get install -y \
+        software-properties-common \
+        apt-utils \
+        build-essential make gcc git \
+        ca-certificates \
+        curl wget \
+        gzip zip unzip \
+        libc6-dev libglu1 libglu1:i386 libegl1-mesa libegl1-mesa:i386 \
+        libsm6 libxv1 libxv1:i386 libpci3 \
+        python python-numpy python3 python3-numpy libpython-dev \
+        x11-xkb-utils xauth xfonts-base xkb-data \
+        libxtst6 libxtst6:i386 \
+        mlocate \
+        nano vim \
+        htop net-tools \
+        xterm rsync \
+        lubuntu-core lubuntu-desktop && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Vulkan
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libvulkan1 \
+        vulkan-utils && \
+    rm -rf /var/lib/apt/lists/* && \
+    VULKAN_API_VERSION=`dpkg -s libvulkan1 | grep -oP 'Version: [0-9|\.]+' | grep -oP '[0-9]+(\.[0-9]+)(\.[0-9]+)'` && \
+    mkdir -p /etc/vulkan/icd.d/ && \
+    echo "{\n\
+    \"file_format_version\" : \"1.0.0\",\n\
+    \"ICD\": {\n\
+        \"library_path\": \"libGLX_nvidia.so.0\",\n\
+        \"api_version\" : \"${VULKAN_API_VERSION}\"\n\
+    }\n\
+}" > /etc/vulkan/icd.d/nvidia_icd.json
+
+# Install VirtualGL and TurboVNC
+RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    chmod u+s /usr/lib/libvglfaker.so && \
+    chmod u+s /usr/lib/libdlfaker.so && \
+    chmod u+s /usr/lib32/libvglfaker.so && \
+    chmod u+s /usr/lib32/libdlfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so && \
+    curl -fsSL -O https://s3.amazonaws.com/turbovnc-pr/dev/linux/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    apt-get update && apt-get install -y --no-install-recommends ./turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo -e "no-remote-connections\n\
+no-httpd\n\
+no-x11-tcp-connections\n\
+no-pam-sessions\n\
+permitted-security-types = None, VNC, otp\
+" > /etc/turbovncserver-security.conf
+
+# Install noVNC and Websockify
+ENV NOVNC_VERSION 1.2.0
+RUN curl -fsSL https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz | tar -xzf - -C /opt && \
+    mv /opt/noVNC-${NOVNC_VERSION} /opt/noVNC && \
+    ln -s /opt/noVNC/vnc.html /opt/noVNC/index.html && \
+    git clone https://github.com/novnc/websockify /opt/noVNC/utils/websockify
+
+# Xorg segfault error mitigation
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        dbus-x11 \
+        libdbus-c++-1-0v5 && \
+    rm -rf /var/lib/apt/lists/*
+
+#---------------------------------------------------------------------
+# Install gtest
+#---------------------------------------------------------------------
+RUN apt-get update && apt-get install -y libgtest-dev cmake && \
+	cd /usr/src/gtest \
+	&& mkdir build && cd build \
+	&& cmake .. && make -j$(nproc) \
+	&& cp *.a /usr/lib \
+	&& cd .. && rm -rf build \
+	rm -rf /var/lib/apt/lists/*
+
+#---------------------------------------------------------------------
 # PX4
-RUN apt remove modemmanager
+#---------------------------------------------------------------------
+# RUN apt remove modemmanager
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 		bzip2 \
 		ca-certificates \
@@ -69,13 +156,6 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 
 RUN which xxd || apt install xxd -y || apt install vim-common --no-install-recommends -y
 
-# gtest
-RUN cd /usr/src/gtest \
-	&& mkdir build && cd build \
-	&& cmake .. && make -j$(nproc) \
-	&& cp *.a /usr/lib \
-	&& cd .. && rm -rf build
-
 # Install Python 3 pip build dependencies first.
 RUN pip3 install wheel setuptools
 
@@ -118,35 +198,16 @@ RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4
 	&& gradle install \
 	&& rm -rf /tmp/*
 
-RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
-	&& sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -sc` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
-	&& apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --no-install-recommends install \
-		ant \
-		bc \
-		gazebo9 \
-		gstreamer1.0-plugins-bad \
-		gstreamer1.0-plugins-base \
-		gstreamer1.0-plugins-good \
-		gstreamer1.0-plugins-ugly \
-		libeigen3-dev \
-		libgazebo9-dev \
-		libgstreamer-plugins-base1.0-dev \
-		libimage-exiftool-perl \
-		libopencv-dev \
-		libxml2-utils \
-		protobuf-compiler \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
-
+#---------------------------------------------------------------------
+# Install ROS and ROS packages
+#---------------------------------------------------------------------
 ENV ROS_DISTRO melodic
-
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
+RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
 	&& sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list' \
 	&& sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-shadow.list' \
 	&& apt-get update \
 	&& apt-get -y --quiet --no-install-recommends install \
+		ros-$ROS_DISTRO-desktop-full \
 		geographiclib-tools \
 		libeigen3-dev \
 		libgeographic-dev \
@@ -169,11 +230,27 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6B
 		ros-$ROS_DISTRO-rostest \
 		ros-$ROS_DISTRO-rosunit \
 		ros-$ROS_DISTRO-xacro \
-		xvfb \
 	&& geographiclib-get-geoids egm96-5 \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# catkin build tools
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    python-pyproj \
+    python-catkin-tools \
+    && apt-get clean
+    
+# install bootstrap tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    build-essential \
+    python-rosdep \
+    python-rosinstall \
+    python-vcstools \
+    && rm -rf /var/lib/apt/lists/*
+
+# bootstrap rosdep
+RUN rosdep init && rosdep update 
 
 # Install everything again for Python 2 because we could not get Firmware
 # to compile using catkin without it.
@@ -184,97 +261,75 @@ RUN pip install packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rosp
 RUN pip install empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments 
 RUN pip install pymavlink 
 
-# bootstrap rosdep
-# RUN rosdep init && rosdep update
-RUN rosdep update
+#---------------------------------------------------------------------
+# Install PX4 from source
+#---------------------------------------------------------------------
+RUN apt-get update && \
+     apt upgrade -y --quiet --no-install-recommends libignition-math2
+RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 
+#TOD0 https://github.com/PX4/PX4-Autopilot/issues/13117
+RUN sudo apt-get install libgstreamer-plugins-base1.0-dev -y
+RUN cd /Firmware \
+	&& DONT_RUN=1 make px4_sitl_default gazebo \
+    && rm -rf /var/lib/apt/lists/*
 
-## PX4 src
-RUN apt-get update
-RUN apt upgrade -y --quiet --no-install-recommends libignition-math2
-RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
-	&& cd /Firmware \
-	&& DONT_RUN=1 make px4_sitl_default gazebo
-
-
-# Get the Custom Robot Repository
-# and set the environment variables
-RUN mkdir -p /opt/jderobot && cd /opt/jderobot && git clone https://github.com/JdeRobot/CustomRobots.git \
-    && cd CustomRobots && git checkout melodic-devel && git pull origin melodic-devel
-
-## Setting env vars
-ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
-ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models:/opt/ros/melodic/share/drone_assets/urdf"
-ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
-
-# GzWeb
-# https://answers.gazebosim.org//question/15807/node-gyp-build-errors-while-trying-to-install-gzweb/
-RUN curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-RUN apt-get install -y nodejs
-RUN git clone https://github.com/osrf/gzweb.git
-RUN cd gzweb && git checkout gzweb_1.4.0 && npm run deploy --- -m local
-
-# VNC
-RUN apt-get -y install x11vnc
-
-RUN git clone https://github.com/novnc/noVNC.git &&\
-	cd noVNC/utils &&\
-	git checkout tags/v1.2.0 &&\ 
-	git clone https://github.com/novnc/websockify websockify &&\
-	cd websockify &&\
-	git checkout tags/v0.9.0
-
-# Console
-RUN apt-get -y install xterm
+#---------------------------------------------------------------------
+# Get the  Repository
+#---------------------------------------------------------------------
+# Custom Robot
+RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \ 
+    git clone https://github.com/JdeRobot/CustomRobots.git \
+    && cd CustomRobots && git checkout melodic-devel && \ 
+    git pull origin melodic-devel
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git pull origin master
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git && \
+    cd RoboticsAcademy && git pull origin master
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
+#---------------------------------------------------------------------
+# Setting environment variables
+#---------------------------------------------------------------------
+ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
+ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models:/opt/ros/melodic/share/drone_assets/urdf"
+ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 
+# ROS Melodic 
+RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+
+# Set paths for VirtualGL and turboVNC
+ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+
+#---------------------------------------------------------------------
 # Certain Dependencies for Exercises
-# Vacuum Cleaner Exercise
-RUN apt-get -y --quiet install ros-melodic-kobuki-msgs
+#---------------------------------------------------------------------
+RUN apt-get update && \ 
+	# Vacuum Cleaner Exercise
+	apt-get -y --quiet install ros-melodic-kobuki-msgs  && \
+	# Drone-cat-mouse
+   	apt-get -y --quiet --no-install-recommends install xmlstarlet && \
+	# Follow Turtlebot exercise
+	apt-get -y --quiet --no-install-recommends install \
+		ros-$ROS_DISTRO-turtlebot3-description
 
-# Drone-cat-mouse
-RUN apt-get -y --quiet --no-install-recommends install xmlstarlet
-
-# Follow Turtlebot exercise
-RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-	ros-$ROS_DISTRO-turtlebot3-description
-
-
-
-# Put the other commands in bashrc file
-RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
-RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc
-
-# Install and run XDummy XServer
-RUN apt-get update && apt-get -y install xserver-xorg-video-dummy x11-apps
-RUN wget https://xpra.org/xorg.conf
-RUN Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0 &
-RUN echo 'export DISPLAY=:0' >> ~/.bashrc
-
-RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware' >> ~/.bashrc
-RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
-
+#---------------------------------------------------------------------
 # websocket server dependency
+#---------------------------------------------------------------------
 RUN apt-get update && apt-get install -y python2.7 python-pip
 RUN pip install websocket_server posix-ipc
-COPY manager.py /manager.py
 RUN apt-get install -y python3.8 python3-pip
 RUN python3.8 -m pip install websockets asyncio
 
-LABEL com.nvidia.volumes.needed="nvidia_driver"
-ENV PATH /usr/local/nvidia/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
-
 # django to serve the exercises
 RUN pip3 install django
-
-# execute permissions to start.sh
 COPY start.sh /start.sh
 RUN chmod 755 /start.sh
+
+COPY manager.py /manager.py
+
+RUN cd RoboticsAcademy && git pull origin master
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 EXPOSE 2303
 EXPOSE 1905
