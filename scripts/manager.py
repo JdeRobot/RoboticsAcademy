@@ -99,7 +99,7 @@ def start_gzclient(exercise, width, height):
     gzclient_cmd = (f"export DISPLAY={DISPLAY};" +
                     export_gazebo(exercise) +
                     "".join(gzclient_config_cmds) +
-                    "export VGL_DISPLAY=:0.0; vglrun gzclient --verbose")
+                    "export VGL_DISPLAY=egl; vglrun gzclient --verbose")
     gzclient_thread = DockerThread(gzclient_cmd)
     gzclient_thread.start()
 
