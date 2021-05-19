@@ -2,7 +2,7 @@ FROM jderobot/base
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \ 
-	git clone https://github.com/JdeRobot/CustomRobots.git -b melodic-devel \
+	git clone -b melodic-devel https://github.com/JdeRobot/CustomRobots.git
 
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"
