@@ -201,6 +201,7 @@ RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
 
 RUN git clone https://github.com/JdeRobot/drones.git && cd drones && git checkout noetic-devel
 RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
+RUN cd /catkin_ws/src && ln -s /drones/drone_assets .
 
 RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro noetic -y
 
@@ -254,6 +255,7 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 
 # Put the other commands in bashrc file
 RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
+RUN echo 'source /catkin_ws/devel/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-11/setup.sh' >> ~/.bashrc
 
 # Install and run XDummy XServer
@@ -264,7 +266,6 @@ RUN echo 'export DISPLAY=:0' >> ~/.bashrc
 
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/PX4-Autopilot' >> ~/.bashrc
 RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/PX4-Autopilot/Tools/sitl_gazebo' >> ~/.bashrc
-RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/catkin_ws/src/drone_wrapper' >> ~/.bashrc
 
 # websocket server dependency
 RUN pip3 install websocket_server
