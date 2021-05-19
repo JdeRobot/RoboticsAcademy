@@ -5,6 +5,10 @@ ENV NVIDIA_VISIBLE_DEVICES \
 ENV NVIDIA_DRIVER_CAPABILITIES \
     ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
+LABEL com.nvidia.volumes.needed="nvidia_driver"
+ENV PATH /usr/local/nvidia/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+
 # Setup NON INTERACTIVE ENVIRONMENT
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -182,19 +186,75 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6B
 # Install everything again for Python 2 because we could not get Firmware
 # to compile using catkin without it.
 ENV PIP_DEFAULT_TIMEOUT=1000
-RUN pip install wheel setuptools
-RUN pip install argcomplete argparse catkin_pkg catkin-tools cerberus coverage 
-RUN pip install packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml
-RUN pip install empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments 
-RUN pip install pymavlink 
+RUN pip install wheel setuptools && \
+	argcomplete argparse catkin_pkg catkin-tools cerberus coverage && \
+	packaging pyros-genmsg pyulog==0.8.* pyyaml requests rosdep rospkg serial six toml && \
+	empy jinja2 matplotlib==2.2.* numpy pkgconfig px4tools pygments && \
+	pymavlink 
 
 # bootstrap rosdep
 # RUN rosdep init && rosdep update
 RUN rosdep update
 
 ## PX4 src
-RUN apt-get update
 RUN apt upgrade -y --quiet --no-install-recommends libignition-math2
 RUN git clone --recursive https://github.com/PX4/Firmware.git -b v1.11.3 \
 	&& cd /Firmware \
 	&& DONT_RUN=1 make px4_sitl_default gazebo
+
+# Setup environment variables
+RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware' >> ~/.bashrc
+RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/Firmware/Tools/sitl_gazebo' >> ~/.bashrc
+
+# Other exercises specific dependcies similar to PX4 like MoveIt may go here!
+# ...
+# ...
+
+# Constant installations
+# Dependencies required for all the exercises may go here!
+# In case of a new dependency
+# For installation with apt-get add it to the list of apt-get dependencies
+# For installation from a git repository add it to the end
+# Put the other commands in bashrc file
+RUN echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
+RUN echo 'source /usr/share/gazebo-9/setup.sh' >> ~/.bashrc
+
+# apt-get install dependencies
+# Nodejs, x11vnc, xterm, xdummy, python2, pip2, python3, pip3
+RUN apt-get update && apt-get --no-install-recommends install -y \
+		x11vnc \
+		xterm \
+		xserver-xorg-video-dummy \ 
+		x11-apps \
+		python2.7 \
+		python-pip \
+		python3.8 \
+		python3-pip \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+RUN wget https://xpra.org/xorg.conf \
+	&& rm -rf /tmp/*
+
+# noVNC
+RUN git clone https://github.com/novnc/noVNC.git -b v1.2.0 &&\
+	cd noVNC/utils &&\
+	git clone https://github.com/novnc/websockify websockify -b v0.9.0 &&\
+
+# ROS dependencies for exercises
+# ros-melodic-kobuki-msgs: Vaccuum Cleaner
+# xmlstarlet: Drone Cat Mouse
+# ros-$ROS_DISTRO-turtlebot3-description: Follow Turtlebot
+RUN apt-get -y --quiet --no-install-recommends install \
+		ros-melodic-kobuki-msgs \
+		xmlstarlet \
+		ros-$ROS_DISTRO-turtlebot3-description \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# python dependencies
+RUN pip install websocket_server posix-ipc
+RUN python3.8 -m pip install websockets asyncio
+RUN pip3 install django

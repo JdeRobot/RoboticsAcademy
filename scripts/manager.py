@@ -12,7 +12,6 @@ import json
 
 GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH:"
 DISPLAY = ":0"
-GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
 
 instructions = {
     "follow_line": {
@@ -136,8 +135,8 @@ def start_exercise(exercise):
         pass
 
 async def kill_simulation():
-    cmd_gzweb = "pkill -9 -f exercise.py"
-    os.popen(cmd_gzweb)
+    cmd_exercise = "pkill -9 -f exercise.py"
+    os.popen(cmd_exercise)
     cmd_gui = "pkill -9 -f gui.py"
     os.popen(cmd_gui)
     cmd_host = "pkill -9 -f node"
@@ -203,24 +202,18 @@ async def hello(websocket, path):
                 roslaunch_thread.start()
                 time.sleep(5)
 
-                if (data["exercise"] in GZCLIENT_EXERCISES):
-                    # Start x11vnc servers
-                    start_vnc(DISPLAY, 5900, 6080)
-                    start_vnc(":1", 5901, 1108)
+                # Start x11vnc servers
+                start_vnc(DISPLAY, 5900, 6080)
+                start_vnc(":1", 5901, 1108)
 
-                    # Start gazebo client
-                    width = data.get("width", 1920)
-                    height = data.get("height", 1080)
-                    start_gzclient(data["exercise"], width, height)
-                    start_console(width, height)
-                else:
-                    gzweb_cmd = 'cd /gzweb; npm start -p 8080'
-                    gzweb_thread = DockerThread(gzweb_cmd)
-                    gzweb_thread.start()
+                # Start gazebo client
+                width = data.get("width", 1920)
+                height = data.get("height", 1080)
+                start_gzclient(data["exercise"], width, height)
+                start_console(width, height)
             else:
-                if (data["exercise"] in GZCLIENT_EXERCISES):
-                    start_vnc(":1", 5900, 1108)
-                    start_console(1920, 1080)
+                start_vnc(":1", 5900, 1108)
+                start_console(1920, 1080)
 
         elif command == "resume":
             print("RESUME SIMULATIOn")

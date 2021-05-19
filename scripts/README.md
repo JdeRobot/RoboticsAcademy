@@ -2,6 +2,17 @@
 
 Build your own docker image to start simulations
 
+## Adding new instructions to Dockerfile
+
+The idea is to keep, `Dockerfile.base` to install the non changing elements and `Dockerfile` to install the elements that keep changing.
+
+1. If the dependencies are a framework for an exercise, like ROS, PX4 or MoveIt! add the dependencies
+to `Dockerfile.base` after the PX4 installation. Comments mark the spot.
+
+2. If the dependencies are not ROS related but required for almost all the exercises, add them to `Dockerfile.base`. Comments mark the spot. If they are `apt-get` related, add them to the `apt-get` list, otherwise add them add the end.
+
+3. `Dockerfile` remains mostly untouched for most of the cases. It clones the `CustomRobot` and `RoboticsAcademy` repositories, which are quite dynamic.
+
 ## Installation
 
 First you need to build the image. Then, you need to run a container.
