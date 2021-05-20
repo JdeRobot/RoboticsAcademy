@@ -283,6 +283,8 @@ RUN pip3 install django
 COPY start.sh /start.sh
 RUN chmod 755 /start.sh
 
+RUN ln -s /usr/bin/python3.8 /usr/bin/python
+
 EXPOSE 2303
 EXPOSE 1905
 EXPOSE 8080
