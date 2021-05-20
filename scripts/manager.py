@@ -103,10 +103,7 @@ def ros_instructions(exercise):
                     'export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH;' \
                     'export ROS_MASTER_URI=http://localhost:11311;' \
                     'export PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                    'export ROS_PACKAGE_PATH=/opt/ros/noetic/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo;' \
-                    '. /opt/ros/noetic/setup.bash;' \
-                    '. /catkin_ws/devel/setup.bash;' \
-                    '. /usr/share/gazebo-11/setup.sh;'
+                    'export ROS_PACKAGE_PATH=/opt/ros/noetic/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
     roslaunch_cmd = roslaunch_cmd + export_gazebo(exercise)
     for instruction in instructions[exercise]["instructions_ros"]:
         roslaunch_cmd = roslaunch_cmd + instruction + ";"
