@@ -62,14 +62,12 @@ docker pull jderobot/robotics-academy
 - Start a new docker container of the image and keep it running in the background
 
 	```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy python3.8 manager.py
+docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
 	```
 
-- On the local machine navigate to the follow_line exercise which is: `RoboticsAcademy/exercises/vacuum_cleaner/web-template`
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Inside `assets\websocket_address.js` , change the variable websocket_address to the IP address through which the container is connected. Usually for Linux machine it is `127.0.0.1` and for Windows is `192.168.99.100`.
-
-- Launch the `index.html` web-page. Wait for some time until an alert appears with the message `Connection Established`. 
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
 
 - The exercise can be used after the alert.
 
@@ -95,7 +93,7 @@ while True:
 
 * **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
 
-* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+* **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
 
 **Application Programming Interface**
 
@@ -103,6 +101,10 @@ while True:
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.bumper.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `HAL.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
+* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
+* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
+* `HAL.getPose3d().yaw` - to get the orientation of the robot with
+  regarding the map
 * `HAL.laser.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
 * `HAL.motors.sendV()` - to set the linear speed
 * `HAL.motors.sendW()` - to set the angular velocity
@@ -148,10 +150,10 @@ print ('Execute')
 
 # TODO
 
-print self.pose3d.getPose3d().x
-print self.pose3d.getPose3d().y
+print(HAL.getPose3d().x)
+print(HAL.getPose3d().y)
 # Vacuum's yaw
-yaw = self.pose3d.getPose3d().yaw
+yaw = HAL.getPose3d().yaw
 ```
 
 ```python
@@ -169,14 +171,12 @@ self.motors.sendV(vel.vx)
 
 ### API
 
-* `self.pose3d.getPose3d().yaw` - to get the orientation of the robot
-* `self.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `self.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `laser.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `self.motors.sendVelocities(vel)` - to set linear and angular velocity. Object 'vel' must be a CMDVel():
-    - `vel` = CMDVel()
-    - `vel.vx` = v - linear velocity
-    - `vel.az` = w - angular velocity
+* `HAL.getPose3d().yaw` - to get the orientation of the robot
+* `HAL.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
+* `HAL.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
+* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
+* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.motors.sendW()` - to set the angular velocity
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 

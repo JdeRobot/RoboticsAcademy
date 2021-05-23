@@ -68,6 +68,36 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     version: "v2.3"
+    
+  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
+    alt: "Follow Turtlebot"
+    title: "Follow Turtlebot"
+    excerpt: "Follow a turtlebot on the ground using a camera."
+    url: "/exercises/Drones/follow_turtlebot"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
+
+  - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
+    alt: "3D Reconstruction"
+    title: "3D Reconstruction"
+    excerpt: "Reconstruct a 3D scene from a stereo pair"
+    url: "/exercises/ComputerVision/3d_reconstruction"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    version: "v2.3"
+
+  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
+    alt: "Follow Road"
+    title: "Follow Road"
+    excerpt: "Follow a road through color filter segmentation."
+    url: "/exercises/Drones/follow_road"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.3"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
@@ -118,16 +148,6 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--info"
     version: "v2.1"
-
-  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
-    alt: "Follow Road"
-    title: "Follow Road"
-    excerpt: "Follow a road through color filter segmentation."
-    url: "/exercises/Drones/follow_road"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
     
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape_teaser.jpg
     alt: "Labyrinth Escape"
@@ -158,16 +178,6 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--info"
     version: "v2.1"
-  
-  - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
-    alt: "Follow Turtlebot"
-    title: "Follow Turtlebot"
-    excerpt: "Follow a turtlebot on the ground using a camera."
-    url: "/exercises/Drones/follow_turtlebot"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
     
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar"
@@ -194,16 +204,6 @@ feature_row:
     title: "Visual Odometry"
     excerpt: "Solving the Visual Odometry problem in a given dataset"
     url: "/exercises/ComputerVision/visual_odometry"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
-    version: "--"
-
-  - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
-    alt: "3D Reconstruction"
-    title: "3D Reconstruction"
-    excerpt: "Reconstruct a 3D scene from a stereo pair"
-    url: "/exercises/ComputerVision/3d_reconstruction"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"

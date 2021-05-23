@@ -2,6 +2,28 @@
 
 Build your own docker image to start simulations
 
+## Adding new instructions to Dockerfile
+
+The idea is to keep, `Dockerfile.base` to install the non changing elements and `Dockerfile` to install the elements that keep changing.
+
+1. If the dependencies are a framework for an exercise, like ROS, PX4 or MoveIt! add the dependencies
+to `Dockerfile.base` after the PX4 installation. Comments mark the spot.
+
+2. If the dependencies are not ROS related but required for almost all the exercises, add them to `Dockerfile.base`. Comments mark the spot. If they are `apt-get` related, add them to the `apt-get` list, otherwise add them add the end.
+
+3. `Dockerfile` remains mostly untouched for most of the cases. It clones the `CustomRobot` and `RoboticsAcademy` repositories, which are quite dynamic.
+
+## Installation
+
+First you need to build the image. Then, you need to run a container.
+
+```
+git clone https://github.com/JdeRobot/RoboticsAcademy.git
+cd scripts
+./build.sh <tag>
+docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:<tag> ./start.sh
+```
+
 ## Structure of Image
 
 The image contains the following:
@@ -17,17 +39,6 @@ The image contains the following:
 
 The exercise runs using the CustomRobots directory as a dependency. The Gazebo simulation's visual view is provided by Gzweb.
 
-
-## Installation
-
-First you need to build the image. Then, you need to run a container.
-
-```
-git clone https://github.com/JdeRobot/RoboticsAcademy.git
-cd scripts
-docker build -t image-name .
-docker run -it --name=container_name -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy python3.8 manager.py
-```
 
 ## Manager Script
 The `manager.py` script runs exercises by following the steps:

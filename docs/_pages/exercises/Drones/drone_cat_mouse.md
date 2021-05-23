@@ -49,17 +49,21 @@ Secondly, clone the Robotics Academy repository on your local machine:
 ```bash
 git clone https://github.com/JdeRobot/RoboticsAcademy
 ```
+#### Enable GPU Acceleration (For advanced users)
+- For Linux machines, GPU acceleration can be enabled by downloading Nvidia Container Runtime, as given [here](https://github.com/NVIDIA/nvidia-container-runtime)
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
 
 ### How can I run the exercise?
-Start a new docker container of the image and keep it running in the background:
+- Start a new docker container of the image and keep it running in the background:
 
-```bash
-docker run -it -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 jderobot/robotics-academy:drones-beta python3.8 manager.py
-```
+	```bash
+docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
+	```
 
-Go to *RoboticsAcademy/exercises/drone_cat_mouse/web-template* and open `exercise.html` on you web browser.
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-The page should says **[open]Connection established!**. Means it is working as expected.
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
 
 ### How should I solve the exercise?
 The launched webpage contains several widgets that will help you to solve the exercise.
@@ -67,7 +71,7 @@ The launched webpage contains several widgets that will help you to solve the ex
 - **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).
 - **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code(under the while True:). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer(a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
 - **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
-- **Pseudo Console**: This shows the error messages related to the student’s code that is sent. In order to print certain debugging information on this console. The student is provided with console.print() similar to print() command in the Python Interpreter.
+- **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
 
 ### Where to insert the code
 To solve the exercise, you must edit the text editor in the launched webpage.
@@ -91,7 +95,7 @@ Some explanations about the above code:
 
 ### Installation instructions
 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy. You won't need jderobot-base and jderobot-base, so you can skip those steps.
+Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy. You won't need jderobot-base, so you can skip those steps.
 
 However, there are some additional dependencies. Install **JdeRobot-drones**, **MAVROS** and **PX4** following the [Drones installation instructions](/RoboticsAcademy/installation/#specific-infrastructure).
 
@@ -164,15 +168,15 @@ The three following drone control functions are *non-blocking*, i.e. each time y
 
 #### 1. Position control
 
-* `HAL.set_cmd_pos(x, y, z, yaw)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle* (in rad) taking as reference the first takeoff point (map frame)
+* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame)
 
 #### 2. Velocity control
 
-* `HAL.set_cmd_vel(vx, vy, vz, yaw_rate)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate* (rad/s) in its body fixed frame
+* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame
 
 #### 3. Mixed control
 
-* `HAL.set_cmd_mix(vx, vy, z, yaw_rate)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate* (in rad/s) 
+* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s) 
 
 ### Drone takeoff and land
 
