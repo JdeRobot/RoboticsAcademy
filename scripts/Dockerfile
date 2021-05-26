@@ -15,6 +15,7 @@ RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 COPY manager.py /manager.py
+COPY instructions.json /instructions.json
 
 # execute permissions to start.sh
 COPY start.sh /start.sh
