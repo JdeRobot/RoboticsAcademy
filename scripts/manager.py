@@ -192,6 +192,8 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
+            elif command == "Pong":
+                await websocket.send("Ping")
             else:
                 self.kill_simulation()
 

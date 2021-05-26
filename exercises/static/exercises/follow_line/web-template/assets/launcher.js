@@ -10,8 +10,8 @@ function startSim() {
     }
 
     ws_manager.onmessage = function (event) {
-        console.log(event.data);
-        ws_manager.send("Pong");
+        // console.log(event.data);
+        ws_manager.send(JSON.stringify({"command" : "Pong"}));
     }
 
     setTimeout(function () {
