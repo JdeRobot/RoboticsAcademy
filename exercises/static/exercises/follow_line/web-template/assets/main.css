@@ -43,17 +43,23 @@ time{
     padding-top: 2px;
 }
 
-#Control{
-  text-align: center;
-  align-items: center;
-  display: inline-block;
-  margin-bottom: 30px;
-}
+
 .btn_img{
     height: 25px;
 }
 img{
     height: 25px;
+}
+
+#Control{
+    vertical-align:middle;
+    text-align:center;  
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-template-columns: repeat(13, 1fr);
+    grid-template-columns: repeat(13, 1fr);
+    width: 100%;
+    margin: 15px auto;  
 }
 
 #submit{
@@ -62,7 +68,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    margin-right:20px;
 }
 
 #stop{
@@ -71,7 +77,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
+    margin-right: 20px;
 
 }
 
@@ -81,7 +87,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    margin-right: 20px;
 }
 
 #load{
@@ -90,7 +96,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-
+    margin-right: 20px;
 }
 
 #reset{
@@ -100,16 +106,50 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
-
+    margin-right: 20px;
 }
 
-#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover{
+#gazebo{
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right: 20px;
+}
+
+
+#console{
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right: 20px;
+}
+
+#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo:hover, #console:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     border-image: linear-gradient(to right, #3acfd5 0%, #3a4ed5 100%);
     border-image-slice: 1;
+}
+
+#letters{
+    margin-top: 10px;
+    width: 80px;
+}
+
+#number{
+    border:none;
+}
+
+input[type=number]{
+    width: 60px;
+}
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
 }
 
 #gzweb_btn{
