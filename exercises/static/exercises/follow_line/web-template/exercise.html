@@ -24,46 +24,7 @@
         <div class="content">
 
             <div class="split a">
-              <div id="Control" class="container" >
-                <button  id="submit" type="button" onclick="submitCode()"><img src="./assets/img/submit.png"> Play </button>
-                <button  id="stop" type="button" onclick="stopCode()"><img src="./assets/img/pause.png"> Stop</button>
-                <button  id="save" type="button" onclick="saveCodeLocally()"><img src="./assets/img/upload.png"> Save</button>
-                <input   type="file" id="real-file" hidden="hidden"/>
-                <button  id="load" type="button"><img src="./assets/img/download.png"> Load</button>
-                <button  id="reset" type="button" onclick="resetSim()"><img style="height:15px;" src="./assets/img/reset.svg"> Reset</button>
-              </div>
-
-            <li id="frecuency_control" style="list-style: none; display:block; text-align:center; font-weight:bold;" ><div id="Frequency" class="container">
-            <!-- Source http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input -->
-            <table>
-          <tr>
-            <strong>
-              <th>Name</th>
-              <th>Slider</th>
-              <th>Measured/Desired</th>
-            </strong>
-          </tr>
-          <tr>
-            <td>Brain Frequency</td>
-            <td><input type="range" min="1" max="30" value="12.5" id="fader"
-              step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
-            <td><output id="ideal_code_frequency">0</output> / <output for="fader" id="code_frequency">12.5</output> Hz</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>GUI Frequency</td>
-            <td><input type="range" min="1" max="30" value="12" id="fader"
-              step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
-            <td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output> Hz</td>
-          </tr>
-          <tr>
-            <td>RTF</td>
-            <td/>
-            <td><output id="real_time_factor">0</output></td>
-          </tr>
-
-        </table>
-      </div></li>
+              
 
 
       <div id="code-control">

@@ -87,6 +87,18 @@ function stopCode(){
 	running = false;
 }
 
+function resetSim(){
+	// Send message to initiate reset
+	var message = "#rest"
+	websocket_code.send(message)
+	reset_gui();
+
+	if(running == true){
+		stopCode();
+		submitCode();
+	}
+}
+
 // Function for range slider
 function codefrequencyUpdate(vol) {
 	document.querySelector('#code_frequency').value = vol;

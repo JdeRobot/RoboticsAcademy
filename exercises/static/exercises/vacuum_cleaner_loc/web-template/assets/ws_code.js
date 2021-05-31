@@ -112,6 +112,7 @@ function resetSim(){
 	clearMap();
 	websocket_code.send(message)
 	if(running == true){
+		stopCode();
 		submitCode();
 	}
 }

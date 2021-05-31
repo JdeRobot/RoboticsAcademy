@@ -35,7 +35,6 @@
         <button  id="stop" type="button" onclick="stopCode()"<span title="Stop the current simulation"></span><img src="{% static 'exercises/assets/img/pause.png' %}"> Stop</button>
         <input   type="file" id="real-file" hidden="hidden"/>
         <button  id="reset" type="button" onclick="resetSim()" <span title="Reset the current simulation"></span><img style="height:15px;" src="{% static 'exercises/assets/img//reset.svg' %}"> Reset</button>
-        <button id="gazebo_button" type="button" onclick="changegzweb()" <span title="Activate the gazebo screen"></span><img id="gzimg" style="height:20px;" src="{% static 'exercises/assets/img//gazebo.svg' %}">Gazebo</button>
         <button id="console_button" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/assets/img/console.png' %}"> Console</button>
         <a id="letters">Brain Freq </a><input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span>
         <div overflow-x:auto>
@@ -53,7 +52,7 @@
             </tr>  
             </table>
             </div>     
-        <a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
+            <a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
     </div>
     <div class="content">
         <div class="split a">
