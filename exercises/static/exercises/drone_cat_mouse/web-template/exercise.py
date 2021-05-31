@@ -147,8 +147,8 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = importlib.new_module("HAL")
-        hal_module.HAL = importlib.new_module("HAL")
+        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
         # hal_module.drone = imp.new_module("drone")
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
@@ -170,8 +170,8 @@ class Template:
         hal_module.HAL.land = self.hal.land
 
         # Define GUI module
-        gui_module = importlib.new_module("GUI")
-        gui_module.GUI = importlib.new_module("GUI")
+        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
@@ -240,13 +240,13 @@ class Template:
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
         # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=0)
         # bufsize=1 enables line-bufferred mode (the input buffer is flushed 
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
             for line in iter(stats_process.stdout.readline, b''):
                 stats_list = [x.strip() for x in line.split(b',')]
-                self.real_time_factor = stats_list[0]
+                self.real_time_factor = stats_list[0].decode("utf-8")
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
