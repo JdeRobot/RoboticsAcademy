@@ -46,12 +46,10 @@ class Template:
         self.gui = GUI(self.host, self.console, self.hal)
 
     # The process function
-    def process_dl_model(self, raw_dl_model, n_consecutive_frames=20, roi_scale=0.75, input_size=(28, 28)):
+    def process_dl_model(self, raw_dl_model, roi_scale=0.75, input_size=(28, 28)):
         """
         Given a DL model in onnx format, yield prediction per frame.
         :param raw_dl_model: raw DL model transferred through websocket
-        :param n_consecutive_frames: int, number of consecutive frames that must be reached to consider a valid
-        prediction
         :param roi_scale: float, pct of the smallest image dimension that will be used to build the ROI used as input
         :param input_size: (int, int), model input image size
         """
@@ -78,6 +76,7 @@ class Template:
             count_same_digit = 0
             while not self.reload:
                 start_time = datetime.now()
+                start = time.time()
 
                 # Get input webcam image
                 input_image = self.hal.getImage()
@@ -100,6 +99,12 @@ class Template:
                 output = ort_session.run(None, ort_inputs)[0]
                 pred = int(np.argmax(output, axis=1))  # get the index of the max log-probability
 
+                end = time.time()
+                frame_time = round(end-start, 3)
+                fps = 1.0/frame_time
+                # number of consecutive frames that must be reached to consider a validprediction
+                n_consecutive_frames = int(fps/2)
+
                 # For stability, only show digit if detected in more than n consecutive frames
                 if pred != previous_established_pred:
                     if count_same_digit < n_consecutive_frames:
@@ -115,16 +120,12 @@ class Template:
                     previous_pred = pred
 
                 # Show region used as ROI
-                output_image = cv2.rectangle(
-                    input_image,
-                    pt2=(w_border, h_border),
-                    pt1=(w_border + w_roi, h_border + h_roi),
-                    color=(255, 0, 0),
-                    thickness=3
-                )
+                cv2.rectangle(input_image,pt2=(w_border, h_border),pt1=(w_border + w_roi, h_border + h_roi),color=(255, 0, 0),thickness=3)
+                # Show FPS count
+                cv2.putText(input_image, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1)
 
                 # Send result
-                self.gui.showResult(output_image, str(previous_established_pred))
+                self.gui.showResult(input_image, str(previous_established_pred))
 
                 # Template specifics to run!
                 finish_time = datetime.now()
