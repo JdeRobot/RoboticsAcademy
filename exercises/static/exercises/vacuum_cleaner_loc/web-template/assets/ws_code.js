@@ -62,7 +62,8 @@ function submitCode(){
 
 		// Get the debug level and add header
 		//var debug_level = document.querySelector('input[name = "debug"]').value;
-		//python_code = "#dbug" + debug_level + python_code
+		var debug_level = 1;
+		python_code = "#dbug" + debug_level + python_code
 
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
