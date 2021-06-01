@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import sys
-print(sys.path)
 
 import asyncio
 import websockets
@@ -8,164 +7,19 @@ import os
 import threading
 import time
 import json
+import stat
 
-
-GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH:"
-DISPLAY = ":0"
-GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road"])
-
-instructions = {
-    "follow_line": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_line/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
-        "instructions_gui": "python /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
-    },
-    "obstacle_avoidance": {
-        "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
-    },
-    "vacuum_cleaner": {
-        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
-    },
-    "vacuum_cleaner_loc": {
-        "gazebo_path": "/RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
-    },
-    "color_filter": {
-        "instructions_host": "python /RoboticsAcademy/exercises/color_filter/web-template/exercise.py 0.0.0.0"
-    },
-    "drone_cat_mouse": {
-        "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
-    },
-    "3dreconstruction": {
-        "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
-        "instructions_ros": [
-            "vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/3d_reconstruction/web-template/exercise.py 0.0.0.0"
-    },
-    "follow_turtlebot": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
-    },
-    "global_navigation": {
-        "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
-        "instructions_ros": [
-            "vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/global_navigation/web-template/launch/taxiholo_1_citylarge_headless.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/global_navigation/web-template/exercise.py 0.0.0.0"
-    },
-    "follow_road": {
-        "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["vglrun /opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
-        "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
-    },
-}
-
-
-def export_gazebo(exercise):
-    gazebo_path = GAZEBO_RESOURCE_PATH + instructions[exercise]["gazebo_path"] + ";"
-    return gazebo_path
-
-
-def ros_instructions(exercise):
-    roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
-                      'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
-                      '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
-                      'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                      'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
-    roslaunch_cmd = roslaunch_cmd + export_gazebo(exercise)
-    for instruction in instructions[exercise]["instructions_ros"]:
-        roslaunch_cmd = roslaunch_cmd + instruction + ";"
-    roslaunch_cmd = roslaunch_cmd + '"'
-    return roslaunch_cmd
-
-
-def start_gzclient(exercise, width, height):
-    # Configure browser screen width and height for gzclient
-    gzclient_config_cmds = ["echo [geometry] > ~/.gazebo/gui.ini;",
-                            "echo x=0 >> ~/.gazebo/gui.ini;",
-                            "echo y=0 >> ~/.gazebo/gui.ini;",
-                            f"echo width={width} >> ~/.gazebo/gui.ini;",
-                            f"echo height={height} >> ~/.gazebo/gui.ini;"]
-
-    # Write display config and start gzclient
-    gzclient_cmd = (f"export DISPLAY={DISPLAY};" +
-                    export_gazebo(exercise) +
-                    "".join(gzclient_config_cmds) +
-                    "export VGL_DISPLAY=/dev/dri/card0; vglrun gzclient --verbose")
-    gzclient_thread = DockerThread(gzclient_cmd)
-    gzclient_thread.start()
-
-def start_console(width, height):
-    # Write display config and start the console
-    width = int(width) / 10; height = int(height) / 18
-    console_cmd = f"export DISPLAY=:1; "
-    console_cmd += f"vglrun xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
-    # console_cmd += f"vglrun xterm -fa 'Monospace' -fs 10 -bg black -fg white"
-    print("console started")
-    console_thread = DockerThread(console_cmd)
-    console_thread.start()
-
-def start_vnc(display, internal_port, external_port):
-    # Start VNC server without password, forever running in background
-    x11vnc_cmd = f"export VGL_DISPLAY=/dev/dri/card0; export TVNC_WM=startlxde; /opt/TurboVNC/bin/vncserver {display} -geometry '1920x1080' -vgl -noreset -SecurityTypes None -rfbport {internal_port}"
-    x11vnc_thread = DockerThread(x11vnc_cmd)
-    x11vnc_thread.start()
-
-    # Start noVNC with default port 6080 listening to VNC server on 5900
-    novnc_cmd = f"/opt/noVNC/utils/launch.sh  --listen {external_port} --vnc localhost:{internal_port}"
-    novnc_thread = DockerThread(novnc_cmd)
-    novnc_thread.start()
-
-def start_exercise(exercise):
-    host_cmd = instructions[exercise]["instructions_host"]
-    host_thread = DockerThread(host_cmd)
-    host_thread.start()
-
+# Function to check if a device exists
+def check_device(device_path):
     try:
-        gui_cmd = instructions[exercise]["instructions_gui"]
-        gui_thread = DockerThread(gui_cmd)
-        gui_thread.start()
-    except KeyError:
-        pass
+        return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
+    except:
+        return False
 
-async def kill_simulation():
-    cmd_gzweb = "pkill -9 -f exercise.py"
-    os.popen(cmd_gzweb)
-    cmd_gui = "pkill -9 -f gui.py"
-    os.popen(cmd_gui)
-    cmd_host = "pkill -9 -f node"
-    os.popen(cmd_host)
-    cmd_host = "pkill -9 -f gzserver"
-    os.popen(cmd_host)
-    cmd_client = "pkill -9 -f gzclient"
-    os.popen(cmd_client)
-    cmd_ros = "pkill -9 -f roslaunch"
-    os.popen(cmd_ros)
-    cmd_rosout = "pkill -9 -f rosout"
-    os.popen(cmd_rosout)
-    cmd_mel = "pkill -9 -f melodroot"
-    os.popen(cmd_mel)
-    cmd_rosout = "pkill -9 -f rosout"
-    os.popen(cmd_rosout)
-    cmd_vncserver = "pkill -9 -f vncserver"
-    os.popen(cmd_vncserver)
-    cmd_novnc = "pkill -9 -f launch.sh"
-    os.popen(cmd_novnc)
-    os.popen(cmd_novnc)
-    cmd_console = "pkill -9 -f tilda"
-    os.popen(cmd_console)
-    """cmd_py = "pkill -9 -f python"
-    os.popen(cmd_py)"""
+DRI_PATH = "/dev/dri/card0"
+ACCELERATION_ENABLED = check_device(DRI_PATH)
 
-
+# Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
     def __init__(self, cmd):
         threading.Thread.__init__(self)
@@ -175,85 +29,300 @@ class DockerThread(threading.Thread):
         stream = os.popen(self.cmd)
         out = stream.read()
         print(out)
-        
 
-async def hello(websocket, path):
-    # name = await websocket.recv()
-    print(websocket)
-    async for name in websocket:
-        print(name)
-        data = json.loads(name)
-        command = data["command"]
-        if command == "open":
-            print("> Starting simulation")
-            # xserver_cmd = "/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0"
-            # xserver_thread = DockerThread(xserver_cmd)
-            # xserver_thread.start()
+# Class to store the commands
+class Commands:
+    # Initialization function
+    def __init__(self):
+        # Constants
+        self.GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH:"
+        self.DISPLAY = ":0"
 
-            # # X Server for Console
-            # console_xserver_cmd = "/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./console_xdummy.log -config ./xorg.conf :1"
-            # console_xserver_thread = DockerThread(console_xserver_cmd)
-            # console_xserver_thread.start()
+        self.read_json_instructions("instructions.json")
 
-            if not ("color_filter" in data["exercise"]):
-                # Start the exercise in display created by TurboVNC
-                start_vnc(DISPLAY, 5900, 6080)
-                start_exercise(data["exercise"])
-                
-                roslaunch_cmd = ros_instructions(data["exercise"])
-                roslaunch_thread = DockerThread(roslaunch_cmd)
-                roslaunch_thread.start()
-                time.sleep(5)
+    # Function to read the instructions to run an exercise
+    def read_json_instructions(self, path):
+        with open(path) as f:
+            self.instructions = json.load(f)
 
-                if (data["exercise"] in GZCLIENT_EXERCISES):
-                    start_vnc(":1", 5901, 1108)
-                    
-                    # Start gazebo client
-                    width = data.get("width", 1920)
-                    height = data.get("height", 1080)
-                    time.sleep(2)
-                    start_gzclient(data["exercise"], width, height)
-                    time.sleep(2)
-                    start_console(width, height)
-                else:
-                    gzweb_cmd = 'cd /gzweb; npm start -p 8080'
-                    gzweb_thread = DockerThread(gzweb_cmd)
-                    gzweb_thread.start()
-            else:
-                # Start the exercise
-                start_exercise(data["exercise"])
+    # Function to get the Gazebo Path Variables
+    def get_gazebo_path(self, exercise):
+        gazebo_path = self.GAZEBO_RESOURCE_PATH + self.instructions[exercise]["gazebo_path"] + ";"
+        return gazebo_path
 
-                if (data["exercise"] in GZCLIENT_EXERCISES):
-                    start_vnc(":1", 5900, 1108)
-                    start_console(1920, 1080)
-        elif command == "resume":
-            print("RESUME SIMULATIOn")
-            cmd = "/opt/ros/melodic/bin/rosservice call gazebo/unpause_physics"
-            rosservice_thread = DockerThread(cmd)
-            rosservice_thread.start()
-        elif command == "stop":
-            print("STOP SIMULATIOn")
-            cmd = "/opt/ros/melodic/bin/rosservice call gazebo/pause_physics"
-            rosservice_thread = DockerThread(cmd)
-            rosservice_thread.start()
-        elif command == "start":
-            cmd = "/opt/ros/melodic/bin/rosservice call gazebo/unpause_physics"
-            rosservice_thread = DockerThread(cmd)
-            rosservice_thread.start()
-        elif command == "reset":
-            cmd = "/opt/ros/melodic/bin/rosservice call gazebo/reset_simulation"
-            rosservice_thread = DockerThread(cmd)
-            rosservice_thread.start()
+    # Function to get the instructions to run ROS
+    def get_ros_instructions(self, exercise):
+        if ACCELERATION_ENABLED:
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
+                        'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
+                        '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
+                        'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
         else:
-            print("ALL KILED")
-            await kill_simulation()
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
+                        'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
+                        '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
+                        'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
+        roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
+        for instruction in self.instructions[exercise]["instructions_ros"]:
+            if not (ACCELERATION_ENABLED):
+                roslaunch_cmd = roslaunch_cmd + instruction + ";"
+            else:
+                roslaunch_cmd = roslaunch_cmd + "vglrun " + instruction + ";"
+        roslaunch_cmd = roslaunch_cmd + '"'
+        return roslaunch_cmd
 
-        greeting = f"Hello {name}!"
+    # Function to start gzclient
+    def start_gzclient(self, exercise, width, height):
+        # Configure browser screen width and height for gzclient
+        gzclient_config_cmds = ["echo [geometry] > ~/.gazebo/gui.ini;",
+                                "echo x=0 >> ~/.gazebo/gui.ini;",
+                                "echo y=0 >> ~/.gazebo/gui.ini;",
+                                f"echo width={width} >> ~/.gazebo/gui.ini;",
+                                f"echo height={height} >> ~/.gazebo/gui.ini;"]
 
-        await websocket.send("Done")
-        # print(f"> {greeting}")
+        if not (ACCELERATION_ENABLED):
+	    # Write display config and start gzclient
+            gzclient_cmd = (f"export DISPLAY={self.DISPLAY};" + self.get_gazebo_path(exercise) + "".join(gzclient_config_cmds) + "gzclient --verbose")
+        else:
+            gzclient_cmd = (f"export DISPLAY={self.DISPLAY};" +
+		    self.get_gazebo_path(exercise) +
+		    "".join(gzclient_config_cmds) +
+		    "export VGL_DISPLAY=/dev/dri/card0; vglrun gzclient --verbose")
+        gzclient_thread = DockerThread(gzclient_cmd)
+        gzclient_thread.start()
 
-start_server = websockets.serve(hello, "0.0.0.0", 8765)
+    # Function to start the console
+    def start_console(self, width, height):
+        # Write display config and start the console
+        width = int(width) / 10; height = int(height) / 18
+        console_cmd = f"export DISPLAY=:1;"
+        if ACCELERATION_ENABLED:
+            console_cmd += f"vglrun xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
+        else:
+            console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
 
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+        console_thread = DockerThread(console_cmd)
+        console_thread.start()
+
+    # Function to start VNC server
+    def start_vnc(self, display, internal_port, external_port):
+        if not (ACCELERATION_ENABLED):
+            # Start VNC server without password, forever running in background
+            x11vnc_cmd = f"x11vnc -display {display} -nopw -forever -xkb -bg -rfbport {internal_port}"
+            x11vnc_thread = DockerThread(x11vnc_cmd)
+            x11vnc_thread.start()
+
+            # Start noVNC with default port 6080 listening to VNC server on 5900
+            novnc_cmd = f"/noVNC/utils/launch.sh --listen {external_port} --vnc localhost:{internal_port}"
+            novnc_thread = DockerThread(novnc_cmd)
+            novnc_thread.start()
+        else:
+            # Start VNC server without password, forever running in background
+            turbovnc_cmd = f"export VGL_DISPLAY=/dev/dri/card0; export TVNC_WM=startlxde; /opt/TurboVNC/bin/vncserver {display} -geometry '1920x1080' -vgl -noreset -SecurityTypes None -rfbport {internal_port}"
+            turbovnc_thread = DockerThread(turbovnc_cmd)
+            turbovnc_thread.start()
+
+            # Start noVNC with default port 6080 listening to VNC server on 5900
+            novnc_cmd = f"noVNC/utils/launch.sh  --listen {external_port} --vnc localhost:{internal_port}"
+            novnc_thread = DockerThread(novnc_cmd)
+            novnc_thread.start()
+
+    # Function to start an exercise
+    def start_exercise(self, exercise):
+        host_cmd = self.instructions[exercise]["instructions_host"]
+        host_thread = DockerThread(host_cmd)
+        host_thread.start()
+
+        try:
+            gui_cmd = self.instructions[exercise]["instructions_gui"]
+            gui_thread = DockerThread(gui_cmd)
+            gui_thread.start()
+        except KeyError:
+            pass
+
+    # Function to start the Xserver
+    def start_xserver(self, display):
+        xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {display}"
+        xserver_thread = DockerThread(xserver_cmd)
+        xserver_thread.start() 
+
+    # Function to roslaunch Gazebo Server
+    def start_gzserver(self, exercise):
+        roslaunch_cmd = self.get_ros_instructions(exercise)
+        roslaunch_thread = DockerThread(roslaunch_cmd)
+        roslaunch_thread.start()
+
+    # Function to pause Gazebo physics
+    def pause_physics(self):
+        cmd = "/opt/ros/melodic/bin/rosservice call gazebo/pause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.start()
+
+    # Function to unpause Gazebo physics
+    def unpause_physics(self):
+        cmd = "/opt/ros/melodic/bin/rosservice call gazebo/unpause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.start()
+
+    # Function to reset Gazebo physics
+    def reset_physics(self):
+        cmd = "/opt/ros/melodic/bin/rosservice call gazebo/reset_simulation"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.start()
+
+    # Function to kill every program
+    async def kill_all(self):
+        cmd_exercise = "pkill -9 -f exercise.py"
+        os.popen(cmd_exercise)
+        cmd_gui = "pkill -9 -f gui.py"
+        os.popen(cmd_gui)
+        cmd_host = "pkill -9 -f node"
+        os.popen(cmd_host)
+        cmd_host = "pkill -9 -f gzserver"
+        os.popen(cmd_host)
+        cmd_client = "pkill -9 -f gzclient"
+        os.popen(cmd_client)
+        cmd_ros = "pkill -9 -f roslaunch"
+        os.popen(cmd_ros)
+        cmd_rosout = "pkill -9 -f rosout"
+        os.popen(cmd_rosout)
+        cmd_mel = "pkill -9 -f melodroot"
+        os.popen(cmd_mel)
+        cmd_rosout = "pkill -9 -f rosout"
+        os.popen(cmd_rosout)
+        cmd_x11vnc = "pkill -9 -f x11vnc"
+        os.popen(cmd_x11vnc)
+        cmd_novnc = "pkill -9 -f launch.sh"
+        os.popen(cmd_novnc)
+        os.popen(cmd_novnc)
+        cmd_console = "pkill -9 -f xterm"
+        os.popen(cmd_console)
+
+
+# Main Manager class
+class Manager:
+    # Initialization function
+    def __init__(self):
+        self.server = None
+        self.client = None
+        self.host = "0.0.0.0"
+        self.commands = Commands()
+
+    # Function to handle all the requests
+    async def handle(self, websocket, path):
+        self.client = websocket
+        
+        async for message in websocket:
+            data = json.loads(message)
+            command = data["command"]
+
+            if command == "open":
+                width = data.get("width", 1920)
+                height = data.get("height", 1080)
+                if not (ACCELERATION_ENABLED):
+                    self.open_simulation(data["exercise"], width, height)
+                else:
+                    self.open_accelerated_simulation(data["exercise"], width, height)
+            elif command == "resume":
+                self.resume_simulation()
+            elif command == "stop":
+                self.stop_simulation()
+            elif command == "start":
+                self.start_simulation()
+            elif command == "reset":
+                self.reset_simulation()
+            elif command == "Pong":
+                await websocket.send("Ping")
+            else:
+                self.kill_simulation()
+
+            await websocket.send("Ping")
+
+    
+    # Function to open non-accelerated simulation
+    def open_simulation(self, exercise, width, height):
+        print("> Starting simulation")
+
+        # X Server for Console and Gazebo
+        self.commands.start_xserver(":0")
+        self.commands.start_xserver(":1")
+
+        # Start the exercise
+        self.commands.start_exercise(exercise)
+
+        if not ("color_filter" in exercise):
+            self.commands.start_gzserver(exercise)
+            time.sleep(5)
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+
+            # Start gazebo client
+            self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_console(width, height)
+        else:
+            self.commands.start_vnc(":1", 5900, 1108)
+            self.commands.start_console(1920, 1080)
+
+    # Function to open accelerated simulation
+    def open_accelerated_simulation(self, exercise, width, height):
+        print("> Starting accelerated simulation")
+
+        # Start VNC and accelerated displays
+        self.commands.start_vnc(":0", 5900, 6080)
+
+        # Start the exercise
+        self.commands.start_exercise(exercise)
+        self.commands.start_gzserver(exercise)
+        time.sleep(5)
+        
+        if not ("color_filter" in exercise):
+            self.commands.start_vnc(":1", 5901, 1108)
+
+            # Start gazebo client
+            time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
+            time.sleep(2)
+            self.commands.start_console(width, height)
+        else:
+            self.commands.start_vnc(":1", 5900, 1108)
+            self.commands.start_console(1920, 1080)
+
+    # Function to resume simulation
+    def resume_simulation(self):
+        print("Resume Simulation")
+        self.commands.unpause_physics()
+
+    # Function to stop simulation
+    def stop_simulation(self):
+        print("Stop Simulation")
+        self.commands.pause_physics()
+
+    # Function to start simulation
+    def start_simulation(self):
+        print("Starting Simulation")
+        self.commands.unpause_physics()
+
+    # Function to reset simulation
+    def reset_simulation(self):
+        print("Reset Simulation")
+        self.commands.reset_physics()
+
+    # Function to kill simulation
+    async def kill_simulation(self):
+        print("Kill simulation")
+        self.commands.kill_all()
+                
+    # Function to start the websocket server
+    def run_server(self):
+        self.server = websockets.serve(self.handle, self.host, 8765)
+        asyncio.get_event_loop().run_until_complete(self.server)
+        asyncio.get_event_loop().run_forever()
+
+
+if __name__ == "__main__":
+    server = Manager()
+    server.run_server()
