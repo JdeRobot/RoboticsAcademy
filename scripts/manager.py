@@ -99,7 +99,7 @@ class Commands:
         width = int(width) / 10; height = int(height) / 18
         console_cmd = f"export DISPLAY=:1;"
         if ACCELERATION_ENABLED:
-            console_cmd += f"vglrun xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
+            console_cmd += f"vglrun xterm -fullscreen -sb -fa 'Monospace' -fs 10 -bg black -fg white"
         else:
             console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
 
