@@ -107,7 +107,9 @@ function resetSim(){
     // Send message to initiate reset
     var message = "#rest"
     websocket_code.send(message)
+    reset_gui();
     if(running == true){
+        stopCode();
         submitCode();
     }
 }

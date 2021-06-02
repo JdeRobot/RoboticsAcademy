@@ -99,6 +99,7 @@ function resetSim(){
 	reset_gui();
 
 	if(running == true){
+		stopCode();
 		submitCode();
 	}
 }
