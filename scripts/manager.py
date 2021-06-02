@@ -7,6 +7,17 @@ import os
 import threading
 import time
 import json
+import stat
+
+# Function to check if a device exists
+def check_device(device_path):
+    try:
+        return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
+    except:
+        return False
+
+DRI_PATH = "/dev/dri/card0"
+ACCELERATION_ENABLED = check_device(DRI_PATH)
 
 # Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
@@ -41,14 +52,24 @@ class Commands:
 
     # Function to get the instructions to run ROS
     def get_ros_instructions(self, exercise):
-        roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
+        if ACCELERATION_ENABLED:
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
+                        'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
+                        '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
+                        'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
+        else:
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
                         'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
                         '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
                         'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
                         'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
         for instruction in self.instructions[exercise]["instructions_ros"]:
-            roslaunch_cmd = roslaunch_cmd + instruction + ";"
+            if not (ACCELERATION_ENABLED):
+                roslaunch_cmd = roslaunch_cmd + instruction + ";"
+            else:
+                roslaunch_cmd = roslaunch_cmd + "vglrun " + instruction + ";"
         roslaunch_cmd = roslaunch_cmd + '"'
         return roslaunch_cmd
 
@@ -61,11 +82,14 @@ class Commands:
                                 f"echo width={width} >> ~/.gazebo/gui.ini;",
                                 f"echo height={height} >> ~/.gazebo/gui.ini;"]
 
-        # Write display config and start gzclient
-        gzclient_cmd = (f"export DISPLAY={self.DISPLAY};" +
-                        self.get_gazebo_path(exercise) +
-                        "".join(gzclient_config_cmds) +
-                        "gzclient --verbose")
+        if not (ACCELERATION_ENABLED):
+	    # Write display config and start gzclient
+            gzclient_cmd = (f"export DISPLAY={self.DISPLAY};" + self.get_gazebo_path(exercise) + "".join(gzclient_config_cmds) + "gzclient --verbose")
+        else:
+            gzclient_cmd = (f"export DISPLAY={self.DISPLAY};" +
+		    self.get_gazebo_path(exercise) +
+		    "".join(gzclient_config_cmds) +
+		    "export VGL_DISPLAY=/dev/dri/card0; vglrun gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start()
 
@@ -74,22 +98,36 @@ class Commands:
         # Write display config and start the console
         width = int(width) / 10; height = int(height) / 18
         console_cmd = f"export DISPLAY=:1;"
-        console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
+        if ACCELERATION_ENABLED:
+            console_cmd += f"vglrun xterm -fullscreen -sb -fa 'Monospace' -fs 10 -bg black -fg white"
+        else:
+            console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
 
     # Function to start VNC server
     def start_vnc(self, display, internal_port, external_port):
-        # Start VNC server without password, forever running in background
-        x11vnc_cmd = f"x11vnc -display {display} -nopw -forever -xkb -bg -rfbport {internal_port}"
-        x11vnc_thread = DockerThread(x11vnc_cmd)
-        x11vnc_thread.start()
+        if not (ACCELERATION_ENABLED):
+            # Start VNC server without password, forever running in background
+            x11vnc_cmd = f"x11vnc -display {display} -nopw -forever -xkb -bg -rfbport {internal_port}"
+            x11vnc_thread = DockerThread(x11vnc_cmd)
+            x11vnc_thread.start()
 
-        # Start noVNC with default port 6080 listening to VNC server on 5900
-        novnc_cmd = f"/noVNC/utils/launch.sh --listen {external_port} --vnc localhost:{internal_port}"
-        novnc_thread = DockerThread(novnc_cmd)
-        novnc_thread.start()
+            # Start noVNC with default port 6080 listening to VNC server on 5900
+            novnc_cmd = f"/noVNC/utils/launch.sh --listen {external_port} --vnc localhost:{internal_port}"
+            novnc_thread = DockerThread(novnc_cmd)
+            novnc_thread.start()
+        else:
+            # Start VNC server without password, forever running in background
+            turbovnc_cmd = f"export VGL_DISPLAY=/dev/dri/card0; export TVNC_WM=startlxde; /opt/TurboVNC/bin/vncserver {display} -geometry '1920x1080' -vgl -noreset -SecurityTypes None -rfbport {internal_port}"
+            turbovnc_thread = DockerThread(turbovnc_cmd)
+            turbovnc_thread.start()
+
+            # Start noVNC with default port 6080 listening to VNC server on 5900
+            novnc_cmd = f"noVNC/utils/launch.sh  --listen {external_port} --vnc localhost:{internal_port}"
+            novnc_thread = DockerThread(novnc_cmd)
+            novnc_thread.start()
 
     # Function to start an exercise
     def start_exercise(self, exercise):
@@ -183,7 +221,10 @@ class Manager:
             if command == "open":
                 width = data.get("width", 1920)
                 height = data.get("height", 1080)
-                self.open_simulation(data["exercise"], width, height)
+                if not (ACCELERATION_ENABLED):
+                    self.open_simulation(data["exercise"], width, height)
+                else:
+                    self.open_accelerated_simulation(data["exercise"], width, height)
             elif command == "resume":
                 self.resume_simulation()
             elif command == "stop":
@@ -200,7 +241,7 @@ class Manager:
             await websocket.send("Ping")
 
     
-    # Function to open simulation
+    # Function to open non-accelerated simulation
     def open_simulation(self, exercise, width, height):
         print("> Starting simulation")
 
@@ -221,6 +262,30 @@ class Manager:
 
             # Start gazebo client
             self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_console(width, height)
+        else:
+            self.commands.start_vnc(":1", 5900, 1108)
+            self.commands.start_console(1920, 1080)
+
+    # Function to open accelerated simulation
+    def open_accelerated_simulation(self, exercise, width, height):
+        print("> Starting accelerated simulation")
+
+        # Start VNC and accelerated displays
+        self.commands.start_vnc(":0", 5900, 6080)
+
+        # Start the exercise
+        self.commands.start_exercise(exercise)
+        self.commands.start_gzserver(exercise)
+        time.sleep(5)
+        
+        if not ("color_filter" in exercise):
+            self.commands.start_vnc(":1", 5901, 1108)
+
+            # Start gazebo client
+            time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
+            time.sleep(2)
             self.commands.start_console(width, height)
         else:
             self.commands.start_vnc(":1", 5900, 1108)
