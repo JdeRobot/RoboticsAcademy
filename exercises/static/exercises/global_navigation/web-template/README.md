@@ -1,4 +1,4 @@
-# Follow Line Exercise using WebTemplates
+# Global Navigation Exercise using WebTemplate
 
 ## How to launch the exercise?
 
