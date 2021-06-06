@@ -12,7 +12,7 @@ import json
 
 GAZEBO_RESOURCE_PATH = "export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH:"
 DISPLAY = ":0"
-GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road", "dl_digit_classifier"])
+GZCLIENT_EXERCISES = set(["follow_line", "obstacle_avoidance", "vacuum_cleaner", "vacuum_cleaner_loc", "color_filter", "drone_cat_mouse", "3dreconstruction", "follow_turtlebot", "global_navigation", "follow_road", "dl_digit_classifier", "human_detection"])
 
 instructions = {
     "follow_line": {
@@ -68,6 +68,9 @@ instructions = {
     },
     "dl_digit_classifier": {
         "instructions_host": "python3 /RoboticsAcademy/exercises/dl_digit_classifier/web-template/exercise.py 0.0.0.0"
+    },
+    "human_detection": {
+        "instructions_host": "python3 /RoboticsAcademy/exercises/human_detection/web-template/exercise.py 0.0.0.0"
     },
 }
 
