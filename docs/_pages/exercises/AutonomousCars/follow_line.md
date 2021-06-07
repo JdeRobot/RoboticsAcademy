@@ -79,7 +79,7 @@ This is the preferred way for running the exercise.
 
 ### Installation 
 
-- Download [Docker](https://docs.docker.com/get-docker/)
+- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
 - Pull the current distribution of Robotics Academy Docker Image
 
