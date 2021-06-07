@@ -69,13 +69,7 @@ class HAL:
         topicCameraR  = cfg['Stop']["CameraR"]["Topic"]
         self.cameraR = ListenerCamera(topicCameraR)
 
-        # print("Starting movement of dummy cars")
-        #motorsDummy1 = PublisherMotors("/dummy1/cmd_vel", 4, 0.3)
-        #motorsDummy2 = PublisherMotors("/dummy2/cmd_vel", 4, 0.3)
-
-        #motorsDummy1.sendV(2.5)
-        #motorsDummy2.sendV(3)
-
+        self.template = cv2.imread('assets/img/template.png',0)
 
     # Get Image from ROS Driver Camera
     def getImage(self, lr):
@@ -115,3 +109,10 @@ class HAL:
 
     def setPose3D(self, pose3d):
         self.pose3d = pose3d
+
+    def getTemplate(self):
+        return self.template
+
+    def getYaw(self):
+        return self.pose3d.data.yaw
+

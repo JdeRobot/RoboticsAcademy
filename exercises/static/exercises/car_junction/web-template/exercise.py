@@ -185,6 +185,8 @@ class Template:
         hal_module.HAL.setV = self.hal.setV
         hal_module.HAL.setW = self.hal.setW
         hal_module.HAL.getPose3D = self.hal.getPose3D
+        hal_module.HAL.getTemplate = self.hal.getTemplate
+        hal_module.HAL.getYaw = self.hal.getYaw
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
