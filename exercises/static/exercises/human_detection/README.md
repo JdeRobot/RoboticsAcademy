@@ -69,7 +69,7 @@ python exercise.py 127.0.0.xx
 
 ### Model Input Specification
 
-`input_shape` - The application code pre processes the input frame of shape (H, W, C) **TO** (1, 300, 300, 3) i.e (batch_size, H, W, C). This is a typical input shape for a `Conv2D` layer, so it is mandatory for your custom built model to have its first layer as Conv2D.
+`input_shape` - The application code pre processes the input frame of shape (H, W, C) **TO** (1, 300, 300, 3) i.e (batch_size, H, W, C). This is a typical input shape for a `Conv2D` layer, so it is mandatory for your custom built model to have its first layer as `Conv2D`.
 
 ### Model Output Specification
 
