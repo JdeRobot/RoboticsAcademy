@@ -19,7 +19,9 @@ COPY instructions.json /instructions.json
 
 # execute permissions to start.sh
 COPY start.sh /start.sh
+COPY start_manager.sh /start_manager.sh
 RUN chmod 755 /start.sh
+RUN chmod 755 /start_manager.sh
 
 EXPOSE 2303
 EXPOSE 1905
