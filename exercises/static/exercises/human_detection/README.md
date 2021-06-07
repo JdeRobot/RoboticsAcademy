@@ -69,21 +69,21 @@ python exercise.py 127.0.0.xx
 
 ### Model Input Specification
 
-`input_shape` - The application code pre processes the input frame of shape (H, W, C) to (1, 300, 300, C), where 1 represents the batch size . This information is mainly provided for users designing their model with a fully connected input layer.
+`input_shape` - The application code pre processes the input frame of shape (H, W, C) **TO** (1, 300, 300, 3) i.e (batch_size, H, W, C). This is a typical input shape for a `Conv2D` layer, so it is mandatory for your custom built model to have its first layer as Conv2D.
 
 ### Model Output Specification
 
-Given each batch of images, the model must return 4 tensor arrays:
-
-`num_detections`: the number of detections.
+Given 1 frame per batch, the model must return 4 tensor arrays in the following order:
 
 `detection_boxes`: a list of bounding boxes. Each list item describes a box with top, left, bottom, right relative to the image size.
 
-`detection_scores`: the score for each detection with values between 0 and 1 representing probability that a class was detected.
-
 `detection_classes`: Array of detected classes. The class label must be **1** for humans. 
 
-Note: Make sure to keep the class label for Humans while training your model as 1. Any object detected by your model with any other class label other than 1, will not be accounted for.
+`detection_scores`: the score for each detection with values between 0 and 1 representing probability that a class was detected.
+
+`num_detections`: the number of detections.
+
+**Note**: Make sure to keep the class label for Humans while training your model as 1. Any object detected by your model with any other class label other than 1, will not be accounted for.
 
 ## Demo Model
 
