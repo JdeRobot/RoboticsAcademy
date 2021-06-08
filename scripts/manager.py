@@ -315,6 +315,10 @@ class Manager:
     async def kill_simulation(self):
         print("Kill simulation")
         self.commands.kill_all()
+
+    def launch_level(x):
+        print("Level is "+ x)
+
                 
     # Function to start the websocket server
     def run_server(self):
