@@ -102,6 +102,14 @@ youtubeId3: itTbU4uLwfE
 youtubeId4: zcS4X-ZO68U
 
 ---
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates(Current Release)
+
+The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -123,9 +131,89 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Arrive as quickly as possible to the destination.
 
+## Instructions for Web Template
+This is the preferred way for running the exercise.
 
-## Installation 
+### Installation 
+- Clone the Robotics Academy repository on your local machine
 
+	```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy
+	```
+
+- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
+
+- Pull the current distribution of Robotics Academy Docker Image
+
+	```bash
+docker pull jderobot/robotics-academy
+	```
+
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+#### Enable GPU Acceleration (For advanced users)
+- For Linux machines, GPU acceleration can be enabled by downloading Nvidia Container Runtime, as given [here](https://github.com/NVIDIA/nvidia-container-runtime)
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
+
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background
+
+	```bash
+docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
+	```
+
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
+
+- The exercise can be used after the alert.
+
+**Where to insert the code?**
+
+In the launched webpage, type your code in the text editor,
+
+```python
+from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+### Using the Interface
+
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
+
+* **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code(under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer(a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
+
+**Application Programming Interface**
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `from MAP import MAP` - This class contains functions that interact with data related to the map and Gazebo world. 
+* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.motors.sendW()` - to set the angular velocity
+* `HAL.getPose()` - returns x,y and theta components in the world
+* `GUI.showGPP(img)` - shows Gradient Path Planning field on the web-template. It represents the values ​​of the field that have been assigned to the grid. The smaller values ​​will have a color closer to black, and will become clearer as larger values ​​are involved. For the representation, a copy of the grid is made and its values ​​are normalized so that they are between 0 and 1, and it is represented later with cv2.imshow()
+* `GUI.showPath(array)` - shows ideal path on the map and the parameter should be 2D array
+* `GUI.targetPose` - returns x,y coordinates of chosen destionation in the world 
+* `MAP.getMap()` - Map image opencv data in opencv data
+* `MAP.robotPose()` - returns x,y coordinates of robot on the map
+* `MAP.setGridVal(x, y, val)` - sets the value val to the indicated position on the map
+* `MAP.getGridVal(x, y)` - returns the value in that grid position on the map
+* `MAP.gridToWorld(x, y)` - returns translated x,y coordinates in the world
+* `MAP.worldToGrid(x, y)` - returns translated x,y coordinates on the map 
+
+## Instructions for ROSNode Template
+
+### Installation
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
 ## How to run your solution
@@ -332,7 +420,7 @@ Global Navigation teletaxi with OMPL:
 
 ## Contributors
 
-- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
+- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Nay Oo Lwin](https://github.com/NayOoLwin5).
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References

@@ -61,7 +61,8 @@ function submitCode(){
 		python_code = "#code\n" + python_code
 
 		// Get the debug level and add header
-		var debug_level = document.querySelector('input[name = "debug"]').value;
+		//var debug_level = document.querySelector('input[name = "debug"]').value;
+		var debug_level = 2;
 		python_code = "#dbug" + debug_level + python_code
 
 		websocket_code.send(python_code);
@@ -112,6 +113,7 @@ function resetSim(){
 	clearMap();
 	websocket_code.send(message)
 	if(running == true){
+		stopCode();
 		submitCode();
 	}
 }

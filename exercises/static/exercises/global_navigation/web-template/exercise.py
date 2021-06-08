@@ -185,8 +185,7 @@ class Template:
         print("Current Thread Joined!")
 
     def getMap(self):
-        img = cv2.imread("assets/img/cityLargeBin.png")
-        img = cv2.resize(img, (450, 440))
+        img = cv2.imread("assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
         return img
 
     def getPose(self):
