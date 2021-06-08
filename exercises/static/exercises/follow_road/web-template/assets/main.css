@@ -164,7 +164,7 @@ input[type=number]::-webkit-inner-spin-button {
 
 #table_code_freq, #table_gui_freq{
     height:40px;
-    width:100px;
+    width:140px;
 }
 
 #ideal_code_frequency, #code_frequency{

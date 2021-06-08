@@ -36,22 +36,22 @@
         <input   type="file" id="real-file" hidden="hidden"/>
         <button  id="reset" type="button" onclick="resetSim()" <span title="Reset the current simulation"></span><img style="height:15px;" src="{% static 'exercises/assets/img//reset.svg' %}"> Reset</button>
         <button id="console_button" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/assets/img/console.png' %}"> Console</button>
-        <a id="letters">Brain Freq </a><input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span>
+        <a id="letters">Brain Freq </a>
         <div overflow-x:auto>
-        <table id=table_code_freq>
-        <tr>
-        <td><output id="ideal_code_frequency">0</output>/<output for="code_freq" id="code_frequency">12</output>Hz</td>
-        </tr>  
-        </table>
-        </div>       
-        <a id="letters">GUI Freq</a><input type="number" id="gui_freq" name="quantity" min="1" max="30" value="12" step="1" style="color:green" oninput="guifrequencyUpdate(value)"<span title="This value corresponds to the frequency the UI and visuals will be updated."></span>
+            <table id=table_code_freq>
+            <tr>
+            <td><output id="ideal_code_frequency">0</output>/ <input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span> Hz</td>
+            </tr>  
+            </table>
+            </div>       
+        <a id="letters">GUI Freq</a>
         <div overflow-x:auto>
             <table id=table_gui_freq>
             <tr>
-            <td><output id="ideal_gui_frequency">0</output>/<output for="gui_freq" id="gui_frequency">12</output>Hz</td>
+            <td><output id="ideal_gui_frequency">0</output>/ <input type="number" id="gui_freq" name="quantity" min="1" max="30" value="12" step="1" style="color:green" oninput="guifrequencyUpdate(value)"<span title="This value corresponds to the frequency the UI and visuals will be updated."></span> Hz</td>
             </tr>  
             </table>
-            </div>     
+            </div>      
     </div>
     <div class="content">
         <div class="split a">
