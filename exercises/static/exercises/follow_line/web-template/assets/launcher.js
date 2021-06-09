@@ -7,6 +7,7 @@ function startSim() {
         ws_manager.send(JSON.stringify({"command": "exit", "exercise": ""}));
         ws_manager.send(JSON.stringify({
             "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString()}));
+        document.getElementById("launch_level").innerHTML = 1;
     }
 
     ws_manager.onmessage = function (event) {

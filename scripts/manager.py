@@ -317,11 +317,13 @@ class Manager:
         self.commands.kill_all()
 
     def launch_level(x):
-        print("Level is "+ x)
+        level = x;
+        print("Level is "+ level)
 
                 
     # Function to start the websocket server
     def run_server(self):
+
         self.server = websockets.serve(self.handle, self.host, 8765)
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()
