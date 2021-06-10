@@ -52,7 +52,7 @@
             $(document).ready(function() {$("#connection-button").click(
                 function () {
                     $("#connection-button").removeClass('btn btn-danger').addClass('btn btn-warning');
-                    $("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting <a id="launch_level">0</a>');
+                    $("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting <a id="launch_level">1</a>');
                     window.top.postMessage('start', '*')
 
                 });
