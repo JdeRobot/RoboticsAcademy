@@ -16,7 +16,8 @@ var command_input;
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
-	websocket_gui.onopen = function(event){		
+	websocket_gui.onopen = function(event){	
+		document.getElementById("launch_level").innerHTML = 6;
 		if (websocket_code.readyState == 1)
 			alert("[open] Connection established!");
 	}
