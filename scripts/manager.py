@@ -233,6 +233,9 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
+	#Aquí hay dos maneras de enviar los datos, o cada x tiempo con el comando PONG, ya que es un comando periodico o
+	#crear nuestro propio comando que envie datos (más abajo se encuentra un método que coge el valor que le das y lo envia mediante websocket)
+	#El método se llama launch_level
             elif command == "Pong":
                 await websocket.send("Ping")
             else:
@@ -319,6 +322,7 @@ class Manager:
     def launch_level(x):
         level = x;
         print("Level is "+ level)
+	await websocket.send(level)
 
                 
     # Function to start the websocket server
