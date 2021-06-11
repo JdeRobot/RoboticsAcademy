@@ -1,35 +1,38 @@
 function startSim() {
     ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
     exercise = "follow_line"
-    var level = 1;
+    var level = 0;
+    let websockets_connected = false;
 
     ws_manager.onopen = function (event) {
+        level++;
+        radiConect.contentWindow.postMessage({command: 'launch_level', level: `${level}`}, '*');
         var size = get_novnc_size();
-        level = 2;
         ws_manager.send(JSON.stringify({"command": "exit", "exercise": ""}));
         ws_manager.send(JSON.stringify({
             "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString()}));
-        document.getElementById("launch_level").innerHTML = 2;
+        level++;
+        radiConect.contentWindow.postMessage({command: 'launch_level', level: `${level}`}, '*');
+        ws_manager.send(JSON.stringify({"command" : "Pong"}));
     }
 
     ws_manager.onmessage = function (event) {
-        // console.log(event.data);
-        
-        //Aquí debería leer si cuando recibe el mensaje tiene x comando
-        //Podrías hacer que siempre lea event.data para sacar el valor del número independientemente del mensaje?
-        ws_manager.send(JSON.stringify({"command" : "Pong"}));
-        //Así podrías conseguir que level se actualize correctamente y por lo tanto actualizar launch_level que es el elemento que contiene o modifica el número
-        //Si event.data llevase otro valor en otro mensaje, tendras que sustituirlo por una variable que envies en el websocket
-        
-        if (event.data < 5) //Así nos aseguramos que en un futuro donde haya avanzado más pasos pero siga enviando mensajes pues no vuelva a actualizarlo
-            level = event.data;
-            document.getElementById("launch_level").innerHTML = level;
-        
+        console.log(event.data);
+        if (event.data.level > level) {
+            level = event.data.level;
+            radiConect.contentWindow.postMessage({command: 'launch_level', level: `${level}`}, '*');
+        }
+        if (event.data.includes("Ping")) {
+            if (!websockets_connected && event.data == "Ping3") {
+                level = 4;
+                radiConect.contentWindow.postMessage({command: 'launch_level', level: `${level}`}, '*');
+                websockets_connected = true;
+                declare_code(websocket_address);
+                declare_gui(websocket_address);
+            }
+            setTimeout(function () {
+                ws_manager.send(JSON.stringify({"command" : "Pong"}));
+            }, 1000)
+        }        
     }
-
-    //Esto supongo que habría que eliminarlo y recolocarlo cuando haya llegado el paso correspondiente
-    setTimeout(function () {
-        declare_code(websocket_address);
-        declare_gui(websocket_address);
-    }, 20000);
 }
