@@ -20,8 +20,10 @@ function declare_code(websocket_address){
 
 	websocket_code.onopen = function(event){
 		radiConect.contentWindow.postMessage({command: 'launch_level', level: '5'}, '*');
-		if (websocket_gui.readyState == 1)
+		if (websocket_gui.readyState == 1) {
 			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage('up', '*');
+		}
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){

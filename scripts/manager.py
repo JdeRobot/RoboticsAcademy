@@ -272,10 +272,11 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        self.commands.start_exercise(exercise)
 
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
             self.launch_level = 3
 
             # Start x11vnc servers
@@ -286,6 +287,9 @@ class Manager:
             self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
             self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
@@ -297,10 +301,11 @@ class Manager:
         self.commands.start_vnc(":0", 5900, 6080)
 
         # Start the exercise
-        self.commands.start_exercise(exercise)
         
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
             self.launch_level = 3
 
             self.commands.start_vnc(":1", 5901, 1108)
@@ -309,6 +314,9 @@ class Manager:
             self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
             self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
