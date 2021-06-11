@@ -49,8 +49,8 @@ function declare_code(websocket_address){
         }
 
         // Send the acknowledgment message along with frequency
-        code_frequency = document.querySelector('#code_frequency').value;
-		gui_frequency = document.querySelector('#gui_frequency').value;
+        code_frequency = document.querySelector('#code_freq').value;
+		gui_frequency = document.querySelector('#gui_freq').value;
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
     };
