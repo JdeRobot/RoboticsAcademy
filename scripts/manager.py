@@ -305,13 +305,15 @@ class Manager:
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
-            time.sleep(2)
+            time.sleep(5)
             self.launch_level = 3
 
             self.commands.start_vnc(":1", 5901, 1108)
 
             # Start gazebo client
+            time.sleep(2)
             self.commands.start_gzclient(exercise, width, height)
+            time.sleep(2)
             self.commands.start_console(width, height)
         else:
             self.commands.start_exercise(exercise)
