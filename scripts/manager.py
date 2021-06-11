@@ -284,6 +284,7 @@ class Manager:
             self.commands.start_vnc(":1", 5901, 1108)
 
             # Start gazebo client
+            time.sleep(2)
             self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
