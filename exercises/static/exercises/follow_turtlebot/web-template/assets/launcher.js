@@ -17,7 +17,7 @@ function startSim() {
     }
 
     ws_manager.onmessage = function (event) {
-        console.log(event.data);
+        //console.log(event.data);
         if (event.data.level > level) {
             level = event.data.level;
             radiConect.contentWindow.postMessage({command: 'launch_level', level: `${level}`}, '*');
