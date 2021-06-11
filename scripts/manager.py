@@ -233,6 +233,7 @@ class Manager:
         self.client = None
         self.host = "0.0.0.0"
         self.commands = Commands()
+        self.launch_level = 0
 
     # Function to handle all the requests
     async def handle(self, websocket, path):
@@ -241,7 +242,6 @@ class Manager:
         async for message in websocket:
             data = json.loads(message)
             command = data["command"]
-            print("COMANDO: ", command)
             if command == "open":
                 width = data.get("width", 1920)
                 height = data.get("height", 1080)
@@ -257,12 +257,10 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-            elif command == "Pong":
-                await websocket.send("Ping")
+            elif "Pong" in command:
+                await websocket.send("Ping{}".format(self.launch_level))
             else:
                 await self.kill_simulation()
-
-            await websocket.send("Ping")
 
     
     # Function to open non-accelerated simulation
@@ -274,11 +272,12 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        self.commands.start_exercise(exercise)
 
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
             time.sleep(5)
+            self.launch_level = 3
 
             # Start x11vnc servers
             self.commands.start_vnc(":0", 5900, 6080)
@@ -288,6 +287,9 @@ class Manager:
             self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
             self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
@@ -299,19 +301,22 @@ class Manager:
         self.commands.start_vnc(":0", 5900, 6080)
 
         # Start the exercise
-        self.commands.start_exercise(exercise)
-        self.commands.start_gzserver(exercise)
-        time.sleep(5)
         
         if not ("color_filter" in exercise):
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
+
             self.commands.start_vnc(":1", 5901, 1108)
 
             # Start gazebo client
-            time.sleep(2)
             self.commands.start_gzclient(exercise, width, height)
-            time.sleep(2)
             self.commands.start_console(width, height)
         else:
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
             self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
@@ -342,6 +347,7 @@ class Manager:
                 
     # Function to start the websocket server
     def run_server(self):
+
         self.server = websockets.serve(self.handle, self.host, 8765)
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()
