@@ -40,7 +40,7 @@
         <div overflow-x:auto id="Medidor_Brain">
             <table id=table_code_freq>
             <tr>
-            <td><a id="letters">Brain Freq:</a> <output id="ideal_code_frequency">0</output>/ <input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span> Hz</td>
+            <td><a id="letters">Brain Freq:</a> <output id="ideal_code_frequency">0</output>/ <input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span> <a id="Hz">Hz</a></td>
             </tr>  
             </table>
         </div>    
@@ -50,11 +50,7 @@
             <td><a id="letters">GUI Freq:</a><output id="ideal_gui_frequency">0</output>/ <input type="number" id="gui_freq" name="quantity" min="1" max="30" value="12" step="1" style="color:green" oninput="guifrequencyUpdate(value)"<span title="This value corresponds to the frequency the UI and visuals will be updated."></span> Hz</td>
             </tr>  
             </table>
-        </div>     
-        <div id="Medidor_RTF">
-            <a id="letters">Sim RTF:</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
-        </div>
-        
+        </div>    
     </div>
     <div class="content">
         <div class="split a">

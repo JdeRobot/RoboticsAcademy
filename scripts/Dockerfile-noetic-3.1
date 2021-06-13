@@ -37,6 +37,7 @@ RUN apt-get update && apt-get install -y \
         nano vim \
         htop net-tools \
         xterm rsync \
+        lxde-core \
         tasksel && \
     rm -rf /var/lib/apt/lists/*
 RUN tasksel install lubuntu-core lubuntu-desktop
@@ -78,54 +79,57 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # PX4
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-		bzip2 \
-		ca-certificates \
-		ccache \
-		cmake \
-		cppcheck \
-		curl \
-		dirmngr \
-		doxygen \
-		file \
-		g++ \
-		gcc \
-		gdb \
-		git \
-		gnupg \
-		gosu \
-		lcov \
-		libfreetype6-dev \
-		libgtest-dev \
-		libpng-dev \
-		libssl-dev \
-		lsb-release \
-		make \
-		ninja-build \
-		openjdk-8-jdk \
-		openjdk-8-jre \
-		openssh-client \
-		pkg-config \
-		python3-dev \
-		python3-pip \
-		shellcheck \
-		tzdata \
-		unzip \
-		valgrind \
-		wget \
-		xsltproc \
-		zip \
+        bzip2 \
+        ca-certificates \
+        ccache \
+        cmake \
+        cppcheck \
+        curl \
+        dirmngr \
+        doxygen \
+        file \
+        g++ \
+        gcc \
+        gdb \
+        git \
+        gnupg \
+        gosu \
+        lcov \
+        libfreetype6-dev \
+        libgtest-dev \
+        libpng-dev \
+        libssl-dev \
+        lsb-release \
+        make \
+        ninja-build \
+        openjdk-8-jdk \
+        openjdk-8-jre \
+        openssh-client \
+        pkg-config \
+        python3-dev \
+        python3-pip \
+        rsync \
+        shellcheck \
+        tzdata \
+        unzip \
+        valgrind \
+        wget \
+        xsltproc \
+        zip \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # gtest
-RUN cd /usr/src/gtest \
+RUN apt-get update && apt-get install -y libgtest-dev cmake && \
+    cd /usr/src/gtest \
 	&& mkdir build && cd build \
 	&& cmake .. && make -j$(nproc) \
 	&& find . -name \*.a -exec cp {} /usr/lib \; \
-	&& cd .. && rm -rf build
+	&& cd .. && rm -rf build \
+    rm -rf /var/lib/apt/lists/*
 
-# Install Python 3 pip build dependencies first.
+# Install Python 3 pip build dependencies first
 RUN python3 -m pip install --upgrade pip wheel setuptools
 
 # Python 3 dependencies installed by pip
@@ -180,24 +184,24 @@ RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add
 	&& sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -sc` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
 	&& apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --no-install-recommends install \
-		ant \
-		binutils \
-		bc \
-		dirmngr \
-		gazebo11 \
-		gstreamer1.0-plugins-bad \
-		gstreamer1.0-plugins-base \
-		gstreamer1.0-plugins-good \
-		gstreamer1.0-plugins-ugly \
-		libeigen3-dev \
-		libgazebo11-dev \
-		libgstreamer-plugins-base1.0-dev \
-		libimage-exiftool-perl \
-		libopencv-dev \
-		libxml2-utils \
-		mesa-utils \
-		protobuf-compiler \
-		x-window-system \
+        ant \
+        binutils \
+        bc \
+        dirmngr \
+        gazebo11 \
+        gstreamer1.0-plugins-bad \
+        gstreamer1.0-plugins-base \
+        gstreamer1.0-plugins-good \
+        gstreamer1.0-plugins-ugly \
+        libeigen3-dev \
+        libgazebo11-dev \
+        libgstreamer-plugins-base1.0-dev \
+        libimage-exiftool-perl \
+        libopencv-dev \
+        libxml2-utils \
+        mesa-utils \
+        protobuf-compiler \
+        x-window-system \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
@@ -230,21 +234,21 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
         ros-$ROS_DISTRO-ros-base \
         ros-$ROS_DISTRO-rostest \
         ros-$ROS_DISTRO-rosunit \
-        xvfb \
+        ros-$ROS_DISTRO-xacro \
 	&& geographiclib-get-geoids egm96-5 \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN pip3 install -U \
-		osrf-pycommon
+    osrf-pycommon
 
 # bootstrap rosdep
 RUN rosdep init && rosdep update
 
 # PX4 src
-RUN apt-get update
-RUN apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
+RUN apt-get update && \
+    apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
 RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.12.0-beta5 \
 	&& cd /PX4-Autopilot \
 	&& DONT_RUN=1 make px4_sitl gazebo
@@ -264,7 +268,6 @@ RUN /bin/bash -c '. /opt/ros/noetic/setup.bash; cd /catkin_ws; catkin build'
 # ros-$ROS_DISTRO-kobuki-msgs: Vaccuum Cleaner
 # xmlstarlet: Drone Cat Mouse
 # ros-$ROS_DISTRO-turtlebot3-description: Follow Turtlebot
-
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 		ros-$ROS_DISTRO-kobuki-msgs \
 		xmlstarlet \
@@ -274,7 +277,8 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # websocket server dependency
-RUN python3 -m pip install websocket_server websockets asyncio
+RUN pip3 install websocket_server posix-ipc django
+RUN python3.8 -m pip install websockets asyncio
 
 # Setup environment variables
 RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
@@ -293,12 +297,9 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
-RUN wget https://xpra.org/xorg.conf
-RUN Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0 &
-RUN echo 'export DISPLAY=:0' >> ~/.bashrc
 
-# django to serve the exercises
-RUN python3 -m pip install django
+RUN wget https://xpra.org/xorg.conf \
+    && rm -rf /tmp/*
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
@@ -317,9 +318,11 @@ RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/
 COPY manager-3.1.py /manager-3.1.py
 COPY instructions.json /instructions.json
 
-# execute permissions to start-3.1.sh
+# execute permissions
 COPY start-3.1.sh /start-3.1.sh
+COPY start_manager.sh /start_manager.sh
 RUN chmod 755 /start-3.1.sh
+RUN chmod 755 /start_manager.sh
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
     && ln -s /usr/bin/python3.8 /usr/bin/python
