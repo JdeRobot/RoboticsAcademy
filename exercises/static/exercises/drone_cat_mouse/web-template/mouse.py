@@ -1,7 +1,7 @@
 import threading
 import rospy
 
-from drone_wrapper import DroneWrapper
+from drone_wrapper_class import DroneWrapper
 from interfaces.autonomous_mouse import path_obfuscated
 from interfaces.threadStoppable import StoppableThread
 from gazebo_msgs.srv import SetModelState

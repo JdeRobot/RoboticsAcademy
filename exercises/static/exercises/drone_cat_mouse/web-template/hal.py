@@ -1,17 +1,17 @@
 import rospy
 import cv2
 
-from drone_wrapper import DroneWrapper
+from drone_wrapper_class import DroneWrapper
 
 
 # Hardware Abstraction Layer
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
         rospy.init_node("HAL")
-    
+
         self.image = None
         self.cat = DroneWrapper(name="rqt", ns="cat/")
 
@@ -21,7 +21,7 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
-    
+
     # Get Image from ROS Driver Camera
     def get_frontal_image(self):
         image = self.cat.get_frontal_image()
