@@ -3,15 +3,13 @@
 from __future__ import print_function
 
 from websocket_server import WebsocketServer
-import logging
 import time
 import threading
 import sys
 from datetime import datetime
 import re
 import json
-import traceback
-import imp
+import importlib
 import numpy as np
 import base64
 
@@ -199,13 +197,13 @@ class Template:
     def generate_modules(self):
         # Define HAL module
 
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
-        hal_module.HAL.motors = imp.new_module("motors")
+        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
         hal_module.HAL.getPose = self.getPose
 
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         # Add GUI functions
         gui_module.GUI.showGPP = self.gui.showGPP
         gui_module.GUI.showPath = self.gui.showPath
@@ -215,8 +213,8 @@ class Template:
         hal_module.HAL.motors.sendW = self.hal.motors.sendW
 
         # Define GUI module
-        map_module = imp.new_module("MAP")
-        map_module.MAP = imp.new_module("MAP")
+        map_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
+        map_module.MAP = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
         map_module.MAP.robotPose = self.gui.update_gui
         map_module.MAP.getGridVal = self.gui.map.getVal
         map_module.MAP.setGridVal = self.gui.map.setVal
