@@ -1,4 +1,3 @@
-import logging
 import time
 import threading
 import multiprocessing
@@ -6,8 +5,7 @@ import sys
 from datetime import datetime
 import re
 import json
-import traceback
-import imp
+import importlib
 
 import rospy
 from std_srvs.srv import Empty
@@ -61,10 +59,10 @@ class BrainProcess(multiprocessing.Process):
 
         # Reference Environment for the exec() function
         iterative_code, sequential_code = self.iterative_code, self.sequential_code
-        
+
         # print(sequential_code)
         # print(iterative_code)
-        
+
         # Whatever the code is, first step is to just stop!
         self.hal.sendV(0)
         self.hal.sendW(0)
@@ -81,7 +79,7 @@ class BrainProcess(multiprocessing.Process):
         # and keep the check for flag
         while not self.exit_signal.is_set():
             start_time = datetime.now()
-            
+
             # Execute the iterative portion
             if iterative_code != "":
                 exec(iterative_code, reference_environment)
@@ -90,13 +88,13 @@ class BrainProcess(multiprocessing.Process):
             finish_time = datetime.now()
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            
+
             # Keep updating the iteration counter
             if(iterative_code == ""):
                 self.iteration_counter = 0
             else:
                 self.iteration_counter = self.iteration_counter + 1
-        
+
             # The code should be run for atleast the target time step
             # If it's less put to sleep
             # If it's more no problem as such, but we can change it!
@@ -112,9 +110,9 @@ class BrainProcess(multiprocessing.Process):
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
-        hal_module.HAL.motors = imp.new_module("motors")
+        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
 
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
@@ -122,8 +120,8 @@ class BrainProcess(multiprocessing.Process):
         hal_module.HAL.motors.sendW = self.hal.sendW
 
         # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
@@ -135,7 +133,7 @@ class BrainProcess(multiprocessing.Process):
         sys.modules["GUI"] = gui_module
 
         return gui_module, hal_module
-            
+
     # Function to measure the frequency of iterations
     def measure_frequency(self):
         previous_time = datetime.now()
@@ -143,19 +141,19 @@ class BrainProcess(multiprocessing.Process):
         while not self.exit_signal.is_set():
             # Sleep for 2 seconds
             time.sleep(2)
-            
+
             # Measure the current time and subtract from the previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
-            
+
             # Get the time period
             try:
             	# Division by zero
             	self.ideal_cycle.add(ms / self.iteration_counter)
             except:
             	self.ideal_cycle.add(0)
-            
+
             # Reset the counter
             self.iteration_counter = 0
