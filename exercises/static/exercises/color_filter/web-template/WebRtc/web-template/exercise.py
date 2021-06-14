@@ -3,14 +3,12 @@
 from __future__ import print_function
 
 from websocket_server import WebsocketServer
-import logging
 import time
 import threading
 import sys
 from datetime import datetime
 import re
-import traceback
-import imp
+import importlib
 
 import cv2
 
@@ -172,15 +170,15 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
 
         # Define WebRtc module
-        webrtc_module = imp.new_module("WEBRTC")
-        webrtc_module.WebrtcFrame = imp.new_module("WEBRTC")
+        webrtc_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("WEBRTC", None))
+        webrtc_module.WebrtcFrame = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("WEBRTC", None))
 
         # Add WebRTC functions
         webrtc_module.WebrtcFrame.getImage = self.webrtc.getImage
