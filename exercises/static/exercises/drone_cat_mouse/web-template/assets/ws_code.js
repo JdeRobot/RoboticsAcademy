@@ -8,9 +8,10 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
-// running variable for psuedo decoupling 
+// running variable for psuedo decoupling
 // Play/Pause from Reset
-var frequency = "0";
+var frequency = "0",
+	running = false;
 
 //WebSocket for Code
 var websocket_code;
@@ -36,7 +37,7 @@ function declare_code(websocket_address){
 	websocket_code.onmessage = function(event){
 		var source_code = event.data;
 		operation = source_code.substring(0, 5);
-		
+
 		if(operation == "#load"){
 			editor.setValue(source_code.substring(5,));
 		}
@@ -48,7 +49,7 @@ function declare_code(websocket_address){
 			// Parse real time factor
 			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
-		
+
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_freq').value;
 		gui_frequency = document.querySelector('#gui_freq').value;
@@ -64,18 +65,19 @@ function submitCode(){
 		// Get the code from editor and add headers
 		var python_code = editor.getValue();
 		python_code = "#code\n" + python_code
-		
+
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
 
 		stop_button.disabled = false;
 		stop_button.style.opacity = "1.0";
 		stop_button.style.cursor = "default";
-		
+
+		running = true;
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
-	}	
+	}
 }
 
 // Function that send/submits an empty string
@@ -83,7 +85,8 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-	
+
+	running = false;
 }
 
 // Function to command the simulation to reset

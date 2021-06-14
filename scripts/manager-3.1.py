@@ -136,6 +136,13 @@ class Commands:
             novnc_thread = DockerThread(novnc_cmd)
             novnc_thread.start()
 
+    # Function to stop VNC server for accelerated simulation
+    def stop_vnc(self):
+        cmd_console = "/opt/TurboVNC/bin/vncserver -kill :0"
+        os.popen(cmd_console)
+        cmd_console = "/opt/TurboVNC/bin/vncserver -kill :1"
+        os.popen(cmd_console)
+
     # Function to start an exercise
     def start_exercise(self, exercise):
         host_cmd = self.instructions[exercise]["instructions_host"]
@@ -224,10 +231,6 @@ class Commands:
         os.popen(cmd_novnc)
         cmd_console = "pkill -9 -f xterm"
         os.popen(cmd_console)
-        cmd_console = "vncserver -kill :0"
-        os.popen(cmd_console)
-        cmd_console = "vncserver -kill :1"
-        os.popen(cmd_console)
 
 
 # Main Manager class
@@ -302,7 +305,11 @@ class Manager:
     def open_accelerated_simulation(self, exercise, width, height):
         print("> Starting accelerated simulation")
 
-        # Start VNC and accelerated displays
+        # Stop existing VNC and any accelerated displays
+        self.commands.stop_vnc()
+        time.sleep(2)
+
+        # Start new VNC and accelerated displays
         self.commands.start_vnc(":0", 5900, 6080)
 
         # Start the exercise
