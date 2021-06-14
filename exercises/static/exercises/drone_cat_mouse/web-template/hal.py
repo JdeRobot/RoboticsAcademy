@@ -1,7 +1,7 @@
 import rospy
 import cv2
 
-from drone_wrapper_class import DroneWrapper
+from drone_wrapper import DroneWrapper
 
 
 # Hardware Abstraction Layer

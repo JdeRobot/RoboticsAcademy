@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from drone_wrapper_class import DroneWrapper
+from drone_wrapper import DroneWrapper
 from math import sin as s
 from math import cos as c
 from random import uniform as u
