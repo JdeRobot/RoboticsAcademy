@@ -60,16 +60,141 @@ illustrations:
 youtubeId: 4WIi2cpaLDA
 ---
 
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates (Current Release)
+
+The instructions for both of them are provided as follows.
+
 ## Goal
 
 The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must Stop at the T joint, where there is a stop sign, wait until there are no cars and pass once the road is clear.
 
 {% include gallery caption="Gallery" %}
 
-## Installation 
+## Instructions for Web Templates
+This is the preferred way for running the exercise.
+
+### Installation 
+- Clone the Robotics Academy repository on your local machine
+
+	```bash
+git clone https://github.com/JdeRobot/RoboticsAcademy
+	```
+
+- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
+
+- Pull the current distribution of Robotics Academy Docker Image
+
+	```bash
+docker pull jderobot/robotics-academy
+	```
+
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+### Enable GPU Acceleration
+- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers and executing the following docker run command:
+  ```bash
+  docker run -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.2 ./start.sh
+  ```
+
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
+
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
+
+	```bash
+  docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.2 ./start.sh
+  ```
+
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
+
+- The exercise can be used after the alert.
+
+**Where to insert the code?**
+
+In the launched webpage, type your code in the text editor,
+
+```python
+from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+### Using the Interface
+
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).
+
+* **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor. 
+
+**Application Programming Interface**
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getImage('left')` - to get the left image
+* `HAL.getImage('right')` - to get the right image
+* `HAL.getImage('center')` - to get the central image
+* `HAL.getV()` - to get the linear velocity
+* `HAL.getW()` - to get the angular velocity
+* `HAL.setV()` - to set the linear velocity
+* `HAL.setW()` - to set the angular velocity
+* `HAL.getPose3D()` - to obtain the position of the robot
+* `HAL.getYaw()` - to obtain the orientation of the robot
+* `HAL.setPose3D()` - to set the position of the robot
+* `HAL.getTemplate()` - to get the stop's image template
+* `GUI.showImages(imageLeft, imageCentral, imageRight)` - allows you to view a debug images or with relevant information
+
+### Example video with web template
+
+
+## Instructions for ROSNode Templates
+
+### Installation 
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
-## How to run your solution?
+### How to perform the exercise?
+To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which gives intelligence to the autonomous car.
+
+**Where to insert the code?**
+In the `MyAlgorithm.py` file,
+
+```python
+def execute(self):
+        
+    # Add your code here
+    print "Running"
+    # Getting the images
+    input_image = self.cameraC.getImage().data      
+```
+
+**Application Programming Interface**
+
+* `self.cameraC.getImage().data` - to get image from center camera
+* `self.cameraL.getImage().data` - to get image from left camera
+* `self.cameraR.getImage().data` - to get image from right camera
+
+* `self.pose3d.getPose3d().x` - to obtain the position of the robot
+* `self.pose3d.getPose3d().y` - to obtain the position of the robot
+* `self.pose3d.getPose3d().yaw` - to obtain the orientation of the robot
+
+* `self.motors.sendW()` - to set the angular velocity
+* `self.motors.sendV()` - to set the linear velocity
+
+### How to run your solution?
 
 Navigate to the car_junction directory
 
@@ -89,34 +214,9 @@ Then you have to execute the academic application, which will incorporate your c
 python2 ./stop.py stop_conf.yml
 ```
 
-## Where to insert the code?
+### Example video with ROSNode Templates
 
-[MyAlgorithm.py](MyAlgorithm.py#L74)
-
-```
-def execute(self):
-        
-    # Add your code here
-    print "Running"
-    # Getting the images
-    input_image = self.cameraC.getImage().data      
-```
-
-
-## API
-* `self.cameraC.getImage().data` - to get image from center camera
-* `self.cameraL.getImage().data` - to get image from left camera
-* `self.cameraR.getImage().data` - to get image from right camera
-
-* `self.pose3d.getPose3d().x` - to obtain the position of the robot
-* `self.pose3d.getPose3d().y` - to obtain the position of the robot
-* `self.pose3d.getPose3d().yaw` - to obtain the position of the robot
-
-* `self.motors.sendW()` - to set the angular velocity
-* `self.motors.sendV()` - to set the linear velocity
-
-## How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which gives intelligence to the autonomous car.
+{% include youtubePlayer.html id=page.youtubeId %}
 
 ## Theory
 This exercise mostly revolves around simple Computer Vision and Control mechanisms. Let's start with the Computer Vision tasks:
@@ -158,11 +258,22 @@ The stop sign is of a very particular red color, which clearly stands out in the
 ### Turning
 Turning is a challenging part of this exercise. The parameters have to be tuned in a specific way to carry out the turn, and then the control should be passed to the follow road method in order to continue with the task. The physical equation given above can simplify the process of setting the parameters.
 
-## Illustrations
+### Illustrations
 
 {% include gallery id="illustrations" caption="Illustrations" %}
 
-## Reference Solution
+## Contributors
 
-{% include youtubePlayer.html id=page.youtubeId %}
+- Contributors: [Irene Lope](https://github.com/ilope236), [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
+- Maintained by [Jessica Fernández](https://github.com/jessiffmm), [Vanessa Fernández](https://github.com/vmartinezf).
+
+## References
+
+[1](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)
+[2](https://en.wikipedia.org/wiki/PID_controller)
+[3](https://www.elprocus.com/the-working-of-a-pid-controller/)
+[4](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)
+[5](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)
+[6](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)
+[7](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)
 
