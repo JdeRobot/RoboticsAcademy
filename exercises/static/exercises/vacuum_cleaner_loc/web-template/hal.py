@@ -13,16 +13,16 @@ from interfaces.bumper import ListenerBumper
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
-    	rospy.init_node("HAL")
-    
-    	self.motors = PublisherMotors("/roombaROS/cmd_vel", 4, 0.3)
-    	self.pose3d = ListenerPose3d("/roombaROS/odom")
-    	self.laser = ListenerLaser("/roombaROS/laser/scan")
-    	self.bumper = ListenerBumper("/roombaROS/events/bumper")
-    	self.camera_lock = threading.Lock()
-    	
+        rospy.init_node("HAL")
+
+        self.motors = PublisherMotors("/roombaROS/cmd_vel", 4, 0.3)
+        self.pose3d = ListenerPose3d("/roombaROS/odom")
+        self.laser = ListenerLaser("/roombaROS/laser/scan")
+        self.bumper = ListenerBumper("/roombaROS/events/bumper")
+        self.camera_lock = threading.Lock()
+
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
     @classmethod

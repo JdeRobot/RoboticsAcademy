@@ -19,6 +19,7 @@ from shared.value import SharedValue
 from hal import HAL
 from brain import BrainProcess
 
+
 class Template:
     # Initialize class variables
     # self.time_cycle to run an execution for atleast 1 second
@@ -47,58 +48,58 @@ class Template:
 
     # Function for saving
     def save_code(self, source_code):
-    	with open('code/academy.py', 'w') as code_file:
-    		code_file.write(source_code)
+        with open('code/academy.py', 'w') as code_file:
+            code_file.write(source_code)
 
     # Function for loading
     def load_code(self):
-    	with open('code/academy.py', 'r') as code_file:
-    		source_code = code_file.read()
+        with open('code/academy.py', 'r') as code_file:
+            source_code = code_file.read()
 
-    	return source_code
+        return source_code
 
     # Function to parse the code
     # A few assumptions:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-    	# Check for save/load
-    	if(source_code[:5] == "#save"):
-    		source_code = source_code[5:]
-    		self.save_code(source_code)
+        # Check for save/load
+        if(source_code[:5] == "#save"):
+            source_code = source_code[5:]
+            self.save_code(source_code)
 
-    		return "", ""
+            return "", ""
 
-    	elif(source_code[:5] == "#load"):
-    		source_code = source_code + self.load_code()
-    		self.server.send_message(self.client, source_code)
+        elif(source_code[:5] == "#load"):
+            source_code = source_code + self.load_code()
+            self.server.send_message(self.client, source_code)
 
-    		return "", ""
+            return "", ""
 
         elif(source_code[:5] == "#resu"):
-                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-                restart_simulation()
+            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation()
 
-                return "", ""
+            return "", ""
 
         elif(source_code[:5] == "#paus"):
-                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-                pause_simulation()
+            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation()
 
-                return "", ""
+            return "", ""
 
-    	elif(source_code[:5] == "#rest"):
-    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-    		reset_simulation()
-    		return "", ""
+        elif(source_code[:5] == "#rest"):
+            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
+            reset_simulation()
+            return "", ""
 
-    	else:
-    		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-    		return iterative_code, sequential_code
+        else:
+            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+            return iterative_code, sequential_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
-    	if source_code == "":
+        if source_code == "":
             return "", ""
 
         # Search for an instance of while True
@@ -169,11 +170,12 @@ class Template:
                 stats_list = [x.strip() for x in line.split(b',')]
                 self.real_time_factor = stats_list[0].decode("utf-8")
 
-
     # Function to generate and send frequency messages
+
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0; gui_frequency = 0
+        brain_frequency = 0
+        gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.brain_ideal_cycle.get(), 1)
         except ZeroDivisionError:
@@ -191,9 +193,9 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
-
     # The websocket function
     # Gets called when there is an incoming message from the client
+
     def handle(self, client, server, message):
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
@@ -212,8 +214,8 @@ class Template:
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
-    	self.client = client
-    	# Start the HAL update thread
+        self.client = client
+        # Start the HAL update thread
         self.hal.start_thread()
 
         # Start real time factor tracker thread
@@ -223,18 +225,18 @@ class Template:
         # Initialize the ping message
         self.send_frequency_message()
 
-    	print(client, 'connected')
+        print(client, 'connected')
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-    	print(client, 'closed')
+        print(client, 'closed')
 
     def run_server(self):
-    	self.server = WebsocketServer(port=1905, host=self.host)
-    	self.server.set_fn_new_client(self.connected)
-    	self.server.set_fn_client_left(self.handle_close)
-    	self.server.set_fn_message_received(self.handle)
-    	self.server.run_forever()
+        self.server = WebsocketServer(port=1905, host=self.host)
+        self.server.set_fn_new_client(self.connected)
+        self.server.set_fn_client_left(self.handle_close)
+        self.server.set_fn_message_received(self.handle)
+        self.server.run_forever()
 
 
 # Execute!

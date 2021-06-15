@@ -18,6 +18,7 @@ from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
 
+
 class Template:
     # Initialize class variables
     # self.time_cycle to run an execution for atleast 1 second
@@ -42,83 +43,82 @@ class Template:
 
     # Function for saving
     def save_code(self, source_code):
-    	with open('code/academy.py', 'w') as code_file:
-    		code_file.write(source_code)
+        with open('code/academy.py', 'w') as code_file:
+            code_file.write(source_code)
 
     # Function for loading
     def load_code(self):
-    	with open('code/academy.py', 'r') as code_file:
-    		source_code = code_file.read()
+        with open('code/academy.py', 'r') as code_file:
+            source_code = code_file.read()
 
-    	return source_code
+        return source_code
 
     # Function to parse the code
     # A few assumptions:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-    	# Check for save/load
-    	if(source_code[:5] == "#save"):
-    		source_code = source_code[5:]
-    		self.save_code(source_code)
+        # Check for save/load
+        if(source_code[:5] == "#save"):
+            source_code = source_code[5:]
+            self.save_code(source_code)
 
-    		return "", ""
+            return "", ""
 
-    	elif(source_code[:5] == "#load"):
-    		source_code = source_code + self.load_code()
-    		self.server.send_message(self.client, source_code)
+        elif(source_code[:5] == "#load"):
+            source_code = source_code + self.load_code()
+            self.server.send_message(self.client, source_code)
 
-    		return "", ""
+            return "", ""
 
         elif(source_code[:5] == "#resu"):
-                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-                restart_simulation()
+            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation()
 
-                return "", ""
+            return "", ""
 
         elif(source_code[:5] == "#paus"):
-                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-                pause_simulation()
+            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation()
 
-                return "", ""
+            return "", ""
 
-    	elif(source_code[:5] == "#rest"):
-    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-    		reset_simulation()
-    		self.gui.reset_gui()
-    		return "", ""
+        elif(source_code[:5] == "#rest"):
+            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
+            reset_simulation()
+            self.gui.reset_gui()
+            return "", ""
 
-    	else:
-    		# Get the frequency of operation, convert to time_cycle and strip
-    		try:
-        		# Get the debug level and strip the debug part
-        		debug_level = int(source_code[5])
-        		source_code = source_code[12:]
-        	except:
-        		debug_level = 1
-        		source_code = ""
+        else:
+            # Get the frequency of operation, convert to time_cycle and strip
+            try:
+                # Get the debug level and strip the debug part
+                debug_level = int(source_code[5])
+                source_code = source_code[12:]
+            except:
+                debug_level = 1
+                source_code = ""
 
-    		source_code = self.debug_parse(source_code, debug_level)
+            source_code = self.debug_parse(source_code, debug_level)
             # Pause and unpause
-    		if(source_code == ""):
-    		    self.gui.lap.pause()
-    		else:
-    		    self.gui.lap.unpause()
-    		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-    		return iterative_code, sequential_code
-
+            if(source_code == ""):
+                self.gui.lap.pause()
+            else:
+                self.gui.lap.unpause()
+            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+            return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
-    	if(debug_level == 1):
-    		# If debug level is 0, then all the GUI operations should not be called
-    		source_code = re.sub(r'GUI\..*', '', source_code)
+        if(debug_level == 1):
+            # If debug level is 0, then all the GUI operations should not be called
+            source_code = re.sub(r'GUI\..*', '', source_code)
 
-    	return source_code
+        return source_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
-    	if source_code == "":
+        if source_code == "":
             return "", ""
 
         # Search for an instance of while True
@@ -142,8 +142,8 @@ class Template:
 
         return sequential_code, iterative_code
 
-
     # The process function
+
     def process_code(self, source_code):
 
         # Redirect the information to console
@@ -193,8 +193,8 @@ class Template:
         close_console()
         print("Current Thread Joined!")
 
-
     # Function to generate the modules for use in ACE Editor
+
     def generate_modules(self):
         # Define HAL module
         hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
@@ -240,10 +240,10 @@ class Template:
 
             # Get the time period
             try:
-            	# Division by zero
-            	self.ideal_cycle = ms / self.iteration_counter
+                # Division by zero
+                self.ideal_cycle = ms / self.iteration_counter
             except:
-            	self.ideal_cycle = 0
+                self.ideal_cycle = 0
 
             # Reset the counter
             self.iteration_counter = 0
@@ -251,7 +251,8 @@ class Template:
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0; gui_frequency = 0
+        brain_frequency = 0
+        gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.ideal_cycle, 1)
         except ZeroDivisionError:
@@ -319,26 +320,26 @@ class Template:
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
-    	self.client = client
-    	# Start the GUI update thread
-    	self.thread_gui = ThreadGUI(self.gui)
-    	self.thread_gui.start()
+        self.client = client
+        # Start the GUI update thread
+        self.thread_gui = ThreadGUI(self.gui)
+        self.thread_gui.start()
 
         # Initialize the ping message
         self.send_frequency_message()
 
-    	print(client, 'connected')
+        print(client, 'connected')
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-    	print(client, 'closed')
+        print(client, 'closed')
 
     def run_server(self):
-    	self.server = WebsocketServer(port=1905, host=self.host)
-    	self.server.set_fn_new_client(self.connected)
-    	self.server.set_fn_client_left(self.handle_close)
-    	self.server.set_fn_message_received(self.handle)
-    	self.server.run_forever()
+        self.server = WebsocketServer(port=1905, host=self.host)
+        self.server.set_fn_new_client(self.connected)
+        self.server.set_fn_client_left(self.handle_close)
+        self.server.set_fn_message_received(self.handle)
+        self.server.run_forever()
 
 
 # Execute!

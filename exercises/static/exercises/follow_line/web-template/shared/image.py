@@ -2,7 +2,7 @@ import numpy as np
 import mmap
 from posix_ipc import Semaphore, O_CREX, ExistentialError, O_CREAT, SharedMemory, unlink_shared_memory
 from ctypes import sizeof, memmove, addressof, create_string_buffer
-from structure_img import MD
+from shared.structure_img import MD
 
 # Probably, using self variables gives errors with memmove
 # Therefore, a global variable for utility
@@ -74,7 +74,7 @@ class SharedImage:
     def add(self, image):
         # Get byte size of the image
         byte_size = image.nbytes
-        
+
         # Get the shared memory buffer to read from
         if not self.shm_region:
             self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=byte_size)

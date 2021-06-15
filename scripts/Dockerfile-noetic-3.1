@@ -296,7 +296,7 @@ RUN wget https://xpra.org/xorg.conf \
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
-	git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
+	git clone -b melodic-devel https://github.com/JdeRobot/CustomRobots.git
 
 # Setting environment variables
 RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
@@ -306,7 +306,7 @@ RUN echo 'export ROS_PACKAGE_PATH=ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot
 
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1/models:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
 
 # RoboticsAcademy
