@@ -3,15 +3,13 @@
 from __future__ import print_function
 
 from websocket_server import WebsocketServer
-import logging
 import json
 import time
 import threading
 import sys
 from datetime import datetime
 import re
-import traceback
-import imp
+import importlib
 import cv2
 from gui import GUI, ThreadGUI
 from hal import HAL
@@ -168,14 +166,14 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
+        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
 
         # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
 
