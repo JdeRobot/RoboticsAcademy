@@ -44,11 +44,15 @@ function declare_code(websocket_address){
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
+			// Parse real time factor
+			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
 		
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_freq').value;
 		gui_frequency = document.querySelector('#gui_freq').value;
+		real_time_factor = document.querySelector('#real_time_factor').value;
+		
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
