@@ -13,18 +13,18 @@ from shared.value import SharedValue
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
-    	rospy.init_node("HAL")
-    
+        rospy.init_node("HAL")
+
         # Shared memory variables
-    	self.shared_image = SharedImage("halimage")
+        self.shared_image = SharedImage("halimage")
         self.shared_v = SharedValue("velocity")
         self.shared_w = SharedValue("angular")
 
         # ROS Topics
-    	self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
-    	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
+        self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
+        self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
@@ -32,7 +32,7 @@ class HAL:
     # Function to start the update thread
     def start_thread(self):
         self.thread.start()
-    
+
     # Get Image from ROS Driver Camera
     def getImage(self):
         image = self.camera.getImage().data
@@ -68,6 +68,7 @@ class HAL:
         self.shared_image.close()
         self.shared_v.close()
         self.shared_w.close()
+
 
 class ThreadHAL(threading.Thread):
     def __init__(self, update_function):

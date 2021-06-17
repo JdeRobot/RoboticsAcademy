@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_no_RTF.html' %}
 
 {% load static %}
 {% block content %}
@@ -22,8 +22,6 @@ while True:
 </div>
 <div class="split b">
     <div id="visual_buttons" class="row no-gutters">
-        <button id="gzweb_btn" type="button" onclick="changegzweb()"><img id="gzimg" src="{% static 'exercises/vacuum_cleaner/web-template/assets/img/gzweb_btn.png' %}"></button>
-        <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/vacuum_cleaner/web-template/assets/img/terminal-solid.svg' %}"> Console</button>
         <!--<div id="lap_heading">Lap Time <span id="lap_time"></span> </div>-->
     </div>
     <div id="visual">

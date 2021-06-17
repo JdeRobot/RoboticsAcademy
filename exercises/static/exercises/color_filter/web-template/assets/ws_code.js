@@ -19,8 +19,11 @@ function declare_code(){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){
-		if (websocket_gui.readyState == 1)
+		radiConect.contentWindow.postMessage({command: 'launch_level', level: '5'}, '*');
+		if (websocket_gui.readyState == 1) {
 			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage('up', '*');
+		}
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
@@ -46,8 +49,8 @@ function declare_code(){
 		}
 
 		// Send the acknowledgment message along with frequency
-		code_frequency = document.querySelector('#code_frequency').value;
-		gui_frequency = document.querySelector('#gui_frequency').value;
+		code_frequency = document.querySelector('#code_freq').value;
+		gui_frequency = document.querySelector('#gui_freq').value;
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
@@ -61,7 +64,8 @@ function submitCode(){
 		python_code = "#code\n" + python_code
 
 		// Get the debug level and add header
-		var debug_level = document.querySelector('input[name = "debug"]').value;
+		//var debug_level = document.querySelector('input[name = "debug"]').value;
+		var debug_level = 2;
 		python_code = "#dbug" + debug_level + python_code
 
 		websocket_code.send(python_code);
@@ -85,6 +89,18 @@ function stopCode(){
 	websocket_code.send(stop_code);
 
 	running = false;
+}
+
+function resetSim(){
+	// Send message to initiate reset
+	var message = "#rest"
+	websocket_code.send(message)
+	reset_gui();
+
+	if(running == true){
+		stopCode();
+		submitCode();
+	}
 }
 
 // Function for range slider

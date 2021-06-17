@@ -7,7 +7,7 @@
     </include>
     <!-- My robots -->
     <include>
-      <pose>0 0 0 0 0 0.0997458</pose>
+      <pose>0 0 0 0 0 -1.5529944</pose>
       <uri>model://taxi_holo_ROS</uri>
     </include>
     <!-- A global light source -->

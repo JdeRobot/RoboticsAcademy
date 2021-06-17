@@ -12,24 +12,26 @@ from interfaces.pose3d import ListenerPose3d
 from map import Map
 
 # Graphical User Interface Class
+
+
 class GUI:
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
-        
+
         self.payload = {'map': ''}
         self.server = None
         self.client = None
-        
+
         self.host = host
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-        
+
         self.hal = hal
         t.start()
-        
+
         # Create the lap object
         pose3d_object = ListenerPose3d("/roombaROS/odom")
         self.map = Map(pose3d_object)
@@ -52,35 +54,35 @@ class GUI:
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-        
+
         return acknowledge
-        
+
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
-   
+
     # Update the gui
     def update_gui(self):
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
-        self.payload["map"] = pos_message   
-        
+        self.payload["map"] = pos_message
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
-		# Acknowledge Message for GUI Thread
-		if(message[:4] == "#ack"):
-			self.set_acknowledge(True)
-			
-    
+        # Acknowledge Message for GUI Thread
+        if(message[:4] == "#ack"):
+            self.set_acknowledge(True)
+
     # Activate the server
+
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
@@ -90,7 +92,7 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         self.map.reset()
-        
+
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -138,25 +140,25 @@ class ThreadGUI:
 
             # Reset the counter
             self.iteration_counter = 0
-        
+
     # The main thread of execution
     def run(self):
-    	while(self.gui.client == None):
-    		pass
-    
+        while(self.gui.client == None):
+            pass
+
         while(True):
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
-            
+
             while(acknowledge_message == False):
-            	acknowledge_message = self.gui.get_acknowledge()
-            	
+                acknowledge_message = self.gui.get_acknowledge()
+
             self.gui.set_acknowledge(False)
-            
+
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
-            
+
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             if(ms < self.time_cycle):

@@ -44,10 +44,15 @@ time{
 }
 
 #Control{
-  text-align: center;
-  align-items: center;
-  display: inline-block;
-  margin-bottom: 30px;
+    vertical-align:middle;
+    text-align:center;  
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-template-columns: repeat(15, 1fr);
+    grid-template-columns: repeat(15, 1fr);
+    width: 100%;
+    margin: 15px auto; 
+    margin-left: 80px;  
 }
 .btn_img{
     height: 25px;
@@ -62,7 +67,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    margin-right:10px;
 }
 
 #stop{
@@ -71,7 +76,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
+    margin-right:10px;
 
 }
 
@@ -81,7 +86,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    margin-right:10px;
 }
 
 #load{
@@ -90,6 +95,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
+    margin-right:50px;
 
 }
 
@@ -100,16 +106,94 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
+    margin-right:50px;
 
 }
 
-#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover{
+#gazebo_button{
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right: 10px;
+}
+
+
+#console_button{
+    font-size: 12px;
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right: 50px;
+}
+
+#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     border-image: linear-gradient(to right, #3acfd5 0%, #3a4ed5 100%);
     border-image-slice: 1;
+}
+
+#letters{
+    margin-top: 10px;
+    margin-right:10px;
+    width: 80px;
+    height: 40px;
+}
+
+#real_time_factor{
+    margin-top:8px;
+    width: 20px;
+    height: 40px;
+}
+
+input[type=number]{
+    width: 40px;
+    background-color: whitesmoke;
+}
+input[type=number]::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
+#code_freq, #gui_freq, #sim_rtf{
+    height: 40px;
+    border:none;
+}
+
+#table_code_freq, #table_gui_freq{
+    height:40px;
+    width:210px;
+    margin-right:30px;
+}
+
+#ideal_code_frequency, #code_frequency{
+    display:inline-block;
+    margin-right:10px;
+    white-space: pre-wrap;
+}
+
+#Medidor_Brain{
+    width:210px;
+    height:42px;
+    background-color: whitesmoke;
+    margin-right:10px;
+}
+
+#Medidor_GUI{
+    width:190px;
+    height:42px;
+    background-color: whitesmoke;
+    margin-right:10px;
+}
+
+#Medidor_RTF{
+    width:100px;
+    height:42px;
+    background-color: whitesmoke;
+    margin-right:10px;
 }
 
 #gzweb_btn{
@@ -164,7 +248,7 @@ margin-bottom: 10px;
 }
 
 th, td{
-    padding-left: 10px;
+    padding-left: 0px;
 }
 #frecuency_control{
   margin-left: 5%;
