@@ -62,7 +62,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    margin-right: 10px;
 }
 
 #stop{
@@ -71,7 +71,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
+    margin-right: 10px;
 
 }
 
@@ -81,7 +81,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 10px;
+    margin-right: 10px;
 }
 
 #load{
@@ -90,7 +90,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-
+    margin-right: 10px;
 }
 
 #reset{
@@ -100,7 +100,7 @@ margin-bottom: 10px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
+  margin-right: 50px;
 
 }
 
@@ -158,14 +158,14 @@ margin-bottom: 10px;
     width:190px;
     height:42px;
     background-color: whitesmoke;
-    margin-right:50px;
+    margin-right:10px;
   }
   
   #Medidor_RTF{
     width:100px;
     height:42px;
     background-color: whitesmoke;
-    margin-right:10px;
+    margin-right:50px;
   }
 
 #console_btn{
