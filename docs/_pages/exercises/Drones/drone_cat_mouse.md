@@ -81,6 +81,8 @@ while True:
 
 * **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code(under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer(a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
 
+* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+
 * **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
 
 ## Application Programming Interface
@@ -137,7 +139,7 @@ Besides using the buttons at the drone teleoperator GUI, taking off and landing 
 
 ## Hints
 
-Simple hints provided to help you solve the follow_road exercise. Please note that the **full solution has not been provided.**
+Simple hints provided to help you solve the drone_cat_mouse exercise. Please note that the **full solution has not been provided.**
 
 ### Directional control. How should drone yaw be handled? 
 
