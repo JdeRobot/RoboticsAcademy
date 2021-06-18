@@ -154,12 +154,12 @@ Besides using the buttons at the drone teleoperator GUI, taking off and landing 
 ### Beacons
 * `HAL.init_beacons()` - Initializes the beacons
 * `HAL.get_next_beacon` - Returns the next beacon to be visited
-* `HAL.beacon.get_pose()` - Returns pose of the beacon
-* `HAL.beacon.get_id()` - Returns id of the beacon
-* `HAL.beacon.is_reached()` - Returns reached of the beacon
-* `HAL.beacon.set_reached(value)` - Sets reached parameter of a beacon
-* `HAL.beacon.is_active()` - Returns active of the beacon
-* `HAL.beacon.set_active(value)` - Sets active parameter of a beacon
+* `HAL.get_next_beacon().get_pose()` - Returns pose of the beacon
+* `HAL.get_next_beacon().get_id()` - Returns id of the beacon
+* `HAL.get_next_beacon().is_reached()` - Returns reached of the beacon
+* `HAL.get_next_beacon().set_reached(value)` - Sets reached parameter of a beacon
+* `HAL.get_next_beacon().is_active()` - Returns active of the beacon
+* `HAL.get_next_beacon().set_active(value)` - Sets active parameter of a beacon
 
 ## Theory
 
