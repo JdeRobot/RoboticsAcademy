@@ -10,7 +10,8 @@ stop_button.style.cursor = "not-allowed";
 
 // running variable for psuedo decoupling 
 // Play/Pause from Reset
-var frequency = "0";
+var frequency = "0",
+	running = false;
 
 //WebSocket for Code
 var websocket_code;
@@ -72,6 +73,7 @@ function submitCode(){
 		stop_button.style.opacity = "1.0";
 		stop_button.style.cursor = "default";
 		
+		running = true;
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
@@ -83,7 +85,8 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-	
+
+	running = false;
 }
 
 // Function to command the simulation to reset
