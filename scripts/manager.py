@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-
+import subprocess
 import asyncio
 import websockets
 import os
@@ -24,11 +24,15 @@ class DockerThread(threading.Thread):
     def __init__(self, cmd):
         threading.Thread.__init__(self)
         self.cmd = cmd
+        self.out = None
 
     def run(self):
         stream = os.popen(self.cmd)
-        out = stream.read()
-        print(out)
+        output = stream.read()
+        self.out = output
+     
+    def print_output(self):
+        return self.out
 
 # Class to store the commands
 class Commands:
@@ -64,6 +68,7 @@ class Commands:
                         '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
                         'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
                         'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
+        gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
         for instruction in self.instructions[exercise]["instructions_ros"]:
             if not (ACCELERATION_ENABLED):
@@ -71,7 +76,7 @@ class Commands:
             else:
                 roslaunch_cmd = roslaunch_cmd + "vglrun " + instruction + ";"
         roslaunch_cmd = roslaunch_cmd + '"'
-        return roslaunch_cmd
+        return roslaunch_cmd, gz_cmd
 
     # Function to start gzclient
     def start_gzclient(self, exercise, width, height):
@@ -150,9 +155,22 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
-        roslaunch_cmd = self.get_ros_instructions(exercise)
+        roslaunch_cmd,gz_cmd = self.get_ros_instructions(exercise)
         roslaunch_thread = DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
+        args=["gz", "stats", "-p"]
+        repeat = True
+        while repeat:
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+            with process.stdout:
+                for line in iter(process.stdout.readline, b''):
+                    if not ("is not running" in line.decode()):
+                        repeat = False
+                        break
+                    else:
+                        repeat = True
+            
+
 
     # Function to pause Gazebo physics
     def pause_physics(self):
@@ -174,6 +192,10 @@ class Commands:
 
     # Function to kill every program
     async def kill_all(self):
+        cmd_py = 'pkill -9 -f "python "'
+        os.popen(cmd_py)
+        cmd_gz = "pkill -9 -f gz"
+        os.popen(cmd_gz)
         cmd_exercise = "pkill -9 -f exercise.py"
         os.popen(cmd_exercise)
         cmd_gui = "pkill -9 -f gui.py"
@@ -192,6 +214,8 @@ class Commands:
         os.popen(cmd_mel)
         cmd_rosout = "pkill -9 -f rosout"
         os.popen(cmd_rosout)
+        cmd_websocki = "pkill -9 -f websockify"
+        os.popen(cmd_websocki)
         cmd_x11vnc = "pkill -9 -f x11vnc"
         os.popen(cmd_x11vnc)
         cmd_novnc = "pkill -9 -f launch.sh"
@@ -209,6 +233,7 @@ class Manager:
         self.client = None
         self.host = "0.0.0.0"
         self.commands = Commands()
+        self.launch_level = 0
 
     # Function to handle all the requests
     async def handle(self, websocket, path):
@@ -217,7 +242,6 @@ class Manager:
         async for message in websocket:
             data = json.loads(message)
             command = data["command"]
-
             if command == "open":
                 width = data.get("width", 1920)
                 height = data.get("height", 1080)
@@ -233,12 +257,10 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-            elif command == "Pong":
-                await websocket.send("Ping")
+            elif "Pong" in command:
+                await websocket.send("Ping{}".format(self.launch_level))
             else:
-                self.kill_simulation()
-
-            await websocket.send("Ping")
+                await self.kill_simulation()
 
     
     # Function to open non-accelerated simulation
@@ -250,20 +272,25 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        self.commands.start_exercise(exercise)
 
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
             time.sleep(5)
+            self.launch_level = 3
 
             # Start x11vnc servers
             self.commands.start_vnc(":0", 5900, 6080)
             self.commands.start_vnc(":1", 5901, 1108)
 
             # Start gazebo client
+            time.sleep(2)
             self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
             self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
@@ -275,11 +302,13 @@ class Manager:
         self.commands.start_vnc(":0", 5900, 6080)
 
         # Start the exercise
-        self.commands.start_exercise(exercise)
-        self.commands.start_gzserver(exercise)
-        time.sleep(5)
         
         if not ("color_filter" in exercise):
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
             self.commands.start_vnc(":1", 5901, 1108)
 
             # Start gazebo client
@@ -288,6 +317,9 @@ class Manager:
             time.sleep(2)
             self.commands.start_console(width, height)
         else:
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
             self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
@@ -314,10 +346,11 @@ class Manager:
     # Function to kill simulation
     async def kill_simulation(self):
         print("Kill simulation")
-        self.commands.kill_all()
+        await self.commands.kill_all()
                 
     # Function to start the websocket server
     def run_server(self):
+
         self.server = websockets.serve(self.handle, self.host, 8765)
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()

@@ -125,7 +125,7 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin-right: 10px;
+    margin-right: 50px;
 }
 
 #reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo:hover, #console:hover{
@@ -138,6 +138,7 @@ img{
 
 #letters{
     margin-top: 8px;
+    margin-right:10px;
     width: 80px;
     height: 40px;
 }
@@ -149,7 +150,8 @@ img{
 }
 
 input[type=number]{
-    width: 60px;
+    width: 40px;
+    background-color: whitesmoke;
 }
 input[type=number]::-webkit-inner-spin-button {
     opacity: 1;
@@ -162,13 +164,35 @@ input[type=number]::-webkit-inner-spin-button {
 
 #table_code_freq, #table_gui_freq{
     height:40px;
-    width:100px;
+    width:210px;
+    margin-right:30px;
 }
 
 #ideal_code_frequency, #code_frequency{
     display:inline-block;
     margin-right:10px;
     white-space: pre-wrap;
+}
+
+#Medidor_Brain{
+    width:210px;
+    height:42px;
+    background-color: whitesmoke;
+    margin-right:10px;
+}
+
+#Medidor_GUI{
+    width:190px;
+    height:42px;
+    background-color: whitesmoke;
+    margin-right:10px;
+}
+
+#Medidor_RTF{
+    width:100px;
+    height:42px;
+    background-color: whitesmoke;
+    margin-right:10px;
 }
 
 #gzweb_btn{
@@ -223,7 +247,7 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 th, td{
-    padding-left: 10px;
+    padding-left: 0px;
 }
 #frecuency_control{
   margin-left: 5%;

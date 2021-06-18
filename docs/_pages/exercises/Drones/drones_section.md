@@ -16,7 +16,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -26,7 +26,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
@@ -36,7 +36,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"    
+    version: "v2.4"    
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"

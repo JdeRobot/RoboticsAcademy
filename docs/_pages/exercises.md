@@ -37,7 +37,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
     alt: "Vacuum Cleaner"
@@ -77,7 +77,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
     alt: "3D Reconstruction"
@@ -97,7 +97,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"

@@ -15,8 +15,11 @@ function declare_gui(){
     websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
     websocket_gui.onopen = function(event){
-        if (websocket_code.readyState == 1)
-            alert("[open] Connection established!");
+		radiConect.contentWindow.postMessage({command: 'launch_level', level: '6'}, '*');
+		if (websocket_code.readyState == 1) {
+			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage('up', '*');
+		}
     }
 
     websocket_gui.onclose = function(event){
@@ -32,7 +35,6 @@ function declare_gui(){
     // What to do when a message from server is received
     websocket_gui.onmessage = function(event){
         var operation = event.data.substring(0, 4);
-        radiConect.contentWindow.postMessage('up', '*');
         if(operation == "#gui"){
             // Parse the entire Object
 
