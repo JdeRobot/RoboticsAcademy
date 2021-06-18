@@ -36,7 +36,17 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"    
+    version: "v2.4" 
+
+  - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
+    alt: "Labyrinth Escape"
+    title: "Labyrinth Escape"
+    excerpt: "Escape from a labyrinth through visual signals."
+    url: "/exercises/Drones/labyrinth_escape"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
