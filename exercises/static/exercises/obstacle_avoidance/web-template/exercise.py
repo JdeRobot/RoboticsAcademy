@@ -6,6 +6,7 @@ from websocket_server import WebsocketServer
 import logging
 import time
 import threading
+import subprocess
 import sys
 from datetime import datetime
 import re
@@ -22,7 +23,7 @@ from console import start_console, close_console
 
 class Template:
     # Initialize class variables
-    # self.time_cycle to run an execution for atleast 1 second
+    # self.time_cycle to run an execution for at least 1 second
     # self.process for the current running process
     def __init__(self):
         self.thread = None
@@ -32,7 +33,8 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '',  'rtf': ''}
                 
         self.server = None
         self.client = None
@@ -250,6 +252,8 @@ class Template:
             # Reset the counter
             self.iteration_counter = 0
 
+            self.send_frequency_message()
+
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
@@ -266,6 +270,7 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
@@ -286,6 +291,22 @@ class Template:
         self.thread.start()
         self.measure_thread.start()
         print("New Thread Started!")
+
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args = ["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(',')]
+                self.real_time_factor = stats_list[0]
+
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -325,6 +346,10 @@ class Template:
     	# Start the GUI update thread
     	self.thread_gui = ThreadGUI(self.gui)
     	self.thread_gui.start()
+
+        # Start the real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
 
         # Initialize the ping message
         self.send_frequency_message()
