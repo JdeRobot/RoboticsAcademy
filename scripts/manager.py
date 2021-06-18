@@ -275,6 +275,7 @@ class Manager:
 
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
+            if exercise in ("drone_cat_mouse"): time.sleep(15)
             self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
@@ -305,6 +306,7 @@ class Manager:
         
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
+            if exercise in ("drone_cat_mouse"): time.sleep(15)
             self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
