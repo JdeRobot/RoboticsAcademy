@@ -39,6 +39,16 @@ feature_row:
     version_label: ""
     version: ""
 
+  - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
+    alt: "Human Detection"
+    title: "Human Detection"
+    excerpt: "Develop a DL human detection model to perform inference and benchmarking in real time."
+    url: "/exercises/ComputerVision/human_detection"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: ""
+    version: ""
+
 --- 
 
 
