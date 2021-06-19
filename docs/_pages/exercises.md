@@ -119,6 +119,16 @@ feature_row:
     version_label: "btn--success"
     version: "v2.4"
 
+  - image_path: /assets/images/exercises/position_control/position_control_teaser.png
+    alt: "Position Control"
+    title: "Position Control"
+    excerpt: "Local navigation algorithm through the use of a PID controller."
+    url: "/exercises/Drones/position_control"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.4"
+
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
     title: "Car Junction"
@@ -154,16 +164,6 @@ feature_row:
     title: "Drone Gymkhana"
     excerpt: "Learn about different drone controls and drone infrastructure."
     url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/position_control/position_control_teaser.png
-    alt: "Position Control"
-    title: "Position Control"
-    excerpt: "Local navigation algorithm through the use of a PID controller."
-    url: "/exercises/Drones/position_control"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"

@@ -54,5 +54,10 @@
         "gazebo_path": "/RoboticsAcademy/exercises/labyrinth_escape/web-template/launch",
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/labyrinth_escape/web-template/launch/labyrinth_escape.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/labyrinth_escape/web-template/exercise.py 0.0.0.0"
+    },
+    "position_control": {
+        "gazebo_path": "/RoboticsAcademy/exercises/position_control/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/position_control/web-template/launch/position_control.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/position_control/web-template/exercise.py 0.0.0.0"
     }
 }
