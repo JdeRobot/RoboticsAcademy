@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- vehicle model and world -->
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="iris"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/drone_cat_mouse.world"/>
+    <!--<arg name="world" default="$(eval env('PWD') + '/drone_cat_mouse.world')"/>-->
+
+    <!-- gazebo configs -->
+    <arg name="gui" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="true"/>
+    <arg name="paused" default="false"/>
+	<arg name="headless" default="true"/>
+    <arg name="use_sim_time" default="true"/>
+
+    <!-- Gazebo sim -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+		<arg name="headless" value="$(arg headless)"/>
+		<arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+
+    <rosparam command="load" file="/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/drone_cat_mouse.yaml" />
+    <!--<rosparam command="load" file="$(eval env('PWD') + '/drone_cat_mouse.yaml')" />-->
+
+    <group ns="cat">
+        <!-- MAVROS and vehicle configs -->
+        <arg name="ID" value="0"/>
+        <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="model" value="iris_dual_cam"/>
+            <arg name="model_name" value="iris"/>
+            <arg name="mavlink_udp_port" value="14560"/>
+            <arg name="mavlink_tcp_port" value="4560"/>
+            <arg name="ID" value="$(arg ID)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+
+    <group ns="mouse">
+        <!-- MAVROS and vehicle configs -->
+        <arg name="ID" value="1"/>
+        <arg name="fcu_url" default="udp://:14541@localhost:14581"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+            <arg name="x" value="2"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="model" value="iris_red"/>
+            <arg name="model_name" value="iris_red"/>
+            <arg name="mavlink_udp_port" value="14561"/>
+            <arg name="mavlink_tcp_port" value="4561"/>
+            <arg name="ID" value="$(arg ID)"/>
+        </include>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="$(arg fcu_url)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+    </group>
+</launch>

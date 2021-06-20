@@ -1,0 +1,10 @@
+Color_Filter:
+
+  Camera:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "cameraA:default -h localhost -p 9999"
+    Topic: "/videoopencv/image_raw"
+    Format: RGB8
+    Name: ColorFilterCamera
+    
+  NodeName: Color_Filter
