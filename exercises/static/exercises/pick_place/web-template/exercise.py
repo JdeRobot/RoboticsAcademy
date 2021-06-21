@@ -52,142 +52,142 @@ class Template:
     # A few assumptions: 
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
-    def parse_code(self, source_code):
-        if source_code[:5] == "#resu":
-            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-            restart_simulation()
+    # def parse_code(self, source_code):
+    #     if source_code[:5] == "#resu":
+    #         restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+    #         restart_simulation()
 
-            return "", ""
+    #         return "", ""
 
-        elif source_code[:5] == "#paus":
-            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-            pause_simulation()
+    #     elif source_code[:5] == "#paus":
+    #         pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+    #         pause_simulation()
 
-            return "", ""
+    #         return "", ""
 
-        elif source_code[:5] == "#rest":
-            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-            reset_simulation()
-            self.gui.reset_gui()
-            if self.hal.get_landed_state() ==2 : self.hal.land()
-            self.turtlebot.reset_turtlebot()
+    #     elif source_code[:5] == "#rest":
+    #         reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
+    #         reset_simulation()
+    #         self.gui.reset_gui()
+    #         if self.hal.get_landed_state() ==2 : self.hal.land()
+    #         self.turtlebot.reset_turtlebot()
             
-            return "", ""
+    #         return "", ""
 
-        else:
-            # Pause and unpause
-            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-            return iterative_code, sequential_code
+    #     else:
+    #         # Pause and unpause
+    #         sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+    #         return iterative_code, sequential_code
     
-    # Function to separate the iterative and sequential code
-    def seperate_seq_iter(self, source_code):
-        if source_code == "":
-            return "", ""
+    # # Function to separate the iterative and sequential code
+    # def seperate_seq_iter(self, source_code):
+    #     if source_code == "":
+    #         return "", ""
 
-        # Search for an instance of while True
-        infinite_loop = re.search(r'[^ \t]while\(True\):|[^ \t]while True:', source_code)
+    #     # Search for an instance of while True
+    #     infinite_loop = re.search(r'[^ \t]while\(True\):|[^ \t]while True:', source_code)
 
-        # Separate the content inside while True and the other
-        # (Separating the sequential and iterative part!)
-        try:
-            start_index = infinite_loop.start()
-            iterative_code = source_code[start_index:]
-            sequential_code = source_code[:start_index]
+    #     # Separate the content inside while True and the other
+    #     # (Separating the sequential and iterative part!)
+    #     try:
+    #         start_index = infinite_loop.start()
+    #         iterative_code = source_code[start_index:]
+    #         sequential_code = source_code[:start_index]
 
-            # Remove while True: syntax from the code
-            # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
-            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
+    #         # Remove while True: syntax from the code
+    #         # And remove the the 4 spaces indentation before each command
+    #         iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
+    #         iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
-        except:
-            sequential_code = source_code
-            iterative_code = ""
+    #     except:
+    #         sequential_code = source_code
+    #         iterative_code = ""
             
-        return sequential_code, iterative_code
+    #     return sequential_code, iterative_code
 
-    # The process function
-    def process_code(self, source_code):
-        # Redirect the information to console
-        start_console()
+    # # The process function
+    # def process_code(self, source_code):
+    #     # Redirect the information to console
+    #     start_console()
 
-        iterative_code, sequential_code = self.parse_code(source_code)
+    #     iterative_code, sequential_code = self.parse_code(source_code)
         
-        # print(sequential_code)
-        # print(iterative_code)
+    #     # print(sequential_code)
+    #     # print(iterative_code)
 
-        # The Python exec function
-        # Run the sequential part
-        gui_module, hal_module = self.generate_modules()
-        reference_environment = {"GUI": gui_module, "HAL": hal_module}
-        exec(sequential_code, reference_environment)
+    #     # The Python exec function
+    #     # Run the sequential part
+    #     gui_module, hal_module = self.generate_modules()
+    #     reference_environment = {"GUI": gui_module, "HAL": hal_module}
+    #     exec(sequential_code, reference_environment)
 
-        # Run the iterative part inside template
-        # and keep the check for flag
-        while self.reload == False:
-            start_time = datetime.now()
+    #     # Run the iterative part inside template
+    #     # and keep the check for flag
+    #     while self.reload == False:
+    #         start_time = datetime.now()
 
-            # Execute the iterative portion
-            exec(iterative_code, reference_environment)
+    #         # Execute the iterative portion
+    #         exec(iterative_code, reference_environment)
 
-            # Template specifics to run!
-            finish_time = datetime.now()
-            dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+    #         # Template specifics to run!
+    #         finish_time = datetime.now()
+    #         dt = finish_time - start_time
+    #         ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
-            # Keep updating the iteration counter
-            if (iterative_code == ""):
-                self.iteration_counter = 0
-            else:
-                self.iteration_counter = self.iteration_counter + 1
+    #         # Keep updating the iteration counter
+    #         if (iterative_code == ""):
+    #             self.iteration_counter = 0
+    #         else:
+    #             self.iteration_counter = self.iteration_counter + 1
 
-            # The code should be run for atleast the target time step
-            # If it's less put to sleep
-            if (ms < self.time_cycle):
-                time.sleep((self.time_cycle - ms) / 1000.0)
+    #         # The code should be run for atleast the target time step
+    #         # If it's less put to sleep
+    #         if (ms < self.time_cycle):
+    #             time.sleep((self.time_cycle - ms) / 1000.0)
 
-        close_console()
-        print("Current Thread Joined!")
+    #     close_console()
+    #     print("Current Thread Joined!")
 
-    # Function to generate the modules for use in ACE Editor
-    def generate_modules(self):
-        # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
-        # hal_module.drone = imp.new_module("drone")
-        # motors# hal_module.HAL.motors = imp.new_module("motors")
+    # # Function to generate the modules for use in ACE Editor
+    # def generate_modules(self):
+    #     # Define HAL module
+    #     hal_module = imp.new_module("HAL")
+    #     hal_module.HAL = imp.new_module("HAL")
+    #     # hal_module.drone = imp.new_module("drone")
+    #     # motors# hal_module.HAL.motors = imp.new_module("motors")
 
-        # Add HAL functions
-        hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
-        hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
-        hal_module.HAL.get_position = self.hal.get_position
-        hal_module.HAL.get_velocity = self.hal.get_velocity
-        hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
-        hal_module.HAL.get_orientation = self.hal.get_orientation
-        hal_module.HAL.get_roll = self.hal.get_roll
-        hal_module.HAL.get_pitch = self.hal.get_pitch
-        hal_module.HAL.get_yaw = self.hal.get_yaw
-        hal_module.HAL.get_landed_state = self.hal.get_landed_state
-        hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
-        hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
-        hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
-        hal_module.HAL.takeoff = self.hal.takeoff
-        hal_module.HAL.land = self.hal.land
+    #     # Add HAL functions
+    #     hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
+    #     hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
+    #     hal_module.HAL.get_position = self.hal.get_position
+    #     hal_module.HAL.get_velocity = self.hal.get_velocity
+    #     hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
+    #     hal_module.HAL.get_orientation = self.hal.get_orientation
+    #     hal_module.HAL.get_roll = self.hal.get_roll
+    #     hal_module.HAL.get_pitch = self.hal.get_pitch
+    #     hal_module.HAL.get_yaw = self.hal.get_yaw
+    #     hal_module.HAL.get_landed_state = self.hal.get_landed_state
+    #     hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
+    #     hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
+    #     hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
+    #     hal_module.HAL.takeoff = self.hal.takeoff
+    #     hal_module.HAL.land = self.hal.land
 
-        # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+    #     # Define GUI module
+    #     gui_module = imp.new_module("GUI")
+    #     gui_module.GUI = imp.new_module("GUI")
 
-        # Add GUI functions
-        gui_module.GUI.showImage = self.gui.showImage
-        gui_module.GUI.showLeftImage = self.gui.showLeftImage
+    #     # Add GUI functions
+    #     gui_module.GUI.showImage = self.gui.showImage
+    #     gui_module.GUI.showLeftImage = self.gui.showLeftImage
 
-        # Adding modules to system
-        # Protip: The names should be different from
-        # other modules, otherwise some errors
-        sys.modules["HAL"] = hal_module
-        sys.modules["GUI"] = gui_module
+    #     # Adding modules to system
+    #     # Protip: The names should be different from
+    #     # other modules, otherwise some errors
+    #     sys.modules["HAL"] = hal_module
+    #     sys.modules["GUI"] = gui_module
 
-        return gui_module, hal_module
+    #     return gui_module, hal_module
 
     # Function to measure the frequency of iterations
     def measure_frequency(self):
