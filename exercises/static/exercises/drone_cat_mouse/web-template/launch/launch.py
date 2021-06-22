@@ -19,13 +19,15 @@ ACCELERATION_ENABLED = check_device(DRI_PATH)
 
 class Tests():
     def test_px4(self):
-        cmd = 'cd /Firmware/build/px4_sitl_default/bin/ && ./px4-commander check'
-        output = subprocess.check_output(cmd, shell=True)
-
-        idx = output.find('Prearm check: ')
-        if output[idx+14:idx+16] == 'OK':
-            return True
-        return False
+        while True:
+            args = ['./Firmware/build/px4_sitl_default/bin/px4-commander', 'check']
+            process = subprocess.Popen(args, stdout=subprocess.PIPE)
+            output, err = process.communicate()
+            idx = output.find('Prearm check: ')
+            if output[idx+14:idx+16] == 'OK':
+                break
+            else:
+                rospy.sleep(2)
 
     def test_mavros(self, ns=''):
         rospy.wait_for_service(ns + '/mavros/cmd/arming', 30)
@@ -50,24 +52,21 @@ class Launch(Tests):
             if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
             subprocess.Popen(args)
 
-            print('[GAZEBO] Waiting for spawn_sdf_model service')
+            print('[ GAZEBO ] Waiting for spawn_sdf_model service')
             self.test_gazebo()
 
             args = ['/opt/ros/melodic/bin/roslaunch', '/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/px4_cat.launch']
             if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
             subprocess.Popen(args)
 
-            while True:
-                print('[PX4-SITL] Waiting for Prearm checks')
-                if self.test_px4() == True:
-                    break
-                rospy.sleep(2)
+            print('[ PX4-SITL ] Waiting for Pre-Arm checks')
+            self.test_px4()
 
             args = ['/opt/ros/melodic/bin/roslaunch', '/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/mavros_cat.launch']
             if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
             subprocess.Popen(args)
 
-            print('[MAVROS] [cat] Waiting for mavros')
+            print('[ MAVROS ] [ cat ] Waiting for mavros')
             self.test_mavros('/cat')
 
             args = ['/opt/ros/melodic/bin/roslaunch', '/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/px4_mouse.launch']
@@ -80,14 +79,14 @@ class Launch(Tests):
             if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
             subprocess.Popen(args)
 
-            print('[MAVROS] [mouse] Waiting for mavros')
+            print('[ MAVROS ] [ mouse ] Waiting for mavros')
             self.test_mavros('/mouse')
 
             args = ['python', '/RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py', '0.0.0.0']
             subprocess.Popen(args)
 
         except Exception as e:
-            print('[ERROR]', e)
+            print('[ ERROR ]', e)
 
 
 if __name__ == '__main__':
