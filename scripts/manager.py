@@ -156,7 +156,7 @@ class Commands:
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
         roslaunch_cmd,gz_cmd = self.get_ros_instructions(exercise)
-        if exercise in ("drone_cat_mouse", "follow_turtlebot", "follow_road"):
+        if exercise in ("drone_cat_mouse", "follow_turtlebot", "follow_road", "position_control", "labyrinth_escape"):
             os.popen(roslaunch_cmd)
         else:
             roslaunch_thread = DockerThread(roslaunch_cmd)
