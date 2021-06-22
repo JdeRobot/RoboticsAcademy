@@ -53,16 +53,16 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         if source_code[:5] == "#resu":
-                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-                restart_simulation()
-
-                return "", ""
+            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation()
+            
+            return "", ""
 
         elif source_code[:5] == "#paus":
-                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-                pause_simulation()
-
-                return "", ""
+            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation()
+            
+            return "", ""
 
         elif source_code[:5] == "#rest":
             reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
