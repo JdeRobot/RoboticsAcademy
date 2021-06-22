@@ -7,7 +7,7 @@ docker pull jderobot/robotics-academy
 
 - Open a terminal and run:
 ```bash
-docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
+docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
 ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.

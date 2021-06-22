@@ -36,33 +36,33 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"    
+    version: "v2.4" 
 
-  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
-    alt: "Drone Gymkhana"
-    title: "Drone Gymkhana"
-    excerpt: "Learn to control a drone and complete the gymkhana!"
-    url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape_teaser.jpg
+  - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
     alt: "Labyrinth Escape"
     title: "Labyrinth Escape"
     excerpt: "Escape from a labyrinth through visual signals."
     url: "/exercises/Drones/labyrinth_escape"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
+    version_label: "btn--success"
+    version: "v2.4"
+
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
     title: "Position Control"
     excerpt: "Local navigation algorithm through the use of a PID controller."
     url: "/exercises/Drones/position_control"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.4"
+
+  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
+    alt: "Drone Gymkhana"
+    title: "Drone Gymkhana"
+    excerpt: "Learn to control a drone and complete the gymkhana!"
+    url: "/exercises/Drones/drone_gymkhana"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"
