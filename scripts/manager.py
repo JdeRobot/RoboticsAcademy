@@ -224,7 +224,7 @@ async def hello(websocket, path):
             # Start the exercise
             start_exercise(data["exercise"])
 
-            if data["exercise"] not in ["color_filter", "dl_digit_classifier"]:
+            if data["exercise"] not in ["color_filter", "dl_digit_classifier", "human_detection"]:
                 roslaunch_cmd = ros_instructions(data["exercise"])
                 roslaunch_thread = DockerThread(roslaunch_cmd)
                 roslaunch_thread.start()
