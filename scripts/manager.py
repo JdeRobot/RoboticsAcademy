@@ -156,8 +156,11 @@ class Commands:
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
         roslaunch_cmd,gz_cmd = self.get_ros_instructions(exercise)
-        roslaunch_thread = DockerThread(roslaunch_cmd)
-        roslaunch_thread.start()
+        if exercise in ("drone_cat_mouse"):
+            os.popen(roslaunch_cmd)
+        else:
+            roslaunch_thread = DockerThread(roslaunch_cmd)
+            roslaunch_thread.start()
         args=["gz", "stats", "-p"]
         repeat = True
         while repeat:
@@ -277,10 +280,7 @@ class Manager:
 
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
-            if exercise not in ("drone_cat_mouse"):
-                self.commands.start_exercise(exercise)
-            else:
-                time.sleep(5)
+            self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
 
@@ -310,10 +310,7 @@ class Manager:
         
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
-            if exercise not in ("drone_cat_mouse"):
-                self.commands.start_exercise(exercise)
-            else:
-                time.sleep(5)
+            self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
 
