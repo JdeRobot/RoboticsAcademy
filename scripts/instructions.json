@@ -36,7 +36,7 @@
     },
     "follow_turtlebot": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
+        "instructions_ros": ["python ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/launch.py"],
         "instructions_host": "python /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
     },
     "global_navigation": {
@@ -47,7 +47,7 @@
     },
     "follow_road": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_road/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/follow_road/web-template/launch/follow_road.launch"],
+        "instructions_ros": ["python ./RoboticsAcademy/exercises/follow_road/web-template/launch/launch.py"],
         "instructions_host": "python /RoboticsAcademy/exercises/follow_road/web-template/exercise.py 0.0.0.0"
     },
     "labyrinth_escape": {

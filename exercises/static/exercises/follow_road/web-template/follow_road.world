@@ -2,7 +2,7 @@
 <sdf version="1.5">
 	<world name="default">
 
-        <gui fullscreen=1></gui>
+        <gui fullscreen="1"></gui>
 
 		<scene>
 			<grid>false</grid>
@@ -30,10 +30,10 @@
             <pose>-6 -8 0 0 0 0</pose>
         </include>
 
-		<!--<include>
+		<include>
 			<uri>model://gas_station</uri>
 			<pose>1 6.43 0 0 0 0</pose>
-		</include>-->
+		</include>
 
 		<!-- <include>
 			<uri>model://house_4</uri>
