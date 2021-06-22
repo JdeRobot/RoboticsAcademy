@@ -27,7 +27,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
     alt: "Drone Cat and Mouse"
@@ -47,7 +47,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
     alt: "Localized Vacuum Cleaner"
@@ -57,7 +57,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
     alt: "Color Filter"
@@ -67,7 +67,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    version: "v2.4"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -87,7 +87,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v2.3"
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
