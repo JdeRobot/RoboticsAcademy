@@ -1,0 +1,43 @@
+FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
+
+# Make all NVIDIA GPUS visible
+ARG NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES all
+
+# Setup NON INTERACTIVE ENVIRONMENT
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install CLI tools
+RUN apt-get update && apt-get install -y \
+  curl \
+  lsb-release \
+  python3
+
+# Install ROS
+ENV ROS_DISTRO foxy
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null' \
+  && apt-get update \
+  && apt-get -y --quiet --no-install-recommends install \
+        ros-$ROS_DISTRO-desktop
+
+# Install ROS packages
+RUN apt-get install -y \
+  python3-colcon-common-extensions \
+  ros-$ROS_DISTRO-gazebo-* \
+  ros-$ROS_DISTRO-cartographer \
+  ros-$ROS_DISTRO-cartographer-ros \
+  ros-$ROS_DISTRO-navigation2 \
+  ros-$ROS_DISTRO-nav2-bringup \
+  ros-$ROS_DISTRO-turtlebot3-msgs \
+  ros-$ROS_DISTRO-turtlebot3 \
+  ros-$ROS_DISTRO-turtlebot3-simulations
+
+
+
+# Adding environment variables to .bashrc file
+## TODO: Check if these can be by-passed
+## when using the web-template
+RUN echo 'source /opt/ros/$ROS_DISTRO/local_setup.bash' >> ~/.bashrc
+RUN echo 'source /usr/share/gazebo-11/setup.sh' >> ~/.bashrc
+RUN echo 'export TURTLEBOT3_MODEL=waffle' >> ~/.bashrc
