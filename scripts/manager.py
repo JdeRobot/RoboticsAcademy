@@ -196,6 +196,8 @@ class Commands:
         os.popen(cmd_py)
         cmd_gz = "pkill -9 -f gz"
         os.popen(cmd_gz)
+        cmd_launch = "pkill -9 -f launch.py"
+        os.popen(cmd_launch)
         cmd_exercise = "pkill -9 -f exercise.py"
         os.popen(cmd_exercise)
         cmd_gui = "pkill -9 -f gui.py"
@@ -275,8 +277,8 @@ class Manager:
 
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
-            if exercise in ("drone_cat_mouse"): time.sleep(15)
-            self.commands.start_exercise(exercise)
+            if exercise not in ("drone_cat_mouse"):
+                self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
 
@@ -306,8 +308,8 @@ class Manager:
         
         if not ("color_filter" in exercise):
             self.commands.start_gzserver(exercise)
-            if exercise in ("drone_cat_mouse"): time.sleep(15)
-            self.commands.start_exercise(exercise)
+            if exercise not in ("drone_cat_mouse"):
+                self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
 
