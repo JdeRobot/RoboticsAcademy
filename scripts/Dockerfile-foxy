@@ -1,6 +1,6 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
-ARG VIRTUALGL_VERSION=2.6.80
+ARG VIRTUALGL_VERSION=2.6.90
 ARG TURBOVNC_VERSION=2.2.80
 
 # Make all NVIDIA GPUS visible
@@ -43,8 +43,8 @@ RUN apt-get update && apt-get install -y \
 RUN tasksel install lubuntu-core lubuntu-desktop
 
 # Install VirtualGL and TurboVNC
-RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
-    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     chmod u+s /usr/lib/libvglfaker.so && \
@@ -77,7 +77,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libdbus-c++-1-0v5 && \
     rm -rf /var/lib/apt/lists/*
 
-# PX4
+# Standard tools
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
         bzip2 \
         ca-certificates \
@@ -179,102 +179,44 @@ RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4
 	&& gradle install \
 	&& rm -rf /tmp/*
 
-# Gazebo11
-RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
-	&& sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -sc` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
-	&& apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --no-install-recommends install \
-        ant \
-        binutils \
-        bc \
-        dirmngr \
-        gazebo11 \
-        gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-base \
-        gstreamer1.0-plugins-good \
-        gstreamer1.0-plugins-ugly \
-        libeigen3-dev \
-        libgazebo11-dev \
-        libgstreamer-plugins-base1.0-dev \
-        libimage-exiftool-perl \
-        libopencv-dev \
-        libxml2-utils \
-        mesa-utils \
-        protobuf-compiler \
-        x-window-system \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # Install ROS and ROS packages
-ENV ROS_DISTRO noetic
-RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
-	&& sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list' \
-	&& sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-shadow.list' \
-	&& apt-get update \
-	&& apt-get -y --quiet --no-install-recommends install \
-        ros-$ROS_DISTRO-desktop-full \
-        geographiclib-tools \
-        libeigen3-dev \
-        libgeographic-dev \
-        libopencv-dev \
-        libyaml-cpp-dev \
-        python3-rosdep \
-        python3-catkin-tools \
-        python3-catkin-lint \
-        ros-$ROS_DISTRO-gazebo-ros-pkgs \
-        ros-$ROS_DISTRO-mavlink \
-        ros-$ROS_DISTRO-mavros \
-        ros-$ROS_DISTRO-mavros-extras \
-        ros-$ROS_DISTRO-octomap \
-        ros-$ROS_DISTRO-octomap-msgs \
-        ros-$ROS_DISTRO-pcl-conversions \
-        ros-$ROS_DISTRO-pcl-msgs \
-        ros-$ROS_DISTRO-pcl-ros \
-        ros-$ROS_DISTRO-ros-base \
-        ros-$ROS_DISTRO-rostest \
-        ros-$ROS_DISTRO-rosunit \
-        ros-$ROS_DISTRO-xacro \
-	&& geographiclib-get-geoids egm96-5 \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+ENV ROS_DISTRO foxy
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null' \
+  && apt-get update \
+  && apt-get -y --quiet --no-install-recommends install \
+        ros-$ROS_DISTRO-desktop \
+        ros-$ROS_DISTRO-gazebo-* \
+        python3-colcon-common-extensions \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
-RUN pip3 install -U \
-    osrf-pycommon
 
-# bootstrap rosdep
-RUN rosdep init && rosdep update
+# RUN pip3 install -U \
+#     osrf-pycommon
 
-# PX4 src
-RUN apt-get update && \
-    apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
-RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.12.0-beta5 \
-	&& cd /PX4-Autopilot \
-	&& DONT_RUN=1 make px4_sitl gazebo
+# # bootstrap rosdep
+# RUN rosdep init && rosdep update
 
-# jderobot_drones src
-RUN rm -rf /catkin_ws
-RUN mkdir -p /catkin_ws/src
-RUN cd /catkin_ws && catkin init
-RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
-RUN git clone https://github.com/JdeRobot/drones.git -b $ROS_DISTRO-devel
-RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
-RUN cd /catkin_ws/src && ln -s /drones/drone_assets .
-RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
-RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
 
 # Certain Dependencies for Exercises
-# ros-$ROS_DISTRO-kobuki-msgs: Vaccuum Cleaner
-# xmlstarlet: Drone Cat Mouse
-# ros-$ROS_DISTRO-turtlebot3-description: Follow Turtlebot
-RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-		ros-$ROS_DISTRO-kobuki-msgs \
-		xmlstarlet \
-		ros-$ROS_DISTRO-turtlebot3-description \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+# TB3_teleop: turtlebot3 packages
+RUN apt-get install -y \
+  ros-$ROS_DISTRO-cartographer \
+  ros-$ROS_DISTRO-cartographer-ros \
+  ros-$ROS_DISTRO-navigation2 \
+  ros-$ROS_DISTRO-nav2-bringup \
+  ros-$ROS_DISTRO-turtlebot3-msgs \
+  ros-$ROS_DISTRO-turtlebot3 \
+  ros-$ROS_DISTRO-turtlebot3-simulations
+# TODO: Revert to Docker conventions (commented below) after alpha testing
+# RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+#         <PACKAGES> \
+#     && apt-get -y autoremove \
+#     && apt-get clean autoclean \
+#     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # websocket server dependency
 RUN pip3 install websocket_server posix-ipc django
@@ -296,31 +238,32 @@ RUN wget https://xpra.org/xorg.conf \
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
-	git clone -b melodic-devel https://github.com/JdeRobot/CustomRobots.git
+	git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
 
-# Setting environment variables
-RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
-RUN echo 'source /catkin_ws/devel/setup.bash' >> ~/.bashrc
-RUN echo 'source /usr/share/gazebo-11/setup.sh' >> ~/.bashrc
-RUN echo 'export ROS_PACKAGE_PATH=ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo' >> ~/.bashrc
+# Environment variables are set inside /radi-entrypoint.sh
+# As ./start.sh is executed from a non-interactive terminal,
+# it is not allowed to source ~/.bashrc (early exit)
+# The solution is to source /radi-entrypoint.sh
 
-ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
-ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models"
-ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
+# For the web template console to obtain the same 
+# environment variables, we add the below line to ~/.bashrc
+RUN echo 'source /radi-entrypoint.sh' >> ~/.bashrc
+
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
-RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+# TODO: Uncomment when PR is made to the official repo
+# RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
+# RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
-COPY manager-3.1.py /manager-3.1.py
+# Copy scripts to Docker container's root
+COPY manager-4.0.py /manager.py
+COPY manager_utils.py /manager_utils.py
 COPY instructions.json /instructions.json
+COPY radi-entrypoint.sh /radi-entrypoint.sh
+COPY start.sh /start.sh
 
 # execute permissions
-COPY start-3.1.sh /start-3.1.sh
-COPY start_manager.sh /start_manager.sh
-RUN chmod 755 /start-3.1.sh
-RUN chmod 755 /start_manager.sh
+RUN chmod 755 /start.sh
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
     && ln -s /usr/bin/python3.8 /usr/bin/python
