@@ -58,54 +58,6 @@
     </div>
     <div class="content">
         <div class="split a">
-            <li id="frecuency_control" style="list-style: none; display:block; text-align:center; font-weight:bold;" ><div id="Frequency" class="container">
-                <!-- Source http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input -->
-                <!--<table>
-                    <tr>
-                        <strong>
-                            <th>Name</th>
-                            <th>Slider</th>
-                            <th>Measured/Desired</th>
-                        </strong>
-					</tr>
-					<tr>
-						<td>Brain Frequency</td>
-						<td><input type="range" min="1" max="30" value="12.5" id="fader"
-							step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
-						<td><output id="ideal_code_frequency">0</output> / <output for="number" id="code_frequency">12.5</output> Hz</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>GUI Frequency</td>
-						<td><input type="range" min="1" max="30" value="12" id="fader"
-							step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
-						<td><output id="ideal_gui_frequency">0</output> / <output for="fader" id="gui_frequency">12.5</output> Hz</td>
-					</tr>
-                    <tr>
-                        {% if not exercise in 'follow_line,drone_cat_mouse,follow_turtlebot,follow_road' %}
-                            <th >Debug-Level</th>
-                            <td ><input  id="slide" type="range" min="1" max="4" steps="1" value="2" name="debug" class="debug-slider">
-                                <ul class="debug-labels">
-                            <th><p id="slidernum">2</p>
-                            <script type="text/javascript">
-                                var slide = document.getElementById('slide'),
-                                    sliderDiv = document.getElementById("slidernum");
-                                slide.onchange = function() {
-                                    sliderDiv.innerHTML = this.value;
-                                }
-                            </script>
-                            </ul>
-                            </td>
-                            </th>
-
-                        {% else %}
-                            <td>RTF</td>
-                            <td/>
-                            <td><output id="real_time_factor">0</output></td>
-                        {% endif %}
-                    </tr>
-                </table>
-            </div></li>
 
 {% block content %} {% endblock %}
 
