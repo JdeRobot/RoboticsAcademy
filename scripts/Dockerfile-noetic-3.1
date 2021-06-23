@@ -1,0 +1,337 @@
+FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
+
+ARG VIRTUALGL_VERSION=2.6.80
+ARG TURBOVNC_VERSION=2.2.80
+
+# Make all NVIDIA GPUS visible
+ARG NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES all
+
+# Setup NON INTERACTIVE ENVIRONMENT
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install locales to prevent errors
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y locales && \
+    rm -rf /var/lib/apt/lists/* && \
+    locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Install desktop and tools
+RUN apt-get update && apt-get install -y \
+        software-properties-common \
+        apt-utils \
+        build-essential make gcc git \
+        ca-certificates \
+        curl wget \
+        gzip zip unzip \
+        libc6-dev libglu1 libglu1:i386 libegl1-mesa libegl1-mesa:i386 \
+        libsm6 libxv1 libxv1:i386 libpci3 \
+        python3 python3-numpy libpython3-dev \
+        x11-xkb-utils xauth xfonts-base xkb-data \
+        libxtst6 libxtst6:i386 \
+        mlocate \
+        nano vim \
+        htop net-tools \
+        xterm rsync \
+        lxde-core \
+        tasksel && \
+    rm -rf /var/lib/apt/lists/*
+RUN tasksel install lubuntu-core lubuntu-desktop
+
+# Install VirtualGL and TurboVNC
+RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    chmod u+s /usr/lib/libvglfaker.so && \
+    chmod u+s /usr/lib/libdlfaker.so && \
+    chmod u+s /usr/lib32/libvglfaker.so && \
+    chmod u+s /usr/lib32/libdlfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so && \
+    curl -fsSL -O https://s3.amazonaws.com/turbovnc-pr/dev/linux/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    apt-get update && apt-get install -y --no-install-recommends ./turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo -e "no-remote-connections\n\
+no-httpd\n\
+no-x11-tcp-connections\n\
+no-pam-sessions\n\
+permitted-security-types = None, VNC, otp\
+" > /etc/turbovncserver-security.conf
+# Set paths for VirtualGL and turboVNC
+ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+
+# Install noVNC and Websockify
+RUN git clone https://github.com/novnc/noVNC.git -b v1.2.0 && \
+	cd noVNC/utils && \
+	git clone https://github.com/novnc/websockify websockify -b v0.9.0
+
+# Xorg segfault error mitigation
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        dbus-x11 \
+        libdbus-c++-1-0v5 && \
+    rm -rf /var/lib/apt/lists/*
+
+# PX4
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+        bzip2 \
+        ca-certificates \
+        ccache \
+        cmake \
+        cppcheck \
+        curl \
+        dirmngr \
+        doxygen \
+        file \
+        g++ \
+        gcc \
+        gdb \
+        git \
+        gnupg \
+        gosu \
+        lcov \
+        libfreetype6-dev \
+        libgtest-dev \
+        libpng-dev \
+        libssl-dev \
+        lsb-release \
+        make \
+        ninja-build \
+        openjdk-8-jdk \
+        openjdk-8-jre \
+        openssh-client \
+        pkg-config \
+        python3-dev \
+        python3-pip \
+        rsync \
+        shellcheck \
+        tzdata \
+        unzip \
+        valgrind \
+        wget \
+        xsltproc \
+        zip \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# gtest
+RUN apt-get update && apt-get install -y libgtest-dev cmake && \
+    cd /usr/src/gtest \
+	&& mkdir build && cd build \
+	&& cmake .. && make -j$(nproc) \
+	&& find . -name \*.a -exec cp {} /usr/lib \; \
+	&& cd .. && rm -rf build \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python 3 pip build dependencies first
+RUN python3 -m pip install --upgrade pip wheel setuptools
+
+# Python 3 dependencies installed by pip
+RUN python3 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
+		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
+		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python
+
+# manual ccache setup
+RUN ln -sf /usr/bin/ccache /usr/lib/ccache/cc \
+	&& ln -sf /usr/bin/ccache /usr/lib/ccache/c++
+
+# astyle v3.1
+RUN wget -q https://downloads.sourceforge.net/project/astyle/astyle/astyle%203.1/astyle_3.1_linux.tar.gz -O /tmp/astyle.tar.gz \
+	&& cd /tmp && tar zxf astyle.tar.gz && cd astyle/src \
+	&& make -f ../build/gcc/Makefile -j$(nproc) && cp bin/astyle /usr/local/bin \
+	&& rm -rf /tmp/*
+
+# Gradle (Required to build Fast-RTPS-Gen)
+RUN wget -q "https://services.gradle.org/distributions/gradle-6.3-rc-4-bin.zip" -O /tmp/gradle-6.3-rc-4-bin.zip \
+	&& mkdir /opt/gradle \
+	&& cd /tmp \
+	&& unzip -d /opt/gradle gradle-6.3-rc-4-bin.zip \
+	&& rm -rf /tmp/*
+
+ENV PATH "/opt/gradle/gradle-6.3-rc-4/bin:$PATH"
+
+# Intall foonathan_memory from source as it is required to Fast-RTPS >= 1.9
+RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git /tmp/foonathan_memory \
+	&& cd /tmp/foonathan_memory \
+	&& mkdir build && cd build \
+	&& cmake .. \
+	&& cmake --build . --target install -- -j $(nproc) \
+	&& rm -rf /tmp/*
+
+# Fast-DDS (Fast-RTPS 2.0.0)
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.0.0 /tmp/FastRTPS-2.0.0 \
+	&& cd /tmp/FastRTPS-2.0.0 \
+	&& mkdir build && cd build \
+	&& cmake -DTHIRDPARTY=ON -DSECURITY=ON .. \
+	&& cmake --build . --target install -- -j $(nproc) \
+	&& rm -rf /tmp/*
+
+# Fast-RTPS-Gen 1.0.4
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 /tmp/Fast-RTPS-Gen-1.0.4 \
+	&& cd /tmp/Fast-RTPS-Gen-1.0.4 \
+	&& gradle assemble \
+	&& gradle install \
+	&& rm -rf /tmp/*
+
+# Gazebo11
+RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
+	&& sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -sc` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
+	&& apt-get update \
+	&& DEBIAN_FRONTEND=noninteractive apt-get -y --quiet --no-install-recommends install \
+        ant \
+        binutils \
+        bc \
+        dirmngr \
+        gazebo11 \
+        gstreamer1.0-plugins-bad \
+        gstreamer1.0-plugins-base \
+        gstreamer1.0-plugins-good \
+        gstreamer1.0-plugins-ugly \
+        libeigen3-dev \
+        libgazebo11-dev \
+        libgstreamer-plugins-base1.0-dev \
+        libimage-exiftool-perl \
+        libopencv-dev \
+        libxml2-utils \
+        mesa-utils \
+        protobuf-compiler \
+        x-window-system \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# Install ROS and ROS packages
+ENV ROS_DISTRO noetic
+RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 \
+	&& sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list' \
+	&& sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-shadow.list' \
+	&& apt-get update \
+	&& apt-get -y --quiet --no-install-recommends install \
+        ros-$ROS_DISTRO-desktop-full \
+        geographiclib-tools \
+        libeigen3-dev \
+        libgeographic-dev \
+        libopencv-dev \
+        libyaml-cpp-dev \
+        python3-rosdep \
+        python3-catkin-tools \
+        python3-catkin-lint \
+        ros-$ROS_DISTRO-gazebo-ros-pkgs \
+        ros-$ROS_DISTRO-mavlink \
+        ros-$ROS_DISTRO-mavros \
+        ros-$ROS_DISTRO-mavros-extras \
+        ros-$ROS_DISTRO-octomap \
+        ros-$ROS_DISTRO-octomap-msgs \
+        ros-$ROS_DISTRO-pcl-conversions \
+        ros-$ROS_DISTRO-pcl-msgs \
+        ros-$ROS_DISTRO-pcl-ros \
+        ros-$ROS_DISTRO-ros-base \
+        ros-$ROS_DISTRO-rostest \
+        ros-$ROS_DISTRO-rosunit \
+        ros-$ROS_DISTRO-xacro \
+	&& geographiclib-get-geoids egm96-5 \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+RUN pip3 install -U \
+    osrf-pycommon
+
+# bootstrap rosdep
+RUN rosdep init && rosdep update
+
+# PX4 src
+RUN apt-get update && \
+    apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
+RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.12.0-beta5 \
+	&& cd /PX4-Autopilot \
+	&& DONT_RUN=1 make px4_sitl gazebo
+
+# jderobot_drones src
+RUN rm -rf /catkin_ws
+RUN mkdir -p /catkin_ws/src
+RUN cd /catkin_ws && catkin init
+RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
+RUN git clone https://github.com/JdeRobot/drones.git -b $ROS_DISTRO-devel
+RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
+RUN cd /catkin_ws/src && ln -s /drones/drone_assets .
+RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
+RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
+
+# Certain Dependencies for Exercises
+# ros-$ROS_DISTRO-kobuki-msgs: Vaccuum Cleaner
+# xmlstarlet: Drone Cat Mouse
+# ros-$ROS_DISTRO-turtlebot3-description: Follow Turtlebot
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+		ros-$ROS_DISTRO-kobuki-msgs \
+		xmlstarlet \
+		ros-$ROS_DISTRO-turtlebot3-description \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# websocket server dependency
+RUN pip3 install websocket_server posix-ipc django
+RUN python3.8 -m pip install websockets asyncio
+
+# apt-get install dependencies
+# Nodejs, x11vnc, xterm, xdummy
+RUN apt-get update && apt-get --no-install-recommends install -y \
+		x11vnc \
+		xterm \
+		xserver-xorg-video-dummy \
+		x11-apps \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+RUN wget https://xpra.org/xorg.conf \
+    && rm -rf /tmp/*
+
+# Custom Robot Repository
+RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
+	git clone -b melodic-devel https://github.com/JdeRobot/CustomRobots.git
+
+# Setting environment variables
+RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
+RUN echo 'source /catkin_ws/devel/setup.bash' >> ~/.bashrc
+RUN echo 'source /usr/share/gazebo-11/setup.sh' >> ~/.bashrc
+RUN echo 'export ROS_PACKAGE_PATH=ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo' >> ~/.bashrc
+
+ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
+ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models"
+ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
+
+# RoboticsAcademy
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+
+COPY manager-3.1.py /manager-3.1.py
+COPY instructions.json /instructions.json
+
+# execute permissions
+COPY start-3.1.sh /start-3.1.sh
+COPY start_manager.sh /start_manager.sh
+RUN chmod 755 /start-3.1.sh
+RUN chmod 755 /start_manager.sh
+
+RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
+    && ln -s /usr/bin/python3.8 /usr/bin/python
+
+EXPOSE 2303
+EXPOSE 1905
+EXPOSE 8080
+EXPOSE 7681
+EXPOSE 8765
+EXPOSE 1108
+# Port by WebRtc
+EXPOSE 1831
+# Port for noVNC
+EXPOSE 6080
