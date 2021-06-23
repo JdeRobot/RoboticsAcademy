@@ -28,14 +28,14 @@ class Template:
     def __init__(self):
         self.thread = None
         self.reload = False
-        
+
         # Time variables
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
-                
+
         self.server = None
         self.client = None
         self.host = sys.argv[1]
@@ -46,7 +46,7 @@ class Template:
         self.gui = GUI(self.host, self.hal, self.mouse)
 
     # Function to parse the code
-    # A few assumptions: 
+    # A few assumptions:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
@@ -67,14 +67,14 @@ class Template:
             reset_simulation()
             self.gui.reset_gui()
             if self.hal.get_landed_state() ==2 : self.hal.land()
-            
+
             return "", ""
 
         else:
             # Pause and unpause
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
             return iterative_code, sequential_code
-    
+
     # Function to separate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
         if source_code == "":
@@ -98,7 +98,7 @@ class Template:
         except:
             sequential_code = source_code
             iterative_code = ""
-            
+
         return sequential_code, iterative_code
 
     # The process function
@@ -192,23 +192,23 @@ class Template:
         while not self.reload:
             # Sleep for 2 seconds
             time.sleep(2)
-            
+
             # Measure the current time and subtract from the previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
-            
+
             # Get the time period
             try:
                 # Division by zero
                 self.ideal_cycle = ms / self.iteration_counter
             except:
                 self.ideal_cycle = 0
-            
+
             # Reset the counter
             self.iteration_counter = 0
-            
+
             # Send to client
             self.send_frequency_message()
 
@@ -240,8 +240,8 @@ class Template:
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
         # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=0)
-        # bufsize=1 enables line-bufferred mode (the input buffer is flushed 
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
             for line in iter(stats_process.stdout.readline, b''):
@@ -286,7 +286,7 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             return
-        
+
         try:
             # Once received turn the reload flag up and send it to execute_thread function
             code = message
@@ -306,7 +306,7 @@ class Template:
         # Start the real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
-    
+
         # Initialize the ping message
         self.send_frequency_message()
 
@@ -322,7 +322,7 @@ class Template:
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
         self.server.run_forever()
-    
+
 
 # Execute!
 if __name__ == "__main__":

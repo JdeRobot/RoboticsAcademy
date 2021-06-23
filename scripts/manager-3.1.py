@@ -165,8 +165,11 @@ class Commands:
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
         roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
-        roslaunch_thread = DockerThread(roslaunch_cmd)
-        roslaunch_thread.start()
+        if exercise in ("drone_cat_mouse", "follow_turtlebot", "follow_road", "position_control", "labyrinth_escape"):
+            os.popen(roslaunch_cmd)
+        else:
+            roslaunch_thread = DockerThread(roslaunch_cmd)
+            roslaunch_thread.start()
         args=["gz", "stats", "-p"]
         repeat = True
         while repeat:
@@ -204,6 +207,8 @@ class Commands:
         os.popen(cmd_py)
         cmd_gz = "pkill -9 -f gz"
         os.popen(cmd_gz)
+        cmd_launch = "pkill -9 -f launch.py"
+        os.popen(cmd_launch)
         cmd_exercise = "pkill -9 -f exercise.py"
         os.popen(cmd_exercise)
         cmd_gui = "pkill -9 -f gui.py"

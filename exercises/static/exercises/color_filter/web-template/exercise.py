@@ -227,6 +227,7 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
+
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
@@ -263,6 +264,7 @@ class Template:
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            time.sleep(1)
             self.send_frequency_message()
             return
 
