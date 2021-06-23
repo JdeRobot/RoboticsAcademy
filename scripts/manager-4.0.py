@@ -5,35 +5,20 @@ import subprocess
 import asyncio
 import websockets
 import os
-import threading
 import time
 import json
-import stat
 
-# Function to check if a device exists
-def check_device(device_path):
-    try:
-        return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
-    except:
-        return False
+# Importing manager_utils.py script
+import manager_utils as m_utils
+
 
 DRI_PATH = "/dev/dri/card0"
-ACCELERATION_ENABLED = check_device(DRI_PATH)
+ACCELERATION_ENABLED = m_utils.check_device(DRI_PATH)
 
-# Docker Thread class for running commands on threads
-class DockerThread(threading.Thread):
-    def __init__(self, cmd):
-        threading.Thread.__init__(self)
-        self.cmd = cmd
-        self.out = None
+# Quieten all stdout and stderr outputs (of vnc)
+# if vnc debugging mode is off
+VNC_DEBUGGING_MODE = False
 
-    def run(self):
-        stream = os.popen(self.cmd)
-        output = stream.read()
-        self.out = output
-
-    def print_output(self):
-        return self.out
 
 # Class to store the commands
 class Commands:
@@ -57,18 +42,21 @@ class Commands:
 
     # Function to get the instructions to run ROS
     def get_ros_instructions(self, exercise):
-        if ACCELERATION_ENABLED:
-            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
-                'PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages/;chmod +x /opt/ros/noetic/bin/roslaunch; export' \
-                'ROS_ROOT=/opt/ros/noetic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
-                'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                'export ROS_PACKAGE_PATH=/opt/ros/noetic/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
-        else:
-            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
-                'PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages/;chmod +x /opt/ros/noetic/bin/roslaunch; export' \
-                'ROS_ROOT=/opt/ros/noetic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
-                'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                'export ROS_PACKAGE_PATH=/opt/ros/noetic/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
+        # if ACCELERATION_ENABLED:
+        #     roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/foxy/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=foxy;export PKG_CONFIG_PATH=/opt/ros/foxy/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/foxy/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/foxy;export ROS_PACKAGE_PATH=/opt/ros/foxy/share;chmod +x /opt/ros/foxy/bin/rosmaster; export' \
+        #         'PYTHONPATH=/opt/ros/foxy/lib/python3/dist-packages/;chmod +x /opt/ros/foxy/bin/roslaunch; export' \
+        #         'ROS_ROOT=/opt/ros/foxy/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
+        #         'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/foxy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+        #         'export ROS_PACKAGE_PATH=/opt/ros/foxy/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
+        # else:
+        #     roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/foxy/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=foxy;export PKG_CONFIG_PATH=/opt/ros/foxy/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/foxy/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/foxy;export ROS_PACKAGE_PATH=/opt/ros/foxy/share;chmod +x /opt/ros/foxy/bin/rosmaster; export' \
+        #         'PYTHONPATH=/opt/ros/foxy/lib/python3/dist-packages/;chmod +x /opt/ros/foxy/bin/roslaunch; export' \
+        #         'ROS_ROOT=/opt/ros/foxy/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
+        #         'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/foxy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
+        #         'export ROS_PACKAGE_PATH=/opt/ros/foxy/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
+        
+        # roslaunch_cmd = '/bin/bash -c "source ~/.bashrc; export PWD="/";chmod +rwx /;export DISPLAY=:0;source /usr/share/gazebo-11/setup.sh;'
+        roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;'
 
         gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
@@ -97,7 +85,7 @@ class Commands:
 		    self.get_gazebo_path(exercise) +
 		    "".join(gzclient_config_cmds) +
 		    "export VGL_DISPLAY=/dev/dri/card0; vglrun gzclient --verbose")
-        gzclient_thread = DockerThread(gzclient_cmd)
+        gzclient_thread = m_utils.DockerThread(gzclient_cmd)
         gzclient_thread.start()
 
     # Function to start the console
@@ -110,7 +98,7 @@ class Commands:
         else:
             console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
 
-        console_thread = DockerThread(console_cmd)
+        console_thread = m_utils.DockerThread(console_cmd)
         console_thread.start()
 
     # Function to start VNC server
@@ -118,22 +106,25 @@ class Commands:
         if not (ACCELERATION_ENABLED):
             # Start VNC server without password, forever running in background
             x11vnc_cmd = f"x11vnc -display {display} -nopw -forever -xkb -bg -rfbport {internal_port}"
-            x11vnc_thread = DockerThread(x11vnc_cmd)
+            if not VNC_DEBUGGING_MODE:
+                x11vnc_cmd = m_utils.quieten(x11vnc_cmd)
+            
+            x11vnc_thread = m_utils.DockerThread(x11vnc_cmd)
             x11vnc_thread.start()
 
             # Start noVNC with default port 6080 listening to VNC server on 5900
             novnc_cmd = f"/noVNC/utils/launch.sh --listen {external_port} --vnc localhost:{internal_port}"
-            novnc_thread = DockerThread(novnc_cmd)
+            novnc_thread = m_utils.DockerThread(novnc_cmd)
             novnc_thread.start()
         else:
             # Start VNC server without password, forever running in background
             turbovnc_cmd = f"export VGL_DISPLAY=/dev/dri/card0; export TVNC_WM=startlxde; /opt/TurboVNC/bin/vncserver {display} -geometry '1920x1080' -vgl -noreset -SecurityTypes None -rfbport {internal_port}"
-            turbovnc_thread = DockerThread(turbovnc_cmd)
+            turbovnc_thread = m_utils.DockerThread(turbovnc_cmd)
             turbovnc_thread.start()
 
             # Start noVNC with default port 6080 listening to VNC server on 5900
             novnc_cmd = f"noVNC/utils/launch.sh  --listen {external_port} --vnc localhost:{internal_port}"
-            novnc_thread = DockerThread(novnc_cmd)
+            novnc_thread = m_utils.DockerThread(novnc_cmd)
             novnc_thread.start()
 
     # Function to stop VNC server for accelerated simulation
@@ -146,12 +137,12 @@ class Commands:
     # Function to start an exercise
     def start_exercise(self, exercise):
         host_cmd = self.instructions[exercise]["instructions_host"]
-        host_thread = DockerThread(host_cmd)
+        host_thread = m_utils.DockerThread(host_cmd)
         host_thread.start()
 
         try:
             gui_cmd = self.instructions[exercise]["instructions_gui"]
-            gui_thread = DockerThread(gui_cmd)
+            gui_thread = m_utils.DockerThread(gui_cmd)
             gui_thread.start()
         except KeyError:
             pass
@@ -159,16 +150,25 @@ class Commands:
     # Function to start the Xserver
     def start_xserver(self, display):
         xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {display}"
-        xserver_thread = DockerThread(xserver_cmd)
+        if not VNC_DEBUGGING_MODE:
+            xserver_cmd = m_utils.quieten(xserver_cmd)
+
+        xserver_thread = m_utils.DockerThread(xserver_cmd)
         xserver_thread.start()
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
+        print("Starting gz server")
         roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
-        roslaunch_thread = DockerThread(roslaunch_cmd)
+        roslaunch_thread = m_utils.DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
         args=["gz", "stats", "-p"]
         repeat = True
+        '''
+        Until gzserver is ready, gz stats will keep outputting this-
+        "An instance of Gazebo is not running"
+        We loop as long as this message is outputted
+        '''
         while repeat:
             process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=0)
             with process.stdout:
@@ -177,25 +177,25 @@ class Commands:
                         repeat = False
                         break
                     else:
-                        repeat = True
+                        print("Trying again")
 
 
     # Function to pause Gazebo physics
     def pause_physics(self):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
-        rosservice_thread = DockerThread(cmd)
+        cmd = "/opt/ros/foxy/bin/rosservice call gazebo/pause_physics"
+        rosservice_thread = m_utils.DockerThread(cmd)
         rosservice_thread.start()
 
     # Function to unpause Gazebo physics
     def unpause_physics(self):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
-        rosservice_thread = DockerThread(cmd)
+        cmd = "/opt/ros/foxy/bin/rosservice call gazebo/unpause_physics"
+        rosservice_thread = m_utils.DockerThread(cmd)
         rosservice_thread.start()
 
     # Function to reset Gazebo physics
     def reset_physics(self):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_simulation"
-        rosservice_thread = DockerThread(cmd)
+        cmd = "/opt/ros/foxy/bin/rosservice call gazebo/reset_simulation"
+        rosservice_thread = m_utils.DockerThread(cmd)
         rosservice_thread.start()
 
     # Function to kill every program
@@ -292,7 +292,7 @@ class Manager:
 
             # Start gazebo client
             time.sleep(2)
-            self.commands.start_gzclient(exercise, width, height)
+            # self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
             self.commands.start_exercise(exercise)
@@ -323,7 +323,7 @@ class Manager:
 
             # Start gazebo client
             time.sleep(2)
-            self.commands.start_gzclient(exercise, width, height)
+            # self.commands.start_gzclient(exercise, width, height)
             time.sleep(2)
             self.commands.start_console(width, height)
         else:
