@@ -285,7 +285,7 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"]:
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
@@ -318,7 +318,7 @@ class Manager:
         self.commands.start_vnc(":0", 5900, 6080)
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"]:
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
