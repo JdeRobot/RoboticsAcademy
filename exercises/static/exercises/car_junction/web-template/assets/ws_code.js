@@ -8,7 +8,7 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
-// running variable for psuedo decoupling 
+// running variable for psuedo decoupling
 // Play/Pause from Reset
 var frequency = "0",
 	running = false;
@@ -19,8 +19,11 @@ function declare_code(websocket_address){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){
-		if (websocket_gui.readyState == 1)
+		radiConect.contentWindow.postMessage({command: 'launch_level', level: '5'}, '*');
+		if (websocket_gui.readyState == 1) {
 			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage('up', '*');
+		}
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
@@ -34,7 +37,7 @@ function declare_code(websocket_address){
 	websocket_code.onmessage = function(event){
 		var source_code = event.data;
 		operation = source_code.substring(0, 5);
-		
+
 		if(operation == "#load"){
 			editor.setValue(source_code.substring(5,));
 		}
@@ -46,14 +49,11 @@ function declare_code(websocket_address){
 			// Parse real time factor
 			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
-		
-		// The acknowledgement messages invoke the python server to send further
-		// messages to this client (inside the server's handle function)
+
 		// Send the acknowledgment message along with frequency
-		code_frequency = document.querySelector('#code_frequency').value;
-		gui_frequency = document.querySelector('#gui_frequency').value;
+		code_frequency = document.querySelector('#code_freq').value;
+		gui_frequency = document.querySelector('#gui_freq').value;
 		real_time_factor = document.querySelector('#real_time_factor').value;
-    
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
@@ -65,7 +65,7 @@ function submitCode(){
 		// Get the code from editor and add headers
 		var python_code = editor.getValue();
 		python_code = "#code\n" + python_code
-		
+
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
 
@@ -85,8 +85,7 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-	pause_lap();
-	
+
 	running = false;
 }
 
@@ -98,16 +97,17 @@ function resetSim(){
 	reset_gui();
 
 	if(running == true){
+		stopCode();
 		submitCode();
 	}
 }
 
 // Function for range slider
 function codefrequencyUpdate(vol) {
-	document.querySelector('#code_frequency').value = vol;
+	document.querySelector('#code_freq').value = vol;
 }
 
 // Function for range slider
 function guifrequencyUpdate(vol) {
-	document.querySelector('#gui_frequency').value = vol;
+	document.querySelector('#gui_freq').value = vol;
 }

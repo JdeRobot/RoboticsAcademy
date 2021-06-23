@@ -19,24 +19,18 @@ while True:
 
 </div>
 <div class="split b">
-    <div id="visual_buttons" class="row no-gutters">
-        <div id="lap_heading">Lap Time <img src="{% static 'exercises/car_junction/web-template/assets/img/stopwatch-solid.svg' %}"><span id="lap_time"></span> </div>
-    </div>
     <div id="visual">
         <!-- Canvas -->
-        <img id="gui_canvas"></img>
-        <!--<iframe src="" id="gzweb"></iframe>-->
-        <canvas id="local-map"></canvas>
+        <canvas id="gui_canvas"></canvas>
     </div>
     <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
-
     <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
     <script type="text/javascript">
         function changeconsole(){
             document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
             var console_display = document.getElementById('console').style.display
             console.log(console_display)
-            if (console_display == "none" || console_display == "none" ) {
+            if (console_display == "none") {
                 document.getElementById('console').style.display = 'block';
             } else{
                 document.getElementById('console').style.display = 'none';
@@ -46,7 +40,7 @@ while True:
             document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true")
             var display = document.getElementById('iframeGzweb').style.display
             console.log(display)
-            if (display == "none" || display == "none" ) {
+            if (display == "none") {
                 document.getElementById('iframeGzweb').style.display = 'block';
             } else{
                 document.getElementById('iframeGzweb').style.display = 'none';
@@ -68,7 +62,6 @@ while True:
 <script src="{% static 'exercises/car_junction/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/car_junction/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/car_junction/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/car_junction/web-template/assets/map_view.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/car_junction/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/car_junction/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 

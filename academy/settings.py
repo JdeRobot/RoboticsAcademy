@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
-VERSION = '17062021'
+VERSION = '20210623'
 
 
 # Application definition
