@@ -9,8 +9,38 @@ time{
     margin-left: 10px;
 }
 
-#visual_buttons{
-  margin-left: inherit;
+#split_b{
+    display: flex;
+    justify-content: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+#fwdKinematics{
+    margin-left: inherit;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 50%;
+    float: left;
+    padding:  20px 0 20px 0;
+    display: flex;
+    border-right: 2px solid black;
+    border-bottom: solid 2px black;    
+  /* border-bottom: solid 2px black; */
+}
+
+#invKinematics{
+    margin-left: 50px;
+    padding: 20px 0 20px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    float: left;
+    border-bottom: solid 2px black;    
+}
+
+.slider{
+    width: 30%;
 }
 
 #editor{
@@ -238,6 +268,11 @@ input[type=number]::-webkit-inner-spin-button {
 #turtlebot_play_btn{
     margin-left: 10%;
     border:1 solid whitesmoke;
+    display: inline-block;
+    align-items: center;
+    padding: 5px;
+    width: 150px;
+    flex-direction: row;
 }
 
 #turtlebot_reset_btn{
