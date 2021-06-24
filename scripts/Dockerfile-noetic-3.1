@@ -249,9 +249,9 @@ RUN rosdep init && rosdep update
 # PX4 src
 RUN apt-get update && \
     apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
-RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.12.0-beta5 \
+RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.11.3 \
 	&& cd /PX4-Autopilot \
-	&& DONT_RUN=1 make px4_sitl_default gazebo
+	&& DONT_RUN=1 make px4_sitl gazebo
 
 # jderobot_drones src
 RUN rm -rf /catkin_ws

@@ -20,9 +20,10 @@ ACCELERATION_ENABLED = check_device(DRI_PATH)
 class Tests():
     def test_px4(self):
         while True:
-            args = ['./Firmware/build/px4_sitl_default/bin/px4-commander', 'check']
+            args = ['./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander', 'check']
             process = subprocess.Popen(args, stdout=subprocess.PIPE)
             output, err = process.communicate()
+            output = output.decode('utf-8')
             idx = output.find('Prearm check: ')
             if output[idx+14:idx+16] == 'OK':
                 break
@@ -38,7 +39,7 @@ class Tests():
 
 class Launch(Tests):
     def __init__(self):
-        env = {'GAZEBO_MODEL_PATH': '$GAZEBO_MODEL_PATH:/Firmware/Tools/sitl_gazebo/models:/opt/ros/noetic/share/drone_assets/models:/opt/ros/noetic/share/drone_assets/urdf:/drones/drone_assets/models'}
+        env = {'GAZEBO_MODEL_PATH': '$GAZEBO_MODEL_PATH:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/noetic/share/drone_assets/models:/opt/ros/noetic/share/drone_assets/urdf:/drones/drone_assets/models'}
         os.environ.update(env)
 
         args = ['/opt/ros/noetic/bin/roscore']
