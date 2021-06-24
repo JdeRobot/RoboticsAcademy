@@ -15,165 +15,165 @@ class GUI:
     def __init__(self, host, hal, turtlebot):
         t = threading.Thread(target=self.run_server)
         
-        self.payload = {'image': ''}
-        self.left_payload = {'image': ''}
-        self.server = None
-        self.client = None
+        # self.payload = {'image': ''}
+        # self.left_payload = {'image': ''}
+        # self.server = None
+        # self.client = None
         
-        self.host = host
+        # self.host = host
 
-        # Image variables
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        # # Image variables
+        # self.image_to_be_shown = None
+        # self.image_to_be_shown_updated = False
+        # self.image_show_lock = threading.Lock()
 
-        self.left_image_to_be_shown = None
-        self.left_image_to_be_shown_updated = False
-        self.left_image_show_lock = threading.Lock()
+        # self.left_image_to_be_shown = None
+        # self.left_image_to_be_shown_updated = False
+        # self.left_image_show_lock = threading.Lock()
         
-        self.acknowledge = False
-        self.acknowledge_lock = threading.Lock()
+        # self.acknowledge = False
+        # self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
-        self.hal = hal
-        self.turtlebot = turtlebot
+        # self.hal = hal
+        # self.turtlebot = turtlebot
         t.start()
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
-    @classmethod
-    def initGUI(cls, host):
-        # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host)
-        return new_instance
+    # @classmethod
+    # def initGUI(cls, host):
+    #     # self.payload = {'image': '', 'shape': []}
+    #     new_instance = cls(host)
+    #     return new_instance
 
-    # Function to prepare image payload
-    # Encodes the image as a JSON string and sends through the WS
-    def payloadImage(self):
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
+    # # Function to prepare image payload
+    # # Encodes the image as a JSON string and sends through the WS
+    # def payloadImage(self):
+    #     self.image_show_lock.acquire()
+    #     image_to_be_shown_updated = self.image_to_be_shown_updated
+    #     image_to_be_shown = self.image_to_be_shown
+    #     self.image_show_lock.release()
 
-        image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+    #     image = image_to_be_shown
+    #     payload = {'image': '', 'shape': ''}
 
-        if not image_to_be_shown_updated:
-            return payload
+    #     if not image_to_be_shown_updated:
+    #         return payload
 
-        shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
-        encoded_image = base64.b64encode(frame)
+    #     shape = image.shape
+    #     frame = cv2.imencode('.JPEG', image)[1]
+    #     encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+    #     payload['image'] = encoded_image.decode('utf-8')
+    #     payload['shape'] = shape
 
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
+    #     self.image_show_lock.acquire()
+    #     self.image_to_be_shown_updated = False
+    #     self.image_show_lock.release()
 
-        return payload
+    #     return payload
 
-    # Function to prepare image payload
-    # Encodes the image as a JSON string and sends through the WS
-    def payloadLeftImage(self):
-        self.left_image_show_lock.acquire()
-        left_image_to_be_shown_updated = self.left_image_to_be_shown_updated
-        left_image_to_be_shown = self.left_image_to_be_shown
-        self.left_image_show_lock.release()
+    # # Function to prepare image payload
+    # # Encodes the image as a JSON string and sends through the WS
+    # def payloadLeftImage(self):
+    #     self.left_image_show_lock.acquire()
+    #     left_image_to_be_shown_updated = self.left_image_to_be_shown_updated
+    #     left_image_to_be_shown = self.left_image_to_be_shown
+    #     self.left_image_show_lock.release()
 
-        image = left_image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+    #     image = left_image_to_be_shown
+    #     payload = {'image': '', 'shape': ''}
 
-        if not left_image_to_be_shown_updated:
-            return payload
+    #     if not left_image_to_be_shown_updated:
+    #         return payload
 
-        shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
-        encoded_image = base64.b64encode(frame)
+    #     shape = image.shape
+    #     frame = cv2.imencode('.JPEG', image)[1]
+    #     encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+    #     payload['image'] = encoded_image.decode('utf-8')
+    #     payload['shape'] = shape
 
-        self.left_image_show_lock.acquire()
-        self.left_image_to_be_shown_updated = False
-        self.left_image_show_lock.release()
+    #     self.left_image_show_lock.acquire()
+    #     self.left_image_to_be_shown_updated = False
+    #     self.left_image_show_lock.release()
 
-        return payload
+    #     return payload
 
-    # Function for student to call
-    def showImage(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+    # # Function for student to call
+    # def showImage(self, image):
+    #     self.image_show_lock.acquire()
+    #     self.image_to_be_shown = image
+    #     self.image_to_be_shown_updated = True
+    #     self.image_show_lock.release()
 
-    # Function for student to call
-    def showLeftImage(self, image):
-        self.left_image_show_lock.acquire()
-        self.left_image_to_be_shown = image
-        self.left_image_to_be_shown_updated = True
-        self.left_image_show_lock.release()
+    # # Function for student to call
+    # def showLeftImage(self, image):
+    #     self.left_image_show_lock.acquire()
+    #     self.left_image_to_be_shown = image
+    #     self.left_image_to_be_shown_updated = True
+    #     self.left_image_show_lock.release()
 
-    # Function to get the client
-    # Called when a new client is received
-    def get_client(self, client, server):
-        self.client = client
+    # # Function to get the client
+    # # Called when a new client is received
+    # def get_client(self, client, server):
+    #     self.client = client
         
-    # Function to get value of Acknowledge
-    def get_acknowledge(self):
-        self.acknowledge_lock.acquire()
-        acknowledge = self.acknowledge
-        self.acknowledge_lock.release()
+    # # Function to get value of Acknowledge
+    # def get_acknowledge(self):
+    #     self.acknowledge_lock.acquire()
+    #     acknowledge = self.acknowledge
+    #     self.acknowledge_lock.release()
         
-        return acknowledge
+    #     return acknowledge
         
-    # Function to get value of Acknowledge
-    def set_acknowledge(self, value):
-        self.acknowledge_lock.acquire()
-        self.acknowledge = value
-        self.acknowledge_lock.release()
+    # # Function to get value of Acknowledge
+    # def set_acknowledge(self, value):
+    #     self.acknowledge_lock.acquire()
+    #     self.acknowledge = value
+    #     self.acknowledge_lock.release()
         
-    # Update the gui
-    def update_gui(self):
-        # Payload Image Message
-        payload = self.payloadImage()
-        self.payload["image"] = json.dumps(payload)
+    # # Update the gui
+    # def update_gui(self):
+    #     # Payload Image Message
+    #     payload = self.payloadImage()
+    #     self.payload["image"] = json.dumps(payload)
         
-        message = "#gui" + json.dumps(self.payload)
-        self.server.send_message(self.client, message)
+    #     message = "#gui" + json.dumps(self.payload)
+    #     self.server.send_message(self.client, message)
 
-        # Payload Left Image Message
-        left_payload = self.payloadLeftImage()
-        self.left_payload["image"] = json.dumps(left_payload)
+    #     # Payload Left Image Message
+    #     left_payload = self.payloadLeftImage()
+    #     self.left_payload["image"] = json.dumps(left_payload)
 
-        message = "#gul" + json.dumps(self.left_payload)
-        self.server.send_message(self.client, message)
+    #     message = "#gul" + json.dumps(self.left_payload)
+    #     self.server.send_message(self.client, message)
             
-    # Function to read the message from websocket
-    # Gets called when there is an incoming message from the client
-    def get_message(self, client, server, message):
-        # Acknowledge Message for GUI Thread
-        if message[:4] == "#ack":
-            self.set_acknowledge(True)
-        elif message[:4] == "#tur":
-            self.turtlebot.start_turtlebot()
-        elif message[:4] == "#stp":
-            self.turtlebot.stop_turtlebot()
-        elif message[:4] == "#rst":
-            self.turtlebot.reset_turtlebot()
+    # # Function to read the message from websocket
+    # # Gets called when there is an incoming message from the client
+    # def get_message(self, client, server, message):
+    #     # Acknowledge Message for GUI Thread
+    #     if message[:4] == "#ack":
+    #         self.set_acknowledge(True)
+    #     elif message[:4] == "#tur":
+    #         self.turtlebot.start_turtlebot()
+    #     elif message[:4] == "#stp":
+    #         self.turtlebot.stop_turtlebot()
+    #     elif message[:4] == "#rst":
+    #         self.turtlebot.reset_turtlebot()
 
 
-    # Activate the server
-    def run_server(self):
-        self.server = WebsocketServer(port=2303, host=self.host)
-        self.server.set_fn_new_client(self.get_client)
-        self.server.set_fn_message_received(self.get_message)
-        self.server.run_forever()
+    # # Activate the server
+    # def run_server(self):
+    #     self.server = WebsocketServer(port=2303, host=self.host)
+    #     self.server.set_fn_new_client(self.get_client)
+    #     self.server.set_fn_message_received(self.get_message)
+    #     self.server.run_forever()
 
-    # Function to reset
-    def reset_gui(self):
-        pass
+    # # Function to reset
+    # def reset_gui(self):
+    #     pass
         
 
 # This class decouples the user thread
