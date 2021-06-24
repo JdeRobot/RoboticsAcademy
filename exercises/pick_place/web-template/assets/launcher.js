@@ -1,6 +1,6 @@
 function startSim() {
     ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
-    exercise = "follow_turtlebot"
+    exercise = "pick_place"
     var level = 0;
     let websockets_connected = false;
 
