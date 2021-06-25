@@ -129,6 +129,16 @@ feature_row:
     version_label: "btn--success"
     version: "v2.4"
 
+  - image_path: /assets/images/exercises/rescue_people/rescue_people.jpg
+    alt: "Rescue People"
+    title: "Rescue People"
+    excerpt: "Recognition of faces of lost people and save their locations."
+    url: "/exercises/Drones/rescue_people"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v2.4"
+
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
     title: "Car Junction"
@@ -164,16 +174,6 @@ feature_row:
     title: "Drone Gymkhana"
     excerpt: "Learn about different drone controls and drone infrastructure."
     url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
-    alt: "Rescue People"
-    title: "Rescue People"
-    excerpt: "Recognition of faces of lost people and save their locations."
-    url: "/exercises/Drones/rescue_people"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"
