@@ -59,5 +59,10 @@
         "gazebo_path": "/RoboticsAcademy/exercises/position_control/web-template/launch",
         "instructions_ros": ["python ./RoboticsAcademy/exercises/position_control/web-template/launch/launch.py"],
         "instructions_host": "python /RoboticsAcademy/exercises/position_control/web-template/exercise.py 0.0.0.0"
+    },
+    "rescue_people": {
+        "gazebo_path": "/RoboticsAcademy/exercises/rescue_people/web-template/launch",
+        "instructions_ros": ["python ./RoboticsAcademy/exercises/rescue_people/web-template/launch/launch.py"],
+        "instructions_host": "python /RoboticsAcademy/exercises/rescue_people/web-template/exercise.py 0.0.0.0"
     }
 }

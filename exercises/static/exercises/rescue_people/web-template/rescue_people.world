@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+	<world name="default">
+		<gui fullscreen="1"></gui>
+
+		<!-- People -->
+		<include>
+			<uri>model://face1</uri>
+			<pose>0 0 0 0 0 -1.57</pose>
+		</include>
+		<include>
+			<uri>model://face2</uri>
+			<pose>3 -3 0 0 0 -1.57</pose>
+		</include>
+		<include>
+			<uri>model://face3</uri>
+			<pose>-1 -4 0 0 0 -1.57</pose>
+		</include>
+		<include>
+			<uri>model://face4</uri>
+			<pose>4 2 0 0 0 -1.57</pose>
+		</include>
+		<include>
+			<uri>model://face5</uri>
+			<pose>-4 0 0 0 0 -1.57</pose>
+		</include>
+		<include>
+			<uri>model://face6</uri>
+			<pose>-1 5 0 0 0 -1.57</pose>
+		</include>
+
+		<!-- Target Box -->
+		<include>
+			<uri>model://custom_box_target_green</uri>
+			<pose>10 0 0.5 0 0 -1.57</pose>
+		</include>
+
+		<!-- Ocean -->
+		<include>
+			<uri>model://ocean</uri>
+			<pose>0 0 -0.02 0 0 -1.57</pose>
+		</include>
+
+		<scene>
+			<grid>1</grid>
+			<ambient>0.01 0.01 0.01 1.0</ambient>
+			<shadows>0</shadows>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+		</scene>
+
+		<!-- A global light source -->
+		<include>
+			<uri>model://sun</uri>
+		</include>
+
+		<!-- Gazebo required specifications -->
+		<physics name='default_physics' default='0' type='ode'>
+			<gravity>0 0 -9.8066</gravity>
+			<ode>
+				<solver>
+					<type>quick</type>
+					<iters>10</iters>
+					<sor>1.3</sor>
+					<use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+				</solver>
+				<constraints>
+					<cfm>0</cfm>
+					<erp>0.2</erp>
+					<contact_max_correcting_vel>100</contact_max_correcting_vel>
+					<contact_surface_layer>0.001</contact_surface_layer>
+				</constraints>
+			</ode>
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>250</real_time_update_rate>
+			<magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+		</physics>
+
+	</world>
+</sdf>
