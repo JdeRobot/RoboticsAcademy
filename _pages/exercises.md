@@ -248,6 +248,16 @@ feature_row:
     btn_label: "Go!"
     version_label: ""
     version: "v.prototype"
+    
+  - image_path: /assets/images/exercises/dl_digit_classifier/dl_digit_classifier.png
+    alt: "Digit Classifier"
+    title: "Digit Classifier"
+    excerpt: "Classify digits in real time using your own deep learning model."
+    url: "/exercises/ComputerVision/dl_digit_classifier"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: ""
+    version: "v.prototype"
 
 ---
 
