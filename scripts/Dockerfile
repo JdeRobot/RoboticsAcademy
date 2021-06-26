@@ -13,7 +13,7 @@ ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins
 ENV ROS_PACKAGE_PATH "$ROS_PACKAGE_PATH:/opt/jderobot/IndustrialRobots/industrial_robots"
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
+RUN git clone https://github.com/predator4hack/RoboticsAcademy.git -b pick_place
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 COPY manager.py /manager.py
