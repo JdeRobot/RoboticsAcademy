@@ -25,7 +25,7 @@ cnn:
     alt: "Example of a Convolutional Neural Network"
     title: "Example of a Convolutional Neural Network"
 
-youtubeId1: gzALLE2jlRI
+youtubeId1: 80K0Fd9GFkU
 
 ---
 
