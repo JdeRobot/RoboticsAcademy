@@ -1,6 +1,6 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu18.04
 
-ARG VIRTUALGL_VERSION=2.6.80
+ARG VIRTUALGL_VERSION=2.6.90
 ARG TURBOVNC_VERSION=2.2.80
 
 # Make all NVIDIA GPUS visible
@@ -41,8 +41,8 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # Install VirtualGL and TurboVNC
-RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
-    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/dev/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     chmod u+s /usr/lib/libvglfaker.so && \
