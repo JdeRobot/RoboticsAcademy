@@ -43,7 +43,6 @@
 
 		<scene>
 			<grid>1</grid>
-			<ambient>0.01 0.01 0.01 1.0</ambient>
 			<shadows>0</shadows>
 			<sky>
 				<clouds>
