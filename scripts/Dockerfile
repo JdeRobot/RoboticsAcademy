@@ -14,7 +14,7 @@ ENV ROS_PACKAGE_PATH "$ROS_PACKAGE_PATH:/opt/jderobot/IndustrialRobots/industria
 
 # RoboticsAcademy
 RUN git clone https://github.com/predator4hack/RoboticsAcademy.git -b pick_place
-RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+# RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 COPY manager.py /manager.py
 COPY instructions.json /instructions.json
