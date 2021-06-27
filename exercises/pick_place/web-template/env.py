@@ -1,4 +1,4 @@
-import rospy
+import rospy, rospkg
 import os
 import copy
 import yaml
