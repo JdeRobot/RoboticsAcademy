@@ -13,7 +13,8 @@ RUN mkdir -p /catkin_ws/src && cd /catkin_ws && catkin init && cd / && \
 RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
 RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
 RUN cd /catkin_ws/src && ln -s /drones/drone_assets .
-RUN cd /catkin_ws/src && ln -s /IndustrialRobots/industrial_robots .
+RUN cd /catkin_ws/src && ln -s /IndustrialRobots/industrial_robots/irb120_robotiq85/irb120_robotiq85_gazebo .
+RUN cd /catkin_ws/src && ln -s /IndustrialRobots/industrial_robots/irb120_robotiq85/irb120_robotiq85_moveit_config .
 RUN cd /catkin_ws/src && ln -s /IndustrialRobots/assets .
 RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /catkin_ws; catkin build'

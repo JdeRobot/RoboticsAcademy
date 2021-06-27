@@ -1,5 +1,5 @@
-<launch>
 <?xml version="1.0"?>
+<launch>
 <!-- PARTE 1: LANZAR MUNDO VACÍO EN GAZEBO + IRB 120 + TF + CONTROL INTERFACE -->
   <arg name="paused" default="false" doc="Start gazebo in paused mode" />
   <arg name="use_sim_time" default="true"/>
