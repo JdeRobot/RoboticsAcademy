@@ -7,7 +7,7 @@
   <arg name="headless" default="true"/>
   <arg name="debug" default="false"/>
   <arg name="verbose" default="true"/>
-  <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/pick_place/web-template/warehouse.world"/>
+  <arg name="world" default="/RoboticsAcademy/exercises/pick_place/warehouse.world"/>
 
   <!-- remap topics to conform to ROS-I specifications -->
   <remap from="/arm_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
