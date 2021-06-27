@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+    <world name="default">
+        <gui fullscreen="1"></gui>
+        <scene>
+            <grid>false</grid>
+        </scene>
+        <!-- A global light source -->
+        <include>
+            <uri>model://sun</uri>
+            <pose>1.5 -30 100 0 0 0</pose>
+        </include>
+        <!-- Stop signs -->
+        <include>
+            <static>true</static>
+            <uri>model://stop_sign</uri>
+            <pose>3.5 -3.5 0 0 0 0</pose>
+        </include>
+        <include>
+            <static>true</static>
+            <uri>model://stop_sign</uri>
+            <pose>-3 3 0 0 0 3.15</pose>
+        </include>
+        <!-- Houses -->
+        <include>
+            <uri>model://house_1</uri>
+            <pose>-12 12 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://house_2</uri>
+            <pose>-32 9 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://house_3</uri>
+            <pose>-5.5 -7 0 0 0 1.55</pose>
+        </include>
+        <!-- A gas station -->
+        <include>
+            <uri>model://gas_station</uri>
+            <pose>10 14 0 0 0 1.55</pose>
+        </include>
+        <!-- Lamps -->
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-3 13 0 0 0 1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>3 23 0 0 0 -1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-3 33 0 0 0 1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-3 -3 0 0 0 1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>3 -13 0 0 0 -1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-3 -23 0 0 0 1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>3 -33 0 0 0 -1.55</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>3 3 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>13 -3 0 0 0 3.15</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>23 3 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>33 -3 0 0 0 3.15</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-13 3 0 0 0 0</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-23 -3 0 0 0 3.15</pose>
+        </include>
+        <include>
+            <uri>model://lamp_post</uri>
+            <pose>-33 3 0 0 0 0</pose>
+        </include>
+        <!-- A opel car -->
+        <include>
+            <uri>model://opel_ROS</uri>
+            <pose>1.5 -30 0 0 0 3.14</pose>
+        </include>
+        <!-- Cars -->
+        <model name="car1">
+            <pose>30 1.5 0 0 0 -1.57</pose>
+            <static>false</static>
+            <link name="car1">
+                <gravity>false</gravity>
+                <inertial>
+                    <mass>1.0</mass>
+                    <inertia>
+                        <ixx>0.083</ixx>
+                        <ixy>0.0</ixy>
+                        <ixz>0.0</ixz>
+                        <iyy>0.083</iyy>
+                        <iyz>0.0</iyz>
+                        <izz>0.083</izz>
+                    </inertia>
+                </inertial>
+                <collision name="collision">
+                    <geometry>
+                        <mesh>
+                            <uri>model://opel/meshes/model.dae</uri>
+                        </mesh>
+                    </geometry>
+                </collision>
+                <visual name="visual">
+                    <geometry>
+                        <mesh>
+                            <uri>model://opel/meshes/model.dae</uri>
+                        </mesh>
+                    </geometry>
+                </visual>
+            </link>
+            <plugin name="object_controller" filename="libcarplugin.so">
+                <robotNamespace></robotNamespace>
+                <commandTopic>dummy1/cmd_vel</commandTopic>
+                <odometryTopic>dummy1/odom</odometryTopic>
+                <odometryFrame>odom</odometryFrame>
+                <odometryRate>20.0</odometryRate>
+                <robotBaseFrame>car1</robotBaseFrame>
+            </plugin>
+        </model>
+        <model name="car2">
+            <pose>-30 -1.5 0 0 0 1.57</pose>
+            <static>false</static>
+            <link name="car2">
+                <gravity>false</gravity>
+                <inertial>
+                    <mass>1.0</mass>
+                    <inertia>
+                        <ixx>0.083</ixx>
+                        <ixy>0.0</ixy>
+                        <ixz>0.0</ixz>
+                        <iyy>0.083</iyy>
+                        <iyz>0.0</iyz>
+                        <izz>0.083</izz>
+                    </inertia>
+                </inertial>
+                <collision name="collision">
+                    <geometry>
+                        <mesh>
+                            <uri>model://opel/meshes/model.dae</uri>
+                        </mesh>
+                    </geometry>
+                </collision>
+                <visual name="visual">
+                    <geometry>
+                        <mesh>
+                            <uri>model://opel/meshes/model.dae</uri>
+                        </mesh>
+                    </geometry>
+                </visual>
+            </link>
+            <plugin name="object_controller" filename="libcarplugin.so">
+                <robotNamespace></robotNamespace>
+                <commandTopic>dummy2/cmd_vel</commandTopic>
+                <odometryTopic>dummy2/odom</odometryTopic>
+                <odometryFrame>odom</odometryFrame>
+                <odometryRate>20.0</odometryRate>
+                <robotBaseFrame>car2</robotBaseFrame>
+            </plugin>
+        </model>
+        <!-- Roads -->
+        <include>
+            <uri>model://stopW</uri>
+            <pose>0 0 0 0 0 0</pose>
+        </include>
+    </world>
+</sdf>

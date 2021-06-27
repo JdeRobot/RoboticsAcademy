@@ -249,7 +249,7 @@ RUN rosdep init && rosdep update
 # PX4 src
 RUN apt-get update && \
     apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
-RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.12.0-beta5 \
+RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.11.3 \
 	&& cd /PX4-Autopilot \
 	&& DONT_RUN=1 make px4_sitl gazebo
 
@@ -306,7 +306,7 @@ RUN echo 'export ROS_PACKAGE_PATH=ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot
 
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models"
+ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/opt/jderobot/CustomRobots/car_junction:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
 
 # RoboticsAcademy
@@ -315,10 +315,10 @@ RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/
 
 COPY manager-3.1.py /manager-3.1.py
 COPY instructions.json /instructions.json
-
-# execute permissions
 COPY start-3.1.sh /start-3.1.sh
 COPY start_manager.sh /start_manager.sh
+
+# execute permissions
 RUN chmod 755 /start-3.1.sh
 RUN chmod 755 /start_manager.sh
 

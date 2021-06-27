@@ -2,7 +2,7 @@
 <sdf version="1.5">
 	<world name="default">
 
-        <gui fullscreen=1></gui>
+        <gui fullscreen="1"></gui>
 
 		<scene>
 			<grid>false</grid>
@@ -30,17 +30,17 @@
             <pose>-6 -8 0 0 0 0</pose>
         </include>
 
-		<!--<include>
+		<include>
 			<uri>model://gas_station</uri>
 			<pose>1 6.43 0 0 0 0</pose>
-		</include>-->
+		</include>
 
 		<!-- <include>
 			<uri>model://house_4</uri>
 			<pose>-19 -12.57 0 0 0 1.55</pose>
 		</include>
 		 -->
-		
+
 		<include>
 			<uri>model://polaris_ranger_ev</uri>
 			<pose>4.48 -6 0.1 0 0 0</pose>
@@ -52,13 +52,13 @@
 			<pose>4.48 -12 0.1 0 0 0</pose>
 			<static>true</static>
 		</include>
-		
+
 		<include>
 			<uri>model://person_standing</uri>
 			<pose>-3 2 0.1 0 0 0</pose>
 			<static>true</static>
 		</include> -->
-		
+
 
 		<include>
 			<name>lampost1</name>
