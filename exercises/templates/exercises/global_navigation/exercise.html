@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+
+<div id="code-control">
+    <!-- Code Editor -->
+    <!-- Along with buttons -->
+    <div id="code_container">
+        <div id="editor">from GUI import GUI
+from HAL import HAL
+import cv2
+from MAP import MAP
+import numpy as np
+
+# Enter sequential code!
+img = MAP.getMap()  #Map image opencv data
+target = GUI.targetPose  #returns x,y coordinates of chosen destionation in the world
+pose = MAP.robotPose()   #returns x,y coordinates of robot on the map
+ropose = HAL.getPose()   #returns x,y and theta components in the world
+
+coor = MAP.gridToWorld(415,85)   #returns translated x,y coordinates in the world
+coor1 = MAP.worldToGrid(212,315) #returns translated x,y coordinates on the map
+set_grid = MAP.setGridVal(121,155,255) #sets the value val to the indicated position
+get_grid = MAP.getGridVal(121,155) #returns the value in that grid position
+
+GUI.showGPP(img) #shows Gradient Path Planning field on the web-template(Opencv image)
+#GUI.showPath(arr) #shows ideal path on the map and the parameter should be 2D array
+
+#printing debugging data on the console
+console.print(coor)
+
+while True:
+    # Enter iterative code!
+        </div>
+
+
+    </div>
+</div>
+
+</div>
+<div class="split b">
+    <div id="visual_buttons" class="row no-gutters">
+        <!--<div id="lap_heading">Lap Time <span id="lap_time"></span> </div>-->
+    </div>
+    <div id="visual">
+        <!-- Canvas -->
+        <canvas id="birds-eye" onclick="pickLoc()" ></canvas>
+        <img id="gui_canvas"></img>
+        <!--<iframe src="" id="gzweb"></iframe>
+        <h3 id="lap_heading">Lap Time</h3>
+        <h4 id="lap_time"></h4>-->
+    </div>
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
+
+    <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    <script type="text/javascript">
+        function changeconsole(){
+            document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+            var console_display = document.getElementById('console').style.display
+            console.log(console_display)
+            if (console_display == "none" || console_display == "none" ) {
+                document.getElementById('console').style.display = 'block';
+            } else{
+                document.getElementById('console').style.display = 'none';
+            }
+        }
+        function changegzweb(){
+            document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
+            var display = document.getElementById('iframeGzweb').style.display
+            console.log(display)
+            if (display == "none" || display == "none" ) {
+                document.getElementById('iframeGzweb').style.display = 'block';
+            } else{
+                document.getElementById('iframeGzweb').style.display = 'none';
+            }
+        }
+    </script>
+</div>
+</div>
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+    Split(['.a', '.b'], {
+        gutterSize: 3,
+        sizes: [50,50]
+    });
+</script>
+
+<script src="{% static 'exercises/global_navigation/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/generatepath.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
