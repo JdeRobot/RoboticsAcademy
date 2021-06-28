@@ -1,3 +1,7 @@
+##################
+# This file containes the APIs used to interact with robot
+##################
+
 import rospy
 import rospkg
 import threading

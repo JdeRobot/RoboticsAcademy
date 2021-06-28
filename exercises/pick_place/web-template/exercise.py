@@ -50,10 +50,10 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         # self.turtlebot = Turtlebot()
-        # self.gui = GUI(self.host, self.hal, self.turtlebot)
+        # self.gui = GUI(self.host, self.hal, self.turtlebot)   # There is no need of GUI for this exercise so commented this line
         self.env = ENV()
-        t = threading.Thread(target=self.run_server)
-        t.start()
+        t = threading.Thread(target=self.run_server)    # This command is usually executed from GUI.py, but now I have migrated it to exercise.py
+        t.start()   # Started the thread
 
     # Function to parse the code
     # A few assumptions: 
@@ -321,7 +321,7 @@ class Template:
     def connected(self, client, server):
         self.client = client
         # Start the GUI update thread
-        # self.thread_gui = ThreadGUI(self.gui)
+        # self.thread_gui = ThreadGUI(self.gui)     # Commented the use of ThreadGUI class from GUI.py
         # self.thread_gui.start()
 
         # Start the real time factor tracker thread

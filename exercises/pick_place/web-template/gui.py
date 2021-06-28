@@ -1,3 +1,7 @@
+#################################
+# Currently this file is not being used in this exercise
+#################################
+
 import json
 import cv2
 import base64

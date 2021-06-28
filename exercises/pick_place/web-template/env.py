@@ -1,3 +1,6 @@
+################################
+# This file contains the helper APIs used by the exercise.
+################################
 import rospy, rospkg
 import os
 import copy
