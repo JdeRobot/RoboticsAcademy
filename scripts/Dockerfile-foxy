@@ -1,0 +1,56 @@
+FROM foxy-radi-base
+### TODO: Change name to jderobot/base:4.0
+
+# Custom Robot Repository
+RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
+  git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
+
+# Set up Nav2
+# (dependency for warehouse exercise)
+RUN mkdir -p /nav2_ws/src && \
+  cd /nav2_ws/src && \
+  git clone -b $ROS_DISTRO-devel https://github.com/ros-planning/navigation2.git && \
+  . /opt/ros/$ROS_DISTRO/setup.sh && \
+  cd /nav2_ws && \
+  colcon build
+
+# Amazon warehouse exercise
+RUN cd /opt/jderobot/CustomRobots && \
+  git submodule update --init --recursive && \
+  . /nav2_ws/install/setup.sh && \
+  colcon build
+
+# Environment variables are set inside /radi-entrypoint.sh
+# As ./start.sh is executed from a non-interactive terminal,
+# it is not allowed to source ~/.bashrc (early exit)
+# The solution is to source /radi-entrypoint.sh
+
+# For the web template console to obtain the same 
+# environment variables, we add the below line to ~/.bashrc
+RUN echo 'source /radi-entrypoint.sh' >> ~/.bashrc
+
+# RoboticsAcademy
+### TODO: Uncomment when PR is made to the official repo
+# RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
+# RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+
+# Copy scripts to Docker container's root
+COPY manager-4.0.py /manager.py
+COPY manager_utils.py /manager_utils.py
+COPY instructions.json /instructions.json
+COPY radi-entrypoint.sh /radi-entrypoint.sh
+COPY start.sh /start.sh
+
+# execute permissions
+RUN chmod 755 /start.sh
+
+EXPOSE 2303
+EXPOSE 1905
+EXPOSE 8080
+EXPOSE 7681
+EXPOSE 8765
+EXPOSE 1108
+# Port by WebRtc
+EXPOSE 1831
+# Port for noVNC
+EXPOSE 6080
