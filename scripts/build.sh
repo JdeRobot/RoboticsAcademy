@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
+docker build -f Dockerfile-foxy.base -t foxy-radi-base . > build_log && \
 docker build -f Dockerfile-foxy -t foxy-radi . && \
+### TODO: Add --no-cache=true in above step
 docker run -it \
       --rm \
       -v /tmp/.X11-unix:/tmp/.X11-unix \

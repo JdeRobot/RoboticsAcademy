@@ -36,8 +36,6 @@ RUN apt-get install -y \
 
 
 # Adding environment variables to .bashrc file
-## TODO: Check if these can be by-passed
-## when using the web-template
 RUN echo 'source /opt/ros/$ROS_DISTRO/local_setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-11/setup.sh' >> ~/.bashrc
 RUN echo 'export TURTLEBOT3_MODEL=waffle' >> ~/.bashrc
