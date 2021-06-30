@@ -1,7 +1,3 @@
-#################
-# Currently Under Progreess
-#################
-
 #!/usr/bin/env python
 
 from __future__ import print_function
@@ -22,9 +18,9 @@ import rospy
 from std_srvs.srv import Empty
 import cv2
 
-# from gui import GUI, ThreadGUI
-from env import ENV
+from gui import GUI, ThreadGUI
 from hal import HAL
+from turtlebot import Turtlebot
 from console import start_console, close_console
 
 
@@ -49,11 +45,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        # self.turtlebot = Turtlebot()
-        # self.gui = GUI(self.host, self.hal, self.turtlebot)   # There is no need of GUI for this exercise so commented this line
-        self.env = ENV()
-        t = threading.Thread(target=self.run_server)    # This command is usually executed from GUI.py, but now I have migrated it to exercise.py
-        t.start()   # Started the thread
+        self.turtlebot = Turtlebot()
+        self.gui = GUI(self.host, self.hal, self.turtlebot)
 
     # Function to parse the code
     # A few assumptions: 
@@ -124,8 +117,8 @@ class Template:
 
         # The Python exec function
         # Run the sequential part
-        env_module, hal_module = self.generate_modules()
-        reference_environment = {"ENV": env_module, "HAL": hal_module}
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
         exec(sequential_code, reference_environment)
 
         # Run the iterative part inside template
@@ -164,47 +157,37 @@ class Template:
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
         # Add HAL functions
-        hal_module.HAL.pickup = self.hal.pickup
-        hal_module.HAL.place = self.hal.place
-        hal_module.HAL.back_to_home = self.hal.back_to_home
-        hal_module.HAL.move_joint_arm = self.hal.move_joint_arm
-        hal_module.HAL.move_pose_arm = self.hal.move_pose_arm
-        hal_module.HAL.move_joint_hand = self.hal.move_joint_hand
-        hal_module.HAL.generate_grasps = self.hal.generate_grasps
-
-        # Define ENV module
-        env_module = imp.new_module("ENV")
-        env_module.HAL = imp.new_module("ENV")
-
-        # Add ENV functions
-        env_module.ENV.get_object_pose = self.env.get_object_pose
-        env_module.ENV.get_object_list = self.env.get_object_list
-        env_module.ENV.get_object_info = self.env.get_object_info
-        env_module.ENV.get_target_list = self.env.get_target_list
-        env_module.ENV.get_target_position = self.env.get_target_position
-        env_module.ENV.pose2msg = self.env.pose2msg
-        env_module.ENV.msg2pose = self.env.msg2pose
-        env_module.ENV.spawn_model = self.env.spawn_model
-        env_module.ENV.delete_model = self.env.delete_model
-        env_module.ENV.clean_scene = self.env.clean_scene
-        env_module.ENV.respawn_all_objects = self.env.respawn_all_objects
-        env_module.ENV.spawn_all_model = self.env.spawn_all_model
+        hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
+        hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
+        hal_module.HAL.get_position = self.hal.get_position
+        hal_module.HAL.get_velocity = self.hal.get_velocity
+        hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
+        hal_module.HAL.get_orientation = self.hal.get_orientation
+        hal_module.HAL.get_roll = self.hal.get_roll
+        hal_module.HAL.get_pitch = self.hal.get_pitch
+        hal_module.HAL.get_yaw = self.hal.get_yaw
+        hal_module.HAL.get_landed_state = self.hal.get_landed_state
+        hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
+        hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
+        hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
+        hal_module.HAL.takeoff = self.hal.takeoff
+        hal_module.HAL.land = self.hal.land
 
         # Define GUI module
-        # gui_module = imp.new_module("GUI")
-        # gui_module.GUI = imp.new_module("GUI")
+        gui_module = imp.new_module("GUI")
+        gui_module.GUI = imp.new_module("GUI")
 
         # Add GUI functions
-        # gui_module.GUI.showImage = self.gui.showImage
-        # gui_module.GUI.showLeftImage = self.gui.showLeftImage
+        gui_module.GUI.showImage = self.gui.showImage
+        gui_module.GUI.showLeftImage = self.gui.showLeftImage
 
         # Adding modules to system
         # Protip: The names should be different from
         # other modules, otherwise some errors
         sys.modules["HAL"] = hal_module
-        sys.modules["ENV"] = env_module
+        sys.modules["GUI"] = gui_module
 
-        return env_module, hal_module
+        return gui_module, hal_module
 
     # Function to measure the frequency of iterations
     def measure_frequency(self):
@@ -321,8 +304,8 @@ class Template:
     def connected(self, client, server):
         self.client = client
         # Start the GUI update thread
-        # self.thread_gui = ThreadGUI(self.gui)     # Commented the use of ThreadGUI class from GUI.py
-        # self.thread_gui.start()
+        self.thread_gui = ThreadGUI(self.gui)
+        self.thread_gui.start()
 
         # Start the real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
