@@ -42,21 +42,7 @@ class Commands:
 
     # Function to get the instructions to run ROS
     def get_ros_instructions(self, exercise):
-        # if ACCELERATION_ENABLED:
-        #     roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/foxy/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=foxy;export PKG_CONFIG_PATH=/opt/ros/foxy/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/foxy/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/foxy;export ROS_PACKAGE_PATH=/opt/ros/foxy/share;chmod +x /opt/ros/foxy/bin/rosmaster; export' \
-        #         'PYTHONPATH=/opt/ros/foxy/lib/python3/dist-packages/;chmod +x /opt/ros/foxy/bin/roslaunch; export' \
-        #         'ROS_ROOT=/opt/ros/foxy/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
-        #         'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/foxy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-        #         'export ROS_PACKAGE_PATH=/opt/ros/foxy/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
-        # else:
-        #     roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/foxy/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=foxy;export PKG_CONFIG_PATH=/opt/ros/foxy/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/foxy/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/foxy;export ROS_PACKAGE_PATH=/opt/ros/foxy/share;chmod +x /opt/ros/foxy/bin/rosmaster; export' \
-        #         'PYTHONPATH=/opt/ros/foxy/lib/python3/dist-packages/;chmod +x /opt/ros/foxy/bin/roslaunch; export' \
-        #         'ROS_ROOT=/opt/ros/foxy/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
-        #         'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/foxy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-        #         'export ROS_PACKAGE_PATH=/opt/ros/foxy/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
-        
-        # roslaunch_cmd = '/bin/bash -c "source ~/.bashrc; export PWD="/";chmod +rwx /;export DISPLAY=:0;source /usr/share/gazebo-11/setup.sh;'
-        roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;'
+        roslaunch_cmd = '/bin/sh -c "export DISPLAY=:0;'
 
         gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
