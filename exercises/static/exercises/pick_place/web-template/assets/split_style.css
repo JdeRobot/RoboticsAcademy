@@ -61,3 +61,110 @@ html, body {
   height: 100%;
   background: grey;
 }
+
+.float-container {
+  display: flex;
+}
+​
+.float-container
+.float-child
+.head {
+  display:flex;
+  margin: auto;
+  justify-content: center;
+}
+​
+.wid-row-fwd {
+  display: flex;
+}
+​
+.wid-row-inv {
+  display: flex;
+}
+​
+.slidecontainer {
+  width: 50%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  margin-top: 15px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%; 
+  background: rgb(25, 80, 197);
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 12.5px;
+  height: 12.5px;
+  border-radius: 50%;
+  background: #04AA6D;
+  cursor: pointer;
+}
+​
+.inDegrees {
+    height: 40px;
+    margin: auto;
+    margin-top: 8px;
+}
+
+​
+.label {
+    margin: auto;
+    width: 30%;
+    display: block;
+    font-size: large;
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin-top: 6px;
+}
+​
+.widget-buttons {
+  width: 40%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+​
+.bottom-part {
+  display: flex;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  padding-top: 15px;
+  padding-bottom: 20px;
+}
+​
+.button {
+  padding: 7.5px 16px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  width: 80px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+​
+.message-box {
+    width: 80%;
+}
+#message {
+  width: 85%;
+  height: 50px;
+}
