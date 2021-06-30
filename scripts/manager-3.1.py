@@ -164,7 +164,7 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
-        DRONE_EX = ["follow_road", "follow_turtlebot", "labyrinth_escape", "position_control"]
+        DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control"]
 
         if exercise in DRONE_EX:
             roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
@@ -177,10 +177,10 @@ class Commands:
         args=["gz", "stats", "-p"]
         repeat = True
         while repeat:
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
             with process.stdout:
-                for line in iter(process.stdout.readline, b''):
-                    if not ("is not running" in line.decode()):
+                for line in iter(process.stdout.readline, ''):
+                    if not ("is not running" in line):
                         repeat = False
                         break
                     else:

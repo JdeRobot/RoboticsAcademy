@@ -21,14 +21,14 @@ EXERCISE = "labyrinth_escape"
 
 class Tests():
     def test_px4(self):
+        rospy.logwarn("[PX4-SITL] Performing checks")
         while True:
-            rospy.logwarn("[PX4-SITL] Performing checks")
             args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander", "check"]
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
-            output = process.communicate()[0].decode("utf-8")
-            idx = output.find("Prearm check: ")
-            if output[idx+14:idx+16] == "OK":
-                break
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+            with process.stdout:
+                for line in iter(process.stdout.readline, ''):
+                    if ("Prearm check: OK" in line):
+                        return
             time.sleep(2)
 
     def test_mavros(self, ns=""):
@@ -49,7 +49,7 @@ class Launch(Tests):
     def run(self, args, insert_roslaunch=True, insert_vglrun=True):
         if insert_roslaunch: args.insert(0, "/opt/ros/noetic/bin/roslaunch")
         if insert_vglrun and ACCELERATION_ENABLED: args.insert(0, "vglrun")
-        subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
 
     def finished(self):
         while True:
