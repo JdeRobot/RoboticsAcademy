@@ -2,9 +2,10 @@
 
 import os
 import stat
+import time
 import rospy
+import fcntl
 import subprocess
-
 
 # Function to check if a device exists
 def check_device(device_path):
@@ -15,65 +16,70 @@ def check_device(device_path):
 
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
+EXERCISE = "position_control"
 
 
 class Tests():
     def test_px4(self):
+        rospy.logwarn("[PX4-SITL] Performing checks")
         while True:
-            args = ['./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander', 'check']
-            process = subprocess.Popen(args, stdout=subprocess.PIPE)
-            output, err = process.communicate()
-            output = output.decode('utf-8')
-            idx = output.find('Prearm check: ')
-            if output[idx+14:idx+16] == 'OK':
-                break
-            else:
-                rospy.sleep(2)
+            args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander", "check"]
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+            with process.stdout:
+                for line in iter(process.stdout.readline, ''):
+                    if ("Prearm check: OK" in line):
+                        return
+            time.sleep(2)
 
-    def test_mavros(self, ns=''):
-        rospy.wait_for_service(ns + '/mavros/cmd/arming', 30)
+    def test_mavros(self, ns=""):
+        rospy.logwarn("[MAVROS] Performing checks")
+        rospy.wait_for_service(ns + "/mavros/cmd/arming", 30)
 
     def test_gazebo(self):
-        rospy.wait_for_service('/gazebo/spawn_sdf_model', 30)
+        rospy.logwarn("[GAZEBO] Performing checks")
+        rospy.wait_for_service("/gazebo/get_model_properties", 30)
 
 
 class Launch(Tests):
     def __init__(self):
-        env = {'GAZEBO_MODEL_PATH': '$GAZEBO_MODEL_PATH:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/noetic/share/drone_assets/models:/opt/ros/noetic/share/drone_assets/urdf:/drones/drone_assets/models'}
-        os.environ.update(env)
+        args = ["/opt/ros/noetic/bin/roscore"]
+        self.run(args, insert_roslaunch=False, insert_vglrun=False) #start roscore
+        rospy.init_node("launch", anonymous=True)
 
-        args = ['/opt/ros/noetic/bin/roscore']
-        subprocess.Popen(args)
+    def run(self, args, insert_roslaunch=True, insert_vglrun=True):
+        if insert_roslaunch: args.insert(0, "/opt/ros/noetic/bin/roslaunch")
+        if insert_vglrun and ACCELERATION_ENABLED: args.insert(0, "vglrun")
+        subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
 
-        rospy.init_node('launch', anonymous=True)
+    def finished(self):
+        while True:
+            try:
+                with open("/status.txt", "w") as f:
+                    fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB) #lock
+                    f.write("done")
+                    fcntl.flock(f, fcntl.LOCK_UN) #unlock
+                    break
+            except:
+                time.sleep(0.05)
 
     def main(self):
         try:
-            args = ['/opt/ros/noetic/bin/roslaunch', '/RoboticsAcademy/exercises/position_control/web-template/launch/gazebo.launch', '--wait']
-            if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
-            subprocess.Popen(args, stdout=subprocess.PIPE)
+            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait"]
+            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4.launch"]
+            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros.launch"]
 
-            rospy.logwarn('[ GAZEBO ] Waiting for spawn_sdf_model service')
+            self.run(args1)     #launch gazebo
             self.test_gazebo()
-
-            args = ['/opt/ros/noetic/bin/roslaunch', '/RoboticsAcademy/exercises/position_control/web-template/launch/px4.launch']
-            if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
-            subprocess.Popen(args, stdout=subprocess.PIPE)
-
-            rospy.logwarn('[ PX4-SITL ] Waiting for Pre-Arm checks')
+            self.run(args2)     #launch px4
             self.test_px4()
-
-            args = ['/opt/ros/noetic/bin/roslaunch', '/RoboticsAcademy/exercises/position_control/web-template/launch/mavros.launch']
-            if ACCELERATION_ENABLED: args.insert(0, 'vglrun')
-            subprocess.Popen(args, stdout=subprocess.PIPE)
-
-            rospy.logwarn('[ MAVROS ] Waiting for mavros')
+            self.run(args3)     #launch mavros
             self.test_mavros()
+            self.finished()
 
         except Exception as e:
-            print('[ ERROR ]', e)
+            rospy.logerr(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     launch = Launch()
     launch.main()

@@ -164,23 +164,39 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
-        roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
-        if exercise in ("drone_cat_mouse", "follow_turtlebot", "follow_road", "position_control", "labyrinth_escape"):
+        DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people"]
+
+        if exercise in DRONE_EX:
+            roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
             os.popen(roslaunch_cmd)
         else:
+            roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
             roslaunch_thread = DockerThread(roslaunch_cmd)
             roslaunch_thread.start()
+
         args=["gz", "stats", "-p"]
         repeat = True
         while repeat:
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=0)
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
             with process.stdout:
-                for line in iter(process.stdout.readline, b''):
-                    if not ("is not running" in line.decode()):
+                for line in iter(process.stdout.readline, ''):
+                    if not ("is not running" in line):
                         repeat = False
                         break
                     else:
                         repeat = True
+
+        if exercise in DRONE_EX:
+            data  = ""
+            while True:
+                try:
+                    with open("/status.txt", "r", encoding="utf-8") as f:
+                        data = f.read(4)
+                    if data == "done":
+                        os.remove("/status.txt")
+                        break
+                except:
+                    time.sleep(2)
 
 
     # Function to pause Gazebo physics
@@ -232,7 +248,6 @@ class Commands:
         cmd_x11vnc = "pkill -9 -f x11vnc"
         os.popen(cmd_x11vnc)
         cmd_novnc = "pkill -9 -f launch.sh"
-        os.popen(cmd_novnc)
         os.popen(cmd_novnc)
         cmd_console = "pkill -9 -f xterm"
         os.popen(cmd_console)
