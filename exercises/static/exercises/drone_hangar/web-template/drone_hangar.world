@@ -156,8 +156,6 @@
 		</include>
 
 		<scene>
-			<grid>1</grid>
-			<shadows>1</shadows>
 			<sky>
 				<clouds>
 					<speed>12</speed>
