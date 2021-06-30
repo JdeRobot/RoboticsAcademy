@@ -166,21 +166,24 @@ class Commands:
                         print("Trying again")
 
 
+    ## Reference service names for ROS2-
+    ## https://github.com/ros-simulation/gazebo_ros_pkgs/wiki/ROS-2-Migration:-ROS-Clocks-and-sim-time#time-commands
+
     # Function to pause Gazebo physics
     def pause_physics(self):
-        cmd = "/opt/ros/foxy/bin/rosservice call gazebo/pause_physics"
+        cmd = "ros2 service call /pause_physics std_srvs/srv/Empty"
         rosservice_thread = m_utils.DockerThread(cmd)
         rosservice_thread.start()
 
     # Function to unpause Gazebo physics
     def unpause_physics(self):
-        cmd = "/opt/ros/foxy/bin/rosservice call gazebo/unpause_physics"
+        cmd = "ros2 service call /unpause_physics std_srvs/srv/Empty"
         rosservice_thread = m_utils.DockerThread(cmd)
         rosservice_thread.start()
 
     # Function to reset Gazebo physics
     def reset_physics(self):
-        cmd = "/opt/ros/foxy/bin/rosservice call gazebo/reset_simulation"
+        cmd = "ros2 service call /reset_simulation std_srvs/Empty"
         rosservice_thread = m_utils.DockerThread(cmd)
         rosservice_thread.start()
 
