@@ -1,3 +1,0 @@
-#!/bin/bash
-
-python @CMAKE_INSTALL_PREFIX@/share/jderobot/python/pantilt_teleop_py/pantilt_teleop.py $*

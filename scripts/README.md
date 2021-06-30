@@ -22,7 +22,6 @@ docker run -it \
 ```
 
 ## Direct Method: Via DockerHub
-(Will be live soon)
 ```sh
 docker run -it \
       --rm \
