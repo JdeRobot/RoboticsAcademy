@@ -7,12 +7,16 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
 
 # Set up Nav2
 # (dependency for warehouse exercise)
+# In order to limit the number of parallel threads as it
+# becomes very cpu intensive, reference:
+# https://answers.ros.org/question/368249/colcon-build-number-of-threads/?answer=368699#post-id-368699
 RUN mkdir -p /nav2_ws/src && \
   cd /nav2_ws/src && \
   git clone -b $ROS_DISTRO-devel https://github.com/ros-planning/navigation2.git && \
   . /opt/ros/$ROS_DISTRO/setup.sh && \
   cd /nav2_ws && \
-  colcon build
+  export MAKEFLAGS="-j 4" && \
+  colcon build --parallel-workers 4
 
 # Amazon warehouse exercise
 RUN cd /opt/jderobot/CustomRobots && \
