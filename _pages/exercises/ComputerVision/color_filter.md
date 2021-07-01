@@ -61,7 +61,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 ```bash
-docker pull jderobot/robotics-academy
+docker pull jderobot/robotics-academy:3.1.2
 ```
 
 ### How to perform the exercise?
@@ -69,7 +69,7 @@ docker pull jderobot/robotics-academy
 - For ubuntu: The port to map will be in /dev/videoX , you should check the number where your camera is connected. For exaple /dev/video0
 
 ```bash
-docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy:2.4.3 ./start.sh 
+docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy:3.1.2 ./start-3.1.sh 
 ```   
 - For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this [documentation](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468) for it.
 
