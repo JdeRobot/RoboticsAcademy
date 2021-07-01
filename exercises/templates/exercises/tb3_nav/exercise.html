@@ -32,7 +32,7 @@
             }
         }
         function changervizweb(){
-            document.getElementById("iframeRvizweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
+            document.getElementById("iframeRvizweb").setAttribute("src", "http://" + websocket_address + ":6081/vnc.html?resize=remote&autoconnect=true");
             var display = document.getElementById('iframeRvizweb').style.display
             console.log(display)
             if (display == "none") {
