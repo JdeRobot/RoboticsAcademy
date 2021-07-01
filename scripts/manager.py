@@ -100,7 +100,7 @@ class Commands:
 
     # Function to stop gzclient
     def stop_gzclient(self):
-        cmd_stop = "pkill -9 -f gzclient"
+        cmd_stop = "pkill -f gzclient"
         os.popen(cmd_stop)
 
     # Function to start the console
@@ -275,8 +275,10 @@ class Manager:
                 self.reset_simulation()
             elif command == "stopgz":
                 self.stop_gz()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif command == "startgz":
                 self.start_gz()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif "Pong" in command:
                 await websocket.send("Ping{}".format(self.launch_level))
             else:

@@ -52,11 +52,11 @@ function startSim() {
 }
 
 function toggleGazebo() {
-    gazeboToggle = true;
-    
     if (gazeboOn) {
         gazeboOn = false;
     } else {
         gazeboOn = true;
     }
+
+    gazeboToggle = true;
 }
