@@ -119,6 +119,14 @@ img{
     margin-right: 10px;
 }
 
+#rviz_button{
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right: 10px;
+}
 
 #console_button{
     font-size: 12px;
@@ -129,7 +137,7 @@ img{
     margin-right: 50px;
 }
 
-#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover{
+#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #rviz_button:hover, #console_button:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
@@ -240,7 +248,14 @@ input[type=number]::-webkit-inner-spin-button {
     height: 40px;
 }
 
+#rvizimg{
+    height: 40px;
+}
+
 #iframeGzweb{
+    display:none;
+}
+#iframeRvizweb{
     display:none;
 }
 #iframe{
