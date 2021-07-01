@@ -1,5 +1,4 @@
-FROM foxy-radi-base
-### TODO: Change name to jderobot/base:4.0
+FROM jderobot/base:4.0
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
@@ -34,9 +33,8 @@ RUN cd /opt/jderobot/CustomRobots && \
 RUN echo 'source /radi-entrypoint.sh' >> ~/.bashrc
 
 # RoboticsAcademy
-### TODO: Uncomment when PR is made to the official repo
-# RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
-# RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # Copy scripts to Docker container's root
 COPY manager-4.0.py /manager.py
