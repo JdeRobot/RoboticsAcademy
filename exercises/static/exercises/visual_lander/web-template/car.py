@@ -10,8 +10,7 @@ class Car():
     def __init__(self):
         self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
         self.play_event = Event()
-        self.init_posx = 5.0
-        self.curr_posx = self.init_posx + 0.0
+        self.curr_posx = 5.0 #initial position
         self.base_speed = 0.0001
         self.level0 = self.base_speed * 1
         self.level1 = self.base_speed * 10
@@ -69,5 +68,5 @@ class Car():
             self.thread.join()
         except:
             pass
-        self.curr_posx = self.init_posx + 0.0
-        self.set_pos_car(self.init_posx) #set initial position
+        self.curr_posx = 5.0
+        self.set_pos_car(self.curr_posx) #set initial position
