@@ -62,4 +62,5 @@
   <include file="$(find irb120_robotiq85_moveit_config)/launch/move_group.launch">
     <arg name="info" value="true"/>
   </include>
+  <node name="model_manager" pkg="spawn_objects" type="model_manager.py"/>
 </launch>
