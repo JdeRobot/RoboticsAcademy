@@ -203,23 +203,18 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o
 
 # Certain Dependencies for Exercises
 # TB3_teleop: turtlebot3 packages
-RUN apt-get install -y \
-  ros-$ROS_DISTRO-cartographer \
-  ros-$ROS_DISTRO-cartographer-ros \
-  ros-$ROS_DISTRO-navigation2 \
-  ros-$ROS_DISTRO-nav2-bringup \
-  ros-$ROS_DISTRO-turtlebot3-msgs \
-  ros-$ROS_DISTRO-turtlebot3 \
-  ros-$ROS_DISTRO-turtlebot3-simulations
-### TODO: Revert to Docker conventions (commented below) after alpha testing
-# RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
-#         <PACKAGES> \
-#     && apt-get -y autoremove \
-#     && apt-get clean autoclean \
-#     && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
-
-RUN apt-get install -y \
-  ros-$ROS_DISTRO-bondcpp
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+    ros-$ROS_DISTRO-cartographer \
+    ros-$ROS_DISTRO-cartographer-ros \
+    ros-$ROS_DISTRO-navigation2 \
+    ros-$ROS_DISTRO-nav2-bringup \
+    ros-$ROS_DISTRO-turtlebot3-msgs \
+    ros-$ROS_DISTRO-turtlebot3 \
+    ros-$ROS_DISTRO-turtlebot3-simulations \
+    ros-$ROS_DISTRO-bondcpp \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # websocket server dependency
 RUN pip3 install websocket_server posix-ipc django
