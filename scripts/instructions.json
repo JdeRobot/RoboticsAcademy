@@ -2,6 +2,7 @@
     "tb3_nav": {
         "gazebo_path": "",
         "instructions_ros": ["/opt/ros/foxy/bin/ros2 launch /RoboticsAcademy/exercises/static/exercises/tb3_nav/web-template/launch/tb3_teleop.launch.py"],
+        "instructions_rviz": "ros2 launch turtlebot3_cartographer cartographer.launch.py use_sim_time:=True",
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/tb3_nav/web-template/exercise.py 0.0.0.0"
     },
     "tb3_teleop": {

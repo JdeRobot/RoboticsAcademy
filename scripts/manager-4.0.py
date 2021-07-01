@@ -87,6 +87,13 @@ class Commands:
         console_thread = m_utils.DockerThread(console_cmd)
         console_thread.start()
 
+    # Function to start RViz
+    def start_rviz(self, exercise):
+        rviz_cmd = f'DISPLAY=:2 {self.instructions[exercise]["instructions_rviz"]}'
+
+        rviz_thread = m_utils.DockerThread(rviz_cmd)
+        rviz_thread.start()
+
     # Function to start VNC server
     def start_vnc(self, display, internal_port, external_port):
         if not (ACCELERATION_ENABLED):
@@ -143,9 +150,16 @@ class Commands:
         xserver_thread.start()
 
     # Function to roslaunch Gazebo Server
-    def start_gzserver(self, exercise):
+    def start_gzserver(self, exercise, width, height):
         print("Starting gz server")
         roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
+        gzclient_config_cmds = ["mkdir -p ~/.gazebo;",
+                                "echo [geometry] > ~/.gazebo/gui.ini;",
+                                "echo x=0 >> ~/.gazebo/gui.ini;",
+                                "echo y=0 >> ~/.gazebo/gui.ini;",
+                                f"echo width={width} >> ~/.gazebo/gui.ini;",
+                                f"echo height={height} >> ~/.gazebo/gui.ini;"]
+        roslaunch_cmd = "".join(gzclient_config_cmds) + roslaunch_cmd
         roslaunch_thread = m_utils.DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
         args=["gz", "stats", "-p"]
@@ -276,7 +290,7 @@ class Manager:
             # X Server for RViz
             self.commands.start_xserver(":2")
             
-            self.commands.start_gzserver(exercise)
+            self.commands.start_gzserver(exercise, width, height)
             self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
@@ -289,6 +303,7 @@ class Manager:
             # Start gazebo client
             time.sleep(2)
             # self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_rviz(exercise)
             self.commands.start_console(width, height)
 
         elif exercise not in ["color_filter", "dl_digit_classifier"]:
