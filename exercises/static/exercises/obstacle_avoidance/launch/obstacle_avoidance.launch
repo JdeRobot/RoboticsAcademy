@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<launch>
-  <include file="/opt/jderobot/share/jderobot/gazebo/launch/turtlebot-rplidar.launch">
-  </include>
-	<include file="kobuki_node minimal.launch">
-	</include>
-	<include file="/opt/jderobot/share/jderobot/gazebo/launch/kobuki-simple-ros.launch">
-	</include>
-</launch>

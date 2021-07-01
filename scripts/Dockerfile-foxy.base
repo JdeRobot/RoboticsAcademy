@@ -1,0 +1,239 @@
+FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
+
+ARG VIRTUALGL_VERSION=2.6.90
+ARG TURBOVNC_VERSION=2.2.80
+
+# Make all NVIDIA GPUS visible
+ARG NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES all
+
+# Setup NON INTERACTIVE ENVIRONMENT
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install locales to prevent errors
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y locales && \
+    rm -rf /var/lib/apt/lists/* && \
+    locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+# Install desktop and tools
+RUN apt-get update && apt-get install -y \
+        software-properties-common \
+        apt-utils \
+        build-essential make gcc git \
+        ca-certificates \
+        curl wget \
+        gzip zip unzip \
+        libc6-dev libglu1 libglu1:i386 libegl1-mesa libegl1-mesa:i386 \
+        libsm6 libxv1 libxv1:i386 libpci3 \
+        python3 python3-numpy libpython3-dev \
+        x11-xkb-utils xauth xfonts-base xkb-data \
+        libxtst6 libxtst6:i386 \
+        mlocate \
+        nano vim \
+        htop net-tools \
+        xterm rsync \
+        lxde-core \
+        tasksel && \
+    rm -rf /var/lib/apt/lists/*
+RUN tasksel install lubuntu-core lubuntu-desktop
+
+# Install VirtualGL and TurboVNC
+RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    chmod u+s /usr/lib/libvglfaker.so && \
+    chmod u+s /usr/lib/libdlfaker.so && \
+    chmod u+s /usr/lib32/libvglfaker.so && \
+    chmod u+s /usr/lib32/libdlfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
+    chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so && \
+    curl -fsSL -O https://s3.amazonaws.com/turbovnc-pr/dev/linux/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    apt-get update && apt-get install -y --no-install-recommends ./turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo -e "no-remote-connections\n\
+no-httpd\n\
+no-x11-tcp-connections\n\
+no-pam-sessions\n\
+permitted-security-types = None, VNC, otp\
+" > /etc/turbovncserver-security.conf
+# Set paths for VirtualGL and turboVNC
+ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+
+# Install noVNC and Websockify
+RUN git clone https://github.com/novnc/noVNC.git -b v1.2.0 && \
+	cd noVNC/utils && \
+	git clone https://github.com/novnc/websockify websockify -b v0.9.0
+
+# Xorg segfault error mitigation
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        dbus-x11 \
+        libdbus-c++-1-0v5 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Standard tools
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+        bzip2 \
+        ca-certificates \
+        ccache \
+        cmake \
+        cppcheck \
+        curl \
+        dirmngr \
+        doxygen \
+        file \
+        g++ \
+        gcc \
+        gdb \
+        git \
+        gnupg \
+        gosu \
+        lcov \
+        libfreetype6-dev \
+        libgtest-dev \
+        libpng-dev \
+        libssl-dev \
+        lsb-release \
+        make \
+        ninja-build \
+        openjdk-8-jdk \
+        openjdk-8-jre \
+        openssh-client \
+        pkg-config \
+        python3-dev \
+        python3-pip \
+        rsync \
+        shellcheck \
+        tzdata \
+        unzip \
+        valgrind \
+        wget \
+        xsltproc \
+        zip \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# gtest
+RUN apt-get update && apt-get install -y libgtest-dev cmake && \
+    cd /usr/src/gtest \
+	&& mkdir build && cd build \
+	&& cmake .. && make -j$(nproc) \
+	&& find . -name \*.a -exec cp {} /usr/lib \; \
+	&& cd .. && rm -rf build \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python 3 pip build dependencies first
+RUN python3 -m pip install --upgrade pip wheel setuptools
+
+# Python 3 dependencies installed by pip
+RUN python3 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
+		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
+		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python
+
+# manual ccache setup
+RUN ln -sf /usr/bin/ccache /usr/lib/ccache/cc \
+	&& ln -sf /usr/bin/ccache /usr/lib/ccache/c++
+
+# astyle v3.1
+RUN wget -q https://downloads.sourceforge.net/project/astyle/astyle/astyle%203.1/astyle_3.1_linux.tar.gz -O /tmp/astyle.tar.gz \
+	&& cd /tmp && tar zxf astyle.tar.gz && cd astyle/src \
+	&& make -f ../build/gcc/Makefile -j$(nproc) && cp bin/astyle /usr/local/bin \
+	&& rm -rf /tmp/*
+
+# Gradle (Required to build Fast-RTPS-Gen)
+RUN wget -q "https://services.gradle.org/distributions/gradle-6.3-rc-4-bin.zip" -O /tmp/gradle-6.3-rc-4-bin.zip \
+	&& mkdir /opt/gradle \
+	&& cd /tmp \
+	&& unzip -d /opt/gradle gradle-6.3-rc-4-bin.zip \
+	&& rm -rf /tmp/*
+
+ENV PATH "/opt/gradle/gradle-6.3-rc-4/bin:$PATH"
+
+# Intall foonathan_memory from source as it is required to Fast-RTPS >= 1.9
+RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git /tmp/foonathan_memory \
+	&& cd /tmp/foonathan_memory \
+	&& mkdir build && cd build \
+	&& cmake .. \
+	&& cmake --build . --target install -- -j $(nproc) \
+	&& rm -rf /tmp/*
+
+# Fast-DDS (Fast-RTPS 2.0.0)
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.0.0 /tmp/FastRTPS-2.0.0 \
+	&& cd /tmp/FastRTPS-2.0.0 \
+	&& mkdir build && cd build \
+	&& cmake -DTHIRDPARTY=ON -DSECURITY=ON .. \
+	&& cmake --build . --target install -- -j $(nproc) \
+	&& rm -rf /tmp/*
+
+# Fast-RTPS-Gen 1.0.4
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git -b v1.0.4 /tmp/Fast-RTPS-Gen-1.0.4 \
+	&& cd /tmp/Fast-RTPS-Gen-1.0.4 \
+	&& gradle assemble \
+	&& gradle install \
+	&& rm -rf /tmp/*
+
+
+# Install ROS and ROS packages
+ENV ROS_DISTRO foxy
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null' \
+  && apt-get update \
+  && apt-get -y --quiet --no-install-recommends install \
+        ros-$ROS_DISTRO-desktop \
+        ros-$ROS_DISTRO-gazebo-* \
+        python3-colcon-common-extensions \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+
+# RUN pip3 install -U \
+#     osrf-pycommon
+
+# # bootstrap rosdep
+# RUN rosdep init && rosdep update
+
+
+# Certain Dependencies for Exercises
+# TB3_teleop: turtlebot3 packages
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+    ros-$ROS_DISTRO-cartographer \
+    ros-$ROS_DISTRO-cartographer-ros \
+    ros-$ROS_DISTRO-navigation2 \
+    ros-$ROS_DISTRO-nav2-bringup \
+    ros-$ROS_DISTRO-turtlebot3-msgs \
+    ros-$ROS_DISTRO-turtlebot3 \
+    ros-$ROS_DISTRO-turtlebot3-simulations \
+    ros-$ROS_DISTRO-bondcpp \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# websocket server dependency
+RUN pip3 install websocket_server posix-ipc django
+RUN python3.8 -m pip install websockets asyncio
+
+# apt-get install dependencies
+# Nodejs, x11vnc, xterm, xdummy
+RUN apt-get update && apt-get --no-install-recommends install -y \
+		x11vnc \
+		xterm \
+		xserver-xorg-video-dummy \
+		x11-apps \
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+RUN wget https://xpra.org/xorg.conf \
+    && rm -rf /tmp/*
+
+
+RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
+    && ln -s /usr/bin/python3.8 /usr/bin/python
