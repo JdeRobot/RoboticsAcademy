@@ -17,6 +17,7 @@ from std_srvs.srv import Empty
 
 from gui import GUI, ThreadGUI
 from hal import HAL
+from car import Car
 from console import start_console, close_console
 
 
@@ -41,7 +42,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.car = Car()
+        self.gui = GUI(self.host, self.hal, self.car)
 
     # Function to parse the code
     # A few assumptions:

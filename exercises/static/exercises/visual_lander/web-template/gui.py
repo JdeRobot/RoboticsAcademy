@@ -11,14 +11,14 @@ from websocket_server import WebsocketServer
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal):
+    def __init__(self, host, hal, car):
         t = threading.Thread(target=self.run_server)
-        
+
         self.payload = {'image': ''}
         self.left_payload = {'image': ''}
         self.server = None
         self.client = None
-        
+
         self.host = host
 
         # Image variables
@@ -29,12 +29,13 @@ class GUI:
         self.left_image_to_be_shown = None
         self.left_image_to_be_shown_updated = False
         self.left_image_show_lock = threading.Lock()
-        
+
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-        
+
         # Take the console object to set the same websocket and client
         self.hal = hal
+        self.car = car
         t.start()
 
     # Explicit initialization function
@@ -117,27 +118,27 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        
+
     # Function to get value of Acknowledge
     def get_acknowledge(self):
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-        
+
         return acknowledge
-        
+
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
-        
+
     # Update the gui
     def update_gui(self):
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
@@ -147,14 +148,19 @@ class GUI:
 
         message = "#gul" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
-            
+
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
         if message[:4] == "#ack":
             self.set_acknowledge(True)
-
+        elif message[:4] == "#car":
+            self.car.start_car(int(message[4:5]))
+        elif message[:4] == "#stp":
+            self.car.stop_car()
+        elif message[:4] == "#rst":
+            self.car.reset_car()
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
@@ -165,7 +171,7 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         pass
-        
+
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -218,20 +224,20 @@ class ThreadGUI:
     def run(self):
         while self.gui.client is None:
             pass
-    
+
         while True:
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
-            
+
             while not acknowledge_message:
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
-            
+
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
-            
+
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             if ms < self.time_cycle:
