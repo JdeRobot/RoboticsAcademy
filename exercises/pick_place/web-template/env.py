@@ -1,6 +1,4 @@
-################################
-# This file contains the helper APIs used by the exercise.
-################################
+import sys
 import rospy, rospkg
 import os
 import copy
@@ -9,6 +7,12 @@ from moveit_commander import RobotCommander,PlanningSceneInterface
 from gazebo_msgs.srv import SpawnModel, DeleteModel
 from geometry_msgs.msg import Pose, Quaternion, PoseStamped
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from threading import Event
+
+from gazebo_msgs.msg import ModelState
+from gazebo_msgs.srv import GetModelState
+from gazebo_msgs.srv import SetModelState
+from interfaces.threadStoppable import StoppableThread
 
 class Object:
     def __init__(self, relative_pose, abs_pose, height, width, length, shape, color):
@@ -22,19 +26,20 @@ class Object:
 
 class ENV():
     def __init__(self):
-        rospy.wait_for_service("gazebo/spawn_sdf_model")
-        self.spawn_model_srv = rospy.ServiceProxy("gazebo/spawn_sdf_model", SpawnModel)
+        self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+        self.get_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+        self.play_event = Event()
+        rospy.sleep(2)
+        # self.stop_turtlebot()
 
-        rospy.wait_for_service("gazebo/spawn_sdf_model")
-        self.delete_model_srv = rospy.ServiceProxy("gazebo/delete_model", DeleteModel)
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        filename = os.path.join(__location__, 'models_info.yaml')
+        with open(filename) as file:
+            self.objects_info = yaml.load(file)
+        self.get_object_list = self.objects_info["objects"]
 
-        self.scene = PlanningSceneInterface()
-        self.robot = RobotCommander()
-        rospy.sleep(1)
-
-        self.object_list = {}
-        self.spawn_all_model()
-
+    # Explicit initialization functions
+    # Class method, so user can call it without instantiation
     @classmethod
     def initRobot(cls):
         new_instance = cls()

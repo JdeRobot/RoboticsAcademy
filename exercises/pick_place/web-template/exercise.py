@@ -20,7 +20,7 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-from turtlebot import Turtlebot
+from env import ENV
 from console import start_console, close_console
 
 
@@ -45,8 +45,8 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.turtlebot = Turtlebot()
-        self.gui = GUI(self.host, self.hal, self.turtlebot)
+        self.env = ENV()
+        self.gui = GUI(self.host, self.hal, self.env)
 
     # Function to parse the code
     # A few assumptions: 
@@ -70,7 +70,7 @@ class Template:
             reset_simulation()
             self.gui.reset_gui()
             if self.hal.get_landed_state() ==2 : self.hal.land()
-            self.turtlebot.reset_turtlebot()
+            self.env.reset_env()
             
             return "", ""
 
@@ -157,29 +157,21 @@ class Template:
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
         # Add HAL functions
-        hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
-        hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
-        hal_module.HAL.get_position = self.hal.get_position
-        hal_module.HAL.get_velocity = self.hal.get_velocity
-        hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
-        hal_module.HAL.get_orientation = self.hal.get_orientation
-        hal_module.HAL.get_roll = self.hal.get_roll
-        hal_module.HAL.get_pitch = self.hal.get_pitch
-        hal_module.HAL.get_yaw = self.hal.get_yaw
-        hal_module.HAL.get_landed_state = self.hal.get_landed_state
-        hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
-        hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
-        hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
-        hal_module.HAL.takeoff = self.hal.takeoff
-        hal_module.HAL.land = self.hal.land
+        hal_module.HAL.pickup = self.hal.pickup
+        hal_module.HAL.place = self.hal.place
+        hal_module.HAL.back_to_home = self.hal.back_to_home
+        hal_module.HAL.move_joint_arm = self.hal.move_joint_arm
+        hal_module.HAL.move_pose_arm = self.hal.move_pose_arm
+        hal_module.HAL.move_joint_hand = self.hal.move_joint_hand
+        hal_module.HAL.generate_grasps = self.hal.generate_grasps
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
         gui_module.GUI = imp.new_module("GUI")
 
         # Add GUI functions
-        gui_module.GUI.showImage = self.gui.showImage
-        gui_module.GUI.showLeftImage = self.gui.showLeftImage
+        # gui_module.GUI.showImage = self.gui.showImage
+        # gui_module.GUI.showLeftImage = self.gui.showLeftImage
 
         # Adding modules to system
         # Protip: The names should be different from
