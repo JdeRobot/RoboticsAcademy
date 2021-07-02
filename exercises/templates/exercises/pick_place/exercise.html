@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_rviz.html' %}
 
 {% load static %}
 {% block content %}
@@ -176,6 +176,7 @@ while True:
     </div>
     <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
     <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    <iframe id="iframeRvizweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
     <script type="text/javascript">
         function changeconsole(){            
             var console_display = document.getElementById('console').style.display
@@ -195,6 +196,16 @@ while True:
                 document.getElementById('iframeGzweb').style.display = 'block';
             } else{
                 document.getElementById('iframeGzweb').style.display = 'none';
+            }
+        }
+        function changervizweb(){
+            document.getElementById("iframeRvizweb").setAttribute("src", "http://" + websocket_address + ":6081/vnc.html?resize=remote&autoconnect=true");
+            var display = document.getElementById('iframeRvizweb').style.display
+            console.log(display)
+            if (display == "none") {
+                document.getElementById('iframeRvizweb').style.display = 'block';
+            } else{
+                document.getElementById('iframeRvizweb').style.display = 'none';
             }
         }
     </script>
