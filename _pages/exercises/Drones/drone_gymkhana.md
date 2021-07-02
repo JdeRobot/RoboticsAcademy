@@ -29,7 +29,7 @@ youtubeId: Guq3nPIQmdM
 ---
 ## Goal
 
-To goal of this exercise is to learn how to control a drone to complete a gymkhana course, composed of several waypoints that you'll have to navigate through. 
+The goal of this exercise is to learn how to control a drone to complete a gymkhana course, composed of several waypoints that you'll have to navigate through. 
 
 {% include gallery caption="Gymkhana course. 3DR Iris drone it its launch pad" %}
 
