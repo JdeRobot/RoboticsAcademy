@@ -310,7 +310,7 @@ class Manager:
             '''
             Gazebo + Console
             '''
-            self.commands.start_gzserver(exercise)
+            self.commands.start_gzserver(exercise, width, height)
             self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
@@ -346,7 +346,7 @@ class Manager:
 
         # Start the exercise
         if exercise not in ["color_filter", "dl_digit_classifier"]:
-            self.commands.start_gzserver(exercise)
+            self.commands.start_gzserver(exercise, width, height)
             self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3

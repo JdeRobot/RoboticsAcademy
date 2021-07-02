@@ -36,8 +36,6 @@ def generate_launch_description():
     resolution = LaunchConfiguration('resolution', default='0.05')
     publish_period_sec = LaunchConfiguration('publish_period_sec', default='1.0')
 
-    # rviz_config_dir = os.path.join(get_package_share_directory('turtlebot3_cartographer'),
-    #                                'rviz', 'tb3_cartographer.rviz')
     rviz_config_dir = os.path.join('/RoboticsAcademy/exercises/static/exercises/tb3_nav/web-template/',
                         'rviz', 'config.rviz')
 
@@ -57,8 +55,8 @@ def generate_launch_description():
 
         Node(
             package='cartographer_ros',
-            node_executable='cartographer_node',
-            node_name='cartographer_node',
+            executable='cartographer_node',
+            name='cartographer_node',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}],
             arguments=['-configuration_directory', cartographer_config_dir,
@@ -75,15 +73,15 @@ def generate_launch_description():
             description='OccupancyGrid publishing period'),
 
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([ThisLaunchFileDir(), '/occupancy_grid.launch.py']),
+            PythonLaunchDescriptionSource([turtlebot3_cartographer_prefix,'/launch', '/occupancy_grid.launch.py']),
             launch_arguments={'use_sim_time': use_sim_time, 'resolution': resolution,
                               'publish_period_sec': publish_period_sec}.items(),
         ),
 
         Node(
             package='rviz2',
-            node_executable='rviz2',
-            node_name='rviz2',
+            executable='rviz2',
+            name='rviz2',
             arguments=['-d', rviz_config_dir],
             parameters=[{'use_sim_time': use_sim_time}],
             output='screen'),
