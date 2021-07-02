@@ -16,6 +16,7 @@ gallery:
     title: "Labyrinth Escape."
 
 youtubeId: JR5OH_XHw7U
+youtubeId2: e2-BE1KKtm0
 ---
 
 The goal of this exercise is to implement the logic that allows a quadrotor to escape a labyrinth through visual signals placed on the ground.
@@ -153,6 +154,10 @@ In this exercise, you can use the one you prefer.
 ### Do I need to know when the drone is in the air?
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
+
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Demonstrative video of the solution
 

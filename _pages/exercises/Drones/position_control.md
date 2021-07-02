@@ -33,6 +33,7 @@ pid:
 
 youtubeId1: ZfGN53v56AI
 youtubeId2: L1suayB3vVA
+youtubeId3: VF5tj0xFpe0
 ---
 ## Goal
 
@@ -240,6 +241,9 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 ## Demonstrative video of the solution
 
