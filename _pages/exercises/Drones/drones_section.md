@@ -58,7 +58,7 @@ feature_row:
     version_label: "btn--success"
     version: "v2.4"
 
-  - image_path: /assets/images/exercises/rescue_people/rescue_people.jpg
+  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
     alt: "Rescue People"
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
@@ -66,7 +66,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
