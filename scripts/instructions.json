@@ -75,5 +75,20 @@
         "gazebo_path": "/RoboticsAcademy/exercises/rescue_people/web-template/launch",
         "instructions_ros": ["python3 ./RoboticsAcademy/exercises/rescue_people/web-template/launch/launch.py"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/rescue_people/web-template/exercise.py 0.0.0.0"
+    },
+    "drone_hangar": {
+        "gazebo_path": "/RoboticsAcademy/exercises/drone_hangar/web-template/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_hangar/web-template/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_hangar/web-template/exercise.py 0.0.0.0"
+    },
+    "drone_gymkhana": {
+        "gazebo_path": "/RoboticsAcademy/exercises/drone_gymkhana/web-template/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_gymkhana/web-template/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_gymkhana/web-template/exercise.py 0.0.0.0"
+    },
+    "visual_lander": {
+        "gazebo_path": "/RoboticsAcademy/exercises/visual_lander/web-template/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/visual_lander/web-template/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/visual_lander/web-template/exercise.py 0.0.0.0"
     }
 }

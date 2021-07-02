@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+	<world name="default">
+
+		<gui fullscreen='1'>
+			<camera name='user_camera'>
+				<pose frame=''>-10.5394 -103.514 31.8675 0 0.275642 1.23938</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+
+		<include>
+			<uri>model://hangar</uri>
+			<pose>0 -2 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall1</uri>
+			<pose>0 5 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall2</uri>
+			<pose>0 0 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall3</uri>
+			<pose>0 -6 0 0 0 0</pose>
+		</include>
+		<include>
+			<uri>model://wall4</uri>
+			<pose>0 -6 0 0 0 0</pose>
+		</include>
+
+		<!-- A global light source -->
+		<include>
+			<uri>model://sun</uri>
+		</include>
+
+		<light name='user_point_light_0' type='point'>
+			<pose frame=''>7.53258 -10.5204 1 0 -0 0</pose>
+			<diffuse>0.5 0.5 0.5 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<attenuation>
+				<range>37</range>
+				<constant>1</constant>
+				<linear>0.05</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>0</cast_shadows>
+			<direction>0 0 -1</direction>
+		</light>
+
+		<light name='user_point_light_0_clone' type='point'>
+			<pose frame=''>-13.5592 -18.4336 10 0 -0 0</pose>
+			<diffuse>0.498039 0.498039 0.498039 1</diffuse>
+			<specular>0 0 0 1</specular>
+			<direction>0 0 -1</direction>
+			<attenuation>
+				<range>37</range>
+				<constant>1</constant>
+				<linear>0.05</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>1</cast_shadows>
+		</light>
+
+		<light name='user_point_light_1' type='point'>
+			<pose frame=''>-11.0322 15.4092 1 0 -0 0</pose>
+			<diffuse>0.5 0.5 0.5 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<attenuation>
+				<range>20</range>
+				<constant>0.5</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>0</cast_shadows>
+			<direction>0 0 -1</direction>
+		</light>
+
+		<light name='user_point_light_2' type='point'>
+			<pose frame=''>7.67436 15.2643 1 0 -0 0</pose>
+			<diffuse>0.5 0.5 0.5 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<attenuation>
+				<range>20</range>
+				<constant>0.5</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>0</cast_shadows>
+			<direction>0 0 -1</direction>
+		</light>
+
+		<light name='user_point_light_3' type='point'>
+			<pose frame=''>-13.7195 0.042174 1 0 -0 0</pose>
+			<diffuse>0.5 0.5 0.5 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<attenuation>
+				<range>20</range>
+				<constant>0.5</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>0</cast_shadows>
+			<direction>0 0 -1</direction>
+		</light>
+
+		<light name='user_point_light_4' type='point'>
+			<pose frame=''>12.95 2.24523 1 0 -0 0</pose>
+			<diffuse>0.5 0.5 0.5 1</diffuse>
+			<specular>0.1 0.1 0.1 1</specular>
+			<attenuation>
+				<range>20</range>
+				<constant>0.5</constant>
+				<linear>0.01</linear>
+				<quadratic>0.001</quadratic>
+			</attenuation>
+			<cast_shadows>0</cast_shadows>
+			<direction>0 0 -1</direction>
+		</light>
+
+		<state world_name='default'>
+			<light name='sun'>
+				<pose frame=''>0 0 10 0 -0 0</pose>
+			</light>
+			<light name='user_point_light_0'>
+				<pose frame=''>10 -30 10 0 -0 0</pose>
+			</light>
+			<light name='user_point_light_0_clone'>
+				<pose frame=''>-10 -30 10 0 -0 0</pose>
+			</light>
+			<light name='user_point_light_1'>
+				<pose frame=''>-11.0322 15.4092 1 0 -0 0</pose>
+			</light>
+			<light name='user_point_light_2'>
+				<pose frame=''>7.67436 15.2643 1 0 -0 0</pose>
+			</light>
+			<light name='user_point_light_3'>
+				<pose frame=''>-13.7195 0.042174 1 0 -0 0</pose>
+			</light>
+			<light name='user_point_light_4'>
+				<pose frame=''>12.95 2.24523 1 0 -0 0</pose>
+			</light>
+		</state>
+
+		<!-- Grass plane -->
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- JdeRobot logo -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<pose>-12.0.0 0.0 0.0 0.0 0.0 0.0</pose>
+		</include>
+
+		<scene>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+		</scene>
+
+		<!-- Gazebo required specifications -->
+		<physics name='default_physics' default='0' type='ode'>
+			<gravity>0 0 -9.8066</gravity>
+			<ode>
+				<solver>
+					<type>quick</type>
+					<iters>10</iters>
+					<sor>1.3</sor>
+					<use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+				</solver>
+				<constraints>
+					<cfm>0</cfm>
+					<erp>0.2</erp>
+					<contact_max_correcting_vel>100</contact_max_correcting_vel>
+					<contact_surface_layer>0.001</contact_surface_layer>
+				</constraints>
+			</ode>
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>250</real_time_update_rate>
+			<magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+		</physics>
+
+	</world>
+</sdf>

@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+	<world name="default">
+
+		<gui fullscreen='1'>
+			<camera name='user_camera'>
+				<pose frame=''>18.377 -12.9995 8.68736 0 0.383644 2.52736</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- Numbers -->
+		<include>
+			<name>number1</name>
+			<uri>model://number1</uri>
+			<pose>8 8 0.4 0 0 0</pose>
+		</include>
+		<include>
+			<name>number2</name>
+			<uri>model://number2</uri>
+			<pose>8 -8 0.4 0 0 0</pose>
+		</include>
+		<include>
+			<name>number3</name>
+			<uri>model://number3</uri>
+			<pose>-8 -8 0.4 0 0 0</pose>
+		</include>
+		<include>
+			<name>number4</name>
+			<uri>model://number4</uri>
+			<pose>-8 8 0.4 0 0 0</pose>
+		</include>
+
+		<!-- JdeRobot logo and arrows -->
+		<include>
+			<name>logo</name>
+			<uri>model://logoJdeRobot</uri>
+			<pose>0 -4 0 0 0 0</pose>
+		</include>
+		<include>
+			<name>arrow1-2</name>
+			<uri>model://arrow</uri>
+			<pose>8 0 0.01 0 0 -1.57</pose>
+		</include>
+		<include>
+			<name>arrow2-3</name>
+			<uri>model://arrow</uri>
+			<pose>0 -8 0.01 0 0 -3.14159</pose>
+		</include>
+		<include>
+			<name>arrow3-4</name>
+			<uri>model://arrow</uri>
+			<pose>-8 0 0.01 0 0 1.57</pose>
+		</include>
+
+		<!-- Hoops -->
+		<include>
+			<name>hoop1-1</name>
+			<uri>model://hoop_red</uri>
+			<pose>8 3 -4 0 0 0</pose>
+		</include>
+		<include>
+			<name>hoop1-2</name>
+			<uri>model://hoop_red</uri>
+			<pose>8 -3 -4 0 0 0</pose>
+		</include>
+
+		<include>
+			<name>hoop2-1</name>
+			<uri>model://hoop_red</uri>
+			<pose>3 -8 -3 0 0 1.5708</pose>
+		</include>
+		<include>
+			<name>hoop2-2</name>
+			<uri>model://hoop_red</uri>
+			<pose>-3 -8 -2 0 0 1.5708</pose>
+		</include>
+
+		<include>
+			<name>hoop3-1</name>
+			<uri>model://hoop_red</uri>
+			<pose>-8 -4 -2 0 0 0</pose>
+		</include>
+		<include>
+			<name>hoop3-2</name>
+			<uri>model://hoop_red</uri>
+			<pose>-6 0 -3 0 0 0</pose>
+		</include>
+		<include>
+			<name>hoop3-3</name>
+			<uri>model://hoop_red</uri>
+			<pose>-8 4 -4 0 0 0</pose>
+		</include>
+
+		<!-- Targets -->
+		<include>
+			<name>takeoff-target</name>
+			<uri>model://custom_box_target_green</uri>
+			<pose>0 0 0.5 0 0 0</pose>
+		</include>
+		<include>
+			<name>land-target</name>
+			<uri>model://custom_box_target_red</uri>
+			<pose>0 8 0.5 0 0 0</pose>
+		</include>
+
+		<!-- JdeRobot logo -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<pose>-12.0.0 0.0 0.0 0.0 0.0 0.0</pose>
+		</include>
+
+		<scene>
+			<grid>1</grid>
+			<shadows>1</shadows>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+		</scene>
+
+		<!-- A global light source -->
+		<include>
+			<uri>model://sun</uri>
+		</include>
+
+		<!-- Gazebo required specifications -->
+		<physics name='default_physics' default='0' type='ode'>
+			<gravity>0 0 -9.8066</gravity>
+			<ode>
+				<solver>
+					<type>quick</type>
+					<iters>10</iters>
+					<sor>1.3</sor>
+					<use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+				</solver>
+				<constraints>
+					<cfm>0</cfm>
+					<erp>0.2</erp>
+					<contact_max_correcting_vel>100</contact_max_correcting_vel>
+					<contact_surface_layer>0.001</contact_surface_layer>
+				</constraints>
+			</ode>
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>250</real_time_update_rate>
+			<magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+		</physics>
+
+	</world>
+</sdf>

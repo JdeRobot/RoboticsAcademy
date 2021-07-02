@@ -58,13 +58,13 @@ class Commands:
     # Function to get the instructions to run ROS
     def get_ros_instructions(self, exercise):
         if ACCELERATION_ENABLED:
-            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/catkin_ws/devel/lib;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
                 'PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages/;chmod +x /opt/ros/noetic/bin/roslaunch; export' \
                 'ROS_ROOT=/opt/ros/noetic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
                 'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
                 'export ROS_PACKAGE_PATH=/opt/ros/noetic/share:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo:/catkin_ws/src/drone_wrapper:/catkin_ws/src/drone_assets;'
         else:
-            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/catkin_ws/devel/lib;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
                 'PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages/;chmod +x /opt/ros/noetic/bin/roslaunch; export' \
                 'ROS_ROOT=/opt/ros/noetic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-11:$GAZEBO_RESOURCE_PATH; export' \
                 'ROS_MASTER_URI=http://localhost:11311;export PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
@@ -164,7 +164,7 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
-        DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people"]
+        DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander"]
 
         if exercise in DRONE_EX:
             roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
@@ -231,6 +231,8 @@ class Commands:
         os.popen(cmd_gui)
         cmd_host = "pkill -9 -f node"
         os.popen(cmd_host)
+        cmd_rosmaster = "pkill -9 -f rosmaster"
+        os.popen(cmd_rosmaster)
         cmd_host = "pkill -9 -f gzserver"
         os.popen(cmd_host)
         cmd_client = "pkill -9 -f gzclient"
