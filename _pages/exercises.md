@@ -129,7 +129,7 @@ feature_row:
     version_label: "btn--success"
     version: "v3.1"
 
-  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
+  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
     alt: "Rescue People"
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
