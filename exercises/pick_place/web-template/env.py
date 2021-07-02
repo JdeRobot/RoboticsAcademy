@@ -29,7 +29,7 @@ class ENV():
         self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
         self.get_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
         self.play_event = Event()
-        rospy.sleep(2)
+        # rospy.sleep(2)
         # self.stop_turtlebot()
 
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
