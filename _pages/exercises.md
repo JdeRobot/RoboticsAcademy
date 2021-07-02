@@ -129,6 +129,16 @@ feature_row:
     version_label: "btn--success"
     version: "v3.1"
 
+  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
+    alt: "Rescue People"
+    title: "Rescue People"
+    excerpt: "Recognition of faces of lost people and save their locations."
+    url: "/exercises/Drones/rescue_people"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
+
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
     title: "Car Junction"
@@ -168,17 +178,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--info"
     version: "v2.1"
-    
-  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
-    alt: "Rescue People"
-    title: "Rescue People"
-    excerpt: "Recognition of faces of lost people and save their locations."
-    url: "/exercises/Drones/rescue_people"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v3.1"
-    
+
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar"
     title: "Drone Hangar"
