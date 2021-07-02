@@ -16,7 +16,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -26,7 +26,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
@@ -36,7 +36,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4" 
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
     alt: "Labyrinth Escape"
@@ -46,7 +46,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
@@ -56,7 +56,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
     alt: "Rescue People"
@@ -75,8 +75,8 @@ feature_row:
     url: "/exercises/Drones/drone_gymkhana"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
+    version_label: "btn--success"
+    version: "v3.1"
     
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
     alt: "Drone Hangar"
@@ -85,8 +85,8 @@ feature_row:
     url: "/exercises/Drones/drone_hangar"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
+    version_label: "btn--success"
+    version: "v3.1"
     
   - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
     alt: "Visual Lander"
@@ -95,8 +95,8 @@ feature_row:
     url: "/exercises/Drones/visual_lander"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
+    version_label: "btn--success"
+    version: "v3.1"
 ---
 
 

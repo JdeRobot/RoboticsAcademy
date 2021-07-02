@@ -27,6 +27,7 @@ drone_teleop:
 
 youtubeId: Guq3nPIQmdM
 ---
+## Goal
 
 To goal of this exercise is to learn how to control a drone to complete a gymkhana course, composed of several waypoints that you'll have to navigate through. 
 
@@ -34,81 +35,80 @@ To goal of this exercise is to learn how to control a drone to complete a gymkha
 
 You will have contact with the drone infrastructure in our Robotics Academy for the first time, learning how to access the drone sensors, actuators and cameras via an *Application Programing Interface* (API), which is a key point to master the rest of the proposed exercises.
 
-## Installation
-First, make sure you have installed the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
+## Instructions for Web Templates
+This is the preferred way for running the exercise.
 
-Second, install the specific infrastructure for working with drones in the Academy, which includes the [PX4 open source flight controller platform](http://jderobot.github.io/RoboticsAcademy/installation/#px4)  and [MAVROS](http://jderobot.github.io/RoboticsAcademy/installation/#mavros), a MAVLink-based communication node between PX4 and ROS.  
+### Installation 
 
-And finally, install our ROS metapackage for controlling drones, called `jderobot-drones`. It contains a  teleoperator GUI, the drone HAL-API and some other useful stuff for running these drone exercises:
+- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-```bash
-sudo apt-get install ros-melodic-jderobot-drones
-```
+- Pull the current distribution of Robotics Academy Docker Image
 
-## How can I run the exercise?
+	```bash
+  docker pull jderobot/robotics-academy:3.1.2
+  ```
 
-To launch the exercise, open a terminal window, navigate to the [drone_gymkhana exercise folder](https://github.com/JdeRobot/RoboticsAcademy/tree/master/exercises/drone_gymkhana) and execute the following roslaunch command:
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-```bash
-roslaunch drone_gymkhana.launch
-```
+### Enable GPU Acceleration
+- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
+  ```bash
+  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.2 ./start-3.1.sh
+  ```
 
-Two different windows will pop up:
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
 
-- The **Gazebo simulator**, showing the 3DR IRIS quadcopter in the central takeoff (green) pad, the gymkhana course and the landing pad, in red. 
-- The **Drone teleoperator**, a GUI which provides the following functionalities:
-  - *Buttons* to takeoff, land and stop the drone.
-  - A button to *play and stop* your own programming code, together with an status messages window.
-  - A *drone teleoperator* (top, left) mimicking a RC transmitter configured in Mode 2, which shows the commanded velocities. 
-  - An *info box (bottom, left)* showing the actual position (m), linear velocities (m/s) and angular yaw rate (rad/s) of the drone, and the corresponding ROS frames for each data.
-  - An *extra sensors* window composed by graphical attitude, altitude and velocity indicators (click in Sensors)
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
-{% include gallery id="drone_teleop" caption="Drone teleoperator GUI" %}
+	```bash
+  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.2 ./start-3.1.sh
+  ```
 
-## How should I solve the exercise?
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-To solve the exercise, you must edit the `my_solution.py` file and insert the control logic into it. In this drone_gymkhana exercise, your code has to be entered in:
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
 
-1. The `position_control` function, where you have to program a *blocking position control*, so each time you call this function the drone has to reach a given target position before accepting more control commands. Please have a look a the [Hints section](#hints) to get some help about how to deal with this.  
-2. The `execute` function, where you can define all waypoints of the gymkhana course and call iteratively the `position control` function. 
+- The exercise can be used after the alert.
+
+### Where to insert the code?
+
+In the launched webpage, type your code in the text editor,
 
 ```python
-####### Build your position control function here ######
-def position_control():
-	global drone
-	# Insert your code here
- 
-########################################################
+from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
 
-def execute(event):
-	global drone
-	############## Insert your code here ###############
-	# Waypoint list  
-	waypoint_list = []
-	
-	# Navigation using position control
-	for waypoint in waypoint_list:
-	    position_control()
-        
-	####################################################
+while True:
+    # Enter iterative code!
 ```
 
-You must assume your drone has already took off from the central green pad and its already airbone (i.e. you already pressed the Takeoff button). Then your drone has to **navigate autonomously** to complete the gymkana course following the numbered cubes (1, 2, 3 and 4). It has to **pierce all red obstacles** present at each course leg without any collision. Finally, it hast to go to the landing red pad and land on it. 
+### Using the Interface
 
-**To remember:** *At the moment, each time you update your code you must to run again the launch file in order to insert the updated code in the drone teleoperator GUI*
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
 
-## API
+* **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code(under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer(a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
+
+## Application Programming Interface
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
 ### Sensors and drone state
 
-* `drone.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
-* `drone.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s
-* `drone.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
-* `drone.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad. 
-* `drone.get_roll()` - Returns the roll angle of the drone, in rad
-* `drone.get_pitch()` - Returns the pitch angle of the drone, in rad.
-* `drone.get_yaw()` - Returns the yaw angle of the drone, in rad. 
-* `drone.get_landed_state()` -  Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown. 
+* `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
+* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s
+* `HAL.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
+* `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad. 
+* `HAL.get_roll()` - Returns the roll angle of the drone, in rad
+* `HAL.get_pitch()` - Returns the pitch angle of the drone, in rad.
+* `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad. 
+* `HAL.get_landed_state()` -  Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown. 
 
 ### Actuators and drone control
 
@@ -116,29 +116,32 @@ The three following drone control functions are *non-blocking*, i.e. each time y
 
 #### 1. Position control
 
-* `drone.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame)
+* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame)
 
 #### 2. Velocity control
 
-* `drone.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame
+* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame
 
 #### 3. Mixed control
 
-* `drone.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s) 
+* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s) 
 
 ### Drone takeoff and land
 
 Besides using the buttons at the drone teleoperator GUI, taking off and landing can also be controlled from the following commands in your code:
 
-* `drone.takeoff(height)` - Takeoff at the current location, to the given height (in m)
-* `drone.land()` - Land at the current location. 
+* `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m)
+* `HAL.land()` - Land at the current location. 
 
-### Drone cameras (not used in this exercise)
+### Drone cameras
 
-* `drone.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image
-* `drone.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image
-* `set_image_filtered(cv2_image)` - Shows a filtered image of the camera images in the GUI
-* `set_image_threshed(cv2_image)` - Shows a thresholded image in the GUI
+* `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image
+* `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image
+
+### GUI
+
+* `GUI.showImage(cv2_image)` - Shows a image of the camera  in the GUI
+* `GUI.showLeftImage(cv2_image)` - Shows another image of the camera in the GUI
 
 ## Hints
 
