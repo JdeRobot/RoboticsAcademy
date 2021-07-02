@@ -146,7 +146,37 @@ feature_row:
     url: "/exercises/AutonomousCars/car_junction"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--inverse"
+    version_label: "btn--success"
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
+    alt: "Drone Gymkhana"
+    title: "Drone Gymkhana"
+    excerpt: "Learn about different drone controls and drone infrastructure."
+    url: "/exercises/Drones/drone_gymkhana"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
+    alt: "Drone Hangar"
+    title: "Drone Hangar"
+    excerpt: "Escape from a hangar filled with moving obstacles."
+    url: "/exercises/Drones/drone_hangar"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
+    
+  - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
+    alt: "Visual Lander"
+    title: "Visual Lander"
+    excerpt: "Visualization of a beacon and land on it."
+    url: "/exercises/Drones/visual_lander"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
     version: "v3.1"
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
@@ -168,36 +198,6 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     version: "v.prototype"
-
-  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
-    alt: "Drone Gymkhana"
-    title: "Drone Gymkhana"
-    excerpt: "Learn about different drone controls and drone infrastructure."
-    url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-
-  - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
-    alt: "Drone Hangar"
-    title: "Drone Hangar"
-    excerpt: "Escape from a hangar filled with moving obstacles."
-    url: "/exercises/Drones/drone_hangar"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
-    alt: "Visual Lander"
-    title: "Visual Lander"
-    excerpt: "Visualization of a beacon and land on it."
-    url: "/exercises/Drones/visual_lander"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
     
   - image_path: /assets/images/exercises/visual_odometry/vo.png
     alt: "Visual Odometry"
