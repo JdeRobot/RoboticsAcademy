@@ -1,4 +1,4 @@
-{% extends 'base_rviz.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% block content %}
@@ -20,7 +20,7 @@ while True:
 </div>
 
 <div class="split b">
-    <div class="float-container">
+    <!-- <div class="float-container">
         <div class="float-child">
             <div class="head">
                 <span style="font-size: 21px;">Forward Kinematics</span>
@@ -173,7 +173,7 @@ while True:
             <span>Message Box</span>
             <input type="text" name="Message" id="message">
         </div>
-    </div>
+    </div> -->
     <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
     <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
     <iframe id="iframeRvizweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
