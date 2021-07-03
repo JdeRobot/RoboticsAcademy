@@ -2,7 +2,7 @@
 <sdf version="1.5">
 	<world name="default">
 		<gui fullscreen='1'></gui>
-		
+
 		<!-- Arrows -->
 		<include>
 			<uri>model://arrow</uri>
@@ -72,8 +72,6 @@
 		</include>
 
 		<scene>
-			<grid>0</grid>
-			<shadows>0</shadows>
 			<sky>
 				<clouds>
 					<speed>12</speed>
