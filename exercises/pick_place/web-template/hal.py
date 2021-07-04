@@ -3,7 +3,7 @@ import rospkg
 import threading
 import time
 from datetime import datetime
-
+import yaml
 import sys
 import copy
 import os
@@ -55,6 +55,10 @@ class HAL:
         self.approach_retreat_min_dist = 0.1
 
         # rospy.sleep(1.0)
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        filename = os.path.join(__location__, 'models_info.yaml')
+        with open(filename) as file:
+            self.objects_info = yaml.load(file)
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -196,3 +200,22 @@ class HAL:
         grasps.append(grasp)
 
         return grasps
+
+    def get_object_pose(self, object_name):
+        pose = self.object_list[object_name].pose
+        return pose
+
+    def get_object_list(self):
+        return self.objects_info["objects"].keys()
+
+    def get_object_info(self, object_name):
+        return self.object_list[object_name]
+
+    def get_target_list(self):
+        target_list = {}
+        for target in self.objects_info["targets"]:
+            target_list.append(target)
+        return target_list
+
+    def get_target_position(self, target_name):
+        return self.objects_info["targets"][target_name]
