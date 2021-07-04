@@ -8,7 +8,7 @@ import threading
 import time
 import json
 import stat
-
+import manager_utils as m_utils
 # Function to check if a device exists
 def check_device(device_path):
     try:
@@ -110,6 +110,12 @@ class Commands:
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
+
+    def start_rviz(self, exercise):
+        rviz_cmd = f'DISPLAY=:2 {self.instructions[exercise]["instructions_rviz"]}'
+
+        rviz_thread = m_utils.DockerThread(rviz_cmd)
+        rviz_thread.start()
 
     # Function to start VNC server
     def start_vnc(self, display, internal_port, external_port):
@@ -277,8 +283,34 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
+        if exercise in ["tb3_nav", "pick_place"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # X Server for RViz
+            print("********Rviz + Gazebo + Console************")
+            self.commands.start_xserver(":2")
 
-        if not ("color_filter" in exercise):
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            self.commands.start_vnc(":2", 5902, 6081)
+
+            # Start gazebo client
+            time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_rviz(exercise)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
@@ -308,7 +340,32 @@ class Manager:
 
         # Start the exercise
         
-        if not ("color_filter" in exercise):
+        if exercise in ["tb3_nav", "pick_place"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # X Server for RViz
+            self.commands.start_xserver(":2")
+
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            self.commands.start_vnc(":2", 5902, 6081)
+
+            # Start gazebo client
+            time.sleep(2)
+            # self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
