@@ -21,7 +21,6 @@
 
 		<scene>
 			<grid>0</grid>
-			<shadows>0</shadows>
 			<sky>
 				<clouds>
 					<speed>12</speed>
