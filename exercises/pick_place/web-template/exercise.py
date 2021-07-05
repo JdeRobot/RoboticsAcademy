@@ -45,7 +45,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.env = ENV()
+        self.env = ENV(self.hal.obj_list)
         self.gui = GUI(self.host, self.hal, self.env)
 
     # Function to parse the code
@@ -66,11 +66,12 @@ class Template:
             return "", ""
 
         elif source_code[:5] == "#rest":
-            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-            reset_simulation()
-            self.gui.reset_gui()
-            if self.hal.get_landed_state() ==2 : self.hal.land()
-            self.env.reset_env()
+            # reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
+            # reset_simulation()
+            # self.env.reset()
+            # self.gui.reset_gui()
+            # if self.hal.get_landed_state() ==2 : self.hal.land()
+            # self.env.reset_env()
             
             return "", ""
 
@@ -163,7 +164,9 @@ class Template:
         hal_module.HAL.move_joint_arm = self.hal.move_joint_arm
         hal_module.HAL.move_pose_arm = self.hal.move_pose_arm
         hal_module.HAL.move_joint_hand = self.hal.move_joint_hand
-        hal_module.HAL.generate_grasps = self.hal.generate_grasps
+        hal_module.HAL.generate_grasp = self.hal.generate_grasp
+        hal_module.HAL.get_object_pose = self.hal.get_object_pose
+        hal_module.HAL.get_target_position = self.hal.get_target_position
 
         # Define GUI module
         gui_module = imp.new_module("GUI")
