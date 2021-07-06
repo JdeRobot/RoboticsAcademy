@@ -51,7 +51,7 @@ class Launch(Tests):
         if insert_roslaunch: args.insert(0, "/opt/ros/noetic/bin/roslaunch")
         if insert_vglrun and ACCELERATION_ENABLED: args.insert(0, "vglrun")
         if len(sys.argv)>=2 and sys.argv[1] == "log":
-            with open("/logs/launch_logs.txt", "a+") as f:
+            with open("/logs/launch.log", "a+") as f:
                 subprocess.Popen(args, stdout=f, bufsize=4096, universal_newlines=True)
         else:
             subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
