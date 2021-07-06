@@ -1,3 +1,6 @@
+var ws_manager;
+var gazeboToggle = false, gazeboOn = false;
+
 function startSim() {
     ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
     exercise = "rescue_people"
@@ -30,9 +33,29 @@ function startSim() {
                 declare_code(websocket_address);
                 declare_gui(websocket_address);
             }
-            setTimeout(function () {
-                ws_manager.send(JSON.stringify({"command" : "Pong"}));
-            }, 1000)
+            if (gazeboToggle) {
+                if (gazeboOn) {
+                    ws_manager.send(JSON.stringify({"command" : "startgz"}));
+                } else {
+                    ws_manager.send(JSON.stringify({"command" : "stopgz"}));
+                }
+
+                gazeboToggle = false;
+            } else {
+                setTimeout(function () {
+                    ws_manager.send(JSON.stringify({"command" : "Pong"}));
+                }, 1000)
+            }
         }
     }
+}
+
+function toggleGazebo() {
+    if (gazeboOn) {
+        gazeboOn = false;
+    } else {
+        gazeboOn = true;
+    }
+
+    gazeboToggle = true;
 }
