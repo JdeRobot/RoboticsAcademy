@@ -126,6 +126,8 @@ class Commands:
         os.popen(cmd_console)
         cmd_console = "/opt/TurboVNC/bin/vncserver -kill :1"
         os.popen(cmd_console)
+        cmd_console = "/opt/TurboVNC/bin/vncserver -kill :2"
+        os.popen(cmd_console)
 
     # Function to start an exercise
     def start_exercise(self, exercise):
@@ -300,9 +302,7 @@ class Manager:
             self.commands.start_vnc(":1", 5901, 1108)
             self.commands.start_vnc(":2", 5902, 6081)
 
-            # Start gazebo client
             time.sleep(2)
-            # self.commands.start_gzclient(exercise, width, height)
             self.commands.start_rviz(exercise)
             self.commands.start_console(width, height)
 
@@ -319,9 +319,7 @@ class Manager:
             self.commands.start_vnc(":0", 5900, 6080)
             self.commands.start_vnc(":1", 5901, 1108)
 
-            # Start gazebo client
             time.sleep(2)
-            # self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
             '''
@@ -341,28 +339,53 @@ class Manager:
         self.commands.stop_vnc()
         time.sleep(2)
 
-        # Start new VNC and accelerated displays
-        self.commands.start_vnc(":0", 5900, 6080)
-
+        
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier"]:
+        if exercise in ["tb3_nav"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # Start new VNC and accelerated displays
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            self.commands.start_vnc(":2", 5902, 6081)
+            time.sleep(2)
+
             self.commands.start_gzserver(exercise, width, height)
             self.commands.start_exercise(exercise)
             time.sleep(5)
             self.launch_level = 3
 
-            self.commands.start_vnc(":1", 5901, 1108)
 
-            # Start gazebo client
+            self.commands.start_rviz(exercise)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
+            # Start new VNC and accelerated displays
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
             time.sleep(2)
-            # self.commands.start_gzclient(exercise, width, height)
-            time.sleep(2)
+
+            self.commands.start_gzserver(exercise, width, height)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+
             self.commands.start_console(width, height)
         else:
+            '''
+            Only Console
+            '''
+            # Start new VNC and accelerated displays
+            self.commands.start_vnc(":1", 5900, 1108)
+
             self.commands.start_exercise(exercise)
             time.sleep(2)
             self.launch_level = 3
-            self.commands.start_vnc(":1", 5900, 1108)
             self.commands.start_console(1920, 1080)
 
     # Function to resume simulation
