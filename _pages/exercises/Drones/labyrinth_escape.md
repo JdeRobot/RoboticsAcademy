@@ -16,6 +16,7 @@ gallery:
     title: "Labyrinth Escape."
 
 youtubeId: JR5OH_XHw7U
+youtubeId2: e2-BE1KKtm0
 ---
 
 The goal of this exercise is to implement the logic that allows a quadrotor to escape a labyrinth through visual signals placed on the ground.
@@ -27,7 +28,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to e
 
 First, pull the last version of our [docker image](https://hub.docker.com/r/jderobot/robotics-academy):
 ```bash
-docker pull jderobot/robotics-academy
+docker pull jderobot/robotics-academy:3.1.3
 ```
 
 Notice that you have to have installed [Docker](https://docs.docker.com/get-docker/) to complete the previous step.
@@ -37,9 +38,9 @@ Secondly, clone the Robotics Academy repository on your local machine:
 git clone https://github.com/JdeRobot/RoboticsAcademy
 ```
 ### Enable GPU Acceleration
-- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers and executing the following docker run command:
+- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.3 ./start.sh
+  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
   ```
 
 
@@ -49,7 +50,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.3 ./start.sh
+  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -153,6 +154,10 @@ In this exercise, you can use the one you prefer.
 ### Do I need to know when the drone is in the air?
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
+
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Demonstrative video of the solution
 

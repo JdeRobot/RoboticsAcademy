@@ -17,7 +17,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
     
   - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
     alt: "Obstacle avoidance"
@@ -27,7 +27,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
     alt: "Drone Cat and Mouse"
@@ -37,7 +37,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
     alt: "Vacuum Cleaner"
@@ -47,7 +47,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
     alt: "Localized Vacuum Cleaner"
@@ -57,7 +57,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
     alt: "Color Filter"
@@ -67,7 +67,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -77,7 +77,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
     alt: "3D Reconstruction"
@@ -87,7 +87,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
@@ -97,7 +97,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
@@ -117,7 +117,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
@@ -127,7 +127,17 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
+    alt: "Rescue People"
+    title: "Rescue People"
+    excerpt: "Recognition of faces of lost people and save their locations."
+    url: "/exercises/Drones/rescue_people"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
@@ -136,8 +146,38 @@ feature_row:
     url: "/exercises/AutonomousCars/car_junction"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--inverse"
-    version: "v2.0"
+    version_label: "btn--success"
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
+    alt: "Drone Gymkhana"
+    title: "Drone Gymkhana"
+    excerpt: "Learn about different drone controls and drone infrastructure."
+    url: "/exercises/Drones/drone_gymkhana"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
+    alt: "Drone Hangar"
+    title: "Drone Hangar"
+    excerpt: "Escape from a hangar filled with moving obstacles."
+    url: "/exercises/Drones/drone_hangar"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
+    
+  - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
+    alt: "Visual Lander"
+    title: "Visual Lander"
+    excerpt: "Visualization of a beacon and land on it."
+    url: "/exercises/Drones/visual_lander"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
@@ -158,46 +198,6 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     version: "v.prototype"
-
-  - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
-    alt: "Drone Gymkhana"
-    title: "Drone Gymkhana"
-    excerpt: "Learn about different drone controls and drone infrastructure."
-    url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.jpg
-    alt: "Rescue People"
-    title: "Rescue People"
-    excerpt: "Recognition of faces of lost people and save their locations."
-    url: "/exercises/Drones/rescue_people"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
-    alt: "Drone Hangar"
-    title: "Drone Hangar"
-    excerpt: "Escape from a hangar filled with moving obstacles."
-    url: "/exercises/Drones/drone_hangar"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
-    
-  - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
-    alt: "Visual Lander"
-    title: "Visual Lander"
-    excerpt: "Visualization of a beacon and land on it."
-    url: "/exercises/Drones/visual_lander"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--info"
-    version: "v2.1"
     
   - image_path: /assets/images/exercises/visual_odometry/vo.png
     alt: "Visual Odometry"
