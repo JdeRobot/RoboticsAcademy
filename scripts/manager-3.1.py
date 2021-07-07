@@ -237,6 +237,8 @@ class Commands:
         os.popen(cmd_gui)
         cmd_host = "pkill -9 -f node"
         os.popen(cmd_host)
+        cmd_rosmaster = "pkill -9 -f rosmaster"
+        os.popen(cmd_rosmaster)
         cmd_host = "pkill -9 -f gzserver"
         os.popen(cmd_host)
         cmd_client = "pkill -9 -f gzclient"
