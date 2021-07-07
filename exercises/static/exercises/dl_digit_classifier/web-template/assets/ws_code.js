@@ -49,13 +49,12 @@ function declare_code(){
 
 // Function that sends/submits the code!
 function submitCode(){
+	document.getElementById("output_heading").textContent = "Uploading model..."
 	var input = document.getElementById("dl_model");
 	var fReader = new FileReader();
 	fReader.readAsDataURL(input.files[0]);
 	fReader.onloadend = function(event){
-		alert("Uploading DL model file...");
 		websocket_code.send(event.target.result);
-		alert("...the file has been transferred!");
 	}
 
     stop_button.disabled = false;
