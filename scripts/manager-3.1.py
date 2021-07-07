@@ -257,7 +257,7 @@ class Commands:
         os.popen(cmd_console)
         cmd_noetic = "pkill -9 -f noetic"
         os.popen(cmd_noetic)
-        cmd_px4 = "px4"
+        cmd_px4 = "pkill -9 -f px4"
         os.popen(cmd_px4)
 
 
