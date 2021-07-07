@@ -23,8 +23,13 @@
         radiConect.contentWindow.postMessage('message', '*');
         window.onmessage = function(event){
             if (event.data == 'start') {
-                console.log
-                startSim()
+                try {
+                    startSim();
+                }
+                catch (e) {
+                    if (e instanceof ReferenceError)
+                        radiConect.contentWindow.postMessage('down', '*');
+                }
             }
         };
     </script>
