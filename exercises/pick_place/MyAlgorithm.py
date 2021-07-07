@@ -90,3 +90,14 @@ if __name__=="__main__":
     print("You can start your algorithm with GUI")
 
     rospy.spin()
+
+    # HAL.back_to_home()
+    # object_name = "blue_ball"
+    # pose = HAL.get_object_pose(object_name)
+    # WIDTH = 0.3
+    # LENGTH = 0.15
+    # grasp = HAL.generate_grasp(object_name, "vertical", pose.position, WIDTH, length=LENGTH)
+    # HAL.pickup(object_name, [grasp])
+    # target_name = "blue_target"
+    # place_position = HAL.get_target_position(target_name)
+    # HAL.place("vertical", place_position)
