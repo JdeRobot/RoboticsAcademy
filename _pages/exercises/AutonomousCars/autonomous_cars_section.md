@@ -17,7 +17,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.3"
+    status: "running"
+    order: 0
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser.png
     alt: "Obstacle avoidance"
@@ -27,7 +29,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    status: "running"
+    order: 0
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
@@ -37,7 +41,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--info"
-    version: "v2.0"
+    status: "testing"
+    order: 1
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
@@ -46,8 +51,10 @@ feature_row:
     url: "/exercises/AutonomousCars/car_junction"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: ""
-    version: ""
+    version_label: "btn--success"
+    status: "running"
+    order: 0
+    version: "v3.1"
 
 ---
 

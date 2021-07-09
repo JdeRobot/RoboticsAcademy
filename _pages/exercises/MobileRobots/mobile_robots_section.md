@@ -17,7 +17,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    status: "running"
+    order: 0;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
     alt: "Localized Vacuum Cleaner"
@@ -27,7 +29,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    version: "v2.4"
+    status: "running"
+    order: 0;
+    version: "v3.1"
     
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
@@ -37,7 +41,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v.prototype"
+    status: "prototype"
+    order: 2;
 
   - image_path: /assets/images/exercises/multi_robot_amazon_warehouse/multi_robot_amazon_warehouse_teaser.png
     alt: "Multi Robot Amazon Warehouse (ROS2)"
@@ -47,7 +52,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v.prototype"
+    status: "prototype"
+    order: 2;
 
 ---
 

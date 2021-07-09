@@ -16,6 +16,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
@@ -26,6 +28,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
@@ -36,6 +40,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
@@ -46,6 +52,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
@@ -56,6 +64,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
@@ -66,6 +76,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
@@ -76,6 +88,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
     
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
@@ -86,6 +100,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
     
   - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
@@ -96,6 +112,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
+    status: "running"
+    order: 0;
     version: "v3.1"
 ---
 
