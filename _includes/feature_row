@@ -4,9 +4,64 @@
   {% assign feature_row = page.feature_row %}
 {% endif %}
 
-<div class="feature__wrapper">
+<style>
+#exercise_card_running {
+  background-color: #46C630;
+  margin-top: 20px;
+  border-radius: 20px;
+  border-style: solid;
+  display: inline-block;
+  overflow: hidden;
+}
 
-  {% for f in feature_row %}
+#exercise_card_testing {
+  background-color: #FF9E21;
+  margin-top: 20px;
+  border-radius: 20px;
+  border-style: solid;
+  display: inline-block;
+  overflow: hidden;
+}
+
+#exercise_card_prototype {
+  background-color: #FF714B;
+  margin-top: 20px;
+  border-radius: 20px;
+  border-style: solid;
+  display: inline-block;
+  overflow: hidden;
+}
+
+#exercise_card_idea {
+  background-color: #CFCFCF;
+  margin-top: 20px;
+  border-radius: 20px;
+  border-style: solid;
+  display: inline-block;
+  overflow: hidden;
+}
+
+#exercise_card_simple {
+
+}
+
+#inner_card_separator {
+  width: 100%;
+  text-align: left;
+  margin-left: 0;
+  margin-top: 0px;
+  border-top: 4px solid black;
+}
+
+#card_image {
+  background-color: black;
+  border-radius: 0px;
+}
+</style>
+
+<div class="feature__wrapper" style="flex-wrap: wrap; position: relative; flex-direction: row; display: flex;">
+  {% assign sorted = feature_row | sort: 'order' %}
+  {% for f in sorted %}
 
     {% if f.url contains "://" %}
       {% capture f_url %}{{ f.url }}{% endcapture %}
@@ -14,10 +69,10 @@
       {% capture f_url %}{{ f.url | relative_url }}{% endcapture %}
     {% endif %}
 
-    <div class="feature__item{% if include.type %}--{{ include.type }}{% endif %}">
+    <div class="feature__item{% if include.type %}--{{ include.type }}{% endif %}" id="exercise_card_{% if f.status == "running" %}running{% elsif f.status == "testing" %}testing{% elsif f.status == "prototype" %}prototype{% elsif f.status == "idea" %}idea{% else %}simple{% endif %}">
       <div class="archive__item">
         {% if f.image_path %}
-          <div class="archive__item-teaser">
+          <div class="archive__item-teaser" id="card_image">
             <img src=
               {% if f.image_path contains "://" %}
                 "{{ f.image_path }}"
@@ -30,6 +85,8 @@
             {% endif %}
           </div>
         {% endif %}
+
+        <hr id="inner_card_separator">
 
         <div class="archive__item-body">
           {% if f.title %}
@@ -46,9 +103,11 @@
 
           {% if f.url %}
             <p>
-              <a href="{{ f_url }}" class="btn {{ f.btn_class }}">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>
-              {% if f.version %}
-                <i style="font-size: 12px">{{ f.version | default: site.data.ui-text[site.locale].more_label | default:  }}</i>
+              <a href="{{ f_url }}" class="btn {{ f.btn_class }}" style="background-color: #9E1C00">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>              
+              {% if f.version and f.status == "running" %}
+                <i style="font-size: 12px">{{ f.status }} - {{ f.version | default: site.data.ui-text[site.locale].more_label | default:  }}</i>
+              {% else %}
+                <i style="font-size: 12px">{{ f.status }}</i>
               {% endif %}
             </p>
           {% endif %}

@@ -17,7 +17,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v.prototype"
+    status: "prototype"
+    order: 2;
 
   - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
     alt: "Machine Vision"
@@ -27,7 +28,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v.prototype"
+    status: "prototype"
+    order: 2;
 
   - image_path: /assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png
     alt: "Mobile Manipulation"
@@ -37,7 +39,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    version: "v.prototype"
+    status: "prototype"
+    order: 2;
 
 --- 
 

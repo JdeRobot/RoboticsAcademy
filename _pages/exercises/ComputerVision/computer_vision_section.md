@@ -17,7 +17,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    version: ""
+    status: "prototype"
+    order: 2;
 
   - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
     alt: "3D Reconstruction"
@@ -27,7 +28,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    version: ""
+    status: "running"
+    order: 0;
+    version: "v3.1"
   
   - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
     alt: "Color Filter"
@@ -37,7 +40,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    version: ""
+    status: "running"
+    order: 0;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     alt: "Human Detection"
@@ -47,7 +52,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    version: ""
+    status: "running"
+    order: 0;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/dl_digit_classifier/dl_digit_classifier.png
     alt: "Digit Classifier"
@@ -57,7 +64,21 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    version: "v.prototype"
+    status: "running"
+    order: 0;
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
+    alt: "Follow Face"
+    title: "Follow Face"
+    excerpt: "Detect people faces and follow them through a camera"
+    url: "/exercises/ComputerVision/follow_face"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
 --- 
 
 
