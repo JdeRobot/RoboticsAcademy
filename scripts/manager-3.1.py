@@ -173,6 +173,8 @@ class Commands:
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
         if exercise in DRONE_EX:
+            if os.path.exists("/status.txt"):
+                os.remove("/status.txt")
             roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
             os.popen(roslaunch_cmd)
         else:
@@ -227,20 +229,18 @@ class Commands:
     async def kill_all(self):
         cmd_py = 'pkill -9 -f "python "'
         os.popen(cmd_py)
+        cmd_host = "pkill -9 -f gzserver"
+        os.popen(cmd_host)
         cmd_gz = "pkill -9 -f gz"
         os.popen(cmd_gz)
         cmd_launch = "pkill -9 -f launch.py"
         os.popen(cmd_launch)
-        cmd_exercise = "pkill -9 -f exercise.py"
-        os.popen(cmd_exercise)
         cmd_gui = "pkill -9 -f gui.py"
         os.popen(cmd_gui)
         cmd_host = "pkill -9 -f node"
         os.popen(cmd_host)
         cmd_rosmaster = "pkill -9 -f rosmaster"
         os.popen(cmd_rosmaster)
-        cmd_host = "pkill -9 -f gzserver"
-        os.popen(cmd_host)
         cmd_client = "pkill -9 -f gzclient"
         os.popen(cmd_client)
         cmd_ros = "pkill -9 -f roslaunch"
@@ -261,6 +261,8 @@ class Commands:
         os.popen(cmd_noetic)
         cmd_px4 = "pkill -9 -f px4"
         os.popen(cmd_px4)
+        cmd_exercise = "pkill -9 -f exercise.py"
+        os.popen(cmd_exercise)
 
 
 # Main Manager class
