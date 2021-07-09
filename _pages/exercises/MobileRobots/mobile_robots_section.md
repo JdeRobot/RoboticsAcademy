@@ -55,6 +55,28 @@ feature_row:
     status: "prototype"
     order: 2;
 
+  - image_path: /assets/images/exercises/bump_and_go/bump_and_go_teaser.png
+    alt: "Bump and Go"
+    title: "Bump and Go"
+    excerpt: "Basic behaviour of bump-spin using a finite state machine"
+    url: "/exercises/MobileRobots/bump_and_go"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
+  - image_path: /assets/images/exercises/laser_loc/autoloc_teaser.png
+    alt: "Laser-based localization"
+    title: "Laser-based localization"
+    excerpt: "Robot self-localization using particle filter and laser sensor"
+    url: "/exercises/MobileRobots/laser_loc"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
 ---
 
 

@@ -303,6 +303,61 @@ feature_row:
     order: 0;
     version: "v.3.1"
 
+  - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
+    alt: "Qualifying Formula1"
+    title: "Qualifying Formula1"
+    excerpt: "Complete a lap to the Nürburgring circuit as fast as it can"
+    url: "/exercises/AutonomousCars/qualifying_formula1"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
+  - image_path: /assets/images/exercises/bump_and_go/bump_and_go_teaser.png
+    alt: "Bump and Go"
+    title: "Bump and Go"
+    excerpt: "Basic behaviour of bump-spin using a finite state machine"
+    url: "/exercises/MobileRobots/bump_and_go"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
+  - image_path: /assets/images/exercises/laser_loc/autoloc_teaser.png
+    alt: "Laser-based localization"
+    title: "Laser-based localization"
+    excerpt: "Robot self-localization using particle filter and laser sensor"
+    url: "/exercises/MobileRobots/laser_loc"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
+  - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
+    alt: "Follow Face"
+    title: "Follow Face"
+    excerpt: "Detect people faces and follow them through a camera"
+    url: "/exercises/ComputerVision/follow_face"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
+  - image_path: /assets/images/exercises/autoparking/autoparking_teaser.png
+    alt: "Autoparking"
+    title: "Autoparking"
+    excerpt: "Logic of a navigation algorithm for an automated vehicle"
+    url: "/exercises/AutonomousCars/autoparking"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
 ---
 
 

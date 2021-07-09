@@ -18,7 +18,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 0
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser.png
@@ -30,7 +30,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 0
+    order: 0;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
@@ -42,7 +42,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--info"
     status: "testing"
-    order: 1
+    order: 1;
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
@@ -53,8 +53,30 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 0
+    order: 0;
     version: "v3.1"
+
+  - image_path: /assets/images/exercises/autoparking/autoparking_teaser.png
+    alt: "Autoparking"
+    title: "Autoparking"
+    excerpt: "Logic of a navigation algorithm for an automated vehicle"
+    url: "/exercises/AutonomousCars/autoparking"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
+  - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
+    alt: "Qualifying Formula1"
+    title: "Qualifying Formula1"
+    excerpt: "Complete a lap to the Nürburgring circuit as fast as it can"
+    url: "/exercises/AutonomousCars/qualifying_formula1"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
 
 ---
 

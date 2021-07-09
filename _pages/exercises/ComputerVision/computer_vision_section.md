@@ -67,6 +67,18 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.1"
+
+  - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
+    alt: "Follow Face"
+    title: "Follow Face"
+    excerpt: "Detect people faces and follow them through a camera"
+    url: "/exercises/ComputerVision/follow_face"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+
 --- 
 
 
