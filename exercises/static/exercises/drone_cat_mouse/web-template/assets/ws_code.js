@@ -13,6 +13,11 @@ stop_button.style.cursor = "not-allowed";
 var frequency = "0",
 	running = false;
 
+// variable for the evaluator
+var eval_button_on_press="open",
+    draw = undefined,
+    dist = 0;
+
 //WebSocket for Code
 var websocket_code;
 function declare_code(websocket_address){
@@ -48,13 +53,17 @@ function declare_code(websocket_address){
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
 			// Parse real time factor
 			document.querySelector('#real_time_factor').value = frequency_message.rtf;
+			// Parse score
+			document.querySelector('#score').value = frequency_message.score;
 		}
 
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_freq').value;
 		gui_frequency = document.querySelector('#gui_freq').value;
 		real_time_factor = document.querySelector('#real_time_factor').value;
-		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
+		score = document.querySelector('#real_time_factor').value;
+        dist = frequency_message.dist;
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor, "score": score, "dist": dist};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
 }
@@ -110,4 +119,30 @@ function codefrequencyUpdate(vol) {
 // Function for range slider
 function guifrequencyUpdate(vol) {
 	document.querySelector('#gui_frequency').value = vol;
+}
+
+// Function for graph
+function evaluator() {
+    if (eval_button_on_press == "open") {
+        data = {
+            "data": [{ "y": [dist] }],
+            "layout": { "width": 800, "height": 300, "plot_bgcolor": "#b3ffb3"}
+        };
+        
+        Plotly.newPlot("eval", data)
+        var cnt = 0;
+        
+        draw=setInterval(function(){
+            Plotly.extendTraces("eval", { y:[[dist]]}, [0]);
+            cnt++;
+            if(cnt > 5000) {
+                Plotly.relayout("eval", {xaxis: {range: [cnt-5000, cnt]}});}
+        },1000);
+        
+        eval_button_on_press="close";
+    
+    } else {
+        clearInterval(draw);
+        eval_button_on_press="open";
+    }
 }

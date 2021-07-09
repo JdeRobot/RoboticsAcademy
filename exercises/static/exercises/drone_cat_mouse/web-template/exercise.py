@@ -11,6 +11,7 @@ from datetime import datetime
 import re
 import json
 import importlib
+import numpy as np
 
 import rospy
 from std_srvs.srv import Empty
@@ -34,7 +35,9 @@ class Template:
         self.ideal_cycle = 80
         self.iteration_counter = 0
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.score = 0
+        self.dist = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': '', 'score': '', 'dist': ''}
 
         self.server = None
         self.client = None
@@ -229,6 +232,8 @@ class Template:
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
         self.frequency_message["rtf"] = self.real_time_factor
+        self.frequency_message["score"] = self.score
+        self.frequency_message["dist"] = self.dist
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
@@ -247,6 +252,43 @@ class Template:
             for line in iter(stats_process.stdout.readline, ''):
                 stats_list = [x.strip() for x in line.split(',')]
                 self.real_time_factor = stats_list[0]
+
+    # Function to calculate score for evaluation
+    def calc_score(self):
+        while True:
+            x1, y1, z1 = self.hal.get_position()
+            x2, y2, z2 = self.mouse.get_position()
+            
+            # calculate distance between cat and mouse drones
+            self.dist = np.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
+
+            if z2 > z1:
+                self.dist = -round(self.dist/2)
+            else:
+                self.dist = round(self.dist/2)
+            
+            # calculate score
+            if self.dist < 0.1:
+                # too close
+                _score = 0.0
+            elif self.dist >= 0.1 and self.dist < 0.25:
+                # good
+                _score = 0.5 
+            elif self.dist >= 0.25 and self.dist < 1:
+                # medium 1
+                _score = 0.5/2
+            elif self.dist >= 1 and self.dist < 2:
+                # medium 2
+                _score = 0.5/4
+            elif self.dist >= 2 and self.dist < 3:
+                # medium 3
+                _score = 0.5/8
+            else:
+                # too far
+                _score = 0.0
+            
+            self.score = round(self.score + _score, 2)
+            time.sleep(1)
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
@@ -306,6 +348,10 @@ class Template:
         # Start the real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
+
+        # Start the score evaluation thread
+        self.eval_thread = threading.Thread(target=self.calc_score)
+        self.eval_thread.start()
 
         # Initialize the ping message
         self.send_frequency_message()
