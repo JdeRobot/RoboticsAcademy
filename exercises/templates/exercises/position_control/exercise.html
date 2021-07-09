@@ -39,6 +39,8 @@ while True:
             }
         }
         function changegzweb(){
+            toggleGazebo();
+            
             document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
             var display = document.getElementById('iframeGzweb').style.display
             console.log(display)

@@ -15,6 +15,7 @@ import imp
 import numpy as np
 import base64
 
+import subprocess
 import rospy
 from std_srvs.srv import Empty
 import cv2
@@ -35,7 +36,8 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
 
         self.server = None
         self.client = None
@@ -139,7 +141,6 @@ class Template:
         # Redirect the information to console
         start_console()
         # Reference Environment for the exec() function
-        reference_environment = {}
         iterative_code, sequential_code = self.parse_code(source_code)
 
         # print("The debug level is " + str(debug_level)
@@ -153,8 +154,7 @@ class Template:
         # The Python exec function
         # Run the sequential part
         gui_module, hal_module, map_module = self.generate_modules()
-        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "MAP": map_module, "time": time},
-             reference_environment)
+        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "MAP": map_module})
 
         # Run the iterative part inside template
         # and keep the check for flag
@@ -162,7 +162,7 @@ class Template:
             start_time = datetime.now()
 
             # Execute the iterative portion
-            exec(iterative_code, reference_environment)
+            exec(iterative_code, {"GUI": gui_module, "HAL": hal_module, "MAP": map_module})
 
             # Template specifics to run!
             finish_time = datetime.now()
@@ -258,6 +258,7 @@ class Template:
 
             # Reset the counter
             self.iteration_counter = 0
+            self.send_frequency_message()
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
@@ -276,15 +277,31 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
+
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args = ["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(',')]
+                self.real_time_factor = stats_list[0]
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if (self.thread != None):
+        if (self.thread is not None):
             while self.thread.is_alive() or self.measure_thread.is_alive():
                 pass
 
@@ -317,6 +334,7 @@ class Template:
         if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            time.sleep(1)
             self.send_frequency_message()
             return
 
@@ -335,6 +353,10 @@ class Template:
         # Start the GUI update thread
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
+
+        # Start the real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
 
         # Initialize the frequency message
         self.send_frequency_message()
