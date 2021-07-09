@@ -127,7 +127,7 @@ feature_row:
     version_label: "btn--info"
     status: "testing"
     order: 1;
-    version: "v2.3"
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
     alt: "Labyrinth Escape"
