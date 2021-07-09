@@ -61,7 +61,7 @@ function declare_code(websocket_address){
 		code_frequency = document.querySelector('#code_freq').value;
 		gui_frequency = document.querySelector('#gui_freq').value;
 		real_time_factor = document.querySelector('#real_time_factor').value;
-		score = document.querySelector('#real_time_factor').value;
+		score = document.querySelector('#score').value;
         dist = frequency_message.dist;
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor, "score": score, "dist": dist};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
