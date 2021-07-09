@@ -18,6 +18,8 @@ gallery:
     image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     alt: "Human Detection"
     title: "Human Detection"
+    
+youtubeId1: xZQ9x8J-shY
 
 ---
 
@@ -112,6 +114,24 @@ Given 1 frame per batch, the model must return 4 tensor arrays in the following 
 
 A demo model has been provided inside the `Demo_Model` folder to test and play around with the application.
 
+## Guide to Fine Tuning pre-existing models
+
+Expecting the user to build the model from scratch would be an overkill, we have compliled and provided the revelevant guide for Fine Tuning pre exisiting models in TensorFlow and Pytorch. This includes everything from making the process of collecting data, preprocessing it and fine tuning with it on a pre-existing model architecture. Since the process of exporting models to ONNX format is different for different frameworks, we have also added so under the respective guide. We strongly suggest the user to go through the guide.
+
+### Pytorch 
+
+We have documented a guide for the PyTorch implementation. Please refer to it below for the detailed information.
+
+* [**SSDMobilenet_PyTorch_FineTune**](https://github.com/TheRoboticsClub/gsoc2021-Shashwat_Dalakoti/blob/main/Fine_Tuning/PyTorch/SSDMobilenet_pytorch_FineTune.ipynb)
+
+### TensorFlow
+
+* [**Training a TensorFlow MobileNet Object Detection Model with a Custom Dataset**](https://blog.roboflow.com/training-a-tensorflow-object-detection-model-with-a-custom-dataset/)
+
+This guide walks you through using the TensorFlow object detection API to train a MobileNet Single Shot Detector (v2) to your own dataset. Here’s the complete Jupyter notebook guide for the above article:
+
+* [**Roboflow-tensorflow-object-detection-mobilenet-colab.ipynb**](https://colab.research.google.com/drive/1wTMIrJhYsQdq_u7ROOkf0Lu_fsX5Mu8a)
+
 
 ## Using the interface
 
@@ -124,6 +144,10 @@ A demo model has been provided inside the `Demo_Model` folder to test and play a
 * **Debug Level**: This decides the debugging level of the application. A debug level of 1 implies no debugging at all. A debug level greater than or equal to 2 enables all the GUI functions working properly.
 
 * **Psuedo Console**: This shows the error messages and a few intermediate outputs along the inference and benchmarking process.
+
+## Demonstrative Video with Web Template
+
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 
 ## Note
