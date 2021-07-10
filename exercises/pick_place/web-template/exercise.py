@@ -45,7 +45,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.env = ENV(self.hal.obj_list)
+        self.env = ENV()
         self.gui = GUI(self.host, self.hal, self.env)
 
     # Function to parse the code
@@ -68,7 +68,7 @@ class Template:
         elif source_code[:5] == "#rest":
             # reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
             # reset_simulation()
-            # self.env.reset()
+            self.env.reset()
             # self.gui.reset_gui()
             # if self.hal.get_landed_state() ==2 : self.hal.land()
             # self.env.reset_env()

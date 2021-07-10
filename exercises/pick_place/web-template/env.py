@@ -25,7 +25,7 @@ class Object:
         self.color = color
 
 class ENV():
-    def __init__(self, object_list):
+    def __init__(self):
         rospy.wait_for_service("gazebo/spawn_sdf_model")
         self.spawn_model_srv = rospy.ServiceProxy("gazebo/spawn_sdf_model", SpawnModel)
 
@@ -38,7 +38,66 @@ class ENV():
         self.scene = PlanningSceneInterface()
         self.robot = RobotCommander()
 
-        self.object_list = object_list
+        self.object_list = {}
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        filename = os.path.join(__location__, 'models_info.yaml')
+        with open(filename) as file:
+            objects_info = yaml.load(file)
+            robot_x = objects_info["robot"]["pose"]["x"]
+            robot_y = objects_info["robot"]["pose"]["y"]
+            robot_z = objects_info["robot"]["pose"]["z"]
+            robot_roll = objects_info["robot"]["pose"]["roll"]
+            robot_pitch = objects_info["robot"]["pose"]["pitch"]
+            robot_yaw = objects_info["robot"]["pose"]["yaw"]
+
+            rospy.loginfo("Spawning Objects in Gazebo and planning scene")
+            objects = objects_info["objects"]
+            objects_name = objects.keys()
+            for object_name in objects_name:
+                name = object_name
+                shape = objects[name]["shape"]
+                color = objects[name]["color"]
+
+                x = objects[name]["pose"]["x"]
+                y = objects[name]["pose"]["y"]
+                z = objects[name]["pose"]["z"]
+                roll = objects[name]["pose"]["roll"]
+                pitch = objects[name]["pose"]["pitch"]
+                yaw = objects[name]["pose"]["yaw"]
+                object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
+
+                p = PoseStamped()
+                p.header.frame_id = self.robot.get_planning_frame()
+                p.header.stamp = rospy.Time.now()
+
+                p.pose.position.x = x - robot_x
+                p.pose.position.y = y - robot_y
+                p.pose.position.z = z - robot_z
+
+                q = quaternion_from_euler(roll,pitch,yaw)
+                p.pose.orientation = Quaternion(*q)
+
+                if shape == "box":
+                    x = objects[name]["size"]["x"]
+                    y = objects[name]["size"]["y"]
+                    z = objects[name]["size"]["z"]
+                    p.pose.position.z += z/2
+
+                    height = z
+                    width = y
+                    length = x
+                    self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
+
+                elif shape == "cylinder":
+                    height = objects[name]["size"]["height"]
+                    radius = objects[name]["size"]["radius"]
+                    p.pose.position.z += height/2
+                    self.object_list[name] = Object(p.pose, object_pose, height, radius*2, radius*2, shape, color)
+
+                elif shape == "sphere":
+                    radius = objects[name]["size"]
+                    p.pose.position.z += radius
+                    self.object_list[name] = Object(p.pose, object_pose, radius*2, radius*2, radius*2, shape, color)
         self.play_event = Event()
 
     # Explicit initialization functions
@@ -53,6 +112,7 @@ class ENV():
         self.move_joint_hand(0)
         self.play_event.clear()
         self.thread = StoppableThread(target = self.respawn_all_objects, args=[])
+        self.thread.start()
 
     def move_joint_arm(self,joint_0,joint_1,joint_2,joint_3,joint_4,joint_5):
         joint_goal = self.arm.get_current_joint_values()
@@ -113,6 +173,7 @@ class ENV():
         self.scene.remove_world_object(object_name)
 
     def respawn_all_objects(self):
+        print(self.object_list)
         objects_name = self.object_list.keys()
         for object_name in objects_name:
             this_object = self.object_list[object_name]
