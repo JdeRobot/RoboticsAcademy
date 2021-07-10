@@ -256,38 +256,37 @@ class Template:
     # Function to calculate score for evaluation
     def calc_score(self):
         while True:
+            # get position of cat drone
             x1, y1, z1 = self.hal.get_position()
+            # get position of mouse drone
             x2, y2, z2 = self.mouse.get_position()
-            
+
             # calculate distance between cat and mouse drones
             self.dist = np.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
+            # rounding upto 2 decimal
+            self.dist = int(self.dist*100)/100
 
-            if z2 > z1:
-                self.dist = -round(self.dist/2)
-            else:
-                self.dist = round(self.dist/2)
-            
-            # calculate score
-            if self.dist < 0.1:
-                # too close
-                _score = 0.0
-            elif self.dist >= 0.1 and self.dist < 0.25:
-                # good
-                _score = 0.5 
-            elif self.dist >= 0.25 and self.dist < 1:
-                # medium 1
-                _score = 0.5/2
-            elif self.dist >= 1 and self.dist < 2:
-                # medium 2
-                _score = 0.5/4
-            elif self.dist >= 2 and self.dist < 3:
-                # medium 3
-                _score = 0.5/8
-            else:
-                # too far
-                _score = 0.0
-            
-            self.score = round(self.score + _score, 2)
+            # calculate score only when both the drones are in air
+            if z1 > 1.0 and z2 > 1.0:
+                # calculate score
+                if self.dist < 2.0:
+                    self.score = self.score + 0.5
+                elif self.dist >= 2.0 and self.dist < 3.0:
+                    self.score = self.score + 0.25
+                elif self.dist >= 3.0 and self.dist < 4.0:
+                    self.score = self.score + 0.12
+                else:
+                    self.score = self.score + 0.01
+
+                # rounding upto 2 decimal
+                self.score = int(self.score*100)/100
+
+            # plot above x-axis by default
+            # if height of cat < height of mouse, plot below x-axis and
+            # ignore if the difference is less than 0.5
+            if z1 < z2 and not np.abs(z2-z1) < 0.5:
+                self.dist = -self.dist
+
             time.sleep(1)
 
     # Function to maintain thread execution
