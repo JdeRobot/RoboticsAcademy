@@ -1,0 +1,806 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Car Junction - Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Car Junction">
+<meta property="og:url" content="http://localhost:4000/exercises/AutonomousCars/car_junction/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/AutonomousCars/car_junction/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Car Junction">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Car Junction
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC Visual Follow Line</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#versions-to-run-the-exercise">Versions to run the exercise</a></li>
+  <li><a href="#goal">Goal</a></li>
+  <li><a href="#instructions-for-web-templates">Instructions for Web Templates</a>
+    <ul>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#enable-gpu-acceleration">Enable GPU Acceleration</a></li>
+      <li><a href="#how-to-perform-the-exercise">How to perform the exercise?</a></li>
+      <li><a href="#using-the-interface">Using the Interface</a></li>
+      <li><a href="#example-video-with-web-template">Example video with web template</a></li>
+    </ul>
+  </li>
+  <li><a href="#instructions-for-rosnode-templates">Instructions for ROSNode Templates</a>
+    <ul>
+      <li><a href="#installation-1">Installation</a></li>
+      <li><a href="#how-to-perform-the-exercise-1">How to perform the exercise?</a></li>
+      <li><a href="#how-to-run-your-solution">How to run your solution?</a></li>
+      <li><a href="#example-video-with-rosnode-templates">Example video with ROSNode Templates</a></li>
+    </ul>
+  </li>
+  <li><a href="#theory">Theory</a>
+    <ul>
+      <li><a href="#image-segmentation">Image Segmentation</a></li>
+      <li><a href="#motion-detection">Motion Detection</a></li>
+      <li><a href="#control">Control</a></li>
+    </ul>
+  </li>
+  <li><a href="#hints">Hints</a>
+    <ul>
+      <li><a href="#following-the-road">Following the Road</a></li>
+      <li><a href="#stop-sign">Stop Sign</a></li>
+      <li><a href="#turning">Turning</a></li>
+      <li><a href="#illustrations">Illustrations</a></li>
+    </ul>
+  </li>
+  <li><a href="#contributors">Contributors</a></li>
+  <li><a href="#references">References</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="versions-to-run-the-exercise">Versions to run the exercise</h2>
+
+<p>Currently, there are 2 versions for running this exercise:</p>
+
+<ul>
+  <li>ROSNode Templates</li>
+  <li>Web Templates (Current Release)</li>
+</ul>
+
+<p>The instructions for both of them are provided as follows.</p>
+
+<h2 id="goal">Goal</h2>
+
+<p>The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must Stop at the T joint, where there is a stop sign, wait until there are no cars and pass once the road is clear.</p>
+
+<figure class="half ">
+  
+    
+      <a href="/assets/images/exercises/car_junction/car_junction.png" title="Car Junction">
+        <img src="/assets/images/exercises/car_junction/car_junction.png" alt="Car Junction" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/car_junction/car_junction_2.png" title="Car Junction">
+        <img src="/assets/images/exercises/car_junction/car_junction_2.png" alt="Car Junction" />
+      </a>
+    
+  
+  
+    <figcaption>Gallery
+</figcaption>
+  
+</figure>
+
+<h2 id="instructions-for-web-templates">Instructions for Web Templates</h2>
+<p>This is the preferred way for running the exercise.</p>
+
+<h3 id="installation">Installation</h3>
+<ul>
+  <li>
+    <p>Clone the Robotics Academy repository on your local machine</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Download <a href="https://docs.docker.com/get-docker/">Docker</a>. Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.</p>
+  </li>
+  <li>
+    <p>Pull the current distribution of Robotics Academy Docker Image</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull jderobot/robotics-academy:3.1.3
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.</p>
+  </li>
+</ul>
+
+<h3 id="enable-gpu-acceleration">Enable GPU Acceleration</h3>
+<ul>
+  <li>For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  <a href="https://virtualgl.org/">VirtualGL</a> and executing the following docker run command:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">--device</span> /dev/dri <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>    </div>
+  </li>
+  <li>For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given <a href="https://www.docker.com/blog/wsl-2-gpu-support-is-here/">here</a></li>
+</ul>
+
+<h3 id="how-to-perform-the-exercise">How to perform the exercise?</h3>
+<ul>
+  <li>
+    <p>Start a new docker container of the image and keep it running in the background (<a href="#enable-gpu-acceleration">hardware accelerated version</a>)</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.</p>
+  </li>
+  <li>
+    <p>Click the connect button and wait for some time until an alert appears with the message <code class="language-plaintext highlighter-rouge">Connection Established</code> and button displays connected.</p>
+  </li>
+  <li>
+    <p>The exercise can be used after the alert.</p>
+  </li>
+</ul>
+
+<p><strong>Where to insert the code?</strong></p>
+
+<p>In the launched webpage, type your code in the text editor,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">GUI</span> <span class="kn">import</span> <span class="n">GUI</span>
+<span class="kn">from</span> <span class="nn">HAL</span> <span class="kn">import</span> <span class="n">HAL</span>
+<span class="c1"># Enter sequential code!
+</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># Enter iterative code!
+</span></code></pre></div></div>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+
+<ul>
+  <li>
+    <p><strong>Control Buttons</strong>: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).</p>
+  </li>
+  <li>
+    <p><strong>Frequency Slider</strong>: This slider adjusts the running frequency of the iterative part of the code (under the <code class="language-plaintext highlighter-rouge">while True:</code>). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.</p>
+  </li>
+  <li>
+    <p><strong>Debug Level</strong>: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.</p>
+  </li>
+  <li>
+    <p><strong>Psuedo Console</strong>: This shows the error messages related to the student’s code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor.</p>
+  </li>
+</ul>
+
+<p><strong>Application Programming Interface</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">from HAL import HAL</code> - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).</li>
+  <li><code class="language-plaintext highlighter-rouge">from GUI import GUI</code> - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getImage('left')</code> - to get the left image</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getImage('right')</code> - to get the right image</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getImage('center')</code> - to get the central image</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getV()</code> - to get the linear velocity</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getW()</code> - to get the angular velocity</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.setV()</code> - to set the linear velocity</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.setW()</code> - to set the angular velocity</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getPose3D()</code> - to obtain the position of the robot</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getYaw()</code> - to obtain the orientation of the robot</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.setPose3D()</code> - to set the position of the robot</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getTemplate()</code> - to get the stop’s image template</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.showImages(imageLeft, imageCentral, imageRight)</code> - allows you to view a debug images or with relevant information</li>
+</ul>
+
+<h3 id="example-video-with-web-template">Example video with web template</h3>
+
+<h2 id="instructions-for-rosnode-templates">Instructions for ROSNode Templates</h2>
+
+<h3 id="installation-1">Installation</h3>
+<p>Install the <a href="https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure">General Infrastructure</a> of the JdeRobot Robotics Academy.</p>
+
+<h3 id="how-to-perform-the-exercise-1">How to perform the exercise?</h3>
+<p>To carry out the exercise, you have to edit the file <code class="language-plaintext highlighter-rouge">MyAlgorithm.py</code> and insert in it your code, which gives intelligence to the autonomous car.</p>
+
+<p><strong>Where to insert the code?</strong>
+In the <code class="language-plaintext highlighter-rouge">MyAlgorithm.py</code> file,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+    <span class="c1"># Add your code here
+</span>    <span class="k">print</span> <span class="s">"Running"</span>
+    <span class="c1"># Getting the images
+</span>    <span class="n">input_image</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">cameraC</span><span class="p">.</span><span class="n">getImage</span><span class="p">().</span><span class="n">data</span>      
+</code></pre></div></div>
+
+<p><strong>Application Programming Interface</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">self.cameraC.getImage().data</code> - to get image from center camera</li>
+  <li><code class="language-plaintext highlighter-rouge">self.cameraL.getImage().data</code> - to get image from left camera</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">self.cameraR.getImage().data</code> - to get image from right camera</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">self.pose3d.getPose3d().x</code> - to obtain the position of the robot</li>
+  <li><code class="language-plaintext highlighter-rouge">self.pose3d.getPose3d().y</code> - to obtain the position of the robot</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">self.pose3d.getPose3d().yaw</code> - to obtain the orientation of the robot</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">self.motors.sendW()</code> - to set the angular velocity</li>
+  <li><code class="language-plaintext highlighter-rouge">self.motors.sendV()</code> - to set the linear velocity</li>
+</ul>
+
+<h3 id="how-to-run-your-solution">How to run your solution?</h3>
+
+<p>Navigate to the car_junction directory</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>exercises/car_junction
+</code></pre></div></div>
+
+<p>Launch Gazebo with the car_junction world through the command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>roslaunch ./launch/car_junction.launch
+</code></pre></div></div>
+
+<p>Then you have to execute the academic application, which will incorporate your code:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python2 ./stop.py stop_conf.yml
+</code></pre></div></div>
+
+<h3 id="example-video-with-rosnode-templates">Example video with ROSNode Templates</h3>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/4WIi2cpaLDA" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="theory">Theory</h2>
+<p>This exercise mostly revolves around simple Computer Vision and Control mechanisms. Let’s start with the Computer Vision tasks:</p>
+
+<h3 id="image-segmentation">Image Segmentation</h3>
+<p>Image Segmentation is the process of partitioning a digital image into multiple segments. Segmentation is carried out to simplify the representation of information we receive from an input image. There are many ways to carry out image segmentation, but it all depends on the task at hand.</p>
+
+<p>For extremely cluttered images, segmentation is carried out by the use of <strong>Convolutional Neural Networks</strong>. Some of the most useful Neural Networks developed for this task are: UNet, FPN and R-CNNs.</p>
+
+<figure class="third ">
+  
+    
+      <a href="/assets/images/exercises/car_junction/unet.jpg" title="U Net">
+        <img src="/assets/images/exercises/car_junction/unet.jpg" alt="U Net" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/car_junction/fpn.png" title="Feature Pyramid Network">
+        <img src="/assets/images/exercises/car_junction/fpn.png" alt="Feature Pyramid Network" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/car_junction/rcnn.png" title="Region CNN">
+        <img src="/assets/images/exercises/car_junction/rcnn.png" alt="Region CNN" />
+      </a>
+    
+  
+  
+    <figcaption>Neural Networks
+</figcaption>
+  
+</figure>
+
+<p>Some simpler methods involve the use of Clustering Algorithms like <strong>K-Means Clustering</strong>. The simplest of all methods is the use of <strong>Color Filters</strong>.</p>
+
+<p><strong>Color Filters</strong> involve the use of color spaces and their intensity values. By thresholding the input image by appropriate intensity values, we segment a specific <em>color part</em> of an image. For example, the Stop Sign in the exercise is a very specific red color which can be easily segmented. For more information about this topic, the Robotics Academy already has an exercise based on <a href="http://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/color_filter">Color Filter</a>.</p>
+
+<h3 id="motion-detection">Motion Detection</h3>
+<p>Motion detection is the process of detecting a change in the position of an object relative to its surroundings or a change in the surroundings relative to an object. Difference of Frames is the simplest of all motion detection algorithms. By taking the difference between the frame of reference and the current frame, motion can be very easily detected.</p>
+
+<h3 id="control">Control</h3>
+<p>We require the use of control mechanisms in order to make the Car follow the road and take turns.</p>
+
+<p><strong>PID</strong> is an excellent control algorithm which works by calculating the error and making adjustments to keep the error as minimum as possible. A very simple example would be, in case of a quadcopter that is required to maintain a particular height: If the height of the quadcopter is extremely far away from the required height(very high or very low), the quadcopter has to make large adjustments in it’s rotor speed. If the height is near the required value, the quadcopter has to make small adjustments. <a href="https://youtu.be/LSNVHkeDx-g?t=479">This video</a> illustrates the concept very well.</p>
+
+<p><a href="http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/">Follow Line</a> is an exercise based completely on the concept of PID.</p>
+
+<p>The physical equation concerning rotational kinematics is v = ωr . This equation governs the relation between the radius of curvature, the magnitude of velocity and the magnitude of angular velocity. In order to increase the radius of curvature, we need to increase the velocity and decrease the magnitude of angular velocity. In order to decrease the radius of curvature, we need to decrease the velocity and increase the magnitude of angular velocity. This is the fundamental equation that allows our autonomous car to take effective turns.</p>
+
+<h2 id="hints">Hints</h2>
+<p>Simple hints provided to help you solve the car_junction exercise.</p>
+
+<h3 id="following-the-road">Following the Road</h3>
+<p>Color Segmentation is the way to go to detect roads. Thresholding and then applying morphological operations can easily help us detect the roads in the image. The centroid of the generated binary blob can be easily followed by the car. However, there are tiny problems with this approach that can be addressed by using tricks(which the reader is expected to figure out on his/her own).</p>
+
+<p>A really interesting implementation would be, by means of lane detection. Here is a really good implementation. But again, there are some problems in this approach as well. (Do make a video and share with us in case someone solves using this)</p>
+
+<h3 id="stop-sign">Stop Sign</h3>
+<p>The stop sign is of a very particular red color, which clearly stands out in the whole gazebo simulation. So, color filters are the best way to approach. Check out this video for more details.</p>
+
+<h3 id="turning">Turning</h3>
+<p>Turning is a challenging part of this exercise. The parameters have to be tuned in a specific way to carry out the turn, and then the control should be passed to the follow road method in order to continue with the task. The physical equation given above can simplify the process of setting the parameters.</p>
+
+<h3 id="illustrations">Illustrations</h3>
+
+<figure class="third ">
+  
+    
+      <a href="/assets/images/exercises/car_junction/segment.png" title="Road Segmentation">
+        <img src="/assets/images/exercises/car_junction/segment.png" alt="Road Segmentation" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/car_junction/stop.png" title="Stop Sign">
+        <img src="/assets/images/exercises/car_junction/stop.png" alt="Stop Sign" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/car_junction/wrong_turn.gif" title="Wrong Lane">
+        <img src="/assets/images/exercises/car_junction/wrong_turn.gif" alt="Wrong Lane" />
+      </a>
+    
+  
+  
+    <figcaption>Illustrations
+</figcaption>
+  
+</figure>
+
+<h2 id="contributors">Contributors</h2>
+
+<ul>
+  <li>Contributors: <a href="https://github.com/ilope236">Irene Lope</a>, <a href="https://github.com/almartinflorido">Alberto Martín</a>, <a href="https://github.com/chanfr">Francisco Rivas</a>, <a href="https://github.com/fqez">Francisco Pérez</a>, <a href="https://github.com/jmplaza">Jose María Cañas</a>, <a href="https://github.com/igarag">Nacho Arranz</a>.</li>
+  <li>Maintained by <a href="https://github.com/jessiffmm">Jessica Fernández</a>, <a href="https://github.com/vmartinezf">Vanessa Fernández</a>.</li>
+</ul>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/">1</a>
+<a href="https://en.wikipedia.org/wiki/PID_controller">2</a>
+<a href="https://www.elprocus.com/the-working-of-a-pid-controller/">3</a>
+<a href="https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm">4</a>
+<a href="https://instrumentationtools.com/open-loop-and-closed-animation-loop/">5</a>
+<a href="https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/">6</a>
+<a href="http://homepages.math.uic.edu/~kauffman/DCalc.pdf">7</a></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

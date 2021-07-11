@@ -1,0 +1,478 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Robotics-Academy">
+<meta property="og:url" content="http://localhost:4000/">
+
+
+  <meta property="og:description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/cover/test_header_shear_3.png">
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--splash">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style="background-color: #FFFFFF; background-image: url('/assets/images/cover/test_header_shear_3.png');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Robotics-Academy
+
+        
+      </h1>
+      
+        <p class="page__lead">A practical and fun way of learning Robotics and Computer Vision
+</p>
+      
+      
+      
+      
+    </div>
+  
+  
+</div>
+
+
+
+<div id="main" role="main">
+  <article class="splash" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <meta itemprop="description" content="A practical and fun way of learning Robotics and Computer Vision">
+    
+    
+
+    <section class="page__content" itemprop="text">
+      <p>Robotics-Academy is an <strong>open source</strong> collection of exercises and challenges to learn robotics in a practical way.
+There are exercises about drone programming, about computer vision, about mobile robots, about autonomous cars, etc. 
+It is mainly based on <a href="http://gazebosim.org">Gazebo simulator</a> and <a href="https://www.ros.org">ROS</a>. The students program their solutions in <strong>Python</strong> language.</p>
+
+<p>Each exercise is composed of (a) Gazebo configuration files, (b) a ROS node that is the template to host student’s code and (c) theory contents. The students insert their code in the template file and use the provided simple API to access to <em>sensor readings</em> and <em>actuator commands</em> (HAL API) and the provided simple API for Graphical User Interface and debugging (GUI API).</p>
+
+<p>For execution the student launches Gazebo with certain configuration file (specifying the robot and the simulated scenario for that exercise) and launches the ROS node hosting her code.</p>
+
+<div class="feature__wrapper">
+
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/cover_column_1.png" alt="Exercises" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Exercises</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Learn robot programming solving the Robotics-Academy challenges</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/" class="btn btn--primary">Go!</a>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/cover_column_2.png" alt="fully responsive" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Installation</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Instructions for installing Robotics-Academy dependencies (ROS, Gazebo, assets…)</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/installation" class="btn btn--primary">Go!</a>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/forum1.png" alt="100% free" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Forum</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Receive support, show your results and help others at the community forum</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" class="btn btn--primary">Go!</a>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/cover/cover_column_2.png" alt="fully responsive" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Do you want to contribute?</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Info for Robotics-Academy <em>developers</em>: create a new exercise, improve documentation, fix bugs…. Contributors are welcome!</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/contribute" class="btn btn--primary">Go!</a>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+<!-- Courtesy of embedresponsively.com //-->
+<div class="responsive-video-container">
+
+  <iframe src="https://www.youtube-nocookie.com/embed/ID7qaEcIu4k" frameborder="0" allowfullscreen=""></iframe>
+
+</div>
+
+<h2 id="releases">Releases</h2>
+
+<ul>
+  <li>2.3
+    <ul>
+      <li>Web pages for exercise templates</li>
+      <li>Browser for editing user code and execution monitoring</li>
+      <li>Dependencies are pre-installed in <a href="https://hub.docker.com/r/jderobot/robotics-academy/tags">RADI Docker Image</a></li>
+      <li>based in ROS-Melodic and Gazebo9</li>
+      <li>works on Linux, Windows and MacOS</li>
+    </ul>
+  </li>
+  <li>2.1
+    <ul>
+      <li>ROS nodes for exercise templates</li>
+      <li>File editing for user code</li>
+      <li>Dependencies should be installed locally, debian and ROS packages</li>
+      <li>based in ROS-Melodic and Gazebo9</li>
+    </ul>
+  </li>
+  <li>2.0</li>
+</ul>
+
+<h2 id="scientific-papers">Scientific papers</h2>
+
+<ol>
+  <li><em>Open-Source Drone Programming Course for Distance Engineering Education</em>. José M. Cañas, Diego Martín-Martín, Pedro Arias, Julio Vega, David Roldán-Álvarez, Lía García-Pérez, Jesús Fernández-Conde. Electronics 2020, 9(12), 2163, MDPI 2020 (Special Issue Open Source Software in Learning Environments). <a href="https://doi.org/10.3390/electronics9122163">DOI: https://doi.org/10.3390/electronics9122163</a></li>
+  <li><em>A ROS‐Based Open Tool for Intelligent Robotics Education</em>. José M. Cañas, Eduardo Perdices, Lía García-Pérez, Jesús Fernández-Conde. Applied Sciences 10(21), 7419, MDPI 2020 (Special Issue Advances in Artificial Intelligence Learning Technologies). <a href="https://doi.org/10.3390/app10217419">DOI: https://doi.org/10.3390/app10217419</a></li>
+  <li><em>Entorno docente universitario para la programación de robots</em>. José M.Cañas, Alberto Martín, Eduardo Perdices, Francisco Rivas, Roberto Calvo. Revista Iberoamericana de Automática e Informática Industrial, 15, 404-415, 2018 <a href="https://doi.org/10.4995/riai.2018.8962">DOI: https://doi.org/10.4995/riai.2018.8962</a></li>
+</ol>
+
+<h2 id="sponsors">Sponsors</h2>
+
+<figure class="third">
+    <a href="https://www.urjc.es/" target="_blank"><img src="http://localhost:4000/assets/images/cover/logoURJC.jpg" style="width:400px;" /></a>
+    <a href="https://github.com/RoboticsLabURJC" target="_blank"><img src="http://localhost:4000/assets/images/cover/peloto.png" style="width:400px;" /></a>
+    <a href="https://summerofcode.withgoogle.com" target="_blank"><img src="http://localhost:4000/assets/images/cover/gsoc.png" style="width:200px;" /></a>
+</figure>
+
+    </section>
+  </article>
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

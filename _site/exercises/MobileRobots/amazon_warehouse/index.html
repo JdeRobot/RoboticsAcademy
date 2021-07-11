@@ -1,0 +1,648 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Amazon Warehouse - Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Amazon Warehouse">
+<meta property="og:url" content="http://localhost:4000/exercises/MobileRobots/amazon_warehouse/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/MobileRobots/amazon_warehouse/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Amazon Warehouse">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Amazon Warehouse
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC Amazon Warehouse</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#goal">Goal</a></li>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#how-to-run-your-solution">How to run your solution?</a></li>
+  <li><a href="#how-to-do-the-practice">How to do the practice</a>
+    <ul>
+      <li><a href="#where-to-insert-the-code">Where to insert the code</a></li>
+      <li><a href="#api">API</a></li>
+    </ul>
+  </li>
+  <li><a href="#theory">Theory</a>
+    <ul>
+      <li><a href="#navigation-stack">Navigation Stack</a></li>
+      <li><a href="#ros-actions">ROS Actions</a></li>
+    </ul>
+  </li>
+  <li><a href="#hints">Hints</a>
+    <ul>
+      <li><a href="#locations">Locations</a></li>
+    </ul>
+  </li>
+  <li><a href="#demonstrative-video-of-completed-solution">Demonstrative video of completed solution</a></li>
+  <li><a href="#references">References</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="goal">Goal</h2>
+
+<p>The objective of this practice is to implement the autonomous robot navigation and pick-and-place logic in warehouse.</p>
+
+<figure class="third ">
+  
+    
+      <a href="/assets/images/exercises/amazon_warehouse/amazon_warehouse.png" title="Warehouse">
+        <img src="/assets/images/exercises/amazon_warehouse/amazon_warehouse.png" alt="Warehouse" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png" title="MobileRobot">
+        <img src="/assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png" alt="MobileRobot" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/amazon_warehouse/amazon_warehouse_2.png" title="Amazon">
+        <img src="/assets/images/exercises/amazon_warehouse/amazon_warehouse_2.png" alt="Amazon" />
+      </a>
+    
+  
+  
+    <figcaption>Gallery
+</figcaption>
+  
+</figure>
+
+<p>The students program an Amazon robot to navigate to the seleceted pallet, pick it, and deliver to the required zone. After completion of the task, go the charging area, and wait for the next tasks.</p>
+
+<h2 id="installation">Installation</h2>
+<p>Install the <a href="https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure">General Infrastructure</a> of the JdeRobot Robotics Academy.</p>
+
+<p>Add following packages if you don’t have them already:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>wget https://raw.githubusercontent.com/tu-darmstadt-ros-pkg/hector_localization/catkin/hector_pose_estimation/hector_pose_estimation_nodelets.xml <span class="nt">-P</span> /opt/ros/kinetic/share/hector_pose_estimation/
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>ros-melodic-kobuki-msgs
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>ros-melodic-yocs-cmd-vel-mux
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>ros-melodic-navigation
+</code></pre></div></div>
+
+<h2 id="how-to-run-your-solution">How to run your solution?</h2>
+
+<p>Run Gazebo simulator:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>launch
+<span class="nv">ROS_HOME</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> roslaunch amazonrobot_1_warehouse.launch 
+</code></pre></div></div>
+
+<p>Navigate to exercise folder and run the practice and the user interface:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python2 amazonWarehouse.py amazonMap.conf amazonConf.yml
+</code></pre></div></div>
+
+<p>To simplify the closure of the environment, just close the Amazon window (s). <em><code class="language-plaintext highlighter-rouge">Ctrl + C</code> will give problems.</em></p>
+
+<h2 id="how-to-do-the-practice">How to do the practice</h2>
+<p>To carry out the practice, you must edit the <code class="language-plaintext highlighter-rouge">MyAlgorithm.py</code> file and insert the control logic into it.</p>
+
+<h3 id="where-to-insert-the-code">Where to insert the code</h3>
+<p>MyAlgorithm.py</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Add your code here
+</span>        <span class="k">print</span><span class="p">(</span><span class="s">"Running"</span><span class="p">)</span>
+
+        <span class="c1"># LIFT PALLET
+</span>        <span class="bp">self</span><span class="p">.</span><span class="n">liftDropExecute</span><span class="p">()</span>
+
+        <span class="c1"># TO DO
+</span></code></pre></div></div>
+
+<h3 id="api">API</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">self.client.sendGoalToClient(x, y)</code> - to send goal to the move_base client</li>
+  <li><code class="language-plaintext highlighter-rouge">self.client.getResultFromClient()</code> - to send get result from client. None if not reached the goal</li>
+  <li><code class="language-plaintext highlighter-rouge">self.grid.getDestiny()</code> - to get destination of the robot after double click on GUI</li>
+  <li><code class="language-plaintext highlighter-rouge">self.path.getPath()</code> - to obtain the path to the current goal</li>
+  <li><code class="language-plaintext highlighter-rouge">self.liftDropExecute()</code> - to lift or drop pallet</li>
+  <li><code class="language-plaintext highlighter-rouge">clearCostmaps()</code> - to clear costmaps after moving with pallet</li>
+</ul>
+
+<h2 id="theory">Theory</h2>
+
+<p>ROS Navigation Stack forms the backbone of this exercise. The navigation stack is quite simple on a conceptual level. It takes information from odometry and sensor streams and outputs velocity commands to robot controller. The most difficult part of ROS Navigation Stack is configuring it to work with the robot, which has been taken care of, leaving the student with only using the Simple Action Client. Let’s cover all these concepts one by one:</p>
+
+<h3 id="navigation-stack">Navigation Stack</h3>
+
+<p>At its core, the navigation stack system allows a ROS enabled robot to move about the world to a specified goal position efficiently, without hitting the obstacles on its way. It integrates information from the map, localization system, sensors and odometry to plan a good path from the current position to the goal position, and then follows it to the best of robot’s ability.</p>
+
+<p>The basic steps in its working are:</p>
+
+<ol>
+  <li>
+    <p>A navigation goal is sent to the navigation stack. This is done using an action call with a goal of type <em>MoveBaseGoal</em>, which specifies a goal pose (position and orientation) in some coordinate frame (commonly called the <em>map</em> frame).</p>
+  </li>
+  <li>
+    <p>The nav stack uses a path planning algorithm in the <em>global planner</em> to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another <a href="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/">exercise</a>. More about it over there!</p>
+  </li>
+  <li>
+    <p>This path is passed to the <em>local planner</em>, which tries to drive the robot along the path. The local planner uses information from the sensors in order to avoid obstacles that appear in front of the robot but that are not in the map, such as people. <strong>If the local planner gets stuck and cannot make progress, it can ask the global planner to make a new plan and then attempt to follow that.</strong> Local Path Planning is covered in another <a href="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance">exercise</a>. More about it over there!</p>
+  </li>
+  <li>
+    <p>When the robot gets close to the goal pose, the action terminates and we’re done.</p>
+  </li>
+</ol>
+
+<h3 id="ros-actions">ROS Actions</h3>
+
+<p>ROS system consists of a number of independent nodes that comprise a graph. In order for something useful to take place, the nodes have to communicate with each other. This is accomplished by use of <strong>topics</strong>. A topic is a name for a stream of messages with a defined type. Topics implement a <em>publish/subscribe</em> communication mechanism to exchange data in the distributed system. Before nodes start to transmit data over topics, they must first announce, or <em>advertise</em>, both the topic name and the types of messages that are going to be sent. Then they can start to send, or <em>publish</em> the actual data on the topic. Nodes that want to receive messages on a topic can <em>subscribe</em> to the topic.</p>
+
+<p>ROS Services provide a way to execute synchronous remote procedure calls; calling a function in one node that executes in another node. The server(which provides the service) specifies a callback to deal with the service request, and advertises the service. The client(which calls the service) then accesses the service through a local proxy.</p>
+
+<p>ROS Actions provide a way to execute asynchronous remote procedure calls. Similar to the request and response of a service, an action uses a <em>goal</em> to initiate a behaviour and sends the <em>result</em> when the behaviour is complete. But the action further uses <em>feedback</em> to provide updates on the behaviour’s progress toward the goal and also allows for goals to be cancelled.</p>
+
+<p>Hence, services are handy for simple get/set instructions like querying status and managing configuration, they don’t work well when we need to initiate a long running task like navigation. This is exactly where actions can be used.</p>
+
+<figure class="half ">
+  
+    
+      <a href="/assets/images/exercises/amazon_warehouse/navstack.png" title="Navigation Stack">
+        <img src="/assets/images/exercises/amazon_warehouse/navstack.png" alt="Navigation Stack" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/amazon_warehouse/action.png" title="Action Server and Client">
+        <img src="/assets/images/exercises/amazon_warehouse/action.png" alt="Action Server and Client" />
+      </a>
+    
+  
+  
+    <figcaption>Theory
+</figcaption>
+  
+</figure>
+
+<h2 id="hints">Hints</h2>
+<p>Simple hints provided to help you solve the amazon_warehosue exercise.</p>
+
+<p>The main problem in this exercise is to correctly identify the goal and send it to the action server.</p>
+
+<h3 id="locations">Locations</h3>
+
+<ul>
+  <li>The locations of the pallets to be stored are already present in the <code class="language-plaintext highlighter-rouge">pallets_coords.yaml</code> file</li>
+  <li>The boundaries for <em>Pick-up room</em> are: <code class="language-plaintext highlighter-rouge">(x &gt; 310) and (y &gt; 125) and (y &lt; 185)</code></li>
+  <li>The boundaries for <em>Charging Point</em> are : <code class="language-plaintext highlighter-rouge">(y &gt; 255) and (x &lt; 315) and (x &gt; 85)</code></li>
+</ul>
+
+<h2 id="demonstrative-video-of-completed-solution">Demonstrative video of completed solution</h2>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/T1-6Y4ulEnQ" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="references">References</h2>
+
+<p>Programming Robots with ROS, by Morgan Quigley, Brian Gerkey &amp; William D.Smart</p>
+
+<p><a href="http://wiki.ros.org/navigation">The ROS Wiki</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

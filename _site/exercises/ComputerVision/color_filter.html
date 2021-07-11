@@ -1,0 +1,768 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Color Filter - Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Color Filter">
+<meta property="og:url" content="http://localhost:4000/exercises/ComputerVision/color_filter">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/ComputerVision/color_filter">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Color Filter">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Color Filter
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC Color Filter</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#versions-to-run-the-exercise">Versions to run the exercise</a></li>
+  <li><a href="#goal">Goal</a></li>
+  <li><a href="#instructions-for-web-templates">Instructions for Web Templates</a>
+    <ul>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#how-to-perform-the-exercise">How to perform the exercise?</a></li>
+      <li><a href="#using-the-interface">Using the Interface</a></li>
+      <li><a href="#demonstrative-video-with-web-template">Demonstrative Video with Web Template</a></li>
+    </ul>
+  </li>
+  <li><a href="#instructions-for-rosnode-templates">Instructions for ROSNode Templates</a>
+    <ul>
+      <li><a href="#installation-1">Installation</a></li>
+      <li><a href="#how-to-perform-the-exercise-1">How to perform the exercise?</a></li>
+      <li><a href="#how-to-run-your-solution">How to run your solution?</a></li>
+      <li><a href="#demonstrative-video-with-rosnode-templates">Demonstrative Video with ROSNode Templates</a></li>
+    </ul>
+  </li>
+  <li><a href="#theory">Theory</a>
+    <ul>
+      <li><a href="#color-space">Color Space</a></li>
+    </ul>
+  </li>
+  <li><a href="#hints">Hints</a></li>
+  <li><a href="#contributors">Contributors</a></li>
+  <li><a href="#references">References</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="versions-to-run-the-exercise">Versions to run the exercise</h2>
+
+<p>Currently, there are 2 versions for running this exercise:</p>
+
+<ul>
+  <li>ROSNode Templates</li>
+  <li>Web Templates (Current Release)</li>
+</ul>
+
+<p>The instructions for both of them are provided as follows.</p>
+
+<h2 id="goal">Goal</h2>
+
+<p>In this practice the intention is to develop a color filter that allow us to segment some object in the image. You will have to get in contact with RGB and HSV color spaces, and <em>OpenCV</em> (<em>Python</em>) library.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/color_filter/color_filter_teaser.png" title="Color Filter">
+        <img src="/assets/images/exercises/color_filter/color_filter_teaser.png" alt="Color Filter" />
+      </a>
+    
+  
+  
+    <figcaption>Tracking example
+</figcaption>
+  
+</figure>
+
+<h2 id="instructions-for-web-templates">Instructions for Web Templates</h2>
+<p>This is the preferred way for running the exercise.</p>
+
+<h3 id="installation">Installation</h3>
+<ul>
+  <li>Clone the Robotics Academy repository on your local machine</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Download <a href="https://docs.docker.com/get-docker/">Docker</a>. Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.</p>
+  </li>
+  <li>
+    <p>Pull the current distribution of Robotics Academy Docker Image</p>
+  </li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull jderobot/robotics-academy:3.1.3
+</code></pre></div></div>
+
+<h3 id="how-to-perform-the-exercise">How to perform the exercise?</h3>
+<ul>
+  <li>Start a new docker container of the image and keep it running in the background. It is necessary to map the port where the camera is located to the docker container.</li>
+  <li>For ubuntu: The port to map will be in /dev/videoX , you should check the number where your camera is connected. For exaple /dev/video0</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 <span class="nt">--device</span> /dev/video0:/dev/video0 jderobot/robotics-academy:3.1.3 ./start-3.1.sh 
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this <a href="https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468">documentation</a> for it.</p>
+  </li>
+  <li>
+    <p>On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.</p>
+  </li>
+  <li>
+    <p>Click the connect button and wait for some time until an alert appears with the message <code class="language-plaintext highlighter-rouge">Connection Established</code> and button displays connected.</p>
+  </li>
+  <li>
+    <p>The exercise can be used after the alert.</p>
+  </li>
+</ul>
+
+<p><strong>Where to insert the code?</strong></p>
+
+<p>In the launched webpage, type your code in the text editor,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">GUI</span> <span class="kn">import</span> <span class="n">GUI</span>
+<span class="kn">from</span> <span class="nn">HAL</span> <span class="kn">import</span> <span class="n">HAL</span>
+<span class="c1"># Enter sequential code!
+</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># Enter iterative code!
+</span></code></pre></div></div>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+
+<ul>
+  <li>
+    <p><strong>Control Buttons</strong>: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).</p>
+  </li>
+  <li>
+    <p><strong>Frequency Slider</strong>: This slider adjusts the running frequency of the iterative part of the code (under the <code class="language-plaintext highlighter-rouge">while True:</code>). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.</p>
+  </li>
+  <li>
+    <p><strong>Debug Level</strong>: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the image. A debug level greater than or equal to 2 enables all the GUI functions working properly.</p>
+  </li>
+  <li>
+    <p><strong>Psuedo Console</strong>: This shows the error messages related to the student’s code that is sent. In order to print certain debugging information on this console. The student is provided with <code class="language-plaintext highlighter-rouge">console.print()</code> similar to <code class="language-plaintext highlighter-rouge">print()</code> command in the Python Interpreter.</p>
+  </li>
+</ul>
+
+<p><strong>Application Programming Interface</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">from HAL import HAL</code> - to import the HAL library class. This class contains the functions that receives information from the webcam.</li>
+  <li><code class="language-plaintext highlighter-rouge">from GUI import GUI</code> - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getImage()</code> - to get the image</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.showImage()</code> - allows you to view a debug image or with relevant information</li>
+</ul>
+
+<h3 id="demonstrative-video-with-web-template">Demonstrative Video with Web Template</h3>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/Fv9s99IEIvc" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="instructions-for-rosnode-templates">Instructions for ROSNode Templates</h2>
+
+<h3 id="installation-1">Installation</h3>
+
+<p>Install the <a href="https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure">General Infrastructure</a> of the JdeRobot Robotics Academy.</p>
+
+<p>For the exercise, we will need a node to publish the video stream. The <em>video_stream_opencv</em> package contains this node.
+Add this packages if you don’t have it already:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ sudo apt install ros-melodic-video-stream-opencv
+</code></pre></div></div>
+
+<h3 id="how-to-perform-the-exercise-1">How to perform the exercise?</h3>
+
+<p>To carry out the practice, you have to edit the file <code class="language-plaintext highlighter-rouge">MyAlgorithms.py</code> and insert in it your code, which enables the detection of a specific color and displays it in the GUI using the APIs given below.</p>
+
+<p><strong>Where to insert the code?</strong></p>
+
+<p>In the <code class="language-plaintext highlighter-rouge">MyAlgorithm.py</code> file,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+   <span class="c1"># Add your code here
+</span>
+    <span class="n">input_image</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">camera</span><span class="p">.</span><span class="n">getImage</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">input_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">camera</span><span class="p">.</span><span class="n">setColorImage</span><span class="p">(</span><span class="n">input_image</span><span class="p">)</span>
+	  
+</code></pre></div></div>
+
+<p><strong>Application Programming Interface</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">camera.getImage()</code> - to get the image received from server</li>
+  <li><code class="language-plaintext highlighter-rouge">camera.setColorImage(input_image)</code> - to set color image</li>
+  <li><code class="language-plaintext highlighter-rouge">camera.getColorImage()</code> - to get the color image</li>
+  <li><code class="language-plaintext highlighter-rouge">camera.setThresholdImage(bk_image)</code> - to set Threshold image</li>
+  <li><code class="language-plaintext highlighter-rouge">camera.getDetectImage()</code> - to get the Thresold image</li>
+  <li><code class="language-plaintext highlighter-rouge">setDetectImage()</code> - to set the final detected(processed) image</li>
+  <li><code class="language-plaintext highlighter-rouge">getDetectImage()</code> - to get the detected image</li>
+</ul>
+
+<h3 id="how-to-run-your-solution">How to run your solution?</h3>
+
+<ul>
+  <li>Navigate to the color_filter directory</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>exercises/color_filter
+</code></pre></div></div>
+
+<p>This practice allows to obtain the video stream from 3 different sources:</p>
+<ul>
+  <li>From a local camera (Local)</li>
+  <li>A local file (Video)</li>
+  <li>Or through an ICE or ROS video driver (Stream)
+Depending on the way you want to obtain the video, you must specify the selected video
+source in the configuration file (color_filter_conf.yml), and the required parameters for that source. 
+Once done it, if you have selected either ‘Local’ or ‘Video’, follow the next step:</li>
+</ul>
+
+<p><strong>Set the video stream provider</strong></p>
+
+<p>Edit the video_stream_provider argument in the <code class="language-plaintext highlighter-rouge">color_filter.launch</code> file according to your choice of video stream.
+You can use any input that OpenCV on your system accepts, e.g.:</p>
+<ul>
+  <li>Video devices that appear in linux as /dev/videoX, e.g.: USB webcams appearing as /dev/video0</li>
+  <li>Video streamings, e.g.: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov</li>
+  <li>Video files, i.e., anything that you can play, e.g.: myvideo.avi</li>
+</ul>
+
+<p>For camera we can continue with the value of this argument set to “0”.</p>
+
+<p>We also provide you with an example video that you can start the exercise with. This is the <a href="http://wiki.jderobot.org/store/amartinflorido/uploads/curso/pelotas_roja_azul.avi">Link</a> to the video. Download it to your local system and accordingly update the value of video_stream_provider argument in the launch file to absolute path of the video fille. For example,in <code class="language-plaintext highlighter-rouge">color_filter.launch</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;arg name="video_stream_provider" value="/home/&lt;user&gt;/Downloads/pelotas_roja_azul.avi"/&gt;.
+</code></pre></div></div>
+
+<p>It is pre-set that the ROS server will replay the stream. If you want server to play the stream once, change the value of <em>loop_videofile</em> argument to “0”.</p>
+
+<p>Launch the ROS Server. Open the terminal with the directory set to <em>color_filter</em> in the exercises folder and run the command.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ roslaunch color_filter.launch
+</code></pre></div></div>
+
+<p>The above command opens the videostream and starts publishing it.
+Next, ensuring you have written a workable code in <code class="language-plaintext highlighter-rouge">MyAlogrithm.py</code> file, run the following command in a new terminal.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python2 ./color_filter.py color_filter_conf.yml
+</code></pre></div></div>
+
+<h3 id="demonstrative-video-with-rosnode-templates">Demonstrative Video with ROSNode Templates</h3>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/gzALLE2jlRI" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="theory">Theory</h2>
+<p>This exercise is focused on implementing color filter and tracking a color coded object of choice.</p>
+
+<h3 id="color-space">Color Space</h3>
+<p>Color spaces are a way to represent the color channels present in the image that gives the image that particular hue. There are several different color spaces and each has its own significance.
+Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc. In the figure below, a)RGB Color Space and b) HSV color space can be visualized.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/color_filter/colorspace.png" title="color space">
+        <img src="/assets/images/exercises/color_filter/colorspace.png" alt="color space" />
+      </a>
+    
+  
+  
+    <figcaption>RGB and HSV Color Spaces
+</figcaption>
+  
+</figure>
+
+<p><strong>BGR color space</strong>: OpenCV’s default color space is RGB. However, it actually stores color in the BGR format. It is an additive color model where the different intensities of Blue, Green and Red give different shades of color. It turns out that this will not work effectively since the RGB values are highly sensitive to illumination making them not great for color detection.</p>
+
+<p><strong>HSV color space</strong>: HSV(H : Hue represents dominant wavelength S : Saturation represents shades of color V : Value represents Intensity) stores color information in a cylindrical representation of RGB color points. In HSV, each “tint” of colour is assigned a particular number (the Hue). The “amount” of colour is assigned another number (the Saturation) and the brightness of the colour is assigned another number (the Intensity or Value. It attempts to depict the colors as perceived by the human eye. Hue value varies from 0-179, Saturation value varies from 0-255 and Value value varies from 0-255.</p>
+
+<ul>
+  <li>Hue : This channel encodes color color information. Hue can be thought of an angle where 0 degree corresponds to the red color, 120 degrees corresponds to the green color, and 240 degrees corresponds to the blue color.</li>
+  <li>Saturation : This channel encodes the intensity/purity of color. For example, pink is less saturated than red.</li>
+  <li>Value : This channel encodes the brightness of color. Shading and gloss components of an image appear in this channel.</li>
+</ul>
+
+<p>It is mostly used for color segmentation purpose and for identifying contrast in images. These color spaces are frequently used in color selection tools in software and for web design. HSV is widely used for building color filters due to its good invariability to illumination.</p>
+
+<p><strong>CMYK color space</strong>: Unlike, RGB it is a subtractive color space. The CMYK(cyan, magenta, yellow, and key (black)) model works by partially or entirely masking colors on a lighter, usually white, background. The ink reduces the light that would otherwise be reflected. Such a model is called subtractive because inks “subtract” the colors red, green and blue from white light. White light minus red leaves cyan, white light minus green leaves magenta, and white light minus blue leaves yellow.</p>
+
+<p>In reality, color is a continuous phenomenon, meaning that there are an infinite number of colors. Color spaces, however, represent color through discrete structures (a fixed number of whole number integer values), which is acceptable since the human eye and perception are also limited. Color spaces are fully able to represent all the colors we are able to distinguish between.</p>
+
+<h2 id="hints">Hints</h2>
+
+<p><a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_colorspaces/py_colorspaces.html">Color space conversion</a></p>
+
+<p><a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_thresholding/py_thresholding.html">Simple thresholding, Adaptive thresholding, Otsu’s thresholding</a></p>
+
+<p><a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html">Smoothing Images</a></p>
+
+<p><a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html">Contour Features</a></p>
+
+<h2 id="contributors">Contributors</h2>
+
+<ul>
+  <li>Contributors: <a href="https://github.com/cawadall">Carlos Awadallah</a>, <a href="https://github.com/Naman-ntc">Naman Jain</a>, <a href="https://github.com/jmplaza">Jose María Cañas</a>, <a href="https://github.com/igarag">Nacho Arranz</a>, <a href="https://github.com/nemathahmed">Nemath Ahmed</a>, <a href="https://github.com/vmartinezf">Vanessa Fernández</a>, <a href="https://github.com/jessiffmm">Jessica Fernández</a>, <a href="https://github.com/dvalladaresv">David Valladares</a></li>
+  <li>Maintained by <a href="https://github.com/nemathahmed">Nemath Ahmed</a></li>
+</ul>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://www.geeksforgeeks.org/color-spaces-in-opencv-python/">1</a> 
+<a href="https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/">2</a> 
+<a href="https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/">3</a>
+<a href="https://opencv-python-tutroals.readthedocs.io/en/latest/index.html">4</a>
+<a href="https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp">5</a>
+<a href="https://realpython.com/python-opencv-color-spaces/">6</a>
+<a href="https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468">7</a></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

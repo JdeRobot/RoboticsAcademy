@@ -1,0 +1,663 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>  Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Robotics-Academy">
+<meta property="og:url" content="http://localhost:4000/exercises/ComputerVision/human_detection">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/ComputerVision/human_detection">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC Human Detection</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#human-detection-exercise-using-deep-learning">Human Detection Exercise using Deep Learning</a>
+    <ul>
+      <li><a href="#launch-instructions">Launch Instructions</a>
+        <ul>
+          <li><a href="#run-with-docker-container">Run with docker container</a></li>
+          <li><a href="#run-without-docker-container">Run without docker container</a></li>
+        </ul>
+      </li>
+      <li><a href="#exercise-instructions">Exercise Instructions</a>
+        <ul>
+          <li><a href="#model-input-specification">Model Input Specification</a></li>
+          <li><a href="#model-output-specification">Model Output Specification</a></li>
+        </ul>
+      </li>
+      <li><a href="#demo-model">Demo Model</a></li>
+      <li><a href="#guide-to-fine-tuning-pre-existing-models">Guide to Fine Tuning pre-existing models</a>
+        <ul>
+          <li><a href="#pytorch">Pytorch</a></li>
+          <li><a href="#tensorflow">TensorFlow</a></li>
+        </ul>
+      </li>
+      <li><a href="#using-the-interface">Using the interface</a></li>
+      <li><a href="#demonstrative-video-with-web-template">Demonstrative Video with Web Template</a></li>
+      <li><a href="#note">Note</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="human-detection-exercise-using-deep-learning">Human Detection Exercise using Deep Learning</h1>
+
+<p>A Human Detection Exercise to identify the presence of humans and identification of the rectangular boundary around them. 
+The user is expected to upload a Deep Learning model which fits the required input and output specifications for inference. The input model is supposed to be in the ONNX format. For more information refer to the “Exercise Instructions” section below.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/human_detection/human_detection_teaser.jpeg" title="Human Detection">
+        <img src="/assets/images/exercises/human_detection/human_detection_teaser.jpeg" alt="Human Detection" />
+      </a>
+    
+  
+  
+    <figcaption>Detection Example
+</figcaption>
+  
+</figure>
+
+<h2 id="launch-instructions">Launch Instructions</h2>
+
+<ul>
+  <li>
+    <p>There are two ways to run the exercise using web-template:</p>
+
+    <ul>
+      <li>Run the exercise with docker container</li>
+      <li>Run it without container</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="run-with-docker-container">Run with docker container</h3>
+
+<ul>
+  <li>First you need to build the image. Then, you need to run a container.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy.git &amp;&amp; cd RoboticsAcademy &amp;&amp; git checkout noetic
+cd scripts
+docker build -f Dockerfile-noetic -t image-name .
+docker run -it --name=container_name -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 image-name ./start.sh
+</code></pre></div>    </div>
+  </li>
+  <li>On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.</li>
+  <li>Click the connect button and wait for some time until an alert appears with the message Connection Established and button displays connected.</li>
+  <li>The exercise can be used after the alert.</li>
+  <li>It is necessary to map the port where the camera is located to the docker container.</li>
+</ul>
+
+<h3 id="run-without-docker-container">Run without docker container</h3>
+
+<p>The following dependencies should be pre-installed:</p>
+<ul>
+  <li>Python 3 or later</li>
+  <li>Python dependencies
+    <ul>
+      <li>OpenCV</li>
+      <li>onnxruntime</li>
+      <li>WebsocketServer</li>
+    </ul>
+  </li>
+  <li>Clone the Robotics Academy repository to your local machine, switch to the noetic branch and head over to the Human_Detection exercise.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy.git &amp;&amp; cd RoboticsAcademy &amp;&amp; git checkout noetic
+</code></pre></div>    </div>
+  </li>
+  <li>Determine your machine dns server IP address which is generally in the form of <strong>127.0.0.xx for Linux machine</strong> by running this command</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /etc/resolv.conf
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Inside <code class="language-plaintext highlighter-rouge">assets/websocket_address.js</code> file, change the <strong>variable websocket_address</strong> to the IP address found with the above command</p>
+  </li>
+  <li>
+    <p>Start the host application along with the same IP address which is used for connection.</p>
+  </li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python exercise.py 127.0.0.xx
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Open the browser template from <code class="language-plaintext highlighter-rouge">exercice.html</code></p>
+  </li>
+  <li>
+    <p>The page should says <strong>[open]Connection established!</strong>.Means it is working as expected.</p>
+  </li>
+</ul>
+
+<p><strong>__NOTE:__</strong>  If you get <strong>socket.error: [Errno 99] Cannot assign requested address</strong> error,you need to check and pass the correct IP address.</p>
+
+<h2 id="exercise-instructions">Exercise Instructions</h2>
+
+<ul>
+  <li>The uploaded ONNX format model should adhere to the input/output specifications, please keep that in mind while building your model.</li>
+  <li>The user can train their model in any framework of their choice and export it to the ONNX format. Refer to this <a href="https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html"><strong>article</strong></a> to know more about exporting your model to the ONNX format.</li>
+</ul>
+
+<h3 id="model-input-specification">Model Input Specification</h3>
+
+<p><code class="language-plaintext highlighter-rouge">input_shape</code> - The application code pre processes the input frame of shape (H, W, C) <strong>TO</strong> (1, 300, 300, 3) i.e (batch_size, H, W, C). This is a typical input shape for a <code class="language-plaintext highlighter-rouge">Conv2D</code> layer, so it is mandatory for your custom built model to have its first layer as <code class="language-plaintext highlighter-rouge">Conv2D</code>.</p>
+
+<h3 id="model-output-specification">Model Output Specification</h3>
+
+<p>Given 1 frame per batch, the model must return 4 tensor arrays in the following order:</p>
+
+<p><code class="language-plaintext highlighter-rouge">detection_boxes</code>: a list of bounding boxes. Each list item describes a box with top, left, bottom, right relative to the image size.</p>
+
+<p><code class="language-plaintext highlighter-rouge">detection_classes</code>: Array of detected classes. The class label must be <strong>1</strong> for humans.</p>
+
+<p><code class="language-plaintext highlighter-rouge">detection_scores</code>: the score for each detection with values between 0 and 1 representing probability that a class was detected.</p>
+
+<p><code class="language-plaintext highlighter-rouge">num_detections</code>: the number of detections.</p>
+
+<p><strong>Note</strong>: Make sure to keep the class label for Humans while training your model as 1. Any object detected by your model with any other class label other than 1, will not be accounted for.</p>
+
+<h2 id="demo-model">Demo Model</h2>
+
+<p>A demo model has been provided inside the <code class="language-plaintext highlighter-rouge">Demo_Model</code> folder to test and play around with the application.</p>
+
+<h2 id="guide-to-fine-tuning-pre-existing-models">Guide to Fine Tuning pre-existing models</h2>
+
+<p>Expecting the user to build the model from scratch would be an overkill, we have compliled and provided the revelevant guide for Fine Tuning pre exisiting models in TensorFlow and Pytorch. This includes everything from making the process of collecting data, preprocessing it and fine tuning with it on a pre-existing model architecture. Since the process of exporting models to ONNX format is different for different frameworks, we have also added so under the respective guide. We strongly suggest the user to go through the guide.</p>
+
+<h3 id="pytorch">Pytorch</h3>
+
+<p>We have documented a guide for the PyTorch implementation. Please refer to it below for the detailed information.</p>
+
+<ul>
+  <li><a href="https://github.com/TheRoboticsClub/gsoc2021-Shashwat_Dalakoti/blob/main/Fine_Tuning/PyTorch/SSDMobilenet_pytorch_FineTune.ipynb"><strong>SSDMobilenet_PyTorch_FineTune</strong></a></li>
+</ul>
+
+<h3 id="tensorflow">TensorFlow</h3>
+
+<ul>
+  <li><a href="https://blog.roboflow.com/training-a-tensorflow-object-detection-model-with-a-custom-dataset/"><strong>Training a TensorFlow MobileNet Object Detection Model with a Custom Dataset</strong></a></li>
+</ul>
+
+<p>This guide walks you through using the TensorFlow object detection API to train a MobileNet Single Shot Detector (v2) to your own dataset. Here’s the complete Jupyter notebook guide for the above article:</p>
+
+<ul>
+  <li><a href="https://colab.research.google.com/drive/1wTMIrJhYsQdq_u7ROOkf0Lu_fsX5Mu8a"><strong>Roboflow-tensorflow-object-detection-mobilenet-colab.ipynb</strong></a></li>
+</ul>
+
+<h2 id="using-the-interface">Using the interface</h2>
+
+<ul>
+  <li>
+    <p><strong>Browse Button</strong>: The browse button is used to browse and upload the model from the local machine.</p>
+  </li>
+  <li>
+    <p><strong>Control Buttons</strong>: The control buttons enable the control of the interface. Play button sends the uploaded model for inference to the core application. Stop button stops the inference process.</p>
+  </li>
+  <li>
+    <p><strong>Frequency Slider</strong>: This slider adjusts the running frequency of the iterative part of the model inference and benchmarking code. A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.</p>
+  </li>
+  <li>
+    <p><strong>Debug Level</strong>: This decides the debugging level of the application. A debug level of 1 implies no debugging at all. A debug level greater than or equal to 2 enables all the GUI functions working properly.</p>
+  </li>
+  <li>
+    <p><strong>Psuedo Console</strong>: This shows the error messages and a few intermediate outputs along the inference and benchmarking process.</p>
+  </li>
+</ul>
+
+<h2 id="demonstrative-video-with-web-template">Demonstrative Video with Web Template</h2>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/xZQ9x8J-shY" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="note">Note</h2>
+<p>This exercise is still a work under progress. Certain features like benchmarking/evaluating the uploaded model, GUI features for uploaded model visualization and inference source flexibility are still being developed and tested. We will keep updating the page and the code base concurrently.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

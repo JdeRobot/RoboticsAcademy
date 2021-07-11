@@ -47,22 +47,66 @@ function declare_code(){
 	};
 }
 
-// Function that sends/submits the code!
-function submitCode(){
+
+function Upload_Video(){
+
+	var input = document.getElementById("video_file");
+	var fReader = new FileReader();
+	fReader.readAsDataURL(input.files[0]);
+	fReader.onloadend = function(event){
+		alert("Uploading video file...");
+		websocket_code.send("#save_video" + event.target.result);
+		alert("...the video has been sent!");
+	}
+	
+}
+
+function Upload_Model(){
 	var input = document.getElementById("dl_model");
 	var fReader = new FileReader();
 	fReader.readAsDataURL(input.files[0]);
 	fReader.onloadend = function(event){
 		alert("Uploading DL model file...");
-		websocket_code.send(event.target.result);
-		alert("...the file has been transferred!");
+		websocket_code.send("#save_model" + event.target.result);
+		alert("...the model has been transferred!");
 	}
+}
 
+
+// Function that sends/submits the model for live inference!
+function LiveInfer(){
+	websocket_code.send("#infer");
+	alert("Performing Live Inference. Please wait.... ");
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
 	stop_button.style.cursor = "default";
 
 	running = true;
+}
+
+function VideoInfer(){
+	websocket_code.send("#video_infer");
+	alert("Performing Video Inference. Please wait....");
+    stop_button.disabled = false;
+    stop_button.style.opacity = "1.0";
+	stop_button.style.cursor = "default";
+
+	running = true;
+}
+
+function benchmarkModel(){
+	websocket_code.send("#eval");
+	alert("Benchmarking Model on Oxford Town Centre Dataset. Please wait....");
+	stop_button.disabled = false;
+    stop_button.style.opacity = "1.0";
+	stop_button.style.cursor = "default";
+
+	running = true;
+}
+
+function visualizeModel(){
+	websocket_code.send("#visual");
+	alert("Opening Visualizer. Please wait....");
 }
 
 // Function that send/submits an empty string

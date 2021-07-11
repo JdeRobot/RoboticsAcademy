@@ -1,0 +1,1411 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Robotics-Academy exercises - Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Robotics-Academy exercises">
+<meta property="og:url" content="http://localhost:4000/exercises/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Robotics-Academy exercises">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Robotics-Academy exercises
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        
+<div class="feature__wrapper">
+
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/follow_line/formula1_teaser.png" alt="Follow Line Formula1" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Follow Line</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Complete a lap following the line painted on the racing circuit.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/AutonomousCars/follow_line/" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png" alt="Obstacle avoidance" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Obstacle avoidance</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Local navigation. Virtual Force Field navigation algorithm using a F1.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/AutonomousCars/obstacle_avoidance" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg" alt="Drone Cat and Mouse" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Drone Cat and Mouse</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Game of cat and mouse with two quadrotors.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/drone_cat_mouse" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/vacuum_cleaner/vacuum_teaser.png" alt="Vacuum Cleaner" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Vacuum Cleaner</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Navigation algorithm for an autonomous vacuum.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/MobileRobots/vacuum_cleaner" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png" alt="Localized Vacuum Cleaner" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Localized Vacuum Cleaner</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Foraging algorithm for an autonomous vacuum with good localization.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/MobileRobots/vacuum_cleaner_loc" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/color_filter/color_filter_teaser.png" alt="Color Filter" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Color Filter</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Develop a color filter to segment some object in the image and track it</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/ComputerVision/color_filter" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg" alt="Follow Turtlebot" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Follow Turtlebot</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Follow a turtlebot on the ground using a camera.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/follow_turtlebot" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png" alt="3D Reconstruction" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">3D Reconstruction</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Reconstruct a 3D scene from a stereo pair</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/ComputerVision/3d_reconstruction" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/follow_road/follow_road_teaser.jpg" alt="Follow Road" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Follow Road</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Follow a road through color filter segmentation.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/follow_road" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/global_navigation/global_navigation_teaser.png" alt="Global Navigation" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Global Navigation</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Global Navigation. Navigating a Tele Taxi autonomously.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/AutonomousCars/global_navigation" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg" alt="Labyrinth Escape" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Labyrinth Escape</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Escape from a labyrinth through visual signals.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/labyrinth_escape" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/position_control/position_control_teaser.png" alt="Position Control" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Position Control</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Local navigation algorithm through the use of a PID controller.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/position_control" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/rescue_people/rescue_people_teaser.png" alt="Rescue People" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Rescue People</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Recognition of faces of lost people and save their locations.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/rescue_people" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/car_junction/car_junction_teaser.png" alt="Car Junction" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Car Junction</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Car Junction. Automated vehicle must stop and pass once the road is clear.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/AutonomousCars/car_junction" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png" alt="Drone Gymkhana" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Drone Gymkhana</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Learn about different drone controls and drone infrastructure.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/drone_gymkhana" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/drone_hangar/drone_hangar.jpg" alt="Drone Hangar" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Drone Hangar</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Escape from a hangar filled with moving obstacles.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/drone_hangar" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/visual_lander/visual_lander.jpg" alt="Visual Lander" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Visual Lander</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Visualization of a beacon and land on it.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/Drones/visual_lander" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v3.1</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png" alt="Single Robot Amazon Warehouse (ROS2)" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Single Robot Amazon Warehouse (ROS2)</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Autonomous navigation and pick-and-place logic in ROS2</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/MobileRobots/single_robot_amazon_warehouse" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/multi_robot_amazon_warehouse/multi_robot_amazon_warehouse_teaser.png" alt="Multi Robot Amazon Warehouse (ROS2)" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Multi Robot Amazon Warehouse (ROS2)</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Multi robot warehouse planning in ROS2</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/MobileRobots/multi_robot_amazon_warehouse" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/visual_odometry/vo.png" alt="Visual Odometry" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Visual Odometry</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Solving the Visual Odometry problem in a given dataset</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/ComputerVision/visual_odometry" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">--</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/pick_place/pick_place_teaser.png" alt="Pick and Place" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Pick and Place</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Pick and place with industrial robot arm and mechanical gripper</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/IndustrialRobots/pick_place" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/machine_vision/machine_vision_teaser.png" alt="Machine Vision" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Machine Vision</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Detect object and obstacle with kinect camera</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/IndustrialRobots/machine_vision" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/mobile_manipulation/mobile_manipulation_teaser.png" alt="Mobile Manipulation" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Mobile Manipulation</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Pick and place with mobile manipulator</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/IndustrialRobots/mobile_manipulation" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/human_detection/human_detection_teaser.jpeg" alt="Human Detection" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Human Detection</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Develop a DL human detection model to perform inference and benchmarking in real time.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/ComputerVision/human_detection" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+    
+
+    <div class="feature__item">
+      <div class="archive__item">
+        
+          <div class="archive__item-teaser">
+            <img src="/assets/images/exercises/dl_digit_classifier/dl_digit_classifier.png" alt="Digit Classifier" />
+            
+          </div>
+        
+
+        <div class="archive__item-body">
+          
+            <h2 class="archive__item-title">Digit Classifier</h2>
+          
+
+          
+            <div class="archive__item-excerpt">
+              <p>Classify digits in real time using your own deep learning model.</p>
+
+            </div>
+          
+
+          
+
+          
+            <p>
+              <a href="/exercises/ComputerVision/dl_digit_classifier" class="btn btn--danger">Go!</a>
+              
+                <i style="font-size: 12px">v.prototype</i>
+              
+            </p>
+          
+        </div>
+      </div>
+    </div>
+  
+
+</div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

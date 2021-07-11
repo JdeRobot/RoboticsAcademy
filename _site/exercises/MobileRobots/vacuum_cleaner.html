@@ -1,0 +1,902 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Vacuum Cleaner - Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Vacuum Cleaner">
+<meta property="og:url" content="http://localhost:4000/exercises/MobileRobots/vacuum_cleaner">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/MobileRobots/vacuum_cleaner">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Vacuum Cleaner">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Vacuum Cleaner
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC Vacuum Cleaner</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#versions-to-run-the-exercise">Versions to run the exercise</a></li>
+  <li><a href="#goal">Goal</a></li>
+  <li><a href="#instructions-for-web-templates">Instructions for Web Templates</a>
+    <ul>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#enable-gpu-acceleration">Enable GPU Acceleration</a></li>
+      <li><a href="#how-to-perform-the-exercise">How to perform the exercise?</a></li>
+      <li><a href="#using-the-interface">Using the Interface</a></li>
+    </ul>
+  </li>
+  <li><a href="#instructions-for-rosnode-templates">Instructions for ROSNode Templates</a>
+    <ul>
+      <li><a href="#installation-1">Installation</a></li>
+      <li><a href="#how-to-run">How to run</a></li>
+      <li><a href="#how-to-do-the-practice">How to do the practice</a></li>
+      <li><a href="#where-to-insert-the-code">Where to insert the code</a></li>
+      <li><a href="#api">API</a></li>
+      <li><a href="#types-conversion">Types conversion</a></li>
+    </ul>
+  </li>
+  <li><a href="#theory">Theory</a>
+    <ul>
+      <li><a href="#coverage-algorithms">Coverage Algorithms</a></li>
+    </ul>
+  </li>
+  <li><a href="#analyzing-coverage-algorithms">Analyzing Coverage Algorithms</a>
+    <ul>
+      <li><a href="#classification">Classification</a></li>
+      <li><a href="#base-movement">Base Movement</a></li>
+      <li><a href="#analysis-of-coverage-algorithms">Analysis of Coverage Algorithms</a></li>
+      <li><a href="#supplements">Supplements</a></li>
+    </ul>
+  </li>
+  <li><a href="#hints">Hints</a>
+    <ul>
+      <li><a href="#random-angle-generation">Random Angle Generation</a></li>
+      <li><a href="#dash-movement">Dash Movement</a></li>
+      <li><a href="#spiral-movement">Spiral Movement</a></li>
+      <li><a href="#analysis">Analysis</a></li>
+      <li><a href="#illustrations">Illustrations</a></li>
+    </ul>
+  </li>
+  <li><a href="#demonstrative-video">Demonstrative Video</a></li>
+  <li><a href="#contributors">Contributors</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="versions-to-run-the-exercise">Versions to run the exercise</h2>
+
+<p>Currently, there are 2 versions for running this exercise:</p>
+
+<ul>
+  <li>ROSNode Templates</li>
+  <li>Web Templates(Current Release)</li>
+</ul>
+
+<p>The instructions for both of them are provided as follows.</p>
+
+<h2 id="goal">Goal</h2>
+
+<p>The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.</p>
+
+<p><img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%" /></p>
+
+<figure class="half ">
+  
+    
+      <img src="" alt="" />
+    
+  
+    
+      <img src="" alt="" />
+    
+  
+  
+    <figcaption>Vacuum cleaner.
+</figcaption>
+  
+</figure>
+
+<h2 id="instructions-for-web-templates">Instructions for Web Templates</h2>
+<p>This is the preferred way for running the exercise.</p>
+
+<h3 id="installation">Installation</h3>
+<ul>
+  <li>
+    <p>Clone the Robotics Academy repository on your local machine</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Download <a href="https://docs.docker.com/get-docker/">Docker</a>. Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.</p>
+  </li>
+  <li>
+    <p>Pull the current distribution of Robotics Academy Docker Image</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull jderobot/robotics-academy:3.1.3
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.</p>
+  </li>
+</ul>
+
+<h3 id="enable-gpu-acceleration">Enable GPU Acceleration</h3>
+<ul>
+  <li>For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  <a href="https://virtualgl.org/">VirtualGL</a> and executing the following docker run command:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">--device</span> /dev/dri <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>    </div>
+  </li>
+  <li>For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given <a href="https://www.docker.com/blog/wsl-2-gpu-support-is-here/">here</a></li>
+</ul>
+
+<h3 id="how-to-perform-the-exercise">How to perform the exercise?</h3>
+<ul>
+  <li>
+    <p>Start a new docker container of the image and keep it running in the background (<a href="#enable-gpu-acceleration">hardware accelerated version</a>)</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.</p>
+  </li>
+  <li>
+    <p>Click the connect button and wait for some time until an alert appears with the message <code class="language-plaintext highlighter-rouge">Connection Established</code> and button displays connected.</p>
+  </li>
+  <li>
+    <p>The exercise can be used after the alert.</p>
+  </li>
+</ul>
+
+<p><strong>Where to insert the code?</strong></p>
+
+<p>In the launched webpage, type your code in the text editor,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">GUI</span> <span class="kn">import</span> <span class="n">GUI</span>
+<span class="kn">from</span> <span class="nn">HAL</span> <span class="kn">import</span> <span class="n">HAL</span>
+<span class="c1"># Enter sequential code!
+</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># Enter iterative code!
+</span></code></pre></div></div>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+
+<ul>
+  <li>
+    <p><strong>Control Buttons</strong>: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).</p>
+  </li>
+  <li>
+    <p><strong>Frequency Slider</strong>: This slider adjusts the running frequency of the iterative part of the code(under the <code class="language-plaintext highlighter-rouge">while True:</code>). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer(a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.</p>
+  </li>
+  <li>
+    <p><strong>Debug Level</strong>: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.</p>
+  </li>
+  <li>
+    <p><strong>Debugging Console</strong>: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.</p>
+  </li>
+</ul>
+
+<p><strong>Application Programming Interface</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">from HAL import HAL</code> - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).</li>
+  <li><code class="language-plaintext highlighter-rouge">from GUI import GUI</code> - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.bumper.getBumperData().state</code> - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.bumper.getBumperData().bumper</code> - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getPose3d().x</code> - to get the position of the robot (x coordinate)</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getPose3d().y</code> - to obtain the position of the robot (y coordinate)</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getPose3d().yaw</code> - to get the orientation of the robot with
+regarding the map</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.laser.getLaserData()</code> - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.motors.sendV()</code> - to set the linear speed</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.motors.sendW()</code> - to set the angular velocity</li>
+</ul>
+
+<h2 id="instructions-for-rosnode-templates">Instructions for ROSNode Templates</h2>
+
+<h3 id="installation-1">Installation</h3>
+<p>Install the <a href="https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure">General Infrastructure</a> of the JdeRobot Robotics Academy.</p>
+
+<p>Enable Kobuki_msgs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>ros-melodic-kobuki-msgs
+</code></pre></div></div>
+
+<h3 id="how-to-run">How to run</h3>
+
+<ol>
+  <li>Execution without watching the world:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>roslaunch vacuum_cleaner.launch
+</code></pre></div>    </div>
+  </li>
+  <li>Execution of the practice and the user interface:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python2 vacuumCleaner.py vacuumCleaner_conf.yml
+</code></pre></div>    </div>
+  </li>
+  <li>Execution of the automatic evaluator:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python2 referee.py referee.yml
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>To simplify the closure of the environment, simply close the VacuumCleaner window(s). <em>Ctrl + C will give problems</em>.</p>
+
+<h3 id="how-to-do-the-practice">How to do the practice</h3>
+
+<p>To carry out the practice, you must edit the MyAlgorithm.py file and insert the control logic into it.</p>
+
+<h3 id="where-to-insert-the-code">Where to insert the code</h3>
+
+<p>MyAlgorithm.py</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="p">(</span><span class="s">'Execute'</span><span class="p">)</span>
+
+<span class="c1"># TODO
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">HAL</span><span class="p">.</span><span class="n">getPose3d</span><span class="p">().</span><span class="n">x</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">HAL</span><span class="p">.</span><span class="n">getPose3d</span><span class="p">().</span><span class="n">y</span><span class="p">)</span>
+<span class="c1"># Vacuum's yaw
+</span><span class="n">yaw</span> <span class="o">=</span> <span class="n">HAL</span><span class="p">.</span><span class="n">getPose3d</span><span class="p">().</span><span class="n">yaw</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
+</span><span class="n">vel</span> <span class="o">=</span> <span class="n">CMDVel</span><span class="p">()</span>
+<span class="n">myW</span><span class="o">=</span><span class="n">x</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">motors</span><span class="p">.</span><span class="n">getMaxW</span><span class="p">())</span>
+<span class="n">myV</span><span class="o">=-</span><span class="n">y</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">motors</span><span class="p">.</span><span class="n">getMaxV</span><span class="p">())</span>
+<span class="n">vel</span><span class="p">.</span><span class="n">vx</span> <span class="o">=</span> <span class="n">myV</span>
+<span class="n">vel</span><span class="p">.</span><span class="n">az</span> <span class="o">=</span> <span class="n">myW</span>
+<span class="bp">self</span><span class="p">.</span><span class="n">motors</span><span class="p">.</span><span class="n">sendVelocities</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+<span class="c1"># OR
+</span><span class="bp">self</span><span class="p">.</span><span class="n">motors</span><span class="p">.</span><span class="n">sendAZ</span><span class="p">(</span><span class="n">vel</span><span class="p">.</span><span class="n">az</span><span class="p">)</span>
+<span class="bp">self</span><span class="p">.</span><span class="n">motors</span><span class="p">.</span><span class="n">sendV</span><span class="p">(</span><span class="n">vel</span><span class="p">.</span><span class="n">vx</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="api">API</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getPose3d().yaw</code> - to get the orientation of the robot</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.bumper.getBumperData().state</code> - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.bumper.getBumperData().bumper</code> - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getLaserData()</code> - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.motors.sendV()</code> - to set the linear speed</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.motors.sendW()</code> - to set the angular velocity</li>
+</ul>
+
+<p>For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.</p>
+
+<h3 id="types-conversion">Types conversion</h3>
+
+<ul>
+  <li><strong>Laser</strong></li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">laser_data</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">laser</span><span class="p">.</span><span class="n">getLaserData</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">parse_laser_data</span><span class="p">(</span><span class="n">laser_data</span><span class="p">):</span>
+<span class="n">laser</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">180</span><span class="p">):</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">laser_data</span><span class="p">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="n">radians</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">laser</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">dist</span><span class="p">,</span> <span class="n">angle</span><span class="p">)]</span>
+<span class="k">return</span> <span class="n">laser</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">laser_vector</span><span class="p">(</span><span class="n">laser</span><span class="p">):</span>
+<span class="n">laser_vectorized</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">d</span><span class="p">,</span><span class="n">a</span> <span class="ow">in</span> <span class="n">laser</span><span class="p">:</span>
+    <span class="c1"># (4.2.1) laser into GUI reference system
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">d</span> <span class="o">*</span> <span class="n">math</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">laser_vectorized</span> <span class="o">+=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+
+<span class="n">laser_mean</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">laser_vectorized</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">laser_mean</span>
+</code></pre></div></div>
+
+<h2 id="theory">Theory</h2>
+
+<p>Implementation of navigation algorithms for an autonomous vacuum is the basic requirement for this exercise. The main objective is to cover the largest area of a house. First, let us understand what is Coverage Algorithms.</p>
+
+<h3 id="coverage-algorithms">Coverage Algorithms</h3>
+
+<p>Coverage Path Planning is an important area of research in Path Planning for robotics, which involves finding a path that passes through every reachable position in its environment. In this exercise, We are using a very basic coverage algorithm called Random Exploration.</p>
+
+<h2 id="analyzing-coverage-algorithms">Analyzing Coverage Algorithms</h2>
+
+<h3 id="classification">Classification</h3>
+<p>Coverage algorithms are divided into two categories.</p>
+
+<ul>
+  <li>
+    <p><strong>Offline coverage</strong>
+use fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.</p>
+  </li>
+  <li>
+    <p><strong>Online Coverage</strong></p>
+  </li>
+</ul>
+
+<p>Uses real-time measurements and decisions to cover the entire area. The Sensor-based approach is included in this category.</p>
+
+<h3 id="base-movement">Base Movement</h3>
+
+<p>The problem of coverage involves two standard basic motions, which are used as a base for other complex coverage algorithms.</p>
+
+<ul>
+  <li><strong>Spiral Motion</strong></li>
+</ul>
+
+<p>The robot follows an increasing circle/square pattern.</p>
+
+<p><img src="http://localhost:4000/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/spiral.gif" alt="Base Movement Spiral" /></p>
+
+<ul>
+  <li><strong>Boustrophedon Motion</strong></li>
+</ul>
+
+<p>The robot follows an S-shaped pattern.</p>
+
+<p><img src="http://localhost:4000/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/boustrophedon.gif" alt="Base Movement Boustrophedon" /></p>
+
+<h3 id="analysis-of-coverage-algorithms">Analysis of Coverage Algorithms</h3>
+
+<p>Any coverage algorithm is analyzed using the given criterion.</p>
+
+<ul>
+  <li>
+    <p><strong>Environment Decomposition</strong>
+This involves dividing the area into smaller parts.</p>
+  </li>
+  <li>
+    <p><strong>Sweep Direction</strong></p>
+  </li>
+</ul>
+
+<p>This influences the optimality of generated paths for each sub-region by adjusting the duration, speed, and direction of each sweep.</p>
+
+<ul>
+  <li><strong>Optimal Backtracking</strong></li>
+</ul>
+
+<p>This involves the plan to move from one small subregion to another. The coverage is said to be complete when there is no point left to backtrack.</p>
+
+<h3 id="supplements">Supplements</h3>
+
+<p>Usually, coverage algorithms generate a linear, piecewise path composed of straight lines and sharp turns. This path is difficult for other autonomous drones like Underwater Vehicles, Aerial Vehicles and some Ground Vehicles difficult to follow. Path Smoothening is applied to these paths to effectively implement the algorithm.</p>
+
+<h2 id="hints">Hints</h2>
+
+<p>Simple hints provided to help you solve the vacuum_cleaner exercise. Please note that the <strong>full solution has not been provided.</strong></p>
+
+<h3 id="random-angle-generation">Random Angle Generation</h3>
+
+<p>The most important task is the generation of a random angle. There are 2 ways to achieve it.</p>
+
+<ul>
+  <li>
+    <p><strong>Random Duration</strong>: By keeping the angular_velocity fixed, the duration of the turn can be randomized, in order to point the robot towards a random direction.</p>
+  </li>
+  <li>
+    <p><strong>Random Angle</strong>: This method requires calculation. We generate a random angle and then turn towards it. Approximately an angular speed of 3 turns the robot by 90 degrees.</p>
+  </li>
+</ul>
+
+<p>Among both the methods, Random Duration would be a preferable one as the Random Angle requires precision, which requires PID to be achieved successfully.</p>
+
+<p>Also, in order to achieve better precision it is preferable to use <code class="language-plaintext highlighter-rouge">rospy.sleep()</code> in place of <code class="language-plaintext highlighter-rouge">time.sleep()</code>.</p>
+
+<h3 id="dash-movement">Dash Movement</h3>
+
+<p>Once the direction has been decided, we move in that direction. This is the simplest part, we have to send velocity command to the robot, until a collision is detected.</p>
+
+<p>A word of caution though, whenever we have a change of state, we have to give a sleep duration to the robot to give it time to reset the commands given to it. <a href="#Illustrations">Illustrations</a> section describes a visual representation.</p>
+
+<h3 id="spiral-movement">Spiral Movement</h3>
+
+<p>Using the physical formula $v = r·\omega$ (See <a href="#References">references</a> for more details). In order to increase $r$, we can either increase $v$ or decrease $\omega$, while keeping the other parameter constant. Experimentally, increasing $v$ has a better effect than decreasing $\omega$. Refer to <a href="#Illustrations">illustrations</a>.</p>
+
+<h3 id="analysis">Analysis</h3>
+
+<p>Being such a simple algorithm, it is not expected to work all the time. The maximum accuracy we got was 80% and that too only once!</p>
+
+<h3 id="illustrations">Illustrations</h3>
+
+<p><img src="http://localhost:4000/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/without_duration.gif" alt="" /></p>
+
+<p><em>Without applying a sleep duration the previous rotation command still has effect on the go straight command</em></p>
+
+<p><img src="http://localhost:4000/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/duration.gif" alt="" /></p>
+
+<p><em>After applying a duration, we get straight direction movement</em></p>
+
+<p><img src="http://localhost:4000/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/reduce_omega.gif" alt="" /></p>
+
+<p><em>Effect of reducing $\omega$ to generate spiral</em></p>
+
+<p><img src="http://localhost:4000/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/increasing_v.gif" alt="" /></p>
+
+<p><em>Effect of increasing $v$ to generate spiral</em></p>
+
+<h2 id="demonstrative-video">Demonstrative Video</h2>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/c90hmfkZRNY" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<p><em>This solution is an illustration for the ROSNode Templates</em></p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/Xcy84DhVjrY" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<p><em>This solution is an illustration for the Web Templates</em></p>
+
+<p><br /></p>
+
+<h2 id="contributors">Contributors</h2>
+
+<ul>
+  <li>Contributors: <a href="https://github.com/vmartinezf">Vanessa Fernandez</a>, <a href="https://github.com/jmplaza">Jose María Cañas</a>, <a href="https://github.com/cawadall">Carlos Awadallah</a>, <a href="https://github.com/igarag">Nacho Arranz</a>.</li>
+  <li>Maintained by <a href="https://github.com/SakshayMahna">Sakshay Mahna</a>.</li>
+</ul>
+
+<!--
+Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.
+<div class="embed-container">
+  <iframe
+      src="https://www.youtube.com/embed/Xcy84DhVjrY"
+      width="700"
+      height="480"
+      frameborder="0"
+      allowfullscreen="">
+  </iframe>
+</div>
+
+-->
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

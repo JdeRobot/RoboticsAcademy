@@ -1,0 +1,889 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>3D Reconstruction - Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="3D Reconstruction">
+<meta property="og:url" content="http://localhost:4000/exercises/ComputerVision/3d_reconstruction">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/ComputerVision/3d_reconstruction">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="3D Reconstruction">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">3D Reconstruction
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC 3D Reconstruction</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#versions-to-run-the-exercise">Versions to run the exercise</a></li>
+  <li><a href="#goal">Goal</a></li>
+  <li><a href="#instructions-for-web-templates">Instructions for Web Templates</a>
+    <ul>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#enable-gpu-acceleration">Enable GPU Acceleration</a></li>
+      <li><a href="#how-to-perform-the-exercise">How to perform the exercise?</a></li>
+      <li><a href="#using-the-interface">Using the Interface</a></li>
+      <li><a href="#example-video-with-web-template">Example video with web template</a></li>
+    </ul>
+  </li>
+  <li><a href="#instructions-for-rosnode-templates">Instructions for ROSNode Templates</a>
+    <ul>
+      <li><a href="#installation-1">Installation</a></li>
+      <li><a href="#how-to-perform-the-exercise-1">How to perform the exercise?</a></li>
+      <li><a href="#how-to-run-your-solution">How to run your solution?</a></li>
+      <li><a href="#example-video-with-rosnode-templates">Example video with ROSNode Templates</a></li>
+    </ul>
+  </li>
+  <li><a href="#theory">Theory</a>
+    <ul>
+      <li><a href="#epipolar-geometry">Epipolar Geometry</a></li>
+      <li><a href="#stereo-reconstruction">Stereo Reconstruction</a></li>
+      <li><a href="#3d-reconstruction-algorithm">3D Reconstruction Algorithm</a></li>
+      <li><a href="#feature-point-detection">Feature Point Detection</a></li>
+      <li><a href="#feature-point-extraction">Feature Point Extraction</a></li>
+      <li><a href="#triangulation">Triangulation</a></li>
+    </ul>
+  </li>
+  <li><a href="#hints">Hints</a>
+    <ul>
+      <li><a href="#setup">Setup</a></li>
+      <li><a href="#calculating-correspondences">Calculating Correspondences</a></li>
+      <li><a href="#plotting-the-points">Plotting the Points</a></li>
+      <li><a href="#illustrations">Illustrations</a></li>
+    </ul>
+  </li>
+  <li><a href="#contributors">Contributors</a></li>
+  <li><a href="#references">References</a></li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h2 id="versions-to-run-the-exercise">Versions to run the exercise</h2>
+
+<p>Currently, there are 2 versions for running this exercise:</p>
+
+<ul>
+  <li>ROSNode Templates</li>
+  <li>Web Templates(Current Release)</li>
+</ul>
+
+<p>The instructions for both of them are provided as follows.</p>
+
+<h2 id="goal">Goal</h2>
+
+<p>In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/3d_reconstruction.png" title="3D Reconstruction">
+        <img src="/assets/images/exercises/3d_reconstruction/3d_reconstruction.png" alt="3D Reconstruction" />
+      </a>
+    
+  
+  
+    <figcaption>Scene to reconstruct
+</figcaption>
+  
+</figure>
+
+<h2 id="instructions-for-web-templates">Instructions for Web Templates</h2>
+<p>This is the preferred way for running the exercise.</p>
+
+<h3 id="installation">Installation</h3>
+<ul>
+  <li>
+    <p>Clone the Robotics Academy repository on your local machine</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Download <a href="https://docs.docker.com/get-docker/">Docker</a>. Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.</p>
+  </li>
+  <li>
+    <p>Pull the current distribution of Robotics Academy Docker Image</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull jderobot/robotics-academy:3.1.3
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.</p>
+  </li>
+</ul>
+
+<h3 id="enable-gpu-acceleration">Enable GPU Acceleration</h3>
+<ul>
+  <li>For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  <a href="https://virtualgl.org/">VirtualGL</a> and executing the following docker run command:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">--device</span> /dev/dri <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>    </div>
+  </li>
+  <li>For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given <a href="https://www.docker.com/blog/wsl-2-gpu-support-is-here/">here</a></li>
+</ul>
+
+<h3 id="how-to-perform-the-exercise">How to perform the exercise?</h3>
+<ul>
+  <li>
+    <p>Start a new docker container of the image and keep it running in the background (<a href="#enable-gpu-acceleration">hardware accelerated version</a>)</p>
+
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.</p>
+  </li>
+  <li>
+    <p>Click the connect button and wait for some time until an alert appears with the message <code class="language-plaintext highlighter-rouge">Connection Established</code> and button displays connected.</p>
+  </li>
+  <li>
+    <p>The exercise can be used after the alert.</p>
+  </li>
+</ul>
+
+<p><strong>Where to insert the code?</strong></p>
+
+<p>In the launched webpage, type your code in the text editor,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">GUI</span> <span class="kn">import</span> <span class="n">GUI</span>
+<span class="kn">from</span> <span class="nn">HAL</span> <span class="kn">import</span> <span class="n">HAL</span>
+<span class="c1"># Enter sequential code!
+</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># Enter iterative code!
+</span></code></pre></div></div>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+
+<ul>
+  <li>
+    <p><strong>Control Buttons</strong>: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).</p>
+  </li>
+  <li>
+    <p><strong>Frequency Slider</strong>: This slider adjusts the running frequency of the iterative part of the code (under the <code class="language-plaintext highlighter-rouge">while True:</code>). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.</p>
+  </li>
+  <li>
+    <p><strong>Debug Level</strong>: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.</p>
+  </li>
+  <li>
+    <p><strong>Psuedo Console</strong>: This shows the error messages related to the student’s code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor.</p>
+  </li>
+</ul>
+
+<p><strong>Application Programming Interface</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">from HAL import HAL</code> - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).</li>
+  <li><code class="language-plaintext highlighter-rouge">from GUI import GUI</code> - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getImage('left')</code> - to get the left image</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getImage('right')</code> - to get the right image</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getCameraPosition('left')</code> - to get the left camera position from ROS Driver Camera</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.getCameraPosition('right')</code> - to get the right camera position from ROS Driver Camera</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.graficToOptical('left', point2d)</code> -  to transform the Image Coordinate System to the Camera System</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.backproject('left', point2d)</code> - to backprojects the 2D Image Point into 3D Point Space</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.project('left', point3d)</code> - to backprojects a 3D Point Space into the 2D Image Point</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.opticalToGrafic('left', point2d)</code> - to transform the Camera System to the Image Coordinate System</li>
+  <li><code class="language-plaintext highlighter-rouge">HAL.project3DScene(point3d)</code> - to transform 3D Point Space after triangulation to the 3D Point Viewer</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.ShowNewPoints(points)</code> - to plot a array of plots in the 3D visor</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.ShowAllPoints(points)</code> - to clear the 3D visor and plot new array of plots</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.ClearAllPoints()</code> - to clear the 3D visor</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.showImageMatching(x1, y1, x2, y2)</code> - to plot the matching between two images</li>
+  <li><code class="language-plaintext highlighter-rouge">GUI.showImages(imageLeft,imageRight,True)</code> - allows you to view a debug images or with relevant information</li>
+</ul>
+
+<p><strong>3D Viewer</strong></p>
+
+<p><strong>Mouse</strong></p>
+
+<ul>
+  <li><strong>Mouse wheel</strong>: if it is rotated forward, the zoom will increase. If it is rotated backwards, it will zoom out.</li>
+  <li><strong>Right mouse button</strong>: if it is held down and the mouse is dragged, the content of the window will move in the same direction.</li>
+  <li><strong>Left mouse button</strong>: if it is held down and the mouse is dragged, the content of the window will rotate in the same direction.</li>
+</ul>
+
+<p><strong>Keyboard</strong></p>
+
+<ul>
+  <li><strong>Direction keys and Numerical keypad</strong>: the content of the window will move in the same direction of the key.</li>
+  <li><strong>Minus keys</strong>: if it is held down, it will zoom out.</li>
+  <li><strong>Plus keys</strong>: if it is held down, the zoom will increase.</li>
+</ul>
+
+<h3 id="example-video-with-web-template">Example video with web template</h3>
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/dXm8mTMH3qY" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="instructions-for-rosnode-templates">Instructions for ROSNode Templates</h2>
+
+<h3 id="installation-1">Installation</h3>
+<p>Install the <a href="https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure">General Infrastructure</a> of the JdeRobot Robotics Academy.</p>
+
+<h3 id="how-to-perform-the-exercise-1">How to perform the exercise?</h3>
+<p>To carry out the exercise, you have to edit the file <code class="language-plaintext highlighter-rouge">MyAlgorithm.py</code> and insert in it your code, which reconstructs 3d points from the two stereo views.</p>
+
+<p><strong>Where to insert the code?</strong>
+In the <code class="language-plaintext highlighter-rouge">MyAlgorithm.py</code> file,</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">algorithm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+	<span class="c1">#GETTING THE IMAGES
+</span>	<span class="c1"># imageR = self.getImage('right')
+</span>	<span class="c1"># imageL = self.getImage('left')
+</span>
+	<span class="c1">#EXAMPLE OF HOW TO PLOT A RED COLORED POINT
+</span>	<span class="c1"># position = [1.0, 0.0, 0.0]	X, Y, Z
+</span>	<span class="c1"># color = [1.0, 0.0, 0.0]	R, G, B
+</span>	<span class="c1"># self.point.plotPoint(position, color) 
+</span></code></pre></div></div>
+
+<p><strong>Application Programming Interface</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">self.getImage('left')</code> - to get the left image</li>
+  <li><code class="language-plaintext highlighter-rouge">self.getImage('right')</code> - to get the right image</li>
+  <li><code class="language-plaintext highlighter-rouge">self.point.PlotPoint(position, color)</code> - to plot the point in the 3d tool</li>
+</ul>
+
+<p><strong>Navigating the GUI Interface</strong></p>
+
+<p><strong>Mouse based</strong>: Hold and drag to move around the environment. Scroll to zoom in or out</p>
+
+<p><strong>Keyboard based</strong>: Arrow keys to move around the environment. W and S keys to zoom in or out</p>
+
+<h3 id="how-to-run-your-solution">How to run your solution?</h3>
+<p>Navigate to the 3d_reconstruction directory</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>exercises/3d_reconstruction
+</code></pre></div></div>
+
+<p>Launch Gazebo with the kobuki_3d_reconstruction world through the command</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>roslaunch ./launch/3d_reconstruction_ros.launch
+</code></pre></div></div>
+
+<p>Then you have to execute the academic application, which will incorporate your code:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python2 ./3d_reconstruction.py 3d_reconstruction_conf.yml
+</code></pre></div></div>
+<h3 id="example-video-with-rosnode-templates">Example video with ROSNode Templates</h3>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/11pxsE__DPw" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/cAqfb6qJvwI" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="theory">Theory</h2>
+<p>In computer vision and computer graphics, <a href="https://en.wikipedia.org/wiki/3D_reconstruction">3D reconstruction</a> is the process of determining an object’s 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be achieved as follows:</p>
+
+<ul>
+  <li><strong>Hardware Based</strong>: Hardware based approach requires us to utilize the hardware specific to the reconstruction task. Use of structured light, laser range finder, depth gauge and radiometric methods are some examples.</li>
+</ul>
+
+<figure class="half ">
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/kinect.png" title="Microsoft Kinect">
+        <img src="/assets/images/exercises/3d_reconstruction/kinect.png" alt="Microsoft Kinect" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/3d_imaging.jpg" title="3D Imaging">
+        <img src="/assets/images/exercises/3d_reconstruction/3d_imaging.jpg" alt="3D Imaging" />
+      </a>
+    
+  
+  
+    <figcaption>Hardware based 3D Reconstruction
+</figcaption>
+  
+</figure>
+
+<ul>
+  <li><strong>Software Based</strong>: Software based approach relies on the computation abilities of the computer to determine the 3D properties of the object. Shape from shading, texture, stereo vision and homography are some good methods.</li>
+</ul>
+
+<p>In this exercise our main aim is to carry out 3d reconstruction using Software based approach, particularly stereo vision 3d reconstruction.</p>
+
+<h3 id="epipolar-geometry">Epipolar Geometry</h3>
+<p>When two cameras view a 3D scene from two different positions, there are a number of geometric relations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. The study of these properties and constraints is called Epipolar Geometries. The image and explanation below may generalize the idea:</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/epipolar.png" title="Epipolar Geometry">
+        <img src="/assets/images/exercises/3d_reconstruction/epipolar.png" alt="Epipolar Geometry" />
+      </a>
+    
+  
+  
+    <figcaption>Epipolar Geometry
+</figcaption>
+  
+</figure>
+
+<p>Suppose a point <code class="language-plaintext highlighter-rouge">X</code> in 3d space is imaged in two views, at <code class="language-plaintext highlighter-rouge">x</code> in the first and <code class="language-plaintext highlighter-rouge">x'</code> in the second. Backprojecting the rays to their camera centers through the image planes, we obtain a plane surface, denoted by π.</p>
+
+<p>Supposing now that we know only <code class="language-plaintext highlighter-rouge">x</code>, we may ask how the corresponding point <code class="language-plaintext highlighter-rouge">x'</code> is constrained. The plane π is determined by the baseline(line connecting the camera centers) and the ray defined by <code class="language-plaintext highlighter-rouge">x</code>. From above, we know that the ray corresponding to the <em>unknown</em> point <code class="language-plaintext highlighter-rouge">x'</code> lies in π, hence the point <code class="language-plaintext highlighter-rouge">x'</code> lies on the line of intersection <code class="language-plaintext highlighter-rouge">l'</code> of π with second image plane. This line is called the epipolar line corresponding to <code class="language-plaintext highlighter-rouge">x</code>. This relation helps us to reduce the search space of the point in right image, from a plane to a line. Some important definitions to note are:</p>
+
+<ul>
+  <li>
+    <p>The <strong>epipole</strong> is the point of intersection of the line joining the camera centers (the baseline) with the image plane.</p>
+  </li>
+  <li>
+    <p>An <strong>epipolar plane</strong> is a plane containing the baseline.</p>
+  </li>
+  <li>
+    <p>An <strong>epipolar line</strong> is the intersection of the epipolar plane with the image plane.</p>
+  </li>
+</ul>
+
+<h3 id="stereo-reconstruction">Stereo Reconstruction</h3>
+<p>Stereo reconstruction is a special case of the above 3d reconstruction where the two image planes are parallel to each other and equally distant from the 3d point we want to plot.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/stereo.png" title="Stereo reconstruction">
+        <img src="/assets/images/exercises/3d_reconstruction/stereo.png" alt="Stereo reconstruction" />
+      </a>
+    
+  
+  
+    <figcaption>Stereo Reconstruction
+</figcaption>
+  
+</figure>
+
+<p>In this case the epipolar line for both the image planes are same, and are parallel to the width of the planes, simplifying our constraint better.</p>
+
+<h3 id="3d-reconstruction-algorithm">3D Reconstruction Algorithm</h3>
+<p>The reconstruction algorithm consists of 3 steps:</p>
+
+<ol>
+  <li>Detect the feature points in one image plane</li>
+  <li>Detect the feature point corresponding the one found above</li>
+  <li>Triangulate the point in 3d space</li>
+</ol>
+
+<p>Let’s look at them one by one</p>
+
+<h3 id="feature-point-detection">Feature Point Detection</h3>
+<p>Feature Point Detection is a vast area of study where several algorithms are already studied. <a href="https://medium.com/data-breach/introduction-to-harris-corner-detector-32a88850b3f6">Harris Corner Detection</a> and <a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_shi_tomasi/py_shi_tomasi.html">Shi-Tomasi</a> algorithms use <strong>eigen values</strong> to get a good feature point. But, the problem is we need a lot of points for 3D Reconstruction, and these algorithms won’t be able to provide us with such a large number of feature points.</p>
+
+<p>Therefore, we use edge points as our feature points. There may be ambiguity in their detection in the next stage of the algorithm. But, our problem is solved by taking edges as the feature points. One really cool edge detector is <a href="https://www.youtube.com/watch?v=sRFM5IEqR2w">Canny Edge Detection Algorithm</a>. The algorithm is quite simple and reliable in terms of generating the edges.</p>
+
+<h3 id="feature-point-extraction">Feature Point Extraction</h3>
+<p>The use of the <strong>epipolar constraint</strong> really simplifies the time complexity of our algorithm. For general 3d reconstruction problems, we have to generate an epipolar line for every point in one image frame, and then search in that sample space the corresponding point in the other image frame. The generation of epipolar line is also very easy in our case, it is just the parallel line iterpolation from left image to right image plane.</p>
+
+<p>Checking the correspondence between images involves many algorithms, like <strong>Sum of Squared Differences</strong> or <strong>Energy Minimization</strong>. Without going much deep, using a simple <strong>Correlation filter</strong> also suffices our use case.</p>
+
+<h3 id="triangulation">Triangulation</h3>
+<p>Triangulation in simple terms is just calculating where the 3d point is going to lie using the two determined points in the image planes.</p>
+
+<p>In reality, the position of the image points cannot be measured exactly. For general cameras, there may be geometric or physical distortions. Therefore, a lot of mathematics goes behind minimizing that error and calculating the most accurate 3d point projection. Refer to this <a href="https://courses.cs.washington.edu/courses/cse455/09wi/Lects/lect16.pdf">link</a> for a simple model.</p>
+
+<h2 id="hints">Hints</h2>
+<p>Simple hints provided to help you solve the 3d_reconstruction exercise. The <strong>OpenCV library</strong> is used extensively for this exercise.</p>
+
+<h3 id="setup">Setup</h3>
+<p>Using the exercise API, we can easily retrieve the images. Also, after getting the images, it is a good idea to perform <strong>bilateral filtering</strong> on the images, because there are some extra details that need not be included during the 3d reconstruction. Check out the illustrations for the effects of performing the bilateral filtering.</p>
+
+<h3 id="calculating-correspondences">Calculating Correspondences</h3>
+<p>OpenCV already has built-in correlation filters which can be called through <code class="language-plaintext highlighter-rouge">matchTemplate()</code>. Take care of extreme cases like edges and corners.</p>
+
+<p>One good observation is that the points on left will have correspondence in the left part and the points on right will have correspondence in the right part. Using this observation, we can easily speed up the calculation of correspondence.</p>
+
+<h3 id="plotting-the-points">Plotting the Points</h3>
+<p>Either manual or OpenCV based function <code class="language-plaintext highlighter-rouge">triangulatePoints</code> works good for triangulation. Just take care of all the matrix shapes and sizes while carrying out the algebraic implementations.</p>
+
+<p>Keep in mind the difference between simple 3D coordinates and homogenous 4D coordinates. Check out this <a href="https://www.youtube.com/watch?v=JSLG8n_IY9s">video</a> for details. Simply dividing the complete 4d vector by its 4th coordinate gives us the 3d coordinates.</p>
+
+<p>Due to varied implementations of users, the user may have to <strong>adjust the scale and offset of the triangulated points</strong> in order to make them visible and representable in the GUI interface. Downscaling the 3D coordinate vector by a value between 500 to 1000 works well. Also an offset of 0 to 8 works good.</p>
+
+<h3 id="illustrations">Illustrations</h3>
+
+<figure class="half ">
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/without_bilateral.png" title="Without Bilateral Filtering">
+        <img src="/assets/images/exercises/3d_reconstruction/without_bilateral.png" alt="Without Bilateral Filtering" />
+      </a>
+    
+  
+    
+      <a href="/assets/images/exercises/3d_reconstruction/with_bilateral.png" title="With Bilateral Filtering">
+        <img src="/assets/images/exercises/3d_reconstruction/with_bilateral.png" alt="With Bilateral Filtering" />
+      </a>
+    
+  
+  
+    <figcaption>Illustrations
+</figcaption>
+  
+</figure>
+
+<h2 id="contributors">Contributors</h2>
+
+<ul>
+  <li>Contributors: <a href="https://github.com/almartinflorido">Alberto Martín</a>, <a href="https://github.com/chanfr">Francisco Rivas</a>, <a href="https://github.com/fqez">Francisco Pérez</a>, <a href="https://github.com/jmplaza">Jose María Cañas</a>, <a href="https://github.com/igarag">Nacho Arranz</a>.</li>
+  <li>Maintained by <a href="https://github.com/jessiffmm">Jessica Fernández</a>, <a href="https://github.com/vmartinezf">Vanessa Fernández</a> and <a href="https://github.com/dvalladaresv">David Valladares</a>.</li>
+</ul>
+
+<h2 id="references">References</h2>
+
+<p><a href="https://www.researchgate.net/publication/330183516_3D_Computer_Vision_Stereo_and_3D_Reconstruction_from_Disparity">1</a>
+<a href="https://www.iitr.ac.in/departments/MA/uploads/Stereo-updated.pdf">2</a>
+<a href="https://www.cs.auckland.ac.nz/courses/compsci773s1c/lectures/CS773S1C-3DReconstruction.pdf">3</a>
+<a href="https://cs.nyu.edu/~fergus/teaching/vision/9_10_Stereo.pdf">4</a>
+<a href="https://mil.ufl.edu/nechyba/www/eel6562/course_materials/t9.3d_vision/lecture_multiview1x2.pdf">5</a>
+<a href="https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/">6</a>
+<a href="https://medium.com/@dc.aihub/3d-reconstruction-with-stereo-images-part-1-camera-calibration-d86f750a1ade">7</a></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

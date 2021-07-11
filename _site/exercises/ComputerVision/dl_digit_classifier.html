@@ -1,0 +1,603 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.16.5 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>  Robotics-Academy</title>
+<meta name="description" content="A practical and fun way of learning Robotics and Computer Vision">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics-Academy">
+<meta property="og:title" content="Robotics-Academy">
+<meta property="og:url" content="http://localhost:4000/exercises/ComputerVision/dl_digit_classifier">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/exercises/ComputerVision/dl_digit_classifier">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics-Academy Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="icon" type="image/png" href="/assets/images/logo.png" sizes="16x16">
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Robotics-Academy
+          <span class="site-subtitle">by JdeRobot organization</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/exercises/" >Exercises</a>
+            </li><li class="masthead__menu-item">
+              <a href="/installation/" >Installation</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://forum.jderobot.org/c/english/roboticsacademy" >Forum</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name"></h3>
+    
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          
+          
+
+          <a href="/exercises/"><span class="nav__sub-title">Exercises</span></a>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/autonomous_cars_section" class="">Autonomous Driving</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/mobile_robots_section" class="">Service Robots</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/drones_section" class="">Drones</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/computer_vision_section" class="">Computer Vision</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/exercises/industrial_robots_section" class="">Industrial Robots</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Contribute</span>
+        
+
+        
+        <ul>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/roadmap/" class="">Roadmap</a></li>
+          
+            
+            
+
+            
+            
+
+            <li><a href="/contribute/" class="">How to contribute</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+    
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> TOC Digit Classifier</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#digit-classification-exercise-using-deep-learning">Digit Classification Exercise using Deep Learning</a>
+    <ul>
+      <li><a href="#launch-instructions">Launch Instructions</a></li>
+      <li><a href="#exercise-instructions">Exercise Instructions</a>
+        <ul>
+          <li><a href="#using-the-interface">Using the Interface</a></li>
+        </ul>
+      </li>
+      <li><a href="#theory">Theory</a></li>
+      <li><a href="#contributors">Contributors</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </li>
+</ul>
+            </nav>
+          </aside>
+        
+        <h1 id="digit-classification-exercise-using-deep-learning">Digit Classification Exercise using Deep Learning</h1>
+
+<p>In this exercise, we will train our own deep learning model to solve the widely known task of digit classification. In order to do so, the trained model has to match the input and output specifications described in this documentation. The input model must be provided in ONNX format, which we will talk about in the following sections.</p>
+
+<div class="embed-container">
+  <iframe src="https://www.youtube.com/embed/80K0Fd9GFkU" width="700" height="480" frameborder="0" allowfullscreen="">
+  </iframe>
+</div>
+
+<h2 id="launch-instructions">Launch Instructions</h2>
+<ul>
+  <li>Clone the Robotics Academy repository on your local machine and checkout <code class="language-plaintext highlighter-rouge">noetic</code> branch:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/JdeRobot/RoboticsAcademy
+<span class="nb">cd </span>RoboticsAcademy <span class="o">&amp;&amp;</span> git checkout noetic
+</code></pre></div>    </div>
+  </li>
+  <li>Build noetic docker image. It is necessary to map the port where the camera is located to the docker container.
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>scripts
+docker build <span class="nt">-f</span> Dockerfile-noetic <span class="nt">-t</span> image-name <span class="nb">.</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Run docker container. It is necessary to map the port where the camera is located
+    <ul>
+      <li>For Ubuntu: the port to map will be in /dev/videoX, you should check the number where your camera is connected.
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-p</span> 8000:8000 <span class="nt">-p</span> 2303:2303 <span class="nt">-p</span> 1905:1905 <span class="nt">-p</span> 8765:8765 <span class="nt">-p</span> 6080:6080 <span class="nt">-p</span> 1108:1108 <span class="nt">--device</span> /dev/video0:/dev/video0 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+</code></pre></div>        </div>
+      </li>
+      <li>For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this <a href="https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468">documentation</a> for it.</li>
+    </ul>
+  </li>
+  <li>
+    <p>On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.</p>
+  </li>
+  <li>
+    <p>Click the connect button and wait for some time until an alert appears with the message <code class="language-plaintext highlighter-rouge">Connection Established</code> and button displays connected.</p>
+  </li>
+  <li>The exercise can be used after the alert.</li>
+</ul>
+
+<h2 id="exercise-instructions">Exercise Instructions</h2>
+<ul>
+  <li>The uploaded model should adhere to the following input/output specifications, please keep that in mind while building your model.
+    <ul>
+      <li>The model must accept as input grayscale images with size 28x28 pixels. Input shape: 
+<code class="language-plaintext highlighter-rouge">[batch_size, num_channels, height, width] = [1, 1, 28, 28]</code></li>
+      <li>The output must be size 10 array with the probabilities for each class. Output shape: 
+<code class="language-plaintext highlighter-rouge">[batch_size, num_classes] = [1, 10]</code></li>
+    </ul>
+  </li>
+  <li>The user can train their model in any framework of their choice and export it to the ONNX format <a href="https://onnx.ai/">[1]</a>. Refer to this <a href="https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html"><strong>article</strong></a> to know more about how to export your model. For instance, if you are working with PyTorch <a href="https://pytorch.org/">[2]</a>:
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="n">model</span> <span class="o">=</span> <span class="p">...</span>
+<span class="n">dummy_input</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
+<span class="n">torch</span><span class="p">.</span><span class="n">onnx</span><span class="p">.</span><span class="n">export</span><span class="p">(</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">dummy_input</span><span class="p">,</span> <span class="s">"mnist_cnn.onnx"</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">export_params</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">input_names</span><span class="o">=</span><span class="p">[</span><span class="s">'input'</span><span class="p">],</span> <span class="n">output_names</span><span class="o">=</span><span class="p">[</span><span class="s">'output'</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="using-the-interface">Using the Interface</h3>
+<ul>
+  <li>
+    <p><strong>Browse Button</strong>: The browse button is used to browse and upload the trained deep learning model from the local machine.</p>
+  </li>
+  <li>
+    <p><strong>Control Buttons</strong>: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).</p>
+  </li>
+  <li>
+    <p><strong>Frequency Slider</strong>: This slider adjusts the running frequency of the iterative part of the code (under the <code class="language-plaintext highlighter-rouge">while True:</code>). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.</p>
+  </li>
+  <li>
+    <p><strong>Debug Level</strong>: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the image. A debug level greater than or equal to 2 enables all the GUI functions working properly.</p>
+  </li>
+  <li>
+    <p><strong>Psuedo Console</strong>: This shows error messages and other logs about the exercise.</p>
+  </li>
+</ul>
+
+<h2 id="theory">Theory</h2>
+<p>Digit classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits <a href="http://yann.lecun.com/exdb/mnist/">[3]</a> is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/dl_digit_classifier/mnist.png" title="MNIST samples">
+        <img src="/assets/images/exercises/dl_digit_classifier/mnist.png" alt="MNIST samples" />
+      </a>
+    
+  
+  
+    <figcaption>Samples from the MNIST database
+</figcaption>
+  
+</figure>
+
+<p>Image classification can be achieved using classic machine learning algorithms like SVMs or Decision Trees <a href="https://towardsdatascience.com/machine-learning-classifiers-a5cc4e1b0623">[4]</a>. However, these algorithms cannot compete in performance with Convolutional Neural Networks (CNNs). CNNs are a particular class of deep neural network which takes advantage of the spatial relationship between variables that are close to each other, allowing for translation invariance. In that way, they are specially suitable for processing grid-like data, such as pixels in an image or time-steps in an audio signal. CNNs are formed by subsequent convolutional layers, each of them composed of convolutional filters. The number of layers and filters has a great impact on the performance on the model, and the optimal configuration depends mostly on the particular task and the available computational resources. Other basic building blocks in CNNs are fully connected layers, activation functions and regularization strategies, such as dropout or pooling. If you are not familiarized with these concepts, here is <a href="https://towardsdatascience.com/simple-introduction-to-convolutional-neural-networks-cdf8d3077bac">a nice article to warm up</a>.</p>
+
+<figure class=" ">
+  
+    
+      <a href="/assets/images/exercises/dl_digit_classifier/cnn.png" title="Example of a Convolutional Neural Network">
+        <img src="/assets/images/exercises/dl_digit_classifier/cnn.png" alt="Example of a Convolutional Neural Network" />
+      </a>
+    
+  
+  
+    <figcaption>Example of a Convolutional Neural Network
+</figcaption>
+  
+</figure>
+
+<p>For solving the particular task of digit classification, we don’t need complex architectures. Here is an example of how you can build a CNN and train a model using MNIST database with Pytorch: <a href="https://github.com/pytorch/examples/tree/master/mnist">Basic MNIST Example</a>. If you want to further improve the accuracy of your model, try increasing the number of layers and play around with different regularization strategies, such as data augmentation <a href="(https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/)">[5]</a>.</p>
+
+<h2 id="contributors">Contributors</h2>
+<ul>
+  <li>Contributors: <a href="https://github.com/dpascualhe">David Pascual</a>, <a href="https://github.com/shashwat623">Shashwat Dalakoti</a></li>
+  <li>Maintained by <a href="https://github.com/dpascualhe">David Pascual</a></li>
+</ul>
+
+<h2 id="references">References</h2>
+<ol>
+  <li>https://onnx.ai/</li>
+  <li>https://pytorch.org/</li>
+  <li>http://yann.lecun.com/exdb/mnist/</li>
+  <li>https://towardsdatascience.com/machine-learning-classifiers-a5cc4e1b0623</li>
+  <li>https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/</li>
+</ol>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/jderobot" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/JdeRobot/RoboticsAcademy" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+   <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+     MathJax.Hub.Config({
+       extensions: ["tex2jax.js"],
+       jax: ["input/TeX", "output/HTML-CSS"],
+       tex2jax: {
+         inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+         displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+         processEscapes: true
+       },
+       "HTML-CSS": { availableFonts: ["TeX"] }
+     });
+  </script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
