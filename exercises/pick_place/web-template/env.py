@@ -173,7 +173,6 @@ class ENV():
         self.scene.remove_world_object(object_name)
 
     def respawn_all_objects(self):
-        print(self.object_list)
         objects_name = self.object_list.keys()
         for object_name in objects_name:
             this_object = self.object_list[object_name]
@@ -213,5 +212,4 @@ class ENV():
 
             # rospy.sleep(0.5)
         rospy.loginfo("All objects are respawned")
-        if self.play_event.is_set():
-            sys.exit()
+        sys.exit()
