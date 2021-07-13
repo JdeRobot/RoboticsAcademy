@@ -122,7 +122,7 @@ class Template:
                     time.sleep((self.time_cycle - ms) / 1000.0)
 
             self.hal.frame_number = 0
-            print("Process thread closed!")
+            print("Video infer process thread closed!")
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -131,12 +131,14 @@ class Template:
     
     def saveModel(self, raw_dl_model):
         # Receive model
+        print("Received raw model")
         raw_dl_model = raw_dl_model.split(",")[-1]
         raw_dl_model_bytes = raw_dl_model.encode('ascii')
         raw_dl_model_bytes = base64.b64decode(raw_dl_model_bytes)
         try:
             with open(self.aux_model_fname, "wb") as f:
                 f.write(raw_dl_model_bytes)
+            print("Model Uploaded")
         except:
             print("Error saving model to file")
 
@@ -149,7 +151,7 @@ class Template:
             raw_video_bytes = base64.b64decode(raw_video_bytes)
             with open("uploaded_video.mp4", "wb") as f:
                 f.write(raw_video_bytes)
-                print("Video Saved")
+                print("Video Uploaded")
         except:
             print("Error in decoding")
 
@@ -262,7 +264,7 @@ class Template:
                 if (ms < self.time_cycle):
                     time.sleep((self.time_cycle - ms) / 1000.0)
 
-            print("Process thread closed!")
+            print("Live infer process thread closed!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
@@ -315,21 +317,26 @@ class Template:
                 prec = ['%.2f' % p for p in precision]
                 rec = ['%.2f' % r for r in recall]
                 ap_str = "{0:.2f}%".format(ap * 100)
-                print('AP: %s (%s)' % (ap_str, cl))
-                f.write('\n\nClass: %s' % cl)
+                # print('AP: %s (%s)' % (ap_str, cl))
+                f.write('\nClass: %s' % cl)
                 f.write('\nAP: %s' % ap_str)
-                f.write('\n\nPrecision: %s' % prec)
-                f.write('\n\n')
-                f.write("*" * 100)
+                f.write('\nPrecision: %s' % prec)
+                f.write('\n')
+                f.write("*" * 40)
                 f.write('\nRecall: %s' % rec)
                 f.write('\n')
-                f.write("*" * 100)
+                f.write("*" * 40)
 
         mAP = acc_AP / validClasses
         mAP_str = "{0:.2f}%".format(mAP * 100)
-        print('mAP: %s' % mAP_str)
+        # print('mAP: %s' % mAP_str)
         f.write('\nmAP: %s' % mAP_str)
-        print(f)
+        f.close()
+        print("\n" + "#"*10 + "Benchmarking Results" + "#"*10 + "\n")
+        f = open(os.path.join(savePath, 'results.txt'), 'r')
+        for line in f:
+            print(line)
+        print("#"*40)
         f.close()
 
 
@@ -415,7 +422,7 @@ class Template:
             
             self.hal.frame_number = 0
             self.perform_benchmark()
-            print("Process thread closed!")
+            print("Benchmarking process thread closed!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
@@ -484,13 +491,15 @@ class Template:
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         if(message == "#infer"):
             self.thread = threading.Thread(target=self.process_dl_model)
+            print("Live infer process thread started!")
         if(message == "#eval"):
             self.thread = threading.Thread(target= self.eval_dl_model)
+            print("Benchmarking process thread started!")
         if(message == "#video_infer"):
             self.thread = threading.Thread(target= self.video_infer)
+            print("Video infer process thread started!")
         self.thread.start()
         self.measure_thread.start()
-        print("Process Thread Started!")
         print("Frequency Thread started!")
 
 

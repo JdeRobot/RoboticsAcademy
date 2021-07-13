@@ -310,7 +310,7 @@ ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jdero
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
+RUN git clone https://github.com/shashwat623/RoboticsAcademy -b noetic
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 COPY manager-3.1.py /manager-3.1.py
