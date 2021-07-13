@@ -74,24 +74,6 @@ class Template:
     		self.server.send_message(self.client, source_code)
     
     		return "", ""
-
-        elif(source_code[:5] == "#resu"):
-                restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-                restart_simulation()
-
-                return "", ""
-
-        elif(source_code[:5] == "#paus"):
-                pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-                pause_simulation()
-
-                return "", ""
-    		
-    	elif(source_code[:5] == "#rest"):
-    		reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-    		reset_simulation()
-    		self.gui.reset_gui()
-    		return "", ""
     		
     	else:
     		# Get the frequency of operation, convert to time_cycle and strip

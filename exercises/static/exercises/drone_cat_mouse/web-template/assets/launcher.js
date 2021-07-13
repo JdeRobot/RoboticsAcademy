@@ -1,5 +1,6 @@
 var ws_manager;
 var gazeboToggle = false, gazeboOn = false;
+var simReset = false;
 
 function startSim() {
     ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
@@ -42,7 +43,11 @@ function startSim() {
                 }
     
                 gazeboToggle = false;
-            } else {
+            }  else if (simReset){
+                ws_manager.send(JSON.stringify({"command": "reset"}));
+                simReset = false;
+            } 
+            else {
                 setTimeout(function () {
                     ws_manager.send(JSON.stringify({"command" : "Pong"}));
                 }, 1000)
@@ -59,4 +64,8 @@ function toggleGazebo() {
     }
 
     gazeboToggle = true;
+}
+
+function resetSimulation() {
+    simReset = true;
 }
