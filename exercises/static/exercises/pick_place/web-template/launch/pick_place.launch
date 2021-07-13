@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<launch>
 <!-- PARTE 1: LANZAR MUNDO VACÍO EN GAZEBO + IRB 120 + TF + CONTROL INTERFACE -->
   <arg name="paused" default="false" doc="Start gazebo in paused mode" />
   <arg name="use_sim_time" default="true"/>
@@ -6,6 +7,7 @@
   <arg name="headless" default="true"/>
   <arg name="debug" default="false"/>
   <arg name="verbose" default="true"/>
+  <arg name="world" default="/RoboticsAcademy/exercises/pick_place/warehouse.world"/>
 
   <!-- remap topics to conform to ROS-I specifications -->
   <remap from="/arm_controller/follow_joint_trajectory" to="/joint_trajectory_action" />
@@ -60,3 +62,5 @@
   <include file="$(find irb120_robotiq85_moveit_config)/launch/move_group.launch">
     <arg name="info" value="true"/>
   </include>
+  <node name="model_manager" pkg="spawn_objects" type="model_manager.py"/>
+</launch>

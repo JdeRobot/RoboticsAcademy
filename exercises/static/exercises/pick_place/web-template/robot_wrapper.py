@@ -1,3 +1,7 @@
+####################################
+# This file is just for reference, this is not being called by exercise.py
+####################################
+
 #!/usr/bin/python
 import rospy
 import rospkg

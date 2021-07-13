@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<launch>
-  <include file="/opt/jderobot/share/jderobot/gazebo/launch/kobuki_1_reconstruccion3d.launch">
-  </include>
-</launch>

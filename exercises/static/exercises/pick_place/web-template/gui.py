@@ -102,18 +102,18 @@ class GUI:
         return payload
 
     # Function for student to call
-    def showImage(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+    # def showImage(self, image):
+    #     self.image_show_lock.acquire()
+    #     self.image_to_be_shown = image
+    #     self.image_to_be_shown_updated = True
+    #     self.image_show_lock.release()
 
     # Function for student to call
-    def showLeftImage(self, image):
-        self.left_image_show_lock.acquire()
-        self.left_image_to_be_shown = image
-        self.left_image_to_be_shown_updated = True
-        self.left_image_show_lock.release()
+    # def showLeftImage(self, image):
+    #     self.left_image_show_lock.acquire()
+    #     self.left_image_to_be_shown = image
+    #     self.left_image_to_be_shown_updated = True
+    #     self.left_image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
