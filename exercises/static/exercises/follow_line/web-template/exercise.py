@@ -64,22 +64,8 @@ class Template:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-    	# Check for save/load
-    	if(source_code[:5] == "#save"):
-    		source_code = source_code[5:]
-    		self.save_code(source_code)
-    		
-    		return "", ""
-    	
-    	elif(source_code[:5] == "#load"):
-    		source_code = source_code + self.load_code()
-    		self.server.send_message(self.client, source_code)
-    
-    		return "", ""
-    		
-    	else:
-    		sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-    		return iterative_code, sequential_code
+        sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+        return iterative_code, sequential_code
     
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):

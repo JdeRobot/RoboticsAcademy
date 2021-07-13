@@ -116,9 +116,9 @@ function loadCode(){
 // Function to command the simulation to reset
 function resetSim(){
 	// Send message to initiate reset
-	var message = "#rest"
+	resetSimulation();
 	clearMap();
-	websocket_code.send(message)
+
 	if(running == true){
 		stopCode();
 		submitCode();
