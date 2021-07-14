@@ -139,6 +139,7 @@ class Template:
             with open(self.aux_model_fname, "wb") as f:
                 f.write(raw_dl_model_bytes)
             print("Model Uploaded")
+            self.server.send_message(self.client, "#modl")
         except:
             print("Error saving model to file")
 
@@ -152,6 +153,7 @@ class Template:
             with open("uploaded_video.mp4", "wb") as f:
                 f.write(raw_video_bytes)
                 print("Video Uploaded")
+                self.server.send_message(self.client, "#vido")
         except:
             print("Error in decoding")
 

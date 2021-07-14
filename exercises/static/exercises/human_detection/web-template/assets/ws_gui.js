@@ -51,10 +51,10 @@ function declare_gui() {
 
             if (count != ""){
                 if (count == "Plot"){
-                    document.getElementById("output_heading").textContent = "Model Benchmarking Results"
+                    document.getElementById("output_heading").textContent = "Model Benchmarking Results";
                 }
                 else{
-                    document.getElementById("output_heading").textContent = "Total People in Frame: " + count
+                    document.getElementById("output_heading").textContent = "Total People in Frame: " + count;
                 }
             }
 
