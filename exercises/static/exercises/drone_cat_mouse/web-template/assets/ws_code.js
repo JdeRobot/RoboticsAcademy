@@ -21,18 +21,17 @@ function declare_code(websocket_address){
 	websocket_code.onopen = function(event){
 		radiConect.contentWindow.postMessage({command: 'launch_level', level: '5'}, '*');
 		if (websocket_gui.readyState == 1) {
-			// alert("[open] Connection established!");
+			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage('up', '*');
 		}
 	}
 	websocket_code.onclose = function(event){
-        declare_code(websocket_address)
 		if(event.wasClean){
 			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
-		//else{
-		//	alert("[close] Connection closed!");
-		//}
+		else{
+			alert("[close] Connection closed!");
+		}
 	}
 
 	websocket_code.onmessage = function(event){
