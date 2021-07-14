@@ -86,18 +86,6 @@ function stopCode(){
 	
 }
 
-// Function to command the simulation to reset
-function resetSim(){
-	// Send message to initiate reset
-	resetSimulation();
-	reset_gui();
-
-	if(running == true){
-		stopCode();
-		submitCode();
-	}
-}
-
 // Function for range slider
 function codefrequencyUpdate(vol) {
 	document.querySelector('#code_frequency').value = vol;
