@@ -8,8 +8,7 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
-var frequency = "0",
-	running = false;
+var frequency = "0";
 
 //WebSocket for Code
 var websocket_code;
@@ -76,21 +75,10 @@ function submitCode(){
 		stop_button.disabled = false;
 		stop_button.style.opacity = "1.0";
 		stop_button.style.cursor = "default";
-
-		running = true;
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
 	}	
-}
-
-// Function that send/submits an empty string
-function stopCode(){
-    var stop_code = "#code\n";
-    console.log("Message sent!");
-	websocket_code.send(stop_code);
-	
-	running = false
 }
 
 // Function to save the code
@@ -109,19 +97,6 @@ function loadCode(){
 	var message = "#load";
 	websocket_code.send(message);
 	
-}
-
-// Function to command the simulation to reset
-function resetSim(){
-	// Send message to initiate reset
-	var message = "#rest"
-	websocket_code.send(message)
-	reset_gui();
-	
-	if(running == true){
-		stopCode();
-		submitCode();
-	}
 }
 
 // Function for range slider
