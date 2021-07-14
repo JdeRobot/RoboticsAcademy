@@ -74,24 +74,7 @@ class Template:
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
 
-            return "", ""
-
-        elif(source_code[:5] == "#resu"):
-            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-            restart_simulation()
-
-            return "", ""
-
-        elif(source_code[:5] == "#paus"):
-            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-            pause_simulation()
-
-            return "", ""
-
-        elif(source_code[:5] == "#rest"):
-            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-            reset_simulation()
-            return "", ""
+            return "", ""        
 
         else:
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
