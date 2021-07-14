@@ -219,7 +219,7 @@ class Commands:
 
     # Function to reset Gazebo physics
     def reset_physics(self):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_simulation"
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
         rosservice_thread = DockerThread(cmd)
         rosservice_thread.start()
 
@@ -295,12 +295,15 @@ class Manager:
                     self.open_accelerated_simulation(self.exercise, self.width, self.height)
             elif command == "resume":
                 self.resume_simulation()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif command == "stop":
                 self.stop_simulation()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
                 await websocket.send("Ping{}".format(self.launch_level))
