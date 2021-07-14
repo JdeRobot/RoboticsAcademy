@@ -1,35 +1,33 @@
 // Main message controller for websockets
-var running = true;
+var running = false;
 
 // Function to execute the student solution
 function start(){
+    // Manager Websocket
+    if (running == false) {
+        resumeSimulation();
+    }
+
     // Code Websocket
     submitCode();
 
     // GUI Websocket
     unpause_lap();
-
-    // Mark the variables
-    running = true;
 }
 
 // Function to stop the student solution
 function stop(){
-    // Code Websocket
-    stopCode();
+    // Manager Websocket
+    if (running == true) {
+        stopSimulation();
+    }
 
     // GUI Websocket
     pause_lap();
-
-    // Mark the variables
-    running = false;
 }
 
 // Function to reset the simulation
 function reset(){
-    // Code websocket
-    stopCode();
-
     // Manager Websocket
     resetSimulation();
 

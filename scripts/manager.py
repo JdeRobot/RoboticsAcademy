@@ -269,8 +269,10 @@ class Manager:
                 self.resume_simulation()
             elif command == "stop":
                 self.stop_simulation()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif command == "start":
                 self.start_simulation()
+                await websocket.send("Ping{}".format(self.launch_level))
             elif command == "reset":
                 self.reset_simulation()
                 await websocket.send("Ping{}".format(self.launch_level))
