@@ -255,39 +255,39 @@ class Template:
 
     # Function to calculate score for evaluation
     def calc_score(self):
-        while True:
-            # get position of cat drone
+        point_cnt = 0
+        max_score = 100
+        max_points = 240
+        self.score = 0
+
+        while not self.reload:
+            # Get position of cat drone
             x1, y1, z1 = self.hal.get_position()
-            # get position of mouse drone
+            # Get position of mouse drone
             x2, y2, z2 = self.mouse.get_position()
 
-            # calculate distance between cat and mouse drones
+            # Calculate distance between cat and mouse drones
             self.dist = np.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
-            # rounding upto 2 decimal
+            # Rounding upto 2 decimal
             self.dist = int(self.dist*100)/100
 
-            # calculate score only when both the drones are in air
-            if z1 > 1.0 and z2 > 1.0:
-                # calculate score
+            # Calculate score only when both the drones are in air 
+            # and score is less than maximum score
+            # and raise score upto maximum of 2 mins that is 240 measuring points
+            if z1 > 0.25 and z2 > 0.25 and self.score < max_score and point_cnt <= max_points:
+                # Calculate score
                 if self.dist < 2.0:
                     self.score = self.score + 0.5
                 elif self.dist >= 2.0 and self.dist < 3.0:
                     self.score = self.score + 0.25
                 elif self.dist >= 3.0 and self.dist < 4.0:
                     self.score = self.score + 0.12
-                else:
-                    self.score = self.score + 0.01
 
-                # rounding upto 2 decimal
+                # Rounding upto 2 decimal
                 self.score = int(self.score*100)/100
 
-            # plot above x-axis by default
-            # if height of cat < height of mouse, plot below x-axis and
-            # ignore if the difference is less than 0.5
-            if z1 < z2 and not np.abs(z2-z1) < 0.5:
-                self.dist = -self.dist
-
-            time.sleep(1)
+            point_cnt = point_cnt + 1
+            time.sleep(0.5)
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
@@ -302,8 +302,10 @@ class Template:
         # New thread execution
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
+        self.eval_thread = threading.Thread(target=self.calc_score)
         self.thread.start()
         self.measure_thread.start()
+        self.eval_thread.start()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -347,10 +349,6 @@ class Template:
         # Start the real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
-
-        # Start the score evaluation thread
-        self.eval_thread = threading.Thread(target=self.calc_score)
-        self.eval_thread.start()
 
         # Initialize the ping message
         self.send_frequency_message()
