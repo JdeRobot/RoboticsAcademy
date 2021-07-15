@@ -81,6 +81,13 @@ function submitCode(){
 	}	
 }
 
+// Function that send/submits an empty string
+function stopCode(){
+    var stop_code = "#code\n";
+    console.log("Message sent!");
+	websocket_code.send(stop_code);
+}
+
 // Function to save the code
 function saveCode(){
 	// Get the code from editor and add header
