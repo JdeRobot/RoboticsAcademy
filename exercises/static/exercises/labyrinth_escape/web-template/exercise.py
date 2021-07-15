@@ -262,6 +262,8 @@ class Template:
         if message[:5] == "#freq":
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            time.sleep(1)
+            self.send_frequency_message()
             return
 
         try:
