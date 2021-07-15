@@ -14,6 +14,9 @@ function start(){
 
 // Function to stop the student solution
 function stop(){
+    // Code Websocket
+    stopCode();
+
     // Manager Websocket
     if (running == true) {
         stopSimulation();
@@ -22,6 +25,9 @@ function stop(){
 
 // Function to reset the simulation
 function reset(){
+    // Code Websocket
+    stopCode();
+
     // Manager Websocket
     resetSimulation();
 

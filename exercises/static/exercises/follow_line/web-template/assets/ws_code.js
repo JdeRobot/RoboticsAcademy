@@ -80,6 +80,13 @@ function submitCode(){
 	}
 }
 
+// Function that send/submits an empty string
+function stopCode(){
+    var stop_code = "#code\n";
+    console.log("Message sent!");
+	websocket_code.send(stop_code);
+}
+
 // Function for range slider
 function codefrequencyUpdate(vol) {
 	document.querySelector('#code_frequency').value = vol;
