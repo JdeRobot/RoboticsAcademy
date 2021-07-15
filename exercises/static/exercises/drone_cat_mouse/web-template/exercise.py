@@ -266,6 +266,9 @@ class Template:
             # Get position of mouse drone
             x2, y2, z2 = self.mouse.get_position()
 
+            # Offset x2
+            x2 = x2 + 2.0
+
             # Calculate distance between cat and mouse drones
             self.dist = np.sqrt((x2-x1)**2 + (y2-y1)**2 + (z2-z1)**2)
             # Rounding upto 2 decimal
