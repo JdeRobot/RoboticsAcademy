@@ -313,14 +313,14 @@ ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugin
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b $ROS_DISTRO
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
-COPY manager-3.1.py /manager-3.1.py
+COPY manager.py /manager.py
 COPY instructions.json /instructions.json
-COPY start-3.1.sh /start-3.1.sh
+COPY start.sh /start.sh
 COPY start_manager.sh /start_manager.sh
 COPY start_logs.sh /start_logs.sh
 
 # execute permissions
-RUN chmod 755 /start-3.1.sh
+RUN chmod 755 /start.sh
 RUN chmod 755 /start_manager.sh
 RUN chmod 755 /start_logs.sh
 

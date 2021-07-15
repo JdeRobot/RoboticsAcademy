@@ -1,4 +1,4 @@
 #!/bin/bash
 
 mkdir -p /logs
-script -q -c "./start-3.1.sh log" /logs/stderr.log
+script -q -c "./start.sh log" /logs/stderr.log
