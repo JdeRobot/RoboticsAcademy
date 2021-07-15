@@ -25,7 +25,8 @@ drone_teleop:
     alt: "Drone Teleoperator"
     title: "Drone Teleoperator"
 
-youtubeId: Guq3nPIQmdM
+youtubeId1: Guq3nPIQmdM
+youtubeId2: 68GSXnOTUNs
 ---
 ## Goal
 
@@ -154,14 +155,12 @@ There are several ways of solving this exercise, that differ in the approach and
 
 ### How do I get the waypoint coordinates?
 
-You can try to fly your drone manually using the teleoperator included in the GUI to check each waypoint position in space (x, y, z). Once you have your waypoint list you'll pass each target point to the blocking position control function to complete the gymkhana course. 
-
 To give you some initial references, each leg in the squared course is 16 m long, and the position of the numbered cubes at the corners are:
 
-1. **CUBE 1:** Located at (x, y) = (8, 8) m
-2. **CUBE 2:** Located at (x, y) = (8, -8) m
-3. **CUBE 3:** Located at (x, y) = (-8, -8) m
-4. **CUBE 4:** Located at (x, y) = (-8, 8) m
+1. **CUBE 1:** Located at (x, y) = (8, -8) m
+2. **CUBE 2:** Located at (x, y) = (-8, -8) m
+3. **CUBE 3:** Located at (x, y) = (-8, 8) m
+4. **CUBE 4:** Located at (x, y) = (8, 8) m
 
 The takeoff pad is located at (x, y) = (0, 0) m. The dimensions of all cubes are 1 x 1 x 1 m.
 
@@ -177,9 +176,13 @@ If you know your current position and your target one, you can easily compute th
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
 ## Demonstrative video of the solution
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 ---------
 
