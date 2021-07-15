@@ -6,7 +6,7 @@ var simResume = false;
 
 function startSim() {
     ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
-    exercise = "drone_kymkhana"
+    exercise = "drone_gymkhana"
     var level = 0;
     let websockets_connected = false;
 
