@@ -43,7 +43,7 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.car = Car()
-        self.gui = GUI(self.host, self.hal, self.car)
+        self.gui = GUI(self.host, self.car)
 
     # Function to parse the code
     # A few assumptions:

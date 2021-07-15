@@ -68,14 +68,14 @@ class HAL:
         state = self.drone.get_landed_state()
         return state
 
-    def set_cmd_pos(self, x, y, z, yaw):
-        self.drone.set_cmd_pos(x, y, z, yaw)
+    def set_cmd_pos(self, x, y, z, az):
+        self.drone.set_cmd_pos(x, y, z, az)
 
-    def set_cmd_vel(self, vx, vy, vz, yaw_rate):
-        self.drone.set_cmd_vel(vx, vy, vz, yaw_rate)
+    def set_cmd_vel(self, vx, vy, vz, az):
+        self.drone.set_cmd_vel(vx, vy, vz, az)
 
-    def set_cmd_mix(self, vx, vy, z, yaw_rate):
-        self.drone.set_cmd_mix(vx, vy, z, yaw_rate)
+    def set_cmd_mix(self, vx, vy, z, az):
+        self.drone.set_cmd_mix(vx, vy, z, az)
 
     def takeoff(self, h=3):
         self.drone.takeoff(h)

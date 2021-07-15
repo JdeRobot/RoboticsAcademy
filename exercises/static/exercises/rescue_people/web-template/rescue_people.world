@@ -42,6 +42,7 @@
 		</include>
 
 		<scene>
+            <shadows>0</shadows>
 			<ambient>0.01 0.01 0.01 1.0</ambient>
 			<sky>
 				<clouds>

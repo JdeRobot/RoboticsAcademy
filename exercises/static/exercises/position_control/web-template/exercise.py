@@ -41,7 +41,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.gui = GUI(self.host)
 
     # Function to parse the code
     # A few assumptions:

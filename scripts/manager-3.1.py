@@ -26,15 +26,10 @@ class DockerThread(threading.Thread):
     def __init__(self, cmd):
         threading.Thread.__init__(self)
         self.cmd = cmd
-        self.out = None
 
     def run(self):
-        stream = os.popen(self.cmd)
-        output = stream.read()
-        self.out = output
+        subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
 
-    def print_output(self):
-        return self.out
 
 # Class to store the commands
 class Commands:
@@ -105,8 +100,8 @@ class Commands:
 
     # Function to stop gzclient
     def stop_gzclient(self):
-        cmd_stop = "pkill -f gzclient"
-        os.popen(cmd_stop)
+        cmd_stop = ['pkill', '-f', 'gzclient']
+        self.run_subprocess(cmd_stop)
 
     # Function to start the console
     def start_console(self, width, height):
@@ -146,10 +141,10 @@ class Commands:
 
     # Function to stop VNC server for accelerated simulation
     def stop_vnc(self):
-        cmd_console = "/opt/TurboVNC/bin/vncserver -kill :0"
-        os.popen(cmd_console)
-        cmd_console = "/opt/TurboVNC/bin/vncserver -kill :1"
-        os.popen(cmd_console)
+        cmd_vnc_0 = ['/opt/TurboVNC/bin/vncserver', '-kill', ':0']
+        self.run_subprocess(cmd_vnc_0)
+        cmd_vnc_1 = ['/opt/TurboVNC/bin/vncserver', '-kill', ':1']
+        self.run_subprocess(cmd_vnc_1)
 
     # Function to start an exercise
     def start_exercise(self, exercise):
@@ -172,14 +167,11 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise):
-        if exercise in DRONE_EX:
-            roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
-            os.popen(roslaunch_cmd)
-        else:
-            roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
-            roslaunch_thread = DockerThread(roslaunch_cmd)
-            roslaunch_thread.start()
-
+        if os.path.exists("/status.txt"):
+            os.remove("/status.txt")
+        roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
+        roslaunch_thread = DockerThread(roslaunch_cmd)
+        roslaunch_thread.start()
         args=["gz", "stats", "-p"]
         repeat = True
         while repeat:
@@ -223,44 +215,49 @@ class Commands:
         rosservice_thread = DockerThread(cmd)
         rosservice_thread.start()
 
+    # Function to start subprocess
+    def run_subprocess(self, cmd):
+        subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+
     # Function to kill every program
     async def kill_all(self):
-        cmd_py = 'pkill -9 -f "python "'
-        os.popen(cmd_py)
-        cmd_gz = "pkill -9 -f gz"
-        os.popen(cmd_gz)
-        cmd_launch = "pkill -9 -f launch.py"
-        os.popen(cmd_launch)
-        cmd_exercise = "pkill -9 -f exercise.py"
-        os.popen(cmd_exercise)
-        cmd_gui = "pkill -9 -f gui.py"
-        os.popen(cmd_gui)
-        cmd_host = "pkill -9 -f node"
-        os.popen(cmd_host)
-        cmd_rosmaster = "pkill -9 -f rosmaster"
-        os.popen(cmd_rosmaster)
-        cmd_host = "pkill -9 -f gzserver"
-        os.popen(cmd_host)
-        cmd_client = "pkill -9 -f gzclient"
-        os.popen(cmd_client)
-        cmd_ros = "pkill -9 -f roslaunch"
-        os.popen(cmd_ros)
-        cmd_rosout = "pkill -9 -f rosout"
-        os.popen(cmd_rosout)
-        cmd_mel = "pkill -9 -f melodroot"
-        os.popen(cmd_mel)
-        cmd_websockify = "pkill -9 -f websockify"
-        os.popen(cmd_websockify)
-        cmd_x11vnc = "pkill -9 -f x11vnc"
-        os.popen(cmd_x11vnc)
-        cmd_novnc = "pkill -9 -f launch.sh"
-        os.popen(cmd_novnc)
-        cmd_console = "pkill -9 -f xterm"
-        os.popen(cmd_console)
-        cmd_noetic = "pkill -9 -f noetic"
-        os.popen(cmd_noetic)
-        cmd_px4 = "pkill -9 -f px4"
-        os.popen(cmd_px4)
+        cmd = ['pkill', '-9', '-f']
+        cmd_py = cmd + ['"python "']
+        self.run_subprocess(cmd_py)
+        cmd_gz = cmd + ['gz']
+        self.run_subprocess(cmd_gz)
+        cmd_launch = cmd + ['launch.py']
+        self.run_subprocess(cmd_launch)
+        cmd_exercise = cmd + ['exercise.py']
+        self.run_subprocess(cmd_exercise)
+        cmd_gui = cmd + ['gui.py']
+        self.run_subprocess(cmd_gui)
+        cmd_host = cmd + ['node']
+        self.run_subprocess(cmd_host)
+        cmd_rosmaster = cmd + ['rosmaster']
+        self.run_subprocess(cmd_rosmaster)
+        cmd_host = cmd + ['gzserver']
+        self.run_subprocess(cmd_host)
+        cmd_client = cmd + ['gzclient']
+        self.run_subprocess(cmd_client)
+        cmd_ros = cmd + ['roslaunch']
+        self.run_subprocess(cmd_ros)
+        cmd_rosout = cmd + ['rosout']
+        self.run_subprocess(cmd_rosout)
+        cmd_mel = cmd + ['melodroot']
+        self.run_subprocess(cmd_mel)
+        cmd_websockify = cmd + ['websockify']
+        self.run_subprocess(cmd_websockify)
+        cmd_x11vnc = cmd + ['x11vnc']
+        self.run_subprocess(cmd_x11vnc)
+        cmd_novnc = cmd + ['launch.sh']
+        self.run_subprocess(cmd_novnc)
+        cmd_console = cmd + ['xterm']
+        self.run_subprocess(cmd_console)
+        cmd_noetic = cmd + ['noetic']
+        self.run_subprocess(cmd_noetic)
+        cmd_px4 = cmd + ['px4']
+        self.run_subprocess(cmd_px4)
 
 
 # Main Manager class

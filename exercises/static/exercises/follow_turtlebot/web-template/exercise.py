@@ -44,7 +44,7 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.turtlebot = Turtlebot()
-        self.gui = GUI(self.host, self.hal, self.turtlebot)
+        self.gui = GUI(self.host, self.turtlebot)
 
     # Function to parse the code
     # A few assumptions:
