@@ -1,6 +1,6 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
-ARG VIRTUALGL_VERSION=2.6.91
+ARG VIRTUALGL_VERSION=2.6.90
 ARG TURBOVNC_VERSION=2.2.80
 
 # Make all NVIDIA GPUS visible
