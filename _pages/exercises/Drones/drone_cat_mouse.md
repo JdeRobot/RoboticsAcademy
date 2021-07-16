@@ -17,12 +17,13 @@ gallery:
 
 youtubeId: Hd2nhOx1tqI?t=510
 youtubeId1: ykbw1kv6Cgw
+youtubeId2: 0dV8OkTG0pM
 ---
 ## Goal
 
 The goal of this exercise is to implement the logic that allows a quadrotor to play a game of cat and mouse with a second quadrotor.
 
-In this exercise, the cat quadrotor has to be programmed by the student to follow the mouse quadrotor (which is preprogrammed and moves randomly) as close as possible without crashing. The refree application will measure the distance between the two drones and will assign a score based on the time spent by the drones close to each other.
+In this exercise, the cat quadrotor has to be programmed by the student to follow the mouse quadrotor (which is preprogrammed and moves randomly) as close as possible without crashing.
 
 {% include gallery caption="Gallery." %}
 
@@ -152,6 +153,10 @@ In this exercise, you should use the Nose Forward Mode in order to detect the ca
 ### Do I need to know when the drone is in the air?
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
+
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Demonstrative video of the solution
 
