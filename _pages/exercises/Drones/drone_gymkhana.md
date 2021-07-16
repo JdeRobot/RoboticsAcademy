@@ -188,5 +188,5 @@ No, you can solve this exercise without taking care of the **land state** of the
 
 ## Contributors
 
-- Contributors: [Pedro Arias](https://github.com/pariaspe), [Diego Martín](https://github.com/diegomrt) and [JoseMaria Cañas](https://github.com/jmplaza).
-- Maintained by [Pedro Arias](https://github.com/pariaspe) and [Diego Martín](https://github.com/diegomrt) 
+- Contributors: [Pedro Arias](https://github.com/pariaspe), [Diego Martín](https://github.com/diegomrt), [JoseMaria Cañas](https://github.com/jmplaza) and [Arkajyoti Basak](https://github.com/iamarkaj).
+- Maintained by [Pedro Arias](https://github.com/pariaspe), [Diego Martín](https://github.com/diegomrt) and [Arkajyoti Basak](https://github.com/iamarkaj).
