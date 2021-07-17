@@ -3,6 +3,21 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
+var save_button = document.getElementById("save");
+save_button.disabled = true;
+save_button.style.opacity = "0.4";
+save_button.style.cursor = "not-allowed";
+
+var load_button = document.getElementById("load");
+load_button.disabled = true;
+load_button.style.opacity = "0.4";
+load_button.style.cursor = "not-allowed";
+
+var reset_button = document.getElementById("reset");
+reset_button.disabled = true;
+reset_button.style.opacity = "0.4";
+reset_button.style.cursor = "not-allowed";
+
 // running variable for psuedo decoupling
 // Play/Pause from Reset
 var frequency = "0",
@@ -49,13 +64,12 @@ function declare_code(){
 
 // Function that sends/submits the code!
 function submitCode(){
+	document.getElementById("output_heading").textContent = "Uploading model..."
 	var input = document.getElementById("dl_model");
 	var fReader = new FileReader();
 	fReader.readAsDataURL(input.files[0]);
 	fReader.onloadend = function(event){
-		alert("Uploading DL model file...");
 		websocket_code.send(event.target.result);
-		alert("...the file has been transferred!");
 	}
 
     stop_button.disabled = false;

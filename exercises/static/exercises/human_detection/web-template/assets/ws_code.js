@@ -144,6 +144,7 @@ function benchmarkModel(){
 function visualizeModel(){
 	websocket_code.send("#visual");
 	alert("Opening Visualizer. Please wait....");
+	window.open("http://localhost:8081");
 }
 
 // Function that send/submits an empty string

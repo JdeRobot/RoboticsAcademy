@@ -32,7 +32,7 @@ class Car():
 
     def __start__(self, path_level):
         while self.play_event.is_set():
-            rospy.sleep(0.01)
+            rospy.sleep(0.1)
             if path_level == 0:
                 self.set_pos_car(self.curr_posx)
                 self.curr_posx = self.curr_posx + self.level0

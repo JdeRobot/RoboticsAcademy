@@ -17,7 +17,7 @@ from websocket_server import WebsocketServer
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-import console
+from console import start_console, close_console
 
 
 class Template:
@@ -41,9 +41,8 @@ class Template:
         self.aux_model_fname = "dummy.onxx"  # internal name for temporary model uploaded by user
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
 
     # The process function
     def process_dl_model(self, raw_dl_model, roi_scale=0.75, input_size=(28, 28)):
@@ -53,6 +52,9 @@ class Template:
         :param roi_scale: float, pct of the smallest image dimension that will be used to build the ROI used as input
         :param input_size: (int, int), model input image size
         """
+        # Redirect the information to console
+        start_console()
+
         # Receive model
         raw_dl_model = raw_dl_model.split(",")[-1]
         raw_dl_model_bytes = raw_dl_model.encode('ascii')
@@ -66,8 +68,8 @@ class Template:
             ort_session = onnxruntime.InferenceSession(self.aux_model_fname)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
-            self.console.print("ERROR: Model couldn't be loaded")
+            print(str(exc_value))
+            print("ERROR: Model couldn't be loaded")
 
         try:
             # Init auxiliar variables used for stabilized predictions
@@ -114,7 +116,7 @@ class Template:
                             count_same_digit = 0
                         previous_established_pred = "-"  # no prediction
                     else:
-                        self.console.print("Digit found: {}".format(pred))
+                        print("Digit found: {}".format(pred))
                         previous_established_pred = pred
                         count_same_digit = 0
                     previous_pred = pred
@@ -139,12 +141,13 @@ class Template:
                 if (ms < self.time_cycle):
                     time.sleep((self.time_cycle - ms) / 1000.0)
 
+            close_console()
             print("Current Thread Joined!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
+            print(str(exc_value))
 
     # Function to measure the frequency of iterations
     def measure_frequency(self):
@@ -173,7 +176,7 @@ class Template:
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0;
+        brain_frequency = 0
         gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.ideal_cycle, 1)

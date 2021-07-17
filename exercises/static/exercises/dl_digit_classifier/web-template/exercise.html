@@ -89,10 +89,10 @@
             </div>
         </li>
 
-
         <div id="code-control">
             <!-- Button for selecting DL model -->
             <div id="file_selector">
+                <h5 id="file_selector_heading">Choose a deep learning model (ONNX format):</h5>
                 <input type="file" id="dl_model" name="dl_model" accept=".onnx">
             </div>
         </div>
@@ -101,42 +101,30 @@
     <div class="split b">
 
         <div id="visual_buttons" class="row no-gutters">
-            <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg"
-                                                                                  src="./assets/img/terminal-solid.svg">
-                Console
-            </button>
-
+        <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="./assets/img/terminal-solid.svg"> Console</button>
         </div>
 
         <div id="visual">
             <!-- Canvas -->
-            <h3 style="text-align:center" id="output_heading">Detected Digit: -</h3>
+            <h3 style="text-align:center" id="output_heading">Digit Classifier</h3>
             <canvas id="gui_canvas"></canvas>
         </div>
 
-        <div id="console" style="display:none;">
-            <!-- Console -->
-            <div id="Console" class="container">
-                <ul>
-                    <li class="Console-item">
-                        <input value=">>" class="terminal" readonly><input class="command">
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
 
-        <script type="text/javascript">
-            function changeconsole() {
-                var console_display = document.getElementById('console').style.display
-                console.log(console_display)
-                if (console_display == "none" || console_display == "none") {
-                    document.getElementById('console').style.display = 'block';
-                } else {
-                    document.getElementById('console').style.display = 'none';
-                }
-            }
+      <script type="text/javascript">
+      function changeconsole(){
+        document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+        var console_display = document.getElementById('console').style.display;
+        console.log(console_display);
+        if (console_display == "none") {
+          document.getElementById('console').style.display = 'block';
+        } else{
+          document.getElementById('console').style.display = 'none';
+        }
+      }
 
-        </script>
+      </script>
     </div>
 </div>
 <script src="https://unpkg.com/split.js/dist/split.min.js"></script>

@@ -42,7 +42,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.gui = GUI(self.host)
 
 
 
@@ -51,29 +51,9 @@ class Template:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-        if source_code[:5] == "#resu":
-            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-            restart_simulation()
-
-            return "", ""
-
-        elif source_code[:5] == "#paus":
-            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-            pause_simulation()
-
-            return "", ""
-
-        elif source_code[:5] == "#rest":
-            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-            reset_simulation()
-            self.gui.reset_gui()
-            if self.hal.get_landed_state() ==2 : self.hal.land()
-            return "", ""
-
-        else:
-            # Pause and unpause
-            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-            return iterative_code, sequential_code
+        # Pause and unpause
+        sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+        return iterative_code, sequential_code
 
     # Function to separate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -285,6 +265,8 @@ class Template:
         if message[:5] == "#freq":
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            time.sleep(1)
+            self.send_frequency_message()
             return
 
         try:
