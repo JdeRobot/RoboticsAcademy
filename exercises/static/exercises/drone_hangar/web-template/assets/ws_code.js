@@ -83,20 +83,6 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-	
-}
-
-// Function to command the simulation to reset
-function resetSim(){
-	// Send message to initiate reset
-	var message = "#rest"
-	websocket_code.send(message)
-	reset_gui();
-
-	if(running == true){
-		stopCode();
-		submitCode();
-	}
 }
 
 // Function for range slider

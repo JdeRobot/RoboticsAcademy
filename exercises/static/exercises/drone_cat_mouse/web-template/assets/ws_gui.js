@@ -87,11 +87,11 @@ function playmouse(){
 	}
 }
 
-// Function to takeoff mouse
+// Function to stop mouse
 var stopmouse_old_timestamp = 0;
 function stopmouse(){
 	if(stopmouse_old_timestamp == 0 || stopmouse_old_timestamp + 2000 < (new Date).getTime()){
-	    // Send message to initiate start mouse
+	    // Send message to initiate stop mouse
 	    var message = "#stp";
 	    console.log("Message sent: " + message);
 	    websocket_gui.send(message);
@@ -99,11 +99,11 @@ function stopmouse(){
 	}
 }
 
-// Function to land mouse
+// Function to reset mouse
 var resetmouse_old_timestamp = 0;
 function resetmouse(){
 	if(resetmouse_old_timestamp == 0 || resetmouse_old_timestamp + 2000 < (new Date).getTime()){
-	    // Send message to initiate start mouse
+	    // Send message to initiate reset mouse
 	    var message = "#rst";
 	    console.log("Message sent: " + message);
 	    websocket_gui.send(message);
