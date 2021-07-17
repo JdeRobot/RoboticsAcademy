@@ -29,7 +29,11 @@ function declare_code(){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){
-		alert("[open] Connection established!");
+		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
+		if (websocket_gui.readyState == 1) {
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+			alert("[open] Connection established!");
+		}
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){

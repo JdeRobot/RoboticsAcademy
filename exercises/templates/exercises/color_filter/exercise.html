@@ -45,7 +45,6 @@ while True:
                 document.getElementById('console').style.display = 'none';
             }
         }
-
     </script>
 </div>
 </div>
@@ -56,6 +55,9 @@ while True:
     gutterSize: 3,
     sizes: [50,50]
   });
+  window.addEventListener('load', function () {
+            window.top.postMessage('connect', '*');
+    });
 </script>
 <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
 <script src="{% static 'exercises/color_filter/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>

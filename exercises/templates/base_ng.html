@@ -22,9 +22,18 @@
         var radiConect = document.getElementById('radiConect')
         radiConect.contentWindow.postMessage('message', '*');
         window.onmessage = function(event){
-            if (event.data == 'start') {
+            if (event.data == 'connect') {
                 try {
-                    startSim();
+                    startSim(0);
+                }
+                catch (e) {
+                    if (e instanceof ReferenceError)
+                        radiConect.contentWindow.postMessage('down', '*');
+                }
+            } 
+            else if (event.data == 'launch') {
+                try {
+                    startSim(1);
                 }
                 catch (e) {
                     if (e instanceof ReferenceError)
@@ -32,6 +41,9 @@
                 }
             }
         };
+        window.onbeforeunload = function(event) {
+            startSim(2);
+        }
     </script>
     <div id="Control" class="container" >
         <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><img src="{% static 'exercises/assets/img/upload.png' %}"> Save</button>

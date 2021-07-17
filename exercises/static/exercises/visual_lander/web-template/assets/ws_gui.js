@@ -14,15 +14,15 @@ function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
-		radiConect.contentWindow.postMessage({command: 'launch_level', level: '6'}, '*');
+		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
 		if (websocket_code.readyState == 1) {
 			alert("[open] Connection established!");
-			radiConect.contentWindow.postMessage('up', '*');
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
 		}
 	}
 
 	websocket_gui.onclose = function(event){
-		radiConect.contentWindow.postMessage('down', '*');
+		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
 		if(event.wasClean){
 			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
