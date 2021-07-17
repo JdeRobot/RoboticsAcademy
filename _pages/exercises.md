@@ -254,8 +254,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    status: "prototype"
+    status: "running"
     order: 2;
+    version: "v2.4"
 
   - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
     alt: "Machine Vision"
