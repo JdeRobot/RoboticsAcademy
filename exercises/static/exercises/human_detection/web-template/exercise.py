@@ -46,17 +46,87 @@ class Template:
         self.client = None
         self.host = sys.argv[1]
 
-        self.aux_model_fname = "dummy.onnx"  # internal name for temporary model uploaded by user
+        self.aux_model_fname = "uploaded_model.onnx"  # internal name for temporary model uploaded by user
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
-        
+        # Saving the current path for later use.
+        # The current path is somehow required everytime for accessing files, when the exercise is running in the docker container
+        self.current_path = os.path.dirname(os.path.abspath(__file__))
+
+    
+    def saveModel(self, raw_dl_model):
+        # Receive model
+        print("Received raw model")
+        raw_dl_model = raw_dl_model.split(",")[-1]
+        raw_dl_model_bytes = raw_dl_model.encode('ascii')
+        raw_dl_model_bytes = base64.b64decode(raw_dl_model_bytes)
+        try:
+            with open(os.path.join(self.current_path, self.aux_model_fname), "wb") as f:
+                f.write(raw_dl_model_bytes)
+            print("Model Uploaded")
+            self.server.send_message(self.client, "#modl")
+        except:
+            print("Error saving model to file")
+
+
+    def saveVideo(self, raw_video):
+        print("Received raw video")
+        try:
+            raw_video = raw_video.split(",")[-1]
+            raw_video_bytes = raw_video.encode('ascii')
+            raw_video_bytes = base64.b64decode(raw_video_bytes)
+            with open(os.path.join(self.current_path, "uploaded_video.mp4"), "wb") as f:
+                f.write(raw_video_bytes)
+                print("Video Uploaded")
+                self.server.send_message(self.client, "#vido")
+        except:
+            print("Error in decoding")
+
+    def display_output_detection(self, img, detections, scores):
+        """Draw box and label for the detections."""
+        # The output detections received from the model are in form [ymin, xmin, ymax, xmax]
+        height, width = img.shape[0], img.shape[1]
+        for i,detection in enumerate(detections):
+            # the box is relative to the image size so we multiply with height and width to get pixels.
+            top = detection[0] * height
+            left = detection[1] * width
+            bottom = detection[2] * height
+            right = detection[3] * width
+            top = max(0, np.floor(top + 0.5).astype('int32'))
+            left = max(0, np.floor(left + 0.5).astype('int32'))
+            bottom = min(height, np.floor(bottom + 0.5).astype('int32'))
+            right = min(width, np.floor(right + 0.5).astype('int32'))
+            cv2.rectangle(img, (left, top), (right, bottom), (0,0,255), 2)
+            cv2.putText(img, 'Human', (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 1)
+            #cv2.putText(img, str(scores[i])+"%", (left+150, top-10), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255,0,0), 1)
+
+
+    def display_gt_detection(self, img, gt_detections):
+        # The ground truth detections received are in the format [xmin, ymin, xmax, ymax]
+        for gt_detection in gt_detections:
+            left = int(gt_detection[1])
+            top = int(gt_detection[2])
+            right = int(gt_detection[3])
+            bottom = int(gt_detection[4])
+            cv2.rectangle(img, (left, top), (right, bottom), (0,255,0), 2)
+
+
+    def visualizeModel(self):
+        try:
+            netron.start(os.path.join(self.current_path, self.aux_model_fname), address= 8081, browse=False)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print(str(exc_value))
+            print("ERROR: Model couldn't be loaded to the visualizer")
+
 
     def video_infer(self):
         # Load ONNX model
         try:
-            sess = rt.InferenceSession(self.aux_model_fname)
+            self.hal.frame_number = 0
+            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
@@ -128,73 +198,7 @@ class Template:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print(str(exc_value))
 
-    
-    def saveModel(self, raw_dl_model):
-        # Receive model
-        print("Received raw model")
-        raw_dl_model = raw_dl_model.split(",")[-1]
-        raw_dl_model_bytes = raw_dl_model.encode('ascii')
-        raw_dl_model_bytes = base64.b64decode(raw_dl_model_bytes)
-        try:
-            with open(self.aux_model_fname, "wb") as f:
-                f.write(raw_dl_model_bytes)
-            print("Model Uploaded")
-            self.server.send_message(self.client, "#modl")
-        except:
-            print("Error saving model to file")
 
-
-    def saveVideo(self, raw_video):
-        print("Received raw video")
-        try:
-            raw_video = raw_video.split(",")[-1]
-            raw_video_bytes = raw_video.encode('ascii')
-            raw_video_bytes = base64.b64decode(raw_video_bytes)
-            with open("uploaded_video.mp4", "wb") as f:
-                f.write(raw_video_bytes)
-                print("Video Uploaded")
-                self.server.send_message(self.client, "#vido")
-        except:
-            print("Error in decoding")
-
-    def display_output_detection(self, img, detections, scores):
-        """Draw box and label for the detections."""
-        # The output detections received from the model are in form [ymin, xmin, ymax, xmax]
-        height, width = img.shape[0], img.shape[1]
-        for i,detection in enumerate(detections):
-            # the box is relative to the image size so we multiply with height and width to get pixels.
-            top = detection[0] * height
-            left = detection[1] * width
-            bottom = detection[2] * height
-            right = detection[3] * width
-            top = max(0, np.floor(top + 0.5).astype('int32'))
-            left = max(0, np.floor(left + 0.5).astype('int32'))
-            bottom = min(height, np.floor(bottom + 0.5).astype('int32'))
-            right = min(width, np.floor(right + 0.5).astype('int32'))
-            cv2.rectangle(img, (left, top), (right, bottom), (0,0,255), 2)
-            cv2.putText(img, 'Human', (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 1)
-            #cv2.putText(img, str(scores[i])+"%", (left+150, top-10), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255,0,0), 1)
-
-
-    def display_gt_detection(self, img, gt_detections):
-        # The ground truth detections received are in the format [xmin, ymin, xmax, ymax]
-        for gt_detection in gt_detections:
-            left = int(gt_detection[1])
-            top = int(gt_detection[2])
-            right = int(gt_detection[3])
-            bottom = int(gt_detection[4])
-            cv2.rectangle(img, (left, top), (right, bottom), (0,255,0), 2)
-
-
-    def visualizeModel(self):
-        try:
-            netron.start(self.aux_model_fname)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            print(str(exc_value))
-            print("ERROR: Model couldn't be loaded to the visualizer")
-
-        
     # The process function
     def process_dl_model(self):
         """
@@ -203,7 +207,7 @@ class Template:
 
         # Load ONNX model
         try:
-            sess = rt.InferenceSession(self.aux_model_fname)
+            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
@@ -345,7 +349,8 @@ class Template:
     def eval_dl_model(self):
         # Load ONNX model
         try:
-            sess = rt.InferenceSession(self.aux_model_fname)
+            self.hal.frame_number = 0
+            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
@@ -375,7 +380,7 @@ class Template:
                 detections = []
                 scores = []
                 height, width = img.shape[0], img.shape[1]
-                f = open("benchmarking/detections/" + str(frame_number) + ".txt", "w")
+                f = open(self.current_path + "/benchmarking/detections/" + str(frame_number) + ".txt", "w")
                 batch_size = num_detections.shape[0]
                 for batch in range(0, batch_size):
                     for detection in range(0, int(num_detections[batch])):
