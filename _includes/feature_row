@@ -6,7 +6,7 @@
 
 <style>
 #exercise_card_running {
-  background-color: #46C630;
+  background-color: #80d870;
   margin-top: 20px;
   border-radius: 20px;
   border-style: solid;
@@ -15,7 +15,7 @@
 }
 
 #exercise_card_testing {
-  background-color: #FF9E21;
+  background-color: #ffd256;
   margin-top: 20px;
   border-radius: 20px;
   border-style: solid;
@@ -24,7 +24,7 @@
 }
 
 #exercise_card_prototype {
-  background-color: #FF714B;
+  background-color: #ff9477;
   margin-top: 20px;
   border-radius: 20px;
   border-style: solid;
@@ -33,7 +33,7 @@
 }
 
 #exercise_card_idea {
-  background-color: #CFCFCF;
+  background-color: #dedede;
   margin-top: 20px;
   border-radius: 20px;
   border-style: solid;

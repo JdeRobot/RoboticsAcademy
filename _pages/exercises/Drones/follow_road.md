@@ -31,7 +31,8 @@ pid:
     alt: "PID"
     title: "PID"
 
-youtubeId: KLDX4OPTL_c
+youtubeId1: KLDX4OPTL_c
+youtubeId2: DdwsbH944M8
 
 ---
 ## Goal
@@ -225,14 +226,17 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Demonstrative video of the solution
  
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 ---------
 
 ## Contributors
 
-- Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt), [Pedro Arias](https://github.com/pariaspe) and [Prakarsh Kaushik](https://github.com/RUFFY-369).
-- Maintained by [Pedro Arias](https://github.com/pariaspe) and [Prakarsh Kaushik](https://github.com/RUFFY-369).
+- Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt), [Pedro Arias](https://github.com/pariaspe), [Prakarsh Kaushik](https://github.com/RUFFY-369) and [Arkajyoti Basak](https://github.com/iamarkaj).
+- Maintained by [Pedro Arias](https://github.com/pariaspe), [Prakarsh Kaushik](https://github.com/RUFFY-369) and [Arkajyoti Basak](https://github.com/iamarkaj).

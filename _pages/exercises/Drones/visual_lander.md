@@ -15,7 +15,8 @@ gallery:
     alt: "Visual Lander."
     title: "Visual Lander."
 
-youtubeId: i0PGusLHXQM
+youtubeId1: i0PGusLHXQM
+youtubeId2: ScQbVwzqGZA
 ---
 ## Goal
 
@@ -154,12 +155,16 @@ In this exercise, you should use the Nose Forward Mode.
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
+## Web Template teaser video
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
 ## Demonstrative video of the solution
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 -------
 
 ## Contributors
-- Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt) and [Pedro Arias](https://github.com/pariaspe).
-- Maintained by [Pedro Arias](https://github.com/pariaspe).
+- Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt), [Pedro Arias](https://github.com/pariaspe) and [Arkajyoti Basak](https://github.com/iamarkaj).
+- Maintained by [Pedro Arias](https://github.com/pariaspe) and [Arkajyoti Basak](https://github.com/iamarkaj).
