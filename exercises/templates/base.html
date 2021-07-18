@@ -19,12 +19,20 @@
     <!-- Extends base.html to initiate the connection to the RADI -->
     <iframe id="radiConect" type="text/html" src="{% static 'exercises/assets/base.html' %}" width="100%" height="7%" name="data" frameBorder="0" scrolling="no"></iframe>
     <script>
-        var radiConect = document.getElementById('radiConect')
+        var radiConect = document.getElementById('radiConect');
         radiConect.contentWindow.postMessage('message', '*');
         window.onmessage = function(event){
-            if (event.data == 'start') {
+            if (event.data == 'connect') {
                 try {
-                    startSim();
+                    startSim(0);
+                }
+                catch (e) {
+                    if (e instanceof ReferenceError)
+                        radiConect.contentWindow.postMessage('down', '*');
+                }
+            } else if (event.data == 'launch') {
+                try {
+                    startSim(1);
                 }
                 catch (e) {
                     if (e instanceof ReferenceError)
@@ -32,6 +40,9 @@
                 }
             }
         };
+        window.onbeforeunload = function(event){
+            startSim(2);
+        }
     </script>
     <div id="Control" class="container" >
         <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><img src="{% static 'exercises/assets/img/upload.png' %}"> Save</button>

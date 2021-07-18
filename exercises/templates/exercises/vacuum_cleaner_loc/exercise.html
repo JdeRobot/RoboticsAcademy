@@ -62,6 +62,9 @@ while True:
         gutterSize: 3,
         sizes: [50,50]
     });
+    window.addEventListener('load', function () {
+        window.top.postMessage('connect', '*');
+    });
 </script>
 
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>

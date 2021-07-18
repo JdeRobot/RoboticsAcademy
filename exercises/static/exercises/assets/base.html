@@ -39,6 +39,8 @@
                 <div style="padding-inline: 150px" class="d-inline-block align-center">
                     <button type="button" class="btn btn-danger" id="connection-button" value="local-connection"><span id="loading-connection"
                         class="bi bi-arrow-down-up"></span> Connect</button>
+                    <button type="button" class="btn btn-secondary" id="launch-button" value="local-connection"><span id="loading-connection"
+                        class="bi bi-arrow-down-up"></span> Launch</button>
                 </div>
 		    </div>
 
@@ -47,30 +49,46 @@
     
         <!-- BOTON DE CONEXION CON RADI-->
         <script type="text/javascript">
-
-            $(document).ready(function() {$("#connection-button").click(
+            $(document).ready(function() {$("#launch-button").click(
                 function () {
-                    $("#connection-button").removeClass('btn btn-danger').addClass('btn btn-warning');
-                    $("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting <a id="launch_level">0</a>');
-                    window.top.postMessage('start', '*')
-
+                    if ($("#launch-button").attr('class') == 'btn btn-danger') {
+                        $("#launch-button").prop('disabled', true);
+                        $("#launch-button").removeClass('btn-danger').addClass('btn-warning');
+                        $("#launch-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">0</a>');
+                        window.top.postMessage('launch', '*');
+                    } else {
+                        alert("A connection with the manager must be established before launching an exercise");
+                    }
                 });
             });
 
             window.onmessage = function(event){
-                var data = event.data
-                if ( data == 'up') {
-                    var operation = event.data.substring(0, 4);
-                    $("#connection-button").removeClass("btn-warning").addClass("btn-success");
-                    $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
-                    $("#connection-button").prop('disabled', true);
-                }else if (data == 'down'){
-                    $("#connection-button").removeClass("btn-success").addClass("btn-danger");
-		            $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
-		            $("#connection-button").prop('disabled', false);
-                }else if (data.command == 'launch_level'){
-                    let level = data.level;
-                    $("#connection-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting <a id="launch_level">${level}</a>`);
+                var data = event.data;
+                if (data.connection == 'manager') {
+                    if (data.command == 'up') {
+                        $("#connection-button").removeClass("btn-danger").addClass("btn-success");
+                        $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
+                        $("#connection-button").prop('disabled', true);
+                    }else if (data.command == 'down'){
+                        $("#connection-button").removeClass("btn-success").addClass("btn-danger");
+                        $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
+                        $("#connection-button").prop('disabled', false);
+                    }
+                } else if (data.connection == 'exercise') {
+                    if (data.command == 'available') {
+                        $("#launch-button").removeClass('btn-secondary').addClass('btn-danger');
+                    }else if (data.command == 'up') {
+                        $("#launch-button").removeClass("btn-warning").addClass("btn-success");
+                        $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
+                        $("#launch-button").prop('disabled', true);
+                    }else if (data.command == 'down'){
+                        $("#launch-button").removeClass("btn-success").addClass("btn-danger");
+                        $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+                        $("#launch-button").prop('disabled', false);
+                    }else if (data.command == 'launch_level'){
+                        let level = data.level;
+                        $("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
+                    }
                 }
             };
         </script>
