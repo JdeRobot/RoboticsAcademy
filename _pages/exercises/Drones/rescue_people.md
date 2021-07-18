@@ -38,7 +38,7 @@ This is the preferred way for running the exercise.
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-  docker pull jderobot/robotics-academy:3.1.3
+  docker pull jderobot/robotics-academy:3.1.4
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -60,7 +60,7 @@ This is the preferred way for running the exercise.
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
+- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
 
 - The exercise can be used after the alert.
 
