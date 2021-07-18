@@ -28,7 +28,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to e
 
 First, pull the last version of our [docker image](https://hub.docker.com/r/jderobot/robotics-academy):
 ```bash
-docker pull jderobot/robotics-academy:3.1.3
+docker pull jderobot/robotics-academy:3.1.4
 ```
 
 Notice that you have to have installed [Docker](https://docs.docker.com/get-docker/) to complete the previous step.
@@ -40,7 +40,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start.sh
   ```
 
 
@@ -50,12 +50,12 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
+- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
 
 ### How should I solve the exercise?
 The launched webpage contains several widgets that will help you to solve the exercise.
