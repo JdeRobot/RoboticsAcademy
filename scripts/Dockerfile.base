@@ -135,7 +135,7 @@ RUN python3 -m pip install --upgrade pip wheel setuptools
 # Python 3 dependencies installed by pip
 RUN python3 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
 		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python
+		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python netron
 
 # manual ccache setup
 RUN ln -sf /usr/bin/ccache /usr/lib/ccache/cc \
