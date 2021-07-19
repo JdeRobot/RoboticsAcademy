@@ -235,6 +235,7 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
         ros-$ROS_DISTRO-rostest \
         ros-$ROS_DISTRO-rosunit \
         ros-$ROS_DISTRO-xacro \
+		ros-$ROS_DISTRO-catkin \
 	&& geographiclib-get-geoids egm96-5 \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
@@ -275,6 +276,14 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	&& apt-get -y autoremove \
 	&& apt-get clean autoclean \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+#STDR
+RUN mkdir -p ~/catkin_ws/src
+RUN cd ~/catkin_ws
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash ; cd ~/catkin_ws; catkin_make"
+RUN cd ~/catkin_ws/src 
+RUN git clone https://github.com/stdr-simulator-ros-pkg/stdr_simulator.git
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash ;cd ~/catkin_ws; catkin_make"
 
 # websocket server dependency
 RUN pip3 install websocket_server posix-ipc django
