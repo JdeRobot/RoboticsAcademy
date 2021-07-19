@@ -56,13 +56,30 @@ img{
     height: 25px;
 }
 
-#submit{
+#code-menu
+{
+    width: 200px;
+    margin: 22px 0 22px 0;
+}
+
+#Live_Infer{
   font-size: 12px;
     width: 80px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
     margin-bottom: 10px;
+    width: auto;
+}
+
+#Video_Infer{
+  font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-bottom: 10px;
+    width: auto;
 }
 
 #stop{
@@ -71,8 +88,30 @@ img{
     height: 40px;
     border: none;
     background-color: whitesmoke;
-margin-bottom: 10px;
+    margin-bottom: 10px;
+    width: auto;
 
+
+}
+
+#benchmark{
+  font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+#visualizer{
+  font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-bottom: 10px;
+    width: auto;
 }
 
 #save{
@@ -104,7 +143,7 @@ margin-bottom: 10px;
 
 }
 
-#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover{
+#reset:hover, #Live_Infer:hover, #load:hover, #stop:hover, #save:hover, #benchmark:hover, #visualizer:hover, #Video_Infer:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
@@ -145,4 +184,87 @@ th, td{
 
 .debug{
  padding-left: 7%;
+}
+
+/* .button-style
+{
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    padding: 25px 80px;
+    display: inline-block;
+    margin: 15px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    background: #cb4e4e;
+    color: #fff;
+    box-shadow: 0 6px #ab3c3c;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+    border-radius: 0 0 5px 5px;
+} */
+
+.inline_div
+{
+  display: inline;
+}
+
+#video_file
+{
+  width: 231px;
+}
+
+#dl_model
+{
+  width: 231px;
+}
+
+.div-flex
+{
+  display: flex;
+}
+
+#model-upload
+{
+    margin: 22px 0 22px 0;
+}
+
+#video-upload {
+  display: none;
+  margin: 22px 0 22px 0;
+}
+
+#Live_Infer {
+  display: none;
+}
+
+#Video_Infer {
+  display: none;
+}
+
+#visualizer {
+  display: none;
+}
+
+#stop{
+  display: none;
+}
+
+#benchmark {
+  display: none;
+}
+
+.margin-22
+{
+  margin: 22px 10px 22px 0;
 }

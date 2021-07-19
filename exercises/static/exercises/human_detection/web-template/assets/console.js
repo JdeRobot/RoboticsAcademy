@@ -35,7 +35,7 @@ function next_command(){
 	
 	// Maintain the content of the console
 	// Otherwise the computer will hang!!
-	if(command_number == 100){
+	if(command_number == 200){
 		var command_to_delete = document.getElementsByClassName("Console-item")[0];
 		command_to_delete.remove();
 		command_number = command_number - 1;

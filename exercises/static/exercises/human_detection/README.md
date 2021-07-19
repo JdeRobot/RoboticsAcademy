@@ -9,8 +9,8 @@ The user is expected to upload a Deep Learning model which fits the required inp
 
 - There are two ways to run the exercise using web-template:
 
-  - Run the exercise with docker container
-   - Run it without container
+      - Run the exercise with docker container
+      - Run it without container
 
 ### Run with docker container
 
@@ -25,15 +25,16 @@ docker run -it --name=container_name -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1
 - Click the connect button and wait for some time until an alert appears with the message Connection Established and button displays connected.
 - The exercise can be used after the alert.
 - It is necessary to map the port where the camera is located to the docker container.
+```
 
 ### Run without docker container
 
 The following dependencies should be pre-installed:
 - Python 3 or later
 - Python dependencies
-     - OpenCV
-     - onnxruntime
-     - WebsocketServer
+      - OpenCV
+      - onnxruntime
+      - WebsocketServer
 
 - Clone the Robotics Academy repository to your local machine, switch to the noetic branch and head over to the Human_Detection exercise.
 ```
@@ -69,21 +70,21 @@ python exercise.py 127.0.0.xx
 
 ### Model Input Specification
 
-`input_shape` - The application code pre processes the input frame of shape (H, W, C) **TO** (1, 300, 300, 3) i.e (batch_size, H, W, C). This is a typical input shape for a `Conv2D` layer, so it is mandatory for your custom built model to have its first layer as `Conv2D`.
+`**input_shape**` - The application code pre processes the input frame of shape (H, W, C) to (1, 300, 300, C), where 1 represents the batch size . This information is mainly provided for users designing their model with a fully connected input layer.
 
-### Model Output Specification
+#### Model Output Specification
 
-Given 1 frame per batch, the model must return 4 tensor arrays in the following order:
-
-`detection_boxes`: a list of bounding boxes. Each list item describes a box with top, left, bottom, right relative to the image size.
-
-`detection_classes`: Array of detected classes. The class label must be **1** for humans. 
-
-`detection_scores`: the score for each detection with values between 0 and 1 representing probability that a class was detected.
+Given each batch of images, the model must return 4 tensor arrays:
 
 `num_detections`: the number of detections.
 
-**Note**: Make sure to keep the class label for Humans while training your model as 1. Any object detected by your model with any other class label other than 1, will not be accounted for.
+`detection_boxes`: a list of bounding boxes. Each list item describes a box with top, left, bottom, right relative to the image size.
+
+`detection_scores`: the score for each detection with values between 0 and 1 representing probability that a class was detected.
+
+`detection_classes`: Array of detected classes. The class label must be **1** for humans. 
+
+Note: Make sure to keep the class label for Humans while training your model as 1. Any object detected by your model with any other class label other than 1, will not be accounted for.
 
 ## Demo Model
 
