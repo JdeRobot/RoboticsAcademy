@@ -1,21 +1,21 @@
 ---
-permalink: /exercises/MobileRobots/amigo_bot
-title: "Amigo Bot"
+permalink: /exercises/MobileRobots/laser_mapping
+title: "Laser Mapping"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Amigo Bot"
+toc_label: "TOC Laser Mapping"
 toc_icon: "cog"
 
 
 gallery:
-    image_path: /assets/images/exercises/amigo_bot/amigo_bot.png
+    image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Vacuum"
 
-youtubeId1: c90hmfkZRNY
-youtubeId2: Xcy84DhVjrY
+#youtubeId1: c90hmfkZRNY
+#youtubeId2: Xcy84DhVjrY
 ---
 ## Versions to run the exercise
 
@@ -28,10 +28,10 @@ The instructions for both of them are provided as follows.
 
 ## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
+The objective of this practice is to implement the logic of a navigation algorithm for a vacuum using laser mapping. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
-{% include gallery caption="Amigo Bot." %}
+{% include gallery caption="Laser Mapping." %}
 
 ## Instructions for Web Templates
 This is the preferred way for running the exercise.
@@ -48,7 +48,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.3
+docker pull jderobot/robotics-academy:3.1.4
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -56,7 +56,7 @@ docker pull jderobot/robotics-academy:3.1.3
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start-3.1.sh
   ```
 
 
@@ -66,7 +66,7 @@ docker pull jderobot/robotics-academy:3.1.3
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.3 ./start-3.1.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start-3.1.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -93,9 +93,9 @@ while True:
 
 * **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
 
-* **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the code(under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer(a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
+* **Frequency Slider**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
 
-* **Debug Level**: This decides the debugging level of the code. A debug level of 1 implies no debugging at all. At this level, all the GUI functions written by the student are automatically removed when the student sends the code to the robot. A debug level greater than or equal to 2 enables all the GUI functions working properly.
+* **Debug Level**: RTF (Real Time Factor): The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer.
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
 
@@ -128,7 +128,7 @@ sudo apt-get install ros-melodic-kobuki-msgs
 
 1. Execution without watching the world: 
 ```bash
-roslaunch amigo_bot.launch
+roslaunch laser_mapping.launch
 ```
 2. Execution of the practice and the user interface: 
 ```bash
@@ -241,13 +241,13 @@ The problem of coverage involves two standard basic motions, which are used as a
 
 The robot follows an increasing circle/square pattern.
 
-![Base Movement Spiral]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/spiral.gif)
+![Base Movement Spiral]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/spiral.gif)
 
 - **Boustrophedon Motion**
 
 The robot follows an S-shaped pattern.
 
-![Base Movement Boustrophedon]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/boustrophedon.gif)
+![Base Movement Boustrophedon]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/boustrophedon.gif)
 
 ### Analysis of Coverage Algorithms
 
@@ -300,23 +300,23 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ### Illustrations
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/without_duration.gif) 
+![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/without_duration.gif) 
 
 *Without applying a sleep duration the previous rotation command still has effect on the go straight command*
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/duration.gif)
+![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/duration.gif)
 
 *After applying a duration, we get straight direction movement*
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/reduce_omega.gif)
+![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/reduce_omega.gif)
 
 *Effect of reducing $\omega$ to generate spiral*
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/increasing_v.gif)
+![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/increasing_v.gif)
 
 *Effect of increasing $v$ to generate spiral*
 
-
+<!--
 ## Demonstrative Video
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
@@ -328,11 +328,12 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 *This solution is an illustration for the Web Templates*
 
 <br/>
+-->
 
 ## Contributors
 
-- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag).
-- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
+- Contributors: [Vladislav](https://github.com/vladkrav), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag).
+- Maintained by [Juan Manuel Carretero](https://github.com/JuanManuelCarretero).
 
 <!--
 Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.
