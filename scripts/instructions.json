@@ -1,4 +1,10 @@
 {
+    "amazon_single": {
+        "gazebo_path": "",
+        "instructions_ros": ["ros2 launch /RoboticsAcademy/exercises/static/exercises/amazon_single/web-template/launch/amazon_robot_in_aws_world.launch.py"],
+        "instructions_rviz": "ros2 launch /RoboticsAcademy/exercises/static/exercises/amazon_single/web-template/launch/rviz.launch.py",
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/amazon_single/web-template/exercise.py 0.0.0.0"
+    },
     "tb3_nav": {
         "gazebo_path": "",
         "instructions_ros": ["ros2 launch turtlebot3_gazebo turtlebot3_world.launch.py"],
