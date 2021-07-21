@@ -31,6 +31,7 @@ Available exercises and its status:
 | Laser Loc               | **Production** | Roomba           | **DONE**       | **DONE** | **DONE** |
 | Vacuum Cleaner          | **Production** | Roomba           | **DONE**       | **DONE** | **DONE** |
 | Localized Vacuum Cleaner| **Production** | Roomba           | **DONE**       | **DONE** | **DONE** |
+| Laser Mapping           | Prototype      | Amigo_bot        | WIP            | ?        | Review   |
 
 
 ### Autonomous Cars
