@@ -58,6 +58,13 @@ function declare_code(websocket_address){
     
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
+
+		// Send Teleop message if active
+		if(teleop_mode){
+			let teleop_message = {"v": v, "w": w};
+			websocket_code.send("#tele" + JSON.stringify(teleop_message));
+			console.log('TELEOP MSG SENT');
+		}
 	};
 }
 
