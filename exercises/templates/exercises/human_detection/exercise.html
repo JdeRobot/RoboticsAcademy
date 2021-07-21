@@ -110,12 +110,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
 
-<script src="{% static 'exercises/human_detection/web-template/assets/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/human_detection/web-template/assets/main.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/human_detection/web-template/assets/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/human_detection/web-template/assets/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/human_detection/web-template/assets/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/human_detection/web-template/assets/console.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/main.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/console.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
 </html>
 
 {% endblock %}
