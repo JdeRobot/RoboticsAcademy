@@ -1,6 +1,6 @@
 function startSim() {
     ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
-    exercise = "pick_place"
+    exercise = "mobile_manipulation"
     var level = 0;
     let websockets_connected = false;
 
