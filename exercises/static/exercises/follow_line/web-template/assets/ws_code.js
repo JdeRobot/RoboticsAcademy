@@ -63,7 +63,7 @@ function declare_code(websocket_address){
 		if(teleop_mode){
 			let teleop_message = {"v": v, "w": w};
 			websocket_code.send("#tele" + JSON.stringify(teleop_message));
-			console.log('TELEOP MSG SENT');
+			console.log('TELEOP MSG SENT: ', teleop_message);
 		}
 	};
 }

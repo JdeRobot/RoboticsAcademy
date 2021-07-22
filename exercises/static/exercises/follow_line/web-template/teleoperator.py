@@ -24,7 +24,6 @@ class TeleopThread(threading.Thread):
                 try:
                     # Get params from the queue
                     params = self.q.get(timeout=0)
-                    print(params)
 
                     # Check if parameters change
                     if (self.v != params["v"]) : self.v = params["v"]
@@ -33,6 +32,5 @@ class TeleopThread(threading.Thread):
                     pass
 
                 # Send instructions to HAL
-                print('v: ', self.v, 'w: ', self.w)
                 self.hal.motors.sendV(self.v)
                 self.hal.motors.sendW(self.w)
