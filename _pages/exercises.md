@@ -358,7 +358,7 @@ feature_row:
     status: "prototype"
     order: 2;
 
-  - image_path: /assets/images/exercises/laser_mapping/amigo_bot.png
+  - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Laser Mapping"
     title: "Laser Mapping"
     excerpt: "Navigation algorithm for an autonomous vacuum."
