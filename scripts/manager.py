@@ -20,6 +20,7 @@ def check_device(device_path):
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander"]
+CIRCUIT_EX = ["follow_line"]
 
 # Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
@@ -52,7 +53,7 @@ class Commands:
         return gazebo_path
 
     # Function to get the instructions to run ROS
-    def get_ros_instructions(self, exercise):
+    def get_ros_instructions(self, exercise, circuit=None):
         if ACCELERATION_ENABLED:
             roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;export LD_LIBRARY_PATH=/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/catkin_ws/devel/lib;export GAZEBO_MODEL_PATH=/usr/share/gazebo-11/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=noetic;export PKG_CONFIG_PATH=/opt/ros/noetic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/noetic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/noetic;export ROS_PACKAGE_PATH=/opt/ros/noetic/share;chmod +x /opt/ros/noetic/bin/rosmaster; export' \
                 'PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages/;chmod +x /opt/ros/noetic/bin/roslaunch; export' \
@@ -71,6 +72,10 @@ class Commands:
         for instruction in self.instructions[exercise]["instructions_ros"]:
             if exercise in DRONE_EX and len(sys.argv)>=2 and sys.argv[1] == "log":
                 instruction = instruction + " log"
+            elif exercise in CIRCUIT_EX:
+                instruction = instruction.format(circuit)
+                print('INSTRUCTION: ', instruction)    
+            
             if not (ACCELERATION_ENABLED):
                 roslaunch_cmd = roslaunch_cmd + instruction + ";"
             else:
@@ -147,13 +152,16 @@ class Commands:
         self.run_subprocess(cmd_vnc_1)
 
     # Function to start an exercise
-    def start_exercise(self, exercise):
+    def start_exercise(self, exercise, circuit=None):
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
 
         try:
             gui_cmd = self.instructions[exercise]["instructions_gui"]
+            if exercise in CIRCUIT_EX:
+                gui_cmd = gui_cmd.format(circuit)
+                print('GUI: ',gui_cmd)
             gui_thread = DockerThread(gui_cmd)
             gui_thread.start()
         except KeyError:
@@ -166,10 +174,15 @@ class Commands:
         xserver_thread.start()
 
     # Function to roslaunch Gazebo Server
-    def start_gzserver(self, exercise):
+    def start_gzserver(self, exercise, circuit):
         if os.path.exists("/status.txt"):
             os.remove("/status.txt")
-        roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
+        
+        if exercise in CIRCUIT_EX:
+            roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise, circuit=circuit)
+        else:
+            roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
+		
         roslaunch_thread = DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
         args=["gz", "stats", "-p"]
@@ -286,8 +299,16 @@ class Manager:
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
+            
+                try:
+                    circuit = data["circuit"]
+                    print('CIRCUIT: ')
+                    print(circuit)
+                except KeyError:
+                    circuit = "default"
+                
                 if not (ACCELERATION_ENABLED):
-                    self.open_simulation(self.exercise, self.width, self.height)
+                    self.open_simulation(self.exercise, self.width, self.height, circuit)
                 else:
                     self.open_accelerated_simulation(self.exercise, self.width, self.height)
             elif command == "resume":
@@ -313,7 +334,7 @@ class Manager:
                 await self.kill_simulation()
 
     # Function to open non-accelerated simulation
-    def open_simulation(self, exercise, width, height):
+    def open_simulation(self, exercise, width, height, circuit):
         print("> Starting simulation")
 
         # X Server for Console and Gazebo
@@ -322,8 +343,8 @@ class Manager:
 
         # Start the exercise
         if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"]:
-            self.commands.start_gzserver(exercise)
-            self.commands.start_exercise(exercise)
+            self.commands.start_gzserver(exercise, circuit)
+            self.commands.start_exercise(exercise, circuit=circuit)
             time.sleep(5)
             self.launch_level = 3
 

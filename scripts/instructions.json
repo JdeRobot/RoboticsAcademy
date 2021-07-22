@@ -1,9 +1,9 @@
 {
     "follow_line": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_line/web-template/launch",
-        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless.launch"],
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_line/web-template/launch/simple_line_follower_ros_headless_{}.launch"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/follow_line/web-template/exercise.py 0.0.0.0",
-        "instructions_gui": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0"
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0 {}"
     },
     "obstacle_avoidance": {
         "gazebo_path": "/RoboticsAcademy/exercises/obstacle_avoidance/web-template/launch",

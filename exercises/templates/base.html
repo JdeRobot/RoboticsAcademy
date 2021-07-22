@@ -22,6 +22,7 @@
         var radiConect = document.getElementById('radiConect');
         radiConect.contentWindow.postMessage('message', '*');
         window.onmessage = function(event){
+            console.log(event);
             if (event.data == 'connect') {
                 try {
                     startSim(0);
