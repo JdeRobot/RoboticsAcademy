@@ -7,7 +7,8 @@
 
 <div id="code-control">
     <!-- Teleoperate mode selector -->
-    <button id="teleop" class="btn btn-danger" style="margin: 5px;">Teleoperate mode</button>
+    <!-- <button id="teleop" style="margin: 5px;">Teleoperate mode</button> -->
+    <button id="teleop" type="button" onclick="start()"<span title="Teleoperate your robot"></span><img id="teleop_img" src="{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}"> Teleoperate </button>
 
     <!-- Code Editor -->
     <!-- Along with buttons -->
@@ -83,14 +84,14 @@ while True:
     let teleop_mode = false;
     // Teleop button
     const teleop_btn = document.querySelector('#teleop');
+    const teleop_img = document.querySelector('#teleop_img');
 
     teleop_btn.addEventListener('click', function(){
         // If variable is false, activate teleoperate mode
         if(!teleop_mode){
             // Activate mode
             teleop_mode = !teleop_mode;
-            teleop_btn.classList.remove('btn-danger');
-            teleop_btn.classList.add('btn-success');
+            teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_on.png' %}";
             document.addEventListener('keydown', keyHandler, false);
 			document.addEventListener('keyup', keyHandler, false);
 			return;
@@ -98,8 +99,7 @@ while True:
 
         // Else, turn of teleop mode and remove event listeners
         teleop_mode = !teleop_mode;
-        teleop_btn.classList.remove('btn-success');
-        teleop_btn.classList.add('btn-danger');
+        teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}";
         document.removeEventListener('keydown', keyHandler, false);
 		document.removeEventListener('keyup', keyHandler, false);
 		return;
