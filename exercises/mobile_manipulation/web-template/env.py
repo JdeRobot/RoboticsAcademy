@@ -8,9 +8,12 @@ import yaml
 from moveit_commander import RobotCommander,PlanningSceneInterface
 import moveit_commander
 from gazebo_msgs.srv import SpawnModel, DeleteModel
-from geometry_msgs.msg import Pose, Quaternion, PoseStamped
+from geometry_msgs.msg import Pose, Quaternion, PoseStamped, Point
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from threading import Event
+from nav_msgs.msg import Odometry
+from std_msgs.msg import String, Bool
+from trajectory_msgs.msg import JointTrajectoryPoint, JointTrajectory
 
 from interfaces.threadStoppable import StoppableThread
 
@@ -23,6 +26,14 @@ class Object:
         self.length = length
         self.shape = shape
         self.color = color
+class WorkSpace:
+    def __init__(self, x, y, z, min_r, max_r, min_z):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.min_r = min_r
+        self.max_r = max_r
+        self.min_z = min_z
 
 class ENV():
     def __init__(self):
@@ -32,8 +43,24 @@ class ENV():
         rospy.wait_for_service("gazebo/spawn_sdf_model")
         self.delete_model_srv = rospy.ServiceProxy("gazebo/delete_model", DeleteModel)
 
-        self.arm = moveit_commander.MoveGroupCommander("irb_120")
-        self.gripper = moveit_commander.MoveGroupCommander("robotiq_85")
+        self.arm = moveit_commander.MoveGroupCommander("ur10_manipulator")
+        self.arm.set_goal_tolerance(0.01)
+        self.arm.set_pose_reference_frame("ur10_base_link")
+
+        self.gripperpub = rospy.Publisher("gripper_controller/command", JointTrajectory, queue_size=0)
+
+        self.transform_arm_to_baselink = Point()
+        self.get_arm_to_baselink()
+
+        self.gripper_length = 0.33
+
+        self.get_workspace()
+
+        self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
+        self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
+
+        self.robot_pose = Pose()
+        self.odom_sub = rospy.Subscriber("/odom", Odometry, self.robot_pose_callback)
 
         self.scene = PlanningSceneInterface()
         self.robot = RobotCommander()
@@ -58,6 +85,8 @@ class ENV():
                 shape = objects[name]["shape"]
                 color = objects[name]["color"]
 
+                # add object in Gazebo
+                # self.delete_model(object_name)
                 x = objects[name]["pose"]["x"]
                 y = objects[name]["pose"]["y"]
                 z = objects[name]["pose"]["z"]
@@ -65,39 +94,7 @@ class ENV():
                 pitch = objects[name]["pose"]["pitch"]
                 yaw = objects[name]["pose"]["yaw"]
                 object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
-
-                p = PoseStamped()
-                p.header.frame_id = self.robot.get_planning_frame()
-                p.header.stamp = rospy.Time.now()
-
-                p.pose.position.x = x - robot_x
-                p.pose.position.y = y - robot_y
-                p.pose.position.z = z - robot_z
-
-                q = quaternion_from_euler(roll,pitch,yaw)
-                p.pose.orientation = Quaternion(*q)
-
-                if shape == "box":
-                    x = objects[name]["size"]["x"]
-                    y = objects[name]["size"]["y"]
-                    z = objects[name]["size"]["z"]
-                    p.pose.position.z += z/2
-
-                    height = z
-                    width = y
-                    length = x
-                    self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
-
-                elif shape == "cylinder":
-                    height = objects[name]["size"]["height"]
-                    radius = objects[name]["size"]["radius"]
-                    p.pose.position.z += height/2
-                    self.object_list[name] = Object(p.pose, object_pose, height, radius*2, radius*2, shape, color)
-
-                elif shape == "sphere":
-                    radius = objects[name]["size"]
-                    p.pose.position.z += radius
-                    self.object_list[name] = Object(p.pose, object_pose, radius*2, radius*2, radius*2, shape, color)
+                self.spawn_model(object_name, object_pose)
         self.play_event = Event()
 
     # Explicit initialization functions
@@ -114,24 +111,77 @@ class ENV():
         self.thread = StoppableThread(target = self.respawn_all_objects, args=[])
         self.thread.start()
 
-    def move_joint_arm(self,joint_0,joint_1,joint_2,joint_3,joint_4,joint_5):
-        joint_goal = self.arm.get_current_joint_values()
-        joint_goal[0] = joint_0
-        joint_goal[1] = joint_1
-        joint_goal[2] = joint_2
-        joint_goal[3] = joint_3
-        joint_goal[4] = joint_4
-        joint_goal[5] = joint_5
+    def robot_pose_callback(self, msg):
+        self.robot_pose.position = msg.pose.pose.position
+        self.robot_pose.orientation = msg.pose.pose.orientation
 
-        self.arm.go(joint_goal, wait=True)
+    def get_workspace(self):
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        filename = os.path.join(__location__, 'joints_setup.yaml')
+        with open(filename) as file:
+            joints_setup = yaml.load(file)
+            workspace = joints_setup["workspace"]
+
+            x = workspace["center"]["x"]
+            y = workspace["center"]["y"]
+            z = workspace["center"]["z"]
+            min_r = workspace["r"]["min"]
+            max_r = workspace["r"]["max"]
+            min_z = workspace["min_z"]
+            self.workspace = WorkSpace(x, y, z, min_r, max_r, min_z)
+
+    def get_arm_to_baselink(self):
+        # try:
+        #     listener = tf.TransformListener()
+        #     (trans,rot) = listener.lookupTransform('/base_link', "/ur10_base_link", rospy.Time(0))
+        # except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+        #     rospy.loginfo("no transformation")
+        #     return
+        
+        # self.transform_arm_to_baselink.x = trans[0]
+        # self.transform_arm_to_baselink.y = trans[1]
+        # self.transform_arm_to_baselink.z = trans[2]
+        # print(self.transform_arm_to_baselink)
+
+        self.transform_arm_to_baselink.x = 0.205
+        self.transform_arm_to_baselink.y = 0
+        self.transform_arm_to_baselink.z = 0.802
+
+    def move_pose_arm(self, pose_goal):
+        # pose_goal = self.pose2msg(roll, pitch, yaw, x, y, z)
+        # pose_goal = self.gripper2TCP(pose_goal, self.gripper_length)
+
+        x = pose_goal.position.x
+        y = pose_goal.position.y
+        z = pose_goal.position.z
+
+        if not self.is_inside_workspace(x, y, z):
+            rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
+            return False
+
+        self.arm.set_pose_target(pose_goal)
+
+        self.arm.go(wait=True)
+
         self.arm.stop() # To guarantee no residual movement
+        self.arm.clear_pose_targets()
 
-    def move_joint_hand(self,gripper_finger1_joint):
-        joint_goal = self.gripper.get_current_joint_values()
-        joint_goal[2] = gripper_finger1_joint # Gripper master axis
+        return True
 
-        self.gripper.go(joint_goal, wait=True)
-        self.gripper.stop() # To guarantee no residual movement
+    def move_joint_hand(self,finger1_goal, finger2_goal = 10, finger3_goal = 10):
+        if finger2_goal == 10 and finger3_goal == 10:
+            finger2_goal, finger3_goal = finger1_goal, finger1_goal
+
+        jointtrajectory = JointTrajectory()
+        jointtrajectory.header.stamp = rospy.Time.now()
+        jointtrajectory.joint_names.extend(["H1_F1J3", "H1_F2J3", "H1_F3J3"])
+
+        joint = JointTrajectoryPoint()
+        joint.positions.extend([finger1_goal, finger2_goal, finger3_goal])
+        joint.time_from_start = rospy.Duration(1)
+        jointtrajectory.points.append(joint)
+
+        self.gripperpub.publish(jointtrajectory)
     
     def pose2msg(self, x, y, z, roll, pitch, yaw):
         pose = Pose()
@@ -161,7 +211,7 @@ class ENV():
         return roll, pitch, yaw, x, y, z 
 
     def spawn_model(self, model_name, model_pose):
-        with open(os.path.join(rospkg.RosPack().get_path('irb120_robotiq85_gazebo'), 'models', model_name,'model.sdf'), "r") as f:
+        with open(os.path.join(rospkg.RosPack().get_path('neo_simulation'), 'models', model_name,'model.sdf'), "r") as f:
             model_xml = f.read()
 
         self.spawn_model_srv(model_name, model_xml, "", model_pose, "world")
@@ -186,30 +236,128 @@ class ENV():
             self.spawn_model(object_name, object_pose)
 
             # respawn objects in Rviz
-            p = PoseStamped()
-            p.header.frame_id = self.robot.get_planning_frame()
-            p.header.stamp = rospy.Time.now()
+            # p = PoseStamped()
+            # p.header.frame_id = self.robot.get_planning_frame()
+            # p.header.stamp = rospy.Time.now()
 
-            self.clean_scene(object_name)
-            p.pose = copy.copy(this_object.relative_pose)
-            shape = this_object.shape
+            # self.clean_scene(object_name)
+            # p.pose = copy.copy(this_object.relative_pose)
+            # shape = this_object.shape
 
-            if shape == "box":
-                x = this_object.length
-                y = this_object.width
-                z = this_object.height
-                size = (x, y, z)
-                self.scene.add_box(object_name, p, size)
+            # if shape == "box":
+            #     x = this_object.length
+            #     y = this_object.width
+            #     z = this_object.height
+            #     size = (x, y, z)
+            #     self.scene.add_box(object_name, p, size)
 
-            elif shape == "cylinder":
-                height = this_object.height
-                radius = this_object.width/2
-                self.scene.add_cylinder(object_name, p, height, radius)
+            # elif shape == "cylinder":
+            #     height = this_object.height
+            #     radius = this_object.width/2
+            #     self.scene.add_cylinder(object_name, p, height, radius)
 
-            elif shape == "sphere":
-                radius = this_object.width/2
-                self.scene.add_sphere(object_name, p, radius)
+            # elif shape == "sphere":
+            #     radius = this_object.width/2
+            #     self.scene.add_sphere(object_name, p, radius)
 
             # rospy.sleep(0.5)
         rospy.loginfo("All objects are respawned")
+
+    def spawn_all_model(self):
+        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_mobile_manipulator', 'interfaces', 'models_info.yaml')
+        with open(filename) as file:
+            objects_info = yaml.load(file)
+            robot_x = objects_info["robot"]["pose"]["x"]
+            robot_y = objects_info["robot"]["pose"]["y"]
+            robot_z = objects_info["robot"]["pose"]["z"]
+            robot_roll = objects_info["robot"]["pose"]["roll"]
+            robot_pitch = objects_info["robot"]["pose"]["pitch"]
+            robot_yaw = objects_info["robot"]["pose"]["yaw"]
+
+            rospy.loginfo("Spawning Objects in Gazebo and planning scene")
+            objects = objects_info["objects"]
+            objects_name = objects.keys()
+            for object_name in objects_name:
+                name = object_name
+                shape = objects[name]["shape"]
+                color = objects[name]["color"]
+
+                # add object in Gazebo
+                # self.delete_model(object_name)
+                x = objects[name]["pose"]["x"]
+                y = objects[name]["pose"]["y"]
+                z = objects[name]["pose"]["z"]
+                roll = objects[name]["pose"]["roll"]
+                pitch = objects[name]["pose"]["pitch"]
+                yaw = objects[name]["pose"]["yaw"]
+                object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
+                self.spawn_model(object_name, object_pose)
+
+                ## add object in planning scene(Rviz)
+                # p = PoseStamped()
+                # p.header.frame_id = self.robot.get_planning_frame()
+                # p.header.stamp = rospy.Time.now()
+
+                # self.clean_scene(name)
+                # p.pose.position.x = x - robot_x
+                # p.pose.position.y = y - robot_y
+                # p.pose.position.z = z - robot_z
+
+                # q = quaternion_from_euler(roll,pitch,yaw)
+                # p.pose.orientation = Quaternion(*q)
+
+                # if shape == "box":
+                #     x = objects[name]["size"]["x"]
+                #     y = objects[name]["size"]["y"]
+                #     z = objects[name]["size"]["z"]
+                #     p.pose.position.z += z/2
+                #     size = (x, y, z)
+                #     self.scene.add_box(name, p, size)
+
+                #     height = z
+                #     width = y
+                #     length = x
+                #     self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
+
+                # elif shape == "cylinder":
+                #     height = objects[name]["size"]["height"]
+                #     radius = objects[name]["size"]["radius"]
+                #     p.pose.position.z += height/2
+                #     self.scene.add_cylinder(name, p, height, radius)
+                #     self.object_list[name] = Object(p.pose, object_pose, height, radius*2, radius*2, shape, color)
+
+                # elif shape == "sphere":
+                #     radius = objects[name]["size"]
+                #     p.pose.position.z += radius
+                #     self.scene.add_sphere(name, p, radius)
+                #     self.object_list[name] = Object(p.pose, object_pose, radius*2, radius*2, radius*2, shape, color)
+
+                # rospy.sleep(0.5)
+            
+            # rospy.loginfo("Spawning Obstacles in planning scene")
+            # obstacles = objects_info["obstacles"]
+            # obstacles_name = obstacles.keys()
+            # for obstacle_name in obstacles_name:
+            #     name = obstacle_name
+
+            #     p = PoseStamped()
+            #     p.header.frame_id = self.robot.get_planning_frame()
+            #     p.header.stamp = rospy.Time.now()
+
+            #     self.clean_scene(name)
+            #     p.pose.position.x = obstacles[name]["pose"]["x"] - robot_x
+            #     p.pose.position.y = obstacles[name]["pose"]["y"] - robot_y
+            #     p.pose.position.z = obstacles[name]["pose"]["z"] - robot_z
+
+            #     q = quaternion_from_euler(robot_roll, robot_pitch, robot_yaw)
+            #     p.pose.orientation = Quaternion(*q)
+
+            #     x = obstacles[name]["size"]["x"]
+            #     y = obstacles[name]["size"]["y"]
+            #     z = obstacles[name]["size"]["z"]
+            #     size = (x, y, z)
+            #     self.scene.add_box(name, p, size)
+
+            #     rospy.sleep(0.5)
+        rospy.loginfo("All objects are spawnned")
         sys.exit()
