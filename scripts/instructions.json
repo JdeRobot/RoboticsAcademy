@@ -65,5 +65,11 @@
         "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/pick_place/web-template/launch/pick_place.launch"],
         "instructions_rviz": "roslaunch /RoboticsAcademy/exercises/pick_place/web-template/launch/rviz.launch",
         "instructions_host":"python /RoboticsAcademy/exercises/pick_place/web-template/exercise.py 0.0.0.0"
+    },
+    "mobile_manipulation":{
+        "gazebo_path": "/RoboticsAcademy/exercises/mobile_manipulation/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/mobile_manipulation/web-template/launch/mobile_manipulation.launch"],
+        "instructions_rviz": "roslaunch /RoboticsAcademy/exercises/mobile_manipulation/web-template/launch/rviz.launch",
+        "instructions_host":"python /RoboticsAcademy/exercises/mobile_manipulation/web-template/exercise.py 0.0.0.0"
     }
 }
