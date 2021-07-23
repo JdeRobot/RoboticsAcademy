@@ -52,6 +52,7 @@ class Template:
         self.exit_signal_teleop = threading.Event()
         self.teleop_q = queue.Queue()
         self.teleop = TeleopThread(self.teleop_q,self.exit_signal_teleop,self.hal)
+        self.paused = False
 
     # Function for saving
     def save_code(self, source_code):
@@ -202,10 +203,16 @@ class Template:
             self.send_frequency_message()
             return
         elif(message[:5] == "#tele"):
-            # Stop Brain process
-            if(self.brain_process != None):
-                if self.brain_process.is_alive():
-                    self.reload.clear()
+            # Stop Brain code by sending an empty code
+            if not self.paused:
+                self.reload.set()
+                self.execute_thread("""from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!""")
+                self.paused = True
                 
             # Parse message
             teleop_message = message[5:]
@@ -230,6 +237,8 @@ class Template:
             if self.teleop.is_alive():
                 self.exit_signal_teleop.set()
             
+            self.paused = False
+
             # Once received turn the reload flag up and send it to execute_thread function
             code = message
             # print(repr(code))
