@@ -1,0 +1,9 @@
+Referee:
+
+    Pose3D:
+        Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+        Proxy: "Pose3D:default -h localhost -p 9989"
+        Topic: "/Referee/Pose3D"
+        Name: RefereePose3d
+
+NodeName: Referee

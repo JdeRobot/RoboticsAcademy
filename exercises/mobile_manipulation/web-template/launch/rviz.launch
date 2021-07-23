@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="rviz" default="true"/>
+  <group if="$(arg rviz)">
+    <arg name="rvizconfig" default="$(find neo_simulation)/config/mmo_500/rviz/navigation_config.rviz" />
+	  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+  </group>
+</launch>

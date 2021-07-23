@@ -1,0 +1,93 @@
+objects:
+  yellow_box: 
+      shape: box
+      size: {x: 0.03, y: 0.1, z: 0.04}
+      pose: {x: 0.45, y: 0.1, z: 1, roll: 0, pitch: 0, yaw: 0}
+      color: yellow
+
+  red_box:
+    shape: box
+    size: {x: 0.05, y: 0.05, z: 0.05}
+    pose: {x: 0.45, y: -0.1, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: red
+
+  blue_box:
+    shape: box
+    size: {x: 0.1, y: 0.05, z: 0.07}
+    pose: {x: 0.65, y: -0.1, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: blue
+
+  blue_ball:
+    shape: sphere
+    size: 0.03
+    pose: {x: 0.45, y: 0.3, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: blue
+
+  yellow_ball:
+    shape: sphere
+    size: 0.015
+    pose: {x: 0.45, y: -0.3, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: grey
+
+  green_ball:
+    shape: sphere
+    size: 0.025
+    pose: {x: 0.65, y: 0.1, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: grey
+
+  green_cylinder:
+    shape: cylinder
+    size: {radius: 0.03, height: 0.1}
+    pose: {x: 0.65, y: -0.3, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: green
+
+  red_cylinder:
+    shape: cylinder
+    size: {radius: 0.02, height: 0.12}
+    pose: {x: 0.65, y: 0.3, z: 1, roll: 0, pitch: 0, yaw: 0}
+    color: orange
+
+obstacles:
+  conveyor:
+    shape: box
+    size: {x: 0.8, y: 2.4, z: 0.1}
+    pose: {x: 0.6, y: 0, z: 0.95, roll: 0, pitch: 0, yaw: 0}
+
+  red_target:
+    shape: box
+    size: {x: 0.3, y: 0.3, z: 0.36}
+    pose: {x: -0.4, y: 0.15, z: 0.755, roll: 0, pitch: 0, yaw: 0}
+
+  green_target:
+    shape: box
+    size: {x: 0.3, y: 0.3, z: 0.36}
+    pose: {x: -0.4, y: -0.15, z: 0.755, roll: 0, pitch: 0, yaw: 0}
+
+  blue_target:
+    shape: box
+    size: {x: 0.3, y: 0.3, z: 0.36}
+    pose: {x: -0.4, y: 0.35, z: 0.755, roll: 0, pitch: 0, yaw: 0}
+
+  yellow_target:
+    shape: box
+    size: {x: 0.3, y: 0.3, z: 0.36}
+    pose: {x: -0.4, y: -0.35, z: 0.755, roll: 0, pitch: 0, yaw: 0}
+
+targets:
+  red_target: {x: -0.4, y: 0.15, z: 1.1}
+  green_target: {x: -0.4, y: -0.15, z: 1.1}
+  blue_target: {x: -0.4, y: 0.39, z: 1.1}
+  yellow_target: {x: -0.4, y: -0.39, z: 1.1}
+
+robot:
+  pose: {x: 0, y: 0, z: 0.9, roll: 0, pitch: 0, yaw: 0}
+
+gripper_joint_value: 
+  0.01: 0.7
+  0.02: 0.6
+  0.03: 0.55
+  0.04: 0.45
+  0.05: 0.4
+  0.06: 0.3
+  0.07: 0.2
+  0.08: 0.1 
