@@ -310,7 +310,7 @@ class Manager:
                 if not (ACCELERATION_ENABLED):
                     self.open_simulation(self.exercise, self.width, self.height, circuit)
                 else:
-                    self.open_accelerated_simulation(self.exercise, self.width, self.height)
+                    self.open_accelerated_simulation(self.exercise, self.width, self.height, circuit)
             elif command == "resume":
                 self.resume_simulation()
                 await websocket.send("Ping{}".format(self.launch_level))
@@ -363,7 +363,7 @@ class Manager:
             self.commands.start_console(1920, 1080)
 
     # Function to open accelerated simulation
-    def open_accelerated_simulation(self, exercise, width, height):
+    def open_accelerated_simulation(self, exercise, width, height, circuit):
         print("> Starting accelerated simulation")
 
         # Stop existing VNC and any accelerated displays
@@ -375,8 +375,8 @@ class Manager:
 
         # Start the exercise
         if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"]:
-            self.commands.start_gzserver(exercise)
-            self.commands.start_exercise(exercise)
+            self.commands.start_gzserver(exercise, circuit)
+            self.commands.start_exercise(exercise, circuit=circuit)
             time.sleep(5)
             self.launch_level = 3
 
