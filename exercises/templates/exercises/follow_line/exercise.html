@@ -6,6 +6,10 @@
 
 
 <div id="code-control">
+    <!-- Teleoperate mode selector -->
+    <!-- <button id="teleop" style="margin: 5px;">Teleoperate mode</button> -->
+    <button id="teleop" type="button" <span title="Teleoperate your robot"></span><img id="teleop_img" src="{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}"> Teleoperate </button>
+
     <!-- Code Editor -->
     <!-- Along with buttons -->
     <div id="code_container">
@@ -70,6 +74,70 @@ while True:
     window.addEventListener('load', function () {
         window.top.postMessage('connect', '*');
     })
+</script>
+
+<!-- Teleoperate mode script -->
+<script>
+    'use strict';
+
+    // Teleop variable
+    let teleop_mode = false;
+    // Teleop button
+    const teleop_btn = document.querySelector('#teleop');
+    const teleop_img = document.querySelector('#teleop_img');
+
+    teleop_btn.addEventListener('click', function(){
+        // If variable is false, activate teleoperate mode
+        if(!teleop_mode){
+            // Activate mode
+            teleop_mode = true;
+            teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_on.png' %}";
+            document.addEventListener('keydown', keyHandler, false);
+			document.addEventListener('keyup', keyHandler, false);
+			return;
+        }
+
+        // Else, turn of teleop mode and remove event listeners
+        teleop_mode = false;
+        teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}";
+        document.removeEventListener('keydown', keyHandler, false);
+		document.removeEventListener('keyup', keyHandler, false);
+		return;
+    });
+
+    // Car variables
+    let v = 0;
+    let w = 0;
+
+    // Event Handlers for controls
+    function keyHandler(event) {
+        // Right (39), Left (37), Down (40), Up (38)
+        
+        // First check if websocket_gui_guest and websocket_code_guest are defined
+        if((typeof(websocket_gui) !== 'undefined' && (typeof(websocket_code) !== 'undefined'))){
+            let cmd = "#tele";
+
+            // Prevent using arrow keys to scroll page
+            if([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+                event.preventDefault();
+            }
+
+            if(event.keyCode == 39) {
+                //console.log('Right');
+                w = (event.type == 'keydown')?-1:0;
+            }else if(event.keyCode == 37) {
+                //console.log('Left');
+                w = (event.type == 'keydown')?1:0;
+            }else if(event.keyCode == 40) {
+                //console.log('Down');
+                v = (event.type == 'keydown')?-2:0;
+            }else if(event.keyCode == 38) {
+                //console.log('Up');
+                v = (event.type == 'keydown')?2:0;
+            }
+            console.log('v: ', v, 'w: ', w);
+        }
+    }
 </script>
 
 <script src="{% static 'exercises/follow_line/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>

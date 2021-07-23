@@ -129,7 +129,16 @@ img{
     margin-right: 10px;
 }
 
-#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover{
+#teleop{
+    font-size: 12px;
+    width: 160px;
+    height: 80px;
+    border: none;
+    background-color: whitesmoke;
+    margin: 10px;
+}
+
+#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover, #teleop:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
