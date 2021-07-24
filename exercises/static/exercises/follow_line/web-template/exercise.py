@@ -19,6 +19,9 @@ from shared.value import SharedValue
 from hal import HAL
 from brain import BrainProcess
 
+from teleoperator import TeleopThread
+import queue
+
 
 class Template:
     # Initialize class variables
@@ -45,6 +48,11 @@ class Template:
 
         # Initialize the GUI and HAL behind the scenes
         self.hal = HAL()
+
+        self.exit_signal_teleop = threading.Event()
+        self.teleop_q = queue.Queue()
+        self.teleop = TeleopThread(self.teleop_q,self.exit_signal_teleop,self.hal)
+        self.paused = False
 
     # Function for saving
     def save_code(self, source_code):
@@ -176,9 +184,17 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def read_teleop_message(self, teleop_message):
+        teleop_message = json.loads(teleop_message)
+
+        # Get V and W
+        v = float(teleop_message["v"])
+        w = float(teleop_message["w"])
+
+        return v, w
+
     # The websocket function
     # Gets called when there is an incoming message from the client
-
     def handle(self, client, server, message):
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
@@ -186,8 +202,43 @@ class Template:
             time.sleep(1)
             self.send_frequency_message()
             return
+        elif(message[:5] == "#tele"):
+            # Stop Brain code by sending an empty code
+            if not self.paused:
+                self.reload.set()
+                self.execute_thread("""from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
 
+while True:
+    # Enter iterative code!""")
+                self.paused = True
+                
+            # Parse message
+            teleop_message = message[5:]
+            v,w = self.read_teleop_message(teleop_message)
+            
+            # crear hebra de interacciones periódicas
+            # python thread
+            # Clear exit flag in order to continue executing the thread            
+            # envío última V y W recibida y me pongo a dormir
+            
+            # Recupero el flag
+            self.exit_signal_teleop.clear()
+            
+            if not self.teleop.is_alive():
+                self.teleop.start()
+            
+            self.teleop_q.put({"v":v,"w":w})
+            return
+            
         try:
+            # First pause the teleoperator thread if exists
+            if self.teleop.is_alive():
+                self.exit_signal_teleop.set()
+            
+            self.paused = False
+
             # Once received turn the reload flag up and send it to execute_thread function
             code = message
             # print(repr(code))
