@@ -104,6 +104,9 @@
         gutterSize: 3,
         sizes: [50, 50]
     });
+    window.addEventListener('load', function () {
+        window.top.postMessage('connect', '*');
+    });
 </script>
 
 
