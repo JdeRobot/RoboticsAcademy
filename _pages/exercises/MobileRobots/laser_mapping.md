@@ -11,8 +11,45 @@ toc_icon: "cog"
 
 
 gallery:
+  - url: /assets/images/exercises/laser_mapping/laser_mapping.png
     image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Vacuum"
+  
+gifSpiral:
+  - url: /assets/images/exercises/laser_mapping/spiral.gif
+    image_path: /assets/images/exercises/laser_mapping/spiral.gif
+    alt: "spiral"
+    title: "spiral"
+
+gifBoustrophedon:
+  - url: /assets/images/exercises/laser_mapping/boustrophedon.gif
+    image_path: /assets/images/exercises/laser_mapping/boustrophedon.gif
+    alt: "spiral"
+    title: "spiral"
+
+gifNoDuration:
+  - url: /assets/images/exercises/laser_mapping/without_duration.gif
+    image_path: /assets/images/exercises/laser_mapping/without_duration.gif
+    alt: "no duration"
+    title: "no duration"
+
+gifDuration:
+  - url: /assets/images/exercises/laser_mapping/duration.gif
+    image_path: /assets/images/exercises/laser_mapping/duration.gif
+    alt: "duration"
+    title: "duration"
+
+gifOmega:
+  - url: /assets/images/exercises/laser_mapping/reduce_omega.gif
+    image_path: /assets/images/exercises/laser_mapping/reduce_omega.gif
+    alt: "omega"
+    title: "omega"
+
+gifV:
+  - url: /assets/images/exercises/laser_mapping/increasing_v.gif
+    image_path: /assets/images/exercises/laser_mapping/increasing_v.gif
+    alt: "increasing v"
+    title: "increasing v"
 
 #youtubeId1: c90hmfkZRNY
 #youtubeId2: Xcy84DhVjrY
@@ -30,7 +67,6 @@ The instructions for both of them are provided as follows.
 
 The objective of this practice is to implement the logic of a navigation algorithm for a vacuum using laser mapping. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 
-<img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Laser Mapping." %}
 
 ## Instructions for Web Templates
@@ -93,9 +129,9 @@ while True:
 
 * **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
 
-* **Frequency Slider**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
+* **Frequency Input**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
 
-* **Debug Level**: RTF (Real Time Factor): The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer.
+* **RTF**: RTF (Real Time Factor): The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer.
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
 
@@ -241,13 +277,13 @@ The problem of coverage involves two standard basic motions, which are used as a
 
 The robot follows an increasing circle/square pattern.
 
-![Base Movement Spiral]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/spiral.gif)
+{% include gallery id="gifSpiral" %}
 
 - **Boustrophedon Motion**
 
 The robot follows an S-shaped pattern.
 
-![Base Movement Boustrophedon]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/boustrophedon.gif)
+{% include gallery id="gifBoustrophedon" %}
 
 ### Analysis of Coverage Algorithms
 
@@ -300,21 +336,13 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ### Illustrations
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/without_duration.gif) 
+{% include gallery id="gifNoDuration" caption="Without applying a sleep duration the previous rotation command still has effect on the go straight command" %}
 
-*Without applying a sleep duration the previous rotation command still has effect on the go straight command*
+{% include gallery id="gifDuration" caption="After applying a duration, we get straight direction movement" %}
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/duration.gif)
+{% include gallery id="gifOmega" caption="Effect of reducing $\omega$ to generate spiral" %}
 
-*After applying a duration, we get straight direction movement*
-
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/reduce_omega.gif)
-
-*Effect of reducing $\omega$ to generate spiral*
-
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/laser_mapping/increasing_v.gif)
-
-*Effect of increasing $v$ to generate spiral*
+{% include gallery id="gifV" caption="Effect of increasing $v$ to generate spiral" %}
 
 <!--
 ## Demonstrative Video
