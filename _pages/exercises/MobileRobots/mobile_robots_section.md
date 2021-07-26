@@ -76,6 +76,17 @@ feature_row:
     version_label: "btn--success"
     status: "prototype"
     order: 2;
+  
+  - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
+    alt: "Laser Mapping"
+    title: "Laser Mapping"
+    excerpt: "Navigation algorithm for an autonomous vacuum."
+    url: "/exercises/MobileRobots/laser_mapping"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
 
 ---
 
