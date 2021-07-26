@@ -78,7 +78,7 @@
                     if (data.command == 'available') {
                         $("#launch-button").removeClass('btn-secondary').addClass('btn-danger');
                     }else if (data.command == 'up') {
-                        $("#launch-button").removeClass("btn-warning").addClass("btn-success");
+                        $("#launch-button").removeClass("btn-warning btn-danger").addClass("btn-success");
                         $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
                         $("#launch-button").prop('disabled', true);
                     }else if (data.command == 'down'){
