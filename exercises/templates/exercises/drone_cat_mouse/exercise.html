@@ -69,6 +69,8 @@ while True:
 
 <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 <script>
+    var exercise = "drone_cat_mouse";
+
     Split(['.a', '.b'], {
         gutterSize: 3,
         sizes: [50,50]
@@ -78,13 +80,13 @@ while True:
     });
 </script>
 
-<script src="{% static 'exercises/drone_cat_mouse/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
 <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 
 {% endblock %}
