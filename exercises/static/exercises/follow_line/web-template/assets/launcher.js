@@ -4,7 +4,7 @@ var simReset = false;
 var simStop = false;
 var simResume = false;
 
-function startSim(step) {
+function startSim(step, circuit="default") {
     var level = 0;
     let websockets_connected = false;
     if (step == 0) {

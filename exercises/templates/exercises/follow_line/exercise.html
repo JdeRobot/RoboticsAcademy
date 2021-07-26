@@ -10,6 +10,16 @@
     <!-- <button id="teleop" style="margin: 5px;">Teleoperate mode</button> -->
     <button id="teleop" type="button" <span title="Teleoperate your robot"></span><img id="teleop_img" src="{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}"> Teleoperate </button>
 
+    <br>
+    <!-- Circuit selector -->
+    <label for="circuit_selector">Circuit: </label>
+	  <select class="form-control" style="margin-bottom: 10px;" name="circuit_selector" id="circuit_selector">
+		  <option value="default">Default Line</option>
+		  <option value="montmelo">Montmelo Line</option>
+		  <option value="montreal">Montreal Line</option>
+		  <option value="nbg">Nürburgring Line</option>
+	  </select>
+
     <!-- Code Editor -->
     <!-- Along with buttons -->
     <div id="code_container">
@@ -145,10 +155,13 @@ while True:
 <script src="{% static 'exercises/assets/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
 <script src="{% static 'exercises/follow_line/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/assets/js/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/follow_line/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/ws_code_teleop.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/follow_line/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/follow_line/web-template/assets/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/follow_line/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/follow_line/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
+<!-- Circuit selector js -->
+<script src="{% static 'exercises/follow_line/web-template/assets/circuit_selector.js' %}?v={{version}}"></script>
 {% endblock %}

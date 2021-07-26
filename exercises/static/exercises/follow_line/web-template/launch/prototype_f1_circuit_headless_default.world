@@ -24,6 +24,5 @@
       <uri>model://f1</uri>
       <pose>53.462 -10.734 0.004 0 0 -1.57</pose>
     </include>
-
   </world>
 </sdf>
