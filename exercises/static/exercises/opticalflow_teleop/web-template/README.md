@@ -1,13 +1,9 @@
-# Follow Line Exercise using WebTemplates
+# Optical Flow Teleop Exercise using WebTemplates
 
 ## How to launch the exercise?
 
-For users of Robotics Academy, follow the instructions given on this [link](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/)
+For users of Robotics Academy, follow the instructions given on this [link](http://jderobot.github.io/RoboticsAcademy/exercises/computer_vision_section/opticalflow_teleop/)
 
-Note: For Windows users running the exercise through the web template, the websocket_address would be the IP address of the **vEthernet adapter(WSL)**. This can be found through the following command at the command prompt:
-```
-ipconfig/all
-```
 
 ## Dependencies
 
