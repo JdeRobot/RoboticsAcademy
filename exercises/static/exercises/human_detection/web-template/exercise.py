@@ -527,6 +527,7 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
+        start_console()
         if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
@@ -571,7 +572,6 @@ class Template:
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
-        start_console()
         self.client = client
         # Start the GUI update thread
         self.thread_gui = ThreadGUI(self.gui)
