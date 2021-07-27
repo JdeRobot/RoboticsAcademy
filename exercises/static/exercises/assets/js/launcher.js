@@ -13,9 +13,8 @@ function startSim(step) {
     else if (step == 1) {
         radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         var size = get_novnc_size();
-        console.log(circuit);
         ws_manager.send(JSON.stringify({
-            "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString(), "circuit": circuit}));
+            "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString()}));
         level++;
         radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         ws_manager.send(JSON.stringify({"command" : "Pong"}));
