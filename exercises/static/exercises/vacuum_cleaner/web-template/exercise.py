@@ -74,16 +74,6 @@ class Template:
             return "", ""
 
         else:
-            # Get the frequency of operation, convert to time_cycle and strip
-            try:
-                # Get the debug level and strip the debug part
-                debug_level = int(source_code[5])
-                source_code = source_code[12:]
-            except:
-                debug_level = 1
-                source_code = ""
-
-            source_code = self.debug_parse(source_code, debug_level)
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
             return iterative_code, sequential_code
 

@@ -51,6 +51,8 @@ while True:
 
 <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 <script>
+    var exercise = "color_filter";
+
   Split(['.a', '.b'], {
     gutterSize: 3,
     sizes: [50,50]
@@ -60,10 +62,10 @@ while True:
     });
 </script>
 <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
-<script src="{% static 'exercises/color_filter/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
 <script src="{% static 'exercises/color_filter/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/color_filter/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/launcher_no_gazebo.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/color_filter/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/color_filter/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/color_filter/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
