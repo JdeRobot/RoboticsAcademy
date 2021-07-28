@@ -27,10 +27,10 @@ function declare_gui(websocket_address){
 	websocket_gui.onclose = function(event){
 		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
 		if(event.wasClean){
-			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+			//alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
 		else{
-			alert("[close] Connection closed!");
+			//alert("[close] Connection closed!");
 		}
 	}
 
