@@ -5,9 +5,10 @@
 }
 
 #gui_canvas {
-    height: 350px;
-    width: 400px;
-    float:right;
+    margin-left: 20%;
+    height: 240px;
+    width: 320px;
+    border: 3px solid #555;
 }
 
 
@@ -16,47 +17,18 @@
     width:100%;
 }
 
-#lap_heading{
-    padding-left: 10%;
+#stream {
+    margin-left: 20%;
+    height: 240px;
+    width: 320px;
+	border: 3px solid #555;
 }
 
-#lap_time{
-    padding-left: 10%;
+#input_heading{
+    margin-left: 42%;
 }
 
-
-#birds-eye{
-    background: url("./img/map.jpg");
-    background-repeat: no-repeat;
-    height: 350px;
-    width: 340px;
-}
-
-#birds-eye.default{
-	background: url("./img/map.jpg");
-    background-repeat: no-repeat;
-    height: 350px;
-    width: 340px;
-}
-
-#birds-eye.montreal{
-	background: url("./img/montreal.jpg");
-    background-repeat: no-repeat;
-    height: 350px;
-    width: 600px;
-}
-
-#birds-eye.montmelo{
-	background: url("./img/montmelo.jpg");
-    background-repeat: no-repeat;
-    height: 350px;
-    width: 1073px;
-}
-
-#birds-eye.nbg{
-	background: url("./img/nbg.jpg");
-    background-repeat: no-repeat;
-	height: 350px;
-    width: 702px;
+#output_heading{
+    margin-left: 40%;
 }
 

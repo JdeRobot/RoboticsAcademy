@@ -1,4 +1,4 @@
-	//Editor Part
+//Editor Part
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
@@ -8,7 +8,7 @@ stop_button.disabled = true;
 stop_button.style.opacity = "0.4";
 stop_button.style.cursor = "not-allowed";
 
-// running variable for psuedo decoupling 
+// running variable for psuedo decoupling
 // Play/Pause from Reset
 var frequency = "0";
 
@@ -36,7 +36,7 @@ function declare_code(websocket_address){
 	websocket_code.onmessage = function(event){
 		var source_code = event.data;
 		operation = source_code.substring(0, 5);
-		
+
 		if(operation == "#load"){
 			editor.setValue(source_code.substring(5,));
 		}
@@ -48,17 +48,14 @@ function declare_code(websocket_address){
 			// Parse real time factor
 			document.querySelector('#real_time_factor').value = frequency_message.rtf;
 		}
-		
-		// The acknowledgement messages invoke the python server to send further
-		// messages to this client (inside the server's handle function)
+
 		// Send the acknowledgment message along with frequency
 		code_frequency = document.querySelector('#code_freq').value;
 		gui_frequency = document.querySelector('#gui_freq').value;
 		real_time_factor = document.querySelector('#real_time_factor').value;
-    
-		frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
-		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
 }
 
@@ -68,7 +65,12 @@ function submitCode(){
 		// Get the code from editor and add headers
 		var python_code = editor.getValue();
 		python_code = "#code\n" + python_code
-		
+
+		// Get the debug level and add header
+		//var debug_level = document.querySelector('input[name = "debug"]').value;
+		var debug_level = 2;
+		python_code = "#dbug" + debug_level + python_code
+
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
 
@@ -86,6 +88,24 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
+}
+
+// Function to save the code
+function saveCode(){
+	// Get the code from editor and add header
+
+	var python_code = editor.getValue();
+	python_code = "#save" + python_code;
+	console.log("Code Sent! Check terminal for more information!");
+	websocket_code.send(python_code)
+}
+
+// Function to load the code
+function loadCode(){
+	// Send message to initiate load message
+	var message = "#load";
+	websocket_code.send(message);
+
 }
 
 // Function for range slider
