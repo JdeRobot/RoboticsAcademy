@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_teleop.html' %}
 
 {% load static %}
 {% block content %}
@@ -6,20 +6,7 @@
 
 
 <div id="code-control">
-    <!-- Teleoperate mode selector -->
-    <!-- <button id="teleop" style="margin: 5px;">Teleoperate mode</button> -->
-    <button id="teleop" type="button" <span title="Teleoperate your robot"></span><img id="teleop_img" src="{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}"> Teleoperate </button>
-
     <br>
-    <!-- Circuit selector -->
-    <label for="circuit_selector">Circuit: </label>
-	  <select class="form-control" style="margin-bottom: 10px;" name="circuit_selector" id="circuit_selector">
-		  <option value="default">Default Line</option>
-		  <option value="montmelo">Montmelo Line</option>
-		  <option value="montreal">Montreal Line</option>
-		  <option value="nbg">Nürburgring Line</option>
-	  </select>
-
     <!-- Code Editor -->
     <!-- Along with buttons -->
     <div id="code_container">
@@ -37,6 +24,14 @@ while True:
 
 </div>
 <div class="split b">
+        <!-- Circuit selector -->
+        <label for="circuit_selector" style="display: inline-block;">Circuit: </label>
+        <select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">
+            <option value="default">Default Line</option>
+            <option value="montmelo">Montmelo Line</option>
+            <option value="montreal">Montreal Line</option>
+            <option value="nbg">Nürburgring Line</option>
+        </select>
     <div id="visual_buttons" class="row no-gutters">
         <div id="lap_heading">Lap Time <img src="{% static 'exercises/follow_line/web-template/assets/img/stopwatch-solid.svg' %}"><span id="lap_time"></span> </div>
     </div>
@@ -95,12 +90,16 @@ while True:
     // Teleop variable
     let teleop_mode = false;
     // Teleop button
-    const teleop_btn = document.querySelector('#teleop');
+    const teleop_btn = document.querySelector('#teleop_button');
     const teleop_img = document.querySelector('#teleop_img');
 
     teleop_btn.addEventListener('click', function(){
         // If variable is false, activate teleoperate mode
         if(!teleop_mode){
+            if (running == false) {
+                resumeSimulation();
+                running == true;
+            }
             // Activate mode
             teleop_mode = true;
             teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_on.png' %}";
@@ -111,11 +110,19 @@ while True:
 
         // Else, turn of teleop mode and remove event listeners
         teleop_mode = false;
+        submitCode();
         teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}";
         document.removeEventListener('keydown', keyHandler, false);
 		document.removeEventListener('keyup', keyHandler, false);
 		return;
     });
+
+    function deactivateTeleopButton() {
+        teleop_mode = false;
+        teleop_img.src = "{% static 'exercises/follow_line/web-template/assets/img/joystick_off.png' %}";
+        document.removeEventListener('keydown', keyHandler, false);
+		document.removeEventListener('keyup', keyHandler, false);
+    }
 
     // Car variables
     let v = 0;

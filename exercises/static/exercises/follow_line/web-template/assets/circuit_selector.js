@@ -20,8 +20,11 @@ circuit_selector.addEventListener('change', function(){
     
     // Set variable to toggle gazebo
     gazeboToggle = true;
+    // Stop the simulation
+    stop();
     // Kill actual sim
     startSim(2)
     // StartSim
     startSim(1, circuit);
+    alert('Loading circuit. Please wait until the connection is restored.');
 });
