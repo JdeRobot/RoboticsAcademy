@@ -20,31 +20,36 @@ from lap import Lap
 from map import Map
 
 # Graphical User Interface Class
-
-
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host):
+    def __init__(self, host, circuit):
         rospy.init_node("GUI")
 
-        self.payload = {'image': '', 'lap': '', 'map': '', 'v': '', 'w': ''}
+        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
         self.server = None
         self.client = None
-
+        
         self.host = host
+        
+        # Circuit
+        self.circuit = circuit
 
-        # Image variable
+        # Image variable host
         self.shared_image = SharedImage("guiimage")
-
+        
         # Get HAL variables
         self.shared_v = SharedValue("velocity")
         self.shared_w = SharedValue("angular")
-
+        
         # Create the lap object
         pose3d_object = ListenerPose3d("/F1ROS/odom")
         self.lap = Lap(pose3d_object)
-        self.map = Map(pose3d_object)
+        self.map = Map(pose3d_object, self.circuit)
+        # Guest Position
+        pose3d_object_guest = ListenerPose3d("/F1ROSGuest/odom")
+        self.lap_guest = Lap(pose3d_object_guest)
+        self.map_guest = Map(pose3d_object_guest, self.circuit)
 
         # Event objects for multiprocessing
         self.ack_event = multiprocessing.Event()
@@ -59,14 +64,14 @@ class GUI:
     def payloadImage(self):
         image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-
+    	
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
-
+        
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
+        
         return payload
 
     # Function to get the client
@@ -76,22 +81,26 @@ class GUI:
         self.cli_event.set()
 
         print(client, 'connected')
-
+        
     # Update the gui
     def update_gui(self):
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-
+        
         # Payload Lap Message
         lapped = self.lap.check_threshold()
         self.payload["lap"] = ""
         if(lapped != None):
             self.payload["lap"] = str(lapped)
-
+            
         # Payload Map Message
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
+        
+        # Payload Map Message Guest
+        pos_message_guest = str(self.map_guest.getFormulaCoordinates())
+        self.payload["map_guest"] = pos_message_guest
 
         # Payload V Message
         v_message = str(self.shared_v.get())
@@ -100,10 +109,10 @@ class GUI:
         # Payload W Message
         w_message = str(self.shared_w.get())
         self.payload["w"] = w_message
-
+        
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
-
+            
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
@@ -121,6 +130,7 @@ class GUI:
         elif(message[:5] == "#rest"):
             self.reset_gui()
 
+    	
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
         print(client, 'closed')
@@ -138,6 +148,7 @@ class GUI:
         self.lap.reset()
         self.map.reset()
 
+        
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -146,6 +157,8 @@ class ProcessGUI(multiprocessing.Process):
         super(ProcessGUI, self).__init__()
 
         self.host = sys.argv[1]
+        # Circuit
+        self.circuit = sys.argv[2]
 
         # Time variables
         self.time_cycle = SharedValue("gui_time_cycle")
@@ -162,7 +175,7 @@ class ProcessGUI(multiprocessing.Process):
     # Function to start the execution of threads
     def run(self):
         # Initialize GUI
-        self.gui = GUI(self.host)
+        self.gui = GUI(self.host, self.circuit)
         self.initialize_events()
 
         # Wait for client before starting
@@ -211,13 +224,13 @@ class ProcessGUI(multiprocessing.Process):
             # Wait for acknowldege signal
             self.ack_event.wait()
             self.ack_event.clear()
-
+            
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
-
+            
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-
+            
             time_cycle = self.time_cycle.get()
 
             if(ms < time_cycle):
@@ -226,13 +239,13 @@ class ProcessGUI(multiprocessing.Process):
         self.exit_signal.set()
 
     # Functions to handle auxillary GUI functions
-    def reset_gui(self):
+    def reset_gui():
         self.gui.reset_gui()
-
-    def lap_pause(self):
+    
+    def lap_pause():
         self.gui.lap.pause()
-
-    def lap_unpause(self):
+    
+    def lap_unpause():
         self.gui.lap.unpause()
 
 

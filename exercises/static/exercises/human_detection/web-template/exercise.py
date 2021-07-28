@@ -9,7 +9,8 @@ import os
 import sys
 import threading
 import time
-
+import netron
+import shutil
 import cv2
 
 import numpy as np
@@ -18,7 +19,13 @@ from websocket_server import WebsocketServer
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-import console
+from console import start_console, close_console
+
+import _init_paths #Set up path for the benchamrking folder 
+# importing required dependencies from benchmarking folder     
+from Evaluator import *
+import benchmark 
+
 
 
 class Template:
@@ -39,47 +46,87 @@ class Template:
         self.client = None
         self.host = sys.argv[1]
 
-        self.aux_model_fname = "dummy.onxx"  # internal name for temporary model uploaded by user
+        self.aux_model_fname = "uploaded_model.onnx"  # internal name for temporary model uploaded by user
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
+        # Saving the current path for later use.
+        # The current path is somehow required everytime for accessing files, when the exercise is running in the docker container
+        self.current_path = os.path.dirname(os.path.abspath(__file__))
 
-    def output_detection(self, img, d, score):
-        """Draw box and label for 1 detection."""
-        height, width = img.shape[0], img.shape[1]
-        # the box is relative to the image size so we multiply with height and width to get pixels.
-        top = d[0] * height
-        left = d[1] * width
-        bottom = d[2] * height
-        right = d[3] * width
-        top = max(0, np.floor(top + 0.5).astype('int32'))
-        left = max(0, np.floor(left + 0.5).astype('int32'))
-        bottom = min(height, np.floor(bottom + 0.5).astype('int32'))
-        right = min(width, np.floor(right + 0.5).astype('int32'))
-        cv2.rectangle(img, (left, top), (right, bottom), (0,0,255), 2)
-        cv2.putText(img, 'Human', (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (36,255,12), 1)
-        cv2.putText(img, str(score)+"%", (left+150, top-10), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255,0,0), 1)
-        self.gui.showResult(img, str(""))
-
-
-    # The process function
-    def process_dl_model(self, raw_dl_model):
-        """
-        Given a DL model in onnx format, yield prediction per frame.
-        :param raw_dl_model: raw DL model transferred through websocket
-        """
+    
+    def saveModel(self, raw_dl_model):
         # Receive model
+        print("Received raw model")
         raw_dl_model = raw_dl_model.split(",")[-1]
         raw_dl_model_bytes = raw_dl_model.encode('ascii')
         raw_dl_model_bytes = base64.b64decode(raw_dl_model_bytes)
+        try:
+            with open(os.path.join(self.current_path, self.aux_model_fname), "wb") as f:
+                f.write(raw_dl_model_bytes)
+            print("Model Uploaded")
+            self.server.send_message(self.client, "#modl")
+        except:
+            print("Error saving model to file")
 
+
+    def saveVideo(self, raw_video):
+        print("Received raw video")
+        try:
+            raw_video = raw_video.split(",")[-1]
+            raw_video_bytes = raw_video.encode('ascii')
+            raw_video_bytes = base64.b64decode(raw_video_bytes)
+            with open(os.path.join(self.current_path, "uploaded_video.mp4"), "wb") as f:
+                f.write(raw_video_bytes)
+                print("Video Uploaded")
+                self.server.send_message(self.client, "#vido")
+        except:
+            print("Error in decoding")
+
+    def display_output_detection(self, img, detections, scores):
+        """Draw box and label for the detections."""
+        # The output detections received from the model are in form [ymin, xmin, ymax, xmax]
+        height, width = img.shape[0], img.shape[1]
+        for i,detection in enumerate(detections):
+            # the box is relative to the image size so we multiply with height and width to get pixels.
+            top = detection[0] * height
+            left = detection[1] * width
+            bottom = detection[2] * height
+            right = detection[3] * width
+            top = max(0, np.floor(top + 0.5).astype('int32'))
+            left = max(0, np.floor(left + 0.5).astype('int32'))
+            bottom = min(height, np.floor(bottom + 0.5).astype('int32'))
+            right = min(width, np.floor(right + 0.5).astype('int32'))
+            cv2.rectangle(img, (left, top), (right, bottom), (0,0,255), 2)
+            cv2.putText(img, 'Human', (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 1)
+            #cv2.putText(img, str(scores[i])+"%", (left+150, top-10), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255,0,0), 1)
+
+
+    def display_gt_detection(self, img, gt_detections):
+        # The ground truth detections received are in the format [xmin, ymin, xmax, ymax]
+        for gt_detection in gt_detections:
+            left = int(gt_detection[1])
+            top = int(gt_detection[2])
+            right = int(gt_detection[3])
+            bottom = int(gt_detection[4])
+            cv2.rectangle(img, (left, top), (right, bottom), (0,255,0), 2)
+
+
+    def visualizeModel(self):
+        try:
+            netron.start(os.path.join(self.current_path, self.aux_model_fname), address= 8081, browse=False)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print(str(exc_value))
+            print("ERROR: Model couldn't be loaded to the visualizer")
+
+
+    def video_infer(self):
         # Load ONNX model
         try:
-            with open(self.aux_model_fname, "wb") as f:
-                f.write(raw_dl_model_bytes)
-            sess = rt.InferenceSession(self.aux_model_fname)
+            self.hal.frame_number = 0
+            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
@@ -88,8 +135,89 @@ class Template:
                 output_layers_names.append(sess.get_outputs()[i].name)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
-            self.console.print("ERROR: Model couldn't be loaded")
+            print(str(exc_value))
+            print("ERROR: Model couldn't be loaded")
+        try:
+            while not self.reload:
+                start_time = datetime.now()
+                start = time.time()
+                # Get the uploaded video frame by frame
+                success, img = self.hal.getVid()
+                if not success:
+                    break
+                img_resized = cv2.resize(img, (300,300))
+                img_data = np.reshape(img_resized, (1, img_resized.shape[0], img_resized.shape[1], img_resized.shape[2]))
+
+                # Inference
+                # We will get output in the order of output_layers_names
+                result = sess.run(output_layers_names, {input_layer_name: img_data})
+                detection_boxes, detection_classes, detection_scores, num_detections = result
+                count = 0
+                detections = []
+                scores = []
+                # height, width = img.shape[0], img.shape[1]
+                batch_size = num_detections.shape[0]
+                for batch in range(0, batch_size):
+                    for detection in range(0, int(num_detections[batch])):
+                        c = detection_classes[batch][detection]
+                        # Skip if not human class
+                        if c != 1:
+                            self.gui.showResult(img, str(" "))
+                            continue
+                        count = count + 1
+                        #d = detection_boxes[batch][detection]
+                        d = detection_boxes[batch][detection]
+                        detections.append(d)
+                        score = detection_scores[batch][detection]
+                        scores.append(score)
+                    self.display_output_detection(img, detections, scores)
+                    self.hal.frame_number += 1
+                    # To print FPS after each frame as been fully processed and displayed
+                    end = time.time()
+                    frame_time = round(end-start, 3)
+                    fps = 1.0/frame_time
+                    cv2.putText(img, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255,255,255), 1)
+                    self.gui.showResult(img, str(count))
+
+                # Template specifics to run!
+                finish_time = datetime.now()
+                dt = finish_time - start_time
+                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+
+                self.iteration_counter += 1
+
+                # The code should be run for at least the target time step
+                # If it's less put to sleep
+                if (ms < self.time_cycle):
+                    time.sleep((self.time_cycle - ms) / 1000.0)
+
+            self.hal.frame_number = 0
+            print("Video infer process thread closed!")
+        # To print the errors that the user submitted through the Javascript editor (ACE)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print(str(exc_value))
+
+
+    # The process function
+    def process_dl_model(self):
+        """
+        Given a DL model in onnx format, yield prediction per frame.
+        """
+
+        # Load ONNX model
+        try:
+            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
+            # input layer name in the model
+            input_layer_name = sess.get_inputs()[0].name
+            # list for storing names of output layers of the model
+            output_layers_names = []
+            for i in range( len(sess.get_outputs()) ):
+                output_layers_names.append(sess.get_outputs()[i].name)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print(str(exc_value))
+            print("ERROR: Model couldn't be loaded")
 
         try:
             while not self.reload:
@@ -106,6 +234,8 @@ class Template:
                 result = sess.run(output_layers_names, {input_layer_name: img_data})
                 detection_boxes, detection_classes, detection_scores, num_detections = result
                 count = 0
+                detections = []
+                scores = []
 
                 batch_size = num_detections.shape[0]
                 for batch in range(0, batch_size):
@@ -116,9 +246,11 @@ class Template:
                             self.gui.showResult(img, str(count))
                             continue
                         count = count + 1
-                        d = detection_boxes[batch][detection]
-                        score = detection_scores[batch][detection]
-                        self.output_detection(img, d, round(score*100))
+                        #d = detection_boxes[batch][detection]
+                        detections.append(detection_boxes[batch][detection])
+                        #score = detection_scores[batch][detection]
+                        scores.append(detection_scores[batch][detection])
+                    self.display_output_detection(img, detections, scores)
                     # To print FPS after each frame as been fully processed and displayed
                     end = time.time()
                     frame_time = round(end-start, 3)
@@ -138,12 +270,173 @@ class Template:
                 if (ms < self.time_cycle):
                     time.sleep((self.time_cycle - ms) / 1000.0)
 
-            print("Process thread closed!")
+            print("Live infer process thread closed!")
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(str(exc_value))
+            print(str(exc_value))
+
+
+    def perform_benchmark(self):
+        #netron.start("Test_Model/Demo_Model.onnx")
+        currentPath = os.path.dirname(os.path.abspath(__file__))
+        acc_AP = 0
+        validClasses = 0
+        # Read txt files containing bounding boxes (ground truth and detections)
+        # getBoundingBoxes() function is present inside benchmark.py
+        boundingboxes = benchmark.getBoundingBoxes()
+        # getBoundingBoxes() changes the current directory, so we need to change it back
+        os.chdir(currentPath)
+        savePath = os.path.join(currentPath, 'benchmarking/results')
+        shutil.rmtree(savePath, ignore_errors=True)
+        os.makedirs(savePath)
+        # Create an evaluator object in order to obtain the metrics
+        evaluator = Evaluator()
+        # Plot Precision x Recall curve
+        detections = evaluator.PlotPrecisionRecallCurve(
+            boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
+            IOUThreshold=0.3,  # IOU threshold
+            method=MethodAveragePrecision.EveryPointInterpolation,  # As the official matlab code
+            showAP=True,  # Show Average Precision in the title of the plot
+            showInterpolatedPrecision= True, # Plot the interpolated precision curve
+            savePath = savePath, showGraphic=False)
+        plot_img  = cv2.imread(os.path.join(savePath, "person.png"))
+        self.gui.showResult(plot_img, "Plot")
+        f = open(os.path.join(savePath, 'results.txt'), 'w')
+        f.write('Average Precision (AP), Precision and Recall: ')
+
+        # each detection is a class
+        for metricsPerClass in detections:
+            # Get metric values per each class
+            cl = metricsPerClass['class']
+            ap = metricsPerClass['AP']
+            precision = metricsPerClass['precision']
+            recall = metricsPerClass['recall']
+            totalPositives = metricsPerClass['total positives']
+            total_TP = metricsPerClass['total TP']
+            total_FP = metricsPerClass['total FP']
+
+            if totalPositives > 0:
+                validClasses = validClasses + 1
+                acc_AP = acc_AP + ap
+                prec = ['%.2f' % p for p in precision]
+                rec = ['%.2f' % r for r in recall]
+                ap_str = "{0:.2f}%".format(ap * 100)
+                # print('AP: %s (%s)' % (ap_str, cl))
+                f.write('\nClass: %s' % cl)
+                f.write('\nAP: %s' % ap_str)
+                f.write('\nPrecision: %s' % prec)
+                f.write('\n')
+                f.write("*" * 40)
+                f.write('\nRecall: %s' % rec)
+                f.write('\n')
+                f.write("*" * 40)
+
+        mAP = acc_AP / validClasses
+        mAP_str = "{0:.2f}%".format(mAP * 100)
+        # print('mAP: %s' % mAP_str)
+        f.write('\nmAP: %s' % mAP_str)
+        f.close()
+        print("\n" + "#"*10 + "Benchmarking Results" + "#"*10 + "\n")
+        f = open(os.path.join(savePath, 'results.txt'), 'r')
+        for line in f:
+            print(line)
+        print("#"*40)
+        f.close()
+
+
+    def eval_dl_model(self):
+        # Load ONNX model
+        try:
+            self.hal.frame_number = 0
+            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
+            # input layer name in the model
+            input_layer_name = sess.get_inputs()[0].name
+            # list for storing names of output layers of the model
+            output_layers_names = []
+            for i in range( len(sess.get_outputs()) ):
+                output_layers_names.append(sess.get_outputs()[i].name)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print(str(exc_value))
+            print("ERROR: Model couldn't be loaded")
+        try:
+            while not self.reload:
+                start_time = datetime.now()
+                start = time.time()
+                # Get the benchmark video frame by frame, and the corresponding ground truth detection values for the frame
+                success, img, gt_detections, frame_number = self.hal.getBenchmarkVid()
+                if not success:
+                    break
+                #img_resized = cv2.resize(img, (300,300))
+                img_data = np.reshape(img, (1, img.shape[0], img.shape[1], img.shape[2]))
+
+                # Inference
+                # We will get output in the order of output_layers_names
+                result = sess.run(output_layers_names, {input_layer_name: img_data})
+                detection_boxes, detection_classes, detection_scores, num_detections = result
+                #count = 0
+                detections = []
+                scores = []
+                height, width = img.shape[0], img.shape[1]
+                f = open(self.current_path + "/benchmarking/detections/" + str(frame_number) + ".txt", "w")
+                batch_size = num_detections.shape[0]
+                for batch in range(0, batch_size):
+                    for detection in range(0, int(num_detections[batch])):
+                        c = detection_classes[batch][detection]
+                        # Skip if not human class
+                        if c != 1:
+                            self.gui.showResult(img, str(" "))
+                            continue
+                        #count = count + 1
+                        #d = detection_boxes[batch][detection]
+                        d = detection_boxes[batch][detection]
+                        detections.append(d)
+                        score = detection_scores[batch][detection]
+                        scores.append(score)
+                        f.write("person" + " ")
+                        f.write(str(score) + " ")
+                        # The model outputs in the form [ymin, xmin, ymax, xmax]
+                        # But out benchmarking code requires the detections to be stored in the format [xmin, ymin, xmax, ymax], so we write to the file accordingly
+                        f.write(str(int(d[1]*width)) + " ")
+                        f.write(str(int(d[0]*height)) + " ")
+                        f.write(str(int(d[3]*width)) + " ")
+                        f.write(str(int(d[2]*height)) + "\n")
+                    self.display_output_detection(img, detections, scores)
+                    self.display_gt_detection(img, gt_detections)
+                    self.hal.frame_number += 1
+                    f.close()
+                    # To print FPS after each frame as been fully processed and displayed
+                    end = time.time()
+                    frame_time = round(end-start, 3)
+                    fps = 1.0/frame_time
+                    cv2.putText(img, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255,255,255), 1)
+                    self.gui.showResult(img, str(len(gt_detections)))
+
+                # Template specifics to run!
+                finish_time = datetime.now()
+                dt = finish_time - start_time
+                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+
+                self.iteration_counter += 1
+
+                # The code should be run for at least the target time step
+                # If it's less put to sleep
+                if (ms < self.time_cycle):
+                    time.sleep((self.time_cycle - ms) / 1000.0)
+
+            
+            self.hal.frame_number = 0
+            self.perform_benchmark()
+            print("Benchmarking process thread closed!")
+
+        # To print the errors that the user submitted through the Javascript editor (ACE)
+        except Exception:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print(str(exc_value))
+
+
 
     # Function to measure the frequency of iterations
     def measure_frequency(self):
@@ -192,7 +485,7 @@ class Template:
         self.server.send_message(self.client, message)
 
     # Function to maintain thread execution
-    def execute_thread(self, dl_model_raw):
+    def execute_thread(self, message):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if (self.thread != None):
@@ -203,11 +496,19 @@ class Template:
         self.reload = False
         # New thread execution
         self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.thread = threading.Thread(target=self.process_dl_model, args=[dl_model_raw])
+        if(message == "#infer"):
+            self.thread = threading.Thread(target=self.process_dl_model)
+            print("Live infer process thread started!")
+        if(message == "#eval"):
+            self.thread = threading.Thread(target= self.eval_dl_model)
+            print("Benchmarking process thread started!")
+        if(message == "#video_infer"):
+            self.thread = threading.Thread(target= self.video_infer)
+            print("Video infer process thread started!")
         self.thread.start()
         self.measure_thread.start()
-        print("Process Thread Started!")
         print("Frequency Thread started!")
+
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -226,22 +527,48 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
+        start_console()
         if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
             return
-        elif (message[:5] == "#stop"):
+        if (message[:5] == "#stop"):
             self.reload = True
             return
-        try:
-            # Once received turn the reload flag up and send it to execute_thread function
-            dl_model_raw = message
-            # print(repr(code))
-            self.reload = True
-            self.execute_thread(dl_model_raw)
-        except:
-            pass
+        if (message[:6] == "#infer"):
+            try:
+                self.reload = True
+                self.execute_thread(message[:6])
+            except:
+                pass
+        if (message[:5] == "#eval"):
+            try:
+                self.reload = True
+                self.execute_thread(message[:5])
+            except:
+                pass
+        if (message[:7] == "#visual"):
+            try:
+                self.visualizeModel()
+            except:
+                pass
+        if(message[:11] == "#save_model"):
+            try:
+                self.saveModel(message[11:])
+            except:
+                pass
+        if(message[:11] == "#save_video"):
+            try:
+                self.saveVideo(message[11:])
+            except:
+                pass
+        if(message[:12] == "#video_infer"):
+            try:
+                self.reload = True
+                self.execute_thread(message[:12])
+            except:
+                pass
 
     # Function that gets called when the server is connected
     def connected(self, client, server):

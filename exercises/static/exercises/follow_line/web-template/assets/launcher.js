@@ -4,8 +4,7 @@ var simReset = false;
 var simStop = false;
 var simResume = false;
 
-function startSim(step) {
-    exercise = "follow_line";
+function startSim(step, circuit="default") {
     var level = 0;
     let websockets_connected = false;
     if (step == 0) {
@@ -14,8 +13,9 @@ function startSim(step) {
     else if (step == 1) {
         radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         var size = get_novnc_size();
+        console.log(circuit);
         ws_manager.send(JSON.stringify({
-            "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString()}));
+            "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString(), "circuit": circuit}));
         level++;
         radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         ws_manager.send(JSON.stringify({"command" : "Pong"}));

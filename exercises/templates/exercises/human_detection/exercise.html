@@ -1,0 +1,126 @@
+{% extends 'base_DL.html' %}
+
+{% load static %}
+{% block content %}
+
+    <div id="code-control">
+
+
+  <!--       Button for selecting DL model 
+        <div id="file_selector">
+            <input type="file" id="dl_model" name="dl_model" accept=".onnx">
+        </div> -->
+
+        <div class="d-flex flex-column justify-content-center p-5"> 
+            <div class = "d-flex">
+                <label for="code-menu" class = "margin-22">Choose a mode: </label>
+                <select id='code-menu'>
+                    <option>Select</option>
+                    <option value='live'>Live Inference</option>
+                    <option value='video'>Video Inference</option>
+                    <option value='bench'>Model Benchmarking</option>
+                    <option value='visual'>Model Visualization</option>
+                </select>
+            </div>
+
+            <div id="code-control">
+                <!-- Button for selecting DL model -->
+
+                <div class = "div-flex" id = "model-upload">
+                    <div id="file_selector" class="inline-div">
+                        <input class="button-style" type="file" id="dl_model" name="dl_model" accept=".onnx">
+                    </div>
+                    <div class="inline-div">
+                        <button id="Upload" type="button" onclick="Upload_Model()"> Upload Model</button>
+                    </div>
+                </div>
+
+
+                <div class = "div-flex" id = "video-upload">
+                    <div id="video_selector" class="inline-div">
+                        <input class = "button-style" type="file" id="video_file" name="video_file" accept="video/*">
+                    </div>          
+                    <div class="inline-div">
+                        <button id="Upload" type="button" onclick="Upload_Video()"> Upload Video</button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+
+</div>  <!-- Split a ending here -->
+
+<div class="split b">
+
+    <!-- Uncomment this if you wish to have the console button on the right split -->
+<!--     <div id="visual_buttons" class="row no-gutters">
+        <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/dl_digit_classifier/web-template/assets/img/terminal-solid.svg' %}"> Console</button>
+    </div> -->
+
+    <div id="visual">
+    <!-- Canvas -->
+        <h3 style="text-align:center" id="output_heading"></h3>
+        <canvas id="gui_canvas"></canvas>
+    </div>
+
+
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe> 
+
+
+<!-- The previously used command terminal which we no longer use -->
+<!-- <div id="console" style="display:none;">
+    
+    <div id="Console" class="container">
+        <ul>
+            <li class="Console-item">
+                <input value=">>" class="terminal" readonly><input class="command">
+            </li>
+        </ul>
+    </div>
+</div>
+ -->
+
+
+    <script type="text/javascript">
+        function changeconsole(){
+            document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+            var console_display = document.getElementById('console').style.display;
+            console.log(console_display);
+            if (console_display == "none" || console_display == "none" ) {
+                document.getElementById('console').style.display = 'block';
+            } else{
+                document.getElementById('console').style.display = 'none';
+            }
+        }
+    </script>
+    
+</div>
+</div>
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+    var exercise = "human_detection";
+
+    Split(['.a', '.b'], {
+        gutterSize: 3,
+        sizes: [50, 50]
+    });
+    window.addEventListener('load', function () {
+        window.top.postMessage('connect', '*');
+    });
+</script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/main.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/launcher_no_gazebo.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/human_detection/web-template/assets/console.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
+</html>
+
+{% endblock %}
