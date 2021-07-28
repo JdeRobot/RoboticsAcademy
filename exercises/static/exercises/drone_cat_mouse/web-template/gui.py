@@ -6,7 +6,8 @@ import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
-
+import numpy as np
+from hal import HAL
 
 # Graphical User Interface Class
 class GUI:
@@ -17,6 +18,7 @@ class GUI:
         
         self.payload = {'image': ''}
         self.left_payload = {'image': ''}
+        self.dist = {'dist': '', 'ready': ''}
         self.server = None
         self.client = None
         
@@ -35,6 +37,7 @@ class GUI:
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
+        self.hal = HAL()
         self.mouse = mouse
         t.start()
 
@@ -149,6 +152,23 @@ class GUI:
         message = "#gul" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
             
+    # Update distance between cat and mouse drones
+    def update_dist(self):
+        cat_x, cat_y, cat_z = self.hal.get_position()
+        mouse_x, mouse_y, mouse_z = self.mouse.get_position()
+
+        if mouse_z > 0.25:
+            self.dist["ready"] = "true"
+        else:
+            self.dist["ready"] = "false"
+
+        dist = np.sqrt((mouse_x-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
+        dist = int(dist*100)/100
+        self.dist["dist"] = dist
+
+        message = '#dst' + json.dumps(self.dist)
+        self.server.send_message(self.client, message)
+
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
@@ -229,6 +249,7 @@ class ThreadGUI:
         while True:
             start_time = datetime.now()
             self.gui.update_gui()
+            self.gui.update_dist()
             acknowledge_message = self.gui.get_acknowledge()
             
             while not acknowledge_message:
