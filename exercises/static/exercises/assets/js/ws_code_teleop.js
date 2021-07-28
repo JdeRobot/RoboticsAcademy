@@ -63,7 +63,6 @@ function declare_code(websocket_address){
 		if(teleop_mode){
 			let teleop_message = {"v": v, "w": w};
 			websocket_code.send("#tele" + JSON.stringify(teleop_message));
-			console.log('TELEOP MSG SENT: ', teleop_message);
 		}
 	};
 }
@@ -81,6 +80,8 @@ function submitCode(){
 		stop_button.disabled = false;
 		stop_button.style.opacity = "1.0";
 		stop_button.style.cursor = "default";
+		
+		deactivateTeleopButton();
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
