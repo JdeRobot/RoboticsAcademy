@@ -11,8 +11,8 @@ toc_icon: "cog"
 
 
 gallery:
-  - url: /assets/images/exercises/laser_mapping/laser_mapping.png
-    image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
+  - url: /assets/images/exercises/laser_mapping/laser_mapping.PNG
+    image_path: /assets/images/exercises/laser_mapping/laser_mapping.PNG
     alt: "Vacuum"
   
 Occupancy_grid:
