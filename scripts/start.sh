@@ -1,9 +1,8 @@
 #!/bin/bash
-rm -rf instructions.json
+rm -rf instructions.json manager.py
 cp /RoboticsAcademy/scripts/instructions.json /instructions.json
-sudo apt-get update
-sudo apt-get install ros-melodic-navigation -y
-sudo apt-get install ros-melodic-eband-local-planner
+cp /RoboticsAcademy/scripts/manager.py /manager.py
+echo 'source /catkin_ws/devel/setup.bash' >> ~/.bashrc & echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc & source ~/.bashrc
 source /opt/ros/melodic/setup.bash
 source /catkin_ws/devel/setup.bash
 python3 RoboticsAcademy/manage.py runserver 0.0.0.0:8000 &

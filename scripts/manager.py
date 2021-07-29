@@ -283,7 +283,7 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        if exercise in ["tb3_nav", "pick_place"]:
+        if exercise in ["tb3_nav", "pick_place", "mobile_manipulation"]:
             '''
             RViz + Gazebo + Console
             '''
@@ -294,6 +294,7 @@ class Manager:
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
+            print("*********Exercise is completed**********")
             self.launch_level = 3
 
             # Start x11vnc servers
@@ -303,9 +304,11 @@ class Manager:
 
             # Start gazebo client
             time.sleep(2)
+            print("*********Start Gzclient************")
             self.commands.start_gzclient(exercise, width, height)
             self.commands.start_rviz(exercise)
             self.commands.start_console(width, height)
+            print("**************Console completed*****************")
 
         elif exercise not in ["color_filter", "dl_digit_classifier"]:
             '''

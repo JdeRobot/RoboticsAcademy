@@ -15,8 +15,9 @@ RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
 RUN cd /catkin_ws/src && ln -s /drones/drone_assets .
 RUN cd /catkin_ws/src && ln -s /IndustrialRobots/industrial_robots .
 RUN cd /catkin_ws/src && ln -s /IndustrialRobots/assets .
-RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y && apt install ros-melodic-moveit -y
+RUN cd /catkin_ws && apt-get update -y && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro melodic -y && apt install ros-melodic-moveit -y && apt install ros-melodic-eband-local-planner -y && apt install ros-melodic-navigation -y
 RUN /bin/bash -c '. /opt/ros/melodic/setup.bash; cd /catkin_ws; catkin build'
+RUN /bin/bash -c 'source /catkin_ws/devel/setup.bash'
 
 ## Setting env vars
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAcademy/exercises/follow_line/web-template/launch"

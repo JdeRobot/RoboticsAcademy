@@ -164,7 +164,7 @@ class Template:
         hal_module.HAL.move_joint_arm = self.hal.move_joint_arm
         hal_module.HAL.move_pose_arm = self.hal.move_pose_arm
         hal_module.HAL.move_joint_hand = self.hal.move_joint_hand
-        hal_module.HAL.generate_grasp = self.hal.generate_grasp
+        # hal_module.HAL.generate_grasp = self.hal.generate_grasp
         hal_module.HAL.get_object_pose = self.hal.get_object_pose
         hal_module.HAL.get_target_position = self.hal.get_target_position
 
