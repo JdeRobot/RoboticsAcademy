@@ -129,14 +129,14 @@ img{
     margin-right: 10px;
 }
 
-#teleop{
+#teleop_button{
     font-size: 12px;
-    width: 160px;
-    height: 80px;
+    width: 100px;
+    height: 40px;
     border: none;
     background-color: whitesmoke;
-    margin: 10px;
-}
+    margin-right: 10px;
+  }
 
 #reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover, #teleop:hover{
     border: 1.5px solid transparent;
