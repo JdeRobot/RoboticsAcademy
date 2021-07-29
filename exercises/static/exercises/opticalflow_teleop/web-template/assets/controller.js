@@ -11,8 +11,6 @@ function start(){
     // Code Websocket
     submitCode();
 
-    // GUI Websocket
-    unpause_lap();
 }
 
 // Function to stop the student solution
@@ -25,8 +23,6 @@ function stop(){
         stopSimulation();
     }
 
-    // GUI Websocket
-    pause_lap();
 }
 
 // Function to reset the simulation

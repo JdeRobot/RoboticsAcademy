@@ -39,7 +39,7 @@ function declare_gui(){
 			var image_data = JSON.parse(data.image),
 				source = decode_utf8(image_data.image),
 				shape = image_data.shape;
-
+			console.log("PINTANDO LA IMAGEN => ", image_data)
 			if(source != ""){
 				image.src = "data:image/jpeg;base64," + source;
 				canvas.width = shape[1];

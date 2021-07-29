@@ -58,6 +58,8 @@ class GUI:
         if(image_to_be_shown_updated == False):
             return payload
 
+
+        image = cv2.resize(image, (0, 0), fx=0.75, fy=0.75)
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
