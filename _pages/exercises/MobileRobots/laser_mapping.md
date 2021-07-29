@@ -15,44 +15,13 @@ gallery:
     image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Vacuum"
   
-gifSpiral:
-  - url: /assets/images/exercises/laser_mapping/spiral.gif
-    image_path: /assets/images/exercises/laser_mapping/spiral.gif
-    alt: "spiral"
-    title: "spiral"
+Occupancy_grid:
+  - url: /assets/images/exercises/laser_mapping/occupancy_grid.png
+    image_path: /assets/images/exercises/laser_mapping/occupancy_grid.png
+    alt: "Occupancy Grid"
+    title: "Occupancy Grid"
 
-gifBoustrophedon:
-  - url: /assets/images/exercises/laser_mapping/boustrophedon.gif
-    image_path: /assets/images/exercises/laser_mapping/boustrophedon.gif
-    alt: "spiral"
-    title: "spiral"
-
-gifNoDuration:
-  - url: /assets/images/exercises/laser_mapping/without_duration.gif
-    image_path: /assets/images/exercises/laser_mapping/without_duration.gif
-    alt: "no duration"
-    title: "no duration"
-
-gifDuration:
-  - url: /assets/images/exercises/laser_mapping/duration.gif
-    image_path: /assets/images/exercises/laser_mapping/duration.gif
-    alt: "duration"
-    title: "duration"
-
-gifOmega:
-  - url: /assets/images/exercises/laser_mapping/reduce_omega.gif
-    image_path: /assets/images/exercises/laser_mapping/reduce_omega.gif
-    alt: "omega"
-    title: "omega"
-
-gifV:
-  - url: /assets/images/exercises/laser_mapping/increasing_v.gif
-    image_path: /assets/images/exercises/laser_mapping/increasing_v.gif
-    alt: "increasing v"
-    title: "increasing v"
-
-#youtubeId1: c90hmfkZRNY
-#youtubeId2: Xcy84DhVjrY
+youtubeId1: vCIFpZcWZhs
 ---
 ## Versions to run the exercise
 
@@ -137,17 +106,20 @@ while True:
 
 **Application Programming Interface**
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.bumper.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
-* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
-* `HAL.getPose3d().yaw` - to get the orientation of the robot with
-  regarding the map
-* `HAL.laser.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.motors.sendV()` - to set the linear speed
-* `HAL.motors.sendW()` - to set the angular velocity
+* `HAL.getPose3d().x` - to get position x of the robot 
+* `HAL.getPose3d().y` - to get position y of the robot 
+* `HAL.getPose3d().yaw` - to get the orientation of the robot 
+* `HAL.motors.sendW()` - to set the angular velocity 
+* `HAL.motors.sendV()` - to set the linear velocity 
+* `HAL.getLaserData()` - to get the data of the LIDAR 
+* `HAL.getSonarData_0()` - to get the sonar data of the sonar 1 
+* `HAL.getSonarData_1()` - to get the sonar data of the sonar 2 
+* `HAL.getSonarData_2()` - to get the sonar data of the sonar 3 
+* `HAL.getSonarData_3()` - to get the sonar data of the sonar 4 
+* `HAL.getSonarData_4()` - to get the sonar data of the sonar 5 
+* `HAL.getSonarData_5()` - to get the sonar data of the sonar 6 
+* `HAL.getSonarData_6()` - to get the sonar data of the sonar 7 
+* `HAL.getSonarData_7()` - to get the sonar data of the sonar 8
 
 ## Instructions for ROSNode Templates
 
@@ -207,156 +179,33 @@ self.motors.sendVelocities(vel)
 self.motors.sendAZ(vel.az)
 self.motors.sendV(vel.vx)
 ```
-
-### API
-
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
-* `HAL.bumper.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.bumper.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.motors.sendV()` - to set the linear speed
-* `HAL.motors.sendW()` - to set the angular velocity
-
-For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
-
-### Types conversion
-
-- **Laser**
-
-```python
-laser_data = self.laser.getLaserData()
-
-def parse_laser_data(laser_data):
-laser = []
-for i in range(180):
-    dist = laser_data.values[i]
-    angle = math.radians(i)
-    laser += [(dist, angle)]
-return laser
-```
-
-```python
-def laser_vector(laser):
-laser_vectorized = []
-for d,a in laser:
-    # (4.2.1) laser into GUI reference system
-    x = d * math.cos(a) * -1
-    y = d * math.sin(a) * -1
-    v = (x,y)
-    laser_vectorized += [v]
-
-laser_mean = np.mean(laser_vectorized, axis=0)
-return laser_mean
-```
-
 ## Theory
+Implementation of laser mapping for a vacuum is the basic requirement for this exercise. First, lets see how mapping with known possitions works.
 
-Implementation of navigation algorithms for an autonomous vacuum is the basic requirement for this exercise. The main objective is to cover the largest area of a house. First, let us understand what is Coverage Algorithms.
-
-### Coverage Algorithms
-
+### Mapping with known possitions
 Coverage Path Planning is an important area of research in Path Planning for robotics, which involves finding a path that passes through every reachable position in its environment. In this exercise, We are using a very basic coverage algorithm called Random Exploration.
 
 ## Analyzing Coverage Algorithms
+Mapping with known positions assumes that the current position of the robot is known. This technique consists of converting the distance measurements of the different laser beams into Cartesian coordinates relative to the robot. The distance of the beams reflects the existence of an obstacle; therefore, these Cartesian coordinates are inserted reflecting obstacles in an occupation grid with respect to the current position of the robot.
+This technique is not entirely real because in most cases, the position of the robot is unknown. Therefore, other techniques such as SLAM are used.
 
-### Classification
-Coverage algorithms are divided into two categories.
-
-- **Offline coverage**
-use fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.
-
-- **Online Coverage**
-
-Uses real-time measurements and decisions to cover the entire area. The Sensor-based approach is included in this category.
-
-### Base Movement
-
-The problem of coverage involves two standard basic motions, which are used as a base for other complex coverage algorithms.
-
-- **Spiral Motion**
-
-The robot follows an increasing circle/square pattern.
-
-{% include gallery id="gifSpiral" %}
-
-- **Boustrophedon Motion**
-
-The robot follows an S-shaped pattern.
-
-{% include gallery id="gifBoustrophedon" %}
-
-### Analysis of Coverage Algorithms
-
-Any coverage algorithm is analyzed using the given criterion.
-
-- **Environment Decomposition**
-This involves dividing the area into smaller parts.
-
-- **Sweep Direction**
-
-This influences the optimality of generated paths for each sub-region by adjusting the duration, speed, and direction of each sweep.
-
-- **Optimal Backtracking**
-
-This involves the plan to move from one small subregion to another. The coverage is said to be complete when there is no point left to backtrack.
-
-### Supplements
-
-Usually, coverage algorithms generate a linear, piecewise path composed of straight lines and sharp turns. This path is difficult for other autonomous drones like Underwater Vehicles, Aerial Vehicles and some Ground Vehicles difficult to follow. Path Smoothening is applied to these paths to effectively implement the algorithm.
-
-## Hints
-
-Simple hints provided to help you solve the vacuum_cleaner exercise. Please note that the **full solution has not been provided.**
-
-### Random Angle Generation
-
-The most important task is the generation of a random angle. There are 2 ways to achieve it.
-
-- **Random Duration**: By keeping the angular_velocity fixed, the duration of the turn can be randomized, in order to point the robot towards a random direction.
-
-- **Random Angle**: This method requires calculation. We generate a random angle and then turn towards it. Approximately an angular speed of 3 turns the robot by 90 degrees.
-
-Among both the methods, Random Duration would be a preferable one as the Random Angle requires precision, which requires PID to be achieved successfully.
-
-Also, in order to achieve better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```.
-
-### Dash Movement
-
-Once the direction has been decided, we move in that direction. This is the simplest part, we have to send velocity command to the robot, until a collision is detected.
-
-A word of caution though, whenever we have a change of state, we have to give a sleep duration to the robot to give it time to reset the commands given to it. [Illustrations](#Illustrations) section describes a visual representation.
-
-### Spiral Movement
-
-Using the physical formula $v = r·\omega$ (See [references](#References) for more details). In order to increase $r$, we can either increase $v$ or decrease $\omega$, while keeping the other parameter constant. Experimentally, increasing $v$ has a better effect than decreasing $\omega$. Refer to [illustrations](#Illustrations).
-
-### Analysis
-
-Being such a simple algorithm, it is not expected to work all the time. The maximum accuracy we got was 80% and that too only once!
+### Occupancy grid
+An occupation grid is a discretization of the robot's environment in cells. This discretization will be given by the size of the world in which the robot is located. With an occupation grid, a matrix is handled whose cells will contain a probability value, which indicates the certainty that in that position there is an obstacle (1), there is free space (0), or it has not been explored for the moment (gray space).
+The occupation grids were initially proposed in 1985 by Moravec and Elfes. The biggest advantage of these types of maps is that they are easy to build and maintain, even in large environments. Also, it is easy for a robot to determine its position within the map just by knowing its position and orientation, since the geometry of the cells corresponds to the geometry of the terrain.
+On the other hand, the basic problem with this type of map is the large amount of memory required for storing the information.
 
 ### Illustrations
 
-{% include gallery id="gifNoDuration" caption="Without applying a sleep duration the previous rotation command still has effect on the go straight command" %}
+{% include gallery id="Occupancy_grid" caption="An example of a map obtained with the Mapping technique with known positions." %}
 
-{% include gallery id="gifDuration" caption="After applying a duration, we get straight direction movement" %}
-
-{% include gallery id="gifOmega" caption="Effect of reducing $\omega$ to generate spiral" %}
-
-{% include gallery id="gifV" caption="Effect of increasing $v$ to generate spiral" %}
-
-<!--
 ## Demonstrative Video
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-*This solution is an illustration for the ROSNode Templates*
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
 *This solution is an illustration for the Web Templates*
 
 <br/>
--->
+
 
 ## Contributors
 
