@@ -19,14 +19,14 @@ gallery:
     alt: "Human Detection"
     title: "Human Detection"
     
-youtubeId1: xZQ9x8J-shY
+youtubeId1: vn4ahq8mElg
 
 ---
 
 # Human Detection Exercise using Deep Learning
 
-A Human Detection Exercise to identify the presence of humans and identification of the rectangular boundary around them. 
-The user is expected to upload a Deep Learning model which fits the required input and output specifications for inference. The input model is supposed to be in the ONNX format. For more information refer to the "Exercise Instructions" section below.
+A Human Detection Exercise to identify the presence of humans and identification of the rectangular boundary around them. Apart from the live and video inference features, the exercise also includes model benchmarking and model visualization.
+The user is expected to upload a Deep Learning model which fits the required input and output specifications for inference. The input model is supposed to be in the ONNX format. We provide all the guidance in the exercise docs to the user, this includes everything from fine tuning pre built object detection models in different frameworks to its subsequent conversion to the ONNX format. For more information refer to the "Exercise Instructions" section below.
 
 {% include gallery caption="Detection Example" %}
 
@@ -41,16 +41,21 @@ The user is expected to upload a Deep Learning model which fits the required inp
 ### Run with docker container
 
 - First you need to build the image. Then, you need to run a container.
+
 ```
-git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git checkout noetic
+git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 cd scripts
-docker build -f Dockerfile-noetic -t image-name .
-docker run -it --name=container_name -p 8080:8080 -p 7681:7681 -p 2303:2303 -p 1905:1905 -p 8765:8765 image-name ./start.sh
+docker build -t image-name .
+docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --net=host --device /dev/video0:/dev/video0 jderobot/robotics-academy ./start.sh
 ```  
+
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 - Click the connect button and wait for some time until an alert appears with the message Connection Established and button displays connected.
 - The exercise can be used after the alert.
 - It is necessary to map the port where the camera is located to the docker container.
+  - For ubuntu: The port to map will be in /dev/videoX , you should check the number where your camera is connected. For exaple /dev/video0
+  - For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this [documentation](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468) for it.
+  - The docker run command above includes the `--net=host` option. This is essential for opening the Model Visualizer in the exercise. This basically specifies Docker to use the host's network stack for the container. 
 
 ### Run without docker container
 
@@ -61,9 +66,9 @@ The following dependencies should be pre-installed:
      - onnxruntime
      - WebsocketServer
 
-- Clone the Robotics Academy repository to your local machine, switch to the noetic branch and head over to the Human_Detection exercise.
+- Clone the Robotics Academy repository to your local machine, switch to the master branch and head over to the Human_Detection exercise.
 ```
-git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git checkout noetic
+git clone https://github.com/JdeRobot/RoboticsAcademy.git && cd RoboticsAcademy && git checkout master
 ```
       
 - Determine your machine dns server IP address which is generally in the form of **127.0.0.xx for Linux machine** by running this command
@@ -80,7 +85,7 @@ cat /etc/resolv.conf
 python exercise.py 127.0.0.xx
 ```
 
-- Open the browser template from `exercice.html`
+- Open the web template from `exercice.html`
 
 - The page should says **[open]Connection established!**.Means it is working as expected.
 
@@ -132,23 +137,31 @@ This guide walks you through using the TensorFlow object detection API to train 
 
 * [**Roboflow-tensorflow-object-detection-mobilenet-colab.ipynb**](https://colab.research.google.com/drive/1wTMIrJhYsQdq_u7ROOkf0Lu_fsX5Mu8a)
 
+## Exercise Features
+
+* **Live Inference** - Perform live inference on the input feed from the web-cam.
+* **Video Inference** - Perform inference on an uploaded video.
+* **Model Benchmarking** - Evaluate the uploaded model by benchmarking against a ground truth dataset(Oxford Town Centre dataset). 
+* **Model Visualization** - Visualize and analyse the uploaded model to get a visual summary of the model, which will make it easier to identify trends and patterns, understand connections, and interact with your data.
+
 
 ## Using the interface
 
-* **Browse Button**: The browse button is used to browse and upload the model from the local machine.
+* **Dropdown**: Use the dropdown menu to choose a specific mode. The required control buttons will pop-up accordingly.
 
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the uploaded model for inference to the core application. Stop button stops the inference process.
+* **Control Buttons**: The control buttons enable the control of the interface.
+  - **Live/Video/Benchmark buttons** - Send the uploaded model for inference to the core application.
+  - **Stop button**: Stops the inference process.
+  - **Visualizer button**: Opens the model visualizer.
+
+* **Browse and Upload buttons**: These are used to browse and upload the model and video. The control buttons for the specific mode will only activate once all the required files have been uploaded. 
 
 * **Frequency Slider**: This slider adjusts the running frequency of the iterative part of the model inference and benchmarking code. A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The Target Frequency is the one set on the Slider and Measured Frequency is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one). The student should adjust the Target Frequency according to the Measured Frequency.
 
 * **Debug Level**: This decides the debugging level of the application. A debug level of 1 implies no debugging at all. A debug level greater than or equal to 2 enables all the GUI functions working properly.
 
-* **Psuedo Console**: This shows the error messages and a few intermediate outputs along the inference and benchmarking process.
+* **Psuedo Console**: This shows the error messages and a few intermediate outputs along the inference, benchmarking and file uploading process.
 
 ## Demonstrative Video with Web Template
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
-
-
-## Note
-This exercise is still a work under progress. Certain features like benchmarking/evaluating the uploaded model, GUI features for uploaded model visualization and inference source flexibility are still being developed and tested. We will keep updating the page and the code base concurrently.
