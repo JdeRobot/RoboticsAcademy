@@ -164,9 +164,14 @@ class Template:
         hal_module.HAL.move_joint_arm = self.hal.move_joint_arm
         hal_module.HAL.move_pose_arm = self.hal.move_pose_arm
         hal_module.HAL.move_joint_hand = self.hal.move_joint_hand
-        hal_module.HAL.generate_grasp = self.hal.generate_grasp
         hal_module.HAL.get_object_pose = self.hal.get_object_pose
         hal_module.HAL.get_target_position = self.hal.get_target_position
+        hal_module.HAL.get_target_pose = self.hal.get_target_pose
+        hal_module.HAL.get_goal_to_client = self.hal.send_goal_to_client
+        hal_module.HAL.get_result_from_client = self.hal.get_result_from_client
+        hal_module.HAL.spawn_obstacle_rviz = self.hal.spawn_obstacle_rviz
+        hal_module.HAL.spawn_all_objects = self.hal.spawn_all_objects
+        hal_module.HAL.get_robot_pose = self.hal.get_robot_pose
 
         # Define GUI module
         gui_module = imp.new_module("GUI")

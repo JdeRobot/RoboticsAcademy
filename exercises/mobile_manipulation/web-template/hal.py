@@ -20,6 +20,8 @@ from moveit_msgs.msg import Grasp, PlaceLocation
 from trajectory_msgs.msg import JointTrajectoryPoint, JointTrajectory
 from std_msgs.msg import String, Bool
 from nav_msgs.msg import Odometry
+import actionlib
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 from math import pi
 from tf.transformations import euler_from_quaternion, quaternion_from_euler, euler_matrix
@@ -206,6 +208,19 @@ class HAL:
 
         self.robot_pose = Pose()
         self.odom_sub = rospy.Subscriber("/odom", Odometry, self.robot_pose_callback)
+        
+        self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+        self.target_pose = {}
+
+        filename = os.path.join(__location__, 'navigation.yaml')
+        with open(filename) as file:
+            navigation_params = yaml.load(file)
+            stop_pose = navigation_params["stop_pose"]
+            target_names = stop_pose.keys()
+            for target_name in target_names:
+                pose = stop_pose[target_name]
+                self.target_pose[target_name] = [pose["x"], pose["y"], pose["theta"]]
+
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -231,6 +246,35 @@ class HAL:
         objects_name = self.object_list.keys()
         for object_name in objects_name:
             self.clean_scene(object_name)
+
+    def get_target_pose(self, target_name):
+        return self.target_pose[target_name]
+
+    def send_goal_to_client(self, pose):
+        self.client.wait_for_server()
+
+        goal = MoveBaseGoal()
+        goal.target_pose.header.frame_id = "map"
+        goal.target_pose.header.stamp = rospy.Time.now()
+        goal.target_pose.pose.position.x = pose[0]
+        goal.target_pose.pose.position.y = pose[1]
+        quat = quaternion_from_euler(0,0,pose[2])
+        goal.target_pose.pose.orientation.x = quat[0]
+        goal.target_pose.pose.orientation.y = quat[1]
+        goal.target_pose.pose.orientation.z = quat[2]
+        goal.target_pose.pose.orientation.w = quat[3]
+
+        self.client.send_goal(goal)
+
+    def get_result_from_client(self):
+        wait = self.client.wait_for_result()
+        return wait
+        # if not wait:
+        #     rospy.logerr("Action server not available!")
+        #     rospy.signal_shutdown("Action server not available!")
+        # else:
+        #     print("self.client.get_result()",self.client.get_result())
+        #     return self.client.get_result()
 
     def spawn_all_objects(self):
         objects_name = self.object_list.keys()
