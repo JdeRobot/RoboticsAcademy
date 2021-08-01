@@ -72,18 +72,16 @@ function declare_gui(websocket_address){
 			websocket_gui.send("#ack");
 		}
 
-        if(operation == "#dst"){
-            // Parse the entire Object
-            var data = JSON.parse(event.data.substring(4, ));
+		if(operation == "#dst"){
+			// Parse the entire Object
+			var data = JSON.parse(event.data.substring(4, ));
 
-            // Parse the Position Data
-            var dist_data = JSON.parse(data)
+			dist_value = data.dist;
+			dist_ready = data.ready;
 
-            score = calculate_score(dist_data.dist, dist_data.ready)
-            document.querySelector('#score').value = score
-
-            plot_graph(dist)
-        }
+			// Send the Acknowledgment Message
+			websocket_gui.send("#ack");
+		}
 	}
 }
 

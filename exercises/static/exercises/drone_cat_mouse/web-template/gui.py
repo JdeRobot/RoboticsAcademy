@@ -157,10 +157,8 @@ class GUI:
         cat_x, cat_y, cat_z = self.hal.get_position()
         mouse_x, mouse_y, mouse_z = self.mouse.get_position()
 
-        if mouse_z > 0.25:
-            self.dist["ready"] = "true"
-        else:
-            self.dist["ready"] = "false"
+        if mouse_z > 0.1: self.dist["ready"] = "true"
+        else: self.dist["ready"] = "false"
 
         dist = np.sqrt((mouse_x-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
         dist = int(dist*100)/100
