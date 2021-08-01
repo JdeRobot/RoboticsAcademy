@@ -37,64 +37,64 @@ class WorkSpace:
 
 class ENV():
     def __init__(self):
-        rospy.wait_for_service("gazebo/spawn_sdf_model")
-        self.spawn_model_srv = rospy.ServiceProxy("gazebo/spawn_sdf_model", SpawnModel)
+        # rospy.wait_for_service("gazebo/spawn_sdf_model")
+        # self.spawn_model_srv = rospy.ServiceProxy("gazebo/spawn_sdf_model", SpawnModel)
 
-        rospy.wait_for_service("gazebo/spawn_sdf_model")
-        self.delete_model_srv = rospy.ServiceProxy("gazebo/delete_model", DeleteModel)
+        # rospy.wait_for_service("gazebo/spawn_sdf_model")
+        # self.delete_model_srv = rospy.ServiceProxy("gazebo/delete_model", DeleteModel)
 
-        self.arm = moveit_commander.MoveGroupCommander("ur10_manipulator")
-        self.arm.set_goal_tolerance(0.01)
-        self.arm.set_pose_reference_frame("ur10_base_link")
+        # self.arm = moveit_commander.MoveGroupCommander("ur10_manipulator")
+        # self.arm.set_goal_tolerance(0.01)
+        # self.arm.set_pose_reference_frame("ur10_base_link")
 
-        self.gripperpub = rospy.Publisher("gripper_controller/command", JointTrajectory, queue_size=0)
+        # self.gripperpub = rospy.Publisher("gripper_controller/command", JointTrajectory, queue_size=0)
 
-        self.transform_arm_to_baselink = Point()
-        self.get_arm_to_baselink()
+        # self.transform_arm_to_baselink = Point()
+        # self.get_arm_to_baselink()
 
-        self.gripper_length = 0.33
+        # self.gripper_length = 0.33
 
-        self.get_workspace()
+        # self.get_workspace()
 
-        self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
-        self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
+        # self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
+        # self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
 
-        self.robot_pose = Pose()
-        self.odom_sub = rospy.Subscriber("/odom", Odometry, self.robot_pose_callback)
+        # self.robot_pose = Pose()
+        # self.odom_sub = rospy.Subscriber("/odom", Odometry, self.robot_pose_callback)
 
-        self.scene = PlanningSceneInterface()
-        self.robot = RobotCommander()
+        # self.scene = PlanningSceneInterface()
+        # self.robot = RobotCommander()
 
-        self.object_list = {}
-        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        filename = os.path.join(__location__, 'models_info.yaml')
-        with open(filename) as file:
-            objects_info = yaml.load(file)
-            robot_x = objects_info["robot"]["pose"]["x"]
-            robot_y = objects_info["robot"]["pose"]["y"]
-            robot_z = objects_info["robot"]["pose"]["z"]
-            robot_roll = objects_info["robot"]["pose"]["roll"]
-            robot_pitch = objects_info["robot"]["pose"]["pitch"]
-            robot_yaw = objects_info["robot"]["pose"]["yaw"]
+        # self.object_list = {}
+        # __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        # filename = os.path.join(__location__, 'models_info.yaml')
+        # with open(filename) as file:
+        #     objects_info = yaml.load(file)
+        #     robot_x = objects_info["robot"]["pose"]["x"]
+        #     robot_y = objects_info["robot"]["pose"]["y"]
+        #     robot_z = objects_info["robot"]["pose"]["z"]
+        #     robot_roll = objects_info["robot"]["pose"]["roll"]
+        #     robot_pitch = objects_info["robot"]["pose"]["pitch"]
+        #     robot_yaw = objects_info["robot"]["pose"]["yaw"]
 
-            rospy.loginfo("Spawning Objects in Gazebo and planning scene")
-            objects = objects_info["objects"]
-            objects_name = objects.keys()
-            for object_name in objects_name:
-                name = object_name
-                shape = objects[name]["shape"]
-                color = objects[name]["color"]
+        #     rospy.loginfo("Spawning Objects in Gazebo and planning scene")
+        #     objects = objects_info["objects"]
+        #     objects_name = objects.keys()
+        #     for object_name in objects_name:
+        #         name = object_name
+        #         shape = objects[name]["shape"]
+        #         color = objects[name]["color"]
 
-                # add object in Gazebo
-                # self.delete_model(object_name)
-                x = objects[name]["pose"]["x"]
-                y = objects[name]["pose"]["y"]
-                z = objects[name]["pose"]["z"]
-                roll = objects[name]["pose"]["roll"]
-                pitch = objects[name]["pose"]["pitch"]
-                yaw = objects[name]["pose"]["yaw"]
-                object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
-                self.spawn_model(object_name, object_pose)
+        #         # add object in Gazebo
+        #         # self.delete_model(object_name)
+        #         x = objects[name]["pose"]["x"]
+        #         y = objects[name]["pose"]["y"]
+        #         z = objects[name]["pose"]["z"]
+        #         roll = objects[name]["pose"]["roll"]
+        #         pitch = objects[name]["pose"]["pitch"]
+        #         yaw = objects[name]["pose"]["yaw"]
+        #         object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
+        #         self.spawn_model(object_name, object_pose)
         self.play_event = Event()
 
     # Explicit initialization functions

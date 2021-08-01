@@ -66,160 +66,161 @@ class HAL:
     
     def __init__(self):
         rospy.init_node("HAL")
-        self.scene = PlanningSceneInterface()
+        # self.scene = PlanningSceneInterface()
         self.robot = RobotCommander()
 
-        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        filename = os.path.join(__location__, 'joints_setup.yaml')
-        with open(filename) as file:
-            joints_setup = yaml.load(file)
-            jointslimit = joints_setup["joints_limit"]
+        # __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        # filename = os.path.join(__location__, 'joints_setup.yaml')
+        # with open(filename) as file:
+        #     joints_setup = yaml.load(file)
+        #     jointslimit = joints_setup["joints_limit"]
 
-            home_value = joints_setup["home_value"]
-            j1 = home_value["joint_1"]
-            j2 = home_value["joint_2"]
-            j3 = home_value["joint_3"]
-            j4 = home_value["joint_4"]
-            j5 = home_value["joint_5"]
-            j6 = home_value["joint_6"]
-            g = home_value["gripper"]
-            self.set_home_value([j1, j2, j3, j4, j5, j6, g])
+        #     home_value = joints_setup["home_value"]
+        #     j1 = home_value["joint_1"]
+        #     j2 = home_value["joint_2"]
+        #     j3 = home_value["joint_3"]
+        #     j4 = home_value["joint_4"]
+        #     j5 = home_value["joint_5"]
+        #     j6 = home_value["joint_6"]
+        #     g = home_value["gripper"]
+        #     self.set_home_value([j1, j2, j3, j4, j5, j6, g])
 
-            home_value = joints_setup["pick_place_home_value"]
-            j1 = home_value["joint_1"]
-            j2 = home_value["joint_2"]
-            j3 = home_value["joint_3"]
-            j4 = home_value["joint_4"]
-            j5 = home_value["joint_5"]
-            j6 = home_value["joint_6"]
-            g = home_value["gripper"]
-            self.set_pick_place_home_value([j1, j2, j3, j4, j5, j6, g])
+        #     home_value = joints_setup["pick_place_home_value"]
+        #     j1 = home_value["joint_1"]
+        #     j2 = home_value["joint_2"]
+        #     j3 = home_value["joint_3"]
+        #     j4 = home_value["joint_4"]
+        #     j5 = home_value["joint_5"]
+        #     j6 = home_value["joint_6"]
+        #     g = home_value["gripper"]
+        #     self.set_pick_place_home_value([j1, j2, j3, j4, j5, j6, g])
 
-        self.object_list = {}
-        self.obstacle_list = {}
-        filename = os.path.join(__location__, 'models_info.yaml')
-        with open(filename) as file:
-            objects_info = yaml.load(file)
+        # self.object_list = {}
+        # self.obstacle_list = {}
+        # filename = os.path.join(__location__, 'models_info.yaml')
+        # with open(filename) as file:
+        #     objects_info = yaml.load(file)
 
-            rospy.loginfo("Spawning Objects in Gazebo and planning scene")
-            objects = objects_info["objects"]
-            objects_name = objects.keys()
-            for object_name in objects_name:
-                name = object_name
-                shape = objects[name]["shape"]
-                color = objects[name]["color"]
+        #     rospy.loginfo("Spawning Objects in Gazebo and planning scene")
+        #     objects = objects_info["objects"]
+        #     objects_name = objects.keys()
+        #     for object_name in objects_name:
+        #         name = object_name
+        #         shape = objects[name]["shape"]
+        #         color = objects[name]["color"]
 
-                x = objects[name]["pose"]["x"]
-                y = objects[name]["pose"]["y"]
-                z = objects[name]["pose"]["z"]
-                roll = objects[name]["pose"]["roll"]
-                pitch = objects[name]["pose"]["pitch"]
-                yaw = objects[name]["pose"]["yaw"]
-                object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
+        #         x = objects[name]["pose"]["x"]
+        #         y = objects[name]["pose"]["y"]
+        #         z = objects[name]["pose"]["z"]
+        #         roll = objects[name]["pose"]["roll"]
+        #         pitch = objects[name]["pose"]["pitch"]
+        #         yaw = objects[name]["pose"]["yaw"]
+        #         object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
 
-                p = PoseStamped()
-                p.header.frame_id = self.robot.get_planning_frame()
-                p.header.stamp = rospy.Time.now()
+        #         p = PoseStamped()
+        #         p.header.frame_id = self.robot.get_planning_frame()
+        #         p.header.stamp = rospy.Time.now()
 
-                p.pose.position.x = x
-                p.pose.position.y = y
-                p.pose.position.z = z
+        #         p.pose.position.x = x
+        #         p.pose.position.y = y
+        #         p.pose.position.z = z
 
-                q = quaternion_from_euler(roll,pitch,yaw)
-                p.pose.orientation = Quaternion(*q)
+        #         q = quaternion_from_euler(roll,pitch,yaw)
+        #         p.pose.orientation = Quaternion(*q)
 
-                if shape == "box":
-                    x = objects[name]["size"]["x"]
-                    y = objects[name]["size"]["y"]
-                    z = objects[name]["size"]["z"]
-                    p.pose.position.z += z/2
+        #         if shape == "box":
+        #             x = objects[name]["size"]["x"]
+        #             y = objects[name]["size"]["y"]
+        #             z = objects[name]["size"]["z"]
+        #             p.pose.position.z += z/2
 
-                    height = z
-                    width = y
-                    length = x
-                    self.object_list[name] = Object(p.pose, p.pose, height, width, length, shape, color)
+        #             height = z
+        #             width = y
+        #             length = x
+        #             self.object_list[name] = Object(p.pose, p.pose, height, width, length, shape, color)
 
-                elif shape == "cylinder":
-                    height = objects[name]["size"]["height"]
-                    radius = objects[name]["size"]["radius"]
-                    p.pose.position.z += height/2
-                    self.object_list[name] = Object(p.pose, p.pose, height, radius*2, radius*2, shape, color)
+        #         elif shape == "cylinder":
+        #             height = objects[name]["size"]["height"]
+        #             radius = objects[name]["size"]["radius"]
+        #             p.pose.position.z += height/2
+        #             self.object_list[name] = Object(p.pose, p.pose, height, radius*2, radius*2, shape, color)
 
-                elif shape == "sphere":
-                    radius = objects[name]["size"]
-                    p.pose.position.z += radius
-                    self.object_list[name] = Object(p.pose, p.pose, radius*2, radius*2, radius*2, shape, color)
+        #         elif shape == "sphere":
+        #             radius = objects[name]["size"]
+        #             p.pose.position.z += radius
+        #             self.object_list[name] = Object(p.pose, p.pose, radius*2, radius*2, radius*2, shape, color)
 
-                objects = objects_info["objects"]
+        #         objects = objects_info["objects"]
             
-            obstacles = objects_info["obstacles"]
-            obstacles_name = obstacles.keys()
-            for object_name in obstacles_name:
-                name = object_name
+        #     obstacles = objects_info["obstacles"]
+        #     obstacles_name = obstacles.keys()
+        #     for object_name in obstacles_name:
+        #         name = object_name
 
-                x = obstacles[name]["pose"]["x"]
-                y = obstacles[name]["pose"]["y"]
-                z = obstacles[name]["pose"]["z"]
-                roll = obstacles[name]["pose"]["roll"]
-                pitch = obstacles[name]["pose"]["pitch"]
-                yaw = obstacles[name]["pose"]["yaw"]
-                object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
+        #         x = obstacles[name]["pose"]["x"]
+        #         y = obstacles[name]["pose"]["y"]
+        #         z = obstacles[name]["pose"]["z"]
+        #         roll = obstacles[name]["pose"]["roll"]
+        #         pitch = obstacles[name]["pose"]["pitch"]
+        #         yaw = obstacles[name]["pose"]["yaw"]
+        #         object_pose = self.pose2msg(x, y, z, roll, pitch, yaw)
 
-                p = PoseStamped()
-                p.header.frame_id = self.robot.get_planning_frame()
-                p.header.stamp = rospy.Time.now()
+        #         p = PoseStamped()
+        #         p.header.frame_id = self.robot.get_planning_frame()
+        #         p.header.stamp = rospy.Time.now()
 
-                p.pose.position.x = x
-                p.pose.position.y = y
-                p.pose.position.z = z
+        #         p.pose.position.x = x
+        #         p.pose.position.y = y
+        #         p.pose.position.z = z
 
-                x = obstacles[name]["size"]["x"]
-                y = obstacles[name]["size"]["y"]
-                z = obstacles[name]["size"]["z"]
-                p.pose.position.z += z/2
+        #         x = obstacles[name]["size"]["x"]
+        #         y = obstacles[name]["size"]["y"]
+        #         z = obstacles[name]["size"]["z"]
+        #         p.pose.position.z += z/2
 
-                height = z
-                width = y
-                length = x
-                self.obstacle_list[name] = Obstacle(p.pose, p.pose, height, width, length)
+        #         height = z
+        #         width = y
+        #         length = x
+        #         self.obstacle_list[name] = Obstacle(p.pose, p.pose, height, width, length)
 
-        # self.object_list = object_list
-        self.goal_list = {}
-        self.set_target_info()
+        # # self.object_list = object_list
+        # self.goal_list = {}
+        # self.set_target_info()
 
-        self.gripper_width = {}
-        self.set_gripper_width_relationship()
+        # self.gripper_width = {}
+        # self.set_gripper_width_relationship()
 
-        self.arm = moveit_commander.MoveGroupCommander("ur10_manipulator")
-        self.arm.set_goal_tolerance(0.01)
-        self.arm.set_pose_reference_frame("ur10_base_link")
+        # self.arm = moveit_commander.MoveGroupCommander("ur10_manipulator")
+        # self.arm.set_goal_tolerance(0.01)
+        # self.arm.set_pose_reference_frame("ur10_base_link")
 
-        self.gripperpub = rospy.Publisher("gripper_controller/command", JointTrajectory, queue_size=0)
+        # self.gripperpub = rospy.Publisher("gripper_controller/command", JointTrajectory, queue_size=0)
 
-        self.transform_arm_to_baselink = Point()
-        self.get_arm_to_baselink()
+        # self.transform_arm_to_baselink = Point()
+        # self.get_arm_to_baselink()
 
-        self.gripper_length = 0.33
+        # self.gripper_length = 0.33
 
-        self.get_workspace()
+        # self.get_workspace()
 
-        self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
-        self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
+        # self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
+        # self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
 
-        self.robot_pose = Pose()
-        self.odom_sub = rospy.Subscriber("/odom", Odometry, self.robot_pose_callback)
+        # self.robot_pose = Pose()
+        # self.odom_sub = rospy.Subscriber("/odom", Odometry, self.robot_pose_callback)
         
-        self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
-        self.target_pose = {}
+        # self.client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+        # self.target_pose = {}
+        print("hello")
 
-        filename = os.path.join(__location__, 'navigation.yaml')
-        with open(filename) as file:
-            navigation_params = yaml.load(file)
-            stop_pose = navigation_params["stop_pose"]
-            target_names = stop_pose.keys()
-            for target_name in target_names:
-                pose = stop_pose[target_name]
-                self.target_pose[target_name] = [pose["x"], pose["y"], pose["theta"]]
+        # filename = os.path.join(__location__, 'navigation.yaml')
+        # with open(filename) as file:
+        #     navigation_params = yaml.load(file)
+        #     stop_pose = navigation_params["stop_pose"]
+        #     target_names = stop_pose.keys()
+        #     for target_name in target_names:
+        #         pose = stop_pose[target_name]
+        #         self.target_pose[target_name] = [pose["x"], pose["y"], pose["theta"]]
 
 
     # Explicit initialization functions
