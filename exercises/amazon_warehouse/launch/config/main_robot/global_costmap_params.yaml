@@ -1,0 +1,5 @@
+global_costmap:
+  global_frame: map
+  robot_base_frame: amazon_warehouse_robot/amazon_warehouse_robot::chassis
+  update_frequency: 1.0
+  static_map: true

@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <include file="$(find kobuki_node)/launch/robot_with_tf.launch"/>
+
+  <node name="urg_node"          pkg="urg_node"  type="urg_node" output="screen"/>
+
+  <!--<node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+    <rosparam commandn="load" file="definition/robot/my_laser_config.yaml" />
+  </node>-->
+
+  <node pkg="tf" type="static_transform_publisher" name="bf2laser"
+    args="0 0.0 0.41 3.14 3.14 0 base_footprint laser 100"/>
+
+
+</launch>

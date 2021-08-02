@@ -1,0 +1,8 @@
+obstacle_range: 9.5
+raytrace_range: 10.0
+footprint: [[-0.45, -0.3375], [-0.45, 0.3375], [0.45, 0.3375], [0.45, -0.3375]]
+footprint_padding: 0.02
+inflation_radius: 1.2
+cost_scaling_factor: 10.0
+observation_sources: laser_scan_sensor
+laser_scan_sensor: {sensor_frame: amazon_warehouse_robot/hokuyo_link, observation_persistence: 0.0, data_type: LaserScan, topic: /amazon_warehouse_robot/laser/scan, marking: true, clearing: true}

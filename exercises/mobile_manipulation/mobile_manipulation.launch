@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!--To launch RVIZ set the value to true-->
+  <arg name="rviz" default="true"/>
+  <arg name="amcl" default="true"/>
+  <arg name="move_base" default="true"/>
+
+  <!--Gazebo Variables--> 
+  <arg name="world" default="empty"/> 
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(eval env('PWD') + '/warehouse.world')"/>
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  <!--Robot description to param server-->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find neo_simulation)/robots/mmo_500/mmo_500.urdf.xacro'"/>
+
+  <node name="mmo_500_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+  args="-urdf -param robot_description -model mmo_500" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+  <param name="publish_frequency" value="30.0"/>
+  </node>
+
+  <!-- UR10 -->
+  <!-- <rosparam file="$(find neo_simulation)/config/controller/arm_controller_ur10.yaml" command="load"/>
+  <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" respawn="false" output="screen"/> -->
+  <rosparam file="$(find neo_simulation)/config/controller/ur10_arm_controller.yaml" command="load"/>
+  <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn ur10_manipulator_controller" respawn="false" output="screen"/>
+  <remap from="/follow_joint_trajectory" to="/arm_controller/follow_joint_trajectory"/>
+
+  <rosparam file="$(find neo_simulation)/config/controller/gripper_controller.yaml" command="load"/>
+  <node name="gripper_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn gripper_controller" respawn="false" output="screen"/> 
+  
+  <!-- <rosparam file="$(find neo_simulation)/config/controller/finger1_controller.yaml" command="load"/>
+  <node name="finger1_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn finger1_controller" respawn="false" output="screen"/> 
+  <rosparam file="$(find neo_simulation)/config/controller/finger2_controller.yaml" command="load"/>
+  <node name="finger2_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn finger2_controller" respawn="false" output="screen"/> 
+  <rosparam file="$(find neo_simulation)/config/controller/finger3_controller.yaml" command="load"/>
+  <node name="finger3_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn finger3_controller" respawn="false" output="screen"/>  -->
+
+  <include file="$(find neo_simulation)/config/controller/launch/controller_utils.launch"/>
+
+  <!-- Scan_unifier -->
+	<rosparam command="load" ns="cob_scan_unifier" file="$(find neo_simulation)/config/mmo_500/scan_unifier/unifier.yaml"/>
+	<node pkg="cob_scan_unifier" type="scan_unifier_node" name="scan_unifier_node" ns="cob_scan_unifier" respawn="false" output="screen" >
+	</node>
+
+  <!-- Launch moveit -->
+  <include file="$(find mmo500_moveit_config)/launch/move_group.launch">
+  <!-- <include file="$(find mmo500_moveit_config_test)/launch/move_group.launch"> -->
+    <arg name="debug" default="$(arg debug)" />
+  </include>
+
+  <!-- RVIZ -->
+  <!-- <arg name="config" value="navigation"/> -->
+  <group if="$(arg rviz)">
+    <arg name="rvizconfig" default="$(find neo_simulation)/config/mmo_500/rviz/navigation_config.rviz" />
+	  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true"/>
+  </group>
+
+  <!-- amcl -->
+  <group if="$(arg amcl)">
+    <include file="$(find neo_simulation)/config/mmo_500/amcl/mmo_500_amcl.launch"/>
+  </group>
+
+  <!-- move_base -->
+  <group if="$(arg move_base)">
+    <include file="$(find neo_simulation)/config/mmo_500/move_base/mmo_500_move_base.launch"/>
+  </group>
+
+   <!-- Spawn GUI-->
+  <!-- <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="-perspective-file $(find rqt_industrial_robot)/mobile_manipulator.perspective"/> -->
+
+</launch>

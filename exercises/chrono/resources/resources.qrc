@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="images">
+    <file>ball.png</file>
+    <file>play.png</file>
+    <file>stop.png</file>
+    <file>jderobot.png</file>
+    <file>monaco.png</file>
+  </qresource>
+</RCC>
