@@ -85,7 +85,7 @@ cat /etc/resolv.conf
 python exercise.py 127.0.0.xx
 ```
 
-- Open the web template from `exercice.html`
+- Open the web template from `exercise.html`
 
 - The page should says **[open]Connection established!**.Means it is working as expected.
 
