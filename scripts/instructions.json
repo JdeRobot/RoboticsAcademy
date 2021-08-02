@@ -59,5 +59,10 @@
         "gazebo_path": "/RoboticsAcademy/exercises/position_control/web-template/launch",
         "instructions_ros": ["python ./RoboticsAcademy/exercises/position_control/web-template/launch/launch.py"],
         "instructions_host": "python /RoboticsAcademy/exercises/position_control/web-template/exercise.py 0.0.0.0"
+    },
+    "machine_vision": {
+        "gazebo_path": "/RoboticsAcademy/exercises/machine_vision/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/machine_vision/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python /RoboticsAcademy/exercises/machine_vision/web-template/exercise.py 0.0.0.0"
     }
 }
