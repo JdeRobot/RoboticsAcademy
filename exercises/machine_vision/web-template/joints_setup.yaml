@@ -1,0 +1,20 @@
+joints_limit:
+  joint_1: {low: -360, high: 360}
+  joint_2: {low: -180, high: 180}
+  joint_3: {low: -180, high: 180}
+  joint_4: {low: -180, high: 180}
+  joint_5: {low: -180, high: 180}
+  joint_6: {low: -180, high: 180}
+
+workspace:
+  center: {x: 0, y: 0, z: 0.089}
+  r: {min: 0.200, max: 0.750}
+  min_z: -0.7
+
+home_value:
+  joint_1: 0
+  joint_2: -1.57
+  joint_3: 0
+  joint_4: 0
+  joint_5: -1.57
+  joint_6: 0

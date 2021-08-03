@@ -62,7 +62,7 @@
     },
     "machine_vision": {
         "gazebo_path": "/RoboticsAcademy/exercises/machine_vision/web-template/launch",
-        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/machine_vision/web-template/launch/vacuum_cleaner_headless.launch"],
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/machine_vision/web-template/launch/machine_vision.launch"],
         "instructions_host": "python /RoboticsAcademy/exercises/machine_vision/web-template/exercise.py 0.0.0.0"
     }
 }
