@@ -54,6 +54,22 @@
 
 <div class="split b">
 
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <p><b>Errors detected:</b></p>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-wrap;">
+              <p style="word-wrap: break-word;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     <!-- Uncomment this if you wish to have the console button on the right split -->
 <!--     <div id="visual_buttons" class="row no-gutters">
         <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/dl_digit_classifier/web-template/assets/img/terminal-solid.svg' %}"> Console</button>

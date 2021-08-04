@@ -17,6 +17,8 @@ from map import Map
 
 
 class GUI:
+    map = None
+
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):

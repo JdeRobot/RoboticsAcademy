@@ -23,6 +23,23 @@ while True:
 
 </div>
 <div class="split b">
+    
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <p><b>Errors detected:</b></p>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-wrap;">
+              <p style="word-wrap: break-word;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <div id="visual_buttons" class="row no-gutters">
         <div id="lap_heading">Lap Time <img src="{% static 'exercises/obstacle_avoidance/web-template/assets/img/stopwatch-solid.svg' %}"><span id="lap_time"></span> </div>
     </div>

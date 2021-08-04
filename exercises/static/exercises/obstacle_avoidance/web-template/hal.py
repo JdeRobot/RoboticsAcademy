@@ -29,6 +29,18 @@ class HAL:
     def initRobot(self):
         pass
     
+    def setV(self, velocity):
+        self.motors.sendV(velocity)
+    
+    def setW(self, velocity):
+        self.motors.sendW(velocity)
+
+    def getPose3d(self):
+        return self.pose3d.getPose3d()
+
+    def getLaserData(self):
+        return self.laser.getLaserData()
+
     # Get Image from ROS Driver Camera
     def getImage(self):
         image = self.camera.getImage().data

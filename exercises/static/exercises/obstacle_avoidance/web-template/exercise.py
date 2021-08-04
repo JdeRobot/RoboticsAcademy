@@ -179,8 +179,8 @@ class Template:
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
         hal_module.HAL.getLaserData = self.hal.laser.getLaserData
         hal_module.HAL.getImage = self.hal.getImage
-        hal_module.HAL.motors.sendV = self.hal.motors.sendV
-        hal_module.HAL.motors.sendW = self.hal.motors.sendW
+        hal_module.HAL.setV = self.hal.motors.sendV
+        hal_module.HAL.setW = self.hal.motors.sendW
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

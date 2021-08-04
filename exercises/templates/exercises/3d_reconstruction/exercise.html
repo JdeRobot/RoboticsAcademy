@@ -21,6 +21,23 @@ while True:
 
 </div>
 <div class="split b">
+
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <p><b>Errors detected:</b></p>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-wrap;">
+              <p style="word-wrap: break-word;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    
     <div id="visual">
         <body onload = "webGLStart()">
             <div id="descarga"></div>
@@ -59,7 +76,7 @@ while True:
 </div>
 <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 <script>
-    var exercise = "3dreconstruction";
+    var exercise = "3d_reconstruction";
 
   Split(['.a', '.b'], {
     gutterSize: 3,
