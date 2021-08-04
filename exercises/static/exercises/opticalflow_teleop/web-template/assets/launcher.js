@@ -3,6 +3,7 @@ var gazeboToggle = false, gazeboOn = false;
 var simReset = false;
 var simStop = false;
 var simResume = false;
+var sendCode = false;
 
 function startSim(step) {
     exercise = "opticalflow_teleop";
@@ -53,7 +54,12 @@ function startSim(step) {
                 }
 
                 gazeboToggle = false;
-            } else if (simReset){
+            }else if (sendCode) {
+                let python_code = editor.getValue();
+		        python_code = "#code\n" + python_code;
+                ws_manager.send(JSON.stringify({"command": "evaluate", "code": python_code}));
+                sendCode = false;
+            }else if (simReset){
                 console.log("reset simulation");
                 ws_manager.send(JSON.stringify({"command": "reset"}));
                 simReset = false;
@@ -70,7 +76,18 @@ function startSim(step) {
                     ws_manager.send(JSON.stringify({"command" : "Pong"}));
                 }, 1000)
             }
-        }        
+        }
+        if (event.data.includes("evaluate")) {
+            if (event.data.length < 9) {    // If there is an error it is sent along with "evaluate"
+                start();
+            } else {                
+                let error = event.data.substring(10,event.data.length);
+                radiConect.contentWindow.postMessage({connection: 'exercise', command: 'error', text: error}, '*');
+            }
+            setTimeout(function () {
+                ws_manager.send(JSON.stringify({"command" : "Pong"}));
+            }, 1000)
+        }         
     }
 }
 
@@ -94,4 +111,8 @@ function stopSimulation() {
 
 function resumeSimulation() {
     simResume = true;
+}
+
+function checkCode() {
+    sendCode = true;
 }

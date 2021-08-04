@@ -24,6 +24,23 @@ while True:
 
 </div>
 <div class="split b">
+
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <p><b>Errors detected:</b></p>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="white-space: pre-wrap;">
+              <p style="word-wrap: break-word;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
         <!-- Circuit selector -->
         <label for="circuit_selector" style="display: inline-block;">Circuit: </label>
         <select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">

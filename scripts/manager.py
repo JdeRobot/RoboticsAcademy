@@ -9,6 +9,9 @@ import threading
 import time
 import json
 import stat
+import tempfile
+import re
+from pylint import epylint as lint
 
 # Function to check if a device exists
 def check_device(device_path):
@@ -317,6 +320,8 @@ class Manager:
             elif command == "stop":
                 self.stop_simulation()
                 await websocket.send("Ping{}".format(self.launch_level))
+            elif command == "evaluate":
+                await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
@@ -426,6 +431,49 @@ class Manager:
     async def kill_simulation(self):
         print("Kill simulation")
         await self.commands.kill_all()
+    
+    def evaluate_code(self, code):
+        try:
+            code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
+            code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
+            f = open("user_code.py", "w")
+            f.write(code[6:])
+            f.close()
+
+            command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
+            ret = subprocess.run(command, capture_output=True, shell=True)
+            result = ret.stdout.decode()
+            result = result + "\n"
+
+            # Removes convention and warning messages
+            convention_messages = re.search(":[0-9]+: convention.*\n", result)
+            while (convention_messages != None):
+                result = result[:convention_messages.start()] + result[convention_messages.end():]
+                convention_messages = re.search(":[0-9]+: convention.*\n", result)
+            warning_messages = re.search(":[0-9]+: warning.*\n", result)
+            while (warning_messages != None):
+                result = result[:warning_messages.start()] + result[warning_messages.end():]
+                warning_messages = re.search(":[0-9]+: warning.*\n", result)
+
+            # Removes unexpected EOF error
+            eof_exception = re.search(":[0-9]+: error.*EOF.*\n", result)
+            if (eof_exception != None):
+                result = result[:eof_exception.start()] + result[eof_exception.end():]
+
+            # Removes no value for argument 'self' error
+            self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+            while (self_exception != None):
+                result = result[:self_exception.start()] + result[self_exception.end():]    
+                self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+
+            # Returns an empty string if there are no errors
+            error = re.search("error", result)
+            if (error == None):
+                return ""
+            else:
+                return result
+        except Exception as ex:
+            print(ex)
 
     # Function to start the websocket server
     def run_server(self):

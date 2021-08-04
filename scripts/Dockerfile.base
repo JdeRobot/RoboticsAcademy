@@ -285,6 +285,9 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 RUN pip3 install websocket_server posix-ipc django
 RUN python3.8 -m pip install websockets asyncio
 
+# pip install dependencies
+RUN pip install pylint
+
 # apt-get install dependencies
 # Nodejs, x11vnc, xterm, xdummy
 RUN apt-get update && apt-get --no-install-recommends install -y \

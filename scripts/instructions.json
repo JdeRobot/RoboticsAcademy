@@ -28,7 +28,7 @@
         "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/launch.py"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0"
     },
-    "3dreconstruction": {
+    "3d_reconstruction": {
         "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
         "instructions_ros": [
             "/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/3d_reconstruction/web-template/launch/3d_reconstruction_ros.launch"],
