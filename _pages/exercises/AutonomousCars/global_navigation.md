@@ -202,7 +202,7 @@ while True:
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `from MAP import MAP` - This class contains functions that interact with data related to the map and Gazebo world. 
 * `HAL.motors.sendV()` - to set the linear speed
-* `HAL.motors.sendW()` - to set the angular velocity
+* `HAL.setW()` - to set the angular velocity
 * `HAL.getPose()` - returns x,y and theta components in the world
 * `GUI.showGPP(img)` - shows Gradient Path Planning field on the web-template. It represents the values ​​of the field that have been assigned to the grid. The smaller values ​​will have a color closer to black, and will become clearer as larger values ​​are involved. For the representation, a copy of the grid is made and its values ​​are normalized so that they are between 0 and 1, and it is represented later with cv2.imshow()
 * `GUI.showPath(array)` - shows ideal path on the map and the parameter should be 2D array

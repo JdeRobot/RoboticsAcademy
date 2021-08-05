@@ -92,7 +92,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.4
+docker pull jderobot/robotics-academy:3.1.5
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -100,7 +100,7 @@ docker pull jderobot/robotics-academy:3.1.4
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
   ```
 
 
@@ -110,7 +110,7 @@ docker pull jderobot/robotics-academy:3.1.4
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -159,8 +159,8 @@ while True:
 * `HAL.getLaserData()` - to obtain laser sensor data
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
 * `HAL.getImage()` - to get the image
-* `HAL.motors.sendV()` - to set the linear speed
-* `HAL.motors.sendW()` - to set the angular velocity
+* `HAL.setV()` - to set the linear speed
+* `HAL.setW()` - to set the angular velocity
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 
 **Own API**
@@ -248,8 +248,8 @@ def execute(self):
   regarding the map
 * `laser.getLaserData()` - to obtain laser sensor data
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `motors.sendV()` - to set and send the linear speed
-* `motors.sendW()` - to set and send the angular velocity
+* `setV()` - to set and send the linear speed
+* `setW()` - to set and send the angular velocity
 
 **Own API**
 
@@ -266,7 +266,7 @@ To use it, only two actions must be carried out:
 **Laser**
 
 ```python
-    laser_data = self.laser.getLaserData ()
+    laser_data = self.getLaserData ()
 
 def parse_laser_data (laser_data):
     laser = []
