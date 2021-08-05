@@ -436,6 +436,15 @@ class Manager:
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
+            
+            # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
+            while_position = re.search(r'[^ ]while\(True\):|[^ ]while True:', code)
+            sequential_code = code[:while_position.start()]
+            iterative_code = code[while_position.start():]
+            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code, 1)
+            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
+            code = sequential_code + iterative_code
+
             f = open("user_code.py", "w")
             f.write(code[6:])
             f.close()
