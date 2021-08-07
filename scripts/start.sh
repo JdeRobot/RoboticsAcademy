@@ -2,8 +2,7 @@
 rm -rf instructions.json manager.py
 cp /RoboticsAcademy/scripts/instructions.json /instructions.json
 cp /RoboticsAcademy/scripts/manager.py /manager.py
-echo 'source /catkin_ws/devel/setup.bash' >> ~/.bashrc & echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc & source ~/.bashrc
-source /opt/ros/melodic/setup.bash
-source /catkin_ws/devel/setup.bash
+cp /RoboticsAcademy/scripts/radi-entrypoint.sh /radi-entrypoint.sh
+source radi-entrypoint.sh
 python3 RoboticsAcademy/manage.py runserver 0.0.0.0:8000 &
 python3.8 manager.py

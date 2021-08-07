@@ -24,6 +24,7 @@ ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-9:/RoboticsAca
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
 ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-9/models:/opt/jderobot/CustomRobots/f1:/opt/jderobot/CustomRobots/roomba_robot:/opt/jderobot/CustomRobots/3d_reconstruction:/opt/jderobot/CustomRobots/Taxi_navigator:/Firmware/Tools/sitl_gazebo/models:/opt/ros/melodic/share/drone_assets/models:/opt/ros/melodic/share/drone_assets/urdf:/drones/drone_assets/models:/IndustrialRobots/assets/models"
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/Firmware/build/px4_sitl_default/build_gazebo"
+RUN echo 'source /radi-entrypoint.sh' >> ~/.bashrc
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
@@ -32,12 +33,14 @@ RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/
 COPY manager.py /manager.py
 COPY instructions.json /instructions.json
 COPY manager_utils.py /manager_utils.py
+COPY radi-entrypoint.sh /radi-entrypoint.sh
 
 # execute permissions to start.sh
 COPY start.sh /start.sh
 COPY start_manager.sh /start_manager.sh
 RUN chmod 755 /start.sh
 RUN chmod 755 /start_manager.sh
+RUN chmod 755 /radi-entrypoint.sh
 
 EXPOSE 2303
 EXPOSE 1905
