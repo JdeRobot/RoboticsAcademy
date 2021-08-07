@@ -314,7 +314,7 @@ class HAL:
 
     def get_workspace(self):
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
-        filename = os.path.join(__location__, 'joint_setup.yaml')
+        filename = os.path.join(__location__, 'joints_setup.yaml')
         with open(filename) as file:
             joints_setup = yaml.load(file)
             workspace = joints_setup["workspace"]
