@@ -23,7 +23,7 @@ def check_device(device_path):
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander"]
-CIRCUIT_EX = ["follow_line"]
+CIRCUIT_EX = ["follow_line", "follow_line_game"]
 
 # Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
@@ -167,6 +167,25 @@ class Commands:
                 print('GUI: ',gui_cmd)
             gui_thread = DockerThread(gui_cmd)
             gui_thread.start()
+        except KeyError:
+            pass
+
+        # Launch exercise_guest.py
+        try:
+            host_cmd_guest = self.instructions[exercise]["instructions_guest"]
+            guest_thread = DockerThread(host_cmd_guest)
+            guest_thread.start()
+        except KeyError:
+            pass
+
+        # Launch gui_guest.py
+        try:
+            gui_cmd_guest = self.instructions[exercise]["instructions_gui_guest"]
+            if exercise in CIRCUIT_EX:
+                gui_cmd_guest = gui_cmd_guest.format(circuit)
+                print('GUI guest: ',gui_cmd_guest)
+            gui_thread_guest = DockerThread(gui_cmd_guest)
+            gui_thread_guest.start()
         except KeyError:
             pass
 
@@ -449,7 +468,12 @@ class Manager:
             f.write(code[6:])
             f.close()
 
+            # If the exercise is part of the follow_line challenge then set the path for this challenge
+            if self.exercise in CIRCUIT_EX:
+                self.exercise = 'follow_line'
+
             command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
+            print('COMANDO: ', command)
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
