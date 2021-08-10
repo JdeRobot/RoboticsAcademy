@@ -12,8 +12,8 @@ toc_icon: "cog"
 
 **Robotics-Academy (2.3 release)** supports Linux (Ubuntu 18.04, 20.04 and other distributions), MacOS and Windows. The installation has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics-Academy Docker Image. The users of this release should:
 
-1. Install the [RADI (Robotics-Academy Docker Image)](https://hub.docker.com/r/jderobot/robotics-academy/tags) on their machines
-2. Copy the [Robotics-Academy source code repository](https://jderobot.github.io/RoboticsAcademy/installation/#robotics-academy-source-code) on their machines. 
+1. Install [Docker](https://www.docker.com/) on their machines
+2. Run the [RADI (Robotics-Academy Docker Image)](https://hub.docker.com/r/jderobot/robotics-academy/tags) using the exercise specific launch instructions
 
 Enjoy :-)
 

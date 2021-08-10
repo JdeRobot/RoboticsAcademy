@@ -104,12 +104,7 @@ youtubeId4: zcS4X-ZO68U
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -213,60 +208,6 @@ while True:
 * `MAP.getGridVal(x, y)` - returns the value in that grid position on the map
 * `MAP.gridToWorld(x, y)` - returns translated x,y coordinates in the world
 * `MAP.worldToGrid(x, y)` - returns translated x,y coordinates on the map 
-
-## Instructions for ROSNode Template
-
-### Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-## How to run your solution
-
-Navigate to the global_navigation directory
-
-```bash
-cd exercises/global_navigation
-```
-
-Launch Gazebo with the tele_taxi world through the command 
-
-```bash
-roslaunch ./launch/tele_taxi.launch
-```
-
-Execute the practice's component indicating the configuration file for the map:
-```bash
-python2 globalNavigation.py taxiMap.conf
-```
-
-## How to do the practice
-To carry out the practice, you must edit the file MyAlgorithm.py and insert all the functionality in it.
-
-### Where to insert the code
-There are two parts in which the code should be inserted:
-
-- The part related to finding the shortest path must be located inside the 
-generatePath function, which is executed only when the button is pressed in 
-the GUI MyAlgorithm.py
-
-```python
-def generatePath(self):
-	print "LOOKING FOR SHORTER PATH"
-        mapIm = self.grid.getMap()      
-        dest = self.grid.getDestiny()   
-        gridPos = self.grid.getPose()
-
-        # TODO
-```
-
-- The code that will allow the robot to reach the destination will be placed in 
-the execute function, which is executed periodically. 
-MyAlgorithm.py
-
-```python
-def execute(self):
-        # Add your code here
-        print "GOING TO DESTINATION"
-```
 
 ### API
 * `sensor.getRobotX()` - to obtain the position of the robot

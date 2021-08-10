@@ -25,12 +25,7 @@ youtubeId1: vCIFpZcWZhs
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -120,52 +115,6 @@ while True:
 * `HAL.getSonarData_5()` - to get the sonar data of the sonar 6 
 * `HAL.getSonarData_6()` - to get the sonar data of the sonar 7 
 * `HAL.getSonarData_7()` - to get the sonar data of the sonar 8
-
-## Instructions for ROSNode Templates
-
-### Installation 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-Enable Kobuki_msgs:
-
-```bash
-sudo apt-get install ros-melodic-kobuki-msgs
-```
-
-### How to run
-
-1. Execution without watching the world: 
-```bash
-roslaunch laser_mapping.launch
-```
-2. Execution of the practice and the user interface: 
-```bash
-python2 AmigoBot.py AmigoBot_conf.yml
-```
-3. Execution of the automatic evaluator:
-```bash
-python2 referee.py referee.yml
-```
-
-To simplify the closure of the environment, simply close the AmigoBot window(s). *Ctrl + C will give problems*.
-
-### How to do the practice
-
-To carry out the practice, you must edit the MyAlgorithm.py file and insert the control logic into it.
-
-### Where to insert the code
-
-MyAlgorithm.py
-
-```python
-print ('Execute')
-
-# TODO
-
-print ("Posicion X del robot: ", self.pose3d.getPose3d().x)
-print ("Posicion Y del robot: ", self.pose3d.getPose3d().y)
-print ("Giro del AmigoBot: ", self.pose3d.getPose3d().yaw)
-```
 
 ```python
 # EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS

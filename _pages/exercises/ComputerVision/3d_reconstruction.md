@@ -57,12 +57,7 @@ youtubeId3: dXm8mTMH3qY
 
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -155,6 +150,18 @@ while True:
 * `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
 * `GUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information       
 
+```python
+def algorithm(self):
+	#GETTING THE IMAGES
+	# imageR = self.getImage('right')
+	# imageL = self.getImage('left')
+
+	#EXAMPLE OF HOW TO PLOT A RED COLORED POINT
+	# position = [1.0, 0.0, 0.0]	X, Y, Z
+	# color = [1.0, 0.0, 0.0]	R, G, B
+	# self.point.plotPoint(position, color) 
+```
+
 **3D Viewer**
 
 **Mouse**
@@ -170,30 +177,8 @@ while True:
 * **Plus keys**: if it is held down, the zoom will increase.
 
 ### Example video with web template
+
 {% include youtubePlayer.html id=page.youtubeId3 %}
-
-## Instructions for ROSNode Templates
-
-### Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-### How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which reconstructs 3d points from the two stereo views.
-
-**Where to insert the code?**
-In the `MyAlgorithm.py` file,
-
-```python
-def algorithm(self):
-	#GETTING THE IMAGES
-	# imageR = self.getImage('right')
-	# imageL = self.getImage('left')
-
-	#EXAMPLE OF HOW TO PLOT A RED COLORED POINT
-	# position = [1.0, 0.0, 0.0]	X, Y, Z
-	# color = [1.0, 0.0, 0.0]	R, G, B
-	# self.point.plotPoint(position, color) 
-```
 
 **Application Programming Interface**
 
@@ -207,31 +192,6 @@ def algorithm(self):
 **Mouse based**: Hold and drag to move around the environment. Scroll to zoom in or out
 
 **Keyboard based**: Arrow keys to move around the environment. W and S keys to zoom in or out
-
-### How to run your solution?
-Navigate to the 3d_reconstruction directory
-
-```bash
-cd exercises/3d_reconstruction
-```
-
-Launch Gazebo with the kobuki_3d_reconstruction world through the command 
-
-```bash
-roslaunch ./launch/3d_reconstruction_ros.launch
-```
-
-Then you have to execute the academic application, which will incorporate your code:
-
-```bash
-python2 ./3d_reconstruction.py 3d_reconstruction_conf.yml
-```
-### Example video with ROSNode Templates
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Theory
 In computer vision and computer graphics, [3D reconstruction](https://en.wikipedia.org/wiki/3D_reconstruction) is the process of determining an object's 3D profile, as well as knowing the 3D coordinate of any point on the profile. Reconstruction can be achieved as follows:
