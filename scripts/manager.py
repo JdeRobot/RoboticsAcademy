@@ -8,7 +8,7 @@ import threading
 import time
 import json
 import stat
-
+# import manager_utils as m_utils
 # Function to check if a device exists
 def check_device(device_path):
     try:
@@ -98,11 +98,6 @@ class Commands:
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start()
 
-    # Function to stop gzclient
-    def stop_gzclient(self):
-        cmd_stop = "pkill -f gzclient"
-        os.popen(cmd_stop)
-
     # Function to start the console
     def start_console(self, width, height):
         # Write display config and start the console
@@ -115,6 +110,12 @@ class Commands:
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
+
+    # def start_rviz(self, exercise):
+    #     rviz_cmd = f'DISPLAY=:2 {self.instructions[exercise]["instructions_rviz"]}'
+
+    #     rviz_thread = m_utils.DockerThread(rviz_cmd)
+    #     rviz_thread.start()
 
     # Function to start VNC server
     def start_vnc(self, display, internal_port, external_port):
@@ -245,10 +246,6 @@ class Manager:
         self.commands = Commands()
         self.launch_level = 0
 
-        self.exercise = None
-        self.height = None
-        self.width = None
-
     # Function to handle all the requests
     async def handle(self, websocket, path):
         self.client = websocket
@@ -257,14 +254,12 @@ class Manager:
             data = json.loads(message)
             command = data["command"]
             if command == "open":
-                self.width = data.get("width", 1920)
-                self.height = data.get("height", 1080)
-                self.exercise = data["exercise"]
-
+                width = data.get("width", 1920)
+                height = data.get("height", 1080)
                 if not (ACCELERATION_ENABLED):
-                    self.open_simulation(self.exercise, self.width, self.height)
+                    self.open_simulation(data["exercise"], width, height)
                 else:
-                    self.open_accelerated_simulation(self.exercise, self.width, self.height)
+                    self.open_accelerated_simulation(data["exercise"], width, height)
             elif command == "resume":
                 self.resume_simulation()
             elif command == "stop":
@@ -273,12 +268,6 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-            elif command == "stopgz":
-                self.stop_gz()
-                await websocket.send("Ping{}".format(self.launch_level))
-            elif command == "startgz":
-                self.start_gz()
-                await websocket.send("Ping{}".format(self.launch_level))
             elif "Pong" in command:
                 await websocket.send("Ping{}".format(self.launch_level))
             else:
@@ -294,8 +283,34 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
+        if exercise in ["tb3_nav", "machine_vision"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # X Server for RViz
+            print("********Rviz + Gazebo + Console************")
+            # self.commands.start_xserver(":2")
 
-        if not ("color_filter" in exercise):
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            # self.commands.start_vnc(":2", 5902, 6081)
+
+            # Start gazebo client
+            time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
+            # self.commands.start_rviz(exercise)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
@@ -307,6 +322,7 @@ class Manager:
 
             # Start gazebo client
             time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
             self.commands.start_console(width, height)
         else:
             self.commands.start_exercise(exercise)
@@ -324,7 +340,32 @@ class Manager:
 
         # Start the exercise
         
-        if not ("color_filter" in exercise):
+        if exercise in ["tb3_nav", "pick_place"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # X Server for RViz
+            self.commands.start_xserver(":2")
+
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            self.commands.start_vnc(":2", 5902, 6081)
+
+            # Start gazebo client
+            time.sleep(2)
+            # self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
@@ -333,6 +374,8 @@ class Manager:
             self.commands.start_vnc(":1", 5901, 1108)
 
             # Start gazebo client
+            time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
             time.sleep(2)
             self.commands.start_console(width, height)
         else:
@@ -361,16 +404,6 @@ class Manager:
     def reset_simulation(self):
         print("Reset Simulation")
         self.commands.reset_physics()
-
-    # Function to start gz client
-    def start_gz(self):
-        print("Starting Gzclient")
-        self.commands.start_gzclient(self.exercise, self.width, self.height)
-
-    # Function to stop gz client
-    def stop_gz(self):
-        print("Closing Gzclient")
-        self.commands.stop_gzclient()
 
     # Function to kill simulation
     async def kill_simulation(self):
