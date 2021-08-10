@@ -170,6 +170,25 @@ class Commands:
         except KeyError:
             pass
 
+        # Launch exercise_guest.py
+        try:
+            host_cmd_guest = self.instructions[exercise]["instructions_guest"]
+            guest_thread = DockerThread(host_cmd_guest)
+            guest_thread.start()
+        except KeyError:
+            pass
+
+        # Launch gui_guest.py
+        try:
+            gui_cmd_guest = self.instructions[exercise]["instructions_gui_guest"]
+            if exercise in CIRCUIT_EX:
+                gui_cmd_guest = gui_cmd_guest.format(circuit)
+                print('GUI guest: ',gui_cmd_guest)
+            gui_thread_guest = DockerThread(gui_cmd_guest)
+            gui_thread_guest.start()
+        except KeyError:
+            pass
+
     # Function to start the Xserver
     def start_xserver(self, display):
         xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {display}"
@@ -454,6 +473,7 @@ class Manager:
                 self.exercise = 'follow_line'
 
             command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
+            print('COMANDO: ', command)
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
