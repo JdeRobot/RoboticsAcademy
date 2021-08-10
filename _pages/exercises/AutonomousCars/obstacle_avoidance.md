@@ -45,12 +45,7 @@ youtubeId2: wVJJ9ndY2aY
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Objective
 
@@ -198,46 +193,6 @@ As well as the destination that we have assigned:
 # Current target
 GUI.map.targetx = 0.0
 GUI.map.targety = 0.0
-```
-
-
-## Instructions for ROSNode Templates
-
-### Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-### How to run your solution?
-
-Navigate to the obstacle_avoidance directory
-
-```bash
-cd exercises/obstacle_avoidance
-```
-
-Launch Gazebo with the f1_simple_circuitobstacles world through the command 
-
-```bash
-roslaunch ./launch/obstacle_avoidance_f1.launch
-```
-
-
-Then you have to execute the academic application, which will incorporate your code:
-```bash
-python ./obstacle_avoidance_f1.py obstacle_avoidance_conf_f1.yml
-```
-
-### How to do the practice
-To carry out the practice, you must edit the file `MyAlgorithm.py` and
-insert the control logic.
-
-```python
-def execute(self):
-  self.currentTarget=self.getNextTarget()
-  self.targetx = self.currentTarget.getPose().x
-  self.targety = self.currentTarget.getPose().y
-
-  # TODO
-  # insert your code here
 ```
 
 **API**
@@ -427,10 +382,6 @@ Also, please note that this is **not the only solution** to this problem. We may
 {% include gallery id="gifs2" caption="Oscillation Problem in Narrow Corridors" %}
 
 ## Demonstrative Video
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-*This solution is an illustration for the ROSNode Templates*
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

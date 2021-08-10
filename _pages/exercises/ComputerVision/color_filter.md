@@ -31,13 +31,7 @@ youtubeId2: Fv9s99IEIvc
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates (Current Release)
-
-The instructions for both of them are provided as follows.
-
 
 ## Goal
 
@@ -115,29 +109,14 @@ while True:
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-
-
-## Instructions for ROSNode Templates
-
-### Installation
-
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-
-For the exercise, we will need a node to publish the video stream. The *video_stream_opencv* package contains this node.
-Add this packages if you don’t have it already:
-```
-$ sudo apt install ros-melodic-video-stream-opencv
-```
-
-
-### How to perform the exercise?
-
-To carry out the practice, you have to edit the file `MyAlgorithms.py` and insert in it your code, which enables the detection of a specific color and displays it in the GUI using the APIs given below.
-
-**Where to insert the code?**
-
-In the `MyAlgorithm.py` file,
+**Application Programming Interface**
+* `camera.getImage()` - to get the image received from server
+* `camera.setColorImage(input_image)` - to set color image
+* `camera.getColorImage()` - to get the color image
+* `camera.setThresholdImage(bk_image)` - to set Threshold image
+* `camera.getDetectImage()` - to get the Thresold image
+* `setDetectImage()` - to set the final detected(processed) image
+* `getDetectImage()` - to get the detected image
 
 ```python
 def execute(self):
@@ -148,71 +127,6 @@ def execute(self):
         self.camera.setColorImage(input_image)
 	  
 ```
-
-
-**Application Programming Interface**
-* `camera.getImage()` - to get the image received from server
-* `camera.setColorImage(input_image)` - to set color image
-* `camera.getColorImage()` - to get the color image
-* `camera.setThresholdImage(bk_image)` - to set Threshold image
-* `camera.getDetectImage()` - to get the Thresold image
-* `setDetectImage()` - to set the final detected(processed) image
-* `getDetectImage()` - to get the detected image
-
-
-
-### How to run your solution?
-
-- Navigate to the color_filter directory
-
-```bash
-cd exercises/color_filter
-```
-
-This practice allows to obtain the video stream from 3 different sources:
-- From a local camera (Local)
-- A local file (Video)
-- Or through an ICE or ROS video driver (Stream)
-Depending on the way you want to obtain the video, you must specify the selected video
-source in the configuration file (color_filter_conf.yml), and the required parameters for that source. 
-Once done it, if you have selected either 'Local' or 'Video', follow the next step:
-
-
-**Set the video stream provider**
-
-Edit the video_stream_provider argument in the `color_filter.launch` file according to your choice of video stream.
-You can use any input that OpenCV on your system accepts, e.g.:
-- Video devices that appear in linux as /dev/videoX, e.g.: USB webcams appearing as /dev/video0
-- Video streamings, e.g.: rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov
-- Video files, i.e., anything that you can play, e.g.: myvideo.avi
-
-For camera we can continue with the value of this argument set to "0".
-
-We also provide you with an example video that you can start the exercise with. This is the [Link](http://wiki.jderobot.org/store/amartinflorido/uploads/curso/pelotas_roja_azul.avi) to the video. Download it to your local system and accordingly update the value of video_stream_provider argument in the launch file to absolute path of the video fille. For example,in `color_filter.launch`
-
-```
-<arg name="video_stream_provider" value="/home/<user>/Downloads/pelotas_roja_azul.avi"/>.
-```
-
-It is pre-set that the ROS server will replay the stream. If you want server to play the stream once, change the value of *loop_videofile* argument to "0". 
-
-Launch the ROS Server. Open the terminal with the directory set to *color_filter* in the exercises folder and run the command. 
-
-``` 
-$ roslaunch color_filter.launch
-```
-
-The above command opens the videostream and starts publishing it.
-Next, ensuring you have written a workable code in `MyAlogrithm.py` file, run the following command in a new terminal.
-
-```
-$ python2 ./color_filter.py color_filter_conf.yml
-```
-
-### Demonstrative Video with ROSNode Templates
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
 
 ## Theory
 This exercise is focused on implementing color filter and tracking a color coded object of choice.

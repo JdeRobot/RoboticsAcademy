@@ -19,12 +19,7 @@ youtubeId2: Xcy84DhVjrY
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -112,42 +107,6 @@ while True:
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
-
-## Instructions for ROSNode Templates
-
-### Installation 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-Enable Kobuki_msgs:
-
-```bash
-sudo apt-get install ros-melodic-kobuki-msgs
-```
-
-### How to run
-
-1. Execution without watching the world: 
-```bash
-roslaunch vacuum_cleaner.launch
-```
-2. Execution of the practice and the user interface: 
-```bash
-python2 vacuumCleaner.py vacuumCleaner_conf.yml
-```
-3. Execution of the automatic evaluator:
-```bash
-python2 referee.py referee.yml
-```
-
-To simplify the closure of the environment, simply close the VacuumCleaner window(s). *Ctrl + C will give problems*.
-
-### How to do the practice
-
-To carry out the practice, you must edit the MyAlgorithm.py file and insert the control logic into it.
-
-### Where to insert the code
-
-MyAlgorithm.py
 
 ```python
 print ('Execute')
@@ -319,10 +278,6 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 
 ## Demonstrative Video
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-*This solution is an illustration for the ROSNode Templates*
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

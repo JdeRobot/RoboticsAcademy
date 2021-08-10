@@ -22,12 +22,7 @@ youtubeId2: mT5PkgtDLDg
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -115,46 +110,6 @@ while True:
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 
-## Instructions for ROSNode Templates
-
-### Installation 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-Enable Kobuki_msgs:
-
-```bash
-sudo apt-get install ros-melodic-kobuki-msgs
-```
-
-### How to run
-
-1. Execution watching the world: 
-
-```bash
-roslaunch vacuum_cleaner_loc.launch
-```
-
-2. Execution of the practice and the user interface: 
-
-```bash
-python2 vacuum.py vacuum_conf.yml
-```
-
-3. Execution of the automatic evaluator: 
-
-```bash
-python2 referee.py vacuum_conf.yml
-```
-
-To simplify the closure of the environment, simply close the VacuumCleaner window (s). *Ctrl + C will give problems*.
-
-### How to do the practice
-
-To carry out the practice, you must edit the MyAlgorithms.py file and insert all the functionality in it.
-
-## Where to insert the code
-
-[MyAlgorithm.py](MyAlgorithm.py#L81)
 ```python
 def execute(self):
 
@@ -210,10 +165,6 @@ def laser_vector(laser):
 ```
 
 ## Demonstration video
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-*This solution is an illustration for the ROSNode Templates*
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

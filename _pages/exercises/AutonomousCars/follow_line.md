@@ -59,12 +59,7 @@ youtubeId2: gHZVESBcgKE
 ---
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates(Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -146,61 +141,6 @@ while True:
 * `HAL.setW()` - to set the angular velocity
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 
-## Instructions for ROSNode Templates
-
-### Installation 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-### How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithms.py` and insert in it your code, which gives intelligence to the autonomous car.
-
-**Where to insert the code?**
-
-In the `MyAlgorithm.py` file,
-
-```python
-def execute(self):
-    #GETTING THE IMAGES
-    image = self.getImage()
-
-    # Add your code here
-    print "Runing"
-
-    #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-    #self.motors.sendV(10)
-    #self.motors.sendW(5)
-
-    #SHOW THE FILTERED IMAGE ON THE GUI
-    self.set_threshold_image(image)
-```
-
-**Application Programming Interface**
-
-* `self.getImage()` - to get the image
-* `self.motors.sendV()` - to set the linear speed
-* `self.motors.sendW()` - to set the angular velocity
-* `self.set_threshold_image()` - allows you to view a debug image or with relevant information. It must be an image in RGB format (Tip: np.dstack())
-
-### How to run your solution?
-
-- Navigate to the follow_line directory
-
-	```bash
-cd exercises/follow_line
-	```
-
-- Launch Gazebo with the f1_simple_circuit world through the command 
-
-	```bash
-roslaunch ./launch/simple_line_follower_ros.launch
-	```
-
-- Then you have to execute the academic application, which will incorporate your code:
-
-	```bash
-python2 ./follow_line.py follow_line_conf.yml
-	```
-
 ## Theory
 
 PID Control is the main fundamental behind this exercise. To understand PID Control, let us first understand what is Control in general.
@@ -278,10 +218,6 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 
 ## Demonstrative Video
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-*This solution is an illustration for the ROSNode Templates*
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

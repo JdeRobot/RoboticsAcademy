@@ -62,12 +62,7 @@ youtubeId: 4WIi2cpaLDA
 
 ## Versions to run the exercise
 
-Currently, there are 2 versions for running this exercise:
-
-- ROSNode Templates
 - Web Templates (Current Release)
-
-The instructions for both of them are provided as follows.
 
 ## Goal
 
@@ -159,64 +154,6 @@ while True:
 * `GUI.showImages(imageLeft, imageCentral, imageRight)` - allows you to view a debug images or with relevant information
 
 ### Example video with web template
-
-
-## Instructions for ROSNode Templates
-
-### Installation 
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
-
-### How to perform the exercise?
-To carry out the exercise, you have to edit the file `MyAlgorithm.py` and insert in it your code, which gives intelligence to the autonomous car.
-
-**Where to insert the code?**
-In the `MyAlgorithm.py` file,
-
-```python
-def execute(self):
-        
-    # Add your code here
-    print "Running"
-    # Getting the images
-    input_image = self.cameraC.getImage().data      
-```
-
-**Application Programming Interface**
-
-* `self.cameraC.getImage().data` - to get image from center camera
-* `self.cameraL.getImage().data` - to get image from left camera
-* `self.cameraR.getImage().data` - to get image from right camera
-
-* `self.pose3d.getPose3d().x` - to obtain the position of the robot
-* `self.pose3d.getPose3d().y` - to obtain the position of the robot
-* `self.pose3d.getPose3d().yaw` - to obtain the orientation of the robot
-
-* `self.setW()` - to set the angular velocity
-* `self.setV()` - to set the linear velocity
-
-### How to run your solution?
-
-Navigate to the car_junction directory
-
-```bash
-cd exercises/car_junction
-```
-
-Launch Gazebo with the car_junction world through the command 
-
-```bash
-roslaunch ./launch/car_junction.launch
-```
-
-Then you have to execute the academic application, which will incorporate your code:
-
-```bash
-python2 ./stop.py stop_conf.yml
-```
-
-### Example video with ROSNode Templates
-
-{% include youtubePlayer.html id=page.youtubeId %}
 
 ## Theory
 This exercise mostly revolves around simple Computer Vision and Control mechanisms. Let's start with the Computer Vision tasks:
