@@ -267,6 +267,13 @@ class Commands:
         self.run_subprocess(cmd_exercise)
         cmd_gui = cmd + ['gui.py']
         self.run_subprocess(cmd_gui)
+        try:
+            cmd_exercise_guest = cmd + ['exercise_guest.py']
+            self.run_subprocess(cmd_exercise_guest)
+            cmd_gui_guest = cmd + ['gui_guest.py']
+            self.run_subprocess(cmd_gui_guest)
+        except:
+            pass
         cmd_host = cmd + ['node']
         self.run_subprocess(cmd_host)
         cmd_rosmaster = cmd + ['rosmaster']
