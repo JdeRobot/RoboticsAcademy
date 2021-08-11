@@ -160,12 +160,15 @@ class Template:
         # Add HAL functions
         hal_module.HAL.pickup = self.hal.pickup
         hal_module.HAL.place = self.hal.place
+        hal_module.HAL.send_message = self.hal.send_message
+        hal_module.HAL.start_color_filter = self.hal.start_color_filter
+        hal_module.HAL.stop_color_filter = self.hal.stop_color_filter
+        hal_module.HAL.start_shape_filter = self.hal.start_shape_filter
+        hal_module.HAL.stop_color_filter = self.hal.stop_shape_filter
         hal_module.HAL.back_to_home = self.hal.back_to_home
         hal_module.HAL.move_joint_arm = self.hal.move_joint_arm
         hal_module.HAL.move_pose_arm = self.hal.move_pose_arm
-        hal_module.HAL.move_joint_hand = self.hal.move_joint_hand
-        hal_module.HAL.generate_grasp = self.hal.generate_grasp
-        hal_module.HAL.get_object_pose = self.hal.get_object_pose
+        hal_module.HAL.get_object_position = self.hal.get_object_position
         hal_module.HAL.get_target_position = self.hal.get_target_position
 
         # Define GUI module
