@@ -25,6 +25,7 @@ COPY instructions.json /instructions.json
 COPY start.sh /start.sh
 COPY start_manager.sh /start_manager.sh
 COPY start_logs.sh /start_logs.sh
+COPY pylint_checker.py /pylint_checker.py
 # execute permissions
 RUN chmod 755 /start.sh
 RUN chmod 755 /start_manager.sh

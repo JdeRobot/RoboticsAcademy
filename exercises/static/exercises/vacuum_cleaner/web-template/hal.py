@@ -29,3 +29,18 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
+
+    def getBumperData(self):
+        return self.bumper.getBumperData()
+
+    def getPose3d(self):
+        return self.pose3d.getPose3d()
+
+    def getLaserData(self):
+        return self.laser.getLaserData()
+
+    def setV(self, velocity):
+        self.motors.sendV(velocity)
+
+    def setW(self, velocity):
+        self.motors.sendW(velocity)

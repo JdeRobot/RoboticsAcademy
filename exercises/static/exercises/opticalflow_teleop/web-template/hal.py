@@ -18,6 +18,12 @@ class HAL:
     def initRobot(self):
         pass
 
+    def setV(self, velocity):
+        self.motors.sendV(velocity)
+    
+    def setW(self, velocity):
+        self.motors.sendW(velocity)
+
     # Get Image from ROS Driver Camera
     def getImage(self):
         success, frame = self.cameraCapture.read()

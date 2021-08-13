@@ -1,4 +1,3 @@
-import logging
 import time
 import threading
 import multiprocessing
@@ -6,8 +5,7 @@ import sys
 from datetime import datetime
 import re
 import json
-import traceback
-import imp
+import importlib
 
 import rospy
 from std_srvs.srv import Empty
@@ -112,18 +110,18 @@ class BrainProcess(multiprocessing.Process):
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
-        hal_module.HAL.motors = imp.new_module("motors")
+        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
 
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
-        hal_module.HAL.motors.sendV = self.hal.sendV
-        hal_module.HAL.motors.sendW = self.hal.sendW
+        hal_module.HAL.setV = self.hal.sendV
+        hal_module.HAL.setW = self.hal.sendW
 
         # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage

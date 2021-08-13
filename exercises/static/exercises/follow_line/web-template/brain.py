@@ -116,8 +116,8 @@ class BrainProcess(multiprocessing.Process):
 
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
-        hal_module.HAL.motors.sendV = self.hal.sendV
-        hal_module.HAL.motors.sendW = self.hal.sendW
+        hal_module.HAL.setV = self.hal.sendV
+        hal_module.HAL.setW = self.hal.sendW
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

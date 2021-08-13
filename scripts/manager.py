@@ -9,6 +9,9 @@ import threading
 import time
 import json
 import stat
+import tempfile
+import re
+from pylint import epylint as lint
 
 # Function to check if a device exists
 def check_device(device_path):
@@ -20,7 +23,7 @@ def check_device(device_path):
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander"]
-CIRCUIT_EX = ["follow_line"]
+CIRCUIT_EX = ["follow_line", "follow_line_game"]
 
 # Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
@@ -167,6 +170,25 @@ class Commands:
         except KeyError:
             pass
 
+        # Launch exercise_guest.py
+        try:
+            host_cmd_guest = self.instructions[exercise]["instructions_guest"]
+            guest_thread = DockerThread(host_cmd_guest)
+            guest_thread.start()
+        except KeyError:
+            pass
+
+        # Launch gui_guest.py
+        try:
+            gui_cmd_guest = self.instructions[exercise]["instructions_gui_guest"]
+            if exercise in CIRCUIT_EX:
+                gui_cmd_guest = gui_cmd_guest.format(circuit)
+                print('GUI guest: ',gui_cmd_guest)
+            gui_thread_guest = DockerThread(gui_cmd_guest)
+            gui_thread_guest.start()
+        except KeyError:
+            pass
+
     # Function to start the Xserver
     def start_xserver(self, display):
         xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {display}"
@@ -245,6 +267,13 @@ class Commands:
         self.run_subprocess(cmd_exercise)
         cmd_gui = cmd + ['gui.py']
         self.run_subprocess(cmd_gui)
+        try:
+            cmd_exercise_guest = cmd + ['exercise_guest.py']
+            self.run_subprocess(cmd_exercise_guest)
+            cmd_gui_guest = cmd + ['gui_guest.py']
+            self.run_subprocess(cmd_gui_guest)
+        except:
+            pass
         cmd_host = cmd + ['node']
         self.run_subprocess(cmd_host)
         cmd_rosmaster = cmd + ['rosmaster']
@@ -317,6 +346,8 @@ class Manager:
             elif command == "stop":
                 self.stop_simulation()
                 await websocket.send("Ping{}".format(self.launch_level))
+            elif command == "evaluate":
+                await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
@@ -426,6 +457,63 @@ class Manager:
     async def kill_simulation(self):
         print("Kill simulation")
         await self.commands.kill_all()
+    
+    def evaluate_code(self, code):
+        try:
+            code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
+            code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
+            
+            # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
+            while_position = re.search(r'[^ ]while\(True\):|[^ ]while True:', code)
+            sequential_code = code[:while_position.start()]
+            iterative_code = code[while_position.start():]
+            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code, 1)
+            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
+            code = sequential_code + iterative_code
+
+            f = open("user_code.py", "w")
+            f.write(code[6:])
+            f.close()
+
+            # If the exercise is part of the follow_line challenge then set the path for this challenge
+            if self.exercise in CIRCUIT_EX:
+                self.exercise = 'follow_line'
+
+            command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
+            print('COMANDO: ', command)
+            ret = subprocess.run(command, capture_output=True, shell=True)
+            result = ret.stdout.decode()
+            result = result + "\n"
+
+            # Removes convention and warning messages
+            convention_messages = re.search(":[0-9]+: convention.*\n", result)
+            while (convention_messages != None):
+                result = result[:convention_messages.start()] + result[convention_messages.end():]
+                convention_messages = re.search(":[0-9]+: convention.*\n", result)
+            warning_messages = re.search(":[0-9]+: warning.*\n", result)
+            while (warning_messages != None):
+                result = result[:warning_messages.start()] + result[warning_messages.end():]
+                warning_messages = re.search(":[0-9]+: warning.*\n", result)
+
+            # Removes unexpected EOF error
+            eof_exception = re.search(":[0-9]+: error.*EOF.*\n", result)
+            if (eof_exception != None):
+                result = result[:eof_exception.start()] + result[eof_exception.end():]
+
+            # Removes no value for argument 'self' error
+            self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+            while (self_exception != None):
+                result = result[:self_exception.start()] + result[self_exception.end():]    
+                self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+
+            # Returns an empty string if there are no errors
+            error = re.search("error", result)
+            if (error == None):
+                return ""
+            else:
+                return result
+        except Exception as ex:
+            print(ex)
 
     # Function to start the websocket server
     def run_server(self):

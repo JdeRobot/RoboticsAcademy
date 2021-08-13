@@ -12,6 +12,10 @@ function start(){
     submitCode();
 }
 
+function check() {
+    checkCode();
+}
+
 // Function to stop the student solution
 function stop(){
     // Code Websocket

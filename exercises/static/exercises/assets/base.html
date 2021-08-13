@@ -88,6 +88,11 @@
                     }else if (data.command == 'launch_level'){
                         let level = data.level;
                         $("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
+                    }else if (data.command == 'error') {
+                        var $body = $(window.frameElement).parents('body'), dlg = $body.find('#myModal');
+                        var $body = $(window.frameElement).parents('body'), dlg_body = $body.find('#myModal .modal-body');
+                        dlg_body.text(data.text);                                                                        
+                        dlg.modal({ show:true, backdrop: false});
                     }
                 }
             };
