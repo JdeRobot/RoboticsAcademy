@@ -13,7 +13,7 @@ from hal import HAL
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, mouse):
+    def __init__(self, host, hal, mouse):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': ''}
@@ -37,7 +37,7 @@ class GUI:
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
-        self.hal = HAL()
+        self.hal = hal
         self.mouse = mouse
         t.start()
 
