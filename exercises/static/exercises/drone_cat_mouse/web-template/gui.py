@@ -160,7 +160,7 @@ class GUI:
         if mouse_z > 0.1: self.dist["ready"] = "true"
         else: self.dist["ready"] = "false"
 
-        dist = np.sqrt((mouse_x-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
+        dist = np.sqrt((mouse_x+2-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
         dist = int(dist*100)/100
         self.dist["dist"] = dist
 
