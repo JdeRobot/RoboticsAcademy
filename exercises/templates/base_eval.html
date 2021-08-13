@@ -47,7 +47,7 @@
     <div id="Control" class="container" >
         <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><img src="{% static 'exercises/assets/img/upload.png' %}"> Save</button>
         <button  id="load" type="button"<span title="Load your code from your local machine"></span><img src="{% static 'exercises/assets/img/download.png' %}"> Load</button>
-        <button  id="submit" type="button" onclick="start()"<span title="Submit and try out your code"></span><img src="{% static 'exercises/assets/img/submit.png' %}"> Play </button>
+        <button  id="submit" type="button" onclick="check()"<span title="Submit and try out your code"></span><img src="{% static 'exercises/assets/img/submit.png' %}"> Play </button>
         <button  id="stop" type="button" onclick="stop()"<span title="Stop the current simulation"></span><img src="{% static 'exercises/assets/img/pause.png' %}"> Stop</button>
         <input   type="file" id="real-file" hidden="hidden"/>
         <button  id="reset" type="button" onclick="reset()" <span title="Reset the current simulation"></span><img style="height:15px;" src="{% static 'exercises/assets/img//reset.svg' %}"> Reset</button>

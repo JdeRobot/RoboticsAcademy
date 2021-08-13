@@ -31,7 +31,7 @@ function startevaluate() {
     dist = 0.0;
 
     // submit code
-    start();
+    check();
 
     // stop existing plot if any
     var eval = undefined;
