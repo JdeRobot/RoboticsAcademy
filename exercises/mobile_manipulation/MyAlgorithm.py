@@ -88,3 +88,35 @@ if __name__=="__main__":
     print("You can start your algorithm with GUI")
 
     rospy.spin()
+
+# from GUI import GUI
+# from HAL import HAL
+# # Enter sequential code!
+
+# while True:
+#     # Enter iterative code!
+#     HAL.back_to_home()
+#     target_name = "conveyor1"
+#     pose = HAL.get_target_pose(target_name)
+#     HAL.send_goal_to_client(pose)
+#     while HAL.get_result_from_client() != True:
+#         pass
+#     print(HAL.get_robot_pose())
+#     HAL.move_to_pick_place_home()
+#     HAL.spawn_obstacle_rviz("conveyor1")
+#     HAL.spawn_all_objects()
+#     object_name = "green_cylinder"
+#     pose = HAL.get_object_pose(object_name)
+#     pose.position.z -= 0.01
+#     HAL.pickup(object_name, pose.position, 0.48)
+#     HAL.back_to_home(False)
+#     target_name = "conveyor2"
+#     pose = HAL.get_target_pose(target_name)
+#     HAL.send_goal_to_client(pose)
+#     while HAL.get_result_from_client() != True:
+#         pass
+#     print(HAL.get_robot_pose())
+#     HAL.move_to_pick_place_home(False)
+#     HAL.spawn_obstacle_rviz(target_name)
+#     pose = HAL.get_target_position(target_name)
+#     HAL.place(object_name, pose)
