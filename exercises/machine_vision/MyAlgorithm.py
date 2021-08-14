@@ -208,3 +208,19 @@ if __name__=="__main__":
     print("You can start your algorithm with GUI")
 
     rospy.spin()
+
+# from GUI import GUI
+# from HAL import HAL
+# # Enter sequential code!
+
+# while True:
+#     # Enter iterative code!
+#     HAL.back_to_home()
+#     HAL.send_message("Building map")
+#     color = "green"
+#     shape = "cylinder"
+#     HAL.start_color_filter(color, 50, 0, 255, 100, 50, 0)
+#     HAL.start_shape_filter(color, shape, 0.05)
+#     object_name = "green_cylinder"
+#     position = HAL.get_object_position(object_name)
+#     HAL.pickup(object_name, position)
