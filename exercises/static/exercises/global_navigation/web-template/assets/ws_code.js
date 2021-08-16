@@ -18,7 +18,10 @@ function declare_code(websocket_address){
     websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
     websocket_code.onopen = function(event){
-        alert("[open] Connection established!");
+        if (websocket_gui.readyState == 1) {
+			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+		}
     }
     websocket_code.onclose = function(event){
         if(event.wasClean){
@@ -32,20 +35,21 @@ function declare_code(websocket_address){
     websocket_code.onmessage = function(event){
         var source_code = event.data;
         operation = source_code.substring(0, 5);
-
         if(operation == "#load"){
             editor.setValue(source_code.substring(5,));
         }
-        else if(operation == "#freq"){
+        else if(operation == "#freq"){            
             var frequency_message = JSON.parse(source_code.substring(5,));
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
+            document.querySelector('#real_time_factor').value = frequency_message.rtf;
         }
 
         // Send the acknowledgment message along with frequency
         code_frequency = document.querySelector('#code_frequency').value;
 		gui_frequency = document.querySelector('#gui_frequency').value;
+        real_time_factor = document.querySelector('#real_time_factor').value;
 		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
 		websocket_code.send("#freq" + JSON.stringify(frequency_message));
     };

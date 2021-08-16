@@ -24,10 +24,10 @@
     padding-left: 10%;
 }
 
-#birds-eye{
-    margin-top: 15px;
-    background: url("./img/cityLargeBin.png");
-    background-size : cover;
-    height: 440px;
-    width: 450px;
+#globalnav-eye{
+	background: url("./img/globalnav.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
 }

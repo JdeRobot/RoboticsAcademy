@@ -12,6 +12,7 @@ import json
 import importlib
 import numpy as np
 import base64
+import subprocess
 
 import rospy
 from std_srvs.srv import Empty
@@ -33,7 +34,8 @@ class Template:
         self.time_cycle = 80
         self.ideal_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
 
         self.server = None
         self.client = None
@@ -209,8 +211,8 @@ class Template:
         gui_module.GUI.showPath = self.gui.showPath
         gui_module.GUI.targetPose = self.gui.worldXY
         # Add HAL functions
-        hal_module.HAL.motors.sendV = self.hal.motors.sendV
-        hal_module.HAL.motors.sendW = self.hal.motors.sendW
+        hal_module.HAL.setV = self.hal.motors.sendV
+        hal_module.HAL.setW = self.hal.motors.sendW
 
         # Define GUI module
         map_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
@@ -274,9 +276,25 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor 
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
+
+    # Function to track the real time factor from Gazebo statistics
+    # https://stackoverflow.com/a/17698359
+    # (For reference, Python3 solution specified in the same answer)
+    def track_stats(self):
+        args = ["gz", "stats", "-p"]
+        # Prints gz statistics. "-p": Output comma-separated values containing-
+        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        # bufsize=1 enables line-bufferred mode (the input buffer is flushed
+        # automatically on newlines if you would write to process.stdin )
+        with stats_process.stdout:
+            for line in iter(stats_process.stdout.readline, b''):
+                stats_list = [x.strip() for x in line.split(b',')]
+                self.real_time_factor = stats_list[0].decode("utf-8")
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
@@ -333,6 +351,10 @@ class Template:
         # Start the GUI update thread
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
+
+        # Start the real time factor tracker thread
+        self.stats_thread = threading.Thread(target=self.track_stats)
+        self.stats_thread.start()
 
         # Initialize the frequency message
         self.send_frequency_message()

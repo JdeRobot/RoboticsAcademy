@@ -1,5 +1,5 @@
 // Retreive the canvas elements and context
-var mapCanvas = document.getElementById("birds-eye"),
+var mapCanvas = document.getElementById("globalnav-eye"),
     ctx = mapCanvas.getContext("2d");
 
 
