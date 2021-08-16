@@ -20,4 +20,8 @@ class HAL:
         self.motors = PublisherMotors("/taxi_holo/cmd_vel", 4, 0.3)
         self.camera_lock = threading.Lock()
   
+    def setV(self, velocity):
+        self.motors.sendV(velocity)
 
+    def setW(self, velocity):
+        self.motors.sendW(velocity)

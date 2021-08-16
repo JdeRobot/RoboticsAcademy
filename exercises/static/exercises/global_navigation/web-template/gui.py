@@ -159,6 +159,12 @@ class GUI:
     def reset_gui(self):
         self.map.reset()
 
+    def showImage(self, image):
+        self.image_show_lock.acquire()
+        self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+        self.image_show_lock.release()
+
 
 # This class decouples the user thread
 # and the GUI update thread
