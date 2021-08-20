@@ -155,7 +155,6 @@ class Template:
                 count = 0
                 detections = []
                 scores = []
-                # height, width = img.shape[0], img.shape[1]
                 batch_size = num_detections.shape[0]
                 for batch in range(0, batch_size):
                     for detection in range(0, int(num_detections[batch])):
@@ -165,7 +164,6 @@ class Template:
                             self.gui.showResult(img, str(" "))
                             continue
                         count = count + 1
-                        #d = detection_boxes[batch][detection]
                         d = detection_boxes[batch][detection]
                         detections.append(d)
                         score = detection_scores[batch][detection]
@@ -246,9 +244,7 @@ class Template:
                             self.gui.showResult(img, str(count))
                             continue
                         count = count + 1
-                        #d = detection_boxes[batch][detection]
                         detections.append(detection_boxes[batch][detection])
-                        #score = detection_scores[batch][detection]
                         scores.append(detection_scores[batch][detection])
                     self.display_output_detection(img, detections, scores)
                     # To print FPS after each frame as been fully processed and displayed
@@ -279,7 +275,6 @@ class Template:
 
 
     def perform_benchmark(self):
-        #netron.start("Test_Model/Demo_Model.onnx")
         currentPath = os.path.dirname(os.path.abspath(__file__))
         acc_AP = 0
         validClasses = 0
@@ -323,7 +318,6 @@ class Template:
                 prec = ['%.2f' % p for p in precision]
                 rec = ['%.2f' % r for r in recall]
                 ap_str = "{0:.2f}%".format(ap * 100)
-                # print('AP: %s (%s)' % (ap_str, cl))
                 f.write('\nClass: %s' % cl)
                 f.write('\nAP: %s' % ap_str)
                 f.write('\nPrecision: %s' % prec)
@@ -335,7 +329,6 @@ class Template:
 
         mAP = acc_AP / validClasses
         mAP_str = "{0:.2f}%".format(mAP * 100)
-        # print('mAP: %s' % mAP_str)
         f.write('\nmAP: %s' % mAP_str)
         f.close()
         print("\n" + "#"*10 + "Benchmarking Results" + "#"*10 + "\n")
