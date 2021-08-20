@@ -1,0 +1,23 @@
+Amazon:
+
+  Motors:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:default -h localhost -p 9999"
+    Topic: "/amazon_warehouse_robot/teleop"
+    Name: AmazonMotors
+    maxV: 0.5
+    maxW: 0.25
+
+  Pose3D:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:default -h localhost -p 9989"
+    Topic: "/amazon_warehouse_robot/odom"
+    Name: AmazonPose3d
+
+  Laser:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:default -h localhost -p 8996"
+    Topic: "/amazon_warehouse_robot/laser/scan"
+    Name: AmazonLaser
+
+  NodeName: Amazon

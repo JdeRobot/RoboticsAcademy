@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<launch>
+  <include file="/opt/jderobot/share/jderobot/gazebo/launch/taxiholo_1_citylarge.launch">
+  </include>
+</launch>

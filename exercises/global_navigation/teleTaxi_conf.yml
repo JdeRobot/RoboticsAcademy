@@ -1,0 +1,21 @@
+TeleTaxi:
+
+  Motors:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:default -h localhost -p 9999"
+    Topic: "/TeleTaxi/Motos"
+    Name: TeleTaxiMotors
+    maxV: 20 #5
+    maxW: 50 #0.5
+
+  Pose3D:
+    Server: 1 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:default -h localhost -p 9989"
+    Topic: "/TeleTaxi/Pose3D"
+    Name: TeleTaxiPose3d
+
+  robot: Pioneer
+
+
+  
+NodeName: TeleTaxi
