@@ -5,12 +5,6 @@
 
     <div id="code-control">
 
-
-  <!--       Button for selecting DL model 
-        <div id="file_selector">
-            <input type="file" id="dl_model" name="dl_model" accept=".onnx">
-        </div> -->
-
         <div class="d-flex flex-column justify-content-center p-5"> 
             <div class = "d-flex">
                 <label for="code-menu" class = "margin-22">Choose a mode: </label>
@@ -69,11 +63,6 @@
           </div>
         </div>
       </div>
-      
-    <!-- Uncomment this if you wish to have the console button on the right split -->
-<!--     <div id="visual_buttons" class="row no-gutters">
-        <button id="console_btn" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/dl_digit_classifier/web-template/assets/img/terminal-solid.svg' %}"> Console</button>
-    </div> -->
 
     <div id="visual">
     <!-- Canvas -->
@@ -83,20 +72,6 @@
 
 
     <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe> 
-
-
-<!-- The previously used command terminal which we no longer use -->
-<!-- <div id="console" style="display:none;">
-    
-    <div id="Console" class="container">
-        <ul>
-            <li class="Console-item">
-                <input value=">>" class="terminal" readonly><input class="command">
-            </li>
-        </ul>
-    </div>
-</div>
- -->
 
 
     <script type="text/javascript">

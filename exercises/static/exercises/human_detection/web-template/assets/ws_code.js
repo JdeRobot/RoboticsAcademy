@@ -4,11 +4,8 @@ var benchmark_button = document.getElementById("benchmark");
 var video_button = document.getElementById("Video_Infer");
 var visualizer_button = document.getElementById("visualizer");
 stop_button.disabled = live_button.disabled =  benchmark_button.disabled = video_button.disabled = visualizer_button.disabled = true;
-//stop_button.disabled = true;
 stop_button.style.opacity = live_button.style.opacity = benchmark_button.style.opacity = video_button.style.opacity = visualizer_button.style.opacity = "0.4";
-//stop_button.style.opacity = "0.4";
 stop_button.style.cursor = live_button.style.cursor = benchmark_button.style.cursor = video_button.style.cursor = visualizer_button.style.cursor = "not-allowed";
-//stop_button.style.cursor = "not-allowed";
 var model_uploaded = false;
 var video_uploaded = false;
 
@@ -63,10 +60,6 @@ function declare_code(){
 				video_button.style.opacity = "1.0";
 				video_button.style.cursor = "default";
 			}
-		}
-
-		if(operation == "#load"){
-			editor.setValue(source_code.substring(5,));
 		}
 		if(operation == "#freq"){
 			var frequency_message = JSON.parse(source_code.substring(5,));
