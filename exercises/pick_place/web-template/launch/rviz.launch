@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-  <!-- launch rviz to check TF data -->
-  <node type="rviz" name="rviz" pkg="rviz" args="-d $(find irb120_robotiq85_gazebo)/rviz/irb120.rviz" />
-</launch>
