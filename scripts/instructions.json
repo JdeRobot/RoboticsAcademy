@@ -59,5 +59,10 @@
         "gazebo_path": "/RoboticsAcademy/exercises/position_control/web-template/launch",
         "instructions_ros": ["python ./RoboticsAcademy/exercises/position_control/web-template/launch/launch.py"],
         "instructions_host": "python /RoboticsAcademy/exercises/position_control/web-template/exercise.py 0.0.0.0"
+    },
+    "pick_place":{
+        "gazebo_path": "/RoboticsAcademy/exercises/pick_place/web-template/launch",
+        "instructions_ros": ["/opt/ros/melodic/bin/roslaunch ./RoboticsAcademy/exercises/pick_place/web-template/launch/pick_place.launch"],
+        "instructions_host":"python /RoboticsAcademy/exercises/pick_place/web-template/exercise.py 0.0.0.0"
     }
 }
