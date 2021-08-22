@@ -63,7 +63,7 @@ youtubeId: LHq4ZA2lGxQ
 Currently, there are 2 versions for running this exercise:
 
 - ROSNode Templates
-- Web Templates(Current Release)
+- Web Templates(In Development)
 
 The instructions for both of them are provided as follows.
 ## Goal
@@ -74,7 +74,7 @@ The goal of this exercise is to learn how to use vision to assist industrial rob
 
 ## Instructions for web-templates
 
-This is the preferred way for running the exercise.
+This is the preferred way for running the exercise once it is finished.
 
 ### Installation 
 
