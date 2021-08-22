@@ -49,12 +49,97 @@ rpy:
 
 youtubeId: kJMPz80w9BM
 ---
+## Versions to run the exercise
+
+Currently, there are 2 versions for running this exercise:
+
+- ROSNode Templates
+- Web Templates(Current Release)
+
+The instructions for both of them are provided as follows.
+
+## Goal
 
 The goal of this exercise is to learn the underlying infrastructure of Industrial Robot exercises(ROS + MoveIt + our own industrial robotics API) and get familiar with the key components needed for more complex exercises by completing the task of pick and place multiple objects and classify them by color or shape.
 
 {% include gallery caption="Gallery." %}
 
-## Installation
+## Instructions for Web Templates
+This is the preferred way for running the exercise.
+
+### Installation 
+
+- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
+
+- Pull the current distribution of Robotics Academy Docker Image
+
+	```bash
+  docker pull jderobot/robotics-academy:2.4.2
+  ```
+
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+### Enable GPU Acceleration
+- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
+  ```bash
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.2 ./start.sh
+  ```
+
+
+- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
+
+### How to perform the exercise?
+- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
+
+	```bash
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.2 ./start.sh
+  ```
+
+- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
+
+- The exercise can be used after the alert.
+
+**Where to insert the code?**
+
+In the launched webpage, type your code in the text editor,
+
+```python
+from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+
+while True:
+    # Enter iterative code!
+```
+
+### Using the Interface
+
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
+
+* **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as recal time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
+
+* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
+
+**Application Programming Interface**
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.back_to_home()` - Command the robot arm and gripper to move back to the home pose.
+* `HAL.pickup()` - to set the linear speed
+* `HAL.place()` - to set the angular velocity
+* `HAL.move_pose_arm(pose_goal)` - Command the robot with Pose message to make its end effector frame move to the desired pose with inverse kinematics.
+* `HAL.move_joint_hand(joint_value)` - Command the gripper joint to move to desired joint value.
+* `HAL.generate_grasp(object_name, eef_orientation, position, [width, roll, pitch, yaw, length])` - Returns the specified Grasp message according to related setup.
+* `HAL.get_object_pose(object_name)` - Return the pose of the object.
+* `HAL.get_target_position(target_name)` - Return the position of target where we are going to place the objects.
+
+## Instructions for ROSNode Templates
+### Installation
 1. Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 2. Install MoveIt
 ```bash
