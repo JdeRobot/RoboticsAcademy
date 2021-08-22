@@ -285,7 +285,7 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        if exercise in ["tb3_nav"]:
+        if exercise in ["tb3_nav", "amazon_single"]:
             '''
             RViz + Gazebo + Console
             '''
@@ -341,7 +341,7 @@ class Manager:
 
         
         # Start the exercise
-        if exercise in ["tb3_nav"]:
+        if exercise in ["tb3_nav", "amazon_single"]:
             '''
             RViz + Gazebo + Console
             '''
