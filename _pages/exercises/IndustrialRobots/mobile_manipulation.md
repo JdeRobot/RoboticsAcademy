@@ -39,7 +39,7 @@ youtubeId: 0oNY_UHu2cU
 Currently, there are 2 versions for running this exercise:
 
 - ROSNode Templates
-- Web Templates(Current Release)
+- Web Templates(In Development)
 
 The instructions for both of them are provided as follows.
 
@@ -50,6 +50,8 @@ The goal of this exercise is to practice integrating navigation and manipulation
 The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-robots.com/homepage). They provides a set of ROS simulation packages and tutorials to test their mobile robot and mobile manipulators[1]. The MMO-500 is one of them, combining the omnidirectional robot MPO-500 with a light-weight robot arm UR10. The navigation part of this exercise is based on their provided packages.
 
 {% include gallery caption="Gallery." %}
+
+## Instructions for for Web Templates
 
 ### Installation
 
