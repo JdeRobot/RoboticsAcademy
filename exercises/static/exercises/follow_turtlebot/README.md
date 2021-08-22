@@ -4,7 +4,7 @@
 
 The goal of this exercise is to implement the logic that allows a quadrotor to follow a turtlebot on the ground by following the movements made by it.
 
-![World](../../docs/follow_turtlebot.jpg)
+![World](web-template/assets/img/follow_turtlebot_teaser.png)
 
 ## Requirements
 

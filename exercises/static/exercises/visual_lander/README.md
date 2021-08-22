@@ -4,7 +4,7 @@
 
 The goal of this exercise is to implement the logic that allows a quadrotor to visualize a beacon and land on it.
 
-![World](../../docs/visual_lander.jpg)
+![World](web-template/assets/img/visual_lander_teaser.png)
 
 ## Requirements
 

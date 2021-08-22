@@ -6,7 +6,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to p
 
 In this exercise, the cat quadrotor is to be programmed by the student to follow the mouse quadrotor (which is preprogrammed and has random paths) as close as possible without crashing. The refree application will measure the distance between the two drones and assign a score based on it that is proportional to the time spent by the drones close to each other.
 
-![World](../../docs/drone_cat_mouse.jpg)
+![World](web-template/assets/img/drone_cat_mouse_teaser.png)
 
 ## Requirements
 
