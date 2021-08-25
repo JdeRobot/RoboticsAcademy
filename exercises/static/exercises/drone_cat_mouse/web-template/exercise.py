@@ -43,7 +43,7 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.mouse = Mouse()
-        self.gui = GUI(self.host, self.mouse)
+        self.gui = GUI(self.host, self.hal, self.mouse)
 
     # Function to parse the code
     # A few assumptions:

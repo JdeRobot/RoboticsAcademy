@@ -71,7 +71,17 @@ function declare_gui(websocket_address){
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
 		}
-		
+
+		if(operation == "#dst"){
+			// Parse the entire Object
+			var data = JSON.parse(event.data.substring(4, ));
+
+			dist_value = data.dist;
+			dist_ready = data.ready;
+
+			// Send the Acknowledgment Message
+			websocket_gui.send("#ack");
+		}
 	}
 }
 
