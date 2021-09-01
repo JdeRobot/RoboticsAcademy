@@ -1,3 +1,1 @@
-# Digit classification using deep learning exercise
-		
-[Doc coming soon]()
+[Exercise Documentation Website](https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/dl_digit_classifier)
