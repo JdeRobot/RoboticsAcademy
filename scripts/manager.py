@@ -467,7 +467,7 @@ class Manager:
             while_position = re.search(r'[^ ]while\(True\):|[^ ]while True:', code)
             sequential_code = code[:while_position.start()]
             iterative_code = code[while_position.start():]
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code, 1)
+            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '\n', iterative_code, 1)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
             code = sequential_code + iterative_code
 
