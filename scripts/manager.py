@@ -506,6 +506,12 @@ class Manager:
                 result = result[:self_exception.start()] + result[self_exception.end():]    
                 self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
 
+            # Removes assignment from no return error
+            self_exception = re.search(":[0-9]+:.*E1111.*\n", result)
+            while (self_exception != None):
+                result = result[:self_exception.start()] + result[self_exception.end():]    
+                self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+
             # Returns an empty string if there are no errors
             error = re.search("error", result)
             if (error == None):
