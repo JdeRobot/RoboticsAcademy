@@ -68,6 +68,18 @@ feature_row:
     order: 0;
     version: "v3.1"
 
+  - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
+    alt: "OpticalFlow Teleop"
+    title: "OpticalFlow Teleop"
+    excerpt: "Teleoperate to the robot using optical flow."
+    url: "/exercises/ComputerVision/opticalflow_teleop"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: ""
+    status: "running"
+    order: 0;
+    version: "v3.1"
+
   - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
     alt: "Follow Face"
     title: "Follow Face"
