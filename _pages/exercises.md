@@ -212,6 +212,18 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.1"
+      
+  - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
+    alt: "OpticalFlow Teleop"
+    title: "OpticalFlow Teleop"
+    excerpt: "Teleoperate to the robot using optical flow."
+    url: "/exercises/ComputerVision/opticalflow_teleop/"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 0;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
