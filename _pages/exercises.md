@@ -217,7 +217,7 @@ feature_row:
     alt: "OpticalFlow Teleop"
     title: "OpticalFlow Teleop"
     excerpt: "Teleoperate to the robot using optical flow."
-    url: "/exercises/ComputerVision/opticalflow_teleop/"
+    url: "/exercises/ComputerVision/opticalflow_teleop"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
