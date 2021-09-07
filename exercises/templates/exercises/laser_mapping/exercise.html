@@ -1,0 +1,129 @@
+{% extends 'base_ng.html' %}
+
+{% load static %}
+{% block content %}
+
+      <div class="content">
+        <div class="split a">
+        </div>
+        <div id="code-control">
+          <!-- Code Editor -->
+          <!-- Along with buttons -->
+          <div id="code_container">
+            <div id="editor">from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+  # Enter iterative code!
+            </div>
+          </div>
+        </div>
+      </div>
+<div class="split b">
+  <div id="visual_buttons" class="row no-gutters">
+    <!-- <button id="gzweb_btn" type="button" onclick="changegzweb()"><img id="gzimg" src="./assets/img/gzweb_btn.png"></button> -->
+    <button id="mapping_btn" type="button" onclick="changemapping()"><img id="mappingimg" src="{% static 'exercises/laser_mapping/assets/img/mapping_btn.png' %}"> Mapping</button>
+    <!-- Implement the button ON/OFF for the teleoperation mode -->
+    <div class="popup"onmouseover="HelpWindow()" onmouseout="HelpWindow()">
+      <div class="switch-button" >
+        <span class="popuptext" id="myPopup">
+          <b>When Teleoperation is ON, use the following keys:<br></b>
+          <b>'w'</b> -> Go forward<br>
+          <b>'s'</b> -> Stop<br>
+          <b>'a'</b> -> Turn left<br>
+          <b>'d'</b> -> Turn right<br>
+          <b>'q'</b> -> Increase linear speed 10%<br>
+          <b>'z'</b> -> Decrease linear speed 10%<br>
+          <b>'e'</b> -> Increase angular speed 10%<br>
+          <b>'c'</b> -> Decrease angular speed 10%<br>
+        </span>
+        <p><strong>Teleoperation</strong></p>
+        <input id="switch-label" type="checkbox" name="switch-button" class="switch-button__checkbox" onclick="Teleoperation()">
+        <label for="switch-label" class="switch-button__label"></label>
+        <body onkeydown="keyEvent(event)"></body>
+        <!-- Source https://programadorwebvalencia.com/sencillo-boton-on-off-html-y-css/ -->
+      </div>
+    </div>
+    
+  </div>
+  <div id="visual">
+    <!-- Canvas -->
+    <canvas id="birds-eye"></canvas>
+    <!-- <div id="mapping"> -->
+    <canvas id="mapping" style="display: none;"></canvas>
+    <!-- </div> -->
+    <!-- <canvas id="gui_canvas"></canvas> -->
+  </div>
+  <div id="console" style="display:none;">
+    <!-- Console -->
+    <div id="Console" class="container">
+      <ul>
+        <li class="Console-item">
+          <input value=">>" class="terminal" readonly><input class="command">
+        </li>
+      </ul>
+    </div>
+  </div>
+  <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+  <script type="text/javascript">
+      function changeconsole(){
+        var console_display = document.getElementById('console').style.display
+        console.log(console_display)
+        if (console_display == "none" || console_display == "none" ) {
+          document.getElementById('console').style.display = 'block';
+        } else{
+          document.getElementById('console').style.display = 'none';
+        }
+      }
+       function changegzweb(){
+         document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
+         var display = document.getElementById('iframeGzweb').style.display
+         console.log(display)
+         if (display == "none" || display == "none" ) {
+           document.getElementById('iframeGzweb').style.display = 'block';
+          } else{
+           document.getElementById('iframeGzweb').style.display = 'none';
+          }
+        }
+      // function changemapping(){
+      //   var mapping_display = document.getElementById("mapping").style.display
+      //   console.log(mapping_display)
+      //   if(mapping_display == "none" || mapping_display == "none"){
+      //     document.getElementById('mapping').style.display = 'block';
+      //   } else{
+      //     document.getElementById('mapping').style.display = 'none';
+      //   }
+      // }
+      function HelpWindow(){
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+      }
+  </script>
+</div>
+</div>
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+  Split(['.a', '.b'], {
+    gutterSize: 3,
+    sizes: [50,50]
+  });
+  
+  window.addEventListener('load', function () {
+        window.top.postMessage('connect', '*');
+    });
+</script>
+    </body>
+
+    <script src="{% static 'exercises/laser_mapping/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/console.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/mapping.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
