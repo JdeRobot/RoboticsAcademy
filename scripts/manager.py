@@ -34,6 +34,9 @@ class DockerThread(threading.Thread):
     def run(self):
         subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
 
+    def call(self):
+        subprocess.call(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True) 
+
 
 # Class to store the commands
 class Commands:
@@ -248,7 +251,7 @@ class Commands:
     def reset_physics(self):
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
         rosservice_thread = DockerThread(cmd)
-        rosservice_thread.start()
+        rosservice_thread.call()
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -352,7 +355,7 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-                await websocket.send("Ping{}".format(self.launch_level))
+                await websocket.send("Pingreset{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
                 await websocket.send("Ping{}".format(self.launch_level))
