@@ -15,19 +15,19 @@ toc_icon: "cog"
 
 gallery:
   - url: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
-    image_path:/assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
+    image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
     alt: "Optical Flow Teleop"
     title: "Optical Flow Teleop"
     
 basic:
   - url: /assets/images/exercises/opticalflow_teleop/optical_flow_basic.jpg
-    image_path:/assets/images/exercises/opticalflow_teleop/optical_flow_basic.jpg
+    image_path: /assets/images/exercises/opticalflow_teleop/optical_flow_basic.jpg
     alt: "Optical Flow Theory"
     title: "Optical Flow Theory"
     
 example:
   - url: /assets/images/exercises/opticalflow_teleop/opticalflow_example.jpg
-    image_path:/assets/images/exercises/opticalflow_teleop/opticalflow_example.jpg
+    image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_example.jpg
     alt: "Optical Flow Example"
     title: "Optical Flow Example"
 
