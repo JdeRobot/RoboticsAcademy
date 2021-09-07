@@ -19,21 +19,24 @@ gallery:
     alt: "Optical Flow Teleop"
     title: "Optical Flow Teleop"
     
-opticalflow_basic:
+basic:
   - url: /assets/images/exercises/opticalflow_teleop/optical_flow_basic.jpg
     image_path:/assets/images/exercises/opticalflow_teleop/optical_flow_basic.jpg
     alt: "Optical Flow Theory"
     title: "Optical Flow Theory"
     
-opticalflow_example:
+example:
   - url: /assets/images/exercises/opticalflow_teleop/opticalflow_example.jpg
     image_path:/assets/images/exercises/opticalflow_teleop/opticalflow_example.jpg
     alt: "Optical Flow Example"
     title: "Optical Flow Example"
-    
-youtubeId1: xUpTw0_jt5s
+
+youtubeId1: xUpTw0_jt5s   
 
 ---
+## Versions to run the exercise
+
+- Web Templates (Current Release)
 
 ## Goal
 
@@ -117,13 +120,13 @@ while True:
 ## Theory
 Optical flow is the pattern of apparent motion of image objects between two consecutive frames caused by the movement of object or camera. It is 2D vector field where each vector is a displacement vector showing the movement of points from first frame to second. Consider the image below:    
 
-{% include gallery id="opticalflow_basic" caption="It shows a ball moving in 5 consecutive frames. The arrow shows its displacement vector" %}   
+{% include gallery id="basic" caption="It shows a ball moving in 5 consecutive frames. The arrow shows its displacement vector" %}   
 
 Optical flow works on several assumptions:     
     1. The pixel intensities of an object do not change between consecutive frames.   
     2. Neighbouring pixels have similar motion.  
 
-{% include gallery id="opticalflow_example" caption="Example of optical flow motion estimation" %}   
+{% include gallery id="example" caption="Example of optical flow motion estimation" %}   
 
 Optical flow has many applications in areas like:   
     - Structure from Motion   
@@ -142,5 +145,3 @@ Optical flow has many applications in areas like:
 
 [1](https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html)   
 [2](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468)   
-
-
