@@ -107,7 +107,7 @@
     "drone_cat_mouse_game": {
         "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
         "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0",
-        "instructions_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_guest.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_unibotics.py 0.0.0.0",
+        "instructions_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_unibotics_guest.py 0.0.0.0"
     }
 }
