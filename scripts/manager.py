@@ -22,7 +22,7 @@ def check_device(device_path):
 
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
-DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander"]
+DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
 
 # Docker Thread class for running commands on threads
