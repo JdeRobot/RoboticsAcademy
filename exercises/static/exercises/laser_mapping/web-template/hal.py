@@ -34,3 +34,39 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
+
+    def setV(self, velocity):
+        self.motors.sendV(velocity)
+
+    def setW(self, velocity):
+        self.motors.sendW(velocity)
+    
+    def getPose3d(self):
+        return self.pose3d.getPose3d()
+
+    def getLaserData(self):
+        return self.laser.getLaserData()
+    
+    def getSonarData_0(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_1(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_2(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_3(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_4(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_5(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_6(self):
+        return self.sonar_0.getSonarData()
+
+    def getSonarData_7(self):
+        return self.sonar_0.getSonarData()

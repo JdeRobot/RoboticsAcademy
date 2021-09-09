@@ -172,8 +172,8 @@ class Template:
         self.hal.motors.sendW(0)
 
         gui_module, hal_module = self.generate_modules()
-        reference_environment = {"GUI": gui_module, "HAL": hal_module}
-        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time})
+        reference_environment = {"GUI": gui_module, "HAL": hal_module, "time": time}
+        exec(sequential_code, reference_environment)
         # The Python exec function
         # Run the sequential part
         
@@ -217,8 +217,8 @@ class Template:
 
         # Add HAL functions
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
-        hal_module.HAL.motors.sendV = self.hal.motors.sendV
-        hal_module.HAL.motors.sendW = self.hal.motors.sendW
+        hal_module.HAL.setV = self.hal.motors.sendV
+        hal_module.HAL.setW = self.hal.motors.sendW
         hal_module.HAL.getLaserData = self.hal.laser.getLaserData
         hal_module.HAL.getSonarData_0 = self.hal.sonar_0.getSonarData
         hal_module.HAL.getSonarData_1 = self.hal.sonar_1.getSonarData
