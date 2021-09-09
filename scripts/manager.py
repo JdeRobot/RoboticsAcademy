@@ -34,6 +34,9 @@ class DockerThread(threading.Thread):
     def run(self):
         subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
 
+    def call(self):
+        subprocess.call(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True) 
+
 
 # Class to store the commands
 class Commands:
@@ -369,7 +372,7 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-                await websocket.send("Ping{}".format(self.launch_level))
+                await websocket.send("Pingreset{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
                 await websocket.send("Ping{}".format(self.launch_level))
