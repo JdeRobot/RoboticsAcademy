@@ -6,12 +6,14 @@ from websocket_server import WebsocketServer
 import logging
 import time
 import threading
+import subprocess
 import sys
 from datetime import datetime
 import re
 import json
 import traceback
 import imp
+import importlib
 
 import rospy
 from std_srvs.srv import Empty
@@ -19,7 +21,7 @@ import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-import console
+from console import start_console, close_console
 
 class Template:
     # Initialize class variables
@@ -40,9 +42,8 @@ class Template:
         self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
-        self.console = console.Console()
         self.hal = HAL()
-        self.gui = GUI(self.host, self.console, self.hal)
+        self.gui = GUI(self.host, self.hal)
         # initialize Teleoperation variables
         self.teop = False
         self.speedV = 0.3
@@ -75,32 +76,13 @@ class Template:
             source_code = source_code[5:]
             self.save_code(source_code)
             
-            return "", "", 1
+            return "", ""
         
         elif(source_code[:5] == "#load"):
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
     
-            return "", "", 1
-
-        elif(source_code[:5] == "#resu"):
-            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
-            restart_simulation()
-
-            return "", "", 1
-
-        elif(source_code[:5] == "#paus"):
-            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
-            pause_simulation()
-
-            return "", "", 1
-            
-        elif(source_code[:5] == "#rest"):
-            reset_simulation = rospy.ServiceProxy('/gazebo/reset_world', Empty)
-            reset_simulation()
-            self.gui.reset_gui()
-
-            return "", "", 1            
+            return "", ""
  
         else:
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
@@ -175,8 +157,10 @@ class Template:
 
     # The process function
     def process_code(self, source_code):
+        # Redirect the information to console
+        start_console()
+
         # Reference Environment for the exec() function
-        reference_environment = {'console': self.console, 'print': print_function}
         iterative_code, sequential_code = self.parse_code(source_code)
         
         # print("The debug level is " + str(debug_level)
@@ -187,45 +171,42 @@ class Template:
         self.hal.motors.sendV(0)
         self.hal.motors.sendW(0)
 
-        try:
-            # The Python exec function
-            # Run the sequential part
-            gui_module, hal_module = self.generate_modules()
-            exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time}, reference_environment)
-            # Run the iterative part inside template
-            # and keep the check for flag
-            while self.reload == False:
-                start_time = datetime.now()
-                # Execute the iterative portion
-                if(self.teop == True):
-                    self.KeyEvent(self.key)
-                    iterative_code = re.sub(self.pattern_V, '#', iterative_code)
-                    iterative_code = re.sub(self.pattern_W, '#', iterative_code)
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "time": time})
+        # The Python exec function
+        # Run the sequential part
+        
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            start_time = datetime.now()
+            # Execute the iterative portion
+            if(self.teop == True):
+                self.KeyEvent(self.key)
+                iterative_code = re.sub(self.pattern_V, '#', iterative_code)
+                iterative_code = re.sub(self.pattern_W, '#', iterative_code)
 
-                exec(iterative_code, reference_environment)
-                # Template specifics to run!
-                finish_time = datetime.now()
-                dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-                
-                # Keep updating the iteration counter
-                if(iterative_code == ""):
-                    self.iteration_counter = 0
-                else:
-                    self.iteration_counter = self.iteration_counter + 1
+            exec(iterative_code, reference_environment)
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             
-                # The code should be run for atleast the target time step
-                # If it's less put to sleep
-                # If it's more no problem as such, but we can change it!
-                if(ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+            # Keep updating the iteration counter
+            if(iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
+        
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            # If it's more no problem as such, but we can change it!
+            if(ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
 
-            print("Current Thread Joined!")
-
-        # To print the errors that the user submitted through the Javascript editor (ACE)
-        except Exception:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            self.console.print(exc_value)
+        close_console()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
@@ -349,6 +330,8 @@ class Template:
             return
         elif(message[:5] == "#teop"):
             self.teop = not self.teop
+            if (self.teop == False):
+                self.key = None
         elif(message[:4] == "#key"):
             self.key = message[4]
             self.reload = False

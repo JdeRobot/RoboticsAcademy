@@ -249,10 +249,16 @@ class Commands:
         rosservice_thread.start()
 
     # Function to reset Gazebo physics
-    def reset_physics(self):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.start()
+    def reset_physics(self, simulator):
+        if (simulator == "gazebo"):
+            cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
+            rosservice_thread = DockerThread(cmd)
+            rosservice_thread.start()
+        else:
+            cmd = "rosrun stdr_robot robot_handler replace /robot0 4 8 0"
+            rosservice_thread = DockerThread(cmd)
+            rosservice_thread.start()
+
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -317,6 +323,7 @@ class Manager:
         self.launch_level = 0
 
         self.exercise = None
+        self.simulator = None
         self.height = None
         self.width = None
 
@@ -332,6 +339,12 @@ class Manager:
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
+                if (self.exercise == "laser_mapping"):
+                    self.simulator = "stdr"
+                elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier"):
+                    self.simulator = "none"
+                else:
+                    self.simulator = "gazebo"
             
                 try:
                     circuit = data["circuit"]
@@ -467,7 +480,7 @@ class Manager:
     # Function to reset simulation
     def reset_simulation(self):
         print("Reset Simulation")
-        self.commands.reset_physics()
+        self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
     def start_gz(self):

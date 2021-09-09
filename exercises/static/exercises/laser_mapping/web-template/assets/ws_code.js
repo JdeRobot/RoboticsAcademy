@@ -10,8 +10,7 @@ stop_button.style.cursor = "not-allowed";
 
 // running variable for psuedo decoupling 
 // Play/Pause from Reset
-var frequency = "0",
-	running = false;
+var frequency = "0";
 
 //WebSocket for Code
 var websocket_code;
@@ -24,7 +23,11 @@ function declare_code(websocket_address){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){
-		alert("[open] Connection established!");
+		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
+		if (websocket_gui.readyState == 1) {
+			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+		}
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
@@ -68,8 +71,6 @@ function submitCode(){
     stop_button.disabled = false;
     stop_button.style.opacity = "1.0";
 	stop_button.style.cursor = "default";
-	
-	running = true;
 }
 
 // Function that send/submits an empty string
@@ -77,8 +78,6 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-	
-	running = false;
 }
 
 // Function to save the code
@@ -99,17 +98,6 @@ function loadCode(){
 	
 }
 
-// Function to command the simulation to reset
-function resetSim(){
-	// Send message to initiate reset
-	var message = "#rest"
-	clearMap();
-	websocket_code.send(message)
-	if(running == true){
-		submitCode();
-	}
-}
-
 // Function for range slider
 function codefrequencyUpdate(vol) {
 	document.querySelector('#code_freq').value = vol;
@@ -122,8 +110,13 @@ function guifrequencyUpdate(vol) {
 function Teleoperation(){
 	var message = "#teop"
 	teleop_switch = !teleop_switch;
+	change_teleop_img();
 	if (websocket_code != null)
-		websocket_code.send(message)
+	websocket_code.send(message)
+}
+function deactivateTeleop(){
+	if (teleop_switch)
+		Teleoperation();
 }
 function keyEvent(event){
 	var message = "#key";

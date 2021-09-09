@@ -11,7 +11,11 @@ function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
-		alert("[open] Connection established!");
+		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
+		if (websocket_code.readyState == 1) {
+			alert("[open] Connection established!");
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+		}
 	}
 	
 	websocket_gui.onclose = function(event){
@@ -29,10 +33,24 @@ function declare_gui(websocket_address){
 		var operation = event.data.substring(0, 4); /*Devuelve un subconunto de un objeto String*/
 		
 		if(operation == "#gui"){
+			//console.log(event.data.substring(4, ));
 			// Parse the entire Object
 			/*Analiza una cadena de texto como JSON, transformando opcionalmente el valor producido por el analisis */
-			console.log(data);
-			var data = JSON.parse(event.data.substring(4, ));
+			var data;
+			// Nan and infinity json errors
+			try {
+				data = JSON.parse(event.data.substring(4, ));
+			} catch (e)
+			{
+				let json_data = event.data.substring(4, );
+				const regex1 = /NaN/g;
+				const regex2 = /Infinity/g;
+				const regex3 = /-0/g;
+				json_data = json_data.replace(regex1, '0');
+				json_data = json_data.replace(regex2, '0');
+				json_data = json_data.replace(regex3, '0');
+				data = JSON.parse(json_data);
+			}
 			// var pose = data.map.substring(1, data.map.length - 1);
 			// var content = pose.split(',').map(function(item) {
 			// 	return parseFloat(item);
@@ -52,17 +70,6 @@ function declare_gui(websocket_address){
 			else{
 				enable_flag = 0;
 			}
-			
-			// Parse the Console messages
-			messages = JSON.parse(data.text_buffer);
-			// Loop through the messages and print them on the console
-			for(message of messages){
-				// Set value of command
-				command.value = message
-				// Go to next command line
-				next_command()
-			}
-
 
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");

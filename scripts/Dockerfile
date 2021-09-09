@@ -30,14 +30,14 @@ COPY manager.py /manager.py
 COPY instructions.json /instructions.json
 COPY start.sh /start.sh
 COPY start_manager.sh /start_manager.sh
-COPY start_stdr.sh /start_stdr.sh
+COPY launch_stdr.sh /launch_stdr.sh
 COPY start_logs.sh /start_logs.sh
 COPY pylint_checker.py /pylint_checker.py
 COPY pylintrc /etc/pylintrc
 # execute permissions
 RUN chmod 755 /start.sh
 RUN chmod 755 /start_manager.sh
-RUN chmod 755 /start_stdr.sh
+RUN chmod 755 /launch_stdr.sh
 RUN chmod 755 /start_logs.sh
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
