@@ -1,0 +1,123 @@
+{% extends 'base_stdr.html' %}
+
+{% load static %}
+{% block content %}
+
+      <div class="content">
+        <div class="split a">
+        </div>
+        <div id="code-control">
+          <!-- Code Editor -->
+          <!-- Along with buttons -->
+          <div id="code_container">
+            <div id="editor">from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!
+            </div>
+          </div>
+        </div>
+      </div>
+<div class="split b"> 
+  <div class="modal" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p><b>Errors detected:</b></p>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="white-space: pre-wrap;">
+          <p style="word-wrap: break-word;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="visual">
+    <!-- Canvas -->
+    <canvas id="birds-eye"></canvas>
+    <!-- <div id="mapping"> -->
+    <canvas id="mapping" style="display: none;"></canvas>
+    <!-- </div> -->
+    <!-- <canvas id="gui_canvas"></canvas> -->
+  </div>
+  <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
+  <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+  <script type="text/javascript">
+      function changeconsole(){
+        document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+        var console_display = document.getElementById('console').style.display
+        if (console_display == "none" || console_display == "none" ) {
+          document.getElementById('console').style.display = 'block';
+        } else{
+          document.getElementById('console').style.display = 'none';
+        }
+      }
+       function changegzweb(){
+         document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":8080")
+         var display = document.getElementById('iframeGzweb').style.display
+         if (display == "none" || display == "none" ) {
+           document.getElementById('iframeGzweb').style.display = 'block';
+          } else{
+           document.getElementById('iframeGzweb').style.display = 'none';
+          }
+        }
+      // function changemapping(){
+      //   var mapping_display = document.getElementById("mapping").style.display
+      //   console.log(mapping_display)
+      //   if(mapping_display == "none" || mapping_display == "none"){
+      //     document.getElementById('mapping').style.display = 'block';
+      //   } else{
+      //     document.getElementById('mapping').style.display = 'none';
+      //   }
+      // }
+      function HelpWindow(){
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");
+      }
+  </script>
+</div>
+</div>
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+  exercise = "laser_mapping";
+  
+  Split(['.a', '.b'], {
+    gutterSize: 3,
+    sizes: [50,50]
+  });
+  
+  window.addEventListener('load', function () {
+        window.top.postMessage('connect', '*');
+    });
+</script>
+<!--- Teleoperate mode script -->
+<script>
+	function change_teleop_img() {
+    const teleop_img = document.querySelector('#teleop_img');
+    if (teleop_switch) {
+      teleop_img.src = "{% static 'exercises/laser_mapping/web-template/assets/img/joystick_on.png' %}";
+    }
+    else {
+      teleop_img.src = "{% static 'exercises/laser_mapping/web-template/assets/img/joystick_off.png' %}";
+    }
+  }
+</script>
+    </body>
+
+    <script src="{% static 'exercises/laser_mapping/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/laser_mapping/web-template/assets/mapping.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}

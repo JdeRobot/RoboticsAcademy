@@ -103,5 +103,10 @@
         "instructions_guest": "python3 /RoboticsAcademy/exercises/follow_line/web-template/exercise_guest.py 0.0.0.0",
         "instructions_gui": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0 {}",
         "instructions_gui_guest": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui_guest.py 0.0.0.0"
+    },
+    "laser_mapping": {
+        "gazebo_path": "/RoboticsAcademy/exercises/laser_mapping/web-template/launch",
+        "instructions_ros": ["./launch_stdr.sh"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/laser_mapping/web-template/exercise.py 0.0.0.0"
     }
 }
