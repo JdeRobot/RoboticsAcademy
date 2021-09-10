@@ -256,7 +256,7 @@ class Commands:
         if (simulator == "gazebo"):
             cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
             rosservice_thread = DockerThread(cmd)
-            rosservice_thread.start()
+            rosservice_thread.call()
         else:
             cmd = "rosrun stdr_robot robot_handler replace /robot0 4 8 0"
             rosservice_thread = DockerThread(cmd)
