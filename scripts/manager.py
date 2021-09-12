@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 
 import sys
@@ -234,6 +235,10 @@ class Commands:
                 except:
                     time.sleep(2)
 
+    def start_stdrserver(self,exercise):
+        roslaunch_cmd,gz_cmd = self.get_ros_instructions(exercise)
+        roslaunch_thread = DockerThread(roslaunch_cmd)
+        roslaunch_thread.start()
 
     # Function to pause Gazebo physics
     def pause_physics(self):
@@ -248,10 +253,16 @@ class Commands:
         rosservice_thread.start()
 
     # Function to reset Gazebo physics
-    def reset_physics(self):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
+    def reset_physics(self, simulator):
+        if (simulator == "gazebo"):
+            cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
+            rosservice_thread = DockerThread(cmd)
+            rosservice_thread.call()
+        else:
+            cmd = "rosrun stdr_robot robot_handler replace /robot0 4 8 0"
+            rosservice_thread = DockerThread(cmd)
+            rosservice_thread.start()
+
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -316,6 +327,7 @@ class Manager:
         self.launch_level = 0
 
         self.exercise = None
+        self.simulator = None
         self.height = None
         self.width = None
 
@@ -331,6 +343,12 @@ class Manager:
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
+                if (self.exercise == "laser_mapping"):
+                    self.simulator = "stdr"
+                elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier"):
+                    self.simulator = "none"
+                else:
+                    self.simulator = "gazebo"
             
                 try:
                     circuit = data["circuit"]
@@ -376,7 +394,7 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
             self.commands.start_gzserver(exercise, circuit)
             self.commands.start_exercise(exercise, circuit=circuit)
             time.sleep(5)
@@ -389,6 +407,17 @@ class Manager:
             # Start gazebo client
             time.sleep(2)
             self.commands.start_console(width, height)
+        elif ("laser_mapping" in exercise):
+            self.commands.start_stdrserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+
+            self.commands.start_console(1920, 1080)
         else:
             self.commands.start_exercise(exercise)
             time.sleep(2)
@@ -408,7 +437,7 @@ class Manager:
         self.commands.start_vnc(":0", 5900, 6080)
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
             self.commands.start_gzserver(exercise, circuit)
             self.commands.start_exercise(exercise, circuit=circuit)
             time.sleep(5)
@@ -419,6 +448,17 @@ class Manager:
             # Start gazebo client
             time.sleep(2)
             self.commands.start_console(width, height)
+        elif ("laser_mapping" in exercise):
+            self.commands.start_stdrserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+
+            self.commands.start_console(1920, 1080)
         else:
             self.commands.start_exercise(exercise)
             time.sleep(2)
@@ -444,7 +484,7 @@ class Manager:
     # Function to reset simulation
     def reset_simulation(self):
         print("Reset Simulation")
-        self.commands.reset_physics()
+        self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
     def start_gz(self):
