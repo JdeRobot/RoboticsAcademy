@@ -140,6 +140,9 @@ class GUI:
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
+        # Add position to payload
+        mouse_x, mouse_y, mouse_z = self.hal.get_position()
+        self.payload["pos"] = [mouse_x, mouse_y, mouse_z]
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
