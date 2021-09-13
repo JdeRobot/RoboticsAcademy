@@ -166,7 +166,10 @@ class Template:
         hal_module.HAL.getImage = self.hal.getImage
         hal_module.HAL.setV = self.hal.setV
         hal_module.HAL.setW = self.hal.setW
-        hal_module.HAL.getPose3D = self.hal.getPose3D
+        hal_module.HAL.getV = self.hal.getV
+        hal_module.HAL.getW = self.hal.getW
+        hal_module.HAL.getPose3D = self.hal.pose3d.getPose3d
+        hal_module.HAL.setPose3D = self.hal.setPose3D
         hal_module.HAL.getTemplate = self.hal.getTemplate
         hal_module.HAL.getYaw = self.hal.getYaw
 
