@@ -40,9 +40,10 @@ feature_row:
     url: "/exercises/AutonomousCars/global_navigation"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    status: "testing"
-    order: 1;
+    version_label: "btn--success"
+    status: "running"
+    order: 0;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"

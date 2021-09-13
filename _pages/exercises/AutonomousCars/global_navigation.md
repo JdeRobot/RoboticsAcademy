@@ -100,6 +100,7 @@ youtubeId1: zUtK6seVL5g
 youtubeId2: q6G6BHqljP4
 youtubeId3: itTbU4uLwfE
 youtubeId4: zcS4X-ZO68U
+youtubeId5: lO9Ru2mNAR4
 
 ---
 ## Versions to run the exercise
@@ -256,6 +257,10 @@ of the map and returns a tuple with the equivalent coordinates in the world: (wo
 coordinates and returns a tuple with the equivalent coordinates in the map: (gridX, gridY)
     
 **REMEMBER**: Once running, double click in any point of the map to set destination, then click on "Generate Path" and finally click "GO" to see the result.
+
+### Example video for web template
+
+{% include youtubePlayer.html id=page.youtubeId5 %}
 
 ## Theory
 
