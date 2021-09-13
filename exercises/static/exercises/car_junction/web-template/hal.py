@@ -107,7 +107,7 @@ class HAL:
         self.motors.sendW(angular)
 
     def getPose3D(self):
-        return self.pose3d
+        return self.pose3d.getPose3d()
 
     def setPose3D(self, pose3d):
         self.pose3d = pose3d
