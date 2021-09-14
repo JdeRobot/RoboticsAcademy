@@ -104,6 +104,12 @@
         "instructions_gui": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui.py 0.0.0.0 {}",
         "instructions_gui_guest": "python3 /RoboticsAcademy/exercises/follow_line/web-template/gui_guest.py 0.0.0.0"
     },
+    "drone_cat_mouse_game": {
+        "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_unibotics.py 0.0.0.0",
+        "instructions_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_unibotics_guest.py 0.0.0.0"
+    },
     "laser_mapping": {
         "gazebo_path": "/RoboticsAcademy/exercises/laser_mapping/web-template/launch",
         "instructions_ros": ["./launch_stdr.sh"],
