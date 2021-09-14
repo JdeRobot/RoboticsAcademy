@@ -1,0 +1,231 @@
+{% extends 'base_rviz.html' %}
+
+{% load static %}
+{% block content %}
+
+<div id="code-control">
+    <!-- Code Editor -->
+    <!-- Along with buttons -->
+    <div id="code_container">
+        <div id="editor">from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="split b">
+    <!-- <div class="float-container">
+        <div class="float-child">
+            <div class="head">
+                <span style="font-size: 21px;">Forward Kinematics</span>
+                <div class="widget-buttons">
+                    <input type="button" class="button" value="Update">
+                </div>
+            </div>
+            <div class="wid-row-fwd">
+            <label for="lname" class="label">Joint 1</label>
+            <div class="slidecontainer" id="lname">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>
+            <div class="inDegrees">
+                <input type="text" style="height: 20px;width: 50%;margin: auto;display: block;">
+            </div>
+            </div>
+            <div class="wid-row-fwd">
+            <label for="lname" class="label">Joint 2</label>
+            <div class="slidecontainer" id="lname">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>
+            <div class="inDegrees">
+                <input type="text" style="height: 20px;width: 50%;margin: auto;display: block;">
+            </div>
+            </div>
+            <div class="wid-row-fwd">
+            <label for="lname" class="label">Joint 3</label>
+            <div class="slidecontainer" id="lname">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>
+            <div class="inDegrees">
+                <input type="text" style="height: 20px;width: 50%;margin: auto;display: block;">
+            </div>
+            </div>
+            <div class="wid-row-fwd">
+            <label for="lname" class="label">Joint 4</label>
+            <div class="slidecontainer" id="lname">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>
+            <div class="inDegrees">
+                <input type="text" style="height: 20px;width: 50%;margin: auto;display: block;">
+            </div>
+            </div>
+            <div class="wid-row-fwd">
+            <label for="lname" class="label">Joint 5</label>
+            <div class="slidecontainer" id="lname">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>
+            <div class="inDegrees">
+                <input type="text" style="height: 20px;width: 50%;margin: auto;display: block;">
+            </div>
+            </div>
+            <div class="wid-row-fwd">
+            <label for="lname" class="label">Joint 6</label>
+            <div class="slidecontainer" id="lname">
+                <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            </div>
+            <div class="inDegrees">
+                <input type="text" style="height: 20px;width: 50%;margin: auto;display: block;">
+            </div>
+            </div>
+        </div>
+        
+        <div class="float-child">
+            <div class="head">
+                <span style="font-size: 21px;">Inverse Kinematics</span>
+                <div class="widget-buttons">
+                    <input type="button" class="button" value="Update">
+                </div>
+            </div>
+            <div class="wid-row-inv">
+                <label for="lname" class="label" style="width: 10%;">x</label>
+                <div class="inDegrees" style="width: 30%;">
+                    <input type="text" style="height: 20px;width: 100%;margin: auto;display: block;">
+                </div>
+                <label for="lname" class="label" style="width: 3%;">m</label>
+                <div class="widget-buttons">
+                    <button type="button" style="font-size: 17px; width: 80%;">Plan</button>
+                </div>
+            </div>
+            <div class="wid-row-inv">
+                <label for="lname" class="label" style="width: 10%;">y</label>
+                <div class="inDegrees" style="width: 30%;">
+                    <input type="text" style="height: 20px;width: 100%;margin: auto;display: block;">
+                </div>
+                <label for="lname" class="label" style="width: 3%;">m</label>
+                <div class="widget-buttons">
+                    <button type="button" style="font-size: 17px; width: 80%;">Execute</button>
+                </div>
+            </div>
+            <div class="wid-row-inv">
+                <label for="lname" class="label" style="width: 10%;">z</label>
+                <div class="inDegrees" style="width: 30%;">
+                    <input type="text" style="height: 20px;width: 100%;margin: auto;display: block;">
+                </div>
+                <label for="lname" class="label" style="width: 3%;">m</label>
+                <div class="widget-buttons">
+                    <button type="button" style="font-size: 14px; width: 80%;">Plan & Execute</button>
+                </div>
+            </div>
+            <div class="wid-row-inv">
+                <label for="lname" class="label" style="width: 10%;">roll</label>
+                <div class="inDegrees" style="width: 30%;">
+                    <input type="text" style="height: 20px;width: 100%;margin: auto;display: block;">
+                </div>
+                <label for="lname" class="label" style="width: 3%;">m</label>
+                <div class="widget-buttons">
+                    <button type="button" style="font-size: 17px; width: 80%;">Stop</button>
+                </div>
+            </div>
+            <div class="wid-row-inv">
+                <label for="lname" class="label" style="width: 10%;">pitch</label>
+                <div class="inDegrees" style="width: 30%;">
+                    <input type="text" style="height: 20px;width: 100%;margin: auto;display: block;">
+                </div>
+                <label for="lname" class="label" style="width: 3%;">m</label>
+                <div class="widget-buttons">
+                    <button type="button" style="font-size: 14px; width: 80%;">Back to home</button>
+                </div>
+            </div>
+            <div class="wid-row-inv">
+                <label for="lname" class="label" style="width: 10%;">yaw</label>
+                <div class="inDegrees" style="width: 30%;">
+                    <input type="text" style="height: 20px;width: 100%;margin: auto;display: block;">
+                </div>
+                <label for="lname" class="label" style="width: 3%;">m</label>
+                <div class="widget-buttons">
+                    <button type="button" style="font-size: 17px; width: 80%;">Rviz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-part">
+        <div class="widget-buttons">
+            <input type="button" class="button" value="Start">
+        </div>
+        <div class="widget-buttons">
+            <input type="button" class="button" value="Stop">
+        </div>
+        <div class="widget-buttons">
+            <input type="button" class="button" value="Pause">
+        </div>
+        <div class="widget-buttons">
+            <input type="button" class="button" value="Restart">
+        </div>
+        <div class="widget-buttons">
+            <input type="button" class="button" value="Spawn">
+        </div>
+        <div class="message-box">
+            <span>Message Box</span>
+            <input type="text" name="Message" id="message">
+        </div>
+    </div> -->
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
+    <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    <iframe id="iframeRvizweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    <script type="text/javascript">
+        function changeconsole(){            
+            var console_display = document.getElementById('console').style.display
+            document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+            console.log(console_display)
+            if (console_display == "none") {
+                document.getElementById('console').style.display = 'block';
+            } else{
+                document.getElementById('console').style.display = 'none';
+            }
+        }
+        function changegzweb(){
+            document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
+            var display = document.getElementById('iframeGzweb').style.display
+            console.log(display)
+            if (display == "none") {
+                document.getElementById('iframeGzweb').style.display = 'block';
+            } else{
+                document.getElementById('iframeGzweb').style.display = 'none';
+            }
+        }
+        function changervizweb(){
+            document.getElementById("iframeRvizweb").setAttribute("src", "http://" + websocket_address + ":6081/vnc.html?resize=remote&autoconnect=true");
+            var display = document.getElementById('iframeRvizweb').style.display
+            console.log(display)
+            if (display == "none") {
+                document.getElementById('iframeRvizweb').style.display = 'block';
+            } else{
+                document.getElementById('iframeRvizweb').style.display = 'none';
+            }
+        }
+    </script>
+</div>
+</div>
+
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+    Split(['.a', '.b'], {
+        gutterSize: 3,
+        sizes: [50,50]
+    });
+</script>
+
+<script src="{% static 'exercises/mobile_manipulation/web-template/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/mobile_manipulation/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/mobile_manipulation/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/mobile_manipulation/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/mobile_manipulation/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/mobile_manipulation/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}

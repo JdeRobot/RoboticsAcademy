@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- Because the world path is relative to GAZEBO_RESOURCE_PATH, we append to it here. -->
+    <!--<env name="GAZEBO_RESOURCE_PATH" value="$(env GAZEBO_RESOURCE_PATH):$(find simple_create)"/>-->
+    <!--<arg name="world_name" value="kobuki-simple-ros.world"/>-->
+    <arg name="world_name" value="Asymmetric-Easy-To-Model.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="verbose" value="true"/>
+    <arg name="debug" value="false"/>
+  </include>
+  <!--<node name="publisher" pkg="simple_create" type="circle.py" required="true" />-->
+
+</launch>

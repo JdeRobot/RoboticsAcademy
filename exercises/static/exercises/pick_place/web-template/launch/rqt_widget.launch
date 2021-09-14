@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- launch rviz to check TF data -->
+  <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(find rqt_industrial_robot)/kinematics.perspective"/>
+</launch>

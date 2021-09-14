@@ -8,7 +8,7 @@ import threading
 import time
 import json
 import stat
-
+import manager_utils as m_utils
 # Function to check if a device exists
 def check_device(device_path):
     try:
@@ -57,17 +57,17 @@ class Commands:
     # Function to get the instructions to run ROS
     def get_ros_instructions(self, exercise):
         if ACCELERATION_ENABLED:
-            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export VGL_DISPLAY=/dev/dri/card0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/catkin_ws/devel/lib:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
                         'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
                         '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
                         'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
+                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo:/catkin_ws/src;'
         else:
-            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
+            roslaunch_cmd = '/bin/sh -c "export PWD="/";chmod +rwx /;export DISPLAY=:0;export OLDPWD=/etc/ros/rosdep;cd /;export LD_LIBRARY_PATH=/opt/ros/melodic/lib:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins;export GAZEBO_MODEL_PATH=/usr/share/gazebo-9/models:$GAZEBO_MODEL_PATH;export GAZEBO_MODEL_DATABASE_URI=http://gazebosim.org/models;export ROS_DISTRO=melodic;export PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig;export OGRE_RESOURCE_PATH=/usr/lib/x86_64-linux-gnu/OGRE-1.9.0;export SHLVL=1;export GAZEBO_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gazebo-9/plugins:/catkin_ws/devel/lib:${GAZEBO_PLUGIN_PATH};export TERM=xterm;export ROS_VERSION=1;export GAZEBO_MASTER_URI=http://localhost:11345;ROS_ETC_DIR=/opt/ros/melodic/etc/ros;export CMAKE_PREFIX_PATH=/opt/ros/melodic;export ROS_PACKAGE_PATH=/opt/ros/melodic/share; chmod +x /opt/ros/melodic/bin/rosmaster;export ' \
                         'PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages; chmod +x /opt/ros/melodic/bin/roslaunch ; cd ' \
                         '/; export ROS_ROOT=/opt/ros/melodic/share/ros;export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-9:$GAZEBO_RESOURCE_PATH; export ' \
                         'ROS_MASTER_URI=http://localhost:11311; export PATH=/opt/ros/melodic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin;' \
-                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo;'
+                        'export ROS_PACKAGE_PATH=/opt/ros/melodic/share:/Firmware:/Firmware/Tools/sitl_gazebo:/catkin_ws/src;'
         gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
         for instruction in self.instructions[exercise]["instructions_ros"]:
@@ -115,6 +115,12 @@ class Commands:
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
+
+    def start_rviz(self, exercise):
+        rviz_cmd = f'DISPLAY=:2 {self.instructions[exercise]["instructions_rviz"]}'
+
+        rviz_thread = m_utils.DockerThread(rviz_cmd)
+        rviz_thread.start()
 
     # Function to start VNC server
     def start_vnc(self, display, internal_port, external_port):
@@ -295,8 +301,34 @@ class Manager:
         self.commands.start_xserver(":1")
 
         # Start the exercise
+        if exercise in ["tb3_nav", "pick_place", "mobile_manipulation"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # X Server for RViz
+            print("********Rviz + Gazebo + Console************")
+            self.commands.start_xserver(":2")
 
-        if not ("color_filter" in exercise):
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            self.commands.start_vnc(":2", 5902, 6081)
+
+            # Start gazebo client
+            time.sleep(2)
+            self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_rviz(exercise)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)
@@ -325,7 +357,32 @@ class Manager:
 
         # Start the exercise
         
-        if not ("color_filter" in exercise):
+        if exercise in ["tb3_nav", "pick_place", "mobile_manipulation"]:
+            '''
+            RViz + Gazebo + Console
+            '''
+            # X Server for RViz
+            self.commands.start_xserver(":2")
+
+            self.commands.start_gzserver(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(5)
+            self.launch_level = 3
+
+            # Start x11vnc servers
+            self.commands.start_vnc(":0", 5900, 6080)
+            self.commands.start_vnc(":1", 5901, 1108)
+            self.commands.start_vnc(":2", 5902, 6081)
+
+            # Start gazebo client
+            time.sleep(2)
+            # self.commands.start_gzclient(exercise, width, height)
+            self.commands.start_console(width, height)
+
+        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+            '''
+            Gazebo + Console
+            '''
             self.commands.start_gzserver(exercise)
             self.commands.start_exercise(exercise)
             time.sleep(5)

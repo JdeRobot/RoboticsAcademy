@@ -1,0 +1,31 @@
+joints_limit:
+  joint_1: {low: -360, high: 360}
+  joint_2: {low: -180, high: 180}
+  joint_3: {low: -180, high: 180}
+  joint_4: {low: -180, high: 180}
+  joint_5: {low: -180, high: 180}
+  joint_6: {low: -180, high: 180}
+  gripper: {low: -0.5, high: 1.5}
+
+workspace:
+  center: {x: 0, y: 0, z: 0.181}
+  r: {min: 0.190, max: 1.300}
+  min_z: -1.274
+
+home_value:
+  joint_1: 0
+  joint_2: 1.27
+  joint_3: 0.02
+  joint_4: -1.24
+  joint_5: 1.57
+  joint_6: 1.57
+  gripper: -0.1
+
+pick_place_home_value:
+  joint_1: 3.089
+  joint_2: 1.257
+  joint_3: 0.82
+  joint_4: -2.04
+  joint_5: 1.57
+  joint_6: 1.57
+  gripper: -0.1

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- vehicle model -->
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="iris"/>
+
+    <group ns="mouse">
+        <!-- vehicle configs -->
+        <arg name="ID" value="1"/>
+        <!-- PX4 SITL and vehicle spawn -->
+        <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+            <arg name="x" value="2"/>
+            <arg name="vehicle" value="$(arg vehicle)"/>
+            <arg name="model" value="iris_red"/>
+            <arg name="model_name" value="iris_red"/>
+            <arg name="mavlink_udp_port" value="14561"/>
+            <arg name="mavlink_tcp_port" value="4561"/>
+            <arg name="ID" value="$(arg ID)"/>
+        </include>
+    </group>
+</launch>
