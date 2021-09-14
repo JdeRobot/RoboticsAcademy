@@ -19,17 +19,25 @@ ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugin
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
+# STDR files copy
+RUN cp /RoboticsAcademy/exercises/static/exercises/laser_mapping/web-template/launch/amigobot_without_gui.launch /catkin_ws/src/stdr_simulator/stdr_launchers/launch/
+RUN cp /RoboticsAcademy/exercises/static/exercises/laser_mapping/stdr_files/amigobot.xml /catkin_ws/src/stdr_simulator/stdr_resources/resources/robots/amigobot.xml
+RUN cp /RoboticsAcademy/exercises/static/exercises/laser_mapping/stdr_files/sonar_amigobot.xml /catkin_ws/src/stdr_simulator/stdr_resources/resources/range_sensors/
+RUN cp /RoboticsAcademy/exercises/static/exercises/laser_mapping/stdr_files/rplidar_a2.xml /catkin_ws/src/stdr_simulator/stdr_resources/resources/laser_sensors/
+
 # Scripts copy
 COPY manager.py /manager.py
 COPY instructions.json /instructions.json
 COPY start.sh /start.sh
 COPY start_manager.sh /start_manager.sh
+COPY launch_stdr.sh /launch_stdr.sh
 COPY start_logs.sh /start_logs.sh
 COPY pylint_checker.py /pylint_checker.py
 COPY pylintrc /etc/pylintrc
 # execute permissions
 RUN chmod 755 /start.sh
 RUN chmod 755 /start_manager.sh
+RUN chmod 755 /launch_stdr.sh
 RUN chmod 755 /start_logs.sh
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
