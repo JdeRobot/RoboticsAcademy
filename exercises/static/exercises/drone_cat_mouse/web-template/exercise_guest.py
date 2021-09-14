@@ -15,8 +15,8 @@ import importlib
 import rospy
 from std_srvs.srv import Empty
 
-from gui_unibotics_guest import GUI, ThreadGUI
-from hal_unibotics_guest import HAL
+from gui_guest import GUI, ThreadGUI
+from hal_guest import HAL
 from console import start_console, close_console
 
 

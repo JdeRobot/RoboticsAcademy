@@ -10,7 +10,7 @@ class HAL:
     IMG_HEIGHT = 240
 
     def __init__(self):
-        rospy.init_node("HAL")
+        rospy.init_node("HAL_cat")
 
         self.image = None
         self.cat = DroneWrapper(name="rqt", ns="cat/")
