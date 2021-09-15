@@ -17,7 +17,6 @@ from std_srvs.srv import Empty
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-from mouse import Mouse
 from console import start_console, close_console
 
 
@@ -42,8 +41,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.mouse = Mouse()
-        self.gui = GUI(self.host, self.hal, self.mouse)
+        self.gui = GUI(self.host, self.hal)
 
     # Function to parse the code
     # A few assumptions:

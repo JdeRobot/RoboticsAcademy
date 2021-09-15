@@ -13,7 +13,7 @@ from hal import HAL
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal, mouse):
+    def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': ''}
@@ -38,7 +38,6 @@ class GUI:
         
         # Take the console object to set the same websocket and client
         self.hal = hal
-        self.mouse = mouse
         t.start()
 
     # Explicit initialization function
@@ -141,6 +140,9 @@ class GUI:
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
+        # Add position to payload
+        cat_x, cat_y, cat_z = self.hal.get_position()
+        self.payload["pos"] = [cat_x, cat_y, cat_z]
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -173,12 +175,12 @@ class GUI:
         # Acknowledge Message for GUI Thread
         if message[:4] == "#ack":
             self.set_acknowledge(True)
-        elif message[:4] == "#mou":
-            self.mouse.start_mouse(int(message[4:5]))
-        elif message[:4] == "#stp":
-            self.mouse.stop_mouse()
-        elif message[:4] == "#rst":
-            self.mouse.reset_mouse()
+        # elif message[:4] == "#mou":
+        #     self.mouse.start_mouse(int(message[4:5]))
+        # elif message[:4] == "#stp":
+        #     self.mouse.stop_mouse()
+        # elif message[:4] == "#rst":
+        #     self.mouse.reset_mouse()
 
     # Activate the server
     def run_server(self):
@@ -247,7 +249,7 @@ class ThreadGUI:
         while True:
             start_time = datetime.now()
             self.gui.update_gui()
-            self.gui.update_dist()
+            #self.gui.update_dist()
             acknowledge_message = self.gui.get_acknowledge()
             
             while not acknowledge_message:

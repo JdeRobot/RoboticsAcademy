@@ -1,4 +1,4 @@
-{% extends 'base_eval.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 {% block content %}
@@ -17,8 +17,8 @@ while True:
     </div>
 
     <!-- Evaluator -->
-    <script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
-    <div id="eval"></div>
+    <!-- <script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
+    <div id="eval"></div> -->
 
 </div>
 
@@ -44,7 +44,7 @@ while True:
       
     <div id="visual_buttons" class="row no-gutters">
 
-        <button id="mouse_play_btn" type="button" onclick="playmouse()">Play Mouse</button>
+        <button id="mouse_play_btn" type="button" onclick="submitCodeMouse()">Play Mouse</button>
         <select name="mouse" id="mouse">
             <option value="0">0</option>
             <option value="1">1</option>
@@ -104,11 +104,13 @@ while True:
 <script src="{% static 'exercises/assets/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
 <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/assets/js/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/assets/js/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/ws_code_mouse.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/ws_gui_mouse.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/drone_cat_mouse/web-template/assets/evaluator.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<!-- <script src="{% static 'exercises/drone_cat_mouse/web-template/assets/evaluator.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script> -->
 
 {% endblock %}

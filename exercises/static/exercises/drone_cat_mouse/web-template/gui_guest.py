@@ -7,7 +7,7 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 import numpy as np
-from hal_unibotics_guest import HAL
+from hal_guest import HAL
 
 # Graphical User Interface Class
 class GUI:

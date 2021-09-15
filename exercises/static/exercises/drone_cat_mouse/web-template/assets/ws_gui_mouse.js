@@ -8,20 +8,20 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var websocket_gui;
+var websocket_gui_guest;
 
-function declare_gui(websocket_address){
-	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
+function declare_gui_guest(websocket_address){
+	websocket_gui_guest = new WebSocket("ws://" + websocket_address + ":2304/");
 
-	websocket_gui.onopen = function(event){
+	websocket_gui_guest.onopen = function(event){
 		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
-		if (websocket_code.readyState == 1) {
+		if (websocket_code_guest.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
 		}
 	}
 	
-	websocket_gui.onclose = function(event){
+	websocket_gui_guest.onclose = function(event){
 		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
 		if(event.wasClean){
 			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
@@ -32,7 +32,7 @@ function declare_gui(websocket_address){
 	}
 
 	// What to do when a message from server is received
-	websocket_gui.onmessage = function(event){
+	websocket_gui_guest.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
 		if(operation == "#gui"){
 			// Parse the entire Object
@@ -50,7 +50,7 @@ function declare_gui(websocket_address){
 			}
 			
 			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
+			websocket_gui_guest.send("#ack");
 		}
 
 		if(operation == "#gul"){
@@ -69,7 +69,7 @@ function declare_gui(websocket_address){
 			}
 
 			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
+			websocket_gui_guest.send("#ack");
 		}
 
 		if(operation == "#dst"){
@@ -80,8 +80,44 @@ function declare_gui(websocket_address){
 			dist_ready = data.ready;
 
 			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
+			websocket_gui_guest.send("#ack");
 		}
+	}
+}
+
+// Function to start mouse
+var playmouse_old_timestamp = 0;
+function playmouse(){
+	if(playmouse_old_timestamp == 0 || playmouse_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate start mouse
+	    var message = "#mou" + document.getElementById('mouse').value;
+	    console.log("Message sent: " + message);
+	    websocket_gui_guest.send(message);
+	    playmouse_old_timestamp = (new Date).getTime();
+	}
+}
+
+// Function to stop mouse
+var stopmouse_old_timestamp = 0;
+function stopmouse(){
+	if(stopmouse_old_timestamp == 0 || stopmouse_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate stop mouse
+	    var message = "#stp";
+	    console.log("Message sent: " + message);
+	    websocket_gui_guest.send(message);
+	    stopmouse_old_timestamp = (new Date).getTime();
+	}
+}
+
+// Function to reset mouse
+var resetmouse_old_timestamp = 0;
+function resetmouse(){
+	if(resetmouse_old_timestamp == 0 || resetmouse_old_timestamp + 2000 < (new Date).getTime()){
+	    // Send message to initiate reset mouse
+	    var message = "#rst";
+	    console.log("Message sent: " + message);
+	    websocket_gui_guest.send(message);
+	    resetmouse_old_timestamp = (new Date).getTime();
 	}
 }
 
