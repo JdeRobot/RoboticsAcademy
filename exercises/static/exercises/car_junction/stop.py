@@ -41,7 +41,7 @@ if __name__ == "__main__":
     node = rospy.init_node(ymlNode["NodeName"], anonymous=True)
 
     # ------------ M O T O R S ----------------------------------
-    print("Publishing "+  "Stop.Motors" + " with ROS messages")
+    # print("Publishing "+  "Stop.Motors" + " with ROS messages")
     topicM = cfg.getProperty("Stop.Motors"+".Topic")
     maxW = cfg.getPropertyWithDefault("Stop.Motors"+".maxW", 0.5)
     if not maxW:
@@ -58,26 +58,26 @@ if __name__ == "__main__":
 
 
     # ----------------- P O S E     3 D -------------------------------------
-    print("Receiving " + "Stop.Pose3D" + " from ROS messages")
+    # print("Receiving " + "Stop.Pose3D" + " from ROS messages")
     topicP = cfg.getProperty("Stop.Pose3D"+".Topic")
     pose3d = ListenerPose3d(topicP)
     # pose3d = ListenerPose3d("/opel/odom")
 
 
     # -------- C A M E R A C E N T R A L --------------------------------------
-    print("Receiving " + "Stop.CameraC" + "  CameraData from ROS messages")
+    # print("Receiving " + "Stop.CameraC" + "  CameraData from ROS messages")
     topicCameraC  = cfg.getProperty("Stop.CameraC"+".Topic")
     cameraC = ListenerCamera(topicCameraC)
     # cameraC = ListenerCamera("/opel/cameraC/image_raw")
 
     # -------- C A M E R A L E F T --------------------------------------------
-    print("Receiving " + "Stop.CameraL" + "  CameraData from ROS messages")
+    # print("Receiving " + "Stop.CameraL" + "  CameraData from ROS messages")
     topicCameraL  = cfg.getProperty("Stop.CameraL"+".Topic")
     cameraL = ListenerCamera(topicCameraL)
     # cameraL = ListenerCamera("/opel/cameraL/image_raw")
 
     # -------- C A M E R A R I G H T ------------------------------------------
-    print("Receiving " + "Stop.CameraR" + "  CameraData from ROS messages")
+    # print("Receiving " + "Stop.CameraR" + "  CameraData from ROS messages")
     topicCameraR  = cfg.getProperty("Stop.CameraR"+".Topic")
     cameraR = ListenerCamera(topicCameraR)
     # cameraR = ListenerCamera("/opel/cameraR/image_raw")
