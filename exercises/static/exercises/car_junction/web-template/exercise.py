@@ -129,6 +129,17 @@ class Template:
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
         exec(sequential_code, reference_environment)
 
+        # Execute the dummy cars code
+        hal_module_dummy = self.generate_modules()
+        reference_environment_dummy = {"HAL": hal_module_dummy}
+        iterative_code_dummy = """
+import rospy
+from hal import HAL
+hal = HAL()
+time = rospy.get_time()
+        """
+        exec(iterative_code_dummy, reference_environment_dummy)
+
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
@@ -136,6 +147,15 @@ class Template:
 
             # Execute the iterative portion
             exec(iterative_code, reference_environment)
+
+            # Execute the dummy cars code
+            sequential_code_dummy = """
+time_elapsed = rospy.get_time() - time
+time = rospy.get_time()
+hal.move_dummy(1, time_elapsed)
+hal.move_dummy(2, time_elapsed)
+            """
+            exec(sequential_code_dummy, reference_environment_dummy)
 
             # Template specifics to run!
             finish_time = datetime.now()
