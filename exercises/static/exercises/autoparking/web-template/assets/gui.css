@@ -1,0 +1,15 @@
+#canvas_container{
+    float: left;
+    width: 50%;
+    height: 500px;
+}
+
+#gui_canvas {
+    height: 350px;
+    width: 400px;
+}
+
+#gzweb{
+    height: 40%;
+    width:100%;
+}
