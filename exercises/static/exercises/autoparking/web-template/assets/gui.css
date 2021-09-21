@@ -13,3 +13,10 @@
     height: 40%;
     width:100%;
 }
+
+#local-map{
+	margin-top: 15px;
+	background: #0D488A;
+	height: 500px;
+	width: 500px;
+}

@@ -9,58 +9,81 @@ function paintEvent(car, obs, avg, lasers, ranges){
 	drawCar();
 	
 	// Draw Laser
-	drawLaser(lasers[0], ranges[0], "#FF0000");
-	drawLaser(lasers[1], ranges[1], "#F7FF00");
-	drawLaser(lasers[2], ranges[2], "#0FFF00");
-	
-	// Draw arrows
-	drawArrow(-car[1] , car[0] , "#7CFC00");
-	drawArrow(-obs[1] , obs[0] , "#DC143C");
-	drawArrow(-avg[1] , avg[0], "#000000");
+	drawLaser(lasers[0], ranges[0], "f", "#FF0000");
+	drawLaser(lasers[1], ranges[1], "r", "#F7FF00");
+	drawLaser(lasers[2], ranges[2], "b", "#0FFF00");
 }
 
 function drawCar(){
-	carsize = 60;
-	tiresize = carsize / 5;
+	carWidth = 40;
+	carHeight = 95;
+	tiresize = carWidth / 5;
 	
 	ctx.beginPath();
 	
-	// Connector
-	ctx.fillStyle = 'black';
-	ctx.fillRect(135, 125, 24, 1);
-	
 	// Chassis
-	ctx.fillStyle = 'red';
-	ctx.fillRect(143, 120, 8, 12);
-	ctx.fillRect(140, 132, 15, 15);
-	
-	// Tires
 	ctx.fillStyle = 'black';
-	ctx.fillRect(134, 121, 5, 8);
-	ctx.fillRect(155, 121, 5, 8);
-	ctx.fillRect(134, 139, 5, 8);
-	ctx.fillRect(155, 139, 5, 8);
+	ctx.fillRect(mapCanvas.width/2 - carWidth/2, mapCanvas.height/2 - carHeight/2, carWidth, carHeight);
 	
 	ctx.stroke();
 	
 	ctx.closePath();
 }
 
-function drawLaser(laser, max_range, color){
+function drawLaser(laser, max_range, pos, color){
+	let originx = 0;
+	let originy = 0;
+	let resizeFactor = 0.8;
+	ctx.strokeStyle = color;
+	switch(pos) {
+		case "f":
+			originx = mapCanvas.width/2;
+			originy = mapCanvas.height/2 - carHeight/2 + 16;
+			break;
+		case "r":
+			originx = mapCanvas.width/2 + carWidth/2;
+			originy = mapCanvas.height/2;
+			break;
+		case "b":
+			originx = mapCanvas.width/2;
+			originy = mapCanvas.height/2 + carHeight/2;
+			break;
+	}
+
+	// Resizes the lasers
+	max_range *= resizeFactor;
+
 	for (let d of laser){
+		d[0] *= resizeFactor;
+		
 		if (d[0] > max_range){
-			py = 120 - max_range * Math.sin(d[1]);
-			px = 146.5 + max_range * Math.cos(d[1]);
+			py = originy - max_range * Math.sin(d[1]);
+			px = originx + max_range * Math.cos(d[1]);
 		}
 		else{
-			py = 120 - d[0] * Math.sin(d[1]);
-			px = 146.5 + d[0] * Math.cos(d[1]);
+			py = originy - d[0] * Math.sin(d[1]);
+			px = originx + d[0] * Math.cos(d[1]);
 		}
-		
+		// Rotates for right and back lasers
+		let rotatedPoints;
+		switch(pos) {
+			case "f":
+
+				break;
+			case "r":
+				rotatedPoints = rotate(originx, originy, px, py, -90)
+				px = rotatedPoints[0];
+				py = rotatedPoints[1];
+				break;
+			case "b":
+				rotatedPoints = rotate(originx, originy, px, py, 180)
+				px = rotatedPoints[0];
+				py = rotatedPoints[1];
+				break;
+		}
+
 		ctx.beginPath();
-		
-		ctx.strokeStyle = color;
-		ctx.moveTo(146.5, 120);
+		ctx.moveTo(originx, originy);
 		ctx.lineTo(px, py);
 		ctx.stroke();
 		
@@ -68,89 +91,12 @@ function drawLaser(laser, max_range, color){
 	}
 }
 
-// Testing to be carried out with Python interface
-function drawArrow(posx, posy, color){
-	if(posx == 0 && posy == 0){
-		return;
-	}
-	
-	px = 146.5 + posx * 20;
-	py = 120 - posy * 20;
-	
-	ctx.beginPath();
-	
-	// The main line
-	ctx.strokeStyle = color;
-	ctx.moveTo(146.5, 120);
-	ctx.lineTo(px, py);
-	
-	// Sides
-	side = 3 * Math.hypot(posx, posy);
-	
-	if(posx != 0){
-		ang = Math.atan2(posy, posx);
-	}
-	else{
-		ang = Math.PI / 2;
-	}
-	
-	if(posx == 0.0){
-		px1 = px + side * Math.cos(ang - 0.5);
-		py1 = py + side * Math.sin(ang - 0.5);
-		px2 = px + side * Math.cos(ang + 0.5);
-		py2 = py + side * Math.sin(ang + 0.5);
-	}
-	else{
-		px1 = px + side * Math.cos(5 * Math.PI / 6 + ang);
-		py1 = py - side * Math.sin(5 * Math.PI / 6 + ang);
-		px2 = px + side * Math.cos(5 * Math.PI / 6 - ang);
-		py2 = py + side * Math.sin(5 * Math.PI / 6 - ang);
-	}
-	
-	ctx.moveTo(px, py);
-	ctx.lineTo(px1, py1);
-	//ctx.moveTo(px, py);
-	ctx.lineTo(px2, py2);
-	ctx.lineTo(px, py);
-	
-	ctx.stroke();
-	
-	ctx.closePath();
+// Rotates the point
+function rotate(cx, cy, x, y, angle) {
+    let radians = (Math.PI / 180) * angle;
+    let cos = Math.cos(radians);
+    let sin = Math.sin(radians);
+    let nx = (cos * (x - cx)) + (sin * (y - cy)) + cx;
+    let ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+    return [nx, ny];
 }
-
-function drawTarget(posx, posy){
-	if(posx == 0 && posy == 0){
-		return;
-	}
-	
-	ctx.beginPath();
-	
-	ctx.strokeStyle = 'yellow';
-	ctx.lineWidth = 2;
-	
-	sx = posx - 7;
-	sy = posy - 5;
-	ex = posx + 7;
-	ey = posy + 5;
-	
-	ctx.moveTo(sx, sy);
-	ctx.lineTo(ex, ey);
-	
-	sx = posx + 7;
-	sy = posy - 5;
-	ex = posx - 7;
-	ey = posy + 5;
-	
-	ctx.moveTo(sx, sy);
-	ctx.lineTo(ex, ey);
-	
-	ctx.stroke();
-	
-	ctx.closePath();
-}
-
-
-//drawArrow(-2, 2, "#7CFC00");
-//drawCar();
-//drawLaser([[130, Math.PI / 2]]);
-//drawTarget(120, 90);
