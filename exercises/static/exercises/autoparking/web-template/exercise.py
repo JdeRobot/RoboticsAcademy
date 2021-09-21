@@ -172,7 +172,9 @@ class Template:
 
         # Add HAL functions
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
-        hal_module.HAL.getLaserData = self.hal.laser.getLaserData
+        hal_module.HAL.getFrontLaserData = self.hal.laser_front.getLaserData
+        hal_module.HAL.getRightLaserData = self.hal.laser_right.getLaserData
+        hal_module.HAL.getBackLaserData = self.hal.laser_back.getLaserData
         hal_module.HAL.setV = self.hal.motors.sendV
         hal_module.HAL.setW = self.hal.motors.sendW
 
