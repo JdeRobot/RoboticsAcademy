@@ -14,12 +14,14 @@ class HAL:
     IMG_HEIGHT = 240
     
     def __init__(self):
-    	rospy.init_node("HAL")
+        rospy.init_node("HAL")
     
-    	self.motors = PublisherMotors("/taxi_holo/cmd_vel", 4, 0.3)
-    	self.pose3d = ListenerPose3d("/taxi_holo/odom")
-    	self.laser = ListenerLaser("/F1ROS/laser/scan")
-    	
+        self.motors = PublisherMotors("/taxi_holo/cmd_vel", 4, 0.3)
+        self.pose3d = ListenerPose3d("/taxi_holo/odom")
+        self.laser_front = ListenerLaser("/F1ROS/laser_f/scan")
+        self.laser_right = ListenerLaser("/F1ROS/laser_r/scan")
+        self.laser_back = ListenerLaser("/F1ROS/laser_b/scan")
+    
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
     @classmethod
@@ -35,5 +37,11 @@ class HAL:
     def getPose3d(self):
         return self.pose3d.getPose3d()
 
-    def getLaserData(self):
-        return self.laser.getLaserData()
+    def getFrontLaserData(self):
+        return self.laser_front.getLaserData()
+
+    def getRightLaserData(self):
+        return self.laser_right.getLaserData()
+
+    def getBackLaserData(self):
+        return self.laser_back.getLaserData()
