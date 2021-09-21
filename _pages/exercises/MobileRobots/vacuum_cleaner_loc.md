@@ -101,36 +101,16 @@ while True:
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+
+* `HAL.setV()` - to set the linear speed
+* `HAL.setW()` - to set the angular velocity
+
 * `HAL.getPose3d().x` - to get the X coordinate of the robot
 * `HAL.getPose3d().y` - to get the Y coordinate of the robot
 * `HAL.getPose3d().yaw` - to get the orientation of the robot
 * `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-
-```python
-def execute(self):
-
-    # Add your code here
-    print "Runing"
-
-    #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-    #HAL.setV(10)
-    #HAL.setW(5)
-```
-
-### API
-
-* `HAL.getPose3d().x` - to get the X coordinate of the robot
-* `HAL.getPose3d().y` - to get the Y coordinate of the robot
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
-* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
