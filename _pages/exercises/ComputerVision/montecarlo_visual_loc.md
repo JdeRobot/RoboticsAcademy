@@ -126,11 +126,9 @@ Probabilistic localisation seeks to estimate the position of the robot and the m
 - B. Probabilistic model of sensory observation.  It is related to the sensor measurements at each instant of time. This model is built by taking observations at known positions in the environment and calculating the probability that the robot is in each of these positions [2].   
 - C. Probability fusion.  This consists of accumulating the information obtained at each time instant, something that can be done using Bayes' theorem. This fusion achieves that in each observation some modes of the probability function go up and others go down, so that as the number of iterations advances, the probability will be concentrated in only one of the modes, which will indicate the position of the robot [3].   
 
-{% include gallery id="basic" caption="Probabilistic location model" %}   
-
 The following figure shows an example of probabilistic localisation. In the first phase, the robot does not know its initial state, the initial probability distribution is uniform. In the second phase, the robot is looking at a door, the sensory observation model determines that there are three zones or modes with equal probability of being the zone where the robot is.  In the third phase, the robot is moving forward so the probabilistic motion model is applied, the probability distribution should move the same distance that the robot has moved, but as estimating the motion is difficult, what is done is to smooth it.  In the last phase, the robot detects another door and this observation is merged with the accumulated information. This causes the probability to concentrate on a single possible area where it can be found, and thus ends the global localisation process.
 
-{% include gallery id="basic" caption="Probabilistic location model" %}   
+{% include gallery id="model" caption="Probabilistic location model" %}   
 
 #### Montecarlo
 
