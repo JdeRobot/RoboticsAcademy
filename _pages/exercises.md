@@ -225,6 +225,18 @@ feature_row:
     order: 0;
     version: "v3.1"
 
+  - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
+    alt: "Montecarlo Visual Loc"
+    title: "Montecarlo Visual Loc"
+    excerpt: "Visual localisation based on the particle filter."
+    url: "/exercises/ComputerVision/montecarlo_visual_loc"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 0;
+    version: "v3.1"
+
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
     title: "Single Robot Amazon Warehouse (ROS2)"
