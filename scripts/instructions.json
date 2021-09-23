@@ -109,5 +109,10 @@
         "gazebo_path": "/RoboticsAcademy/exercises/autoparking/web-template/launch",
         "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/autoparking/web-template/launch/autoparking.launch"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/autoparking/web-template/exercise.py 0.0.0.0"
+    },
+    "montecarlo_visual_loc": {
+        "gazebo_path": "/RoboticsAcademy/exercises/montecarlo_visual_loc/web-template/launch",
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/montecarlo_visual_loc/web-template/launch/visual_loc_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/montecarlo_visual_loc/web-template/exercise.py 0.0.0.0"
     }
 }
