@@ -3,7 +3,7 @@ Do not run manager_utils.py as a stand-alone script
 Contains utility functions for the manager script
 '''
 
-import os
+import os, subprocess
 import stat
 import threading
 
@@ -31,14 +31,20 @@ class DockerThread(threading.Thread):
     def __init__(self, cmd):
         threading.Thread.__init__(self)
         self.cmd = cmd
-        self.out = None
 
     def run(self):
-        stream = os.popen(self.cmd)
-        output = stream.read()
-        self.out = output
+        subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
 
-    def print_output(self):
-        return self.out
+    def call(self):
+        subprocess.call(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True) 
 
+# For debugging log output
+class DockerThreadLog(threading.Thread):
+    def __init__(self, cmd):
+        threading.Thread.__init__(self)
+        self.cmd = cmd
+
+    def run(self):
+        log = open("/RoboticsAcademy/logfile", "w", 1)
+        subprocess.Popen(self.cmd, shell=True, stdout=log, stderr=subprocess.STDOUT, bufsize=1024, universal_newlines=True)
 
