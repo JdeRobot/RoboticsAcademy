@@ -553,7 +553,13 @@ class Manager:
             self_exception = re.search(":[0-9]+:.*E1111.*\n", result)
             while (self_exception != None):
                 result = result[:self_exception.start()] + result[self_exception.end():]    
-                self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+                self_exception = re.search(":[0-9]+:.*E1111.*\n", result)
+
+            # Removes E1136 until issue https://github.com/PyCQA/pylint/issues/1498 is closed
+            self_exception = re.search(":[0-9]+:.*E1136.*\n", result)
+            while (self_exception != None):
+                result = result[:self_exception.start()] + result[self_exception.end():]    
+                self_exception = re.search(":[0-9]+:.*E1136.*\n", result)
 
             # Returns an empty string if there are no errors
             error = re.search("error", result)
