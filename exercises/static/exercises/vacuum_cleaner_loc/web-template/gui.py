@@ -1,5 +1,6 @@
 import json
 import cv2
+import numpy as np
 import base64
 import threading
 import time
@@ -20,7 +21,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'map': ''}
+        self.payload = {'map': '', 'nav': ''}
         self.server = None
         self.client = None
 
@@ -70,6 +71,15 @@ class GUI:
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
+
+        # Example Payload Navigation Data message (random data)
+        # 4 colors supported (0, 1, 2, 3)
+        #nav_mat = np.zeros((20, 20), int)
+        #nav_mat[2, 1] = 1
+        #nav_mat[3, 3] = 2
+        #nav_mat[5,9] = 3
+        #nav_message = str(nav_mat.tolist())
+        #self.payload["nav"] = nav_message
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)

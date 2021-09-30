@@ -128,6 +128,15 @@ img{
     margin-right: 10px;
 }
 
+#grid_button{
+    font-size: 12px;
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right: 10px;
+}
+
 #reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo:hover, #console:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
@@ -232,6 +241,12 @@ input[type=number]::-webkit-inner-spin-button {
 #terminalimg {
     float: left;
     height: 20px;
+    margin-left: 10px;
+}
+
+#gridimg {
+    float: left;
+    height: 18px;
     margin-left: 10px;
 }
 
