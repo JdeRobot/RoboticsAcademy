@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_grid.html' %}
 
 {% load static %}
 {% block content %}
@@ -40,8 +40,8 @@ while True:
     </div>
     <div id="visual">
         <!-- Canvas -->
-        <canvas id="birds-eye"></canvas>
-        <canvas id="gui_canvas"></canvas>
+        <div><canvas id="birds-eye"></canvas></div>
+        <div><canvas id="grid" width="500px" height="500px" style="border:2px solid #000000; display:none;"></canvas></div>
         <!--<iframe src="" id="gzweb"></iframe>
         <h3 id="lap_heading">Lap Time</h3>
         <h4 id="lap_time"></h4>-->
@@ -70,6 +70,14 @@ while True:
                 document.getElementById('iframeGzweb').style.display = 'none';
             }
         }
+        function changegrid(){
+            var display = document.getElementById('grid').style.display
+            if (display == "none" || display == "none" ) {
+                document.getElementById('grid').style.display = 'block';
+            } else{
+                document.getElementById('grid').style.display = 'none';
+            }
+        }
     </script>
 </div>
 </div>
@@ -95,5 +103,6 @@ while True:
 <script src="{% static 'exercises/assets/js/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/navigation_grid.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 
 {% endblock %}

@@ -48,6 +48,24 @@ function declare_gui(websocket_address){
 			})
 			draw(content[0], content[1], content[2], content[3]);
 
+			// Parse the Navigation Grid Data
+			if (data.nav != null) {
+				navData = data.nav;
+				navData = navData.substring(2, navData.length-2);
+				navArray = navData.split(/\[|\]/);
+				for (let i = 0; i < navArray.length; i++) {
+					if (navArray[i] == ", ") {
+						navArray.splice(i, 1);
+					}
+				}
+				for (let i = 0; i < navArray.length; i++) {
+					navArray[i] = navArray[i].split(", ");
+				}
+	
+				// Draw the nav data
+				initGrid(navArray.length, navArray[0].length);
+				fillGrid(navArray);
+			}
 
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
