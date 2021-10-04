@@ -182,6 +182,9 @@ class Template:
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
+        gui_module.GUI.show_numpy = self.gui.show_numpy
+
+        # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage
 
         # Adding modules to system
