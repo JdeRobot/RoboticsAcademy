@@ -24,6 +24,8 @@ class GUI:
         self.payload = {'map': '', 'nav': ''}
         self.server = None
         self.client = None
+        self.user_mat = None
+        self.show_mat = False
 
         self.host = host
 
@@ -79,7 +81,11 @@ class GUI:
         #nav_mat[3, 3] = 2
         #nav_mat[5,9] = 3
         #nav_message = str(nav_mat.tolist())
-        #self.payload["nav"] = nav_message
+        if (self.show_mat == True):
+            nav_message = str(self.user_mat.tolist())
+            self.payload["nav"] = nav_message
+        else:
+            self.payload["nav"] = None
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -91,8 +97,11 @@ class GUI:
         if(message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-    # Activate the server
+    def show_numpy(self, mat):
+        self.user_mat = mat
+        self.show_mat = True
 
+    # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
@@ -102,6 +111,7 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         self.map.reset()
+        self.user_mat = None
 
 
 # This class decouples the user thread
