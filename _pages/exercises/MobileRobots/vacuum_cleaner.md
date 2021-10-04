@@ -43,7 +43,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:latest
+docker pull jderobot/robotics-academy:3.1.6
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -51,7 +51,7 @@ docker pull jderobot/robotics-academy:latest
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
   ```
 
 
@@ -61,7 +61,7 @@ docker pull jderobot/robotics-academy:latest
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -119,28 +119,6 @@ print(HAL.getPose3d().y)
 yaw = HAL.getPose3d().yaw
 ```
 
-```python
-# EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-vel = CMDVel()
-myW=x*(self.motors.getMaxW())
-myV=-y*(self.motors.getMaxV())
-vel.vx = myV
-vel.az = myW
-self.motors.sendVelocities(vel)
-# OR
-self.motors.sendAZ(vel.az)
-self.motors.sendV(vel.vx)
-```
-
-### API
-
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
-* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
 ### Types conversion
@@ -148,29 +126,29 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 - **Laser**
 
 ```python
-laser_data = self.laser.getLaserData()
+laser_data = HAL.getLaserData()
 
 def parse_laser_data(laser_data):
-laser = []
-for i in range(180):
-    dist = laser_data.values[i]
-    angle = math.radians(i)
-    laser += [(dist, angle)]
-return laser
+    laser = []
+    for i in range(180):
+        dist = laser_data.values[i]
+        angle = math.radians(i)
+        laser += [(dist, angle)]
+    return laser
 ```
 
 ```python
 def laser_vector(laser):
-laser_vectorized = []
-for d,a in laser:
-    # (4.2.1) laser into GUI reference system
-    x = d * math.cos(a) * -1
-    y = d * math.sin(a) * -1
-    v = (x,y)
-    laser_vectorized += [v]
+    laser_vectorized = []
+    for d,a in laser:
+        # (4.2.1) laser into GUI reference system
+        x = d * math.cos(a) * -1
+        y = d * math.sin(a) * -1
+        v = (x,y)
+        laser_vectorized += [v]
 
-laser_mean = np.mean(laser_vectorized, axis=0)
-return laser_mean
+    laser_mean = np.mean(laser_vectorized, axis=0)
+    return laser_mean
 ```
 
 ## Theory
