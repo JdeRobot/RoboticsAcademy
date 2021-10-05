@@ -97,7 +97,7 @@ class GUI:
         if(message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-    def show_numpy(self, mat):
+    def showNumpy(self, mat):
         self.user_mat = mat
         self.show_mat = True
 

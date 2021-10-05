@@ -129,9 +129,9 @@ function fillGrid(mat){
             else if (mat[i][j] == 1)
                 cell_color = '#287C00';
             else if (mat[i][j] == 2)
-                cell_color = '#7C0000';
-            else if (mat[i][j] == 3)
                 cell_color = '#D6E000';
+            else if (mat[i][j] == 3)
+                cell_color = '#7C0000';
             fillCell(i, j, ctx, cell_color);
         }
     }
