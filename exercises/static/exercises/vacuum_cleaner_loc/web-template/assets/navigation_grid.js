@@ -6,7 +6,10 @@ var inputColor = document.getElementById("color");
 var score = document.getElementById("score");
 var count = 0;
 var fill_index=[];
-var grid_line_width = Math.ceil(sizeSquare/20);
+//var grid_line_width = Math.ceil(sizeSquare/20);
+var grid_line_width = 1;
+var columnas = [];
+var filas = [];
 
 function initGrid(rows, cols){
 //Drawing canvas grid for first time
@@ -27,8 +30,8 @@ function dibujaGrid(disX, disY, wLine, color, ctx){
     squares=[];
     ctx.strokeStyle = color;
     ctx.lineWidth = wLine;
-    var columnas = [];
-    var filas = [];
+    columnas = [];
+    filas = [];
     for (i = 0; i < canvas.width; i += disX) {
         ctx.moveTo(i, 0);
         ctx.lineTo(i, canvas.height);
@@ -139,14 +142,6 @@ function fillGrid(mat){
 function reset_evaluator_map() {        
     var canvas = document.getElementById("grid");
     var ctx = canvas.getContext("2d");
+    ctx.beginPath();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    initGrid();
-    var canvas = document.getElementById("grid");
-    var ctxto = canvas.getContext("2d");
-    color = '#000000';
-    for (k = 0; k < black_squares.length; k++) {
-        fillCell(black_squares[k][0], black_squares[k][1],ctxto, color);
-    }
-    count=0
-    fill_index =[]
 }

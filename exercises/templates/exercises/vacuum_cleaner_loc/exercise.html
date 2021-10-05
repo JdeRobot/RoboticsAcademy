@@ -40,8 +40,10 @@ while True:
     </div>
     <div id="visual">
         <!-- Canvas -->
-        <div><canvas id="birds-eye"></canvas></div>
-        <div><canvas id="grid" width="500px" height="500px" style="border:2px solid #000000; display:none;"></canvas></div>
+        <div>
+            <canvas id="birds-eye"></canvas>
+            <canvas id="grid" style="border:2px solid #000000; display:none;"></canvas>
+        </div>
         <!--<iframe src="" id="gzweb"></iframe>
         <h3 id="lap_heading">Lap Time</h3>
         <h4 id="lap_time"></h4>-->
@@ -73,7 +75,7 @@ while True:
         function changegrid(){
             var display = document.getElementById('grid').style.display
             if (display == "none" || display == "none" ) {
-                document.getElementById('grid').style.display = 'block';
+                document.getElementById('grid').style.display = 'inline';
             } else{
                 document.getElementById('grid').style.display = 'none';
             }
@@ -100,7 +102,7 @@ while True:
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/assets/js/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/vacuum_cleaner_loc/web-template/assets/navigation_grid.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
