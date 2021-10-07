@@ -200,7 +200,7 @@ while True:
 * `HAL.motors.sendV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `HAL.getPose()` - returns x,y and theta components in the world
-* `GUI.showGPP(img)` - shows Gradient Path Planning field on the web-template. It represents the values ​​of the field that have been assigned to the grid. The smaller values ​​will have a color closer to black, and will become clearer as larger values ​​are involved. For the representation, a copy of the grid is made and its values ​​are normalized so that they are between 0 and 1, and it is represented later with cv2.imshow()
+* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the web-template. It represents the values of the field that have been assigned to the grid. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale).   
 * `GUI.showPath(array)` - shows ideal path on the map and the parameter should be 2D array
 * `GUI.targetPose` - returns x,y coordinates of chosen destionation in the world 
 * `MAP.getMap()` - Map image opencv data in opencv data
