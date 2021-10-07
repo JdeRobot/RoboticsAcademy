@@ -207,7 +207,7 @@ class Template:
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         # Add GUI functions
-        gui_module.GUI.showGPP = self.gui.showGPP
+        gui_module.GUI.showNumpy = self.gui.showNumpy
         gui_module.GUI.showPath = self.gui.showPath
         gui_module.GUI.targetPose = self.gui.worldXY
         # Add HAL functions
