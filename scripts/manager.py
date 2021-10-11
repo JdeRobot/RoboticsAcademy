@@ -340,6 +340,7 @@ class Manager:
             command = data["command"]
 
             if command == "open":
+                await self.kill_simulation()
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
