@@ -249,7 +249,7 @@ class Template:
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
         # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
         # bufsize=1 enables line-bufferred mode (the input buffer is flushed
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
