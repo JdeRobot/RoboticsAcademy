@@ -257,6 +257,9 @@ hal.move_dummy(2, time_elapsed)
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
     # Function to track the real time factor from Gazebo statistics
     # https://stackoverflow.com/a/17698359
     # (For reference, Python3 solution specified in the same answer)
@@ -311,6 +314,11 @@ hal.move_dummy(2, time_elapsed)
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             self.send_frequency_message()
+            return
+
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
 
         try:

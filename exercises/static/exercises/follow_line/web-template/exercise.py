@@ -184,6 +184,9 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
     def read_teleop_message(self, teleop_message):
         teleop_message = json.loads(teleop_message)
 
@@ -201,6 +204,10 @@ class Template:
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             self.send_frequency_message()
+            return
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
         elif(message[:5] == "#tele"):
             # Stop Brain code by sending an empty code
