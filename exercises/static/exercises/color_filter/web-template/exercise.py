@@ -228,6 +228,9 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
@@ -266,6 +269,11 @@ class Template:
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             self.send_frequency_message()
+            return
+
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
 
         try:
