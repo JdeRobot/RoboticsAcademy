@@ -508,10 +508,10 @@ class Manager:
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
             
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
-            while_position = re.search(r'[^ ]while\(True\):|[^ ]while True:', code)
+            while_position = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)
             sequential_code = code[:while_position.start()]
             iterative_code = code[while_position.start():]
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '\n', iterative_code, 1)
+            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '\n', iterative_code, 1)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
             code = sequential_code + iterative_code
 
