@@ -160,9 +160,6 @@ class Template:
             if (ms < self.time_cycle):
                 time.sleep((self.time_cycle - ms) / 1000.0)
 
-            print("Tantas Threas ", threading.active_count())
-            print("El valor de reload es ", self.reload)
-            print("Hebra ejecutandose ", threading.get_ident())
         close_console()
         print("Current Thread Joined!")
 

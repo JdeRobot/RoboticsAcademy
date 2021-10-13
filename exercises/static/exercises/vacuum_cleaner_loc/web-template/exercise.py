@@ -274,7 +274,7 @@ class Template:
         # The thread will die when the coming iteration reads the flag
         if(self.thread != None):
             while self.thread.is_alive():
-                pass
+                time.sleep(0.2)
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
