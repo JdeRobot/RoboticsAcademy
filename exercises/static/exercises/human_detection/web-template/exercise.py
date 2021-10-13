@@ -480,6 +480,10 @@ class Template:
     def send_ping_message(self):
         self.server.send_message(self.client, "#ping")
 
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
+
     # Function to maintain thread execution
     def execute_thread(self, message):
         # Keep checking until the thread is alive
@@ -503,6 +507,7 @@ class Template:
             print("Video infer process thread started!")
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("Frequency Thread started!")
 
 

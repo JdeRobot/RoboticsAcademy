@@ -260,6 +260,10 @@ hal.move_dummy(2, time_elapsed)
     def send_ping_message(self):
         self.server.send_message(self.client, "#ping")
 
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
+
     # Function to track the real time factor from Gazebo statistics
     # https://stackoverflow.com/a/17698359
     # (For reference, Python3 solution specified in the same answer)
@@ -290,6 +294,7 @@ hal.move_dummy(2, time_elapsed)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
