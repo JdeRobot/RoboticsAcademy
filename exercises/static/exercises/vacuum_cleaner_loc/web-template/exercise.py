@@ -25,6 +25,7 @@ class Template:
     # self.time_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
+        self.measure_thread = None
         self.thread = None
         self.reload = False
 
@@ -199,7 +200,7 @@ class Template:
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
-        while self.reload == False:
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -220,7 +221,7 @@ class Template:
             self.iteration_counter = 0
 
             # Send to client
-            self.send_frequency_message()
+            #self.send_frequency_message()
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
@@ -272,16 +273,14 @@ class Template:
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if(self.thread != None):
-            while self.thread.is_alive() or self.measure_thread.is_alive():
+            while self.thread.is_alive():
                 pass
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
-        self.measure_thread.start()
         self.send_code_message()
         print("New Thread Started!")
 
@@ -335,6 +334,10 @@ class Template:
         # Start the real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
+
+        # Start measure frequency
+        self.measure_thread = threading.Thread(target=self.measure_frequency)
+        self.measure_thread.start()
 
         # Initialize the ping message
         self.send_frequency_message()
