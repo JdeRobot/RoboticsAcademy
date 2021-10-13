@@ -219,7 +219,7 @@ class Template:
             self.iteration_counter = 0
 
             # Send to client
-            #self.send_frequency_message()
+            self.send_frequency_message()
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
@@ -302,7 +302,7 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
-            self.send_frequency_message()
+            #self.send_frequency_message()
             return
 
         elif (message[:5] == "#ping"):
@@ -335,7 +335,7 @@ class Template:
         self.measure_thread.start()
 
         # Initialize the ping message
-        self.send_frequency_message()
+        #self.send_frequency_message()
 
         print(client, 'connected')
 
