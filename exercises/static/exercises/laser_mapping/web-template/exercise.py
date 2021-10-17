@@ -290,6 +290,13 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
+
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
     
     # Function to maintain thread execution
     def execute_thread(self, source_code):
@@ -305,6 +312,7 @@ class Template:
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -327,6 +335,10 @@ class Template:
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            return
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
         elif(message[:5] == "#teop"):
             self.teop = not self.teop

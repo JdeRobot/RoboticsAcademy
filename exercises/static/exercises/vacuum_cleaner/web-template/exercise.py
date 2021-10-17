@@ -25,6 +25,7 @@ class Template:
     # self.time_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
+        self.measure_thread = None
         self.thread = None
         self.reload = False
 
@@ -61,13 +62,13 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         # Check for save/load
-        if(source_code[:5] == "#save"):
+        if (source_code[:5] == "#save"):
             source_code = source_code[5:]
             self.save_code(source_code)
 
             return "", ""
 
-        elif(source_code[:5] == "#load"):
+        elif (source_code[:5] == "#load"):
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
 
@@ -79,7 +80,7 @@ class Template:
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
-        if(debug_level == 1):
+        if (debug_level == 1):
             # If debug level is 0, then all the GUI operations should not be called
             source_code = re.sub(r'GUI\..*', '', source_code)
 
@@ -197,7 +198,7 @@ class Template:
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
-        while self.reload == False:
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -242,6 +243,13 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
+
     # Function to track the real time factor from Gazebo statistics
     # https://stackoverflow.com/a/17698359
     # (For reference, Python3 solution specified in the same answer)
@@ -249,7 +257,7 @@ class Template:
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
         # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
         # bufsize=1 enables line-bufferred mode (the input buffer is flushed
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
@@ -261,17 +269,16 @@ class Template:
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if(self.thread != None):
-            while self.thread.is_alive() or self.measure_thread.is_alive():
-                pass
+        if (self.thread != None):
+            while self.thread.is_alive():
+                time.sleep(0.2)
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
-        self.measure_thread.start()
+        self.send_code_message()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -291,11 +298,16 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if(message[:5] == "#freq"):
+        if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
-            self.send_frequency_message()
+            #self.send_frequency_message()
+            return
+
+        elif (message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
 
         try:
@@ -318,8 +330,12 @@ class Template:
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
 
+        # Start measure frequency
+        self.measure_thread = threading.Thread(target=self.measure_frequency)
+        self.measure_thread.start()
+
         # Initialize the ping message
-        self.send_frequency_message()
+        #self.send_frequency_message()
 
         print(client, 'connected')
 

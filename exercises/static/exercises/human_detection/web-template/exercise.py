@@ -477,6 +477,13 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
+
     # Function to maintain thread execution
     def execute_thread(self, message):
         # Keep checking until the thread is alive
@@ -500,6 +507,7 @@ class Template:
             print("Video infer process thread started!")
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("Frequency Thread started!")
 
 
@@ -525,6 +533,10 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
+            return
+        if(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
         if (message[:5] == "#stop"):
             self.reload = True

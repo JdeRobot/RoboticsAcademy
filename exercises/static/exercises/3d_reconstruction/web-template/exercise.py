@@ -239,6 +239,13 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
+
     # Function to track the real time factor from Gazebo statistics
     # https://stackoverflow.com/a/17698359
     # (For reference, Python3 solution specified in the same answer)
@@ -246,7 +253,7 @@ class Template:
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
         # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
         # bufsize=1 enables line-bufferred mode (the input buffer is flushed
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
@@ -269,6 +276,7 @@ class Template:
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -293,6 +301,11 @@ class Template:
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             self.send_frequency_message()
+            return
+
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
 
         try:

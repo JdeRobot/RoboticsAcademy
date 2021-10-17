@@ -131,6 +131,7 @@ class Template:
 
         self.brain_process = BrainProcess(code, self.reload)
         self.brain_process.start()
+        self.send_code_message()
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -184,6 +185,13 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
+
     def read_teleop_message(self, teleop_message):
         teleop_message = json.loads(teleop_message)
 
@@ -201,6 +209,10 @@ class Template:
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             self.send_frequency_message()
+            return
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
         elif(message[:5] == "#tele"):
             # Stop Brain code by sending an empty code
