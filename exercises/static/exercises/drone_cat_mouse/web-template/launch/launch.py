@@ -21,15 +21,26 @@ EXERCISE = "drone_cat_mouse"
 
 
 class Tests():
-    def test_px4(self):
+    def test_px4__(self, n=1):
         rospy.logwarn("[PX4-SITL] Performing checks")
-        while True:
-            args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander", "check"]
+        passed, failed = False, False
+        while passed and failed:
+            args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander_tests", "check"]
             process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
             with process.stdout:
                 for line in iter(process.stdout.readline, ''):
-                    if ("Prearm check: OK" in line):
-                        return
+                    if ("INFO  [commander_tests]   Tests passed :" in line):
+                        passed = int(line.split()[-1]) == n
+                    if ("INFO  [commander_tests]   Tests failed :" in line):
+                        failed = int(line.split()[-1]) == 0
+            time.sleep(2)
+
+    def test_px4(self, output):
+        rospy.logwarn("[PX4-SITL] Performing checks")
+        while True:
+            for line in output:
+                if "INFO  [px4] Startup script returned successfully" in line:
+                    return 
             time.sleep(2)
 
     def test_mavros(self, ns=""):
@@ -54,7 +65,8 @@ class Launch(Tests):
             with open("/logs/launch.log", "a+") as f:
                 subprocess.Popen(args, stdout=f, bufsize=4096, universal_newlines=True)
         else:
-            subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+            return process.stdout
 
     def finished(self):
         while True:
@@ -77,12 +89,12 @@ class Launch(Tests):
 
             self.run(args1)         #launch gazebo
             self.test_gazebo()
-            self.run(args2)         #launch px4 cat
-            self.test_px4()
+            output = self.run(args2)         #launch px4 cat
+            self.test_px4(output)
             self.run(args3)         #launch mavros cat
             self.test_mavros("/cat")
-            self.run(args4)         #launch px4 mouse
-            time.sleep(5) #self.test_px4()
+            output = self.run(args4)         #launch px4 mouse
+            self.test_px4(output)
             self.run(args5)         #launch mavros mouse
             self.test_mavros("/mouse")
             self.finished()
