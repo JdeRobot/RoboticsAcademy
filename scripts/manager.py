@@ -244,13 +244,13 @@ class Commands:
     def pause_physics(self):
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
         rosservice_thread = DockerThread(cmd)
-        rosservice_thread.start()
+        rosservice_thread.call()
 
     # Function to unpause Gazebo physics
     def unpause_physics(self):
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
         rosservice_thread = DockerThread(cmd)
-        rosservice_thread.start()
+        rosservice_thread.call()
 
     # Function to reset Gazebo physics
     def reset_physics(self, simulator):
@@ -364,17 +364,17 @@ class Manager:
                     self.open_accelerated_simulation(self.exercise, self.width, self.height, circuit)
             elif command == "resume":
                 self.resume_simulation()
-                await websocket.send("Ping{}".format(self.launch_level))
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stop":
                 self.stop_simulation()
-                await websocket.send("Ping{}".format(self.launch_level))
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "evaluate":
                 await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-                await websocket.send("Pingreset{}".format(self.launch_level))
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
                 await websocket.send("Ping{}".format(self.launch_level))
@@ -485,6 +485,7 @@ class Manager:
     # Function to reset simulation
     def reset_simulation(self):
         print("Reset Simulation")
+        self.commands.pause_physics()
         self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
