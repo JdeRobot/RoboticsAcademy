@@ -60,7 +60,7 @@ docker pull jderobot/robotics-academy:latest
 
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background. It is necessary to map the port where the camera is located to the docker container.  
-- For ubuntu: The port to map will be in /dev/videoX , you should check the number where your camera is connected. For exaple /dev/video0
+- For ubuntu: The port to map will be in /dev/videoX , you should check the number where your camera is connected. For example /dev/video0
 
 ```bash
 docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy:latest ./start.sh 
