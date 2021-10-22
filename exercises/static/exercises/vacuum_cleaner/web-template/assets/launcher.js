@@ -80,6 +80,7 @@ function startSim(step) {
             } else {                
                 let error = event.data.substring(10,event.data.length);
                 radiConect.contentWindow.postMessage({connection: 'exercise', command: 'error', text: error}, '*');
+                toggleSubmitButton(true);
             }
             setTimeout(function () {
                 ws_manager.send(JSON.stringify({"command" : "Pong"}));

@@ -3,11 +3,6 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
-var stop_button = document.getElementById("stop");
-stop_button.disabled = true;
-stop_button.style.opacity = "0.4";
-stop_button.style.cursor = "not-allowed";
-
 // running variable for psuedo decoupling
 // Play/Pause from Reset
 var frequency = "0";
@@ -19,9 +14,10 @@ function declare_code_guest(websocket_address){
 
     websocket_code_guest.onopen = function(event){
 		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
-		if (websocket_gui_guest.readyState == 1) {
+		if (websocket_code.readyState == 1 && websocket_gui.readyState == 1 && websocket_gui_guest.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+            enableSimControls();
 		}
     }
     websocket_code_guest.onclose = function(event){
@@ -94,10 +90,6 @@ function submitCodeMouse(){
 
         websocket_code_guest.send(python_code);
         console.log("Code Sent! Check terminal for more information!");
-
-        stop_button.disabled = false;
-        stop_button.style.opacity = "1.0";
-        stop_button.style.cursor = "default";
     }
 	catch (e){
 		alert("Connection must be established before sending the code: ", e)

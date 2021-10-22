@@ -19,6 +19,7 @@ function declare_gui(){
 		if (websocket_code.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+            enableSimControls();
 		}
     }
 
