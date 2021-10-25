@@ -82,7 +82,7 @@ img{
 
 #save{
   font-size: 12px;
-    width: 80px;
+    width: 90px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
@@ -91,12 +91,20 @@ img{
 
 #load{
   font-size: 12px;
-    width: 80px;
+    width: 90px;
     height: 40px;
     border: none;
     background-color: whitesmoke;
     margin-right:50px;
 
+}
+
+#loadIntoRobot{
+    font-size: 12px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-right:10px;
 }
 
 #reset{
@@ -129,7 +137,7 @@ img{
     margin-right: 10px;
 }
 
-#reset:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover{
+#reset:hover, #loadIntoRobot:hover, #submit:hover, #load:hover, #stop:hover, #save:hover, #gazebo_button:hover, #console_button:hover{
     border: 1.5px solid transparent;
     -moz-border-image: -moz-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
     -webkit-border-image: -webkit-linear-gradient(left, #3acfd5 0%, #3a4ed5 100%);
