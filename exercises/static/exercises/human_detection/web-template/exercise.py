@@ -30,15 +30,15 @@ import benchmark
 
 class Template:
     # Initialize class variables
-    # self.time_cycle to run an execution for at least 1 second
+    # self.ideal_cycle to run an execution for at least 1 second
     # self.process for the current running process
     def __init__(self):
         self.thread = None
         self.reload = False
 
         # Time variables
-        self.time_cycle = 80
         self.ideal_cycle = 80
+        self.measured_cycle = 80
         self.iteration_counter = 0
         self.frequency_message = {'brain': '', 'gui': ''}
 
@@ -186,8 +186,8 @@ class Template:
 
                 # The code should be run for at least the target time step
                 # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+                if (ms < self.ideal_cycle):
+                    time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             self.hal.frame_number = 0
             print("Video infer process thread closed!")
@@ -263,8 +263,8 @@ class Template:
 
                 # The code should be run for atleast the target time step
                 # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+                if (ms < self.ideal_cycle):
+                    time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             print("Live infer process thread closed!")
 
@@ -416,8 +416,8 @@ class Template:
 
                 # The code should be run for at least the target time step
                 # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+                if (ms < self.ideal_cycle):
+                    time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             
             self.hal.frame_number = 0
@@ -448,9 +448,9 @@ class Template:
             # Get the time period
             try:
                 # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
+                self.measured_cycle = ms / self.iteration_counter
             except:
-                self.ideal_cycle = 0
+                self.measured_cycle = 0
 
             # Reset the counter
             self.iteration_counter = 0
@@ -462,12 +462,12 @@ class Template:
         brain_frequency = 0
         gui_frequency = 0
         try:
-            brain_frequency = round(1000 / self.ideal_cycle, 1)
+            brain_frequency = round(1000 / self.measured_cycle, 1)
         except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -517,11 +517,11 @@ class Template:
 
         # Set brain frequency
         frequency = float(frequency_message["brain"])
-        self.time_cycle = 1000.0 / frequency
+        self.ideal_cycle = 1000.0 / frequency
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.time_cycle = 1000.0 / frequency
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return  
 
