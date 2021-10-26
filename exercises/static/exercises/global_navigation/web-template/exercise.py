@@ -24,15 +24,16 @@ from console import start_console, close_console
 
 class Template:
     # Initialize class variables
-    # self.time_cycle to run an execution for atleast 1 second
+    # self.ideal_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
+        self.measure_thread = None
         self.thread = None
         self.reload = False
 
         # Time variables
-        self.time_cycle = 80
         self.ideal_cycle = 80
+        self.measured_cycle = 80
         self.iteration_counter = 0
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
@@ -178,8 +179,8 @@ class Template:
             # The code should be run for atleast the target time step
             # If it's less put to sleep
             # If it's more no problem as such, but we can change it!
-            if (ms < self.time_cycle):
-                time.sleep((self.time_cycle - ms) / 1000.0)
+            if (ms < self.ideal_cycle):
+                time.sleep((self.ideal_cycle - ms) / 1000.0)
 
         close_console()
         print("Current Thread Joined!")
@@ -239,7 +240,7 @@ class Template:
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
-        while self.reload == False:
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -252,9 +253,9 @@ class Template:
             # Get the time period
             try:
                 # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
+                self.measured_cycle = ms / self.iteration_counter
             except:
-                self.ideal_cycle = 0
+                self.measured_cycle = 0
 
             # Reset the counter
             self.iteration_counter = 0
@@ -265,12 +266,12 @@ class Template:
         brain_frequency = 0
         gui_frequency = 0
         try:
-            brain_frequency = round(1000 / self.ideal_cycle, 1)
+            brain_frequency = round(1000 / self.measured_cycle, 1)
         except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -308,16 +309,14 @@ class Template:
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if (self.thread != None):
-            while self.thread.is_alive() or self.measure_thread.is_alive():
-                pass
+            while self.thread.is_alive():
+                time.sleep(0.2)
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
-        self.measure_thread.start()
         self.send_code_message()
         print("New Thread Started!")
 
@@ -327,11 +326,11 @@ class Template:
 
         # Set brain frequency
         frequency = float(frequency_message["brain"])
-        self.time_cycle = 1000.0 / frequency
+        self.ideal_cycle = 1000.0 / frequency
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.time_cycle = 1000.0 / frequency
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
 
@@ -341,7 +340,7 @@ class Template:
         if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
-            self.send_frequency_message()
+            time.sleep(1)
             return
 
         elif(message[:5] == "#ping"):
@@ -369,8 +368,9 @@ class Template:
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
 
-        # Initialize the frequency message
-        self.send_frequency_message()
+        # Start measure frequency
+        self.measure_thread = threading.Thread(target=self.measure_frequency)
+        self.measure_thread.start()
 
         print(client, 'connected')
 
