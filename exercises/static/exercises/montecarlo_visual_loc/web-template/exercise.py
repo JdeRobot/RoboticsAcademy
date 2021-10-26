@@ -307,14 +307,15 @@ class Template:
             self.send_ping_message()
             return
 
-        try:
-            # Once received turn the reload flag up and send it to execute_thread function
-            code = message
-            # print(repr(code))
-            self.reload = True
-            self.execute_thread(code)
-        except:
-            pass
+        elif (message[:5] == "#code"):
+            try:
+                # Once received turn the reload flag up and send it to execute_thread function
+                code = message
+                # print(repr(code))
+                self.reload = True
+                self.execute_thread(code)
+            except:
+                pass
 
     # Function that gets called when the server is connected
     def connected(self, client, server):

@@ -243,21 +243,22 @@ while True:
             
             self.teleop_q.put({"v":v,"w":w})
             return
-            
-        try:
-            # First pause the teleoperator thread if exists
-            if self.teleop.is_alive():
-                self.exit_signal_teleop.set()
-            
-            self.paused = False
 
-            # Once received turn the reload flag up and send it to execute_thread function
-            code = message
-            # print(repr(code))
-            self.reload.set()
-            self.execute_thread(code)
-        except:
-            pass
+        elif (message[:5] == "#code"):  
+            try:
+                # First pause the teleoperator thread if exists
+                if self.teleop.is_alive():
+                    self.exit_signal_teleop.set()
+                
+                self.paused = False
+
+                # Once received turn the reload flag up and send it to execute_thread function
+                code = message
+                # print(repr(code))
+                self.reload.set()
+                self.execute_thread(code)
+            except:
+                pass
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
