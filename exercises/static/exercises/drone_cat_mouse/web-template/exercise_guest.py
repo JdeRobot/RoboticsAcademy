@@ -25,6 +25,7 @@ class Template:
     # self.ideal_cycle to run an execution for at least 1 second
     # self.process for the current running process
     def __init__(self):
+        self.measure_thread = None
         self.thread = None
         self.reload = False
 
@@ -165,7 +166,7 @@ class Template:
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
-        while not self.reload:
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -229,16 +230,14 @@ class Template:
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
         if self.thread is not None:
-            while self.thread.is_alive() or self.measure_thread.is_alive():
-                pass
+            while self.thread.is_alive():
+                time.sleep(0.2)
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
-        self.measure_thread.start()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -262,7 +261,6 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
-            self.send_frequency_message()
             return
 
         try:
@@ -285,8 +283,9 @@ class Template:
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
 
-        # Initialize the ping message
-        self.send_frequency_message()
+        # Start measure frequency
+        self.measure_thread = threading.Thread(target=self.measure_frequency)
+        self.measure_thread.start()
 
         print(client, 'connected')
 
