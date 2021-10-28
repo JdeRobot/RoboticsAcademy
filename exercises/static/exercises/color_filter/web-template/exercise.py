@@ -97,7 +97,7 @@ class Template:
             return "", ""
 
         # Search for an instance of while True
-        infinite_loop = re.search(r'[^ \t]while\(True\):|[^ \t]while True:', source_code)
+        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -108,7 +108,7 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
+            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
