@@ -101,7 +101,7 @@ while True:
 
 * **Grid Button**: Toggles the visualization of the navigation matrix. It must be sent using the API in order to visualize it.
 
-**Application Programming Interface**
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.

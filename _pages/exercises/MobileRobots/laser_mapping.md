@@ -99,7 +99,7 @@ while True:
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
 
-**Application Programming Interface**
+## Robot API
 
 * `HAL.getPose3d().x` - to get position x of the robot 
 * `HAL.getPose3d().y` - to get position y of the robot 

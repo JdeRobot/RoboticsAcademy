@@ -94,7 +94,7 @@ MyAlgorithm.py
         # TO DO
 ```
 
-### API
+## Robot API
 * `self.client.sendGoalToClient(x, y)` - to send goal to the move_base client
 * `self.client.getResultFromClient()` - to send get result from client. None if not reached the goal
 * `self.grid.getDestiny()` - to get destination of the robot after double click on GUI
