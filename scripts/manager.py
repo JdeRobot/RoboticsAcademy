@@ -310,13 +310,6 @@ class Commands:
         self.call_subprocess(cmd_mel)
         cmd_websockify = cmd + ['websockify']
         self.call_subprocess(cmd_websockify)
-        cmd_x11vnc = cmd + ['x11vnc']
-        self.call_subprocess(cmd_x11vnc)
-        try:
-            cmd_x11 = cmd + ['/usr/lib/xorg/Xorg']
-            self.call_subprocess(cmd_x11)
-        except:
-            pass
         cmd_novnc = cmd + ['launch.sh']
         self.call_subprocess(cmd_novnc)
         cmd_console = cmd + ['xterm']
