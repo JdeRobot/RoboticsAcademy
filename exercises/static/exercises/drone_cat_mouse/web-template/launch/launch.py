@@ -66,18 +66,11 @@ class Launch(Tests):
 
     def main(self):
         try:
-            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait"]
-            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch"]
-            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch"]
-            args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch"]
-            args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch"]
-
-            if len(sys.argv)>=2 and sys.argv[1] == "log":
-                args1.append("--log")
-                args2.append("--log")
-                args3.append("--log")
-                args4.append("--log")
-                args5.append("--log")
+            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait", "--log"]
+            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", "--log"]
+            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch", "--log"]
+            args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", "--log"]
+            args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", "--log"]
 
             self.run(args1)         #launch gazebo
             self.test_gazebo()
