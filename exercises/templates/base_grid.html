@@ -46,12 +46,12 @@
         }
     </script>
     <div id="Control" class="container" >
-        <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><img src="{% static 'exercises/assets/img/upload.png' %}"> Save</button>
-        <button  id="load" type="button"<span title="Load your code from your local machine"></span><img src="{% static 'exercises/assets/img/download.png' %}"> Load</button>
-        <button  id="submit" type="button" onclick="check()"<span title="Submit and try out your code"></span><img src="{% static 'exercises/assets/img/submit.png' %}"> Play </button>
-        <button  id="stop" type="button" onclick="stop()"<span title="Stop the current simulation"></span><img src="{% static 'exercises/assets/img/pause.png' %}"> Stop</button>
+        <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><nobr><img src="{% static 'exercises/assets/img/download.png' %}" style="display: inline"><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
+        <button  id="load" type="button"<span title="Load your code from your local machine"></span><nobr><img src="{% static 'exercises/assets/img/upload.png' %}" style="display: inline;"><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
+        <button id="loadIntoRobot" type="button" onclick="check()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><nobr><img class="btn_img" src="{% static 'exercises/assets/img/robot.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load in robot</p></nobr></button>
+		<button id="submit" type="button" onclick="start('{{user.username}}')" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'exercises/assets/img/submit.png' %}" style="display: inline;"/><p style="display: inline;"> Play</p></button>
         <input   type="file" id="real-file" hidden="hidden"/>
-        <button  id="reset" type="button" onclick="reset()" <span title="Reset the current simulation"></span><img style="height:15px;" src="{% static 'exercises/assets/img//reset.svg' %}"> Reset</button>
+        <button  id="reset" type="button" onclick="resetSim()" <span title="Reset the current simulation"></span><img style="height:15px;" src="{% static 'exercises/assets/img//reset.svg' %}"> Reset</button>
         <div overflow-x:auto id="Medidor_Brain">
             <table id=table_code_freq>
             <tr>
@@ -73,6 +73,68 @@
         <button id="console_button" type="button" onclick="changeconsole()"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="terminalimg" style="height:20px;" src="{% static 'exercises/assets/img/console.png' %}"/><span style="display: block;">Console</span></div></button>
         <button id="grid_button" type="button" onclick="changegrid()"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="gridimg" style="height:20px;" src="{% static 'exercises/assets/img/grid_icon.png' %}"/><span style="display: block;">Nav Grid</span></div></button>
     </div>
+
+    <script>
+        function toggleSubmitButton(toggle) {
+            let submit_button = document.getElementById("loadIntoRobot");
+            if (toggle == false) {
+                submit_button.disabled = true;
+                submit_button.style.opacity = "0.4";
+            } else {
+                submit_button.disabled = false;
+                submit_button.style.opacity = "1.0";
+            }
+        }
+
+        function toggleResetButton(toggle) {
+            let reset_button = document.getElementById("reset");
+            if (toggle == false) {
+                reset_button.disabled = true;
+                reset_button.style.opacity = "0.4";
+                reset_button.style.cursor = "not-allowed";
+            } else {
+                reset_button.disabled = false;
+                reset_button.style.opacity = "1.0";
+                reset_button.style.cursor = "default";
+            }
+          }
+
+          function togglePlayPause(stop) {
+            let submit_button = document.getElementById("submit");
+            if (stop) {
+                submit_button.getElementsByTagName('img')[0].src="{% static 'exercises/assets/img/pause.png' %}";
+                submit_button.getElementsByTagName('p')[0].innerText = " Stop";
+                submit_button.setAttribute( "onClick", "javascript: stop();" );
+            } else {
+                submit_button.getElementsByTagName('img')[0].src="{% static 'exercises/assets/img/submit.png' %}";
+                submit_button.getElementsByTagName('p')[0].innerText = " Play";
+                submit_button.setAttribute( "onClick", "javascript: start();" );
+            }
+          }
+
+          function enablePlayPause(enable) {
+            let playPause_button = document.getElementById("submit");
+            if (enable == false) {
+                playPause_button.disabled = true;
+                playPause_button.style.opacity = "0.4";
+                playPause_button.style.cursor = "not-allowed";
+            } else if (firstCodeSent == true) {
+                playPause_button.disabled = false;
+                playPause_button.style.opacity = "1.0";
+                playPause_button.style.cursor = "default";
+            }
+          }
+
+          function enableSimControls() {
+            let reset_button = document.getElementById("reset");
+            if (resetRequested == true) {
+                togglePlayPause(false);			
+            }
+            enablePlayPause(true);
+            toggleResetButton(true);
+          }
+    </script>
+
     <div class="content">
         <div class="split a">
             <li id="frecuency_control" style="list-style: none; display:block; text-align:center; font-weight:bold;" ><div id="Frequency" class="container">

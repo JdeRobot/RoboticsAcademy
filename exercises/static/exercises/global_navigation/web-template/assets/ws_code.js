@@ -3,10 +3,6 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
-var stop_button = document.getElementById("stop");
-stop_button.disabled = true;
-stop_button.style.opacity = "0.4";
-stop_button.style.cursor = "not-allowed";
 // running variable for psuedo decoupling
 // Play/Pause from Reset
 var frequency = "0",
@@ -21,6 +17,7 @@ function declare_code(websocket_address){
         if (websocket_gui.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+            enableSimControls();
 		}
         websocket_code.send("#ping");
     }
@@ -55,6 +52,12 @@ function declare_code(websocket_address){
         }
         else if (operation == "#ping"){
             websocket_code.send("#ping");
+        } else if (operation == "#exec") {
+            if (firstCodeSent == false) {
+                firstCodeSent = true;
+                enablePlayPause(true);
+            }
+            toggleSubmitButton(true);
         }
     };
 }
@@ -67,10 +70,6 @@ function submitCode(){
 
     console.log("Code Sent! Check terminal for more information!");
     websocket_code.send(python_code);
-
-    stop_button.disabled = false;
-    stop_button.style.opacity = "1.0";
-	stop_button.style.cursor = "default";
 
 	running = true;
 }

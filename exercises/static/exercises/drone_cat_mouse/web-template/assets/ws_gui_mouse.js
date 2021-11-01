@@ -15,9 +15,10 @@ function declare_gui_guest(websocket_address){
 
 	websocket_gui_guest.onopen = function(event){
 		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
-		if (websocket_code_guest.readyState == 1) {
+		if (websocket_code.readyState == 1 && websocket_code_guest.readyState == 1 && websocket_gui.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+			enableSimControls();
 		}
 	}
 	
