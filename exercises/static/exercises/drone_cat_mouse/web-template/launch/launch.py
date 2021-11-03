@@ -50,11 +50,8 @@ class Launch(Tests):
     def run(self, args, insert_roslaunch=True, insert_vglrun=True):
         if insert_roslaunch: args.insert(0, "/opt/ros/noetic/bin/roslaunch")
         if insert_vglrun and ACCELERATION_ENABLED: args.insert(0, "vglrun")
-        if len(sys.argv)>=2 and sys.argv[1] == "log":
-            with open("/logs/launch.log", "a+") as f:
-                subprocess.Popen(args, stdout=f, bufsize=4096, universal_newlines=True)
-        else:
-            subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+
+        subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
 
     def finished(self):
         while True:
@@ -69,11 +66,11 @@ class Launch(Tests):
 
     def main(self):
         try:
-            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait"]
-            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch"]
-            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch"]
-            args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch"]
-            args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch"]
+            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait", "--log"]
+            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", "--log"]
+            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch", "--log"]
+            args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", "--log"]
+            args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", "--log"]
 
             self.run(args1)         #launch gazebo
             self.test_gazebo()

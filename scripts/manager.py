@@ -77,9 +77,7 @@ class Commands:
         gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
         for instruction in self.instructions[exercise]["instructions_ros"]:
-            if exercise in DRONE_EX and len(sys.argv)>=2 and sys.argv[1] == "log":
-                instruction = instruction + " log"
-            elif exercise in CIRCUIT_EX:
+            if exercise in CIRCUIT_EX:
                 instruction = instruction.format(circuit)
                 print('INSTRUCTION: ', instruction)    
             
