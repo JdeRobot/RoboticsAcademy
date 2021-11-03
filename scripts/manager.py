@@ -77,9 +77,7 @@ class Commands:
         gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
         for instruction in self.instructions[exercise]["instructions_ros"]:
-            if exercise in DRONE_EX and len(sys.argv)>=2 and sys.argv[1] == "log":
-                instruction = instruction + " log"
-            elif exercise in CIRCUIT_EX:
+            if exercise in CIRCUIT_EX:
                 instruction = instruction.format(circuit)
                 print('INSTRUCTION: ', instruction)    
             
@@ -244,13 +242,13 @@ class Commands:
     def pause_physics(self):
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
         rosservice_thread = DockerThread(cmd)
-        rosservice_thread.start()
+        rosservice_thread.call()
 
     # Function to unpause Gazebo physics
     def unpause_physics(self):
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
         rosservice_thread = DockerThread(cmd)
-        rosservice_thread.start()
+        rosservice_thread.call()
 
     # Function to reset Gazebo physics
     def reset_physics(self, simulator):
@@ -268,52 +266,56 @@ class Commands:
     def run_subprocess(self, cmd):
         subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
 
+    # Function to wait subprocess
+    def call_subprocess(self, cmd):
+        subprocess.call(cmd, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
+
+
+
     # Function to kill every program
     async def kill_all(self):
         cmd = ['pkill', '-9', '-f']
         cmd_py = cmd + ['"python "']
-        self.run_subprocess(cmd_py)
+        self.call_subprocess(cmd_py)
         cmd_gz = cmd + ['gz']
-        self.run_subprocess(cmd_gz)
+        self.call_subprocess(cmd_gz)
         cmd_launch = cmd + ['launch.py']
-        self.run_subprocess(cmd_launch)
+        self.call_subprocess(cmd_launch)
         cmd_exercise = cmd + ['exercise.py']
-        self.run_subprocess(cmd_exercise)
+        self.call_subprocess(cmd_exercise)
         cmd_gui = cmd + ['gui.py']
-        self.run_subprocess(cmd_gui)
+        self.call_subprocess(cmd_gui)
         try:
             cmd_exercise_guest = cmd + ['exercise_guest.py']
-            self.run_subprocess(cmd_exercise_guest)
+            self.call_subprocess(cmd_exercise_guest)
             cmd_gui_guest = cmd + ['gui_guest.py']
-            self.run_subprocess(cmd_gui_guest)
+            self.call_subprocess(cmd_gui_guest)
         except:
             pass
         cmd_host = cmd + ['node']
-        self.run_subprocess(cmd_host)
+        self.call_subprocess(cmd_host)
         cmd_rosmaster = cmd + ['rosmaster']
-        self.run_subprocess(cmd_rosmaster)
+        self.call_subprocess(cmd_rosmaster)
         cmd_host = cmd + ['gzserver']
-        self.run_subprocess(cmd_host)
+        self.call_subprocess(cmd_host)
         cmd_client = cmd + ['gzclient']
-        self.run_subprocess(cmd_client)
+        self.call_subprocess(cmd_client)
         cmd_ros = cmd + ['roslaunch']
-        self.run_subprocess(cmd_ros)
+        self.call_subprocess(cmd_ros)
         cmd_rosout = cmd + ['rosout']
-        self.run_subprocess(cmd_rosout)
+        self.call_subprocess(cmd_rosout)
         cmd_mel = cmd + ['melodroot']
-        self.run_subprocess(cmd_mel)
+        self.call_subprocess(cmd_mel)
         cmd_websockify = cmd + ['websockify']
-        self.run_subprocess(cmd_websockify)
-        cmd_x11vnc = cmd + ['x11vnc']
-        self.run_subprocess(cmd_x11vnc)
+        self.call_subprocess(cmd_websockify)
         cmd_novnc = cmd + ['launch.sh']
-        self.run_subprocess(cmd_novnc)
+        self.call_subprocess(cmd_novnc)
         cmd_console = cmd + ['xterm']
-        self.run_subprocess(cmd_console)
+        self.call_subprocess(cmd_console)
         cmd_noetic = cmd + ['noetic']
-        self.run_subprocess(cmd_noetic)
+        self.call_subprocess(cmd_noetic)
         cmd_px4 = cmd + ['px4']
-        self.run_subprocess(cmd_px4)
+        self.call_subprocess(cmd_px4)
 
 
 # Main Manager class
@@ -340,6 +342,7 @@ class Manager:
             command = data["command"]
 
             if command == "open":
+                await self.kill_simulation()
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
@@ -363,17 +366,17 @@ class Manager:
                     self.open_accelerated_simulation(self.exercise, self.width, self.height, circuit)
             elif command == "resume":
                 self.resume_simulation()
-                await websocket.send("Ping{}".format(self.launch_level))
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stop":
                 self.stop_simulation()
-                await websocket.send("Ping{}".format(self.launch_level))
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "evaluate":
                 await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
-                await websocket.send("Pingreset{}".format(self.launch_level))
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
                 await websocket.send("Ping{}".format(self.launch_level))
@@ -484,6 +487,7 @@ class Manager:
     # Function to reset simulation
     def reset_simulation(self):
         print("Reset Simulation")
+        self.commands.pause_physics()
         self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
@@ -507,10 +511,10 @@ class Manager:
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
             
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
-            while_position = re.search(r'[^ ]while\(True\):|[^ ]while True:', code)
+            while_position = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)
             sequential_code = code[:while_position.start()]
             iterative_code = code[while_position.start():]
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '\n', iterative_code, 1)
+            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '\n', iterative_code, 1)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
             code = sequential_code + iterative_code
 

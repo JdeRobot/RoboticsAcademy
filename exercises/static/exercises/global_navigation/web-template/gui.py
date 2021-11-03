@@ -92,7 +92,7 @@ class GUI:
         return payload
 
     # load the image data
-    def showGPP(self, image):
+    def showNumpy(self, image):
         self.image_show_lock.acquire()
         self.image_to_be_shown = image
         self.image_to_be_shown_updated = True
@@ -159,21 +159,14 @@ class GUI:
     def reset_gui(self):
         self.map.reset()
 
-    def showImage(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
-
-
 # This class decouples the user thread
 # and the GUI update thread
 class ThreadGUI:
     def __init__(self, gui):
         self.gui = gui
         # Time variables
-        self.time_cycle = 80
         self.ideal_cycle = 80
+        self.measured_cycle = 80
         self.iteration_counter = 0
 
     # Function to start the execution of threads
@@ -205,9 +198,9 @@ class ThreadGUI:
             # Get the time period
             try:
                 # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
+                self.measured_cycle = ms / self.iteration_counter
             except:
-                self.ideal_cycle = 0
+                self.measured_cycle = 0
 
             # Reset the counter
             self.iteration_counter = 0
@@ -231,5 +224,5 @@ class ThreadGUI:
 
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if (ms < self.time_cycle):
-                time.sleep((self.time_cycle - ms) / 1000.0)
+            if (ms < self.ideal_cycle):
+                time.sleep((self.ideal_cycle - ms) / 1000.0)

@@ -23,7 +23,8 @@ function declare_code(){
 		if (websocket_gui.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
-		}
+		}		
+        websocket_code.send("#ping");
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
@@ -46,13 +47,15 @@ function declare_code(){
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
+			// Send the acknowledgment message along with frequency
+			code_frequency = document.querySelector('#code_freq').value;
+			gui_frequency = document.querySelector('#gui_freq').value;
+			frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+			websocket_code.send("#freq" + JSON.stringify(frequency_message));
 		}
-
-		// Send the acknowledgment message along with frequency
-		code_frequency = document.querySelector('#code_freq').value;
-		gui_frequency = document.querySelector('#gui_freq').value;
-		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
-		websocket_code.send("#freq" + JSON.stringify(frequency_message));
+		else if (operation == "#ping"){
+            websocket_code.send("#ping");
+        }
 	};
 }
 
@@ -62,11 +65,6 @@ function submitCode(){
 		// Get the code from editor and add headers
 		var python_code = editor.getValue();
 		python_code = "#code\n" + python_code
-
-		// Get the debug level and add header
-		//var debug_level = document.querySelector('input[name = "debug"]').value;
-		var debug_level = 2;
-		python_code = "#dbug" + debug_level + python_code
 
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");

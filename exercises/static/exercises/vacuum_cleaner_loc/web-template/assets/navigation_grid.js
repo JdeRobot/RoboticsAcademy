@@ -6,8 +6,7 @@ var inputColor = document.getElementById("color");
 var score = document.getElementById("score");
 var count = 0;
 var fill_index=[];
-//var grid_line_width = Math.ceil(sizeSquare/20);
-var grid_line_width = 1;
+var grid_line_width = Math.ceil(sizeSquare/35);
 var columnas = [];
 var filas = [];
 
@@ -16,10 +15,11 @@ function initGrid(rows, cols){
     var canvas = document.getElementById("grid");
     sizeSquare.w = canvas.width/rows;
     sizeSquare.h = canvas.height/cols;
+    grid_line_width = Math.ceil(sizeSquare/35);
     if (canvas && canvas.getContext) {
         var ctx = canvas.getContext("2d");
         if (ctx) {
-            dibujaGrid(sizeSquare.w, sizeSquare.h, 1, "#44414B", ctx);
+            dibujaGrid(sizeSquare.w, sizeSquare.h, grid_line_width, "#44414B", ctx);
         } else {
             alert("No se pudo cargar el contexto");
         }
@@ -129,9 +129,9 @@ function fillGrid(mat){
             else if (mat[i][j] == 1)
                 cell_color = '#287C00';
             else if (mat[i][j] == 2)
-                cell_color = '#7C0000';
-            else if (mat[i][j] == 3)
                 cell_color = '#D6E000';
+            else if (mat[i][j] == 3)
+                cell_color = '#7C0000';
             fillCell(i, j, ctx, cell_color);
         }
     }

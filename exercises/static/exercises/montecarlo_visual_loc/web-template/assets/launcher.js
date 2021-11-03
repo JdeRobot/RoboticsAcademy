@@ -65,11 +65,9 @@ function startSim(step) {
             } else if (simStop){
                 ws_manager.send(JSON.stringify({"command": "stop"}));
                 simStop = false;
-                running = false;
             } else if (simResume){
                 ws_manager.send(JSON.stringify({"command": "resume"}));
                 simResume = false;
-                running = true;
             } else {
                 setTimeout(function () {
                     ws_manager.send(JSON.stringify({"command" : "Pong"}));
@@ -78,18 +76,26 @@ function startSim(step) {
         }
         if (event.data.includes("evaluate")) {
             if (event.data.length < 9) {    // If there is an error it is sent along with "evaluate"
-                start();
+                submitCode();
             } else {                
                 let error = event.data.substring(10,event.data.length);
                 radiConect.contentWindow.postMessage({connection: 'exercise', command: 'error', text: error}, '*');
+                toggleSubmitButton(true);
             }
             setTimeout(function () {
                 ws_manager.send(JSON.stringify({"command" : "Pong"}));
             }, 1000)
         } else if (event.data.includes("reset")) {
             clearMap();
+        } else if (event.data.includes("PingDone")) {
+            enablePlayPause(true);    
+            toggleResetButton(true);       
+            if (resetRequested == true) {
+                togglePlayPause(false);
+                clearMap();
+                resetRequested = false;
+            }
         }
-
     }
 }
 

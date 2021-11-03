@@ -67,6 +67,7 @@ class Launch(Tests):
         else:
             process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
             return process.stdout
+        # subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
 
     def finished(self):
         while True:
@@ -81,11 +82,11 @@ class Launch(Tests):
 
     def main(self):
         try:
-            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait"]
-            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch"]
-            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch"]
-            args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch"]
-            args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch"]
+            args1 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", "--wait", "--log"]
+            args2 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", "--log"]
+            args3 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch", "--log"]
+            args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", "--log"]
+            args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", "--log"]
 
             self.run(args1)         #launch gazebo
             self.test_gazebo()

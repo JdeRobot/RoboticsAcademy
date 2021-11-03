@@ -11,6 +11,7 @@ function decode_utf8(s){
 var websocket_gui, operation, data;
 var pose, content;
 var command_input;
+var last_data_nav;
 
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
@@ -20,6 +21,7 @@ function declare_gui(websocket_address){
 		if (websocket_code.readyState == 1) {
 			alert("[open] Connection established!");
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+			enableSimControls();
 		}
 	}
 	
@@ -50,21 +52,25 @@ function declare_gui(websocket_address){
 
 			// Parse the Navigation Grid Data
 			if (data.nav != null) {
-				navData = data.nav;
-				navData = navData.substring(2, navData.length-2);
-				navArray = navData.split(/\[|\]/);
-				for (let i = 0; i < navArray.length; i++) {
-					if (navArray[i] == ", ") {
-						navArray.splice(i, 1);
+				if (last_data_nav !== data.nav) {
+					last_data_nav = data.nav;
+					navData = data.nav;
+					navData = navData.substring(2, navData.length-2);
+					navArray = navData.split(/\[|\]/);
+					for (let i = 0; i < navArray.length; i++) {
+						if (navArray[i] == ", ") {
+							navArray.splice(i, 1);
+						}
 					}
-				}
-				for (let i = 0; i < navArray.length; i++) {
-					navArray[i] = navArray[i].split(", ");
-				}
-	
-				// Draw the nav data
-				initGrid(navArray.length, navArray[0].length);
-				fillGrid(navArray);
+					for (let i = 0; i < navArray.length; i++) {
+						navArray[i] = navArray[i].split(", ");
+					}
+		
+					// Draw the nav data
+					reset_evaluator_map();
+					initGrid(navArray.length, navArray[0].length);
+					fillGrid(navArray);
+				}				
 			}
 
 			// Send the Acknowledgment Message

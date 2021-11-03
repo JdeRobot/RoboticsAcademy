@@ -25,15 +25,15 @@ from console import start_console, close_console
 
 class Template:
     # Initialize class variables
-    # self.time_cycle to run an execution for atleast 1 second
+    # self.ideal_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
         self.thread = None
         self.reload = False
         
         # Time variables
-        self.time_cycle = 80
         self.ideal_cycle = 80
+        self.measured_cycle = 80
         self.iteration_counter = 0
         self.frequency_message = {'brain': '', 'gui': ''}
                 
@@ -102,7 +102,7 @@ class Template:
             return "", ""
 
         # Search for an instance of while True
-        infinite_loop = re.search(r'[^ \t]while\(True\):|[^ \t]while True:', source_code)
+        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -113,7 +113,7 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
+            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
@@ -202,8 +202,8 @@ class Template:
             # The code should be run for atleast the target time step
             # If it's less put to sleep
             # If it's more no problem as such, but we can change it!
-            if(ms < self.time_cycle):
-                time.sleep((self.time_cycle - ms) / 1000.0)
+            if(ms < self.ideal_cycle):
+                time.sleep((self.ideal_cycle - ms) / 1000.0)
 
         close_console()
         print("Current Thread Joined!")
@@ -261,9 +261,9 @@ class Template:
             # Get the time period
             try:
                 # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
+                self.measured_cycle = ms / self.iteration_counter
             except:
-                self.ideal_cycle = 0
+                self.measured_cycle = 0
             
             # Reset the counter
             self.iteration_counter = 0
@@ -276,12 +276,12 @@ class Template:
         # This function generates and sends frequency measures of the brain and gui
         brain_frequency = 0; gui_frequency = 0
         try:
-            brain_frequency = round(1000 / self.ideal_cycle, 1)
+            brain_frequency = round(1000 / self.measured_cycle, 1)
         except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -290,6 +290,13 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
+
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
     
     # Function to maintain thread execution
     def execute_thread(self, source_code):
@@ -305,6 +312,7 @@ class Template:
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -313,11 +321,11 @@ class Template:
 
         # Set brain frequency
         frequency = float(frequency_message["brain"])
-        self.time_cycle = 1000.0 / frequency
+        self.ideal_cycle = 1000.0 / frequency
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.time_cycle = 1000.0 / frequency
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
 
@@ -328,6 +336,10 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             return
+        elif(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
+            return
         elif(message[:5] == "#teop"):
             self.teop = not self.teop
             if (self.teop == False):
@@ -336,14 +348,15 @@ class Template:
             self.key = message[4]
             self.reload = False
             return
-        try:
-            # Once received turn the reload flag up and send it to execute_thread function
-            code = message
-            # print(repr(code))
-            self.reload = True
-            self.execute_thread(code)
-        except:
-            pass
+        elif (message[:5] == "#code"):
+            try:
+                # Once received turn the reload flag up and send it to execute_thread function
+                code = message
+                # print(repr(code))
+                self.reload = True
+                self.execute_thread(code)
+            except:
+                pass
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
