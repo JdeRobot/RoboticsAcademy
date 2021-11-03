@@ -6,7 +6,7 @@ from gazebo_msgs.srv import SetModelState
 from threading import Event, Thread
 
 
-MIN_DIST = 30 # minimum distance required by drone to pick package
+MIN_DIST = 0.5 # minimum distance required by drone to pick package
 
 
 class Magnet:
@@ -19,7 +19,7 @@ class Magnet:
 
     def start_magnet(self):
         req = ModelState()
-        req.model_name = "box"
+        req.model_name = "package_box"
 
         while self.magnetize.is_set():
             drone_pos = self.get_state("typhoon_h480_dual_cam", "")
@@ -45,7 +45,7 @@ class Magnet:
 
     def pick_pkg(self):
         try:
-            pkg_pos = self.get_state("box", "")
+            pkg_pos = self.get_state("package_box", "")
             drone_pos = self.get_state("typhoon_h480_dual_cam", "")
             dist = sqrt(pow(pkg_pos.pose.position.x - drone_pos.pose.position.x, 2) + \
                         pow(pkg_pos.pose.position.y - drone_pos.pose.position.y, 2) + \

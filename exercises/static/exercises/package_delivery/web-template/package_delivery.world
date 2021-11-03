@@ -9,13 +9,41 @@
             <pose>0 0 1 0 0 0</pose>
         </include>
 
+        <!-- Grass Plane -->
         <include>
 			<uri>model://grass_plane</uri>
 		</include>
 
+        <!-- Warehouse -->
         <include>
-			<uri>model://box</uri>
-            <pose>0 0 0 0 0 0</pose>
+			<uri>model://warehouse_pd</uri>
+            <pose>0 30 0.01 0 0 0</pose>
+		</include>
+
+        <!-- Starting Beacon -->
+        <include>
+			<uri>model://target_beacon_pd</uri>
+            <name>starting_beacon</name>
+            <pose>0 30 0.01 0 0 0</pose>
+		</include>
+
+        <!-- Package Box -->
+        <include>
+			<uri>model://package_box</uri>
+            <pose>0 30 0.011 0 0 0</pose>
+		</include>
+
+        <!-- Target House -->
+        <include>
+			<uri>model://house_3</uri>
+            <pose>0 -20 0 0 0 0</pose>
+		</include>
+
+        <!-- Target Beacon -->
+        <include>
+			<uri>model://target_beacon_pd</uri>
+            <name>target_beacon</name>
+            <pose>0 -10 0 0 0 0</pose>
 		</include>
 
         <scene>
