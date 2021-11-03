@@ -217,6 +217,7 @@ class Commands:
                     repeat = False
                 else:
                     repeat = True
+                    time.sleep(0.2)
             except subprocess.TimeoutExpired:
                 repeat = False
 
