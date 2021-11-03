@@ -209,17 +209,16 @@ class Commands:
 		
         roslaunch_thread = DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
-        args=["gz", "stats", "-p"]
         repeat = True
         while repeat:
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
-            with process.stdout:
-                for line in iter(process.stdout.readline, ''):
-                    if not ("is not running" in line):
-                        repeat = False
-                        break
-                    else:
-                        repeat = True
+            try:
+                stats_output = str(subprocess.check_output(['gz', 'stats', '-p', '-d', '1'], timeout=5))
+                if "real-time factor" in str(stats_output):
+                    repeat = False
+                else:
+                    repeat = True
+            except subprocess.TimeoutExpired:
+                repeat = False
 
         if exercise in DRONE_EX:
             data  = ""
