@@ -160,7 +160,7 @@ This guide walks you through using the TensorFlow object detection API to train 
 
 * **Debug Level**: This decides the debugging level of the application. A debug level of 1 implies no debugging at all. A debug level greater than or equal to 2 enables all the GUI functions working properly.
 
-* **Psuedo Console**: This shows the error messages and a few intermediate outputs along the inference, benchmarking and file uploading process.
+* **Pseudo Console**: This shows the error messages and a few intermediate outputs along the inference, benchmarking and file uploading process.
 
 ## Demonstrative Video with Web Template
 
