@@ -20,6 +20,7 @@ function declare_gui(websocket_address){
 		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
 		if (websocket_code.readyState == 1) {
 			alert("[open] Connection established!");
+			enableSimControls();
 			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
 		}
 	}

@@ -94,7 +94,7 @@ class Template:
             return "", ""
 
         # Search for an instance of while True
-        infinite_loop = re.search(r'[^ \t]while\(True\):|[^ \t]while True:', source_code)
+        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -105,7 +105,7 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\(True\):|[^ ]while True:', '', iterative_code)
+            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
@@ -243,21 +243,22 @@ while True:
             
             self.teleop_q.put({"v":v,"w":w})
             return
-            
-        try:
-            # First pause the teleoperator thread if exists
-            if self.teleop.is_alive():
-                self.exit_signal_teleop.set()
-            
-            self.paused = False
 
-            # Once received turn the reload flag up and send it to execute_thread function
-            code = message
-            # print(repr(code))
-            self.reload.set()
-            self.execute_thread(code)
-        except:
-            pass
+        elif (message[:5] == "#code"):  
+            try:
+                # First pause the teleoperator thread if exists
+                if self.teleop.is_alive():
+                    self.exit_signal_teleop.set()
+                
+                self.paused = False
+
+                # Once received turn the reload flag up and send it to execute_thread function
+                code = message
+                # print(repr(code))
+                self.reload.set()
+                self.execute_thread(code)
+            except:
+                pass
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
