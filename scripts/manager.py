@@ -393,40 +393,63 @@ class Manager:
         print("> Starting simulation")
 
         # X Server for Console and Gazebo
+        print("> Starting XServer")
         self.commands.start_xserver(":0")
         self.commands.start_xserver(":1")
+        print("> XServer started")
 
         # Start the exercise
         if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
+            print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
+            print("> GZServer started")
+            print("> Starting exercise")
             self.commands.start_exercise(exercise, circuit=circuit)
             time.sleep(5)
+            print("> Exercise started")
             self.launch_level = 3
 
             # Start x11vnc servers
+            print("> Starting VNCs")
             self.commands.start_vnc(":0", 5900, 6080)
             self.commands.start_vnc(":1", 5901, 1108)
+            print("> VNCs started")
 
             # Start gazebo client
             time.sleep(2)
+            print("> Starting console")
             self.commands.start_console(width, height)
+            print("> Console started")
         elif ("laser_mapping" in exercise):
+            print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
+            print("> STDRServer started")
+            print("> Starting exercise")
             self.commands.start_exercise(exercise)
             time.sleep(5)
+            print("> Exercise started")
             self.launch_level = 3
 
             # Start x11vnc servers
+            print("> Starting VNCs")
             self.commands.start_vnc(":0", 5900, 6080)
             self.commands.start_vnc(":1", 5901, 1108)
-
+            print("> VNCs started")
+            print("> Starting console")
             self.commands.start_console(1920, 1080)
+            print("> Console started")
         else:
+            print("> Starting exercise")
             self.commands.start_exercise(exercise)
             time.sleep(2)
+            print("> Exercise started")
             self.launch_level = 3
+            print("> Starting VNC")
             self.commands.start_vnc(":1", 5900, 1108)
+            print("> VNC started")
+            print("> Starting console")
             self.commands.start_console(1920, 1080)
+            print("> Console started")
 
     # Function to open accelerated simulation
     def open_accelerated_simulation(self, exercise, width, height, circuit):
@@ -437,37 +460,62 @@ class Manager:
         time.sleep(2)
 
         # Start new VNC and accelerated displays
+        print("> Starting VNC")
         self.commands.start_vnc(":0", 5900, 6080)
+        print("> VNC started")
 
         # Start the exercise
         if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
+            print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
+            print("> GZServer started")
+            print("> Starting exercise")
             self.commands.start_exercise(exercise, circuit=circuit)
             time.sleep(5)
+            print("> Exercise started")
             self.launch_level = 3
 
+            print("> Starting VNC 2")
             self.commands.start_vnc(":1", 5901, 1108)
+            print("> VNC 2 started")
 
             # Start gazebo client
             time.sleep(2)
+            print("> Starting console")
             self.commands.start_console(width, height)
+            print("> Console started")
+
         elif ("laser_mapping" in exercise):
+            print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
+            print("> STDRServer started")
+            print("> Starting exercise")
             self.commands.start_exercise(exercise)
             time.sleep(5)
+            print("> Exercise started")
             self.launch_level = 3
 
             # Start x11vnc servers
+            print("> Starting VNCs")
             self.commands.start_vnc(":0", 5900, 6080)
             self.commands.start_vnc(":1", 5901, 1108)
+            print("> VNCs started")
 
+            print("> Starting console")
             self.commands.start_console(1920, 1080)
+            print("> Console started")
         else:
+            print("> Starting exercise")
             self.commands.start_exercise(exercise)
             time.sleep(2)
+            print("> Exercise started")
             self.launch_level = 3
+            print("> Starting VNC 2")
             self.commands.start_vnc(":1", 5900, 1108)
+            print("> VNC 2 Started")
+            print("> Starting console")
             self.commands.start_console(1920, 1080)
+            print("> Console started")
 
     # Function to resume simulation
     def resume_simulation(self):
