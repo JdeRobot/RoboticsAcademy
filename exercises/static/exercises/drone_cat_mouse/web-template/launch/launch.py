@@ -15,33 +15,27 @@ def check_device(device_path):
     except:
         return False
 
+# Function to find px4 sitl log files
+def find_sitl_log(path, regex):
+    for filename in os.listdir(path):
+        if regex in filename:
+            return filename
+
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 EXERCISE = "drone_cat_mouse"
 
 
 class Tests():
-    def test_px4__(self, n=1):
-        rospy.logwarn("[PX4-SITL] Performing checks")
-        passed, failed = False, False
-        while passed and failed:
-            args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander_tests", "check"]
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
-            with process.stdout:
-                for line in iter(process.stdout.readline, ''):
-                    if ("INFO  [commander_tests]   Tests passed :" in line):
-                        passed = int(line.split()[-1]) == n
-                    if ("INFO  [commander_tests]   Tests failed :" in line):
-                        failed = int(line.split()[-1]) == 0
-            time.sleep(2)
-
-    def test_px4(self, output):
+    def test_px4(self, filename):
         rospy.logwarn("[PX4-SITL] Performing checks")
         while True:
-            for line in output:
-                if "INFO  [px4] Startup script returned successfully" in line:
-                    return 
-            time.sleep(2)
+            with open(filename, "r") as f:
+                for line in f:
+                    if "INFO  [px4] Startup script returned successfully" in line:
+                        return 
+                time.sleep(2)
+
 
     def test_mavros(self, ns=""):
         rospy.logwarn("[MAVROS] Performing checks")
@@ -61,13 +55,8 @@ class Launch(Tests):
     def run(self, args, insert_roslaunch=True, insert_vglrun=True):
         if insert_roslaunch: args.insert(0, "/opt/ros/noetic/bin/roslaunch")
         if insert_vglrun and ACCELERATION_ENABLED: args.insert(0, "vglrun")
-        if len(sys.argv)>=2 and sys.argv[1] == "log":
-            with open("/logs/launch.log", "a+") as f:
-                subprocess.Popen(args, stdout=f, bufsize=4096, universal_newlines=True)
-        else:
-            process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
-            return process.stdout
-        # subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+
+        subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
 
     def finished(self):
         while True:
@@ -88,14 +77,17 @@ class Launch(Tests):
             args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", "--log"]
             args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", "--log"]
 
+            process = subprocess.run(["roslaunch-logs"], shell=True, stdout=subprocess.PIPE, encoding="utf-8")
+            path = process.stdout[:-1]
+
             self.run(args1)         #launch gazebo
             self.test_gazebo()
-            output = self.run(args2)         #launch px4 cat
-            self.test_px4(output)
+            self.run(args2)         #launch px4 cat
+            self.test_px4(os.path.join(path, find_sitl_log(path, "cat-sitl")))
             self.run(args3)         #launch mavros cat
             self.test_mavros("/cat")
-            output = self.run(args4)         #launch px4 mouse
-            self.test_px4(output)
+            self.run(args4)         #launch px4 mouse
+            self.test_px4(os.path.join(path, find_sitl_log(path, "mouse-sitl")))
             self.run(args5)         #launch mavros mouse
             self.test_mavros("/mouse")
             self.finished()
