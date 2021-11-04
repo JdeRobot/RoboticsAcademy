@@ -27,15 +27,16 @@ EXERCISE = "drone_cat_mouse"
 
 
 class Tests():
-    def test_px4(self, filename):
+    def test_px4(self, path, regex):
         rospy.logwarn("[PX4-SITL] Performing checks")
         while True:
-            with open(filename, "r") as f:
+            time.sleep(1)
+            filename = find_sitl_log(path, regex)  # None until sitl launchs
+            if filename is None: continue
+            with open(os.path.join(path, filename), "r") as f:
                 for line in f:
                     if "INFO  [px4] Startup script returned successfully" in line:
                         return 
-                time.sleep(2)
-
 
     def test_mavros(self, ns=""):
         rospy.logwarn("[MAVROS] Performing checks")
@@ -51,6 +52,9 @@ class Launch(Tests):
         args = ["/opt/ros/noetic/bin/roscore"]
         self.run(args, insert_roslaunch=False, insert_vglrun=False) #start roscore
         rospy.init_node("launch", anonymous=True)
+
+        process = subprocess.run(["roslaunch-logs"], shell=True, stdout=subprocess.PIPE, encoding="utf-8")
+        self.log_path = process.stdout[:-1]
 
     def run(self, args, insert_roslaunch=True, insert_vglrun=True):
         if insert_roslaunch: args.insert(0, "/opt/ros/noetic/bin/roslaunch")
@@ -77,17 +81,14 @@ class Launch(Tests):
             args4 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", "--log"]
             args5 = ["/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", "--log"]
 
-            process = subprocess.run(["roslaunch-logs"], shell=True, stdout=subprocess.PIPE, encoding="utf-8")
-            path = process.stdout[:-1]
-
             self.run(args1)         #launch gazebo
             self.test_gazebo()
             self.run(args2)         #launch px4 cat
-            self.test_px4(os.path.join(path, find_sitl_log(path, "cat-sitl")))
+            self.test_px4(self.log_path, "cat-sitl")
             self.run(args3)         #launch mavros cat
             self.test_mavros("/cat")
             self.run(args4)         #launch px4 mouse
-            self.test_px4(os.path.join(path, find_sitl_log(path, "mouse-sitl")))
+            self.test_px4(self.log_path, "mouse-sitl")
             self.run(args5)         #launch mavros mouse
             self.test_mavros("/mouse")
             self.finished()
