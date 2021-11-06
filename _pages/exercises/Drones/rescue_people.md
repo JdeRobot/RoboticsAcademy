@@ -59,7 +59,7 @@ docker run -it --rm -v $HOME/.roboticsacademy/log/:/root/.roboticsacademy/log/ -
 
 - The log files will be stored inside `$HOME/.roboticsacademy/{year-month-date-hours-mins}/`. After the session, use `more` to view the logs, for example:
 ```bash
-more $HOME/.roboticsacademy/2021-11-06-14-45/manager.log
+more $HOME/.roboticsacademy/log/2021-11-06-14-45/manager.log
 ```
 
 ### How to perform the exercise?
