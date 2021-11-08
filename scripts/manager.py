@@ -372,6 +372,8 @@ class Manager:
                 await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "evaluate":
                 await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
+            elif command == "evaluate_style":
+                await websocket.send("style{}".format(self.evaluate_code(data["code"], True)))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
@@ -553,7 +555,7 @@ class Manager:
         print("Kill simulation")
         await self.commands.kill_all()
     
-    def evaluate_code(self, code):
+    def evaluate_code(self, code, warnings=False):
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
@@ -575,20 +577,20 @@ class Manager:
                 self.exercise = 'follow_line'
 
             command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
-            print('COMANDO: ', command)
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
 
             # Removes convention and warning messages
-            convention_messages = re.search(":[0-9]+: convention.*\n", result)
-            while (convention_messages != None):
-                result = result[:convention_messages.start()] + result[convention_messages.end():]
+            if not warnings:
                 convention_messages = re.search(":[0-9]+: convention.*\n", result)
-            warning_messages = re.search(":[0-9]+: warning.*\n", result)
-            while (warning_messages != None):
-                result = result[:warning_messages.start()] + result[warning_messages.end():]
+                while (convention_messages != None):
+                    result = result[:convention_messages.start()] + result[convention_messages.end():]
+                    convention_messages = re.search(":[0-9]+: convention.*\n", result)
                 warning_messages = re.search(":[0-9]+: warning.*\n", result)
+                while (warning_messages != None):
+                    result = result[:warning_messages.start()] + result[warning_messages.end():]
+                    warning_messages = re.search(":[0-9]+: warning.*\n", result)
 
             # Removes unexpected EOF error
             eof_exception = re.search(":[0-9]+: error.*EOF.*\n", result)
@@ -615,7 +617,7 @@ class Manager:
 
             # Returns an empty string if there are no errors
             error = re.search("error", result)
-            if (error == None):
+            if (error == None and not warnings):
                 return ""
             else:
                 return result
