@@ -134,6 +134,17 @@ class GUI:
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
         self.server.set_fn_client_left(self.handle_close)
+
+        logged = False
+        while not logged:
+            try:
+                f = open("/ws_gui_guest.log", "w")
+                f.write("websocket_gui_guest=ready")
+                f.close()
+                logged = True
+            except:
+                time.sleep(0.1)
+
         self.server.run_forever()
 
     # Function to reset

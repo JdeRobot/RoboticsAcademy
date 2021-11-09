@@ -162,6 +162,18 @@ class Commands:
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
+        # Wait until websocket server is set up
+        server_ready = False
+        while not server_ready:
+            try:
+                f = open("/ws_code.log", "r")
+                if f.readline() == "websocket_code=ready":
+                    server_ready = True
+                f.close()
+                time.sleep(0.2)
+            except Exception as e: 
+                print("waiting for ws code server...")
+                time.sleep(0.2)
 
         try:
             gui_cmd = self.instructions[exercise]["instructions_gui"]
@@ -170,6 +182,18 @@ class Commands:
                 print('GUI: ',gui_cmd)
             gui_thread = DockerThread(gui_cmd)
             gui_thread.start()
+            # Wait until websocket server is set up
+            server_ready = False
+            while not server_ready:
+                try:
+                    f = open("/ws_gui.log", "r")
+                    if f.readline() == "websocket_gui=ready":
+                        server_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except Exception as e: 
+                    print("waiting for ws guest server...")
+                    time.sleep(0.2)
         except KeyError:
             pass
 
@@ -178,6 +202,18 @@ class Commands:
             host_cmd_guest = self.instructions[exercise]["instructions_guest"]
             guest_thread = DockerThread(host_cmd_guest)
             guest_thread.start()
+            # Wait until websocket server is set up
+            server_ready = False
+            while not server_ready:
+                try:
+                    f = open("/ws_code_guest.log", "r")
+                    if f.readline() == "websocket_code_guest=ready":
+                        server_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except Exception as e: 
+                    print("waiting for ws code guest server...")
+                    time.sleep(0.2)
         except KeyError:
             pass
 
@@ -189,6 +225,18 @@ class Commands:
                 print('GUI guest: ',gui_cmd_guest)
             gui_thread_guest = DockerThread(gui_cmd_guest)
             gui_thread_guest.start()
+            # Wait until websocket server is set up
+            server_ready = False
+            while not server_ready:
+                try:
+                    f = open("/ws_gui_guest.log", "r")
+                    if f.readline() == "websocket_gui_guest=ready":
+                        server_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except Exception as e: 
+                    print("waiting for ws gui guest server...")
+                    time.sleep(0.2)
         except KeyError:
             pass
 
@@ -317,6 +365,23 @@ class Commands:
         self.call_subprocess(cmd_noetic)
         cmd_px4 = cmd + ['px4']
         self.call_subprocess(cmd_px4)
+        # Remove previous exercise ws startup logs
+        try:
+            self.call_subprocess(['rm', '/ws_code.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/ws_gui.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/ws_code_guest.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/ws_gui_guest.log'])
+        except:
+            pass
 
 
 # Main Manager class
@@ -409,7 +474,6 @@ class Manager:
             print("> GZServer started")
             print("> Starting exercise")
             self.commands.start_exercise(exercise, circuit=circuit)
-            time.sleep(5)
             print("> Exercise started")
             self.launch_level = 3
 
@@ -445,7 +509,6 @@ class Manager:
         else:
             print("> Starting exercise")
             self.commands.start_exercise(exercise)
-            time.sleep(2)
             print("> Exercise started")
             self.launch_level = 3
             print("> Starting VNC")
@@ -475,7 +538,6 @@ class Manager:
             print("> GZServer started")
             print("> Starting exercise")
             self.commands.start_exercise(exercise, circuit=circuit)
-            time.sleep(5)
             print("> Exercise started")
             self.launch_level = 3
 
@@ -495,7 +557,6 @@ class Manager:
             print("> STDRServer started")
             print("> Starting exercise")
             self.commands.start_exercise(exercise)
-            time.sleep(5)
             print("> Exercise started")
             self.launch_level = 3
 
@@ -511,7 +572,6 @@ class Manager:
         else:
             print("> Starting exercise")
             self.commands.start_exercise(exercise)
-            time.sleep(2)
             print("> Exercise started")
             self.launch_level = 3
             print("> Starting VNC 2")
