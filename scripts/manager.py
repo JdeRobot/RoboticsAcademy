@@ -158,6 +158,8 @@ class Commands:
 
     # Function to start an exercise
     def start_exercise(self, exercise, circuit=None):
+        self.run_subprocess(['rosclean', 'purge', '-y'])  # Clears ROS logs dir
+
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
