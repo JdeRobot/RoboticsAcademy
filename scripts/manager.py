@@ -267,7 +267,7 @@ class Commands:
                 else:
                     repeat = True
                     time.sleep(0.2)
-            except subprocess.TimeoutExpired:
+            except:
                 repeat = False
 
         if exercise in DRONE_EX:
