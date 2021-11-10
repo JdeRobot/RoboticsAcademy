@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- vehicle model -->
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="typhoon_h480_dual_cam"/>
+
+    <!-- vehicle configs -->
+    <arg name="ID" value="0"/>
+    <!-- PX4 SITL and vehicle spawn -->
+    <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+        <arg name="x" default="4"/>
+        <arg name="y" default="30"/>
+        <arg name="Y" default="-1.5729"/>
+        <arg name="vehicle" value="$(arg vehicle)"/>
+        <arg name="model" value="typhoon_h480_dual_cam"/>
+        <arg name="model_name" value="typhoon_h480_dual_cam"/>
+        <arg name="mavlink_udp_port" value="14560"/>
+        <arg name="mavlink_tcp_port" value="4560"/>
+        <arg name="ID" value="$(arg ID)"/>
+    </include>
+</launch>
