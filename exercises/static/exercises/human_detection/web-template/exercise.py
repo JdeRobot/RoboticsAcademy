@@ -598,6 +598,17 @@ class Template:
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
+
+        logged = False
+        while not logged:
+            try:
+                f = open("/ws_code.log", "w")
+                f.write("websocket_code=ready")
+                f.close()
+                logged = True
+            except:
+                time.sleep(0.1)
+
         self.server.run_forever()
 
 
