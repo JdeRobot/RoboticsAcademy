@@ -3,7 +3,7 @@
 	<world name='Vacuum Cleaner'>
 		<gui fullscreen=1></gui>
           <include>
-	        <uri>model://turtlebotROS</uri>
+	        <uri>model://roombaROS_with_camera</uri>
             <pose>-1 1.5 0 0 0 0</pose>
     	  	 <!--<pose>5.04 3.80 0 0 0 -1.57 </pose> Room-->
     	  	 <!--<pose>5.04 0.00 0 0 0 -1.57 </pose> Bedroom-->

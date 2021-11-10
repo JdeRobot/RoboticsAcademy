@@ -31,7 +31,6 @@ function startSim(step) {
     }
 
     ws_manager.onmessage = function (event) {
-        //console.log(event.data);
         if (event.data.level > level) {
             level = event.data.level;
             radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
@@ -111,6 +110,10 @@ function toggleGazebo() {
 
 function resetSimulation() {
     simReset = true;
+
+    // Reset GUI
+    reset_scene3d();
+    clearMap();
 }
 
 function stopSimulation() {

@@ -45,6 +45,10 @@ while True:
         <!-- Canvas -->
         <canvas id="birds-eye"></canvas>
         <img id="gui_canvas" style="vertical-align: baseline;"></img>
+        <body onload = "webGLStart()">
+            <div id="descarga"></div>
+            <div id="canvas" align = "center"></div>
+        </body>
     </div>
     <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
 
@@ -96,5 +100,11 @@ while True:
 <script src="{% static 'exercises/assets/js/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/three.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/OrbitControls.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/OBJLoader.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/ColladaLoader.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/3d_scene.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/3DViz.js' %}?v={{SYS_VERSION}}"></script>
+<script src="{% static 'exercises/montecarlo_visual_loc/web-template/assets/3DScene/pose3d.js' %}?v={{SYS_VERSION}}"></script>
 {% endblock %}

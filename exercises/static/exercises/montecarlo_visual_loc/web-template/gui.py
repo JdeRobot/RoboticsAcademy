@@ -20,7 +20,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image': '', 'map': '', 'particles': ''}
+        self.payload = {'image': '', 'map': '', 'particles': '', 'pos3D': ''}
         self.server = None
         self.client = None
 
@@ -33,6 +33,7 @@ class GUI:
 
         # Particles
         self.particles = []
+        self.pos3D = []
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -42,7 +43,7 @@ class GUI:
         t.start()
 
         # Create the lap object
-        pose3d_object = ListenerPose3d("/TurtlebotROS/odom")
+        pose3d_object = ListenerPose3d("/roombaROS_with_camera/odom")
         self.map = Map(pose3d_object)
 
     # Explicit initialization function
@@ -93,6 +94,13 @@ class GUI:
         else:
             self.particles = []
 
+    # Function for student to call
+    def showPose3D(self, pos):
+        if len(pos) > 0:
+            self.pos3D = pos
+        else:
+            self.pos3D = []
+
     # Function to get the client
     # Called when a new client is received
     def get_client(self, client, server):
@@ -129,6 +137,12 @@ class GUI:
             self.payload["particles"] = json.dumps(self.particles)
         else:
             self.payload["particles"] = json.dumps([])
+
+        # Payload Particles Message
+        if len(self.pos3D) > 0:
+            self.payload["pos3D"] = json.dumps(self.pos3D)
+        else:
+            self.payload["pos3D"] = json.dumps([])
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)

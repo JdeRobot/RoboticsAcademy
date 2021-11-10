@@ -18,9 +18,9 @@ class HAL:
         rospy.init_node("HAL")
 
         self.image = None
-        self.camera = ListenerCamera("/TurtlebotROS/cameraL/image_raw")
-        self.motors = PublisherMotors("/TurtlebotROS/cmd_vel", 4, 0.3)
-        self.pose3d = ListenerPose3d("/TurtlebotROS/odom")
+        self.camera = ListenerCamera("/roombaROS_with_camera/camera/image_raw")
+        self.motors = PublisherMotors("/roombaROS_with_camera/cmd_vel", 4, 0.3)
+        self.pose3d = ListenerPose3d("/roombaROS_with_camera/odom")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation

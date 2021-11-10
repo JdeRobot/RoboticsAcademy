@@ -12,7 +12,7 @@ var websocket_gui, operation, data;
 var image_data, source, shape;
 var pose, content;
 var command_input;
-
+var count = 0;
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
@@ -47,7 +47,6 @@ function declare_gui(websocket_address){
 
 			source = decode_utf8(image_data.image);
 			shape = image_data.shape;
-			console.log("Imagen => " + source)
 			if(source != ""){
 				canvas.src = "data:image/jpeg;base64," + source;
 				canvas.width = shape[1];
@@ -64,10 +63,12 @@ function declare_gui(websocket_address){
 
 			// Print Particles
 			var particles = JSON.parse(data.particles);
-			console.log("PINTANDO PARTICLES => ", particles)
             if(particles != "") {
                 printParticles(particles);
             }
+            // Print Pose3D
+			var pose = JSON.parse(data.pos3D);
+            paintPoints3D([[content[0], content[1], 0], pose])
 			// Send the Acknowledgment Message
 			websocket_gui.send("#ack");
 		}
@@ -78,4 +79,25 @@ function declare_gui(websocket_address){
 
 // Image Display Configuration
 var canvas = document.getElementById("gui_canvas");
+
+
+// 3D Scene
+function paintPoints3D(points){
+
+	var point = [];
+	var colors = [[255,0,0], [0,255,0]]
+    for (var i = 0; i < points.length; i++) {
+    	if (points[i] !== ""){
+    		point.x = points[i][0];
+    		point.y = points[i][1];
+    		point.z = points[i][2];
+    		point.r = colors[i][0];
+    		point.g = colors[i][1];
+    		point.b = colors[i][2];
+    		addPoint(point);
+		}
+
+    }
+
+}
 
