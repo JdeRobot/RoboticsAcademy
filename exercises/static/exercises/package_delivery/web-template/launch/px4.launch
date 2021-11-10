@@ -2,7 +2,6 @@
 <launch>
     <!-- vehicle model -->
     <arg name="est" default="ekf2"/>
-    <arg name="vehicle" default="typhoon_h480_dual_cam"/>
 
     <!-- vehicle configs -->
     <arg name="ID" value="0"/>
