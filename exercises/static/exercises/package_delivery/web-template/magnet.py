@@ -6,7 +6,7 @@ from gazebo_msgs.srv import SetModelState
 from threading import Event, Thread
 
 
-MIN_DIST = 0.5 # minimum distance required by drone to pick package
+MIN_DIST = 2.0 # minimum distance required by drone to pick package
 
 
 class Magnet:
