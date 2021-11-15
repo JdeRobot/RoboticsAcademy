@@ -310,6 +310,24 @@ class Commands:
             rosservice_thread = DockerThread(cmd)
             rosservice_thread.start()
 
+    # Function to reset drone
+    def reset_drone(self, exercise):
+        # Kill exercise.py
+        cmd = ['pkill', '-9', '-f']
+        cmd_exercise = cmd + ['exercise.py']
+        self.call_subprocess(cmd_exercise)
+
+        # Reset gz world
+        self.reset_physics("gazebo")
+
+        # Wait disarming
+        cmd_wait = ["rostopic", "echo", "--filter", "m.armed==False", "/mavros/state", "-n", "1"]
+        self.call_subprocess(cmd_wait)
+
+        # Rerun exercise.py
+        host_cmd = self.instructions[exercise]["instructions_host"]
+        host_thread = DockerThread(host_cmd)
+        host_thread.start()
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -599,6 +617,8 @@ class Manager:
     # Function to reset simulation
     def reset_simulation(self):
         print("Reset Simulation")
+        if self.exercise in DRONE_EX:
+            self.commads.reset_drone(self.exercise)
         self.commands.pause_physics()
         self.commands.reset_physics(self.simulator)
 
