@@ -6,33 +6,33 @@
 		<!-- People -->
 		<include>
 			<uri>model://face1</uri>
-			<pose>0 0 0 0 0 -1.57</pose>
+			<pose>35 -35 0 0 0 -1.57</pose>
 		</include>
 		<include>
 			<uri>model://face2</uri>
-			<pose>3 -3 0 0 0 -1.57</pose>
+			<pose>42 -40 0 0 0 0.57</pose>
 		</include>
 		<include>
 			<uri>model://face3</uri>
-			<pose>-1 -4 0 0 0 -1.57</pose>
+			<pose>32 -39 0 0 0 2.57</pose>
 		</include>
 		<include>
 			<uri>model://face4</uri>
-			<pose>4 2 0 0 0 -1.57</pose>
+			<pose>40 -34 0 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://face5</uri>
-			<pose>-4 0 0 0 0 -1.57</pose>
+			<pose>25 -35 0 0 0 1.11</pose>
 		</include>
 		<include>
 			<uri>model://face6</uri>
-			<pose>-1 5 0 0 0 -1.57</pose>
+			<pose>37 -31 0 0 0 -1.0</pose>
 		</include>
 
-		<!-- Target Box -->
+		<!-- Boat -->
 		<include>
-			<uri>model://custom_box_target_green</uri>
-			<pose>10 0 0.5 0 0 -1.57</pose>
+			<uri>model://boat_beacon</uri>
+			<pose>0 0 0 0 0 0.785</pose>
 		</include>
 
 		<!-- Ocean -->
