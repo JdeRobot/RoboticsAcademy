@@ -321,7 +321,7 @@ class Commands:
         self.reset_physics("gazebo")
 
         # Wait disarming
-        cmd_wait = ["rostopic", "echo", "--filter", "m.armed==False", "/mavros/state", "-n", "1"]
+        cmd_wait = ["rostopic", "echo", "--filter", "'m.armed==False'", "/mavros/state", "-n", "1"]
         self.call_subprocess(cmd_wait)
 
         # Rerun exercise.py
@@ -618,7 +618,7 @@ class Manager:
     def reset_simulation(self):
         print("Reset Simulation")
         if self.exercise in DRONE_EX:
-            self.commads.reset_drone(self.exercise)
+            self.commands.reset_drone(self.exercise)
         self.commands.pause_physics()
         self.commands.reset_physics(self.simulator)
 
