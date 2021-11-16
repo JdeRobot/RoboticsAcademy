@@ -14,20 +14,20 @@ function declare_code(websocket_address){
 
     websocket_code.onopen = function(event){
         if (!resetRequested)
-		    radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
-		if (websocket_gui.readyState == 1 && websocket_code_guest.readyState == 1 && websocket_gui_guest.readyState == 1) {
+            radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
+		if (websocket_gui.readyState == 1) {
             if (!resetRequested) {
                 alert("[open] Connection established!");
                 radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
             }
-            firstCodeSent = false;
             enableSimControls();
-		}
-        websocket_code.send("#ping");
+            resetRequested = false;
+		}        
+		websocket_code.send("#ping");
     }
     websocket_code.onclose = function(event){
         // Check for hard reset (reboot exercise.py)
-        if (websocket_code_guest.readyState == 1 && websocket_gui_guest.readyState == 1 && resetRequested && ws_manager.readyState == 1) {
+        if (resetRequested && ws_manager.readyState == 1) {
             console.log("retrying...")
             setTimeout(function () {
                 declare_code(websocket_address);
@@ -46,7 +46,7 @@ function declare_code(websocket_address){
     websocket_code.onmessage = function(event){
         var source_code = event.data;
         operation = source_code.substring(0, 5);
-
+        console.log(event.data);
         if(operation == "#load"){
             editor.setValue(source_code.substring(5,));
         }
@@ -69,17 +69,18 @@ function declare_code(websocket_address){
         else if (operation == "#ping"){
             websocket_code.send("#ping");
         }
-        else if (operation == "#exec") {
+        else if (operation == "#exec") {            
             if (firstCodeSent == false) {
                 firstCodeSent = true;
                 enablePlayPause(true);
             }
             toggleSubmitButton(true);
+            toggleResetButton(true);
         }
     };
 }
 
-// Function that sends/submits the code!
+
 // Function that sends/submits the code!
 function submitCode(){
     try {

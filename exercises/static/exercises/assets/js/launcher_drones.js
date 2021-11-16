@@ -43,8 +43,6 @@ function startSim(step) {
                 websockets_connected = true;
                 declare_code(websocket_address);
                 declare_gui(websocket_address);
-                declare_code_guest(websocket_address);
-                declare_gui_guest(websocket_address);
             }
             if (gazeboToggle) {
                 console.log("toggle gazebo");
@@ -83,6 +81,7 @@ function startSim(step) {
                     let error = event.data.substring(10,event.data.length);
                     radiConect.contentWindow.postMessage({connection: 'exercise', command: 'error', text: error}, '*');
                     toggleSubmitButton(true);
+                    toggleResetButton(true);
                 }
                 setTimeout(function () {
                     ws_manager.send(JSON.stringify({"command" : "Pong"}));
@@ -93,7 +92,6 @@ function startSim(step) {
                 if (resetRequested == true) {
                     togglePlayPause(false);
                     enablePlayPause(false);
-                    resetRequested = false;
             }
         }
     }
