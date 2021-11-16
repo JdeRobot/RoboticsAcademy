@@ -92,6 +92,7 @@ function startSim(step) {
                 toggleResetButton(true);       
                 if (resetRequested == true) {
                     togglePlayPause(false);
+                    enablePlayPause(false);
                     resetRequested = false;
             }
         }

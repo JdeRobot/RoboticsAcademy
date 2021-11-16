@@ -318,11 +318,15 @@ class Commands:
         self.call_subprocess(cmd_exercise)
 
         # Reset gz world
+        self.unpause_physics()
         self.reset_physics("gazebo")
 
         # Wait disarming
         cmd_wait = ["rostopic", "echo", "--filter", "'m.armed==False'", "/mavros/state", "-n", "1"]
-        self.call_subprocess(cmd_wait)
+        try:
+            subprocess.check_output(cmd_wait, timeout=5)
+        except Exception:
+            pass
 
         # Rerun exercise.py
         host_cmd = self.instructions[exercise]["instructions_host"]
