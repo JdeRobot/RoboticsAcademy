@@ -324,7 +324,7 @@ class Commands:
         # Wait disarming
         cmd_wait = ["rostopic", "echo", "--filter", "'m.armed==False'", "/mavros/state", "-n", "1"]
         try:
-            subprocess.call(cmd_wait, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True, timeout=10)
+            subprocess.call(cmd_wait, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True, timeout=5)
         except Exception:
             print("Timeout reached")
             pass
