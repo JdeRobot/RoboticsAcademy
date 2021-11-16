@@ -20,6 +20,7 @@ function start(){
 
 function check() {
     toggleSubmitButton(false);
+    toggleResetButton(false);
     checkCode();
 }
 
@@ -46,12 +47,13 @@ function resetSim(){
     toggleResetButton(false);
     toggleSubmitButton(false);
     resetSimulation();
-
+    firstCodeSent = false;
     running = false;
 }
 
 function enableSimControls() {
-    stop();
+    if (!resetRequested)
+        stop();
     togglePlayPause(false);
     let reset_button = document.getElementById("reset");
     reset_button.disabled = false;
