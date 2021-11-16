@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/rescue_people/rescue_people.jpg
-    image_path: /assets/images/exercises/rescue_people/rescue_people.jpg
+  - url: /assets/images/exercises/rescue_people/rescue_people.png
+    image_path: /assets/images/exercises/rescue_people/rescue_people.png
     alt: "Rescue People."
     title: "Rescue People."
 
@@ -27,6 +27,11 @@ youtubeId2: ee_T46fpHN8
 The goal of this exercise is to implement the logic that allows a quadrotor to recognize the faces of lost people and save their locations in order to perform a subsequent rescue maneuver.
 
 {% include gallery caption="Gallery." %}
+
+### Orientative GPS Locations
+
+Safety boat is located at **40º16'48.2" N**, **3º49'03.5" W**.
+While survivors are known to be close to **40º16'47.23" N**, **3º49'01.78" W**.
 
 ## Instructions for Web Templates
 This is the preferred way for running the exercise.
@@ -157,6 +162,20 @@ Simple hints provided to help you solve the rescue_people exercise. Please note 
 ### Face detection
 
 You can use the Face Detection using Haar Cascades from opencv [[1]](https://docs.opencv.org/4.5.0/db/d28/tutorial_cascade_classifier.html).
+
+### Does the drone API understand GPS Locations?
+
+No, it doesn't. But don't worry, you can easily convert them to UTM locations which are in meters. There are several open converters that can make the job for you [[2]](http://rcn.montana.edu/Resources/Converter.aspx).
+
+**FYI**: A Quick Guide to Using UTM Coordinates [[3]](https://www.maptools.com/tutorials/utm/quick_guide).
+
+### Coordinates Frames
+
+- **UTM**: Easting (+x), North (+y).
+- **Drone Position Control**: North (+x), West (+y), Height (+z).
+- **Drone Velocity Control**: Forward (+x), Left (+y), Up (+z).
+
+Also notice that UTM coordinates are global, while drone positions are local, refered to its initial position. Velocities are body related.
 
 ### Directional control. How should drone yaw be handled? 
 
