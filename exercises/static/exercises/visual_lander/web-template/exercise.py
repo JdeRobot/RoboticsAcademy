@@ -29,6 +29,8 @@ class Template:
         self.measure_thread = None
         self.thread = None
         self.reload = False
+        self.stop_brain = False
+        self.user_code = ""
 
         # Time variables
         self.ideal_cycle = 80
@@ -99,6 +101,11 @@ class Template:
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
+            while (self.stop_brain == True):
+                if (self.reload == True):
+                    break
+                time.sleep(0.1)
+
             start_time = datetime.now()
 
             # Execute the iterative portion
@@ -280,12 +287,26 @@ class Template:
         elif (message[:5] == "#code"):
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
-                code = message
+                self.user_code = message
                 # print(repr(code))
                 self.reload = True
-                self.execute_thread(code)
+                self.execute_thread(self.user_code)
             except:
                 pass
+
+        elif (message[:5] == "#rest"):
+            try:
+                self.reload = True
+                self.stop_brain = True
+                self.execute_thread(self.user_code)
+            except:
+                pass
+
+        elif (message[:5] == "#stop"):
+            self.stop_brain = True
+
+        elif (message[:5] == "#play"):
+            self.stop_brain = False
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
