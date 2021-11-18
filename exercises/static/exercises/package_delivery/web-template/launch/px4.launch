@@ -10,7 +10,6 @@
         <arg name="x" default="4"/>
         <arg name="y" default="30"/>
         <arg name="Y" default="-1.5729"/>
-        <arg name="vehicle" value="$(arg vehicle)"/>
         <arg name="model" value="typhoon_h480_dual_cam"/>
         <arg name="model_name" value="typhoon_h480_dual_cam"/>
         <arg name="mavlink_udp_port" value="14560"/>
