@@ -1,6 +1,6 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
-ARG VIRTUALGL_VERSION=2.6.91
+ARG VIRTUALGL_VERSION=2.6.5
 ARG TURBOVNC_VERSION=2.2.80
 
 # Make all NVIDIA GPUS visible
@@ -43,9 +43,9 @@ RUN apt-get update && apt-get install -y \
 RUN tasksel install lubuntu-core lubuntu-desktop
 
 # Install VirtualGL and TurboVNC
-RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
-    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
-    apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+RUN wget https://deac-fra.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    wget https://kumisystems.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    apt-get update && dpkg -i ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     chmod u+s /usr/lib/libvglfaker.so && \
     chmod u+s /usr/lib/libdlfaker.so && \
@@ -165,8 +165,8 @@ RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git /tmp/foona
 	&& rm -rf /tmp/*
 
 # Fast-DDS (Fast-RTPS 2.0.0)
-RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.0.0 /tmp/FastRTPS-2.0.0 \
-	&& cd /tmp/FastRTPS-2.0.0 \
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.1.0 /tmp/FastRTPS-2.1.0 \
+	&& cd /tmp/FastRTPS-2.1.0 \
 	&& mkdir build && cd build \
 	&& cmake -DTHIRDPARTY=ON -DSECURITY=ON .. \
 	&& cmake --build . --target install -- -j $(nproc) \
@@ -255,7 +255,7 @@ RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.11.3 \
 
 # jderobot_drones src and stdr simulator
 RUN sudo add-apt-repository ppa:rock-core/qt4 -y
-RUN sudo apt update
+RUN sudo apt update --fix-missing
 RUN rm -rf /catkin_ws
 RUN mkdir -p /catkin_ws/src
 RUN cd /catkin_ws && catkin init
