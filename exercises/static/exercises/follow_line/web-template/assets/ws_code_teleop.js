@@ -3,7 +3,7 @@ var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 
-// running variable for psuedo decoupling
+// running variable for psuedo decoupling 
 // Play/Pause from Reset
 var frequency = "0";
 
@@ -33,7 +33,7 @@ function declare_code(websocket_address){
 	websocket_code.onmessage = function(event){
 		var source_code = event.data;
 		operation = source_code.substring(0, 5);
-
+		
 		if(operation == "#load"){
 			editor.setValue(source_code.substring(5,));
 		}
@@ -44,12 +44,14 @@ function declare_code(websocket_address){
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
 			// Parse real time factor
 			document.querySelector('#real_time_factor').value = frequency_message.rtf;
+			// The acknowledgement messages invoke the python server to send further
+			// messages to this client (inside the server's handle function)
 			// Send the acknowledgment message along with frequency
 			code_frequency = document.querySelector('#code_freq').value;
 			gui_frequency = document.querySelector('#gui_freq').value;
 			real_time_factor = document.querySelector('#real_time_factor').value;
-
-			frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		
+			frequency_message = {"brain": code_frequency, "gui": gui_frequency, "rtf": real_time_factor};
 			websocket_code.send("#freq" + JSON.stringify(frequency_message));
 		}
 		else if (operation == "#ping"){
@@ -62,6 +64,12 @@ function declare_code(websocket_address){
             }
             toggleSubmitButton(true);
         }
+
+		// Send Teleop message if active
+		if(teleop_mode){
+			let teleop_message = {"v": v, "w": w};
+			websocket_code.send("#tele" + JSON.stringify(teleop_message));
+		}
 	};
 }
 
@@ -71,9 +79,11 @@ function submitCode(){
 		// Get the code from editor and add headers
 		var python_code = editor.getValue();
 		python_code = "#code\n" + python_code
-
+		
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
+		
+		deactivateTeleopButton();
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
@@ -85,42 +95,6 @@ function stopCode(){
     var stop_code = "#code\n";
     console.log("Message sent!");
 	websocket_code.send(stop_code);
-}
-
-// Function to save the code
-function saveCode(){
-	// Get the code from editor and add header
-
-	var python_code = editor.getValue();
-	python_code = "#save" + python_code;
-	console.log("Code Sent! Check terminal for more information!");
-	websocket_code.send(python_code)
-}
-
-// Function to load the code
-function loadCode(){
-	// Send message to initiate load message
-	var message = "#load";
-	websocket_code.send(message);
-
-}
-
-function resumeBrain(){
-    let message = "#play\n";
-    console.log("Message sent!");
-	websocket_code.send(message);
-}
-
-function stopBrain(){
-    let message = "#stop\n";
-    console.log("Message sent!");
-	websocket_code.send(message);
-}
-
-function resetBrain(){
-    let message = "#rest\n";
-    console.log("Message sent!");
-	websocket_code.send(message);
 }
 
 // Function for range slider

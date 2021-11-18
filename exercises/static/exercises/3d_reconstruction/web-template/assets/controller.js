@@ -11,6 +11,7 @@ function start(){
     // Manager Websocket
     if (running == false) {
         resumeSimulation();
+        resumeBrain();
     }
 
     togglePlayPause(true);
@@ -30,6 +31,7 @@ function stop(){
     // Manager Websocket
     if (running == true) {
         stopSimulation();
+        stopBrain();
     }
 
     togglePlayPause(false);
@@ -42,6 +44,7 @@ function resetSim(){
     enablePlayPause(false);
     togglePlayPause(false);
     toggleResetButton(false);
+    resetBrain();
 
     // Manager Websocket
     resetSimulation();
@@ -49,11 +52,6 @@ function resetSim(){
     // Reset GUI
     reset_scene3d();
     reset_matching();
-
-    // Code Websocket
-    if (running == true) {
-        submitCode();
-    }
 
     running = false;
 }

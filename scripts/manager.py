@@ -21,13 +21,14 @@ def check_device(device_path):
     except:
         return False
 
-RADI_VERSION = "3.1.13"
+RADI_VERSION = "3.1.14"
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", 
             "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game",
             "package_delivery"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
+STDR_EX = ["laser_mapping", "laser_loc"]
 
 # Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
@@ -415,7 +416,7 @@ class Manager:
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
-                if (self.exercise == "laser_mapping"):
+                if (self.exercise in STDR_EX):
                     self.simulator = "stdr"
                 elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier"):
                     self.simulator = "none"
@@ -470,7 +471,7 @@ class Manager:
         print("> XServer started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
@@ -490,7 +491,7 @@ class Manager:
             print("> Starting console")
             self.commands.start_console(width, height)
             print("> Console started")
-        elif ("laser_mapping" in exercise):
+        elif (exercise in STDR_EX):
             print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
             print("> STDRServer started")
@@ -534,7 +535,7 @@ class Manager:
         print("> VNC started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
@@ -553,7 +554,7 @@ class Manager:
             self.commands.start_console(width, height)
             print("> Console started")
 
-        elif ("laser_mapping" in exercise):
+        elif (exercise not in STDR_EX):
             print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
             print("> STDRServer started")

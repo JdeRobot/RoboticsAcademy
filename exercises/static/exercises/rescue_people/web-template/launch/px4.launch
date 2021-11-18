@@ -8,8 +8,8 @@
     <arg name="ID" value="0"/>
     <!-- PX4 SITL and vehicle spawn -->
     <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
-        <arg name="x" value="10"/>
-        <arg name="z" value="1"/>
+        <arg name="z" value="1.45"/>
+        <arg name="Y" value="1.57"/>
         <arg name="vehicle" value="$(arg vehicle)"/>
         <arg name="model" value="iris_dual_cam"/>
         <arg name="model_name" value="iris"/>
