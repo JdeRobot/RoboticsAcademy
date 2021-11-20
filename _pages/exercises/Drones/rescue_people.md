@@ -33,7 +33,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to r
 Safety boat is located at **40º16'48.2" N**, **3º49'03.5" W**.
 While survivors are known to be close to **40º16'47.23" N**, **3º49'01.78" W**.
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -189,11 +189,11 @@ In this exercise, you can use the one you prefer.
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
-## Web Template teaser video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-## Demonstrative video of the solution
+### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId %}
 

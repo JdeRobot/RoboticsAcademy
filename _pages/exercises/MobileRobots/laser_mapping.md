@@ -33,7 +33,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 {% include gallery caption="Laser Mapping." %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -147,7 +147,7 @@ On the other hand, the basic problem with this type of map is the large amount o
 
 {% include gallery id="Occupancy_grid" caption="An example of a map obtained with the Mapping technique with known positions." %}
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 

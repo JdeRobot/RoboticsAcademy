@@ -51,7 +51,7 @@ The aim of this practice is to develop a visual localisation algorithm based on 
 {% include gallery caption="Gallery" %}
 
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 

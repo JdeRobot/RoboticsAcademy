@@ -36,7 +36,7 @@ In this exercise, we will train our own deep learning model to solve the widely 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
 
-## Launch Instructions
+## Instructions
 - Clone the Robotics Academy repository on your local machine and checkout ``noetic`` branch:
 ```bash
 git clone https://github.com/JdeRobot/RoboticsAcademy

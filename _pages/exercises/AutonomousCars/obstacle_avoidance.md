@@ -71,7 +71,7 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Robustness in situations of indecision (zero vector sum)
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way to run the exercise.
 
 ### Installation
@@ -194,7 +194,7 @@ As well as the destination that we have assigned:
 GUI.map.targetx = 0.0
 GUI.map.targety = 0.0
 ```
-
+<!---
 **API**
 
 * `pose3d.getPose3d().x` - to get the position of the robot (x coordinate)
@@ -213,7 +213,7 @@ To use it, only two actions must be carried out:
 1. Obtain the following point:
    `self.currentTarget = self.getNextTarget()`
 2. Mark it as visited when necessary:
-   `self.currentTarget.setReached(True)`
+   `self.currentTarget.setReached(True)` --->
 
 
 ### Conversion of types
@@ -221,15 +221,15 @@ To use it, only two actions must be carried out:
 **Laser**
 
 ```python
-    laser_data = self.getLaserData ()
+laser_data = self.getLaserData ()
 
 def parse_laser_data (laser_data):
     laser = []
     for i in range (laser_data.numLaser):
         dist = laser_data.distanceData [i] /1000.0
         angle = math.radians (i)
-        laser + = [(dist, angle)]
-      return laser
+        laser += [(dist, angle)]
+    return laser
 ```
 
 ```python
@@ -239,7 +239,7 @@ for d, a in laser:
     x = d * math.cos (a) * -1
     y = d * math.sin (a) * -1
     v = (x, y)
-    laser_vectorized + = [v]
+    laser_vectorized += [v]
 
 laser_mean = np.mean (laser_vectorized, axis = 0)
 ```
@@ -250,7 +250,7 @@ laser_mean = np.mean (laser_vectorized, axis = 0)
 def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
 
     # robotx, roboty are the absolute coordinates of the robot
-# robott is its absolute orientation
+    # robott is its absolute orientation
     # Convert to relatives
     dx = x_abs - robotx
     dy = y_abs - roboty
@@ -259,7 +259,7 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
     x_rel = dx * math.cos (-robott) - dy * math.sin (-robott)
     y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
 
-return x_rel, and y_rel
+    return x_rel and y_rel
 ```
 
 
@@ -381,7 +381,7 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 {% include gallery id="gifs2" caption="Oscillation Problem in Narrow Corridors" %}
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
