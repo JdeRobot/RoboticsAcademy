@@ -28,7 +28,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -255,7 +255,7 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 *Effect of increasing $v$ to generate spiral*
 
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

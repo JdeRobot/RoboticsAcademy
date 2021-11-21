@@ -40,7 +40,7 @@ In this practice the intention is to develop a color filter that allow us to seg
 {% include gallery caption="Tracking example" %}
 
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -105,7 +105,7 @@ while True:
 * `HAL.getImage()` - to get the image
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 
-### Demonstrative Video with Web Template
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

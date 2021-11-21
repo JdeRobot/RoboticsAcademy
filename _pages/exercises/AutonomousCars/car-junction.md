@@ -70,7 +70,7 @@ The goal of this practice is to implement the logic of a navigation algorithm fo
 
 {% include gallery caption="Gallery" %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -153,7 +153,7 @@ while True:
 * `HAL.getTemplate()` - to get the stop's image template
 * `GUI.showImages(imageLeft, imageCentral, imageRight)` - allows you to view a debug images or with relevant information
 
-### Example video with web template
+## Videos
 
 ## Theory
 This exercise mostly revolves around simple Computer Vision and Control mechanisms. Let's start with the Computer Vision tasks:

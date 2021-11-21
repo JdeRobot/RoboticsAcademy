@@ -72,7 +72,7 @@ The goal of this exercise is to learn how to use vision to assist industrial rob
 
 {% include gallery caption="Gallery." %}
 
-## Instructions for web-templates
+## Instructions
 
 This is the preferred way for running the exercise once it is finished.
 

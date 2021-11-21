@@ -31,7 +31,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner" %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -158,7 +158,7 @@ def laser_vector(laser):
     return laser_mean
 ```
 
-## Demonstration video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

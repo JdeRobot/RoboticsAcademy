@@ -65,7 +65,7 @@ In this practice, the intention is to program the necessary logic to allow kobuk
 
 {% include gallery caption="Scene to reconstruct" %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -176,7 +176,7 @@ def algorithm(self):
 * **Minus keys**: if it is held down, it will zoom out.
 * **Plus keys**: if it is held down, the zoom will increase.
 
-### Example video with web template
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId3 %}
 
