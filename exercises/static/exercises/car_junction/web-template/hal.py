@@ -33,7 +33,7 @@ class HAL:
         else:
             f = open("stop_conf.yml", "r")
 
-        cfg = yaml.load(f)
+        cfg = yaml.safe_load(f)
 
         ymlNode = cfg['Stop']
         #node = rospy.init_node(ymlNode["NodeName"], anonymous=True)
