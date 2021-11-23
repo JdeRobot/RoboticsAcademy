@@ -1,12 +1,7 @@
 // Retreive the canvas elements and context
-
-
-
 var mapCanvas = document.getElementById("local-map"),
     ctx = mapCanvas.getContext("2d");
-
-let f1_center = [mapCanvas.width/2,  mapCanvas.height/2]; 
- 
+    
 function paintEvent(target, car, obs, avg, laser, max_range){
 	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);	
 	
@@ -17,38 +12,12 @@ function paintEvent(target, car, obs, avg, laser, max_range){
 	drawLaser(laser, max_range);
 	
 	// Draw target
-	drawTarget(target[0], target[1]);
-	
-	//Draw Distance lines
-	drawBorders()
+	drawTarget(target[0] , target[1]);
 	
 	// Draw arrows
-	drawArrow(car[0], car[1], "#7CFC00");
-	drawArrow(obs[0], obs[1], "#DC143C");
-	drawArrow(avg[0], avg[1], "#000000");
-}
-
-function drawBorders() { 
-    // draw the stroke 
-    var d10 = 10;
-    var d25 = 25;
-    var scale =5;
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = '#000000';
-    ctx.stroke();
-    //Rectangle for 10m
-    ctx.strokeRect(f1_center[0]-(d10*scale/2), f1_center[1]-5,d10*scale,d10*scale)
-    //Rectangle for 25m
-    ctx.strokeRect(f1_center[0]-(d25*scale/2), f1_center[1]-d25,d25*scale,(d25+3)*scale/2)
-    
-    //Text 10m & 25m local-map canvas
-    ctx.font = "14px Comic Sans MS";
-    ctx.fillStyle = "#AAAAAA";
-    ctx.textAlign = "center";
-    var s = d10 + " m";
-    ctx.fillText(s, mapCanvas.width/2+50, f1_center[1]-d10); 
-    s = d25 + " m";
-    ctx.fillText(s, mapCanvas.width/2+50, f1_center[1]-d25); 
+	drawArrow(-car[1] , car[0] , "#7CFC00");
+	drawArrow(-obs[1] , obs[0] , "#DC143C");
+	drawArrow(-avg[1] , avg[0], "#000000");
 }
 
 function drawCar(){
@@ -127,10 +96,19 @@ function drawArrow(posx, posy, color){
 	}
 	
 	if(posx == 0.0){
-		px1 = px + side * Math.cos(ang - 0.5);
-		py1 = py + side * Math.sin(ang - 0.5);
-		px2 = px + side * Math.cos(ang + 0.5);
-		py2 = py + side * Math.sin(ang + 0.5);
+		if(posy <=0){
+			px1 = px - side * Math.cos(ang - 0.5);
+			py1 = py + side * Math.sin(ang + 0.5);
+			px2 = px - side * Math.cos(ang - 0.5);
+			py2 = py - side * Math.sin(ang + 0.5);
+		}
+		else{
+			px1 = px + side * Math.cos(ang - 0.5);
+			py1 = py + side * Math.sin(ang + 0.5);
+			px2 = px + side * Math.cos(ang - 0.5);
+			py2 = py - side * Math.sin(ang + 0.5);
+		
+		}
 	}
 	else{
 		px1 = px - side * Math.cos(5 * Math.PI / 6 + ang);
@@ -182,7 +160,7 @@ function drawTarget(posx, posy){
 }
 
 
-//drawArrow(5, 3, "#7CFC00");
+//drawArrow(0, -2, "#7CFC00");
 //drawCar();
 //drawLaser([[130, Math.PI / 2]]);
 //drawTarget(120, 90);
