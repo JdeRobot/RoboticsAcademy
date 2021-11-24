@@ -8,7 +8,7 @@
     padding-top: 15px;
     padding-right: 10px;
     height: 400px;
-    width: 400px;
+    width: 100%;
     float: left;
 }
 
@@ -31,5 +31,5 @@
 	margin-top: 15px;
 	background: #0D488A;
 	height: 420px;
-	width: 400px;
+	width: 100%;
 }
