@@ -647,6 +647,7 @@ class Manager:
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
+            code = re.sub(r'\nimport cv2\n', '\nfrom cv2 import cv2\n', code)
             
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
             while_position = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)
