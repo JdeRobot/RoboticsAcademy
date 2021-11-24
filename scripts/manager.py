@@ -470,6 +470,9 @@ class Manager:
             elif command == "reset":
                 self.reset_simulation()
                 await websocket.send("PingDone{}".format(self.launch_level))
+            elif command == "soft_reset":
+                self.reset_simulation("soft")
+                await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
                 await websocket.send("Ping{}".format(self.launch_level))
@@ -621,10 +624,11 @@ class Manager:
         self.commands.unpause_physics()
 
     # Function to reset simulation
-    def reset_simulation(self):
+    def reset_simulation(self, reset_type="default"):
         print("Reset Simulation")
-        if self.exercise in DRONE_EX:
-            self.commands.reset_drone(self.exercise)
+        if (reset_type == "default"):
+            if self.exercise in DRONE_EX:
+                self.commands.reset_drone(self.exercise)
         self.commands.pause_physics()
         self.commands.reset_physics(self.simulator)
 
