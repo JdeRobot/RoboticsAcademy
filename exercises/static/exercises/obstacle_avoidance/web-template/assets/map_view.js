@@ -75,8 +75,8 @@ function drawArrow(posx, posy, color){
 		return;
 	}
 	
-	px = 146.5 - posy * 20;
-	py = 120 - posx * 20;
+	px = 146.5 + posx * 20;
+	py = 120 - posy * 20;
 	
 	ctx.beginPath();
 	
@@ -96,23 +96,14 @@ function drawArrow(posx, posy, color){
 	}
 	
 	if(posx == 0.0){
-		if(posy <=0){
-			px1 = px - side * Math.cos(ang - 0.5);
-			py1 = py + side * Math.sin(ang + 0.5);
-			px2 = px - side * Math.cos(ang - 0.5);
-			py2 = py - side * Math.sin(ang + 0.5);
-		}
-		else{
-			px1 = px + side * Math.cos(ang - 0.5);
-			py1 = py + side * Math.sin(ang + 0.5);
-			px2 = px + side * Math.cos(ang - 0.5);
-			py2 = py - side * Math.sin(ang + 0.5);
-		
-		}
+		px1 = px + side * Math.cos(ang - 0.5);
+		py1 = py + side * Math.sin(ang - 0.5);
+		px2 = px + side * Math.cos(ang + 0.5);
+		py2 = py + side * Math.sin(ang + 0.5);
 	}
 	else{
-		px1 = px - side * Math.cos(5 * Math.PI / 6 + ang);
-		py1 = py + side * Math.sin(5 * Math.PI / 6 + ang);
+		px1 = px + side * Math.cos(5 * Math.PI / 6 + ang);
+		py1 = py - side * Math.sin(5 * Math.PI / 6 + ang);
 		px2 = px + side * Math.cos(5 * Math.PI / 6 - ang);
 		py2 = py + side * Math.sin(5 * Math.PI / 6 - ang);
 	}
@@ -160,7 +151,7 @@ function drawTarget(posx, posy){
 }
 
 
-//drawArrow(0, -2, "#7CFC00");
+//drawArrow(-2, 2, "#7CFC00");
 //drawCar();
 //drawLaser([[130, Math.PI / 2]]);
 //drawTarget(120, 90);
