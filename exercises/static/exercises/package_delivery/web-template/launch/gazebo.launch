@@ -21,4 +21,6 @@
         <arg name="headless" value="$(arg headless)"/>
         <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     </include>
+
+    <rosparam command="load" file="/RoboticsAcademy/exercises/package_delivery/web-template/package_delivery.yaml" />
 </launch>
