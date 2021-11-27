@@ -56,7 +56,7 @@ class ListenerParameters:
         else:
             f = open(configFile, "r")
 
-        cfg = yaml.load(f)
+        cfg = yaml.safe_load(f)
         #starting comm
         #jdrc= comm.init(cfg, '3DReconstruction')
         #ic = jdrc.getIc()

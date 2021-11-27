@@ -6,7 +6,7 @@
 
 #gui_canvas {
     height: 350px;
-    width: 400px;
+    width: 100%;
 }
 
 #gzweb{
