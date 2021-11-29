@@ -171,8 +171,7 @@ To use it, only two actions must be carried out:
    
 **Debugging**
 
-The graphical interface (GUI) allows to visualize each of the vectors of
-calculated forces. There is a function for this purpose:
+The graphical interface (GUI) allows to visualize each of the vectors of calculated forces. There is a function for this purpose:
 ```python
 # Car direction
 carForce = [2.0, 0.0]
