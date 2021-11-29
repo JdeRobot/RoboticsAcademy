@@ -263,7 +263,7 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
 ```
 
 
-### Debugging
+<!---### Debugging
 The graphical interface (GUI) allows to visualize each of the vectors of
 calculated forces. For this purpose, the following variables should be given 
 value:
@@ -287,7 +287,7 @@ As well as the destination that we have assigned:
 self.targetx = 0.0
 self.targety = 0.0
 ```
-
+-->
 ## Theory
 This exercise requires us to implement a local navigation algorithm called Virtual Force Field Algorithm. Following is the complete theory regarding this algorithm.
 
