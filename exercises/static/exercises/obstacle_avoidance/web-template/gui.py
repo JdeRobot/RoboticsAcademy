@@ -85,6 +85,16 @@ class GUI:
         return payload
 
     # Function for student to call
+    def showForces(self, vec1, vec2, vec3):
+        self.map.setCar(vec1[0], vec1[1])
+        self.map.setObs(vec2[0], vec2[1])
+        self.map.setAvg(vec3[0], vec3[1])
+    
+    # Function for student to call
+    def showLocalTarget(self, newVec):
+        self.map.setTargetPos(newVec[0], newVec[1])
+
+    # Function for student to call
     def showImage(self, image):
         self.image_show_lock.acquire()
         self.image_to_be_shown = image
