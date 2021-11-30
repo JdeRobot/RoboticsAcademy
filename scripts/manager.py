@@ -320,20 +320,27 @@ class Commands:
 
         # Reset gz world
         self.unpause_physics()
-        self.reset_physics("gazebo")
 
         # Wait disarming
-        cmd_wait = ["rostopic", "echo", "--filter", "'m.armed==False'", "/mavros/state", "-n", "1"]
-        try:
-            subprocess.call(cmd_wait, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True, timeout=10)
-        except Exception:
-            print("Timeout reached")
-            pass
+        cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
+        attempt = 0
+        while (attempt < 20):
+            stats_output = ""
+            try:
+                stats_output = str(subprocess.check_output(cmd_wait, timeout=5))
+            except Exception:
+                print("Timeout reached")
+            if ("armed: False" in stats_output):
+                break
+            attempt = attempt + 1
 
         # Rerun exercise.py
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
+        self.reset_physics("gazebo")
+        self.pause_physics()
+        print("Drone reset finished")
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -629,8 +636,9 @@ class Manager:
         if (reset_type == "default"):
             if self.exercise in DRONE_EX:
                 self.commands.reset_drone(self.exercise)
-        self.commands.pause_physics()
-        self.commands.reset_physics(self.simulator)
+        else:
+            self.commands.pause_physics()
+            self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
     def start_gz(self):
