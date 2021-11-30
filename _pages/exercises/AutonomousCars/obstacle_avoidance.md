@@ -171,23 +171,28 @@ To use it, only two actions must be carried out:
    
 **Debugging**
 
-The graphical interface (GUI) allows to visualize each of the vectors of calculated forces. There is a function for this purpose:
+The graphical interface (GUI) allows to visualize each of the vectors of
+calculated forces. For this purpose, the following variables should be given 
+value:
 ```python
 # Car direction
-carForce = [2.0, 0.0]
-# Obstacles direction
-obsForce = [0.0, 2.0]
-# Average direction
-avgForce = [-2.0, 0.0]
+GUI.map.carx = 0.0
+GUI.map.cary = 0.0
 
-GUI.showForces(carForce, obsForce, avgForce)
+# Obstacles direction
+GUI.map.obsx = 0.0
+GUI.map.obsy = 0.0
+
+# Average direction
+GUI.map.avgx = 0.0
+GUI.map.avgy = 0.0
 ```
 
 As well as the destination that we have assigned:
 ```python
 # Current target
-target = [1.0, 1.0]
-GUI.showLocalTarget(target)
+GUI.map.targetx = 0.0
+GUI.map.targety = 0.0
 ```
 <!---
 **API**
