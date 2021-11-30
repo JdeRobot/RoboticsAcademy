@@ -552,7 +552,7 @@ class Manager:
             self.commands.start_console(width, height)
             print("> Console started")
 
-        elif (exercise not in STDR_EX):
+        elif (exercise in STDR_EX):
             print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
             print("> STDRServer started")
