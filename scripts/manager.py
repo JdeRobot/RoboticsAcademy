@@ -633,9 +633,12 @@ class Manager:
     # Function to reset simulation
     def reset_simulation(self, reset_type="default"):
         print("Reset Simulation")
-        if (reset_type == "default"):
-            if self.exercise in DRONE_EX:
+        if self.exercise in DRONE_EX:
+            if (reset_type == "default"):
                 self.commands.reset_drone(self.exercise)
+            else:
+                self.commands.pause_physics()
+                self.commands.reset_physics(self.simulator)
         else:
             self.commands.pause_physics()
             self.commands.reset_physics(self.simulator)
