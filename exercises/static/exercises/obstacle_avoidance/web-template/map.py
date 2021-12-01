@@ -86,8 +86,13 @@ class Map:
 		for target in self.targets:
 			if target.isReached() == False:
 				return target
-
-		return None
+		return self.resetTargets()
+	
+	# Function to reset all targets once the last one is reached
+	def resetTargets(self):
+		for target in self.targets:
+			target.setReached(False)
+		return self.targets[0]
 
     # Function to reset target information
 	def reset(self):
