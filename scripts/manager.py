@@ -311,6 +311,36 @@ class Commands:
             rosservice_thread = DockerThread(cmd)
             rosservice_thread.start()
 
+    # Function to reset drone
+    def reset_drone(self, exercise):
+        # Kill exercise.py
+        cmd = ['pkill', '-9', '-f']
+        cmd_exercise = cmd + ['exercise.py']
+        self.call_subprocess(cmd_exercise)
+
+        # Reset gz world
+        self.unpause_physics()
+
+        # Wait disarming
+        cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
+        attempt = 0
+        while (attempt < 20):
+            stats_output = ""
+            try:
+                stats_output = str(subprocess.check_output(cmd_wait, timeout=5))
+            except Exception:
+                print("Timeout reached")
+            if ("armed: False" in stats_output):
+                break
+            attempt = attempt + 1
+
+        # Rerun exercise.py
+        host_cmd = self.instructions[exercise]["instructions_host"]
+        host_thread = DockerThread(host_cmd)
+        host_thread.start()
+        self.reset_physics("gazebo")
+        self.pause_physics()
+        print("Drone reset finished")
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -446,6 +476,9 @@ class Manager:
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
+                await websocket.send("PingDone{}".format(self.launch_level))
+            elif command == "soft_reset":
+                self.reset_simulation("soft")
                 await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
@@ -598,10 +631,17 @@ class Manager:
         self.commands.unpause_physics()
 
     # Function to reset simulation
-    def reset_simulation(self):
+    def reset_simulation(self, reset_type="default"):
         print("Reset Simulation")
-        self.commands.pause_physics()
-        self.commands.reset_physics(self.simulator)
+        if self.exercise in DRONE_EX:
+            if (reset_type == "default"):
+                self.commands.reset_drone(self.exercise)
+            else:
+                self.commands.pause_physics()
+                self.commands.reset_physics(self.simulator)
+        else:
+            self.commands.pause_physics()
+            self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
     def start_gz(self):
