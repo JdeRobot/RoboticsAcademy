@@ -222,6 +222,9 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
         python3-rosdep \
         python3-catkin-tools \
         python3-catkin-lint \
+        python3-rosinstall-generator \
+        python3-osrf-pycommon \
+        python3-wstool \
         ros-$ROS_DISTRO-gazebo-ros-pkgs \
         ros-$ROS_DISTRO-octomap \
         ros-$ROS_DISTRO-octomap-msgs \
@@ -249,9 +252,10 @@ RUN sudo apt update --fix-missing
 RUN rm -rf /catkin_ws
 RUN mkdir -p /catkin_ws/src
 RUN cd /catkin_ws && catkin init
+COPY mavros.rosinstall /tmp/mavros.rosinstall
+RUN wstool init src /tmp/mavros.rosinstall
+RUN cd /catkin_ws && rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
 RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
-RUN cd /catkin_ws/src && git clone https://github.com/mavlink/mavros.git -b 1.9.0
-RUN cd /catkin_ws/src && git clone https://github.com/mavlink/mavlink.git
 RUN git clone https://github.com/JdeRobot/drones.git -b $ROS_DISTRO-devel
 RUN git clone https://github.com/stdr-simulator-ros-pkg/stdr_simulator.git
 RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
