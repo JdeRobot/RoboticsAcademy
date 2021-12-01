@@ -8,7 +8,7 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
 RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
 RUN echo 'source /catkin_ws/devel/setup.bash' >> ~/.bashrc
 RUN echo 'source /usr/share/gazebo-11/setup.sh' >> ~/.bashrc
-RUN echo 'export ROS_PACKAGE_PATH=ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo' >> ~/.bashrc
+RUN echo 'export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo' >> ~/.bashrc
 
 ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
 ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
