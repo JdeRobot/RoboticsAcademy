@@ -74,6 +74,11 @@ class Template:
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
             iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
+            # Add newlines to match line on bug report
+            extra_lines = sequential_code.count('\n')
+            while (extra_lines >= 0):
+                iterative_code = '\n' + iterative_code
+                extra_lines -= 1
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
@@ -287,7 +292,7 @@ class Template:
         elif (message[:5] == "#code"):
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message
+                self.user_code = message[6:]
                 # print(repr(code))
                 self.reload = True
                 self.execute_thread(self.user_code)
