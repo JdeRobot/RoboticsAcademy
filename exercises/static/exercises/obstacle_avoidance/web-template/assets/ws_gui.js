@@ -17,21 +17,32 @@ function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
 	websocket_gui.onopen = function(event){
-		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
+		if (!resetRequested)
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
 		if (websocket_code.readyState == 1) {
-			alert("[open] Connection established!");
-			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
-			enableSimControls();
+			if (!resetRequested) {
+                alert("[open] Connection established!");
+                radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+            }
+            enableSimControls();
 		}
 	}
 
 	websocket_gui.onclose = function(event){
-		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
-		if(event.wasClean){
-			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+		// Check for hard reset (reboot exercise.py)
+		if (resetRequested && ws_manager.readyState == 1) {
+			setTimeout(function () {
+				declare_gui(websocket_address);
+			}, 500)
 		}
-		else{
-			alert("[close] Connection closed!");
+		else {
+			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
+			if(event.wasClean){
+				alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+			}
+			else{
+				alert("[close] Connection closed!");
+			}
 		}
 	}
 
