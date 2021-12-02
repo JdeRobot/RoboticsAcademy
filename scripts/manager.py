@@ -26,6 +26,7 @@ DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
+HARD_RESET_EX = ["obstacle_avoidance"]
 STDR_EX = ["laser_mapping", "laser_loc"]
 
 # Docker Thread class for running commands on threads
@@ -342,6 +343,33 @@ class Commands:
         self.pause_physics()
         print("Drone reset finished")
 
+    def hard_reset(self, exercise):
+        # Kill exercise.py
+        cmd = ['pkill', '-9', '-f']
+        cmd_exercise = cmd + ['exercise.py']
+        self.call_subprocess(cmd_exercise)
+        
+        # Launch exercise.py
+        host_cmd = self.instructions[exercise]["instructions_host"]
+        host_thread = DockerThread(host_cmd)
+        host_thread.start()
+        # Wait until websocket server is set up
+        server_ready = False
+        while not server_ready:
+            try:
+                f = open("/ws_code.log", "r")
+                if f.readline() == "websocket_code=ready":
+                    server_ready = True
+                f.close()
+                time.sleep(0.2)
+            except Exception as e: 
+                print("waiting for ws code server...")
+                time.sleep(0.2)
+        
+        # Reset simulation
+        self.reset_physics("gazebo")
+        self.pause_physics()
+
     # Function to start subprocess
     def run_subprocess(self, cmd):
         subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
@@ -636,6 +664,12 @@ class Manager:
         if self.exercise in DRONE_EX:
             if (reset_type == "default"):
                 self.commands.reset_drone(self.exercise)
+            else:
+                self.commands.pause_physics()
+                self.commands.reset_physics(self.simulator)
+        if self.exercise in HARD_RESET_EX:
+            if (reset_type == "default"):
+                self.commands.hard_reset(self.exercise)
             else:
                 self.commands.pause_physics()
                 self.commands.reset_physics(self.simulator)
