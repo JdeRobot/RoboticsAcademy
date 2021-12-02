@@ -34,11 +34,17 @@ class Tests():
 
     def test_mavros(self, ns=""):
         rospy.logwarn("[MAVROS] Performing checks")
-        rospy.wait_for_service(ns + "/mavros/cmd/arming", 30)
+        try:
+            rospy.wait_for_service(ns + "/mavros/cmd/arming", 30)
+        except rospy.ROSException:
+            rospy.logwarn("[MAVROS] Check timeout exceeded")
 
     def test_gazebo(self):
         rospy.logwarn("[GAZEBO] Performing checks")
-        rospy.wait_for_service("/gazebo/get_model_properties", 30)
+        try:
+            rospy.wait_for_service("/gazebo/get_model_properties", 30)
+        except rospy.ROSException:
+            rospy.logwarn("[GAZEBO] Check timeout exceeded")
 
 
 class Launch(Tests):

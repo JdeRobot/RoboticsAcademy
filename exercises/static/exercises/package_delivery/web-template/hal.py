@@ -84,8 +84,12 @@ class HAL:
     def land(self):
         self.drone.land()
 
-    def pick_pkg(self):
-        self.magnet.pick_pkg()
+    def set_cmd_pick(self):
+        self.magnet.set_cmd_pick()
 
-    def drop_pkg(self):
-        self.magnet.drop_pkg()
+    def set_cmd_drop(self):
+        self.magnet.set_cmd_drop()
+
+    def get_pkg_state(self):
+        state = self.magnet.get_pkg_state()
+        return state

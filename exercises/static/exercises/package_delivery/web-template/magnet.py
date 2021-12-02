@@ -15,6 +15,7 @@ class Magnet:
         self.magnetize = Event()
         self.get_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
         self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+        self.set_pkg_state = False
 
 
     def start_magnet(self):
@@ -43,7 +44,7 @@ class Magnet:
         self.magnetize.clear()
 
 
-    def pick_pkg(self):
+    def set_cmd_pick(self):
         try:
             pkg_pos = self.get_state("package_box", "")
             drone_pos = self.get_state("typhoon_h480_dual_cam", "")
@@ -53,15 +54,20 @@ class Magnet:
 
             if dist < MIN_DIST:
                 self.magnetize.set()
-                self.pick_pkg_thread = Thread(target=self.start_magnet)
-                self.pick_pkg_thread.start()
+                self.set_cmd_pick_thread = Thread(target=self.start_magnet)
+                self.set_cmd_pick_thread.start()
+                self.set_pkg_state = True
         except:
             pass
 
 
-    def drop_pkg(self):
+    def set_cmd_drop(self):
         try:
             self.stop_magnet()
-            self.pick_pkg_thread.join()
+            self.set_cmd_pick_thread.join()
+            self.set_pkg_state = False
         except:
             pass
+
+    def get_pkg_state(self):
+        return self.set_pkg_state
