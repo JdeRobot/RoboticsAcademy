@@ -91,153 +91,159 @@ class Map:
 		return coord_robot, coord_contorno
 	
 	def setSonarValues(self):
-		# Init array
-		self.sonares = []
-		self.dist = []
-		# Sonar disposition
-		self.sonares.append((0,0,0))
-		self.sonares[0] = (self.config.sonar_0['POS_X'], self.config.sonar_0['POS_Y'], self.config.sonar_0['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[1] = (self.config.sonar_1['POS_X'], self.config.sonar_1['POS_Y'], self.config.sonar_1['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[2] = (self.config.sonar_2['POS_X'], self.config.sonar_2['POS_Y'], self.config.sonar_2['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[3] = (self.config.sonar_3['POS_X'], self.config.sonar_3['POS_Y'], self.config.sonar_3['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[4] = (self.config.sonar_4['POS_X'], self.config.sonar_4['POS_Y'], self.config.sonar_4['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[5] = (self.config.sonar_5['POS_X'], self.config.sonar_5['POS_Y'], self.config.sonar_5['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[6] = (self.config.sonar_6['POS_X'], self.config.sonar_6['POS_Y'], self.config.sonar_6['ORIENTATION'])
-		self.sonares.append((0,0,0))
-		self.sonares[7] = (self.config.sonar_7['POS_X'], self.config.sonar_7['POS_Y'], self.config.sonar_7['ORIENTATION'])
-		# SONAR 0
-		self.dist.append(0)
-		self.dist[0] = self.hal.sonar_0.getSonarData().distances
-		if self.dist[0] == float("inf"):
-			self.dist[0] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[0] == float("-inf"):
-			self.dist[0] = self.hal.sonar_0.getSonarData().minRange
-		# SONAR 1
-		self.dist.append(0)
-		self.dist[1] = self.hal.sonar_1.getSonarData().distances
-		if self.dist[1] == float("inf"):
-			self.dist[1] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[1] == float("-inf"):
-			self.dist[1] = self.hal.sonar_0.getSonarData().minRange
-		# SONAR 2
-		self.dist.append(0)
-		self.dist[2] = self.hal.sonar_2.getSonarData().distances
-		if self.dist[2] == float("inf"):
-			self.dist[2] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[2] == float("-inf"):
-			self.dist[2] = self.hal.sonar_0.getSonarData().minRange
-		#SONAR 3
-		self.dist.append(0)
-		self.dist[3] = self.hal.sonar_3.getSonarData().distances
-		if self.dist[3] == float("inf"):
-			self.dist[3] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[3] == float("-inf"):
-			self.dist[3] = self.hal.sonar_0.getSonarData().minRange
-		#SONAR 4
-		self.dist.append(0)
-		self.dist[4] = self.hal.sonar_4.getSonarData().distances
-		if self.dist[4] == float("inf"):
-			self.dist[4] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[4] == float("-inf"):
-			self.dist[4] = self.hal.sonar_0.getSonarData().minRange
-		#SONAR 5
-		self.dist.append(0)
-		self.dist[5] = self.hal.sonar_5.getSonarData().distances
-		if self.dist[5] == float("inf"):
-			self.dist[5] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[5] == float("-inf"):
-			self.dist[5] = self.hal.sonar_0.getSonarData().minRange
-		#SONAR 6
-		self.dist.append(0)
-		self.dist[6] = self.hal.sonar_6.getSonarData().distances
-		if self.dist[6] == float("inf"):
-			self.dist[6] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[6] == float("-inf"):
-			self.dist[6] = self.hal.sonar_0.getSonarData().minRange
-		#SONAR 7
-		self.dist.append(0)
-		self.dist[7] = self.hal.sonar_7.getSonarData().distances
-		if self.dist[7] == float("inf"):
-			self.dist[7] = self.hal.sonar_0.getSonarData().maxRange
-		elif self.dist[7] == float("-inf"):
-			self.dist[7] = self.hal.sonar_0.getSonarData().minRange
+		try:
+			# Init array
+			self.sonares = []
+			self.dist = []
+			# Sonar disposition
+			self.sonares.append((0,0,0))
+			self.sonares[0] = (self.config.sonar_0['POS_X'], self.config.sonar_0['POS_Y'], self.config.sonar_0['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[1] = (self.config.sonar_1['POS_X'], self.config.sonar_1['POS_Y'], self.config.sonar_1['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[2] = (self.config.sonar_2['POS_X'], self.config.sonar_2['POS_Y'], self.config.sonar_2['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[3] = (self.config.sonar_3['POS_X'], self.config.sonar_3['POS_Y'], self.config.sonar_3['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[4] = (self.config.sonar_4['POS_X'], self.config.sonar_4['POS_Y'], self.config.sonar_4['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[5] = (self.config.sonar_5['POS_X'], self.config.sonar_5['POS_Y'], self.config.sonar_5['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[6] = (self.config.sonar_6['POS_X'], self.config.sonar_6['POS_Y'], self.config.sonar_6['ORIENTATION'])
+			self.sonares.append((0,0,0))
+			self.sonares[7] = (self.config.sonar_7['POS_X'], self.config.sonar_7['POS_Y'], self.config.sonar_7['ORIENTATION'])
+			# SONAR 0
+			self.dist.append(0)
+			self.dist[0] = self.hal.sonar_0.getSonarData().distances
+			if self.dist[0] == float("inf"):
+				self.dist[0] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[0] == float("-inf"):
+				self.dist[0] = self.hal.sonar_0.getSonarData().minRange
+			# SONAR 1
+			self.dist.append(0)
+			self.dist[1] = self.hal.sonar_1.getSonarData().distances
+			if self.dist[1] == float("inf"):
+				self.dist[1] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[1] == float("-inf"):
+				self.dist[1] = self.hal.sonar_0.getSonarData().minRange
+			# SONAR 2
+			self.dist.append(0)
+			self.dist[2] = self.hal.sonar_2.getSonarData().distances
+			if self.dist[2] == float("inf"):
+				self.dist[2] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[2] == float("-inf"):
+				self.dist[2] = self.hal.sonar_0.getSonarData().minRange
+			#SONAR 3
+			self.dist.append(0)
+			self.dist[3] = self.hal.sonar_3.getSonarData().distances
+			if self.dist[3] == float("inf"):
+				self.dist[3] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[3] == float("-inf"):
+				self.dist[3] = self.hal.sonar_0.getSonarData().minRange
+			#SONAR 4
+			self.dist.append(0)
+			self.dist[4] = self.hal.sonar_4.getSonarData().distances
+			if self.dist[4] == float("inf"):
+				self.dist[4] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[4] == float("-inf"):
+				self.dist[4] = self.hal.sonar_0.getSonarData().minRange
+			#SONAR 5
+			self.dist.append(0)
+			self.dist[5] = self.hal.sonar_5.getSonarData().distances
+			if self.dist[5] == float("inf"):
+				self.dist[5] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[5] == float("-inf"):
+				self.dist[5] = self.hal.sonar_0.getSonarData().minRange
+			#SONAR 6
+			self.dist.append(0)
+			self.dist[6] = self.hal.sonar_6.getSonarData().distances
+			if self.dist[6] == float("inf"):
+				self.dist[6] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[6] == float("-inf"):
+				self.dist[6] = self.hal.sonar_0.getSonarData().minRange
+			#SONAR 7
+			self.dist.append(0)
+			self.dist[7] = self.hal.sonar_7.getSonarData().distances
+			if self.dist[7] == float("inf"):
+				self.dist[7] = self.hal.sonar_0.getSonarData().maxRange
+			elif self.dist[7] == float("-inf"):
+				self.dist[7] = self.hal.sonar_0.getSonarData().minRange
 
-		pose = self.pose3d.getPose3d()
-		x_desired = self.config.pos_x
-		y_desired = self.config.pos_y
-		yaw_desired = self.config.orientation
-		yaw = pose.yaw
-		x = pose.x
-		y = pose.y
-		cone = 0.261799
-		vertices = []
-		sonar_sensor = []
-		# Se definen las posiciones de los vertices del triangulo
-		for i in range(0,8):
-			vertices.append((0,0,0,0))
-			distance = self.dist[i]
-			hipotenusa = distance/(math.cos(cone/2))
-			if(self.sonares[i][2] < 0):
-				orientation = self.sonares[i][2] - cone/2
-				xr_1, yr_1 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)
-				orientation = self.sonares[i][2] + cone/2
-				xr_2, yr_2 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)
-			else:
-				orientation = self.sonares[i][2] + cone/2
-				xr_1, yr_1 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)
-				orientation = self.sonares[i][2] - cone/2
-				xr_2, yr_2 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)	
-			xg_1, yg_1 = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), xr_1, yr_1, yaw_desired + (yaw - self.initial_yaw))
-			xg_2, yg_2 = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), xr_2, yr_2, yaw_desired + (yaw - self.initial_yaw))
-			xc_1, yc_1 = self.global2canvas(xg_1, yg_1)
-			xc_2, yc_2 = self.global2canvas(xg_2, yg_2)
-			vertices[i] = (xc_1, yc_1, xc_2, yc_2)
-		# Se definen las posiciones de los sensores sonar
-		for i in range(0,8):
-			sonar_sensor.append((0,0))
-			xg, yg = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), self.sonares[i][0], self.sonares[i][1], yaw_desired + (yaw - self.initial_yaw))
-			xc, yc = self.global2canvas(xg, yg)
-			sonar_sensor[i] = (xc, yc)
-		return vertices, sonar_sensor
+			pose = self.pose3d.getPose3d()
+			x_desired = self.config.pos_x
+			y_desired = self.config.pos_y
+			yaw_desired = self.config.orientation
+			yaw = pose.yaw
+			x = pose.x
+			y = pose.y
+			cone = 0.261799
+			vertices = []
+			sonar_sensor = []
+			# Se definen las posiciones de los vertices del triangulo
+			for i in range(0,8):
+				vertices.append((0,0,0,0))
+				distance = self.dist[i]
+				hipotenusa = distance/(math.cos(cone/2))
+				if(self.sonares[i][2] < 0):
+					orientation = self.sonares[i][2] - cone/2
+					xr_1, yr_1 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)
+					orientation = self.sonares[i][2] + cone/2
+					xr_2, yr_2 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)
+				else:
+					orientation = self.sonares[i][2] + cone/2
+					xr_1, yr_1 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)
+					orientation = self.sonares[i][2] - cone/2
+					xr_2, yr_2 = self.local2relative(self.sonares[i][0], self.sonares[i][1], hipotenusa, orientation)	
+				xg_1, yg_1 = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), xr_1, yr_1, yaw_desired + (yaw - self.initial_yaw))
+				xg_2, yg_2 = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), xr_2, yr_2, yaw_desired + (yaw - self.initial_yaw))
+				xc_1, yc_1 = self.global2canvas(xg_1, yg_1)
+				xc_2, yc_2 = self.global2canvas(xg_2, yg_2)
+				vertices[i] = (xc_1, yc_1, xc_2, yc_2)
+			# Se definen las posiciones de los sensores sonar
+			for i in range(0,8):
+				sonar_sensor.append((0,0))
+				xg, yg = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), self.sonares[i][0], self.sonares[i][1], yaw_desired + (yaw - self.initial_yaw))
+				xc, yc = self.global2canvas(xg, yg)
+				sonar_sensor[i] = (xc, yc)
+			return vertices, sonar_sensor
+		except:
+			return [[0, 0], [0, 0]]
 
 	def setLaserValues(self):
-		pose = self.pose3d.getPose3d()
-		yaw = pose.yaw
-		x = pose.x
-		y = pose.y
-		x_desired = self.config.pos_x
-		y_desired = self.config.pos_y
-		yaw_desired = self.config.orientation
-		xg, yg = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), self.config.laser['POS_X'], self.config.laser['POS_Y'], yaw_desired + (yaw - self.initial_yaw))
-		xc, yc = self.global2canvas(xg, yg)
-		laser_sensor = [xc, yc]
-		laser = self.hal.laser.getLaserData()
-		angle_min = laser.minAngle
-		angle_max = laser.maxAngle
-		angle_increment = laser.angleIncrement
-		rays = np.arange(angle_min, angle_max + angle_increment, angle_increment)
-		cont_rays = len(rays)
-		laser_beam = []
-		for i in range(0,cont_rays-1):
-			laser_beam.append((0,0))
-			if(i == 0):
-				angle = -math.pi
-			else:
-				angle = angle + 0.015708
-			dist = laser.values[i]
-			if(dist == float("inf")):
-				dist = laser.maxRange
-			xr, yr = self.local2relative(self.config.laser['POS_X'], self.config.laser['POS_Y'], dist, angle)
-			xg, yg = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), xr, yr, yaw_desired + (yaw - self.initial_yaw))
+		try:
+			pose = self.pose3d.getPose3d()
+			yaw = pose.yaw
+			x = pose.x
+			y = pose.y
+			x_desired = self.config.pos_x
+			y_desired = self.config.pos_y
+			yaw_desired = self.config.orientation
+			xg, yg = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), self.config.laser['POS_X'], self.config.laser['POS_Y'], yaw_desired + (yaw - self.initial_yaw))
 			xc, yc = self.global2canvas(xg, yg)
-			laser_beam[i] = (xc, yc)
-		return laser_beam, laser_sensor
+			laser_sensor = [xc, yc]
+			laser = self.hal.laser.getLaserData()
+			angle_min = laser.minAngle
+			angle_max = laser.maxAngle
+			angle_increment = laser.angleIncrement
+			rays = np.arange(angle_min, angle_max + angle_increment, angle_increment)
+			cont_rays = len(rays)
+			laser_beam = []
+			for i in range(0,cont_rays-1):
+				laser_beam.append((0,0))
+				if(i == 0):
+					angle = -math.pi
+				else:
+					angle = angle + 0.015708
+				dist = laser.values[i]
+				if(dist == float("inf")):
+					dist = laser.maxRange
+				xr, yr = self.local2relative(self.config.laser['POS_X'], self.config.laser['POS_Y'], dist, angle)
+				xg, yg = self.relative2global(x_desired + (x - self.initial_x), y_desired + (y - self.initial_y), xr, yr, yaw_desired + (yaw - self.initial_yaw))
+				xc, yc = self.global2canvas(xg, yg)
+				laser_beam[i] = (xc, yc)
+			return laser_beam, laser_sensor
+		except:
+			return [[0, 0], [0, 0]]
 
 	def local2relative(self, posx, posy, distance, orientation):
 		xr = posx + math.cos(orientation)*distance

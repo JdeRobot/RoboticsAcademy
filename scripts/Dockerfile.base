@@ -222,10 +222,10 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
         python3-rosdep \
         python3-catkin-tools \
         python3-catkin-lint \
+        python3-rosinstall-generator \
+        python3-osrf-pycommon \
+        python3-wstool \
         ros-$ROS_DISTRO-gazebo-ros-pkgs \
-        ros-$ROS_DISTRO-mavlink \
-        ros-$ROS_DISTRO-mavros \
-        ros-$ROS_DISTRO-mavros-extras \
         ros-$ROS_DISTRO-octomap \
         ros-$ROS_DISTRO-octomap-msgs \
         ros-$ROS_DISTRO-pcl-conversions \
@@ -246,19 +246,15 @@ RUN pip3 install -U \
 # bootstrap rosdep
 RUN rosdep init && rosdep update
 
-# PX4 src
-RUN apt-get update && \
-    apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
-RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.11.3 \
-	&& cd /PX4-Autopilot \
-	&& DONT_RUN=1 make px4_sitl gazebo
-
 # jderobot_drones src and stdr simulator
 RUN sudo add-apt-repository ppa:rock-core/qt4 -y
 RUN sudo apt update --fix-missing
 RUN rm -rf /catkin_ws
 RUN mkdir -p /catkin_ws/src
 RUN cd /catkin_ws && catkin init
+COPY mavros.rosinstall /tmp/mavros.rosinstall
+RUN wstool init src /tmp/mavros.rosinstall
+RUN cd /catkin_ws && rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
 RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
 RUN git clone https://github.com/JdeRobot/drones.git -b $ROS_DISTRO-devel
 RUN git clone https://github.com/stdr-simulator-ros-pkg/stdr_simulator.git
@@ -268,6 +264,13 @@ RUN cd /catkin_ws/src && ln -s /stdr_simulator .
 RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 RUN cd catkin_ws/src
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
+
+# PX4 src
+RUN apt-get update && \
+    apt upgrade -y --quiet --no-install-recommends libignition-common3-graphics
+RUN git clone --recursive https://github.com/PX4/PX4-Autopilot.git -b v1.11.3 \
+    && cd /PX4-Autopilot \
+    && DONT_RUN=1 make px4_sitl gazebo
 
 # Certain Dependencies for Exercises
 # ros-$ROS_DISTRO-kobuki-msgs: Vaccuum Cleaner
