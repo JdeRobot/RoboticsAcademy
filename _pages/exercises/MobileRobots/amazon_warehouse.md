@@ -48,7 +48,9 @@ The objective of this practice is to implement the autonomous robot navigation a
 
 The students program an Amazon robot to navigate to the seleceted pallet, pick it, and deliver to the required zone. After completion of the task, go the charging area, and wait for the next tasks.
 
-## Installation
+## Instructions
+
+### Installation
 Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
 
 Add following packages if you don't have them already:
@@ -144,7 +146,9 @@ The main problem in this exercise is to correctly identify the goal and send it 
 * The boundaries for *Pick-up room* are: `(x > 310) and (y > 125) and (y < 185)`
 * The boundaries for *Charging Point* are : `(y > 255) and (x < 315) and (x > 85)`
 
-## Demonstrative video of completed solution
+## Videos
+
+### Demonstrative video of completed solution
 
 {% include youtubePlayer.html id=page.youtubeId %}
 

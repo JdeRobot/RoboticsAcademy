@@ -36,7 +36,7 @@ The goal of this exercise is to learn how to control a drone to complete a gymkh
 
 You will have contact with the drone infrastructure in our Robotics Academy for the first time, learning how to access the drone sensors, actuators and cameras via an *Application Programing Interface* (API), which is a key point to master the rest of the proposed exercises.
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -187,11 +187,11 @@ If you know your current position and your target one, you can easily compute th
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
-## Web Template teaser video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-## Demonstrative video of the solution
+### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 

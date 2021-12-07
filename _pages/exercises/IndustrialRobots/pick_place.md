@@ -64,7 +64,7 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 
 {% include gallery caption="Gallery." %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -364,6 +364,8 @@ Fail: ABORTED: No motion plan found. No execution attempted.
 - `Controller is taking too long to execute trajectory`
 - `Controller failed with error GOAL_TOLERANCE_VIOLATED`
 
-## Demonstration video of the solution
+## Videos
+
+### Demonstration video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId %}

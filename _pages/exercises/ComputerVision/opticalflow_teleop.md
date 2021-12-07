@@ -45,7 +45,7 @@ In this practice the intention is to develop an optical flow algorithm to teleop
 {% include gallery caption="Gallery" %}
 
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -112,7 +112,7 @@ while True:
 * `HAL.motors.sendV()` - to set the linear speed
 * `HAL.motors.sendW()` - to set the angular velocity   
 
-### Demonstrative Video with Web Template
+##Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 

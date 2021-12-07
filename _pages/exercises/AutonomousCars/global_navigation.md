@@ -127,7 +127,7 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Arrive as quickly as possible to the destination.
 
-## Instructions for Web Template
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -258,7 +258,7 @@ coordinates and returns a tuple with the equivalent coordinates in the map: (gri
     
 **REMEMBER**: Once running, double click in any point of the map to set destination, then click on "Generate Path" and finally click "GO" to see the result.
 
-### Example video for web template
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId5 %}
 

@@ -51,7 +51,7 @@ The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-rob
 
 {% include gallery caption="Gallery." %}
 
-## Instructions for for Web Templates
+## Instructions
 
 ### Installation
 

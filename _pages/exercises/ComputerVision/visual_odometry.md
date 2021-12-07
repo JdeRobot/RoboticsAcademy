@@ -35,7 +35,9 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
 
 {% include gallery caption="Gallery." %}
 
-## Installation
+## Instructions
+
+### Installation
 
 * **Requirements** - (install these packages before proceeding).
     
@@ -44,7 +46,7 @@ The objective of this exercise is to implement the logic of a RGBD visual odomet
     configparser --- ```sudo pip install configparser```
 
 
-## How to run
+### How to run
 
 To launch the exercise, follow the steps below:
 
