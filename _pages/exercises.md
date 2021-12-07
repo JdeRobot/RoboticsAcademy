@@ -291,7 +291,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     status: "running"
-    order: 2;
+    order: 0;
     version: "v2.4"
 
   - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
@@ -392,8 +392,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Laser Mapping"
