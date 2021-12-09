@@ -29,7 +29,7 @@ class Template:
         self.measure_thread = None
         self.thread = None
         self.reload = False
-        self.stop_brain = False
+        self.stop_brain = True
         self.user_code = ""
 
         # Time variables
@@ -101,6 +101,10 @@ class Template:
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        while (self.stop_brain == True):
+            if (self.reload == True):
+                return
+            time.sleep(0.1)
         exec(sequential_code, reference_environment)
 
         # Run the iterative part inside template
@@ -108,7 +112,7 @@ class Template:
         while self.reload == False:
             while (self.stop_brain == True):
                 if (self.reload == True):
-                    break
+                    return
                 time.sleep(0.1)
 
             start_time = datetime.now()
