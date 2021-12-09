@@ -96,6 +96,24 @@ function submitCode(){
 	}
 }
 
+function resumeBrain(){
+    let message = "#play\n";
+    console.log("Message sent!");
+	websocket_code.send(message);
+}
+
+function stopBrain(){
+    let message = "#stop\n";
+    console.log("Message sent!");
+	websocket_code.send(message);
+}
+
+function resetBrain(){
+    let message = "#rest\n";
+    console.log("Message sent!");
+	websocket_code.send(message);
+}
+
 // Function that send/submits an empty string
 function stopCode(){
     var stop_code = "#code\n";
