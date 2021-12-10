@@ -215,24 +215,25 @@ class Template:
         hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
         hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
         hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
-        hal_module.HAL.getPose = self.getPose
+        hal_module.HAL.getPose3d = self.getPose
 
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         # Add GUI functions
         gui_module.GUI.showNumpy = self.gui.showNumpy
         gui_module.GUI.showPath = self.gui.showPath
-        gui_module.GUI.targetPose = self.gui.worldXY
+        gui_module.GUI.getTargetPose = self.gui.getTargetPose
         # Add HAL functions
         hal_module.HAL.setV = self.hal.motors.sendV
         hal_module.HAL.setW = self.hal.motors.sendW
+        hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
 
         # Define GUI module
         map_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
         map_module.MAP = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
-        map_module.MAP.robotPose = self.gui.update_gui
-        map_module.MAP.getGridVal = self.gui.map.getVal
-        map_module.MAP.setGridVal = self.gui.map.setVal
+        map_module.MAP.robotPose = self.gui.map.getTaxiCoordinates
+        map_module.MAP.getGridVal = self.gui.map.getGridVal
+        map_module.MAP.setGridVal = self.gui.map.setGridVal
         map_module.MAP.gridToWorld = self.gui.map.gridToWorld
         map_module.MAP.worldToGrid = self.gui.map.worldToGrid
         # map_module.MAP.destination = self.gui.mapXY
