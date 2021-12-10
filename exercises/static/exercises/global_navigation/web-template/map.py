@@ -3,7 +3,7 @@ import math
 from math import pi as pi
 import cv2
 
-class Map:
+class MAP:
 	def __init__(self, pose3d):
 		self.pose3d = pose3d
 		self.worldWidth = 500
@@ -61,11 +61,11 @@ class Map:
 		RTz = self.RTz(pi/2, 50, 70, 0)
 		return RTz
 
-	def getVal(self, x, y):
+	def getGridVal(self, x, y):
 		tmp = self.grid[y][x]
 		return tmp
 
-	def setVal(self, x, y, val):
+	def setGridVal(self, x, y, val):
 		self.grid[y][x] = val
 		
 	def getTaxiCoordinates(self):
@@ -101,4 +101,10 @@ class Map:
 	# Function to reset
 	def reset(self):
 		# Nothing to do, service takes care!
+		pass
+
+	def robotPose(self):
+		pass
+
+	def getMap(self):
 		pass
