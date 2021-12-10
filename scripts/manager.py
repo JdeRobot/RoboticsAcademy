@@ -163,6 +163,10 @@ class Commands:
 
     # Function to start an exercise
     def start_exercise(self, exercise, circuit=None):
+        # ROS logs are only generated in drone ex. Then, only cleaning them too.
+        if exercise in DRONE_EX:
+            self.run_subprocess(['rosclean', 'purge', '-y'])  # Clears ROS logs dir
+
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
@@ -698,7 +702,6 @@ class Manager:
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
-            code = re.sub(r'from MAP import MAP', 'from map import MAP', code)
             code = re.sub(r'\nimport cv2\n', '\nfrom cv2 import cv2\n', code)
             
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
