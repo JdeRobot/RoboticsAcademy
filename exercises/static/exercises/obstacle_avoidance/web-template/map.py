@@ -35,7 +35,23 @@ class Map:
 
 		self.laser_topic = laser_object
 		self.pose3d = pose3d_object
-        
+    
+	def setCar(self, newx, newy):
+		self.carx = newx
+		self.cary = newy
+	
+	def setObs(self, newx, newy):
+		self.obsx = newx
+		self.obsy = newy
+	
+	def setAvg(self, newx, newy):
+		self.avgx = newx
+		self.avgy = newy    
+
+	def setTargetPos(self, newx, newy):
+		self.targetx = newx
+		self.targety = newy
+
     # Get the JSON data as string
 	def get_json_data(self):
 		self.payload["target"] = self.setTarget(self.targetx, self.targety,
@@ -70,8 +86,13 @@ class Map:
 		for target in self.targets:
 			if target.isReached() == False:
 				return target
-
-		return None
+		return self.resetTargets()
+	
+	# Function to reset all targets once the last one is reached
+	def resetTargets(self):
+		for target in self.targets:
+			target.setReached(False)
+		return self.targets[0]
 
     # Function to reset target information
 	def reset(self):

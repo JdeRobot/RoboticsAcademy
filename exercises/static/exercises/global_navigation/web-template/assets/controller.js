@@ -11,6 +11,7 @@ function start(){
     // Manager Websocket
     if (running == false) {
         resumeSimulation();
+        resumeBrain();
     }
 
     // Code Websocket
@@ -31,6 +32,7 @@ function stop(){
     // Manager Websocket
     if (running == true) {
         stopSimulation();
+        stopBrain();
     }
 
     togglePlayPause(false);
@@ -43,6 +45,7 @@ function resetSim(){
     enablePlayPause(false);
     togglePlayPause(false);
     toggleResetButton(false);
+    resetBrain();
 
     // Manager Websocket
     resetSimulation();

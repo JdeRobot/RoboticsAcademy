@@ -85,7 +85,7 @@ class Template:
             return "", ""        
 
         else:
-            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+            sequential_code, iterative_code = self.seperate_seq_iter(source_code[6:])
             return iterative_code, sequential_code
 
     # Function to seperate the iterative and sequential code
@@ -106,6 +106,11 @@ class Template:
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
             iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
+            # Add newlines to match line on bug report
+            extra_lines = sequential_code.count('\n')
+            while (extra_lines >= 0):
+                iterative_code = '\n' + iterative_code
+                extra_lines -= 1
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
@@ -284,6 +289,17 @@ while True:
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
+
+        logged = False
+        while not logged:
+            try:
+                f = open("/ws_code.log", "w")
+                f.write("websocket_code=ready")
+                f.close()
+                logged = True
+            except:
+                time.sleep(0.1)
+
         self.server.run_forever()
 
 

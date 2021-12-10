@@ -21,10 +21,15 @@ def check_device(device_path):
     except:
         return False
 
+RADI_VERSION = "3.1.14"
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
-DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game"]
+DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", 
+            "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game",
+            "package_delivery"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
+HARD_RESET_EX = ["obstacle_avoidance"]
+STDR_EX = ["laser_mapping", "laser_loc"]
 
 # Docker Thread class for running commands on threads
 class DockerThread(threading.Thread):
@@ -163,6 +168,18 @@ class Commands:
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
+        # Wait until websocket server is set up
+        server_ready = False
+        while not server_ready:
+            try:
+                f = open("/ws_code.log", "r")
+                if f.readline() == "websocket_code=ready":
+                    server_ready = True
+                f.close()
+                time.sleep(0.2)
+            except Exception as e: 
+                print("waiting for ws code server...")
+                time.sleep(0.2)
 
         try:
             gui_cmd = self.instructions[exercise]["instructions_gui"]
@@ -171,6 +188,18 @@ class Commands:
                 print('GUI: ',gui_cmd)
             gui_thread = DockerThread(gui_cmd)
             gui_thread.start()
+            # Wait until websocket server is set up
+            server_ready = False
+            while not server_ready:
+                try:
+                    f = open("/ws_gui.log", "r")
+                    if f.readline() == "websocket_gui=ready":
+                        server_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except Exception as e: 
+                    print("waiting for ws guest server...")
+                    time.sleep(0.2)
         except KeyError:
             pass
 
@@ -179,6 +208,18 @@ class Commands:
             host_cmd_guest = self.instructions[exercise]["instructions_guest"]
             guest_thread = DockerThread(host_cmd_guest)
             guest_thread.start()
+            # Wait until websocket server is set up
+            server_ready = False
+            while not server_ready:
+                try:
+                    f = open("/ws_code_guest.log", "r")
+                    if f.readline() == "websocket_code_guest=ready":
+                        server_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except Exception as e: 
+                    print("waiting for ws code guest server...")
+                    time.sleep(0.2)
         except KeyError:
             pass
 
@@ -190,6 +231,18 @@ class Commands:
                 print('GUI guest: ',gui_cmd_guest)
             gui_thread_guest = DockerThread(gui_cmd_guest)
             gui_thread_guest.start()
+            # Wait until websocket server is set up
+            server_ready = False
+            while not server_ready:
+                try:
+                    f = open("/ws_gui_guest.log", "r")
+                    if f.readline() == "websocket_gui_guest=ready":
+                        server_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except Exception as e: 
+                    print("waiting for ws gui guest server...")
+                    time.sleep(0.2)
         except KeyError:
             pass
 
@@ -220,7 +273,7 @@ class Commands:
                 else:
                     repeat = True
                     time.sleep(0.2)
-            except subprocess.TimeoutExpired:
+            except:
                 repeat = False
 
         if exercise in DRONE_EX:
@@ -263,6 +316,63 @@ class Commands:
             rosservice_thread = DockerThread(cmd)
             rosservice_thread.start()
 
+    # Function to reset drone
+    def reset_drone(self, exercise):
+        # Kill exercise.py
+        cmd = ['pkill', '-9', '-f']
+        cmd_exercise = cmd + ['exercise.py']
+        self.call_subprocess(cmd_exercise)
+
+        # Reset gz world
+        self.unpause_physics()
+
+        # Wait disarming
+        cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
+        attempt = 0
+        while (attempt < 20):
+            stats_output = ""
+            try:
+                stats_output = str(subprocess.check_output(cmd_wait, timeout=5))
+            except Exception:
+                print("Timeout reached")
+            if ("armed: False" in stats_output):
+                break
+            attempt = attempt + 1
+
+        # Rerun exercise.py
+        host_cmd = self.instructions[exercise]["instructions_host"]
+        host_thread = DockerThread(host_cmd)
+        host_thread.start()
+        self.reset_physics("gazebo")
+        self.pause_physics()
+        print("Drone reset finished")
+
+    def hard_reset(self, exercise):
+        # Kill exercise.py
+        cmd = ['pkill', '-9', '-f']
+        cmd_exercise = cmd + ['exercise.py']
+        self.call_subprocess(cmd_exercise)
+        
+        # Launch exercise.py
+        host_cmd = self.instructions[exercise]["instructions_host"]
+        host_thread = DockerThread(host_cmd)
+        host_thread.start()
+        # Wait until websocket server is set up
+        server_ready = False
+        while not server_ready:
+            try:
+                f = open("/ws_code.log", "r")
+                if f.readline() == "websocket_code=ready":
+                    server_ready = True
+                f.close()
+                time.sleep(0.2)
+            except Exception as e: 
+                print("waiting for ws code server...")
+                time.sleep(0.2)
+        
+        # Reset simulation
+        self.reset_physics("gazebo")
+        self.pause_physics()
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
@@ -318,6 +428,23 @@ class Commands:
         self.call_subprocess(cmd_noetic)
         cmd_px4 = cmd + ['px4']
         self.call_subprocess(cmd_px4)
+        # Remove previous exercise ws startup logs
+        try:
+            self.call_subprocess(['rm', '/ws_code.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/ws_gui.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/ws_code_guest.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/ws_gui_guest.log'])
+        except:
+            pass
 
 
 # Main Manager class
@@ -345,10 +472,11 @@ class Manager:
 
             if command == "open":
                 await self.kill_simulation()
+                print("> RADI VERSION: ", RADI_VERSION)
                 self.width = data.get("width", 1920)
                 self.height = data.get("height", 1080)
                 self.exercise = data["exercise"]
-                if (self.exercise == "laser_mapping"):
+                if (self.exercise in STDR_EX):
                     self.simulator = "stdr"
                 elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier"):
                     self.simulator = "none"
@@ -374,10 +502,15 @@ class Manager:
                 await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "evaluate":
                 await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
+            elif command == "evaluate_style":
+                await websocket.send("style{}".format(self.evaluate_code(data["code"], True)))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
                 self.reset_simulation()
+                await websocket.send("PingDone{}".format(self.launch_level))
+            elif command == "soft_reset":
+                self.reset_simulation("soft")
                 await websocket.send("PingDone{}".format(self.launch_level))
             elif command == "stopgz":
                 self.stop_gz()
@@ -401,13 +534,12 @@ class Manager:
         print("> XServer started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
             print("> Starting exercise")
             self.commands.start_exercise(exercise, circuit=circuit)
-            time.sleep(5)
             print("> Exercise started")
             self.launch_level = 3
 
@@ -422,7 +554,7 @@ class Manager:
             print("> Starting console")
             self.commands.start_console(width, height)
             print("> Console started")
-        elif ("laser_mapping" in exercise):
+        elif (exercise in STDR_EX):
             print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
             print("> STDRServer started")
@@ -443,7 +575,6 @@ class Manager:
         else:
             print("> Starting exercise")
             self.commands.start_exercise(exercise)
-            time.sleep(2)
             print("> Exercise started")
             self.launch_level = 3
             print("> Starting VNC")
@@ -467,13 +598,12 @@ class Manager:
         print("> VNC started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "laser_mapping"]:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
             print("> Starting exercise")
             self.commands.start_exercise(exercise, circuit=circuit)
-            time.sleep(5)
             print("> Exercise started")
             self.launch_level = 3
 
@@ -487,13 +617,12 @@ class Manager:
             self.commands.start_console(width, height)
             print("> Console started")
 
-        elif ("laser_mapping" in exercise):
+        elif (exercise in STDR_EX):
             print("> Starting STDRServer")
             self.commands.start_stdrserver(exercise)
             print("> STDRServer started")
             print("> Starting exercise")
             self.commands.start_exercise(exercise)
-            time.sleep(5)
             print("> Exercise started")
             self.launch_level = 3
 
@@ -509,7 +638,6 @@ class Manager:
         else:
             print("> Starting exercise")
             self.commands.start_exercise(exercise)
-            time.sleep(2)
             print("> Exercise started")
             self.launch_level = 3
             print("> Starting VNC 2")
@@ -535,10 +663,23 @@ class Manager:
         self.commands.unpause_physics()
 
     # Function to reset simulation
-    def reset_simulation(self):
+    def reset_simulation(self, reset_type="default"):
         print("Reset Simulation")
-        self.commands.pause_physics()
-        self.commands.reset_physics(self.simulator)
+        if self.exercise in DRONE_EX:
+            if (reset_type == "default"):
+                self.commands.reset_drone(self.exercise)
+            else:
+                self.commands.pause_physics()
+                self.commands.reset_physics(self.simulator)
+        if self.exercise in HARD_RESET_EX:
+            if (reset_type == "default"):
+                self.commands.hard_reset(self.exercise)
+            else:
+                self.commands.pause_physics()
+                self.commands.reset_physics(self.simulator)
+        else:
+            self.commands.pause_physics()
+            self.commands.reset_physics(self.simulator)
 
     # Function to start gz client
     def start_gz(self):
@@ -555,10 +696,11 @@ class Manager:
         print("Kill simulation")
         await self.commands.kill_all()
     
-    def evaluate_code(self, code):
+    def evaluate_code(self, code, warnings=False):
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
+            code = re.sub(r'\nimport cv2\n', '\nfrom cv2 import cv2\n', code)
             
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
             while_position = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)
@@ -577,20 +719,20 @@ class Manager:
                 self.exercise = 'follow_line'
 
             command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
-            print('COMANDO: ', command)
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
 
             # Removes convention and warning messages
-            convention_messages = re.search(":[0-9]+: convention.*\n", result)
-            while (convention_messages != None):
-                result = result[:convention_messages.start()] + result[convention_messages.end():]
+            if not warnings:
                 convention_messages = re.search(":[0-9]+: convention.*\n", result)
-            warning_messages = re.search(":[0-9]+: warning.*\n", result)
-            while (warning_messages != None):
-                result = result[:warning_messages.start()] + result[warning_messages.end():]
+                while (convention_messages != None):
+                    result = result[:convention_messages.start()] + result[convention_messages.end():]
+                    convention_messages = re.search(":[0-9]+: convention.*\n", result)
                 warning_messages = re.search(":[0-9]+: warning.*\n", result)
+                while (warning_messages != None):
+                    result = result[:warning_messages.start()] + result[warning_messages.end():]
+                    warning_messages = re.search(":[0-9]+: warning.*\n", result)
 
             # Removes unexpected EOF error
             eof_exception = re.search(":[0-9]+: error.*EOF.*\n", result)
@@ -617,7 +759,7 @@ class Manager:
 
             # Returns an empty string if there are no errors
             error = re.search("error", result)
-            if (error == None):
+            if (error == None and not warnings):
                 return ""
             else:
                 return result

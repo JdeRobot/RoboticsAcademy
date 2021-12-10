@@ -106,6 +106,17 @@ class GUI:
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
+
+        logged = False
+        while not logged:
+            try:
+                f = open("/ws_gui.log", "w")
+                f.write("websocket_gui=ready")
+                f.close()
+                logged = True
+            except:
+                time.sleep(0.1)
+
         self.server.run_forever()
 
     # Function to reset

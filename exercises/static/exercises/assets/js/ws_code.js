@@ -89,6 +89,24 @@ function stopCode(){
 	websocket_code.send(stop_code);
 }
 
+function resumeBrain(){
+    let message = "#play\n";
+    console.log("Message sent!");
+	websocket_code.send(message);
+}
+
+function stopBrain(){
+    let message = "#stop\n";
+    console.log("Message sent!");
+	websocket_code.send(message);
+}
+
+function resetBrain(){
+    let message = "#rest\n";
+    console.log("Message sent!");
+	websocket_code.send(message);
+}
+
 // Function to save the code
 function saveCode(){
     // Get the code from editor and add header

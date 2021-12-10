@@ -6,8 +6,8 @@
 
     <include file="$(find drone_wrapper)/launch/mavros_px4_sitl.launch">
         <arg name="world" value="$(arg world)"/>
-        <arg name="x" value="10"/>
-        <arg name="z" value="0.5"/>
+        <arg name="z" value="1.45"/>
+        <arg name="Y" value="1.57"/>
     </include>
     
     <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(arg perspective)"/>
