@@ -25,3 +25,6 @@ class HAL:
 
     def setW(self, velocity):
         self.motors.sendW(velocity)
+
+    def getPose3d(self):
+        return self.pose3d.getPose3d()

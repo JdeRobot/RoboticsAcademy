@@ -9,7 +9,7 @@ import logging
 import numpy as np
 from interfaces.pose3d import ListenerPose3d
 import re
-from map import Map
+from map import MAP
 
 
 # Graphical User Interface Class
@@ -43,7 +43,7 @@ class GUI:
 
         # Create the lap object
         self.pose3d_object = ListenerPose3d("/taxi_holo/odom")
-        self.map = Map(self.pose3d_object)
+        self.map = MAP(self.pose3d_object)
 
     # Function to get the client
     # Called when a new client is received
@@ -101,16 +101,22 @@ class GUI:
     # Process the array(ideal path) to be sent to websocket
     def showPath(self, array):
         self.array_lock.acquire()
-        arr_shape = array.shape
-        three_dim = array.reshape(1, arr_shape[0], arr_shape[1])
-        strArray = np.array_str(three_dim)
+
+        strArray = ''.join(str(e) for e in array)
+
         # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
         strArray = re.sub(r"\[[ ]+", "[", strArray)
         strArray = re.sub(r"[ ]+", ", ", strArray)
         strArray = re.sub(r",[ ]+]", "]", strArray)
+        strArray = re.sub(r",,", ",", strArray)
+        strArray = re.sub(r"]\[", "],[", strArray)
+        strArray = "[" + strArray + "]"
 
         self.array = strArray
         self.array_lock.release()
+
+    def getTargetPose(self):
+        return self.worldXY
 
     # Update the gui
     def update_gui(self):

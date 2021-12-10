@@ -698,6 +698,7 @@ class Manager:
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
+            code = re.sub(r'from MAP import MAP', 'from map import MAP', code)
             code = re.sub(r'\nimport cv2\n', '\nfrom cv2 import cv2\n', code)
             
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
