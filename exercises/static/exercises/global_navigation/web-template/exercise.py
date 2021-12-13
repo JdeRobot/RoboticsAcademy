@@ -198,7 +198,7 @@ class Template:
         print("Current Thread Joined!")
 
     def getMap(self):
-        img = cv2.imread("assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
+        img = cv2.imread("/RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
         return img
 
     def getPose(self):
