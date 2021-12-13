@@ -103,9 +103,6 @@ youtubeId4: zcS4X-ZO68U
 youtubeId5: lO9Ru2mNAR4
 
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
@@ -285,7 +282,7 @@ Assignment of weights to the cells is arbitrary. Generally, diagonally neighbori
 
 **Important Points to Remember**
 
-- You may use `self.grid.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
+- You may use `MAP.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
 
 - In order to assign those extra weights, we may take the obstacle points we saved earlier, and add extra values to the neighbors of the obstacle cell afterwards.
 
