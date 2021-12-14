@@ -116,7 +116,7 @@ class GUI:
         self.array_lock.release()
 
     def getTargetPose(self):
-        return self.worldXY
+        return [self.worldXY[1], self.worldXY[0]]
 
     # Update the gui
     def update_gui(self):

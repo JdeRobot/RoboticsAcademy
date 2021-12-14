@@ -49,12 +49,12 @@ class MAP:
 
 	def gridToWorld(self, gridX, gridY):
 		# self.wWidth/self.gWidth is the scale
-		gridX = gridX * self.worldWidth/self.gridWidth
-		gridY = gridY * self.worldHeight/self.gridHeight 
-		orig_poses = np.matrix([[gridX], [gridY], [0], [-1]])
-		final_poses = self.RTGridWorld() * orig_poses
-		worldX = final_poses.flat[0]
-		worldY = final_poses.flat[1]
+		gridX = gridX / 400
+		gridX = gridX * 500
+		worldX = gridX - 250
+		gridY = gridY / 400
+		gridY = gridY * 500
+		worldY = gridY - 250		
 		return (worldX, worldY)
 		
 	def RTFormula(self):
@@ -74,20 +74,43 @@ class MAP:
 		x = pose.x
 		y = pose.y
 		#print("x : {} , y : {}".format(x,y))
-		scale_y = 0.6  ; offset_y = 153
-		y = scale_y * y + offset_y
-		
-		scale_x = -0.3 ; offset_x = 77
-		x = scale_x * x + offset_x
-		if x > 77:
-			t = x - 77
-			x = 77 - t
-		else:
-			t = 77 - x
-			x = t + 77
+		# Transform from world coordinates to map coordinates
+		# The scenario is placed on 0,0. It has a length of 500x500
+		# The coordinates of the map are from 0 to 400, being 0,0 the top left corner
+		x = x + 250
+		x = x / 500
+		x = x * 400
+		y = y + 250
+		y = y / 500
+		y = y * 400
 		#print("x : {} , y : {}".format(x,y))
 		return y, x
 
+	def rowColumn(self, pose):
+		x = pose[0]
+		y = pose[1]
+		#print("x : {} , y : {}".format(x,y))
+		# Transform from world coordinates to map coordinates
+		# The scenario is placed on 0,0. It has a length of 500x500
+		# The coordinates of the map are from 0 to 400, being 0,0 the top left corner
+		x = x + 250
+		x = x / 500
+		x = x * 400
+		if (x > 400):
+			x = 400
+		if (x < 0):
+			x = 0
+		x = int(x)
+		y = y + 250
+		y = y / 500
+		y = y * 400
+		if (y > 400):
+			y = 400
+		if (y < 0):
+			y = 0
+		y = int(y)
+		#print("x : {} , y : {}".format(x,y))
+		return [y, x]
 
 	def getTaxiAngle(self):
 		pose = self.pose3d.getPose3d()
