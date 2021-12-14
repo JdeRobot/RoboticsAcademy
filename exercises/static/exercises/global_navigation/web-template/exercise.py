@@ -198,7 +198,7 @@ class Template:
         print("Current Thread Joined!")
 
     def getMap(self):
-        img = cv2.imread("assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
+        img = cv2.imread("/RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
         return img
 
     def getPose(self):
@@ -231,12 +231,7 @@ class Template:
         # Define GUI module
         map_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
         map_module.MAP = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
-        map_module.MAP.robotPose = self.gui.map.getTaxiCoordinates
-        map_module.MAP.getGridVal = self.gui.map.getGridVal
-        map_module.MAP.setGridVal = self.gui.map.setGridVal
-        map_module.MAP.gridToWorld = self.gui.map.gridToWorld
-        map_module.MAP.worldToGrid = self.gui.map.worldToGrid
-        # map_module.MAP.destination = self.gui.mapXY
+        map_module.MAP.rowColumn = self.gui.map.rowColumn
         map_module.MAP.getMap = self.getMap
 
         # Adding modules to system
