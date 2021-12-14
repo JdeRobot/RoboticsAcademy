@@ -196,18 +196,14 @@ while True:
 * `from MAP import MAP` - This class contains functions that interact with data related to the map and Gazebo world. 
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
-* `HAL.getPose3d()` - returns x,y and theta components in the world
-* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the web-template. It represents the values of the field that have been assigned to the grid. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale).   
-* `GUI.showPath(array)` - shows ideal path on the map and the parameter should be 2D array
-* `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world 
-* `MAP.getMap()` - Map image opencv data in opencv data
-* `MAP.robotPose()` - returns x,y coordinates of robot on the map
-* `MAP.setGridVal(x, y, val)` - sets the value val to the indicated position on the map
-* `MAP.getGridVal(x, y)` - returns the value in that grid position on the map
-* `MAP.gridToWorld(x, y)` - returns translated x,y coordinates in the world
-* `MAP.worldToGrid(x, y)` - returns translated x,y coordinates on the map 
+* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
+* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400
+* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
+* `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image
+* `MAP.getMap()` - Map image opencv data in opencv data (400x400) [image](https://github.com/JdeRobot/RoboticsAcademy/blob/master/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png)
+* `MAP.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter
     
-**REMEMBER**: Once running, double click in any point of the map to set destination.
+The map image has a resolution of 400x400 and indicates if there is an obstacle or not by its color. The map has its center in the Gazebo world in [0, 0]. It has a width and height of 500. Therefore, each of the cells in the map represent a cell in the Gazebo world with a width and height of 1.25.
 
 ## Videos
 
