@@ -200,10 +200,10 @@ while True:
 * `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
 * `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image
-* `MAP.getMap()` - Map image opencv data in opencv data (400x400) [image](https://github.com/JdeRobot/RoboticsAcademy/blob/master/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png)
+* `MAP.getMap()` - Returns map [image](https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/master/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png) opencv data in opencv data (400x400px)
 * `MAP.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter
     
-The map image has a resolution of 400x400 and indicates if there is an obstacle or not by its color. The map has its center in the Gazebo world in [0, 0]. It has a width and height of 500. Therefore, each of the cells in the map represent a cell in the Gazebo world with a width and height of 1.25.
+The map image has a resolution of 400x400 pixels and indicates wheter there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
 
 ## Videos
 
