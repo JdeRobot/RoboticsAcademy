@@ -17,9 +17,6 @@ gallery:
 youtubeId1: c90hmfkZRNY
 youtubeId2: Xcy84DhVjrY
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
