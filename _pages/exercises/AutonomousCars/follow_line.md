@@ -57,9 +57,6 @@ youtubeId1: eNuSQN9egpA
 youtubeId2: gHZVESBcgKE
 
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
