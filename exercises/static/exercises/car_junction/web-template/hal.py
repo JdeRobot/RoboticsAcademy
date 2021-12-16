@@ -73,7 +73,7 @@ class HAL:
         topicCameraR = cfg['Stop']["CameraR"]["Topic"]
         self.cameraR = ListenerCamera(topicCameraR)
 
-        self.template = cv2.imread('assets/img/template.png', 0)
+        self.template = cv2.imread('/RoboticsAcademy/exercises/static/exercises/car_junction/web-template/assets/img/template.png', 0)
 
         # Dummy Cars Controller
         self.dummy_speed_1 = -2
@@ -131,10 +131,24 @@ class HAL:
         self.motors.sendW(angular)
 
     def getPose3D(self):
-        return self.pose3d.getPose3d()
+        return self.pose3d.data
 
     def setPose3D(self, pose3d):
-        self.pose3d = pose3d
+        newPose = ModelState()
+        newPose.model_name = 'opel'
+        newPose.pose.position.x = pose3d.x
+        newPose.pose.position.y = pose3d.y
+        newPose.pose.position.z = pose3d.z
+        newPose.pose.orientation.x = pose3d.q[1]
+        newPose.pose.orientation.y = pose3d.q[0]
+        newPose.pose.orientation.z = pose3d.q[3]
+        newPose.pose.orientation.w = pose3d.q[2]
+        rospy.wait_for_service('/gazebo/set_model_state')
+        try:
+            set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+            resp = set_state(newPose)
+        except rospy.ServiceException:
+            print("Service call failed")
 
     def getTemplate(self):
         return self.template
