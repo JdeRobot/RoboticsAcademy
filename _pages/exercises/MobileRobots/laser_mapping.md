@@ -23,9 +23,6 @@ Occupancy_grid:
 
 youtubeId1: vCIFpZcWZhs
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
