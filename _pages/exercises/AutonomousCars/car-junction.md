@@ -150,8 +150,8 @@ while True:
 * `HAL.getPose3D()` - to obtain the position of the robot
 * `HAL.getYaw()` - to obtain the orientation of the robot
 * `HAL.setPose3D()` - to set the position of the robot
-* `HAL.getTemplate()` - to get the stop's image template
-* `GUI.showImages(imageLeft, imageCentral, imageRight)` - allows you to view a debug images or with relevant information
+* `HAL.getTemplate()` - to get the image template of the stop sign
+* `GUI.showImages(imageLeft, imageCentral, imageRight)` - to visualize the images in the webpage
 
 ## Videos
 
