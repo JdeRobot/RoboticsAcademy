@@ -265,6 +265,20 @@ while True:
             except:
                 pass
 
+        elif (message[:5] == "#stop"):
+            try:
+                self.reload.set()
+                self.execute_thread("""from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!""")
+                self.paused = True
+            except:
+                pass
+            self.server.send_message(self.client, "#stpd")
+
     # Function that gets called when the server is connected
     def connected(self, client, server):
         self.client = client
