@@ -40,9 +40,6 @@ evolution:
 youtubeId1: xUpTw0_jt5s
 
 ---
-## Versions to run the exercise
-
-- Web Templates (Current Release)
 
 ## Goal
 

@@ -20,9 +20,6 @@ gallery:
 youtubeId1: I967nzeSSZg
 youtubeId2: mT5PkgtDLDg
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 

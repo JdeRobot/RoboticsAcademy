@@ -55,10 +55,6 @@ youtubeId2: cAqfb6qJvwI
 youtubeId3: dXm8mTMH3qY 
 ---
 
-## Versions to run the exercise
-
-- Web Templates(Current Release)
-
 ## Goal
 
 In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.
