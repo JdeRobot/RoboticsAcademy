@@ -146,8 +146,6 @@ class Template:
     def process_code(self, source_code):
         # Redirect the information to console
         start_console()
-        # Reference Environment for the exec() function
-        reference_environment = {}
         iterative_code, sequential_code = self.parse_code(source_code)
 
         # print("The debug level is " + str(debug_level)
@@ -161,8 +159,9 @@ class Template:
         # The Python exec function
         # Run the sequential part
         gui_module, hal_module, map_module = self.generate_modules()
-        exec(sequential_code, {"GUI": gui_module, "HAL": hal_module, "MAP": map_module, "time": time},
-             reference_environment)
+        # Reference Environment for the exec() function
+        reference_environment = {"GUI": gui_module, "HAL": hal_module, "MAP": map_module, "time": time}
+        exec(sequential_code, reference_environment)
 
         # Run the iterative part inside template
         # and keep the check for flag
