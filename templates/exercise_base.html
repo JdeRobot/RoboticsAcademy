@@ -1,0 +1,509 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE HTML>
+<html lang="es-ES">
+
+<head>
+    <meta http-equiv="Content-type" content="text/html" charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href='{% static "common/img/logo.ico"%}' sizes="32x32">
+    <title>RoboticsAcademy</title>
+    <link rel="stylesheet" href="{% static 'common/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'common/css/split_style.css' %}">
+    <link rel="stylesheet" href="{% static 'common/css/gui.css' %}">
+    <link rel="stylesheet" href="{% static 'common/css/console.css' %}">
+    <!-- Bootstrap 3.3.7 from local -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"
+        type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <!-- SWAL -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+    <script>
+        function showInfoModal() {
+            $("#info-modal").modal('show');
+        }
+
+        // Tab selection functions
+        function openExercise() {
+            hideAll();
+            $("#exercise-view").show();
+            $("#exercise-controls").show();
+        }
+
+        function openTheory() {
+            hideAll();
+            $("#theory-view").show();
+        }
+
+        function hideAll() {
+            $("#exercise-view").hide();
+            $("#exercise-controls").hide();
+            $("#theory-view").hide();
+        }
+    </script>
+
+    <!-- Roboto Typography -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+    <!-- Hoja de Estilo principal de la Aplicación (Main Styles) -->
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/animate.css' %}">
+
+    <!--Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        /* Styling h1 tag */
+        h1 {
+            color: green;
+            text-align: center;
+        }
+
+        /* Styling modal */
+        .modal .modal-content {
+            padding: 20px 20px 20px 20px;
+            width: 650px;
+            -webkit-animation-name: modal-animation;
+            -webkit-animation-duration: 0.5s;
+            animation-name: modal-animation;
+            animation-duration: 0.5s;
+        }
+
+        .content {
+            visibility: visible;
+        }
+
+        @-webkit-keyframes modal-animation {
+            from {
+                top: -100px;
+                opacity: 0;
+            }
+
+            to {
+                top: 0px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes modal-animation {
+            from {
+                top: -100px;
+                opacity: 0;
+            }
+
+            to {
+                top: 0px;
+                opacity: 1;
+            }
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            visibility: hidden;
+            display: none;
+            background-color: rgba(22, 22, 22, 0.5);
+        }
+
+        #container:target {
+            visibility: visible;
+            display: block;
+        }
+
+        .carousel-control-prev-icon, .carousel-control-next-icon {filter: invert(100%); }
+
+        .carousel-control-prev-icon{
+            position: absolute;
+            left: 0%;
+        }
+        .carousel-control-next-icon{
+            position: absolute;
+            right: 0%;
+        }
+
+        .carousel-item-controls p { padding-left: 6px;}
+        .carousel-item-controls img {width: 20px; height: 20px}
+
+        #chat-content{
+            display: flex;
+            flex-direction: row;
+        }
+        #chat-log{
+            width: auto;
+            height: 50vh;
+            border: 1px solid black;
+            overflow-y: scroll;
+        }
+        #chat-div p#chat-title{
+            text-align: center;
+        }
+        #stream-div{
+            border: 1px solid black;
+        }
+
+        #chat-div {
+            width: 450px;
+            margin: auto;
+            float: right;
+        }
+        input[type=text]#chat-message-input{
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #chat-log{
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #chat-message-submit{
+            width: 100%;
+        }
+
+        .send{
+            text-align: right;
+        }
+
+        .receive{
+            text-align: left;
+        }
+
+        video{
+            display: block;
+        }
+
+    </style>
+</head>
+
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light" style="padding-top: 0px; padding-bottom: 0px;">
+
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <img src="{% static 'common/img/logo.png' %}" class="d-inline-block align-top"
+                height="28" alt="Academy">
+
+            <div class="col-xs-3 ml-auto">
+                <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="connection-button" value="local-connection" disabled="true"><span id="loading-connection"
+                        class="bi bi-arrow-down-up"></span> Connect</button>
+                <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="launch-button" value="local-connection"><span id="loading-connection"
+                            class="bi bi-arrow-down-up"></span> Launch</button>
+                <button type="button" class="btn" onclick="showInfoModal()"><span class="fa fa-question-circle-o" style="font: normal normal normal 20px/1 FontAwesome; padding-top: 2px; padding-bottom: 2px;"></span></button>
+            </div>
+
+
+
+            <!-- Cuando se genere el token se le muestra la url de invitado y se quita cuando se detecta conexión-->
+            <div id="rtc-url" style="color: black; margin: 15px"></div>
+
+            <div class="mr-auto">
+                    <div id="Control" class="container">
+                        <button id="open-theory" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" type="button" onclick="openTheory()"><i class="fa fa-graduation-cap" aria-hidden="true"></i></button>
+                        <button id="open-exercise" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"  type="button" onclick="openExercise()"><i class="fa fa-code" aria-hidden="true"></i></button>
+                    </div>
+            </div>
+
+            <script> 
+
+                // Simulate variable
+                let theory_mode = false;
+                let code_mode = true;
+                // Simulate button
+                const theory_icon = document.querySelector('#open-theory');
+                const code_icon = document.querySelector('#open-exercise');
+                code_icon.style.background = '#28A745';
+                theory_icon.style.background = '#6C757D';
+                theory_icon.addEventListener('click', function(){
+
+                    if(!theory_mode){
+
+                        // Activate mode
+                        theory_mode = true;
+                        code_mode = false;
+                        theory_icon.style.background = '#28A745';
+                        code_icon.style.background = '#6C757D'; 
+                        return;
+                    }
+
+
+                });
+
+                code_icon.addEventListener('click', function(){
+
+                    if(!code_mode){
+
+                        // Activate mode
+                        code_mode = true;
+                        theory_mode = false;
+                        code_icon.style.background = '#28A745';
+                        theory_icon.style.background = '#6C757D';
+                        return;
+                    }
+
+
+                });
+
+        </script>   
+        </div>
+    </nav>
+
+    <script>
+        var launch_level = 0;
+        // Changes connection step value
+        function set_launch_level(level) {
+            launch_level = level;
+        }
+        function get_launch_level() {
+            return launch_level;
+        }
+
+    </script>
+
+
+<div class="row col-md-12" id="exercise-controls">
+	<div id="Control" style = "margin-top: 3px; margin-bottom: 0px;" class="container">
+        <button id="load" type="button"><nobr><img class="btn_img" src="{% static 'common/img/upload.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
+        <button id="save" type="button" onclick="saveCodeUnibotics()"><nobr><img class="btn_img" src="{% static 'common/img/download.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
+		<button id="loadIntoRobot" title="" type="button" onclick="check()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><nobr><img class="btn_img" src="{% static 'common/img/robot.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load in robot</p></nobr><img class="btn_img" id="loadIntoRobotAlert" src="{% static 'common/img/dot.png' %}" style="position: absolute; display: none; height: 14px; margin-top: -6px; filter: invert(83%) sepia(29%) saturate(7448%) hue-rotate(12deg) brightness(87%) contrast(101%);"/></button>
+		<button id="submit" type="button" onclick="start('{{user.username}}')" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/submit.png' %}" style="display: inline;"/><p style="display: inline;"> Play</p></button>
+		<input type="file" id="real-file" hidden="hidden"/>
+		<button id="reset" type="button" onclick="resetSim()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" style="height:15px;" src="{% static 'common/img/reset.svg' %}"> Reset</button>
+		<div overflow-x:auto id="Medidor_Brain">
+			<table id=table_code_freq>
+			<tr>
+			<td><a id="letters">Brain Freq:</a> <output id="ideal_code_frequency">0</output>/ <input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span> <a id="Hz">Hz</a></td>
+			</tr>
+			</table>
+		</div>
+		<div overflow-x:auto id="Medidor_GUI">
+			<table id=table_gui_freq>
+			<tr>
+			<td><a id="letters">GUI Freq:</a><output id="ideal_gui_frequency">0</output>/ <input type="number" id="gui_freq" name="quantity" min="1" max="30" value="12" step="1" style="color:green" oninput="guifrequencyUpdate(value)"<span title="This value corresponds to the frequency the UI and visuals will be updated."></span> Hz</td>
+			</tr>
+			</table>
+		</div>
+		<div id="Medidor_RTF">
+            <a id="letters">Sim RTF:</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
+        </div>
+
+
+
+
+
+        
+		<button id="gazebo_button" type="button" onclick="changegzweb()" title="Activate the simulation screen"><div style="vertical-align: top; display: inline-block; text-align: center;"><img id="gzimg" style="height:20px;" src="{% static 'common/img/gazebo.svg' %}"/><span style="display: block;">View Sim</span></div></button>
+        <button id="console_button" type="button" onclick="changeconsole()" title="Open the console"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="terminalimg" style="height:20px;" src="{% static 'common/img/console.png' %}"/><span style="display: block;">View Console</span></div></button>
+		<!--<a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>-->
+        <button id="teleop_button" type="button" title="Use the arrow keys to operate the F1"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="teleop_img" style="height:20px;" src="{% static 'common/img/joystick_off.png' %}"/><span style="display: block;">Teleoperate</span></div></button>
+
+        
+        <script>
+            document.getElementById('teleop_button').style.display = 'none';
+
+            if(window.location.pathname=='/exercises/follow_line/'){ 
+                document.getElementById('teleop_button').style.display = 'block';
+            }
+            if(window.location.pathname=='/exercises/laser_mapping' || window.location.pathname=='/academy/exercise/follow_line_game/'){ 
+                document.getElementById('teleop_button').style.display = 'block';
+            }  
+            if(window.location.pathname=='/exercises/color_filter/'){ 
+                document.getElementById('gazebo_button').style.display = 'none';
+            }
+                
+        </script>
+    </div>
+
+</div>
+
+<script> 
+        
+// Simulate variable
+let simulate_mode = false;
+		// Simulate button
+		const simulate_btn = document.querySelector('#gazebo_button');
+		const simulate_img = document.querySelector('#gzimg');
+		simulate_btn.addEventListener('click', function(){
+
+			if(!simulate_mode){
+
+				// Activate mode
+				simulate_mode = true;
+				simulate_btn.style.background = '#BEBEBE';
+				simulate_img.src = "{% static 'common/img/gazebo_on.svg' %}";
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			simulate_mode = false;
+			simulate_btn.style.background = 'transparent';
+			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
+
+			return;
+
+
+		});
+
+		function deactivateSimulateButton() {
+			simulate_mode = false;
+			simulate_btn.style.background = 'transparent';
+			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
+
+		}
+
+		// Console variable
+		let console_mode = false;
+		// Console button
+		const console_btn = document.querySelector('#console_button');
+		const console_img = document.querySelector('#terminalimg');
+		console_btn.addEventListener('click', function(){
+
+			if(!console_mode){
+			
+				// Activate mode
+				console_mode = true;
+				console_btn.style.background = '#BEBEBE';
+				console_img.src = "{% static 'common/img/console_on.svg' %}";
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			console_mode = false;
+			console_btn.style.background = 'transparent';
+			console_img.src = "{% static 'common/img/console.svg' %}";
+
+			return;
+
+
+		});
+		function deactivateConsoleButton() {
+			console_mode = false;
+			console_btn.style.background = 'transparent';
+			console_img.src = "{% static 'common/img/console.svg' %}";
+
+		}
+
+        // Teleop variable
+        let teleop_mode = false;
+		// Teleop button
+		const teleop_btn = document.querySelector('#teleop_button');
+		const teleop_img = document.querySelector('#teleop_img');
+
+		teleop_btn.addEventListener('click', function(){
+			// If variable is false, activate teleoperate mode
+			if(!teleop_mode){
+				if (running == false) {
+					resumeSimulation();
+					running == true;
+				}
+				// Activate mode
+				teleop_mode = true;
+				teleop_btn.style.background = '#BEBEBE';
+				teleop_img.src = "{% static 'common/img/joystick_on.png' %}";
+				document.addEventListener('keydown', keyHandler, false);
+				document.addEventListener('keyup', keyHandler, false);
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			teleop_mode = false;
+			submitCode();
+			teleop_btn.style.background = 'transparent';
+			teleop_img.src = "{% static 'common/img/joystick_off.png' %}";
+			document.removeEventListener('keydown', keyHandler, false);
+			document.removeEventListener('keyup', keyHandler, false);
+			return;
+		});
+
+		function deactivateTeleopButton() {
+			teleop_mode = false;
+			teleop_btn.style.background = 'transparent';
+			teleop_img.src = "{% static 'common/img/joystick_off.png' %}";
+			document.removeEventListener('keydown', keyHandler, false);
+			document.removeEventListener('keyup', keyHandler, false);
+		}
+
+
+    		// Car variables
+		let v = 0;
+		let w = 0;
+
+		// Event Handlers for controls
+		function keyHandler(event) {
+			// Right (39), Left (37), Down (40), Up (38)
+			
+			// First check if websocket_gui_guest and websocket_code_guest are defined
+			if((typeof(websocket_gui) !== 'undefined' && (typeof(websocket_code) !== 'undefined'))){
+				let cmd = "#tele";
+
+				// Prevent using arrow keys to scroll page
+				if([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+					event.preventDefault();
+				}
+
+				if(event.keyCode == 39) {
+					//console.log('Right');
+					w = (event.type == 'keydown')?-1:0;
+				}else if(event.keyCode == 37) {
+					//console.log('Left');
+					w = (event.type == 'keydown')?1:0;
+				}else if(event.keyCode == 40) {
+					//console.log('Down');
+					v = (event.type == 'keydown')?-2:0;
+				}else if(event.keyCode == 38) {
+					//console.log('Up');
+					v = (event.type == 'keydown')?2:0;
+				}
+				console.log('v: ', v, 'w: ', w);
+			}
+		}
+
+</script>   
+
+
+    {% block content %}
+
+    <!-- CONTENIDO DE LAS DISTINTAS PÁGINAS -->
+
+    {% endblock %}
+
+
+
+    {% if not simulation_site %}
+    <div class="footer">
+        <span><b>Release {{version}}</b></span> | <span>Derechos de autor &copy;
+            <script>document.write(new Date().getFullYear())</script> - Asociación JdeRobot.
+        </span> Este sitio utiliza cookies. <a href="/terms#cookies" target="_blank">Más Información</a>
+    </div>
+    {% endif %}
+
+</body>
+</html>
