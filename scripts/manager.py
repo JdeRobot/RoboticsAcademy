@@ -726,7 +726,7 @@ class Manager:
             result = ret.stdout.decode()
             result = result + "\n"
 
-            # Removes convention and warning messages
+            # Removes convention, refactor and warning messages
             if not warnings:
                 convention_messages = re.search(":[0-9]+: convention.*\n", result)
                 while (convention_messages != None):
@@ -736,6 +736,10 @@ class Manager:
                 while (warning_messages != None):
                     result = result[:warning_messages.start()] + result[warning_messages.end():]
                     warning_messages = re.search(":[0-9]+: warning.*\n", result)
+                refactor_messages = re.search(":[0-9]+: refactor.*\n", result)
+                while (refactor_messages != None):
+                    result = result[:refactor_messages.start()] + result[refactor_messages.end():]
+                    refactor_messages = re.search(":[0-9]+: refactor.*\n", result)
 
             # Removes unexpected EOF error
             eof_exception = re.search(":[0-9]+: error.*EOF.*\n", result)
