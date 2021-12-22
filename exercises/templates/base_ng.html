@@ -45,7 +45,7 @@
             startSim(2);
         }
     </script>
-    <div id="Control" class="container" >
+    <div id="Control"  style = "margin-top: 3px; margin-bottom: 0px;" class="container" >
         <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><nobr><img src="{% static 'exercises/assets/img/download.png' %}" style="display: inline"><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
         <button  id="load" type="button"<span title="Load your code from your local machine"></span><nobr><img src="{% static 'exercises/assets/img/upload.png' %}" style="display: inline;"><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
         <button  id="submit" type="button" onclick="submitCode()"<span title="Submit and try out your code"></span><img src="{% static 'exercises/assets/img/submit.png' %}"> Play </button>
@@ -66,8 +66,49 @@
             </tr>
             </table>
         </div>
-        <button id="console_button" type="button" onclick="changeconsole()"><img id="terminalimg" src="{% static 'exercises/assets/img/console.png' %}"> Console</button>
+        <button id="console_button" type="button" onclick="changeconsole()" title="Open the console"> <div style="vertical-align: top; text-align: center;display: flex; flex-direction: column;"><img id="terminalimg" style="height:20px;" src="{% static 'exercises/assets/img/console.svg' %}"/><span style="display: block; text-align: center;">View Console</span></div></button>
     </div>
+
+
+    <script> 
+        
+        // Console variable
+        let console_mode = false;
+        // Console button
+        const console_btn = document.querySelector('#console_button');
+        const console_img = document.querySelector('#terminalimg');
+        console_btn.addEventListener('click', function(){
+
+            if(!console_mode){
+            
+                // Activate mode
+                console_mode = true;
+                console_btn.style.background = '#BEBEBE';
+                console_img.src = "{% static 'unibotics-exercises/static/assets/common/img/console_on.svg' %}";
+                return;
+            }
+
+            // Else, turn of teleop mode and remove event listeners
+            console_mode = false;
+            console_btn.style.background = 'transparent';
+            console_img.src = "{% static 'unibotics-exercises/static/assets/common/img/console.svg' %}";
+
+            return;
+
+
+        });
+        function deactivateConsoleButton() {
+            console_mode = false;
+            console_btn.style.background = 'transparent';
+            console_img.src = "{% static 'unibotics-exercises/static/assets/common/img/console.svg' %}";
+
+        }
+
+
+</script>   
+
+
+
     <div class="content">
         <div class="split a">
             <li id="frecuency_control" style="list-style: none; display:block; text-align:center; font-weight:bold;" ><div id="Frequency" class="container">

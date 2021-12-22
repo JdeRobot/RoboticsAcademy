@@ -37,9 +37,9 @@
                     height="28" alt="Academy">
 		        Robotics Academy by JdeRobot
                 <div style="padding-inline: 150px" class="d-inline-block align-center">
-                    <button type="button" class="btn btn-danger" id="connection-button" value="local-connection"><span id="loading-connection"
+                    <button type="button" class="btn btn-secondary" id="connection-button" style="padding-top: 2px; padding-bottom: 2px;" value="local-connection"><span id="loading-connection"
                         class="bi bi-arrow-down-up"></span> Connect</button>
-                    <button type="button" class="btn btn-secondary" id="launch-button" value="local-connection"><span id="loading-connection"
+                    <button type="button" class="btn btn-secondary" id="launch-button" style="padding-top: 2px; padding-bottom: 2px;" value="local-connection"><span id="loading-connection"
                         class="bi bi-arrow-down-up"></span> Launch</button>
                 </div>
 		    </div>
@@ -51,12 +51,12 @@
         <script type="text/javascript">
             $(document).ready(function() {$("#launch-button").click(
                 function () {
-                    if ($("#launch-button").attr('class') == 'btn btn-danger') {
+                    if ($("#launch-button").attr('class') == 'btn btn-secondary' && $("#connection-button").attr('class') == 'btn btn-success') {
                         $("#launch-button").prop('disabled', true);
-                        $("#launch-button").removeClass('btn-danger').addClass('btn-warning');
+                        $("#launch-button").removeClass('btn-secondary').addClass('btn-warning');
                         $("#launch-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">0</a>');
                         window.top.postMessage('launch', '*');
-                    } else {
+                    } else if ($("#connection-button").attr('class') == 'btn btn-secondary'){
                         alert("A connection with the manager must be established before launching an exercise");
                     }
                 });
@@ -66,23 +66,23 @@
                 var data = event.data;
                 if (data.connection == 'manager') {
                     if (data.command == 'up') {
-                        $("#connection-button").removeClass("btn-danger").addClass("btn-success");
+                        $("#connection-button").removeClass("btn-secondary btn-warning").addClass("btn-success");
                         $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
                         $("#connection-button").prop('disabled', true);
                     }else if (data.command == 'down'){
-                        $("#connection-button").removeClass("btn-success").addClass("btn-danger");
+                        $("#connection-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
                         $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
                         $("#connection-button").prop('disabled', false);
                     }
                 } else if (data.connection == 'exercise') {
                     if (data.command == 'available') {
-                        $("#launch-button").removeClass('btn-secondary').addClass('btn-danger');
+                        $("#launch-button").removeClass('btn-secondary btn-success').addClass('btn-secondary');
                     }else if (data.command == 'up') {
-                        $("#launch-button").removeClass("btn-warning btn-danger").addClass("btn-success");
+                        $("#launch-button").removeClass("btn-warning btn-secondary").addClass("btn-success");
                         $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
                         $("#launch-button").prop('disabled', true);
                     }else if (data.command == 'down'){
-                        $("#launch-button").removeClass("btn-success").addClass("btn-danger");
+                        $("#launch-button").removeClass("btn-success").addClass("btn-secondary");
                         $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
                         $("#launch-button").prop('disabled', false);
                     }else if (data.command == 'launch_level'){

@@ -82,11 +82,15 @@ function submitCode(){
 		
 		websocket_code.send(python_code);
 		console.log("Code Sent! Check terminal for more information!");
-		
-		deactivateTeleopButton();
 	}
 	catch {
 		alert("Connection must be established before sending the code.")
+	}
+	try {
+		deactivateTeleopButton();
+	}
+	catch {
+		
 	}
 }
 
