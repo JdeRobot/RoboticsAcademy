@@ -72,24 +72,27 @@ class SharedImage:
 
     # Add the shared image
     def add(self, image):
-        # Get byte size of the image
-        byte_size = image.nbytes
+        try:            
+            # Get byte size of the image
+            byte_size = image.nbytes
 
-        # Get the shared memory buffer to read from
-        if not self.shm_region:
-            self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=byte_size)
-            self.shm_buf = mmap.mmap(self.shm_region.fd, byte_size)
-            self.shm_region.close_fd()
+            # Get the shared memory buffer to read from
+            if not self.shm_region:
+                self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=byte_size)
+                self.shm_buf = mmap.mmap(self.shm_region.fd, byte_size)
+                self.shm_region.close_fd()
 
-        # Generate meta data
-        metadata = MD(image.shape[0], image.shape[1], image.shape[2], byte_size)
+            # Generate meta data
+            metadata = MD(image.shape[0], image.shape[1], image.shape[2], byte_size)
 
-        # Send the meta data and image to shared regions
-        self.image_lock.acquire()
-        memmove(md_buf, addressof(metadata), sizeof(metadata))
-        self.md_buf[:] = md_buf[:]
-        self.shm_buf[:] = image.tobytes()
-        self.image_lock.release()
+            # Send the meta data and image to shared regions
+            self.image_lock.acquire()
+            memmove(md_buf, addressof(metadata), sizeof(metadata))
+            self.md_buf[:] = md_buf[:]
+            self.shm_buf[:] = image.tobytes()
+            self.image_lock.release()
+        except:
+            pass
 
     # Destructor function to unlink and disconnect
     def close(self):
