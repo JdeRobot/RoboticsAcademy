@@ -16,10 +16,4 @@ toc_icon: "cog"
 2. Run the [RADI (Robotics-Academy Docker Image)](https://hub.docker.com/r/jderobot/robotics-academy/tags) using the exercise specific launch instructions
 3. Clone [Robotics-Academy repository](https://github.com/JdeRobot/RoboticsAcademy).
 
-    Download the Academy software. With git Shell clone the repository as in Linux and run the exercices with `CMD` o powershell
-
-    ```bash
-    git clone https://github.com/jderobot/academy.git
-    ```
-    
 Enjoy :-)
