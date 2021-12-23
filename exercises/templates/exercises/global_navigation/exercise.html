@@ -37,7 +37,7 @@ while True:
         </div>
       </div>
 
-    <div class="row" id="visual">
+      <div class="row" id="visual">
 		<div class="col-md-8">
 			<div class="card text-center">
 				<div class="card-header">
@@ -45,8 +45,13 @@ while True:
 				</div>
 				<div class="card-body">
 					<div class="row mx-auto">
-                        <canvas id="globalnav-eye" onclick="pickLoc()" ></canvas>
-                        <img id="gui_canvas"></img>
+                        <canvas id="globalnav-eye" style="width:400px; margin:auto;" width="400" height="400" onclick="pickLoc()" ></canvas>
+					</div>
+					<div class="row mx-auto">
+						<hr style="border-top: 2px solid rgb(196, 196, 196); width: 100%;">
+					</div>
+					<div class="row mx-auto">
+						<img id="gui-canvas-numpy" width="400" height="400" style="height: 100%; width:400px; margin:auto;" ></img>
 					</div>
 				</div>
 			</div>
@@ -94,16 +99,16 @@ while True:
         window.top.postMessage('connect', '*');
     });
 </script>
-
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="{% static 'exercises/assets/ace-builds/src-noconflict/ace.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/utils.js' %}?v={{SYS_VERSION}}"></script>
 <script src="{% static 'exercises/global_navigation/web-template/assets/websocket_address.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/launcher.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/global_navigation/web-template/assets/generatepath.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/global_navigation/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/assets/js/ws_code.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/global_navigation/web-template/assets/ws_gui.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/global_navigation/web-template/assets/controller.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/global_navigation/web-template/assets/local_functions.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/birds_eye.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/global_navigation/web-template/assets/generatepath.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
 
 {% endblock %}

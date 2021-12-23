@@ -15,7 +15,7 @@ var command_input;
 
 function declare_gui(websocket_address){
 	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
-
+	let canvas = document.getElementById("gui_canvas");
 	websocket_gui.onopen = function(event){
 		if (websocket_code.readyState == 1) {
 			alert("[open] Connection established!");
@@ -80,8 +80,11 @@ function pickLoc(){
         websocket_gui.send("#pick" + JSON.stringify(coords));
 }
 
+function reset_gui(){
+	websocket_gui.send("#rest");
+}
 
-var canvas = document.getElementById("gui_canvas");
+
     
     
 
