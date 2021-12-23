@@ -492,7 +492,7 @@ class Manager:
                 except KeyError:
                     circuit = "default"
                 
-                if not (ACCELERATION_ENABLED):
+                if not (ACCELERATION_ENABLED) or (self.exercise in STDR_EX):
                     self.open_simulation(self.exercise, self.width, self.height, circuit)
                 else:
                     self.open_accelerated_simulation(self.exercise, self.width, self.height, circuit)
