@@ -120,6 +120,11 @@
         "instructions_ros": ["./launch_stdr.sh"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/laser_mapping/web-template/exercise.py 0.0.0.0"
     },
+    "laser_loc": {
+        "gazebo_path": "/RoboticsAcademy/exercises/laser_loc/web-template/launch",
+        "instructions_ros": ["./launch_stdr.sh"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/laser_loc/web-template/exercise.py 0.0.0.0"
+    },
     "package_delivery": {
         "gazebo_path": "/RoboticsAcademy/exercises/package_delivery/web-template/launch",
         "instructions_ros": ["python3 ./RoboticsAcademy/exercises/package_delivery/web-template/launch/launch.py"],
