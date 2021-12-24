@@ -21,13 +21,16 @@ function get_novnc_size() {
     return {width: width, height: height};
 }
 
+
 function saveCodeUnibotics(exercise, verbose = true){
 // Get the code from editor and add header
+console.log("Save code unibotics called");
 var python_code = editor.getValue();
 var blob = new Blob([python_code], {type: "text/plain; charset=utf-8"});
-if (window.navigator.msSaveOROpenBlob)
+if (window.navigator.msSaveOrOpenBlob)
   window.navigator.msSaveOrOpenBlob(blob, $("#form29").val());
 else{
+  console.log("else");
   var a = document.createElement("a"),
   url = URL.createObjectURL(blob);
   a.href = url;
@@ -38,5 +41,5 @@ else{
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }, 0);
-  }
+  }  
 }
