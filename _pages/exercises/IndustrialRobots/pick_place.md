@@ -74,7 +74,7 @@ This is the preferred way for running the exercise.
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-  docker pull jderobot/robotics-academy:2.4.2
+  docker pull jderobot/robotics-academy:latest
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
