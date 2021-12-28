@@ -4,20 +4,28 @@ var simReset = false;
 var simStop = false;
 var simResume = false;
 var sendCode = false;
+var address_code;
+var address_gui;
+var first_attempt = true;
 
-function startSim(step) {
+function startSim(step){
     var level = 0;
     let websockets_connected = false;
+
     if (step == 0) {
+        $("#connection-button").removeClass("btn-danger").addClass("btn-warning");
+		$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
+        address_code = "ws://" + websocket_address + ":1905";
+        address_gui = "ws://" + websocket_address + ":2303";
         ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
     }
     else if (step == 1) {
-        radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
+        connectionUpdate({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         var size = get_novnc_size();
         ws_manager.send(JSON.stringify({
             "command": "open", "exercise": exercise, "width": size.width.toString(), "height": size.height.toString()}));
         level++;
-        radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
+        connectionUpdate({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         ws_manager.send(JSON.stringify({"command" : "Pong"}));
     }
     else if (step == 2) {
@@ -26,26 +34,39 @@ function startSim(step) {
 
     ws_manager.onopen = function (event) {
         level++;
-        radiConect.contentWindow.postMessage({connection: 'manager', command: 'up'}, '*');
-        radiConect.contentWindow.postMessage({connection: 'exercise', command: 'available'}, '*');
+        connectionUpdate({connection: 'manager', command: 'up'}, '*');
+        connectionUpdate({connection: 'exercise', command: 'available'}, '*');
+    }
+
+    ws_manager.onclose = function (event) {
+        connectionUpdate({connection: 'manager', command: 'down'}, '*');
+        if (!first_attempt) {
+            alert("Connection lost, retrying connection...");
+            startSim(step, websocket_address, server, username);
+        } else {
+            first_attempt = false;
+        }
+    }
+
+    ws_manager.onerror = function (event) {
+        connectionUpdate({connection: 'manager', command: 'down'}, '*');
     }
 
     ws_manager.onmessage = function (event) {
         //console.log(event.data);
         if (event.data.level > level) {
             level = event.data.level;
-            radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
+            connectionUpdate({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
         }
         if (event.data.includes("Ping")) {
             if (!websockets_connected && event.data == "Ping3") {
                 level = 4;
-                radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
+                connectionUpdate({connection: 'exercise', command: 'launch_level', level: `${level}`}, '*');
                 websockets_connected = true;
-                declare_code(websocket_address);
-                declare_gui(websocket_address);
+                declare_code(address_code);
+                declare_gui(address_gui);
             }
             if (gazeboToggle) {
-                console.log("toggle gazebo");
                 if (gazeboOn) {
                     ws_manager.send(JSON.stringify({"command" : "startgz"}));
                 } else {
@@ -53,21 +74,22 @@ function startSim(step) {
                 }
 
                 gazeboToggle = false;
-            } else if (sendCode) {
+            } else if (simStop){
+                ws_manager.send(JSON.stringify({"command": "stop"}));
+                simStop = false;
+                running = false;
+            }else if (simReset){
+                ws_manager.send(JSON.stringify({"command": "reset"}));
+                simReset = false;
+            }else if (sendCode) {
                 let python_code = editor.getValue();
 		        python_code = "#code\n" + python_code;
                 ws_manager.send(JSON.stringify({"command": "evaluate", "code": python_code}));
                 sendCode = false;
-            }else if (simReset){
-                console.log("reset simulation");
-                ws_manager.send(JSON.stringify({"command": "reset"}));
-                simReset = false;
-            } else if (simStop){
-                ws_manager.send(JSON.stringify({"command": "stop"}));
-                simStop = false;
             } else if (simResume){
                 ws_manager.send(JSON.stringify({"command": "resume"}));
                 simResume = false;
+                running = true;
             } else {
                 setTimeout(function () {
                     ws_manager.send(JSON.stringify({"command" : "Pong"}));
@@ -79,24 +101,24 @@ function startSim(step) {
                 submitCode();
             } else {                
                 let error = event.data.substring(10,event.data.length);
-                radiConect.contentWindow.postMessage({connection: 'exercise', command: 'error', text: error}, '*');
-                toggleSubmitButton(true);
+                connectionUpdate({connection: 'exercise', command: 'error', text: error}, '*');
             }
             setTimeout(function () {
                 ws_manager.send(JSON.stringify({"command" : "Pong"}));
             }, 1000)
         } else if (event.data.includes("reset")) {
             clearMap();
+            reset_evaluator_map();
         } else if (event.data.includes("PingDone")) {
-            enablePlayPause(true);    
-            toggleResetButton(true);       
+            enableSimControls();
             if (resetRequested == true) {
-                togglePlayPause(false);
-                clearMap();
                 resetRequested = false;
+            }
         }
-    }
-
+        else if (event.data.includes("style")) {
+            let error = event.data.substring(5, event.data.length);
+            connectionUpdate({connection: 'exercise', command: 'style', text: error}, '*');
+        }
     }
 }
 

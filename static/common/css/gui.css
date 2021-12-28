@@ -106,6 +106,12 @@
 	width: 100%;
 }
 
+#nav-mat{
+	margin-top: 15px;
+	width: 100%;
+	margin: auto;
+}
+
 
 #vacuumloc-eye{
 	background: url("../img/vacuum_loc.png");

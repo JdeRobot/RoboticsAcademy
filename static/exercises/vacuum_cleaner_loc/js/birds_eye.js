@@ -1,9 +1,11 @@
 // Retreive the canvas elements and context
-var mapCanvas = document.getElementById("birds-eye"),
+var mapCanvas = document.getElementById("vacuum-eye"),
 	ctx = mapCanvas.getContext("2d");
 	
 var trail = [],
 	coords = [-1, -1];;
+
+var initialPosition;
 
 // Complete draw function
 function draw(x, y, ax, ay){
@@ -34,6 +36,10 @@ function drawCircle(x, y){
 
 // Testing to be carried out with Python interface
 function drawTriangle(posx, posy, angx, angy){	
+	if (initialPosition == null) {
+		initialPosition = [posx, posy, angx, angy];
+	}
+
 	ctx.beginPath();
 	
 	px = posx;
@@ -91,3 +97,12 @@ function clearMap(){
 	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 	trail = [];
 }
+
+function restoreInitialPosition() {
+	draw(initialPosition[0], initialPosition[1], initialPosition[2], initialPosition[3]);
+}
+
+const reset = document.getElementById("reset");
+    reset.addEventListener("click", function(){
+	clearMap();
+});

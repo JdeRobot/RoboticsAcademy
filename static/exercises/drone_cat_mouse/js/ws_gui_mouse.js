@@ -8,32 +8,25 @@ function decode_utf8(s){
 }
 
 // Websocket and other variables for image display
-var websocket_gui;
+var websocket_gui_guest;
 
-function declare_gui(websocket_address){
-	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
+var mouse_pos;
 
-	websocket_gui.onopen = function(event){
-		if (!resetRequested)
-			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
-		if (websocket_code.readyState == 1 && websocket_code_guest.readyState == 1 && websocket_gui_guest.readyState == 1) {
-            if (!resetRequested) {
-                alert("[open] Connection established!");
-                radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
-            }
-            enableSimControls();
+function declare_gui_guest(websocket_address){
+	websocket_gui_guest = new WebSocket( websocket_address);
+
+	websocket_gui_guest.onopen = function(event){
+		set_launch_level(get_launch_level()+1);
+		connectionUpdate({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
+		if (websocket_code_guest.readyState == 1 && websocket_code.readyState == 1 && websocket_gui.readyState == 1) {
+			alert("[open] Connection established!");
+			connectionUpdate({connection: 'exercise', command: 'up'}, '*');
 		}
 	}
 	
-	websocket_gui.onclose = function(event){
-		// Check for hard reset (reboot exercise.py)
-		if (websocket_code_guest.readyState == 1 && websocket_gui_guest.readyState == 1 && resetRequested && ws_manager.readyState == 1) {
-			setTimeout(function () {
-				declare_gui(websocket_address);
-			}, 500)
-		}
-		else {
-			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
+	websocket_gui_guest.onclose = function(event){
+		connectionUpdate({connection: 'exercise', command: 'down'}, '*');
+		if (websocket_code_guest.readyState == 1 && websocket_code.readyState == 1 && websocket_gui.readyState == 1) {
 			if(event.wasClean){
 				alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 			}
@@ -44,12 +37,16 @@ function declare_gui(websocket_address){
 	}
 
 	// What to do when a message from server is received
-	websocket_gui.onmessage = function(event){
+	websocket_gui_guest.onmessage = function(event){
 		var operation = event.data.substring(0, 4);
 		if(operation == "#gui"){
 			// Parse the entire Object
 			var data = JSON.parse(event.data.substring(4, ));
 			
+			// Set and calculate distance
+			mouse_pos = data["pos"];
+			calculateDistance();
+
 			// Parse the Image Data
 			var image_data = JSON.parse(data.image),
 				source = decode_utf8(image_data.image),
@@ -62,7 +59,7 @@ function declare_gui(websocket_address){
 			}
 			
 			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
+			websocket_gui_guest.send("#ack");
 		}
 
 		if(operation == "#gul"){
@@ -81,20 +78,35 @@ function declare_gui(websocket_address){
 			}
 
 			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
+			websocket_gui_guest.send("#ack");
 		}
-
-		if(operation == "#dst"){
-			// Parse the entire Object
-			var data = JSON.parse(event.data.substring(4, ));
-
-			dist_value = data.dist;
-			dist_ready = data.ready;
-
-			// Send the Acknowledgment Message
-			websocket_gui.send("#ack");
-		}
+	
+		
 	}
+}
+
+// Function to start mouse
+function playmouse(){
+    // Send message to initiate start mouse
+    var message = "#mou" + document.getElementById('mouse').value;
+    console.log("Message sent: " + message);
+    websocket_gui_guest.send(message);
+}
+
+// Function to takeoff mouse
+function stopmouse(){
+    // Send message to initiate start mouse
+    var message = "#stp";
+    console.log("Message sent: " + message);
+    websocket_gui_guest.send(message);
+}
+
+// Function to land mouse
+function resetmouse(){
+    // Send message to initiate start mouse
+    var message = "#rst";
+    console.log("Message sent: " + message);
+    websocket_gui_guest.send(message);
 }
 
 var canvas = document.getElementById("gui_canvas_right"),

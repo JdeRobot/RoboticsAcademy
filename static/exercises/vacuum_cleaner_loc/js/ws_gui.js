@@ -14,30 +14,31 @@ var command_input;
 var last_data_nav;
 
 function declare_gui(websocket_address){
-	websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
+	websocket_gui = new WebSocket(websocket_address);
 
 	websocket_gui.onopen = function(event){
-		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '6'}, '*');
+		//alert("[open] Connection established!");
+		set_launch_level(get_launch_level()+1);
 		if (websocket_code.readyState == 1) {
 			alert("[open] Connection established!");
-			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
-			enableSimControls();
+			connectionUpdate({connection: 'exercise', command: 'up'}, '*');
 		}
 	}
 	
 	websocket_gui.onclose = function(event){
-		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'down'}, '*');
+		connectionUpdate({connection: 'exercise', command: 'down'}, '*');
 		if(event.wasClean){
-			alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+			//alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
 		}
 		else{
-			alert("[close] Connection closed!");
+			//alert("[close] Connection closed!");
 		}
 	}
 
 	// What to do when a message from server is received
 	websocket_gui.onmessage = function(event){
 		operation = event.data.substring(0, 4);
+		
 		if(operation == "#gui"){
 			// Parse the entire Object
 			data = JSON.parse(event.data.substring(4, ));
@@ -67,7 +68,7 @@ function declare_gui(websocket_address){
 					}
 		
 					// Draw the nav data
-					reset_evaluator_map();
+					reset_navigation_map();
 					initGrid(navArray.length, navArray[0].length);
 					fillGrid(navArray);
 				}				
