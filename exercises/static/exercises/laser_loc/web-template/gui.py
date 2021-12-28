@@ -71,7 +71,7 @@ class GUI:
         self.acknowledge_lock.release()
    
     # Update the gui
-    def update_gui(self):
+    def update(self):
         # Payload Map Message
         self.payload["robot_coord"], self.payload["robot_contorno"] = self.map.setRobotValues()
         # Payload the Sonar and Laser data
@@ -181,7 +181,7 @@ class ThreadGUI:
         
         while(True):
             start_time = datetime.now()
-            self.gui.update_gui()
+            self.gui.update()
             acknowledge_message = self.gui.get_acknowledge()
             
             while(acknowledge_message == False):
