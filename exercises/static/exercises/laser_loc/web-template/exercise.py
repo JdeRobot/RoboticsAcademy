@@ -229,7 +229,7 @@ class Template:
         gui_module.GUI = imp.new_module("GUI")
 
         # Add GUI functions
-        gui_module.GUI.update = self.gui.update_gui
+        gui_module.GUI.update = self.gui.update
         gui_module.GUI.showParticles = self.gui.showParticles
         gui_module.GUI.showEstimatedPose = self.gui.showEstimatedPose
         # gui_module.GUI.showEstimatedLaser = self.gui.showEstimatedLaser
