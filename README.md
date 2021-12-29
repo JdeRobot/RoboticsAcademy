@@ -87,6 +87,12 @@ The connection between the backend and the frontend consists of these elements:
 
 ![robotics academy architecture image](/docs/images/robotics_academy_architecture.png "Robotics Academy Architecture")
 
+## User code processing
+When a user requests to load the code in the robot, the code follows these steps:
+1. The code is sent from the ACE Editor of the browser to the manager.py process of the RADI. The code is checked by Pylint and the errors are returned to the browser. If the browser receives an error, the error is displayed on a modal and the code is not sent to the brain.
+2. If there aren't any errors, the code is sent from the browser to the exercise.py through the code websocket.
+3. The exercise.py separates the code in two portions: the sequential part (executed once) and the iterative part (executed every brain interval). The code is separated by the first `while True` loop encountered. The user code is also enriched with some execution control elements in order to pause, reset and load a new code into the robot brain.
+
 ## Flow Control
 In order to control the number of messages sent by the users, so the RADI is not overflown with them, both the manager websocket and the code websocket have response messages for certain orders which are sent after the operetions are completed.
 
