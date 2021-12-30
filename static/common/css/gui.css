@@ -85,7 +85,7 @@
 
 #birds-eye-mapping{
 	margin-top: 15px;
-	background: url("../img/robocup.png");
+	background: url("../../exercises/laser_mapping/img/robocup.png");
 	background-size: cover;
 	height: 729px;
 	width: 769px;

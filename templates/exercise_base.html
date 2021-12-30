@@ -334,9 +334,24 @@
             }
             if(window.location.pathname=='/exercises/laser_mapping' || window.location.pathname=='/academy/exercise/follow_line_game/'){ 
                 document.getElementById('teleop_button').style.display = 'block';
+                document.getElementById('loadIntoRobot').style.display = 'none';
+            }
+            if(window.location.pathname=='/exercises/laser_loc/'){ 
+                document.getElementById('teleop_button').style.display = 'none';
+                document.getElementById('gazebo_button').style.display = 'none';
+                document.getElementById('loadIntoRobot').style.display = 'none';
             }  
             if(window.location.pathname=='/exercises/color_filter/'){ 
                 document.getElementById('gazebo_button').style.display = 'none';
+                document.getElementById('loadIntoRobot').style.display = 'none';
+            }
+            if(window.location.pathname=='/exercises/dl_digit_classifier/'){                 
+                document.getElementById('Medidor_RTF').style.display = 'none';
+                document.getElementById('gazebo_button').style.display = 'none';
+                document.getElementById('loadIntoRobot').style.display = 'none';
+                document.getElementById('load').style.display = 'none';
+                document.getElementById('save').style.display = 'none';
+                document.getElementById('console_button').style.display = 'none';
             }
                 
         </script>
