@@ -86,7 +86,6 @@ function startSim(step) {
         }
         if (event.data.includes("evaluate")) {
             if (event.data.length < 9) {    // If there is an error it is sent along with "evaluate"
-                intervalSave(false);
                 start();
             } else {                
                 let error = event.data.substring(10,event.data.length);

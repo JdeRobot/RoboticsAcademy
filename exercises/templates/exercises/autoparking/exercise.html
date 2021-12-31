@@ -197,7 +197,6 @@ while True:
     <script src="{% static 'common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
-    <script src="{% static 'common/js/ws_data.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'common/js/controller.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
@@ -211,7 +210,7 @@ while True:
   <!-- BOTON DE CONEXION CON RADI-->
     <script>
 		window.onload = function() {
-			startSim(0, "{{websocket_address}}","{{server}}", "{{user.username}}");
+			startSim(0 );
 			$("#connection-button").prop('disabled', true);
 		}
 		window.onbeforeunload = function() {
@@ -237,7 +236,7 @@ while True:
 					$("#connection-button").prop('disabled', true);
 					$("#connection-button").removeClass('btn-secondary').addClass('btn-warning');
 					$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
-					startSim(0, "{{websocket_address}}","{{server}}", "{{user.username}}");
+					startSim(0 );
 				}
 			});
         });

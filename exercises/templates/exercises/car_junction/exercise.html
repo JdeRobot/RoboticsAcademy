@@ -1,7 +1,22 @@
 {% extends "exercise_base.html" %}
 {% load static %} <!-- Cargamos los archivos estaticos -->
-{% load i18n %} <!-- Cargamos el módulo de Internacionalización -->
 {% block content %}
+
+	<div class="modal" tabindex="-1" role="dialog" id="errorModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-header-text" style="font-weight: 700;"></p>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" style="white-space: pre-wrap;">
+				<p style="word-wrap: break-word;"></p>
+			</div>
+			</div>
+		</div>
+	</div>
 
   <div id="theory-view" style="display: none;">
 	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction/" id="iframe-tab"></iframe>
@@ -139,11 +154,11 @@ while True:
 	  function togglePlayPause(stop) {
 		let submit_button = document.getElementById("submit");
 		if (stop) {
-			submit_button.getElementsByTagName('img')[0].src = "{% static 'academy/assets/img/pause.png''%}";
+			submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/pause.png''%}";
 			submit_button.getElementsByTagName('p')[0].innerText = " Stop";
 			submit_button.setAttribute( "onClick", "javascript: stop();" );
 		} else {
-			submit_button.getElementsByTagName('img')[0].src = "{% static 'academy/assets/img/submit.png'%}";
+			submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/submit.png'%}";
 			submit_button.getElementsByTagName('p')[0].innerText = " Play";
 			submit_button.setAttribute( "onClick", "javascript: start();" );
 		}
@@ -193,20 +208,19 @@ while True:
         </script>
 
     <!-- Common -->
-    <script src="{% static 'common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
-    <script src="{% static 'common/js/ws_data.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/controller.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-
+	<script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
     <!-- Exercise specific resources -->
-    <script src="{% static 'exercises/car_junction/js/ws_gui.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'exercises/car_junction/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
 
- <!-- BOTON DE CONEXION CON RADI-->
+
+    <!-- BOTON DE CONEXION CON RADI-->
     <script>
 		window.onload = function() {
 			startSim(0, "{{websocket_address}}","{{server}}", "{{user.username}}");
@@ -299,7 +313,7 @@ while True:
 			}
 		}
     </script>
-   
+
 	<script type="text/javascript">
 		const editorele = ace.edit("editor");
 		function downloadCode() {

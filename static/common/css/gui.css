@@ -36,7 +36,7 @@
 }
 
 #birds-eye{
-	background: url("../img/map.jpg");
+	background: url("../../exercises/follow_line/img/map.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -44,7 +44,7 @@
 }
 
 #birds-eye.default{
-	background: url("../img/default.jpg");
+	background: url("../../exercises/follow_line/img/map.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -52,7 +52,7 @@
 }
 
 #birds-eye.montreal{
-	background: url("../img/montreal.jpg");
+	background: url("../../exercises/follow_line/img/montreal.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -60,7 +60,7 @@
 }
 
 #birds-eye.montmelo{
-	background: url("../img/montmelo.jpg");
+	background: url("../../exercises/follow_line/img/montmelo.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -68,7 +68,7 @@
 }
 
 #birds-eye.nbg{
-	background: url("../img/nbg.jpg");
+	background: url("../../exercises/follow_line/img/nbg.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -92,7 +92,7 @@
 }
 
 #birds-eye-montecarlo{
-    background: url("../img/montecarlo.png");
+    background: url("../../exercises/montecarlo_visual_loc/img/map.png");
     background-size: cover;
     height: 350px;
     width: 340px;
@@ -128,7 +128,7 @@
 }
 
 #globalnav-eye{
-	background: url("../img/globalnav.png");
+	background: url("../../exercises/global_navigation/img/globalnav.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;

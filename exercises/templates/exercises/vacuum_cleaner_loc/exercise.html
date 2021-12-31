@@ -320,7 +320,7 @@ while True:
 				$("#connection-button").prop('disabled', true);
 				$("#connection-button").removeClass('btn-secondary').addClass('btn-warning');
 				$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
-					startSim(0, "{{websocket_address}}","{{server}}", "{{user.username}}");
+					startSim(0 );
 			}
 		});
 	});
