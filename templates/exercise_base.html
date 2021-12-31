@@ -220,7 +220,8 @@
                 <button type="button" class="btn" onclick="showInfoModal()"><span class="fa fa-question-circle-o" style="font: normal normal normal 20px/1 FontAwesome; padding-top: 2px; padding-bottom: 2px;"></span></button>
             </div>
 
-
+ 
+     
 
             <!-- Cuando se genere el token se le muestra la url de invitado y se quita cuando se detecta conexión-->
             <div id="rtc-url" style="color: black; margin: 15px"></div>
@@ -519,6 +520,6 @@ let simulate_mode = false;
         </span> Este sitio utiliza cookies. <a href="/terms#cookies" target="_blank">Más Información</a>
     </div>
     {% endif %}
-
+{% include "info_modal.html" %}
 </body>
 </html>
