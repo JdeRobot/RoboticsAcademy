@@ -1,0 +1,89 @@
+#logo_container{
+  margin-top: 10px;
+}
+
+.navbar {
+  color: white;
+  background-color: white;
+}
+
+.row-navbar{
+  
+}
+
+.info_user{
+    text-align: center;
+}
+
+.navbar-collapse {
+  box-shadow: 0 2px 2px -2px rgba(0,0,0,2);
+  background-color: white;
+}
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 10px;  
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.navbar-wrapper .navbar {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.navbar-content
+{
+    width:250px;
+    padding: 5px;
+    padding-bottom:0px;
+}
+.navbar-content:before, .navbar-content:after
+{
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.navbar-nav.navbar-right:last-child {
+margin-right: 15px !important;
+}
+.navbar-footer 
+{
+    background-color:#DDD;
+}
+.navbar-footer-content { padding:15px 15px 15px 15px; }
+.dropdown-menu {
+padding: 0px;
+overflow: hidden;
+}
+
+#logout_section{
+    color: red;
+    margin-bottom: 10px
+}
+
+#email{
+  color: gray;
+}
+
+[data-letters]:before {
+  content:attr(data-letters);
+  display:inline-block;
+  font-size:1em;
+  width:2.5em;
+  height:2.5em;
+  line-height:2.5em;
+  text-align:center;
+  border-radius:50%;
+  background:rgba(23, 143, 247);
+  vertical-align:middle;
+  margin-right:1em;
+  color:white;
+  }

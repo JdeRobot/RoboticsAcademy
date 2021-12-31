@@ -214,12 +214,12 @@ class Template:
         brain_frequency = 0; gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.measured_cycle, 1)
-        except ZeroDivisionError:
+        except:
             brain_frequency = 0
 
         try:
             gui_frequency = round(1000 / self.thread_gui.measured_cicle, 1)
-        except ZeroDivisionError:
+        except:
             gui_frequency = 0
 
         self.frequency_message["brain"] = brain_frequency

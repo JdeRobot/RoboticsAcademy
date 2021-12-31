@@ -4,6 +4,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+
+
+    <!--<link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/main.css">
+    <link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/gui.css">
+    <link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/console.css">
+    <link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/split_style.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+            <!-- Roboto Typography -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <!--Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <title>ACE Editor</title>
     <meta charset="utf-8">
     <link rel="icon" href="{% static 'exercises/assets/img/logo.ico' %}" sizes="32x32">
@@ -16,6 +42,73 @@
 
 </head>
 <body>
+	<nav class="navbar navbar-expand-md navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <img src="img/logo.png" class="d-inline-block align-top"
+                    height="28" alt="Academy">
+		        Robotics Academy by JdeRobot
+                <div style="padding-inline: 150px" class="d-inline-block align-center">
+                    <button type="button" class="btn btn-secondary" id="connection-button" value="local-connection"><span id="loading-connection"
+                        class="bi bi-arrow-down-up"></span> Connect</button>
+                    <button type="button" class="btn btn-secondary" id="launch-button" value="local-connection"><span id="loading-connection"
+                        class="bi bi-arrow-down-up"></span> Launch</button>
+                </div>
+		    </div>
+
+        </nav>
+
+    
+        <!-- BOTON DE CONEXION CON RADI-->
+        <script type="text/javascript">
+            $(document).ready(function() {$("#launch-button").click(
+                function () {
+                    if ($("#launch-button").attr('class') == 'btn btn-secondary' && $("#connection-button").attr('class') == 'btn btn-success') {
+                        $("#launch-button").prop('disabled', true);
+                        $("#launch-button").removeClass('btn-danger').addClass('btn-warning');
+                        $("#launch-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">0</a>');
+                        window.top.postMessage('launch', '*');
+                    } else if ($("#connection-button").attr('class') == 'btn btn-secondary'){
+                        alert("A connection with the manager must be established before launching an exercise");
+                    }
+                });
+            });
+
+            window.onmessage = function(event){
+                var data = event.data;
+                if (data.connection == 'manager') {
+                    if (data.command == 'up') {
+                        $("#connection-button").removeClass("btn-secondary").addClass("btn-success");
+                        $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
+                        $("#connection-button").prop('disabled', true);
+                    }else if (data.command == 'down'){
+                        $("#connection-button").removeClass("btn-success btn-secondary").addClass("btn-secondary");
+                        $("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
+                        $("#connection-button").prop('disabled', false);
+                    }
+                } else if (data.connection == 'exercise') {
+                    if (data.command == 'available') {
+                        $("#launch-button").removeClass('btn-secondary btn-success').addClass('btn-secondary');
+                    }else if (data.command == 'up') {
+                        $("#launch-button").removeClass("btn-warning btn-secondary").addClass("btn-success");
+                        $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
+                        $("#launch-button").prop('disabled', true);
+                    }else if (data.command == 'down'){
+                        $("#launch-button").removeClass("btn-success btn-secondary").addClass("btn-secondary");
+                        $("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+                        $("#launch-button").prop('disabled', false);
+                    }else if (data.command == 'launch_level'){
+                        let level = data.level;
+                        $("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
+                    }else if (data.command == 'error') {
+                        var $body = $(window.frameElement).parents('body'), dlg = $body.find('#myModal');
+                        var $body = $(window.frameElement).parents('body'), dlg_body = $body.find('#myModal .modal-body');
+                        dlg_body.text(data.text);                                                                        
+                        dlg.modal({ show:true, backdrop: false});
+                    }
+                }
+            };
+        </script>
+
     <!-- Extends base.html to initiate the connection to the RADI -->
     <iframe id="radiConect" type="text/html" src="{% static 'exercises/assets/base.html' %}" width="100%" height="7%" name="data" frameBorder="0" scrolling="no"></iframe>
     <script>
@@ -68,79 +161,174 @@
         </div>
         <div id="Medidor_RTF">
             <a id="letters">Sim RTF:</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
-        </div>
-        <button id="gazebo_button" type="button" onclick="changegzweb()" title="Activate the simulation screen"><div style="vertical-align: top; display: inline-block; text-align: center;"><img id="gzimg" style="height:20px;" src="{% static 'exercises/assets/img/gazebo.svg' %}"/><span style="display: block;">View Sim</span></div></button>
-        <button id="console_button" type="button" onclick="changeconsole()" title="Open the console"> <div style="vertical-align: top; text-align: center;display: flex; flex-direction: column;"><img id="terminalimg" style="height:20px;" src="{% static 'exercises/assets/img/console.svg' %}"/><span style="display: block; text-align: center;">View Console</span></div></button>
+     
+		<button id="gazebo_button" type="button" onclick="changegzweb()" title="Activate the simulation screen"><div style="vertical-align: top; display: inline-block; text-align: center;"><img id="gzimg" style="height:20px;" src="{% static 'common/img/gazebo.svg' %}"/><span style="display: block;">View Sim</span></div></button>
+        <button id="console_button" type="button" onclick="changeconsole()" title="Open the console"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="terminalimg" style="height:20px;" src="{% static 'common/img/console.png' %}"/><span style="display: block;">View Console</span></div></button>
+		<!--<a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>-->
+        <button id="teleop_button" type="button" title="Use the arrow keys to operate the F1"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="teleop_img" style="height:20px;" src="{% static 'common/img/joystick_off.png' %}"/><span style="display: block;">Teleoperate</span></div></button>
+
+        
+        <script>
+            document.getElementById('teleop_button').style.display = 'none';
+
+            if(window.location.pathname=='/exercises/follow_line/'){ 
+                document.getElementById('teleop_button').style.display = 'block';
+            }
+            if(window.location.pathname=='/exercises/laser_mapping' || window.location.pathname=='/academy/exercise/follow_line_game/'){ 
+                document.getElementById('teleop_button').style.display = 'block';
+            }  
+            if(window.location.pathname=='/exercises/color_filter/'){ 
+                document.getElementById('gazebo_button').style.display = 'none';
+            }
+                
+        </script>
     </div>
 
+</div>
 
-    <script> 
+<script> 
         
-        // Simulate variable
-        let simulate_mode = false;
-                // Simulate button
-                const simulate_btn = document.querySelector('#gazebo_button');
-                const simulate_img = document.querySelector('#gzimg');
-                simulate_btn.addEventListener('click', function(){
-        
-                    if(!simulate_mode){
-        
-                        // Activate mode
-                        simulate_mode = true;
-                        simulate_btn.style.background = '#BEBEBE';
-                        simulate_img.src = "{% static 'exercises/assets/img/gazebo_on.svg' %}";
-                        return;
-                    }
-        
-                    // Else, turn of teleop mode and remove event listeners
-                    simulate_mode = false;
-                    simulate_btn.style.background = 'transparent';
-                    simulate_img.src = "{% static 'exercises/assets/img/gazebo.svg' %}";
-        
-                    return;
-        
-        
-                });
-        
-                function deactivateSimulateButton() {
-                    simulate_mode = false;
-                    simulate_btn.style.background = 'transparent';
-                    simulate_img.src = "{% static 'exercises/assets/img/gazebo.svg' %}";
-        
-                }
-        
-                // Console variable
-                let console_mode = false;
-                // Console button
-                const console_btn = document.querySelector('#console_button');
-                const console_img = document.querySelector('#terminalimg');
-                console_btn.addEventListener('click', function(){
-                    if(!console_mode){
-                    
-                        // Activate mode
-                        console_mode = true;
-                        console_btn.style.background = '#BEBEBE';
-                        console_img.src = "{% static 'exercises/assets/img/console_on.svg' %}";
-                        return;
-                    }
-        
-                    // Else, turn of teleop mode and remove event listeners
-                    console_mode = false;
-                    console_btn.style.background = 'transparent';
-                    console_img.src = "{% static 'exercises/assets/img/console.svg' %}";
-        
-                    return;
-        
-        
-                });
-                function deactivateConsoleButton() {
-                    console_mode = false;
-                    console_btn.style.background = 'transparent';
-                    console_img.src = "{% static 'exercises/assets/img/console.svg' %}";
-                }
-        
-    </script>   
+// Simulate variable
+let simulate_mode = false;
+		// Simulate button
+		const simulate_btn = document.querySelector('#gazebo_button');
+		const simulate_img = document.querySelector('#gzimg');
+		simulate_btn.addEventListener('click', function(){
 
+			if(!simulate_mode){
+
+				// Activate mode
+				simulate_mode = true;
+				simulate_btn.style.background = '#BEBEBE';
+				simulate_img.src = "{% static 'common/img/gazebo_on.svg' %}";
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			simulate_mode = false;
+			simulate_btn.style.background = 'transparent';
+			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
+
+			return;
+
+
+		});
+
+		function deactivateSimulateButton() {
+			simulate_mode = false;
+			simulate_btn.style.background = 'transparent';
+			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
+
+		}
+
+		// Console variable
+		let console_mode = false;
+		// Console button
+		const console_btn = document.querySelector('#console_button');
+		const console_img = document.querySelector('#terminalimg');
+		console_btn.addEventListener('click', function(){
+
+			if(!console_mode){
+			
+				// Activate mode
+				console_mode = true;
+				console_btn.style.background = '#BEBEBE';
+				console_img.src = "{% static 'common/img/console_on.svg' %}";
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			console_mode = false;
+			console_btn.style.background = 'transparent';
+			console_img.src = "{% static 'common/img/console.svg' %}";
+
+			return;
+
+
+		});
+		function deactivateConsoleButton() {
+			console_mode = false;
+			console_btn.style.background = 'transparent';
+			console_img.src = "{% static 'common/img/console.svg' %}";
+
+		}
+
+        // Teleop variable
+        let teleop_mode = false;
+		// Teleop button
+		const teleop_btn = document.querySelector('#teleop_button');
+		const teleop_img = document.querySelector('#teleop_img');
+
+		teleop_btn.addEventListener('click', function(){
+			// If variable is false, activate teleoperate mode
+			if(!teleop_mode){
+				if (running == false) {
+					resumeSimulation();
+					running == true;
+				}
+				// Activate mode
+				teleop_mode = true;
+				teleop_btn.style.background = '#BEBEBE';
+				teleop_img.src = "{% static 'common/img/joystick_on.png' %}";
+				document.addEventListener('keydown', keyHandler, false);
+				document.addEventListener('keyup', keyHandler, false);
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			teleop_mode = false;
+			submitCode();
+			teleop_btn.style.background = 'transparent';
+			teleop_img.src = "{% static 'common/img/joystick_off.png' %}";
+			document.removeEventListener('keydown', keyHandler, false);
+			document.removeEventListener('keyup', keyHandler, false);
+			return;
+		});
+
+		function deactivateTeleopButton() {
+			teleop_mode = false;
+			teleop_btn.style.background = 'transparent';
+			teleop_img.src = "{% static 'common/img/joystick_off.png' %}";
+			document.removeEventListener('keydown', keyHandler, false);
+			document.removeEventListener('keyup', keyHandler, false);
+		}
+
+
+    		// Car variables
+		let v = 0;
+		let w = 0;
+
+		// Event Handlers for controls
+		function keyHandler(event) {
+			// Right (39), Left (37), Down (40), Up (38)
+			
+			// First check if websocket_gui_guest and websocket_code_guest are defined
+			if((typeof(websocket_gui) !== 'undefined' && (typeof(websocket_code) !== 'undefined'))){
+				let cmd = "#tele";
+
+				// Prevent using arrow keys to scroll page
+				if([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
+					event.preventDefault();
+				}
+
+				if(event.keyCode == 39) {
+					//console.log('Right');
+					w = (event.type == 'keydown')?-1:0;
+				}else if(event.keyCode == 37) {
+					//console.log('Left');
+					w = (event.type == 'keydown')?1:0;
+				}else if(event.keyCode == 40) {
+					//console.log('Down');
+					v = (event.type == 'keydown')?-2:0;
+				}else if(event.keyCode == 38) {
+					//console.log('Up');
+					v = (event.type == 'keydown')?2:0;
+				}
+				console.log('v: ', v, 'w: ', w);
+			}
+		}
+
+</script>   
     <script>
         function toggleSubmitButton(toggle) {
             let submit_button = document.getElementById("loadIntoRobot");

@@ -1,0 +1,109 @@
+{% load static %}
+
+
+<div id="info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+	  <div class="modal-content">
+		  <div id="carouselControls" class="carousel slide" data-ride="carousel" data-interval="false">
+		  <div class="carousel-inner">
+			  <div class="carousel-item active">
+				  
+			  <div class="modal-header">
+					  <h5>Controls (1/2)</h5>
+				  </div>
+				  <div class="modal-body" style="display: flex">
+					  <div>
+					  <ul>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <img style="height:30px; width:30px;" src="{% static 'common/img/submit.png' %}">
+							  <p>- Execute your code</p>
+							  </div>
+						  </li>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <img style="height:30px; width:30px;" src="{% static 'common/img/pause.png' %}">
+							  <p>- Pause the simulation</p>
+							  </div>
+						  </li>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <img style="height:30px; width:30px;" src="{% static 'common/img/upload.png' %}">
+							  <p> - Save your code on the cloud</p>
+							  </div>
+						  </li>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <img style="height:30px; width:30px;" src="{% static 'common/img/reset.svg' %}">
+							  <p>- Reset the simulation</p>
+							  </div>
+						  </li>
+					  </ul>
+					  </div>
+					  <div>
+						  <ul>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <img style="width: 30px; height: 30px" src="{% static 'common/img/gazebo.svg' %}">
+							  <p>- Open gzweb</p>
+							  </div>
+						  </li>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <img style="height:30px; width:30px;" src="{% static 'common/img/console.svg' %}">
+							  <p style="padding-left: 12px;">- Open terminal</p>
+							  </div>
+						  </li>
+						  </ul>
+					  </div>
+				  </div>
+			  </div>
+			  <div class="carousel-item carousel-item-controls">
+					  <div class="modal-header">
+						  <h5>Controls (2/2)</h5>
+					  </div>
+					  <div class="modal-body">
+					  <ul>
+						  <li>
+							  <div class="d-flex flex-row" style="margin-top: 20px">
+							  <p><strong>Brain Frecuency:</strong>&nbspadjusts the running frecuency of the code</p>
+							  </div>
+						  </li>
+						  <li>
+							  <div class="d-flex flex-row">
+							  <p><strong>GUI Frecuency:</strong>&nbspadjusts the running frecuency of the GUI</p>
+							  </div>
+						  </li>
+					  </ul>
+					  </div>
+			  </div>
+		
+		  </div>
+		  <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
+			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			  <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
+			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			  <span class="sr-only">Next</span>
+		  </a>
+		  </div>
+	  </div>
+	</div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="errorModal">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <p class="modal-header-text" style="font-weight: 700;"></p>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body" style="white-space: pre-wrap;">
+		  <p style="word-wrap: break-word;"></p>
+		</div>
+	  </div>
+	</div>
+</div>

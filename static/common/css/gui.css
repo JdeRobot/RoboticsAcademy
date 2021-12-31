@@ -1,0 +1,197 @@
+
+#canvas_container{
+	float: left;
+	width: 50%;
+	height: 500px;
+}
+
+#gui_canvas, #gui_canvas_guest {
+    height: 350px;
+    width: 100%;
+}
+#gzweb{
+    height: 40%;
+    width:100%;
+}
+
+#lap_heading{
+	padding-left: 10%;
+}
+
+#lap_time{
+	padding-left: 10%;
+}
+
+#local-map{
+	background: #0D488A;
+	height: 350px;
+	width: 100%;
+}
+
+#local-map-lasers{
+	margin-top: 15px;
+	background: #0D488A;
+	height: 500px;
+	width: 500px;
+}
+
+#birds-eye{
+	background: url("../../exercises/follow_line/img/map.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.default{
+	background: url("../../exercises/follow_line/img/map.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.montreal{
+	background: url("../../exercises/follow_line/img/montreal.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.montmelo{
+	background: url("../../exercises/follow_line/img/montmelo.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.nbg{
+	background: url("../../exercises/follow_line/img/nbg.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#mapping{
+    margin-top: 15px;
+    background: #808080;
+    background-size: cover;
+    height: 500px;
+    width: 500px;
+}
+
+#birds-eye-mapping{
+	margin-top: 15px;
+	background: url("../../exercises/laser_mapping/img/robocup.png");
+	background-size: cover;
+	height: 729px;
+	width: 769px;
+}
+
+#birds-eye-montecarlo{
+    background: url("../../exercises/montecarlo_visual_loc/img/map.png");
+    background-size: cover;
+    height: 350px;
+    width: 340px;
+}
+
+#vacuum-eye{
+	background: url("../../exercises/vacuum_cleaner/img/map.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#nav-mat{
+	margin-top: 15px;
+	width: 100%;
+	margin: auto;
+}
+
+
+#vacuumloc-eye{
+	background: url("../img/vacuum_loc.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	height: 350px;
+    width: 340px;
+}
+
+#vacuumloc-grid{
+    height: 350px;
+    width: 340px;
+}
+
+#globalnav-eye{
+	background: url("../../exercises/global_navigation/img/globalnav.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+	margin-bottom: 5px;
+	margin: auto;
+
+}
+
+#gui-canvas-numpy{
+	margin-top: 5px;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+}
+
+#grid {
+	width: 100%;
+	height: 125px;
+}
+
+.popup{
+    position: relative;
+    display: inline-block;
+}
+.popup .popuptext {
+    visibility: hidden;
+    width: 390px;
+    height: 230px;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding:  5px 0;
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    bottom: 125%;
+    left: 105%;
+    overflow: hidden;
+    margin-left: 20px;
+}
+.popup .popuptext::after {
+	content: "";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #555 transparent transparent transparent;
+}
+	.popup .show {
+	visibility: visible;
+	-webkit-animation: fadeIn 1s;
+	animation: fadeIn 1s;
+}
+	@-webkit-keyframes fadeIn {
+	from {opacity: 0;} 
+	to {opacity: 1;}
+}
+	@keyframes fadeIn {
+	from {opacity: 0;}
+	to {opacity:1 ;}
+}
+
