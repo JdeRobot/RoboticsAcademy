@@ -1,0 +1,22 @@
+<laser>
+    <laser_specifications>
+        <max_angle>3.14159</max_angle>
+        <min_angle>-3.14159</min_angle>
+        <max_range>8</max_range>
+        <min_range>0.15</min_range>
+        <num_rays>400</num_rays>
+        <frequency>10</frequency>
+        <frame_id>laser_1</frame_id>
+        <pose>
+            <x>0.09</x>
+            <y>0</y>
+            <theta>0</theta>
+        </pose>
+        <noise>
+            <noise_specifications>
+                <noise_mean>0</noise_mean>
+                <noise_std>0</noise_std>
+            </noise_specifications>
+        </noise>
+    </laser_specifications>
+</laser>

@@ -138,7 +138,7 @@
             startSim(2);
         }
     </script>
-    <div id="Control" class="container" >
+    <div id="Control" style = "margin-top: 3px; margin-bottom: 0px;" class="container" >
         <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><nobr><img src="{% static 'exercises/assets/img/download.png' %}" style="display: inline"><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
         <button  id="load" type="button"<span title="Load your code from your local machine"></span><nobr><img src="{% static 'exercises/assets/img/upload.png' %}" style="display: inline;"><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
         <button id="loadIntoRobot" type="button" onclick="check()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><nobr><img class="btn_img" src="{% static 'exercises/assets/img/robot.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load in robot</p></nobr></button>
