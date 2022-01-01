@@ -26,7 +26,7 @@ DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", 
             "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game",
-            "package_delivery"]
+            "package_delivery", "power_tower_inspection"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
 HARD_RESET_EX = ["obstacle_avoidance"]
 STDR_EX = ["laser_mapping", "laser_loc"]
