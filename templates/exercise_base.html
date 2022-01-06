@@ -292,7 +292,7 @@
 
 <div class="row col-md-12" id="exercise-controls">
 	<div id="Control" style = "margin-top: 3px; margin-bottom: 0px;" class="container">
-        <button id="load" type="button"><nobr><img class="btn_img" src="{% static 'common/img/upload.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
+        <button id="load" type="button"><nobr><img class="btn_img" src="{% static 'common/img/upload.svg' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
         <button id="save" type="button" onclick="saveCodeUnibotics()"><nobr><img class="btn_img" src="{% static 'common/img/download.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
 		<button id="loadIntoRobot" title="" type="button" onclick="check()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><nobr><img class="btn_img" src="{% static 'common/img/robot.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load in robot</p></nobr><img class="btn_img" id="loadIntoRobotAlert" src="{% static 'common/img/dot.png' %}" style="position: absolute; display: none; height: 14px; margin-top: -6px; filter: invert(83%) sepia(29%) saturate(7448%) hue-rotate(12deg) brightness(87%) contrast(101%);"/></button>
 		<button id="submit" type="button" onclick="start('{{user.username}}')" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/submit.png' %}" style="display: inline;"/><p style="display: inline;"> Play</p></button>
