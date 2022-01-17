@@ -279,16 +279,16 @@ class Commands:
                 repeat = False
 
         if exercise in DRONE_EX:
-            data  = ""
-            while True:
+            launch_ready = False
+            while not launch_ready:
                 try:
-                    with open("/status.txt", "r", encoding="utf-8") as f:
-                        data = f.read(4)
-                    if data == "done":
-                        os.remove("/status.txt")
-                        break
+                    f = open("/status.txt", "r")
+                    if f.readline() == "done":
+                        launch_ready = True
+                    f.close()
+                    time.sleep(0.2)
                 except:
-                    time.sleep(2)
+                    time.sleep(0.2)
 
     def start_stdrserver(self,exercise):
         roslaunch_cmd,gz_cmd = self.get_ros_instructions(exercise)
@@ -384,8 +384,6 @@ class Commands:
     def call_subprocess(self, cmd):
         subprocess.call(cmd, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
 
-
-
     # Function to kill every program
     async def kill_all(self):
         cmd = ['pkill', '-9', '-f']
@@ -445,6 +443,10 @@ class Commands:
             pass
         try:
             self.call_subprocess(['rm', '/ws_gui_guest.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/status.txt'])
         except:
             pass
 

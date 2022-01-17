@@ -6,11 +6,10 @@ from os import lstat
 from subprocess import Popen, PIPE
 
 
-
 DRI_PATH = "/dev/dri/card0"
 EXERCISE = "package_delivery"
 TIMEOUT = 30
-
+MAX_ATTEMPT = 5
 
 
 # Check if acceleration can be enabled
@@ -21,7 +20,6 @@ def check_device(device_path):
         return False
 
 
-
 # Spawn new process
 def spawn_process(args, insert_vglrun=False):
     if insert_vglrun:
@@ -30,18 +28,17 @@ def spawn_process(args, insert_vglrun=False):
     return process
 
 
-
 class Test():
     def gazebo(self):
-        rospy.logwarn("[GAZEBO] Performing checks")
+        rospy.logwarn("[GAZEBO] Launching")
         try:
             rospy.wait_for_service("/gazebo/get_model_properties", TIMEOUT)
+            return True
         except rospy.ROSException:
-            rospy.logwarn("[GAZEBO] Check timeout exceeded")
-
+            return False
 
     def px4(self):
-        rospy.logwarn("[PX4-SITL] Performing checks")
+        rospy.logwarn("[PX4-SITL] Launching")
         start_time = rospy.get_time()
         args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander", "check"]
         while rospy.get_time() - start_time < TIMEOUT:
@@ -49,18 +46,17 @@ class Test():
             with process.stdout:
                 for line in iter(process.stdout.readline, ''):
                     if ("Prearm check: OK" in line):
-                        return
+                        return True
             rospy.sleep(2)
-        rospy.logwarn("[PX4] Check timeout exceeded")
-
+        return False
 
     def mavros(self, ns=""):
-        rospy.logwarn("[MAVROS] Performing checks")
+        rospy.logwarn("[MAVROS] Launching")
         try:
             rospy.wait_for_service(ns + "/mavros/cmd/arming", TIMEOUT)
+            return True
         except rospy.ROSException:
-            rospy.logwarn("[MAVROS] Check timeout exceeded")
-
+            return False
 
 
 class Launch():
@@ -74,38 +70,57 @@ class Launch():
 
         rospy.init_node("launch", anonymous=True)
 
-
     def start(self):
         ######## LAUNCH GAZEBO ########
-        args = [
-                    "/opt/ros/noetic/bin/roslaunch", 
-                    "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
-                    "--wait", 
-                    "--log"
+        args = ["/opt/ros/noetic/bin/roslaunch", 
+                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
+                "--wait", 
+                "--log"
                 ]
-        spawn_process(args, insert_vglrun=self.acceleration_enabled)
-        self.test.gazebo()
+
+        attempt = 1
+        while True:
+            spawn_process(args, insert_vglrun=self.acceleration_enabled)
+            if self.test.gazebo() == True:
+                break
+            if attempt == MAX_ATTEMPT:
+                rospy.logerr("[GAZEBO] Launch Failed")
+                return
+            attempt = attempt + 1
 
 
         ######## LAUNCH PX4 ########
-        args = [
-                    "/opt/ros/noetic/bin/roslaunch", 
-                    "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4.launch", 
-                    "--log"
+        args = ["/opt/ros/noetic/bin/roslaunch", 
+                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4.launch", 
+                "--log"
                 ]
-        spawn_process(args, insert_vglrun=self.acceleration_enabled)
-        self.test.px4()
 
+        attempt = 1
+        while True:
+            spawn_process(args, insert_vglrun=self.acceleration_enabled)
+            if self.test.px4() == True:
+                break
+            if attempt == MAX_ATTEMPT:
+                rospy.logerr("[PX4] Launch Failed")
+                return
+            attempt = attempt + 1
+        
 
         ######## LAUNCH MAVROS ########
-        args = [
-                    "/opt/ros/noetic/bin/roslaunch", 
-                    "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros.launch", 
-                    "--log"
+        args = ["/opt/ros/noetic/bin/roslaunch", 
+                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros.launch", 
+                "--log"
                 ]
-        spawn_process(args, insert_vglrun=self.acceleration_enabled)
-        self.test.mavros()
 
+        attempt = 1
+        while True:
+            spawn_process(args, insert_vglrun=self.acceleration_enabled)
+            if self.test.mavros() == True:
+                break
+            if attempt == MAX_ATTEMPT:
+                rospy.logerr("[MAVROS] Launch Failed")
+                return
+            attempt = attempt + 1
 
 
 if __name__ == "__main__":
