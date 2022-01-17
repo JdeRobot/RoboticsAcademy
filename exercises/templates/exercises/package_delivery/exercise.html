@@ -3,6 +3,72 @@
 {% load i18n %}
 {% block content %}
 
+<div id="info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+	  <div class="modal-content">
+		  <div id="carouselControls" class="carousel slide" data-ride="carousel" data-interval="false">
+		  <div class="carousel-inner">
+			<div class="modal-header">
+				<h5>Controls</h5>
+			</div>
+			<div class="modal-body" style="display: flex">
+				<div>
+				<ul>
+					<li>
+						<div class="d-flex flex-row">
+						<img src="{% static 'common/img/submit.png' %}" style="width: 30px; height: 30px;">
+						<p>- Execute your code</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row">
+						<img src="{% static 'common/img/pause.png' %}" style="width: 30px; height: 30px;">
+						<p>- Pause the simulation</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row">
+						<img src="{% static 'common/img/upload.png' %}" style="width: 30px; height: 30px;">
+						<p> - Save your code on the cloud</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row">
+						<img src="{% static 'common/img/reset.svg' %}" style="width: 30px; height: 30px;">
+						<p>- Reset the simulation</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row">
+						<img src="{% static 'common/img/gazebo.svg' %}" style="width: 30px; height: 30px;">
+						<p>- Open gzweb</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row">
+						<img src="{% static 'common/img/console.png' %}" style="width: 30px; height: 30px;">
+						<p style="padding-left: 12px;">- Open terminal</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row" style="margin-top: 20px">
+						<p><strong>Brain Frecuency:</strong>&nbspadjusts the running frecuency of the code</p>
+						</div>
+					</li>
+					<li>
+						<div class="d-flex flex-row">
+						<p><strong>GUI Frecuency:</strong>&nbspadjusts the running frecuency of the GUI</p>
+						</div>
+					</li>
+				</ul>
+				</div>
+			</div>
+	  </div>
+	</div>
+  </div>
+  </div>
+  </div>
+
   <div class="modal" tabindex="-1" role="dialog" id="errorModal">
 	<div class="modal-dialog" role="document">
 	  <div class="modal-content">
@@ -209,9 +275,9 @@ while True:
        <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
        <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
 	   <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'exercises/package_delivery/js/launcher_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/launcher_drones.js' %}" type="text/javascript" charset="utf-8"></script>
        <script src="{% static 'common/js/controller_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'exercises/package_delivery/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
 	   <script src="{% static 'common/js/ws_code_drones.js' %}" type="text/javascript" charset="utf-8"></script>
        <!-- Exercise specific resources -->	   
 
