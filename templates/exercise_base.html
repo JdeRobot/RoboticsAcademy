@@ -37,6 +37,15 @@
         function showInfoModal() {
             $("#info-modal").modal('show');
         }
+        
+        function hideLoadModal() {
+            $("#load-modal").modal('hide');
+        }
+
+        function showLoadModal() {
+            $("#load-modal").modal('show');
+        }
+       
 
         // Tab selection functions
         function openExercise() {
@@ -521,5 +530,6 @@ let simulate_mode = false;
     </div>
     {% endif %}
 {% include "info_modal.html" %}
+{% include "load_modal.html" %}
 </body>
 </html>

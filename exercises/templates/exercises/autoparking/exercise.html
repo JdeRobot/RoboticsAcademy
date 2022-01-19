@@ -114,10 +114,12 @@ while True:
 			submit_button.disabled = true;
 			submit_button.style.opacity = "0.4";
 			submit_button.style.cursor = "not-allowed";
+			showLoadModal();
 		} else {
 			submit_button.disabled = false;
 			submit_button.style.opacity = "1.0";
 			submit_button.style.cursor = "default";
+			hideLoadModal();
 		}
 	  }
 
@@ -275,6 +277,7 @@ while True:
 					load_button.disabled = false;
 					load_button.style.opacity = "1.0";
 					load_button.style.cursor = "default";
+					
 				}else if (data.command == 'down'){
 					$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
 					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
