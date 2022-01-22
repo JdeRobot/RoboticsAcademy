@@ -244,8 +244,8 @@ feature_row:
     url: "/exercises/Drones/package_delivery"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--success"
-    status: "running"
+    version_label: "btn--inverse"
+    status: "prototype"
     order: 0;
     version: "v3.1"
 
