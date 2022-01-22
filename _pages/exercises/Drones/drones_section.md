@@ -115,6 +115,18 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.1"
+
+  - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
+    alt: "Package Delivery"
+    title: "Package Delivery"
+    excerpt: "Deliver a package from the warehouse using a drone."
+    url: "/exercises/Drones/package_delivery"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    status: "prototype"
+    order: 0;
+    version: "v3.1"
 ---
 
 
