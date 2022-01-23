@@ -256,8 +256,8 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise, circuit):
-        if os.path.exists("/status.txt"):
-            os.remove("/status.txt")
+        if os.path.exists("/drones_launch.log"):
+            os.remove("/drones_launch.log")
         
         if exercise in CIRCUIT_EX:
             roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise, circuit=circuit)
@@ -282,10 +282,10 @@ class Commands:
             data  = ""
             while True:
                 try:
-                    with open("/status.txt", "r", encoding="utf-8") as f:
+                    with open("/drones_launch.log", "r", encoding="utf-8") as f:
                         data = f.read(4)
-                    if data == "done":
-                        os.remove("/status.txt")
+                    if data == "success":
+                        os.remove("/drones_launch.log")
                         break
                 except:
                     time.sleep(2)
