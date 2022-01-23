@@ -9,7 +9,7 @@ from subprocess import Popen, PIPE
 DRI_PATH = "/dev/dri/card0"
 EXERCISE = "package_delivery"
 TIMEOUT = 30
-MAX_ATTEMPT = 5
+MAX_ATTEMPT = 2
 
 
 # Check if acceleration can be enabled
