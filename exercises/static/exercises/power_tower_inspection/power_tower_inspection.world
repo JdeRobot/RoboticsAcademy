@@ -25,6 +25,7 @@
         <include>
 			<uri>model://logoJdeRobot</uri>
 			<pose>20 -5 0 0 0 0</pose>
+			<scale>0.25 0.25 0.25</scale>
 		</include>
 
         
@@ -33,6 +34,7 @@
 			<uri>model://power_tower_danube</uri>
             <pose>-1 -4 0.05 0 0</pose>
             <name>power_tower1</name>
+			<scale>0.25 0.25 0.25</scale>
 		</include>
 
          <!-- Power Tower Wires -->
@@ -49,26 +51,51 @@
             <name>power_tower2</name>
 		</include>
 
-		<!-- Defect/AprilTag -->
+		<!-- Rust Defect 1 -->
         <include>
-			<uri>model://Apriltag36_11_00000</uri>
+			<uri>model://rust_defect_01</uri>
             <pose>-2.35 -4 4.05 0 1.57</pose>
-			<name>def1</name>
+			<name>rust_def1</name>
 		</include>
 
-		<!-- Defect/AprilTag -->
+		<!-- Rust Defect 2 -->
         <include>
-			<uri>model://Apriltag36_11_00000</uri>
+			<uri>model://rust_defect_02</uri>
             <pose>-1.9 -4 14.05 0 1.57</pose>
-			<name>def2</name>
+			<name>rust_def2</name>
 		</include>
 
-		<!-- Defect/AprilTag -->
+		<!-- Rust Defect 3 -->
         <include>
-			<uri>model://Apriltag36_11_00000</uri>
+			<uri>model://rust_defect_03</uri>
             <pose>-1.7 -4 20.05 0 1.57</pose>
-			<name>def3</name>
+			<name>rust_def3</name>
 		</include>
+
+		<!-- Nest 1 -->
+        <include>
+			<uri>model://nest1</uri>
+            <pose>4.76 0.48 1.41339 0 0 0</pose>
+			<scale>0.25 0.25 0.25</scale>
+			<name>nest_1</name>
+		</include>
+
+		<!-- Nest 2 -->
+        <include>
+			<uri>model://nest2</uri>
+            <pose>4.78 0.42 4.27551 0 0 0</pose>
+			<scale>0.25 0.25 0.25</scale>
+			<name>nest_2</name>
+		</include>
+
+		<!-- Electrical Box -->
+        <include>
+			<uri>model://electrical_box</uri>
+            <pose>10 -1 0 0 0 0</pose>
+			<scale>0.25 0.25 0.25</scale>
+			<name>electrical_box1</name>
+		</include>
+
         
 
         <scene>
