@@ -446,7 +446,7 @@ class Commands:
         except:
             pass
         try:
-            self.call_subprocess(['rm', '/status.txt'])
+            self.call_subprocess(['rm', '/drones_launch.log'])
         except:
             pass
 

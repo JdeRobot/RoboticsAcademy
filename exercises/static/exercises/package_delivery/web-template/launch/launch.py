@@ -127,5 +127,5 @@ if __name__ == "__main__":
     launch = Launch()
     launch.start()
     
-    with open("/status.txt", "w") as f:
-            f.write("done")
+    with open("/drones_launch.log", "w") as f:
+            f.write("success")
