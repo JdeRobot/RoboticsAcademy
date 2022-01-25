@@ -44,7 +44,7 @@ youtubeId: y7rBPpV2NdI
 
 The aim of this practical is to develop a localisation algorithm based on the particle filter using the robot's laser.   
 
-{% include gallery caption="Gallery" %}
+{% include gallery caption="MonteCarlo Laser Location." %}
 
 ## Instructions
 This is the preferred way for running the exercise.

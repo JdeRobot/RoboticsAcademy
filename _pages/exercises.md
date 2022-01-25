@@ -398,8 +398,8 @@ feature_row:
     version: "v3.1"
 
   - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
-    alt: "MonteCarlo Laser-based localization"
-    title: "MonteCarlo Laser-based localization"
+    alt: "MonteCarlo Laser Loc"
+    title: "MonteCarlo Laser Loc"
     excerpt: "Robot self-localization using particle filter and laser sensor"
     url: "/exercises/MobileRobots/laser_loc"
     btn_class: "btn--danger"
