@@ -361,18 +361,7 @@ feature_row:
     version_label: "btn--success"
     status: "prototype"
     order: 2;
-
-  - image_path: /assets/images/exercises/laser_loc/autoloc_teaser.png
-    alt: "Laser-based localization"
-    title: "Laser-based localization"
-    excerpt: "Robot self-localization using particle filter and laser sensor"
-    url: "/exercises/MobileRobots/laser_loc"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
-    status: "prototype"
-    order: 2;
-
+  
   - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
     alt: "Follow Face"
     title: "Follow Face"
@@ -401,6 +390,18 @@ feature_row:
     title: "Laser Mapping"
     excerpt: "Navigation algorithm for an autonomous vacuum."
     url: "/exercises/MobileRobots/laser_mapping"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 0;
+    version: "v3.1"
+
+  - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
+    alt: "MonteCarlo Laser-based localization"
+    title: "MonteCarlo Laser-based localization"
+    excerpt: "Robot self-localization using particle filter and laser sensor"
+    url: "/exercises/MobileRobots/laser_loc"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
