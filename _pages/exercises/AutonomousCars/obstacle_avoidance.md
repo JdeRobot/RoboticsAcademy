@@ -43,9 +43,6 @@ gifs2:
 youtubeId1: 5SVkvfKPi_s
 youtubeId2: wVJJ9ndY2aY
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Objective
 

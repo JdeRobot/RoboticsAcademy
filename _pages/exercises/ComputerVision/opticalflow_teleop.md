@@ -34,9 +34,6 @@ example:
 youtubeId1: xUpTw0_jt5s
 
 ---
-## Versions to run the exercise
-
-- Web Templates (Current Release)
 
 ## Goal
 
@@ -60,7 +57,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 ```bash
-docker pull jderobot/robotics-academy:3.1.4
+docker pull jderobot/robotics-academy:latest
 ```
 
 ### How to perform the exercise?

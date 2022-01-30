@@ -103,9 +103,6 @@ youtubeId4: zcS4X-ZO68U
 youtubeId5: lO9Ru2mNAR4
 
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
@@ -142,7 +139,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 ```bash
-docker pull jderobot/robotics-academy:3.1.3
+docker pull jderobot/robotics-academy:latest
 ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -197,66 +194,16 @@ while True:
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `from MAP import MAP` - This class contains functions that interact with data related to the map and Gazebo world. 
-* `HAL.motors.sendV()` - to set the linear speed
+* `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
-* `HAL.getPose()` - returns x,y and theta components in the world
-* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the web-template. It represents the values of the field that have been assigned to the grid. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale).   
-* `GUI.showPath(array)` - shows ideal path on the map and the parameter should be 2D array
-* `GUI.targetPose` - returns x,y coordinates of chosen destionation in the world 
-* `MAP.getMap()` - Map image opencv data in opencv data
-* `MAP.robotPose()` - returns x,y coordinates of robot on the map
-* `MAP.setGridVal(x, y, val)` - sets the value val to the indicated position on the map
-* `MAP.getGridVal(x, y)` - returns the value in that grid position on the map
-* `MAP.gridToWorld(x, y)` - returns translated x,y coordinates in the world
-* `MAP.worldToGrid(x, y)` - returns translated x,y coordinates on the map 
-
-### API
-* `sensor.getRobotX()` - to obtain the position of the robot
-* `sensor.getRobotY()` - to obtain the position of the robot
-* `sensor.getRobotTheta()` - to obtain the orientation of the robot with respect to the map
-* `vel.setV()` - to set the linear speed
-* `vel.setW()` - to set the angular velocity
-
-
-### Own API
-This component, is related both to the world and the map. To simplify this, we 
-have a grid object with the following functions:
-
-* `grid.getMap()` - returns the image of the map that is being displayed. 
-The image returned will be a 3-channel image with values 0 or 255, 
-where 0 represents the obstacles and 255 the road. Although the image has 3 
-channels, for this practice it will be useful to use only one.
-* `grid.getDestiny()` - returns the selected destination through the GUI as 
-a tuple (x, y).
-* `grid.getPose()` - returns the position with respect to the map, not with 
-respect to the world, also as a tuple (x, y).
-* `gird.showGrid()` - creates a window in which represents the values ​​of the 
-field that have been assigned to the grid. The smaller values ​​will have a color 
-closer to black, and will become clearer as larger values ​​are involved. For the 
-representation, a copy of the grid is made and its values ​​are normalized so that 
-they are between 0 and 1, and it is represented later with cv2.imshow().
-
-The Grid class also provides a grid, on which to point the distance to the 
-destination. The values ​​of this grid are float type. The size and positions of 
-the grid match that of the image. To interact with it:
-* `grid.getVal(x, y)` - returns the value in that grid position.
-* `grid.setVal(x, y, val)` - sets the value val to the indicated position.
-
-This class also offers another grid on which the path should be pointed once found. 
-Points with value 0 will be ignored, higher values ​​will be considered path. 
-The functions to interact are:
-* `grid.setPathVal(x, y, val)` - sets the value val to the indicated position.
-* `grid.getPathVal(x, y)` - returns the value of the indicated position.
-* `grid.setPathFinded()` - establishes that the path has been found to start painting.
-
-Finally, the grid object also offers functions to move from world coordinates to 
-map coordinates and vice versa:
-* `gridToWorld(gridX, gridY)` - receives the x and y components of the coordinates 
-of the map and returns a tuple with the equivalent coordinates in the world: (worldX, worldY)
-* `worldToGrid(worldX, worldY)` - receives the x and y components of the world 
-coordinates and returns a tuple with the equivalent coordinates in the map: (gridX, gridY)
+* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
+* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400
+* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
+* `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image
+* `MAP.getMap()` - Returns map [image](https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/master/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png) opencv data in opencv data (400x400px)
+* `MAP.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter
     
-**REMEMBER**: Once running, double click in any point of the map to set destination, then click on "Generate Path" and finally click "GO" to see the result.
+The map image has a resolution of 400x400 pixels and indicates wheter there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
 
 ## Videos
 
@@ -331,7 +278,7 @@ Assignment of weights to the cells is arbitrary. Generally, diagonally neighbori
 
 **Important Points to Remember**
 
-- You may use `self.grid.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
+- You may use `MAP.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
 
 - In order to assign those extra weights, we may take the obstacle points we saved earlier, and add extra values to the neighbors of the obstacle cell afterwards.
 

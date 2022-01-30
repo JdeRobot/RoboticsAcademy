@@ -60,10 +60,6 @@ illustrations:
 youtubeId: 4WIi2cpaLDA
 ---
 
-## Versions to run the exercise
-
-- Web Templates (Current Release)
-
 ## Goal
 
 The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must Stop at the T joint, where there is a stop sign, wait until there are no cars and pass once the road is clear.
@@ -150,10 +146,12 @@ while True:
 * `HAL.getPose3D()` - to obtain the position of the robot
 * `HAL.getYaw()` - to obtain the orientation of the robot
 * `HAL.setPose3D()` - to set the position of the robot
-* `HAL.getTemplate()` - to get the stop's image template
-* `GUI.showImages(imageLeft, imageCentral, imageRight)` - allows you to view a debug images or with relevant information
+* `HAL.getTemplate()` - to get the image template of the stop sign
+* `GUI.showImages(imageLeft, imageCentral, imageRight)` - to visualize the images in the webpage
 
 ## Videos
+
+{% include youtubePlayer.html id=page.youtubeId %}
 
 ## Theory
 This exercise mostly revolves around simple Computer Vision and Control mechanisms. Let's start with the Computer Vision tasks:
