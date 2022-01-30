@@ -11,7 +11,7 @@ toc_icon: "cog"
 
 gallery:
   - url: /assets/images/exercises/package_delivery/package_delivery_teaser.png
-    image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
+    image_path: /assets/images/exercises/package_delivery/package_delivery.png
     alt: "Package Delivery."
     title: "Package Delivery."
 
