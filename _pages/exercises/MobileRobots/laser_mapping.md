@@ -14,14 +14,14 @@ gallery:
   - url: /assets/images/exercises/laser_mapping/laser_mapping.png
     image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Vacuum"
-  
+
 Occupancy_grid:
   - url: /assets/images/exercises/laser_mapping/occupancy_grid.png
     image_path: /assets/images/exercises/laser_mapping/occupancy_grid.png
     alt: "Occupancy Grid"
     title: "Occupancy Grid"
 
-youtubeId1: vCIFpZcWZhs
+youtubeId1: obHhJ-_Y96c
 ---
 
 ## Goal
@@ -33,7 +33,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 ## Instructions
 This is the preferred way for running the exercise.
 
-### Installation 
+### Installation
 - Clone the Robotics Academy repository on your local machine
 
 	```bash
@@ -59,7 +59,7 @@ docker pull jderobot/robotics-academy:latest
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
 
 - The exercise can be used after the alert.
 
@@ -89,19 +89,19 @@ while True:
 
 ## Robot API
 
-* `HAL.getPose3d().x` - to get position x of the robot 
-* `HAL.getPose3d().y` - to get position y of the robot 
-* `HAL.getPose3d().yaw` - to get the orientation of the robot 
-* `HAL.motors.sendW()` - to set the angular velocity 
-* `HAL.motors.sendV()` - to set the linear velocity 
-* `HAL.getLaserData()` - to get the data of the LIDAR 
-* `HAL.getSonarData_0()` - to get the sonar data of the sonar 1 
-* `HAL.getSonarData_1()` - to get the sonar data of the sonar 2 
-* `HAL.getSonarData_2()` - to get the sonar data of the sonar 3 
-* `HAL.getSonarData_3()` - to get the sonar data of the sonar 4 
-* `HAL.getSonarData_4()` - to get the sonar data of the sonar 5 
-* `HAL.getSonarData_5()` - to get the sonar data of the sonar 6 
-* `HAL.getSonarData_6()` - to get the sonar data of the sonar 7 
+* `HAL.getPose3d().x` - to get position x of the robot
+* `HAL.getPose3d().y` - to get position y of the robot
+* `HAL.getPose3d().yaw` - to get the orientation of the robot
+* `HAL.motors.sendW()` - to set the angular velocity
+* `HAL.motors.sendV()` - to set the linear velocity
+* `HAL.getLaserData()` - to get the data of the LIDAR
+* `HAL.getSonarData_0()` - to get the sonar data of the sonar 1
+* `HAL.getSonarData_1()` - to get the sonar data of the sonar 2
+* `HAL.getSonarData_2()` - to get the sonar data of the sonar 3
+* `HAL.getSonarData_3()` - to get the sonar data of the sonar 4
+* `HAL.getSonarData_4()` - to get the sonar data of the sonar 5
+* `HAL.getSonarData_5()` - to get the sonar data of the sonar 6
+* `HAL.getSonarData_6()` - to get the sonar data of the sonar 7
 * `HAL.getSonarData_7()` - to get the sonar data of the sonar 8
 
 ```python
