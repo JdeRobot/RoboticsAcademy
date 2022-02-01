@@ -105,3 +105,26 @@ After any of the previous commands is requested by the user, the respective butt
 Robotics Academy includes two JdeRobot repositories as dependencies.
 - [CustomRobots](https://github.com/JdeRobot/CustomRobots) contains different types of robots (vehicles, service robots...) and world files for Gazebo.
 - [drones](https://github.com/JdeRobot/drones) contains differnt types of drones and world files for Gazebo.
+
+## Developers info about repository architecture
+
+### master branch
+
+Master branch of the RoboticsAcademy repository is divided in some folders that contains different types of codes. There are 4 main folders: docs, exercises, static and scripts.
+
+- **Docs** folder holds all documentation about the repository and its architecture.
+- **Exercises** folder contains all the codes related to the exercises launch process and visualization. In it you can find:
+	1. HTML codes of every exercise (exercise.html) --> (/exercises/templates/exercises).
+	2. Base HTML file (exercise_base.html) with the exercise view navbars and buttons, and modal files with the pop-up messages --> (/exercises/templates).
+	3. Python and User Interface (UI) codes used in the exercises (/exercises/static).
+- **Static** folder has all resources used by the codes in the exercises folder such as images and javascript and css files called by HTML codes. This folder is divided in:
+	1. Common folder, that holds all shared resources between the different exercises (common images, javascript, css...) --> (/static/common).
+	2. Exercise folder, that holds all specific resources that only a single exercise use that file. It's divided in folders with the exercise name --> (/static/exercises).
+- **Scripts** folder, that hosts the dockerfile (file with the Docker commands to create a RADI), shell files, manager.py (file used to manage the exercises processes) and pyint_checker.py (file used to check if the code has been written properly).
+
+### gh-pages branch
+
+
+
+
+
