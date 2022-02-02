@@ -279,16 +279,16 @@ class Commands:
                 repeat = False
 
         if exercise in DRONE_EX:
-            data  = ""
-            while True:
+            launch_ready = False
+            while not launch_ready:
                 try:
-                    with open("/drones_launch.log", "r", encoding="utf-8") as f:
-                        data = f.read(4)
-                    if data == "success":
-                        os.remove("/drones_launch.log")
-                        break
-                except:
-                    time.sleep(2)
+                    f = open("/drones_launch.log", "r")
+                    if f.readline() == "success":
+                        launch_ready = True
+                    f.close()
+                    time.sleep(0.2)
+                except: 
+                    time.sleep(0.2)
 
     def start_stdrserver(self,exercise):
         roslaunch_cmd,gz_cmd = self.get_ros_instructions(exercise)
@@ -445,6 +445,10 @@ class Commands:
             pass
         try:
             self.call_subprocess(['rm', '/ws_gui_guest.log'])
+        except:
+            pass
+        try:
+            self.call_subprocess(['rm', '/drones_launch.log'])
         except:
             pass
 
