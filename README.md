@@ -104,7 +104,7 @@ After any of the previous commands is requested by the user, the respective butt
 ## Other repositories
 Robotics Academy includes two JdeRobot repositories as dependencies.
 - [CustomRobots](https://github.com/JdeRobot/CustomRobots) contains different types of robots (vehicles, service robots...) and world files for Gazebo.
-- [drones](https://github.com/JdeRobot/drones) contains differnt types of drones and world files for Gazebo.
+- [drones](https://github.com/JdeRobot/drones) contains different types of drones and world files for Gazebo.
 
 ## Developers info about repository architecture
 
