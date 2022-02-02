@@ -246,7 +246,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     status: "prototype"
-    order: 0;
+    order: 2;
     version: "v3.1"
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
