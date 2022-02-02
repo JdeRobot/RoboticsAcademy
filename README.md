@@ -133,5 +133,5 @@ The gh-pages branch contains part of the source code of the front-end. It's sepa
 	4. IndustrialRobots: text documentation of the exercises 'machine_vision', 'mobile_manipulation' and 'pick_place'.
 	5. MobileRobots: text documentation of the exercises 'amazon_warehouse', 'bump_and_go', 'laser_mapping', 'localization_laser', 'multi_robot_amazon_warehouse', 'vacuum_cleaner' and 'vacuum_cleaner_loc'.
 - **assets**: this folder contains all css, js and images resources used by the front-end documentation pages.
-- **_includes**: this folder has all html files that are used to structure the webpage front-end (head, footer, search bar...) and some other resources such as the youtubePlayer.html file. This resources are called by the Jekyll template through the tag{%include xxxxx.html %}. You can obtain more information [**here**](https://jekyllrb.com/docs/includes/) .
+- **_includes**: this folder has all html files that are used to structure the webpage front-end (head, footer, search bar...) and some other resources such as the youtubePlayer.html file. This resources are called by the Jekyll template through the tag {%include xxxxx.html %}. You can obtain more information [**here**](https://jekyllrb.com/docs/includes/) .
 - **_layouts**: this folder stores the html example templates used to create the webpage html files.
