@@ -195,10 +195,12 @@ while True:
 							submit_button.disabled = true;
 							submit_button.style.opacity = "0.4";
 							submit_button.style.cursor = "not-allowed";
+							showLoadModal();
 						} else {
 							submit_button.disabled = false;
 							submit_button.style.opacity = "1.0";
 							submit_button.style.cursor = "default";
+							hideLoadModal();
 						}
 					}
 

@@ -37,6 +37,15 @@
         function showInfoModal() {
             $("#info-modal").modal('show');
         }
+        
+        function hideLoadModal() {
+            $("#load-modal").modal('hide');
+        }
+
+        function showLoadModal() {
+            $("#load-modal").modal('show');
+        }
+       
 
         // Tab selection functions
         function openExercise() {
@@ -295,9 +304,39 @@
         <button id="load" type="button"><nobr><img class="btn_img" src="{% static 'common/img/upload.svg' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
         <button id="save" type="button" onclick="saveCodeUnibotics()"><nobr><img class="btn_img" src="{% static 'common/img/download.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
 		<button id="loadIntoRobot" title="" type="button" onclick="check()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><nobr><img class="btn_img" src="{% static 'common/img/robot.svg' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load in robot</p></nobr><img class="btn_img" id="loadIntoRobotAlert" src="{% static 'common/img/dot.svg' %}" style="position: absolute; display: none; height: 14px; margin-top: -6px; filter: invert(83%) sepia(29%) saturate(7448%) hue-rotate(12deg) brightness(87%) contrast(101%);"/></button>
-		<button id="submit" type="button" onclick="start('{{user.username}}')" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/submit.svg' %}" style="display: inline;"/><p style="display: inline;"> Play</p></button>
+		<button id="submit" type="button" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/submit.svg' %}" style="display: inline;"/><p style="display: inline;"> Play</p></button>
+		<button id="stop" type="button" onclick="stop()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/pause.png' %}" style="display: inline;"/><p style="display: inline;"> Pause</p></button>
 		<input type="file" id="real-file" hidden="hidden"/>
-		<button id="reset" type="button" onclick="resetSim()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" style="height:15px;" src="{% static 'common/img/reset.svg' %}"> Reset</button>
+		<button id="reset" type="button" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" style="height:15px;" src="{% static 'common/img/reset.svg' %}"> Reset</button>
+		
+			
+		<script>
+		
+            		
+            		document.getElementById('stop').style.display = 'none';
+			 if(window.location.pathname=='/exercises/laser_mapping/' || window.location.pathname=='/exercises/laser_mapping'){
+                		document.getElementById('loadIntoRobot').style.display = 'none';
+                		document.getElementById('stop').style.display = 'block';
+                		document.getElementById('submit').onclick = function(){check('{{user.username}}')};
+				document.getElementById("reset").onclick = function(){resetSim()};
+				
+            		}
+            		else{
+            			document.getElementById('submit').onclick =function(){start('{{user.username}}')};
+            			document.getElementById('reset').onclick=function(){resetSim()};
+            		
+            		}
+		
+		
+		
+		</script>
+		
+		
+		
+		
+		
+		
+		
 		<div overflow-x:auto id="Medidor_Brain">
 			<table id=table_code_freq>
 			<tr>
@@ -521,5 +560,6 @@ let simulate_mode = false;
     </div>
     {% endif %}
 {% include "info_modal.html" %}
+{% include "load_modal.html" %}
 </body>
 </html>
