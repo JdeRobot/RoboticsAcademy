@@ -23,7 +23,7 @@
     <arg name="ID" value="0"/>
     <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
     <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
-        <arg name="x" default="-5.0"/>
+        <arg name="x" default="-21.0"/>
         <arg name="y" default="-4.0"/>
         <arg name="model" value="iris_dual_cam"/>
         <arg name="model_name" value="iris"/>

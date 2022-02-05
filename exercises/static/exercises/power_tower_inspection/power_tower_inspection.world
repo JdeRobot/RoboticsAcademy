@@ -87,11 +87,25 @@
 			<name>rust_def1_tower1</name>
 		</include>
 
+		<!-- Rust Defect 1 Tower 1 Opposite -->
+        <include>
+			<uri>model://rust_defect_01</uri>
+            <pose>0.232054 -4.00614 3.96187 0 1.41745 0</pose>
+			<name>rust_def1_tower1_opp</name>
+		</include>
+
 		<!-- Rust Defect 2 Tower 1 -->
         <include>
 			<uri>model://rust_defect_02</uri>
             <pose>-1.80605 -4.40198 14.7671 0 1.57</pose>
 			<name>rust_def2_tower1</name>
+		</include>
+
+		<!-- Rust Defect 2 Tower 1 Opposite-->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <pose>-0.438877 -4.04055 14.7724 0 1.57 0</pose>
+			<name>rust_def2_tower1_opp</name>
 		</include>
 
 		<!-- Rust Defect 3 Tower 1 -->
@@ -101,11 +115,25 @@
 			<name>rust_def3_tower1</name>
 		</include>
 
+		<!-- Rust Defect 3 Tower 1 Opposite -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <pose>-0.435477 -3.59453 14.7738 0 1.57 0</pose>
+			<name>rust_def3_tower1_opp</name>
+		</include>
+
 		<!-- Rust Defect 4 Tower 1 -->
         <include>
 			<uri>model://rust_defect_03</uri>
             <pose>-1.59 -4.33479 20.438 0 1.74</pose>
 			<name>rust_def4_tower1</name>
+		</include>
+
+		<!-- Rust Defect 4 Tower 1 Opposite-->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <pose>-0.577392 -3.56405 19.08 0 1.542 0</pose>
+			<name>rust_def4_tower1_opp</name>
 		</include>
 
 		<!-- Rust Defect 5 Tower 1 -->
@@ -115,11 +143,19 @@
 			<name>rust_def5_tower1</name>
 		</include>
 
+
 		<!-- Rust Defect 1 Tower 2 -->
         <include>
 			<uri>model://rust_defect_01</uri>
             <pose>37.69 -4 3.79 0 1.74</pose>
 			<name>rust_def1_tower2</name>
+		</include>
+
+		<!-- Rust Defect 1 Tower 2 Opposite -->
+        <include>
+			<uri>model://rust_defect_01</uri>
+            <pose>40.232054 -4.00614 3.96187 0 1.41745 0</pose>
+			<name>rust_def1_tower2_opp</name>
 		</include>
 
 		<!-- Rust Defect 2 Tower 2 -->
@@ -129,11 +165,25 @@
 			<name>rust_def2_tower2</name>
 		</include>
 
+		<!-- Rust Defect 2 Tower 2 Opposite-->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <pose>39.561123 -4.04055 14.7724 0 1.57 0</pose>
+			<name>rust_def2_tower2_opp</name>
+		</include>
+
 		<!-- Rust Defect 3 Tower 2 -->
         <include>
 			<uri>model://rust_defect_03</uri>
             <pose>38.18749 -3.67691 14.7727 0 1.57</pose>
 			<name>rust_def3_tower2</name>
+		</include>
+
+		<!-- Rust Defect 3 Tower 2 Opposite -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <pose>39.564523 -3.59453 14.7738 0 1.57 0</pose>
+			<name>rust_def3_tower2_opp</name>
 		</include>
 
 		<!-- Rust Defect 4 Tower 2 -->
@@ -143,26 +193,31 @@
 			<name>rust_def4_tower2</name>
 		</include>
 
-		
+		<!-- Rust Defect 4 Tower 2 Opposite-->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <pose>39.422608 -3.56405 19.08 0 1.542 0</pose>
+			<name>rust_def4_tower2_opp</name>
+		</include>
 
 		<!-- Rust Defect 1 on Wires -->
         <include>
 			<uri>model://rust_defect_wire</uri>
-            <pose>-7.72703 -0.244323 12.3414 -0.004648 -0.162325 -0.001229</pose>
+            <pose>-7.72635 -0.241255 12.3353 -0.004615 -0.109891 -0.001474</pose>
 			<name>rust_def_wire1</name>
 		</include>
 
 		<!-- Rust Defect 2 on Wires -->
         <include>
 			<uri>model://rust_defect_wire</uri>
-            <pose>-11.0764 1.3147 16.5219 -0.004603 -0.084534 -0.001592</pose>
+            <pose>-11.058 1.31607 16.5176 -0.004602 -0.082412 -0.001602</pose>
 			<name>rust_def_wire2</name>
 		</include>
 
 		<!-- Rust Defect 3 on Wires -->
         <include>
 			<uri>model://rust_defect_wire</uri>
-            <pose>19.8556 2.73239 11.5729 -0.004587 0.013264 -0.002041</pose>
+            <pose>19.8548 2.72211 11.5241 -0.004587 -0.002014 -0.001971</pose>
 			<name>rust_def_wire3</name>
 		</include>
 
@@ -173,32 +228,53 @@
 			<name>rust_def_wire4</name>
 		</include>
 
-		<!-- Nest 1 on Tower -->
+		<!-- Rust Defect 1 on Springs of Tower 1-->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>-2.37899 -0.352206 13.0936 -0.004633 -0.140673 -0.001331</pose>
+			<name>rust_def_spring_tower1</name>
+		</include>
+
+		<!-- Rust Defect 1 on Springs of Tower 2-->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>37.8828 2.61147 13.101 -0.004636 -0.145252 -0.001309</pose>
+			<name>rust_def_spring_tower2</name>
+		</include>
+
+		<!-- Nest on Tower -->
         <include>
 			<uri>model://nest1</uri>
             <pose>-1.3 1.56 12.55 0 0 0</pose>
-			<name>nest_1.1</name>
+			<name>nest1</name>
 		</include>
 
-		<!-- Nest 2 on Tower-->
+		<!-- Eggs on Tower-->
         <include>
-			<uri>model://nest2</uri>
-            <pose>-1.3 1.5 13.24 0 0 1.57</pose>
-			<name>nest_2.1</name>
+			<uri>model://egg</uri>
+            <pose>-1.3 1.5 13.3197 0 -0 1.57</pose>
+			<name>egg1</name>
 		</include>
 
-		<!-- Nest 1 on Electrical Box-->
+		<!-- Bird on Tower-->
+        <include>
+			<uri>model://bird</uri>
+            <pose>-1.06401 1.28978 13.4012 0 -0 -2.07145</pose>
+			<name>bird</name>
+		</include>
+
+		<!-- Nest on Electrical Box-->
         <include>
 			<uri>model://nest1</uri>
             <pose>14.86 5.48 2.51339 0 0 0</pose>
-			<name>nest_1.2</name>
+			<name>nest2</name>
 		</include>
 
-		<!-- Nest 2 on Electrical Box-->
+		<!-- Eggs on Electrical Box-->
         <include>
-			<uri>model://nest2</uri>
-            <pose>14.86 5.42 3.19951 0 0 0</pose>
-			<name>nest_2.2</name>
+			<uri>model://egg</uri>
+            <pose>14.86 5.42 3.25989 0 0 0</pose>
+			<name>egg2</name>
 		</include>
 
 		<!-- Electrical Box -->
