@@ -28,6 +28,13 @@
 			<scale>0.25 0.25 0.25</scale>
 		</include>
 
+		<!-- Launching Pad -->
+        <include>
+			<uri>model://launching_pad</uri>
+            <pose>-21.0 -4.0 0 0 0</pose>
+			<name>launching_pad</name>
+		</include>
+
         <!-- Power Tower Wires -->
         <include>
 			<uri>model://power_tower_danube_wires</uri>
