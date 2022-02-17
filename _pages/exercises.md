@@ -19,7 +19,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
     alt: "Obstacle avoidance"
@@ -31,7 +31,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
     alt: "Drone Cat and Mouse"
@@ -43,7 +43,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
     alt: "Vacuum Cleaner"
@@ -55,7 +55,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
     alt: "Localized Vacuum Cleaner"
@@ -67,7 +67,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
     alt: "Color Filter"
@@ -79,7 +79,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -91,7 +91,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
     alt: "3D Reconstruction"
@@ -103,7 +103,7 @@ feature_row:
     version_label: "btn--inverse"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
@@ -115,7 +115,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
@@ -127,7 +127,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
     alt: "Labyrinth Escape"
@@ -139,7 +139,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
@@ -151,7 +151,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
     alt: "Rescue People"
@@ -163,7 +163,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
@@ -175,7 +175,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
@@ -187,7 +187,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar"
@@ -199,7 +199,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
     alt: "Visual Lander"
@@ -211,7 +211,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
       
   - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
     alt: "OpticalFlow Teleop"
@@ -223,7 +223,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
     alt: "Montecarlo Visual Loc"
@@ -235,7 +235,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
     alt: "Package Delivery"
@@ -290,7 +290,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v2.4"
 
@@ -326,7 +326,7 @@ feature_row:
     version_label: ""
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/dl_digit_classifier/dl_digit_classifier.png
     alt: "Digit Classifier"
@@ -338,7 +338,7 @@ feature_row:
     version_label: ""
     status: "running"
     order: 0;
-    version: "v.3.1"
+    version: "v.3.2"
 
   - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
     alt: "Qualifying Formula1"
@@ -383,7 +383,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Laser Mapping"
@@ -395,7 +395,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
     alt: "MonteCarlo Laser Loc"
@@ -407,7 +407,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
 ---
 
