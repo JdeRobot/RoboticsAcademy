@@ -1,4 +1,4 @@
-FROM jderobot/base:3.1
+FROM jderobot/base:3.2
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
