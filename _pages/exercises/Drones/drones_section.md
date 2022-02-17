@@ -18,7 +18,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -30,7 +30,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
     alt: "Follow Road"
@@ -42,7 +42,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
     alt: "Labyrinth Escape"
@@ -54,7 +54,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
@@ -66,7 +66,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
     alt: "Rescue People"
@@ -78,7 +78,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
@@ -90,7 +90,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar_teaser.jpg
     alt: "Drone Hangar"
@@ -102,7 +102,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
     alt: "Visual Lander"
@@ -114,7 +114,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
     alt: "Package Delivery"
