@@ -57,7 +57,15 @@ while True:
 
     <div class="split b">
 
-
+	<!-- Map selector -->
+	<label for="circuit_selector" style="display: inline-block;">Map: </label>
+	<select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">
+		<option value="default">Classic Map</option>
+		<option value="prius_map">Prius Map</option>
+	</select>
+	
+	
+	
 	<div class="row" id="visual">
 		<canvas id="local-map-lasers" width="500" height="500"></canvas>
 	</div>
