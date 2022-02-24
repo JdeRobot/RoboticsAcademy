@@ -30,7 +30,7 @@
 
 		<!-- Launching Pad -->
         <include>
-			<uri>model://launching_pad</uri>
+			<uri>model://logoPadGreen</uri>
             <pose>-21.0 -4.0 0 0 0</pose>
 			<name>launching_pad</name>
 		</include>
