@@ -19,6 +19,19 @@
 		</div>
 	</div>
 
+
+    <div id="Control_HD" class="container" >
+        <button id="Live_Infer" type="button" onclick="LiveInfer()"><img class='img-40' src="{% static 'common/img/webcam_logo.jpg' %}"> Live</button>
+        <button id="Video_Infer" type="button" onclick="VideoInfer()"><img class='img-40' src="{% static 'common/img/submit.png' %}"> Video</button>
+        <button id="benchmark" type="button" onclick="benchmarkModel()"><img class='img-40' src="{% static 'common/img/benchmark_icon.jpg' %}"> Benchmark</button>
+        <button id="visualizer" type="button" onclick="visualizeModel()"><img class='img-40' src="{% static 'common/img/netron_icon.png' %}"> Visualize</button>
+        <button id="stop_code" type="button" onclick="stopCode()"><img class='img-40' src="{% static 'common/img/pause.png' %}"> Stop</button>
+        <input   type="file" id="real-file" hidden="hidden"/>
+    </div>
+
+
+
+
   <div id="theory-view" style="display: none;">
     <iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection" id="iframe-tab"></iframe>
 </div>
@@ -87,7 +100,7 @@
         <div id="visual">
         <!-- Canvas -->
             <h3 style="text-align:center" id="output_heading"></h3>
-            <canvas id="gui_canvas"></canvas>
+            <canvas id="gui_canvas_HD"></canvas>
         </div>
     
     
@@ -151,7 +164,7 @@
 <script src="{% static 'exercises/human_detection/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'exercises/human_detection/js/console.js' %}" type="text/javascript" charset="utf-8"></script>
 
-<script>
+<script>   
     window.onload = function() {
         startSim(0 );
         $("#connection-button").prop('disabled', true);

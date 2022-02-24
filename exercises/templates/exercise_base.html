@@ -58,11 +58,19 @@
             hideAll();
             $("#theory-view").show();
         }
+        
+        function openForum() {
+            hideAll();
+            $("#forum-view").show();
+
+            //window.open('https://forum.unibotics.org/', '_blank');
+	}
 
         function hideAll() {
             $("#exercise-view").hide();
             $("#exercise-controls").hide();
             $("#theory-view").hide();
+            $("#forum-view").hide();
         }
     </script>
 
@@ -238,7 +246,8 @@
             <div class="mr-auto">
                     <div id="Control" class="container">
                         <button id="open-theory" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" type="button" onclick="openTheory()"><i class="fa fa-graduation-cap" aria-hidden="true"></i></button>
-                        <button id="open-exercise" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"  type="button" onclick="openExercise()"><i class="fa fa-code" aria-hidden="true"></i></button>
+                        <button id="open-exercise" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;border-top-right-radius: 0px; border-bottom-right-radius: 0px;"  type="button" onclick="openExercise()"><i class="fa fa-code" aria-hidden="true"></i></button>
+                        <button id="open-forum" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"  type="button" onclick="openForum()"><img src="{% static 'common/img/forum.svg' %}" height="20" style="filter: brightness(0) invert(1);"/></button>
                     </div>
             </div>
 
@@ -247,11 +256,15 @@
                 // Simulate variable
                 let theory_mode = false;
                 let code_mode = true;
+                let forum_mode = false;
                 // Simulate button
                 const theory_icon = document.querySelector('#open-theory');
                 const code_icon = document.querySelector('#open-exercise');
+                const forum_icon = document.querySelector('#open-forum');
                 code_icon.style.background = '#28A745';
                 theory_icon.style.background = '#6C757D';
+                forum_icon.style.background = '#6C757D';
+                
                 theory_icon.addEventListener('click', function(){
 
                     if(!theory_mode){
@@ -259,7 +272,9 @@
                         // Activate mode
                         theory_mode = true;
                         code_mode = false;
+                        forum_mode = false;
                         theory_icon.style.background = '#28A745';
+                        forum_icon.style.background = '#6C757D';
                         code_icon.style.background = '#6C757D'; 
                         return;
                     }
@@ -274,8 +289,27 @@
                         // Activate mode
                         code_mode = true;
                         theory_mode = false;
+                        forum_mode = false;
                         code_icon.style.background = '#28A745';
                         theory_icon.style.background = '#6C757D';
+                        forum_icon.style.background = '#6C757D';
+                        return;
+                    }
+
+
+                });
+                
+                forum_icon.addEventListener('click', function(){
+
+                    if(!forum_mode){
+
+                        // Activate mode
+                        forum_mode = true;
+                        theory_mode = false;
+                        code_mode = false;
+                        theory_icon.style.background = '#6C757D';
+                        code_icon.style.background = '#6C757D';
+                        forum_icon.style.background = '#28A745';
                         return;
                     }
 
@@ -393,6 +427,17 @@
                 document.getElementById('save').style.display = 'none';
                 document.getElementById('console_button').style.display = 'none';
             }
+            if(window.location.pathname=='/exercises/human_detection/'){                 
+                document.getElementById('Medidor_RTF').style.display = 'none';
+                document.getElementById('gazebo_button').style.display = 'none';
+                document.getElementById('loadIntoRobot').style.display = 'none';
+                document.getElementById('load').style.display = 'none';
+                document.getElementById('save').style.display = 'none';
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('reset').style.display = 'none';
+                document.getElementById('stop').style.display = 'none';
+            }
+
                 
         </script>
     </div>
@@ -543,7 +588,11 @@ let simulate_mode = false;
 
 </script>   
 
-
+    <div id="forum-view" style="display: none;">
+	<iframe src="https://forum.unibotics.org/" id="iframe-tab"></iframe>
+    </div>
+    
+    
     {% block content %}
 
     <!-- CONTENIDO DE LAS DISTINTAS PÁGINAS -->

@@ -1,6 +1,6 @@
 <a href="https://mmg-ai.com/en/"><img src="https://jderobot.github.io/assets/images/logo.png" width="100 " align="right" /></a>
 
-# RoboticsAcademy: Learn Robotics, Artificial Intelligence and Computer Vision 
+# RoboticsAcademy: Learn Robotics, Artificial Intelligence and Computer Vision
 
 
 JdeRobot Academy is an **open source** collection of exercises to learn robotics in a practical way. Gazebo simulator is the main tool required, as ROS. Its latest documentation (including installation recipes, current available exercises and illustrative videos) is on its <a href="https://jderobot.github.io/RoboticsAcademy">webpage</a>.
@@ -21,7 +21,7 @@ To include a new exercise, add the folder with the exercise contents in exercise
 4)  Commit db.sqlite3 changes.
 
 
-## How to update static files version 
+## How to update static files version
 Follow this steps after changing any js or css document in order to prevent the browser cache to be used:
 
 1º Make all the changes necesary to the required documents.
@@ -76,6 +76,9 @@ The GUI websocket (on port 2303) is commonly used to send data from the backend 
 - “#image” with the image obtained from the camera of the robot
 - “#map” with the position and rotation of the robot
 
+#### **Manager websocket**
+The manager websocket is in charge of requesting the exercises and handling the control of the simulation. For example, it starts/stop/pause/resume/kill the Gazebo simulation. It also starts the VNC server. The code written by the user is sent first from the browser to the manager.py proccess through the manager websockets. Then, the manager.py checks the code with Pylint and returns the result to the browser
+
 ## Frontend-backend communication
 The connection between the backend and the frontend consists of these elements:
 
@@ -110,7 +113,7 @@ Robotics Academy includes two JdeRobot repositories as dependencies.
 
 ### master branch
 
-Master branch of the RoboticsAcademy repository is divided in some folders that contains different types of codes. There are 4 main folders: docs, exercises, static and scripts.
+[Master branch](https://github.com/JdeRobot/RoboticsAcademy/tree/master) of the RoboticsAcademy repository is divided in some folders that contains different types of codes. There are 4 main folders: docs, exercises, static and scripts.
 
 - **docs** folder holds all documentation about the repository and its architecture.
 - **exercises** folder contains all the codes related to the exercises launch process and visualization. In it you can find:
@@ -124,7 +127,7 @@ Master branch of the RoboticsAcademy repository is divided in some folders that 
 
 ### gh-pages branch
 
-The gh-pages branch contains part of the source code of the front-end. It's separated into some folders that holds html, json, xml and markdown files. Main folders are:
+The [gh-pages branch](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages) contains part of the source code of the front-end. It's separated into some folders that holds html, json, xml and markdown files. Main folders are:
 
 - **_pages**: this folder stores all markdown files that are imported to other html files. in this folder you can find the exercise folder in which the markdown corresponding to the documentation of the various exercises of the repository can be found.
 	1. Autonomous Cars: text documentation of the exercises 'autoparking', 'car-junction', 'follow_line', 'global_navigation' and 'obstacle_avoidance'.
@@ -135,3 +138,7 @@ The gh-pages branch contains part of the source code of the front-end. It's sepa
 - **assets**: this folder contains all css, js and images resources used by the front-end documentation pages.
 - **_includes**: this folder has all html files that are used to structure the webpage front-end (head, footer, search bar...) and some other resources such as the youtubePlayer.html file. This resources are called by the Jekyll template through the tag {%include xxxxx.html %}. You can obtain more information [**here**](https://jekyllrb.com/docs/includes/) .
 - **_layouts**: this folder stores the html example templates used to create the webpage html files.
+
+### issues branches
+
+The rest of the branches will have the designation 'issue-xxxx', being xxxx the name correspondent to the incidence they are attached to. This number is given automatically by GitHub when an issue is open.
