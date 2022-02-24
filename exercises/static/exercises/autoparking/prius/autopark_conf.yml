@@ -1,0 +1,35 @@
+Autopark:
+
+  Motors:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:default -h localhost -p 9999"
+    Topic: "/prius/cmd_vel"
+    Name: AutoparkMotors
+    maxV: 250
+    maxW: 20
+
+  Pose3D:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Pose3D:default -h localhost -p 9989"
+    Topic: "/prius/odom"
+    Name: AutoparkPose3d
+
+  Laser1:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:default -h localhost -p 8996"
+    Topic: "/prius/laser1/scan"
+    Name: AutoparkLaser1
+
+  Laser2:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:default -h localhost -p 8997"
+    Topic: "/prius/laser2/scan"
+    Name: AutoparkLaser2
+
+  Laser3:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Laser:default -h localhost -p 8998"
+    Topic: "/prius/laser3/scan"
+    Name: AutoparkLaser3
+
+  NodeName: Autopark
