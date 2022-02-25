@@ -90,63 +90,72 @@
 		<!-- Rust Defect 1 Tower 1 -->
         <include>
 			<uri>model://rust_defect_01</uri>
-            <pose>-2.31 -4 3.79 0 1.74</pose>
+            <!-- <pose>-2.31 -4 3.79 0 1.74</pose> -->
+			<pose>-2.31 -4 3.79 0 0.17</pose>
 			<name>rust_def1_tower1</name>
 		</include>
 
 		<!-- Rust Defect 1 Tower 1 Opposite -->
         <include>
 			<uri>model://rust_defect_01</uri>
-            <pose>0.232054 -4.00614 3.96187 0 1.41745 0</pose>
+            <!-- <pose>0.232054 -4.00614 3.96187 0 1.41745 0</pose> -->
+			<pose>0.232054 -4.00614 3.96187 0 -0.15255 0</pose>
 			<name>rust_def1_tower1_opp</name>
 		</include>
 
 		<!-- Rust Defect 2 Tower 1 -->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>-1.80605 -4.40198 14.7671 0 1.57</pose>
+            <!-- <pose>-1.80605 -4.40198 14.7671 0 1.57</pose> -->
+			<pose>-1.80605 -4.40198 14.7671 0 0.0</pose>
 			<name>rust_def2_tower1</name>
 		</include>
 
 		<!-- Rust Defect 2 Tower 1 Opposite-->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>-0.438877 -4.04055 14.7724 0 1.57 0</pose>
+            <!-- <pose>-0.438877 -4.04055 14.7724 0 1.57 0</pose> -->
+			<pose>-0.438877 -4.04055 14.7724 0 0.0 0</pose>
 			<name>rust_def2_tower1_opp</name>
 		</include>
 
 		<!-- Rust Defect 3 Tower 1 -->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>-1.81251 -3.67691 14.7727 0 1.57</pose>
+            <!-- <pose>-1.81251 -3.67691 14.7727 0 1.57</pose> -->
+			<pose>-1.81251 -3.67691 14.7727 0 0.0</pose>
 			<name>rust_def3_tower1</name>
 		</include>
 
 		<!-- Rust Defect 3 Tower 1 Opposite -->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>-0.435477 -3.59453 14.7738 0 1.57 0</pose>
+            <!-- <pose>-0.435477 -3.59453 14.7738 0 1.57 0</pose> -->
+			<pose>-0.435477 -3.59453 14.7738 0 0.0 0</pose>
 			<name>rust_def3_tower1_opp</name>
 		</include>
 
 		<!-- Rust Defect 4 Tower 1 -->
         <include>
 			<uri>model://rust_defect_03</uri>
-            <pose>-1.59 -4.33479 20.438 0 1.74</pose>
+            <!-- <pose>-1.59 -4.33479 20.438 0 1.74</pose> -->
+			<pose>-1.59 -4.33479 20.438 0 0.17</pose>
 			<name>rust_def4_tower1</name>
 		</include>
 
 		<!-- Rust Defect 4 Tower 1 Opposite-->
         <include>
 			<uri>model://rust_defect_03</uri>
-            <pose>-0.577392 -3.56405 19.08 0 1.542 0</pose>
+            <!-- <pose>-0.577392 -3.56405 19.08 0 1.542 0</pose> -->
+			<pose>-0.577392 -3.56405 19.08 0 -0.028 0</pose>
 			<name>rust_def4_tower1_opp</name>
 		</include>
 
 		<!-- Rust Defect 5 Tower 1 -->
         <include>
 			<uri>model://rust_defect_03</uri>
-            <pose>-1.73 -3.51 19.1255 0 1.74</pose>
+            <!-- <pose>-1.73 -3.51 19.1255 0 1.74</pose> -->
+			<pose>-1.73 -3.51 19.1255 0 0.17</pose>
 			<name>rust_def5_tower1</name>
 		</include>
 
@@ -154,56 +163,64 @@
 		<!-- Rust Defect 1 Tower 2 -->
         <include>
 			<uri>model://rust_defect_01</uri>
-            <pose>37.69 -4 3.79 0 1.74</pose>
+            <!-- <pose>37.69 -4 3.79 0 1.74</pose> -->
+			<pose>37.69 -4 3.79 0 0.17</pose>
 			<name>rust_def1_tower2</name>
 		</include>
 
 		<!-- Rust Defect 1 Tower 2 Opposite -->
         <include>
 			<uri>model://rust_defect_01</uri>
-            <pose>40.232054 -4.00614 3.96187 0 1.41745 0</pose>
+            <!-- <pose>40.232054 -4.00614 3.96187 0 1.41745 0</pose> -->
+			<pose>40.232054 -4.00614 3.96187 0 -0.15255 0</pose>
 			<name>rust_def1_tower2_opp</name>
 		</include>
 
 		<!-- Rust Defect 2 Tower 2 -->
         <include>
 			<uri>model://rust_defect_03</uri>
-            <pose>38.19395 -4.40198 14.7671 0 1.57</pose>
+            <!-- <pose>38.19395 -4.40198 14.7671 0 1.57</pose> -->
+			<pose>38.19395 -4.40198 14.7671 0 0.0</pose>
 			<name>rust_def2_tower2</name>
 		</include>
 
 		<!-- Rust Defect 2 Tower 2 Opposite-->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>39.561123 -4.04055 14.7724 0 1.57 0</pose>
+            <!-- <pose>39.561123 -4.04055 14.7724 0 1.57 0</pose> -->
+			<pose>39.561123 -4.04055 14.7724 0 0.0 0</pose>
 			<name>rust_def2_tower2_opp</name>
 		</include>
 
 		<!-- Rust Defect 3 Tower 2 -->
         <include>
 			<uri>model://rust_defect_03</uri>
-            <pose>38.18749 -3.67691 14.7727 0 1.57</pose>
+            <!-- <pose>38.18749 -3.67691 14.7727 0 1.57</pose> -->
+			<pose>38.18749 -3.67691 14.7727 0 0.0</pose>
 			<name>rust_def3_tower2</name>
 		</include>
 
 		<!-- Rust Defect 3 Tower 2 Opposite -->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>39.564523 -3.59453 14.7738 0 1.57 0</pose>
+            <!-- <pose>39.564523 -3.59453 14.7738 0 1.57 0</pose> -->
+			<pose>39.564523 -3.59453 14.7738 0 0.0 0</pose>
 			<name>rust_def3_tower2_opp</name>
 		</include>
 
 		<!-- Rust Defect 4 Tower 2 -->
         <include>
 			<uri>model://rust_defect_02</uri>
-            <pose>38.41 -4.33479 20.438 0 1.74</pose>
+            <!-- <pose>38.41 -4.33479 20.438 0 1.74</pose> -->
+			<pose>38.41 -4.33479 20.438 0 0.17</pose>
 			<name>rust_def4_tower2</name>
 		</include>
 
 		<!-- Rust Defect 4 Tower 2 Opposite-->
         <include>
 			<uri>model://rust_defect_03</uri>
-            <pose>39.422608 -3.56405 19.08 0 1.542 0</pose>
+            <!-- <pose>39.422608 -3.56405 19.08 0 1.542 0</pose> -->
+			<pose>39.422608 -3.56405 19.08 0 -0.028 0</pose>
 			<name>rust_def4_tower2_opp</name>
 		</include>
 
