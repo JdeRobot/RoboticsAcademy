@@ -36,6 +36,31 @@ If a new static file is created or you find a file that doesn't have (or updates
 
 For example: ```script src="{% static 'exercises/assets/js/utils.js``` would have his src update as follows: ```script src="{% static 'exercises/assets/js/utils.js?v={{SYS_VERSION}}' %}"```
 
+## How to change and test models from CustomRobots repository
+
+### Option 1: Change files in a created RADI
+
+1. Launch latest version of RADI:
+	- ```docker run --name jderobot --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest bash```
+2. In other terminal positioned in your branch direction, you have to copy the RoboticsAcademy files inside the container:
+	- ```docker cp RoboticsAcademy jderobot:./```
+3. Changing the terminal route to your CustomRobots folder, you have to copy the CustomRobots files inside the RADI:
+	- ```docker cp CustomRobots/<dirección del modelo> jderobot:/opt/jderobot/CustomRobots/<dirección del modelo>```
+4. Inside the docker container, execute the follow commands:
+	- ```rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises```
+	- ```source /opt/ros/noetic/setup.bash```
+	- ```source /catkin_ws/devel/setup.bash```
+	- ```python3 RoboticsAcademy/manage.py runserver 0.0.0.0:8000 &```
+	- ```python3.8 manager.py```
+
+### Option 2: Create a new container from repositories
+
+1. Change the branch name (-b <branch>) of CustomRobots and RoboticsAcademy inside the Dockerfile
+2. In the terminal positioned in the Dockerfile route, execute the following command to create a new container:
+	- ```docker build --no-cache=true -f Dockerfile -t jderobot/<name> .```
+3. Launch new container:
+	- ```docker run --name jderobot --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/<name> bash```
+
 # Robotics Academy Architecture
 ## Robotics Academy frontend
 Robotics frontend is served from a Django webserver running inside the RADI. Each exercise page communicates with different elements of the RADI in order to interact with the simulation.
