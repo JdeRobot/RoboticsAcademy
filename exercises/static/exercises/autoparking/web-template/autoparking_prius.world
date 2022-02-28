@@ -15,7 +15,7 @@
     <!-- A taxi with lasers-->
     <include>
       <uri>model://prius</uri>
-      <pose>-7 2.5 0.02 0 0 0</pose> 
+      <pose>-7 2.5 0 0 0 0</pose> 
     </include>
     
     
