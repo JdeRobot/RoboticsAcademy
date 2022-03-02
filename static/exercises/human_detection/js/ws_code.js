@@ -21,9 +21,8 @@ function declare_code(){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){
-		radiConect.contentWindow.postMessage({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
 		if (websocket_gui.readyState == 1) {
-			radiConect.contentWindow.postMessage({connection: 'exercise', command: 'up'}, '*');
+			connectionUpdate({connection: 'exercise', command: 'up'}, '*');
 			alert("[open] Connection established!");
 		}
         websocket_code.send("#ping");
