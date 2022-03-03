@@ -12,6 +12,8 @@ If you are a contributor, please note that we use GitHub Pages and a Jekyll them
 Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcademy/contribute/) to join this project.
 
 
+
+## INDEX
 - [Instructions for developers](#Instructions-for-developers)
     - [How to add a new exercise](#How-to-add-a-new-exercise)
     - [How to update static files version](#How-to-update-static-files-version)
@@ -135,9 +137,9 @@ The connection between the backend and the frontend consists of these elements:
 <a name="User-code-processing"></a>
 ## User code processing
 When a user requests to load the code in the robot, the code follows these steps:
-1. The code is sent from the ACE Editor of the browser to the manager.py process of the RADI. The code is checked by Pylint and the errors are returned to the browser. If the browser receives an error, the error is displayed on a modal and the code is not sent to the brain.
-2. If there aren't any errors, the code is sent from the browser to the exercise.py through the code websocket. Exercise.py receives the user's source code as raw text and puts it to work.
-3. The exercise.py separates the code in two portions: the sequential part (executed once) and the iterative part (executed every brain interval). The code is separated by the first while True loop encountered. Within the iterative part the brain measures the time after each iteration, this is called code management, so as not to saturate the CPU and keep a controlled rhythm of iterations per second to leave the CPU free for other browser tasks. The iterative part is inserted into another template along with extra code that controls the iterations per second that are carried out, (computational skeleton) so this computational engine is tied to the user code to ensure that the code is executed at a nominal frequency.
+1. The code is **sent from** the **ACE Editor** of the browser **to** the **manager.py** process of the RADI. The code is **checked** by Pylint and the **errors** are returned to the browser. If the browser receives an error, the error is displayed on a modal and the code is not sent to the brain.
+2. If there aren't any errors, the code is **sent from** the **browser to** the **exercise.py** through the code websocket. Exercise.py receives the user's source code as raw text and puts it to work.
+3. The exercise.py **separates** the **code** in two portions: the **sequential part** (executed once) and the **iterative part** (executed every brain interval). The code is separated by the first while True loop encountered. Within the iterative part the **brain measures** the **time after each iteration**, this is called **code management**, so as not to saturate the CPU and keep a **controlled rhythm** of iterations per second to leave the CPU free for other browser tasks. The iterative part is inserted into another template along with extra code that controls the iterations per second that are carried out, (computational skeleton) so this **computational engine** is tied to the user code to ensure that the code is executed at a **nominal frequency**.
 The user code is also enriched with some execution control elements in order to pause, reset and load a new code into the robot brain.
 
 <a name="Flow-Control"></a>
