@@ -26,10 +26,10 @@ Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcade
     - [User code processing](#User-code-processing)
     - [Flow control](#Flow-control)
     - [Other repositories](#Other-repositories)
-    - [Repository architecture](#Repository-architecture)
-        - [master branch](#master-branch)
-        - [gh-pages branch](#gh-pages-branch)
-        - [issues branches](#issues-branches)
+- [Repository architecture](#Repository-architecture)
+    - [master branch](#master-branch)
+    - [gh-pages branch](#gh-pages-branch)
+    - [issues branches](#issues-branches)
 
 <a name="Instructions-for-developers"></a>
 # Instructions for developers
@@ -157,10 +157,10 @@ Robotics Academy includes two JdeRobot repositories as dependencies.
 - [drones](https://github.com/JdeRobot/drones) contains different types of drones and world files for Gazebo.
 
 <a name="Repository-architecture"></a>
-## Developers info about repository architecture
+# Developers info about repository architecture
 
 <a name="master-branch"></a>
-### master branch
+## master branch
 
 [Master branch](https://github.com/JdeRobot/RoboticsAcademy/tree/master) of the RoboticsAcademy repository is divided in some folders that contains different types of codes. There are 4 main folders: docs, exercises, static and scripts.
 
@@ -175,7 +175,7 @@ Robotics Academy includes two JdeRobot repositories as dependencies.
 - **scripts** folder, that hosts the dockerfile (file with the Docker commands to create a RADI), shell files, manager.py (file used to manage the exercises processes) and pyint_checker.py (file used to check if the code has been written properly).
 
 <a name="gh-pages-branch"></a>
-### gh-pages branch
+## gh-pages branch
 
 The [gh-pages branch](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages) contains part of the source code of the front-end. It's separated into some folders that holds html, json, xml and markdown files. Main folders are:
 
@@ -190,6 +190,6 @@ The [gh-pages branch](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages)
 - **_layouts**: this folder stores the html example templates used to create the webpage html files.
 
 <a name="issues-branches"></a>
-### issues branches
+## issues branches
 
 The rest of the branches will have the designation 'issue-xxxx', being xxxx the name correspondent to the incidence they are attached to. This number is given automatically by GitHub when an issue is open.
