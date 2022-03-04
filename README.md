@@ -18,8 +18,8 @@ Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcade
     - [How to add a new exercise](#How-to-add-a-new-exercise)
     - [How to update static files version](#How-to-update-static-files-version)
 - [Robotics Academy Architecture](#Robotics-Academy-Architecture)
-    - [Unibotics frontend](#Unibotics-frontend)
-    - [Unibotics backend](#Unibotics-backend)
+    - [Robotics Academy frontend](#Robotics Academy-frontend)
+    - [Robotics Academy backend](#Robotics Academy-backend)
     - [Protocol between exercise.py and browser](#Protocol-between-exercise.py-and-browser)
     - [Protocol between manager.py and browser](#Protocol-between-manager.py-and-browser)
     - [Frontend-backend communication](#Frontend-backend-communication)
@@ -60,11 +60,11 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
 
 <a name="Robotics-Academy-Architecture"></a>
 # Robotics Academy Architecture
-<a name="Unibotics-frontend"></a>
+<a name="Robotics-Academy-frontend"></a>
 ## Robotics Academy frontend
 Robotics frontend is served from a Django webserver running inside the RADI. Each exercise page communicates with different elements of the RADI in order to interact with the simulation.
 
-<a name="Unibotics-backend"></a>
+<a name="Robotics-Academy-backend"></a>
 ## Robotics Academy backend
 The **Robotics Academy Docker Image** (RADI) has several exercises available using **Gazebo** and **STDR**. In order to request and interact with the exercises, the container has a websocket **port (8765)** and a communication protocol (Robotics Academy Manager Protocol, or RAMP). Each exercise opens 1, 2 or more websockets to interact specifically with the exercise and receive data. The RAMP includes these commands:
 
@@ -98,7 +98,6 @@ The server responds with these messages:
 - “#freq” message (sent on every iteration of the brain) including three fields: “brain” with the brain frequency; “gui” with the GUI frequency and “rtf” with the Real Time Factor Value.
 - “#ping” response to ping messages
 
-<a name="How-to-add-a-new-exercise"></a>
 #### **GUI websocket**
 The GUI websocket (on **port 2303**) is commonly used to send data from the backend to the frontend since exercise.py has no graphical interface. Gui websocket **sends images to the browser to be displayed** (e.g: robot camera) and displays them with **html widgets**. This websocket varies according to the requirements of each exercise, it has more **variability**. The data is included on a message starting with “#gui” and has different fields based on the exercise. The most common fields are:
 
