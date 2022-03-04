@@ -2,7 +2,7 @@ FROM jderobot/base:3.2
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
-	git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
+	git clone -b issue-145 https://github.com/JdeRobot/CustomRobots.git
 
 # Setting environment variables
 RUN echo 'source /opt/ros/$ROS_DISTRO/setup.bash' >> ~/.bashrc
@@ -16,7 +16,7 @@ ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jdero
 ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b issue-1547b
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # STDR files copy

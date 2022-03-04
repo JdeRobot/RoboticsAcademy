@@ -57,7 +57,14 @@ while True:
 
     <div class="split b">
 
-
+	<!-- Map selector -->
+	<label for="circuit_selector" style="display: inline-block;">Map: </label>
+	<select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">
+		<option value="default">Classic Map</option>
+		<option value="prius">Prius Map</option>
+	</select>
+	
+	
 	<div class="row" id="visual">
 		<canvas id="local-map-lasers" width="500" height="500"></canvas>
 	</div>
@@ -200,15 +207,15 @@ while True:
     <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
     <script src="{% static 'common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	<!-- <script src="{% static 'common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script> -->
 	<script src="{% static 'common/js/controller.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 	
     <!-- Exercise specific resources -->
     <script src="{% static 'exercises/autoparking/js/ws_gui.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'exercises/autoparking/js/map_view.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
-
-
+    <script src="{% static 'exercises/autoparking/js/map_view.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/autoparking/js/circuit_selector.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'exercises/autoparking/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
   <!-- BOTON DE CONEXION CON RADI-->
     <script>
 		window.onload = function() {
