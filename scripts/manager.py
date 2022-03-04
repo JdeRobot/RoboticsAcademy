@@ -82,7 +82,7 @@ class Commands:
         gz_cmd = roslaunch_cmd
         roslaunch_cmd = roslaunch_cmd + self.get_gazebo_path(exercise)
         for instruction in self.instructions[exercise]["instructions_ros"]:
-            if exercise in CIRCUIT_EX:
+            if exercise in CIRCUIT_EX or exercise == "autoparking":
                 instruction = instruction.format(circuit)
                 print('INSTRUCTION: ', instruction)    
             

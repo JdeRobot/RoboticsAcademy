@@ -7,9 +7,16 @@ circuit_selector.addEventListener('change', function(){
     circuit = circuit_selector.options[circuit_selector.selectedIndex].value;
     console.log('Changed: ', circuit);
     // Classes
-    let classes = ['default', 'prius'];
+    let classes = ['default', 'montreal', 'montmelo', 'nbg'];
 
-
+    // Disable connection button
+    //$("#connection-button").prop('disabled', true);
+    // Set birds-eye background
+    let canvas = document.querySelector('#birds-eye');
+    classes.forEach(c => {
+        canvas.classList.remove(c);
+    });
+    canvas.classList.add(circuit);
 
     // Set variable to toggle gazebo
     gazeboToggle = true;

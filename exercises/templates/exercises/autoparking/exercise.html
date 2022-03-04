@@ -206,7 +206,7 @@ while True:
     <script src="{% static 'common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
-    <script src="{% static 'common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/ws_code_teleop.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 	<!-- <script src="{% static 'common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script> -->
 	<script src="{% static 'common/js/controller.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 	<script src="{% static 'common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
@@ -219,7 +219,7 @@ while True:
   <!-- BOTON DE CONEXION CON RADI-->
     <script>
 		window.onload = function() {
-			startSim(0 );
+			startSim(0, "default" );
 			$("#connection-button").prop('disabled', true);
 		}
 		window.onbeforeunload = function() {
@@ -228,11 +228,10 @@ while True:
         $(document).ready(function() {$("#launch-button").click(
             function () {
 				if ($("#launch-button").attr('class') == 'btn btn-secondary' && $("#connection-button").attr('class') == 'btn btn-success') {
-
 					$("#launch-button").prop('disabled', true);
 					$("#launch-button").removeClass('btn-secondary').addClass('btn-warning');
 					$("#launch-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching');
-					startSim(1);
+					startSim(1, circuit_selector.options[circuit_selector.selectedIndex].value);
 				}
 				else if ($("#connection-button").attr('class') == 'btn btn-secondary') {
 					alert("A connection with the manager must be established before launching an exercise");
@@ -245,7 +244,7 @@ while True:
 					$("#connection-button").prop('disabled', true);
 					$("#connection-button").removeClass('btn-secondary').addClass('btn-warning');
 					$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
-					startSim(0 );
+					startSim(0, "default" );
 				}
 			});
         });
@@ -272,6 +271,7 @@ while True:
 					$("#launch-button").removeClass('btn-secondary').addClass('btn-secondary');
 				}else if (data.command == 'up') {
 					stop();
+					swapping = false;
 					$("#launch-button").removeClass("btn-warning").addClass("btn-success");
 					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
 					$("#launch-button").prop('disabled', true);
@@ -284,11 +284,15 @@ while True:
 					load_button.disabled = false;
 					load_button.style.opacity = "1.0";
 					load_button.style.cursor = "default";
-					
 				}else if (data.command == 'down'){
-					$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
-					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
-					$("#launch-button").prop('disabled', false);
+					if (!swapping) {
+						$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
+						$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+						$("#launch-button").prop('disabled', false);
+					}
+				}else if (data.command == 'swap'){
+					$("#launch-button").removeClass("btn-success btn-warning btn-secondary").addClass("btn-warning");
+					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching`);
 				}else if (data.command == 'launch_level'){
 					let level = data.level;
 					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
