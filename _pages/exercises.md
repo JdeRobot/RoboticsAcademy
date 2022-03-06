@@ -240,7 +240,7 @@ feature_row:
   - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection.png
     alt: "Power Tower Inspection"
     title: "Power Tower Inspection"
-    excerpt: "Perform inspection of power towers and the electrical wires using a drone."
+    excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
     url: "/exercises/Drones/power_tower_inspection"
     btn_class: "btn--danger"
     btn_label: "Go!"
