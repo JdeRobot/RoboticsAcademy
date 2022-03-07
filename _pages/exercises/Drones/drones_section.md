@@ -128,7 +128,7 @@ feature_row:
     order: 0;
     version: "v3.1"
 
-  - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection.png
+  - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
     alt: "Power Tower Inspection"
     title: "Power Tower Inspection"
     excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
