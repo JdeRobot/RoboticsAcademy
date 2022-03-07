@@ -236,6 +236,18 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.2"
+  
+  - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection.png
+    alt: "Power Tower Inspection"
+    title: "Power Tower Inspection"
+    excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
+    url: "/exercises/Drones/power_tower_inspection"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    status: "prototype"
+    order: 2;
+    version: "v3.1"
 
   - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
     alt: "Package Delivery"
