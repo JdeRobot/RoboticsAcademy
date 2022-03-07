@@ -193,3 +193,11 @@ The [gh-pages branch](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages)
 ## issues branches
 
 The rest of the branches will have the designation 'issue-xxxx', being xxxx the name correspondent to the incidence they are attached to. This number is given automatically by GitHub when an issue is open.
+
+## Steps to change models from CustomRobots in RoboticsAcademy exercises.
+
+- Upload the new model files to [CustomRobots repository](https://github.com/JdeRobot/CustomRobots)
+- Change the model name in .world file contained in static/exercises path that calls it.
+- If you have some .world files you need to create different .launch files and add a '{}' in the [instructions.json file](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/instructions.json) that will be replaced by the [manager.py file](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/manager.py) for the variable name of the selection list of the JS and HTML files of the exercise.
+- You need to change the launcher.js file in the case that the exercise has a map selector or not.
+- Finally, if the exercise need an specific plugin that isn't installed in the container you need to modify the [Dockerfile](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/Dockerfile) an add the commands that allows the installation of the .cc and .hh files of the CustomRobots repository.
