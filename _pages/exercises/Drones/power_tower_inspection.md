@@ -111,7 +111,6 @@ while True:
 * `HAL.get_pitch()` - Returns the pitch angle of the drone, in rad.
 * `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad. 
 * `HAL.get_landed_state()` -  Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown. 
-* `HAL.get_pkg_state()` -  Returns True if the drone has picked up the package box else returns False.
 
 ### Actuators and drone control
 
@@ -140,11 +139,6 @@ Besides using the buttons at the drone teleoperator GUI, taking off and landing 
 
 * `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image
 * `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image
-
-### Package box control
-
-* `HAL.set_cmd_pick()` - Drone picks up the package box from a minimum distance of 0.5 m
-* `HAL.set_cmd_drop()` - Drone drops the package box
 
 ### GUI
 
