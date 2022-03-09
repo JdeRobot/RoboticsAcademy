@@ -2,7 +2,7 @@
 <script type="text/javascript">
 			 var csrf = '{{ csrf_token }}';
 
-		var exercise = {{ exercise }};
+		var exercise = "{{ exercise }}";
         function changeconsole(){
           var console_display = document.getElementById('console-vnc').style.display
           console.log(console_display)
@@ -98,8 +98,9 @@
 		  }
 	  }
         </script></div>
-
+    <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
  <script>
+
           Split(['.a', '.b'], {
             gutterSize: 3,
             sizes: [50,50]

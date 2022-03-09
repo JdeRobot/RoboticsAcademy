@@ -8,6 +8,7 @@
 	}
 	$(document).ready(function() {$("#launch-button").click(
             function () {
+
 				if ($("#launch-button").attr('class') == 'btn btn-secondary' && $("#connection-button").attr('class') == 'btn btn-success') {
 					$("#launch-button").prop('disabled', true);
 					$("#launch-button").removeClass('btn-secondary').addClass('btn-warning');
