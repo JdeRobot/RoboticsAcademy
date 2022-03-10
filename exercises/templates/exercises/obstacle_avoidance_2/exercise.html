@@ -39,7 +39,7 @@
     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
     <!-- Exercise specific resources -->
     {% for file in statics %}
-        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{% static 'exercises/obstacle_avoidance/js/'%}{{ file }}" type="text/javascript" charset="utf-8"></script>
     {% endfor %}
     <!-- BOTON DE CONEXION CON RADI-->
     {% if "connect_button" in indexs %}
