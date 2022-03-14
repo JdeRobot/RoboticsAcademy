@@ -1,20 +1,38 @@
-unibotics exercises's ID: 14/02/2022
+RoboticsAcademy exercises's ID: 14/03/2022
 
+2d_visual_odometry
 3d_reconstruction
+amazon_warehouse 
+assets 
 autoparking
+bump_and_go
 car_junction
+chrono 
 color_filter
+dl_digit_classifier 
 drone_cat_mouse
-drone_cat_mouse_game
+drone_gymkhana
+drone_hangar
+follow_face
 follow_line
-follow_line_game
-follow_line_game_sync
+follow_line_turtlebot 
+follow_road 
+follow_turtlebot  
 global_navigation
+human_detection
+labyrinth_escape
 laser_loc
 laser_mapping
+machine_vision
+mobile_manipulation
 montecarlo_visual_loc
 obstacle_avoidance
 opticalflow_teleop
-rescue_people
+package_delivery 
+pick_place
+position_control
+power_tower_inspection
+rescue_people   
 vacuum_cleaner
 vacuum_cleaner_loc
+visual_lander 
