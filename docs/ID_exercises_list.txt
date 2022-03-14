@@ -1,0 +1,20 @@
+unibotics exercises's ID: 14/02/2022
+
+3d_reconstruction
+autoparking
+car_junction
+color_filter
+drone_cat_mouse
+drone_cat_mouse_game
+follow_line
+follow_line_game
+follow_line_game_sync
+global_navigation
+laser_loc
+laser_mapping
+montecarlo_visual_loc
+obstacle_avoidance
+opticalflow_teleop
+rescue_people
+vacuum_cleaner
+vacuum_cleaner_loc
