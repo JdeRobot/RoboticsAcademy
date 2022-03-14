@@ -1,7 +1,7 @@
 ﻿# CLIENT SIDE
 
-- [Unibotics frontend](#Unibotics-frontend)
-- [Unibotics backend](#Unibotics-backend)
+- [RoboticsAcademy frontend](#RoboticsAcademy-frontend)
+- [Protocol between manager.py and browser](#Protocol-between-manager.py-and-browser)
 - [Protocol between exercise.py and browser](#Protocol-between-exercise.py-and-browser)
 - [Protocol between manager.py and browser](#Protocol-between-manager.py-and-browser)
 - [Frontend-backend communication](#Frontend-backend-communication)
@@ -9,18 +9,18 @@
 - [Flow control](#Flow-control)
 - [Types of backend](#Types-of-backend)
 
-<a name="Unibotics-frontend"></a>
-## Unibotics frontend
-Unibotics frontend is served from an AWS machine using Django, Nginx and MySQL. All the containers are set up using Docker Compose. The exercises are developed on a separate repository (unibotics-exercises). The users and the exercises available can be declared and modified through the Django administrator page.
+<a name="RoboticsAcademy-frontend"></a>
+## RoboticsAcademy frontend
+RoboticsAcademy frontend is served from an AWS machine using Django, Nginx and MySQL. All the containers are set up using Docker Compose. The exercises are developed on a one single repository (RoboticsAcademy/exercises). The users and the exercises available can be declared and modified through the Django administrator page.
 Instructions to declare a new exercise:
 1) Access the Django admin page.
 2) Click on "Exercises".
 3) Click on "add exercise" and fill the fields: exercise id (folder name), name (name to display), state, language and description (description to display).
 4) Save and exit.
 
-<a name="Unibotics-backend"></a>
-## Unibotics backend
-Unibotics backend is built upon Robotics Academy Docker Image (RADI). This docker image has several exercises available using Gazebo and STDR. In order to request and interact with the exercises, the container has a websocket port (8765) and a communication protocol (Robotics Academy Manager Protocol, or RAMP). Each exercise opens 1, 2 or more websockets to interact specifically with the exercise and receive data.
+<a name="Protocol-between-manager.py-and-browser"></a>
+## RoboticsAcademy backend
+RoboticsAcademy backend is built upon Robotics Academy Docker Image (RADI). This docker image has several exercises available using Gazebo and STDR. In order to request and interact with the exercises, the container has a websocket port (8765) and a communication protocol (Robotics Academy Manager Protocol, or RAMP). Each exercise opens 1, 2 or more websockets to interact specifically with the exercise and receive data.
 The RAMP includes these commands:
 - “open” in order to start an exercise specified on the field “exercise”
 - “stop” to stop the simulation
@@ -80,7 +80,7 @@ The connection between the backend and the frontend consists of these elements:
 - GZClient VNC: interact and visualize the simulation
 - Console VNC: debug and print messages
 
-![unibotics architecture image](/docs/images/unibotics_architecture.png "Unibotics Architecture")
+![RoboticsAcademy architecture image](/docs/images/RoboticsAcademy_architecture.png "RoboticsAcademy Architecture")
 
 <a name="User-code-processing"></a>
 ## User code processing
