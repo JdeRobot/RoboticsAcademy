@@ -1,0 +1,103 @@
+   {% load static %}
+{% load i18n %}
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light" style="padding-top: 0px; padding-bottom: 0px;">
+
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <img src="{% static 'common/img/logo.png' %}" class="d-inline-block align-top"
+                height="28" alt="Academy">
+
+            <div class="col-xs-3 ml-auto">
+                <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="connection-button" value="local-connection" disabled="true"><span id="loading-connection"
+                        class="bi bi-arrow-down-up"></span> Connect</button>
+                <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="launch-button" value="local-connection"><span id="loading-connection"
+                            class="bi bi-arrow-down-up"></span> Launch</button>
+                <button type="button" class="btn" onclick="showInfoModal()"><span class="fa fa-question-circle-o" style="font: normal normal normal 20px/1 FontAwesome; padding-top: 2px; padding-bottom: 2px;"></span></button>
+            </div>
+
+
+
+
+            <!-- Cuando se genere el token se le muestra la url de invitado y se quita cuando se detecta conexión-->
+            <div id="rtc-url" style="color: black; margin: 15px"></div>
+
+            <div class="mr-auto">
+                    <div id="Control" class="container">
+                        <button id="open-theory" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" type="button" onclick="openTheory()"><i class="fa fa-graduation-cap" aria-hidden="true"></i></button>
+                        <button id="open-exercise" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;border-top-right-radius: 0px; border-bottom-right-radius: 0px;"  type="button" onclick="openExercise()"><i class="fa fa-code" aria-hidden="true"></i></button>
+                        <button id="open-forum" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"  type="button" onclick="openForum()"><img src="{% static 'common/img/forum.svg' %}" height="20" style="filter: brightness(0) invert(1);"/></button>
+                    </div>
+            </div>
+
+            <script>
+
+                // Simulate variable
+                let theory_mode = false;
+                let code_mode = true;
+                let forum_mode = false;
+                // Simulate button
+                const theory_icon = document.querySelector('#open-theory');
+                const code_icon = document.querySelector('#open-exercise');
+                const forum_icon = document.querySelector('#open-forum');
+                code_icon.style.background = '#28A745';
+                theory_icon.style.background = '#6C757D';
+                forum_icon.style.background = '#6C757D';
+
+                theory_icon.addEventListener('click', function(){
+
+                    if(!theory_mode){
+
+                        // Activate mode
+                        theory_mode = true;
+                        code_mode = false;
+                        forum_mode = false;
+                        theory_icon.style.background = '#28A745';
+                        forum_icon.style.background = '#6C757D';
+                        code_icon.style.background = '#6C757D';
+                        return;
+                    }
+
+
+                });
+
+                code_icon.addEventListener('click', function(){
+
+                    if(!code_mode){
+
+                        // Activate mode
+                        code_mode = true;
+                        theory_mode = false;
+                        forum_mode = false;
+                        code_icon.style.background = '#28A745';
+                        theory_icon.style.background = '#6C757D';
+                        forum_icon.style.background = '#6C757D';
+                        return;
+                    }
+
+
+                });
+
+                forum_icon.addEventListener('click', function(){
+
+                    if(!forum_mode){
+
+                        // Activate mode
+                        forum_mode = true;
+                        theory_mode = false;
+                        code_mode = false;
+                        theory_icon.style.background = '#6C757D';
+                        code_icon.style.background = '#6C757D';
+                        forum_icon.style.background = '#28A745';
+                        return;
+                    }
+
+
+                });
+
+        </script>
+        </div>
+    </nav>
