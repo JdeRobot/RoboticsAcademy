@@ -1,0 +1,24 @@
+{% load static %}
+{% load i18n %}
+
+
+<button
+        id="submit"
+        type="button"
+        style="opacity: 0.4;
+        cursor: not-allowed;"
+        disabled="true">
+    <img class="btn_img" src="{% static 'common/img/submit.svg' %}" style="display: inline;"/>
+    <p style="display: inline;"> Play</p>
+</button>
+
+<script>
+
+    if(window.location.pathname=='/exercises/laser_mapping/' || window.location.pathname=='/exercises/laser_mapping'){
+        document.getElementById('submit').onclick = function(){check('{{user.username}}')};
+    }
+    else{
+        document.getElementById('submit').onclick =function(){start('{{user.username}}')};
+    }
+
+</script>

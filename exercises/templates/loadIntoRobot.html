@@ -1,0 +1,35 @@
+{% load static %}
+{% load i18n %}
+
+
+<button
+        id="loadIntoRobot"
+        title=""
+        type="button"
+        onclick="check()"
+        style="opacity: 0.4;
+        cursor: not-allowed;"
+        disabled="true">
+    <nobr>
+        <img class="btn_img" src="{% static 'common/img/robot.svg' %}" style="display: inline;"/>
+        <p style="display: inline; white-space: nowrap;"> Load in robot</p>
+    </nobr>
+    <img
+            class="btn_img"
+            id="loadIntoRobotAlert"
+            src="{% static 'common/img/dot.svg' %}"
+            style="position: absolute;
+            display: none; height: 14px;
+            margin-top: -6px;
+            filter: invert(83%) sepia(29%) saturate(7448%) hue-rotate(12deg) brightness(87%) contrast(101%);"
+    />
+</button>
+
+
+<script>
+
+    if(window.location.pathname=='/exercises/laser_mapping/' || window.location.pathname=='/exercises/laser_mapping'){
+        document.getElementById('loadIntoRobot').style.display = 'none';
+    }
+
+</script>

@@ -1,0 +1,13 @@
+{% load static %}
+{% load i18n %}
+
+
+<button
+        id="teleop_button"
+        type="button"
+        title="Use the arrow keys to operate the F1">
+    <div style="vertical-align: top; display: inline-block; text-align: center;">
+        <img id="teleop_img" style="height:20px;" src="{% static 'common/img/joystick_off.svg' %}"/>
+        <span style="display: block;">Teleoperate</span>
+    </div>
+</button>

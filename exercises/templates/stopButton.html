@@ -1,0 +1,21 @@
+{% load static %}
+{% load i18n %}
+
+
+<button id="stop"
+        type="button"
+        onclick="stop()"
+        style="opacity: 0.4;
+        cursor: not-allowed;"
+        disabled="true">
+    <img class="btn_img" src="{% static 'common/img/pause.png' %}" style="display: inline;"/>
+    <p style="display: inline;"> Pause</p>
+</button>
+
+<script>
+    document.getElementById('stop').style.display = 'none';
+
+    if(window.location.pathname=='/exercises/laser_mapping/' || window.location.pathname=='/exercises/laser_mapping'){
+        document.getElementById('stop').style.display = 'block';
+    }
+</script>

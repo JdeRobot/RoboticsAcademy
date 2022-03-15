@@ -3,111 +3,63 @@
 
 <div class="row col-md-12" id="exercise-controls">
 	<div id="Control" style = "margin-top: 3px; margin-bottom: 0px;" class="container">
-        <button id="load" type="button"><nobr><img class="btn_img" src="{% static 'common/img/upload.svg' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load file</p></nobr></button>
-        <button id="save" type="button" onclick="saveCodeUnibotics()"><nobr><img class="btn_img" src="{% static 'common/img/download.png' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Save file</p></nobr></button>
-		<button id="loadIntoRobot" title="" type="button" onclick="check()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><nobr><img class="btn_img" src="{% static 'common/img/robot.svg' %}" style="display: inline;"/><p style="display: inline; white-space: nowrap;"> Load in robot</p></nobr><img class="btn_img" id="loadIntoRobotAlert" src="{% static 'common/img/dot.svg' %}" style="position: absolute; display: none; height: 14px; margin-top: -6px; filter: invert(83%) sepia(29%) saturate(7448%) hue-rotate(12deg) brightness(87%) contrast(101%);"/></button>
-		<button id="submit" type="button" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/submit.svg' %}" style="display: inline;"/><p style="display: inline;"> Play</p></button>
-		<button id="stop" type="button" onclick="stop()" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" src="{% static 'common/img/pause.png' %}" style="display: inline;"/><p style="display: inline;"> Pause</p></button>
 		<input type="file" id="real-file" hidden="hidden"/>
-		<button id="reset" type="button" style="opacity: 0.4; cursor: not-allowed;" disabled="true"><img class="btn_img" style="height:15px;" src="{% static 'common/img/reset.svg' %}"> Reset</button>
+
+        {% if "gazebo" in indexs %}
+        {% include 'gazeboButton.html' %}
+        {% endif %}
+
+        {% if "console" in indexs %}
+        {% include 'consoleButton.html' %}
+        {% endif %}
+
+        {% if "medidor_brain" in indexs %}
+        {% include 'medidorBrain.html' %}
+        {% endif %}
+
+        {% if "medidor_GUI" in indexs %}
+        {% include 'medidorGUI.html' %}
+        {% endif %}
+
+        {% if "teleop_button" in indexs %}
+        {% include 'teleopButton.html' %}
+        {% endif %}
+
+        {% if "medidor_RTF" in indexs %}
+        {% include 'medidorRTF.html' %}
+        {% endif %}
+
+        {% if "reset_button" in indexs %}
+        {% include 'resetButton.html' %}
+        {% endif %}
+
+        {% if "load_button" in indexs %}
+        {% include 'loadButton.html' %}
+        {% endif %}
+
+        {% if "save_button" in indexs %}
+        {% include 'saveButton.html' %}
+        {% endif %}
+
+        {% if "loadIntoRobot_button" in indexs %}
+        {% include 'loadIntoRobot.html' %}
+        {% endif %}
+
+        {% if "play_button" in indexs %}
+        {% include 'playButton.html' %}
+        {% endif %}
+
+        {% if "stop_button" in indexs %}
+        {% include 'stopButton.html' %}
+        {% endif %}
 
 
-		<script>
 
 
-            		document.getElementById('stop').style.display = 'none';
-			 if(window.location.pathname=='/exercises/laser_mapping/' || window.location.pathname=='/exercises/laser_mapping'){
-                		document.getElementById('loadIntoRobot').style.display = 'none';
-                		document.getElementById('stop').style.display = 'block';
-                		document.getElementById('submit').onclick = function(){check('{{user.username}}')};
-				document.getElementById("reset").onclick = function(){resetSim()};
-
-            		}
-            		else{
-            			document.getElementById('submit').onclick =function(){start('{{user.username}}')};
-            			document.getElementById('reset').onclick=function(){resetSim()};
-
-            		}
-
-
-
-		</script>
-
-
-
-
-
-
-
-		<div overflow-x:auto id="Medidor_Brain">
-			<table id=table_code_freq>
-			<tr>
-			<td><a id="letters">Brain Freq:</a> <output id="ideal_code_frequency">0</output>/ <input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span> <a id="Hz">Hz</a></td>
-			</tr>
-			</table>
-		</div>
-		<div overflow-x:auto id="Medidor_GUI">
-			<table id=table_gui_freq>
-			<tr>
-			<td><a id="letters">GUI Freq:</a><output id="ideal_gui_frequency">0</output>/ <input type="number" id="gui_freq" name="quantity" min="1" max="30" value="12" step="1" style="color:green" oninput="guifrequencyUpdate(value)"<span title="This value corresponds to the frequency the UI and visuals will be updated."></span> Hz</td>
-			</tr>
-			</table>
-		</div>
-		<div id="Medidor_RTF">
-            <a id="letters">Sim RTF:</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
-        </div>
-
-
-
-
-
-
-		<button id="gazebo_button" type="button" onclick="changegzweb()" title="Activate the simulation screen"><div style="vertical-align: top; display: inline-block; text-align: center;"><img id="gzimg" style="height:20px;" src="{% static 'common/img/gazebo.svg' %}"/><span style="display: block;">View Sim</span></div></button>
-        <button id="console_button" type="button" onclick="changeconsole()" title="Open the console"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="terminalimg" style="height:20px;" src="{% static 'common/img/console.svg' %}"/><span style="display: block;">View Console</span></div></button>
 		<!--<a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>-->
-        <button id="teleop_button" type="button" title="Use the arrow keys to operate the F1"> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="teleop_img" style="height:20px;" src="{% static 'common/img/joystick_off.svg' %}"/><span style="display: block;">Teleoperate</span></div></button>
 
 
-        <script>
-            document.getElementById('teleop_button').style.display = 'none';
-
-            if(window.location.pathname=='/exercises/follow_line/'){
-                document.getElementById('teleop_button').style.display = 'block';
-            }
-            if(window.location.pathname=='/exercises/laser_mapping' || window.location.pathname=='/academy/exercise/follow_line_game/'){
-                document.getElementById('teleop_button').style.display = 'block';
-                document.getElementById('loadIntoRobot').style.display = 'none';
-            }
-            if(window.location.pathname=='/exercises/laser_loc/'){
-                document.getElementById('teleop_button').style.display = 'none';
-                document.getElementById('gazebo_button').style.display = 'none';
-                document.getElementById('loadIntoRobot').style.display = 'none';
-            }
-            if(window.location.pathname=='/exercises/color_filter/'){
-                document.getElementById('gazebo_button').style.display = 'none';
-                document.getElementById('loadIntoRobot').style.display = 'none';
-            }
-            if(window.location.pathname=='/exercises/dl_digit_classifier/'){
-                document.getElementById('Medidor_RTF').style.display = 'none';
-                document.getElementById('gazebo_button').style.display = 'none';
-                document.getElementById('loadIntoRobot').style.display = 'none';
-                document.getElementById('load').style.display = 'none';
-                document.getElementById('save').style.display = 'none';
-                document.getElementById('console_button').style.display = 'none';
-            }
-            if(window.location.pathname=='/exercises/human_detection/'){
-                document.getElementById('Medidor_RTF').style.display = 'none';
-                document.getElementById('gazebo_button').style.display = 'none';
-                document.getElementById('loadIntoRobot').style.display = 'none';
-                document.getElementById('load').style.display = 'none';
-                document.getElementById('save').style.display = 'none';
-                document.getElementById('submit').style.display = 'none';
-                document.getElementById('reset').style.display = 'none';
-                document.getElementById('stop').style.display = 'none';
-            }
-
-
-        </script>
     </div>
 
 </div>
+

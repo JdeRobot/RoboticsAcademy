@@ -33,46 +33,6 @@
     <!-- SWAL -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
-    <script>
-        function showInfoModal() {
-            $("#info-modal").modal('show');
-        }
-        
-        function hideLoadModal() {
-            $("#load-modal").modal('hide');
-        }
-
-        function showLoadModal() {
-            $("#load-modal").modal('show');
-        }
-       
-
-        // Tab selection functions
-        function openExercise() {
-            hideAll();
-            $("#exercise-view").show();
-            $("#exercise-controls").show();
-        }
-
-        function openTheory() {
-            hideAll();
-            $("#theory-view").show();
-        }
-        
-        function openForum() {
-            hideAll();
-            $("#forum-view").show();
-
-            //window.open('https://forum.unibotics.org/', '_blank');
-	}
-
-        function hideAll() {
-            $("#exercise-view").hide();
-            $("#exercise-controls").hide();
-            $("#theory-view").hide();
-            $("#forum-view").hide();
-        }
-    </script>
 
     <!-- Roboto Typography -->
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -218,6 +178,7 @@
 
 
 <body>
+
     <!-- NAVBAR -->
     {% include 'navbar.html' %}
 
@@ -380,10 +341,7 @@ let simulate_mode = false;
 
 </script>   
 
-    <div id="forum-view" style="display: none;">
-	<iframe src="https://forum.unibotics.org/" id="iframe-tab"></iframe>
-    </div>
-    
+
     
     {% block content %}
 
