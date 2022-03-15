@@ -1,0 +1,448 @@
+{% extends "exercise_base.html" %}
+{% load static %} <!-- Cargamos los archivos estaticos -->
+{% block content %}
+
+  {% include 'load_modal.html' %}
+<!--  <div class="modal" tabindex="-1" role="dialog" id="errorModal">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <p class="modal-header-text" style="font-weight: 700;"></p>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body" style="white-space: pre-wrap;">
+		  <p style="word-wrap: break-word;"></p>
+		</div>
+	  </div>
+	</div>
+  </div> -->
+
+<div id="theory-view" style="display: none;">
+	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" id="iframe-tab"></iframe>
+</div>
+
+
+<div class="content" id="exercise-view">
+  <div class="split a">
+	<!--<div class="row col-md-auto justify-content-center">
+		<div class="card text-center">
+			<div class="card-body">
+				<li id="frecuency_control" style="list-style: none; display:inline-block; margin:auto;" >
+					Source http://thenewcode.com/757/Playing-With-The-HTML5-range-Slider-Input
+					<table>
+						<tr>
+							<th>Brain Frequency</th>
+							<th><input type="range" min="0" max="30" value="12.5" id="fader"
+							step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider">
+							<td><strong><output id="ideal_code_frequency">0</output>/<output for="fader" id="code_frequency">12.5</output></strong> </td>
+							</th>
+						</tr>
+						  <tr>
+							<th>GUI Frequency</th>
+							<th><input type="range" min="0" max="30" value="12.5" id="fader"
+							  step="0.1" oninput="guifrequencyUpdate(value)" class="frequency-slider" ></th>
+							<th><output id="ideal_gui_frequency">0</output>/<output for="fader" id="gui_frequency">12.5</output></th>
+						  </tr>
+						<tr>
+							  <th>Debug-Level</th>
+							  <td><input  id="slide" type="range" min="1" max="4" steps="1" value="2" name="debug" class="debug-slider">
+
+								<ul class="debug-labels">
+							  <th><p id="slidernum">2</p>
+
+							<script type="text/javascript">
+								var slide = document.getElementById('slide'),
+								sliderDiv = document.getElementById("slidernum");
+
+								slide.onchange = function() {
+									sliderDiv.innerHTML = this.value;
+								}
+							</script>
+						  </ul>
+
+					  </td>
+					  </th>
+					</tr>
+					</table>
+				  </li>
+			</div>
+		</div>
+</div>-->
+	<br>
+  {% include 'code_control.html' %}
+<!--
+	<div class="col-md-12 justify-content-center">
+		<div id="code-control">
+			<!-- Code Editor -->
+			<!-- Along with buttons -->
+<!--
+			<div id="code_container">
+			<input type="button" id="aug_font" onclick="setFontSize(true)" value="+" />
+			<input type="button" id="red_font" onclick="setFontSize(false)" value="-" />
+			<div id="editor">from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!</div>
+
+			</div>
+			<div id="myModal" class="modal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title">Enter a filename</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+			<div class="md-form ml-0 mr-0">
+				<input  type="text" id="form29" class="form-control form-control-sm validate ml-0">
+			  </div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-primary" onclick="downloadFile()">Download</button>
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		</div>
+		</div>
+			</div>
+	</div> -->
+
+  </div>
+
+  <div class="split b">
+	<!--<div class="row justify-content-center">
+			<div class="col-md-3">
+				<div class="btn-group" role="group" aria-label="Toggle buttons">
+					<button id="gzweb_btn" class="btn btn-primary" type="button" onclick="changegzweb()" data-toggle="tooltip" data-placement="bottom" title="Display Gazebo visualization"><img src="{% static 'unibotics-exercises/static/assets/common/img/gzweb_btn.png'%}" alt="Gazebo logo"></button>
+					<button id="console_btn" class="btn btn-primary" type="button" onclick="changeconsole()" data-toggle="tooltip" data-placement="bottom" title="Toogle command console"><img src="{% static 'unibotics-exercises/static/assets/common/img/terminal-solid.png'%}" alt="Command console logo"></button>
+				</div>
+			</div>
+  	</div><br>-->
+
+	<!-- Circuit selector -->
+	<label for="circuit_selector" style="display: inline-block;">Circuit: </label>
+	<select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">
+		<option value="default">Default Line</option>
+		<option value="montmelo">Montmelo Line</option>
+		<option value="montreal">Montreal Line</option>
+		<option value="nbg">Nürburgring Line</option>
+	</select>
+
+ {% include 'visualization2.html' with canvas="birds-eye" %}
+<!--
+  <div class="row" id="visual">
+		<div class="col-md-12">
+			<div class="card text-center">
+				<div class="card-header">
+					Visualization
+				</div>
+				<div class="card-body">
+					<div class="row mx-auto">
+						<canvas id="birds-eye"></canvas>
+					</div>
+					<div class="row mx-auto">
+						<img id="gui_canvas"></img>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div> -->
+  <br>
+  {% include 'gazebo.html' %}
+<!--
+  <div class="row">
+	  <div class="col-md-12">
+		<div class="card text-center flex-fill">
+			<div class="card-header">
+				Gazebo
+			</div>
+			<div class="card-body">
+				<iframe id="iframe" style="display:none;" src="" width="100%" height="500" ></iframe>
+			</div>
+		</div>
+	  </div>
+  </div>
+  -->
+  <hr>
+	<div class="row">
+		<div class="col-md-12">
+			<iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
+		</div>
+	</div>
+  {% include 'console.html' with exercise="follow_line" %}
+<!--
+    <script type="text/javascript">
+	var exercise = "follow_line";
+
+    function changeconsole(){
+      var console_display = document.getElementById('console-vnc').style.display
+      console.log(console_display)
+      if (console_display == "none" || console_display == "none" ) {
+		  setIframeConsole();
+        document.getElementById('console-vnc').style.display = 'block';
+      } else{
+        document.getElementById('console-vnc').style.display = 'none';
+      }
+    }
+
+	function changegzweb(){
+		toggleGazebo();
+        var display = document.getElementById('iframe').style.display
+        console.log(display)
+        if (display == "none" || display == "none" ) {
+          document.getElementById('iframe').style.display = 'block';
+          setIframe();
+        } else{
+          document.getElementById('iframe').style.display = 'none';
+        }
+      }
+
+	  function toggleSubmitButton(toggle) {
+		let submit_button = document.getElementById("loadIntoRobot");
+		if (toggle == false) {
+			submit_button.disabled = true;
+			submit_button.style.opacity = "0.4";
+			submit_button.style.cursor = "not-allowed";
+			showLoadModal();
+		} else {
+			submit_button.disabled = false;
+			submit_button.style.opacity = "1.0";
+			submit_button.style.cursor = "default";
+			hideLoadModal();
+		}
+	  }
+
+	  function toggleResetButton(toggle) {
+		let reset_button = document.getElementById("reset");
+		if (toggle == false) {
+			reset_button.disabled = true;
+			reset_button.style.opacity = "0.4";
+			reset_button.style.cursor = "not-allowed";
+		} else {
+			reset_button.disabled = false;
+			reset_button.style.opacity = "1.0";
+			reset_button.style.cursor = "default";
+		}
+	  }
+
+	  function togglePlayPause(stop) {
+		let submit_button = document.getElementById("submit");
+		if (stop) {
+			submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/pause.png''%}";
+			submit_button.getElementsByTagName('p')[0].innerText = " Stop";
+			submit_button.setAttribute( "onClick", "javascript: stop();" );
+		} else {
+			submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/submit.png'%}";
+			submit_button.getElementsByTagName('p')[0].innerText = " Play";
+			submit_button.setAttribute( "onClick", "javascript: start();" );
+		}
+	  }
+
+	  function enablePlayPause(enable) {
+		let playPause_button = document.getElementById("submit");
+		if (enable == false) {
+			playPause_button.disabled = true;
+			playPause_button.style.opacity = "0.4";
+			playPause_button.style.cursor = "not-allowed";
+		} else if (firstCodeSent == true) {
+			playPause_button.disabled = false;
+			playPause_button.style.opacity = "1.0";
+			playPause_button.style.cursor = "default";
+		}
+	  }
+
+	  function enableSimControls() {
+		let reset_button = document.getElementById("reset");
+		if (resetRequested == true) {
+			togglePlayPause(false);
+		}
+		enablePlayPause(true);
+		toggleResetButton(true);
+	  }
+
+	  function setFontSize(augm) {
+		  if (augm) {
+			if (editorele.getFontSize() < 70)
+				editorele.setFontSize(editorele.getFontSize()+1);
+		  } else {
+			if (editorele.getFontSize() > 2)
+				editorele.setFontSize(editorele.getFontSize()-1);
+		  }
+	  }
+    </script></div>
+
+	<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+
+	<script>
+      Split(['.a', '.b'], {
+        gutterSize: 3,
+        sizes: [50,50]
+      });
+    </script>
+ -->
+       <!-- Common -->
+       <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/ws_code_teleop.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+       <!-- Exercise specific resources -->
+       <script src="{% static 'exercises/follow_line/js/circuit_selector.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'exercises/follow_line/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'exercises/follow_line/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'exercises/follow_line/js/birds_eye.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'exercises/follow_line/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+
+
+
+    <!-- BOTON DE CONEXION CON RADI-->
+     {% include 'connect_button.html' %}
+<!--    <script>
+		window.onload = function() {
+			startSim(0, "default" );
+			$("#connection-button").prop('disabled', true);
+		}
+		window.onbeforeunload = function() {
+			startSim(2);
+		}
+        $(document).ready(function() {$("#launch-button").click(
+            function () {
+				if ($("#launch-button").attr('class') == 'btn btn-secondary' && $("#connection-button").attr('class') == 'btn btn-success') {
+					$("#launch-button").prop('disabled', true);
+					$("#launch-button").removeClass('btn-secondary').addClass('btn-warning');
+					$("#launch-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching');
+					startSim(1, circuit_selector.options[circuit_selector.selectedIndex].value);
+				}
+				else if ($("#connection-button").attr('class') == 'btn btn-secondary') {
+					alert("A connection with the manager must be established before launching an exercise");
+				}
+			});
+        });
+		$(document).ready(function() {$("#connection-button").click(
+            function () {
+				if ($("#connection-button").attr('class') == 'btn btn-secondary') {
+					$("#connection-button").prop('disabled', true);
+					$("#connection-button").removeClass('btn-secondary').addClass('btn-warning');
+					$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
+					startSim(0, "default" );
+				}
+			});
+        });
+		function connectionUpdate(data){
+			if (data.connection == 'manager') {
+				if (data.command == 'up') {
+					$("#connection-button").removeClass("btn-warning btn-secondary").addClass("btn-success");
+					$("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
+					$("#connection-button").prop('disabled', true);
+					$("#launch-button").prop('disabled', false);
+				}else if (data.command == 'down'){
+					$("#connection-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
+					$("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
+					$("#connection-button").prop('disabled', false);
+					if (websocket_code != null)
+						websocket_code.close();
+					if (websocket_gui != null)
+						websocket_gui.close();
+					$("#launch-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
+					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+				}
+			} else if (data.connection == 'exercise') {
+				if (data.command == 'available') {
+					$("#launch-button").removeClass('btn-secondary').addClass('btn-secondary');
+				}else if (data.command == 'up') {
+					stop();
+					swapping = false;
+					$("#launch-button").removeClass("btn-warning").addClass("btn-success");
+					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
+					$("#launch-button").prop('disabled', true);
+					togglePlayPause(false);
+					let reset_button = document.getElementById("reset");
+					reset_button.disabled = false;
+					reset_button.style.opacity = "1.0";
+					reset_button.style.cursor = "default";
+					let load_button = document.getElementById("loadIntoRobot");
+					load_button.disabled = false;
+					load_button.style.opacity = "1.0";
+					load_button.style.cursor = "default";
+				}else if (data.command == 'down'){
+					if (!swapping) {
+						$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
+						$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+						$("#launch-button").prop('disabled', false);
+					}
+				}else if (data.command == 'swap'){
+					$("#launch-button").removeClass("btn-success btn-warning btn-secondary").addClass("btn-warning");
+					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching`);
+				}else if (data.command == 'launch_level'){
+					let level = data.level;
+					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
+				}else if (data.command == 'error') {
+					$('#errorModal .modal-header .modal-header-text').text("Errors detected:");
+                    $('#errorModal .modal-body').text(data.text);
+                    $('#errorModal').modal({ show:true, backdrop: false});
+					$('#errorModal .modal-dialog').draggable({});
+					toggleSubmitButton(true);
+                }
+				else if (data.command == 'style') {
+					$('#errorModal .modal-header .modal-header-text').text("Style evaluation:");
+					if (data.text.replace(/\s/g, '').length)
+                    	$('#errorModal .modal-body').text(data.text);
+					else
+						$('#errorModal .modal-body').text("Everything is correct!");
+                    $('#errorModal').modal({ show:true, backdrop: false});
+					$('#errorModal .modal-dialog').draggable({});
+                }
+			}
+		}
+    </script>
+
+	<script type="text/javascript">
+		const editorele = ace.edit("editor");
+		function downloadCode() {
+			downloaded_code = downloadUserCode('{{exercise}}');
+		}
+		function showUserCode(downloaded_code){
+			if (downloaded_code != "") {
+				code = downloaded_code.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=").replace(/\n/g, "\n").replace(/\n/g, "\n");
+				editorele.setValue(code);
+			}
+		}
+	</script>
+
+	<script>
+		editorele.getSession().on('change', function() {
+			editorChanged(true);
+		});
+
+		function editorChanged(toggle) {
+			if (firstCodeSent) {
+				if (toggle) {
+					document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
+					document.getElementById("loadIntoRobot").title = "Code changed since last sending";
+				} else {
+					document.getElementById("loadIntoRobotAlert").style.display = 'none';
+					document.getElementById("loadIntoRobot").title = "";
+				}
+			}
+		}
+	</script>
+-->
+    {% if user_code|length > 0 %}
+
+    <script type="text/javascript">
+		code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=");
+		console.log(code);
+        editorele.setValue(code)
+    </script>
+    {% endif %}
+
+</div>
+
+{% endblock %}
