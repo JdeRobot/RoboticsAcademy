@@ -1,6 +1,38 @@
    {% load static %}
 {% load i18n %}
+ <script>
+        function showInfoModal() {
+            $("#info-modal").modal('show');
+        }
 
+        function hideLoadModal() {
+            $("#load-modal").modal('hide');
+        }
+
+        function showLoadModal() {
+            $("#load-modal").modal('show');
+        }
+
+
+        // Tab selection functions
+        function openExercise() {
+            hideAll();
+            $("#exercise-view").show();
+            $("#exercise-controls").show();
+        }
+
+        function openTheory() {
+            hideAll();
+            $("#theory-view").show();
+        }
+
+        function hideAll() {
+            $("#exercise-view").hide();
+            $("#exercise-controls").hide();
+            $("#theory-view").hide();
+            $("#forum-view").hide();
+        }
+    </script>
     <nav class="navbar navbar-expand-md navbar-light bg-light" style="padding-top: 0px; padding-bottom: 0px;">
 
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -12,11 +44,15 @@
                 height="28" alt="Academy">
 
             <div class="col-xs-3 ml-auto">
+
                 <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="connection-button" value="local-connection" disabled="true"><span id="loading-connection"
                         class="bi bi-arrow-down-up"></span> Connect</button>
+
                 <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="launch-button" value="local-connection"><span id="loading-connection"
                             class="bi bi-arrow-down-up"></span> Launch</button>
+
                 <button type="button" class="btn" onclick="showInfoModal()"><span class="fa fa-question-circle-o" style="font: normal normal normal 20px/1 FontAwesome; padding-top: 2px; padding-bottom: 2px;"></span></button>
+
             </div>
 
 
@@ -81,23 +117,9 @@
 
                 });
 
-                forum_icon.addEventListener('click', function(){
 
-                    if(!forum_mode){
-
-                        // Activate mode
-                        forum_mode = true;
-                        theory_mode = false;
-                        code_mode = false;
-                        theory_icon.style.background = '#6C757D';
-                        code_icon.style.background = '#6C757D';
-                        forum_icon.style.background = '#28A745';
-                        return;
-                    }
-
-
-                });
-
-        </script>
+            </script>
         </div>
     </nav>
+
+{% include 'forum.html' %}

@@ -1,0 +1,13 @@
+{% load static %}
+{% load i18n %}
+
+<button
+        id="console_button"
+        type="button"
+        onclick="changeconsole()"
+        title="Open the console">
+    <div style="vertical-align: top; display: inline-block; text-align: center;">
+        <img id="terminalimg" style="height:20px;" src="{% static 'common/img/console.svg' %}"/>
+        <span style="display: block;">View Console</span>
+    </div>
+</button>

@@ -1,6 +1,8 @@
-{% extends "exercise_base.html" %}
+{% extends "exercise_base_2.html" %}
 {% load static %} <!-- Cargamos los archivos estaticos -->
 {% block content %}
+
+    <script src="{% include 'exercises/obstacle_avoidance_2/Insert_into_toolbar.js' %}" type="text/javascript" charset="utf-8"></script>
 
     <div id="theory-view" style="display: none;">
         <iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/{{ exercise_id }}" id="iframe-tab"></iframe>

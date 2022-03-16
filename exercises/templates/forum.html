@@ -1,0 +1,30 @@
+
+   <script>
+        function openForum() {
+            hideAll();
+            $("#forum-view").show();
+
+            //window.open('https://forum.unibotics.org/', '_blank');
+	    }
+
+         forum_icon.addEventListener('click', function(){
+
+                    if(!forum_mode){
+
+                        // Activate mode
+                        forum_mode = true;
+                        theory_mode = false;
+                        code_mode = false;
+                        theory_icon.style.background = '#6C757D';
+                        code_icon.style.background = '#6C757D';
+                        forum_icon.style.background = '#28A745';
+                        return;
+                    }
+
+
+                });
+
+   </script>
+     <div id="forum-view" style="display: none;">
+	<iframe src="https://forum.unibotics.org/" id="iframe-tab"></iframe>
+    </div>
