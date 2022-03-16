@@ -5,7 +5,6 @@ from .models import Exercise
 import ast
 import json
 
-
 # Create your views here.
 def index(request):
     exercises = Exercise.objects.all()
