@@ -1,13 +1,10 @@
-{% extends "exercise_base.html" %}
+{% extends "exercise_base_2.html" %}
 {% load static %} <!-- Cargamos los archivos estaticos -->
 {% block content %}
-
-  {% include 'load_modal.html' %}
 
 <div id="theory-view" style="display: none;">
 	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/{{ exercise_id }}/" id="iframe-tab"></iframe>
 </div>
-
 
 <div class="content" id="exercise-view">
 
@@ -15,7 +12,6 @@
     {% if "code_control" in indexs %}
         {% include 'code_control.html' %}
     {% endif %}
-	<br>
   </div>
 
   <div class="split b">
@@ -55,12 +51,6 @@
        <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
        <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
        <!-- Exercise specific resources -->
-       <script src="{% static 'exercises/follow_line/js/circuit_selector.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'exercises/follow_line/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'exercises/follow_line/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'exercises/follow_line/js/birds_eye.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'exercises/follow_line/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
-
        {% for file in statics %}
            <script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
         {% endfor %}
