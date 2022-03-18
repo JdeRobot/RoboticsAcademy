@@ -153,12 +153,8 @@
     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
     <!-- Exercise specific resources -->
     {% for file in statics %}
-        <!-- borrar esto -->
-        {% if exercise_id == "obstacle_avoidance_2" %}
-            <script src="{% static 'exercises/'%}obstacle_avoidance/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-            {% else %}
-            <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-        {% endif %}
+
+        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
 
     {% endfor %}
 

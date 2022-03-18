@@ -2,7 +2,7 @@
 
 
 
-var mapCanvas = document.getElementById("local-map"),
+var mapCanvas = document.getElementById("gui_canvas"),
     ctx = mapCanvas.getContext("2d");
 
 let f1_center = [mapCanvas.width/2,  mapCanvas.height/2]; 
