@@ -229,7 +229,7 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
         python3-catkin-lint \
         python3-rosinstall-generator \
         python3-osrf-pycommon \
-        python3-wstool \
+        python3-vcstool \
         ros-$ROS_DISTRO-gazebo-ros-pkgs \
         ros-$ROS_DISTRO-octomap \
         ros-$ROS_DISTRO-octomap-msgs \

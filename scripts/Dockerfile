@@ -8,28 +8,25 @@ RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
 RUN rosdep init && rosdep update
 
 # jderobot_drones src and stdr simulator
-RUN sudo add-apt-repository ppa:rock-core/qt4 -y
-RUN sudo apt update --fix-missing
-RUN rm -rf /catkin_ws && mkdir -p /catkin_ws/src
-RUN cd /catkin_ws && catkin init
+RUN add-apt-repository ppa:rock-core/qt4 -y && \
+    apt update --fix-missing
+RUN rm -rf /catkin_ws && \
+    mkdir -p /catkin_ws/src && \
+    cd /catkin_ws && \
+    catkin init
 COPY .rosinstall /tmp/
-RUN vcs import /catkin/src  < /tmp/.rosinstall
+RUN vcs import /catkin_ws/src  < /tmp/.rosinstall
 
 RUN cd /catkin_ws && rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
 RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
-
-ENV GAZEBO_RESOURCE_PATH "$GAZEBO_RESOURCE_PATH:/usr/share/gazebo-11:/RoboticsAcademy/exercises/follow_line/web-template/launch"
-ENV GAZEBO_PLUGIN_PATH "$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
-ENV GAZEBO_MODEL_PATH "$GAZEBO_MODEL_PATH:/usr/share/gazebo-11/models:/opt/jderobot/CustomRobots/f1/models:/opt/jderobot/CustomRobots/roomba_robot/models:/opt/jderobot/CustomRobots/3d_reconstruction/models:/opt/jderobot/CustomRobots/Taxi_navigator/models:/opt/jderobot/CustomRobots/car_junction/models:/PX4-Autopilot/Tools/sitl_gazebo/models:/opt/ros/$ROS_DISTRO/share/drone_assets/models:/drones/drone_assets/models:/opt/jderobot/CustomRobots/package_delivery/models:/opt/jderobot/CustomRobots/power_tower_inspection/models"
-ENV LD_LIBRARY_PATH "$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/PX4-Autopilot/build/px4_sitl_default/build_gazebo"
-ENV ROS_PACKAGE_PATH "$ROS_PACKAGE_PATH:/PX4-Autopilot:/PX4-Autopilot/Tools/sitl_gazebo"
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # Scripts copy
+COPY .env /
 COPY manager.py /manager.py
 COPY instructions.json /instructions.json
 COPY pylint_checker.py /pylint_checker.py
@@ -38,6 +35,7 @@ COPY pylintrc /etc/pylintrc
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
     && ln -s /usr/bin/python3.8 /usr/bin/python
 
+EXPOSE 8000
 EXPOSE 2303
 EXPOSE 1905
 EXPOSE 8080
