@@ -24,7 +24,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to f
 
 {% include gallery caption="Gallery." %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -34,7 +34,7 @@ This is the preferred way for running the exercise.
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-  docker pull jderobot/robotics-academy:3.1.5
+  docker pull jderobot/robotics-academy:latest
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -42,16 +42,27 @@ This is the preferred way for running the exercise.
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
 
+### Optional: Store terminal output
+- To store the terminal output of manager.py and launch.py to a file execute the following docker run command and keep it running in the background:
+```bash
+docker run -it --rm -v $HOME/.roboticsacademy/log/:/root/.roboticsacademy/log/ --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 2304:2304 -p 1904:1904 jderobot/robotics-academy:latest ./start_logs.sh
+```
+
+- The log files will be stored inside `$HOME/.roboticsacademy/{year-month-date-hours-mins}/`. After the session, use `more` to view the logs, for example:
+```bash
+more $HOME/.roboticsacademy/log/2021-11-06-14-45/manager.log
+```
+
 ### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
+- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration)/[store terminal output](#optional-store-terminal-output))
 
 	```bash
-  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -81,9 +92,9 @@ while True:
 
 * **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
+* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
 
-## Application Programming Interface
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -156,11 +167,11 @@ In this exercise, you should use the Nose Forward Mode.
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
-## Web Template teaser video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-## Demonstrative video of the solution
+### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 

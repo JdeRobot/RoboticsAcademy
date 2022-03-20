@@ -23,12 +23,13 @@ The goal of this exercise is to implement the logic that allows a quadrotor to e
 
 {% include gallery caption="Gallery." %}
 
-## Web Templates installation instructions
-### Installation instructions
+## Instructions
+
+### Installation
 
 First, pull the last version of our [docker image](https://hub.docker.com/r/jderobot/robotics-academy):
 ```bash
-docker pull jderobot/robotics-academy:3.1.5
+docker pull jderobot/robotics-academy:latest
 ```
 
 Notice that you have to have installed [Docker](https://docs.docker.com/get-docker/) to complete the previous step.
@@ -40,17 +41,28 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run -it --rm --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 
 - For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
 
+### Optional: Store terminal output
+- To store the terminal output of manager.py and launch.py to a file execute the following docker run command and keep it running in the background:
+```bash
+docker run -it --rm -v $HOME/.roboticsacademy/log/:/root/.roboticsacademy/log/ --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 2304:2304 -p 1904:1904 jderobot/robotics-academy:latest ./start_logs.sh
+```
+
+- The log files will be stored inside `$HOME/.roboticsacademy/{year-month-date-hours-mins}/`. After the session, use `more` to view the logs, for example:
+```bash
+more $HOME/.roboticsacademy/log/2021-11-06-14-45/manager.log
+```
+
 ### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
+- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration)/[store terminal output](#optional-store-terminal-output))
 
 	```bash
-  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -81,12 +93,13 @@ while True:
     # Enter iterative code!
 ```
 
+## Robot API
+
 Some explanations about the above code:
 - It has two parts, a sequential one and iterative one. The sequential (before the while loop) just execs once, while the iterative execs forever.
 - `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 - `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-## API
 You can access to the drone methods through the Hardware Abstraction Layer (HAL).
 
 ### Sensors and drone state
@@ -158,11 +171,11 @@ In this exercise, you can use the one you prefer.
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
-## Web Template teaser video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-## Demonstrative video of the solution
+### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId %}
 

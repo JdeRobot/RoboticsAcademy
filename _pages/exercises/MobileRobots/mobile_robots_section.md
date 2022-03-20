@@ -19,7 +19,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
     alt: "Localized Vacuum Cleaner"
@@ -31,7 +31,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
     
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
@@ -85,8 +85,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
+    version: "v3.2"
 
 ---
 

@@ -20,9 +20,6 @@ gallery:
 youtubeId1: I967nzeSSZg
 youtubeId2: mT5PkgtDLDg
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
@@ -31,7 +28,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner" %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -46,7 +43,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.5
+docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -54,7 +51,7 @@ docker pull jderobot/robotics-academy:3.1.5
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
   ```
 
 
@@ -64,7 +61,7 @@ docker pull jderobot/robotics-academy:3.1.5
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -95,42 +92,36 @@ while True:
 
 * **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
 
-* **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the `print()` function.
+* **Simulation Button**: Opens a VNC with GZClient.
 
-**Application Programming Interface**
+* **Console Button**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the `print()` function.
+
+* **Grid Button**: Toggles the visualization of the navigation matrix. It must be sent using the API in order to visualize it.
+
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+
+* `HAL.setV()` - to set the linear speed
+* `HAL.setW()` - to set the angular velocity
+
 * `HAL.getPose3d().x` - to get the X coordinate of the robot
 * `HAL.getPose3d().y` - to get the Y coordinate of the robot
 * `HAL.getPose3d().yaw` - to get the orientation of the robot
 * `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
+* `GUI.showNumpy(mat)` - Displays the numpy matrix sent. It supports 3 different colors: 0 - grey, 1 - green, 2 - yellow, 3 - red. The tool button **Grid** must be turned on in order to visualize the grid.
 
 ```python
-def execute(self):
-
-    # Add your code here
-    print "Runing"
-
-    #EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-    #HAL.setV(10)
-    #HAL.setW(5)
+# Example of how to visualize a matrix
+nav_mat = np.zeros((20, 20), int) # grey color
+nav_mat[0, 0] = 1 # green color
+nav_mat[1, 1] = 2 # yellow color
+nav_mat[2, 2] = 3 # red color
+GUI.showNumpy(nav_mat)
 ```
-
-### API
-
-* `HAL.getPose3d().x` - to get the X coordinate of the robot
-* `HAL.getPose3d().y` - to get the Y coordinate of the robot
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
-* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
@@ -164,7 +155,7 @@ def laser_vector(laser):
     return laser_mean
 ```
 
-## Demonstration video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

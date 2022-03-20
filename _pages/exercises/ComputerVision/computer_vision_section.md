@@ -30,7 +30,7 @@ feature_row:
     version_label: ""
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
   
   - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
     alt: "Color Filter"
@@ -42,7 +42,7 @@ feature_row:
     version_label: ""
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     alt: "Human Detection"
@@ -54,7 +54,7 @@ feature_row:
     version_label: ""
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/dl_digit_classifier/dl_digit_classifier.png
     alt: "Digit Classifier"
@@ -66,7 +66,31 @@ feature_row:
     version_label: ""
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
+
+  - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
+    alt: "OpticalFlow Teleop"
+    title: "OpticalFlow Teleop"
+    excerpt: "Teleoperate to the robot using optical flow."
+    url: "/exercises/ComputerVision/opticalflow_teleop"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: ""
+    status: "running"
+    order: 0;
+    version: "v3.2"
+
+  - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
+    alt: "Montecarlo Visual Loc"
+    title: "Montecarlo Visual Loc"
+    excerpt: "Visual localisation based on the particle filter."
+    url: "/exercises/ComputerVision/montecarlo_visual_loc"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: ""
+    status: "running"
+    order: 0;
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/follow_face/follow_face_teaser.png
     alt: "Follow Face"

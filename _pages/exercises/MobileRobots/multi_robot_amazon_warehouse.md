@@ -244,4 +244,4 @@ Following action servers might be useful:
 
 ## Contributors
     
-[Shreyas Gokhale](https://theroboticsclub.github.io/colab-gsoc2020-Shreyas_Gokhale/about/)
+[Shreyas Gokhale](https://theroboticsclub.github.io/colab-gsoc2020-Shreyas_Gokhale/about/), [Siddharth Saha](https://trunc8.github.io/)

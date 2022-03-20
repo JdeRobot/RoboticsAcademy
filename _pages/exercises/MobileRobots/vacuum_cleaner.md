@@ -17,9 +17,6 @@ gallery:
 youtubeId1: c90hmfkZRNY
 youtubeId2: Xcy84DhVjrY
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
@@ -28,7 +25,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -43,7 +40,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.5
+docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -51,7 +48,7 @@ docker pull jderobot/robotics-academy:3.1.5
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
   ```
 
 
@@ -61,7 +58,7 @@ docker pull jderobot/robotics-academy:3.1.5
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -94,7 +91,7 @@ while True:
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the `print()` function.
 
-**Application Programming Interface**
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -119,28 +116,6 @@ print(HAL.getPose3d().y)
 yaw = HAL.getPose3d().yaw
 ```
 
-```python
-# EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-vel = CMDVel()
-myW=x*(self.motors.getMaxW())
-myV=-y*(self.motors.getMaxV())
-vel.vx = myV
-vel.az = myW
-self.motors.sendVelocities(vel)
-# OR
-self.motors.sendAZ(vel.az)
-self.motors.sendV(vel.vx)
-```
-
-### API
-
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
-* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
 ### Types conversion
@@ -148,29 +123,29 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 - **Laser**
 
 ```python
-laser_data = self.laser.getLaserData()
+laser_data = HAL.getLaserData()
 
 def parse_laser_data(laser_data):
-laser = []
-for i in range(180):
-    dist = laser_data.values[i]
-    angle = math.radians(i)
-    laser += [(dist, angle)]
-return laser
+    laser = []
+    for i in range(180):
+        dist = laser_data.values[i]
+        angle = math.radians(i)
+        laser += [(dist, angle)]
+    return laser
 ```
 
 ```python
 def laser_vector(laser):
-laser_vectorized = []
-for d,a in laser:
-    # (4.2.1) laser into GUI reference system
-    x = d * math.cos(a) * -1
-    y = d * math.sin(a) * -1
-    v = (x,y)
-    laser_vectorized += [v]
+    laser_vectorized = []
+    for d,a in laser:
+        # (4.2.1) laser into GUI reference system
+        x = d * math.cos(a) * -1
+        y = d * math.sin(a) * -1
+        v = (x,y)
+        laser_vectorized += [v]
 
-laser_mean = np.mean(laser_vectorized, axis=0)
-return laser_mean
+    laser_mean = np.mean(laser_vectorized, axis=0)
+    return laser_mean
 ```
 
 ## Theory
@@ -277,7 +252,7 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 *Effect of increasing $v$ to generate spiral*
 
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

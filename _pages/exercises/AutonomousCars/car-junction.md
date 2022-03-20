@@ -60,17 +60,13 @@ illustrations:
 youtubeId: 4WIi2cpaLDA
 ---
 
-## Versions to run the exercise
-
-- Web Templates (Current Release)
-
 ## Goal
 
 The goal of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must Stop at the T joint, where there is a stop sign, wait until there are no cars and pass once the road is clear.
 
 {% include gallery caption="Gallery" %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -85,7 +81,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.5
+docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -93,7 +89,7 @@ docker pull jderobot/robotics-academy:3.1.5
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 
@@ -103,7 +99,7 @@ docker pull jderobot/robotics-academy:3.1.5
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -134,9 +130,9 @@ while True:
 
 * **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor. 
+* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor. 
 
-**Application Programming Interface**
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -150,10 +146,12 @@ while True:
 * `HAL.getPose3D()` - to obtain the position of the robot
 * `HAL.getYaw()` - to obtain the orientation of the robot
 * `HAL.setPose3D()` - to set the position of the robot
-* `HAL.getTemplate()` - to get the stop's image template
-* `GUI.showImages(imageLeft, imageCentral, imageRight)` - allows you to view a debug images or with relevant information
+* `HAL.getTemplate()` - to get the image template of the stop sign
+* `GUI.showImages(imageLeft, imageCentral, imageRight)` - to visualize the images in the webpage
 
-### Example video with web template
+## Videos
+
+{% include youtubePlayer.html id=page.youtubeId %}
 
 ## Theory
 This exercise mostly revolves around simple Computer Vision and Control mechanisms. Let's start with the Computer Vision tasks:

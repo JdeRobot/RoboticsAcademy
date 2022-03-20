@@ -55,17 +55,13 @@ youtubeId2: cAqfb6qJvwI
 youtubeId3: dXm8mTMH3qY 
 ---
 
-## Versions to run the exercise
-
-- Web Templates(Current Release)
-
 ## Goal
 
 In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.
 
 {% include gallery caption="Scene to reconstruct" %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -80,7 +76,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.5
+docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -88,7 +84,7 @@ docker pull jderobot/robotics-academy:3.1.5
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 
@@ -98,7 +94,7 @@ docker pull jderobot/robotics-academy:3.1.5
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -129,9 +125,9 @@ while True:
 
 * **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor. 
+* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the print() command in the Editor. 
 
-**Application Programming Interface**
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -176,7 +172,7 @@ def algorithm(self):
 * **Minus keys**: if it is held down, it will zoom out.
 * **Plus keys**: if it is held down, the zoom will increase.
 
-### Example video with web template
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId3 %}
 

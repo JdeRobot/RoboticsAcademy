@@ -19,7 +19,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser.png
     alt: "Obstacle avoidance"
@@ -31,7 +31,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
@@ -40,9 +40,10 @@ feature_row:
     url: "/exercises/AutonomousCars/global_navigation"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--info"
-    status: "testing"
-    order: 1;
+    version_label: "btn--success"
+    status: "running"
+    order: 0;
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
     alt: "Car Junction"
@@ -54,7 +55,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/autoparking/autoparking_teaser.png
     alt: "Autoparking"
@@ -64,8 +65,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
     alt: "Qualifying Formula1"

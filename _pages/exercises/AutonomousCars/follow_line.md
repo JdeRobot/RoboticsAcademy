@@ -57,9 +57,6 @@ youtubeId1: eNuSQN9egpA
 youtubeId2: gHZVESBcgKE
 
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
@@ -69,7 +66,7 @@ The goal of this exercise is to perform a PID reactive control capable of follow
 
 The students will program a Formula1 car in a race circuit to follow the red line in the middle of the road.
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
 ### Installation 
@@ -79,7 +76,7 @@ This is the preferred way for running the exercise.
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-  docker pull jderobot/robotics-academy:3.1.5
+  docker pull jderobot/robotics-academy:latest
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -87,7 +84,7 @@ This is the preferred way for running the exercise.
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 
@@ -97,7 +94,7 @@ This is the preferred way for running the exercise.
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -130,9 +127,9 @@ while True:
 
 * **Lap Time**: The lap timer starts once the Robot car, moves beyond some point on the race track.
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
+* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student can use the `print()` command in the Editor. 
 
-**Application Programming Interface**
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -217,7 +214,7 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 {% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %}
 
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

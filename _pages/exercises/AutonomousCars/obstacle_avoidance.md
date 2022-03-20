@@ -43,9 +43,6 @@ gifs2:
 youtubeId1: 5SVkvfKPi_s
 youtubeId2: wVJJ9ndY2aY
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Objective
 
@@ -71,7 +68,7 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Robustness in situations of indecision (zero vector sum)
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way to run the exercise.
 
 ### Installation
@@ -87,7 +84,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.5
+docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -95,7 +92,7 @@ docker pull jderobot/robotics-academy:3.1.5
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 
@@ -105,7 +102,7 @@ docker pull jderobot/robotics-academy:3.1.5
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.5 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:latest ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -141,9 +138,9 @@ while True:
 
 * **Lap Time**: The lap timer starts once the Robot car, has collected the first waypoint.
 
-* **Psuedo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
 
-**Application Programming Interface**
+## Robot API
 
 * `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -171,9 +168,24 @@ To use it, only two actions must be carried out:
    
 **Debugging**
 
-The graphical interface (GUI) allows to visualize each of the vectors of
-calculated forces. For this purpose, the following variables should be given 
-value:
+The graphical interface (GUI) allows to visualize each of the vectors of calculated forces. There is a function for this purpose:
+```python
+# Car direction
+carForce = [2.0, 0.0]
+# Obstacles direction
+obsForce = [0.0, 2.0]
+# Average direction
+avgForce = [-2.0, 0.0]
+
+GUI.showForces(carForce, obsForce, avgForce)
+```
+As well as the destination that we have assigned:
+```python
+# Current target
+target = [1.0, 1.0]
+GUI.showLocalTarget(target)
+```
+Alternatively, the follwing variables can be setted with the same results:
 ```python
 # Car direction
 GUI.map.carx = 0.0
@@ -186,15 +198,12 @@ GUI.map.obsy = 0.0
 # Average direction
 GUI.map.avgx = 0.0
 GUI.map.avgy = 0.0
-```
 
-As well as the destination that we have assigned:
-```python
 # Current target
 GUI.map.targetx = 0.0
 GUI.map.targety = 0.0
 ```
-
+<!---
 **API**
 
 * `pose3d.getPose3d().x` - to get the position of the robot (x coordinate)
@@ -213,7 +222,7 @@ To use it, only two actions must be carried out:
 1. Obtain the following point:
    `self.currentTarget = self.getNextTarget()`
 2. Mark it as visited when necessary:
-   `self.currentTarget.setReached(True)`
+   `self.currentTarget.setReached(True)` --->
 
 
 ### Conversion of types
@@ -221,15 +230,15 @@ To use it, only two actions must be carried out:
 **Laser**
 
 ```python
-    laser_data = self.getLaserData ()
+laser_data = self.getLaserData ()
 
 def parse_laser_data (laser_data):
     laser = []
     for i in range (laser_data.numLaser):
         dist = laser_data.distanceData [i] /1000.0
         angle = math.radians (i)
-        laser + = [(dist, angle)]
-      return laser
+        laser += [(dist, angle)]
+    return laser
 ```
 
 ```python
@@ -239,7 +248,7 @@ for d, a in laser:
     x = d * math.cos (a) * -1
     y = d * math.sin (a) * -1
     v = (x, y)
-    laser_vectorized + = [v]
+    laser_vectorized += [v]
 
 laser_mean = np.mean (laser_vectorized, axis = 0)
 ```
@@ -250,7 +259,7 @@ laser_mean = np.mean (laser_vectorized, axis = 0)
 def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
 
     # robotx, roboty are the absolute coordinates of the robot
-# robott is its absolute orientation
+    # robott is its absolute orientation
     # Convert to relatives
     dx = x_abs - robotx
     dy = y_abs - roboty
@@ -259,11 +268,11 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
     x_rel = dx * math.cos (-robott) - dy * math.sin (-robott)
     y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
 
-return x_rel, and y_rel
+    return x_rel and y_rel
 ```
 
 
-### Debugging
+<!---### Debugging
 The graphical interface (GUI) allows to visualize each of the vectors of
 calculated forces. For this purpose, the following variables should be given 
 value:
@@ -287,7 +296,7 @@ As well as the destination that we have assigned:
 self.targetx = 0.0
 self.targety = 0.0
 ```
-
+-->
 ## Theory
 This exercise requires us to implement a local navigation algorithm called Virtual Force Field Algorithm. Following is the complete theory regarding this algorithm.
 
@@ -381,7 +390,7 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 {% include gallery id="gifs2" caption="Oscillation Problem in Narrow Corridors" %}
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 

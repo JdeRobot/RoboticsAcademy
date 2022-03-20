@@ -36,7 +36,7 @@ In this exercise, we will train our own deep learning model to solve the widely 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
 
-## Launch Instructions
+## Instructions
 - Clone the Robotics Academy repository on your local machine and checkout ``noetic`` branch:
 ```bash
 git clone https://github.com/JdeRobot/RoboticsAcademy
@@ -52,7 +52,7 @@ docker build -f Dockerfile-noetic -t image-name .
 - Run docker container. It is necessary to map the port where the camera is located
   - For Ubuntu: the port to map will be in /dev/videoX, you should check the number where your camera is connected.
     ```bash
-    docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy:3.1.5 ./start.sh
+    docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy:latest ./start.sh
     ```
   - For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this [documentation](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468) for it.
 
@@ -87,7 +87,7 @@ torch.onnx.export(
 
 * **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
 
-* **Psuedo Console**: This shows error messages and other logs about the exercise.
+* **Pseudo Console**: This shows error messages and other logs about the exercise.
 
 ## Theory
 Digit classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits [[3]](http://yann.lecun.com/exdb/mnist/) is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.

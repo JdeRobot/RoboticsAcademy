@@ -36,7 +36,7 @@ The user is expected to upload a Deep Learning model which fits the required inp
 - There are two ways to run the exercise using web-template:
 
   - Run the exercise with docker container
-   - Run it without container
+  - Run it without container
 
 ### Run with docker container
 
@@ -161,8 +161,8 @@ This guide walks you through using the TensorFlow object detection API to train 
 
 * **Debug Level**: This decides the debugging level of the application. A debug level of 1 implies no debugging at all. A debug level greater than or equal to 2 enables all the GUI functions working properly.
 
-* **Psuedo Console**: This shows the error messages and a few intermediate outputs along the inference, benchmarking and file uploading process.
+* **Pseudo Console**: This shows the error messages and a few intermediate outputs along the inference, benchmarking and file uploading process.
 
-## Demonstrative Video with Web Template
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}

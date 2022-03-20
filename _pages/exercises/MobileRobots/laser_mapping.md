@@ -14,18 +14,15 @@ gallery:
   - url: /assets/images/exercises/laser_mapping/laser_mapping.png
     image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Vacuum"
-  
+
 Occupancy_grid:
   - url: /assets/images/exercises/laser_mapping/occupancy_grid.png
     image_path: /assets/images/exercises/laser_mapping/occupancy_grid.png
     alt: "Occupancy Grid"
     title: "Occupancy Grid"
 
-youtubeId1: vCIFpZcWZhs
+youtubeId1: obHhJ-_Y96c
 ---
-## Versions to run the exercise
-
-- Web Templates(Current Release)
 
 ## Goal
 
@@ -33,10 +30,10 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 {% include gallery caption="Laser Mapping." %}
 
-## Instructions for Web Templates
+## Instructions
 This is the preferred way for running the exercise.
 
-### Installation 
+### Installation
 - Clone the Robotics Academy repository on your local machine
 
 	```bash
@@ -48,22 +45,13 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:3.1.4
+docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-### Enable GPU Acceleration
-- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
-  ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start-3.1.sh
-  ```
-
-
-- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
-
 ### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
+- Start a new docker container of the image and keep it running in the background
 
 	```bash
   docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.4 ./start-3.1.sh
@@ -71,7 +59,7 @@ docker pull jderobot/robotics-academy:3.1.4
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected. 
+- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
 
 - The exercise can be used after the alert.
 
@@ -99,21 +87,21 @@ while True:
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
 
-**Application Programming Interface**
+## Robot API
 
-* `HAL.getPose3d().x` - to get position x of the robot 
-* `HAL.getPose3d().y` - to get position y of the robot 
-* `HAL.getPose3d().yaw` - to get the orientation of the robot 
-* `HAL.motors.sendW()` - to set the angular velocity 
-* `HAL.motors.sendV()` - to set the linear velocity 
-* `HAL.getLaserData()` - to get the data of the LIDAR 
-* `HAL.getSonarData_0()` - to get the sonar data of the sonar 1 
-* `HAL.getSonarData_1()` - to get the sonar data of the sonar 2 
-* `HAL.getSonarData_2()` - to get the sonar data of the sonar 3 
-* `HAL.getSonarData_3()` - to get the sonar data of the sonar 4 
-* `HAL.getSonarData_4()` - to get the sonar data of the sonar 5 
-* `HAL.getSonarData_5()` - to get the sonar data of the sonar 6 
-* `HAL.getSonarData_6()` - to get the sonar data of the sonar 7 
+* `HAL.getPose3d().x` - to get position x of the robot
+* `HAL.getPose3d().y` - to get position y of the robot
+* `HAL.getPose3d().yaw` - to get the orientation of the robot
+* `HAL.motors.sendW()` - to set the angular velocity
+* `HAL.motors.sendV()` - to set the linear velocity
+* `HAL.getLaserData()` - to get the data of the LIDAR
+* `HAL.getSonarData_0()` - to get the sonar data of the sonar 1
+* `HAL.getSonarData_1()` - to get the sonar data of the sonar 2
+* `HAL.getSonarData_2()` - to get the sonar data of the sonar 3
+* `HAL.getSonarData_3()` - to get the sonar data of the sonar 4
+* `HAL.getSonarData_4()` - to get the sonar data of the sonar 5
+* `HAL.getSonarData_5()` - to get the sonar data of the sonar 6
+* `HAL.getSonarData_6()` - to get the sonar data of the sonar 7
 * `HAL.getSonarData_7()` - to get the sonar data of the sonar 8
 
 ```python
@@ -147,7 +135,7 @@ On the other hand, the basic problem with this type of map is the large amount o
 
 {% include gallery id="Occupancy_grid" caption="An example of a map obtained with the Mapping technique with known positions." %}
 
-## Demonstrative Video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
