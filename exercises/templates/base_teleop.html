@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ACE Editor</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="{% static 'exercises/assets/img/logo.ico' %}" sizes="32x32">
+    <link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/main.css">
+    <link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/gui.css">
+    <!--<link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/console.css">-->
+    <link rel="stylesheet" href="{% static '' %}exercises/{{exercise}}/web-template/assets/split_style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+
+</head>
+<body>
+    <!-- Extends base.html to initiate the connection to the RADI -->
+    <iframe id="radiConect" type="text/html" src="{% static 'exercises/assets/base.html' %}" width="100%" height="7%" name="data" frameBorder="0" scrolling="no"></iframe>
+    <script>
+        var radiConect = document.getElementById('radiConect')
+        radiConect.contentWindow.postMessage('message', '*');
+        window.onmessage = function(event){
+            if (event.data == 'start') {
+                console.log
+                startSim()
+            }
+        };
+    </script>
+    <div id="Control" class="container" >
+        <button  id="save" type="button" onclick="saveCodeLocally()"<span title="Save your code in your local machine"></span><img src="{% static 'exercises/assets/img/upload.png' %}"> Save</button>
+        <button  id="load" type="button"<span title="Load your code from your local machine"></span><img src="{% static 'exercises/assets/img/download.png' %}"> Load</button>
+        <button  id="submit" type="button" onclick="submitCode()"<span title="Submit and try out your code"></span><img src="{% static 'exercises/assets/img/submit.png' %}"> Play </button>
+        <button  id="stop" type="button" onclick="stopCode()"<span title="Stop the current simulation"></span><img src="{% static 'exercises/assets/img/pause.png' %}"> Stop</button>
+        <input   type="file" id="real-file" hidden="hidden"/>
+        <button  id="reset" type="button" onclick="resetSim()" <span title="Reset the current simulation"></span><img style="height:15px;" src="{% static 'exercises/assets/img//reset.svg' %}"> Reset</button>
+        <button id="gazebo_button" type="button" onclick="changegzweb()" <span title="Activate the gazebo screen"></span><img id="gzimg" style="height:20px;" src="{% static 'exercises/assets/img//gazebo.svg' %}">Gazebo</button>
+        <button id="console_button" type="button" onclick="changeconsole()" <span title="Activate the console screen"></span><img id="terminalimg" src="{% static 'exercises/assets/img/console.png' %}"> Console</button>
+        <button id="teleop_button" type="button" onclick="teleopCode()" <span title="Activate the teleoperator"></span> <div style="vertical-align: top; display: inline-block; text-align: center;"><img id="teleop_img" style="height:20px;" src="{% static 'exercises/assets/img/joystick_off.svg' %}"/><span style="display: block;">Teleoperate</span></div></button>
+        <div overflow-x:auto id="Medidor_Brain">
+            <table id=table_code_freq>
+            <tr>
+            <td><a id="letters">Brain Freq:</a> <output id="ideal_code_frequency">0</output>/ <input type="number" id="code_freq" name="Brain Frequency" min="1" max="30" value="12" step="1" style="color:blue" oninput="codefrequencyUpdate(value)"<span title="The brain frequency is the value that tells the robot with what frequency should the code be updated"></span> Hz</td>
+            </tr>  
+            </table>
+        </div>    
+        <div overflow-x:auto id="Medidor_GUI">
+            <table id=table_gui_freq>
+            <tr>
+            <td><a id="letters">GUI Freq:</a><output id="ideal_gui_frequency">0</output>/ <input type="number" id="gui_freq" name="quantity" min="1" max="30" value="12" step="1" style="color:green" oninput="guifrequencyUpdate(value)"<span title="This value corresponds to the frequency the UI and visuals will be updated."></span> Hz</td>
+            </tr>  
+            </table>
+        </div>     
+        <div id="Medidor_RTF">
+            <a id="letters">Sim RTF:</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>
+        </div>
+        
+    </div>
+    <div class="content">
+        <div class="split a">
+
+{% block content %} {% endblock %}
+
+</body>
+
+</html>

@@ -6,6 +6,9 @@ export TURTLEBOT3_MODEL=waffle
 # For Amazon Warehouse exercise
 source /opt/jderobot/CustomRobots/install/setup.sh
 
+# For Simulated Follow Person exercise
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/opt/jderobot/CustomRobots/amazon_hospital/models:/opt/jderobot/CustomRobots/amazon_hospital/fuel_models:/opt/jderobot/CustomRobots/amazon_hospital/hospital_world/models
+
 # Convenience variable used to simplify GAZEBO_MODEL_PATH
 export AMAZON_ROBOT_PATH=/opt/jderobot/CustomRobots/amazon_robot
 # Make all Gazebo models accessible
