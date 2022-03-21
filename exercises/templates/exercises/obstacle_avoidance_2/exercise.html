@@ -45,136 +45,8 @@
 
     <!--Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <style>
-        /* Styling h1 tag */
-        h1 {
-            color: green;
-            text-align: center;
-        }
 
-        /* Styling modal */
-        .modal .modal-content {
-            padding: 20px 20px 20px 20px;
-            width: 650px;
-            -webkit-animation-name: modal-animation;
-            -webkit-animation-duration: 0.5s;
-            animation-name: modal-animation;
-            animation-duration: 0.5s;
-        }
-
-        .content {
-            visibility: visible;
-        }
-
-        @-webkit-keyframes modal-animation {
-            from {
-                top: -100px;
-                opacity: 0;
-            }
-
-            to {
-                top: 0px;
-                opacity: 1;
-            }
-        }
-
-        @keyframes modal-animation {
-            from {
-                top: -100px;
-                opacity: 0;
-            }
-
-            to {
-                top: 0px;
-                opacity: 1;
-            }
-        }
-
-        #container {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            visibility: hidden;
-            display: none;
-            background-color: rgba(22, 22, 22, 0.5);
-        }
-
-        #container:target {
-            visibility: visible;
-            display: block;
-        }
-
-        .carousel-control-prev-icon, .carousel-control-next-icon {filter: invert(100%); }
-
-        .carousel-control-prev-icon{
-            position: absolute;
-            left: 0%;
-        }
-        .carousel-control-next-icon{
-            position: absolute;
-            right: 0%;
-        }
-
-        .carousel-item-controls p { padding-left: 6px;}
-        .carousel-item-controls img {width: 20px; height: 20px}
-
-        #chat-content{
-            display: flex;
-            flex-direction: row;
-        }
-        #chat-log{
-            width: auto;
-            height: 50vh;
-            border: 1px solid black;
-            overflow-y: scroll;
-        }
-        #chat-div p#chat-title{
-            text-align: center;
-        }
-        #stream-div{
-            border: 1px solid black;
-        }
-
-        #chat-div {
-            width: 450px;
-            margin: auto;
-            float: right;
-        }
-        input[type=text]#chat-message-input{
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        #chat-log{
-            padding: 12px 20px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        #chat-message-submit{
-            width: 100%;
-        }
-
-        .send{
-            text-align: right;
-        }
-
-        .receive{
-            text-align: left;
-        }
-
-        video{
-            display: block;
-        }
-
-    </style>
+    {% include 'exercise_style.html' %}
 </head>
 
 
@@ -195,118 +67,12 @@
 
     </script>
 
+    <!-- TOOLBAR -->
+    {% include 'toolbar.html'%}
 
-   {% include 'toolbar.html'%}
+    <script>
 
-<script>
-
-// Simulate variable
-let simulate_mode = false;
-		// Simulate button
-		const simulate_btn = document.querySelector('#gazebo_button');
-		const simulate_img = document.querySelector('#gzimg');
-		simulate_btn.addEventListener('click', function(){
-
-			if(!simulate_mode){
-
-				// Activate mode
-				simulate_mode = true;
-				simulate_btn.style.background = '#BEBEBE';
-				simulate_img.src = "{% static 'common/img/gazebo_on.svg' %}";
-				return;
-			}
-
-			// Else, turn of teleop mode and remove event listeners
-			simulate_mode = false;
-			simulate_btn.style.background = 'transparent';
-			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
-
-			return;
-
-
-		});
-
-		function deactivateSimulateButton() {
-			simulate_mode = false;
-			simulate_btn.style.background = 'transparent';
-			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
-
-		}
-
-		// Console variable
-		let console_mode = false;
-		// Console button
-		const console_btn = document.querySelector('#console_button');
-		const console_img = document.querySelector('#terminalimg');
-		console_btn.addEventListener('click', function(){
-
-			if(!console_mode){
-
-				// Activate mode
-				console_mode = true;
-				console_btn.style.background = '#BEBEBE';
-				console_img.src = "{% static 'common/img/console_on.svg' %}";
-				return;
-			}
-
-			// Else, turn of teleop mode and remove event listeners
-			console_mode = false;
-			console_btn.style.background = 'transparent';
-			console_img.src = "{% static 'common/img/console.svg' %}";
-
-			return;
-
-
-		});
-		function deactivateConsoleButton() {
-			console_mode = false;
-			console_btn.style.background = 'transparent';
-			console_img.src = "{% static 'common/img/console.svg' %}";
-
-		}
-
-        // Teleop variable
-        let teleop_mode = false;
-		// Teleop button
-		const teleop_btn = document.querySelector('#teleop_button');
-		const teleop_img = document.querySelector('#teleop_img');
-
-		teleop_btn.addEventListener('click', function(){
-			// If variable is false, activate teleoperate mode
-			if(!teleop_mode){
-				if (running == false) {
-					resumeSimulation();
-					running == true;
-				}
-				// Activate mode
-				teleop_mode = true;
-				teleop_btn.style.background = '#BEBEBE';
-				teleop_img.src = "{% static 'common/img/joystick_on.svg' %}";
-				document.addEventListener('keydown', keyHandler, false);
-				document.addEventListener('keyup', keyHandler, false);
-				return;
-			}
-
-			// Else, turn of teleop mode and remove event listeners
-			teleop_mode = false;
-			submitCode();
-			teleop_btn.style.background = 'transparent';
-			teleop_img.src = "{% static 'common/img/joystick_off.svg' %}";
-			document.removeEventListener('keydown', keyHandler, false);
-			document.removeEventListener('keyup', keyHandler, false);
-			return;
-		});
-
-		function deactivateTeleopButton() {
-			teleop_mode = false;
-			teleop_btn.style.background = 'transparent';
-			teleop_img.src = "{% static 'common/img/joystick_off.svg' %}";
-			document.removeEventListener('keydown', keyHandler, false);
-			document.removeEventListener('keyup', keyHandler, false);
-		}
-
-
-    		// Car variables
+        // Car variables
 		let v = 0;
 		let w = 0;
 
@@ -387,12 +153,8 @@ let simulate_mode = false;
     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
     <!-- Exercise specific resources -->
     {% for file in statics %}
-        <!-- borrar esto -->
-        {% if exercise_id == "obstacle_avoidance_2" %}
-            <script src="{% static 'exercises/'%}obstacle_avoidance/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-            {% else %}
-            <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-        {% endif %}
+
+        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
 
     {% endfor %}
 
@@ -417,14 +179,16 @@ let simulate_mode = false;
 
 
     {% if not simulation_site %}
+
     <div class="footer">
         <span><b>Release {{version}}</b></span> | <span>Derechos de autor &copy;
             <script>document.write(new Date().getFullYear())</script> - Asociación JdeRobot.
         </span> Este sitio utiliza cookies. <a href="/terms#cookies" target="_blank">Más Información</a>
     </div>
+
     {% endif %}
-{% include "info_modal.html" %}
-{% include "load_modal.html" %}
+    {% include "info_modal.html" %}
+    {% include "load_modal.html" %}
 </body>
 </html>
 
