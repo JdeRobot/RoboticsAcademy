@@ -1,0 +1,15 @@
+django==2.2.27
+channels==1.1.5
+django-extensions==2.2.5
+mysqlclient==1.3.14
+asgi-redis==1.4.3
+simplejson==3.17.0
+pygithub==1.39
+docker==4.1.0
+paramiko==2.7.0
+django-queryset-csv==1.0.3
+requests==2.22.0
+websocket-client==0.57.0
+pydiscourse==0.9.0
+django-taggit-autosuggest==0.3.8
+pillow==9.0.1
