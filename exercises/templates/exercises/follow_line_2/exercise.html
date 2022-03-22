@@ -7,7 +7,6 @@
 </div>
 
 <div class="content" id="exercise-view">
-
   <div class="split a">
     {% if "code_control" in indexs %}
         {% include 'code_control.html' %}
@@ -32,12 +31,6 @@
     {% include 'gazebo.html' %}
   {% endif %}
 
-  <hr>
-	<div class="row">
-		<div class="col-md-12">
-			<iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
-		</div>
-	</div>
   {% if "console" in indexs %}
     {% include 'console.html' with exercise="follow_line" %}
   {% endif %}
