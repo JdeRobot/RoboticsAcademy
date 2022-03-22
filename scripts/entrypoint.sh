@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usage="$(basename "$0") [-h] [--degub] [--logs] [--no-server]\n\n
+usage="$(basename "$0") [-h] [--debug] [--logs] [--no-server]\n\n
 
 optional arguments:\n
 \t  -h  show this help message and exit\n
