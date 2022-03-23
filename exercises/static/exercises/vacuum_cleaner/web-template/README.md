@@ -3,11 +3,11 @@
 
 ## Threads documentation of vacuum_cleaner exercise
 
-**Thread** --> Name of the thread
-**Location** --> Function in which we can find the thread 
-**Description** --> Brief description of thread's function
-**Target** --> The target variable sets the function that each thread will execute
-**Arguments** --> Arguments used in the execution of the function 
+- **Thread**: Name of the thread
+- **Location**: Function in which we can find the thread 
+- **Description**: Brief description of thread's function
+- **Target**: The target variable sets the function that each thread will execute
+- **Arguments**: Arguments used in the execution of the function 
 
 ### Exercise.py 
 
