@@ -14,10 +14,10 @@ Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcade
 
 ## INDEX
 - [Instructions for developers.][]
-- [Client side (Robotics Academy architecture)][] 
+- [Client side.][] (Robotics Academy architecture)
 - [Repository Architecture.][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
-[Client side (Robotics Academy architecture)]: ./docs/ClientSide.md
+[Client side.]: ./docs/ClientSide.md
 [Repository Architecture.]: ./docs/RepositoryArchitecture.md
 
