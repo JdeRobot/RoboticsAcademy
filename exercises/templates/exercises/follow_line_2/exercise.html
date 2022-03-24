@@ -14,40 +14,47 @@
   </div>
 
   <div class="split b">
-	<!-- Circuit selector -->
-	<label for="circuit_selector" style="display: inline-block;">Circuit: </label>
-	<select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">
-		<option value="default">Default Line</option>
-		<option value="montmelo">Montmelo Line</option>
-		<option value="montreal">Montreal Line</option>
-		<option value="nbg">Nürburgring Line</option>
-	</select>
+  	<!-- Circuit selector -->
+  	<label for="circuit_selector" style="display: inline-block;">Circuit: </label>
+  	<select class="form-control" style="display: inline-block; margin-bottom: 10px; width: auto;" name="circuit_selector" id="circuit_selector">
+  		<option value="default">Default Line</option>
+  		<option value="montmelo">Montmelo Line</option>
+  		<option value="montreal">Montreal Line</option>
+  		<option value="nbg">Nürburgring Line</option>
+  	</select>
 
-  {% if "visualization" in indexs %}
-      {% include 'visualization.html' with canvas="birds-eye" %}
-  {% endif %}
+    {% if "visualization" in indexs %}
+        {% include 'visualization.html' with canvas="birds-eye" %}
+    {% endif %}
 
-  {% if "gazebo" in indexs %}
-    {% include 'gazebo.html' %}
-  {% endif %}
+    {% if "gazebo" in indexs %}
+      {% include 'gazebo.html' %}
+    {% endif %}
 
-  {% if "console" in indexs %}
-    {% include 'console.html' with exercise="follow_line" %}
-  {% endif %}
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
+        </div>
+    </div>
 
-       <!-- Common -->
-       <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/ws_code_teleop.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-       <!-- Exercise specific resources -->
-       {% for file in statics %}
-           <script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-        {% endfor %}
+    {% if "console" in indexs %}
+      {% include 'console.html' with exercise="follow_line" %}
+    {% endif %}
 
-    <!-- BOTON DE CONEXION CON RADI-->
+     <!-- Common -->
+     <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+     <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+     <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+     <script src="{% static 'common/js/ws_code_teleop.js' %}" type="text/javascript" charset="utf-8"></script>
+     <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+     <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+     <!-- Exercise specific resources -->
+     {% for file in statics %}
+         <script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+      {% endfor %}
+
+      <!-- BOTON DE CONEXION CON RADI-->
     {% if "connect_button" in indexs %}
        {% include 'connect_button.html' %}
     {% endif %}
@@ -55,11 +62,12 @@
     {% if user_code|length > 0 %}
 
     <script type="text/javascript">
-		code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=");
-		console.log(code);
+  	code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=");
+  	console.log(code);
         editorele.setValue(code)
     </script>
     {% endif %}
+  </div>
 </div>
 
 {% endblock %}
