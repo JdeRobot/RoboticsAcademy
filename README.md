@@ -18,6 +18,6 @@ Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcade
 - [Repository Architecture.][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
-[Client side.]: ./docs/ClientSide.md
+[Client side.]: ./docs/clientside.md
 [Repository Architecture.]: ./docs/RepositoryArchitecture.md
 
