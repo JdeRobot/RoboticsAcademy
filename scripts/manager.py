@@ -21,12 +21,12 @@ def check_device(device_path):
     except:
         return False
 
-RADI_VERSION = "3.1.14"
+RADI_VERSION = "3.2.3"
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", 
             "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game",
-            "package_delivery"]
+            "package_delivery", "power_tower_inspection"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
 HARD_RESET_EX = ["obstacle_avoidance"]
 STDR_EX = ["laser_mapping", "laser_loc"]
@@ -256,8 +256,8 @@ class Commands:
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise, circuit):
-        if os.path.exists("/status.txt"):
-            os.remove("/status.txt")
+        if os.path.exists("/drones_launch.log"):
+            os.remove("/drones_launch.log")
         
         if exercise in CIRCUIT_EX:
             roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise, circuit=circuit)
@@ -282,12 +282,12 @@ class Commands:
             launch_ready = False
             while not launch_ready:
                 try:
-                    f = open("/status.txt", "r")
-                    if f.readline() == "done":
+                    f = open("/drones_launch.log", "r")
+                    if f.readline() == "success":
                         launch_ready = True
                     f.close()
                     time.sleep(0.2)
-                except:
+                except: 
                     time.sleep(0.2)
 
     def start_stdrserver(self,exercise):

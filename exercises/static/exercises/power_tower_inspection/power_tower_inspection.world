@@ -1,0 +1,353 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+    <world name="default">
+
+        <gui>
+            <camera name="user_camera">
+                <pose frame=''>-4.70385 10.895 16.2659 -0 0.921795 -1.12701</pose>
+                <view_controller>orbit</view_controller>
+                <projection_type>perspective</projection_type>
+            </camera>
+        </gui>
+
+        <!-- A global light source -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <!-- Grass Plane -->
+        <include>
+			<uri>model://grass_plane</uri>
+            <pose>0 0 -0.045 0 0</pose>
+		</include>
+
+        <!-- JdeRobot Logo -->
+        <include>
+			<uri>model://logoJdeRobot</uri>
+			<pose>20 -5 0 0 0 0</pose>
+			<scale>0.25 0.25 0.25</scale>
+		</include>
+
+		<!-- Launching Pad -->
+        <include>
+			<uri>model://logoPadGreen</uri>
+            <pose>-21.0 -4.0 0 0 0</pose>
+			<name>launching_pad</name>
+		</include>
+
+        <!-- Power Tower Wires -->
+        <include>
+			<uri>model://power_tower_danube_wires</uri>
+            <pose>-41 -4 0.05 0 0</pose>
+			<name>power_tower_wires0</name>
+		</include>
+
+        <!-- Power Tower -->
+        <include>
+			<uri>model://power_tower_danube</uri>
+            <pose>-1 -4 0.05 0 0</pose>
+            <name>power_tower1</name>
+		</include>
+
+        <!-- Power Tower Wires -->
+        <include>
+			<uri>model://power_tower_danube_wires</uri>
+            <pose>-1 -4 0.05 0 0</pose>
+			<name>power_tower_wires1</name>
+		</include>
+        
+
+        <!-- Power Tower -->
+        <include>
+			<uri>model://power_tower_danube</uri>
+            <pose>39 -4 0.05 0 0</pose>
+            <name>power_tower2</name>
+		</include>
+
+		<!-- Power Tower Wires -->
+        <include>
+			<uri>model://power_tower_danube_wires</uri>
+            <pose>39 -4 0.05 0 0</pose>
+			<name>power_tower_wires2</name>
+		</include>
+
+		<!-- Power Tower -->
+        <include>
+			<uri>model://power_tower_danube</uri>
+            <pose>79 -4 0.05 0 0</pose>
+            <name>power_tower3</name>
+		</include>
+
+		<!-- Power Tower Wires -->
+        <include>
+			<uri>model://power_tower_danube_wires</uri>
+            <pose>79 -4 0.05 0 0</pose>
+			<name>power_tower_wires3</name>
+		</include>
+
+        
+
+		<!-- Rust Defect 1 Tower 1 -->
+        <include>
+			<uri>model://rust_defect_01</uri>
+            <!-- <pose>-2.31 -4 3.79 0 1.74</pose> -->
+			<pose>-2.31 -4 3.79 0 0.17</pose>
+			<name>rust_def1_tower1</name>
+		</include>
+
+		<!-- Rust Defect 1 Tower 1 Opposite -->
+        <include>
+			<uri>model://rust_defect_01</uri>
+            <!-- <pose>0.232054 -4.00614 3.96187 0 1.41745 0</pose> -->
+			<pose>0.232054 -4.00614 3.96187 0 -0.15255 0</pose>
+			<name>rust_def1_tower1_opp</name>
+		</include>
+
+		<!-- Rust Defect 2 Tower 1 -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>-1.80605 -4.40198 14.7671 0 1.57</pose> -->
+			<pose>-1.80605 -4.40198 14.7671 0 0.0</pose>
+			<name>rust_def2_tower1</name>
+		</include>
+
+		<!-- Rust Defect 2 Tower 1 Opposite-->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>-0.438877 -4.04055 14.7724 0 1.57 0</pose> -->
+			<pose>-0.438877 -4.04055 14.7724 0 0.0 0</pose>
+			<name>rust_def2_tower1_opp</name>
+		</include>
+
+		<!-- Rust Defect 3 Tower 1 -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>-1.81251 -3.67691 14.7727 0 1.57</pose> -->
+			<pose>-1.81251 -3.67691 14.7727 0 0.0</pose>
+			<name>rust_def3_tower1</name>
+		</include>
+
+		<!-- Rust Defect 3 Tower 1 Opposite -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>-0.435477 -3.59453 14.7738 0 1.57 0</pose> -->
+			<pose>-0.435477 -3.59453 14.7738 0 0.0 0</pose>
+			<name>rust_def3_tower1_opp</name>
+		</include>
+
+		<!-- Rust Defect 4 Tower 1 -->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <!-- <pose>-1.59 -4.33479 20.438 0 1.74</pose> -->
+			<pose>-1.59 -4.33479 20.438 0 0.17</pose>
+			<name>rust_def4_tower1</name>
+		</include>
+
+		<!-- Rust Defect 4 Tower 1 Opposite-->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <!-- <pose>-0.577392 -3.56405 19.08 0 1.542 0</pose> -->
+			<pose>-0.577392 -3.56405 19.08 0 -0.028 0</pose>
+			<name>rust_def4_tower1_opp</name>
+		</include>
+
+		<!-- Rust Defect 5 Tower 1 -->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <!-- <pose>-1.73 -3.51 19.1255 0 1.74</pose> -->
+			<pose>-1.73 -3.51 19.1255 0 0.17</pose>
+			<name>rust_def5_tower1</name>
+		</include>
+
+
+		<!-- Rust Defect 1 Tower 2 -->
+        <include>
+			<uri>model://rust_defect_01</uri>
+            <!-- <pose>37.69 -4 3.79 0 1.74</pose> -->
+			<pose>37.69 -4 3.79 0 0.17</pose>
+			<name>rust_def1_tower2</name>
+		</include>
+
+		<!-- Rust Defect 1 Tower 2 Opposite -->
+        <include>
+			<uri>model://rust_defect_01</uri>
+            <!-- <pose>40.232054 -4.00614 3.96187 0 1.41745 0</pose> -->
+			<pose>40.232054 -4.00614 3.96187 0 -0.15255 0</pose>
+			<name>rust_def1_tower2_opp</name>
+		</include>
+
+		<!-- Rust Defect 2 Tower 2 -->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <!-- <pose>38.19395 -4.40198 14.7671 0 1.57</pose> -->
+			<pose>38.19395 -4.40198 14.7671 0 0.0</pose>
+			<name>rust_def2_tower2</name>
+		</include>
+
+		<!-- Rust Defect 2 Tower 2 Opposite-->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>39.561123 -4.04055 14.7724 0 1.57 0</pose> -->
+			<pose>39.561123 -4.04055 14.7724 0 0.0 0</pose>
+			<name>rust_def2_tower2_opp</name>
+		</include>
+
+		<!-- Rust Defect 3 Tower 2 -->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <!-- <pose>38.18749 -3.67691 14.7727 0 1.57</pose> -->
+			<pose>38.18749 -3.67691 14.7727 0 0.0</pose>
+			<name>rust_def3_tower2</name>
+		</include>
+
+		<!-- Rust Defect 3 Tower 2 Opposite -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>39.564523 -3.59453 14.7738 0 1.57 0</pose> -->
+			<pose>39.564523 -3.59453 14.7738 0 0.0 0</pose>
+			<name>rust_def3_tower2_opp</name>
+		</include>
+
+		<!-- Rust Defect 4 Tower 2 -->
+        <include>
+			<uri>model://rust_defect_02</uri>
+            <!-- <pose>38.41 -4.33479 20.438 0 1.74</pose> -->
+			<pose>38.41 -4.33479 20.438 0 0.17</pose>
+			<name>rust_def4_tower2</name>
+		</include>
+
+		<!-- Rust Defect 4 Tower 2 Opposite-->
+        <include>
+			<uri>model://rust_defect_03</uri>
+            <!-- <pose>39.422608 -3.56405 19.08 0 1.542 0</pose> -->
+			<pose>39.422608 -3.56405 19.08 0 -0.028 0</pose>
+			<name>rust_def4_tower2_opp</name>
+		</include>
+
+		<!-- Rust Defect 1 on Wires -->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>-7.72635 -0.241255 12.3353 -0.004615 -0.109891 -0.001474</pose>
+			<name>rust_def_wire1</name>
+		</include>
+
+		<!-- Rust Defect 2 on Wires -->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>-11.058 1.31607 16.5176 -0.004602 -0.082412 -0.001602</pose>
+			<name>rust_def_wire2</name>
+		</include>
+
+		<!-- Rust Defect 3 on Wires -->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>19.8548 2.72211 11.5241 -0.004587 -0.002014 -0.001971</pose>
+			<name>rust_def_wire3</name>
+		</include>
+
+		<!-- Rust Defect 4 on Wires -->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>30.6961 -7.7434 12.1612 -0.004616 -0.113092 -0.001459</pose>
+			<name>rust_def_wire4</name>
+		</include>
+
+		<!-- Rust Defect 1 on Springs of Tower 1-->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>-2.37899 -0.352206 13.0936 -0.004633 -0.140673 -0.001331</pose>
+			<name>rust_def_spring_tower1</name>
+		</include>
+
+		<!-- Rust Defect 1 on Springs of Tower 2-->
+        <include>
+			<uri>model://rust_defect_wire</uri>
+            <pose>37.8828 2.61147 13.101 -0.004636 -0.145252 -0.001309</pose>
+			<name>rust_def_spring_tower2</name>
+		</include>
+
+		<!-- Nest on Tower -->
+        <include>
+			<uri>model://nest1</uri>
+            <pose>-1.3 1.56 12.55 0 0 0</pose>
+			<name>nest1</name>
+		</include>
+
+		<!-- Eggs on Tower-->
+        <include>
+			<uri>model://egg</uri>
+            <pose>-1.3 1.5 13.3197 0 -0 1.57</pose>
+			<name>egg1</name>
+		</include>
+
+		<!-- Bird on Tower-->
+        <include>
+			<uri>model://bird</uri>
+            <pose>-1.06401 1.28978 13.4012 0 -0 -2.07145</pose>
+			<name>bird</name>
+		</include>
+
+		<!-- Nest on Electrical Box-->
+        <include>
+			<uri>model://nest1</uri>
+            <pose>14.86 5.48 2.51339 0 0 0</pose>
+			<name>nest2</name>
+		</include>
+
+		<!-- Eggs on Electrical Box-->
+        <include>
+			<uri>model://egg</uri>
+            <pose>14.86 5.42 3.25989 0 0 0</pose>
+			<name>egg2</name>
+		</include>
+
+		<!-- Electrical Box -->
+        <include>
+			<uri>model://electrical_box</uri>
+            <pose>15 5 0 0 0 1.57</pose>
+			<name>electrical_box1</name>
+		</include>
+
+		<!-- Electrical Box -->
+        <include>
+			<uri>model://electrical_box</uri>
+            <pose>55 5 0 0 0 1.57</pose>
+			<name>electrical_box2</name>
+		</include>
+
+        
+
+        <scene>
+            <shadows>0</shadows>
+            <ambient>0.4 0.4 0.4 1.0</ambient>
+            <background>0.7 0.7 0.7 1</background>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+		</scene>
+
+        <physics name='default_physics' default='0' type='ode'>
+			<gravity>0 0 -9.8066</gravity>
+			<ode>
+				<solver>
+					<type>quick</type>
+					<iters>10</iters>
+					<sor>1.3</sor>
+					<use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+				</solver>
+				<constraints>
+					<cfm>0</cfm>
+					<erp>0.2</erp>
+					<contact_max_correcting_vel>100</contact_max_correcting_vel>
+					<contact_surface_layer>0.001</contact_surface_layer>
+				</constraints>
+			</ode>
+			<max_step_size>0.004</max_step_size>
+			<real_time_factor>1</real_time_factor>
+			<real_time_update_rate>250</real_time_update_rate>
+			<magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+		</physics>
+    </world>
+</sdf>
