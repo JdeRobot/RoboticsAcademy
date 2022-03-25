@@ -35,22 +35,32 @@ COPY pylintrc /etc/pylintrc
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
     && ln -s /usr/bin/python3.8 /usr/bin/python
 
+# Django server
 EXPOSE 8000
-EXPOSE 2303
-EXPOSE 1905
-EXPOSE 8080
+
+# Manager websocket
 EXPOSE 8765
-EXPOSE 1108
-# Port by WebRtc
-EXPOSE 1831
-# Port for noVNC
-EXPOSE 6080
-EXPOSE 2304
+
+# Code websocket
+EXPOSE 1905
 EXPOSE 1904
 
-# UNUSED ?
-EXPOSE 7681
+# GUI websockets
+EXPOSE 2303
+EXPOSE 2304
 
+# noVNC Console
+EXPOSE 1108
+
+# noVNC Gazebo
+EXPOSE 6080
+
+# Deprecated? --> gzweb
+EXPOSE 7681
+EXPOSE 8080
+
+# Deprecated? --> WebRtc
+EXPOSE 1831
 
 COPY entrypoint.sh /
 ENTRYPOINT [ "./entrypoint.sh" ]
