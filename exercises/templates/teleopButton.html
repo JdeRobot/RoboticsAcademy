@@ -1,0 +1,57 @@
+{% load static %}
+{% load i18n %}
+
+
+<button
+        id="teleop_button"
+        type="button"
+        title="Use the arrow keys to operate the F1">
+    <div style="vertical-align: top; display: inline-block; text-align: center;">
+        <img id="teleop_img" style="height:20px;" src="{% static 'common/img/joystick_off.svg' %}"/>
+        <span style="display: block;">Teleoperate</span>
+    </div>
+</button>
+
+
+<script>
+
+        // Teleop variable
+        let teleop_mode = false;
+		// Teleop button
+		const teleop_btn = document.querySelector('#teleop_button');
+		const teleop_img = document.querySelector('#teleop_img');
+
+		teleop_btn.addEventListener('click', function(){
+			// If variable is false, activate teleoperate mode
+			if(!teleop_mode){
+				if (running == false) {
+					resumeSimulation();
+					running == true;
+				}
+				// Activate mode
+				teleop_mode = true;
+				teleop_btn.style.background = '#BEBEBE';
+				teleop_img.src = "{% static 'common/img/joystick_on.svg' %}";
+				document.addEventListener('keydown', keyHandler, false);
+				document.addEventListener('keyup', keyHandler, false);
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			teleop_mode = false;
+			submitCode();
+			teleop_btn.style.background = 'transparent';
+			teleop_img.src = "{% static 'common/img/joystick_off.svg' %}";
+			document.removeEventListener('keydown', keyHandler, false);
+			document.removeEventListener('keyup', keyHandler, false);
+			return;
+		});
+
+		function deactivateTeleopButton() {
+			teleop_mode = false;
+			teleop_btn.style.background = 'transparent';
+			teleop_img.src = "{% static 'common/img/joystick_off.svg' %}";
+			document.removeEventListener('keydown', keyHandler, false);
+			document.removeEventListener('keyup', keyHandler, false);
+		}
+</script>

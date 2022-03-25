@@ -1,0 +1,48 @@
+{% load static %}
+{% load i18n %}
+
+<button
+        id="gazebo_button"
+        type="button"
+        onclick="changegzweb()"
+        title="Activate the simulation screen">
+    <div style="vertical-align: top; display: inline-block; text-align: center;">
+        <img id="gzimg" style="height:20px;" src="{% static 'common/img/gazebo.svg' %}"/>
+        <span style="display: block;">View Sim</span>
+    </div>
+</button>
+
+<script>
+     // Simulate variable
+        let simulate_mode = false;
+		// Simulate button
+		const simulate_btn = document.querySelector('#gazebo_button');
+		const simulate_img = document.querySelector('#gzimg');
+		simulate_btn.addEventListener('click', function(){
+
+			if(!simulate_mode){
+
+				// Activate mode
+				simulate_mode = true;
+				simulate_btn.style.background = '#BEBEBE';
+				simulate_img.src = "{% static 'common/img/gazebo_on.svg' %}";
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			simulate_mode = false;
+			simulate_btn.style.background = 'transparent';
+			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
+
+			return;
+
+
+		});
+
+		function deactivateSimulateButton() {
+			simulate_mode = false;
+			simulate_btn.style.background = 'transparent';
+			simulate_img.src = "{% static 'common/img/gazebo.svg' %}";
+
+		}
+</script>

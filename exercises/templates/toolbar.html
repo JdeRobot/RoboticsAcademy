@@ -1,0 +1,69 @@
+{% load static %}
+{% load i18n %}
+
+<div class="row col-md-12" id="exercise-controls">
+	<div id="Control" style = "margin-top: 3px; margin-bottom: 0px;" class="container">
+		<input type="file" id="real-file" hidden="hidden"/>
+
+				{% if "load_button" in indexs %}
+				{% include 'loadButton.html' %}
+				{% endif %}
+
+				{% if "save_button" in indexs %}
+				{% include 'saveButton.html' %}
+				{% endif %}
+
+				{% if "loadIntoRobot_button" in indexs %}
+				{% include 'loadIntoRobot.html' %}
+				{% endif %}
+
+				{% if "play_button" in indexs %}
+				{% include 'playButton.html' %}
+				{% endif %}
+
+				{% if "reset_button" in indexs %}
+				{% include 'resetButton.html' %}
+				{% endif %}
+
+				{% if "medidor_brain" in indexs %}
+				{% include 'medidorBrain.html' %}
+				{% endif %}
+
+				{% if "medidor_GUI" in indexs %}
+				{% include 'medidorGUI.html' %}
+				{% endif %}
+
+				{% if "medidor_RTF" in indexs %}
+				{% include 'medidorRTF.html' %}
+				{% endif %}
+
+        {% if "gazebo" in indexs %}
+        {% include 'gazeboButton.html' %}
+        {% endif %}
+
+        {% if "console" in indexs %}
+        {% include 'consoleButton.html' %}
+        {% endif %}
+
+        {% if "teleop_button" in indexs %}
+        {% include 'teleopButton.html' %}
+        {% endif %}
+
+
+
+
+
+
+        {% if "stop_button" in indexs %}
+        {% include 'stopButton.html' %}
+        {% endif %}
+
+
+
+
+		<!--<a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>-->
+
+
+    </div>
+
+</div>

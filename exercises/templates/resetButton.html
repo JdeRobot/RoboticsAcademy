@@ -1,0 +1,25 @@
+
+{% load static %}
+{% load i18n %}
+
+
+<button
+        id="reset"
+        type="button"
+        style="opacity: 0.4;
+        cursor: not-allowed;"
+        disabled="true">
+    <img class="btn_img" style="height:15px;" src="{% static 'common/img/reset.svg' %}">
+    Reset
+</button>
+
+<script>
+
+    if(window.location.pathname=='/exercises/laser_mapping/' || window.location.pathname=='/exercises/laser_mapping'){
+        document.getElementById("reset").onclick = function(){resetSim()};
+    }
+    else{
+        document.getElementById('reset').onclick=function(){resetSim()};
+    }
+
+</script>

@@ -1,0 +1,49 @@
+{% load static %}
+{% load i18n %}
+
+<button
+        id="console_button"
+        type="button"
+        onclick="changeconsole()"
+        title="Open the console">
+    <div style="vertical-align: top; display: inline-block; text-align: center;">
+        <img id="terminalimg" style="height:20px;" src="{% static 'common/img/console.svg' %}"/>
+        <span style="display: block;">View Console</span>
+    </div>
+</button>
+
+<script>
+    // Console variable
+		let console_mode = false;
+		// Console button
+		const console_btn = document.querySelector('#console_button');
+		const console_img = document.querySelector('#terminalimg');
+		console_btn.addEventListener('click', function(){
+
+			if(!console_mode){
+
+				// Activate mode
+				console_mode = true;
+				console_btn.style.background = '#BEBEBE';
+				console_img.src = "{% static 'common/img/console_on.svg' %}";
+				return;
+			}
+
+			// Else, turn of teleop mode and remove event listeners
+			console_mode = false;
+			console_btn.style.background = 'transparent';
+			console_img.src = "{% static 'common/img/console.svg' %}";
+
+			return;
+
+
+		});
+		function deactivateConsoleButton() {
+			console_mode = false;
+			console_btn.style.background = 'transparent';
+			console_img.src = "{% static 'common/img/console.svg' %}";
+
+		}
+
+</script>
+
