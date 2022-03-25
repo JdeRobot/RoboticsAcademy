@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usage="$(basename "$0") [-h] [--degub] [--logs] [--no-server]\n\n
+usage="$(basename "$0") [-h] [--debug] [--logs] [--no-server]\n\n
 
 optional arguments:\n
 \t  -h  show this help message and exit\n
@@ -42,8 +42,9 @@ runmanager="python3.8 manager.py"
 if [ $log == true ]; then
     DATE_TIME=$(date +%F-%H-%M) # FORMAT year-month-date-hours-mins
     mkdir -p /root/.roboticsacademy/log/$DATE_TIME/
-    script -q -c "{ $ros_setup ; $runserver & $runmanager ; }" /root/.roboticsacademy/log/$DATE_TIME/manager.log
-    cp $(readlink -f /root/.ros/log/latest)/* /root/.roboticsacademy/log/$DATE_TIME
+    eval ${ros_setup}
+    script -q -c "$runserver & $runmanager ;" /root/.roboticsacademy/log/$DATE_TIME/manager.log
+    cp -r /root/.ros/log/* /root/.roboticsacademy/log/$DATE_TIME
 else
     eval ${ros_setup}
     if [ $debug == true ]; then
