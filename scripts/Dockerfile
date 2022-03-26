@@ -55,11 +55,7 @@ EXPOSE 1108
 # noVNC Gazebo
 EXPOSE 6080
 
-# Deprecated? --> gzweb
-EXPOSE 7681
-EXPOSE 8080
-
-# Deprecated? --> WebRtc
+# WebRtc
 EXPOSE 1831
 
 COPY entrypoint.sh /
