@@ -16,7 +16,7 @@ gallery:
     title: "Package Delivery."
 
 # youtubeId1: ID1
-# youtubeId2: ID2
+youtubeId2: aWkTDp2UobM
 ---
 ## Goal
 
@@ -180,11 +180,11 @@ In this exercise, you should use the Nose Forward Mode.
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
-<!-- ## Web Template teaser video
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
-## Demonstrative video of the solution
+<!-- ## Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId1 %} -->
 
