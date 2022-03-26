@@ -384,8 +384,6 @@ class Commands:
     def call_subprocess(self, cmd):
         subprocess.call(cmd, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
 
-
-
     # Function to kill every program
     async def kill_all(self):
         cmd = ['pkill', '-9', '-f']
