@@ -123,10 +123,10 @@ feature_row:
     url: "/exercises/Drones/package_delivery"
     btn_class: "btn--danger"
     btn_label: "Go!"
-    version_label: "btn--inverse"
-    status: "prototype"
+    version_label: "btn--success"
+    status: "running"
     order: 0;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
     alt: "Power Tower Inspection"

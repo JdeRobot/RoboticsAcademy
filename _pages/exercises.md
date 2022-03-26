@@ -236,24 +236,24 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.2"
-  
-  - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
-    alt: "Power Tower Inspection"
-    title: "Power Tower Inspection"
-    excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
-    url: "/exercises/Drones/power_tower_inspection"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
-    status: "prototype"
-    order: 2;
-    version: "v3.1"
 
   - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
     alt: "Package Delivery"
     title: "Package Delivery"
     excerpt: "Deliver a package from the warehouse using a drone."
     url: "/exercises/Drones/package_delivery"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 2;
+    version: "v3.2"
+
+  - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
+    alt: "Power Tower Inspection"
+    title: "Power Tower Inspection"
+    excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
+    url: "/exercises/Drones/power_tower_inspection"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
@@ -303,7 +303,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     status: "prototype"
-    order: 0;
+    order: 2;
     version: "v2.4"
 
   - image_path: /assets/images/exercises/machine_vision/machine_vision_teaser.png
