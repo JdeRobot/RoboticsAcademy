@@ -6,7 +6,7 @@
 
 # Data base
 
-The data base of this proyect is localizated en main directory, it's name is db.sqlite3. In this file, we save the structure of all the information that the website is compiling. Db is divided in  12 tables that includes all the diferent parameters.
+The data base of this proyect is localizated en main directory, it's name is db.sqlite3. In this file, we save the structure of all the information that the website is compiling. Db is divided in  12 tables that includes all the diferent parameters. Most of this tables are created and modified by Django, we are just gonna use the table "exercises_exercise".
 
 ### Tables
 
