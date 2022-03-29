@@ -6,7 +6,7 @@ asgi-redis==1.4.3
 simplejson==3.17.0
 pygithub==1.39
 docker==4.1.0
-paramiko==2.7.0
+paramiko==2.10.1
 django-queryset-csv==1.0.3
 requests==2.22.0
 websocket-client==0.57.0
