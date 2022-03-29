@@ -23,7 +23,6 @@
 	    {% include 'gazebo.html' %}
 	  {% endif %}
 
-    <hr>
     <div class="row">
         <div class="col-md-12">
             <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
@@ -33,50 +32,25 @@
 		{% if "console" in indexs %}
 			{% include 'console.html' with exercise="vacuum_cleaner_loc" %}
 		{% endif %}
-
-    <!-- Common -->
-    <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
-		<script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
-		<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-		<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-		<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
-    <!-- Exercise specific resources -->
-		{% for file in statics %}
-				<script src="{% static 'exercises/'%}vacuum_cleaner_loc/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-		 {% endfor %}
-
-    <!-- BOTON DE CONEXION CON RADI-->
-		{% if "connect_button" in indexs %}
-       {% include 'connect_button.html' %}
-    {% endif %}
-
-  	<script type="text/javascript">
-  		const editorele = ace.edit("editor");
-  		function showUserCode(downloaded_code){
-  			if (downloaded_code != "") {
-  				code = downloaded_code.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=").replace(/\n/g, "\n");
-  				editorele.setValue(code);
-  			}
-  		}
-  	</script>
-
-  	<script>
-  		function editorChanged(toggle) {
-  			if (firstCodeSent) {
-  				if (toggle) {
-  					document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
-  					document.getElementById("loadIntoRobot").title = "Code changed since last sending";
-  				} else {
-  					document.getElementById("loadIntoRobotAlert").style.display = 'none';
-  					document.getElementById("loadIntoRobot").title = "";
-  				}
-  			}
-  		}
-  	</script>
-  </div>
 </div>
 
+  <!-- Common -->
+  <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+  <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+  <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+	<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+  <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+  <!-- Exercise specific resources -->
+	{% for file in statics %}
+			<script src="{% static 'exercises/'%}vacuum_cleaner_loc/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+	 {% endfor %}
+
+  <!-- BOTON DE CONEXION CON RADI-->
+	{% if "connect_button" in indexs %}
+     {% include 'connect_button.html' %}
+  {% endif %}
+</div>
 {% endblock %}
