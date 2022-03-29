@@ -1,0 +1,113 @@
+{% extends "exercise_base_2.html" %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+  <div id="theory-view" style="display: none;">
+	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_cat_mouse" id="iframe-tab"></iframe>
+  </div>
+
+
+    <div class="content" id="exercise-view">
+        <div class="split a">
+
+	<br>
+        {% if "code_control" in indexs %}
+                {% include 'code_control.html' %}
+            {% endif %}
+
+  </div>
+            <div class="split b">
+				<!-- Difficulty selector -->
+				<label for="difficulty_selector">Difficulty: </label>
+				<select class="form-control" style="margin-bottom: 10px;" name="difficulty_selector" id="difficulty_selector">
+					<option value="none">--- Select a difficulty ---</option>
+					<option value="bot-easy">Easy</option>
+					<option value="bot-medium">Medium</option>
+					<option value="bot-advanced">Advanced</option>
+				</select>
+				<br>
+                <div id="visual_buttons" class="row no-gutters">
+					<div class="card text-center">
+						<div class="card-header">
+							Evaluator
+						</div>
+						<div class="card-body">
+							<!-- Evaluator -->
+							<script src="https://cdn.plot.ly/plotly-2.2.0.min.js"></script>
+							<div id="eval"></div>
+						</div>
+					</div>
+                </div>
+
+                 {% if "visualization" in indexs %}
+                    <div id="visual">
+                     <!-- Canvas -->
+                     <canvas id="gui_canvas_left"></canvas>
+                     <canvas id="gui_canvas_right"></canvas>
+                     </div>
+                {% endif %}
+
+
+				 <br>
+				 {% if "gazebo" in indexs %}
+                {% include 'gazebo.html' %}
+                {% endif %}
+
+			   <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
+
+                 {% if "console" in indexs %}
+                {% include 'console.html' with exercise="drone_cat_mouse" %}
+            {% endif %}
+
+
+ <!-- Common -->
+       <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
+	   <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/launcher_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/controller_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+       <script src="{% static 'common/js/ws_gui_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'common/js/ws_code_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+       <!-- Exercise specific resources -->	   
+         {% for file in statics %}
+            <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+        {% endfor %}
+
+    <!-- BOTON DE CONEXION CON RADI-->
+    {% if "connect_button" in indexs %}
+        {% include 'connect_button.html' %}
+    {% endif %}
+
+    <script>
+        // Server variable
+        let server = "{{server}}"
+        let difficulty = $('#difficulty_selector').val();
+        let op_modes = ['bot-easy', 'bot-medium', 'bot-hard'];
+        // If the difficulty is selected, enable button
+        $('#difficulty_selector').on('change', function(){
+            let difficulty = $('#difficulty_selector').val();
+            let op_modes = ['bot-easy', 'bot-medium', 'bot-hard'];
+            if(op_modes.includes(difficulty)){
+                $('#submit').prop('disabled', false);
+                return;
+            }
+            $('#submit').prop('disabled', true);
+        });
+    </script>
+
+    {% if user_code|length > 0 %}
+
+    <script type="text/javascript">
+		code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=");
+		console.log(code);
+        editor.setValue(code)
+    </script>
+
+    {% endif %}
+     </div>
+        </div>
+
+{% endblock %}
