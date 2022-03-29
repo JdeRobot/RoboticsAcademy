@@ -53,29 +53,6 @@
      {% include 'connect_button.html' %}
   {% endif %}
 
-	<script type="text/javascript">
-		const editorele = ace.edit("editor");
-		function showUserCode(downloaded_code){
-			if (downloaded_code != "") {
-				code = downloaded_code.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=").replace(/\n/g, "\n");
-				editorele.setValue(code);
-			}
-		}
-	</script>
-
-	<script>
-		function editorChanged(toggle) {
-			if (firstCodeSent) {
-				if (toggle) {
-					document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
-					document.getElementById("loadIntoRobot").title = "Code changed since last sending";
-				} else {
-					document.getElementById("loadIntoRobotAlert").style.display = 'none';
-					document.getElementById("loadIntoRobot").title = "";
-				}
-			}
-		}
-	</script>
 </div>
 
 {% endblock %}
