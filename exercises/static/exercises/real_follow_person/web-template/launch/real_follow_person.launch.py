@@ -16,7 +16,7 @@ def generate_launch_description():
 	
 	# camera node
 	v4l2_camera_node = ExecuteProcess(
-	    cmd=['ros2', 'run', 'v4l2_camera', 'v4l2_camera_node', '--ros-args', '-p', 'video_device:="/dev/video4"'], output='screen')
+	    cmd=['ros2', 'run', 'v4l2_camera', 'v4l2_camera_node', '--ros-args', '-p', 'video_device:="/dev/video0"'], output='screen')
 	
 	# Kobuki Base launch file
 	kobuki_launch = IncludeLaunchDescription(
