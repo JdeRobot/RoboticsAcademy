@@ -13,13 +13,47 @@ follow_person_demo:
   - url: /assets/images/exercises/follow_person/follow_person_teaser.png
     image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
     alt: "Follow Person cover"
-    title: "Follow Person demo"
+    title: "Follow Person Cover"
 
 simulated_turtlebot2:
   - url: /assets/images/exercises/follow_person/turtlebot2-sim.png
     image_path: /assets/images/exercises/follow_person/turtlebot2-sim.png
     alt: "Simulated Turtlebot2 (ROS Foxy)"
     title: "Simulated Turtlebot2 (ROS Foxy)"
+
+how_to_follow_person:
+  - url: /assets/images/exercises/follow_person/how_to_follow_person.png
+    image_path: /assets/images/exercises/follow_person/how_to_follow_person.png
+    alt: "How to follow a person"
+    title: "How to follow a person"
+
+pid:
+  - url: /assets/images/exercises/follow_person/ControlSystems.jpg
+    image_path: assets/images/exercises/follow_person/ControlSystems.jpg
+    alt: "Control Systems"
+    title: "Control Systems"
+
+  - url: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
+    image_path: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
+    alt: "Types of Control Systems"
+    title: "Types of Control Systems"
+
+  - url: /assets/images/exercises/follow_person/PID.png
+    image_path: /assets/images/exercises/follow_person/PID.png
+    alt: "PID"
+    title: "PID"
+
+vff:
+  - url: /assets/images/exercises/follow_person/vff.png
+    image_path: /assets/images/exercises/follow_person/vff.png
+    alt: "Virtual Force Field (VFF)"
+    title: "Virtual Force Field (VFF)"
+
+joystick:
+  - url: /assets/images/exercises/follow_person/joystick.png
+    image_path: /assets/images/exercises/follow_person/joystick.png
+    alt: "Joystick to move the person"
+    title: "Joystick to move the person"
 
 youtubeId1: "Tt7RkdUgm_U"
 ---
@@ -28,7 +62,7 @@ youtubeId1: "Tt7RkdUgm_U"
 
 The objective of this practice is to implement the logic of a navigation algorithm for follow a person in a hospital using a CNN (Convolutional Neural Network) called SSD
 
-{% include gallery id="follow_person_demo" caption="Follow Person Demo" %}
+{% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
 
 ## Instructions
 This is the preferred way for running the exercise.
@@ -53,7 +87,7 @@ docker pull jderobot/robotics-academy:latest
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
+  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
   ```
 
 
@@ -63,7 +97,7 @@ docker pull jderobot/robotics-academy:latest
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:3.1.6 ./start.sh
+  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -153,6 +187,68 @@ while True:
 ```
 
 ## Theory
+When we are designing a robotic application that knows how to follow a person, the most important mission is knowing how to detect it and not lose it.
+
+The first step is the detection of persons. We perform this first task using a **Convolutional Neural Network (CNN)**. It is a type of network where the first neurons capture groups of pixels and these neurons form new groups for next layers. For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/)
+
+Once we detect all the people in the image, we can establish several **criteria** to decide which person we are going to follow
+
+In order not to lose it we can use **tracking** algorithms. A homemade method that usually works well is for each iteration to locate the Centroid of each Bounding Box and compare it with the chosen Centroid of the previous frame. We will stay with that bounding box that has the closest centroid and area most similar to the chosen bounding box of the previous frame.
+
+The second step is to use the kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the **location** of the centroid of the candidate bounding box. Depending on the position we will establish a certain angular speed.
+
+An easy method to implement is **discretized case-based behavior**. We take the width of an image and divide it into X number of columns. We assign a certain angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity
+
+{% include gallery id="how_to_follow_person" caption="How to follow a person" %}
+
+Another method, a bit more complicated but more efficient, is to implement a PID controller for the angular velocity. With a good design of a [**PID controller**](#pid-controller) we will obtain a more precise and less oscillatory turning response.
+
+However, the robot moves through an environment where there may be obstacles. There is an algorithm called [**VFF (Virtual Force Field)**](#virtual-force-field) that allows us to avoid crashes while following a target. It is based on the sum of attraction and repulsion vectors that cause a different sense of direction
+
+## PID Controller
+To understand PID Control, let us first understand what is Control in general.
+
+### Control System
+
+A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforeseen errors.
+
+### Types of Control System
+#### Open Loop Control System
+A control system in which the control action is completely independent of the output of the system. A manual control system is on Open Loop System.
+
+#### Closed Loop Control System
+A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
+
+### PID Control
+A control loop mechanism employing feedback. A PID Controller continuously calculates an error value as the difference between desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
+
+- **Proportional**
+
+Proportional Controller gives an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, is 0 if the error is 0.
+
+- **Integral**
+
+Integral Controller provides a necessary action to eliminate the offset error which is accumulated by the P Controller.It integrates the error over a period of time until the error value reaches to zero.
+
+- **Derivative**
+
+Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
+
+{% include gallery id="pid" caption="Control Systems and PID" %}
+
+## Virtual Force Field
+The Virtual Force Field Algorithm works in the following steps:
+
+* The robot assigns an attractive vector to the objective (person).
+* The robot assigns a repulsive vector to the obstacle according to its sensor readings that points away from the waypoint. This is done by summing all the vectors that are translated from the sensor readings.
+* The robot follows the vector obtained by summing the target and obstacle vector.
+
+{% include gallery id="vff" caption="Virtual Force Field" %}
+
+## Person model teleoperator
+The web-template has a teleoperator that allows you to move the person inside the hospital. To Control the person click the button and then you will can use AWSD keys to move the model.
+
+{% include gallery id="joystick" %}
 
 
 ## Videos
