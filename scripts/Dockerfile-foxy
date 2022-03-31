@@ -4,6 +4,12 @@ FROM jderobot/base:4.0.0
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
   git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
 
+# Adding RPLIDAR ROS
+RUN cd /opt/jderobot/CustomRobots && \
+  git clone https://github.com/allenh1/rplidar_ros.git -b ros2 && \
+  cd rplidar_ros/launch && \
+  sed -i "$(grep -n serial_port rplidar.launch.py | cut -d: -f1) s/\/dev\/ttyUSB0/\/dev\/ttyUSB1/g" rplidar.launch.py
+
 # Set up Nav2
 # (dependency for warehouse exercise)
 # In order to limit the number of parallel threads as it

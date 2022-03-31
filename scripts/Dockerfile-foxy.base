@@ -1,7 +1,7 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
-ARG VIRTUALGL_VERSION=2.6.91
-ARG TURBOVNC_VERSION=2.2.80
+ARG VIRTUALGL_VERSION=2.6.5
+ARG TURBOVNC_VERSION=2.2.91
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
@@ -43,9 +43,9 @@ RUN apt-get update && apt-get install -y \
 RUN tasksel install lubuntu-core lubuntu-desktop
 
 # Install VirtualGL and TurboVNC
-RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
-    curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
-    apt-get update && apt-get install -y --no-install-recommends ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+RUN wget https://deac-fra.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    wget https://kumisystems.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+    apt-get update && dpkg -i ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     chmod u+s /usr/lib/libvglfaker.so && \
     chmod u+s /usr/lib/libdlfaker.so && \
@@ -53,7 +53,7 @@ RUN curl -fsSL -O https://s3.amazonaws.com/virtualgl-pr/main/linux/virtualgl_${V
     chmod u+s /usr/lib32/libdlfaker.so && \
     chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
     chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so && \
-    curl -fsSL -O https://s3.amazonaws.com/turbovnc-pr/dev/linux/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/turbovnc-pr/main/linux/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     apt-get update && apt-get install -y --no-install-recommends ./turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     rm -rf /var/lib/apt/lists/* && \
@@ -165,8 +165,8 @@ RUN git clone https://github.com/eProsima/foonathan_memory_vendor.git /tmp/foona
 	&& rm -rf /tmp/*
 
 # Fast-DDS (Fast-RTPS 2.0.0)
-RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.0.0 /tmp/FastRTPS-2.0.0 \
-	&& cd /tmp/FastRTPS-2.0.0 \
+RUN git clone --recursive https://github.com/eProsima/Fast-DDS.git -b v2.1.0 /tmp/FastRTPS-2.1.0 \
+	&& cd /tmp/FastRTPS-2.1.0 \
 	&& mkdir build && cd build \
 	&& cmake -DTHIRDPARTY=ON -DSECURITY=ON .. \
 	&& cmake --build . --target install -- -j $(nproc) \
@@ -212,6 +212,22 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
     ros-$ROS_DISTRO-turtlebot3 \
     ros-$ROS_DISTRO-turtlebot3-simulations \
     ros-$ROS_DISTRO-bondcpp \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+
+# Follow Person: Turtlebot2 dependencies
+RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
+    ros-$ROS_DISTRO-ecl-build \
+    ros-$ROS_DISTRO-diagnostic-updater \
+    ros-$ROS_DISTRO-kobuki-core \
+    ros-$ROS_DISTRO-ecl-errors \
+    ros-$ROS_DISTRO-ecl-exceptions \
+    ros-$ROS_DISTRO-ecl-geometry \
+    ros-$ROS_DISTRO-ecl-linear-algebra \
+    ros-$ROS_DISTRO-ecl-sigslots \
+    ros-$ROS_DISTRO-joint-state-publisher \
+    ros-$ROS_DISTRO-v4l2-camera \
   && apt-get -y autoremove \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
