@@ -234,10 +234,14 @@ laser_data = self.getLaserData ()
 
 def parse_laser_data (laser_data):
     laser = []
-    for i in range (laser_data.numLaser):
-        dist = laser_data.distanceData [i] /1000.0
-        angle = math.radians (i)
+    i = 0
+    while (i < 180):
+        dist = laser_data.values[i]
+        if dist > 10:
+            dist = 10
+        angle = math.radians(i-90) # because the front of the robot is -90 degrees
         laser += [(dist, angle)]
+        i+=1
     return laser
 ```
 
