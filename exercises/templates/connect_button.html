@@ -59,6 +59,11 @@
 
                 {% if "loadIntoRobot_button" in indexs %}
                     togglePlayPause(false);
+                    {% else %}
+                    let submit_button = document.getElementById("submit");
+                    submit_button.disabled = false;
+                    submit_button.style.opacity = "1.0";
+					submit_button.style.cursor = "default";
                 {% endif %}
 
 
@@ -125,6 +130,8 @@
 
                      {% if "loadIntoRobot_button" in indexs %}
                         document.getElementById("loadIntoRobot").title = "Code changed since last sending";
+                         {% else %}
+                         document.getElementById("submit").title = "Code changed since last sending";
                      {% endif %}
 
 
@@ -132,6 +139,8 @@
 					document.getElementById("loadIntoRobotAlert").style.display = 'none';
                     {% if "loadIntoRobot_button" in indexs %}
                         document.getElementById("loadIntoRobot").title = "";
+                        {% else %}
+                         document.getElementById("submit").title = "";
 				    {% endif %}
 
 				}
