@@ -56,15 +56,23 @@
 				$("#launch-button").removeClass("btn-warning").addClass("btn-success");
 				$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
 				$("#launch-button").prop('disabled', true);
-				togglePlayPause(false);
+
+                {% if "loadIntoRobot_button" in indexs %}
+                    togglePlayPause(false);
+                {% endif %}
+
+
 				let reset_button = document.getElementById("reset");
 				reset_button.disabled = false;
 				reset_button.style.opacity = "1.0";
 				reset_button.style.cursor = "default";
-				let load_button = document.getElementById("loadIntoRobot");
+             {% if "loadIntoRobot_button" in indexs %}
+                 let load_button = document.getElementById("loadIntoRobot");
 				load_button.disabled = false;
 				load_button.style.opacity = "1.0";
 				load_button.style.cursor = "default";
+				{% endif %}
+
 			}else if (data.command == 'down'){
 				$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
 				$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
@@ -83,7 +91,7 @@
 				$('#errorModal .modal-header .modal-header-text').text("Style evaluation:");
 				if (data.text.replace(/\s/g, '').length)
 					$('#errorModal .modal-body').text(data.text);
-				else 
+				else
 					$('#errorModal .modal-body').text("Everything is correct!");
 				$('#errorModal').modal({ show:true, backdrop: false});
 				$('#errorModal .modal-dialog').draggable({});
@@ -114,10 +122,18 @@
 			if (firstCodeSent) {
 				if (toggle) {
 					document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
-					document.getElementById("loadIntoRobot").title = "Code changed since last sending";
+
+                     {% if "loadIntoRobot_button" in indexs %}
+                        document.getElementById("loadIntoRobot").title = "Code changed since last sending";
+                     {% endif %}
+
+
 				} else {
 					document.getElementById("loadIntoRobotAlert").style.display = 'none';
-					document.getElementById("loadIntoRobot").title = "";
+                    {% if "loadIntoRobot_button" in indexs %}
+                        document.getElementById("loadIntoRobot").title = "";
+				    {% endif %}
+
 				}
 			}
 		}
