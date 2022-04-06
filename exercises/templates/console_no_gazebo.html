@@ -1,0 +1,56 @@
+{% load static %}
+<script type="text/javascript">
+				    var exercise = "{{ exercise }}";
+
+                     function changeconsole(){
+                        var console_display = document.getElementById('console-vnc').style.display
+                        console.log(console_display)
+                        if (console_display == "none" || console_display == "none" ) {
+							setIframeConsole();
+                          document.getElementById('console-vnc').style.display = 'block';
+                        } else{
+                          document.getElementById('console-vnc').style.display = 'none';
+                        }
+                     }
+                     function changegzweb(websocket_address){
+						changeMapping();
+                     }
+                     function HelpWindow(){
+                        var popup = document.getElementById("myPopup");
+                        popup.classList.toggle("show");
+                    }
+
+					function toggleSubmitButton(toggle) {
+						let submit_button = document.getElementById("submit");
+						if (toggle == false) {
+							submit_button.disabled = true;
+							submit_button.style.opacity = "0.4";
+							submit_button.style.cursor = "not-allowed";
+						} else {
+							submit_button.disabled = false;
+							submit_button.style.opacity = "1.0";
+							submit_button.style.cursor = "default";
+						}
+					}
+
+					function setFontSize(augm) {
+						if (augm) {
+							if (editorele.getFontSize() < 70)
+								editorele.setFontSize(editorele.getFontSize()+1);
+						} else {
+							if (editorele.getFontSize() > 2)
+								editorele.setFontSize(editorele.getFontSize()-1);
+						}
+					}
+                </script>
+
+        <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+        <script>
+            Split(['.a', '.b'], {
+                gutterSize: 3,
+                sizes: [50,50]
+            });
+			window.addEventListener('load', function () {
+        window.top.postMessage('connect', '*');
+    })
+        </script>
