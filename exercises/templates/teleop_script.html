@@ -1,0 +1,12 @@
+{% load static %}
+<script>
+        function change_teleop_img() {
+        const teleop_img = document.querySelector('#teleop_img');
+        if (teleop_switch) {
+        teleop_img.src = "{% static 'common/img/joystick_on.png' %}";
+        }
+        else {
+        teleop_img.src = "{% static 'common/img/joystick_off.png' %}";
+        }
+    }
+    </script>
