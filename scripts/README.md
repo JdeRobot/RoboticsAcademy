@@ -10,12 +10,13 @@ The image contains the following:
 - [Gazebo-11](http://gazebosim.org/) that comes with ROS Noetic
 - [Robotics Academy](https://github.com/JdeRobot/RoboticsAcademy) is present in `\`
 - [CustomRobots](https://github.com/JdeRobot/CustomRobots) is present in `\opt\jderobot\`
+- [Drones](https://github.com/JdeRobot/drones) is present in `\`
 - [Gzweb](https://github.com/osrf/gzweb) is present in `\`
 - Python3.8 with the library [websocket_server](https://pypi.org/project/websocket-server/)
 - Python3.8 with the library [websockets](https://pypi.org/project/websockets/) and [asyncio](https://pypi.org/project/asyncio/)
 - [Xvfb](https://www.x.org/releases/X11R7.6/doc/man/man1/Xvfb.1.xhtml) as the XServer for loading images from Gazebo camera
 
-The exercise runs using the CustomRobots directory as a dependency. The Gazebo simulation's visual view is provided by Gzweb.
+The exercise runs using the CustomRobots and drones directories as a dependency. The Gazebo simulation's visual view is provided by Gzweb.
 
 
 ## Installation
@@ -25,8 +26,8 @@ First you need to build the image. Then, you need to run a container.
 ```
 git clone https://github.com/JdeRobot/RoboticsAcademy.git -b noetic
 cd scripts
-docker build -t image-name .
-docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy ./start.sh
+./build.sh <tag>
+docker run -it --rm -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 2304:2304 -p 1904:1904 jderobot/robotics-academy:<tag> ./start.sh
 ```
 
 ## Manager Script
