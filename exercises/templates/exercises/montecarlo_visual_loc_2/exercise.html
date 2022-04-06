@@ -1,0 +1,78 @@
+{% extends "exercise_base.html" %}
+{% load static %} <!-- Cargamos los archivos estaticos -->
+{% block content %}
+
+  <div id="theory-view" style="display: none;">
+	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc" id="iframe-tab"></iframe>
+</div>
+
+<div class="content" id="exercise-view">
+	<div class="split a">
+
+	<br>
+	{% if "code_control" in indexs %}
+                {% include 'code_control.html' %}
+            {% endif %}
+
+  </div>
+
+
+    <div class="split b">
+
+        {% if "visualization" in indexs %}
+   	        <div class="row" id="visual">
+			    <div class="col-6">
+				    <canvas id="birds-eye-montecarlo"></canvas>
+			    </div>
+                <div class="col-6">
+                    <img id="gui_canvas"></img>
+                </div>
+            </div>
+            {% endif %}
+
+
+	<br>
+    {% if "gazebo" in indexs %}
+        {% include 'gazebo.html' %}
+    {% endif %}
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
+		</div>
+	</div>
+
+       {% if "console" in indexs %}
+           {% include 'console.html' with exercise="montecarlo_visual_loc" %}
+       {% endif %}
+
+    <!-- Common -->
+    <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
+    <!-- Exercise specific resources -->
+    {% for file in statics %}
+        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+    {% endfor %}
+
+    <!-- BOTON DE CONEXION CON RADI-->
+    {% if "connect_button" in indexs %}
+        {% include 'connect_button.html' %}
+    {% endif %}
+
+    {% if user_code|length > 0%}
+        <script type="text/javascript">
+            code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/, ">").replace(/&lt;/, "<")
+            console.log(code);
+            editorele.setValue(code)
+        </script>
+    {% endif %}
+
+</div>
+</div>
+	{% endblock %}
