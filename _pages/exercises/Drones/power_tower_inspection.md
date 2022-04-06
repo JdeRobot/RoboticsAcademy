@@ -181,7 +181,13 @@ No, you can solve this exercise without taking care of the **land state** of the
 
 <!-- ### Demonstrative video of the solution
 
-{% include youtubePlayer.html id=page.youtubeId2 %} --> -->
+{% include youtubePlayer.html id=page.youtubeId2 %} --> 
+
+## Reference Power Tower & Wires' Models from:
+
+František Nekovář, Jan Faigl and Martin Saska. Multi-tour Set Traveling Salesman Problem in Planning Power Transmission Line Inspection. IEEE Robotics and Automation Letters 6(4):6196-6203, October 2021.
+
+Giuseppe Silano, Tomas Baca, Robert Penicka, Davide Liuzza and Martin Saska. Power Line Inspection Tasks with Multi-Aerial Robot Systems via Signal Temporal Logic Specifications. IEEE Robotics and Automation Letters 6(2):4169–4176, April 2021.
 
 -------
 
