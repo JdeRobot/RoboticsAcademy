@@ -431,6 +431,17 @@ feature_row:
     version_label: "btn--success"
     status: "prototype"
     order: 2;
+  
+  - image_path: /assets/images/exercises/real_follow_person/real_turtlebot2.png
+    alt: "Real Follow Person"
+    title: "Real Follow Person (ROS2)"
+    excerpt: "Follow a Person using a real Turtlebot 2 robot with Deep Learning"
+    url: "/exercises/MobileRobots/real_follow_person"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
 
 ---
 
