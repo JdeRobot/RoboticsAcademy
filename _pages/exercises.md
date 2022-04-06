@@ -257,9 +257,9 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    status: "prototype"
+    status: "running"
     order: 2;
-    version: "v3.1"
+    version: "v3.2"
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"

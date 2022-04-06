@@ -15,7 +15,7 @@ gallery:
     alt: "Power Tower Inspection."
     title: "Power Tower Inspection."
 
-# youtubeId1: 
+youtubeId1: IAGZmqNrmio
 # youtubeId2: 
 
 ---
@@ -175,13 +175,19 @@ In this exercise, you should use the Nose Forward Mode.
 
 No, you can solve this exercise without taking care of the **land state** of the drone. However, it could be a great enhancement to your blocking position control function if you make it only work when the drone is actually flying, not on the ground.
 
-<!-- ## Videos
+## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-### Demonstrative video of the solution
+<!-- ### Demonstrative video of the solution
 
-{% include youtubePlayer.html id=page.youtubeId2 %} -->
+{% include youtubePlayer.html id=page.youtubeId2 %} --> 
+
+## Reference Power Tower & Wires' Models from:
+
+František Nekovář, Jan Faigl and Martin Saska. Multi-tour Set Traveling Salesman Problem in Planning Power Transmission Line Inspection. IEEE Robotics and Automation Letters 6(4):6196-6203, October 2021.
+
+Giuseppe Silano, Tomas Baca, Robert Penicka, Davide Liuzza and Martin Saska. Power Line Inspection Tasks with Multi-Aerial Robot Systems via Signal Temporal Logic Specifications. IEEE Robotics and Automation Letters 6(2):4169–4176, April 2021.
 
 -------
 
