@@ -117,12 +117,12 @@
     },
     "laser_mapping": {
         "gazebo_path": "/RoboticsAcademy/exercises/laser_mapping/web-template/launch",
-        "instructions_ros": ["./launch_stdr.sh"],
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch /opt/jderobot/CustomRobots/stdr_simulator/stdr_launchers/launch/amigobot_without_gui.launch"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/laser_mapping/web-template/exercise.py 0.0.0.0"
     },
     "laser_loc": {
         "gazebo_path": "/RoboticsAcademy/exercises/laser_loc/web-template/launch",
-        "instructions_ros": ["./launch_stdr.sh"],
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch /opt/jderobot/CustomRobots/stdr_simulator/stdr_launchers/launch/amigobot_without_gui.launch"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/laser_loc/web-template/exercise.py 0.0.0.0"
     },
     "package_delivery": {
