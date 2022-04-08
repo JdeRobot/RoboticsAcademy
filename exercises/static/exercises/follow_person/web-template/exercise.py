@@ -301,6 +301,8 @@ class Template:
                 self.model_client.sendto(str.encode("UAL"), self.model_address) # User Angular Left
             elif mode == "d":
                 self.model_client.sendto(str.encode("UAR"), self.model_address) # User Angular Right
+            elif mode == "x":
+                self.model_client.sendto(str.encode("US--"), self.model_address) # User Stop model
             return
 
         try:
