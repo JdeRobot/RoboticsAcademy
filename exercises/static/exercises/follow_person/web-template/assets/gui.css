@@ -12,15 +12,8 @@
 
 #gui_canvas {
     margin-left: 0%;
-    height: 316px;
-    width: 422px;
-    border: 3px solid #555;
-}
-
-#gui_canvas_ray {
-    margin-right: 20%;
-    height: 316px;
-    width: 422px;
+    height: 379px;
+    width: 506px;
     border: 3px solid #555;
 }
 
