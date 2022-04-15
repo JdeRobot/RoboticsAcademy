@@ -20,7 +20,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Install desktop and tools
+# Install desktop and common tools
 RUN apt-get update && apt-get install -y \
         software-properties-common \
         apt-utils \
@@ -82,7 +82,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libdbus-c++-1-0v5 && \
     rm -rf /var/lib/apt/lists/*
 
-# PX4
+# PX4 dependencies
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
         bzip2 \
         ca-certificates \
