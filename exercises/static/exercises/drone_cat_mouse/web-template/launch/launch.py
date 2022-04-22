@@ -44,17 +44,30 @@ class Test():
         except rospy.ROSException:
             return False
 
-    def px4(self, path, regex):
+    # def px4(self, path, regex):
+    #     rospy.logwarn("[PX4-SITL] Launching")
+    #     start_time = rospy.get_time()
+    #     while rospy.get_time() - start_time < TIMEOUT:
+    #         rospy.sleep(1)
+    #         filename = find_sitl_log(path, regex)  # None until sitl launchs
+    #         if filename is None: continue
+    #         with open(os.path.join(path, filename), "r") as f:
+    #             for line in f:
+    #                 if "INFO  [px4] Startup script returned successfully" in line:
+    #                     return True
+    #     return False
+
+    def px4(self, instance):
         rospy.logwarn("[PX4-SITL] Launching")
         start_time = rospy.get_time()
+        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander","--instance", instance, "check"]
         while rospy.get_time() - start_time < TIMEOUT:
-            rospy.sleep(1)
-            filename = find_sitl_log(path, regex)  # None until sitl launchs
-            if filename is None: continue
-            with open(os.path.join(path, filename), "r") as f:
-                for line in f:
-                    if "INFO  [px4] Startup script returned successfully" in line:
+            process = spawn_process(args, insert_vglrun=False)
+            with process.stdout:
+                for line in iter(process.stdout.readline, ''):
+                    if ("Prearm check: OK" in line):
                         return True
+            rospy.sleep(2)
         return False
 
     def mavros(self, ns=""):
@@ -100,7 +113,7 @@ class Launch():
             attempt = attempt + 1
 
 
-        ######## LAUNCH PX4_CAT ########
+        ######## LAUNCH PX4_CAT (INSTANCE 0) ######## 
         args = ["/opt/ros/noetic/bin/roslaunch", 
                 "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", 
                 "--log"
@@ -109,7 +122,7 @@ class Launch():
         attempt = 1
         while True:
             spawn_process(args, insert_vglrun=self.acceleration_enabled)
-            if self.test.px4(self.log_path, "cat-sitl") == True:
+            if self.test.px4("0") == True:
                 break
             if attempt == MAX_ATTEMPT:
                 rospy.logerr("[PX4_CAT] Launch Failed")
@@ -133,7 +146,7 @@ class Launch():
                 return
             attempt = attempt + 1
 
-        ######## LAUNCH PX4_MOUSE ########
+        ######## LAUNCH PX4_MOUSE  (INSTANCE 1) ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
                 "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", 
                 "--log"
@@ -142,7 +155,7 @@ class Launch():
         attempt = 1
         while True:
             spawn_process(args, insert_vglrun=self.acceleration_enabled)
-            if self.test.px4(self.log_path, "mouse-sitl") == True:
+            if self.test.px4("1") == True:
                 break
             if attempt == MAX_ATTEMPT:
                 rospy.logerr("[PX4_MOUSE] Launch Failed")

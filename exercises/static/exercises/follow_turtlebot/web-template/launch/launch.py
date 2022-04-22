@@ -11,7 +11,6 @@ EXERCISE = "follow_turtlebot"
 TIMEOUT = 30
 MAX_ATTEMPT = 2
 
-
 # Check if acceleration can be enabled
 def check_device(device_path):
     try:
@@ -40,7 +39,7 @@ class Test():
     def px4(self):
         rospy.logwarn("[PX4-SITL] Launching")
         start_time = rospy.get_time()
-        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander", "check"]
+        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander","--instance", "0", "check"]
         while rospy.get_time() - start_time < TIMEOUT:
             process = spawn_process(args, insert_vglrun=False)
             with process.stdout:
