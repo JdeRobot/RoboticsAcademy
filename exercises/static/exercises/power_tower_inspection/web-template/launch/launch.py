@@ -5,12 +5,20 @@ import rospy
 from os import lstat
 from subprocess import Popen, PIPE
 
+
+DRI_PATH = "/dev/dri/card0"
+EXERCISE = "power_tower_inspection"
+TIMEOUT = 30
+MAX_ATTEMPT = 2
+
+
 # Function to check if a device exists
 def check_device(device_path):
     try:
         return stat.S_ISCHR(lstat(device_path)[stat.ST_MODE])
     except:
         return False
+
 
 # Spawn new process
 def spawn_process(args, insert_vglrun=False):
@@ -19,11 +27,6 @@ def spawn_process(args, insert_vglrun=False):
     process = Popen(args, stdout=PIPE, bufsize=1, universal_newlines=True)
     return process
 
-
-DRI_PATH = "/dev/dri/card0"
-EXERCISE = "power_tower_inspection"
-TIMEOUT = 30
-MAX_ATTEMPT = 2
 
 class Test():
     def gazebo(self):
