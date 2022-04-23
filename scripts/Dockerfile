@@ -26,10 +26,7 @@ RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # Scripts copy
-COPY .env /
-COPY manager.py /manager.py
-COPY instructions.json /instructions.json
-COPY pylint_checker.py /pylint_checker.py
+COPY [".env", "manager.py", "instructions.json", "pylint_checker.py", "entrypoint.sh", "./"]
 COPY pylintrc /etc/pylintrc
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
@@ -58,6 +55,6 @@ EXPOSE 6080
 # WebRtc
 EXPOSE 1831
 
-COPY entrypoint.sh /
+
 ENTRYPOINT [ "./entrypoint.sh" ]
 # CMD ["--help"]
