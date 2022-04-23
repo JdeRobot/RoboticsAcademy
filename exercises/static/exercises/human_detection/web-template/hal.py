@@ -1,5 +1,33 @@
 import cv2
 import os
+import threading
+from threading import *
+
+
+class WebcamStream:
+    def __init__(self,id=0):
+        self.id = id
+        self.cap = cv2.VideoCapture(id)
+        self.start_flag = False
+
+        
+    def start(self):
+        self.t = Thread(target=self.update)
+        self.t.daemon = True
+        self.t.start()
+        self.start_flag = True
+
+
+    def update(self):
+        while True:
+            self.flag,self.frame = self.cap.read()
+            if self.flag is False:
+                print("\nError getting Frame")
+                break
+        self.cap.release()
+
+    def read(self):
+        return self.frame
 
 
 class HAL:
@@ -8,7 +36,7 @@ class HAL:
         # Saving the current path for later use.
         # The current path is somehow required everytime for accessing files, when the exercise is running in the docker container.
         self.current_path = os.path.dirname(os.path.abspath(__file__))
-        self.cameraCapture = cv2.VideoCapture(0)
+        self.cameraCapture = WebcamStream(id=0)
         self.benchmark_vid_capture = cv2.VideoCapture(self.current_path + "/benchmarking/test_vid/video.avi")
         self.uploaded_vid_capture = cv2.VideoCapture(self.current_path + "/uploaded_video.mp4")
         #path to the ground truth detections directory
@@ -16,7 +44,9 @@ class HAL:
         self.frame_number = 0
 
     def getImage(self):
-        success, frame = self.cameraCapture.read()
+        if(self.cameraCapture.start_flag==False):
+            self.cameraCapture.start()
+        frame = self.cameraCapture.read()
         return frame
 
     def getBenchmarkVid(self):
