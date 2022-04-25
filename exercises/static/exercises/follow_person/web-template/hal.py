@@ -41,7 +41,8 @@ class HAL:
     	self.motors.sendW(velocity)
     
     def getLaserData(self):
-    	return self.laser.getLaserData()
+    	values = self.laser.getLaserData().values
+    	return values[90:0:-1] + values[0:1] + values[360:270:-1]
     
     def getImage(self):
     	return self.camera.getImage().data
