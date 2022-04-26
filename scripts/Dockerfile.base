@@ -1,3 +1,4 @@
+
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
 ARG VIRTUALGL_VERSION=2.6.5
@@ -43,8 +44,8 @@ RUN apt-get update && apt-get install -y \
 RUN tasksel install lubuntu-core lubuntu-desktop
 
 # Install VirtualGL and TurboVNC
-RUN wget https://deac-fra.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
-    wget https://kumisystems.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+RUN wget --no-check-certificate https://deac-fra.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    wget --no-check-certificate https://kumisystems.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     apt-get update && dpkg -i ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     chmod u+s /usr/lib/libvglfaker.so && \
