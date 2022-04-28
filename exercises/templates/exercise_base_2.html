@@ -7,12 +7,11 @@
 <head>
     <meta http-equiv="Content-type" content="text/html" charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href='{% static "common/img/logo.ico"%}' sizes="32x32">
-    <title>RoboticsAcademy</title>
-    <link rel="stylesheet" href="{% static 'common/css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'common/css/split_style.css' %}">
-    <link rel="stylesheet" href="{% static 'common/css/gui.css' %}">
-    <link rel="stylesheet" href="{% static 'common/css/console.css' %}">
+
+    {% block inicializacion %}
+
+    {% endblock %}
+
     <!-- Bootstrap 3.3.7 from local -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -30,29 +29,30 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-    <!-- SWAL -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    {% block startFunctions%}
 
+    {% endblock %}
 
-    <!-- Roboto Typography -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    {% block style%}
 
-    <!-- Hoja de Estilo principal de la Aplicación (Main Styles) -->
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/navbar.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'common/css/animate.css' %}">
+    {% endblock %}
 
-    <!--Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-
-    {% include 'exercise_style.html' %}
 </head>
 
 
 <body>
 
+    {% block evalModalUnibotics %}
+
+    {% endblock %}
+
     <!-- NAVBAR -->
-    {% include 'navbar.html' %}
+    {% block navegationBar %}
+    {% endblock %}
+
+    {% block exitButton %}
+
+    {% endblock %}
 
     <script>
         var launch_level = 0;
@@ -69,7 +69,7 @@
 
    {% include 'toolbar.html' %}
 
-<script>
+    <script>
 
     		// Car variables
 		let v = 0;
@@ -105,7 +105,7 @@
 			}
 		}
 
-</script>
+    </script>
 
 
 
