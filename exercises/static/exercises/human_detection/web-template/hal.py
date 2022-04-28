@@ -3,15 +3,17 @@ import os
 import threading
 from threading import *
 
-
+#Multi-threading frame access class
 class WebcamStream:
     def __init__(self,id=0):
         self.id = id
         self.cap = cv2.VideoCapture(id)
+        #flag to check if the thread is started
         self.start_flag = False
 
         
     def start(self):
+        #Seperate thread for update function
         self.t = Thread(target=self.update)
         self.t.daemon = True
         self.t.start()
@@ -19,6 +21,7 @@ class WebcamStream:
 
 
     def update(self):
+        #Access frames
         while True:
             self.flag,self.frame = self.cap.read()
             if self.flag is False:
@@ -27,6 +30,7 @@ class WebcamStream:
         self.cap.release()
 
     def read(self):
+        #returning the frames
         return self.frame
 
 
@@ -36,6 +40,7 @@ class HAL:
         # Saving the current path for later use.
         # The current path is somehow required everytime for accessing files, when the exercise is running in the docker container.
         self.current_path = os.path.dirname(os.path.abspath(__file__))
+        #Custom class object
         self.cameraCapture = WebcamStream(id=0)
         self.benchmark_vid_capture = cv2.VideoCapture(self.current_path + "/benchmarking/test_vid/video.avi")
         self.uploaded_vid_capture = cv2.VideoCapture(self.current_path + "/uploaded_video.mp4")
@@ -44,6 +49,7 @@ class HAL:
         self.frame_number = 0
 
     def getImage(self):
+        #Starting the thread if not started
         if(self.cameraCapture.start_flag==False):
             self.cameraCapture.start()
         frame = self.cameraCapture.read()
