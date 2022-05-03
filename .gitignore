@@ -95,3 +95,6 @@ docs/.jekyll-cache/
 
 .jekyll-cache
 _site
+
+# IDEs
+.vscode
