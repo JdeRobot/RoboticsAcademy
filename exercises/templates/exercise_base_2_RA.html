@@ -15,59 +15,41 @@
 
 {% block startFunctions%}
 
-    {% if user.is_authenticated %}
-        <!-- SWAL -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-        <script src="{% static 'js/idle.js' %}?v={{SYS_VERSION}}" type="text/javascript" charset="utf-8"></script>
+<!-- SWAL -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script>
+        function showInfoModal() {
+            $("#info-modal").modal('show');
+        }
 
-        <script>
-            var isLocalBackend = "{{ user.online_docker }}".toLowerCase()
-            if (isLocalBackend === "false"){
-                $(document).ready(function () {
-                    $("#deployment-modal").modal('show');
-                });
-            }
+        function hideLoadModal() {
+            $("#load-modal").modal('hide');
+        }
+
+        function showLoadModal() {
+            $("#load-modal").modal('show');
+        }
 
 
-            function showInfoModal() {
-                $("#info-modal").modal('show');
-            }
-            function hideLoadModal() {
-                $("#load-modal").modal('hide');
-            }
+        // Tab selection functions
+        function openExercise() {
+            hideAll();
+            $("#exercise-view").show();
+            $("#exercise-controls").show();
+        }
 
-            function showLoadModal() {
-                $("#load-modal").modal('show');
-            }
+        function openTheory() {
+            hideAll();
+            $("#theory-view").show();
+        }
 
-            // Tab selection functions
-            function openExercise() {
-                hideAll();
-                $("#exercise-view").show();
-                $("#exercise-controls").show();
-            }
-
-            function openTheory() {
-                hideAll();
-                $("#theory-view").show();
-            }
-
-            function openForum() {
-                hideAll();
-                $("#forum-view").show();
-
-                //window.open('https://forum.unibotics.org/', '_blank');
-            }
-
-            function hideAll() {
-                $("#exercise-view").hide();
-                $("#exercise-controls").hide();
-                $("#theory-view").hide();
-                $("#forum-view").hide();
-            }
-        </script>
-        <script src="{% static 'unibotics-exercises/static/assets/common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
-    {% endif %}
+        function hideAll() {
+            $("#exercise-view").hide();
+            $("#exercise-controls").hide();
+            $("#theory-view").hide();
+            $("#forum-view").hide();
+        }
+    </script>
 
 {% endblock %}
 
