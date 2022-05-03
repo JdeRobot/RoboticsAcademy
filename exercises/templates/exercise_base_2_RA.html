@@ -1,0 +1,116 @@
+{% extends 'exercise_base_2.html' %}
+
+{% load static %}
+{% load i18n %}
+
+{% block inicializacion %}
+
+    <title>RoboticsAcademy</title>
+    <link rel="stylesheet" href="{% static 'common/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'common/css/split_style.css' %}">
+    <link rel="stylesheet" href="{% static 'common/css/gui.css' %}">
+    <link rel="stylesheet" href="{% static 'common/css/console.css' %}">
+
+{% endblock %}
+
+{% block startFunctions%}
+
+<!-- SWAL -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script>
+        function showInfoModal() {
+            $("#info-modal").modal('show');
+        }
+
+        function hideLoadModal() {
+            $("#load-modal").modal('hide');
+        }
+
+        function showLoadModal() {
+            $("#load-modal").modal('show');
+        }
+
+
+        // Tab selection functions
+        function openExercise() {
+            hideAll();
+            $("#exercise-view").show();
+            $("#exercise-controls").show();
+        }
+
+        function openTheory() {
+            hideAll();
+            $("#theory-view").show();
+        }
+
+        function hideAll() {
+            $("#exercise-view").hide();
+            $("#exercise-controls").hide();
+            $("#theory-view").hide();
+            $("#forum-view").hide();
+        }
+    </script>
+
+{% endblock %}
+
+{% block style%}
+
+    <!-- Roboto Typography -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+    <!-- Hoja de Estilo principal de la Aplicación (Main Styles) -->
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/navbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/animate.css' %}">
+
+    <!--Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    {% include 'exercise_style_RA.html' %}
+
+{% endblock %}
+
+{% block navegationBar %}
+
+     <nav class="navbar navbar-expand-md navbar-light bg-light" style="padding-top: 0px; padding-bottom: 0px;">
+
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+
+
+
+    <img src="{% static 'common/img/logo.png' %}" class="d-inline-block align-top"
+                height="28" alt="Academy">
+
+    <div class="col-xs-3 ml-auto">
+
+                <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="connection-button" value="local-connection" disabled="true"><span id="loading-connection"
+                        class="bi bi-arrow-down-up"></span> Connect</button>
+
+                <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="launch-button" value="local-connection"><span id="loading-connection"
+                            class="bi bi-arrow-down-up"></span> Launch</button>
+
+                <button type="button" class="btn" onclick="showInfoModal()"><span class="fa fa-question-circle-o" style="font: normal normal normal 20px/1 FontAwesome; padding-top: 2px; padding-bottom: 2px;"></span></button>
+
+    </div>
+
+    <!-- Cuando se genere el token se le muestra la url de invitado y se quita cuando se detecta conexión-->
+    <div id="rtc-url" style="color: black; margin: 15px"></div>
+
+    <div class="mr-auto">
+                    <div id="Control" class="container">
+                        <button id="open-theory" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-right-radius: 0px; border-bottom-right-radius: 0px;" type="button" onclick="openTheory()"><i class="fa fa-graduation-cap" aria-hidden="true"></i></button>
+                        <button id="open-exercise" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;border-top-right-radius: 0px; border-bottom-right-radius: 0px;"  type="button" onclick="openExercise()"><i class="fa fa-code" aria-hidden="true"></i></button>
+                        <button id="open-forum" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px; border-top-left-radius: 0px; border-bottom-left-radius: 0px;"  type="button" onclick="openForum()"><img src="{% static 'common/img/forum.svg' %}" height="20" style="filter: brightness(0) invert(1);"/></button>
+                    </div>
+    </div>
+
+    {% include 'navbar.html' %}
+
+{% endblock %}
+
+
+
