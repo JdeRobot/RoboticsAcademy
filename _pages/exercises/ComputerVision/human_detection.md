@@ -47,7 +47,7 @@ The user is expected to upload a Deep Learning model which fits the required inp
 git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 cd scripts
 docker build -t image-name .
-docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy ./start.sh
+docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy
 ```  
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
