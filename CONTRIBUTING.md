@@ -1,3 +1,5 @@
+<a href="https://mmg-ai.com/en/"><img src="https://jderobot.github.io/assets/images/logo.png" width="100 " align="right" /></a>
+
 # Contributing to RoboticsAcademy
 
 First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
