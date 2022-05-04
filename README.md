@@ -8,7 +8,7 @@ If you are a contributor, please note that we use GitHub Pages and a Jekyll them
 
 ## How to contribute?
 
-Take a look at the [contribute section](https://jderobot.github.io/RoboticsAcademy/contribute/) to join this project.
+Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 
 
 
