@@ -1,4 +1,5 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
+
 {% load static %} <!-- Cargamos los archivos estaticos -->
 {% block content %}
 
@@ -25,7 +26,15 @@
         <div class="split b">
             {% if "visualization" in indexs %}
                 <div class="row" id="visual">
-		            <div class="col-md-12">
+
+                 {% if exercise_base == "exercise_base_2_U.html" %}
+                    <!-- codigo unibotics unicamente -->
+                    <div class="col-md-8">
+                {% else %}
+                    <!-- codigo robotics unicamente -->
+                    <div class="col-md-12">
+                {% endif %}
+
 			            <div class="card text-center">
 				            <div class="card-header">
 					            Visualization
@@ -40,6 +49,12 @@
 				            </div>
 			            </div>
 		            </div>
+
+                <!-- codigo unibotics unicamente -->
+                {% if exercise_base == "exercise_base_2_U.html" %}
+                    {% include "obstacle_avoidance_2/evaluator.html" %}
+                {% endif %}
+
                 </div>
 
 
@@ -59,22 +74,44 @@
                 {% include 'console.html' with exercise="obstacle_avoidance" %}
             {% endif %}
 
-    <!-- Common -->
-    <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-    <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-    <!-- Exercise specific resources -->
-    {% for file in statics %}
 
-        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+                {% if exercise_base == "exercise_base_2_U.html" %}
+                    <!-- codigo unibotics unicamente -->
+                    <!-- Common -->
+                    <script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'unibotics-exercises/static/assets/common/js/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'unibotics-exercises/static/assets/common/js/ws_data.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 
-    {% endfor %}
+                    {% for file in statics %}
+
+                        <script src="{% static 'unibotics-exercises/static/assets/exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+
+                    {% endfor %}
+
+                {% else %}
+                    <!-- codigo robotics unicamente -->
+                    <!-- Common -->
+                    <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+                    <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+
+                    <!-- Exercise specific resources -->
+                    {% for file in statics %}
+
+                        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+
+                    {% endfor %}
+                {% endif %}
+
+
 
     <!-- BOTON DE CONEXION CON RADI-->
     {% if "connect_button" in indexs %}
-        {% include 'connect_button.html' %}
+        {% include 'connect_button.html'%}
     {% endif %}
 
     {% if user_code|length > 0%}

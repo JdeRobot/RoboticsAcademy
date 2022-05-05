@@ -54,8 +54,16 @@
         {% include 'stopButton.html' %}
         {% endif %}
 
-        {% if "eval" in indexs %}
+        {% if "efficacy_button" in indexs %}
             {% include 'efficacyButton.html' %}
+        {% endif %}
+
+        {% if "style_button" in indexs %}
+            {% include 'evaluate_style_button.html' %}
+        {% endif %}
+
+        {% if "evaluator_button" in indexs %}
+            {% include 'evaluator_button.html' %}
         {% endif %}
 
     </div>
