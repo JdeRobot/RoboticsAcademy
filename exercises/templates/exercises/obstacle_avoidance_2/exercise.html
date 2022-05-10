@@ -84,6 +84,14 @@
                     <script src="{% static 'unibotics-exercises/static/assets/common/js/ws_data.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
                     <script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 
+                     <script>
+                        var csrf = '{{ csrf_token }}';
+                        function intervalSave(verbose = true) {
+                            saveCodeUnibotics('{{exercise}}', verbose);
+                        }
+                        var saving = setInterval(intervalSave, 300000);
+                    </script>
+
                     {% for file in statics %}
 
                         <script src="{% static 'unibotics-exercises/static/assets/exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
