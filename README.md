@@ -1,4 +1,4 @@
-<a href="https://mmg-ai.com/en/"><img src="./img/logo.gif" width="175 " align="right" /></a>
+<a href="https://mmg-ai.com/en/"><img src="./img/logo.gif" width="150" align="right" /></a>
 
 # RoboticsAcademy: Learn Robotics, Artificial Intelligence and Computer Vision
 
