@@ -1,6 +1,14 @@
     <script>
 	window.onload = function() {
-		startSim(0);
+
+                {% if exercise_base == "exercise_base_2_U.html" %}
+                    <!-- codigo unibotics unicamente -->
+                    startSim(0, "{{websocket_address}}","{{server}}", "{{user.username}}");
+                {% else %}
+                    <!-- codigo robotics unicamente -->
+                    startSim(0);
+                {% endif %}
+
 		$("#connection-button").prop('disabled', true);
 	}
 	window.onbeforeunload = function() {
@@ -26,7 +34,14 @@
 				$("#connection-button").prop('disabled', true);
 				$("#connection-button").removeClass('btn-secondary').addClass('btn-warning');
 				$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
-					startSim(0 );
+
+                {% if exercise_base == "exercise_base_2_U.html" %}
+                    <!-- codigo unibotics unicamente -->
+                    startSim(0, "{{websocket_address}}","{{server}}", "{{user.username}}");
+                {% else %}
+                    <!-- codigo robotics unicamente -->
+                    startSim(0);
+                {% endif %}
 			}
 		});
 	});
