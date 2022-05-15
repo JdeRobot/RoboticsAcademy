@@ -8,16 +8,21 @@ sidebar:
 toc: true
 toc_label: "TOC Real Follow Person"
 toc_icon: "cog"
-
 follow_person_demo:
   - url: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
     image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
     alt: "Follow Person cover"
     title: "Follow Person Cover"
 
+r-cnn:
+  - url: /assets/images/exercises/real_follow_person/r-cnn.png
+    image_path: /assets/images/exercises/real_follow_person/r-cnn.png
+    alt: "Region-based Convolutional Neural Network (R-CNN)"
+    title: "Region-based Convolutional Neural Network (R-CNN)"
+
 real_turtlebot2:
-  - url: /assets/images/exercises/real_follow_person/real_turtlebot2.png
-    image_path: /assets/images/exercises/real_follow_person/real_turtlebot2.png
+  - url: /assets/images/exercises/real_follow_person/turtlebot2-lab.png
+    image_path: /assets/images/exercises/real_follow_person/turtlebot2-lab.png
     alt: "Simulated Turtlebot2 (ROS Foxy)"
     title: "Simulated Turtlebot2 (ROS Foxy)"
 
@@ -49,19 +54,20 @@ vff:
     alt: "Virtual Force Field (VFF)"
     title: "Virtual Force Field (VFF)"
 
-youtubeId1: "58ckb5fFvrs"
+youtubeId1: "54Jb4KJwyDM"
 ---
+
 
 ## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for follow a person with a real Turtlebot 2 robot using a CNN (Convolutional Neural Network) called SSD
+The objective of this practice is to implement the logic of a navigation algorithm for follow a person using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
 
 {% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
 
-## Turtlebot 2 (ROS Foxy)
-The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
+## TurtleBot2 (ROS2 Foxy)
+The robot that we will use is a TurtleBot2 (a circular mobile robot) implemented and developed for ROS Foxy. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
 
-{% include gallery id="real_turtlebot2" caption="Turtlebot2" %}
+{% include gallery id="real_turtlebot2" caption="TurtleBot2" %}
 
 ## Instructions
 This is the preferred way for running the exercise.
@@ -83,12 +89,11 @@ docker pull jderobot/robotics-academy:latest
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-
 ### Use of the hardware
-To use the real **Turtlebot2** we have to follow this steps:
-1. To connect the **kobuki base** with our laptop using the corresponding USB cable. This will open the device /dev/ttyUSB0
-2. To connect the **RPLIDAR laser** with our laptop using the corresponding USB cable. This will open the device /dev/ttyUSB1
-3. To connect your **camera** (realsense, webcam...) with our laptop. This will usually open the device /dev/video4. You will need to use /dev/video0, thus you will have to make a port remapping (*your_video_device* -> /dev/video0). In the next sections you will know how to do it
+To use the real *TurtleBot2* we have to follow this steps:
+1. To connect the *kobuki base* with our laptop using the corresponding USB cable. This will open the device /dev/ttyUSB0
+2. To connect the *RPLIDAR laser* with our laptop using the corresponding USB cable. This will open the device /dev/ttyUSB1
+3. To connect your *camera* (realsense, webcam...) with our laptop. This will usually open the device /dev/video4. You will need to use /dev/video0, thus you will have to make a port remapping (*your_video_device* -> /dev/video0). In the next sections you will know how to do it
 
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
@@ -138,26 +143,18 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware.
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to obtain the current frame of the camera robot.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
-* `HAL.getLaserData()` - it allows to obtain the data of the laser sensor.
+* `HAL.getLaserData()` - it allows to obtain the data of the laser sensor. It returns a list of 180 measurements of the laser (0 - 180 degrees)
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
 * `GUI.showImage()` - to show an opencv image in the web template
-
-### Laser attributes
-`HAL.getLaserData()` returns an instance of a Class with the following attributes:
-* `minAngle` - start angle of the scan [rad]
-* `maxAngle` - end angle of the scan [rad]
-* `minRange` - minimum range value [m]
-* `maxRange` - maximum range value [m]
-* `values` - a list of 360 measurements [m] (Note: values < minRange or > maxRange should be discarded)
 
 ### Bounding Box attributes
 `HAL.getBoundingBoxes()` returns an instance a list of Bounding Box Classes with the following attributes:
@@ -171,6 +168,7 @@ while True:
 
 ### Example of use
 ```python
+# Move forward
 HAL.setV(0.3)
 HAL.setW(0.0)
 
@@ -180,7 +178,8 @@ while True:
     bounding_boxes = HAL.getBoundingBoxes(img)
     laser_data = HAL.getLaserData()
 
-    # -- Process sensors data.
+    # -- Process sensors data (bounding boxes, laser ...).
+
     # -- Send commands to actuators.
 
     # -- Show some results
@@ -190,21 +189,32 @@ while True:
 ## Theory
 When we are designing a robotic application that knows how to follow a person, the most important mission is knowing how to detect it and not lose it.
 
-The first step is the detection of persons. We perform this first task using a **Convolutional Neural Network (CNN)**. It is a type of network where the first neurons capture groups of pixels and these neurons form new groups for next layers. For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/)
+The first step is the detection of persons. We perform this first task using a *Region-based Convolutional Neural Network (R-CNN)*. *CNN* are a type of networks where the first neurons capture groups of pixels and these neurons form new groups for next layers doing convolutions with *Kernel* filters. The neurons of the output layer return the percentage probability that the image belongs to a given class (*classification*). For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/). With a *R-CNN* we use a CNN on many regions of the image and we select those regions with more probability of success. There are many types of architectures based on R-CNN as Yolo or SSD. In this exercise you will use a SSD trained model. If you want to know how SSD works you can access this [link](https://developers.arcgis.com/python/guide/how-ssd-works/)
 
-Once we detect all the people in the image, we can establish several **criteria** to decide which person we are going to follow
+{% include gallery id="r-cnn" caption="Region-based Convolutional Neural Network (R-CNN)" %}
 
-In order not to lose it we can use **tracking** algorithms. A homemade method that usually works well is for each iteration to locate the Centroid of each Bounding Box and compare it with the chosen Centroid of the previous frame. We will stay with that bounding box that has the closest centroid and area most similar to the chosen bounding box of the previous frame.
+Once we detect all the people in the image, we can establish several *criteria* to decide which person we are going to follow
 
-The second step is to use the kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the **location** of the centroid of the candidate bounding box. Depending on the position we will establish a certain angular speed.
+In order not to lose it we can use *tracking* algorithms. A homemade method that usually works well is for each iteration to locate the Centroid of each Bounding Box and compare it with the chosen Centroid of the previous frame. We will stay with that bounding box that has the closest centroid and area most similar to the chosen bounding box of the previous frame.
 
-An easy method to implement is **discretized case-based behavior**. We take the width of an image and divide it into X number of columns. We assign a certain angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity
+The second step is to use the kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the *location* of the centroid of the candidate bounding box. Depending on the position we will establish a certain angular speed.
+
+An easy method to implement is *discretized case-based behavior*. We take the width of an image and divide it into X number of columns. We assign a certain angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity
 
 {% include gallery id="how_to_follow_person" caption="How to follow a person" %}
 
 Another method, a bit more complicated but more efficient, is to implement a PID controller for the angular velocity. With a good design of a [**PID controller**](#pid-controller) we will obtain a more precise and less oscillatory turning response.
 
-However, the robot moves through an environment where there may be obstacles. There is an algorithm called [**VFF (Virtual Force Field)**](#virtual-force-field) that allows us to avoid crashes while following a target. It is based on the sum of attraction and repulsion vectors that cause a different sense of direction
+However, the robot moves through an environment where there may be obstacles. There is an algorithm called [**VFF (Virtual Force Field)**](#virtual-force-field) that allows us to avoid crashes while following a target. It is based on the sum of attraction and repulsion vectors that cause a different sense of direction.
+
+## Virtual Force Field
+The Virtual Force Field Algorithm works this way:
+
+* The robot assigns an *Attraction Vector* to the objective (person). With a image, you will have to use the *Field of View* of the camera (60 degrees) to know the angle of each pixel with the center of the image. You can set a fixed module vector with a 2D camera.
+* The robot assigns a *Repulsion Vector* to the obstacle according to its sensor readings that points away from the waypoint. This is done by summing all the vectors that are translated from the sensor readings.
+* The robot follows the *Final Vector* obtained by summing the target and obstacle vector.
+
+{% include gallery id="vff" caption="Virtual Force Field" %}
 
 ## PID Controller
 To understand PID Control, let us first understand what is Control in general.
@@ -237,21 +247,12 @@ Derivative Controller gives an output depending upon the rate of change or error
 
 {% include gallery id="pid" caption="Control Systems and PID" %}
 
-## Virtual Force Field
-The Virtual Force Field Algorithm works in the following steps:
-
-* The robot assigns an attractive vector to the objective (person).
-* The robot assigns a repulsive vector to the obstacle according to its sensor readings that points away from the waypoint. This is done by summing all the vectors that are translated from the sensor readings.
-* The robot follows the vector obtained by summing the target and obstacle vector.
-
-{% include gallery id="vff" caption="Virtual Force Field" %}
-
 
 ## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-*First version of Real Follow Person (ROS2)*
+*Reference solution of Real Follow Person*
 
 <br/>
 
@@ -259,3 +260,9 @@ The Virtual Force Field Algorithm works in the following steps:
 
 - Contributors: [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Jose María Cañas](https://github.com/jmplaza)
 - Maintained by [Carlos Caminero Abad](https://github.com/Carlosalpha1).
+
+## References
+
+[1](https://analyticsindiamag.com/r-cnn-vs-fast-r-cnn-vs-faster-r-cnn-a-comparative-guide/)
+[2](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/)
+[3](https://developers.arcgis.com/python/guide/how-ssd-works/)
