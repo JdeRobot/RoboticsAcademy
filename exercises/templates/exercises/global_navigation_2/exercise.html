@@ -1,4 +1,4 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %} <!-- Cargamos los archivos estaticos -->
 {% block content %}
 
@@ -17,28 +17,34 @@
 
   <div class="split b">
 
-  <div class="row" id="visual">
-		<div class="col-md-8">
-			<div class="card text-center">
-				<div class="card-header">
-					Visualization
-				</div>
-				<div class="card-body">
-					<div class="row mx-auto">
-                        <canvas id="globalnav-eye" width="400" height="400" onclick="pickLoc()" ></canvas>
-					</div>
-					<div class="row mx-auto">
-						<hr style="border-top: 2px solid rgb(196, 196, 196); width: 100%;">
-					</div>
-					<div class="row mx-auto">
-						<img id="gui-canvas-numpy" width="400" height="400"></img>
-					</div>
-				</div>
-			</div>
-		</div>
+		{% if "visualization" in indexs %}
 
+					<div class="row" id="visual">
+												{% if exercise_base == "exercise_base_2_U.html" %}
+														<!-- codigo unibotics unicamente -->
+														<div class="col-md-8">
+												{% else %}
+														<!-- codigo robotics unicamente -->
+														<div class="col-md-12">
+												{% endif %}
+														<div class="card text-center">
+																<div class="card-header">
+																		Visualization
+																</div>
+																<div class="card-body">
+																		<div class="row mx-auto">
+																				<canvas id="{{ canvas }}"></canvas>
+																		</div>
+																		<div class="row mx-auto">
+																				<canvas id="gui_canvas"></canvas>
+																		</div>
+																</div>
+														</div>
+												</div>
 
-  </div>
+										</div>
+
+		{% endif %}
   <br>
 
     {% if "gazebo" in indexs %}
@@ -57,20 +63,34 @@
         {% include 'console.html' with exercise="global_navigation" %}
     {% endif %}
 
+		 {% if exercise_base == "exercise_base_2_U.html" %}
        <!-- Common -->
-	   <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/js/websocket_address.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	   <script src="{% static 'unibotics-exercises/static/assets/common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
        <!-- Exercise specific resources -->
         {% for file in statics %}
-            <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+            <script src="{% static 'unibotics-exercises/static/assets/exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
         {% endfor %}
+		{% else %}
+				<!-- Common -->
+	 	 <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+	 	 <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+	 	 <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+	 	 <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+	 	 <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+	 	 <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+	 	 <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+	 		 <!-- Exercise specific resources -->
+	 			{% for file in statics %}
+	 					<script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+	 			{% endfor %}
 
-
+		{% endif %}
    <!-- BOTON DE CONEXION CON RADI-->
     {% if "connect_button" in indexs %}
         {% include 'connect_button.html' %}
