@@ -1,4 +1,4 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %} <!-- Cargamos los archivos estaticos -->
 {% block content %}
 
@@ -40,23 +40,51 @@
 		{% endif %}
 	</div>
 
+  {% if exercise_base == "exercise_base_2_U.html" %}
 	 <!-- Common -->
-	<script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/controller.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/websocket_address.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src="{% static 'unibotics-exercises/static/assets/common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 
-	<!-- Exercise specific resources -->
-	<script src="{% static 'exercises/3d_reconstruction/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
-	{% for file in statics %}
-			<script src="{% static 'exercises/'%}3d_reconstruction/3DScene/{{ file }}" type="text/javascript" charset="utf-8"></script>
-	 {% endfor %}
+  	<!-- Exercise specific resources -->
+  	<script src="{% static 'unibotics-exercises/static/assets/exercises/3d_reconstruction/js/ws_gui.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+  	<script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
 
+    <script>
+    var csrf = '{{ csrf_token }}';
+    function intervalSave(verbose = true) {
+      saveCodeUnibotics('{{exercise}}', verbose);
+    }
+    var saving = setInterval(intervalSave, 300000);
+    </script>
+
+    {% for file in statics %}
+  			<script src="{% static 'unibotics-exercises/static/assets/exercises/'%}3d_reconstruction/3DScene/{{ file }}" type="text/javascript" charset="utf-8"></script>
+  	 {% endfor %}
+
+  {% else %}
+    <!-- Common -->
+   <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+
+   <!-- Exercise specific resources -->
+   <script src="{% static 'exercises/3d_reconstruction/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
+   <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
+   {% for file in statics %}
+       <script src="{% static 'exercises/'%}3d_reconstruction/3DScene/{{ file }}" type="text/javascript" charset="utf-8"></script>
+    {% endfor %}
+  {% endif %}
   <!-- BOTON DE CONEXION CON RADI-->
 	<!-- No podemos factorizar el boton radi ya que en este caso contiene scrips de la recontruccion 3D -->
   <script>
