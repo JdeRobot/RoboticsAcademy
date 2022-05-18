@@ -1,4 +1,4 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %} <!-- Cargamos los archivos estaticos -->
 {% block content %}
 
@@ -24,11 +24,40 @@
     	<option value="nbg">Nürburgring Line</option>
     </select>
 
-    {% if "visualization" in indexs %}
-        {% include 'visualization.html' with canvas="birds-eye" %}
-    {% endif %}
+		{% if "visualization" in indexs %}
 
-    {% if "gazebo" in indexs %}
+					<div class="row" id="visual">
+                        {% if exercise_base == "exercise_base_2_U.html" %}
+                            <!-- codigo unibotics unicamente -->
+                            <div class="col-md-8">
+                        {% else %}
+                            <!-- codigo robotics unicamente -->
+                            <div class="col-md-12">
+                        {% endif %}
+                            <div class="card text-center">
+                                <div class="card-header">
+                                    Visualization
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mx-auto">
+                                        <canvas id="{{ canvas }}"></canvas>
+                                    </div>
+                                    <div class="row mx-auto">
+                                        <canvas id="gui_canvas"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- codigo unibotics unicamente -->
+                        {% if exercise_base == "exercise_base_2_U.html" %}
+                            {% include "follow_line_2/evaluator.html" %}
+                        {% endif %}
+                    </div>
+
+		{% endif %}
+
+		{% if "gazebo" in indexs %}
       {% include 'gazebo.html' %}
     {% endif %}
 
@@ -43,18 +72,41 @@
     {% endif %}
   </div>
 
-  <!-- Common -->
-  <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/ws_code_teleop.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-  <!-- Exercise specific resources -->
-  {% for file in statics %}
-     <script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-  {% endfor %}
+	{% if exercise_base == "exercise_base_2_U.html" %}
+	  <!-- Common -->
+	  <script src="{% static 'unibotics-exercises/static/assets/common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	  <script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	  <script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	  <script src="{% static 'unibotics-exercises/static/assets/common/js/ws_code_teleop.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	  <script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+	  <script src="{% static 'unibotics-exercises/static/assets/common/js/websocket_address.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 
+		<script>
+		var csrf = '{{ csrf_token }}';
+		function intervalSave(verbose = true) {
+			saveCodeUnibotics('{{exercise}}', verbose);
+		}
+		var saving = setInterval(intervalSave, 300000);
+		</script>
+
+		<!-- Exercise specific resources -->
+	  {% for file in statics %}
+	     <script src="{% static 'unibotics-exercises/static/assets/exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+	  {% endfor %}
+
+	{% else %}
+		<!-- Common -->
+		<script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/ws_code_teleop.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+		<!-- Exercise specific resources -->
+		{% for file in statics %}
+			 <script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+		{% endfor %}
+	{% endif %}
   <!-- BOTON DE CONEXION CON RADI-->
   {% if "connect_button" in indexs %}
      {% include 'connect_button.html' %}
