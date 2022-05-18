@@ -1,71 +1,89 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %}
 {% load i18n %}
 {% block content %}
 
-  <div id="theory-view" style="display: none;">
-	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control" id="iframe-tab"></iframe>
+<div id="theory-view" style="display: none;">
+  <iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control" id="iframe-tab"></iframe>
+</div>
+
+<div class="content" id="exercise-view">
+  <div class="split a">
+    <br>
+    {% if "code_control" in indexs %}
+      {% include 'code_control.html' %}
+    {% endif %}
+
   </div>
+  <div class="split b">
 
-        <div class="content" id="exercise-view">
-            <div class="split a">
+    {% if "visualization" in indexs %}
+      <div id="visual">
+        <!-- Canvas -->
+        <canvas id="gui_canvas_left"></canvas>
+        <canvas id="gui_canvas_right"></canvas>
+      </div>
+    {% endif %}
 
-	<br>
-            {% if "code_control" in indexs %}
-                {% include 'code_control.html' %}
-            {% endif %}
+    <br>
+    {% if "gazebo" in indexs %}
+      {% include 'gazebo.html' %}
+    {% endif %}
 
-  </div>
-            <div class="split b">
+    <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
 
-                {% if "visualization" in indexs %}
-                     <div id="visual">
-                     <!-- Canvas -->
-                     <canvas id="gui_canvas_left"></canvas>
-                     <canvas id="gui_canvas_right"></canvas>
-                 </div>
-                {% endif %}
+    {% if "console" in indexs %}
+      {% include 'console.html' with exercise="position_control" %}
+    {% endif %}
 
+    {% if exercise_base == "exercise_base_2_U.html" %}
+      <!-- codigo unibotics unicamente -->
+      <!-- Common -->
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/websocket_address.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/launcher_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/controller_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/ws_gui_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'unibotics-exercises/static/assets/common/js/ws_code_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 
-				 <br>
-			    {% if "gazebo" in indexs %}
-                    {% include 'gazebo.html' %}
-                {% endif %}
+      <script>
+        var csrf = '{{ csrf_token }}';
 
-			   <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
-
-                {% if "console" in indexs %}
-                    {% include 'console.html' with exercise="position_control" %}
-                {% endif %}
-
-
- <!-- Common -->
-       <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
-	   <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/launcher_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/controller_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-       <script src="{% static 'common/js/ws_gui_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-	   <script src="{% static 'common/js/ws_code_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-
+        function intervalSave(verbose = true) {
+          saveCodeUnibotics('{{exercise}}', verbose);
+        }
+        var saving = setInterval(intervalSave, 300000);
+      </script>
+    {% else %}
+      <!-- Common -->
+      <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/launcher_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/controller_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/ws_gui_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+      <script src="{% static 'common/js/ws_code_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
 
     <!-- BOTON DE CONEXION CON RADI-->
-   {% if "connect_button" in indexs %}
-        {% include 'connect_button.html' %}
+    {% if "connect_button" in indexs %}
+      {% include 'connect_button.html' %}
     {% endif %}
 
     {% if user_code|length > 0 %}
-
-    <script type="text/javascript">
-		code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=");
-		console.log(code);
+      <script type="text/javascript">
+        code = "{{user_code}}".replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=")
+          .replace(/&ge;/g, ">=");
+        console.log(code);
         editor.setValue(code)
-    </script>
-
+      </script>
     {% endif %}
 
-        </div>
-        </div>
+  </div>
+</div>
 {% endblock %}
