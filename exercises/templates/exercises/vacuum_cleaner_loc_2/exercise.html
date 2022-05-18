@@ -1,4 +1,4 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %}
 {% load i18n %}
 {% block content %}
@@ -8,49 +8,102 @@
 </div>
 
 <div class="content" id="exercise-view">
-  <div class="split a">
+	<div class="split a">
 		{% if "code_control" in indexs %}
-				{% include 'code_control.html' %}
+			{% include 'code_control.html' %}
 		{% endif %}
 	</div>
 
-  <div class="split b">
+	<div class="split b">
 		{% if "visualization" in indexs %}
-	      {% include 'visualization.html' with canvas="vacuum-eye" %}
-	  {% endif %}
+			<div class="row" id="visual">
+				{% if exercise_base == "exercise_base_2_U.html" %}
+				<!-- codigo unibotics unicamente -->
+				<div class="col-md-8">
+					{% else %}
+					<!-- codigo robotics unicamente -->
+					<div class="col-md-12">
+						{% endif %}
+						<div class="card text-center">
+							<div class="card-header">
+								Visualization
+							</div>
+							<div class="card-body">
+								<div class="row mx-auto">
+									<canvas id="{{ canvas }}"></canvas>
+								</div>
+								<div class="row mx-auto">
+									<canvas id="gui_canvas"></canvas>
+								</div>
+							</div>
+						</div>
+					</div>
 
-	  {% if "gazebo" in indexs %}
-	    {% include 'gazebo.html' %}
-	  {% endif %}
+					<!-- codigo unibotics unicamente -->
+					{% if exercise_base == "exercise_base_2_U.html" %}
+						{% include "vacuum_cleaner_loc_2/evaluator.html" %}
+					{% endif %}
+				</div>
+			{% endif %}
 
-    <div class="row">
-        <div class="col-md-12">
-            <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
-        </div>
-    </div>
+			{% if "gazebo" in indexs %}
+				{% include 'gazebo.html' %}
+			{% endif %}
 
-		{% if "console" in indexs %}
-			{% include 'console.html' with exercise="vacuum_cleaner_loc" %}
-		{% endif %}
-</div>
+			<div class="row">
+				<div class="col-md-12">
+					<iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
+				</div>
+			</div>
 
-  <!-- Common -->
-  <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
-  <!-- Exercise specific resources -->
-	{% for file in statics %}
+			{% if "console" in indexs %}
+				{% include 'console.html' with exercise="vacuum_cleaner_loc" %}
+			{% endif %}
+		</div>
+		{% if exercise_base == "exercise_base_2_U.html" %}
+			<!-- codigo unibotics unicamente -->
+			<!-- Common -->
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/ws_code.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/controller.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/websocket_address.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'unibotics-exercises/static/assets/common/js/launcher.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+
+			<script>
+				var csrf = '{{ csrf_token }}';
+
+				function intervalSave(verbose = true) {
+					saveCodeUnibotics('{{exercise}}', verbose);
+				}
+				var saving = setInterval(intervalSave, 300000);
+			</script>
+
+			<!-- Exercise specific resources -->
+			{% for file in statics %}
+			<script src="{% static 'unibotics-exercises/static/assets/exercises/'%}vacuum_cleaner_loc/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+			{% endfor %}
+		{% else %}
+			<!-- Common -->
+			<script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+			<script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
+			<!-- Exercise specific resources -->
+			{% for file in statics %}
 			<script src="{% static 'exercises/'%}vacuum_cleaner_loc/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-	 {% endfor %}
+			{% endfor %}
+		{% endif %}
 
-  <!-- BOTON DE CONEXION CON RADI-->
-	{% if "connect_button" in indexs %}
-     {% include 'connect_button.html' %}
-  {% endif %}
-</div>
-{% endblock %}
+		<!-- BOTON DE CONEXION CON RADI-->
+		{% if "connect_button" in indexs %}
+		{% include 'connect_button.html' %}
+		{% endif %}
+	</div>
+	{% endblock %}
