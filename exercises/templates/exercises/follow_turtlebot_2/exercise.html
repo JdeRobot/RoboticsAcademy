@@ -1,4 +1,4 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %}
 {% load i18n %}
 {% block content %}
@@ -42,20 +42,46 @@
    {% endif %}
 	</div>
 
-	<!-- Common -->
-	<script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/controller_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/ws_gui_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-	<script src="{% static 'common/js/ws_code_drones.js' %}" type="text/javascript" charset="utf-8"></script>
-	<!-- Exercise specific resources -->
-	{% for file in statics %}
-			<script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
-	 {% endfor %}
+	{% if exercise_base == "exercise_base_2_U.html" %}
+		<!-- codigo unibotics unicamente -->
+		<!-- Common -->
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/utils.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/setIframe.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/ace-builds/src-noconflict/ace.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/websocket_address.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/local_functions.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/controller_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/ws_gui_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'unibotics-exercises/static/assets/common/js/ws_code_drones.js' %}?v={{version}}" type="text/javascript" charset="utf-8"></script>
 
+	  <script>
+		var csrf = '{{ csrf_token }}';
+		function intervalSave(verbose = true) {
+			saveCodeUnibotics('{{exercise}}', verbose);
+		}
+		var saving = setInterval(intervalSave, 300000);
+	  </script>
+
+		<!-- Exercise specific resources -->
+		{% for file in statics %}
+				<script src="{% static 'unibotics-exercises/static/assets/exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+		 {% endfor %}
+	{% else %}
+		<!-- Common -->
+		<script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/controller_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/ws_gui_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+		<script src="{% static 'common/js/ws_code_drones.js' %}" type="text/javascript" charset="utf-8"></script>
+		<!-- Exercise specific resources -->
+		{% for file in statics %}
+				<script src="{% static 'exercises/'%}follow_line/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+		{% endfor %}
+	{% endif %}
+		
   <!-- BOTON DE CONEXION CON RADI-->
 	{% if "connect_button" in indexs %}
      {% include 'connect_button.html' %}
