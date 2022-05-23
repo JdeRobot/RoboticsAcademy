@@ -1,4 +1,4 @@
-{% extends "exercise_base_2_RA.html" %}
+{% extends exercise_base %}
 {% load static %}
 <!-- Cargamos los archivos estaticos -->
 {% block content %}
@@ -19,6 +19,7 @@
   </div>
 
   <div class="split b" style="width: calc(50% - 1.5px);">
+      <div id="editor" style="visibility: hidden"></div>
     <div id="visual">
       <!-- Canvas -->
       <h3 style="text-align:center" id="output_heading">Digit Classifier</h3>
@@ -57,12 +58,15 @@
   </div>
   <!-- Common -->
   <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
+    <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
   <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>
   <script src="{% static 'common/js/launcher_no_gazebo.js' %}" type="text/javascript" charset="utf-8"></script>
   <!-- Exercise specific resources -->
-  {% for file in statics %}
-  <script src="{% static 'exercises/dl_digit_classifier/js/{{ file }}' %}" type="text/javascript" charset="utf-8"></script>
-  {% endfor %}
+    {% for file in statics %}
+
+        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+
+    {% endfor %}
 
   <!-- BOTON DE CONEXION CON RADI-->
   {% if "connect_button" in indexs %}
