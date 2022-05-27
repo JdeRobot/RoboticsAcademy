@@ -83,7 +83,9 @@
                     <script src="{% static 'common/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
                     <!-- Exercise specific resources -->
                     {% for file in statics %}
-                    <script src="{% static 'exercises/'%}color_filter/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+
+                        <script src="{% static 'exercises/'%}{{ exercise_id }}/js/{{ file }}" type="text/javascript" charset="utf-8"></script>
+
                     {% endfor %}
                 {% endif %}
 

@@ -1,12 +1,16 @@
 var save_button = document.getElementById("save");
-save_button.disabled = true;
-save_button.style.opacity = "0.4";
-save_button.style.cursor = "not-allowed";
+if(save_button != null) {
+	save_button.disabled = true;
+	save_button.style.opacity = "0.4";
+	save_button.style.cursor = "not-allowed";
+}
 
 var load_button = document.getElementById("load");
-load_button.disabled = true;
-load_button.style.opacity = "0.4";
-load_button.style.cursor = "not-allowed";
+if(load_button != null){
+	load_button.disabled = true;
+	load_button.style.opacity = "0.4";
+	load_button.style.cursor = "not-allowed";
+}
 
 var reset_button = document.getElementById("reset");
 reset_button.disabled = true;

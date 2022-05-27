@@ -2,6 +2,20 @@
 <script type="text/javascript">
 				    var exercise = "{{ exercise }}";
 
+
+                     function togglePlayPause(stop) {
+                        let submit_button = document.getElementById("submit");
+                        if (stop) {
+                            submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/pause.png'%}";
+                            submit_button.getElementsByTagName('p')[0].innerText = " Stop";
+                            submit_button.setAttribute( "onClick", "javascript: stop();" );
+                        } else {
+                            submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/submit.png'%}";
+                            submit_button.getElementsByTagName('p')[0].innerText = " Play";
+                            submit_button.setAttribute( "onClick", "javascript: start();" );
+                        }
+                     }
+
                      function changeconsole(){
                         var console_display = document.getElementById('console-vnc').style.display
                         console.log(console_display)

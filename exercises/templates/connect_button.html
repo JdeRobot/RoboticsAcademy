@@ -141,9 +141,8 @@
 		function editorChanged(toggle) {
 			if (firstCodeSent) {
 				if (toggle) {
-					document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
-
                      {% if "loadIntoRobot_button" in indexs %}
+                         document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
                         document.getElementById("loadIntoRobot").title = "Code changed since last sending";
                          {% else %}
                          document.getElementById("submit").title = "Code changed since last sending";
@@ -151,8 +150,9 @@
 
 
 				} else {
-					document.getElementById("loadIntoRobotAlert").style.display = 'none';
+
                     {% if "loadIntoRobot_button" in indexs %}
+                        document.getElementById("loadIntoRobotAlert").style.display = 'none';
                         document.getElementById("loadIntoRobot").title = "";
                         {% else %}
                          document.getElementById("submit").title = "";

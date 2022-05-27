@@ -15,6 +15,8 @@ ArrayText = new Array();
 ArrayText ['something'] = "When Teleoperation is ON, use the following keys: \n 'w' -> Go forward \n 's' -> Stop \n 'a' -> Turn left\n 'd' -> Turn right\n 'q' -> Increase linear speed 10%\n 'z' -> Decrease linear speed 10%\n 'e' -> Increase angular speed 10%\n 'c' -> Decrease angular speed 10%\n";
 ArrayText ['nothing'] = "";
 
+var firstCodeSent = false;
+
 function declare_code(websocket_address){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 

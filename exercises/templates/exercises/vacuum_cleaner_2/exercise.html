@@ -4,7 +4,7 @@
 {% block content %}
 
 <div id="theory-view" style="display: none;">
-	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/{{ exercise_id }}" id="iframe-tab"></iframe>
+	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner" id="iframe-tab"></iframe>
 </div>
 
 <div class="content" id="exercise-view">
@@ -27,16 +27,13 @@
                         {% endif %}
                             <div class="card text-center">
                                 <div class="card-header">
-                                    Visualization
+                                  Visualization
                                 </div>
-                                <div class="card-body">
-                                    <div class="row mx-auto">
-                                        <canvas id="{{ canvas }}"></canvas>
-                                    </div>
-                                    <div class="row mx-auto">
-                                        <canvas id="gui_canvas"></canvas>
-                                    </div>
+                              <div class="card-body mx-auto">
+                                <div class="row mx-auto">
+                                  <canvas id="vacuum-eye"></canvas>
                                 </div>
+                              </div>
                             </div>
                         </div>
 
