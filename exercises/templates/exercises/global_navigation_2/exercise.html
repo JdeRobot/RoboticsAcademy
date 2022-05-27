@@ -20,29 +20,28 @@
 		{% if "visualization" in indexs %}
 
 					<div class="row" id="visual">
-												{% if exercise_base == "exercise_base_2_U.html" %}
-														<!-- codigo unibotics unicamente -->
-														<div class="col-md-8">
-												{% else %}
-														<!-- codigo robotics unicamente -->
-														<div class="col-md-12">
-												{% endif %}
-														<div class="card text-center">
-																<div class="card-header">
-																		Visualization
-																</div>
-																<div class="card-body">
-																		<div class="row mx-auto">
-																				<canvas id="{{ canvas }}"></canvas>
-																		</div>
-																		<div class="row mx-auto">
-																				<canvas id="gui_canvas"></canvas>
-																		</div>
-																</div>
-														</div>
-												</div>
 
-										</div>
+                        <div class="col-md-8">
+
+                            <div class="card text-center">
+                                <div class="card-header">
+                                    Visualization
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mx-auto">
+                                        <canvas id="globalnav-eye" width="400" height="400" onclick="pickLoc()" ></canvas>
+                                    </div>
+                                    <div class="row mx-auto">
+                                        <hr style="border-top: 2px solid rgb(196, 196, 196); width: 100%;">
+                                    </div>
+                                    <div class="row mx-auto">
+                                        <img id="gui-canvas-numpy" width="400" height="400"></img>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
 		{% endif %}
   <br>
@@ -60,7 +59,7 @@
 
 
     {% if "console" in indexs %}
-        {% include 'console.html' with exercise="global_navigation" %}
+        {% include 'console.html' with exercise="global_navigation" %}<
     {% endif %}
 
 		 {% if exercise_base == "exercise_base_2_U.html" %}

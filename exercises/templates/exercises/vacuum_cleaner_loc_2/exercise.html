@@ -4,11 +4,12 @@
 {% block content %}
 
 <div id="theory-view" style="display: none;">
-	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/{{ exercise_id }}" id="iframe-tab"></iframe>
+	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner_loc" id="iframe-tab"></iframe>
 </div>
 
 <div class="content" id="exercise-view">
 	<div class="split a">
+      <br>
 		{% if "code_control" in indexs %}
 			{% include 'code_control.html' %}
 		{% endif %}
@@ -24,19 +25,17 @@
 					<!-- codigo robotics unicamente -->
 					<div class="col-md-12">
 						{% endif %}
-						<div class="card text-center">
-							<div class="card-header">
-								Visualization
-							</div>
-							<div class="card-body">
-								<div class="row mx-auto">
-									<canvas id="{{ canvas }}"></canvas>
-								</div>
-								<div class="row mx-auto">
-									<canvas id="gui_canvas"></canvas>
-								</div>
-							</div>
-						</div>
+						 <div class="card text-center">
+                                <div class="card-header">
+                                  Visualization
+                                </div>
+                              <div class="card-body mx-auto">
+                                <div class="row mx-auto">
+                                  <canvas id="vacuum-eye"></canvas>
+                                  <canvas id="nav-grid"></canvas>
+                                </div>
+                              </div>
+                         </div>
 					</div>
 
 					<!-- codigo unibotics unicamente -->
@@ -46,6 +45,7 @@
 				</div>
 			{% endif %}
 
+      <br>
 			{% if "gazebo" in indexs %}
 				{% include 'gazebo.html' %}
 			{% endif %}

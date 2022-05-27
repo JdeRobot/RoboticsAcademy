@@ -3,12 +3,13 @@
 {% block content %}
 
 <div id="theory-view" style="display: none;">
-	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/{{ exercise_id }}/" id="iframe-tab"></iframe>
+	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" id="iframe-tab"></iframe>
 </div>
 
 <div class="content" id="exercise-view">
 
   <div class="split a">
+  <br>
     {% if "code_control" in indexs %}
         {% include 'code_control.html' %}
     {% endif %}
@@ -40,10 +41,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row mx-auto">
-                                        <canvas id="{{ canvas }}"></canvas>
+                                        <canvas id="birds-eye"></canvas>
                                     </div>
                                     <div class="row mx-auto">
-                                        <canvas id="gui_canvas"></canvas>
+                                        <img id="gui_canvas"></img>
                                     </div>
                                 </div>
                             </div>
