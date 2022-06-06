@@ -107,7 +107,7 @@ class Launch():
 
         ######## LAUNCH MAVROS ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros.launch", 
+                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_and_turtlebot.launch", 
                 "--log"
                 ]
 
