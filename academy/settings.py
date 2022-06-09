@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+print("BASE_DIR", BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,6 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'exercises',
+    'webpack_loader',                                       # Integrate React webpack bundles with Django
+    'rest_framework',                                       # Django Rest Framework
+    'academy.academy_rest_api.apps.AcademyRestApiConfig',   # Academy rest api application
+    'react_frontend.apps.ReactFrontendConfig'               # React frontend application
 ]
 
 MIDDLEWARE = [
@@ -84,7 +89,7 @@ WSGI_APPLICATION = 'academy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -130,9 +135,21 @@ STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'react_frontend/static'),    # React frontend statics
 )
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Settings for django webpack loader
+WEBPACK_LOADER = {
+  'DEFAULT': {
+    'BUNDLE_DIR_NAME': 'react_frontend/',
+    'CACHE': not DEBUG,
+    'STATS_FILE': os.path.join(BASE_DIR, 'react_frontend/webpack-stats.json'),
+    'POLL_INTERVAL': 0.1,
+    'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+  }
+}
