@@ -64,10 +64,6 @@ const ExerciseCard = (props) => {
   const exerciseURL = `${configuration.academy.exercises.exercise_url}`;
   const teaser = configuration.academy.exercises.teaser;
 
-  const teaserCode = (exerciseid) => {
-
-  }
-
   const navigateToExercise = () => {
     const url = exerciseURL.interpolate(props);
     window.location.href = url;
@@ -76,7 +72,7 @@ const ExerciseCard = (props) => {
   return (
     <div className='exercise-card' card-id={props.exerciseid} onClick={ () => navigateToExercise() }>
       <Teaser type={configuration.academy.exercises.teaser.type}
-              url={configuration.academy.exercises.teaser.url.interpolate(props)} />
+              url={teaser.url.interpolate(props)} />
       <div className='name'>{props.name}</div>
       <div className='description'>{props.description}</div>
     </div>
