@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('exercises/', include('exercises.urls')),
     # path('', include('exercises.urls')),
-    path('', lambda request: redirect('exercises/', permanent=True)),
+    path('', lambda request: redirect('exercises/', permanent=False)),
 
     # rest api url
     path('api/v1/', include('academy.academy_rest_api.urls')),
