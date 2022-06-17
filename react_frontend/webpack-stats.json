@@ -1,0 +1,19 @@
+{
+  "status": "done",
+  "assets": {
+    "css/main.css": {
+      "name": "css/main.css",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/RoboticsAcademy/react_frontend/static/react_frontend/css/main.css"
+    },
+    "js/main.efa6ae81.js": {
+      "name": "js/main.efa6ae81.js",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/RoboticsAcademy/react_frontend/static/react_frontend/js/main.efa6ae81.js"
+    }
+  },
+  "chunks": {
+    "main": [
+      "css/main.css",
+      "js/main.efa6ae81.js"
+    ]
+  }
+}

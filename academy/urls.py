@@ -14,10 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls), 
+    path('exercises/', include('react_frontend.urls')),
+
+    path('admin/', admin.site.urls),
     path('exercises/', include('exercises.urls')),
-    path('', include('exercises.urls')),
+    # path('', include('exercises.urls')),
+    path('', lambda request: redirect('exercises/', permanent=False)),
+
+    # rest api url
+    path('api/v1/', include('academy.academy_rest_api.urls')),
 ]
