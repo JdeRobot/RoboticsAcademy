@@ -1,0 +1,12 @@
+{
+  "comment": "This JSON contains site specific configuration for the react frontend",
+  "academy": {
+    "exercises": {
+      "teaser": {
+        "type": "image",
+        "url": "/static/exercises/assets/img/${exerciseid}_teaser.png"
+      },
+      "exercise_url": "/exercises/exercises/${exerciseid}"
+    }
+  }
+}
