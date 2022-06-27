@@ -25,6 +25,9 @@ RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
+# React
+RUN cd /RoboticsAcademy/react_frontend && npm install && npm run build && cd
+
 # Scripts copy
 COPY [".env", "manager.py", "instructions.json", "pylint_checker.py", "entrypoint.sh", "./"]
 COPY pylintrc /etc/pylintrc
