@@ -6,8 +6,8 @@
   "author": "David María Arribas <dmariaa70@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack --mode development --entry ./src/index.js --output-path ./static/react_frontend",
-    "build": "webpack --mode production --entry ./src/index.js --output-path ./static/react_frontend",
+    "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
+    "build": "webpack --mode production --output-path ./static/react_frontend",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,7 +19,7 @@
     "css-loader": "^6.7.1",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.1",
-    "react": "^18.1.0",
+    "react": "^18.2.0",
     "react-dom": "^18.1.0",
     "sass-loader": "^12.6.0",
     "webpack": "^5.72.0",
@@ -32,6 +32,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
     "mui-image": "^1.0.5",
-    "react-ace": "^10.1.0"
+    "react-ace": "^10.1.0",
+    "react-vnc": "^0.5.1"
   }
 }

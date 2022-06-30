@@ -2,6 +2,7 @@
 {% load render_bundle from webpack_loader %}
 
 {% block header %}
+    {% render_bundle 'index' 'css' %}
 {%  endblock %}
 
 {% block content %}
@@ -11,5 +12,5 @@
 {% endblock %}
 
 {% block before_end_body %}
-    {% render_bundle 'main' 'js' %}
+    {% render_bundle 'index' 'js' %}
 {% endblock %}

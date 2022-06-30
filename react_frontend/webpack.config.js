@@ -2,9 +2,12 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleTrackerPlugin = require("webpack-bundle-tracker");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    index: "./src/index.js",
+    exercise: "./src/exercise-index.js"
+  },
   output: {
-    filename: "js/[name].[hash:8].js",
+    filename: "js/[name].[contenthash:8].js",
     clean: true
   },
   module: {
@@ -31,7 +34,7 @@ module.exports = {
         filename: './webpack-stats.json'
       }),
       new MiniCssExtractPlugin({
-        filename: 'css/main.css'
+        filename: 'css/[name].css'
       })
   ],
   devtool: 'inline-source-map'

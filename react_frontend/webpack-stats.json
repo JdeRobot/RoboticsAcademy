@@ -1,19 +1,31 @@
 {
   "status": "done",
   "assets": {
-    "css/main.css": {
-      "name": "css/main.css",
-      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/css/main.css"
+    "css/index.css": {
+      "name": "css/index.css",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/css/index.css"
     },
-    "js/main.b143087b.js": {
-      "name": "js/main.b143087b.js",
-      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/js/main.b143087b.js"
+    "js/index.626851a8.js": {
+      "name": "js/index.626851a8.js",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/js/index.626851a8.js"
+    },
+    "css/exercise.css": {
+      "name": "css/exercise.css",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/css/exercise.css"
+    },
+    "js/exercise.6b7f0d8f.js": {
+      "name": "js/exercise.6b7f0d8f.js",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/js/exercise.6b7f0d8f.js"
     }
   },
   "chunks": {
-    "main": [
-      "css/main.css",
-      "js/main.b143087b.js"
+    "index": [
+      "css/index.css",
+      "js/index.626851a8.js"
+    ],
+    "exercise": [
+      "css/exercise.css",
+      "js/exercise.6b7f0d8f.js"
     ]
   }
 }

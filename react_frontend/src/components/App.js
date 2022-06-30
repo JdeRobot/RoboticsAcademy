@@ -1,6 +1,6 @@
 import '../styles/App.css';
 import {ExerciseList} from "./ExerciseList";
-import DrawerAppBar from "./navigation-bar";
+import DrawerAppBar from "./DrawerAppBar";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme  = createTheme({
@@ -10,7 +10,7 @@ const theme  = createTheme({
       main: '#ffac15',
     },
     secondary: {
-      main: '#147aff',
+      main: '#147aff'
     },
   },
 });
@@ -18,9 +18,9 @@ const theme  = createTheme({
 function App() {
   return (
       <ThemeProvider theme ={theme}>
-      <DrawerAppBar/>
-    <ExerciseList />
-        </ThemeProvider>
+          <DrawerAppBar/>
+          <ExerciseList />
+      </ThemeProvider>
   );
 }
 
