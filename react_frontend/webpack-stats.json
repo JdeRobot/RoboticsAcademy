@@ -3,17 +3,17 @@
   "assets": {
     "css/main.css": {
       "name": "css/main.css",
-      "path": "/Users/apoorvgarg/PycharmProjects/RoboticsAcademy/react_frontend/static/react_frontend/css/main.css"
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/css/main.css"
     },
-    "js/main.e4330ef7.js": {
-      "name": "js/main.e4330ef7.js",
-      "path": "/Users/apoorvgarg/PycharmProjects/RoboticsAcademy/react_frontend/static/react_frontend/js/main.e4330ef7.js"
+    "js/main.b143087b.js": {
+      "name": "js/main.b143087b.js",
+      "path": "/Users/dmariaa/Desarrollo/Proyectos/unibotics/apoorv/RoboticsAcademy/react_frontend/static/react_frontend/js/main.b143087b.js"
     }
   },
   "chunks": {
     "main": [
       "css/main.css",
-      "js/main.e4330ef7.js"
+      "js/main.b143087b.js"
     ]
   }
 }

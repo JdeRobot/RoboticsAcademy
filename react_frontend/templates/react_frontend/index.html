@@ -1,8 +1,7 @@
 {% extends "base.html" %}
+{% load render_bundle from webpack_loader %}
 
 {% block header %}
-    {% load render_bundle from webpack_loader %}
-    {% render_bundle 'main' 'css' %}
 {%  endblock %}
 
 {% block content %}

@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +19,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <!--CSS Main -->
     <link rel="stylesheet" type="text/css" href="{% static 'exercises/assets/css/main.css' %}">
+
+    {% render_bundle 'main' 'css' %}
 
     {% block header %}
         <!-- Here comes additions to header section -->
