@@ -1,5 +1,4 @@
 import {VncScreen} from "react-vnc";
-import * as React from "@types/react";
 
 function GazeboViewer() {
     return (

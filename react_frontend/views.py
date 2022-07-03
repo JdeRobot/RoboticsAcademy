@@ -5,5 +5,6 @@ from django.shortcuts import render
 def exercises(request):
     return render(request, 'react_frontend/index.html')
 
+
 def exercise(request):
     pass

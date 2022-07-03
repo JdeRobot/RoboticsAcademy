@@ -113,3 +113,4 @@ yarn-error.log*
 .npm/
 webpack-stats.json
 *.DS_Store
+react_frontend/static

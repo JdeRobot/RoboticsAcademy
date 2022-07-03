@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load react_component %}
 {% load render_bundle from webpack_loader %}
 
 {% block header %}
@@ -6,9 +7,15 @@
 {%  endblock %}
 
 {% block content %}
-    <div id="exercise"></div>
+    <div id="exercise">
+    </div>
+
+    {% block react-content %}
+    {% endblock %}
 {% endblock %}
+
 
 {% block before_end_body %}
     {% render_bundle 'exercise' 'js' %}
+    {% react_components_render %}
 {% endblock %}
