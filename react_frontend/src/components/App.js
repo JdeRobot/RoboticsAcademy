@@ -3,6 +3,7 @@ import {ExerciseList} from "./ExerciseList";
 import DrawerAppBar from "./DrawerAppBar";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 const theme  = createTheme({
   palette: {
     type: 'light',

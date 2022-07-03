@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/Exercise.css';
-import AceEditor from "./exercises/AceEditor";
+import AceEditorRobot from "./exercises/AceEditorRobot";
 import ProminentAppBar from "./exercises/ProminentAppBar";
 import RoboticsTheme from './RoboticsTheme';
 
@@ -9,7 +9,7 @@ function Exercise() {
     <RoboticsTheme>
       <div className="Exercise">
         <ProminentAppBar/>
-        <AceEditor/>
+        <AceEditorRobot/>
       </div>
     </RoboticsTheme>
   );

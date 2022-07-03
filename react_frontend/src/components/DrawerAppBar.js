@@ -11,24 +11,24 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ForumIcon from '@mui/icons-material/Forum';
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState } from "react";
 
 const drawerWidth = 240;
-const navItems = ['forum'];
 
 export default function DrawerAppBar(props) {
-    const { window } = props;
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const { window_ } = props;
+    const [ clicked, setClicked ] = useState(false);
+
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    const goToForum = () => {
+        const url = "https://forum.jderobot.org/c/english/roboticsacademy/12";
+        window.location.href = url;
 
-    let navigate = useNavigate();
-  const goToForum = () => {
-    let path = `https://forum.jderobot.org/c/english/roboticsacademy/12`;
-    navigate(path);
-  }
+    }
 
     const drawer = (
         <Box sx={{ textAlign: 'center' }}>
@@ -37,15 +37,14 @@ export default function DrawerAppBar(props) {
             </Typography>
             <Divider />
             <List>
-
-                        <ListItemButton sx={{ textAlign: 'center' }} >
-                            Forum
-                        </ListItemButton>
+                <ListItemButton sx={{ textAlign: 'center' }} onClick={ goToForum } >
+                    Forum
+                </ListItemButton>
             </List>
         </Box>
     );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const container = window_ !== undefined ? () => window().document.body : undefined;
 
     return (
         <Box sx={{ display: 'flex'}} mb={10}>
@@ -55,7 +54,7 @@ export default function DrawerAppBar(props) {
                         color="inherit"
                         aria-label="open drawer"
                         edge="start"
-                        // onClick={handleDrawerToggle}
+                        onClick={handleDrawerToggle}
                         sx={{ mr: 2, display: { sm: 'none' } }}
                     >
                         <MenuIcon />
@@ -67,7 +66,7 @@ export default function DrawerAppBar(props) {
                     >
                         Robotics Academy by JdeRobot
                     </Typography>
-                    <Button variant="outlined" sx={{ display: { xs: 'none', sm: 'block'}, color: '#fff' }} startIcon={<ForumIcon />} >
+                    <Button variant="outlined" sx={{ display: { xs: 'none', sm: 'block'}, color: '#fff' }} startIcon={<ForumIcon />} onClick={ goToForum } >
                         Forum
                     </Button>
                 </Toolbar>
@@ -77,7 +76,7 @@ export default function DrawerAppBar(props) {
                     container={container}
                     variant="temporary"
                     open={mobileOpen}
-                    // onClose={handleDrawerToggle}
+                    onClose={handleDrawerToggle}
                     ModalProps={{
                         keepMounted: true, // Better open performance on mobile.
                     }}

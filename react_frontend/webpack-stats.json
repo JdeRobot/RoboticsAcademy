@@ -1,19 +1,31 @@
 {
   "status": "done",
   "assets": {
-    "css/main.css": {
-      "name": "css/main.css",
-      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/css/main.css"
+    "css/index.css": {
+      "name": "css/index.css",
+      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/css/index.css"
     },
-    "js/main.8ea1bd49.js": {
-      "name": "js/main.8ea1bd49.js",
-      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/js/main.8ea1bd49.js"
+    "js/index.54546bbe.js": {
+      "name": "js/index.54546bbe.js",
+      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/js/index.54546bbe.js"
+    },
+    "css/exercise.css": {
+      "name": "css/exercise.css",
+      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/css/exercise.css"
+    },
+    "js/exercise.2f61a77e.js": {
+      "name": "js/exercise.2f61a77e.js",
+      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/js/exercise.2f61a77e.js"
     }
   },
   "chunks": {
-    "main": [
-      "css/main.css",
-      "js/main.8ea1bd49.js"
+    "index": [
+      "css/index.css",
+      "js/index.54546bbe.js"
+    ],
+    "exercise": [
+      "css/exercise.css",
+      "js/exercise.2f61a77e.js"
     ]
   }
 }
