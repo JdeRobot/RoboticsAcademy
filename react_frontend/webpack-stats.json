@@ -1,0 +1,19 @@
+{
+  "status": "done",
+  "assets": {
+    "css/main.css": {
+      "name": "css/main.css",
+      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/css/main.css"
+    },
+    "js/main.8ea1bd49.js": {
+      "name": "js/main.8ea1bd49.js",
+      "path": "/Users/apoorvgarg/gsoc2022-Apoorv_Garg/RoboticsAcademy/react_frontend/static/react_frontend/js/main.8ea1bd49.js"
+    }
+  },
+  "chunks": {
+    "main": [
+      "css/main.css",
+      "js/main.8ea1bd49.js"
+    ]
+  }
+}

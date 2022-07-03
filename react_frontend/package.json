@@ -34,5 +34,6 @@
     "mui-image": "^1.0.5",
     "react-ace": "^10.1.0",
     "react-vnc": "^0.5.1"
+    "react-router-dom": "^6.3.0"
   }
 }
