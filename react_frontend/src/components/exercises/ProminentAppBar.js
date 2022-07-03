@@ -21,13 +21,15 @@ import VideogameAssetOutlinedIcon from '@mui/icons-material/VideogameAssetOutlin
 import SaveIcon from '@mui/icons-material/Save';
 
 function ProminentAppBar() {
+    var customStyle = { display: "flex", flexGrow: 1 ,flexWrap: 'wrap',justifyContent:'center',marginTop:-0.5};
     return (
         <AppBar position="static" sx={{marginBottom:3, marginTop: -1}}>
+
             {/*<List aria-label="nav bar">*/}
                 <Toolbar sx={{ display: "flex", flexWrap: 'wrap', justifyContent:'space-between'}} >
                     <Box sx={{ display: "inline-flex", justifyContent:'space-between',alignItems: 'center'}}>
-                    <Image src="/static/common/img/logo.png" fit={"cover"}  width={50}></Image>
-                    <ButtonGroup>
+                    <Image src="/static/common/img/logo.gif" fit={"cover"}  width={50}></Image>
+                    <ButtonGroup size={"small"}>
                         <Button startIcon={<ConnectingAirportsIcon/>} variant="contained" color={"success"} sx={{marginX:1 ,}} size={"small"}>Connected</Button>
                         <Button startIcon={<LaunchIcon/>} variant="contained" color={"secondary"} sx={{marginX:1 ,}} size={"small"}>Launch</Button>
                         <IconButton aria-label="helpCenter" sx={{marginX:1 ,}}>
@@ -51,30 +53,27 @@ function ProminentAppBar() {
                     </ButtonGroup>
                 </Toolbar>
                 <Divider color={"secondary"}  variant="middle" sx={{m:0.5,marginX:2,marginTop:-0.5}}/>
-                <Toolbar sx={{ display: "flex", flexWrap: 'wrap' ,justifyContent:'space-between'}} >
-                    <ButtonGroup>
-                    <label htmlFor="contained-button-file" >
+                <Toolbar sx={{ display: "flex", flexWrap: 'wrap' ,justifyContent:'space-between',alignItems: 'center'}} >
+                    <label  htmlFor="contained-button-file" sx={{ padding: 0 ,display: 'none'}}>
                             <Input accept=".py" id="contained-button-file" multiple type="file" sx ={{display : 'none'}}/>
-                            <Button size={"medium"} variant="contained" color={"secondary"} component="span" startIcon={<CloudUploadOutlinedIcon/>} sx={{m:1}}>
+                            <Button variant="contained" color={"secondary"} startIcon={<CloudUploadOutlinedIcon/>} sx={{m:1}}>
                                 Load file
                             </Button>
                         </label>
-                        <Button size={"medium"} variant="contained" color={"secondary"} component="span" startIcon={<SaveIcon/>} sx ={{m:1}}>
+                        <Button variant="contained" color={"secondary"}  startIcon={<SaveIcon/>} sx ={{m:1}}>
                             Save file
                         </Button>
-                    </ButtonGroup>
-                    <ButtonGroup size={"medium"} variant="outlined" color={"secondary"} sx ={{m:1}} disabled>
-                        <Button   startIcon={<SmartToyOutlinedIcon/>} >
+
+                        <Button  color={"secondary"} startIcon={<SmartToyOutlinedIcon/>} sx ={{m:0.5}} variant={"outlined"} >
                             Load in robot
                         </Button>
-                        <Button  startIcon={<PlayCircleOutlineOutlinedIcon/>} >
+                        <Button color={"secondary"}  startIcon={<PlayCircleOutlineOutlinedIcon/>} sx ={{m:0.5}} variant={"outlined"} >
                             Play
                         </Button>
-                        <Button startIcon={<RestartAltOutlinedIcon/>} >
+                        <Button color={"secondary"}  startIcon={<RestartAltOutlinedIcon/>}  sx ={{m:0.5}} variant={"outlined"} >
                             reset
                         </Button>
-                    </ButtonGroup>
-                    <Box>
+
                         <TextField
                             id="standard-number"
                             label="Brain Freq (Hz)"
@@ -100,7 +99,7 @@ function ProminentAppBar() {
                             color = {"secondary"}
                         />
                         <TextField
-                            id={"standard-read-only-input"}
+                            id={"standard-input"}
                             defaultValue="Sim RTF: 0"
                             color = {"secondary"}
                             InputProps={{
@@ -110,8 +109,6 @@ function ProminentAppBar() {
                             sx ={{width:120, m:1}}
 
                         />
-                    </Box>
-                    <Box sx={{ display: "flex", flexGrow: 1 ,flexWrap: 'wrap',justifyContent:'space-between',marginTop:-0.5}}>
                         <Button size={"medium"} variant="contained" color={"secondary"} component="span" sx ={{m:1}} startIcon={<VrpanoOutlinedIcon/>} >
                             View Sim
                         </Button>
@@ -121,7 +118,6 @@ function ProminentAppBar() {
                         <Button size={"medium"} variant="contained" color={"secondary"} component="span" sx ={{m:1}} startIcon={<VideogameAssetOutlinedIcon/>} >
                             Teleoperate
                         </Button>
-                    </Box>
                 </Toolbar>
             {/*</List>*/}
         </AppBar>

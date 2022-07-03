@@ -1,16 +1,14 @@
 import React from 'react';
 import '../styles/Exercise.css';
-import AceEditor from "./exercises/AceEditor";
+import AceEditorRobot from "./exercises/AceEditorRobot";
 import ProminentAppBar from "./exercises/ProminentAppBar";
 import RoboticsTheme from './RoboticsTheme';
 
-function Exercise(props) {
-
+function Exercise() {
   return (
     <RoboticsTheme>
       <div className="Exercise">
         <ProminentAppBar/>
-        <div id={"react-content"}></div>
       </div>
     </RoboticsTheme>
   );

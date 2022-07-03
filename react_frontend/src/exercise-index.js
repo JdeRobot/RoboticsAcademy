@@ -4,7 +4,7 @@ import Exercise from './components/Exercise';
 import {createRoot} from 'react-dom/client';
 import './libs/tools.js';
 
-import AceEditor from './components/exercises/AceEditor';
+import AceEditorRobot from './components/exercises/AceEditorRobot';
 import GazeboViewer from './components/exercises/GazeboViewer';
 import ProminentAppBar from './components/exercises/ProminentAppBar';
 import VncConsoleViewer from './components/exercises/VncConsoleViewer';
@@ -14,7 +14,7 @@ const root = createRoot(container);
 
 window.RoboticsExerciseComponents = (function() {
   const components = {
-    AceEditor: AceEditor,
+    AceEditorRobot: AceEditorRobot,
     GazeboViewer: GazeboViewer,
     ProminentAppBar: ProminentAppBar,
     VncConsoleViewer: VncConsoleViewer

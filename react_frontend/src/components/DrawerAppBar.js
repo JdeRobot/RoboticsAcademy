@@ -11,34 +11,40 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ForumIcon from '@mui/icons-material/Forum';
+import {useEffect, useState } from "react";
 
 const drawerWidth = 240;
-const navItems = ['forum'];
 
-const DrawerAppBar = (props) => {
-    const { window } = props;
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+export default function DrawerAppBar(props) {
+    const { window_ } = props;
+    const [ clicked, setClicked ] = useState(false);
+
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    const goToForum = () => {
+        const url = "https://forum.jderobot.org/c/english/roboticsacademy/12";
+        window.location.href = url;
+
+    }
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+        <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }}>
                 Robotics Academy by JdeRobot
             </Typography>
             <Divider />
             <List>
-
-                        <ListItemButton sx={{ textAlign: 'center' }} onClick={location.href='https://forum.jderobot.org/c/english/roboticsacademy/12'}>
-                            Forum
-                        </ListItemButton>
+                <ListItemButton sx={{ textAlign: 'center' }} onClick={ goToForum } >
+                    Forum
+                </ListItemButton>
             </List>
         </Box>
     );
 
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const container = window_ !== undefined ? () => window().document.body : undefined;
 
     return (
         <Box sx={{ display: 'flex'}} mb={10}>
@@ -60,7 +66,7 @@ const DrawerAppBar = (props) => {
                     >
                         Robotics Academy by JdeRobot
                     </Typography>
-                    <Button variant="outlined" sx={{ display: { xs: 'none', sm: 'block'}, color: '#fff' }} startIcon={<ForumIcon />} onClick={location.href='https://forum.jderobot.org/c/english/roboticsacademy/12'}>
+                    <Button variant="outlined" sx={{ display: { xs: 'none', sm: 'block'}, color: '#fff' }} startIcon={<ForumIcon />} onClick={ goToForum } >
                         Forum
                     </Button>
                 </Toolbar>
@@ -86,4 +92,3 @@ const DrawerAppBar = (props) => {
     );
 }
 
-export default DrawerAppBar;
