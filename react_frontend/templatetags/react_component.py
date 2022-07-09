@@ -18,7 +18,7 @@ class ReactComponent(template.Node):
     def render(self, context):
         id = f"{self.node_to_render.lower()}-{uuid.uuid4()}"
 
-        if 'react-components' not in context:
+        if 'react-components' not in context.render_context:
             context.render_context['react-components'] = []
 
         context.render_context['react-components'].append((id, self.node_to_render))
