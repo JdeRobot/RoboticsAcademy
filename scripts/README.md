@@ -23,10 +23,11 @@ docker run -it \
 
 ## Direct Method: Via DockerHub
 ```sh
+docker pull jderobot/robotics-academy:4.2.0
 docker run -it \
       --rm \
       -v /tmp/.X11-unix:/tmp/.X11-unix \
       --name foxy_radi_container \
-      -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 \
-      jderobot/robotics-academy:4.0.0 ./start.sh
+      -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 6081:6081 -p 1831:1831 -p 7681:7681 \
+      jderobot/robotics-academy:4.2.0 ./start.sh
 ```
