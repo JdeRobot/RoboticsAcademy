@@ -8,6 +8,8 @@ import AceEditorRobot from './components/exercises/AceEditorRobot';
 import GazeboViewer from './components/exercises/GazeboViewer';
 import ProminentAppBar from './components/exercises/ProminentAppBar';
 import VncConsoleViewer from './components/exercises/VncConsoleViewer';
+import CircuitSelector from './components/exercises/CircuitSelector';
+import CanvasBirdEye from './components/exercises/CanvasBirdEye';
 
 const container = document.getElementById('exercise');
 const root = createRoot(container);
@@ -17,7 +19,9 @@ window.RoboticsExerciseComponents = (function() {
     AceEditorRobot: AceEditorRobot,
     GazeboViewer: GazeboViewer,
     ProminentAppBar: ProminentAppBar,
-    VncConsoleViewer: VncConsoleViewer
+    VncConsoleViewer: VncConsoleViewer,
+    CircuitSelector: CircuitSelector,
+    CanvasBirdEye: CanvasBirdEye,
   };
 
   const render = function (component, container, props, children, callback) {
