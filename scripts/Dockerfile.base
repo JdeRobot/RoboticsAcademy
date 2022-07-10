@@ -268,7 +268,7 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # websocket server dependency
-RUN pip3 install websocket_server posix-ipc django
+RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0
 RUN python3.8 -m pip install websockets asyncio
 
 # pip install dependencies
@@ -287,3 +287,9 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 
 RUN wget https://xpra.org/xorg.conf \
     && rm -rf /tmp/*
+
+# Node
+RUN apt-get install -y software-properties-common \
+&& curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+&& apt-get install -y nodejs \
+&& curl -L https://www.npmjs.com/install.sh | sh
