@@ -155,6 +155,12 @@ class Commands:
 
         xserver_thread = m_utils.DockerThread(xserver_cmd)
         xserver_thread.start()
+    
+    # Function to launch only ros instructions
+    def start_ros_instructions(self, exercise):
+        roslaunch_cmd, gz_cmd = self.get_ros_instructions(exercise)
+        roslaunch_thread = m_utils.DockerThread(roslaunch_cmd)
+        roslaunch_thread.start()
 
     # Function to roslaunch Gazebo Server
     def start_gzserver(self, exercise, width, height):
@@ -328,7 +334,7 @@ class Manager:
             self.commands.start_rviz(exercise)
             self.commands.start_console(width, height)
 
-        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+        elif exercise not in ["color_filter", "dl_digit_classifier", "real_follow_person"]:
             '''
             Gazebo + Console
             '''
@@ -343,6 +349,17 @@ class Manager:
 
             time.sleep(2)
             self.commands.start_console(width, height)
+        
+        elif exercise in ["real_follow_person"]:
+            '''
+            Real robot + Console
+            '''
+            self.commands.start_ros_instructions(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
+            self.commands.start_console(1920, 1080)
+            
         else:
             '''
             Only Console
@@ -382,7 +399,7 @@ class Manager:
             self.commands.start_rviz(exercise)
             self.commands.start_console(width, height)
 
-        elif exercise not in ["color_filter", "dl_digit_classifier"]:
+        elif exercise not in ["color_filter", "dl_digit_classifier", "real_follow_person"]:
             '''
             Gazebo + Console
             '''
@@ -398,6 +415,17 @@ class Manager:
 
 
             self.commands.start_console(width, height)
+        
+        elif exercise in ["real_follow_person"]:
+            '''
+            Real robot + Console
+            '''
+            self.commands.start_ros_instructions(exercise)
+            self.commands.start_exercise(exercise)
+            time.sleep(2)
+            self.launch_level = 3
+            self.commands.start_console(1920, 1080)
+
         else:
             '''
             Only Console

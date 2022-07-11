@@ -18,5 +18,10 @@
     },
     "color_filter": {
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/color_filter/web-template/exercise.py 0.0.0.0"
+    },
+    "real_follow_person": {
+    	"gazebo_path": "",
+    	"instructions_ros": ["ros2 launch /RoboticsAcademy/exercises/static/exercises/real_follow_person/web-template/launch/real_follow_person.launch.py"],
+    	"instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/real_follow_person/web-template/exercise.py 0.0.0.0"
     }
 }

@@ -1,0 +1,45 @@
+#canvas_container{
+	float: left;
+	width: 50%;
+	height: 500px;
+}
+
+#visual {
+    display: inline-block;
+    max-width: 440;
+    padding: 0px 9px 0px 9px;
+}
+
+#gui_canvas {
+    margin-left: 0%;
+    height: 474px;
+    width: 633px;
+    border: 3px solid #555;
+}
+
+#gui_canvas_ray {
+    margin-right: 20%;
+    height: 316px;
+    width: 422px;
+    border: 3px solid #555;
+}
+
+#gzweb{
+    height: 40%;
+    width:100%;
+}
+
+#stream {
+    margin-left: 20%;
+    height: 240px;
+    width: 320px;
+	border: 3px solid #555;
+}
+
+#input_heading{
+    margin-left: 42%;
+}
+
+#output_heading{
+    text-align: center;
+}
