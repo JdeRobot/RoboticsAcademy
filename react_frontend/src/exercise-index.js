@@ -10,6 +10,7 @@ import ProminentAppBar from './components/exercises/ProminentAppBar';
 import VncConsoleViewer from './components/exercises/VncConsoleViewer';
 import CircuitSelector from './components/exercises/CircuitSelector';
 import CanvasBirdEye from './components/exercises/CanvasBirdEye';
+import ExerciseControl from './components/exercises/ExerciseControl';
 
 const container = document.getElementById('exercise');
 const root = createRoot(container);
@@ -22,6 +23,7 @@ window.RoboticsExerciseComponents = (function() {
     VncConsoleViewer: VncConsoleViewer,
     CircuitSelector: CircuitSelector,
     CanvasBirdEye: CanvasBirdEye,
+    ExerciseControl: ExerciseControl,
   };
 
   const render = function (component, container, props, children, callback) {
