@@ -78,7 +78,7 @@ export function WsGuiProvider({ children }){
 	}
 
     return(
-    	<WsGuiContext.Provider value={{ drawCircle, drawInitialPosition }}>{children}</WsGuiContext.Provider>
+    	<WsGuiContext.Provider value={{ declare_gui }}>{children}</WsGuiContext.Provider>
 	);
 }
 

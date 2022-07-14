@@ -1,24 +1,16 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Image from 'mui-image';
-import {Box, Button, ButtonGroup, Divider, Input, TextField, Typography} from "@mui/material";
+import {Box, Button, ButtonGroup, Typography} from "@mui/material";
 import ConnectingAirportsIcon from '@mui/icons-material/ConnectingAirports';
 import LaunchIcon from '@mui/icons-material/Launch';
 import HelpCenterOutlinedIcon from '@mui/icons-material/HelpCenterOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
-import SmartToyOutlinedIcon from '@mui/icons-material/SmartToyOutlined';
-import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
-import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
-import VrpanoOutlinedIcon from '@mui/icons-material/VrpanoOutlined';
-import TerminalOutlinedIcon from '@mui/icons-material/TerminalOutlined';
-import VideogameAssetOutlinedIcon from '@mui/icons-material/VideogameAssetOutlined';
-import SaveIcon from '@mui/icons-material/Save';
+
 import RoboticsTheme from '../RoboticsTheme.js';
 function ProminentAppBar() {
     const connectionButton = React.useRef(null);

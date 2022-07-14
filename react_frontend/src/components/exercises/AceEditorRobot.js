@@ -1,37 +1,50 @@
 import * as React from 'react';
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import AceEditor from "react-ace";
+// import '/static/common/ace-builds/src-noconflict/ace.js';
+import '/static/common/ace-builds/src-noconflict/ext-language_tools';
+import '/static/common/ace-builds/src-noconflict/mode-python';
+import '/static/common/ace-builds/src-noconflict/theme-dracula';
+import '/static/common/ace-builds/src-noconflict/snippets/python';
 
 function AceEditorRobot() {
-    const editorele_ = React.useRef(null);
-    // const editorele = ace.edit("editor");
-    // function setFontSize(augm) {
-    //
-	// 	  if (augm) {
-	// 		if (editorele_.getFontSize() < 70)
-	// 			editorele_.setFontSize(editorele_.getFontSize()+1);
-	// 	  } else {
-	// 		if (editorele_.getFontSize() > 2)
-	// 			editorele_.setFontSize(editorele_.getFontSize()-1);
-	// 	  }
-	//   }
+    const [fontSize, setFontSize] = React.useState(14);
+    const editorele = React.useRef(null);
+    // var editorele;
+    React.useEffect(() => {
+          console.log(editorele.current.props.fontSize);
+    }, [editorele]);
 
-	  return (
-          <Box sx={{m:3}} id="code-control">
-              <Box sx={{display:"inline-flex"}} id="code_container">
-                  <input type="button" id="aug_font" defaultValue={"+"} />
-                  <input type="button" id="red_font"  defaultValue={"-"} />
+    const codeChange = () => {
+        console.log("Changed!");
+    }
+    const setFontSize_ = (augm) => {
+        const ftSize = editorele.current?.props.fontSize;
+        if (augm) {
+            if (ftSize < 70) setFontSize(ftSize+1);
+        } else {
+            if (ftSize > 2) setFontSize(ftSize-1);
+        }
+    }
+
+    return (
+          <Box sx={{m:3,p:2, display:"inline-flex",flexDirection:"column",border: "2px solid #d3d3d3"}} id="code-control">
+              <Typography align={'center'} variant={"h5"} sx={{fontFamily: 'Raleway'}}>
+                  Editor
+              </Typography>
+              <Box id="code_container">
+                  <div id={"editor"}>
                    <AceEditor
-                id={"editor"}
                 mode="python"
-                theme="github"
+                theme="dracula"
                 name="code"
-                fontSize={14}
+                onChange={codeChange}
+                ref={editorele}
+                fontSize={fontSize}
                 showPrintMargin={true}
                 showGutter={true}
-                ref={ editorele_ }
                 highlightActiveLine={true}
-                value={`from GUI import GUI
+                defaultValue={`from GUI import GUI
 from HAL import HAL
 # Enter sequential code!
 
@@ -45,29 +58,9 @@ while True:
                     tabSize: 2,
                 }}/>
 
+</div><input type="button" id="aug_font" onClick={ ()=> setFontSize_(true)} defaultValue={"+"} />
+                <input type="button" id="red_font" onClick={() => setFontSize_(false)} defaultValue={"-"} />
               </Box>
-              <div id="myModal" className="modal" tabIndex="-1" role="dialog">
-                  <div className="modal-dialog" role="document">
-                      <div className="modal-content">
-                          <div className="modal-header">
-                              <h5 className="modal-title">Enter a filename</h5>
-                              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                              </button>
-                          </div>
-                          <div className="modal-body">
-                              <div className="md-form ml-0 mr-0">
-                                  <input type="text" id="form29" className="form-control form-control-sm validate ml-0"/>
-                              </div>
-                          </div>
-                          <div className="modal-footer">
-                              <button type="button" className="btn btn-primary">Download
-                              </button>
-                              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                          </div>
-                      </div>
-                  </div>
-              </div>
           </Box>
       );
 

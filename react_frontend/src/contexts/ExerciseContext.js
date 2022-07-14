@@ -157,17 +157,17 @@ export function ExerciseProvider({ children }){
 		setSendCode(true);
 	}
 
-	function connectionUpdate(data){
+	function connectionUpdate(data,connectionButton,launchButton){
 			if (data.connection == 'manager') {
 				if (data.command == 'up') {
-					$("#connection-button").removeClass("btn-warning btn-secondary").addClass("btn-success");
-					$("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
-					$("#connection-button").prop('disabled', true);
-					$("#launch-button").prop('disabled', false);
+					connectionButton.removeClass("btn-warning btn-secondary").addClass("btn-success");
+					connectionButton.html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
+					connectionButton.prop('disabled', true);
+					launchButton.prop('disabled', false);
 				}else if (data.command == 'down'){
-					$("#connection-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
-					$("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
-					$("#connection-button").prop('disabled', false);
+					connectionButton.removeClass("btn-success btn-warning").addClass("btn-secondary");
+					connectionButton.html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
+					connectionButton.prop('disabled', false);
 					if (websocket_code != null)
 						websocket_code.close();
 					if (websocket_gui != null)

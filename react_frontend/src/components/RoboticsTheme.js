@@ -13,6 +13,9 @@ const theme  = createTheme({
       main: '#66bb6a'
     }
   },
+  typography:{
+    fontFamily: 'Roboto'
+  }
 });
 
 function RoboticsTheme(props) {
