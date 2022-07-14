@@ -16,13 +16,13 @@ export function ExerciseProvider({ children }){
     const [swapping, setSwapping] = useState(false);
 
 
-	function startSim(step){
+	function startSim(step,connectionButton){
     	var level = 0;
     	let websockets_connected = false;
 
     	if (step == 0) {
-    		$("#connection-button").removeClass("btn-danger").addClass("btn-warning");
-			$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
+    		connectionButton.removeClass("btn-danger").addClass("btn-warning");
+			connectionButton.html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
         	address_code = "ws://" + websocket_address + ":1905";
         	address_gui = "ws://" + websocket_address + ":2303";
         	ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");

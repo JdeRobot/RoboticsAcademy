@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
     "build": "webpack --mode production --output-path ./static/react_frontend",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src/**/*.js"
   },
   "keywords": [],
   "devDependencies": {
@@ -17,8 +18,13 @@
     "@babel/preset-react": "^7.16.7",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.30.1",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^7.0.1",
+    "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.1.0",
     "sass-loader": "^12.6.0",

@@ -35,7 +35,7 @@ function ExerciseControl() {
                             Save file
                         </Button>
                         </Box>
-<Box>
+                        <Box>
                         <Button  color={"secondary"} startIcon={<SmartToyOutlinedIcon/>} sx ={{m:0.5}} variant={"outlined"} >
                             Load in robot
                         </Button>
