@@ -25,7 +25,7 @@
     },
     "drone_cat_mouse": {
         "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/launch.py"],
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/drone_cat_mouse.launch"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0",
         "instructions_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_guest.py 0.0.0.0"
     },
@@ -37,7 +37,7 @@
     },
     "follow_turtlebot": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/launch.py"],
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
     },
     "global_navigation": {

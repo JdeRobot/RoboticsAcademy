@@ -141,8 +141,8 @@ class GUI:
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
         # Add position to payload
-        mouse_x, mouse_y, mouse_z = self.hal.get_position()
-        self.payload["pos"] = [mouse_x, mouse_y, mouse_z]
+        # mouse_x, mouse_y, mouse_z = self.hal.get_position()
+        # self.payload["pos"] = [mouse_x, mouse_y, mouse_z]
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -156,13 +156,13 @@ class GUI:
             
     # Update distance between cat and mouse drones
     def update_dist(self):
-        cat_x, cat_y, cat_z = self.hal.get_position()
-        mouse_x, mouse_y, mouse_z = self.mouse.get_position()
+        # cat_x, cat_y, cat_z = self.hal.get_position()
+        # mouse_x, mouse_y, mouse_z = self.mouse.get_position()
 
-        if mouse_z > 0.1: self.dist["ready"] = "true"
-        else: self.dist["ready"] = "false"
+        # if mouse_z > 0.1: self.dist["ready"] = "true"
+        # else: self.dist["ready"] = "false"
 
-        dist = np.sqrt((mouse_x+2-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
+        # dist = np.sqrt((mouse_x+2-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
         dist = int(dist*100)/100
         self.dist["dist"] = dist
 

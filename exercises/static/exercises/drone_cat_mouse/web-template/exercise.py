@@ -146,21 +146,21 @@ class Template:
         # motors# hal_module.HAL.motors = imp.new_module("motors")
 
         # Add HAL functions
-        hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
-        hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
-        hal_module.HAL.get_position = self.hal.get_position
-        hal_module.HAL.get_velocity = self.hal.get_velocity
-        hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
-        hal_module.HAL.get_orientation = self.hal.get_orientation
-        hal_module.HAL.get_roll = self.hal.get_roll
-        hal_module.HAL.get_pitch = self.hal.get_pitch
-        hal_module.HAL.get_yaw = self.hal.get_yaw
-        hal_module.HAL.get_landed_state = self.hal.get_landed_state
-        hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
-        hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
-        hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
-        hal_module.HAL.takeoff = self.hal.takeoff
-        hal_module.HAL.land = self.hal.land
+        # hal_module.HAL.get_frontal_image = self.hal.get_frontal_image
+        # hal_module.HAL.get_ventral_image = self.hal.get_ventral_image
+        # hal_module.HAL.get_position = self.hal.get_position
+        # hal_module.HAL.get_velocity = self.hal.get_velocity
+        # hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
+        # hal_module.HAL.get_orientation = self.hal.get_orientation
+        # hal_module.HAL.get_roll = self.hal.get_roll
+        # hal_module.HAL.get_pitch = self.hal.get_pitch
+        # hal_module.HAL.get_yaw = self.hal.get_yaw
+        # hal_module.HAL.get_landed_state = self.hal.get_landed_state
+        # hal_module.HAL.set_cmd_pos = self.hal.set_cmd_pos
+        # hal_module.HAL.set_cmd_vel = self.hal.set_cmd_vel
+        # hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
+        # hal_module.HAL.takeoff = self.hal.takeoff
+        # hal_module.HAL.land = self.hal.land
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

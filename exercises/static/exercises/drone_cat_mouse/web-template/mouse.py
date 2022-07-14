@@ -20,50 +20,50 @@ class Mouse:
         new_instance = cls()
         return new_instance
 
-    def takeoff(self):
-        self.mouse.takeoff(h=5)
+    # def takeoff(self):
+    #     self.mouse.takeoff(h=5)
 
-    def start_mouse(self, path_level):
-        self.takeoff()
-        self.thread = StoppableThread(target=self.autonomous_mouse, args=[path_level])
-        self.thread.start()
+    # def start_mouse(self, path_level):
+    #     self.takeoff()
+    #     self.thread = StoppableThread(target=self.autonomous_mouse, args=[path_level])
+    #     self.thread.start()
 
-    def land(self):
-        self.mouse.land()
+    # def land(self):
+    #     self.mouse.land()
 
-    def stop_mouse(self):
-        self.thread.stop()
-        self.mouse.set_cmd_mix(vx=0, vy=0, z=self.mouse.get_position()[2], az=0)
+    # def stop_mouse(self):
+    #     self.thread.stop()
+    #     self.mouse.set_cmd_mix(vx=0, vy=0, z=self.mouse.get_position()[2], az=0)
 
-    def reset_mouse(self):
-        self.thread.stop()
-        self.mouse.land()
+    # def reset_mouse(self):
+    #     self.thread.stop()
+    #     self.mouse.land()
 
-        req = ModelState()
-        req.model_name = "iris_red"
-        req.pose.position.x = 2.0
-        req.pose.position.y = 0.0
-        req.pose.position.z = 0.05
-        req.pose.orientation.x = 0.0
-        req.pose.orientation.y = 0.0
-        req.pose.orientation.z = 0.0
-        req.pose.orientation.w = 1.0
-        req.twist.linear.x = 0.0
-        req.twist.linear.y = 0.0
-        req.twist.linear.z = 0.0
-        req.twist.angular.x = 0.0
-        req.twist.angular.y = 0.0
-        req.twist.angular.z = 0.0
-        self.reset_state(req)
+    #     req = ModelState()
+    #     req.model_name = "iris_red"
+    #     req.pose.position.x = 2.0
+    #     req.pose.position.y = 0.0
+    #     req.pose.position.z = 0.05
+    #     req.pose.orientation.x = 0.0
+    #     req.pose.orientation.y = 0.0
+    #     req.pose.orientation.z = 0.0
+    #     req.pose.orientation.w = 1.0
+    #     req.twist.linear.x = 0.0
+    #     req.twist.linear.y = 0.0
+    #     req.twist.linear.z = 0.0
+    #     req.twist.angular.x = 0.0
+    #     req.twist.angular.y = 0.0
+    #     req.twist.angular.z = 0.0
+    #     self.reset_state(req)
 
-    def autonomous_mouse(self, path_level):
-        v = path_obfuscated(path_level)
-        if v is not None:
-            vx, vy, vz, yaw = v
-            self.mouse.set_cmd_vel(vx, vy, vz, yaw)
-        else:
-            print("[Mouse] Path {} not available".format(path_level))
+    # def autonomous_mouse(self, path_level):
+    #     v = path_obfuscated(path_level)
+    #     if v is not None:
+    #         vx, vy, vz, yaw = v
+    #         self.mouse.set_cmd_vel(vx, vy, vz, yaw)
+    #     else:
+    #         print("[Mouse] Path {} not available".format(path_level))
 
-    def get_position(self):
-        pos = self.mouse.get_position()
-        return pos 
+    # def get_position(self):
+    #     pos = self.mouse.get_position()
+    #     return pos 
