@@ -3,9 +3,13 @@ import { createContext, useState } from "react";
 const ExerciseContext = createContext();
 
 export function ExerciseProvider({ children }){
+	var websocket_address = "127.0.0.1"
     var ws_manager;
     var address_code;
     var address_gui;
+	const [theoryMode, setTheoryMode] = useState(false);
+	const [codeMode, setCodeMode] = useState(true);
+	const [forumMode, setForumMode] = useState(false);
     const [gazeboToggle, setGazeboToggle] = useState(false);
     const [gazeboOn, setGazeboOn] = useState(false);
     const [simReset, setSimReset] = useState(false);
@@ -172,18 +176,18 @@ export function ExerciseProvider({ children }){
 						websocket_code.close();
 					if (websocket_gui != null)
 						websocket_gui.close();
-					$("#launch-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
-					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+					launchButton.removeClass("btn-success btn-warning").addClass("btn-secondary");
+					launchButton.html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
 				}
 			} else if (data.connection == 'exercise') {
 				if (data.command == 'available') {
-					$("#launch-button").removeClass('btn-secondary').addClass('btn-secondary');
+					launchButton.removeClass('btn-secondary').addClass('btn-secondary');
 				}else if (data.command == 'up') {
 					stop();
 					swapping = false;
-					$("#launch-button").removeClass("btn-warning").addClass("btn-success");
-					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
-					$("#launch-button").prop('disabled', true);
+					launchButton.removeClass("btn-warning").addClass("btn-success");
+					launchButton.html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
+					launchButton.prop('disabled', true);
 					togglePlayPause(false);
 					let reset_button = document.getElementById("reset");
 					reset_button.disabled = false;
@@ -195,16 +199,16 @@ export function ExerciseProvider({ children }){
 					load_button.style.cursor = "default";
 				}else if (data.command == 'down'){
 					if (!swapping) {
-						$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
-						$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
-						$("#launch-button").prop('disabled', false);
+						launchButton.removeClass("btn-success").addClass("btn-secondary");
+						launchButton.html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
+						launchButton.prop('disabled', false);
 					}
 				}else if (data.command == 'swap'){
-					$("#launch-button").removeClass("btn-success btn-warning btn-secondary").addClass("btn-warning");
-					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching`);
+					launchButton.removeClass("btn-success btn-warning btn-secondary").addClass("btn-warning");
+					launchButton.html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching`);
 				}else if (data.command == 'launch_level'){
 					let level = data.level;
-					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
+					launchButton.html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
 				}else if (data.command == 'error') {
 					$('#errorModal .modal-header .modal-header-text').text("Errors detected:");
                     $('#errorModal .modal-body').text(data.text);
@@ -224,8 +228,33 @@ export function ExerciseProvider({ children }){
 			}
 		}
 
+		function onClickTheory() {
+         if(!theoryMode){
+             setTheoryMode(true);
+             setCodeMode(false);
+             setForumMode(false);
+         }
+     }
+     function onClickCode() {
+         if(!codeMode){
+             setTheoryMode(false);
+             setCodeMode(true);
+             setForumMode(false);
+         }
+     }
+     function onClickForum() {
+         if(!forumMode){
+             setTheoryMode(false);
+             setCodeMode(false);
+             setForumMode(true);
+         }
+     }
+     function getLaunchLevel() {
+         return launchLevel;
+     }
+
     return(
-    	<ExerciseContext.Provider value={{ }}>{children}</ExerciseContext.Provider>
+    	<ExerciseContext.Provider value={{ startSim, onClickForum,onClickCode,onClickTheory,getLaunchLevel}}>{children}</ExerciseContext.Provider>
 	);
 }
 

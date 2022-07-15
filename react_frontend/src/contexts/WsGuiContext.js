@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 
 const WsGuiContext = createContext();
 
@@ -12,12 +12,12 @@ export function WsGuiProvider({ children }){
 	// Websocket and other variables for image display
 	var websocket_gui, animation_id,image_data, source, shape,lap_time, pose, content,command_input;
 
-	function declare_gui(websocket_address) {
+	function declare_gui(websocket_address, setLaunchLevel, connectionUpdate,getLaunchLevel,websocket_code,running,) {
 		websocket_gui = new WebSocket(websocket_address);
 
 		websocket_gui.onopen = function (event) {
 			//alert("[open] Connection established!");
-			set_launch_level(get_launch_level()+1);
+			setLaunchLevel(getLaunchLevel()+1);
 			connectionUpdate({connection: 'exercise', command: 'launch_level', level: '5'}, '*');
 			if (websocket_code.readyState == 1) {
 				alert("[open] Connection established!");
@@ -36,12 +36,12 @@ export function WsGuiProvider({ children }){
 		}
 
 		// What to do when a message from server is received
-		websocket_gui.onmessage = function (event) {
-			operation = event.data.substring(0, 4);
+		websocket_gui.onmessage = function (event,canvas, drawCircle, command,next_command) {
+			let operation = event.data.substring(0, 4);
 
 			if (operation == "#gui") {
 				// Parse the entire Object
-				data = JSON.parse(event.data.substring(4,));
+				let data = JSON.parse(event.data.substring(4,));
 
 				// Parse the Image Data
 				image_data = JSON.parse(data.image),
@@ -77,8 +77,20 @@ export function WsGuiProvider({ children }){
 		}
 	}
 
+	function pauseLap(){
+		websocket_gui.send("#paus");
+	}
+
+	function unPauseLap(){
+		websocket_gui.send("#resu");
+	}
+
+	function resetGui(){
+		websocket_gui.send("#rest");
+	}
+
     return(
-    	<WsGuiContext.Provider value={{ declare_gui }}>{children}</WsGuiContext.Provider>
+    	<WsGuiContext.Provider value={{ declare_gui, pauseLap, unPauseLap, resetGui }}>{children}</WsGuiContext.Provider>
 	);
 }
 

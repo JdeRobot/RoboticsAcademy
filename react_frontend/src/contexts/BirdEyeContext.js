@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 const BirdEyeContext = createContext();
 
 export function BirdEyeProvider({ children }){
-    const [ initialPosition, setInitialPosition] = useState(null);
+    let [ initialPosition, setInitialPosition] = useState(null);
 
     function drawCircle(x,y,ctx, mapCanvas){
         if (initialPosition == null){
@@ -11,8 +11,8 @@ export function BirdEyeProvider({ children }){
         }
         ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
-	    cursor_x = x;
-	    cursor_y = y;
+	    // cursor_x = x;
+	    // cursor_y = y;
 
 	    ctx.beginPath();
 	    ctx.arc(x, y, 2, 0, 2 * Math.PI);
