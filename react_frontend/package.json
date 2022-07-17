@@ -29,11 +29,14 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@hedgedoc/html-to-react": "^1.4.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
+    "classnames": "^2.3.1",
+    "glob": "^8.0.3",
     "mui-image": "^1.0.5",
     "react-ace": "^10.1.0",
-    "react-vnc": "^0.5.1",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "react-vnc": "^0.5.1"
   }
 }
