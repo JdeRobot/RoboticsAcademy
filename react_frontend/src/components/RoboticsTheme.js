@@ -4,12 +4,18 @@ const theme  = createTheme({
   palette: {
     type: 'light',
     primary: {
-      main: '#ffac15',
+      main: '#ffa726',
     },
     secondary: {
       main: '#147aff'
     },
+    success:{
+      main: '#66bb6a'
+    }
   },
+  typography:{
+    fontFamily: 'Roboto'
+  }
 });
 
 function RoboticsTheme(props) {
