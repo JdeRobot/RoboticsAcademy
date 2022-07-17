@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import AceEditor from "react-ace";
+// import '/static/common/ace-builds/src-noconflict/ace.js';
+import '../../../../static/common/ace-builds/src-noconflict/ext-language_tools';
+import '../../../../static/common/ace-builds/src-noconflict/mode-python';
+import '../../../../static/common/ace-builds/src-noconflict/theme-dracula';
+import '../../../../static/common/ace-builds/src-noconflict/snippets/python';
 import ExerciseContext from "../../contexts/ExerciseContext";
-import "/static/common/ace-builds/src-noconflict/ext-language_tools";
-import "/static/common/ace-builds/src-noconflict/mode-python";
-import "/static/common/ace-builds/src-noconflict/theme-dracula";
-import "/static/common/ace-builds/src-noconflict/snippets/python";
 
 function AceEditorRobot() {
   const [fontSize, setFontSize] = React.useState(14);
