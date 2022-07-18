@@ -44,8 +44,7 @@ RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/r
 
 
 # RoboticsAcademy
-RUN rm -rf /RoboticsAcademy && \
-    git clone https://github.com/RUFFY-369/RoboticsAcademy.git -b rotors
+RUN git clone https://github.com/RUFFY-369/RoboticsAcademy.git -b rotors
 RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # React
