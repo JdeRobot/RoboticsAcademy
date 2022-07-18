@@ -18,6 +18,7 @@ prerequisite - Python
 virtualenv env
  ```
 Virtual environment with name "env" is created 
+
 2) Activate the environment
 ```
 source env/bin/activate
@@ -34,6 +35,7 @@ pip install django-webpack-loader
 python3 manage.py runserver
 ```
 The webserver is not connected with the RADI.
+
 5) To connect the webserver with RADI, Run:
 ```
 docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy —no-server
