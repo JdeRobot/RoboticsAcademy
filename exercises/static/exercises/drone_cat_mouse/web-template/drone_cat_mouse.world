@@ -6,22 +6,23 @@
     <gui fullscreen="1"></gui>
 
     <include>
-  		<uri>model://sun</uri>
-	</include>
+  	  <uri>model://sun</uri>
+	  </include>
 
-    	<!-- Ground -->
-	<include>
+    <!-- Ground -->
+	  <include>
   		<uri>model://grass_plane</uri>
-	</include>
+	  </include>
 
-  <include>
+    <!-- JdeRobot Logo -->
+    <include>
 		  <name>logo</name>
 			<uri>model://logoJdeRobot</uri>
 			<pose>0 -4 0 0 0 0</pose>
-	</include>
+	  </include>
 
 		<!-- Sky -->
-	<scene>
+	  <scene>
         <shadows>0</shadows>
         <ambient>0.4 0.4 0.4 1.0</ambient>
         <background>0.7 0.7 0.7 1</background>
@@ -30,21 +31,15 @@
 	            <speed>12</speed>
 	        </clouds>
 	    </sky>
-	</scene>
+	  </scene>
 
-    <!-- JdeRobot Logo
-    <include>
-        <name>logo</name>
-        <uri>model://logoJdeRobot</uri>
-        <pose>0 -4 0 0 0 0</pose>
-    </include> -->
 
     <!-- Only one ROS interface plugin is required per world, as any other plugin can connect a Gazebo
          topic to a ROS topic (or vise versa). -->
     <plugin name="ros_interface_plugin" filename="librotors_gazebo_ros_interface_plugin.so"/>
 
     
-    <!-- coordinate system {-->
+    <!-- coordinate system -->
     <spherical_coordinates>
       <surface_model>EARTH_WGS84</surface_model>
       <latitude_deg>47.3667</latitude_deg>
@@ -52,9 +47,8 @@
       <elevation>500.0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <!--}-->
 
-    <!-- physics engine {-->
+    <!-- physics engine -->
     <physics name="default_physics" default="0"  type='ode'>
       <ode>
         <solver>
@@ -75,15 +69,13 @@
       <magnetic_field>6.0e-06 2.3e-05 -4.2e-05</magnetic_field>
       <gravity>0 0 -9.8</gravity>
     </physics>
-    <!--}-->
 
-    <!-- turn off shadows {-->
+    <!-- turn off shadows -->
     <scene>
       <shadows>false</shadows>
       <sky>
         <clouds/>
       </sky>
     </scene>
-    <!--}-->
   </world>
 </sdf>

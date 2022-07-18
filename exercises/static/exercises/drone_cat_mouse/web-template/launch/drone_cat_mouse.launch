@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
   <arg name="mav_name" default="crazyflie2"/>
-  <!-- <arg name="world_name" default="basic"/> -->
   <arg name="enable_internal_model_controller" default="true"/>
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
-  <!-- <arg name="enable_state_estimator" default="false" /> -->
+  <!-- <arg name="enable_state_estimator" default="false" /> -->  <!-- as a comment for future possible use of state estimator -->
   <arg name="enable_mellinger_controller" default="false"/>
   <arg name="headless" default="true"/>
   <arg name="log_file" default="$(arg mav_name)" />
@@ -24,13 +23,8 @@
 
   <!-- The following lines simulate the world in Gazebo. The physic engine properties
         are set up in the file "basic_crazyflie.world" file -->
-  <!-- <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/> -->
-  <!-- <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/> -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="/RoboticsAcademy/exercises/drone_cat_mouse/web-template/drone_cat_mouse.world" />
-    <!-- <arg name="x" value="14.96"/>
-    <arg name="z" value="0.3"/>
-    <arg name="y" value="1.57"/> -->
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
