@@ -3,6 +3,7 @@
 [Back to main README.]: ../README.md
 
 # Instructions for developers
+- [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4) 
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [How to update static files version](#How-to-update-static-files-version)
@@ -13,6 +14,7 @@
 To get started with developing exercise in Robotics Academy, a developers needs to follow these steps:
 
 prerequisite - Python
+
 1) First create a virtual env
 ```
 virtualenv env
