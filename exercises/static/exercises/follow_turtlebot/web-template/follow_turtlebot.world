@@ -1,8 +1,10 @@
 <?xml version="1.0" ?>
 <?xml-model href="http://sdformat.org/schemas/root.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
-<sdf version="1.4">
+<sdf version="1.5">
   <world name="default">
     
+    <gui fullscreen="1"></gui>
+
     <include>
   		<uri>model://sun</uri>
 	</include>
@@ -11,6 +13,13 @@
 	<include>
   		<uri>model://ground_plane</uri>
 	</include>
+
+  <include>
+		  <name>logo</name>
+			<uri>model://logoJdeRobot</uri>
+			<pose>0 -4 0 0 0 0</pose>
+	</include>
+
 
 		<!-- Sky -->
 	<scene>

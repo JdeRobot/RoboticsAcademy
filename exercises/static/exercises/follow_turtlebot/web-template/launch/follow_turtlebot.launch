@@ -21,8 +21,8 @@
 
   <!-- The following lines simulate the world in Gazebo. The physic engine properties
         are set up in the file "basic_crazyflie.world" file -->
-  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
-  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+  <!-- <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/> -->
+  <!-- <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/> -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="/RoboticsAcademy/exercises/follow_turtlebot/web-template/follow_turtlebot.world" />
     <!-- <arg name="x" value="14.96"/>

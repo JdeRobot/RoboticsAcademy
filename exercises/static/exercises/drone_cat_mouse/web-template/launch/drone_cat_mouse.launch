@@ -5,7 +5,7 @@
   <arg name="enable_internal_model_controller" default="true"/>
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
-  <arg name="enable_state_estimator" default="false" />
+  <!-- <arg name="enable_state_estimator" default="false" /> -->
   <arg name="enable_mellinger_controller" default="false"/>
   <arg name="headless" default="true"/>
   <arg name="log_file" default="$(arg mav_name)" />
@@ -14,17 +14,18 @@
   <arg name="debug" default="false"/>
   
   <arg name="gui" default="false"/>
-  <arg name="csvFilesStoring" default="false"/>
-  <arg name="csvFilesStoringTime" default="15.0"/> <!-- seconds -->
-  <arg name="user_account" default="giuseppe"/>
+  <!-- uncomment to save logs -->
+  <!-- <arg name="csvFilesStoring" default="false"/> -->
+  <!-- <arg name="csvFilesStoringTime" default="15.0"/> --> <!-- seconds -->
+  <!-- <arg name="user_account" default="your_account_name"/> -->
   <!-- The following line causes gzmsg and gzerr messages to be printed to the console
       (even when Gazebo is started through roslaunch) -->
   <arg name="verbose" default="true"/>
 
   <!-- The following lines simulate the world in Gazebo. The physic engine properties
         are set up in the file "basic_crazyflie.world" file -->
-  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
-  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+  <!-- <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/> -->
+  <!-- <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/> -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="/RoboticsAcademy/exercises/drone_cat_mouse/web-template/drone_cat_mouse.world" />
     <!-- <arg name="x" value="14.96"/>
@@ -65,7 +66,8 @@
    </node>
    <!-- Enable/Disable the trajectory generator - If the position_controller is activated, the hovering_example will be executed,
         otherwise the spline generator and the Mellinger's controller will be run-->
-   <node name="hovering_example_spline_swarm" pkg="rotors_gazebo" type="hovering_example_spline_swarm" output="screen" >
+   <node unless="$(arg enable_mellinger_controller)" name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen" />
+   <node if="$(arg enable_mellinger_controller)" name="hovering_example_spline" pkg="rotors_gazebo" type="hovering_example_spline" output="screen" >
      <rosparam command="load" file="$(find rotors_gazebo)/resource/spline_trajectory.yaml" />
    </node>
    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
@@ -99,7 +101,8 @@
    </node>
    <!-- Enable/Disable the trajectory generator - If the position_controller is activated, the hovering_example will be executed,
         otherwise the spline generator and the Mellinger's controller will be run-->
-   <node name="hovering_example_spline_swarm" pkg="rotors_gazebo" type="hovering_example_spline_swarm" output="screen" >
+   <node unless="$(arg enable_mellinger_controller)" name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen" />
+   <node if="$(arg enable_mellinger_controller)" name="hovering_example_spline" pkg="rotors_gazebo" type="hovering_example_spline" output="screen" >
      <rosparam command="load" file="$(find rotors_gazebo)/resource/spline_trajectory.yaml" />
    </node>
    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
