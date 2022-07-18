@@ -38,7 +38,7 @@ The webserver is not connected with the RADI.
 
 5) To connect the webserver with RADI, Run:
 ```
-docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy —no-server
+docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy --no-server
 ```
 
 <a name="How-to-add-a-new-exercise"></a>
