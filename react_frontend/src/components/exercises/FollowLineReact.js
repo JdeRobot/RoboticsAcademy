@@ -1,27 +1,21 @@
-import * as React from 'react';
-import {Box} from "@mui/material";
-import ExerciseControl from "./ExerciseControl";
-import AceEditorRobot from "./AceEditorRobot";
-import CircuitSelector from "./CircuitSelector";
-import CanvasBirdEye from "./CanvasBirdEye";
-import {CircuitSelectorProvider} from "../../contexts/CircuitSelectorContext";
-import VncConsoleViewer from "./VncConsoleViewer";
-import GazeboViewer from "./GazeboViewer";
+import * as React from "react";
+import { Box } from "@mui/material";
+import { ViewProvider } from "../../contexts/ViewContext";
+import { ExerciseProvider } from "../../contexts/ExerciseContext";
+import ProminentAppBar from "./ProminentAppBar";
+import View from "./View";
 
 function FollowLineReact() {
-
-    return (
-        <Box>
-            <CircuitSelectorProvider>
-            <ExerciseControl/>
-            <AceEditorRobot/>
-            <CircuitSelector/>
-            <CanvasBirdEye/>
-            <GazeboViewer/>
-            <VncConsoleViewer/>
-            </CircuitSelectorProvider>
-        </Box>
-    )
+  return (
+    <Box>
+      <ViewProvider>
+        <ExerciseProvider>
+          <ProminentAppBar />
+          <View />
+        </ExerciseProvider>
+      </ViewProvider>
+    </Box>
+  );
 }
 
 export default FollowLineReact;

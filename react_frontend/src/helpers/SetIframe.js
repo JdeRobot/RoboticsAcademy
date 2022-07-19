@@ -1,9 +1,7 @@
-export const setIframe = () => {
-    var iframe = document.querySelector('#iframe');
+export const setIframe = (iframe) => {
     iframe.setAttribute('src', "http://127.0.0.1:6080/vnc.html?resize=remote&autoconnect=true");
-    }
+}
 
-export const setIframeConsole = () => {
-    var console = document.querySelector('#console-vnc');
+export const setIframeConsole = (console) => {
     console.setAttribute('src', "http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true");
 }

@@ -10,7 +10,13 @@ const theme  = createTheme({
       main: '#147aff'
     },
     success:{
-      main: '#66bb6a'
+      main: '#4CAF50'
+    },
+    notConnected: {
+      main: '#757575'
+    },
+    loading: {
+      main: '#E64A19'
     }
   },
   typography:{

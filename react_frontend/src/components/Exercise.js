@@ -1,17 +1,11 @@
-import React from 'react';
-import '../styles/Exercise.css';
-import RoboticsTheme from './RoboticsTheme';
-import {CircuitSelectorProvider} from "../contexts/CircuitSelectorContext";
+import React from "react";
+import "../styles/Exercise.css";
+import RoboticsTheme from "./RoboticsTheme";
 
 function Exercise() {
-
   return (
-
     <RoboticsTheme>
-        <CircuitSelectorProvider>
-        <div className="Exercise">
-        </div>
-        </CircuitSelectorProvider>
+      <div className="Exercise"></div>
     </RoboticsTheme>
   );
 }
