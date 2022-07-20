@@ -1,0 +1,78 @@
+{% extends 'base_teleop.html' %}
+
+{% load static %}
+{% block content %}
+
+      <div id="code-control">
+      <!-- Code Editor -->
+      <!-- Along with buttons -->
+          <div id="code_container">
+              <div id="editor">from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!
+              </div>
+
+
+          </div>
+      </div>
+
+</div>
+
+<div class="split b">
+
+    <div id="visual">
+    <!-- Canvas -->
+        <h3 class="output_heading">Camera Image</h3>
+        <canvas id="gui_canvas"></canvas>
+    </div>
+    
+    <iframe id="console" style="display:none;" src="" width="100%" height="50%"></iframe>
+    <iframe id="iframeGzweb" style="display:none;" src="" width="100%" height="50%" ></iframe>
+    
+    <script type="text/javascript">
+        function changeconsole(){
+            document.getElementById("console").setAttribute("src", "http://" + websocket_address + ":1108/vnc.html?resize=remote&autoconnect=true");
+            var console_display = document.getElementById('console').style.display;
+            console.log(console_display);
+            if (console_display == "none" || console_display == "none" ) {
+                document.getElementById('console').style.display = 'block';
+            } else{
+                document.getElementById('console').style.display = 'none';
+            }
+        }
+
+        function changegzweb(){
+            document.getElementById("iframeGzweb").setAttribute("src", "http://" + websocket_address + ":6080/vnc.html?resize=remote&autoconnect=true");
+            var display = document.getElementById('iframeGzweb').style.display
+            console.log(display)
+            if (display == "none") {
+                document.getElementById('iframeGzweb').style.display = 'block';
+            } else{
+                document.getElementById('iframeGzweb').style.display = 'none';
+            }
+        }
+
+    </script>
+</div>
+</div>
+
+<script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+<script>
+  Split(['.a', '.b'], {
+    gutterSize: 3,
+    sizes: [40,60]
+  });
+</script>
+<script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
+<script src="{% static '' %}exercises/{{exercise}}/web-template/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '' %}exercises/assets/js/utils.js"></script>
+<script src="{% static '' %}exercises/{{exercise}}/web-template/assets/websocket_address.js" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '' %}exercises/{{exercise}}/web-template/assets/launcher.js" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '' %}exercises/{{exercise}}/web-template/assets/ws_code.js" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '' %}exercises/{{exercise}}/web-template/assets/ws_gui.js" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '' %}exercises/{{exercise}}/web-template/assets/local_functions.js" type="text/javascript" charset="utf-8"></script>
+
+{% endblock %}
