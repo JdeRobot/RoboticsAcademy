@@ -2,9 +2,8 @@ export const drawCircle = (x, y, initialPosition, mapCanvas) => {
   if (initialPosition == null) {
     initialPosition = [x, y];
   }
-  console.log("Place Robot in the starting position");
   let ctx = mapCanvas.getContext("2d");
-  ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+  // ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
   // cursor_x = x;
   // cursor_y = y;

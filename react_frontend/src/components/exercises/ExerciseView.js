@@ -6,6 +6,7 @@ import CircuitSelector from "./CircuitSelector";
 import CanvasBirdEye from "./CanvasBirdEye";
 import GazeboViewer from "./GazeboViewer";
 import VncConsoleViewer from "./VncConsoleViewer";
+import LoadModalView from "./LoadModalView";
 
 function ExerciseView() {
   return (
@@ -16,6 +17,7 @@ function ExerciseView() {
       <CanvasBirdEye />
       <GazeboViewer />
       <VncConsoleViewer />
+      <LoadModalView />
     </Box>
   );
 }

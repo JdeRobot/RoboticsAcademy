@@ -1,35 +1,36 @@
-import {createTheme, ThemeProvider} from '@mui/material/styles';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import PropTypes from "prop-types";
 
-const theme  = createTheme({
+const theme = createTheme({
   palette: {
-    type: 'light',
+    type: "light",
     primary: {
-      main: '#ffa726',
+      main: "#ffa726",
     },
     secondary: {
-      main: '#147aff'
+      main: "#147aff",
     },
-    success:{
-      main: '#4CAF50'
+    success: {
+      main: "#4CAF50",
     },
     notConnected: {
-      main: '#757575'
+      main: "#757575",
     },
     loading: {
-      main: '#E64A19'
-    }
+      main: "#E64A19",
+    },
   },
-  typography:{
-    fontFamily: 'Roboto'
-  }
+  typography: {
+    fontFamily: "Roboto",
+  },
 });
 
 function RoboticsTheme(props) {
-  return(
-      <ThemeProvider theme={theme}>
-        {props.children}
-      </ThemeProvider>
-  )
+  return <ThemeProvider theme={theme}>{props.children}</ThemeProvider>;
 }
+
+RoboticsTheme.propTypes = {
+  children: PropTypes.node,
+};
 
 export default RoboticsTheme;

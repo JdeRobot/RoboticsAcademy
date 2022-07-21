@@ -11,8 +11,6 @@ function AceEditorRobot() {
   const [fontSize, setFontSize] = React.useState(14);
   const { editorCode, editorCodeChange } = React.useContext(ExerciseContext);
   const editorele = React.useRef(null);
-  React.useEffect(() => {}, [editorele]);
-
   const setFontSize_ = (augm) => {
     const ftSize = editorele.current?.props.fontSize;
     if (augm) {

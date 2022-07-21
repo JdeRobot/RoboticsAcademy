@@ -4,7 +4,14 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Image from "mui-image";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  DialogActions,
+  DialogContent,
+  Typography,
+} from "@mui/material";
 import ConnectingAirportsIcon from "@mui/icons-material/ConnectingAirports";
 import LaunchIcon from "@mui/icons-material/Launch";
 import HelpCenterOutlinedIcon from "@mui/icons-material/HelpCenterOutlined";
@@ -14,8 +21,20 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import ExerciseContext from "../../contexts/ExerciseContext";
 import ViewContext from "../../contexts/ViewContext";
 import RoboticsTheme from "../RoboticsTheme.js";
+import BootstrapDialogTitle from "./InfoModalView";
+import BootstrapDialog from "./InfoModalView";
+
 function ProminentAppBar() {
-  const { startSim } = React.useContext(ExerciseContext);
+  const [open, setOpen] = React.useState(false);
+
+  const {
+    startSim,
+    connectionState,
+    launchState,
+    connectionButtonClick,
+    launchButtonClick,
+    launchLevel,
+  } = React.useContext(ExerciseContext);
   const {
     theoryMode,
     codeMode,
@@ -24,8 +43,6 @@ function ProminentAppBar() {
     openExercise,
     openForum,
   } = React.useContext(ViewContext);
-  const connectionButton = React.useRef(null);
-  const infoModal = React.useRef(null);
   React.useEffect(() => {
     const onPageLoad = () => {
       startSim(0);
@@ -34,15 +51,25 @@ function ProminentAppBar() {
     const onUnload = () => {
       startSim(2);
     };
-    if (document.readyState == "complete") {
+    if (document.readyState === "complete") {
       onPageLoad();
     } else {
       window.addEventListener("load", onPageLoad);
-
-      return () => window.removeEventListener("load", onPageLoad);
+      window.addEventListener("onbeforeunload", onUnload);
+      return () => {
+        window.removeEventListener("load", onPageLoad);
+        window.removeEventListener("onbeforeunload", onUnload);
+      };
     }
   }, []);
-  const connectionButtonClick = () => {};
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <RoboticsTheme>
       <AppBar position="static">
@@ -60,44 +87,58 @@ function ProminentAppBar() {
               alignItems: "center",
             }}
           >
-            <Image
-              src="/static/common/img/logo.gif"
-              fit={"cover"}
-              width={50}
-            ></Image>
+            <Image src="/static/common/img/logo.gif" fit={"cover"} width={50} />
             <LoadingButton
               id={"connection-button"}
-              ref={connectionButton}
               onClick={connectionButtonClick}
               startIcon={<ConnectingAirportsIcon />}
               variant="contained"
-              loadingIndicator="Connecting…"
-              color={"success"}
+              loadingPosition="start"
+              loading={connectionState === "Connecting"}
+              color={
+                connectionState === "Connecting"
+                  ? "loading"
+                  : connectionState === "Connect"
+                  ? "notConnected"
+                  : "success"
+              }
               sx={{ marginX: 1 }}
               size={"small"}
-              disabled={true}
+              // disabled={connectionState == "Connecting"}
             >
-              Connect
+              {connectionState}
             </LoadingButton>
-            <Button
+            <LoadingButton
               id={"launch-button"}
               startIcon={<LaunchIcon />}
+              onClick={launchButtonClick}
               variant="contained"
-              color={"secondary"}
+              loading={launchState === "Launching"}
+              color={
+                launchState === "Launching"
+                  ? "loading"
+                  : launchState === "Launch"
+                  ? "notConnected"
+                  : "success"
+              }
+              loadingPosition="start"
               sx={{ marginX: 1 }}
               size={"small"}
             >
-              Launch
-            </Button>
-            <Button
-              ref={infoModal}
+              {launchState === "Launching"
+                ? `${launchState} ${launchLevel}`
+                : launchState}
+            </LoadingButton>
+            <IconButton
               id={"info-modal"}
+              onClick={handleClickOpen}
               sx={{ marginX: 1 }}
-              startIcon={<HelpCenterOutlinedIcon />}
-            />
+            >
+              <HelpCenterOutlinedIcon />
+            </IconButton>
           </Box>
           <Typography variant="h5">Follow Line exercise</Typography>
-          <ButtonGroup color={"secondary"} variant={"contained"}>
+          <ButtonGroup color={"loading"} variant={"contained"}>
             <IconButton
               component={"span"}
               id={"open-theory"}
