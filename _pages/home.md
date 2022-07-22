@@ -67,7 +67,7 @@ For execution the student launches a Docker image containing a Gazebo simulation
 
 {% include feature_row %}
 
-{% include video id="ID7qaEcIu4k" provider="youtube" %}
+{% include video id="Y6CoOK9WtDQ" provider="youtube" %}
 
 ## Releases
 
