@@ -52,7 +52,7 @@ docker build -f Dockerfile-noetic -t image-name .
 - Run docker container. It is necessary to map the port where the camera is located
   - For Ubuntu: the port to map will be in /dev/videoX, you should check the number where your camera is connected.
     ```bash
-    docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy:latest ./start.sh
+    docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy
     ```
   - For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this [documentation](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468) for it.
 

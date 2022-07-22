@@ -1,75 +1,73 @@
 ---
-permalink: /exercises/MobileRobots/follow_person
-title: "Follow Person"
+permalink: /exercises/MobileRobots/real_follow_person
+title: "Real Follow Person"
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Follow Person"
+toc_label: "TOC Real Follow Person"
 toc_icon: "cog"
-
 follow_person_demo:
-  - url: /assets/images/exercises/follow_person/follow_person_teaser.png
-    image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
+  - url: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
+    image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
     alt: "Follow Person cover"
     title: "Follow Person Cover"
 
-simulated_turtlebot2:
-  - url: /assets/images/exercises/follow_person/turtlebot2-sim.png
-    image_path: /assets/images/exercises/follow_person/turtlebot2-sim.png
-    alt: "Simulated Turtlebot2 (ROS Foxy)"
-    title: "Simulated Turtlebot2 (ROS Foxy)"
-
 r-cnn:
-  - url: /assets/images/exercises/follow_person/r-cnn.png
-    image_path: /assets/images/exercises/follow_person/r-cnn.png
+  - url: /assets/images/exercises/real_follow_person/r-cnn.png
+    image_path: /assets/images/exercises/real_follow_person/r-cnn.png
     alt: "Region-based Convolutional Neural Network (R-CNN)"
     title: "Region-based Convolutional Neural Network (R-CNN)"
 
+real_turtlebot2:
+  - url: /assets/images/exercises/real_follow_person/turtlebot2-lab.png
+    image_path: /assets/images/exercises/real_follow_person/turtlebot2-lab.png
+    alt: "Simulated Turtlebot2 (ROS Foxy)"
+    title: "Simulated Turtlebot2 (ROS Foxy)"
+
 how_to_follow_person:
-  - url: /assets/images/exercises/follow_person/how_to_follow_person.png
-    image_path: /assets/images/exercises/follow_person/how_to_follow_person.png
+  - url: /assets/images/exercises/real_follow_person/how_to_follow_person.png
+    image_path: /assets/images/exercises/real_follow_person/how_to_follow_person.png
     alt: "How to follow a person"
     title: "How to follow a person"
 
 pid:
-  - url: /assets/images/exercises/follow_person/ControlSystems.jpg
-    image_path: assets/images/exercises/follow_person/ControlSystems.jpg
+  - url: /assets/images/exercises/real_follow_person/ControlSystems.jpg
+    image_path: assets/images/exercises/real_follow_person/ControlSystems.jpg
     alt: "Control Systems"
     title: "Control Systems"
 
-  - url: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
-    image_path: /assets/images/exercises/follow_person/TypesofControlSystems.jpg
+  - url: /assets/images/exercises/real_follow_person/TypesofControlSystems.jpg
+    image_path: /assets/images/exercises/real_follow_person/TypesofControlSystems.jpg
     alt: "Types of Control Systems"
     title: "Types of Control Systems"
 
-  - url: /assets/images/exercises/follow_person/PID.png
-    image_path: /assets/images/exercises/follow_person/PID.png
+  - url: /assets/images/exercises/real_follow_person/PID.png
+    image_path: /assets/images/exercises/real_follow_person/PID.png
     alt: "PID"
     title: "PID"
 
 vff:
-  - url: /assets/images/exercises/follow_person/vff.png
-    image_path: /assets/images/exercises/follow_person/vff.png
+  - url: /assets/images/exercises/real_follow_person/vff.png
+    image_path: /assets/images/exercises/real_follow_person/vff.png
     alt: "Virtual Force Field (VFF)"
     title: "Virtual Force Field (VFF)"
 
-joystick:
-  - url: /assets/images/exercises/follow_person/joystick.png
-    image_path: /assets/images/exercises/follow_person/joystick.png
-    alt: "Joystick to move the person"
-    title: "Joystick to move the person"
-
-youtubeId1: "Tt7RkdUgm_U"
-youtubeId2: "fDAU465eVxQ"
+youtubeId1: "54Jb4KJwyDM"
 ---
+
 
 ## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for follow a person in a hospital using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
+The objective of this practice is to implement the logic of a navigation algorithm for follow a person using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
 
 {% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
+
+## TurtleBot2 (ROS2 Foxy)
+The robot that we will use is a TurtleBot2 (a circular mobile robot) implemented and developed for ROS Foxy. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
+
+{% include gallery id="real_turtlebot2" caption="TurtleBot2" %}
 
 ## Instructions
 This is the preferred way for running the exercise.
@@ -91,10 +89,16 @@ docker pull jderobot/robotics-academy:latest
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
+### Use of the hardware
+To use the real *TurtleBot2* we have to follow this steps:
+1. To connect the *kobuki base* with our laptop using the corresponding USB cable. This will open the device /dev/ttyUSB0
+2. To connect the *RPLIDAR laser* with our laptop using the corresponding USB cable. This will open the device /dev/ttyUSB1
+3. To connect your *camera* (realsense, webcam...) with our laptop. This will usually open the device /dev/video4. You will need to use /dev/video0, thus you will have to make a port remapping (*your_video_device* -> /dev/video0). In the next sections you will know how to do it
+
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video4:/dev/video0 --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
   ```
 
 
@@ -104,7 +108,7 @@ docker pull jderobot/robotics-academy:latest
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video4:/dev/video0 -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
@@ -137,14 +141,9 @@ while True:
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the `print()` function.
 
-## Simulated Turtlebot 2 (ROS Foxy)
-The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
-
-{% include gallery id="simulated_turtlebot2" caption="Simulated Turtlebot2" %}
-
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware.
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to obtain the current frame of the camera robot.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
@@ -248,21 +247,12 @@ Derivative Controller gives an output depending upon the rate of change or error
 
 {% include gallery id="pid" caption="Control Systems and PID" %}
 
-## Person model teleoperator
-The web-template has a teleoperator that allows you to move the person inside the hospital. To Control the person click the button and then you will can use AWSD keys to move the model.
-
-{% include gallery id="joystick" %}
-
 
 ## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-*Example of use of Person Teleoperator*
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
-*Reference solution of Simulated Follow Person*
+*Reference solution of Real Follow Person*
 
 <br/>
 
