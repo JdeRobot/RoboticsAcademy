@@ -12,7 +12,6 @@ export default function CanvasBirdEye() {
     ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
     let background = new Image();
     background.src = backgroundImage;
-    console.log(background.src);
     // Make sure the image is loaded first otherwise nothing will draw.
     background.onload = function () {
       scaleToFit(background, ctx, mapCanvas);
@@ -26,9 +25,11 @@ export default function CanvasBirdEye() {
         display: "inline-flex",
         flexDirection: "column",
         border: "2px solid #d3d3d3",
+        maxHeight: 800,
+        overflow: "auto",
       }}
     >
-      <Typography align={"center"}>Visualization</Typography>
+      <Typography align={"center"}>Bird View</Typography>
       <canvas
         id="birds-eye"
         ref={BirdsEye}
@@ -37,15 +38,21 @@ export default function CanvasBirdEye() {
         sx={{
           marginX: 10,
           border: "2px solid #d3d3d3",
-          backgroundSize: 100,
           backgroundRepeat: "no-repeat",
         }}
-      >
-        Your browser does not support the HTML canvas tag.
-      </canvas>
-      <div>
-        <img id="gui_canvas"></img>
-      </div>
+      />
+      <Typography align={"center"}>Point of View</Typography>
+      <img
+        height={250}
+        width={500}
+        sx={{
+          marginX: 15,
+          marginY: 5,
+          border: "2px solid #d3d3d3",
+          backgroundRepeat: "no-repeat",
+        }}
+        id="gui_canvas"
+      />
     </Box>
   );
 }

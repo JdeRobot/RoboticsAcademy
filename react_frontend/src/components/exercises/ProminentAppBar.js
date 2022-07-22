@@ -19,14 +19,12 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import ExerciseContext from "../../contexts/ExerciseContext";
+import WebSocketContext from "../../contexts/WebSocketContext";
 import ViewContext from "../../contexts/ViewContext";
 import RoboticsTheme from "../RoboticsTheme.js";
-import BootstrapDialogTitle from "./InfoModalView";
-import BootstrapDialog from "./InfoModalView";
 
 function ProminentAppBar() {
   const [open, setOpen] = React.useState(false);
-
   const {
     startSim,
     connectionState,

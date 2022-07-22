@@ -4,6 +4,7 @@ import { setIframeConsole, setIframe } from "../helpers/SetIframe.js";
 import { drawCircle } from "../helpers/birdEye.js";
 import PropTypes from "prop-types";
 import * as React from "react";
+// import WebSocketContext from "./WebSocketContext";
 const ExerciseContext = createContext();
 
 export function ExerciseProvider({ children }) {
@@ -11,9 +12,15 @@ export function ExerciseProvider({ children }) {
   const websocket_address = "127.0.0.1";
   const address_code = "ws://" + websocket_address + ":1905";
   const address_gui = "ws://" + websocket_address + ":2303";
-  const ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
+  // const ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
+  React.useEffect(() => {
+    ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
+  }, []);
+  // const { ws_manager, address_code, address_gui } =
+  //   React.useContext(WebSocketContext);
   // const websocket_gui = new WebSocket(address_gui);
   // const websocket_code = new WebSocket(address_code);
+
   let websocket_code,
     websocket_gui,
     animation_id,
@@ -98,7 +105,7 @@ while True:
       ws_manager.send(JSON.stringify({ command: "exit", exercise: "" }));
       stopSimulation();
     }
-
+    console.log(ws_manager);
     ws_manager.onopen = function (event) {
       level++;
       connectionUpdate({ connection: "manager", command: "up" }, "*");
@@ -623,8 +630,6 @@ while True:
 
         if (source != "" && running == true) {
           canvas.src = "data:image/jpeg;base64," + source;
-          canvas.width = shape[1];
-          canvas.height = shape[0];
         }
         // Parse the Map data
         // Slice off ( and )
@@ -909,6 +914,7 @@ while True:
         guiFreqValue,
         codeFreqValue,
         rtfValue,
+        gazeboOn,
       }}
     >
       {children}

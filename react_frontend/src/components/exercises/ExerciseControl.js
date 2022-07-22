@@ -140,7 +140,9 @@ function ExerciseControl() {
           />
           <TextField
             id={"standard-input"}
-            defaultValue="Sim RTF: 0"
+            label={"Sim RTF:"}
+            defaultValue={0}
+            type="number"
             color={"secondary"}
             InputProps={{
               readOnly: true,
