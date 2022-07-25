@@ -21,7 +21,6 @@ function ExerciseControl() {
     loadFileButton,
     changegzweb,
     changeconsole,
-    guiFreqValue,
   } = React.useContext(ExerciseContext);
   return (
     <RoboticsTheme>

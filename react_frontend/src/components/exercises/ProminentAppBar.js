@@ -4,14 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Image from "mui-image";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  DialogActions,
-  DialogContent,
-  Typography,
-} from "@mui/material";
+import { Box, ButtonGroup, Typography } from "@mui/material";
 import ConnectingAirportsIcon from "@mui/icons-material/ConnectingAirports";
 import LaunchIcon from "@mui/icons-material/Launch";
 import HelpCenterOutlinedIcon from "@mui/icons-material/HelpCenterOutlined";
@@ -19,12 +12,11 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import ExerciseContext from "../../contexts/ExerciseContext";
-import WebSocketContext from "../../contexts/WebSocketContext";
 import ViewContext from "../../contexts/ViewContext";
 import RoboticsTheme from "../RoboticsTheme.js";
 
 function ProminentAppBar() {
-  const [open, setOpen] = React.useState(false);
+  // useBeforeUnload("true", "you have unsaved changes !");
   const {
     startSim,
     connectionState,
@@ -44,29 +36,23 @@ function ProminentAppBar() {
   React.useEffect(() => {
     const onPageLoad = () => {
       startSim(0);
-      // connectionButton.current.prop('disabled',true);
     };
     const onUnload = () => {
       startSim(2);
+      return true;
     };
+    window.addEventListener("beforeunload", onUnload);
     if (document.readyState === "complete") {
       onPageLoad();
     } else {
+      console.log("aassa");
       window.addEventListener("load", onPageLoad);
-      window.addEventListener("onbeforeunload", onUnload);
       return () => {
         window.removeEventListener("load", onPageLoad);
-        window.removeEventListener("onbeforeunload", onUnload);
+        window.removeEventListener("beforeunload", onUnload);
       };
     }
   }, []);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <RoboticsTheme>
@@ -127,11 +113,7 @@ function ProminentAppBar() {
                 ? `${launchState} ${launchLevel}`
                 : launchState}
             </LoadingButton>
-            <IconButton
-              id={"info-modal"}
-              onClick={handleClickOpen}
-              sx={{ marginX: 1 }}
-            >
+            <IconButton id={"info-modal"} sx={{ marginX: 1 }}>
               <HelpCenterOutlinedIcon />
             </IconButton>
           </Box>

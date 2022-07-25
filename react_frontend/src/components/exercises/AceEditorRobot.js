@@ -51,7 +51,6 @@ function AceEditorRobot() {
             showGutter={true}
             highlightActiveLine={true}
             value={editorCode}
-            height={500}
             setOptions={{
               enableBasicAutocompletion: true,
               enableLiveAutocompletion: true,

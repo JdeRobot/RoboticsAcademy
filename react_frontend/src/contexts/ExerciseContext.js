@@ -1,25 +1,24 @@
-import { createContext, useState, useRef } from "react";
+/* eslint-disable no-unused-vars */
+import * as React from "react";
+import { createContext, useRef, useState } from "react";
 import { saveCode } from "../helpers/utils";
-import { setIframeConsole, setIframe } from "../helpers/SetIframe.js";
+import { setIframe, setIframeConsole } from "../helpers/SetIframe.js";
 import { drawCircle } from "../helpers/birdEye.js";
 import PropTypes from "prop-types";
-import * as React from "react";
 // import WebSocketContext from "./WebSocketContext";
 const ExerciseContext = createContext();
-
+const websocket_address = "127.0.0.1";
+const address_code = "ws://" + websocket_address + ":1905";
+const address_gui = "ws://" + websocket_address + ":2303";
+let ws_manager;
 export function ExerciseProvider({ children }) {
   const resetButton = useRef(null);
-  const websocket_address = "127.0.0.1";
-  const address_code = "ws://" + websocket_address + ":1905";
-  const address_gui = "ws://" + websocket_address + ":2303";
-  // const ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
-  React.useEffect(() => {
-    ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
-  }, []);
+
   // const { ws_manager, address_code, address_gui } =
   //   React.useContext(WebSocketContext);
   // const websocket_gui = new WebSocket(address_gui);
   // const websocket_code = new WebSocket(address_code);
+  // let ws_manager = React.useMemo(() => connectWSManager());
 
   let websocket_code,
     websocket_gui,
@@ -54,8 +53,8 @@ export function ExerciseProvider({ children }) {
   const [firstCodeSent, setFirstCodeSent] = useState(false);
   const [initialPosition, setInitialPosition] = useState();
   const [circuit, setCircuit] = useState("default");
-  const [guiFreqValue, setGuiFreqValue] = useState(0);
-  const [codeFreqValue, setCodeFreqValue] = useState(0);
+  const [guiFreqValue, setGuiFreqValue] = useState(10);
+  const [codeFreqValue, setCodeFreqValue] = useState(10);
   const [rtfValue, setRtfValue] = useState(0);
   const [teleopMode, setTeleopMode] = useState(false);
   const [backgroundImage, setBackgroundImage] = React.useState(
@@ -72,13 +71,20 @@ from HAL import HAL
 while True:
     # Enter iterative code!`);
 
+  // const connectWSManager = () => {
+  //   console.log("Connecting from SIM =0");
+  //   setConnectionState("Connecting");
+  //   return new WebSocket("ws://" + websocket_address + ":8765/");
+  // };
+
   const startSim = (step) => {
     var level = 0;
     let websockets_connected = false;
 
-    if (step == 0) {
+    if (step === 0) {
       setConnectionState("Connecting");
-    } else if (step == 1) {
+      ws_manager = new WebSocket("ws://" + websocket_address + ":8765/");
+    } else if (step === 1) {
       connectionUpdate(
         { connection: "exercise", command: "launch_level", level: `${level}` },
         "*"
@@ -100,19 +106,21 @@ while True:
       );
       ws_manager.send(JSON.stringify({ command: "Pong" }));
       console.log("start exercise");
-    } else if (step == 2) {
+    } else if (step === 2) {
       console.log(ws_manager);
       ws_manager.send(JSON.stringify({ command: "exit", exercise: "" }));
       stopSimulation();
     }
-    console.log(ws_manager);
-    ws_manager.onopen = function (event) {
+    console.log("RUNS this appy 1");
+    ws_manager.onopen = function () {
       level++;
+      console.log("Open Event");
       connectionUpdate({ connection: "manager", command: "up" }, "*");
       connectionUpdate({ connection: "exercise", command: "available" }, "*");
     };
 
-    ws_manager.onclose = function (event) {
+    ws_manager.onclose = function () {
+      console.log("RUNS this appy 2");
       connectionUpdate({ connection: "manager", command: "down" }, "*");
       if (!firstAttempt) {
         alert("Connection lost, retrying connection...");
@@ -122,12 +130,17 @@ while True:
       }
     };
 
-    ws_manager.onerror = function (event) {
+    ws_manager.onerror = function () {
+      console.log("RUNS this appy error");
+
       connectionUpdate({ connection: "manager", command: "down" }, "*");
     };
 
     ws_manager.onmessage = function (event) {
       //console.log(event.data);
+
+      console.log("RUNS this appy 3");
+      console.log(`send code --> `, sendCode);
       if (event.data.level > level) {
         level = event.data.level;
         connectionUpdate(
@@ -140,7 +153,7 @@ while True:
         );
       }
       if (event.data.includes("Ping")) {
-        if (!websockets_connected && event.data == "Ping3") {
+        if (!websockets_connected && event.data === "Ping3") {
           level = 4;
           connectionUpdate(
             {
@@ -190,6 +203,7 @@ while True:
       if (event.data.includes("evaluate")) {
         if (event.data.length < 9) {
           // If there is an error it is sent along with "evaluate"
+          console.log("EVENT CODE SENT --> APPY");
           submitCode();
         } else {
           let error = event.data.substring(10, event.data.length);
@@ -202,10 +216,10 @@ while True:
           ws_manager.send(JSON.stringify({ command: "Pong" }));
         }, 1000);
       } else if (event.data.includes("reset")) {
-        ResetEvaluator();
+        // ResetEvaluator();
       } else if (event.data.includes("PingDone")) {
         enableSimControls();
-        if (resetRequested == true) {
+        if (resetRequested === true) {
           setResetRequested(false);
         }
       } else if (event.data.includes("style")) {
@@ -239,13 +253,10 @@ while True:
     setSimResume(true);
   }
 
-  function checkCode() {
-    setSendCode(true);
-  }
-
   function connectionUpdate(data) {
-    if (data.connection == "manager") {
-      if (data.command == "up") {
+    console.log(data);
+    if (data.connection === "manager") {
+      if (data.command === "up") {
         setConnectionState("Connected");
         // connectionButton
         //   .removeClass("btn-warning btn-secondary")
@@ -254,7 +265,7 @@ while True:
         //   '<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected';
         // connectionButton.prop("disabled", true);
         // launchButton.prop("disabled", false);
-      } else if (data.command == "down") {
+      } else if (data.command === "down") {
         setConnectionState("Connect");
         // connectionButton
         //   .removeClass("btn-success btn-warning")
@@ -272,10 +283,10 @@ while True:
         //   '<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch'
         // );
       }
-    } else if (data.connection == "exercise") {
-      if (data.command == "available") {
+    } else if (data.connection === "exercise") {
+      if (data.command === "available") {
         // launchButton.removeClass("btn-secondary").addClass("btn-secondary");
-      } else if (data.command == "up") {
+      } else if (data.command === "up") {
         stop();
         setSwapping(false);
         setLaunchState("Ready");
@@ -293,21 +304,21 @@ while True:
         load_button.disabled = false;
         load_button.style.opacity = "1.0";
         load_button.style.cursor = "default";
-      } else if (data.command == "down") {
+      } else if (data.command === "down") {
         if (!swapping) {
           setLaunchState("Launch");
 
           // launchButton.prop("disabled", false);
         }
-      } else if (data.command == "swap") {
+      } else if (data.command === "swap") {
         setLaunchState("Launching");
-      } else if (data.command == "launch_level") {
+      } else if (data.command === "launch_level") {
         let level = data.level;
         setLaunchState("Launching");
         // launchButton.html(
         //   `<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`
         // );
-      } else if (data.command == "error") {
+      } else if (data.command === "error") {
         // $("#errorModal .modal-header .modal-header-text").text(
         //   "Errors detected:"
         // );
@@ -315,7 +326,7 @@ while True:
         // $("#errorModal").modal({ show: true, backdrop: false });
         // $("#errorModal .modal-dialog").draggable({});
         toggleSubmitButton(true);
-      } else if (data.command == "style") {
+      } else if (data.command === "style") {
         // $("#errorModal .modal-header .modal-header-text").text(
         //   "Style evaluation:"
         // );
@@ -330,11 +341,11 @@ while True:
 
   function enablePlayPause(enable) {
     let playPause_button = document.getElementById("submit");
-    if (enable == false) {
+    if (enable === false) {
       playPause_button.disabled = true;
       playPause_button.style.opacity = "0.4";
       playPause_button.style.cursor = "not-allowed";
-    } else if (firstCodeSent == true) {
+    } else if (firstCodeSent === true) {
       playPause_button.disabled = false;
       playPause_button.style.opacity = "1.0";
       playPause_button.style.cursor = "default";
@@ -344,7 +355,7 @@ while True:
   const changeconsole = () => {
     var console_display = document.getElementById("console-vnc").style.display;
     console.log(console_display);
-    if (console_display == "none" || console_display == "none") {
+    if (console_display === "none") {
       document.getElementById("console-vnc").style.display = "block";
       setIframeConsole(document.getElementById("console-vnc"));
     } else {
@@ -356,7 +367,7 @@ while True:
     toggleGazebo();
     var display = document.getElementById("iframe").style.display;
     console.log(display);
-    if (display == "none" || display == "none") {
+    if (display === "none") {
       document.getElementById("iframe").style.display = "block";
       setIframe(document.getElementById("iframe"));
     } else {
@@ -366,7 +377,7 @@ while True:
 
   const toggleSubmitButton = (toggle) => {
     let submit_button = document.getElementById("loadIntoRobot");
-    if (toggle == false) {
+    if (toggle === false) {
       submit_button.disabled = true;
       submit_button.style.opacity = "0.4";
       submit_button.style.cursor = "not-allowed";
@@ -380,8 +391,8 @@ while True:
   };
 
   function toggleResetButton(toggle) {
-    let reset_button = document.getElementById("reset");
-    if (toggle == false) {
+    // let reset_button = document.getElementById("reset");
+    if (toggle === false) {
       // reset_button.disabled = true;
       // reset_button.style.opacity = "0.4";
       // reset_button.style.cursor = "not-allowed";
@@ -393,7 +404,7 @@ while True:
   }
 
   function togglePlayPause(stop) {
-    let submit_button = document.getElementById("submit");
+    // let submit_button = document.getElementById("submit");
     if (stop) {
       // submit_button.getElementsByTagName("img")[0].src =
       //   "{% static 'common/img/pause.png''%}";
@@ -408,7 +419,7 @@ while True:
   }
 
   function enableSimControls(resetButton, resetRequested) {
-    if (resetRequested == true) {
+    if (resetRequested === true) {
       togglePlayPause(false);
     }
     enablePlayPause(true);
@@ -420,7 +431,7 @@ while True:
     enablePlayPause(false);
     toggleResetButton(false);
     // Manager Websocket
-    if (running == false) {
+    if (running === false) {
       resumeSimulation();
       //check(); // should be replaced by resumeBrain() when available
     }
@@ -447,9 +458,10 @@ while True:
   }
   // Function to request to load the student code into the robot
   const check = () => {
+    console.log("Runnnnnnnnnn");
     editorChanged(false);
     toggleSubmitButton(false);
-    checkCode();
+    setSendCode(true);
   };
 
   // Function to stop the student solution
@@ -458,7 +470,7 @@ while True:
     toggleResetButton(false);
     //stopCode(); // should be replaced by pauseBrain() when available
     // Manager Websocket
-    if (running == true) {
+    if (running === true) {
       stopSimulation();
     }
 
@@ -497,21 +509,21 @@ while True:
       return;
     }
     setTeleopMode(false);
+    console.log("EVENT CODE SENT --> APPY FROM teleOp");
     submitCode();
     document.removeEventListener("keydown", keyHandler, false);
     document.removeEventListener("keyup", keyHandler, false);
-    return;
   };
 
-  function declare_code(websocket_address, codeFreq, guiFreq, rtf) {
+  function declare_code(websocket_address) {
     websocket_code = new WebSocket(websocket_address);
 
-    websocket_code.onopen = function (event) {
+    websocket_code.onopen = function () {
       connectionUpdate(
         { connection: "exercise", command: "launch_level", level: "5" },
         "*"
       );
-      if (websocket_gui.readyState == 1) {
+      if (websocket_gui.readyState === 1) {
         alert("[open] Connection established!");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
@@ -519,7 +531,7 @@ while True:
     };
     websocket_code.onclose = function (event) {
       connectionUpdate({ connection: "exercise", command: "down" }, "*");
-      if (websocket_gui.readyState == 1) {
+      if (websocket_gui.readyState === 1) {
         if (event.wasClean) {
           alert(
             `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
@@ -534,9 +546,9 @@ while True:
       var source_code = event.data;
       let operation = source_code.substring(0, 5);
 
-      if (operation == "#load") {
+      if (operation === "#load") {
         setEditorCode(source_code.substring(5));
-      } else if (operation == "#freq") {
+      } else if (operation === "#freq") {
         var frequency_message = JSON.parse(source_code.substring(5));
         // Parse GUI and Brain frequencies
         // document.querySelector("#ideal_gui_frequency").value =
@@ -554,9 +566,9 @@ while True:
         // The acknowledgement messages invoke the python server to send further
         // messages to this client (inside the server's handle function)
         // Send the acknowledgment message along with frequency
-        let code_frequency = codeFreq.value;
-        let gui_frequency = guiFreq.value;
-        let real_time_factor = rtf.value;
+        let code_frequency = 10;
+        let gui_frequency = 10;
+        let real_time_factor = 0.6;
 
         frequency_message = {
           brain: code_frequency,
@@ -564,15 +576,15 @@ while True:
           rtf: real_time_factor,
         };
         websocket_code.send("#freq" + JSON.stringify(frequency_message));
-      } else if (operation == "#ping") {
+      } else if (operation === "#ping") {
         websocket_code.send("#ping");
-      } else if (operation == "#exec") {
-        if (firstCodeSent == false) {
+      } else if (operation === "#exec") {
+        if (firstCodeSent === false) {
           setFirstCodeSent(true);
           enablePlayPause(true);
         }
         toggleSubmitButton(true);
-      } else if (operation == "#stpd") {
+      } else if (operation === "#stpd") {
         startNewCircuit();
       }
 
@@ -597,7 +609,7 @@ while True:
         { connection: "exercise", command: "launch_level", level: "5" },
         "*"
       );
-      if (websocket_code.readyState == 1) {
+      if (websocket_code.readyState === 1) {
         alert("[open] Connection established!");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
@@ -619,7 +631,7 @@ while True:
       let operation = event.data.substring(0, 4);
       let mapCanvas = document.getElementById("birds-eye");
       let canvas = document.getElementById("gui_canvas");
-      if (operation == "#gui") {
+      if (operation === "#gui") {
         // Parse the entire Object
         let data = JSON.parse(event.data.substring(4));
 
@@ -628,7 +640,7 @@ while True:
           (source = decode_utf8(image_data.image)),
           (shape = image_data.shape);
 
-        if (source != "" && running == true) {
+        if (source != "" && running === true) {
           canvas.src = "data:image/jpeg;base64," + source;
         }
         // Parse the Map data
@@ -643,7 +655,7 @@ while True:
         // Send the Acknowledgment Message
         websocket_gui.send("#ack");
       }
-      // else if (operation == "#cor") {
+      // else if (operation === "#cor") {
       // 	// Set the value of command
       // 	command_input = event.data.substring(4,);
       // 	command.value = command_input;
@@ -748,17 +760,17 @@ while True:
   }
 
   const connectionButtonClick = () => {
-    if (connectionState == "Connect") {
+    if (connectionState === "Connect") {
       setConnectionState("Connecting");
       startSim(0, "default");
     }
   };
 
   const launchButtonClick = () => {
-    if (connectionState == "Connected" && launchState == "Launch") {
+    if (connectionState === "Connected" && launchState === "Launch") {
       setLaunchState("Launching");
       startSim(1, circuit);
-    } else if (connectionState == "Connect") {
+    } else if (connectionState === "Connect") {
       alert(
         "A connection with the manager must be established before launching an exercise"
       );
@@ -836,18 +848,18 @@ while True:
         event.preventDefault();
       }
 
-      if (event.keyCode == 39) {
+      if (event.keyCode === 39) {
         //console.log('Right');
-        w = event.type == "keydown" ? -1 : 0;
-      } else if (event.keyCode == 37) {
+        w = event.type === "keydown" ? -1 : 0;
+      } else if (event.keyCode === 37) {
         //console.log('Left');
-        w = event.type == "keydown" ? 1 : 0;
-      } else if (event.keyCode == 40) {
+        w = event.type === "keydown" ? 1 : 0;
+      } else if (event.keyCode === 40) {
         //console.log('Down');
-        v = event.type == "keydown" ? -2 : 0;
-      } else if (event.keyCode == 38) {
+        v = event.type === "keydown" ? -2 : 0;
+      } else if (event.keyCode === 38) {
         //console.log('Up');
-        v = event.type == "keydown" ? 2 : 0;
+        v = event.type === "keydown" ? 2 : 0;
       }
       console.log("v: ", v, "w: ", w);
     }
