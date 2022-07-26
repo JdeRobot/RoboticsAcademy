@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="mav_name" default="crazyflie2"/>
-  <arg name="enable_internal_model_controller" default="true"/>
+  <arg name="mav_name" default="firefly"/>
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
   <!-- <arg name="enable_state_estimator" default="false" /> -->  <!-- as a comment for future possible use of state estimator -->
@@ -11,8 +10,8 @@
   <arg name="paused" value="false"/>
   <arg name="use_sim_time" value="true"/>
   <arg name="debug" default="false"/>
-  
   <arg name="gui" default="false"/>
+  <arg name="enable_camera_sensor" default="true"/>
   <!-- uncomment to save logs -->
   <!-- <arg name="csvFilesStoring" default="false"/> -->
   <!-- <arg name="csvFilesStoringTime" default="15.0"/> --> <!-- seconds -->
@@ -21,8 +20,7 @@
       (even when Gazebo is started through roslaunch) -->
   <arg name="verbose" default="true"/>
 
-  <!-- The following lines simulate the world in Gazebo. The physic engine properties
-        are set up in the file "basic_crazyflie.world" file -->
+  <!-- The following lines simulate the world in Gazebo.  -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="/RoboticsAcademy/exercises/drone_cat_mouse/web-template/drone_cat_mouse.world" />
     <arg name="debug" value="$(arg debug)" />
@@ -33,73 +31,57 @@
     <arg name="verbose" value="$(arg verbose)"/>
   </include>
   
-  <group ns="$(arg mav_name)_1">
-  <!-- CRAZYFLIE_1 -->
-    <include file="$(find rotors_gazebo)/launch/spawn_mav_crazyflie.launch">
+
+  <group ns="$(arg mav_name)">
+  <!-- FIREFLY_1 -->
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
       <arg name="mav_name" value="$(arg mav_name)" />
-      <arg name="namespace" value="$(arg mav_name)_1" />
       <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
-      <!-- As for the Mellinger and Position controllers in the "crazyflie2_hovering_example.launch" file -->
-      <arg name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)" />
-      <arg name="log_file" value="$(arg mav_name)_1"/>
+      <arg name="enable_camera_sensor" value="$(arg enable_camera_sensor)"/>
+      <arg name="log_file" value="$(arg log_file)"/>
       <!-- Set the initial position -->
       <arg name="x" value="-0.5"/>
       <arg name="y" value="-0.5"/>
     </include>
-   <!-- The Crazyflie position controller -->
-   <node name="position_controller_node" pkg="rotors_control" type="position_controller_node" output="screen">
-      <!-- Enabling internal model controller-->
-      <param name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)"  />
-      <!-- Crazyflie file parameters used within the Internal Model Controller controller -->
-      <rosparam command="load" file="$(find rotors_gazebo)/resource/crazyflie_parameters.yaml" />
+    <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
-      <!-- Loading Internal Model Controller's parameters -->
-      <rosparam command="load" file="$(find rotors_gazebo)/resource/crazyflie_internal_model_controller.yaml" />
-   </node>
-   <!-- Enable/Disable the trajectory generator - If the position_controller is activated, the hovering_example will be executed,
-        otherwise the spline generator and the Mellinger's controller will be run-->
-   <node unless="$(arg enable_mellinger_controller)" name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen" />
-   <node if="$(arg enable_mellinger_controller)" name="hovering_example_spline" pkg="rotors_gazebo" type="hovering_example_spline" output="screen" >
-     <rosparam command="load" file="$(find rotors_gazebo)/resource/spline_trajectory.yaml" />
-   </node>
-   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
 
-  <!-- CRAZYFLIE_2 -->
-  <group ns="$(arg mav_name)_2">
-    <include file="$(find rotors_gazebo)/launch/spawn_mav_crazyflie.launch">
+  <group ns="$(arg mav_name)_1">
+  <!-- FIREFLY_2 -->
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
       <arg name="mav_name" value="$(arg mav_name)" />
-      <arg name="namespace" value="$(arg mav_name)_2" />
       <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
-      <!-- As for the Mellinger and Position controllers in the "crazyflie2_hovering_example.launch" file -->
-      <arg name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)" />
-      <arg name="log_file" value="$(arg mav_name)_2"/>
+      <arg name="enable_camera_sensor" value="false"/>
+      <arg name="log_file" value="$(arg log_file)"/>
       <!-- Set the initial position -->
-      <arg name="x" value="-1.0"/>
+      <arg name="x" value="-3.0"/>
       <arg name="y" value="-0.5"/>
     </include>
-   <!-- The Crazyflie position controller -->
-   <node name="position_controller_node" pkg="rotors_control" type="position_controller_node" output="screen">
-      <!-- Enabling internal model controller-->
-      <param name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)"  />
-      <!-- Crazyflie file parameters used within the Internal Model Controller controller -->
-      <rosparam command="load" file="$(find rotors_gazebo)/resource/crazyflie_parameters.yaml" />
+    <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
-      <!-- Loading Internal Model Controller's parameters -->
-      <rosparam command="load" file="$(find rotors_gazebo)/resource/crazyflie_internal_model_controller.yaml" />
-   </node>
-   <!-- Enable/Disable the trajectory generator - If the position_controller is activated, the hovering_example will be executed,
-        otherwise the spline generator and the Mellinger's controller will be run-->
-   <node unless="$(arg enable_mellinger_controller)" name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen" />
-   <node if="$(arg enable_mellinger_controller)" name="hovering_example_spline" pkg="rotors_gazebo" type="hovering_example_spline" output="screen" >
-     <rosparam command="load" file="$(find rotors_gazebo)/resource/spline_trajectory.yaml" />
-   </node>
-   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
+
+  <!--    Drone model param   -->
+  <arg name="drone_model" default="firefly"/>
+  <param name="drone_model" type="str" value="$(arg drone_model)" />
+
+  <!--    Rotors driver node   -->
+  <node name="rotors_driver_node" pkg="rotors_driver" type="rotors_driver_node.py" output="screen"/>
 </launch>
