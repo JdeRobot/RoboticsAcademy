@@ -15,8 +15,13 @@ export const get_inner_size = (element) => {
   return { width: Math.floor(width), height: Math.floor(height) };
 };
 
+export const get_novnc_size_react = () => {
+  const width = getComputedStyle(document.getElementById("iframe")).width;
+  const height = getComputedStyle(document.getElementById("iframe")).height;
+  return { width: parseInt(width, 10), height: parseInt(height, 10) };
+};
 export const get_novnc_size = () => {
-  const inner_size = get_inner_size(document.querySelector(".split.b"));
+  const inner_size = get_inner_size(document.getElementById("iframe"));
   const width = inner_size.width || document.body.clientWidth;
   // Since only 50% of height is used for gazebo iframe
   const height =

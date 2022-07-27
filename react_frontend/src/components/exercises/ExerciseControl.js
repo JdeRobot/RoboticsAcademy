@@ -1,6 +1,6 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import { Box, Button, Input, TextField, Typography } from "@mui/material";
+import { Box, Button, Input, TextField } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
@@ -8,6 +8,7 @@ import RestartAltOutlinedIcon from "@mui/icons-material/RestartAltOutlined";
 import VrpanoOutlinedIcon from "@mui/icons-material/VrpanoOutlined";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
 import VideogameAssetOutlinedIcon from "@mui/icons-material/VideogameAssetOutlined";
+import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import RoboticsTheme from "../RoboticsTheme.js";
 import ExerciseContext from "../../contexts/ExerciseContext";
@@ -18,9 +19,13 @@ function ExerciseControl() {
     check,
     resetSim,
     start,
+    stop,
+    launchState,
     loadFileButton,
     changegzweb,
     changeconsole,
+    teleopButtonClick,
+    playState,
   } = React.useContext(ExerciseContext);
   return (
     <RoboticsTheme>
@@ -78,17 +83,23 @@ function ExerciseControl() {
           </Button>
           <Button
             id={"submit"}
-            color={"secondary"}
-            startIcon={<PlayCircleOutlineOutlinedIcon />}
+            color={playState ? "success" : "secondary"}
+            startIcon={
+              playState ? (
+                <PlayCircleOutlineOutlinedIcon />
+              ) : (
+                <StopCircleOutlinedIcon />
+              )
+            }
             sx={{ m: 0.5 }}
-            onClick={start}
+            onClick={playState ? start : stop}
             // onClick={stop}
             variant={"outlined"}
           >
-            Play
+            {playState ? "Play" : "Stop"}
           </Button>
           <Button
-            id={"stop"}
+            id={"reset"}
             color={"secondary"}
             startIcon={<RestartAltOutlinedIcon />}
             sx={{ m: 0.5 }}
@@ -112,9 +123,6 @@ function ExerciseControl() {
             inputProps={{
               min: 1,
               max: 30,
-              onKeyDown: (event) => {
-                event.preventDefault();
-              },
             }}
             color={"secondary"}
           />
@@ -128,11 +136,8 @@ function ExerciseControl() {
               "This value corresponds to the frequency the UI and visuals will be updated."
             }
             inputProps={{
-              min: 0,
+              min: 1,
               max: 10,
-              onKeyDown: (event) => {
-                event.preventDefault();
-              },
             }}
             size={"small"}
             color={"secondary"}
@@ -181,13 +186,13 @@ function ExerciseControl() {
             View Console
           </Button>
           <Button
-            hidden
             id={"teleop_button"}
             size={"medium"}
             variant="contained"
             color={"secondary"}
             component="span"
             sx={{ m: 1 }}
+            onClick={teleopButtonClick}
             title={"Use the arrow keys to operate the F1"}
             startIcon={<VideogameAssetOutlinedIcon />}
           >

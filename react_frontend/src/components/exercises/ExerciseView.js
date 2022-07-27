@@ -7,6 +7,7 @@ import CanvasBirdEye from "./CanvasBirdEye";
 import GazeboViewer from "./GazeboViewer";
 import VncConsoleViewer from "./VncConsoleViewer";
 import LoadModalView from "./LoadModalView";
+import CustomAlert from "./CustomAlert";
 
 function ExerciseView() {
   return (
@@ -71,6 +72,7 @@ function ExerciseView() {
         </Box>
       </Box>
       <LoadModalView />
+      <CustomAlert />
     </Box>
   );
 }

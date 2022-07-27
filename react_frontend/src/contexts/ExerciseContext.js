@@ -1,65 +1,73 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import { createContext, useRef, useState } from "react";
-import { saveCode } from "../helpers/utils";
+import { createContext, useState } from "react";
+import { saveCode, get_novnc_size_react } from "../helpers/utils";
 import { setIframe, setIframeConsole } from "../helpers/SetIframe.js";
 import { drawCircle } from "../helpers/birdEye.js";
 import PropTypes from "prop-types";
-// import WebSocketContext from "./WebSocketContext";
 const ExerciseContext = createContext();
 const websocket_address = "127.0.0.1";
 const address_code = "ws://" + websocket_address + ":1905";
 const address_gui = "ws://" + websocket_address + ":2303";
-let ws_manager;
+let ws_manager, websocket_code, websocket_gui;
+let simStop = false,
+  sendCode = false,
+  running = true,
+  firstAttempt = true,
+  simReset = false,
+  simResume = false,
+  resetRequested = false,
+  firstCodeSent = false,
+  swapping = false,
+  gazeboOn = false,
+  gazeboToggle = false;
+let animation_id,
+  image_data,
+  source,
+  shape,
+  lap_time,
+  pose,
+  content,
+  command_input;
+// Car variables
+let v = 0;
+let w = 0;
 export function ExerciseProvider({ children }) {
-  const resetButton = useRef(null);
-
-  // const { ws_manager, address_code, address_gui } =
-  //   React.useContext(WebSocketContext);
-  // const websocket_gui = new WebSocket(address_gui);
-  // const websocket_code = new WebSocket(address_code);
-  // let ws_manager = React.useMemo(() => connectWSManager());
-
-  let websocket_code,
-    websocket_gui,
-    animation_id,
-    image_data,
-    source,
-    shape,
-    lap_time,
-    pose,
-    content,
-    command_input;
   const exercise = "follow_line";
-  // Car variables
-  let v = 0;
-  let w = 0;
   // connectionState - Connect, Connecting, Connected
   const [connectionState, setConnectionState] = useState("Connect");
   // launchState - Launch, Launching, Ready
   const [launchState, setLaunchState] = useState("Launch");
   const [frequency, setFrequency] = useState("0");
   const [launchLevel, setLaunchLevel] = useState(0);
-  const [gazeboToggle, setGazeboToggle] = useState(false);
-  const [gazeboOn, setGazeboOn] = useState(false);
-  const [simReset, setSimReset] = useState(false);
-  const [simStop, setSimStop] = useState(false);
-  const [simResume, setSimResume] = useState(false);
-  const [sendCode, setSendCode] = useState(false);
-  const [firstAttempt, setFirstAttempt] = useState(true);
-  const [swapping, setSwapping] = useState(false);
-  const [running, setRunning] = useState(true);
-  const [resetRequested, setResetRequested] = useState(false);
-  const [firstCodeSent, setFirstCodeSent] = useState(false);
+  // const [gazeboToggle, setGazeboToggle] = useState(false);
+  // const [gazeboOn, setGazeboOn] = useState(false);
+  // const [simReset, setSimReset] = useState(false);
+  // const [simStop, setSimStop] = useState(false);
+  // const [simResume, setSimResume] = useState(false);
+  // const [sendCode, setSendCode] = useState(false);
+  // const [firstAttempt, setFirstAttempt] = useState(true);
+  // const [swapping, setSwapping] = useState(false);
+  // const [running, setRunning] = useState(true);
+  // const [resetRequested, setResetRequested] = useState(false);
+  // const [firstCodeSent, setFirstCodeSent] = useState(false);
+  const [alertState, setAlertState] = useState({
+    errorAlert: false,
+    successAlert: false,
+    infoAlert: false,
+    warningAlert: false,
+  });
+  const [alertContent, setAlertContent] = useState("");
+  const [openGazebo, setOpenGazebo] = useState(false);
+  const [openConsole, setOpenConsole] = useState(false);
   const [initialPosition, setInitialPosition] = useState();
+  const [playState, setPlayState] = useState(true);
   const [circuit, setCircuit] = useState("default");
   const [guiFreqValue, setGuiFreqValue] = useState(10);
   const [codeFreqValue, setCodeFreqValue] = useState(10);
   const [rtfValue, setRtfValue] = useState(0);
   const [teleopMode, setTeleopMode] = useState(false);
-  const [backgroundImage, setBackgroundImage] = React.useState(
-    "/static/exercises/follow_line_react/img/map.jpg"
-  );
+  const [birdEyeClass, setBirdEyeClass] = React.useState("default");
   const getCircuitValue = () => {
     return circuit;
   };
@@ -70,12 +78,6 @@ from HAL import HAL
 
 while True:
     # Enter iterative code!`);
-
-  // const connectWSManager = () => {
-  //   console.log("Connecting from SIM =0");
-  //   setConnectionState("Connecting");
-  //   return new WebSocket("ws://" + websocket_address + ":8765/");
-  // };
 
   const startSim = (step) => {
     var level = 0;
@@ -89,13 +91,13 @@ while True:
         { connection: "exercise", command: "launch_level", level: `${level}` },
         "*"
       );
-      // var size = get_novnc_size();
+      var size = get_novnc_size_react();
       ws_manager.send(
         JSON.stringify({
           command: "open",
           exercise: exercise,
-          width: "1000",
-          height: "1000",
+          width: size.width.toString(),
+          height: size.height.toString(),
           circuit: circuit,
         })
       );
@@ -123,10 +125,19 @@ while True:
       console.log("RUNS this appy 2");
       connectionUpdate({ connection: "manager", command: "down" }, "*");
       if (!firstAttempt) {
-        alert("Connection lost, retrying connection...");
+        setAlertState({
+          ...alertState,
+          errorAlert: true,
+          successAlert: false,
+          warningAlert: false,
+          infoAlert: false,
+        });
+        setAlertContent("Connection lost, retrying connection...");
+        // alert("Connection lost, retrying connection...");
         startSim(step, circuit, websocket_address);
       } else {
-        setFirstAttempt(false);
+        firstAttempt = false;
+        // setFirstAttempt(false);
       }
     };
 
@@ -137,9 +148,8 @@ while True:
     };
 
     ws_manager.onmessage = function (event) {
-      //console.log(event.data);
-
       console.log("RUNS this appy 3");
+      console.log(event.data);
       console.log(`send code --> `, sendCode);
       if (event.data.level > level) {
         level = event.data.level;
@@ -155,6 +165,7 @@ while True:
       if (event.data.includes("Ping")) {
         if (!websockets_connected && event.data === "Ping3") {
           level = 4;
+          console.log("HEEREEEE");
           connectionUpdate(
             {
               connection: "exercise",
@@ -174,27 +185,36 @@ while True:
           } else {
             ws_manager.send(JSON.stringify({ command: "stopgz" }));
           }
-          setGazeboToggle(false);
+          gazeboToggle = false;
+          // setGazeboToggle(false);
         } else if (simStop) {
           ws_manager.send(JSON.stringify({ command: "stop" }));
-          setSimStop(false);
-          setRunning(false);
+          simStop = false;
+          running = false;
+          // setRunning(false);
         } else if (simReset) {
           console.log("reset simulation");
           ws_manager.send(JSON.stringify({ command: "reset" }));
-          setSimReset(false);
+          simReset = false;
+          // setSimReset(false);
         } else if (sendCode) {
+          console.log("RUNNNNNN  --> HEEREEEE");
+
           let python_code = editorCode;
           python_code = "#code\n" + python_code;
           ws_manager.send(
             JSON.stringify({ command: "evaluate", code: python_code })
           );
-          setSendCode(false);
+          sendCode = false;
+          // setSendCode(false);
         } else if (simResume) {
           ws_manager.send(JSON.stringify({ command: "resume" }));
-          setSimResume(false);
-          setRunning(true);
+          // setSimResume(false);
+          simResume = false;
+          running = true;
+          // setRunning(true);
         } else {
+          console.log("RUNNNNNN  --> NOthingggg");
           setTimeout(function () {
             ws_manager.send(JSON.stringify({ command: "Pong" }));
           }, 1000);
@@ -220,7 +240,8 @@ while True:
       } else if (event.data.includes("PingDone")) {
         enableSimControls();
         if (resetRequested === true) {
-          setResetRequested(false);
+          resetRequested = false;
+          // setResetRequested(false);
         }
       } else if (event.data.includes("style")) {
         let error = event.data.substring(5, event.data.length);
@@ -232,25 +253,18 @@ while True:
     };
   };
 
-  function toggleGazebo() {
-    if (gazeboOn) {
-      setGazeboOn(false);
-    } else {
-      setGazeboOn(true);
-    }
-    setGazeboToggle(true);
-  }
-
   function resetSimulation() {
-    setSimReset(true);
+    simReset = true;
+    // setSimReset(true);
   }
 
   function stopSimulation() {
-    setSimStop(true);
+    simStop = true;
   }
 
   function resumeSimulation() {
-    setSimResume(true);
+    simResume = true;
+    // setSimResume(true);
   }
 
   function connectionUpdate(data) {
@@ -258,12 +272,6 @@ while True:
     if (data.connection === "manager") {
       if (data.command === "up") {
         setConnectionState("Connected");
-        // connectionButton
-        //   .removeClass("btn-warning btn-secondary")
-        //   .addClass("btn-success");
-        // connectionButton.innerHTML =
-        //   '<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected';
-        // connectionButton.prop("disabled", true);
         // launchButton.prop("disabled", false);
       } else if (data.command === "down") {
         setConnectionState("Connect");
@@ -276,30 +284,20 @@ while True:
         if (websocket_code != null) websocket_code.close();
         if (websocket_gui != null) websocket_gui.close();
         setLaunchState("Launch");
-        // launchButton
-        //   .removeClass("btn-success btn-warning")
-        //   .addClass("btn-secondary");
-        // launchButton.html(
-        //   '<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch'
-        // );
       }
     } else if (data.connection === "exercise") {
       if (data.command === "available") {
-        // launchButton.removeClass("btn-secondary").addClass("btn-secondary");
+        // Nothing !
       } else if (data.command === "up") {
         stop();
-        setSwapping(false);
+        swapping = false;
+        // setSwapping(false);
         setLaunchState("Ready");
-        // launchButton.removeClass("btn-warning").addClass("btn-success");
-        // launchButton.html(
-        //   '<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready'
-        // );
-        // launchButton.prop("disabled", true);
         togglePlayPause(false);
-        // let reset_button = document.getElementById("reset");
-        // reset_button.disabled = false;
-        // reset_button.style.opacity = "1.0";
-        // reset_button.style.cursor = "default";
+        let reset_button = document.getElementById("reset");
+        reset_button.disabled = false;
+        reset_button.style.opacity = "1.0";
+        reset_button.style.cursor = "default";
         let load_button = document.getElementById("loadIntoRobot");
         load_button.disabled = false;
         load_button.style.opacity = "1.0";
@@ -307,17 +305,13 @@ while True:
       } else if (data.command === "down") {
         if (!swapping) {
           setLaunchState("Launch");
-
-          // launchButton.prop("disabled", false);
         }
       } else if (data.command === "swap") {
         setLaunchState("Launching");
       } else if (data.command === "launch_level") {
-        let level = data.level;
+        var level = data.level;
+        setLaunchLevel(level);
         setLaunchState("Launching");
-        // launchButton.html(
-        //   `<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`
-        // );
       } else if (data.command === "error") {
         // $("#errorModal .modal-header .modal-header-text").text(
         //   "Errors detected:"
@@ -353,72 +347,64 @@ while True:
   }
 
   const changeconsole = () => {
-    var console_display = document.getElementById("console-vnc").style.display;
-    console.log(console_display);
-    if (console_display === "none") {
-      document.getElementById("console-vnc").style.display = "block";
-      setIframeConsole(document.getElementById("console-vnc"));
-    } else {
-      document.getElementById("console-vnc").style.display = "none";
-    }
+    setOpenConsole(!openConsole);
+    setAlertState({
+      ...alertState,
+      errorAlert: false,
+      successAlert: false,
+      warningAlert: false,
+      infoAlert: true,
+    });
+    setAlertContent(`Connection with Console Successful`);
   };
 
   const changegzweb = () => {
-    toggleGazebo();
-    var display = document.getElementById("iframe").style.display;
-    console.log(display);
-    if (display === "none") {
-      document.getElementById("iframe").style.display = "block";
-      setIframe(document.getElementById("iframe"));
-    } else {
-      document.getElementById("iframe").style.display = "none";
-    }
+    gazeboOn = !gazeboOn;
+    setOpenGazebo(gazeboOn);
+    gazeboToggle = true;
+    setAlertState({
+      ...alertState,
+      errorAlert: false,
+      successAlert: false,
+      warningAlert: false,
+      infoAlert: true,
+    });
+    setAlertContent(`Connection with Gazebo Successful`);
   };
 
   const toggleSubmitButton = (toggle) => {
-    let submit_button = document.getElementById("loadIntoRobot");
+    var loadIntoRobot = document.getElementById("loadIntoRobot");
     if (toggle === false) {
-      submit_button.disabled = true;
-      submit_button.style.opacity = "0.4";
-      submit_button.style.cursor = "not-allowed";
+      loadIntoRobot.disabled = true;
+      loadIntoRobot.style.opacity = "0.4";
+      loadIntoRobot.style.cursor = "not-allowed";
       handleLoadModalOpen();
     } else {
-      submit_button.disabled = false;
-      submit_button.style.opacity = "1.0";
-      submit_button.style.cursor = "default";
+      loadIntoRobot.disabled = false;
+      loadIntoRobot.style.opacity = "1.0";
+      loadIntoRobot.style.cursor = "default";
       handleLoadModalClose();
     }
   };
 
   function toggleResetButton(toggle) {
-    // let reset_button = document.getElementById("reset");
+    let reset_button = document.getElementById("reset");
     if (toggle === false) {
-      // reset_button.disabled = true;
-      // reset_button.style.opacity = "0.4";
-      // reset_button.style.cursor = "not-allowed";
+      reset_button.disabled = true;
+      reset_button.style.opacity = "0.4";
+      reset_button.style.cursor = "not-allowed";
     } else {
-      // reset_button.disabled = false;
-      // reset_button.style.opacity = "1.0";
-      // reset_button.style.cursor = "default";
+      reset_button.disabled = false;
+      reset_button.style.opacity = "1.0";
+      reset_button.style.cursor = "default";
     }
   }
 
   function togglePlayPause(stop) {
-    // let submit_button = document.getElementById("submit");
-    if (stop) {
-      // submit_button.getElementsByTagName("img")[0].src =
-      //   "{% static 'common/img/pause.png''%}";
-      // submit_button.getElementsByTagName("p")[0].innerText = " Stop";
-      // submit_button.setAttribute("onClick", "javascript: stop();");
-    } else {
-      // submit_button.getElementsByTagName("img")[0].src =
-      //   "{% static 'common/img/submit.png'%}";
-      // submit_button.getElementsByTagName("p")[0].innerText = " Play";
-      // submit_button.setAttribute("onClick", "javascript: start();");
-    }
+    setPlayState(!stop);
   }
 
-  function enableSimControls(resetButton, resetRequested) {
+  function enableSimControls() {
     if (resetRequested === true) {
       togglePlayPause(false);
     }
@@ -446,26 +432,26 @@ while True:
   function editorChanged(toggle) {
     if (firstCodeSent) {
       if (toggle) {
-        document.getElementById("loadIntoRobotAlert").style.display =
-          "inline-block";
-        document.getElementById("loadIntoRobot").title =
-          "Code changed since last sending";
+        // document.getElementById("loadIntoRobotAlert").style.display =
+        //   "inline-block";
+        // document.getElementById("loadIntoRobot").title =
+        //   "Code changed since last sending";
       } else {
-        document.getElementById("loadIntoRobotAlert").style.display = "none";
-        document.getElementById("loadIntoRobot").title = "";
+        // document.getElementById("loadIntoRobotAlert").style.display = "none";
+        // document.getElementById("loadIntoRobot").title = "";
       }
     }
   }
   // Function to request to load the student code into the robot
   const check = () => {
-    console.log("Runnnnnnnnnn");
     editorChanged(false);
     toggleSubmitButton(false);
-    setSendCode(true);
+    // setSendCode(true);
+    sendCode = true;
   };
 
   // Function to stop the student solution
-  function stop() {
+  const stop = () => {
     enablePlayPause(false);
     toggleResetButton(false);
     //stopCode(); // should be replaced by pauseBrain() when available
@@ -479,11 +465,12 @@ while True:
 
     // Toggle start/pause
     togglePlayPause(false);
-  }
+  };
 
   // Function to reset the simulation
   function resetSim() {
-    setResetRequested(true);
+    resetRequested = true;
+    // setResetRequested(true);
     toggleResetButton(false);
     enablePlayPause(false);
 
@@ -492,8 +479,8 @@ while True:
 
     // GUI Websocket
     reset_gui();
-
-    setRunning(false);
+    running = false;
+    // setRunning(false);
   }
   const loadButtonClick = () => {};
 
@@ -501,7 +488,8 @@ while True:
     if (!teleopMode) {
       if (!running) {
         resetSimulation();
-        setRunning(true);
+        running = true;
+        // setRunning(true);
       }
       setTeleopMode(true);
       document.addEventListener("keydown", keyHandler, false);
@@ -524,7 +512,15 @@ while True:
         "*"
       );
       if (websocket_gui.readyState === 1) {
-        alert("[open] Connection established!");
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: true,
+          warningAlert: false,
+          infoAlert: false,
+        });
+        setAlertContent(" Connection established! ");
+        // alert("[open] Connection established!");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
       websocket_code.send("#ping");
@@ -580,7 +576,8 @@ while True:
         websocket_code.send("#ping");
       } else if (operation === "#exec") {
         if (firstCodeSent === false) {
-          setFirstCodeSent(true);
+          firstCodeSent = true;
+          // setFirstCodeSent(true);
           enablePlayPause(true);
         }
         toggleSubmitButton(true);
@@ -610,7 +607,15 @@ while True:
         "*"
       );
       if (websocket_code.readyState === 1) {
-        alert("[open] Connection established!");
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: true,
+          warningAlert: false,
+          infoAlert: false,
+        });
+        setAlertContent(" Connection established! ");
+        // alert("[open] Connection established!");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
     };
@@ -618,11 +623,29 @@ while True:
     websocket_gui.onclose = function (event) {
       connectionUpdate({ connection: "exercise", command: "down" }, "*");
       if (event.wasClean) {
-        alert(
-          `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: false,
+          warningAlert: true,
+          infoAlert: false,
+        });
+        setAlertContent(
+          `Connection closed cleanly, code=${event.code} reason=${event.reason}`
         );
+        // alert(
+        //   `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
+        // );
       } else {
-        alert("[close] Connection closed!");
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: false,
+          warningAlert: true,
+          infoAlert: false,
+        });
+        setAlertContent(`Connection closed!`);
+        // alert("[close] Connection closed!");
       }
     };
 
@@ -690,11 +713,13 @@ while True:
     // Kill actual sim
     startSim(2);
     // StartSim
-    setSwapping(true);
+    swapping = true;
+    // setSwapping(true);
     startSim(1, circuit);
     connectionUpdate({ connection: "exercise", command: "swap" }, "*");
     toggleSubmitButton(false);
-    setFirstCodeSent(false);
+    firstCodeSent = false;
+    // setFirstCodeSent(false);
   }
 
   function handleCircuitChange(e, circuitSelector) {
@@ -702,48 +727,60 @@ while True:
     let bImgSrc;
     circuitSelector.current.value = circuit_;
     setCircuit(circuit_);
-    switch (circuit_) {
-      case "montreal":
-        bImgSrc = "/static/exercises/follow_line_react/img/montreal.jpg";
-        setBackgroundImage(
-          "/static/exercises/follow_line_react/img/montreal.jpg"
-        );
-        break;
-      case "montmelo":
-        bImgSrc = "/static/exercises/follow_line_react/img/montmelo.jpg";
-        setBackgroundImage(
-          "/static/exercises/follow_line_react/img/montmelo.jpg"
-        );
-        break;
-      case "nbg":
-        bImgSrc = "/static/exercises/follow_line_react/img/nbg.jpg";
-        setBackgroundImage("/static/exercises/follow_line_react/img/nbg.jpg");
-        break;
-      default:
-        bImgSrc = "/static/exercises/follow_line_react/img/map.jpg";
-        setBackgroundImage("/static/exercises/follow_line_react/img/map.jpg");
-    }
+    setBirdEyeClass(circuit_);
+    // switch (circuit_) {
+    //   case "montreal":
+    //     bImgSrc = "/static/exercises/follow_line_react/img/montreal.jpg";
+    //     setBackgroundImage(
+    //       "/static/exercises/follow_line_react/img/montreal.jpg"
+    //     );
+    //     break;
+    //   case "montmelo":
+    //     bImgSrc = "/static/exercises/follow_line_react/img/montmelo.jpg";
+    //     setBackgroundImage(
+    //       "/static/exercises/follow_line_react/img/montmelo.jpg"
+    //     );
+    //     break;
+    //   case "nbg":
+    //     bImgSrc = "/static/exercises/follow_line_react/img/nbg.jpg";
+    //     setBackgroundImage("/static/exercises/follow_line_react/img/nbg.jpg");
+    //     break;
+    //   default:
+    //     bImgSrc = "/static/exercises/follow_line_react/img/map.jpg";
+    //     setBackgroundImage("/static/exercises/follow_line_react/img/map.jpg");
+    // }
 
-    let mapCanvas = document.getElementById("birds-eye");
-    let ctx = mapCanvas.getContext("2d");
-    ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
-    let background = new Image();
-    background.src = bImgSrc;
-    // Make sure the image is loaded first otherwise nothing will draw.
-    background.onload = function () {
-      scaleToFit(background, ctx, mapCanvas);
-    };
+    // let mapCanvas = document.getElementById("birds-eye");
+    // let ctx = mapCanvas.getContext("2d");
+    // ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+    // let background = new Image();
+    // background.src = bImgSrc;
+    // // Make sure the image is loaded first otherwise nothing will draw.
+    // background.onload = function () {
+    //   scaleToFit(background, ctx, mapCanvas);
+    // };
     // Disable connection button
     // connectionButton.current.prop("disabled", true);
     // Set variable to toggle gazebo
-    setGazeboToggle(true);
+    // setGazeboToggle(true);
+    gazeboToggle = true;
     // Stop the simulation
     stop();
     // Kill actual sim
     startSim(2);
     // // StartSim
     startSim(1, e.target.value);
-    alert("Loading circuit. Please wait until the connection is restored.");
+    setAlertState({
+      ...alertState,
+      errorAlert: false,
+      successAlert: false,
+      warningAlert: false,
+      infoAlert: true,
+    });
+    setAlertContent(
+      `Loading circuit. Please wait until the connection is restored.`
+    );
+    // alert("Loading circuit. Please wait until the connection is restored.");
     connectionUpdate({ connection: "exercise", command: "down" }, "*");
   }
 
@@ -771,9 +808,19 @@ while True:
       setLaunchState("Launching");
       startSim(1, circuit);
     } else if (connectionState === "Connect") {
-      alert(
-        "A connection with the manager must be established before launching an exercise"
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: true,
+        infoAlert: false,
+      });
+      setAlertContent(
+        `A connection with the manager must be established before launching an exercise`
       );
+      // alert(
+      //   "A connection with the manager must be established before launching an exercise"
+      // );
     }
   };
 
@@ -813,7 +860,17 @@ while True:
 
       deactivateTeleopButton();
     } catch {
-      alert("Connection must be established before sending the code.");
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: true,
+        infoAlert: false,
+      });
+      setAlertContent(
+        `Connection must be established before sending the code.`
+      );
+      // alert("Connection must be established before sending the code.");
     }
   };
 
@@ -901,19 +958,15 @@ while True:
         connectionState,
         launchState,
         firstCodeSent,
-        running,
         connectionButtonClick,
         launchButtonClick,
-        resetButton,
-        firstAttempt,
         resetSim,
         start,
         stop,
         loadFileButton,
-        swapping,
         startSim,
         circuit,
-        backgroundImage,
+        // backgroundImage,
         scaleToFit,
         handleCircuitChange,
         getCircuitValue,
@@ -926,7 +979,12 @@ while True:
         guiFreqValue,
         codeFreqValue,
         rtfValue,
-        gazeboOn,
+        openGazebo,
+        playState,
+        birdEyeClass,
+        openConsole,
+        alertState,
+        alertContent,
       }}
     >
       {children}

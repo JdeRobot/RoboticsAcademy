@@ -4,18 +4,15 @@ import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/ExerciseContext";
 import ProminentAppBar from "./ProminentAppBar";
 import View from "./View";
-import { WebSocketProvider } from "../../contexts/WebSocketContext";
 
 function FollowLineReact() {
   return (
     <Box>
       <ViewProvider>
-        <WebSocketProvider>
-          <ExerciseProvider>
-            <ProminentAppBar />
-            <View />
-          </ExerciseProvider>
-        </WebSocketProvider>
+        <ExerciseProvider>
+          <ProminentAppBar />
+          <View />
+        </ExerciseProvider>
       </ViewProvider>
     </Box>
   );

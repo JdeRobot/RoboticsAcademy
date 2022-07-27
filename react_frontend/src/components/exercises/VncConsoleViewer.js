@@ -1,27 +1,23 @@
 import * as React from "react";
-import Snackbar from "@mui/material/Snackbar";
-import ExerciseContext from "../../contexts/ExerciseContext";
 import { Box, Typography } from "@mui/material";
-function VncConsoleViewer() {
-  const { gazeboOn } = React.useContext(ExerciseContext);
+import ExerciseContext from "../../contexts/ExerciseContext";
 
+function VncConsoleViewer() {
+  const { openConsole } = React.useContext(ExerciseContext);
   return (
-    <Box>
+    <Box display={openConsole ? "block" : "none"}>
       <Typography>Console</Typography>
       <iframe
         id={"console-vnc"}
-        // scaleViewport
-        // background="#000000"
         style={{
           width: "40vw",
           height: "50vh",
-          display: "none",
         }}
-      />
-      <Snackbar
-        open={gazeboOn}
-        autoHideDuration={6000}
-        message="Console Opened"
+        src={
+          openConsole
+            ? "http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true"
+            : ""
+        }
       />
     </Box>
   );
