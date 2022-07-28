@@ -4,6 +4,9 @@ from collections import Counter
 
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+sns.set()
+
 
 from BoundingBox import *
 from BoundingBoxes import *
