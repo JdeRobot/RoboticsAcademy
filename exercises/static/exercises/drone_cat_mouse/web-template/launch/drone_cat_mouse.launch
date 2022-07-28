@@ -36,44 +36,42 @@
   <!-- FIREFLY_1 -->
     <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
       <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)" />
       <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="enable_camera_sensor" value="$(arg enable_camera_sensor)"/>
       <arg name="log_file" value="$(arg log_file)"/>
       <!-- Set the initial position -->
-      <arg name="x" value="-0.5"/>
-      <arg name="y" value="-0.5"/>
+      <arg name="x" value="0.0"/>
     </include>
     <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
       <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
       <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
-    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="0 0 0 0 2"/> <!-- args for setting the spawn point <x> <y> <z> <yaw_deg> [<delay>] -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
 
-  <group ns="$(arg mav_name)_1">
+  <group ns="$(arg mav_name)1">
   <!-- FIREFLY_2 -->
     <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
       <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)1" />
       <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
-      <arg name="enable_camera_sensor" value="false"/>
-      <arg name="log_file" value="$(arg log_file)"/>
-      <!-- Set the initial position -->
-      <arg name="x" value="-3.0"/>
-      <arg name="y" value="-0.5"/>
+      <arg name="log_file" value="$(arg log_file)1"/>
+      <arg name="x" value="3.0"/>
     </include>
     <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
       <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
       <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
       <remap from="odometry" to="odometry_sensor1/odometry" />
     </node>
-    <node name="hovering_example" pkg="rotors_gazebo" type="hovering_example" output="screen"/>
+    <node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="3 0 0 0 2"/> <!-- args for setting the spawn point <x> <y> <z> <yaw_deg> [<delay>] -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   </group>
