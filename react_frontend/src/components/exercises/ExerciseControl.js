@@ -40,25 +40,16 @@ function ExerciseControl() {
         }}
       >
         <Box>
-          <label htmlFor="contained-button-file">
-            <Input
-              accept=".py"
-              id="contained-button-file"
-              multiple
-              type="file"
-              sx={{ display: "none" }}
-            />
-            <Button
-              id={"load"}
-              variant="contained"
-              color={"secondary"}
-              startIcon={<CloudUploadOutlinedIcon />}
-              onClick={loadFileButton}
-              sx={{ m: 1 }}
-            >
-              Load file
-            </Button>
-          </label>
+          <Button
+            variant="contained"
+            sx={{ m: 1 }}
+            color={"secondary"}
+            startIcon={<CloudUploadOutlinedIcon />}
+            component="label"
+          >
+            Load file
+            <input hidden accept=".py" type="file" onChange={loadFileButton} />
+          </Button>
           <Button
             id={"save"}
             variant="contained"

@@ -9,7 +9,7 @@ export const drawCircle = (x, y, initialPosition, mapCanvas) => {
   // cursor_y = y;
 
   ctx.beginPath();
-  ctx.arc(x, y, 6, 0, 2 * Math.PI);
+  ctx.arc(x, y, 2, 0, 2 * Math.PI);
   ctx.closePath();
   ctx.lineWidth = 1.5;
   ctx.strokeStyle = "#666666";
