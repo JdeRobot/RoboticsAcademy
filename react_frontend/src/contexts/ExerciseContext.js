@@ -334,30 +334,52 @@ while True:
     }
   }
 
-  const changeconsole = () => {
+  const changeconsole = (openSnackbar) => {
+    if (openSnackbar) {
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: false,
+        infoAlert: true,
+      });
+      setAlertContent(`Console Opened !!`);
+    } else {
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: true,
+        infoAlert: false,
+      });
+      setAlertContent(`Console Closed !!`);
+    }
     setOpenConsole(!openConsole);
-    setAlertState({
-      ...alertState,
-      errorAlert: false,
-      successAlert: false,
-      warningAlert: false,
-      infoAlert: true,
-    });
-    setAlertContent(`Connection with Console Successful`);
   };
 
-  const changegzweb = () => {
+  const changegzweb = (openSnackbar) => {
+    if (openSnackbar) {
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: true,
+        infoAlert: false,
+      });
+      setAlertContent(`Gazebo Opened !!`);
+    } else {
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: false,
+        infoAlert: true,
+      });
+      setAlertContent(`Gazebo Closed !!`);
+    }
     gazeboOn = !gazeboOn;
     setOpenGazebo(gazeboOn);
     gazeboToggle = true;
-    setAlertState({
-      ...alertState,
-      errorAlert: false,
-      successAlert: false,
-      warningAlert: false,
-      infoAlert: true,
-    });
-    setAlertContent(`Connection with Gazebo Successful`);
   };
 
   const toggleSubmitButton = (toggle) => {
