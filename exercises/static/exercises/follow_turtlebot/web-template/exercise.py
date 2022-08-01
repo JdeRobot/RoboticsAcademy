@@ -7,6 +7,7 @@ from __future__ import print_function
 from websocket_server import WebsocketServer
 import time
 import threading
+import multiprocessing
 import subprocess
 import sys
 from datetime import datetime
@@ -17,6 +18,11 @@ import importlib
 import rospy
 from std_srvs.srv import Empty
 import cv2
+
+from shared.value import SharedValue
+from hal import HAL
+from brain import BrainProcess
+import queue
 
 from gui import GUI, ThreadGUI
 from hal import HAL
@@ -29,18 +35,25 @@ class Template:
     # self.ideal_cycle to run an execution for at least 1 second
     # self.process for the current running process
     def __init__(self):
-        self.measure_thread = None
-        self.thread = None
-        self.reload = False
-        self.stop_brain = True
-        self.user_code = ""
+        # self.measure_thread = None
+        # self.thread = None
+        # self.reload = False
+        # self.stop_brain = True
+        # self.user_code = ""
+
+        self.brain_process = None
+        self.reload = multiprocessing.Event()
 
         # Time variables
-        self.ideal_cycle = 80
-        self.measured_cycle = 80
-        self.iteration_counter = 0
+        # Time variables
+        self.brain_time_cycle = SharedValue('brain_time_cycle')
+        self.brain_ideal_cycle = SharedValue('brain_ideal_cycle')
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+
+        # GUI variables
+        self.gui_time_cycle = SharedValue('gui_time_cycle')
+        self.gui_ideal_cycle = SharedValue('gui_ideal_cycle')
 
         self.server = None
         self.client = None
@@ -50,14 +63,41 @@ class Template:
         self.hal = HAL()
         self.turtlebot = Turtlebot()
         self.gui = GUI(self.host, self.turtlebot)
+        self.paused = False
 
     # Function to parse the code
     # A few assumptions:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-        sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-        return iterative_code, sequential_code
+        # Check for save/load
+        if(source_code[:5] == "#save"):
+            source_code = source_code[5:]
+            self.save_code(source_code)
+
+            return "", ""
+
+        elif(source_code[:5] == "#load"):
+            source_code = source_code + self.load_code()
+            self.server.send_message(self.client, source_code)
+
+            return "", ""        
+
+        else:
+            sequential_code, iterative_code = self.seperate_seq_iter(source_code[6:])
+            return iterative_code, sequential_code
+
+    # Function for saving
+    def save_code(self, source_code):
+        with open('code/academy.py', 'w') as code_file:
+            code_file.write(source_code)
+
+    # Function for loading
+    def load_code(self):
+        with open('code/academy.py', 'r') as code_file:
+            source_code = code_file.read()
+
+        return source_code
 
     # Function to separate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -257,17 +297,20 @@ class Template:
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if self.thread is not None:
-            while self.thread.is_alive():
-                time.sleep(0.2)
+        if(self.brain_process != None):
+            while self.brain_process.is_alive():
+                pass
 
         # Turn the flag down, the iteration has successfully stopped!
-        self.reload = False
+        self.reload.clear()
         # New thread execution
-        self.thread = threading.Thread(target=self.process_code, args=[source_code])
-        self.thread.start()
+        code = self.parse_code(source_code)
+        if code[0] == "" and code[1] == "":
+            return
+
+        self.brain_process = BrainProcess(code, self.reload)
+        self.brain_process.start()
         self.send_code_message()
-        print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -275,51 +318,86 @@ class Template:
 
         # Set brain frequency
         frequency = float(frequency_message["brain"])
-        self.ideal_cycle = 1000.0 / frequency
+        self.brain_time_cycle.add(1000.0 / frequency)
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.ideal_cicle = 1000.0 / frequency
+        self.gui_time_cycle.add(1000.0 / frequency)
 
         return
 
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if message[:5] == "#freq":
+        if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
+            self.send_frequency_message()
             return
-
         elif(message[:5] == "#ping"):
             time.sleep(1)
             self.send_ping_message()
             return
+        elif(message[:5] == "#tele"):
+            # Stop Brain code by sending an empty code
+            if not self.paused:
+                self.reload.set()
+                self.execute_thread("""from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
 
-        elif (message[:5] == "#code"):
+while True:
+    # Enter iterative code!""")
+                self.paused = True
+                
+            # Parse message
+            teleop_message = message[5:]
+            v,w = self.read_teleop_message(teleop_message)
+            
+            # crear hebra de interacciones periódicas
+            # python thread
+            # Clear exit flag in order to continue executing the thread            
+            # envío última V y W recibida y me pongo a dormir
+            
+            # Recupero el flag
+            self.exit_signal_teleop.clear()
+            
+            if not self.teleop.is_alive():
+                self.teleop.start()
+            
+            self.teleop_q.put({"v":v,"w":w})
+            return
+
+        elif (message[:5] == "#code"):  
             try:
+                # First pause the teleoperator thread if exists
+                if self.teleop.is_alive():
+                    self.exit_signal_teleop.set()
+                
+                self.paused = False
+
                 # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message[6:]
+                code = message
                 # print(repr(code))
-                self.reload = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#rest"):
-            try:
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
+                self.reload.set()
+                self.execute_thread(code)
             except:
                 pass
 
         elif (message[:5] == "#stop"):
-            self.stop_brain = True
+            try:
+                self.reload.set()
+                self.execute_thread("""from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
 
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
+while True:
+    # Enter iterative code!""")
+                self.paused = True
+            except:
+                pass
+            self.server.send_message(self.client, "#stpd")
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
