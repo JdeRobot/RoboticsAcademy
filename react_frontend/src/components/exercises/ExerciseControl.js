@@ -1,6 +1,6 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import { Box, Button, Input, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
@@ -20,11 +20,10 @@ function ExerciseControl() {
     resetSim,
     start,
     stop,
-    launchState,
     loadFileButton,
-    changegzweb,
-    changeconsole,
-    teleopButtonClick,
+    changeGzWeb,
+    changeConsole,
+    teleOpButtonClick,
     playState,
   } = React.useContext(ExerciseContext);
   return (
@@ -158,7 +157,7 @@ function ExerciseControl() {
             component="span"
             sx={{ m: 1 }}
             title={"Activate the simulation Screen"}
-            onClick={changegzweb}
+            onClick={changeGzWeb}
             startIcon={<VrpanoOutlinedIcon />}
           >
             View Sim
@@ -171,7 +170,7 @@ function ExerciseControl() {
             component="span"
             sx={{ m: 1 }}
             title={"Open the console"}
-            onClick={changeconsole}
+            onClick={changeConsole}
             startIcon={<TerminalOutlinedIcon />}
           >
             View Console
@@ -183,7 +182,7 @@ function ExerciseControl() {
             color={"secondary"}
             component="span"
             sx={{ m: 1 }}
-            onClick={teleopButtonClick}
+            onClick={teleOpButtonClick}
             title={"Use the arrow keys to operate the F1"}
             startIcon={<VideogameAssetOutlinedIcon />}
           >

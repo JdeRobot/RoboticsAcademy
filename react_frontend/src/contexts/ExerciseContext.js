@@ -2,7 +2,6 @@
 import * as React from "react";
 import { createContext, useState } from "react";
 import { saveCode, get_novnc_size_react } from "../helpers/utils";
-import { setIframe, setIframeConsole } from "../helpers/SetIframe.js";
 import { drawCircle } from "../helpers/birdEye.js";
 import PropTypes from "prop-types";
 const ExerciseContext = createContext();
@@ -21,7 +20,7 @@ let simStop = false,
   swapping = false,
   gazeboOn = false,
   gazeboToggle = false,
-  teleopMode = false;
+  teleOpMode = false;
 let animation_id,
   image_data,
   source,
@@ -30,6 +29,12 @@ let animation_id,
   pose,
   content,
   command_input;
+let code = `from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!`;
 // Car variables
 let v = 0;
 let w = 0;
@@ -196,7 +201,8 @@ while True:
           simReset = false;
           // setSimReset(false);
         } else if (sendCode) {
-          let python_code = editorCode;
+          let python_code = code;
+          // let python_code = editorCode;
           python_code = "#code\n" + python_code;
           ws_manager.send(
             JSON.stringify({ command: "evaluate", code: python_code })
@@ -334,7 +340,7 @@ while True:
     }
   }
 
-  const changeconsole = (openSnackbar) => {
+  const changeConsole = (openSnackbar) => {
     if (openSnackbar) {
       setAlertState({
         ...alertState,
@@ -357,7 +363,7 @@ while True:
     setOpenConsole(!openConsole);
   };
 
-  const changegzweb = (openSnackbar) => {
+  const changeGzWeb = (openSnackbar) => {
     if (openSnackbar) {
       setAlertState({
         ...alertState,
@@ -495,20 +501,20 @@ while True:
   }
   const loadButtonClick = () => {};
 
-  const teleopButtonClick = () => {
-    if (!teleopMode) {
+  const teleOpButtonClick = () => {
+    if (!teleOpMode) {
       if (!running) {
         resetSimulation();
         running = true;
         // setRunning(true);
       }
-      teleopMode = true;
+      teleOpMode = true;
       // setTeleopMode(true);
       document.addEventListener("keydown", keyHandler, false);
       document.addEventListener("keyup", keyHandler, false);
       return;
     }
-    teleopMode = false;
+    teleOpMode = false;
     // setTeleopMode(false);
     console.log("EVENT CODE SENT --> APPY FROM teleOp");
     submitCode();
@@ -570,7 +576,7 @@ while True:
     };
 
     websocket_code.onmessage = function (event) {
-      var source_code = event.data;
+      const source_code = event.data;
       let operation = source_code.substring(0, 5);
 
       if (operation === "#load") {
@@ -618,9 +624,9 @@ while True:
       }
 
       // Send Teleop message if active
-      if (teleopMode) {
-        let teleop_message = { v: v, w: w };
-        websocket_code.send("#tele" + JSON.stringify(teleop_message));
+      if (teleOpMode) {
+        let teleOpMessage = { v: v, w: w };
+        websocket_code.send("#tele" + JSON.stringify(teleOpMessage));
       }
     };
   }
@@ -696,7 +702,7 @@ while True:
           (source = decode_utf8(image_data.image)),
           (shape = image_data.shape);
 
-        if (source != "" && running === true) {
+        if (source !== "" && running === true) {
           canvas.src = "data:image/jpeg;base64," + source;
         }
         // Parse the Map data
@@ -735,11 +741,13 @@ while True:
     websocket_gui.send("#rest");
   }
   const editorCodeChange = (e) => {
+    code = e;
     setEditorCode(e);
   };
 
   const onClickSave = () => {
-    saveCode("testing", editorCode);
+    saveCode("testing", code);
+    // saveCode("testing", editorCode);
   };
 
   function startNewCircuit() {
@@ -823,7 +831,7 @@ while True:
 
   function deactivateTeleopButton() {
     // setTeleopMode(false);
-    teleopMode = true;
+    teleOpMode = true;
     document.removeEventListener("keydown", keyHandler, false);
     document.removeEventListener("keyup", keyHandler, false);
   }
@@ -850,7 +858,10 @@ while True:
   const submitCode = () => {
     try {
       // Get the code from editor and add headers
-      var python_code = editorCode;
+      // Debug Code Submission -->
+      // console.log(`Code submitted --> ${code}`);
+      var python_code = code;
+      // var python_code = editorCode;
       python_code = "#code\n" + python_code;
 
       websocket_code.send(python_code);
@@ -886,12 +897,12 @@ while True:
   };
 
   // Function for range slider
-  const codefrequencyUpdate = (vol) => {
+  const codeFrequencyUpdate = (vol) => {
     document.querySelector("#code_freq").value = vol;
   };
 
   // Function for range slider
-  const guifrequencyUpdate = (vol) => {
+  const guiFrequencyUpdate = (vol) => {
     document.querySelector("#gui_freq").value = vol;
   };
   function keyHandler(event) {
@@ -942,7 +953,8 @@ while True:
 
     var fr = new FileReader();
     fr.onload = (event) => {
-      setEditorCode(fr.result, 1);
+      code = fr.result;
+      setEditorCode(fr.result);
     };
     fr.readAsText(event.target.files[0]);
   };
@@ -977,10 +989,10 @@ while True:
         getCircuitValue,
         launchLevel,
         loadButtonClick,
-        teleopButtonClick,
+        teleOpButtonClick,
         connectionUpdate,
-        changegzweb,
-        changeconsole,
+        changeGzWeb,
+        changeConsole,
         guiFreqValue,
         codeFreqValue,
         rtfValue,
