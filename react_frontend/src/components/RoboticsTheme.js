@@ -19,6 +19,9 @@ const theme = createTheme({
     loading: {
       main: "#E64A19",
     },
+    selector: {
+      main: "#329D9C",
+    },
   },
   typography: {
     fontFamily: "Roboto",

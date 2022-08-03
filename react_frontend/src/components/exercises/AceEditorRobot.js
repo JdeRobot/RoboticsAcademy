@@ -25,9 +25,10 @@ function AceEditorRobot() {
       sx={{
         m: 3,
         p: 2,
-        display: "inline-flex",
+        flexGrow: 1,
+        width: "100%",
         flexDirection: "column",
-        border: "2px solid #d3d3d3",
+        border: "2px solid",
       }}
       id="code-control"
     >
@@ -44,6 +45,7 @@ function AceEditorRobot() {
             mode="python"
             theme="dracula"
             name="code"
+            width={"100%"}
             onChange={editorCodeChange}
             ref={editorele}
             fontSize={fontSize}

@@ -6,13 +6,17 @@ export default function CircuitSelector() {
   const { handleCircuitChange } = React.useContext(ExerciseContext);
   const circuitSelector = React.useRef(null);
   return (
-    <FormControl sx={{ m: 1, p: 2 }} color={"secondary"}>
-      <InputLabel id={"circuit-selector"}>Circuit</InputLabel>
+    <FormControl variant={"filled"} fullWidth>
+      <InputLabel id={"circuit-selector-label"}>Circuit</InputLabel>
       <Select
         defaultValue={"default"}
-        labelId="circuit-selector"
-        label={"Circuit"}
+        labelId="circuit-selector-label"
+        id={"circuit-selector"}
         color={"success"}
+        label={"Circuit"}
+        sx={{
+          textAlign: "left",
+        }}
         ref={circuitSelector}
         onChange={(e) => handleCircuitChange(e, circuitSelector)}
       >

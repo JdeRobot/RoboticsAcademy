@@ -578,7 +578,6 @@ while True:
     websocket_code.onmessage = function (event) {
       const source_code = event.data;
       let operation = source_code.substring(0, 5);
-
       if (operation === "#load") {
         setEditorCode(source_code.substring(5));
       } else if (operation === "#freq") {
