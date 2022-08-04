@@ -59,9 +59,8 @@ class BrainProcess(multiprocessing.Process):
 
         # Reference Environment for the exec() function
         iterative_code, sequential_code = self.iterative_code, self.sequential_code
-
-        # print(sequential_code)
-        # print(iterative_code)
+        print(sequential_code)
+        print(iterative_code)
 
         # Whatever the code is, first step is to just stop!
         self.hal.sendV(0)
