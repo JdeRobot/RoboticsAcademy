@@ -6,18 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-
-function createData(key, value) {
-  return { key, value };
-}
-
-const rows = [
-  createData("Brain Frequency (Hz)", 159),
-  createData("GUI Frequency (Hz)", 237),
-  createData("Simulation Real time factor", 262),
-];
+import ExerciseContext from "../../contexts/ExerciseContext";
 
 export default function FrequencyMenu() {
+  const { frequencyRows } = React.useContext(ExerciseContext);
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -28,7 +21,7 @@ export default function FrequencyMenu() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {frequencyRows.map((row) => (
             <TableRow key={row.key}>
               <TableCell>{row.key}</TableCell>
               <TableCell align="right">{row.value}</TableCell>

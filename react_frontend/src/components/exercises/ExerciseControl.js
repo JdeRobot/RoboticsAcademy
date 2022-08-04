@@ -1,6 +1,6 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Fab } from "@mui/material";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
@@ -25,6 +25,10 @@ function ExerciseControl() {
     changeConsole,
     teleOpButtonClick,
     playState,
+    codeFrequencyUpdate,
+    guiFrequencyUpdate,
+    guiFreq,
+    brainFreq,
   } = React.useContext(ExerciseContext);
   return (
     <RoboticsTheme>
@@ -71,23 +75,23 @@ function ExerciseControl() {
           >
             Load in robot
           </Button>
-          <Button
-            id={"submit"}
-            color={playState ? "success" : "secondary"}
-            startIcon={
-              playState ? (
-                <PlayCircleOutlineOutlinedIcon />
-              ) : (
-                <StopCircleOutlinedIcon />
-              )
-            }
-            sx={{ m: 0.5 }}
-            onClick={playState ? start : stop}
-            // onClick={stop}
-            variant={"outlined"}
-          >
-            {playState ? "Play" : "Stop"}
-          </Button>
+          {/*<Fab*/}
+          {/*  id={"submit"}*/}
+          {/*  color={playState ? "success" : "secondary"}*/}
+          {/*  startIcon={*/}
+          {/*    playState ? (*/}
+          {/*      <PlayCircleOutlineOutlinedIcon />*/}
+          {/*    ) : (*/}
+          {/*      <StopCircleOutlinedIcon />*/}
+          {/*    )*/}
+          {/*  }*/}
+          {/*  sx={{ m: 0.5 }}*/}
+          {/*  onClick={playState ? start : stop}*/}
+          {/*  // onClick={stop}*/}
+          {/*  variant={"outlined"}*/}
+          {/*>*/}
+          {/*  {playState ? "Play" : "Stop"}*/}
+          {/*</Fab>*/}
           <Button
             id={"reset"}
             color={"secondary"}
@@ -100,15 +104,26 @@ function ExerciseControl() {
           </Button>
         </Box>
         <Box>
+          {/*<Slider*/}
+          {/*  aria-label="Temperature"*/}
+          {/*  defaultValue={30}*/}
+          {/*  getAriaValueText={valuetext}*/}
+          {/*  valueLabelDisplay="auto"*/}
+          {/*  step={10}*/}
+          {/*  marks*/}
+          {/*  min={10}*/}
+          {/*  max={110}*/}
+          {/*/>*/}
           <TextField
-            id={"letters"}
+            id={"code_freq"}
             label="Brain Freq (Hz)"
             type="number"
-            defaultValue={12}
+            value={brainFreq}
             size={"small"}
             title={
               "The brain frequency is the value that tells the robot with what frequency should the code be updated"
             }
+            onChange={codeFrequencyUpdate}
             sx={{ width: 160, m: 1 }}
             inputProps={{
               min: 1,
@@ -117,36 +132,36 @@ function ExerciseControl() {
             color={"secondary"}
           />
           <TextField
-            id="standard-number"
+            id={"gui_freq"}
             label="GUI Freq (Hz)"
-            defaultValue={1}
+            value={guiFreq}
             type="number"
             sx={{ width: 160, m: 1 }}
+            onChange={guiFrequencyUpdate}
             title={
               "This value corresponds to the frequency the UI and visuals will be updated."
             }
             inputProps={{
               min: 1,
-              max: 10,
+              max: 30,
             }}
             size={"small"}
             color={"secondary"}
           />
-          <TextField
-            id={"standard-input"}
-            label={"Sim RTF:"}
-            defaultValue={0}
-            type="number"
-            color={"secondary"}
-            InputProps={{
-              readOnly: true,
-            }}
-            title={
-              "This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."
-            }
-            size={"small"}
-            sx={{ width: 120, m: 1 }}
-          />
+          {/*<TextField*/}
+          {/*  label={"Sim RTF:"}*/}
+          {/*  defaultValue={0}*/}
+          {/*  type="number"*/}
+          {/*  color={"secondary"}*/}
+          {/*  InputProps={{*/}
+          {/*    readOnly: true,*/}
+          {/*  }}*/}
+          {/*  title={*/}
+          {/*    "This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."*/}
+          {/*  }*/}
+          {/*  size={"small"}*/}
+          {/*  sx={{ width: 120, m: 1 }}*/}
+          {/*/>*/}
         </Box>
         <Box>
           <Button
@@ -190,6 +205,19 @@ function ExerciseControl() {
           </Button>
         </Box>
       </Toolbar>
+      <Fab
+        id={"submit"}
+        color={playState ? "success" : "secondary"}
+        sx={{ m: 0.5, position: "fixed", bottom: 2, right: 2 }}
+        onClick={playState ? start : stop}
+        variant={"outlined"}
+      >
+        {playState ? (
+          <PlayCircleOutlineOutlinedIcon />
+        ) : (
+          <StopCircleOutlinedIcon />
+        )}
+      </Fab>
     </RoboticsTheme>
   );
 }

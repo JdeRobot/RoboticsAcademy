@@ -9,6 +9,8 @@ const websocket_address = "127.0.0.1";
 const address_code = "ws://" + websocket_address + ":1905";
 const address_gui = "ws://" + websocket_address + ":2303";
 let ws_manager, websocket_code, websocket_gui;
+let brainFreqAck = 12,
+  guiFreqAck = 12;
 let simStop = false,
   sendCode = false,
   running = true,
@@ -44,8 +46,8 @@ export function ExerciseProvider({ children }) {
   const [connectionState, setConnectionState] = useState("Connect");
   // launchState - Launch, Launching, Ready
   const [launchState, setLaunchState] = useState("Launch");
-  const [frequency, setFrequency] = useState("0");
   const [launchLevel, setLaunchLevel] = useState(0);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
   // const [gazeboToggle, setGazeboToggle] = useState(false);
   // const [gazeboOn, setGazeboOn] = useState(false);
   // const [simReset, setSimReset] = useState(false);
@@ -69,9 +71,13 @@ export function ExerciseProvider({ children }) {
   const [initialPosition, setInitialPosition] = useState();
   const [playState, setPlayState] = useState(true);
   const [circuit, setCircuit] = useState("default");
-  const [guiFreqValue, setGuiFreqValue] = useState(10);
-  const [codeFreqValue, setCodeFreqValue] = useState(10);
-  const [rtfValue, setRtfValue] = useState(0);
+  const [brainFreq, setBrainFreq] = useState(brainFreqAck);
+  const [frequencyRows, setFrequencyRows] = useState([
+    createData("Brain Frequency (Hz)", 0),
+    createData("GUI Frequency (Hz)", 0),
+    createData("Simulation Real time factor", 0),
+  ]);
+  const [guiFreq, setGuiFreq] = useState(guiFreqAck);
   const [birdEyeClass, setBirdEyeClass] = React.useState("default");
   const getCircuitValue = () => {
     return circuit;
@@ -202,7 +208,6 @@ while True:
           // setSimReset(false);
         } else if (sendCode) {
           let python_code = code;
-          // let python_code = editorCode;
           python_code = "#code\n" + python_code;
           ws_manager.send(
             JSON.stringify({ command: "evaluate", code: python_code })
@@ -285,7 +290,6 @@ while True:
       } else if (data.command === "up") {
         stop();
         swapping = false;
-        // setSwapping(false);
         setLaunchState("Ready");
         togglePlayPause(false);
         let reset_button = document.getElementById("reset");
@@ -522,6 +526,10 @@ while True:
     document.removeEventListener("keyup", keyHandler, false);
   };
 
+  function createData(key, value) {
+    return { key, value };
+  }
+
   function declare_code(websocket_address) {
     websocket_code = new WebSocket(websocket_address);
 
@@ -584,24 +592,23 @@ while True:
         var frequency_message = JSON.parse(source_code.substring(5));
 
         // Parse GUI and Brain frequencies
-        // document.querySelector("#ideal_gui_frequency").value =
-        //   frequency_message.gui;
-        console.log(frequency_message.gui);
-        setGuiFreqValue(frequency_message.gui);
-        // document.querySelector("#ideal_code_frequency").value =
-        setCodeFreqValue(frequency_message.brain);
-        console.log(frequency_message.brain);
-        //   frequency_message.brain;
-        // // Parse real time factor
-        // document.querySelector("#real_time_factor").value =
-        setRtfValue(frequency_message.rtf);
+        const idealGuiFreqValue = frequency_message.gui;
+        const idealBrainFreqValue = frequency_message.brain;
+        // Parse real time factor
+        const rtfValue = frequency_message.rtf;
+
+        setFrequencyRows([
+          createData("Brain Frequency (Hz)", idealBrainFreqValue),
+          createData("GUI Frequency (Hz)", idealGuiFreqValue),
+          createData("Simulation Real time factor", rtfValue),
+        ]);
 
         // The acknowledgement messages invoke the python server to send further
         // messages to this client (inside the server's handle function)
         // Send the acknowledgment message along with frequency
-        let code_frequency = 10;
-        let gui_frequency = 10;
-        let real_time_factor = 0.6;
+        let code_frequency = brainFreqAck;
+        let gui_frequency = guiFreqAck;
+        let real_time_factor = rtfValue;
 
         frequency_message = {
           brain: code_frequency,
@@ -692,7 +699,6 @@ while True:
       let mapCanvas = document.getElementById("birds-eye");
       let canvas = document.getElementById("gui_canvas");
       if (operation === "#gui") {
-        console.log("Image");
         // Parse the entire Object
         let data = JSON.parse(event.data.substring(4));
 
@@ -771,9 +777,8 @@ while True:
     // Stop the simulation
     stop();
     // Kill actual sim
-    startSim(2);
-    // // StartSim
-    startSim(1, circuit_);
+    stopBrain();
+
     setAlertState({
       ...alertState,
       errorAlert: false,
@@ -784,7 +789,6 @@ while True:
     setAlertContent(
       `Loading circuit. Please wait until the connection is restored.`
     );
-    // alert("Loading circuit. Please wait until the connection is restored.");
     connectionUpdate({ connection: "exercise", command: "down" }, "*");
   }
 
@@ -896,13 +900,16 @@ while True:
   };
 
   // Function for range slider
-  const codeFrequencyUpdate = (vol) => {
-    document.querySelector("#code_freq").value = vol;
+  const codeFrequencyUpdate = (e) => {
+    // console.log(e.target.data);
+    brainFreqAck = brainFreqAck + 1;
+    setBrainFreq(brainFreqAck);
   };
 
   // Function for range slider
-  const guiFrequencyUpdate = (vol) => {
-    document.querySelector("#gui_freq").value = vol;
+  const guiFrequencyUpdate = (e) => {
+    guiFreqAck = guiFreqAck + 1;
+    setGuiFreq(guiFreqAck);
   };
   function keyHandler(event) {
     // Right (39), Left (37), Down (40), Up (38)
@@ -959,6 +966,8 @@ while True:
   };
 
   const [openLoadModal, setOpenLoadModal] = React.useState(false);
+  const handleInfoModalOpen = () => setOpenInfoModal(true);
+  const handleInfoModalClose = () => setOpenInfoModal(false);
   const handleLoadModalOpen = () => setOpenLoadModal(true);
   const handleLoadModalClose = () => setOpenLoadModal(false);
 
@@ -992,15 +1001,20 @@ while True:
         connectionUpdate,
         changeGzWeb,
         changeConsole,
-        guiFreqValue,
-        codeFreqValue,
-        rtfValue,
         openGazebo,
         playState,
         birdEyeClass,
         openConsole,
         alertState,
         alertContent,
+        brainFreq,
+        guiFreq,
+        codeFrequencyUpdate,
+        guiFrequencyUpdate,
+        frequencyRows,
+        handleInfoModalOpen,
+        handleInfoModalClose,
+        openInfoModal,
       }}
     >
       {children}

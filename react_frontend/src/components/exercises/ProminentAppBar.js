@@ -24,6 +24,7 @@ function ProminentAppBar() {
     connectionButtonClick,
     launchButtonClick,
     launchLevel,
+    handleInfoModalOpen,
   } = React.useContext(ExerciseContext);
   const {
     theoryMode,
@@ -45,7 +46,6 @@ function ProminentAppBar() {
     if (document.readyState === "complete") {
       onPageLoad();
     } else {
-      console.log("aassa");
       window.addEventListener("load", onPageLoad);
       return () => {
         window.removeEventListener("load", onPageLoad);
@@ -113,7 +113,11 @@ function ProminentAppBar() {
                 ? `${launchState} ${launchLevel}`
                 : launchState}
             </LoadingButton>
-            <IconButton id={"info-modal"} sx={{ marginX: 1 }}>
+            <IconButton
+              onClick={handleInfoModalOpen}
+              id={"info-modal"}
+              sx={{ marginX: 1 }}
+            >
               <HelpCenterOutlinedIcon />
             </IconButton>
           </Box>

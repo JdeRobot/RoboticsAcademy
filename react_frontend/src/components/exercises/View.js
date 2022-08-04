@@ -3,6 +3,7 @@ import TheoryView from "./TheoryView";
 import ExerciseView from "./ExerciseView";
 import ForumView from "./ForumView";
 import ViewContext from "../../contexts/ViewContext";
+import InfoModalView from "./InfoModalView";
 function View() {
   const { theoryMode, codeMode, forumMode } = React.useContext(ViewContext);
   return (
@@ -16,6 +17,7 @@ function View() {
       )}
       {codeMode && <ExerciseView />}
       {forumMode && <ForumView />}
+      <InfoModalView />
     </>
   );
 }

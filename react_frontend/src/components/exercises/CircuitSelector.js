@@ -6,7 +6,7 @@ export default function CircuitSelector() {
   const { handleCircuitChange } = React.useContext(ExerciseContext);
   const circuitSelector = React.useRef(null);
   return (
-    <FormControl variant={"filled"} fullWidth>
+    <FormControl variant={"filled"} m={3} fullWidth>
       <InputLabel id={"circuit-selector-label"}>Circuit</InputLabel>
       <Select
         defaultValue={"default"}
