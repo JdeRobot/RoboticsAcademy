@@ -1,47 +1,67 @@
-import React from "react";
-import "./exercise-index.css";
-import Exercise from "./components/Exercise";
-import { createRoot } from "react-dom/client";
-import "./libs/tools.js";
+import React, {lazy} from 'react';
+import convertHtmlToReact from '@hedgedoc/html-to-react';
+import './exercise-index.css';
+import Exercise from './components/Exercise';
+import {createRoot} from 'react-dom/client';
+import './libs/tools.js';
+import {flushSync} from 'react-dom';
 
-import AceEditorRobot from "./components/exercises/AceEditorRobot";
-import GazeboViewer from "./components/exercises/GazeboViewer";
-import ProminentAppBar from "./components/exercises/ProminentAppBar";
-import VncConsoleViewer from "./components/exercises/VncConsoleViewer";
-import CircuitSelector from "./components/exercises/CircuitSelector";
-import CanvasBirdEye from "./components/exercises/CanvasBirdEye";
-import FollowLineReact from "./components/exercises/FollowLineReact";
-
-const container = document.getElementById("exercise");
+const container = document.getElementById('exercise');
 const root = createRoot(container);
 
-window.RoboticsExerciseComponents = (function () {
-  const components = {
-    AceEditorRobot: AceEditorRobot,
-    GazeboViewer: GazeboViewer,
-    ProminentAppBar: ProminentAppBar,
-    VncConsoleViewer: VncConsoleViewer,
-    CircuitSelector: CircuitSelector,
-    CanvasBirdEye: CanvasBirdEye,
-    FollowLineReact: FollowLineReact,
-  };
+window.RoboticsExerciseComponents = (function() {
+  const createElement = function(element) {
+    const children = Array.from(element.childNodes).map((child) => createElement(child));
+    return createElement(element, {}, children);
+  }
 
-  const render = function (component, container, props, children, callback) {
-    if (typeof component == "string") component = components[component];
-
-    const element = React.createElement(component, props, children, callback);
+  const renderComponent = function(component, container, props) {
+    const innerHTML = container.innerHTML.trim();
+    let react_children = null;
+    if(innerHTML !== "") {
+      react_children = convertHtmlToReact(innerHTML, {});
+    }
+    const element = React.createElement(component, props, react_children);
     const root = createRoot(container);
-    root.render(element);
+    flushSync(() => {
+      root.render(element);
+    })
   };
+
+  const renderContext = function(component_name, container, props, children, callback) {
+    const components = require.context('./components', true, /^.*\.(js|jsx)$/, 'sync');
+    const component = components(`${component_name}.js`);
+    renderComponent(component.default, container, props, children, callback);
+  };
+
+  const renderImport = async function (component_name, container, props, callback) {
+    const path = component_name.split('/');
+    const children = Array.from(container.childNodes);
+
+    if(path[0]==='exercise') {
+      await import(`exercise/${path[path.length-1]}.js`).then((component) => {
+        renderComponent(component.default, container, props, children, callback);
+      });
+    } else {
+      await import(`/${component_name}.js`).then((component) => {
+        renderComponent(component.default, container, props, children, callback);
+      });
+    }
+  };
+
+  const render = async function(renderers) {
+    for(let i=0, length=renderers.length; i < length; i++) {
+      await renderImport(...renderers[i]);
+    }
+  }
 
   return {
-    render: render,
-    components: components,
-  };
+    render: render
+  }
 })();
 
 root.render(
-  <React.StrictMode>
-    <Exercise></Exercise>
-  </React.StrictMode>
+    <React.StrictMode>
+      <Exercise></Exercise>
+    </React.StrictMode>
 );
