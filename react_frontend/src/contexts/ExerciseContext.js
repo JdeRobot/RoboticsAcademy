@@ -4,6 +4,7 @@ import { createContext, useState } from "react";
 import { saveCode, get_novnc_size_react } from "../helpers/utils";
 import { drawCircle } from "../helpers/birdEye.js";
 import PropTypes from "prop-types";
+import { Typography } from "@mui/material";
 const ExerciseContext = createContext();
 const websocket_address = "127.0.0.1";
 const address_code = "ws://" + websocket_address + ":1905";
@@ -48,17 +49,8 @@ export function ExerciseProvider({ children }) {
   const [launchState, setLaunchState] = useState("Launch");
   const [launchLevel, setLaunchLevel] = useState(0);
   const [openInfoModal, setOpenInfoModal] = useState(false);
-  // const [gazeboToggle, setGazeboToggle] = useState(false);
-  // const [gazeboOn, setGazeboOn] = useState(false);
-  // const [simReset, setSimReset] = useState(false);
-  // const [simStop, setSimStop] = useState(false);
-  // const [simResume, setSimResume] = useState(false);
-  // const [sendCode, setSendCode] = useState(false);
-  // const [firstAttempt, setFirstAttempt] = useState(true);
-  // const [swapping, setSwapping] = useState(false);
-  // const [running, setRunning] = useState(true);
-  // const [resetRequested, setResetRequested] = useState(false);
-  // const [firstCodeSent, setFirstCodeSent] = useState(false);
+  const [openErrorModal, setOpenErrorModal] = useState(false);
+  const [openLoadModal, setOpenLoadModal] = React.useState(false);
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -77,6 +69,11 @@ export function ExerciseProvider({ children }) {
     createData("GUI Frequency (Hz)", 0),
     createData("Simulation Real time factor", 0),
   ]);
+  let [errorContentHeading, setErrorContentHeading] =
+    useState("Errors detected !");
+  let [errorContent, setErrorContent] = useState(
+    <Typography> No error detected </Typography>
+  );
   const [guiFreq, setGuiFreq] = useState(guiFreqAck);
   const [birdEyeClass, setBirdEyeClass] = React.useState("default");
   const getCircuitValue = () => {
@@ -311,22 +308,20 @@ while True:
         setLaunchLevel(level);
         setLaunchState("Launching");
       } else if (data.command === "error") {
-        // $("#errorModal .modal-header .modal-header-text").text(
-        //   "Errors detected:"
-        // );
-        // $("#errorModal .modal-body").text(data.text);
-        // $("#errorModal").modal({ show: true, backdrop: false });
-        // $("#errorModal .modal-dialog").draggable({});
+        setErrorContent(<Typography>{data.text}</Typography>);
+        handleErrorModalOpen();
         toggleSubmitButton(true);
       } else if (data.command === "style") {
-        // $("#errorModal .modal-header .modal-header-text").text(
-        //   "Style evaluation:"
-        // );
-        // if (data.text.replace(/\s/g, "").length)
-        //   $("#errorModal .modal-body").text(data.text);
-        // else $("#errorModal .modal-body").text("Everything is correct!");
-        // $("#errorModal").modal({ show: true, backdrop: false });
-        // $("#errorModal .modal-dialog").draggable({});
+        setErrorContentHeading("Style Evaluation ");
+        handleErrorModalOpen();
+
+        if (data.text.replace(/\s/g, "").length)
+          setErrorContent(<Typography>{data.text}</Typography>);
+        else
+          setErrorContent(
+            <Typography color={"success"}>Everything is correct !</Typography>
+          );
+        //
       }
     }
   }
@@ -587,6 +582,7 @@ while True:
       const source_code = event.data;
       let operation = source_code.substring(0, 5);
       if (operation === "#load") {
+        print(`AAAA   ---> ${source_code.substring(5)}`);
         setEditorCode(source_code.substring(5));
       } else if (operation === "#freq") {
         var frequency_message = JSON.parse(source_code.substring(5));
@@ -746,6 +742,7 @@ while True:
     websocket_gui.send("#rest");
   }
   const editorCodeChange = (e) => {
+    console.log(e);
     code = e;
     setEditorCode(e);
   };
@@ -862,7 +859,7 @@ while True:
     try {
       // Get the code from editor and add headers
       // Debug Code Submission -->
-      // console.log(`Code submitted --> ${code}`);
+      console.log(`Code submitted --> ${code}`);
       var python_code = code;
       // var python_code = editorCode;
       python_code = "#code\n" + python_code;
@@ -956,7 +953,6 @@ while True:
   }
   const loadFileButton = (event) => {
     event.preventDefault();
-
     var fr = new FileReader();
     fr.onload = (event) => {
       code = fr.result;
@@ -964,10 +960,10 @@ while True:
     };
     fr.readAsText(event.target.files[0]);
   };
-
-  const [openLoadModal, setOpenLoadModal] = React.useState(false);
   const handleInfoModalOpen = () => setOpenInfoModal(true);
   const handleInfoModalClose = () => setOpenInfoModal(false);
+  const handleErrorModalOpen = () => setOpenErrorModal(true);
+  const handleErrorModalClose = () => setOpenErrorModal(false);
   const handleLoadModalOpen = () => setOpenLoadModal(true);
   const handleLoadModalClose = () => setOpenLoadModal(false);
 
@@ -1015,6 +1011,11 @@ while True:
         handleInfoModalOpen,
         handleInfoModalClose,
         openInfoModal,
+        openErrorModal,
+        handleErrorModalOpen,
+        handleErrorModalClose,
+        errorContent,
+        errorContentHeading,
       }}
     >
       {children}

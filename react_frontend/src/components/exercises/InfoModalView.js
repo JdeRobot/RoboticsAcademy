@@ -92,7 +92,7 @@ function DenseTable() {
         <TableBody>
           {control.map((row) => (
             <TableRow
-              key={row.icon}
+              key={row.name}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 backgroundColor: "#329D9C",

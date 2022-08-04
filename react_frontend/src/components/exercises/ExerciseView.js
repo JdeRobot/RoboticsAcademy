@@ -8,6 +8,7 @@ import GazeboViewer from "./GazeboViewer";
 import VncConsoleViewer from "./VncConsoleViewer";
 import LoadModalView from "./LoadModalView";
 import CustomAlert from "./CustomAlert";
+import ErrorModalView from "./ErrorModalView";
 
 function ExerciseView() {
   return (
@@ -83,6 +84,7 @@ function ExerciseView() {
       </Box>
       <LoadModalView />
       <CustomAlert />
+      <ErrorModalView />
     </Box>
   );
 }
