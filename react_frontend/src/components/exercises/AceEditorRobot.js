@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import AceEditor from "react-ace";
 import ExerciseContext from "../../contexts/ExerciseContext";
 import "/static/common/ace-builds/src-noconflict/ext-language_tools";
@@ -9,7 +9,8 @@ import "/static/common/ace-builds/src-noconflict/snippets/python";
 
 function AceEditorRobot() {
   const [fontSize, setFontSize] = React.useState(14);
-  const { editorCode, editorCodeChange } = React.useContext(ExerciseContext);
+  const { filename, handleFilenameChange, editorCode, editorCodeChange } =
+    React.useContext(ExerciseContext);
   const editorele = React.useRef(null);
   const setFontSize_ = (augm) => {
     const ftSize = editorele.current?.props.fontSize;
@@ -23,7 +24,7 @@ function AceEditorRobot() {
   return (
     <Box
       sx={{
-        m: 3,
+        m: 1,
         p: 2,
         flexGrow: 1,
         width: "100%",
@@ -32,13 +33,31 @@ function AceEditorRobot() {
       }}
       id="code-control"
     >
-      <Typography
-        align={"center"}
-        variant={"h5"}
-        sx={{ fontFamily: "Raleway" }}
+      <Box
+        sx={{
+          m: 1,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
       >
-        Editor
-      </Typography>
+        <Typography
+          align={"center"}
+          variant={"h5"}
+          sx={{ fontFamily: "Raleway" }}
+          color={"secondary"}
+        >
+          Editor
+        </Typography>
+        <TextField
+          size={"small"}
+          id="filename"
+          label="Filename"
+          color={"secondary"}
+          value={filename}
+          onChange={handleFilenameChange}
+        />
+      </Box>
       <Box id="code_container">
         <div id={"editor"}>
           <AceEditor

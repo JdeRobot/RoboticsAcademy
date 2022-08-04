@@ -3,7 +3,8 @@ import ExerciseContext from "../../contexts/ExerciseContext";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Divider } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Divider, IconButton } from "@mui/material";
 const style = {
   position: "absolute",
   top: "50%",
@@ -33,14 +34,25 @@ export default function ErrorModalView() {
         aria-describedby="modal-modal-description"
       >
         <Box id={"control 1"} sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            color={"error"}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            {errorContentHeading}
-          </Typography>
+            <Typography
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
+              color={"error"}
+            >
+              {errorContentHeading}
+            </Typography>
+            <IconButton onClick={handleErrorModalClose} color={"error"}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <Divider color={"secondary"} variant={"middle"} sx={{ m: 2 }} />
           {errorContent}
         </Box>

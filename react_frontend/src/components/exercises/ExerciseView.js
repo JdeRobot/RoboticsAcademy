@@ -75,7 +75,6 @@ function ExerciseView() {
             alignItems: "center",
             justifyContent: "space-around",
             p: 2,
-            m: 3,
           }}
         >
           <GazeboViewer />

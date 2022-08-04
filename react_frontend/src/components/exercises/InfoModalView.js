@@ -23,7 +23,9 @@ import {
   TableHead,
   Paper,
   TableRow,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute",
@@ -123,9 +125,21 @@ export default function InfoModalView() {
         aria-describedby="modal-modal-description"
       >
         <Box id={"control 1"} sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Controls
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Controls
+            </Typography>
+            <IconButton onClick={handleInfoModalClose} color={"error"}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
           <Divider color={"secondary"} variant={"middle"} sx={{ m: 2 }} />
           <DenseTable />
         </Box>

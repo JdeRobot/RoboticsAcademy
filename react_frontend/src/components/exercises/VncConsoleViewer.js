@@ -6,7 +6,9 @@ function VncConsoleViewer() {
   const { openConsole } = React.useContext(ExerciseContext);
   return (
     <Box display={openConsole ? "block" : "none"}>
-      <Typography>Console</Typography>
+      <Typography color={"secondary"} borderBottom={2} m={0.4}>
+        Console
+      </Typography>
       <iframe
         id={"console-vnc"}
         style={{

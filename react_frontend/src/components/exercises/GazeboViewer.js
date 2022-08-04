@@ -7,7 +7,9 @@ function GazeboViewer() {
 
   return (
     <Box display={openGazebo ? "block" : "none"}>
-      <Typography>Gazebo</Typography>
+      <Typography color={"secondary"} borderBottom={2} m={0.4}>
+        Gazebo
+      </Typography>
       <iframe
         id={"iframe"}
         style={{

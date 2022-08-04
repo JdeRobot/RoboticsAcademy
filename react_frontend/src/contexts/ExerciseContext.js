@@ -51,6 +51,7 @@ export function ExerciseProvider({ children }) {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [openLoadModal, setOpenLoadModal] = React.useState(false);
+  const [filename, setFilename] = React.useState("follow-line");
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -748,8 +749,7 @@ while True:
   };
 
   const onClickSave = () => {
-    saveCode("testing", code);
-    // saveCode("testing", editorCode);
+    saveCode(filename, code);
   };
 
   function startNewCircuit() {
@@ -966,6 +966,7 @@ while True:
   const handleErrorModalClose = () => setOpenErrorModal(false);
   const handleLoadModalOpen = () => setOpenLoadModal(true);
   const handleLoadModalClose = () => setOpenLoadModal(false);
+  const handleFilenameChange = (event) => setFilename(event.target.value);
 
   return (
     <ExerciseContext.Provider
@@ -1016,6 +1017,8 @@ while True:
         handleErrorModalClose,
         errorContent,
         errorContentHeading,
+        filename,
+        handleFilenameChange,
       }}
     >
       {children}
