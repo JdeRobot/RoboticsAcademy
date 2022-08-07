@@ -100,7 +100,6 @@ function startSim(step) {
         } else {
           ws_manager.send(JSON.stringify({ command: "stopgz" }));
         }
-
         gazeboToggle = false;
       } else if (simStop) {
         ws_manager.send(JSON.stringify({ command: "stop" }));

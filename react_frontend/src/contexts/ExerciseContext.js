@@ -227,7 +227,6 @@ while True:
       if (event.data.includes("evaluate")) {
         if (event.data.length < 9) {
           // If there is an error it is sent along with "evaluate"
-          console.log("EVENT CODE SENT --> APPY");
           submitCode();
         } else {
           let error = event.data.substring(10, event.data.length);
@@ -245,7 +244,6 @@ while True:
         enableSimControls();
         if (resetRequested === true) {
           resetRequested = false;
-          // setResetRequested(false);
         }
       } else if (event.data.includes("style")) {
         let error = event.data.substring(5, event.data.length);
@@ -516,7 +514,6 @@ while True:
     }
     teleOpMode = false;
     // setTeleopMode(false);
-    console.log("EVENT CODE SENT --> APPY FROM teleOp");
     submitCode();
     document.removeEventListener("keydown", keyHandler, false);
     document.removeEventListener("keyup", keyHandler, false);
@@ -583,7 +580,6 @@ while True:
       const source_code = event.data;
       let operation = source_code.substring(0, 5);
       if (operation === "#load") {
-        print(`AAAA   ---> ${source_code.substring(5)}`);
         code = source_code.substring(5);
         setEditorCode(source_code.substring(5));
       } else if (operation === "#freq") {
@@ -860,11 +856,11 @@ while True:
     try {
       // Get the code from editor and add headers
       // Debug Code Submission -->
-      console.log(`Code submitted --> ${code}`);
-      var python_code = code;
-      // var python_code = editorCode;
-      python_code = "#code\n" + python_code;
 
+      // var python_code = code;
+      // var python_code = editorCode;
+      var python_code = "#code      \n" + code;
+      console.log(`Code submitted --> ${python_code}`);
       websocket_code.send(python_code);
       setAlertState({
         ...alertState,
@@ -874,7 +870,7 @@ while True:
         infoAlert: true,
       });
       setAlertContent(`Code Sent! Check terminal for more information!`);
-      deactivateTeleopButton();
+      // deactivateTeleopButton();
     } catch {
       setAlertState({
         ...alertState,

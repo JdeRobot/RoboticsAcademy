@@ -226,7 +226,7 @@ while True:
 	  function togglePlayPause(stop) {
 		let submit_button = document.getElementById("submit");
 		if (stop) {
-			submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/pause.png''%}";
+			submit_button.getElementsByTagName('img')[0].src = "{% static 'common/img/pause.png' %}";
 			submit_button.getElementsByTagName('p')[0].innerText = " Stop";
 			submit_button.setAttribute( "onClick", "javascript: stop();" );
 		} else {
