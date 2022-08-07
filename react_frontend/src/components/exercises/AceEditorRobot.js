@@ -1,20 +1,24 @@
 import * as React from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import AceEditor from "react-ace";
-// import '/static/common/ace-builds/src-noconflict/ace.js';
-import '../../../../static/common/ace-builds/src-noconflict/ext-language_tools';
-import '../../../../static/common/ace-builds/src-noconflict/mode-python';
-import '../../../../static/common/ace-builds/src-noconflict/theme-dracula';
-import '../../../../static/common/ace-builds/src-noconflict/snippets/python';
+import "../../../../static/common/ace-builds/src-noconflict/ace.js";
+import "../../../../static/common/ace-builds/src-noconflict/ext-language_tools";
+import "../../../../static/common/ace-builds/src-noconflict/mode-python";
+import "../../../../static/common/ace-builds/src-noconflict/theme-dracula";
+import "../../../../static/common/ace-builds/src-noconflict/snippets/python";
 import ExerciseContext from "../../contexts/ExerciseContext";
 
 function AceEditorRobot() {
   const [fontSize, setFontSize] = React.useState(14);
-  const { filename, handleFilenameChange, editorCode, editorCodeChange } =
-    React.useContext(ExerciseContext);
-  const editorele = React.useRef(null);
+  const {
+    filename,
+    handleFilenameChange,
+    editorCode,
+    editorCodeChange,
+    editorRef,
+  } = React.useContext(ExerciseContext);
   const setFontSize_ = (augm) => {
-    const ftSize = editorele.current?.props.fontSize;
+    const ftSize = editorRef.current?.props.fontSize;
     if (augm) {
       if (ftSize < 70) setFontSize(ftSize + 1);
     } else {
@@ -67,7 +71,7 @@ function AceEditorRobot() {
             name="code"
             width={"100%"}
             onChange={editorCodeChange}
-            ref={editorele}
+            ref={editorRef}
             fontSize={fontSize}
             showPrintMargin={true}
             showGutter={true}

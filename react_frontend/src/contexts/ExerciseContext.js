@@ -43,6 +43,7 @@ let v = 0;
 let w = 0;
 export function ExerciseProvider({ children }) {
   const exercise = "follow_line";
+  const editorRef = React.useRef();
   // connectionState - Connect, Connecting, Connected
   const [connectionState, setConnectionState] = useState("Connect");
   // launchState - Launch, Launching, Ready
@@ -205,7 +206,7 @@ while True:
           simReset = false;
           // setSimReset(false);
         } else if (sendCode) {
-          let python_code = code;
+          let python_code = editorRef.current.editor.getValue();
           python_code = "#code\n" + python_code;
           ws_manager.send(
             JSON.stringify({ command: "evaluate", code: python_code })
@@ -859,7 +860,8 @@ while True:
 
       // var python_code = code;
       // var python_code = editorCode;
-      var python_code = "#code      \n" + code;
+      // var python_code = "#code      \n" + code;
+      var python_code = "#code\n" + editorRef.current.editor.getValue();
       console.log(`Code submitted --> ${python_code}`);
       websocket_code.send(python_code);
       setAlertState({
@@ -1016,6 +1018,7 @@ while True:
         errorContentHeading,
         filename,
         handleFilenameChange,
+        editorRef,
       }}
     >
       {children}

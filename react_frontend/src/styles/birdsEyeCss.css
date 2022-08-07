@@ -1,5 +1,5 @@
 #birds-eye{
-	background: url("../../static/exercises/follow_line_react/img/map.jpg");
+	background: url("/static/exercises/follow_line/img/map.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -7,7 +7,7 @@
 }
 
 #birds-eye.default{
-	background: url("../../static/exercises/follow_line_react/img/map.jpg");
+	background: url("/static/exercises/follow_line/img/map.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;

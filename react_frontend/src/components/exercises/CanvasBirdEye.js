@@ -5,20 +5,6 @@ import "../../styles/birdsEyeCss.css";
 import FrequencyMenu from "./FrequencyMenu";
 export default function CanvasBirdEye() {
   const { birdEyeClass } = React.useContext(ExerciseContext);
-  // const BirdsEye = React.useRef(null);
-  // React.useEffect(() => {
-  //   // Set Background Image for the first time
-  //   let mapCanvas = BirdsEye.current;
-  //
-  //   let ctx = mapCanvas.getContext("2d");
-  //   ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
-  //   let background = new Image();
-  //   background.src = backgroundImage;
-  //   // Make sure the image is loaded first otherwise nothing will draw.
-  //   background.onload = function () {
-  //     scaleToFit(background, ctx, mapCanvas);
-  //   };
-  // }, []);
 
   return (
     <Box
