@@ -584,6 +584,7 @@ while True:
       let operation = source_code.substring(0, 5);
       if (operation === "#load") {
         print(`AAAA   ---> ${source_code.substring(5)}`);
+        code = source_code.substring(5);
         setEditorCode(source_code.substring(5));
       } else if (operation === "#freq") {
         var frequency_message = JSON.parse(source_code.substring(5));
