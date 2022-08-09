@@ -53,6 +53,12 @@
     <node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="0 0 0 0 2"/> <!-- args for setting the spawn point <x> <y> <z> <yaw_deg> [<delay>] -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <!--    Drone model param   -->
+    <arg name="drone_model" value="$(arg mav_name)"/>
+    <param name="drone_model" type="str" value="$(arg drone_model)" />
+
+    <!--    Rotors driver node   -->
+    <node name="rotors_driver_node" pkg="rotors_driver" type="rotors_driver_node.py" output="screen"/>
   </group>
 
   <group ns="$(arg mav_name)1">
@@ -74,12 +80,13 @@
     <node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="3 0 0 0 2"/> <!-- args for setting the spawn point <x> <y> <z> <yaw_deg> [<delay>] -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <!--    Drone model param   -->
+    <arg name="drone_model" value="$(arg mav_name)1"/>
+    <param name="drone_model" type="str" value="$(arg drone_model)" />
+
+    <!--    Rotors driver node   -->
+    <node name="rotors_driver_node" pkg="rotors_driver" type="rotors_driver_node.py" output="screen"/>
   </group>
 
-  <!--    Drone model param   -->
-  <arg name="drone_model" default="firefly"/>
-  <param name="drone_model" type="str" value="$(arg drone_model)" />
-
-  <!--    Rotors driver node   -->
-  <node name="rotors_driver_node" pkg="rotors_driver" type="rotors_driver_node.py" output="screen"/>
+  
 </launch>
