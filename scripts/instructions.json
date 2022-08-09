@@ -38,7 +38,8 @@
     "follow_turtlebot": {
         "gazebo_path": "/RoboticsAcademy/exercises/follow_turtlebot/web-template/launch",
         "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/follow_turtlebot/web-template/launch/follow_turtlebot.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/follow_turtlebot/web-template/gui.py 0.0.0.0 {}"
     },
     "global_navigation": {
         "gazebo_path": "/RoboticsAcademy/exercises/global_navigation/web-template/launch",
