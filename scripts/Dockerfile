@@ -4,9 +4,6 @@ FROM jderobot/base:3.2
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
 	git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
 
-
-RUN pip install django-webpack-loader djangorestframework
-
 # bootstrap rosdep
 RUN rosdep init && rosdep update
 
@@ -16,10 +13,7 @@ RUN add-apt-repository ppa:rock-core/qt4 -y && \
 RUN rm -rf /catkin_ws && \
     mkdir -p /catkin_ws/src && \
     cd /catkin_ws && \
-    catkin init && \
-    cd /catkin_ws/src && \
-    git clone https://github.com/RUFFY-369/CrazyS.git && \
-    git clone https://github.com/RUFFY-369/mav_comm.git 
+    catkin init
 
 COPY .rosinstall /tmp/
 RUN vcs import /catkin_ws/src  < /tmp/.rosinstall
@@ -44,8 +38,8 @@ RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/r
 
 
 # RoboticsAcademy
-RUN git clone https://github.com/RUFFY-369/RoboticsAcademy.git -b rotors
-RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+ RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
+ RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # React
 RUN cd /RoboticsAcademy/react_frontend && npm install && npm run build && cd
@@ -82,5 +76,3 @@ EXPOSE 1831
 
 
 ENTRYPOINT [ "./entrypoint.sh" ]
-# CMD ["--help"]
-
