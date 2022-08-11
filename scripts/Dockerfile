@@ -33,13 +33,13 @@ RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . src --ignore
 RUN catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build -j1'
 
-#This solves the plugin error that occurred while running rotors simulation for drone based exercises
+# This solves the plugin error that occurred while running rotors simulation for drone based exercises
 RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.h /catkin_ws/src/CrazyS/rotors_gazebo_plugins/src/ ; cp /catkin_ws/build/rotors_gazebo_plugins/libmav_msgs.so /catkin_ws/devel/lib/  
 
 
 # RoboticsAcademy
- RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
- RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
+RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # React
 RUN cd /RoboticsAcademy/react_frontend && npm install && npm run build && cd
