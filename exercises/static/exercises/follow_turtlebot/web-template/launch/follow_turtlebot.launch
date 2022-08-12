@@ -52,7 +52,7 @@
     <!--    Drone model param   -->
     <arg name="drone_model" value="$(arg mav_name)"/>
     <param name="drone_model" type="str" value="$(arg drone_model)" />
-    <param name="sample_time" type="int" value= "1.0" />
+    <param name="sample_time" type="double" value= "1.0" />
     <param name="drone_state_timer_frequency" type="double" value= "0.01" />
     <param name="misc_state_timer_frequency" type="double" value= "1.0" />
 
