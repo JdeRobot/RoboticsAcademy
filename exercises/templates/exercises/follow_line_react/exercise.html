@@ -2,9 +2,13 @@
 {% load react_component %}
 
 {% block react-content %}
-    {% react_component components/exercises/FollowLineReact %} {% end_react_component %}
+{#    {% react_component components/exercises/FollowLineReact %} {% end_react_component %}#}
 {#    {% react_component components/exercises/ProminentAppBar %}{% end_react_component %}#}
 {#    {% react_component components/exercises/ExerciseControl %}{% end_react_component %}#}
+        {% react_component components/exercises/ContextConsumer %}
+            {% react_component components/exercises/ProminentAppBar %}{% end_react_component %}#}
+        {% end_react_component %}
+
 {##}
 {#    {% react_component exercise/follow-line-react/CustomComponent %}#}
 {#        {% react_component exercise/follow-line-react/CustomComponent prop1="value1" intprop=10 floatprop=12.5 anotherprop %}#}
