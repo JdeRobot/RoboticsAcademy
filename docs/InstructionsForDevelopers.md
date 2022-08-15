@@ -74,3 +74,16 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
 - If you have some .world files you need to create different .launch files and add a '{}' in the [instructions.json file](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/instructions.json) that will be replaced by the [manager.py file](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/manager.py) for the variable name of the selection list of the JS and HTML files of the exercise.
 - You need to change the launcher.js file in the case that the exercise has a map selector or not.
 - Finally, if the exercise need an specific plugin that isn't installed in the container you need to modify the [Dockerfile](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/Dockerfile) an add the commands that allows the installation of the .cc and .hh files of the CustomRobots repository.
+
+## Edit code on RADI On The GO.
+
+1. If your IDE of choice is VSCode then this method is for you, visit [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) to download the extenstion.
+
+2. Start the Robotics Academy Docker Image
+
+3. Start VS Code
+
+4. Run the Remote-Containers: Open Folder in Container... command and select the local folder.
+   
+   <img width="597" alt="remote-command-palette" src="https://user-images.githubusercontent.com/58532023/184609609-eb1c1a15-9666-46f9-bc9d-df099d3738b8.png">
+
