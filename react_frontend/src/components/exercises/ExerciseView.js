@@ -31,23 +31,6 @@ function ExerciseView() {
           Start Coding !{" "}
         </Typography>
         <AceEditorRobot />
-
-        {/*<Box*/}
-        {/*  sx={{*/}
-        {/*    display: "flex",*/}
-        {/*    alignItems: "center",*/}
-        {/*  }}*/}
-        {/*>*/}
-        {/*  <AceEditorRobot />*/}
-        {/*  <Box*/}
-        {/*    sx={{*/}
-        {/*      display: "flex",*/}
-        {/*      flexDirection: "column",*/}
-        {/*      border: "2px solid #d3d3d3",*/}
-        {/*      m: 3,*/}
-        {/*      p: 2,*/}
-        {/*    }}*/}
-        {/*  >*/}
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>

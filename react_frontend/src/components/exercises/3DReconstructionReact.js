@@ -5,7 +5,7 @@ import { ExerciseProvider } from "../../contexts/ExerciseContext";
 import ProminentAppBar from "./ProminentAppBar";
 import View from "./View";
 
-function FollowLineReact() {
+function _3DReconstructionReact() {
   return (
     <Box>
       <ViewProvider>
@@ -22,4 +22,4 @@ function FollowLineReact() {
   );
 }
 
-export default FollowLineReact;
+export default _3DReconstructionReact;
