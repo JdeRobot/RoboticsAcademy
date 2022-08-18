@@ -14,7 +14,7 @@ function FollowLineReact(children) {
   );
 }
 
-ExerciseProvider.propTypes = {
+FollowLineReact.propTypes = {
   children: PropTypes.node,
 };
 

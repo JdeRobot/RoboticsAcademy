@@ -9,6 +9,9 @@ import VncConsoleViewer from "./VncConsoleViewer";
 import LoadModalView from "./LoadModalView";
 import CustomAlert from "./CustomAlert";
 import ErrorModalView from "./ErrorModalView";
+import VisualizationComponents from "./VisualizationComponents";
+import FrequencyMenu from "./FrequencyMenu";
+import GuiCanvas from "./GuiCanvas";
 
 function ExerciseView() {
   return (
@@ -35,7 +38,11 @@ function ExerciseView() {
           Visualization
         </Typography>
         <CircuitSelector />
-        <CanvasBirdEye />
+        <VisualizationComponents>
+          <CanvasBirdEye />
+          <GuiCanvas />
+          <FrequencyMenu />
+        </VisualizationComponents>
       </Box>
       {/*  </Box>*/}
       {/*</Box>*/}

@@ -7,8 +7,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ExerciseContext from "../../contexts/ExerciseContext";
+import { Box, Typography } from "@mui/material";
 
-export default function FrequencyMenu() {
+function FrequencyMenuHelper() {
   const { frequencyRows } = React.useContext(ExerciseContext);
 
   return (
@@ -30,5 +31,24 @@ export default function FrequencyMenu() {
         </TableBody>
       </Table>
     </TableContainer>
+  );
+}
+
+export default function frequencyMenu() {
+  return (
+    <Box
+      sx={{
+        m: 3,
+        p: 2,
+        display: "flex",
+        flexDirection: "column",
+        border: "2px solid",
+        justifyContent: "space-around",
+        alignItems: "center",
+      }}
+    >
+      <Typography>Frequency Menu</Typography>
+      <FrequencyMenuHelper />
+    </Box>
   );
 }
