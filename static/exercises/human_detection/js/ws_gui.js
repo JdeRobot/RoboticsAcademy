@@ -12,14 +12,15 @@ function declare_gui() {
     websocket_gui = new WebSocket("ws://" + websocket_address + ":2303/");
 
     websocket_gui.onopen = function (event) {
-		if (websocket_code.readyState == 1) {
+        radiConect.contentWindow.postMessage({command: 'launch_level', level: '6'}, '*');
+        if (websocket_code.readyState == 1) {
             alert("[open] Connection established!");
-			connectionUpdate({connection: 'exercise', command: 'up'}, '*');
-		}
+            radiConect.contentWindow.postMessage('up', '*');
+        }
     }
 
     websocket_gui.onclose = function (event) {
-        connectionUpdate({connection: 'exercise', command: 'down'}, '*');
+        radiConect.contentWindow.postMessage('down', '*');
         if(event.wasClean){
             alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
         }
@@ -65,7 +66,7 @@ function declare_gui() {
     }
 }
 
-var canvas = document.getElementById("gui_canvas_HD"),
+var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
     image = new Image();
 

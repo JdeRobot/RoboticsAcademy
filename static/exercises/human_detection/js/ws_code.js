@@ -1,13 +1,17 @@
-var stop_button = document.getElementById("stop_code");
+var stop_button = document.getElementById("stop");
 var live_button = document.getElementById("Live_Infer");
 var benchmark_button = document.getElementById("benchmark");
 var video_button = document.getElementById("Video_Infer");
 var visualizer_button = document.getElementById("visualizer");
 stop_button.disabled = live_button.disabled =  benchmark_button.disabled = video_button.disabled = visualizer_button.disabled = true;
+//stop_button.disabled = true;
 stop_button.style.opacity = live_button.style.opacity = benchmark_button.style.opacity = video_button.style.opacity = visualizer_button.style.opacity = "0.4";
+//stop_button.style.opacity = "0.4";
 stop_button.style.cursor = live_button.style.cursor = benchmark_button.style.cursor = video_button.style.cursor = visualizer_button.style.cursor = "not-allowed";
+//stop_button.style.cursor = "not-allowed";
 var model_uploaded = false;
 var video_uploaded = false;
+var graph_uploaded = false;
 
 
 // running variable for psuedo decoupling
@@ -21,11 +25,7 @@ function declare_code(){
 	websocket_code = new WebSocket("ws://" + websocket_address + ":1905/");
 
 	websocket_code.onopen = function(event){
-		if (websocket_gui.readyState == 1) {
-			connectionUpdate({connection: 'exercise', command: 'up'}, '*');
-			alert("[open] Connection established!");
-		}
-        websocket_code.send("#ping");
+		alert("[open] Connection established!");
 	}
 	websocket_code.onclose = function(event){
 		if(event.wasClean){
@@ -61,20 +61,22 @@ function declare_code(){
 				video_button.style.cursor = "default";
 			}
 		}
+
+		if(operation == "#load"){
+			editor.setValue(source_code.substring(5,));
+		}
 		if(operation == "#freq"){
 			var frequency_message = JSON.parse(source_code.substring(5,));
 			// Parse GUI and Brain frequencies
 			document.querySelector("#ideal_gui_frequency").value = frequency_message.gui;
 			document.querySelector('#ideal_code_frequency').value = frequency_message.brain;
-			// Send the acknowledgment message along with frequency
-			code_frequency = document.querySelector('#code_frequency').value;
-			gui_frequency = document.querySelector('#gui_frequency').value;
-			frequency_message = {"brain": code_frequency, "gui": gui_frequency};
-			websocket_code.send("#freq" + JSON.stringify(frequency_message));
 		}
-		else if (operation == "#ping"){
-            websocket_code.send("#ping");
-        }
+
+		// Send the acknowledgment message along with frequency
+		code_frequency = document.querySelector('#code_frequency').value;
+		gui_frequency = document.querySelector('#gui_frequency').value;
+		frequency_message = {"brain": code_frequency, "gui": gui_frequency};
+		websocket_code.send("#freq" + JSON.stringify(frequency_message));
 	};
 }
 
@@ -138,6 +140,31 @@ function benchmarkModel(){
 	stop_button.style.cursor = "default";
 
 	running = true;
+}
+
+function graph_input(){
+	var graph= document.getElementById("code-menu-1");
+	document.getElementById("output_heading").textContent = "Getting Graphs. Please wait....";
+	if (graph =='map')
+		websocket_code.send('#graphmap');
+	else if (graph=='11pt')
+		websocket_code.send('#graph_11');	
+	stop_button.disabled = false;
+    stop_button.style.opacity = "1.0";
+	stop_button.style.cursor = "default";
+
+	running = true;	
+}
+
+function EnableGraphInput(){
+	
+	var id=document.getElementById("output_heading").textContent;
+	var graph= document.getElementById("code-menu-1");
+
+	while(id!=="Benchmarking process thread closed!"){
+		graph.disabled = true;
+	}
+	graph.disabled = false;
 }
 
 function visualizeModel(){

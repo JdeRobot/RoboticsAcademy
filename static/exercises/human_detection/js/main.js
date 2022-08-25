@@ -5,8 +5,9 @@ $('#code-menu').on('change', function() {
       $("#Video_Infer").css("display", "inline-block");
       $("#Live_Infer").css("display", "none");
       $("#benchmark").css("display", "none");
+      $("#graph-upload").css("display", "none");
       $("#visualizer").css("display", "none")
-      $("#stop_code").css("display", "inline-block");
+      $("#stop").css("display", "inline-block");
 
     }
     else if (this.value === "live"){
@@ -15,24 +16,27 @@ $('#code-menu').on('change', function() {
         $("#Live_Infer").css("display", "inline-block");
         $("#video-upload").css("display", "none");
         $("#benchmark").css("display", "none");        
+        $("#graph-upload").css("display", "none");
         $("#visualizer").css("display", "none")
-        $("#stop_code").css("display", "inline-block");
+        $("#stop").css("display", "inline-block");
     } 
     else if (this.value === "bench"){
         $("#Video_Infer").css("display", "none");
         $("#video-upload").css("display", "none");
         $("#Live_Infer").css("display", "none");
         $("#benchmark").css("display", "inline-block");
+        $("#graph-upload").css("display", "flex");
         $("#visualizer").css("display", "none")
-        $("#stop_code").css("display", "inline-block");
+        $("#stop").css("display", "inline-block");
     } 
     else if (this.value === "visual"){
         $("#Video_Infer").css("display", "none");
         $("#video-upload").css("display", "none");
         $("#Live_Infer").css("display", "none");
         $("#benchmark").css("display", "none");
+        $("#graph-upload").css("display", "none");
         $("#visualizer").css("display", "inline-block")
-        $("#stop_code").css("display", "inline-block");
+        $("#stop").css("display", "inline-block");
     } 
     else {
 
@@ -40,7 +44,8 @@ $('#code-menu').on('change', function() {
       $("#Video_Infer").css("display", "none");
       $("#Live_Infer").css("display", "none");
       $("#benchmark").css("display", "none");
+      $("#graph-upload").css("display", "none");
       $("#visualizer").css("display", "none")
-      $("#stop_code").css("display", "none");
+      $("#stop").css("display", "none");
     }
   });
