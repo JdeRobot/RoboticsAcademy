@@ -14,12 +14,28 @@ RUN rm -rf /catkin_ws && \
     mkdir -p /catkin_ws/src && \
     cd /catkin_ws && \
     catkin init
+
 COPY .rosinstall /tmp/
 RUN vcs import /catkin_ws/src  < /tmp/.rosinstall
 
-RUN cd /catkin_ws && rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
-RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
-RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
+
+#CrazyS
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
+    apt install -y curl && \
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - && \
+    apt update && \
+    apt install -y ros-noetic-joy ros-noetic-mavlink && \
+    apt install -y ros-noetic-octomap-mapping ros-noetic-control-toolbox && \
+    apt install -y libgoogle-glog-dev
+
+
+RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . src --ignore-src -y --rosdistro $ROS_DISTRO
+RUN catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False
+RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build -j1'
+
+# This solves the plugin error that occurred while running rotors simulation for drone based exercises
+RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.h /catkin_ws/src/CrazyS/rotors_gazebo_plugins/src/ ; cp /catkin_ws/build/rotors_gazebo_plugins/libmav_msgs.so /catkin_ws/devel/lib/  
+
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
@@ -60,4 +76,3 @@ EXPOSE 1831
 
 
 ENTRYPOINT [ "./entrypoint.sh" ]
-# CMD ["--help"]

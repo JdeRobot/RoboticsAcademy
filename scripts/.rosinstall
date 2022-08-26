@@ -19,3 +19,14 @@ repositories:
     type: git
     url: https://github.com/stdr-simulator-ros-pkg/stdr_simulator.git
     version: indigo-devel
+
+  CrazyS:
+    type: git
+    url: https://github.com/RUFFY-369/CrazyS.git
+    version: main
+  
+  mav_comm:
+    type: git
+    url: https://github.com/RUFFY-369/mav_comm.git
+    version: main
+  
