@@ -24,7 +24,7 @@ def check_device(device_path):
 RADI_VERSION = "3.2.3"
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
-DRONE_EX = ["drone_cat_mouse", "follow_road", "follow_turtlebot", "labyrinth_escape", "position_control", 
+DRONE_EX = ["follow_road", "labyrinth_escape", "position_control", 
             "rescue_people", "drone_hangar", "drone_gymkhana", "visual_lander", "drone_cat_mouse_game",
             "package_delivery", "power_tower_inspection"]
 CIRCUIT_EX = ["follow_line", "follow_line_game"]
@@ -313,18 +313,18 @@ class Commands:
         # Reset gz world
         self.unpause_physics()
 
-        # Wait disarming
-        cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
-        attempt = 0
-        while (attempt < 20):
-            stats_output = ""
-            try:
-                stats_output = str(subprocess.check_output(cmd_wait, timeout=5))
-            except Exception:
-                print("Timeout reached")
-            if ("armed: False" in stats_output):
-                break
-            attempt = attempt + 1
+        # Wait disarming (rotors doesn't utilise this fucntion unlike PX4)
+        # cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
+        # attempt = 0
+        # while (attempt < 20):
+        #     stats_output = ""
+        #     try:
+        #         stats_output = str(subprocess.check_output(cmd_wait, timeout=5))
+        #     except Exception:
+        #         print("Timeout reached")
+        #     if ("armed: False" in stats_output):
+        #         break
+        #     attempt = attempt + 1
 
         # Rerun exercise.py
         host_cmd = self.instructions[exercise]["instructions_host"]
