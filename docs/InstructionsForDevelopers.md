@@ -8,6 +8,8 @@
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [How to update static files version](#How-to-update-static-files-version)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
+- [How to create a React based exercise](#How-to-create-a-React-based-exercise)
+- [Guidelines to render a React based exercise](#Guidelines-to-render-a-React-based-exercise)
 
 <a name="How-to-setup-the-developer-environment"></a>
 ## How to setup the developer environment 
@@ -100,3 +102,56 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
 5. To make sure that your local directory has been mounted correctly to the correct location inside RADI, navigate to http://localhost:1108/vnc.html after launching an exercise(This involves clicking on the launch button of any exercise of your choice) and this will open an vnc console Instance where you may verify the integrity of the mount.
 
    ![Screenshot from 2022-08-22 01-31-16](https://user-images.githubusercontent.com/58532023/185808802-3a207cb5-b2df-466f-a7f1-70864ff34206.png)
+
+<a name="How-to-create-a-React-based-exercise"></a>
+## How to create a React based exercise
+
+All the components build in React are present inside the "react_frontend/src/components".
+1. Create the Main Exercise Component follow as -
+
+Add Exercise theory url inside the "react_frontend/src/helpers/TheoryUrlGetter.js"
+```angular2html
+<Box>
+      <ViewProvider>
+        <ExerciseProvider>
+          <ProminentAppBar />
+          <View url={THEORY_URL."exercise_id"} exercise="{<ExerciseIdView />}" />
+        </ExerciseProvider>
+      </ViewProvider>
+</Box>
+```
+
+The **View Component**  handles the different views - theory, exercise and code view.
+2. Create an Exercise View Component which contains all the components required in an exercise.
+
+<a name="Guidelines-to-render-a-React-based-exercise"></a>
+## Guidelines to render a React based exercise 
+
+1. Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/static/exercises"
+     
+This folder contains the static files related to the exercise, it consists of python scripts handling the GUI, Brain and exercise.
+2. Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/templates/exercises"
+
+This folder contains exercise.html which serves React from Django server with the help of tag "react_component". For example -
+```angular2html
+    {% react_component components/exercises/"exercise_id" %} 
+     // Here you can add Child Components [ React Component or HTML ]
+    {% end_react_component %}
+```
+```bash
+├── react_frontend
+│   ├── src
+│       ├── components
+│           ├── exercises 
+├── exercises
+│   ├── static
+│   ├── templates  
+└── 
+```
+| Relative path | Absolute path |
+| ------------- | ------------- |
+| components/exercises/3DReconstructionReact | react_frontend/src/components/exercises/3DReconstructionReact |
+
+Make sure to use the relative path while rendering the component
+3. Follow the steps to [add a new exercise in Django ](#How-to-add-a-new-exercise)
+
