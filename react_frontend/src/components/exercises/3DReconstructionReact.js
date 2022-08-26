@@ -4,6 +4,7 @@ import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/ExerciseContext";
 import ProminentAppBar from "./ProminentAppBar";
 import View from "./View";
+import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 
 function _3DReconstructionReact() {
   return (
@@ -11,11 +12,7 @@ function _3DReconstructionReact() {
       <ViewProvider>
         <ExerciseProvider>
           <ProminentAppBar />
-          <View
-            url={
-              "https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/"
-            }
-          />
+          <View url={THEORY_URL._3dReconstruction} />
         </ExerciseProvider>
       </ViewProvider>
     </Box>
