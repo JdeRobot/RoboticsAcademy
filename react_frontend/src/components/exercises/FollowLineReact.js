@@ -5,6 +5,7 @@ import { ExerciseProvider } from "../../contexts/ExerciseContext";
 import ProminentAppBar from "./ProminentAppBar";
 import View from "./View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
+import FollowLineExerciseView from "./FollowLineExerciseView";
 
 function FollowLineReact() {
   return (
@@ -12,7 +13,10 @@ function FollowLineReact() {
       <ViewProvider>
         <ExerciseProvider>
           <ProminentAppBar />
-          <View url={THEORY_URL.FollowLine} />
+          <View
+            url={THEORY_URL.FollowLine}
+            exerciseId={<FollowLineExerciseView />}
+          />
         </ExerciseProvider>
       </ViewProvider>
     </Box>

@@ -13,7 +13,7 @@ import VisualizationComponents from "./VisualizationComponents";
 import FrequencyMenu from "./FrequencyMenu";
 import GuiCanvas from "./GuiCanvas";
 
-function ExerciseView() {
+function FollowLineExerciseView() {
   return (
     <Box id="exercise-view">
       <ExerciseControl />
@@ -78,4 +78,4 @@ function ExerciseView() {
   );
 }
 
-export default ExerciseView;
+export default FollowLineExerciseView;

@@ -15,7 +15,7 @@
 }
 
 #birds-eye.montreal{
-	background: url("../../static/exercises/follow_line_react/img/montreal.jpg");
+	background: url("/static/exercises/follow_line/img/montreal.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -23,7 +23,7 @@
 }
 
 #birds-eye.montmelo{
-	background: url("../../static/exercises/follow_line_react/img/montmelo.jpg");
+	background: url("/static/exercises/follow_line/img/montmelo.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;
@@ -31,7 +31,7 @@
 }
 
 #birds-eye.nbg{
-	background: url("../../static/exercises/follow_line_react/img/nbg.jpg");
+	background: url("/static/exercises/follow_line/img/nbg.jpg");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: center;

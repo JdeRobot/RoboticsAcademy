@@ -774,17 +774,18 @@ while True:
     // Kill actual sim
     stopBrain();
 
-    setAlertState({
-      ...alertState,
-      errorAlert: false,
-      successAlert: false,
-      warningAlert: false,
-      infoAlert: true,
-    });
-    setAlertContent(
-      `Loading circuit. Please wait until the connection is restored.`
-    );
-    connectionUpdate({ connection: "exercise", command: "down" }, "*");
+    startNewCircuit();
+    // setAlertState({
+    //   ...alertState,
+    //   errorAlert: false,
+    //   successAlert: false,
+    //   warningAlert: false,
+    //   infoAlert: true,
+    // });
+    // setAlertContent(
+    //   `Loading circuit. Please wait until the connection is restored.`
+    // );
+    // connectionUpdate({ connection: "exercise", command: "down" }, "*");
   }
 
   function scaleToFit(img, ctx, canvas) {
