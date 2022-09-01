@@ -491,7 +491,14 @@ while True:
     websocket_gui.onopen = function (event) {
       setLaunchLevel(launchLevel + 1);
       if (websocket_code.readyState === 1) {
-        alert("[open] Connection established!");
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: true,
+          warningAlert: false,
+          infoAlert: false,
+        });
+        setAlertContent(" Connection established! ");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
     };
@@ -499,11 +506,25 @@ while True:
     websocket_gui.onclose = function (event) {
       connectionUpdate({ connection: "exercise", command: "down" }, "*");
       if (event.wasClean) {
-        alert(
-          `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: false,
+          warningAlert: true,
+          infoAlert: false,
+        });
+        setAlertContent(
+          `Connection closed cleanly, code=${event.code} reason=${event.reason}`
         );
       } else {
-        alert("[close] Connection closed!");
+        setAlertState({
+          ...alertState,
+          errorAlert: false,
+          successAlert: false,
+          warningAlert: true,
+          infoAlert: false,
+        });
+        setAlertContent(`Connection closed!`);
       }
     };
 
