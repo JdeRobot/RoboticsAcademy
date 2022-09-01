@@ -613,7 +613,6 @@ while True:
     websocket_gui = new WebSocket(websocket_address);
 
     websocket_gui.onopen = function (event) {
-      //alert("[open] Connection established!");
       setLaunchLevel(launchLevel + 1);
       if (!resetRequested)
         connectionUpdate(
@@ -654,7 +653,6 @@ while True:
           setAlertContent(
             `Connection closed cleanly, code=${event.code} reason=${event.reason}`
           );
-          //alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
         } else {
           setAlertState({
             ...alertState,
@@ -664,7 +662,6 @@ while True:
             infoAlert: false,
           });
           setAlertContent(`Connection closed!`);
-          //alert("[close] Connection closed!");
         }
       }
     };
