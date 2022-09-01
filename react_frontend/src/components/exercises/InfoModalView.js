@@ -10,7 +10,7 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import WebAssetIcon from "@mui/icons-material/WebAsset";
 import PsychologyIcon from "@mui/icons-material/Psychology";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import FollowLineExerciseContext from "../../contexts/FollowLineExerciseContext";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -26,6 +26,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import PropTypes from "prop-types";
 
 const style = {
   position: "absolute",
@@ -113,9 +114,10 @@ function DenseTable() {
   );
 }
 
-export default function InfoModalView() {
-  const { openInfoModal, handleInfoModalClose } =
-    React.useContext(ExerciseContext);
+export default function InfoModalView(props) {
+  const { openInfoModal, handleInfoModalClose } = React.useContext(
+    props.context
+  );
   return (
     <div>
       <Modal
@@ -147,3 +149,7 @@ export default function InfoModalView() {
     </div>
   );
 }
+
+InfoModalView.propTypes = {
+  context: PropTypes.any,
+};

@@ -6,11 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import ExerciseContext from "../../contexts/ExerciseContext";
 import { Box, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
-function FrequencyMenuHelper() {
-  const { frequencyRows } = React.useContext(ExerciseContext);
+function FrequencyMenuHelper(props) {
+  const { frequencyRows } = React.useContext(props.context);
 
   return (
     <TableContainer component={Paper}>
@@ -34,7 +34,15 @@ function FrequencyMenuHelper() {
   );
 }
 
-export default function frequencyMenu() {
+FrequencyMenuHelper.propTypes = {
+  context: PropTypes.any,
+};
+
+FrequencyMenu.propTypes = {
+  context: PropTypes.any,
+};
+
+export default function FrequencyMenu(props) {
   return (
     <Box
       sx={{
@@ -48,7 +56,7 @@ export default function frequencyMenu() {
       }}
     >
       <Typography>Frequency Menu</Typography>
-      <FrequencyMenuHelper />
+      <FrequencyMenuHelper context={props.context} />
     </Box>
   );
 }

@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
-import ExerciseContext from "../../contexts/ExerciseContext";
-import "../../styles/birdsEyeCss.css";
-export default function CanvasBirdEye() {
-  const { birdEyeClass } = React.useContext(ExerciseContext);
+import "../../styles/birdsEye.css";
+import PropTypes from "prop-types";
+
+export default function CanvasBirdEye(props) {
+  const { birdEyeClass } = React.useContext(props.context);
 
   return (
     <Box
@@ -22,3 +23,7 @@ export default function CanvasBirdEye() {
     </Box>
   );
 }
+
+CanvasBirdEye.propTypes = {
+  context: PropTypes.any,
+};

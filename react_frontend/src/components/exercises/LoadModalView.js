@@ -3,7 +3,8 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import FollowLineExerciseContext from "../../contexts/FollowLineExerciseContext";
+import PropTypes from "prop-types";
 
 const style = {
   position: "absolute",
@@ -17,9 +18,10 @@ const style = {
   p: 4,
 };
 
-export default function LoadModalView() {
-  const { openLoadModal, handleLoadModalClose } =
-    React.useContext(ExerciseContext);
+export default function LoadModalView(props) {
+  const { openLoadModal, handleLoadModalClose } = React.useContext(
+    props.context
+  );
   return (
     <div>
       <Modal
@@ -40,3 +42,7 @@ export default function LoadModalView() {
     </div>
   );
 }
+
+LoadModalView.propTypes = {
+  context: PropTypes.any,
+};

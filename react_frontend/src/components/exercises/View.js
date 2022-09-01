@@ -13,7 +13,6 @@ function View(props) {
       {theoryMode && <TheoryView url={props.url} />}
       {codeMode && props.exerciseId}
       {forumMode && <ForumView />}
-      <InfoModalView />
     </>
   );
 }

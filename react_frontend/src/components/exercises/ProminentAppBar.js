@@ -11,21 +11,22 @@ import HelpCenterOutlinedIcon from "@mui/icons-material/HelpCenterOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
-import ExerciseContext from "../../contexts/ExerciseContext";
 import ViewContext from "../../contexts/ViewContext";
 import RoboticsTheme from "../RoboticsTheme.js";
+import PropTypes from "prop-types";
 
-function ProminentAppBar() {
+function ProminentAppBar(props) {
   // useBeforeUnload("true", "you have unsaved changes !");
   const {
-    startSim,
     connectionState,
     launchState,
     connectionButtonClick,
     launchButtonClick,
     launchLevel,
     handleInfoModalOpen,
-  } = React.useContext(ExerciseContext);
+    onPageLoad,
+    onUnload,
+  } = React.useContext(props.context);
   const {
     theoryMode,
     codeMode,
@@ -35,13 +36,6 @@ function ProminentAppBar() {
     openForum,
   } = React.useContext(ViewContext);
   React.useEffect(() => {
-    const onPageLoad = () => {
-      startSim(0);
-    };
-    const onUnload = () => {
-      startSim(2);
-      return true;
-    };
     window.addEventListener("beforeunload", onUnload);
     if (document.readyState === "complete") {
       onPageLoad();
@@ -121,7 +115,7 @@ function ProminentAppBar() {
               <HelpCenterOutlinedIcon />
             </IconButton>
           </Box>
-          <Typography variant="h5">Follow Line exercise</Typography>
+          <Typography variant="h5">{props.exerciseName}</Typography>
           <ButtonGroup color={"loading"} variant={"contained"}>
             <IconButton
               component={"span"}
@@ -153,5 +147,10 @@ function ProminentAppBar() {
     </RoboticsTheme>
   );
 }
+
+ProminentAppBar.propTypes = {
+  context: PropTypes.any,
+  exerciseName: PropTypes.string,
+};
 
 export default ProminentAppBar;

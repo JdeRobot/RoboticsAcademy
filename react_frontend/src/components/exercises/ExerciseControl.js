@@ -11,9 +11,9 @@ import VideogameAssetOutlinedIcon from "@mui/icons-material/VideogameAssetOutlin
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import RoboticsTheme from "../RoboticsTheme.js";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import PropTypes from "prop-types";
 
-function ExerciseControl() {
+function ExerciseControl(props) {
   const {
     onClickSave,
     check,
@@ -25,11 +25,10 @@ function ExerciseControl() {
     changeConsole,
     teleOpButtonClick,
     playState,
-    codeFrequencyUpdate,
-    guiFrequencyUpdate,
     guiFreq,
     brainFreq,
-  } = React.useContext(ExerciseContext);
+    keyHandleFrequency,
+  } = React.useContext(props.context);
   return (
     <RoboticsTheme>
       <Toolbar
@@ -123,12 +122,8 @@ function ExerciseControl() {
             title={
               "The brain frequency is the value that tells the robot with what frequency should the code be updated"
             }
-            onChange={codeFrequencyUpdate}
             sx={{ width: 160, m: 1 }}
-            inputProps={{
-              min: 1,
-              max: 30,
-            }}
+            onKeyDown={keyHandleFrequency}
             color={"secondary"}
           />
           <TextField
@@ -137,31 +132,13 @@ function ExerciseControl() {
             value={guiFreq}
             type="number"
             sx={{ width: 160, m: 1 }}
-            onChange={guiFrequencyUpdate}
             title={
               "This value corresponds to the frequency the UI and visuals will be updated."
             }
-            inputProps={{
-              min: 1,
-              max: 30,
-            }}
+            onKeyDown={keyHandleFrequency}
             size={"small"}
             color={"secondary"}
           />
-          {/*<TextField*/}
-          {/*  label={"Sim RTF:"}*/}
-          {/*  defaultValue={0}*/}
-          {/*  type="number"*/}
-          {/*  color={"secondary"}*/}
-          {/*  InputProps={{*/}
-          {/*    readOnly: true,*/}
-          {/*  }}*/}
-          {/*  title={*/}
-          {/*    "This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."*/}
-          {/*  }*/}
-          {/*  size={"small"}*/}
-          {/*  sx={{ width: 120, m: 1 }}*/}
-          {/*/>*/}
         </Box>
         <Box>
           <Button
@@ -221,5 +198,8 @@ function ExerciseControl() {
     </RoboticsTheme>
   );
 }
+ExerciseControl.propTypes = {
+  context: PropTypes.any,
+};
 
 export default ExerciseControl;

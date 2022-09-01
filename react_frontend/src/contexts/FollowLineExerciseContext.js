@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import { createContext, useState } from "react";
+import { createContext, useState, useRef } from "react";
 import { saveCode, get_novnc_size_react } from "../helpers/utils";
 import { drawCircle } from "../helpers/birdEye.js";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
-const ExerciseContext = createContext();
+const FollowLineExerciseContext = createContext();
 const websocket_address = "127.0.0.1";
 const address_code = "ws://" + websocket_address + ":1905";
 const address_gui = "ws://" + websocket_address + ":2303";
@@ -41,9 +41,14 @@ while True:
 // Car variables
 let v = 0;
 let w = 0;
+
+function createData(key, value) {
+  return { key, value };
+}
+
 export function ExerciseProvider({ children }) {
   const exercise = "follow_line";
-  const editorRef = React.useRef();
+  const editorRef = useRef();
   // connectionState - Connect, Connecting, Connected
   const [connectionState, setConnectionState] = useState("Connect");
   // launchState - Launch, Launching, Ready
@@ -51,8 +56,8 @@ export function ExerciseProvider({ children }) {
   const [launchLevel, setLaunchLevel] = useState(0);
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
-  const [openLoadModal, setOpenLoadModal] = React.useState(false);
-  const [filename, setFilename] = React.useState("follow-line");
+  const [openLoadModal, setOpenLoadModal] = useState(false);
+  const [filename, setFilename] = useState("follow-line");
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -62,7 +67,6 @@ export function ExerciseProvider({ children }) {
   const [alertContent, setAlertContent] = useState("");
   const [openGazebo, setOpenGazebo] = useState(false);
   const [openConsole, setOpenConsole] = useState(false);
-  const [initialPosition, setInitialPosition] = useState();
   const [playState, setPlayState] = useState(true);
   const [circuit, setCircuit] = useState("default");
   const [brainFreq, setBrainFreq] = useState(brainFreqAck);
@@ -149,7 +153,7 @@ while True:
         });
         setAlertContent("Connection lost, retrying connection...");
         // alert("Connection lost, retrying connection...");
-        startSim(step, circuit, websocket_address);
+        startSim(step);
       } else {
         firstAttempt = false;
         // setFirstAttempt(false);
@@ -195,12 +199,10 @@ while True:
             ws_manager.send(JSON.stringify({ command: "stopgz" }));
           }
           gazeboToggle = false;
-          // setGazeboToggle(false);
         } else if (simStop) {
           ws_manager.send(JSON.stringify({ command: "stop" }));
           simStop = false;
           running = false;
-          // setRunning(false);
         } else if (simReset) {
           ws_manager.send(JSON.stringify({ command: "reset" }));
           simReset = false;
@@ -258,7 +260,6 @@ while True:
 
   function resetSimulation() {
     simReset = true;
-    // setSimReset(true);
   }
 
   function stopSimulation() {
@@ -267,7 +268,6 @@ while True:
 
   function resumeSimulation() {
     simResume = true;
-    // setSimResume(true);
   }
 
   function connectionUpdate(data) {
@@ -520,10 +520,6 @@ while True:
     document.removeEventListener("keyup", keyHandler, false);
   };
 
-  function createData(key, value) {
-    return { key, value };
-  }
-
   function declare_code(websocket_address) {
     websocket_code = new WebSocket(websocket_address);
 
@@ -560,9 +556,6 @@ while True:
           setAlertContent(
             `Connection closed cleanly, code=${event.code} reason=${event.reason}`
           );
-          // alert(
-          //   `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
-          // );
         } else {
           setAlertState({
             ...alertState,
@@ -572,7 +565,6 @@ while True:
             infoAlert: false,
           });
           setAlertContent(" Connection closed! ");
-          // alert("[close] Connection closed!");
         }
       }
     };
@@ -621,7 +613,7 @@ while True:
         }
         toggleSubmitButton(true);
       } else if (operation === "#stpd") {
-        startNewCircuit();
+        startNewCircuit(circuit);
       }
 
       // Send Teleop message if active
@@ -654,7 +646,6 @@ while True:
           infoAlert: false,
         });
         setAlertContent(" Connection established! ");
-        // alert("[open] Connection established!");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
     };
@@ -672,9 +663,6 @@ while True:
         setAlertContent(
           `Connection closed cleanly, code=${event.code} reason=${event.reason}`
         );
-        // alert(
-        //   `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
-        // );
       } else {
         setAlertState({
           ...alertState,
@@ -684,7 +672,6 @@ while True:
           infoAlert: false,
         });
         setAlertContent(`Connection closed!`);
-        // alert("[close] Connection closed!");
       }
     };
 
@@ -711,7 +698,6 @@ while True:
         content = pose.split(",").map(function (item) {
           return parseFloat(item);
         });
-        setInitialPosition(content);
         drawCircle(content[0], content[1], content, mapCanvas);
 
         // Send the Acknowledgment Message
@@ -741,7 +727,6 @@ while True:
     websocket_gui.send("#rest");
   }
   const editorCodeChange = (e) => {
-    console.log(e);
     code = e;
     setEditorCode(e);
   };
@@ -750,17 +735,15 @@ while True:
     saveCode(filename, code);
   };
 
-  function startNewCircuit() {
+  function startNewCircuit(circuit) {
     // Kill actual sim
     startSim(2);
     // StartSim
     swapping = true;
-    // setSwapping(true);
     startSim(1, circuit);
     connectionUpdate({ connection: "exercise", command: "swap" }, "*");
-    toggleSubmitButton(false);
+    // toggleSubmitButton(false);
     firstCodeSent = false;
-    // setFirstCodeSent(false);
   }
 
   function handleCircuitChange(e, circuitSelector) {
@@ -774,18 +757,17 @@ while True:
     // Kill actual sim
     stopBrain();
 
-    startNewCircuit();
-    // setAlertState({
-    //   ...alertState,
-    //   errorAlert: false,
-    //   successAlert: false,
-    //   warningAlert: false,
-    //   infoAlert: true,
-    // });
-    // setAlertContent(
-    //   `Loading circuit. Please wait until the connection is restored.`
-    // );
-    // connectionUpdate({ connection: "exercise", command: "down" }, "*");
+    setAlertState({
+      ...alertState,
+      errorAlert: false,
+      successAlert: false,
+      warningAlert: false,
+      infoAlert: true,
+    });
+    setAlertContent(
+      `Loading circuit. Please wait until the connection is restored.`
+    );
+    connectionUpdate({ connection: "exercise", command: "down" }, "*");
   }
 
   function scaleToFit(img, ctx, canvas) {
@@ -822,9 +804,6 @@ while True:
       setAlertContent(
         `A connection with the manager must be established before launching an exercise`
       );
-      // alert(
-      //   "A connection with the manager must be established before launching an exercise"
-      // );
     }
   };
 
@@ -837,19 +816,16 @@ while True:
 
   const resumeBrain = () => {
     let message = "#play\n";
-    console.log("Message sent!");
     websocket_code.send(message);
   };
 
   const stopBrain = () => {
     let message = "#stop\n";
-    console.log("Message sent!");
     websocket_code.send(message);
   };
 
   const resetBrain = () => {
     let message = "#rest\n";
-    console.log("Message sent!");
     websocket_code.send(message);
   };
 
@@ -857,13 +833,7 @@ while True:
   const submitCode = () => {
     try {
       // Get the code from editor and add headers
-      // Debug Code Submission -->
-
-      // var python_code = code;
-      // var python_code = editorCode;
-      // var python_code = "#code      \n" + code;
       var python_code = "#code\n" + editorRef.current.editor.getValue();
-      console.log(`Code submitted --> ${python_code}`);
       websocket_code.send(python_code);
       setAlertState({
         ...alertState,
@@ -873,7 +843,7 @@ while True:
         infoAlert: true,
       });
       setAlertContent(`Code Sent! Check terminal for more information!`);
-      // deactivateTeleopButton();
+      // deactivateTeleOpButton();
     } catch {
       setAlertState({
         ...alertState,
@@ -885,29 +855,46 @@ while True:
       setAlertContent(
         `Connection must be established before sending the code.`
       );
-      // alert("Connection must be established before sending the code.");
     }
   };
 
   // Function that send/submits an empty string
   const stopCode = () => {
     var stop_code = "#code\n";
-    console.log("Message sent!");
     websocket_code.send(stop_code);
   };
 
-  // Function for range slider
-  const codeFrequencyUpdate = (e) => {
-    // console.log(e.target.data);
-    brainFreqAck = brainFreqAck + 1;
-    setBrainFreq(brainFreqAck);
+  const keyHandleFrequency = (e) => {
+    if (e.key === "ArrowUp") {
+      if (e.target.id == "gui_freq") {
+        if (guiFreqAck < 30) {
+          guiFreqAck = guiFreqAck + 1;
+          setGuiFreq(guiFreqAck);
+        }
+      }
+      if (e.target.id == "code_freq") {
+        if (brainFreqAck < 30) {
+          brainFreqAck = brainFreqAck + 1;
+          setBrainFreq(brainFreqAck);
+        }
+      }
+    }
+    if (e.key === "ArrowDown") {
+      if (e.target.id == "gui_freq") {
+        if (guiFreqAck > 1) {
+          guiFreqAck = guiFreqAck - 1;
+          setGuiFreq(guiFreqAck);
+        }
+      }
+      if (e.target.id == "code_freq") {
+        if (brainFreqAck > 1) {
+          brainFreqAck = brainFreqAck - 1;
+          setBrainFreq(brainFreqAck);
+        }
+      }
+    }
   };
 
-  // Function for range slider
-  const guiFrequencyUpdate = (e) => {
-    guiFreqAck = guiFreqAck + 1;
-    setGuiFreq(guiFreqAck);
-  };
   function keyHandler(event) {
     // Right (39), Left (37), Down (40), Up (38)
 
@@ -968,36 +955,23 @@ while True:
   const handleLoadModalClose = () => setOpenLoadModal(false);
   const handleFilenameChange = (event) => setFilename(event.target.value);
 
+  const onPageLoad = () => {
+    startSim(0);
+  };
+
+  const onUnload = () => {
+    startSim(2);
+    return true;
+  };
   return (
-    <ExerciseContext.Provider
+    <FollowLineExerciseContext.Provider
       value={{
         editorCode,
         openLoadModal,
-        handleLoadModalOpen,
-        handleLoadModalClose,
-        check,
-        onClickSave,
-        editorCodeChange,
         connectionState,
         launchState,
-        connectionButtonClick,
-        launchButtonClick,
-        resetSim,
-        start,
-        stop,
-        loadFileButton,
-        startSim,
         circuit,
-        // backgroundImage,
-        scaleToFit,
-        handleCircuitChange,
-        getCircuitValue,
         launchLevel,
-        loadButtonClick,
-        teleOpButtonClick,
-        connectionUpdate,
-        changeGzWeb,
-        changeConsole,
         openGazebo,
         playState,
         birdEyeClass,
@@ -1006,24 +980,45 @@ while True:
         alertContent,
         brainFreq,
         guiFreq,
-        codeFrequencyUpdate,
-        guiFrequencyUpdate,
         frequencyRows,
-        handleInfoModalOpen,
-        handleInfoModalClose,
         openInfoModal,
         openErrorModal,
-        handleErrorModalOpen,
-        handleErrorModalClose,
         errorContent,
         errorContentHeading,
         filename,
-        handleFilenameChange,
         editorRef,
+        handleLoadModalOpen,
+        handleLoadModalClose,
+        check,
+        onClickSave,
+        editorCodeChange,
+        connectionButtonClick,
+        launchButtonClick,
+        resetSim,
+        start,
+        stop,
+        loadFileButton,
+        startSim,
+        scaleToFit,
+        handleCircuitChange,
+        getCircuitValue,
+        loadButtonClick,
+        teleOpButtonClick,
+        connectionUpdate,
+        changeGzWeb,
+        changeConsole,
+        handleInfoModalOpen,
+        handleInfoModalClose,
+        handleErrorModalOpen,
+        handleErrorModalClose,
+        onPageLoad,
+        onUnload,
+        handleFilenameChange,
+        keyHandleFrequency,
       }}
     >
       {children}
-    </ExerciseContext.Provider>
+    </FollowLineExerciseContext.Provider>
   );
 }
 
@@ -1031,4 +1026,4 @@ ExerciseProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export default ExerciseContext;
+export default FollowLineExerciseContext;

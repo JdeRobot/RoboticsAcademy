@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import PropTypes from "prop-types";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CustomAlert() {
-  const { alertState, alertContent } = React.useContext(ExerciseContext);
+function CustomAlert(props) {
+  const { alertState, alertContent } = React.useContext(props.context);
   const [snackbar, setSnackbar] = React.useState(false);
   React.useEffect(() => {
     setSnackbar(true);
@@ -76,5 +76,9 @@ function CustomAlert() {
     </div>
   );
 }
+
+CustomAlert.propTypes = {
+  context: PropTypes.any,
+};
 
 export default CustomAlert;

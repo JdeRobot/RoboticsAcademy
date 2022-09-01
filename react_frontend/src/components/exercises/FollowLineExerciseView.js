@@ -12,11 +12,13 @@ import ErrorModalView from "./ErrorModalView";
 import VisualizationComponents from "./VisualizationComponents";
 import FrequencyMenu from "./FrequencyMenu";
 import GuiCanvas from "./GuiCanvas";
+import PropTypes from "prop-types";
+import InfoModalView from "./InfoModalView";
 
-function FollowLineExerciseView() {
+function FollowLineExerciseView(props) {
   return (
     <Box id="exercise-view">
-      <ExerciseControl />
+      <ExerciseControl context={props.context} />
       <Box
         sx={{
           display: "flex",
@@ -33,15 +35,15 @@ function FollowLineExerciseView() {
           {" "}
           Start Coding !{" "}
         </Typography>
-        <AceEditorRobot />
+        <AceEditorRobot context={props.context} />
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>
-        <CircuitSelector />
+        <CircuitSelector context={props.context} />
         <VisualizationComponents>
-          <CanvasBirdEye />
+          <CanvasBirdEye context={props.context} />
           <GuiCanvas />
-          <FrequencyMenu />
+          <FrequencyMenu context={props.context} />
         </VisualizationComponents>
       </Box>
       {/*  </Box>*/}
@@ -67,15 +69,19 @@ function FollowLineExerciseView() {
             p: 2,
           }}
         >
-          <GazeboViewer />
-          <VncConsoleViewer />
+          <GazeboViewer context={props.context} />
+          <VncConsoleViewer context={props.context} />
         </Box>
       </Box>
-      <LoadModalView />
-      <CustomAlert />
-      <ErrorModalView />
+      <LoadModalView context={props.context} />
+      <CustomAlert context={props.context} />
+      <ErrorModalView context={props.context} />
+      <InfoModalView context={props.context} />
     </Box>
   );
 }
+FollowLineExerciseView.propTypes = {
+  context: PropTypes.any,
+};
 
 export default FollowLineExerciseView;
