@@ -1,19 +1,19 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
-import ExerciseControl from "./ExerciseControl";
-import AceEditorRobot from "./AceEditorRobot";
-import CircuitSelector from "./CircuitSelector";
-import CanvasBirdEye from "./CanvasBirdEye";
-import GazeboViewer from "./GazeboViewer";
-import VncConsoleViewer from "./VncConsoleViewer";
-import LoadModalView from "./LoadModalView";
-import CustomAlert from "./CustomAlert";
-import ErrorModalView from "./ErrorModalView";
-import VisualizationComponents from "./VisualizationComponents";
-import FrequencyMenu from "./FrequencyMenu";
-import GuiCanvas from "./GuiCanvas";
+import ExerciseControl from "../exercises/ExerciseControl";
+import AceEditorRobot from "../exercises/AceEditorRobot";
+import CircuitSelector from "../exercises/CircuitSelector";
+import CanvasBirdEye from "../exercises/CanvasBirdEye";
+import GazeboViewer from "../exercises/GazeboViewer";
+import VncConsoleViewer from "../exercises/VncConsoleViewer";
+import LoadModalView from "../exercises/LoadModalView";
+import CustomAlert from "../exercises/CustomAlert";
+import ErrorModalView from "../exercises/ErrorModalView";
+import VisualizationComponents from "../exercises/VisualizationComponents";
+import FrequencyMenu from "../exercises/FrequencyMenu";
+import GuiCanvas from "../exercises/GuiCanvas";
 import PropTypes from "prop-types";
-import InfoModalView from "./InfoModalView";
+import InfoModalView from "../exercises/InfoModalView";
 
 function FollowLineExerciseView(props) {
   return (
@@ -42,7 +42,7 @@ function FollowLineExerciseView(props) {
         <CircuitSelector context={props.context} />
         <VisualizationComponents>
           <CanvasBirdEye context={props.context} />
-          <GuiCanvas />
+          <GuiCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>
       </Box>

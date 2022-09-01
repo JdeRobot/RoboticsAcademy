@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 import { createContext, useState, useRef } from "react";
-import { saveCode, get_novnc_size_react } from "../helpers/utils";
-import { drawCircle } from "../helpers/birdEye.js";
+import { saveCode, get_novnc_size_react, decode_utf8 } from "../helpers/utils";
+import { configMap } from "../helpers/ObstacleAvoidance/map_view";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
-const FollowLineExerciseContext = createContext();
+const ObstacleAvoidanceExerciseContext = createContext();
 const websocket_address = "127.0.0.1";
 const address_code = "ws://" + websocket_address + ":1905";
 const address_gui = "ws://" + websocket_address + ":2303";
@@ -23,33 +23,25 @@ let simStop = false,
   swapping = false,
   gazeboOn = false,
   gazeboToggle = false,
-  teleOpMode = false;
-let animation_id,
-  image_data,
-  source,
-  shape,
-  lap_time,
-  pose,
-  content,
-  command_input;
+  is_local = false;
+let operation, data;
+let image_data, source, shape;
 let code = `from GUI import GUI
 from HAL import HAL
 # Enter sequential code!
 
 while True:
     # Enter iterative code!`;
-// Car variables
-let v = 0;
-let w = 0;
 
 function createData(key, value) {
   return { key, value };
 }
 
 export function ExerciseProvider({ children }) {
-  const exercise = "follow_line";
+  const exercise = "obstacle_avoidance";
   const editorRef = useRef();
   const imageRef = useRef();
+  const localMapRef = useRef();
   // connectionState - Connect, Connecting, Connected
   const [connectionState, setConnectionState] = useState("Connect");
   // launchState - Launch, Launching, Ready
@@ -58,7 +50,7 @@ export function ExerciseProvider({ children }) {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [openLoadModal, setOpenLoadModal] = useState(false);
-  const [filename, setFilename] = useState("follow-line");
+  const [filename, setFilename] = useState("obstacle-avoidance");
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -69,7 +61,6 @@ export function ExerciseProvider({ children }) {
   const [openGazebo, setOpenGazebo] = useState(false);
   const [openConsole, setOpenConsole] = useState(false);
   const [playState, setPlayState] = useState(true);
-  const [circuit, setCircuit] = useState("default");
   const [brainFreq, setBrainFreq] = useState(brainFreqAck);
   const [frequencyRows, setFrequencyRows] = useState([
     createData("Brain Frequency (Hz)", 0),
@@ -82,10 +73,6 @@ export function ExerciseProvider({ children }) {
     <Typography> No error detected </Typography>
   );
   const [guiFreq, setGuiFreq] = useState(guiFreqAck);
-  const [birdEyeClass, setBirdEyeClass] = React.useState("default");
-  const getCircuitValue = () => {
-    return circuit;
-  };
 
   const [editorCode, setEditorCode] = useState(`from GUI import GUI
 from HAL import HAL
@@ -94,7 +81,7 @@ from HAL import HAL
 while True:
     # Enter iterative code!`);
 
-  const startSim = (step) => {
+  function startSim(step) {
     var level = 0;
     let websockets_connected = false;
 
@@ -106,14 +93,13 @@ while True:
         { connection: "exercise", command: "launch_level", level: `${level}` },
         "*"
       );
-      var size = get_novnc_size_react();
+      const size = get_novnc_size_react();
       ws_manager.send(
         JSON.stringify({
           command: "open",
           exercise: exercise,
           width: size.width.toString(),
           height: size.height.toString(),
-          circuit: circuit,
         })
       );
       level++;
@@ -132,17 +118,15 @@ while True:
       setAlertContent("Start the Exercise");
     } else if (step === 2) {
       ws_manager.send(JSON.stringify({ command: "exit", exercise: "" }));
-      stopSimulation();
     }
 
-    ws_manager.onopen = function () {
+    ws_manager.onopen = function (event) {
       level++;
-
       connectionUpdate({ connection: "manager", command: "up" }, "*");
       connectionUpdate({ connection: "exercise", command: "available" }, "*");
     };
 
-    ws_manager.onclose = function () {
+    ws_manager.onclose = function (event) {
       connectionUpdate({ connection: "manager", command: "down" }, "*");
       if (!firstAttempt) {
         setAlertState({
@@ -153,19 +137,18 @@ while True:
           infoAlert: false,
         });
         setAlertContent("Connection lost, retrying connection...");
-        // alert("Connection lost, retrying connection...");
         startSim(step);
       } else {
         firstAttempt = false;
-        // setFirstAttempt(false);
       }
     };
 
-    ws_manager.onerror = function () {
+    ws_manager.onerror = function (event) {
       connectionUpdate({ connection: "manager", command: "down" }, "*");
     };
 
     ws_manager.onmessage = function (event) {
+      //console.log(event.data);
       if (event.data.level > level) {
         level = event.data.level;
         connectionUpdate(
@@ -180,7 +163,6 @@ while True:
       if (event.data.includes("Ping")) {
         if (!websockets_connected && event.data === "Ping3") {
           level = 4;
-
           connectionUpdate(
             {
               connection: "exercise",
@@ -199,15 +181,16 @@ while True:
           } else {
             ws_manager.send(JSON.stringify({ command: "stopgz" }));
           }
+
           gazeboToggle = false;
         } else if (simStop) {
           ws_manager.send(JSON.stringify({ command: "stop" }));
           simStop = false;
           running = false;
         } else if (simReset) {
-          ws_manager.send(JSON.stringify({ command: "reset" }));
+          if (is_local) ws_manager.send(JSON.stringify({ command: "reset" }));
+          else ws_manager.send(JSON.stringify({ command: "soft_reset" }));
           simReset = false;
-          // setSimReset(false);
         } else if (sendCode) {
           let python_code = editorRef.current.editor.getValue();
           python_code = "#code\n" + python_code;
@@ -215,13 +198,10 @@ while True:
             JSON.stringify({ command: "evaluate", code: python_code })
           );
           sendCode = false;
-          // setSendCode(false);
         } else if (simResume) {
           ws_manager.send(JSON.stringify({ command: "resume" }));
-          // setSimResume(false);
           simResume = false;
           running = true;
-          // setRunning(true);
         } else {
           setTimeout(function () {
             ws_manager.send(JSON.stringify({ command: "Pong" }));
@@ -242,40 +222,27 @@ while True:
         setTimeout(function () {
           ws_manager.send(JSON.stringify({ command: "Pong" }));
         }, 1000);
-      } else if (event.data.includes("reset")) {
-        // ResetEvaluator();
       } else if (event.data.includes("PingDone")) {
         enableSimControls();
         if (resetRequested === true) {
+          firstCodeSent = false;
+          enablePlayPause(false);
+          toggleSubmitButton(true);
           resetRequested = false;
         }
       } else if (event.data.includes("style")) {
         let error = event.data.substring(5, event.data.length);
         connectionUpdate(
-          { connection: "exercise", command: "style", text: error },
+          { connection: "exercise", command: "error", text: error },
           "*"
         );
       }
     };
-  };
-
-  function resetSimulation() {
-    simReset = true;
   }
-
-  function stopSimulation() {
-    simStop = true;
-  }
-
-  function resumeSimulation() {
-    simResume = true;
-  }
-
   function connectionUpdate(data) {
     if (data.connection === "manager") {
       if (data.command === "up") {
         setConnectionState("Connected");
-        // launchButton.prop("disabled", false);
       } else if (data.command === "down") {
         setConnectionState("Connect");
         if (websocket_code != null) websocket_code.close();
@@ -284,10 +251,9 @@ while True:
       }
     } else if (data.connection === "exercise") {
       if (data.command === "available") {
-        // Nothing !
+        //Nothing
       } else if (data.command === "up") {
         stop();
-        swapping = false;
         setLaunchState("Ready");
         togglePlayPause(false);
         let reset_button = document.getElementById("reset");
@@ -299,13 +265,9 @@ while True:
         load_button.style.opacity = "1.0";
         load_button.style.cursor = "default";
       } else if (data.command === "down") {
-        if (!swapping) {
-          setLaunchState("Launch");
-        }
-      } else if (data.command === "swap") {
-        setLaunchState("Launching");
+        setLaunchState("Launch");
       } else if (data.command === "launch_level") {
-        var level = data.level;
+        let level = data.level;
         setLaunchLevel(level);
         setLaunchState("Launching");
       } else if (data.command === "error") {
@@ -322,9 +284,24 @@ while True:
           setErrorContent(
             <Typography color={"success"}>Everything is correct !</Typography>
           );
-        //
       }
     }
+  }
+  function toggleGazebo() {
+    gazeboOn = !gazeboOn;
+
+    gazeboToggle = true;
+  }
+  function resetSimulation() {
+    simReset = true;
+  }
+
+  function stopSimulation() {
+    simStop = true;
+  }
+
+  function resumeSimulation() {
+    simResume = true;
   }
 
   function enablePlayPause(enable) {
@@ -435,13 +412,8 @@ while True:
     // Manager Websocket
     if (running === false) {
       resumeSimulation();
-      // resumeBrain();
-      //check(); // should be replaced by resumeBrain() when available
+      resumeBrain();
     }
-
-    // GUI Websocket
-    unpause_lap();
-
     // Toggle start/pause
     togglePlayPause(true);
   };
@@ -462,7 +434,6 @@ while True:
   const check = () => {
     editorChanged(false);
     toggleSubmitButton(false);
-    // setSendCode(true);
     sendCode = true;
   };
 
@@ -474,11 +445,8 @@ while True:
     // Manager Websocket
     if (running === true) {
       stopSimulation();
-      // stopBrain();
+      stopBrain();
     }
-
-    // GUI Websocket
-    pause_lap();
 
     // Toggle start/pause
     togglePlayPause(false);
@@ -487,65 +455,95 @@ while True:
   // Function to reset the simulation
   function resetSim() {
     resetRequested = true;
-    // setResetRequested(true);
     toggleResetButton(false);
+    toggleSubmitButton(false);
     enablePlayPause(false);
 
     // Manager Websocket
+    resetBrain();
     resetSimulation();
 
-    // GUI Websocket
-    reset_gui();
     running = false;
-    // setRunning(false);
   }
-  const loadButtonClick = () => {};
 
-  const teleOpButtonClick = () => {
-    if (!teleOpMode) {
-      if (!running) {
-        resetSimulation();
-        running = true;
-        // setRunning(true);
-      }
-      teleOpMode = true;
-      // setTeleopMode(true);
-      document.addEventListener("keydown", keyHandler, false);
-      document.addEventListener("keyup", keyHandler, false);
-      return;
-    }
-    teleOpMode = false;
-    // setTeleopMode(false);
-    submitCode();
-    document.removeEventListener("keydown", keyHandler, false);
-    document.removeEventListener("keyup", keyHandler, false);
+  const editorCodeChange = (e) => {
+    code = e;
+    setEditorCode(e);
   };
 
+  const onClickSave = () => {
+    saveCode(filename, code);
+  };
+
+  function scaleToFit(img, ctx, canvas) {
+    // get the scale
+    const scale = Math.min(
+      canvas.width / img.width,
+      canvas.height / img.height
+    );
+    // get the top left position of the image
+    const x = canvas.width / 2 - (img.width / 2) * scale;
+    const y = canvas.height / 2 - (img.height / 2) * scale;
+    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+  }
+
+  const connectionButtonClick = () => {
+    if (connectionState === "Connect") {
+      setConnectionState("Connecting");
+      startSim(0);
+    }
+  };
+
+  const launchButtonClick = () => {
+    if (connectionState === "Connected" && launchState === "Launch") {
+      setLaunchState("Launching");
+      startSim(1);
+    } else if (connectionState === "Connect") {
+      setAlertState({
+        ...alertState,
+        errorAlert: false,
+        successAlert: false,
+        warningAlert: true,
+        infoAlert: false,
+      });
+      setAlertContent(
+        `A connection with the manager must be established before launching an exercise`
+      );
+    }
+  };
   function declare_code(websocket_address) {
     websocket_code = new WebSocket(websocket_address);
 
-    websocket_code.onopen = function () {
-      connectionUpdate(
-        { connection: "exercise", command: "launch_level", level: "5" },
-        "*"
-      );
+    websocket_code.onopen = function (event) {
+      if (!resetRequested)
+        connectionUpdate(
+          { connection: "exercise", command: "launch_level", level: "5" },
+          "*"
+        );
       if (websocket_gui.readyState === 1) {
-        setAlertState({
-          ...alertState,
-          errorAlert: false,
-          successAlert: true,
-          warningAlert: false,
-          infoAlert: false,
-        });
-        setAlertContent(" Connection established! ");
-        // alert("[open] Connection established!");
-        connectionUpdate({ connection: "exercise", command: "up" }, "*");
+        if (!resetRequested) {
+          setAlertState({
+            ...alertState,
+            errorAlert: false,
+            successAlert: true,
+            warningAlert: false,
+            infoAlert: false,
+          });
+          setAlertContent(" Connection established! ");
+          connectionUpdate({ connection: "exercise", command: "up" }, "*");
+        }
       }
       websocket_code.send("#ping");
     };
     websocket_code.onclose = function (event) {
-      connectionUpdate({ connection: "exercise", command: "down" }, "*");
-      if (websocket_gui.readyState === 1) {
+      // Check for hard reset (reboot exercise.py)
+      if (resetRequested && ws_manager.readyState === 1) {
+        console.log("retrying...");
+        setTimeout(function () {
+          declare_code();
+        }, 500);
+      } else {
+        connectionUpdate({ connection: "exercise", command: "down" }, "*");
         if (event.wasClean) {
           setAlertState({
             ...alertState,
@@ -572,36 +570,31 @@ while True:
 
     websocket_code.onmessage = function (event) {
       const source_code = event.data;
-      let operation = source_code.substring(0, 5);
+      operation = source_code.substring(0, 5);
+
       if (operation === "#load") {
         code = source_code.substring(5);
         setEditorCode(source_code.substring(5));
       } else if (operation === "#freq") {
         let frequency_message = JSON.parse(source_code.substring(5));
-
         // Parse GUI and Brain frequencies
         const idealGuiFreqValue = frequency_message.gui;
         const idealBrainFreqValue = frequency_message.brain;
         // Parse real time factor
         const rtfValue = frequency_message.rtf;
-
+        // Send the acknowledgment message along with frequency
         setFrequencyRows([
           createData("Brain Frequency (Hz)", idealBrainFreqValue),
           createData("GUI Frequency (Hz)", idealGuiFreqValue),
           createData("Simulation Real time factor", rtfValue),
         ]);
 
-        // The acknowledgement messages invoke the python server to send further
-        // messages to this client (inside the server's handle function)
-        // Send the acknowledgment message along with frequency
         let code_frequency = brainFreqAck;
         let gui_frequency = guiFreqAck;
-        let real_time_factor = rtfValue;
 
         frequency_message = {
           brain: code_frequency,
           gui: gui_frequency,
-          rtf: real_time_factor,
         };
         websocket_code.send("#freq" + JSON.stringify(frequency_message));
       } else if (operation === "#ping") {
@@ -609,225 +602,127 @@ while True:
       } else if (operation === "#exec") {
         if (firstCodeSent === false) {
           firstCodeSent = true;
-          // setFirstCodeSent(true);
           enablePlayPause(true);
         }
         toggleSubmitButton(true);
-      } else if (operation === "#stpd") {
-        startNewCircuit(circuit);
-      }
-
-      // Send Teleop message if active
-      if (teleOpMode) {
-        let teleOpMessage = { v: v, w: w };
-        websocket_code.send("#tele" + JSON.stringify(teleOpMessage));
       }
     };
   }
 
-  // To decode the image string we will receive from server
-  function decode_utf8(s) {
-    return decodeURIComponent(escape(s));
-  }
   function declare_gui(websocket_address) {
     websocket_gui = new WebSocket(websocket_address);
 
     websocket_gui.onopen = function (event) {
+      //alert("[open] Connection established!");
       setLaunchLevel(launchLevel + 1);
-      connectionUpdate(
-        { connection: "exercise", command: "launch_level", level: "5" },
-        "*"
-      );
+      if (!resetRequested)
+        connectionUpdate(
+          { connection: "exercise", command: "launch_level", level: "6" },
+          "*"
+        );
       if (websocket_code.readyState === 1) {
-        setAlertState({
-          ...alertState,
-          errorAlert: false,
-          successAlert: true,
-          warningAlert: false,
-          infoAlert: false,
-        });
-        setAlertContent(" Connection established! ");
-        connectionUpdate({ connection: "exercise", command: "up" }, "*");
+        if (!resetRequested) {
+          setAlertState({
+            ...alertState,
+            errorAlert: false,
+            successAlert: true,
+            warningAlert: false,
+            infoAlert: false,
+          });
+          setAlertContent(" Connection established! ");
+          connectionUpdate({ connection: "exercise", command: "up" }, "*");
+        }
       }
     };
 
     websocket_gui.onclose = function (event) {
-      connectionUpdate({ connection: "exercise", command: "down" }, "*");
-      if (event.wasClean) {
-        setAlertState({
-          ...alertState,
-          errorAlert: false,
-          successAlert: false,
-          warningAlert: true,
-          infoAlert: false,
-        });
-        setAlertContent(
-          `Connection closed cleanly, code=${event.code} reason=${event.reason}`
-        );
+      // Check for hard reset (reboot exercise.py)
+      if (resetRequested && ws_manager.readyState == 1) {
+        setTimeout(function () {
+          declare_gui(websocket_address);
+        }, 500);
       } else {
-        setAlertState({
-          ...alertState,
-          errorAlert: false,
-          successAlert: false,
-          warningAlert: true,
-          infoAlert: false,
-        });
-        setAlertContent(`Connection closed!`);
+        connectionUpdate({ connection: "exercise", command: "down" }, "*");
+        if (event.wasClean) {
+          setAlertState({
+            ...alertState,
+            errorAlert: false,
+            successAlert: false,
+            warningAlert: true,
+            infoAlert: false,
+          });
+          setAlertContent(
+            `Connection closed cleanly, code=${event.code} reason=${event.reason}`
+          );
+          //alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        } else {
+          setAlertState({
+            ...alertState,
+            errorAlert: false,
+            successAlert: false,
+            warningAlert: true,
+            infoAlert: false,
+          });
+          setAlertContent(`Connection closed!`);
+          //alert("[close] Connection closed!");
+        }
       }
     };
 
     // What to do when a message from server is received
     websocket_gui.onmessage = function (event) {
-      let operation = event.data.substring(0, 4);
-      let mapCanvas = document.getElementById("birds-eye");
+      operation = event.data.substring(0, 4);
+
       if (operation === "#gui") {
         // Parse the entire Object
-        let data = JSON.parse(event.data.substring(4));
+        data = JSON.parse(event.data.substring(4));
 
-        // Parse the Image Data
-        (image_data = JSON.parse(data.image)),
-          (source = decode_utf8(image_data.image)),
-          (shape = image_data.shape);
+        // Parse the image data
+        image_data = JSON.parse(data.image);
+        source = decode_utf8(image_data.image);
+        shape = image_data.shape;
 
-        if (source !== "" && running === true) {
+        if (source !== "") {
           imageRef.current.src = "data:image/jpeg;base64," + source;
+          imageRef.current.width = shape[1];
+          imageRef.current.height = shape[0];
         }
-        // Parse the Map data
-        // Slice off ( and )
-        pose = data.map.substring(1, data.map.length - 1);
-        content = pose.split(",").map(function (item) {
-          return parseFloat(item);
-        });
-        drawCircle(content[0], content[1], content, mapCanvas);
 
-        // Send the Acknowledgment Message
+        // Parse the Map data
+        var map_data = JSON.parse(data.map);
+        configMap(
+          localMapRef.current,
+          map_data.target,
+          map_data.car,
+          map_data.obstacle,
+          map_data.average,
+          map_data.laser,
+          map_data.max_range
+        );
+
+        // Send the Acknowledgement Message
         websocket_gui.send("#ack");
       }
-      // else if (operation === "#cor") {
-      // 	// Set the value of command
-      // 	command_input = event.data.substring(4,);
-      // 	command.value = command_input;
-      // 	// Go to next command line
-      // 	next_command();
-      // 	// Focus on the next line
-      // 	command.focus();
-      // }
     };
   }
 
-  function pauseLap() {
-    websocket_gui.send("#paus");
-  }
-
-  function unPauseLap() {
-    websocket_gui.send("#resu");
-  }
-
-  function resetGui() {
-    websocket_gui.send("#rest");
-  }
-  const editorCodeChange = (e) => {
-    code = e;
-    setEditorCode(e);
-  };
-
-  const onClickSave = () => {
-    saveCode(filename, code);
-  };
-
-  function startNewCircuit(circuit) {
-    // Kill actual sim
-    startSim(2);
-    // StartSim
-    swapping = true;
-    startSim(1, circuit);
-    connectionUpdate({ connection: "exercise", command: "swap" }, "*");
-    // toggleSubmitButton(false);
-    firstCodeSent = false;
-  }
-
-  function handleCircuitChange(e, circuitSelector) {
-    let circuit_ = e.target.value;
-    circuitSelector.current.value = circuit_;
-    setCircuit(circuit_);
-    setBirdEyeClass(circuit_);
-    gazeboToggle = true;
-    // Stop the simulation
-    stop();
-    // Kill actual sim
-    stopBrain();
-
-    setAlertState({
-      ...alertState,
-      errorAlert: false,
-      successAlert: false,
-      warningAlert: false,
-      infoAlert: true,
-    });
-    setAlertContent(
-      `Loading circuit. Please wait until the connection is restored.`
-    );
-    connectionUpdate({ connection: "exercise", command: "down" }, "*");
-  }
-
-  function scaleToFit(img, ctx, canvas) {
-    // get the scale
-    const scale = Math.min(
-      canvas.width / img.width,
-      canvas.height / img.height
-    );
-    // get the top left position of the image
-    const x = canvas.width / 2 - (img.width / 2) * scale;
-    const y = canvas.height / 2 - (img.height / 2) * scale;
-    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-  }
-
-  const connectionButtonClick = () => {
-    if (connectionState === "Connect") {
-      setConnectionState("Connecting");
-      startSim(0, "default");
-    }
-  };
-
-  const launchButtonClick = () => {
-    if (connectionState === "Connected" && launchState === "Launch") {
-      setLaunchState("Launching");
-      startSim(1, circuit);
-    } else if (connectionState === "Connect") {
-      setAlertState({
-        ...alertState,
-        errorAlert: false,
-        successAlert: false,
-        warningAlert: true,
-        infoAlert: false,
-      });
-      setAlertContent(
-        `A connection with the manager must be established before launching an exercise`
-      );
-    }
-  };
-
-  function deactivateTeleopButton() {
-    // setTeleopMode(false);
-    teleOpMode = true;
-    document.removeEventListener("keydown", keyHandler, false);
-    document.removeEventListener("keyup", keyHandler, false);
-  }
-
-  const resumeBrain = () => {
+  function resumeBrain() {
     let message = "#play\n";
+    console.log("Message sent!");
     websocket_code.send(message);
-  };
+  }
 
-  const stopBrain = () => {
+  function stopBrain() {
     let message = "#stop\n";
+    console.log("Message sent!");
     websocket_code.send(message);
-  };
+  }
 
-  const resetBrain = () => {
+  function resetBrain() {
     let message = "#rest\n";
+    console.log("Message sent!");
     websocket_code.send(message);
-  };
+  }
 
   // Function that sends/submits the code!
   const submitCode = () => {
@@ -866,13 +761,13 @@ while True:
 
   const keyHandleFrequency = (e) => {
     if (e.key === "ArrowUp") {
-      if (e.target.id == "gui_freq") {
+      if (e.target.id === "gui_freq") {
         if (guiFreqAck < 30) {
           guiFreqAck = guiFreqAck + 1;
           setGuiFreq(guiFreqAck);
         }
       }
-      if (e.target.id == "code_freq") {
+      if (e.target.id === "code_freq") {
         if (brainFreqAck < 30) {
           brainFreqAck = brainFreqAck + 1;
           setBrainFreq(brainFreqAck);
@@ -880,13 +775,13 @@ while True:
       }
     }
     if (e.key === "ArrowDown") {
-      if (e.target.id == "gui_freq") {
+      if (e.target.id === "gui_freq") {
         if (guiFreqAck > 1) {
           guiFreqAck = guiFreqAck - 1;
           setGuiFreq(guiFreqAck);
         }
       }
-      if (e.target.id == "code_freq") {
+      if (e.target.id === "code_freq") {
         if (brainFreqAck > 1) {
           brainFreqAck = brainFreqAck - 1;
           setBrainFreq(brainFreqAck);
@@ -895,49 +790,6 @@ while True:
     }
   };
 
-  function keyHandler(event) {
-    // Right (39), Left (37), Down (40), Up (38)
-
-    // First check if websocket_gui_guest and websocket_code_guest are defined
-    if (
-      typeof websocket_gui !== "undefined" &&
-      typeof websocket_code !== "undefined"
-    ) {
-      let cmd = "#tele";
-
-      // Prevent using arrow keys to scroll page
-      if ([32, 37, 38, 39, 40].indexOf(event.keyCode) > -1) {
-        event.preventDefault();
-      }
-
-      if (event.keyCode === 39) {
-        //console.log('Right');
-        w = event.type === "keydown" ? -1 : 0;
-      } else if (event.keyCode === 37) {
-        //console.log('Left');
-        w = event.type === "keydown" ? 1 : 0;
-      } else if (event.keyCode === 40) {
-        //console.log('Down');
-        v = event.type === "keydown" ? -2 : 0;
-      } else if (event.keyCode === 38) {
-        //console.log('Up');
-        v = event.type === "keydown" ? 2 : 0;
-      }
-      console.log("v: ", v, "w: ", w);
-    }
-  }
-
-  function pause_lap() {
-    websocket_gui.send("#paus");
-  }
-
-  function unpause_lap() {
-    websocket_gui.send("#resu");
-  }
-
-  function reset_gui() {
-    websocket_gui.send("#rest");
-  }
   const loadFileButton = (event) => {
     event.preventDefault();
     var fr = new FileReader();
@@ -964,17 +816,15 @@ while True:
     return true;
   };
   return (
-    <FollowLineExerciseContext.Provider
+    <ObstacleAvoidanceExerciseContext.Provider
       value={{
         editorCode,
         openLoadModal,
         connectionState,
         launchState,
-        circuit,
         launchLevel,
         openGazebo,
         playState,
-        birdEyeClass,
         openConsole,
         alertState,
         alertContent,
@@ -987,6 +837,8 @@ while True:
         errorContentHeading,
         filename,
         editorRef,
+        imageRef,
+        localMapRef,
         handleLoadModalOpen,
         handleLoadModalClose,
         check,
@@ -1000,10 +852,6 @@ while True:
         loadFileButton,
         startSim,
         scaleToFit,
-        handleCircuitChange,
-        getCircuitValue,
-        loadButtonClick,
-        teleOpButtonClick,
         connectionUpdate,
         changeGzWeb,
         changeConsole,
@@ -1018,7 +866,7 @@ while True:
       }}
     >
       {children}
-    </FollowLineExerciseContext.Provider>
+    </ObstacleAvoidanceExerciseContext.Provider>
   );
 }
 
@@ -1026,4 +874,4 @@ ExerciseProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export default FollowLineExerciseContext;
+export default ObstacleAvoidanceExerciseContext;

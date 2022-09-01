@@ -1,5 +1,3 @@
-import { yaml } from "js-yaml";
-import { fs } from "fs";
 let config = {};
 let lineInterval, pointInterval, posInterval, objInterval;
 let cont = 1;
@@ -16,6 +14,8 @@ let cont = 1;
 // }
 
 try {
+  const yaml = require("js-yaml");
+  const fs = require("fs");
   config = yaml.safeLoad(fs.readFileSync("public/config.yml", "utf8"));
 } catch (e) {
   config.Server = "localhost";

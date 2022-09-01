@@ -1,7 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import * as React from "react";
+import PropTypes from "prop-types";
 
-export default function GuiCanvas() {
+export default function GuiCanvas(props) {
+  const { imageRef } = React.useContext(props.context);
   return (
     <Box
       sx={{
@@ -23,8 +25,13 @@ export default function GuiCanvas() {
           border: "2px solid #d3d3d3",
           backgroundRepeat: "no-repeat",
         }}
+        ref={imageRef}
         id="gui_canvas"
       />
     </Box>
   );
 }
+
+GuiCanvas.propTypes = {
+  context: PropTypes.any,
+};

@@ -1,17 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import * as React from "react";
-import ExerciseControl from "./ExerciseControl";
-import AceEditorRobot from "./AceEditorRobot";
-import VisualizationComponents from "./VisualizationComponents";
-import GuiCanvasThree from "./GuiCanvasThree";
-import FrequencyMenu from "./FrequencyMenu";
-import GazeboViewer from "./GazeboViewer";
-import VncConsoleViewer from "./VncConsoleViewer";
-import LoadModalView from "./LoadModalView";
-import CustomAlert from "./CustomAlert";
-import ErrorModalView from "./ErrorModalView";
+import ExerciseControl from "../exercises/ExerciseControl";
+import AceEditorRobot from "../exercises/AceEditorRobot";
+import VisualizationComponents from "../exercises/VisualizationComponents";
+import GuiCanvasThree from "../exercises/GuiCanvasThree";
+import FrequencyMenu from "../exercises/FrequencyMenu";
+import GazeboViewer from "../exercises/GazeboViewer";
+import VncConsoleViewer from "../exercises/VncConsoleViewer";
+import LoadModalView from "../exercises/LoadModalView";
+import CustomAlert from "../exercises/CustomAlert";
+import ErrorModalView from "../exercises/ErrorModalView";
 import PropTypes from "prop-types";
-import CanvasThree from "./CanvasThree";
+import CanvasThree from "../exercises/CanvasThree";
 
 export default function _3DReconstructionExerciseView(props) {
   return (

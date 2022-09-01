@@ -44,3 +44,7 @@ export const saveCode = (fileName, python_code) => {
     window.URL.revokeObjectURL(url);
   }, 0);
 };
+
+export const decode_utf8 = (s) => {
+  return decodeURIComponent(escape(s));
+};
