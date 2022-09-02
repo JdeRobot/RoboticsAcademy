@@ -24,6 +24,7 @@ from hal import HAL
 from brain import BrainProcess
 import queue
 
+
 from hal import HAL
 from shared.turtlebot import Turtlebot
 from console import start_console, close_console
@@ -52,10 +53,13 @@ class Template:
         self.server = None
         self.client = None
         self.host = sys.argv[1]
-
+        print("before hal")
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
+        print("after hal")
         self.turtlebot = Turtlebot()
+        print("After tbbbbbbbbbbbbb")
+       # self.gui = GUI(self.host, self.turtlebot)
         self.paused = False
 
 
@@ -227,12 +231,7 @@ class Template:
         elif (message[:5] == "#stop"):
             try:
                 self.reload.set()
-                self.execute_thread("""from GUI import GUI
-from HAL import HAL
-# Enter sequential code!
-
-while True:
-    # Enter iterative code!""")
+                self.execute_thread(code)
             except:
                 pass
             self.server.send_message(self.client, "#stpd")
@@ -240,15 +239,19 @@ while True:
     # Function that gets called when the server is connected
     def connected(self, client, server):
         self.client = client
+        print("before hal threaddddddddd")
         # Start the HAL update thread
         self.hal.start_thread()
+        print("after hal threadDDDDDDDD")
 
         # Start real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
         self.stats_thread.start()
+        print("after stats thereadddddddd")
 
         # Initialize the ping message
         self.send_frequency_message()
+        print("After sneding freweq msg")
 
         print(client, 'connected')
 
@@ -257,6 +260,7 @@ while True:
         print(client, 'closed')
 
     def run_server(self):
+        print("cycleeeeeeee", self.brain_ideal_cycle.get())
         self.server = WebsocketServer(port=1905, host=self.host)
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
@@ -277,5 +281,7 @@ while True:
 
 # Execute!
 if __name__ == "__main__":
+    print("in aminnnnnnnnnnnnnnnn")
     server = Template()
+    print("afrer remp")
     server.run_server()

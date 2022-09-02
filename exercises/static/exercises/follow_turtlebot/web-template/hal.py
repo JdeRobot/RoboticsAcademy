@@ -70,7 +70,7 @@ class HAL:
 
     def get_velocity(self):
         vel = self.drone.get_velocity()
-        self.shared_velocity.add(vel,type_name="list")
+        self.shared_velocity.add(vel ,type_name="list")
 
     def get_yaw_rate(self):
         yaw_rate = self.drone.get_yaw_rate()
@@ -78,7 +78,7 @@ class HAL:
 
     def get_orientation(self):
         orientation = self.drone.get_orientation()
-        self.shared_orientation.add(orientation,type_name="list")
+        self.shared_orientation.add(orientation ,type_name="list")
 
     def get_roll(self):
         roll = self.drone.get_roll()

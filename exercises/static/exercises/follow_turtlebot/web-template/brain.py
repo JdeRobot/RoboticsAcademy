@@ -52,7 +52,6 @@ class BrainProcess(multiprocessing.Process):
 
         self.exit_signal.wait()
 
-
     # The process function
     def process_code(self):
         # Redirect information to console
@@ -100,7 +99,6 @@ class BrainProcess(multiprocessing.Process):
         print("Current Thread Joined!")
 
 
-
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
@@ -124,8 +122,8 @@ class BrainProcess(multiprocessing.Process):
         hal_module.HAL.get_yaw = self.hal.get_yaw
         hal_module.HAL.get_landed_state = self.hal.get_landed_state
         hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
-
-
+        
+        
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
@@ -142,7 +140,6 @@ class BrainProcess(multiprocessing.Process):
         sys.modules["GUI"] = gui_module
 
         return gui_module, hal_module
-
 
     # Function to measure the frequency of iterations
     def measure_frequency(self):
