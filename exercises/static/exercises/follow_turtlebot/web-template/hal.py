@@ -1,3 +1,5 @@
+
+
 import rospy
 import cv2
 import threading
@@ -181,3 +183,4 @@ class ThreadHAL(threading.Thread):
 
             if(ms < self.time_cycle):
                 time.sleep((self.time_cycle - ms) / 1000.0)
+

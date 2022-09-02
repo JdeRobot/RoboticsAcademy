@@ -251,7 +251,6 @@ class ProcessGUI(multiprocessing.Process):
             
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            
             time_cycle = self.time_cycle.get()
 
             if(ms < time_cycle):
@@ -266,3 +265,4 @@ class ProcessGUI(multiprocessing.Process):
 if __name__ == "__main__":
     gui = ProcessGUI()
     gui.start()
+
