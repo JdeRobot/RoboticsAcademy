@@ -40,6 +40,17 @@ class GUI:
         self.ack_event = multiprocessing.Event()
         self.cli_event = multiprocessing.Event()
 
+        # Image variables
+        # self.image_to_be_shown = None
+        # self.image_to_be_shown_updated = False
+        # self.image_show_lock = threading.Lock()
+
+        # self.left_image_to_be_shown = None
+        # self.left_image_to_be_shown_updated = False
+        # self.left_image_show_lock = threading.Lock()
+        
+        # self.acknowledge = False
+        # self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
         self.turtlebot = turtlebot
@@ -49,7 +60,14 @@ class GUI:
         t.start()
 
     
-    
+    # Explicit initialization function
+    # Class method, so user can call it without instantiation
+    # @classmethod
+    # def initGUI(cls, host):
+    #     # self.payload = {'image': '', 'shape': []}
+    #     new_instance = cls(host)
+    #     return new_instance
+
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
@@ -104,7 +122,20 @@ class GUI:
 
         print(client, 'connected')
         
-    
+    # # Function to get value of Acknowledge
+    # def get_acknowledge(self):
+    #     self.acknowledge_lock.acquire()
+    #     acknowledge = self.acknowledge
+    #     self.acknowledge_lock.release()
+        
+    #     return acknowledge
+        
+    # # Function to get value of Acknowledge
+    # def set_acknowledge(self, value):
+    #     self.acknowledge_lock.acquire()
+    #     self.acknowledge = value
+    #     self.acknowledge_lock.release()
+        
     # Update the gui
     def update_gui(self):
         # Payload Image Message
@@ -156,6 +187,7 @@ class GUI:
 
         logged = False
         while not logged:
+            print("IN WHILEEEEEEEEEEEEEEEEEEEEEEE")
             try:
                 f = open("/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
@@ -210,6 +242,15 @@ class ProcessGUI(multiprocessing.Process):
 
         self.exit_signal.wait()
 
+    # Function to start the execution of threads
+    # def start(self):
+    #     self.measure_thread = threading.Thread(target=self.measure_thread)
+    #     self.thread = threading.Thread(target=self.run)
+
+    #     self.measure_thread.start()
+    #     self.thread.start()
+
+    #     print("GUI Thread Started!")
 
     # The measuring thread to measure frequency
     def measure_thread(self):
