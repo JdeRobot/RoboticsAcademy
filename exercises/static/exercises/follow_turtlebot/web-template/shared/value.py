@@ -12,16 +12,6 @@ class SharedValue:
 
         self.shm_name = name; self.value_lock_name = name
 
-        # Initialize shared memory buffer
-        try:
-            self.shm_region = SharedMemory(self.shm_name)
-            self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
-            self.shm_region.close_fd()
-        except ExistentialError:
-            self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=sizeof(c_float))
-            self.shm_buf = mmap.mmap(self.shm_region.fd, self.shm_region.size)
-            self.shm_region.close_fd()
-
         # Initialize or retreive Semaphore
         try:
             self.value_lock = Semaphore(self.value_lock_name, O_CREX)
@@ -36,12 +26,25 @@ class SharedValue:
     def get(self, type_name):
         # Retreive the data from buffer
         if type_name=="value":
+            # Initialize shared memory buffer
+            try:
+                self.shm_region = SharedMemory(self.shm_name)
+                self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
+                self.shm_region.close_fd()
+            except ExistentialError:
+                self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=sizeof(c_float))
+                self.shm_buf = mmap.mmap(self.shm_region.fd, self.shm_region.size)
+                self.shm_region.close_fd()
             self.value_lock.acquire()
             value = struct.unpack('f', self.shm_buf)[0]
             self.value_lock.release()
 
             return value
         elif  type_name=="list":
+            self.shm_region = SharedMemory(self.shm_name)
+            self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
+            self.shm_region.close_fd()
+
             self.value_lock.acquire()
             array_val = np.ndarray(shape=(3,),
                                 dtype='float32', buffer=self.shm_buf)
@@ -54,11 +57,29 @@ class SharedValue:
      
 
     # Add the shared value
-    def add(self, value):
+    def add(self, value, type_name):
         # Send the data to shared regions
-        self.value_lock.acquire()
-        self.shm_buf[:] = struct.pack('f', value)
-        self.value_lock.release()
+        if type_name=="value":
+            try:
+                self.shm_region = SharedMemory(self.shm_name)
+                self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
+                self.shm_region.close_fd()
+            except ExistentialError:
+                self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=sizeof(c_float))
+                self.shm_buf = mmap.mmap(self.shm_region.fd, self.shm_region.size)
+                self.shm_region.close_fd()
+            
+            self.value_lock.acquire()
+            self.shm_buf[:] = struct.pack('f', value)
+            self.value_lock.release()
+        elif  type_name=="list":
+            byte_size = value.nbytes
+            self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=byte_size)
+            self.shm_buf = mmap.mmap(self.shm_region.fd, byte_size)
+            self.shm_region.close_fd()
+            self.value_lock.acquire()
+            self.shm_buf[:] = value.tobytes()
+            self.value_lock.release()
 
     # Destructor function to unlink and disconnect
     def close(self):
