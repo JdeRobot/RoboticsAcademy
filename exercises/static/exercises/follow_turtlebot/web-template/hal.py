@@ -37,7 +37,7 @@ class HAL:
         self.shared_yaw_rate = SharedValue("yawrate")
 
         self.image = None
-        self.drone = DroneWrapper(name="rqt")
+        self.drone = DroneWrapper(name="rqt",ns="/firefly/")
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
@@ -66,11 +66,11 @@ class HAL:
 
     def get_position(self):
         pos = self.drone.get_position()
-        self.shared_position.add(pos)
+        self.shared_position.add(pos,type_name="list")
 
     def get_velocity(self):
         vel = self.drone.get_velocity()
-        self.shared_velocity.add(vel)
+        self.shared_velocity.add(vel,type_name="list")
 
     def get_yaw_rate(self):
         yaw_rate = self.drone.get_yaw_rate()
@@ -78,7 +78,7 @@ class HAL:
 
     def get_orientation(self):
         orientation = self.drone.get_orientation()
-        self.shared_orientation.add(orientation)
+        self.shared_orientation.add(orientation,type_name="list")
 
     def get_roll(self):
         roll = self.drone.get_roll()
@@ -126,15 +126,41 @@ class HAL:
         self.drone.land()
 
     def update_hal(self):
-        self.getImage()
-        self.setV()
-        self.setW()
+        self.get_frontal_image()
+        self.get_ventral_image()
+        self.get_position()
+        self.get_velocity()
+        self.get_yaw_rate()
+        self.get_orientation()
+        self.get_pitch()
+        self.get_roll()
+        self.get_yaw()
+        self.get_landed_state()
+        self.set_cmd_pos()
+        self.set_cmd_vel()
+        self.set_cmd_mix()
 
     # Destructor function to close all fds
     def __del__(self):
-        self.shared_image.close()
-        self.shared_v.close()
-        self.shared_w.close()
+        self.shared_frontal_image.close()
+        self.shared_ventral_image.close()
+        self.shared_x.close()
+        self.shared_y.close()
+        self.shared_z.close()
+        self.shared_takeoff_z.close()
+        self.shared_az.close()
+        self.shared_azt.close()
+        self.shared_vx.close()
+        self.shared_vy.close()
+        self.shared_vz.close()
+        self.shared_landed_state.close()
+        self.shared_position.close()
+        self.shared_velocity.close()
+        self.shared_orientation.close()
+        self.shared_roll.close()
+        self.shared_pitch.close()
+        self.shared_yaw.close()
+        self.shared_yaw_rate.close()
 
 class ThreadHAL(threading.Thread):
     def __init__(self, update_function):

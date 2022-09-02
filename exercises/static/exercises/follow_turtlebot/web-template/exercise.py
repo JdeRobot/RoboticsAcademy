@@ -24,9 +24,8 @@ from hal import HAL
 from brain import BrainProcess
 import queue
 
-from gui import GUI, ThreadGUI
 from hal import HAL
-from turtlebot import Turtlebot
+from shared.turtlebot import Turtlebot
 from console import start_console, close_console
 
 
@@ -57,7 +56,6 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.turtlebot = Turtlebot()
-        self.gui = GUI(self.host, self.turtlebot)
         self.paused = False
 
 
