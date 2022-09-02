@@ -23,10 +23,9 @@ class SharedValue:
         self.value_lock.release()
 
     # Get the shared value
-    def get(self, type_name):
+    def get(self, type_name= "value"):
         # Retreive the data from buffer
         if type_name=="value":
-            # Initialize shared memory buffer
             try:
                 self.shm_region = SharedMemory(self.shm_name)
                 self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
@@ -44,20 +43,20 @@ class SharedValue:
             self.shm_region = SharedMemory(self.shm_name)
             self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
             self.shm_region.close_fd()
-
             self.value_lock.acquire()
             array_val = np.ndarray(shape=(3,),
                                 dtype='float32', buffer=self.shm_buf)
             self.value_lock.release()
 
             return array_val
-        
+
         else:
             print("missing argument for return type")
+
      
 
     # Add the shared value
-    def add(self, value, type_name):
+    def add(self, value, type_name= "value"):
         # Send the data to shared regions
         if type_name=="value":
             try:
@@ -68,7 +67,7 @@ class SharedValue:
                 self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=sizeof(c_float))
                 self.shm_buf = mmap.mmap(self.shm_region.fd, self.shm_region.size)
                 self.shm_region.close_fd()
-            
+
             self.value_lock.acquire()
             self.shm_buf[:] = struct.pack('f', value)
             self.value_lock.release()
