@@ -39,7 +39,7 @@ class HAL:
         self.shared_yaw_rate = SharedValue("yawrate")
 
         self.image = None
-        self.drone = DroneWrapper(name="rqt",ns="/firefly/")
+        self.drone = DroneWrapper(name="rqt",ns="/iris/")
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
