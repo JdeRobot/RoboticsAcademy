@@ -106,7 +106,7 @@ while True:
         { connection: "exercise", command: "launch_level", level: `${level}` },
         "*"
       );
-      var size = get_novnc_size_react();
+      const size = get_novnc_size_react();
       ws_manager.send(
         JSON.stringify({
           command: "open",
@@ -153,11 +153,9 @@ while True:
           infoAlert: false,
         });
         setAlertContent("Connection lost, retrying connection...");
-        // alert("Connection lost, retrying connection...");
         startSim(step);
       } else {
         firstAttempt = false;
-        // setFirstAttempt(false);
       }
     };
 
@@ -215,13 +213,10 @@ while True:
             JSON.stringify({ command: "evaluate", code: python_code })
           );
           sendCode = false;
-          // setSendCode(false);
         } else if (simResume) {
           ws_manager.send(JSON.stringify({ command: "resume" }));
-          // setSimResume(false);
           simResume = false;
           running = true;
-          // setRunning(true);
         } else {
           setTimeout(function () {
             ws_manager.send(JSON.stringify({ command: "Pong" }));
@@ -499,7 +494,6 @@ while True:
     running = false;
     // setRunning(false);
   }
-  const loadButtonClick = () => {};
 
   const teleOpButtonClick = () => {
     if (!teleOpMode) {
@@ -538,7 +532,6 @@ while True:
           infoAlert: false,
         });
         setAlertContent(" Connection established! ");
-        // alert("[open] Connection established!");
         connectionUpdate({ connection: "exercise", command: "up" }, "*");
       }
       websocket_code.send("#ping");
@@ -833,7 +826,7 @@ while True:
   const submitCode = () => {
     try {
       // Get the code from editor and add headers
-      var python_code = "#code\n" + editorRef.current.editor.getValue();
+      const python_code = "#code\n" + editorRef.current.editor.getValue();
       websocket_code.send(python_code);
       setAlertState({
         ...alertState,
@@ -1002,7 +995,6 @@ while True:
         scaleToFit,
         handleCircuitChange,
         getCircuitValue,
-        loadButtonClick,
         teleOpButtonClick,
         connectionUpdate,
         changeGzWeb,

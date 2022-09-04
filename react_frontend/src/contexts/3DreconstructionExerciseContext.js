@@ -76,6 +76,7 @@ export function ExerciseProvider({ children }) {
     createData("GUI Frequency (Hz)", 0),
     createData("Simulation Real time factor", 0),
   ]);
+  const ExerciseSpecificCSS = "canvas_three";
   let [errorContentHeading, setErrorContentHeading] =
     useState("Errors detected !");
   let [errorContent, setErrorContent] = useState(
@@ -916,6 +917,7 @@ while True:
         errorContent,
         errorContentHeading,
         filename,
+        ExerciseSpecificCSS,
         editorRef,
         guiCanvasRef,
         canvasRef,

@@ -9,7 +9,7 @@ import CustomAlert from "../exercises/CustomAlert";
 import ErrorModalView from "../exercises/ErrorModalView";
 import VisualizationComponents from "../exercises/VisualizationComponents";
 import FrequencyMenu from "../exercises/FrequencyMenu";
-import GuiCanvas from "../exercises/GuiCanvas";
+import ImgCanvas from "../exercises/ImgCanvas";
 import PropTypes from "prop-types";
 import InfoModalView from "../exercises/InfoModalView";
 import LocalMap from "../exercises/LocalMap";
@@ -40,7 +40,7 @@ function ObstacleAvoidanceExerciseView(props) {
         </Typography>
         <VisualizationComponents>
           <LocalMap context={props.context} />
-          <GuiCanvas context={props.context} />
+          <ImgCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>
       </Box>

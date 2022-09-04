@@ -3,7 +3,7 @@ import * as React from "react";
 import ExerciseControl from "../exercises/ExerciseControl";
 import AceEditorRobot from "../exercises/AceEditorRobot";
 import VisualizationComponents from "../exercises/VisualizationComponents";
-import GuiCanvasThree from "../exercises/GuiCanvasThree";
+import GuiCanvas from "../exercises/GuiCanvas";
 import FrequencyMenu from "../exercises/FrequencyMenu";
 import GazeboViewer from "../exercises/GazeboViewer";
 import VncConsoleViewer from "../exercises/VncConsoleViewer";
@@ -39,7 +39,7 @@ export default function _3DReconstructionExerciseView(props) {
         </Typography>
         <CanvasThree context={props.context} />
         <VisualizationComponents>
-          <GuiCanvasThree context={props.context} />
+          <GuiCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>
       </Box>

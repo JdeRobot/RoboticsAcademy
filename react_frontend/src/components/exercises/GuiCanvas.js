@@ -1,9 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import * as React from "react";
 import PropTypes from "prop-types";
+import "../../styles/GuiCanvas.css";
 
 export default function GuiCanvas(props) {
-  const { imageRef } = React.useContext(props.context);
+  const { guiCanvasRef, exerciseSpecificCSS } = React.useContext(props.context);
+
   return (
     <Box
       sx={{
@@ -15,23 +17,17 @@ export default function GuiCanvas(props) {
         alignItems: "center",
       }}
     >
-      <Typography>Point of View</Typography>
-      <img
-        height={250}
-        width={500}
-        sx={{
-          // marginX: 15,
-          // marginY: 5,
-          border: "2px solid #d3d3d3",
-          backgroundRepeat: "no-repeat",
-        }}
-        ref={imageRef}
+      <Typography> View </Typography>
+      <canvas
+        height={240}
+        width={650}
+        ref={guiCanvasRef}
+        className={exerciseSpecificCSS}
         id="gui_canvas"
       />
     </Box>
   );
 }
-
 GuiCanvas.propTypes = {
   context: PropTypes.any,
 };
