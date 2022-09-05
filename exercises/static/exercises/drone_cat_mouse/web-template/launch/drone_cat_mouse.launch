@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-  <arg name="mav_name" default="firefly"/>
+  <arg name="mav_name" default="iris"/>
   <arg name="enable_logging" default="false" />
   <arg name="enable_ground_truth" default="true" />
   <!-- <arg name="enable_state_estimator" default="false" /> -->  <!-- as a comment for future possible use of state estimator -->
