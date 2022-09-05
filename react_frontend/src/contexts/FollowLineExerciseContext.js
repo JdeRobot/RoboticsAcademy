@@ -41,10 +41,11 @@ while True:
 // Car variables
 let v = 0;
 let w = 0;
-
-function createData(key, value) {
+let openGazeboSnackbar = true;
+let openConsoleSnackbar = true;
+const createData = (key, value) => {
   return { key, value };
-}
+};
 
 export function ExerciseProvider({ children }) {
   const exercise = "follow_line";
@@ -335,8 +336,9 @@ while True:
     }
   }
 
-  const changeConsole = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeConsole = () => {
+    if (openConsoleSnackbar) {
+      openConsoleSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -346,6 +348,7 @@ while True:
       });
       setAlertContent(`Console Opened !!`);
     } else {
+      openConsoleSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -358,8 +361,9 @@ while True:
     setOpenConsole(!openConsole);
   };
 
-  const changeGzWeb = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeGzWeb = () => {
+    if (openGazeboSnackbar) {
+      openGazeboSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -369,6 +373,7 @@ while True:
       });
       setAlertContent(`Gazebo Opened !!`);
     } else {
+      openGazeboSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,

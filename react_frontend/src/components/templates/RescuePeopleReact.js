@@ -2,9 +2,9 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/RescuePeopleExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
+import MainAppBar from "../common/MainAppBar";
 import RescuePeopleExerciseContext from "../../contexts/RescuePeopleExerciseContext";
-import View from "../exercises/View";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import RescuePeopleExerciseView from "../views/RescuePeopleExerciseView";
 
@@ -13,7 +13,7 @@ export default function RescuePeopleReact() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" Rescue People "}
             context={RescuePeopleExerciseContext}
           />

@@ -23,4 +23,5 @@ export default function CanvasThree(props) {
 }
 CanvasThree.propTypes = {
   context: PropTypes.any,
+  heading: PropTypes.string,
 };

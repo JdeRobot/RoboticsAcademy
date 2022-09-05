@@ -15,7 +15,7 @@ export default function ImgCanvas(props) {
         alignItems: "center",
       }}
     >
-      <Typography>Point of View</Typography>
+      <Typography>{props.heading}</Typography>
       <img
         height={250}
         width={500}
@@ -34,4 +34,5 @@ export default function ImgCanvas(props) {
 
 ImgCanvas.propTypes = {
   context: PropTypes.any,
+  heading: PropTypes.string,
 };

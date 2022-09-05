@@ -2,9 +2,9 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/VacuumCleanerExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
+import MainAppBar from "../common/MainAppBar";
 import VacuumCleanerExerciseContext from "../../contexts/VacuumCleanerExerciseContext";
-import View from "../exercises/View";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 
 import VacuumCleanerExerciseView from "../views/VacuumCleanerExerciseView";
@@ -14,7 +14,7 @@ function _3DReconstructionReact() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" Vacuum Cleaner "}
             context={VacuumCleanerExerciseContext}
           />

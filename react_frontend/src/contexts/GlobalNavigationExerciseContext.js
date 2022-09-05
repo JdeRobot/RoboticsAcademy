@@ -28,6 +28,8 @@ let simStop = false,
   firstCodeSent = false,
   gazeboOn = false,
   gazeboToggle = false;
+let openConsoleSnackbar = true;
+let openGazeboSnackbar = true;
 let operation;
 let code = `from GUI import GUI
 from HAL import HAL
@@ -55,7 +57,7 @@ export function ExerciseProvider({ children }) {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [openLoadModal, setOpenLoadModal] = useState(false);
-  const [filename, setFilename] = useState("obstacle-avoidance");
+  const [filename, setFilename] = useState("global-navigation");
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -617,8 +619,9 @@ while True:
     }
   };
 
-  const changeConsole = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeConsole = () => {
+    if (openConsoleSnackbar) {
+      openConsoleSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -628,6 +631,7 @@ while True:
       });
       setAlertContent(`Console Opened !!`);
     } else {
+      openConsoleSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -640,8 +644,9 @@ while True:
     setOpenConsole(!openConsole);
   };
 
-  const changeGzWeb = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeGzWeb = () => {
+    if (openGazeboSnackbar) {
+      openGazeboSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -651,6 +656,7 @@ while True:
       });
       setAlertContent(`Gazebo Opened !!`);
     } else {
+      openGazeboSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,

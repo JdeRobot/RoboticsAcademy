@@ -2,9 +2,9 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/PowerTowerInspectionExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
+import MainAppBar from "../common/MainAppBar";
 import PowerTowerInspectionExerciseContext from "../../contexts/PowerTowerInspectionExerciseContext";
-import View from "../exercises/View";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import PowerTowerInspectionExerciseView from "../views/PowerTowerInspectionExerciseView";
 
@@ -13,7 +13,7 @@ export default function PowerTowerInspectionReact() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" Power Tower Inspection "}
             context={PowerTowerInspectionExerciseContext}
           />

@@ -2,9 +2,9 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/3DreconstructionExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
+import MainAppBar from "../common/MainAppBar";
 import _3DReconstructionExerciseContext from "../../contexts/3DreconstructionExerciseContext";
-import View from "../exercises/View";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import _3DReconstructionExerciseView from "../views/3DReconstructionExerciseView";
 
@@ -13,7 +13,7 @@ function _3DReconstructionReact() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" 3D reconstruction "}
             context={_3DReconstructionExerciseContext}
           />

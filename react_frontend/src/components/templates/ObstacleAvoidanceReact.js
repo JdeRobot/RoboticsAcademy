@@ -2,9 +2,9 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/ObstacleAvoidanceExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
+import MainAppBar from "../common/MainAppBar";
 import ObstacleAvoidanceExerciseContext from "../../contexts/ObstacleAvoidanceExerciseContext";
-import View from "../exercises/View";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import ObstacleAvoidanceExerciseView from "../views/ObstacleAvoidanceExerciseView";
 
@@ -13,7 +13,7 @@ function ObstacleAvoidanceReact() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" Obstacle Avoidance "}
             context={ObstacleAvoidanceExerciseContext}
           />

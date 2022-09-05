@@ -1,17 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import * as React from "react";
-import ExerciseControl from "../exercises/ExerciseControl";
+import ExerciseControl from "../common/ExerciseControl";
 import AceEditorRobot from "../exercises/AceEditorRobot";
-import VisualizationComponents from "../exercises/VisualizationComponents";
-import GuiCanvas from "../exercises/GuiCanvas";
-import FrequencyMenu from "../exercises/FrequencyMenu";
+import VisualizationComponents from "../common/VisualizationComponents";
+import GuiCanvas from "../visualizers/GuiCanvas";
+import FrequencyMenu from "../common/FrequencyMenu";
 import GazeboViewer from "../exercises/GazeboViewer";
 import VncConsoleViewer from "../exercises/VncConsoleViewer";
-import LoadModalView from "../exercises/LoadModalView";
-import CustomAlert from "../exercises/CustomAlert";
-import ErrorModalView from "../exercises/ErrorModalView";
+import LoadModal from "../modals/LoadModal";
+import CustomAlert from "../common/CustomAlert";
+import ErrorModal from "../modals/ErrorModal";
 import PropTypes from "prop-types";
-import CanvasThree from "../exercises/CanvasThree";
+import CanvasThree from "../visualizers/CanvasThree";
 
 export default function _3DReconstructionExerciseView(props) {
   return (
@@ -69,9 +69,9 @@ export default function _3DReconstructionExerciseView(props) {
           <VncConsoleViewer context={props.context} />
         </Box>
       </Box>
-      <LoadModalView context={props.context} />
+      <LoadModal context={props.context} />
       <CustomAlert context={props.context} />
-      <ErrorModalView context={props.context} />
+      <ErrorModal context={props.context} />
     </Box>
   );
 }

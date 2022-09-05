@@ -1,17 +1,20 @@
-import { Box, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import * as React from "react";
-import ExerciseControl from "../exercises/ExerciseControl";
-import AceEditorRobot from "../exercises/AceEditorRobot";
-import VisualizationComponents from "../exercises/VisualizationComponents";
-import GuiCanvas from "../exercises/GuiCanvas";
-import FrequencyMenu from "../exercises/FrequencyMenu";
+import VisualizationComponents from "../common/VisualizationComponents";
+import GuiCanvas from "../visualizers/GuiCanvas";
+import FrequencyMenu from "../common/FrequencyMenu";
 import GazeboViewer from "../exercises/GazeboViewer";
 import VncConsoleViewer from "../exercises/VncConsoleViewer";
-import LoadModalView from "../exercises/LoadModalView";
-import CustomAlert from "../exercises/CustomAlert";
-import ErrorModalView from "../exercises/ErrorModalView";
+import LoadModal from "../modals/LoadModal";
+import CustomAlert from "../common/CustomAlert";
+import ErrorModal from "../modals/ErrorModal";
 import PropTypes from "prop-types";
-import CanvasThree from "../exercises/CanvasThree";
+import FileSelector from "../exercises/FileSelector";
+import RoboticsTheme from "../RoboticsTheme";
+import Toolbar from "@mui/material/Toolbar";
+import ResetButton from "../buttons/ResetButton";
+import ConsoleButton from "../buttons/ConsoleButton";
+import PlayStopButton from "../buttons/PlayStopButton";
 
 export default function DlDigitClassifierExerciseView(props) {
   return (
@@ -29,15 +32,10 @@ export default function DlDigitClassifierExerciseView(props) {
           background: "linear-gradient(#EOECDE, #FFFFFF)",
         }}
       >
-        <Typography align={"center"} color={"primary"} variant={"h4"}>
-          {" "}
-          Start Coding !{" "}
-        </Typography>
-        <AceEditorRobot context={props.context} />
+        <FileSelector context={props.context} />
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>
-        <CanvasThree context={props.context} />
         <VisualizationComponents>
           <GuiCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
@@ -69,13 +67,70 @@ export default function DlDigitClassifierExerciseView(props) {
           <VncConsoleViewer context={props.context} />
         </Box>
       </Box>
-      <LoadModalView context={props.context} />
+      <LoadModal context={props.context} />
       <CustomAlert context={props.context} />
-      <ErrorModalView context={props.context} />
+      <ErrorModal context={props.context} />
     </Box>
   );
 }
 
 DlDigitClassifierExerciseView.propTypes = {
+  context: PropTypes.any,
+};
+
+function ExerciseControl(props) {
+  const { guiFreq, brainFreq, keyHandleFrequency } = React.useContext(
+    props.context
+  );
+  return (
+    <RoboticsTheme>
+      <Toolbar
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          m: 1,
+          border: "2px solid #d3d3d3",
+        }}
+      >
+        <Box id={"freq-control"}>
+          <TextField
+            id={"code_freq"}
+            label="Brain Freq (Hz)"
+            type="number"
+            value={brainFreq}
+            size={"small"}
+            title={
+              "The brain frequency is the value that tells the robot with what frequency should the code be updated"
+            }
+            sx={{ width: 160, m: 1 }}
+            onKeyDown={keyHandleFrequency}
+            color={"secondary"}
+          />
+          <TextField
+            id={"gui_freq"}
+            label="GUI Freq (Hz)"
+            value={guiFreq}
+            type="number"
+            sx={{ width: 160, m: 1 }}
+            title={
+              "This value corresponds to the frequency the UI and visuals will be updated."
+            }
+            onKeyDown={keyHandleFrequency}
+            size={"small"}
+            color={"secondary"}
+          />
+        </Box>
+        <Box id={"Sim-console-control"}>
+          <ConsoleButton context={props.context} />
+        </Box>
+      </Toolbar>
+      <PlayStopButton context={props.context} />
+    </RoboticsTheme>
+  );
+}
+
+ExerciseControl.propTypes = {
   context: PropTypes.any,
 };

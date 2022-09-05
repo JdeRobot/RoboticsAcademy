@@ -15,7 +15,7 @@ import ViewContext from "../../contexts/ViewContext";
 import RoboticsTheme from "../RoboticsTheme.js";
 import PropTypes from "prop-types";
 
-function ProminentAppBar(props) {
+function MainAppBar(props) {
   // useBeforeUnload("true", "you have unsaved changes !");
   const {
     connectionState,
@@ -148,9 +148,9 @@ function ProminentAppBar(props) {
   );
 }
 
-ProminentAppBar.propTypes = {
+MainAppBar.propTypes = {
   context: PropTypes.any,
   exerciseName: PropTypes.string,
 };
 
-export default ProminentAppBar;
+export default MainAppBar;

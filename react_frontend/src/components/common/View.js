@@ -1,8 +1,7 @@
 import * as React from "react";
-import TheoryView from "./TheoryView";
-import ForumView from "./ForumView";
+import TheoryView from "../views/TheoryView";
+import ForumView from "../views/ForumView";
 import ViewContext from "../../contexts/ViewContext";
-import InfoModalView from "./InfoModalView";
 import PropTypes from "prop-types";
 
 function View(props) {

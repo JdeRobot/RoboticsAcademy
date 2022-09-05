@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function LoadModalView(props) {
+export default function LoadModal(props) {
   const { openLoadModal, handleLoadModalClose } = React.useContext(
     props.context
   );
@@ -43,6 +43,6 @@ export default function LoadModalView(props) {
   );
 }
 
-LoadModalView.propTypes = {
+LoadModal.propTypes = {
   context: PropTypes.any,
 };

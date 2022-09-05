@@ -28,6 +28,8 @@ from HAL import HAL
 
 while True:
     # Enter iterative code!`;
+let openGazeboSnackbar = true;
+let openConsoleSnackbar = true;
 
 function createData(key, value) {
   return { key, value };
@@ -49,7 +51,7 @@ export function ExerciseProvider({ children }) {
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openErrorModal, setOpenErrorModal] = useState(false);
   const [openLoadModal, setOpenLoadModal] = useState(false);
-  const [filename, setFilename] = useState("obstacle-avoidance");
+  const [filename, setFilename] = useState("vacuum-cleaner");
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -474,7 +476,13 @@ while True:
         const content = pose.split(",").map(function (item) {
           return parseFloat(item);
         });
-        draw(content[0], content[1], content[2], content[3]);
+        draw(
+          guiCanvasRef.current,
+          content[0],
+          content[1],
+          content[2],
+          content[3]
+        );
 
         // Send the Acknowledgment Message
         websocket_gui.send("#ack");
@@ -566,8 +574,9 @@ while True:
     }
   };
 
-  const changeConsole = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeConsole = () => {
+    if (openConsoleSnackbar) {
+      openConsoleSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -577,6 +586,7 @@ while True:
       });
       setAlertContent(`Console Opened !!`);
     } else {
+      openConsoleSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -589,8 +599,9 @@ while True:
     setOpenConsole(!openConsole);
   };
 
-  const changeGzWeb = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeGzWeb = () => {
+    if (openGazeboSnackbar) {
+      openGazeboSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -600,6 +611,7 @@ while True:
       });
       setAlertContent(`Gazebo Opened !!`);
     } else {
+      openGazeboSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,

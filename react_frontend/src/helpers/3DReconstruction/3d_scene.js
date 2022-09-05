@@ -1,5 +1,4 @@
 import { config } from "./3DViz";
-import * as THREE from "three";
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
@@ -19,6 +18,7 @@ import {
   MeshBasicMaterial,
   SphereGeometry,
   ArrowHelper,
+  BufferGeometry,
 } from "three";
 let camera, scene, renderer, controls;
 let grid;
@@ -70,7 +70,7 @@ function animate() {
 }
 
 function addPoint(point) {
-  const geometry = new THREE.Geometry();
+  const geometry = new BufferGeometry();
   geometry.vertices.push(new Vector3(point.x, point.y, point.z));
 
   const material = new PointsMaterial({
@@ -85,7 +85,7 @@ function addPoint(point) {
 }
 
 function addLine(segment, name) {
-  const geometry = new THREE.Geometry();
+  const geometry = new BufferGeometry();
   geometry.vertices.push(
     new Vector3(
       segment.seg.fromPoint.x,

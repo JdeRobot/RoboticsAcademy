@@ -10,7 +10,6 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import WebAssetIcon from "@mui/icons-material/WebAsset";
 import PsychologyIcon from "@mui/icons-material/Psychology";
-import FollowLineExerciseContext from "../../contexts/FollowLineExerciseContext";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -40,9 +39,9 @@ const style = {
   p: 4,
 };
 
-function createData(icon, name, description) {
+const createData = (icon, name, description) => {
   return { icon, name, description };
-}
+};
 
 const control = [
   createData(<CloudUploadOutlinedIcon />, "Load", "Load code from local files"),
@@ -74,7 +73,7 @@ const control = [
   ),
 ];
 
-function DenseTable() {
+const DenseTable = () => {
   return (
     <TableContainer component={Paper}>
       <Table
@@ -112,9 +111,9 @@ function DenseTable() {
       </Table>
     </TableContainer>
   );
-}
+};
 
-export default function InfoModalView(props) {
+const InfoModal = (props) => {
   const { openInfoModal, handleInfoModalClose } = React.useContext(
     props.context
   );
@@ -148,8 +147,10 @@ export default function InfoModalView(props) {
       </Modal>
     </div>
   );
-}
+};
 
-InfoModalView.propTypes = {
+InfoModal.propTypes = {
   context: PropTypes.any,
 };
+
+export default InfoModal;

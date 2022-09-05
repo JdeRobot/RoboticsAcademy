@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import "../../styles/GuiCanvas.css";
 
 export default function GuiCanvas(props) {
-  const { guiCanvasRef, exerciseSpecificCSS } = React.useContext(props.context);
+  const { guiCanvasRef, exerciseSpecificCSS, canvasHeading } = React.useContext(
+    props.context
+  );
 
   return (
     <Box
@@ -17,7 +19,7 @@ export default function GuiCanvas(props) {
         alignItems: "center",
       }}
     >
-      <Typography> View </Typography>
+      <Typography> {canvasHeading} </Typography>
       <canvas
         height={240}
         width={650}

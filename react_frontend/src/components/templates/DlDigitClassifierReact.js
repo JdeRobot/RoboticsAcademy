@@ -2,18 +2,18 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/DlDigitClassifierExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
+import MainAppBar from "../common/MainAppBar";
 import DlDigitClassifierExerciseContext from "../../contexts/DlDigitClassifierExerciseContext";
-import View from "../exercises/View";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
-import DlDigitClassifierExerciseView from "../views/3DReconstructionExerciseView";
+import DlDigitClassifierExerciseView from "../views/DlDigitClassifierExerciseView";
 
 export default function DlDigitClassifierReact() {
   return (
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" Digit Classifier "}
             context={DlDigitClassifierExerciseContext}
           />

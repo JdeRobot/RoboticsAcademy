@@ -21,11 +21,12 @@ docker run --rm -i -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6
 
 P1=$!
 
-echo "Step 2: $bwrt"
+echo "Step 2: $bWrt"
 cd react_frontend || exit
 yarn run "$runMethod" &
 
 P2=$!
+
 echo "Step3 : starting Django Server "
 cd .. || exit
 source env/bin/activate

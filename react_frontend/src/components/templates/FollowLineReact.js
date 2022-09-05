@@ -3,8 +3,8 @@ import { Box } from "@mui/material";
 import { ViewProvider } from "../../contexts/ViewContext";
 import { ExerciseProvider } from "../../contexts/FollowLineExerciseContext";
 import FollowLineExerciseContext from "../../contexts/FollowLineExerciseContext";
-import ProminentAppBar from "../exercises/ProminentAppBar";
-import View from "../exercises/View";
+import MainAppBar from "../common/MainAppBar";
+import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import FollowLineExerciseView from "../views/FollowLineExerciseView";
 
@@ -13,7 +13,7 @@ function FollowLineReact() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar
+          <MainAppBar
             exerciseName={" Follow Line "}
             context={FollowLineExerciseContext}
           />

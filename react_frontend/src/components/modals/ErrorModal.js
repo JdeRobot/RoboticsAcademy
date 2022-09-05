@@ -18,7 +18,7 @@ const style = {
   p: 4,
 };
 
-export default function ErrorModalView(props) {
+export default function ErrorModal(props) {
   const {
     openErrorModal,
     handleErrorModalClose,
@@ -62,6 +62,6 @@ export default function ErrorModalView(props) {
   );
 }
 
-ErrorModalView.propTypes = {
+ErrorModal.propTypes = {
   context: PropTypes.any,
 };

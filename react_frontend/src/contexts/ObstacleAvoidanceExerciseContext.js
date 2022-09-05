@@ -33,6 +33,9 @@ from HAL import HAL
 while True:
     # Enter iterative code!`;
 
+let openConsoleSnackbar = true;
+let openGazeboSnackbar = true;
+
 function createData(key, value) {
   return { key, value };
 }
@@ -317,8 +320,9 @@ while True:
     }
   }
 
-  const changeConsole = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeConsole = () => {
+    if (openConsoleSnackbar) {
+      openConsoleSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -328,6 +332,7 @@ while True:
       });
       setAlertContent(`Console Opened !!`);
     } else {
+      openConsoleSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -340,8 +345,9 @@ while True:
     setOpenConsole(!openConsole);
   };
 
-  const changeGzWeb = (openSnackbar) => {
-    if (openSnackbar) {
+  const changeGzWeb = () => {
+    if (openGazeboSnackbar) {
+      openGazeboSnackbar = false;
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -351,6 +357,7 @@ while True:
       });
       setAlertContent(`Gazebo Opened !!`);
     } else {
+      openGazeboSnackbar = true;
       setAlertState({
         ...alertState,
         errorAlert: false,
