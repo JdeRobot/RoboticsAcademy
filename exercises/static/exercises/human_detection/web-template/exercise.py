@@ -27,17 +27,18 @@ from Evaluator import *
 import benchmark 
 
 
+
 class Template:
     # Initialize class variables
-    # self.time_cycle to run an execution for at least 1 second
+    # self.ideal_cycle to run an execution for at least 1 second
     # self.process for the current running process
     def __init__(self):
         self.thread = None
         self.reload = False
 
         # Time variables
-        self.time_cycle = 80
         self.ideal_cycle = 80
+        self.measured_cycle = 80
         self.iteration_counter = 0
         self.frequency_message = {'brain': '', 'gui': ''}
 
@@ -154,7 +155,6 @@ class Template:
                 count = 0
                 detections = []
                 scores = []
-                # height, width = img.shape[0], img.shape[1]
                 batch_size = num_detections.shape[0]
                 for batch in range(0, batch_size):
                     for detection in range(0, int(num_detections[batch])):
@@ -164,7 +164,6 @@ class Template:
                             self.gui.showResult(img, str(" "))
                             continue
                         count = count + 1
-                        #d = detection_boxes[batch][detection]
                         d = detection_boxes[batch][detection]
                         detections.append(d)
                         score = detection_scores[batch][detection]
@@ -187,8 +186,8 @@ class Template:
 
                 # The code should be run for at least the target time step
                 # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+                if (ms < self.ideal_cycle):
+                    time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             self.hal.frame_number = 0
             print("Video infer process thread closed!")
@@ -245,9 +244,7 @@ class Template:
                             self.gui.showResult(img, str(count))
                             continue
                         count = count + 1
-                        #d = detection_boxes[batch][detection]
                         detections.append(detection_boxes[batch][detection])
-                        #score = detection_scores[batch][detection]
                         scores.append(detection_scores[batch][detection])
                     self.display_output_detection(img, detections, scores)
                     # To print FPS after each frame as been fully processed and displayed
@@ -266,8 +263,8 @@ class Template:
 
                 # The code should be run for atleast the target time step
                 # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+                if (ms < self.ideal_cycle):
+                    time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             print("Live infer process thread closed!")
 
@@ -278,7 +275,6 @@ class Template:
 
 
     def perform_benchmark(self):
-        #netron.start("Test_Model/Demo_Model.onnx")
         currentPath = os.path.dirname(os.path.abspath(__file__))
         acc_AP = 0
         validClasses = 0
@@ -292,7 +288,7 @@ class Template:
         os.makedirs(savePath)
         # Create an evaluator object in order to obtain the metrics
         evaluator = Evaluator()
-        # Plot 11-pt Precision x Recall curve
+        # Plot Precision x Recall curve
         detections = evaluator.PlotPrecisionRecallCurve(
             boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
             IOUThreshold=0.3,  # IOU threshold
@@ -306,8 +302,6 @@ class Template:
         f = open(os.path.join(savePath, 'results11.txt'), 'w')
         f.write('11-point Average Precision (AP), Precision and Recall: ') 
 
-        #Plot 11-pt Precision x Recall curve
-        
         detections = evaluator.PlotPrecisionRecallCurve(
             boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
             IOUThreshold=0.3,  # IOU threshold
@@ -319,7 +313,12 @@ class Template:
         plot_img1= cv2.imread(os.path.join(savePath, "person_every.png"))
         self.gui.showResult(plot_img1, "Plot1")
         f = open(os.path.join(savePath, 'results_every.txt'), 'w')
-        f.write('Mean Average Precision (mAP), Precision and Recall: ') 
+        f.write('Mean Average Precision (mAP), Precision and Recall: ')    
+
+        plot_img  = cv2.imread(os.path.join(savePath, "person.png"))
+        self.gui.showResult(plot_img, "Plot")
+        f = open(os.path.join(savePath, 'results.txt'), 'w')
+        f.write('Average Precision (AP), Precision and Recall: ')
 
         # each detection is a class
         for metricsPerClass in detections:
@@ -338,7 +337,6 @@ class Template:
                 prec = ['%.2f' % p for p in precision]
                 rec = ['%.2f' % r for r in recall]
                 ap_str = "{0:.2f}%".format(ap * 100)
-                # print('AP: %s (%s)' % (ap_str, cl))
                 f.write('\nClass: %s' % cl)
                 f.write('\nAP: %s' % ap_str)
                 f.write('\nPrecision: %s' % prec)
@@ -350,22 +348,16 @@ class Template:
 
         mAP = acc_AP / validClasses
         mAP_str = "{0:.2f}%".format(mAP * 100)
-        # print('mAP: %s' % mAP_str)
         f.write('\nmAP: %s' % mAP_str)
         f.close()
         print("\n" + "#"*10 + "Benchmarking Results" + "#"*10 + "\n")
-        f = open(os.path.join(savePath, 'results11.txt'), 'r')
-        for line in f:
-            print(line)
-        print("#"*40)
-
-        f = open(os.path.join(savePath, 'results_every.txt'), 'r')
+        f = open(os.path.join(savePath, 'results.txt'), 'r')
         for line in f:
             print(line)
         print("#"*40)
         f.close()
 
-    
+
     def eval_dl_model(self):
         # Load ONNX model
         try:
@@ -443,15 +435,13 @@ class Template:
 
                 # The code should be run for at least the target time step
                 # If it's less put to sleep
-                if (ms < self.time_cycle):
-                    time.sleep((self.time_cycle - ms) / 1000.0)
+                if (ms < self.ideal_cycle):
+                    time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             
             self.hal.frame_number = 0
             self.perform_benchmark()
             print("Benchmarking process thread closed!")
-            global list_disable_checker
-            list_disable_checker="Benchmarking process thread closed!"
 
         # To print the errors that the user submitted through the Javascript editor (ACE)
         except Exception:
@@ -477,9 +467,9 @@ class Template:
             # Get the time period
             try:
                 # Division by zero
-                self.ideal_cycle = ms / self.iteration_counter
+                self.measured_cycle = ms / self.iteration_counter
             except:
-                self.ideal_cycle = 0
+                self.measured_cycle = 0
 
             # Reset the counter
             self.iteration_counter = 0
@@ -491,12 +481,12 @@ class Template:
         brain_frequency = 0
         gui_frequency = 0
         try:
-            brain_frequency = round(1000 / self.ideal_cycle, 1)
+            brain_frequency = round(1000 / self.measured_cycle, 1)
         except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.ideal_cycle, 1)
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -505,6 +495,13 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
+
+    def send_ping_message(self):
+        self.server.send_message(self.client, "#ping")
+
+    # Function to notify the front end that the code was received and sent to execution
+    def send_code_message(self):
+        self.server.send_message(self.client, "#exec")
 
     # Function to maintain thread execution
     def execute_thread(self, message):
@@ -529,6 +526,7 @@ class Template:
             print("Video infer process thread started!")
         self.thread.start()
         self.measure_thread.start()
+        self.send_code_message()
         print("Frequency Thread started!")
 
 
@@ -538,21 +536,26 @@ class Template:
 
         # Set brain frequency
         frequency = float(frequency_message["brain"])
-        self.time_cycle = 1000.0 / frequency
+        self.ideal_cycle = 1000.0 / frequency
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.time_cycle = 1000.0 / frequency
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return  
 
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
+        start_console()
         if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
+            return
+        if(message[:5] == "#ping"):
+            time.sleep(1)
+            self.send_ping_message()
             return
         if (message[:5] == "#stop"):
             self.reload = True
@@ -587,7 +590,7 @@ class Template:
                 self.gui.showResult(plot_img1, "Plot1")
                 print('worked!!')
             except:
-                pass               
+                pass                   
         if(message[:11] == "#save_model"):
             try:
                 self.saveModel(message[11:])
@@ -607,7 +610,6 @@ class Template:
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
-        start_console()
         self.client = client
         # Start the GUI update thread
         self.thread_gui = ThreadGUI(self.gui)
@@ -629,6 +631,17 @@ class Template:
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
+
+        logged = False
+        while not logged:
+            try:
+                f = open("/ws_code.log", "w")
+                f.write("websocket_code=ready")
+                f.close()
+                logged = True
+            except:
+                time.sleep(0.1)
+
         self.server.run_forever()
 
 
