@@ -13,7 +13,7 @@ class HAL:
         rospy.init_node("HAL_cat")
 
         self.image = None
-        self.cat = DroneWrapper(name="rqt", ns="cat/")
+        self.cat = DroneWrapper(name="rqt", ns="/firefly/")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation

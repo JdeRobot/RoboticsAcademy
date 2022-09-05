@@ -13,7 +13,7 @@ class HAL:
         rospy.init_node("HAL_mouse")
 
         self.image = None
-        self.mouse = DroneWrapper(name="rqt", ns="mouse/")
+        self.mouse = DroneWrapper(name="rqt", ns="/firefly1/")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation

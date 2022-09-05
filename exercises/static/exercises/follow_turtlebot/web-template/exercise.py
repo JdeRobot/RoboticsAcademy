@@ -20,7 +20,6 @@ from std_srvs.srv import Empty
 import cv2
 
 from shared.value import SharedValue
-from hal import HAL
 from brain import BrainProcess
 import queue
 
