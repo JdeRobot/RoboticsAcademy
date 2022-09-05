@@ -39,19 +39,6 @@ class GUI:
         # Event objects for multiprocessing
         self.ack_event = multiprocessing.Event()
         self.cli_event = multiprocessing.Event()
-
-        # Image variables
-        # self.image_to_be_shown = None
-        # self.image_to_be_shown_updated = False
-        # self.image_show_lock = threading.Lock()
-
-        # self.left_image_to_be_shown = None
-        # self.left_image_to_be_shown_updated = False
-        # self.left_image_show_lock = threading.Lock()
-        
-        # self.acknowledge = False
-        # self.acknowledge_lock = threading.Lock()
-        
         # Take the console object to set the same websocket and client
         self.turtlebot = turtlebot
 
@@ -59,14 +46,6 @@ class GUI:
         t = threading.Thread(target=self.run_server)
         t.start()
 
-    
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
-    # @classmethod
-    # def initGUI(cls, host):
-    #     # self.payload = {'image': '', 'shape': []}
-    #     new_instance = cls(host)
-    #     return new_instance
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -83,7 +62,6 @@ class GUI:
         
         return payload
         
-
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadLeftImage(self):
@@ -98,7 +76,6 @@ class GUI:
         payload['shape'] = shape
         
         return payload
-
 
     # Function for student to call
     def showImage(self, image):
@@ -122,19 +99,6 @@ class GUI:
 
         print(client, 'connected')
         
-    # # Function to get value of Acknowledge
-    # def get_acknowledge(self):
-    #     self.acknowledge_lock.acquire()
-    #     acknowledge = self.acknowledge
-    #     self.acknowledge_lock.release()
-        
-    #     return acknowledge
-        
-    # # Function to get value of Acknowledge
-    # def set_acknowledge(self, value):
-    #     self.acknowledge_lock.acquire()
-    #     self.acknowledge = value
-    #     self.acknowledge_lock.release()
         
     # Update the gui
     def update_gui(self):
@@ -145,7 +109,6 @@ class GUI:
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
-        
         # Payload Left Image Message
         left_payload = self.payloadLeftImage()
         self.left_payload["image"] = json.dumps(left_payload)
@@ -158,7 +121,6 @@ class GUI:
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
 
-
         if(message[:4] == "#ack"):
             # Set acknowledgement flag
             self.ack_event.set()
@@ -169,9 +131,6 @@ class GUI:
         # Reset message
         elif message[:4] == "#rst":
             self.turtlebot.reset_turtlebot()
-        
-    
-    
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
         print(client, 'closed')
@@ -187,7 +146,6 @@ class GUI:
 
         logged = False
         while not logged:
-            print("IN WHILEEEEEEEEEEEEEEEEEEEEEEE")
             try:
                 f = open("/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
@@ -231,7 +189,6 @@ class ProcessGUI(multiprocessing.Process):
 
         # Wait for client before starting
         self.cli_event.wait()
-
         self.measure_thread = threading.Thread(target=self.measure_thread)
         self.thread = threading.Thread(target=self.run_gui)
 
@@ -241,16 +198,6 @@ class ProcessGUI(multiprocessing.Process):
         print("GUI Process Started!")
 
         self.exit_signal.wait()
-
-    # Function to start the execution of threads
-    # def start(self):
-    #     self.measure_thread = threading.Thread(target=self.measure_thread)
-    #     self.thread = threading.Thread(target=self.run)
-
-    #     self.measure_thread.start()
-    #     self.thread.start()
-
-    #     print("GUI Thread Started!")
 
     # The measuring thread to measure frequency
     def measure_thread(self):
@@ -275,7 +222,6 @@ class ProcessGUI(multiprocessing.Process):
             # Reset the counter
             self.iteration_counter = 0
 
-    # The main thread of execution
     # The main thread of execution
     def run_gui(self):
         while(True):
@@ -306,4 +252,3 @@ class ProcessGUI(multiprocessing.Process):
 if __name__ == "__main__":
     gui = ProcessGUI()
     gui.start()
-
