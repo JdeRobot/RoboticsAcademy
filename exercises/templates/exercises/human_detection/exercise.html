@@ -49,7 +49,7 @@
                     </strong>
                     </tr>
                     <tr>
-                        <td>Input Freq</td>
+                        <td>Brain</td>
                         <td><input type="range" min="1" max="30" value="12.5" id="fader"
                                    step="0.1" oninput="codefrequencyUpdate(value)" class="frequency-slider"></td>
                         <td>
@@ -60,7 +60,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Output Freq</td>
+                        <td>GUI</td>
                         <td><input type="range" min="1" max="30" value="12" id="fader"
                                    step="0.5" oninput="guifrequencyUpdate(value)" class="frequency-slider"></td>
                         <td>
@@ -70,11 +70,11 @@
                         </td>
                     </tr>
                     <tr>
-   <!--                  <th>Debug-Level</th>
+                        <th>Debug-Level</th>
                         <td><input id="slide" type="range" min="1" max="4" steps="1" value="2" name="debug"
                                    class="debug-slider">
-                            <ul class="debug-labels"> -->
-                        <!-- <th><p id="slidernum">2</p> -->
+                            <ul class="debug-labels">
+                        <th><p id="slidernum">2</p>
                             <script type="text/javascript">
                                 var slide = document.getElementById('slide'),
                                     sliderDiv = document.getElementById("slidernum");
@@ -95,7 +95,7 @@
 
         <div class="d-flex flex-column justify-content-center p-5"> 
             <div class = "d-flex">
-                <label for="code-menu" class = "margin-22">Choose a mode:</label>
+                <label for="code-menu" class = "margin-22">Choose a mode: </label>
                 <select id='code-menu'>
                     <option>Select</option>
                     <option value='live'>Live Inference</option>
@@ -127,14 +127,15 @@
                     </div>
                 </div>
 
-                    <div class ='div-flex' id="graph-upload">
-                        <select id='code-menu-1'>
-                        <label for="code-menu-1" class = "margin-22">Choose a graph: </label>
-                            <option>Select</option>
-                            <option value='map'>mean Average Precision</option>
-                            <option value='11pt'>11-point Interpolation</option>  
-                        </select>
-                    </div>
+                <div class ='div-flex' id="graph-upload">
+                    <select id='code-menu-1'>
+                    <label for="code-menu-1" class = "margin-22">Choose a graph: </label>
+                        <option>Select</option>
+                        <option value='map'>mean Average Precision</option>
+                        <option value='11pt'>11-point Interpolation</option>  
+                    </select>
+                </div>
+                
             </div>
         </div>
     
@@ -152,7 +153,7 @@
 
         <div id="visual">
             <!-- Canvas -->
-            <h3 style="text-align:center" id="output_heading" onchange="EnableGraphInput()"></h3>
+            <h3 style="text-align:center" id="output_heading"></h3>
             <canvas id="gui_canvas"></canvas>
         </div>
 
