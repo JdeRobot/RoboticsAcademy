@@ -27,7 +27,9 @@
         "gazebo_path": "/RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch",
         "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_cat_mouse/web-template/launch/launch.py"],
         "instructions_host": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0",
-        "instructions_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_guest.py 0.0.0.0"
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/gui.py 0.0.0.0 {}",
+        "instructions_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/exercise_guest.py 0.0.0.0",
+        "instructions_gui_guest": "python3 /RoboticsAcademy/exercises/drone_cat_mouse/web-template/gui_guest.py 0.0.0.0 {}"     
     },
     "3d_reconstruction": {
         "gazebo_path": "/RoboticsAcademy/exercises/3d_reconstruction/web-template/launch",
