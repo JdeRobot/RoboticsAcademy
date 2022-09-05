@@ -1,7 +1,7 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
 ARG VIRTUALGL_VERSION=2.6.5
-ARG TURBOVNC_VERSION=3.0
+ARG TURBOVNC_VERSION=2.2.91
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
@@ -20,7 +20,7 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Install desktop and common tools
+# Install desktop and tools
 RUN apt-get update && apt-get install -y \
         software-properties-common \
         apt-utils \
@@ -43,8 +43,8 @@ RUN apt-get update && apt-get install -y \
 RUN tasksel install lubuntu-core lubuntu-desktop
 
 # Install VirtualGL and TurboVNC
-RUN wget --no-check-certificate https://deac-fra.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
-    wget --no-check-certificate https://kumisystems.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
+RUN wget https://deac-fra.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl_${VIRTUALGL_VERSION}_amd64.deb && \
+    wget https://kumisystems.dl.sourceforge.net/project/virtualgl/${VIRTUALGL_VERSION}/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     apt-get update && dpkg -i ./virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     rm virtualgl_${VIRTUALGL_VERSION}_amd64.deb virtualgl32_${VIRTUALGL_VERSION}_amd64.deb && \
     chmod u+s /usr/lib/libvglfaker.so && \
@@ -53,7 +53,7 @@ RUN wget --no-check-certificate https://deac-fra.dl.sourceforge.net/project/virt
     chmod u+s /usr/lib32/libdlfaker.so && \
     chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
     chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so && \
-    wget --no-check-certificate https://sourceforge.net/projects/turbovnc/files/${TURBOVNC_VERSION}/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    curl -fsSL -O https://s3.amazonaws.com/turbovnc-pr/main/linux/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     apt-get update && apt-get install -y --no-install-recommends ./turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     rm -rf /var/lib/apt/lists/* && \
@@ -82,7 +82,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libdbus-c++-1-0v5 && \
     rm -rf /var/lib/apt/lists/*
 
-# PX4 dependencies
+# PX4
 RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
         bzip2 \
         ca-certificates \
@@ -229,7 +229,7 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
         python3-catkin-lint \
         python3-rosinstall-generator \
         python3-osrf-pycommon \
-        python3-vcstool \
+        python3-wstool \
         ros-$ROS_DISTRO-gazebo-ros-pkgs \
         ros-$ROS_DISTRO-octomap \
         ros-$ROS_DISTRO-octomap-msgs \
@@ -247,6 +247,28 @@ RUN apt-get update && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --re
 
 RUN pip3 install -U \
     osrf-pycommon
+
+# bootstrap rosdep
+RUN rosdep init && rosdep update
+
+# jderobot_drones src and stdr simulator
+RUN sudo add-apt-repository ppa:rock-core/qt4 -y
+RUN sudo apt update --fix-missing
+RUN rm -rf /catkin_ws
+RUN mkdir -p /catkin_ws/src
+RUN cd /catkin_ws && catkin init
+COPY mavros.rosinstall /tmp/mavros.rosinstall
+RUN wstool init src /tmp/mavros.rosinstall
+RUN cd /catkin_ws && rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
+RUN echo 'export ROS_WORKSPACE=/catkin_ws' >> ~/.bashrc
+RUN git clone https://github.com/JdeRobot/drones.git -b $ROS_DISTRO-devel
+RUN git clone https://github.com/stdr-simulator-ros-pkg/stdr_simulator.git
+RUN cd /catkin_ws/src && ln -s /drones/drone_wrapper .
+RUN cd /catkin_ws/src && ln -s /drones/drone_assets .
+RUN cd /catkin_ws/src && ln -s /stdr_simulator .
+RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
+RUN cd catkin_ws/src
+RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
 
 # PX4 src
 RUN apt-get update && \
@@ -268,7 +290,7 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # websocket server dependency
-RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0
+RUN pip3 install websocket_server posix-ipc django
 RUN python3.8 -m pip install websockets asyncio
 
 # pip install dependencies
@@ -287,9 +309,3 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
 
 RUN wget https://xpra.org/xorg.conf \
     && rm -rf /tmp/*
-
-# Node
-RUN apt-get install -y software-properties-common \
-&& curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-&& apt-get install -y nodejs \
-&& curl -L https://www.npmjs.com/install.sh | sh
