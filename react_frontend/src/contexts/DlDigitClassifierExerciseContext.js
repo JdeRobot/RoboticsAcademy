@@ -375,10 +375,7 @@ export function ExerciseProvider({ children }) {
         }
 
         if (digit !== "") {
-          var out_heading =
-            document.getElementById("output_heading").textContent;
-          document.getElementById("output_heading").textContent =
-            out_heading.replace(out_heading, "Digit found: " + digit);
+          setCanvasHeading("Digit found: " + digit);
         }
 
         // Send the Acknowledgment Message
@@ -399,46 +396,6 @@ export function ExerciseProvider({ children }) {
     context.drawImage(image, 0, 0);
   }
   // WS_GUI_ENDS
-
-  const toggleSubmitButton = (toggle) => {
-    var loadIntoRobot = document.getElementById("loadIntoRobot");
-    if (toggle === false) {
-      loadIntoRobot.disabled = true;
-      loadIntoRobot.style.opacity = "0.4";
-      loadIntoRobot.style.cursor = "not-allowed";
-      handleLoadModalOpen();
-    } else {
-      loadIntoRobot.disabled = false;
-      loadIntoRobot.style.opacity = "1.0";
-      loadIntoRobot.style.cursor = "default";
-      handleLoadModalClose();
-    }
-  };
-
-  function toggleResetButton(toggle) {
-    let reset_button = document.getElementById("reset");
-    if (toggle === false) {
-      reset_button.disabled = true;
-      reset_button.style.opacity = "0.4";
-      reset_button.style.cursor = "not-allowed";
-    } else {
-      reset_button.disabled = false;
-      reset_button.style.opacity = "1.0";
-      reset_button.style.cursor = "default";
-    }
-  }
-
-  function togglePlayPause(stop) {
-    setPlayState(!stop);
-  }
-
-  function enableSimControls() {
-    if (resetRequested === true) {
-      togglePlayPause(false);
-    }
-    enablePlayPause(true);
-    toggleResetButton(true);
-  }
 
   const keyHandleFrequency = (e) => {
     if (e.key === "ArrowUp") {
@@ -506,6 +463,14 @@ export function ExerciseProvider({ children }) {
     event.preventDefault();
     var fr = new FileReader();
     fr.readAsDataURL(event.target.files[0]);
+    setAlertState({
+      ...alertState,
+      errorAlert: false,
+      successAlert: true,
+      warningAlert: false,
+      infoAlert: false,
+    });
+    setAlertContent("File Uploaded Successfully");
   };
   const start = () => {
     submitCode();
