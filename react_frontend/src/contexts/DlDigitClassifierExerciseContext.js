@@ -14,6 +14,7 @@ let running = true,
   resetRequested = false,
   firstCodeSent = false;
 const FileLabel = "Choose a Deep learning model(Onnx Format):";
+const acceptExtensions = ".onnx";
 let image = new Image();
 let operation, shape;
 let openConsoleSnackbar = true;
@@ -472,12 +473,14 @@ export function ExerciseProvider({ children }) {
     });
     setAlertContent("File Uploaded Successfully");
   };
+
   const start = () => {
     submitCode();
   };
   return (
     <DlDigitClassifierExerciseContext.Provider
       value={{
+        acceptExtensions,
         FileLabel,
         openLoadModal,
         connectionState,
@@ -499,6 +502,7 @@ export function ExerciseProvider({ children }) {
         guiCanvasRef,
         fileRef,
         canvasHeading,
+        loadModelButton,
         handleLoadModalOpen,
         handleLoadModalClose,
         connectionButtonClick,

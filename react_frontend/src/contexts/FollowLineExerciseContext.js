@@ -2,7 +2,7 @@
 import * as React from "react";
 import { createContext, useState, useRef } from "react";
 import { saveCode, get_novnc_size_react } from "../helpers/utils";
-import { drawCircle } from "../helpers/birdEye.js";
+import { drawCircle } from "../helpers/FollowLine/birdEye.js";
 import PropTypes from "prop-types";
 import { Typography } from "@mui/material";
 const FollowLineExerciseContext = createContext();

@@ -53,7 +53,7 @@ export default function DlDigitClassifierExerciseView(props) {
       >
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           {" "}
-          Simulation and Console !{" "}
+          Console !{" "}
         </Typography>
         <Box
           sx={{
