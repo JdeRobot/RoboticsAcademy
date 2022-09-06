@@ -21,7 +21,7 @@ from shared.mouse import Mouse
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, mouse):
+    def __init__(self, host):
         
         rospy.init_node("GUI")
         self.payload = {'image': ''}
@@ -39,7 +39,7 @@ class GUI:
         self.ack_event = multiprocessing.Event()
         self.cli_event = multiprocessing.Event()
 
-        self.mouse = mouse
+        self.mouse = Mouse()
         # Start server thread
         t = threading.Thread(target=self.run_server)
         t.start()
@@ -180,7 +180,6 @@ class ProcessGUI(multiprocessing.Process):
         super(ProcessGUI, self).__init__()
 
         self.host = sys.argv[1]
-        self.mouse = Mouse()
         # Time variables
         self.time_cycle = SharedValue("gui_time_cycle")
         self.ideal_cycle = SharedValue("gui_ideal_cycle")
@@ -195,7 +194,7 @@ class ProcessGUI(multiprocessing.Process):
     # Function to start the execution of threads
     def run(self):
         # Initialize GUI
-        self.gui = GUI(self.host, self.mouse)
+        self.gui = GUI(self.host)
         self.initialize_events()
 
         # Wait for client before starting

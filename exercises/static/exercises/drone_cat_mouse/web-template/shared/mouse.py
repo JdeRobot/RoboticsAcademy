@@ -10,7 +10,7 @@ from gazebo_msgs.msg import ModelState
 
 class Mouse:
     def __init__(self):
-        self.mouse = DroneWrapper(name="rqt", ns="mouse/")
+        self.mouse = DroneWrapper(name="rqt", ns="/iris1/")
         self.reset_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
 
     # Explicit initialization functions
