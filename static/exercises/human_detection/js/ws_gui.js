@@ -49,7 +49,7 @@ function declare_gui() {
             }       
 
             if (count != ""){
-                if (count == "Plot"){
+                if (count == "Plot"||"Plot1"){
                     document.getElementById("output_heading").textContent = "Model Benchmarking Results";
                 }
                 else{
