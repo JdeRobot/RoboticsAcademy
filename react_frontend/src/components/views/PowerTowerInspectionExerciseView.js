@@ -37,8 +37,8 @@ export default function PowerTowerInspectionExerciseView(props) {
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>
-        <CanvasThree context={props.context} />
         <VisualizationComponents>
+          <GuiCanvas context={props.context} drone={true} />
           <GuiCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>
