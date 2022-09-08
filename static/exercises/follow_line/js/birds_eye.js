@@ -9,7 +9,7 @@ var initialPosition;
 // the angle towards which it points
 function drawCircle(x, y){
 	if (initialPosition == null) {
-		initialPosition = [x, y];
+		inialPosition = [x, y];
 	}
 	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);	
 	

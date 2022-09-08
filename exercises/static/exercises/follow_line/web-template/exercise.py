@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import logging
+
 from websocket_server import WebsocketServer
 import time
 import threading
@@ -131,6 +133,8 @@ class Template:
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
+        logging.debug("appy")
+        logging.debug(code)
         if code[0] == "" and code[1] == "":
             return
 

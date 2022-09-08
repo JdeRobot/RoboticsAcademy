@@ -1,0 +1,11 @@
+.birds-eye {
+    margin: 20px;
+    border: 2px solid #d3d3d3;
+    background-repeat: no-repeat;
+    height: 350px;
+    width: 340px;
+}
+
+.birds-eye, .birds-eye.default {
+    background: url('/static/exercises/follow_line/img/map.jpg');
+}
