@@ -1,5 +1,4 @@
 import * as React from "react";
-import FollowLineExerciseContext from "../../contexts/FollowLineExerciseContext";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -63,5 +62,5 @@ export default function ErrorModal(props) {
 }
 
 ErrorModal.propTypes = {
-  context: PropTypes.any,
+  context: PropTypes.any.isRequired,
 };

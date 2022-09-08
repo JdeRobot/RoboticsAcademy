@@ -4,7 +4,7 @@ import "../../styles/birdsEye.css";
 import PropTypes from "prop-types";
 
 export default function CanvasBirdEye(props) {
-  const { birdEyeClass } = React.useContext(props.context);
+  const { birdEyeClass, birdEyeCanvas } = React.useContext(props.context);
 
   return (
     <Box
@@ -19,7 +19,7 @@ export default function CanvasBirdEye(props) {
       }}
     >
       <Typography>Bird View</Typography>
-      <canvas className={birdEyeClass} id="birds-eye" />
+      <canvas className={birdEyeClass} ref={birdEyeCanvas} id="birds-eye" />
     </Box>
   );
 }

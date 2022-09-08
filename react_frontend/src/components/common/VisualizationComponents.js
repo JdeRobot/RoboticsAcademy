@@ -8,8 +8,9 @@ export default function VisualizationComponents(props) {
       sx={{
         m: 3,
         p: 2,
-        display: "inline-flex",
+        display: "flex",
         width: "100%",
+        flexWrap: "wrap",
         alignItems: "stretch",
         justifyContent: "space-around",
       }}

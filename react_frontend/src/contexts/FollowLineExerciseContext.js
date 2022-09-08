@@ -51,6 +51,7 @@ export function ExerciseProvider({ children }) {
   const exercise = "follow_line";
   const editorRef = useRef();
   const imageRef = useRef();
+  const birdEyeCanvas = useRef();
   // connectionState - Connect, Connecting, Connected
   const [connectionState, setConnectionState] = useState("Connect");
   // launchState - Launch, Launching, Ready
@@ -677,7 +678,6 @@ while True:
     // What to do when a message from server is received
     websocket_gui.onmessage = function (event) {
       let operation = event.data.substring(0, 4);
-      let mapCanvas = document.getElementById("birds-eye");
       if (operation === "#gui") {
         // Parse the entire Object
         let data = JSON.parse(event.data.substring(4));
@@ -696,7 +696,7 @@ while True:
         content = pose.split(",").map(function (item) {
           return parseFloat(item);
         });
-        drawCircle(content[0], content[1], content, mapCanvas);
+        drawCircle(content[0], content[1], content, birdEyeCanvas.current);
 
         // Send the Acknowledgment Message
         websocket_gui.send("#ack");
@@ -985,6 +985,8 @@ while True:
         errorContentHeading,
         filename,
         editorRef,
+        imageRef,
+        birdEyeCanvas,
         handleLoadModalOpen,
         handleLoadModalClose,
         check,

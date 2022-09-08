@@ -11,7 +11,6 @@ import LoadModal from "../modals/LoadModal";
 import CustomAlert from "../common/CustomAlert";
 import ErrorModal from "../modals/ErrorModal";
 import PropTypes from "prop-types";
-import CanvasThree from "../visualizers/CanvasThree";
 
 export default function RescuePeopleExerciseView(props) {
   return (
@@ -37,8 +36,8 @@ export default function RescuePeopleExerciseView(props) {
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>
-        <CanvasThree context={props.context} />
         <VisualizationComponents>
+          <GuiCanvas context={props.context} drone={true} />
           <GuiCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>

@@ -4,10 +4,18 @@ import PropTypes from "prop-types";
 import "../../styles/GuiCanvas.css";
 
 export default function GuiCanvas(props) {
-  const { guiCanvasRef, exerciseSpecificCSS, canvasHeading } = React.useContext(
-    props.context
-  );
-
+  const {
+    guiCanvasRefDrone,
+    guiCanvasRef,
+    exerciseSpecificCSS,
+    canvasHeading,
+  } = React.useContext(props.context);
+  let guiCanvasRef_ = guiCanvasRef;
+  let canvasId = "gui_canvas";
+  if (props.drone) {
+    guiCanvasRef_ = guiCanvasRefDrone;
+    canvasId = "gui_canvas_left";
+  }
   return (
     <Box
       sx={{
@@ -23,13 +31,14 @@ export default function GuiCanvas(props) {
       <canvas
         height={240}
         width={650}
-        ref={guiCanvasRef}
+        ref={guiCanvasRef_}
         className={exerciseSpecificCSS}
-        id="gui_canvas"
+        id={canvasId}
       />
     </Box>
   );
 }
 GuiCanvas.propTypes = {
-  context: PropTypes.any,
+  context: PropTypes.any.isRequired,
+  drone: PropTypes.bool,
 };
