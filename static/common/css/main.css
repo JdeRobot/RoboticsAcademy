@@ -370,6 +370,16 @@ input[type=number]::-webkit-inner-spin-button {
     display: none;
 }
 
+#graph-upload{
+  font-size: 12px;
+    width: 80px;
+    height: 40px;
+    border: none;
+    background-color: whitesmoke;
+    margin-bottom: 10px;
+    width: auto;
+}
+
 #visualizer{
   font-size: 12px;
     width: 80px;
