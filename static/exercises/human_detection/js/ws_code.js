@@ -141,7 +141,7 @@ function benchmarkModel(){
 }
 
 function graph_input(){
-	var graph= document.getElementById("code-menu-1");
+	var graph= document.getElementById("code-menu-1").value;
 	document.getElementById("output_heading").textContent = "Getting Graphs. Please wait....";
 	if (graph =='map')
 		websocket_code.send('#graphmap');
@@ -157,7 +157,7 @@ function graph_input(){
 function EnableGraphInput(){
 	
 	var id=document.getElementById("output_heading").textContent;
-	var graph= document.getElementById("code-menu-1");
+	var graph= document.getElementById("code-menu-1").value;
 
 	while(id!=="Benchmarking process thread closed!"){
 		graph.disabled = true;
