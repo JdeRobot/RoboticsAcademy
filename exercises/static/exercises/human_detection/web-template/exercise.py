@@ -285,7 +285,7 @@ class Template:
         os.chdir(currentPath)
         savePath = os.path.join(currentPath, 'exercises/static/exercises/human_detection/web-template/benchmarking/results')
         print (savePath)
-        PRINT(currentPath)
+        print (currentPath)
         shutil.rmtree(savePath, ignore_errors=True)
         os.makedirs(savePath)
         # Create an evaluator object in order to obtain the metrics
