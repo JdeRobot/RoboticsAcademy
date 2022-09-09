@@ -283,7 +283,9 @@ class Template:
         boundingboxes = benchmark.getBoundingBoxes()
         # getBoundingBoxes() changes the current directory, so we need to change it back
         os.chdir(currentPath)
-        savePath = os.path.join(currentPath, 'benchmarking/results')
+        savePath = os.path.join(currentPath, 'exercises/static/exercises/human_detection/web-template/benchmarking/results')
+        print (savePath)
+        PRINT(currentPath)
         shutil.rmtree(savePath, ignore_errors=True)
         os.makedirs(savePath)
         # Create an evaluator object in order to obtain the metrics
@@ -577,14 +579,14 @@ class Template:
         if (message[:9] == "#graphmap"):
             try:
                 self.reload = True
-                self.gui.showResult(plot_img, "Plot")
+                self.gui.showResult(plot_img1, "Plot1")
                 print('worked!!!!')
             except:
                 pass
         if (message[:9] == "#graph_11"):
             try:
                 self.reload = True
-                self.gui.showResult(plot_img1, "Plot1")
+                self.gui.showResult(plot_img, "Plot1")
                 print('worked!!')
             except:
                 pass            
