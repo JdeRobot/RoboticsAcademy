@@ -163,8 +163,11 @@ class Evaluator:
                 plt.title('Precision x Recall curve \nClass: %s' % str(classId))
             plt.legend(shadow=True)
             plt.grid()
-            if savePath is not None:
-                plt.savefig(os.path.join(savePath, classId + '.png'))
+            if showInterpolatedPrecision:
+                if method == MethodAveragePrecision.EveryPointInterpolation:
+                    plt.savefig(os.path.join(savePath, classId +'_every'+'.png'))
+                elif method == MethodAveragePrecision.ElevenPointInterpolation:
+                    plt.savefig(os.path.join(savePath, classId +'_11'+'.png'))
             if showGraphic is True:
                 plt.show()
                 plt.pause(0.05)
