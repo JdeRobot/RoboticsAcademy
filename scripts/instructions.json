@@ -77,8 +77,9 @@
     },
     "rescue_people": {
         "gazebo_path": "/RoboticsAcademy/exercises/rescue_people/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/rescue_people/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/rescue_people/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["bash ./RoboticsAcademy/exercises/rescue_people/web-template/launch/rescue_people.sh"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/rescue_people/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/rescue_people/web-template/gui.py 0.0.0.0 {}"
     },
     "drone_hangar": {
         "gazebo_path": "/RoboticsAcademy/exercises/drone_hangar/web-template/launch",
