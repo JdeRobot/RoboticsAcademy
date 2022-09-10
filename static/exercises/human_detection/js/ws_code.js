@@ -140,6 +140,31 @@ function benchmarkModel(){
 	running = true;
 }
 
+function graph_input(){
+	var graph= document.getElementById("code-menu-1").value;
+	document.getElementById("output_heading").textContent = "Getting Graphs. Please wait....";
+	if (graph =='map')
+		websocket_code.send('#graphmap');
+	else if (graph=='11pt')
+		websocket_code.send('#graph_11');	
+	stop_button.disabled = false;
+    stop_button.style.opacity = "1.0";
+	stop_button.style.cursor = "default";
+
+	running = true;	
+}
+
+function EnableGraphInput(){
+	
+	var id=document.getElementById("output_heading").textContent;
+	var graph= document.getElementById("code-menu-1").value;
+
+	while(id!=="Benchmarking process thread closed!"){
+		graph.disabled = true;
+	}
+	graph.disabled =false
+}
+
 function visualizeModel(){
 	websocket_code.send("#visual");
 	alert("Opening Visualizer. Please wait....");

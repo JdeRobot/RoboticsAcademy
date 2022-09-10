@@ -5,6 +5,7 @@ $('#code-menu').on('change', function() {
       $("#Video_Infer").css("display", "inline-block");
       $("#Live_Infer").css("display", "none");
       $("#benchmark").css("display", "none");
+      $("#graph-upload").css("display", "none");
       $("#visualizer").css("display", "none")
       $("#stop_code").css("display", "inline-block");
 
@@ -14,7 +15,8 @@ $('#code-menu').on('change', function() {
         $("#Video_Infer").css("display", "none");
         $("#Live_Infer").css("display", "inline-block");
         $("#video-upload").css("display", "none");
-        $("#benchmark").css("display", "none");        
+        $("#benchmark").css("display", "none");   
+        $("#graph-upload").css("display", "none");     
         $("#visualizer").css("display", "none")
         $("#stop_code").css("display", "inline-block");
     } 
@@ -23,6 +25,7 @@ $('#code-menu').on('change', function() {
         $("#video-upload").css("display", "none");
         $("#Live_Infer").css("display", "none");
         $("#benchmark").css("display", "inline-block");
+        $("#graph-upload").css("display", "flex");
         $("#visualizer").css("display", "none")
         $("#stop_code").css("display", "inline-block");
     } 
@@ -31,6 +34,7 @@ $('#code-menu').on('change', function() {
         $("#video-upload").css("display", "none");
         $("#Live_Infer").css("display", "none");
         $("#benchmark").css("display", "none");
+        $("#graph-upload").css("display", "none");
         $("#visualizer").css("display", "inline-block")
         $("#stop_code").css("display", "inline-block");
     } 
@@ -40,6 +44,7 @@ $('#code-menu').on('change', function() {
       $("#Video_Infer").css("display", "none");
       $("#Live_Infer").css("display", "none");
       $("#benchmark").css("display", "none");
+      $("#graph-upload").css("display", "none");
       $("#visualizer").css("display", "none")
       $("#stop_code").css("display", "none");
     }

@@ -283,12 +283,29 @@ class Template:
         boundingboxes = benchmark.getBoundingBoxes()
         # getBoundingBoxes() changes the current directory, so we need to change it back
         os.chdir(currentPath)
-        savePath = os.path.join(currentPath, 'benchmarking/results')
+        savePath = os.path.join(currentPath, 'exercises/static/exercises/human_detection/web-template/benchmarking/results')
+        print (savePath)
+        print (currentPath)
         shutil.rmtree(savePath, ignore_errors=True)
         os.makedirs(savePath)
         # Create an evaluator object in order to obtain the metrics
         evaluator = Evaluator()
-        # Plot Precision x Recall curve
+        # Plot 11-pt Precision x Recall curve
+        detections = evaluator.PlotPrecisionRecallCurve(
+            boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
+            IOUThreshold=0.3,  # IOU threshold
+            method=MethodAveragePrecision.ElevenPointInterpolation,  # As the official matlab code
+            showAP=True,  # Show Average Precision in the title of the plot
+            showInterpolatedPrecision= True, # Plot the interpolated precision curve
+            savePath = savePath, showGraphic=False)
+        global plot_img
+        plot_img=cv2.imread(os.path.join(savePath, "person_11.png"))
+        #self.gui.showResult(plot_img, "Plot")
+        f = open(os.path.join(savePath, 'results11.txt'), 'w')
+        f.write('11-point Average Precision (AP), Precision and Recall: ') 
+
+        #Plot 11-pt Precision x Recall curve
+        
         detections = evaluator.PlotPrecisionRecallCurve(
             boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
             IOUThreshold=0.3,  # IOU threshold
@@ -296,10 +313,11 @@ class Template:
             showAP=True,  # Show Average Precision in the title of the plot
             showInterpolatedPrecision= True, # Plot the interpolated precision curve
             savePath = savePath, showGraphic=False)
-        plot_img  = cv2.imread(os.path.join(savePath, "person.png"))
-        self.gui.showResult(plot_img, "Plot")
-        f = open(os.path.join(savePath, 'results.txt'), 'w')
-        f.write('Average Precision (AP), Precision and Recall: ')
+        global plot_img1  
+        plot_img1= cv2.imread(os.path.join(savePath, "person_every.png"))
+        self.gui.showResult(plot_img1, "Plot1")
+        f = open(os.path.join(savePath, 'results_every.txt'), 'w')
+        f.write('Mean Average Precision (mAP), Precision and Recall: ') 
 
         # each detection is a class
         for metricsPerClass in detections:
@@ -558,6 +576,20 @@ class Template:
                 self.visualizeModel()
             except:
                 pass
+        if (message[:9] == "#graphmap"):
+            try:
+                self.reload = True
+                self.gui.showResult(plot_img1, "Plot1")
+                print('worked!!!!')
+            except:
+                pass
+        if (message[:9] == "#graph_11"):
+            try:
+                self.reload = True
+                self.gui.showResult(plot_img, "Plot1")
+                print('worked!!')
+            except:
+                pass            
         if(message[:11] == "#save_model"):
             try:
                 self.saveModel(message[11:])
