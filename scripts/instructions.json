@@ -79,8 +79,9 @@
     },
     "drone_hangar": {
         "gazebo_path": "/RoboticsAcademy/exercises/drone_hangar/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/drone_hangar/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_hangar/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/drone_hangar/web-template/launch/drone_hangar.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/drone_hangar/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/drone_hangar/web-template/gui.py 0.0.0.0 {}"
     },
     "drone_gymkhana": {
         "gazebo_path": "/RoboticsAcademy/exercises/drone_gymkhana/web-template/launch",
