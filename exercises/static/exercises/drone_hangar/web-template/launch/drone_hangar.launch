@@ -16,7 +16,7 @@
 
   <!-- The following lines simulate the world in Gazebo.  -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="/RoboticsAcademy/exercises/power_tower_inspection/web-template/power_tower_inspection.world" />
+    <arg name="world_name" value="/RoboticsAcademy/exercises/drone_hangar/web-template/drone_hangar.world" />
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
