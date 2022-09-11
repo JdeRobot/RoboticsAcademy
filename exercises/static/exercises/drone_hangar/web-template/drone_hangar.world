@@ -13,6 +13,7 @@
 		<include>
 			<uri>model://hangar</uri>
 			<pose>0 -2 0 0 0 0</pose>
+			<scale>4 4 4</scale>
 		</include>
 		<include>
 			<uri>model://wall1</uri>
@@ -26,9 +27,20 @@
 			<uri>model://wall3</uri>
 			<pose>0 -6 0 0 0 0</pose>
 		</include>
+		
 		<include>
-			<uri>model://wall4</uri>
+			<uri>model://cylinder1</uri>
 			<pose>0 -6 0 0 0 0</pose>
+		</include>
+
+		<include>
+			<uri>model://cylinder2</uri>
+			<pose>0 -6 2 0 0 0</pose>
+		</include>
+
+		<include>
+			<uri>model://cylinder3</uri>
+			<pose>0 -3 2 0 0 0</pose>
 		</include>
 
 		<!-- A global light source -->
