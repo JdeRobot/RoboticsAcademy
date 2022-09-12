@@ -95,8 +95,9 @@
     },
     "visual_lander": {
         "gazebo_path": "/RoboticsAcademy/exercises/visual_lander/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/visual_lander/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/visual_lander/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/visual_lander/web-template/launch/visual_lander.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/visual_lander/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/visual_lander/web-template/gui.py 0.0.0.0 {}"
     },
     "opticalflow_teleop": {
         "gazebo_path": "/RoboticsAcademy/exercises/opticalflow_teleop/web-template/launch",
