@@ -7,61 +7,61 @@
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_1</name>
-			<pose>-18 -8.5 0.01 0 0 0</pose>
+			<pose>-18 -8.5 0.1 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_2</name>
-			<pose>-5.5 -8.5 0.01 0 0 0</pose>
+			<pose>-5.5 -8.5 0.1 0 0 0</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_3</name>
-			<pose>7 -8.5 0.01 0 0 1.57</pose>
+			<pose>7 -8.5 0.1 0 0 1.57</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_4</name>
-			<pose>7 3 0.01 0 0 1.57</pose>
+			<pose>7 3 0.1 0 0 1.57</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_5</name>
-			<pose>7 14.5 0.01 0 0 3.14</pose>
+			<pose>7 14.5 0.1 0 0 3.14</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_6</name>
-			<pose>2.5 14.5 0.01 0 0 3.14</pose>
+			<pose>2.5 14.5 0.1 0 0 3.14</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_7</name>
-			<pose>2.5 7.5.01 0 0 3.14</pose>
+			<pose>2.5 7.5.1 0 0 3.14</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_8</name>
-			<pose>-3 7.5 0.01 0 0 1.57</pose>
+			<pose>-3 7.5 0.1 0 0 1.57</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_9</name>
-			<pose>-3 20.5 0.01 0 0 3.14</pose>
+			<pose>-3 20.5 0.1 0 0 3.14</pose>
 		</include>
 		<include>
 			<uri>model://arrow</uri>
 			<name>arrow_10</name>
-			<pose>-13 20.5 0.01 0 0 3.14</pose>
+			<pose>-13 20.5 0.1 0 0 3.14</pose>
 		</include>
 
 		<include>
 			<uri>model://simple_labyrinth_green</uri>
 		</include>
 
-		<!-- Grass plane -->
+		<!-- Asphalt plane -->
 		<include>
-			<uri>model://grass_plane</uri>
+			<uri>model://asphalt_plane</uri>
 		</include>
 
 		<!-- JdeRobot Logo -->
