@@ -8,6 +8,54 @@
 			<pose>5 0 0.12 0 0 0</pose>
 		</include>
 
+		<road name="my_road">
+			<width>3</width>
+			<point>5 0 0.01</point>
+			<point>10 0 0.01</point>
+			<point>15 0 0.01</point>
+			<point>25 0 0.01</point>
+			<point>30 0 0.01</point>
+			<point>35 0 0.01</point>
+			<point>40 0 0.01</point>
+			<point>45 0 0.01</point>
+			<point>50 0 0.01</point>
+			<point>55 0 0.01</point>
+			<point>60 0 0.01</point>
+			<point>65 0 0.01</point>
+			<point>70 0 0.01</point>
+			<point>75 0 0.01</point>
+			<point>80 0 0.01</point>
+			<point>85 0 0.01</point>
+			<point>90 0 0.01</point>
+			<point>95 0 0.01</point>
+			<point>100 0 0.01</point>
+		</road>
+
+		<include>
+			<uri>model://gas_station</uri>
+			<pose>5 36.0 0 0 0 0</pose>
+		</include>
+
+		<!-- Target Houses -->
+        <include>
+			<uri>model://house_3</uri>
+            <pose>35 16 0 0 0 0</pose>
+            <name>house1</name>
+		</include>
+
+        <include>
+			<uri>model://house_3</uri>
+            <pose>60 -16 0 0 0 0</pose>
+            <name>house2</name>
+		</include>
+
+        <include>
+			<uri>model://house_3</uri>
+            <pose>80 16 0 0 0 0</pose>
+            <name>house3</name>
+		</include>
+
+
 		<!-- Grass plane -->
 		<include>
 			<uri>model://grass_plane</uri>
