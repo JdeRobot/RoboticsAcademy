@@ -16,7 +16,7 @@
 
   <!-- The following lines simulate the world in Gazebo.  -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="/RoboticsAcademy/exercises/labyrinth_escape/web-template/labyrinth_escape.world" />
+    <arg name="world_name" value="/RoboticsAcademy/exercises/follow_road/web-template/follow_road.world" />
     <arg name="debug" value="$(arg debug)" />
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
@@ -30,8 +30,9 @@
     <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
       <arg name="mav_name" value="$(arg mav_name)" />
       <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
-      <arg name="x" value="-18"/>
-      <arg name="y" value="-8.5"/>
+      <arg name="x" value="14.96"/>
+      <arg name="z" value="0.3"/>
+      <arg name="Y" value="1.57"/>
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="enable_camera_sensor" value="$(arg enable_camera_sensor)"/>
