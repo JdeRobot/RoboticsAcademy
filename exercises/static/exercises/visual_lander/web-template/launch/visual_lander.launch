@@ -31,7 +31,7 @@
       <arg name="mav_name" value="$(arg mav_name)" />
       <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
       <arg name="x" value="0.0"/>
-        <arg name="y" value="0.0"/>
+      <arg name="y" value="0.0"/>
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="enable_camera_sensor" value="$(arg enable_camera_sensor)"/>
