@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 
 from drone_wrapper import DroneWrapper
+from shared.light import Light
 from shared.image import SharedImage
 from shared.value import SharedValue
 
@@ -38,6 +39,7 @@ class HAL:
 
         self.image = None
         self.drone = DroneWrapper(name="rqt",ns="/iris/")
+        self.light = Light()
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
@@ -121,6 +123,12 @@ class HAL:
 
     def land(self):
         self.drone.land()
+    
+    def set_cmd_on(self):
+        self.light.set_cmd_on()
+
+    def set_cmd_off(self):
+        self.light.set_cmd_off()
 
     def update_hal(self):
         self.get_frontal_image()
@@ -136,6 +144,8 @@ class HAL:
         self.set_cmd_pos()
         self.set_cmd_vel()
         self.set_cmd_mix()
+        self.set_cmd_on()
+        self.set_cmd_off()
 
     # Destructor function to close all fds
     def __del__(self):
