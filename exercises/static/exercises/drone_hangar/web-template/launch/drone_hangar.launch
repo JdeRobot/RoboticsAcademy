@@ -10,6 +10,7 @@
   <arg name="headless" default="true"/>
   <arg name="use_sim_time" value="true"/>
   <arg name="enable_camera_sensor" default="true"/>
+  <arg name="enable_vi_sensor" default="true"/>
   <!-- The following line causes gzmsg and gzerr messages to be printed to the console
       (even when Gazebo is started through roslaunch) -->
   <arg name="verbose" default="true"/>
@@ -35,6 +36,7 @@
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="enable_camera_sensor" value="$(arg enable_camera_sensor)"/>
+      <arg name="enable_vi_sensor" value="$(arg enable_vi_sensor)"/>
       <arg name="log_file" value="$(arg log_file)"/>
     </include>
     <!-- The Iris position controller -->
@@ -51,6 +53,7 @@
     <param name="sample_time" type="double" value= "1.0" />
     <param name="drone_state_timer_frequency" type="double" value= "0.01" />
     <param name="misc_state_timer_frequency" type="double" value= "1.0" />
+    <param name="enable_depth" type="bool" value= "True" />
 
     <!--    Rotors driver node   -->
     <node name="rotors_driver_node" pkg="rotors_driver" type="rotors_driver_node.py" output="screen"/>
