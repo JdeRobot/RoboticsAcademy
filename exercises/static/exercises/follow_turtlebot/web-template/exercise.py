@@ -25,7 +25,6 @@ import queue
 
 
 from hal import HAL
-from shared.turtlebot import Turtlebot
 from console import start_console, close_console
 
 
@@ -54,8 +53,6 @@ class Template:
         self.host = sys.argv[1]
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.turtlebot = Turtlebot()
-       # self.gui = GUI(self.host, self.turtlebot)
         self.paused = False
 
 
