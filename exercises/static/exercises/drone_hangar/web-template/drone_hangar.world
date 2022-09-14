@@ -61,7 +61,7 @@
 				<linear>0.05</linear>
 				<quadratic>0.001</quadratic>
 			</attenuation>
-			<cast_shadows>1</cast_shadows>
+			<cast_shadows>0</cast_shadows>
 		</light>
 
 		<light name='user_point_light_1' type='point'>
