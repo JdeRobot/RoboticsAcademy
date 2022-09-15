@@ -12,9 +12,8 @@ import logging
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, turtlebot):
-        t = threading.Thread(target=self.run_server)
-        
+    
+    def __init__(self, host):
         self.payload = {'image': ''}
         self.left_payload = {'image': ''}
         self.server = None
@@ -35,7 +34,10 @@ class GUI:
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
-        self.turtlebot = turtlebot
+        self.turtlebot = Turtlebot()
+
+        # Start server thread
+        t = threading.Thread(target=self.run_server)
         t.start()
 
     # Explicit initialization function
@@ -192,13 +194,20 @@ class ThreadGUI:
     def __init__(self, gui):
         self.gui = gui
 
+        self.host = sys.argv[1]
         # Time variables
         self.ideal_cycle = 80
         self.measured_cycle = 80
         self.iteration_counter = 0
 
     # Function to start the execution of threads
-    def start(self):
+    def run(self):
+        # Initialize GUI
+        self.gui = GUI(self.host)
+        self.initialize_events()
+
+        # Wait for client before starting
+        self.cli_event.wait()
         self.measure_thread = threading.Thread(target=self.measure_thread)
         self.thread = threading.Thread(target=self.run)
 
