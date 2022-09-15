@@ -25,7 +25,7 @@
     <arg name="verbose" value="$(arg verbose)"/>
   </include>
   <!-- turtlebot_with_colored_plate -->
-  <arg name="x_pos" default="0.0"/>
+  <arg name="x_pos" default="3.0"/>
   <arg name="y_pos" default="0.0"/>
   <arg name="z_pos" default="0.0"/>
   <param name="robot_description" command="$(find xacro)/xacro $(find drone_assets)/urdf/turtlebot3_waffle_pi_colored_plate.xacro" />

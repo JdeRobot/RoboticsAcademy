@@ -22,7 +22,7 @@ from shared.turtlebot import Turtlebot
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, turtlebot):
+    def __init__(self, host):
         
         rospy.init_node("GUI")
         self.payload = {'image': ''}
@@ -40,7 +40,7 @@ class GUI:
         self.ack_event = multiprocessing.Event()
         self.cli_event = multiprocessing.Event()
         # Take the console object to set the same websocket and client
-        self.turtlebot = turtlebot
+        self.turtlebot = Turtlebot()
 
         # Start server thread
         t = threading.Thread(target=self.run_server)
@@ -168,7 +168,6 @@ class ProcessGUI(multiprocessing.Process):
         super(ProcessGUI, self).__init__()
 
         self.host = sys.argv[1]
-        self.turtlebot = Turtlebot()
         # Time variables
         self.time_cycle = SharedValue("gui_time_cycle")
         self.ideal_cycle = SharedValue("gui_ideal_cycle")
@@ -184,7 +183,7 @@ class ProcessGUI(multiprocessing.Process):
     # Function to start the execution of threads
     def run(self):
         # Initialize GUI
-        self.gui = GUI(self.host, self.turtlebot)
+        self.gui = GUI(self.host)
         self.initialize_events()
 
         # Wait for client before starting
