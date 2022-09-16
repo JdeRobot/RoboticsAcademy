@@ -12,16 +12,6 @@ class SharedValue:
 
         self.shm_name = name; self.value_lock_name = name
 
-        # Initialize shared memory buffer
-       # try:
-        #    self.shm_region = SharedMemory(self.shm_name)
-         #   self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
-          #  self.shm_region.close_fd()
-        #except ExistentialError:
-        #    self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=sizeof(c_float))
-        #    self.shm_buf = mmap.mmap(self.shm_region.fd, self.shm_region.size)
-        #    self.shm_region.close_fd()
-
         # Initialize or retreive Semaphore
         try:
             self.value_lock = Semaphore(self.value_lock_name, O_CREX)
@@ -50,8 +40,10 @@ class SharedValue:
 
             return value
         elif  type_name=="list":
-            self.shm_region = SharedMemory(self.shm_name)
-            self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
+            mock_val_arr = np.array([0.0,0.0,0.0])
+            byte_size = mock_val_arr.nbytes
+            self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=byte_size)
+            self.shm_buf = mmap.mmap(self.shm_region.fd, byte_size)
             self.shm_region.close_fd()
             self.value_lock.acquire()
             array_val = np.ndarray(shape=(3,),

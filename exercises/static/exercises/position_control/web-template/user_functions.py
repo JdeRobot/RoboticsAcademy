@@ -106,13 +106,10 @@ class HALFunctions:
         self.beacons.append(Beacon('beacon5', np.array([10, 0, 0]), False, False))
         self.beacons.append(Beacon('initial', np.array([0, 0, 0]), False, False))
         self.shared_beacons.add(self.beacons ,type_name="list")
-    
+
     def get_next_beacon(self):
-        for beacon in self.beacons:
-            if beacon.is_reached() == False:
-                self.shared_beacons.add(beacon ,type_name="list")
-                beacon =  self.shared_landed_state.get(type_name = "value")
-                return beacon
+        beacon =  self.shared_beacons.get(type_name = "list", n_elem = 1)
+        return beacon[0]
 
 # Define GUI functions
 class GUIFunctions:

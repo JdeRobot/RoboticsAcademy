@@ -126,19 +126,12 @@ class HAL:
         self.drone.land()
 
     def init_beacons(self):
-        self.beacons = []
-        self.beacons.append(Beacon('beacon1', np.array([0, 5, 0]), False, False))
-        self.beacons.append(Beacon('beacon2', np.array([5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon3', np.array([0, -5, 0]), False, False))
-        self.beacons.append(Beacon('beacon4', np.array([-5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon5', np.array([10, 0, 0]), False, False))
-        self.beacons.append(Beacon('initial', np.array([0, 0, 0]), False, False))
-        self.shared_beacons.add(self.beacons ,type_name="list")
+        self.beacons = self.shared_beacons.get(type_name = "list", n_elem = 6)
     
     def get_next_beacon(self):
         for beacon in self.beacons:
             if beacon.is_reached() == False:
-                self.shared_beacons.add(beacon ,type_name="list")
+                self.shared_beacons.add(np.array([beacon]) ,type_name="list")
       
 
     def update_hal(self):

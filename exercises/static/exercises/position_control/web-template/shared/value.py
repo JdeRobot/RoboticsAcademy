@@ -12,16 +12,6 @@ class SharedValue:
 
         self.shm_name = name; self.value_lock_name = name
 
-        # Initialize shared memory buffer
-       # try:
-        #    self.shm_region = SharedMemory(self.shm_name)
-         #   self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
-          #  self.shm_region.close_fd()
-        #except ExistentialError:
-        #    self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=sizeof(c_float))
-        #    self.shm_buf = mmap.mmap(self.shm_region.fd, self.shm_region.size)
-        #    self.shm_region.close_fd()
-
         # Initialize or retreive Semaphore
         try:
             self.value_lock = Semaphore(self.value_lock_name, O_CREX)
@@ -33,7 +23,7 @@ class SharedValue:
         self.value_lock.release()
 
     # Get the shared value
-    def get(self, type_name= "value"):
+    def get(self, type_name= "value", n_elem = 3):
         # Retreive the data from buffer
         if type_name=="value":
             try:
@@ -50,12 +40,26 @@ class SharedValue:
 
             return value
         elif  type_name=="list":
-            self.shm_region = SharedMemory(self.shm_name)
-            self.shm_buf = mmap.mmap(self.shm_region.fd, sizeof(c_float))
+            if n_elem ==  1 :
+                mock_val_arr = np.array([0.0])
+            elif n_elem == 3:
+                mock_val_arr = np.array([0.0, 0.0, 0.0])
+            elif n_elem == 6:
+                mock_val_arr = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+            byte_size = mock_val_arr.nbytes
+            self.shm_region = SharedMemory(self.shm_name, O_CREAT, size=byte_size)
+            self.shm_buf = mmap.mmap(self.shm_region.fd, byte_size)
             self.shm_region.close_fd()
             self.value_lock.acquire()
-            array_val = np.ndarray(shape=(6,),
+            if n_elem ==  1 :
+                array_val = np.ndarray(shape=(1,),
+                                    dtype = 'O', buffer=self.shm_buf)
+            elif n_elem == 3:
+                array_val = np.ndarray(shape=(3,),
                                 dtype='float32', buffer=self.shm_buf)
+            elif n_elem == 6:
+                array_val = np.ndarray(shape=(6,),
+                                    dtype = 'O', buffer=self.shm_buf)
             self.value_lock.release()
 
             return array_val
