@@ -83,16 +83,71 @@ class HAL:
         self.drone.land()
 
     def init_beacons(self):
-        self.beacons = []
-        self.beacons.append(Beacon('beacon1', np.array([0, 5, 0]), False, False))
-        self.beacons.append(Beacon('beacon2', np.array([5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon3', np.array([0, -5, 0]), False, False))
-        self.beacons.append(Beacon('beacon4', np.array([-5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon5', np.array([10, 0, 0]), False, False))
-        self.beacons.append(Beacon('initial', np.array([0, 0, 0]), False, False))
+        self.beacons = self.shared_beacons.get(type_name = "list", n_elem = 6)
     
     def get_next_beacon(self):
         for beacon in self.beacons:
             if beacon.is_reached() == False:
-                return beacon
-        return None
+                self.shared_beacons.add(np.array([beacon]) ,type_name="list")
+      
+
+    def update_hal(self):
+        self.get_frontal_image()
+        self.get_ventral_image()
+        self.get_position()
+        self.get_velocity()
+        self.get_yaw_rate()
+        self.get_orientation()
+        self.get_pitch()
+        self.get_roll()
+        self.get_yaw()
+        self.get_landed_state()
+        self.set_cmd_pos()
+        self.set_cmd_vel()
+        self.set_cmd_mix()
+        self.init_beacons()
+        self.get_next_beacon()
+
+
+    # Destructor function to close all fds
+    def __del__(self):
+        self.shared_frontal_image.close()
+        self.shared_ventral_image.close()
+        self.shared_x.close()
+        self.shared_y.close()
+        self.shared_z.close()
+        self.shared_takeoff_z.close()
+        self.shared_az.close()
+        self.shared_azt.close()
+        self.shared_vx.close()
+        self.shared_vy.close()
+        self.shared_vz.close()
+        self.shared_landed_state.close()
+        self.shared_position.close()
+        self.shared_velocity.close()
+        self.shared_orientation.close()
+        self.shared_roll.close()
+        self.shared_pitch.close()
+        self.shared_yaw.close()
+        self.shared_yaw_rate.close()
+        self.shared_beacons.close()
+
+class ThreadHAL(threading.Thread):
+    def __init__(self, update_function):
+        super(ThreadHAL, self).__init__()
+        self.time_cycle = 80
+        self.update_function = update_function
+
+    def run(self):
+        while(True):
+            start_time = datetime.now()
+
+            self.update_function()
+
+            finish_time = datetime.now()
+
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+
+            if(ms < self.time_cycle):
+                time.sleep((self.time_cycle - ms) / 1000.0)
