@@ -28,7 +28,7 @@ class Turtlebot():
             self.x_v = random.uniform(0.0,0.2)
             self.y_v= random.uniform(0.0,0.2) if self.x_v<=0.15 else 0.05
     
-    def tb_state_update_callback(self, event= None):
+    def tb_state_update_callback(self, event):
         if self.play == 1:
             self.x_v = random.uniform(0.0,0.2)
             self.y_v= random.uniform(0.0,0.2) if self.x_v<=0.15 else 0.05
