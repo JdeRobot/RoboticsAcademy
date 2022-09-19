@@ -49,7 +49,7 @@ class ManagerConsumer:
         async for websocket_message in websocket:
             try:
                 message = ManagerConsumerMessage.from_str(websocket_message)
-                self.manager.trigger(message.command)
+                self.manager.trigger(message.command, data=message.data or None)
                 response = {"message": f"Exercise state changed to {self.manager.state}"}
                 await websocket.send(str(message.response(response)))
             except ManagerConsumerMessageException as e:

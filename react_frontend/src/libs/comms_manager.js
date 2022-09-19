@@ -124,7 +124,7 @@ const CommsManager = (address) => {
   // Messages and events
   const commands = {
     connect: connect,
-    launch: () => send('launch'),
+    launch: (configuration) => send('launch', configuration),
     run: () => send('run'),
     stop: () => send('stop'),
     pause: () => send('pause'),

@@ -14,7 +14,8 @@ const TestExerciseManager = (props) => {
   });
 
   const click = (command) => {
-    RoboticsExerciseComponents.commsManager.launch()
+    const config = JSON.parse(document.getElementById("exercise-config").textContent);
+    RoboticsExerciseComponents.commsManager.launch(config)
     .then((message) => {
       setMessage("Ready");
       setIserror(false);
