@@ -5,6 +5,7 @@ import Exercise from './components/Exercise';
 import {createRoot} from 'react-dom/client';
 import './libs/tools.js';
 import {flushSync} from 'react-dom';
+import CommsManager from './libs/comms_manager';
 
 const container = document.getElementById('exercise');
 const root = createRoot(container);
@@ -55,8 +56,11 @@ window.RoboticsExerciseComponents = (function() {
     }
   }
 
+  const commsManager = CommsManager('ws://127.0.0.1:7163');
+
   return {
-    render: render
+    render: render,
+    commsManager: commsManager
   }
 })();
 

@@ -18,3 +18,7 @@ setuptools==58  # This should be removed after going to python 3.9
 
 djangorestframework==3.13.1
 django-webpack-loader==1.5.0
+
+transitions==0.9.0
+websockets==10.3
+
