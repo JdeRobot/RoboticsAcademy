@@ -2,32 +2,29 @@ from shared.image import SharedImage
 from shared.value import SharedValue
 import numpy as np
 import cv2
-from shared.Beacon import Beacon
 
 # Define HAL functions
 class HALFunctions:
     def __init__(self):
         # Initialize image variable
-        self.shared_frontal_image = SharedImage("halfrontalimage")
-        self.shared_ventral_image = SharedImage("halventralimage")
-        self.shared_x = SharedValue("x")
-        self.shared_y = SharedValue("y")
-        self.shared_z = SharedValue("z")
-        self.shared_takeoff_z = SharedValue("sharedtakeoffz")
-        self.shared_az = SharedValue("az")
-        self.shared_azt = SharedValue("azt")
-        self.shared_vx = SharedValue("vx")
-        self.shared_vy = SharedValue("vy")
-        self.shared_vz = SharedValue("vz")
-        self.shared_landed_state = SharedValue("landedstate")
-        self.shared_position = SharedValue("position",3)
-        self.shared_velocity = SharedValue("velocity",3)
-        self.shared_orientation = SharedValue("orientation",3)
-        self.shared_yaw_rate = SharedValue("yawrate")
-        self.shared_beacons = SharedValue("beacons", 6)
-        self.shared_beacon = SharedValue("beacon")
+        self.shared_frontal_image = SharedImage("halfrontalimageguest")
+        self.shared_ventral_image = SharedImage("halventralimageguest")
+        self.shared_x = SharedValue("xguest")
+        self.shared_y = SharedValue("yguest")
+        self.shared_z = SharedValue("zguest")
+        self.shared_takeoff_z = SharedValue("sharedtakeoffzguest")
+        self.shared_az = SharedValue("azguest")
+        self.shared_azt = SharedValue("aztguest")
+        self.shared_vx = SharedValue("vxguest")
+        self.shared_vy = SharedValue("vyguest")
+        self.shared_vz = SharedValue("vzguest")
+        self.shared_landed_state = SharedValue("landedstateguest")
+        self.shared_position = SharedValue("positionguest",3)
+        self.shared_velocity = SharedValue("velocityguest",3)
+        self.shared_orientation = SharedValue("orientationguest",3)
+        self.shared_yaw_rate = SharedValue("yawrateguest")
 
-        self.shared_CMD =  SharedValue("CMD")
+        self.shared_CMD =  SharedValue("CMDguest")
 
 
     # Get image function
@@ -104,29 +101,13 @@ class HALFunctions:
     def get_landed_state(self):
         landed_state = self.shared_landed_state.get()
         return landed_state
-    
-    def init_beacons(self):
-        self.beacons = []
-        self.beacons.append(Beacon('beacon1', np.array([0, 5, 0]), False, False))
-        self.beacons.append(Beacon('beacon2', np.array([5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon3', np.array([0, -5, 0]), False, False))
-        self.beacons.append(Beacon('beacon4', np.array([-5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon5', np.array([10, 0, 0]), False, False))
-        self.beacons.append(Beacon('initial', np.array([0, 0, 0]), False, False))
-        self.shared_beacons.add(self.beacons)
-        self.shared_CMD.add(5) # INIT BEACON
-
-    def get_next_beacon(self):
-        beacon =  self.shared_beacon.get()
-        self.shared_CMD.add(6) # NEXT BEACON
-        return beacon
 
 # Define GUI functions
 class GUIFunctions:
     def __init__(self):
         # Initialize image variable
-        self.shared_image = SharedImage("guifrontalimage")
-        self.shared_left_image = SharedImage("guiventralimage")
+        self.shared_image = SharedImage("guifrontalimageguest")
+        self.shared_left_image = SharedImage("guiventralimageguest")
 
     # Show image function
     def showImage(self, image):
@@ -134,7 +115,7 @@ class GUIFunctions:
         if (len(image.shape) < 3):
             image = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
         self.shared_image.add(image)
-
+    
     # Show left image function
     def showLeftImage(self, image):
         # Reshape to 3 channel if it has only 1 in order to display it

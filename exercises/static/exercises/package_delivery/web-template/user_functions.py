@@ -2,7 +2,6 @@ from shared.image import SharedImage
 from shared.value import SharedValue
 import numpy as np
 import cv2
-from shared.Beacon import Beacon
 
 # Define HAL functions
 class HALFunctions:
@@ -24,8 +23,8 @@ class HALFunctions:
         self.shared_velocity = SharedValue("velocity",3)
         self.shared_orientation = SharedValue("orientation",3)
         self.shared_yaw_rate = SharedValue("yawrate")
-        self.shared_beacons = SharedValue("beacons", 6)
-        self.shared_beacon = SharedValue("beacon")
+        self.shared_package_state = SharedValue("packagestate")
+
 
         self.shared_CMD =  SharedValue("CMD")
 
@@ -105,21 +104,15 @@ class HALFunctions:
         landed_state = self.shared_landed_state.get()
         return landed_state
     
-    def init_beacons(self):
-        self.beacons = []
-        self.beacons.append(Beacon('beacon1', np.array([0, 5, 0]), False, False))
-        self.beacons.append(Beacon('beacon2', np.array([5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon3', np.array([0, -5, 0]), False, False))
-        self.beacons.append(Beacon('beacon4', np.array([-5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon5', np.array([10, 0, 0]), False, False))
-        self.beacons.append(Beacon('initial', np.array([0, 0, 0]), False, False))
-        self.shared_beacons.add(self.beacons)
-        self.shared_CMD.add(5) # INIT BEACON
+    def set_cmd_pick(self):
+        self.shared_CMD.add(5) #PKG PICK
 
-    def get_next_beacon(self):
-        beacon =  self.shared_beacon.get()
-        self.shared_CMD.add(6) # NEXT BEACON
-        return beacon
+    def set_cmd_drop(self):
+        self.shared_CMD.add(6) #PKG DROP
+
+    def get_pkg_state(self):
+        package_state = self.shared_package_state.get()
+        return package_state
 
 # Define GUI functions
 class GUIFunctions:

@@ -1,10 +1,14 @@
 import numpy as np
 import rospy
 import cv2
+import threading
+import time
+from datetime import datetime
+from shared.Beacon import Beacon
 
 from drone_wrapper import DroneWrapper
-from Beacon import Beacon
-
+from shared.image import SharedImage
+from shared.value import SharedValue
 
 # Hardware Abstraction Layer
 class HAL:
@@ -13,9 +17,33 @@ class HAL:
     
     def __init__(self):
         rospy.init_node("HAL")
-    
+
+        self.shared_frontal_image = SharedImage("halfrontalimage")
+        self.shared_ventral_image = SharedImage("halventralimage")
+        self.shared_x = SharedValue("x")
+        self.shared_y = SharedValue("y")
+        self.shared_z = SharedValue("z")
+        self.shared_takeoff_z = SharedValue("sharedtakeoffz")
+        self.shared_az = SharedValue("az")
+        self.shared_azt = SharedValue("azt")
+        self.shared_vx = SharedValue("vx")
+        self.shared_vy = SharedValue("vy")
+        self.shared_vz = SharedValue("vz")
+        self.shared_landed_state = SharedValue("landedstate")
+        self.shared_position = SharedValue("position",3)
+        self.shared_velocity = SharedValue("velocity",3)
+        self.shared_orientation = SharedValue("orientation",3)
+        self.shared_yaw_rate = SharedValue("yawrate")
+        self.shared_beacons = SharedValue("beacons", 6)
+        self.shared_beacon = SharedValue("beacon")
+        
+
+        self.shared_CMD =  SharedValue("CMD")
+
         self.image = None
         self.drone = DroneWrapper(name="rqt")
+
+        
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -37,11 +65,11 @@ class HAL:
 
     def get_position(self):
         pos = self.drone.get_position()
-        return pos
+        self.shared_position.add(pos)
 
     def get_velocity(self):
         vel = self.drone.get_velocity()
-        return vel
+        self.shared_velocity.add(vel )
 
     def get_yaw_rate(self):
         yaw_rate = self.drone.get_yaw_rate()
@@ -49,19 +77,7 @@ class HAL:
 
     def get_orientation(self):
         orientation = self.drone.get_orientation()
-        return orientation
-
-    def get_roll(self):
-        roll = self.drone.get_roll()
-        return roll
-
-    def get_pitch(self):
-        pitch = self.drone.get_pitch()
-        return pitch
-
-    def get_yaw(self):
-        yaw = self.drone.get_yaw()
-        return yaw
+        self.shared_orientation.add(orientation )
 
     def get_landed_state(self):
         state = self.drone.get_landed_state()
@@ -81,33 +97,43 @@ class HAL:
 
     def land(self):
         self.drone.land()
-
+    
     def init_beacons(self):
-        self.beacons = self.shared_beacons.get(type_name = "list", n_elem = 6)
+        self.beacons = self.shared_beacons.get()
     
     def get_next_beacon(self):
         for beacon in self.beacons:
             if beacon.is_reached() == False:
-                self.shared_beacons.add(np.array([beacon]) ,type_name="list")
-      
+                self.shared_beacon.add(beacon)
 
     def update_hal(self):
+        CMD = self.shared_CMD.get()
+
         self.get_frontal_image()
         self.get_ventral_image()
         self.get_position()
         self.get_velocity()
         self.get_yaw_rate()
         self.get_orientation()
-        self.get_pitch()
-        self.get_roll()
-        self.get_yaw()
         self.get_landed_state()
-        self.set_cmd_pos()
-        self.set_cmd_vel()
-        self.set_cmd_mix()
-        self.init_beacons()
-        self.get_next_beacon()
-
+        
+        
+        
+        if CMD == 0:  # POS
+            self.set_cmd_pos()
+        elif CMD == 1:  # VEL
+            self.set_cmd_vel()
+        elif CMD == 2:  # MIX
+            self.set_cmd_mix()
+        elif CMD == 3:  # TAKEOFF
+            self.takeoff()
+        elif CMD == 4:  # LAND
+            self.land()
+        elif CMD == 5:  # INIT BEACON
+            self.init_beacons()
+        elif CMD == 6:  # NEXT BEACON
+            self.get_next_beacon()
+        
 
     # Destructor function to close all fds
     def __del__(self):
@@ -126,11 +152,9 @@ class HAL:
         self.shared_position.close()
         self.shared_velocity.close()
         self.shared_orientation.close()
-        self.shared_roll.close()
-        self.shared_pitch.close()
-        self.shared_yaw.close()
         self.shared_yaw_rate.close()
         self.shared_beacons.close()
+        self.shared_beacon.close()
 
 class ThreadHAL(threading.Thread):
     def __init__(self, update_function):
