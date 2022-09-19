@@ -24,13 +24,14 @@ class ExerciseManager:
 
     def __init__(self):
         self.machine = Machine(model=self, states=ExerciseManager.states, transitions=ExerciseManager.transitions,
-                               initial='idle')
+                               initial='idle', send_event=True)
 
-    def on_enter_connected(self):
+    def on_enter_connected(self, event):
         print("Connect state entered")
 
-    def on_enter_ready(self):
-        print("Start state entered")
+    def on_enter_ready(self, event):
+        configuration = event.kwargs.get('data', {})
+        print(f"Start state entered, configuration: {configuration}")
 
     def code_loaded(self):
         return True
