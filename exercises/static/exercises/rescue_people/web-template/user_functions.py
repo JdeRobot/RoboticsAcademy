@@ -19,13 +19,12 @@ class HALFunctions:
         self.shared_vy = SharedValue("vy")
         self.shared_vz = SharedValue("vz")
         self.shared_landed_state = SharedValue("landedstate")
-        self.shared_position = SharedValue("position")
-        self.shared_velocity = SharedValue("velocity")
-        self.shared_orientation = SharedValue("orientation")
-        self.shared_roll = SharedValue("roll")
-        self.shared_pitch = SharedValue("pitch")
-        self.shared_yaw = SharedValue("yaw")
+        self.shared_position = SharedValue("position",3)
+        self.shared_velocity = SharedValue("velocity",3)
+        self.shared_orientation = SharedValue("orientation",3)
         self.shared_yaw_rate = SharedValue("yawrate")
+
+        self.shared_CMD =  SharedValue("CMD")
 
 
     # Get image function
@@ -41,65 +40,73 @@ class HALFunctions:
     def takeoff(self, height):
         self.shared_takeoff_z.add(height)
 
+        self.shared_CMD.add(3) #TAKEOFF
+
     def land(self):
-        pass
+        self.shared_CMD.add(4) #LAND
     
     def set_cmd_pos(self, x, y , z, az):
         self.shared_x.add(x)
         self.shared_y.add(y)
         self.shared_z.add(z)
         self.shared_az.add(az)
+
+        self.shared_CMD.add(0) #POS
     
     def set_cmd_vel(self, vx, vy, vz, az):
         self.shared_vx.add(vx)
         self.shared_vy.add(vy)
         self.shared_vz.add(vz)
         self.shared_azt.add(az)
+
+        self.shared_CMD.add(1) #VEL
     
     def set_cmd_mix(self, vx, vy, z, az):
         self.shared_vx.add(vx)
         self.shared_vy.add(vy)
-        self.shared_vz.add(z)
+        self.shared_z.add(z)
         self.shared_azt.add(az)
+
+        self.shared_CMD.add(2) #MIX
     
     
     def get_position(self):
-        position = self.shared_position.get(type_name = "list")
-        return position
+        position = self.shared_position.get()
+        return np.array(position)
 
     def get_velocity(self):
-        velocity = self.shared_velocity.get(type_name = "list")
-        return velocity
+        velocity = self.shared_velocity.get()
+        return np.array(velocity)
 
     def get_yaw_rate(self):
-        yaw_rate = self.shared_yaw_rate.get(type_name = "value")
+        yaw_rate = self.shared_yaw_rate.get()
         return yaw_rate
 
     def get_orientation(self):
-        orientation = self.shared_orientation.get(type_name = "list")
-        return orientation
+        orientation = self.shared_orientation.get()
+        return np.array(orientation)
 
     def get_roll(self):
-        roll = self.shared_roll.get(type_name = "value")
+        roll = self.shared_orientation.get()[0]
         return roll
 
     def get_pitch(self):
-        pitch = self.shared_pitch.get(type_name = "value")
+        pitch = self.shared_orientation.get()[1]
         return pitch
     
     def get_yaw(self):
-        yaw = self.shared_yaw.get(type_name = "value")
+        yaw = self.shared_orientation.get()[2]
         return yaw 
 
     def get_landed_state(self):
-        landed_state = self.shared_landed_state.get(type_name = "value")
+        landed_state = self.shared_landed_state.get()
         return landed_state
     
     def set_cmd_on(self):
-        pass
+        self.shared_CMD.add(5) #LIGHT ON
 
     def set_cmd_off(self):
-        pass
+        self.shared_CMD.add(6) #LIGHT OFF
 
 # Define GUI functions
 class GUIFunctions:

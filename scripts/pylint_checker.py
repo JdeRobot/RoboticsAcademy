@@ -9,7 +9,7 @@ code.close()
 code_file = tempfile.NamedTemporaryFile(delete=False)
 code_file.write(python_code.encode())
 code_file.seek(0)
-options = code_file.name + ' --enable=similarities' + " --disable=C0114,C0116"
+options = code_file.name + ' --enable=similarities' + " --disable=C0114,C0116,E1121"
 (stdout, stderr) = lint.py_run(options, return_std=True)
 code_file.seek(0)
 code_file.close()

@@ -29,13 +29,12 @@ class HAL:
         self.shared_vy = SharedValue("vyguest")
         self.shared_vz = SharedValue("vzguest")
         self.shared_landed_state = SharedValue("landedstateguest")
-        self.shared_position = SharedValue("positionguest")
-        self.shared_velocity = SharedValue("velocityguest")
-        self.shared_orientation = SharedValue("orientationguest")
-        self.shared_roll = SharedValue("rollguest")
-        self.shared_pitch = SharedValue("pitchguest")
-        self.shared_yaw = SharedValue("yawguest")
+        self.shared_position = SharedValue("positionguest",3)
+        self.shared_velocity = SharedValue("velocityguest",3)
+        self.shared_orientation = SharedValue("orientationguest",3)
         self.shared_yaw_rate = SharedValue("yawrateguest")
+
+        self.shared_CMD =  SharedValue("CMDguest")
 
         self.image = None
         self.mouse = DroneWrapper(name="rqt", ns="/iris1/")
@@ -46,7 +45,7 @@ class HAL:
     # Function to start the update thread
     def start_thread(self):
         self.thread.start()
-
+    
     # Get Image from ROS Driver Camera
     def get_frontal_image(self):
         image = self.mouse.get_frontal_image()
@@ -60,11 +59,11 @@ class HAL:
 
     def get_position(self):
         pos = self.mouse.get_position()
-        self.shared_position.add(pos,type_name="list")
+        self.shared_position.add(pos)
 
     def get_velocity(self):
         vel = self.mouse.get_velocity()
-        self.shared_velocity.add(vel ,type_name="list")
+        self.shared_velocity.add(vel )
 
     def get_yaw_rate(self):
         yaw_rate = self.mouse.get_yaw_rate()
@@ -72,19 +71,7 @@ class HAL:
 
     def get_orientation(self):
         orientation = self.mouse.get_orientation()
-        self.shared_orientation.add(orientation ,type_name="list")
-
-    def get_roll(self):
-        roll = self.mouse.get_roll()
-        self.shared_roll.add(roll)
-
-    def get_pitch(self):
-        pitch = self.mouse.get_pitch()
-        self.shared_pitch.add(pitch)
-
-    def get_yaw(self):
-        yaw = self.mouse.get_yaw()
-        self.shared_yaw.add(yaw)
+        self.shared_orientation.add(orientation )
 
     def get_landed_state(self):
         state = self.mouse.get_landed_state()
@@ -120,19 +107,26 @@ class HAL:
         self.mouse.land()
 
     def update_hal(self):
+        CMD = self.shared_CMD.get()
+
         self.get_frontal_image()
         self.get_ventral_image()
         self.get_position()
         self.get_velocity()
         self.get_yaw_rate()
         self.get_orientation()
-        self.get_pitch()
-        self.get_roll()
-        self.get_yaw()
         self.get_landed_state()
-        self.set_cmd_pos()
-        self.set_cmd_vel()
-        self.set_cmd_mix()
+        
+        if CMD == 0:  # POS
+            self.set_cmd_pos()
+        elif CMD == 1:  # VEL
+            self.set_cmd_vel()
+        elif CMD == 2:  # MIX
+            self.set_cmd_mix()
+        elif CMD == 3:  # TAKEOFF
+            self.takeoff()
+        elif CMD == 4:  # LAND
+            self.land()
 
     # Destructor function to close all fds
     def __del__(self):
@@ -151,9 +145,6 @@ class HAL:
         self.shared_position.close()
         self.shared_velocity.close()
         self.shared_orientation.close()
-        self.shared_roll.close()
-        self.shared_pitch.close()
-        self.shared_yaw.close()
         self.shared_yaw_rate.close()
 
 class ThreadHAL(threading.Thread):

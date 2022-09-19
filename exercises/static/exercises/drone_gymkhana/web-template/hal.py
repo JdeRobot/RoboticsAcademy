@@ -28,19 +28,20 @@ class HAL:
         self.shared_vy = SharedValue("vy")
         self.shared_vz = SharedValue("vz")
         self.shared_landed_state = SharedValue("landedstate")
-        self.shared_position = SharedValue("position")
-        self.shared_velocity = SharedValue("velocity")
-        self.shared_orientation = SharedValue("orientation")
-        self.shared_roll = SharedValue("roll")
-        self.shared_pitch = SharedValue("pitch")
-        self.shared_yaw = SharedValue("yaw")
+        self.shared_position = SharedValue("position",3)
+        self.shared_velocity = SharedValue("velocity",3)
+        self.shared_orientation = SharedValue("orientation",3)
         self.shared_yaw_rate = SharedValue("yawrate")
+
+        self.shared_CMD =  SharedValue("CMD")
 
         self.image = None
         self.drone = DroneWrapper(name="rqt",ns="/iris/")
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
+
+        
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -63,11 +64,11 @@ class HAL:
 
     def get_position(self):
         pos = self.drone.get_position()
-        self.shared_position.add(pos,type_name="list")
+        self.shared_position.add(pos)
 
     def get_velocity(self):
         vel = self.drone.get_velocity()
-        self.shared_velocity.add(vel ,type_name="list")
+        self.shared_velocity.add(vel )
 
     def get_yaw_rate(self):
         yaw_rate = self.drone.get_yaw_rate()
@@ -75,19 +76,7 @@ class HAL:
 
     def get_orientation(self):
         orientation = self.drone.get_orientation()
-        self.shared_orientation.add(orientation ,type_name="list")
-
-    def get_roll(self):
-        roll = self.drone.get_roll()
-        self.shared_roll.add(roll)
-
-    def get_pitch(self):
-        pitch = self.drone.get_pitch()
-        self.shared_pitch.add(pitch)
-
-    def get_yaw(self):
-        yaw = self.drone.get_yaw()
-        self.shared_yaw.add(yaw)
+        self.shared_orientation.add(orientation )
 
     def get_landed_state(self):
         state = self.drone.get_landed_state()
@@ -123,19 +112,26 @@ class HAL:
         self.drone.land()
 
     def update_hal(self):
+        CMD = self.shared_CMD.get()
+
         self.get_frontal_image()
         self.get_ventral_image()
         self.get_position()
         self.get_velocity()
         self.get_yaw_rate()
         self.get_orientation()
-        self.get_pitch()
-        self.get_roll()
-        self.get_yaw()
         self.get_landed_state()
-        self.set_cmd_pos()
-        self.set_cmd_vel()
-        self.set_cmd_mix()
+        
+        if CMD == 0:  # POS
+            self.set_cmd_pos()
+        elif CMD == 1:  # VEL
+            self.set_cmd_vel()
+        elif CMD == 2:  # MIX
+            self.set_cmd_mix()
+        elif CMD == 3:  # TAKEOFF
+            self.takeoff()
+        elif CMD == 4:  # LAND
+            self.land()
 
     # Destructor function to close all fds
     def __del__(self):
@@ -154,9 +150,6 @@ class HAL:
         self.shared_position.close()
         self.shared_velocity.close()
         self.shared_orientation.close()
-        self.shared_roll.close()
-        self.shared_pitch.close()
-        self.shared_yaw.close()
         self.shared_yaw_rate.close()
 
 class ThreadHAL(threading.Thread):
