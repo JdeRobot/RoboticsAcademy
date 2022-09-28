@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import PropTypes from "prop-types";
 
-function VncConsoleViewer() {
-  const { openConsole } = React.useContext(ExerciseContext);
+function VncConsoleViewer(props) {
+  const { openConsole } = React.useContext(props.context);
   return (
     <Box display={openConsole ? "block" : "none"}>
       <Typography color={"secondary"} borderBottom={2} m={0.4}>
@@ -24,5 +24,8 @@ function VncConsoleViewer() {
     </Box>
   );
 }
+VncConsoleViewer.propTypes = {
+  context: PropTypes.any,
+};
 
 export default VncConsoleViewer;

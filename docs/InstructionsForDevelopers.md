@@ -114,7 +114,7 @@ Add Exercise theory url inside the "react_frontend/src/helpers/TheoryUrlGetter.j
 <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <ProminentAppBar />
+          <MainAppBar />
           <View url={THEORY_URL."exercise_id"} exercise="{<ExerciseIdView />}" />
         </ExerciseProvider>
       </ViewProvider>

@@ -6,9 +6,9 @@ import "../../../../static/common/ace-builds/src-noconflict/ext-language_tools";
 import "../../../../static/common/ace-builds/src-noconflict/mode-python";
 import "../../../../static/common/ace-builds/src-noconflict/theme-dracula";
 import "../../../../static/common/ace-builds/src-noconflict/snippets/python";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import PropTypes from "prop-types";
 
-function AceEditorRobot() {
+export default function AceEditorRobot(props) {
   const [fontSize, setFontSize] = React.useState(14);
   const {
     filename,
@@ -16,7 +16,8 @@ function AceEditorRobot() {
     editorCode,
     editorCodeChange,
     editorRef,
-  } = React.useContext(ExerciseContext);
+  } = React.useContext(props.context);
+
   const setFontSize_ = (augm) => {
     const ftSize = editorRef.current?.props.fontSize;
     if (augm) {
@@ -103,4 +104,6 @@ function AceEditorRobot() {
   );
 }
 
-export default AceEditorRobot;
+AceEditorRobot.propTypes = {
+  context: PropTypes.any,
+};

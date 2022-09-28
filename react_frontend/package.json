@@ -39,9 +39,12 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.91",
     "@mui/material": "^5.8.5",
+    "@react-three/fiber": "^8.6.0",
     "ace-builds": "^1.7.1",
     "classnames": "^2.3.1",
+    "fs": "^0.0.1-security",
     "glob": "^8.0.3",
+    "js-yaml": "^4.1.0",
     "loglevel": "^1.8.0",
     "mui-image": "^1.0.5",
     "prop-types": "^15.8.1",
@@ -49,6 +52,7 @@
     "react-brace": "^3.6.6",
     "react-router-dom": "^6.3.0",
     "react-use": "^17.4.0",
-    "react-vnc": "^0.5.1"
+    "react-vnc": "^0.5.1",
+    "three": "^0.144.0"
   }
 }

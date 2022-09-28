@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import PropTypes from "prop-types";
 
-function GazeboViewer() {
-  const { openGazebo } = React.useContext(ExerciseContext);
+function GazeboViewer(props) {
+  const { openGazebo } = React.useContext(props.context);
 
   return (
     <Box display={openGazebo ? "block" : "none"}>
@@ -25,5 +25,8 @@ function GazeboViewer() {
     </Box>
   );
 }
+GazeboViewer.propTypes = {
+  context: PropTypes.any,
+};
 
 export default GazeboViewer;
