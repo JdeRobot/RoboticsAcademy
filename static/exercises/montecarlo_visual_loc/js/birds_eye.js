@@ -108,11 +108,11 @@ function printParticle(mapPositionX, mapPositionY, theta){
 	canvasCtx.beginPath();
 	canvasCtx.fillStyle = "blue";
 	canvasCtx.strokeStyle = 'blue';
-	canvasCtx.arc(mapPositionX, mapPositionY, 2, 0,2*Math.PI);
+	canvasCtx.arc(mapPositionX, mapPositionY, 1, 0,2*Math.PI);
 	canvasCtx.fill();
 	canvasCtx.stroke();
 
-	var length = 10;
+	var length = 5;
 	var x2 = mapPositionX + Math.cos(Math.PI * -theta / 180) * length;
 	var y2 = mapPositionY + Math.sin(Math.PI * -theta / 180) * length;
 
@@ -127,9 +127,9 @@ function canvas_arrow(fromx, fromy, tox, toy) {
 	var angle = Math.atan2(dy, dx);
 	canvasCtx.moveTo(fromx, fromy);
 	canvasCtx.lineTo(tox, toy);
-	canvasCtx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-	canvasCtx.moveTo(tox, toy);
-	canvasCtx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+//	canvasCtx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+//	canvasCtx.moveTo(tox, toy);
+//	canvasCtx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
 	canvasCtx.strokeStyle = 'blue';
 	canvasCtx.stroke();
 }
