@@ -10,8 +10,8 @@ classes: wide
 
 feature_row:
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
-    alt: "Vacuum Cleaner"
-    title: "Vacuum Cleaner"
+    alt: "Basic Vacuum Cleaner"
+    title: "Basic Vacuum Cleaner"
     excerpt: "Navigation algorithm for an autonomous vacuum"
     url: "/exercises/MobileRobots/vacuum_cleaner"
     btn_class: "btn--danger"
