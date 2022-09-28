@@ -1,6 +1,6 @@
 ---
 permalink: /exercises/MobileRobots/vacuum_cleaner
-title: "Vacuum Cleaner"
+title: " Basic Vacuum Cleaner"
 
 sidebar:
   nav: "docs"
