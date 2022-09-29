@@ -1,6 +1,6 @@
 ---
 permalink: "/exercises/AutonomousCars/car_junction/"
-title: "Car Junction"
+title: "Road Junction"
 
 sidebar:
   nav: "docs"

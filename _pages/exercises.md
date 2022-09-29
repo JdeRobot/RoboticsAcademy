@@ -166,8 +166,8 @@ feature_row:
     version: "v3.2"
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
-    alt: "Car Junction"
-    title: "Car Junction"
+    alt: "Road Junction"
+    title: "Road Junction"
     excerpt: "Car Junction. Automated vehicle must stop and pass once the road is clear."
     url: "/exercises/AutonomousCars/car_junction"
     btn_class: "btn--danger"
