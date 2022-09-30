@@ -2,7 +2,6 @@ FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
 ARG VIRTUALGL_VERSION=2.6.5
 ARG TURBOVNC_VERSION=3.0
-
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES all
@@ -292,4 +291,5 @@ RUN wget https://xpra.org/xorg.conf \
 RUN apt-get install -y software-properties-common \
 && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
 && apt-get install -y nodejs \
-&& curl -L https://www.npmjs.com/install.sh | sh
+&& curl -L https://www.npmjs.com/install.sh | sh \
+&& npm install -g yarn
