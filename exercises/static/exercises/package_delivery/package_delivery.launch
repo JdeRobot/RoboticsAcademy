@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
+    <arg name="perspective" default="$(find rqt_drone_teleop)/perspectives/drone_teleop_vel_cam.perspective"/>
+    
+    <arg name="est" default="ekf2"/>
+    <arg name="world" default="$(eval env('PWD') + '/package_delivery.world')"/>
+
+    <!-- Gazebo sim -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="true"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="headless" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+    </include>
+
+    <rosparam command="load" file="$(eval env('PWD') + '/package_delivery.yaml')"/>
+
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(arg perspective)"/>
+    <node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>
+
+    <arg name="ID" value="0"/>
+    <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
+    <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+        <arg name="x" default="-1.0"/>
+        <arg name="y" default="-4.0"/>
+        <arg name="Y" default="1.5729"/>
+        <arg name="model" value="typhoon_h480_dual_cam"/>
+        <arg name="model_name" value="typhoon_h480_dual_cam"/>
+        <arg name="mavlink_udp_port" value="14560"/>
+        <arg name="mavlink_tcp_port" value="4560"/>
+        <arg name="ID" value="$(arg ID)"/>
+    </include>
+    <include file="$(find mavros)/launch/px4.launch">
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="gcs_url" value=""/>
+        <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+        <arg name="tgt_component" value="1"/>
+    </include>
+</launch>
