@@ -33,8 +33,8 @@ RUN cd /catkin_ws && rosdep update && rosdep install --from-paths . src --ignore
 RUN catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build -j1'
 
-# This solves the plugin error that occurred while running rotors simulation for drone based exercises
-RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.h /catkin_ws/src/CrazyS/rotors_gazebo_plugins/src/ ; cp /catkin_ws/build/rotors_gazebo_plugins/libmav_msgs.so /catkin_ws/devel/lib/  
+# This solves the plugin error that occurred while running rotors simulation for drone based exercises and for follow_turtlebot texture on turtlebot
+RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.h /catkin_ws/src/CrazyS/rotors_gazebo_plugins/src/ ; cp /catkin_ws/build/rotors_gazebo_plugins/libmav_msgs.so /catkin_ws/devel/lib/ ; cp /catkin_ws/src/drones/drone_assets/urdf/marker0.png /usr/share/gazebo-11/media/materials/textures/ ; cp /catkin_ws/src/drones/drone_assets/urdf/marker0.material /usr/share/gazebo-11/media/materials/scripts/  
 
 
 # RoboticsAcademy

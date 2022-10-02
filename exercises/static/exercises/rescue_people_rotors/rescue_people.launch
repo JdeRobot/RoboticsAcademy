@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="world" default="$(eval env('PWD') + '/rescue_people.world')"/>
+    <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
+    <arg name="perspective" default="$(find rqt_drone_teleop)/perspectives/drone_teleop_vel_cam.perspective"/>
+
+    <include file="$(find drone_wrapper)/launch/mavros_px4_sitl.launch">
+        <arg name="world" value="$(arg world)"/>
+        <arg name="z" value="1.45"/>
+        <arg name="Y" value="1.57"/>
+    </include>
+    
+    <node name="rqt_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" output="screen" args="--perspective-file $(arg perspective)"/>
+    <node name="my_solution" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg solution_file_name)"/>
+</launch> 

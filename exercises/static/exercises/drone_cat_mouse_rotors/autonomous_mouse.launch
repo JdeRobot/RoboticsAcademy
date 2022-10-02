@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="mouse_file_name" default="$(eval env('PWD') + '/autonomous_mouse.py')"/>
+    <arg name="mouse" default="0"/> <!-- arg should be changed by cmd line -->
+
+	<group ns="mouse">
+    	<node name="mouse_wrapper" pkg="drone_wrapper" type="play_python_code" output="screen" args="$(arg mouse_file_name) $(arg mouse)"/>
+		<arg name="ID" value="1"/>
+    	<arg name="fcu_url" default="udp://:14541@localhost:14581"/>
+    </group>
+</launch>
