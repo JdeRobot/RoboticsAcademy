@@ -21,7 +21,7 @@ def check_device(device_path):
     except:
         return False
 
-RADI_VERSION = "3.2.3"
+RADI_VERSION = "3.2.9"
 DRI_PATH = "/dev/dri/card0"
 ACCELERATION_ENABLED = check_device(DRI_PATH)
 DRONE_EX = ["follow_road", "labyrinth_escape", "position_control", 
