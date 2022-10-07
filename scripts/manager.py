@@ -13,6 +13,14 @@ import stat
 import tempfile
 import re
 from pylint import epylint as lint
+from elasticsearch import Elasticsearch
+from elasticsearch import RequestsHttpConnection
+
+#res = client.search(index="style_log", body={"query": {"match_all": {}}})
+#testing connection
+#print("Got %d Hits:" % res['hits']['total']['value'])
+#for hit in res['hits']['hits']:
+#    print(hit["_source"])
 
 # Function to check if a device exists
 def check_device(device_path):
@@ -492,7 +500,7 @@ class Manager:
             elif command == "evaluate":
                 await websocket.send("evaluate{}".format(self.evaluate_code(data["code"])))
             elif command == "evaluate_style":
-                await websocket.send("style{}".format(self.evaluate_code(data["code"], True)))
+                await websocket.send("style{}".format(self.evaluate_code(data["code"], data["username"], data["exercise"], True)))
             elif command == "start":
                 self.start_simulation()
             elif command == "reset":
@@ -685,7 +693,7 @@ class Manager:
         print("Kill simulation")
         await self.commands.kill_all()
     
-    def evaluate_code(self, code, warnings=False):
+    def evaluate_code(self, code, username=None, exercise=None, warnings=False):
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
@@ -712,6 +720,16 @@ class Manager:
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
+            print("Initial result: ", result)
+            score = result[result.find("rated at") + len("rated at") + 1:]
+            if "---" in result:
+                result = result[:result.find('---')]
+            else:
+                result = ""
+            print("Information")    
+            print(exercise, username)
+            print("This result", result)
+            print("This score", score)
 
             # Removes convention, refactor and warning messages
             if not warnings:
@@ -753,10 +771,13 @@ class Manager:
 
             # Returns an empty string if there are no errors
             error = re.search("error", result)
+            client = Elasticsearch(hosts=["https://unibotics.org/es"], connection_class=RequestsHttpConnection,
+                                   use_ssl=True, verify_certs=False)
             if (error == None and not warnings):
-                return ""
-            else:
-                return result
+                result = ""
+            client.index(index="style_log", body={"username": username, "exercise": exercise, "time": time.time(), "score": float(score.split("/")[0])})
+            client.indices.refresh(index="style_log")
+            return result
         except Exception as ex:
             print(ex)
 
