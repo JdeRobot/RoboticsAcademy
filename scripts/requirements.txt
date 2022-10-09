@@ -78,7 +78,7 @@ Pillow==9.2.0
 pkgconfig==1.5.5
 platformdirs==2.5.2
 posix-ipc==1.0.5
-protobuf==3.6.1
+protobuf==3.18.3
 psutil==5.5.1
 py-ubjson==0.14.0
 pyasn1==0.4.2
