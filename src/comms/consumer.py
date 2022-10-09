@@ -1,11 +1,12 @@
 import asyncio
 import json
+from uuid import uuid4
 
 import websockets
 from websockets.server import WebSocketServerProtocol
 
 from src.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
-from src.exercise_manager import ExerciseManager
+from src.manager.manager import Manager
 
 
 class ManagerConsumer:
@@ -23,7 +24,16 @@ class ManagerConsumer:
         self.client = None
         self.host = host
         self.port = port
-        self.manager = ExerciseManager()
+        self.manager = Manager()
+
+    async def state_change(self, state):
+        if self.client is not None and self.server is not None:
+            message = ManagerConsumerMessage(
+                id=str(uuid4()),
+                command="state-changed",
+                data={"state": state}
+            )
+            self.client.send(str(message))
 
     async def reject_connection(self, websocket: WebSocketServerProtocol):
         """

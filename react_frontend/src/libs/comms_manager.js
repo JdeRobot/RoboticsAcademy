@@ -9,6 +9,7 @@ const CommsManager = (address) => {
   const events = {
     RESPONSES: ['ack', 'error'],
     UPDATE_GUI: 'update-gui',
+    STATE_CHANGED: 'state-changed'
   }
 
   //region Observer pattern methods
@@ -134,6 +135,7 @@ const CommsManager = (address) => {
 
   return {
     ...commands,
+
     send: send,
 
     events: events,
