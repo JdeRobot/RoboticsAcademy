@@ -2,8 +2,6 @@ import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import ExerciseControl from "../common/ExerciseControl";
 import AceEditorRobot from "../exercises/AceEditorRobot";
-import CircuitSelector from "../exercises/CircuitSelector";
-import CanvasBirdEye from "../visualizers/CanvasBirdEye";
 import GazeboViewer from "../exercises/GazeboViewer";
 import VncConsoleViewer from "../exercises/VncConsoleViewer";
 import LoadModal from "../modals/LoadModal";
@@ -11,14 +9,14 @@ import CustomAlert from "../common/CustomAlert";
 import ErrorModal from "../modals/ErrorModal";
 import VisualizationComponents from "../common/VisualizationComponents";
 import FrequencyMenu from "../common/FrequencyMenu";
-import ImgCanvas from "../visualizers/ImgCanvas";
 import PropTypes from "prop-types";
 import InfoModal from "../modals/InfoModal";
+import GuiCanvas from "../visualizers/GuiCanvas";
 
-function FollowLineExerciseView(props) {
+function AutoParkingExerciseView(props) {
   return (
     <Box id="exercise-view">
-      <ExerciseControl context={props.context} teleOpMode={true} />
+      <ExerciseControl context={props.context} />
       <Box
         sx={{
           display: "flex",
@@ -39,15 +37,11 @@ function FollowLineExerciseView(props) {
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>
-        <CircuitSelector context={props.context} />
         <VisualizationComponents>
-          <CanvasBirdEye context={props.context} />
-          <ImgCanvas context={props.context} />
+          <GuiCanvas context={props.context} drone={false} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>
       </Box>
-      {/*  </Box>*/}
-      {/*</Box>*/}
       <Box
         sx={{
           display: "flex",
@@ -80,8 +74,9 @@ function FollowLineExerciseView(props) {
     </Box>
   );
 }
-FollowLineExerciseView.propTypes = {
+
+AutoParkingExerciseView.propTypes = {
   context: PropTypes.any,
 };
 
-export default FollowLineExerciseView;
+export default AutoParkingExerciseView;

@@ -25,3 +25,7 @@
 /*	height: 350px;*/
 /*    width: 340px;*/
 /*}*/
+
+#gui_canvas.local-map-lasers{
+	background: #0D488A;
+}

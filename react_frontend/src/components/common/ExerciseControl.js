@@ -67,7 +67,7 @@ function ExerciseControl(props) {
         <Box id={"Sim-console-control"}>
           <GazeboButton context={props.context} />
           <ConsoleButton context={props.context} />
-          <TeleOpButton context={props.context} />
+          {props.teleOpMode && <TeleOpButton context={props.context} />}
         </Box>
       </Toolbar>
       <PlayStopButton context={props.context} />
@@ -75,7 +75,12 @@ function ExerciseControl(props) {
   );
 }
 ExerciseControl.propTypes = {
-  context: PropTypes.any,
+  context: PropTypes.any.isRequired,
+  teleOpMode: PropTypes.bool,
+};
+
+ExerciseControl.defaultProps = {
+  teleOpMode: false,
 };
 
 export default ExerciseControl;
