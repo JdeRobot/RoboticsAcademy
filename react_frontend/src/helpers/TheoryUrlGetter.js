@@ -4,6 +4,7 @@ export const THEORY_URL = {
   FollowLine: BaseUrl + "AutonomousCars/follow_line/",
   AutoParking: BaseUrl + "AutonomousCars/autoparking/",
   CarJunction: BaseUrl + "AutonomousCars/car_junction/",
+  RoadJunction: BaseUrl + "AutonomousCars/car_junction/",
   GlobalNavigation: BaseUrl + "AutonomousCars/global_navigation/",
   ObstacleAvoidance: BaseUrl + "AutonomousCars/obstacle_avoidance",
   ColorFilter: BaseUrl + "ComputerVision/color_filter",

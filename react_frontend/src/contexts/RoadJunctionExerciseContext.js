@@ -2,9 +2,8 @@
 import * as React from "react";
 import { createContext, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { get_novnc_size_react, saveCode } from "../helpers/utils";
+import { decode_utf8, get_novnc_size_react, saveCode } from "../helpers/utils";
 import { Typography } from "@mui/material";
-import { configMap } from "../helpers/AutoParking/MapView";
 
 const websocket_address = "127.0.0.1";
 
@@ -35,13 +34,16 @@ let openGazeboSnackbar = true;
 function createData(key, value) {
   return { key, value };
 }
-
-const AutoParkingExerciseContext = createContext();
+let image_data1, image_data2, image_data3, source1, source2, source3;
+let image1 = new Image();
+let image2 = new Image();
+let image3 = new Image();
+const RoadJunctionExerciseContext = createContext();
 
 export function ExerciseProvider({ children }) {
-  const exercise = "autoparking";
-  const exerciseSpecificCSS = "local-map-lasers";
-  const [filename, setFilename] = useState("Auto parking");
+  const exercise = "road_junction";
+  const exerciseSpecificCSS = "road_junction";
+  const [filename, setFilename] = useState("Road junction");
   const editorRef = useRef();
   const guiCanvasRef = useRef();
   // connectionState - Connect, Connecting, Connected
@@ -382,14 +384,7 @@ while True:
         // The acknowledgement messages invoke the python server to send further
         // messages to this client (inside the server's handle function)
         // Send the acknowledgment message along with frequency
-        let code_frequency = brainFreqAck;
-        let gui_frequency = guiFreqAck;
-        frequency_message = {
-          brain: code_frequency,
-          gui: gui_frequency,
-          rtf: rtfValue,
-        };
-        frequency_message = { brain: code_frequency, gui: gui_frequency };
+        frequency_message = { brain: brainFreqAck, gui: guiFreqAck };
         websocket_code.send("#freq" + JSON.stringify(frequency_message));
       } else if (operation === "#ping") {
         websocket_code.send("#ping");
@@ -465,11 +460,33 @@ while True:
     setGuiFreq(guiFreqAck);
   };
 
+  // For image object
+  image1.onload = function () {
+    update_image();
+  };
+
+  image2.onload = function () {
+    update_image();
+  };
+
+  image3.onload = function () {
+    update_image();
+  };
+
+  // Request Animation Frame to remove the flickers
+  function update_image() {
+    window.requestAnimationFrame(update_image);
+    const context = guiCanvasRef.current.getContext("2d");
+    context.drawImage(image1, 0, 0, 160, 120);
+    context.drawImage(image2, 160, 0, 160, 120);
+    context.drawImage(image3, 320, 0, 160, 120);
+  }
   // WS GUI BEGINS
   function declare_gui(websocket_address) {
     websocket_gui = new WebSocket(websocket_address);
 
     websocket_gui.onopen = function (event) {
+      setLaunchLevel(launchLevel + 1);
       connectionUpdate(
         { connection: "exercise", command: "launch_level", level: "6" },
         "*"
@@ -519,18 +536,34 @@ while True:
         // Parse the entire Object
         const data = JSON.parse(event.data.substring(4));
 
-        // Parse the Map data
-        const map_data = JSON.parse(data.map);
-        configMap(
-          guiCanvasRef.current,
-          map_data.car,
-          map_data.obstacle,
-          map_data.average,
-          map_data.lasers,
-          map_data.ranges
-        );
+        // Parse the Image Data
+        image_data1 = JSON.parse(data.imageL);
+        source1 = decode_utf8(image_data1.img);
 
-        // Send the Acknowledgement Message
+        if (source1 !== "") {
+          image1.src = "data:image1/jpeg;base64," + source1;
+        }
+
+        // Parse the Image Data
+        image_data2 = JSON.parse(data.imageC);
+        source2 = decode_utf8(image_data2.img);
+
+        if (source2 !== "") {
+          image2.src = "data:image2/jpeg;base64," + source2;
+        }
+
+        // Parse the Image Data
+        image_data3 = JSON.parse(data.imageR);
+        source3 = decode_utf8(image_data3.img);
+
+        if (source3 !== "") {
+          image3.src = "data:image3/jpeg;base64," + source3;
+        }
+
+        const v = JSON.parse(data.v);
+        const w = JSON.parse(data.w);
+
+        // Send the Acknowledgment Message
         websocket_gui.send("#ack");
       }
     };
@@ -661,7 +694,7 @@ while True:
   };
 
   const toggleSubmitButton = (toggle) => {
-    var loadIntoRobot = document.getElementById("loadIntoRobot");
+    const loadIntoRobot = document.getElementById("loadIntoRobot");
     if (toggle === false) {
       loadIntoRobot.disabled = true;
       loadIntoRobot.style.opacity = "0.4";
@@ -788,7 +821,7 @@ while True:
   };
 
   return (
-    <AutoParkingExerciseContext.Provider
+    <RoadJunctionExerciseContext.Provider
       value={{
         editorCode,
         openLoadModal,
@@ -839,7 +872,7 @@ while True:
       }}
     >
       {children}
-    </AutoParkingExerciseContext.Provider>
+    </RoadJunctionExerciseContext.Provider>
   );
 }
 
@@ -847,4 +880,4 @@ ExerciseProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export default AutoParkingExerciseContext;
+export default RoadJunctionExerciseContext;
