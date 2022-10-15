@@ -1,27 +1,30 @@
-import '../styles/App.css';
-import {ExerciseList} from "./ExerciseList";
+import "../styles/App.css";
+import ExerciseList from "./ExerciseList";
 import DrawerAppBar from "./DrawerAppBar";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { HomepageProvider } from "../contexts/HomepageContext";
 
-
-const theme  = createTheme({
+const theme = createTheme({
   palette: {
-    type: 'light',
+    type: "light",
     primary: {
-      main: '#ffac15',
+      main: "#ffac15",
     },
     secondary: {
-      main: '#147aff'
+      main: "#147aff",
     },
   },
 });
 
 function App() {
   return (
-      <ThemeProvider theme ={theme}>
-          <DrawerAppBar/>
-          <ExerciseList />
+    <HomepageProvider>
+      <ThemeProvider theme={theme}>
+        <DrawerAppBar />
+        <ExerciseList />
       </ThemeProvider>
+    </HomepageProvider>
   );
 }
 
