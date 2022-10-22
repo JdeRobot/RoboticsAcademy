@@ -41,6 +41,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.91",
     "@mui/material": "^5.8.5",
+    "@mui/system": "^5.10.9",
     "@react-three/fiber": "^8.6.0",
     "ace-builds": "^1.7.1",
     "classnames": "^2.3.1",
@@ -55,6 +56,7 @@
     "react-router-dom": "^6.3.0",
     "react-use": "^17.4.0",
     "react-vnc": "^0.5.1",
+    "styled-components": "^5.3.6",
     "three": "^0.144.0"
   }
 }
