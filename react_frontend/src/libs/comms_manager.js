@@ -130,7 +130,8 @@ const CommsManager = (address) => {
     stop: () => send('stop'),
     pause: () => send('pause'),
     resume: () => send('resume'),
-    reset: () => send('reset')
+    reset: () => send('reset'),
+    terminate: () => send('terminate')
   };
 
   return {

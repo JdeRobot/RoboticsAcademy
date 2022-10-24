@@ -1,3 +1,4 @@
+from __future__ import annotations
 import asyncio
 import json
 from uuid import uuid4
@@ -6,7 +7,6 @@ import websockets
 from websockets.server import WebSocketServerProtocol
 
 from src.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
-from src.manager.manager import Manager
 
 
 class ManagerConsumer:
@@ -15,6 +15,9 @@ class ManagerConsumer:
     """
 
     def __init__(self, host, port):
+        from src.manager.manager import Manager
+
+
         """
         Initializes a new ManagerConsumer
         @param host: host for connections, '0.0.0.0' to bind all interfaces
@@ -24,16 +27,7 @@ class ManagerConsumer:
         self.client = None
         self.host = host
         self.port = port
-        self.manager = Manager()
-
-    async def state_change(self, state):
-        if self.client is not None and self.server is not None:
-            message = ManagerConsumerMessage(
-                id=str(uuid4()),
-                command="state-changed",
-                data={"state": state}
-            )
-            self.client.send(str(message))
+        self.manager = Manager(consumer=self)
 
     async def reject_connection(self, websocket: WebSocketServerProtocol):
         """
@@ -47,26 +41,40 @@ class ManagerConsumer:
         Handles connection
         @param websocket: websocket
         """
-        if self.client is None or self.client.closed:
-            if self.client and self.client.closed:
-                self.manager.reset()
-            self.client = websocket
+        if self.client is not None and websocket != self.client:
+            print("Client already connected, rejecting connection")
+            await self.reject_connection(websocket)
         else:
-            if websocket != self.client:
-                await self.reject_connection(websocket)
-                return
+            # self.client gets reassigned every time, but code is more clear
+            # TODO: Just review this block of code
+            self.client = websocket
+
+        if self.client and self.client.closed:
+            print("Client disconnected, machine state reset")
+            self.manager.reset()
+            self.client = None
+            return
 
         async for websocket_message in websocket:
             try:
-                message = ManagerConsumerMessage.from_str(websocket_message)
-                self.manager.trigger(message.command, data=message.data or None)
+                s = json.loads(websocket_message)
+                message = ManagerConsumerMessage(**s)
+                await self.manager.trigger(message.command, data=message.data or None)
                 response = {"message": f"Exercise state changed to {self.manager.state}"}
                 await websocket.send(str(message.response(response)))
             except ManagerConsumerMessageException as e:
                 await websocket.send(str(e))
             except Exception as e:
-                ex = ManagerConsumerMessageException(message, str(e))
+                if message is None:
+                    ex = ManagerConsumerMessageException(message, str(e))
+                else:
+                    ex = ManagerConsumerMessageException(id=str(uuid4()), message=str(e))
                 await websocket.send(str(ex))
+
+    async def send_message(self, message_data):
+        if self.client is not None and self.server is not None:
+            message = ManagerConsumerMessage(id=str(uuid4()), command="state-changed", data=message_data)
+            await self.client.send(str(message))
 
     def start(self):
         """

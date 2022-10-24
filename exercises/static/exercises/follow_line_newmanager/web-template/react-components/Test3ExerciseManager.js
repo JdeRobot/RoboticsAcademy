@@ -2,9 +2,10 @@ import * as React from 'react';
 import classNames from 'classnames';
 
 import './css/TestExerciseManager3.css';
+import {Fragment} from "react";
 
 const Test3ExerciseManager = () => {
-  const [state, setState] = React.useState("");
+  const [state, setState] = React.useState("Idle");
 
   const classes = classNames({
     "test-exercise-manager-state": true,
@@ -12,23 +13,31 @@ const Test3ExerciseManager = () => {
 
   React.useEffect(() => {
     console.log("Test3ExerciseManager subscribing to ['state-change'] events");
+
     const callback = (message) => {
-          setMessage(message.data.message);
-          console.log(message.data.message);
+          setState(message.data.state);
+          console.log(message);
     };
 
-    RoboticsExerciseComponents.commsManager.subscribe(['state-change'],
+    RoboticsExerciseComponents.commsManager.subscribe([
+          RoboticsExerciseComponents.commsManager.events.STATE_CHANGED
+        ],
         callback);
 
     return () => {
-      console.log("Test2ExerciseManager unsubscribing from ['state-change'] events");
-      RoboticsExerciseComponents.commsManager.unsubscribe(['state-change'],
+      console.log("Test2ExerciseManager unsubscribing from ['state-changed'] events");
+      RoboticsExerciseComponents.commsManager.unsubscribe([
+            RoboticsExerciseComponents.commsManager.events.STATE_CHANGED
+          ],
         callback);
     }
   }, []);
 
   return (
-    <div className={classes}>CURRENT STATE: {state}</div>
+    <Fragment>
+        <hr />
+        <div className={classes}>CURRENT STATE: {state}</div>
+    </Fragment>
   )
 }
 

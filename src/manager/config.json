@@ -3,9 +3,17 @@
   "launch": {
     "0": {
       "type": "module",
-      "module": "gazebo",
+      "module": "ros",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/web-template/launch"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
       "parameters": [],
-      "world_file": "sample_world_file.world"
+      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_default.launch"
     },
     "1": {
       "type": "command",

@@ -13,7 +13,7 @@ const TestExerciseManager = (props) => {
     "error": iserror
   });
 
-  const click = (command) => {
+  const launch = (command) => {
     const config = JSON.parse(document.getElementById("exercise-config").textContent);
 
     RoboticsExerciseComponents.commsManager.launch(config)
@@ -26,24 +26,22 @@ const TestExerciseManager = (props) => {
     })
   };
 
-  React.useEffect(() => {
+  const connect = (command) => {
     RoboticsExerciseComponents.commsManager.connect()
-      .then(() => {
-        setMessage('Connected');
-        setIserror(false);
-      })
-      .catch(() => {
-        setMessage('Connection error');
-        setIserror(true);
-      });
-  }, []);
+    .then((message) => {
+      setMessage("Connected");
+      setIserror(false);
+    }).catch((response) => {
+      setMessage(`Message not received, reason: ${response.data.message}`);
+      setIserror(true);
+    })
+  };
 
   return (
       <Fragment>
-        <div className={"test-exercise-manager"} onClick={click}>Launch</div>
-        <div className={"test-exercise-manager"} onClick={
-          () => RoboticsExerciseComponents.commsManager.send('fail')
-        }>Bad message</div>
+        <div className={"test-exercise-manager"} onClick={connect}>Connect</div>
+        <div className={"test-exercise-manager"} onClick={launch}>Launch</div>
+        
         <div className={classes}>{message}</div>
       </Fragment>
   );

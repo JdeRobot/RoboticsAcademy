@@ -5,7 +5,7 @@ from .models import Exercise
 import ast
 import json
 
-# Create your views here.
+#TODO: Too many hardcoded strings, review
 def index(request):
     exercises = Exercise.objects.all()
     context = {"exercises": exercises}
