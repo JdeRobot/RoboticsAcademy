@@ -170,11 +170,11 @@ To use it, only two actions must be carried out:
 
 The graphical interface (GUI) allows to visualize each of the vectors of calculated forces. There is a function for this purpose:
 ```python
-# Car direction
+# Car direction  (green line in the image below)
 carForce = [2.0, 0.0]
-# Obstacles direction
+# Obstacles direction (red line in the image below)
 obsForce = [0.0, 2.0]
-# Average direction
+# Average direction (black line in the image below)
 avgForce = [-2.0, 0.0]
 
 GUI.showForces(carForce, obsForce, avgForce)
@@ -184,8 +184,13 @@ As well as the destination that we have assigned:
 # Current target
 target = [1.0, 1.0]
 GUI.showLocalTarget(target)
+
 ```
-Alternatively, the follwing variables can be setted with the same results:
+
+![VFF_FORCES]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/vff_forces.png)
+
+
+Alternatively, the following variables can be setted with the same results:
 ```python
 # Car direction
 GUI.map.carx = 0.0
@@ -258,6 +263,13 @@ laser_mean = np.mean (laser_vectorized, axis = 0)
 ```
 
 **Coordinate system**
+
+We have 2 different coordinate systems in this exercise. 
+
+* **Absolute coordinate system**: Its origin (0,0) is located in the finish line of the circuit (exactly where the F1 starts the lap). 
+* **Relative coordinate system**: It is the coordinate system solidary to the robot (F1). Positive values of X means 'forward', and positive values of Y means 'left'.
+
+You can use the following code to convert absolute coordinates to relative ones (solidary to the F1).
 
 ```python
 def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
