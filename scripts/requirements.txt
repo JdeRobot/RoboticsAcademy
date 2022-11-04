@@ -135,7 +135,7 @@ systemd-python==234
 toml==0.10.2
 tomli==2.0.1
 tomlkit==0.11.5
-Twisted==18.9.0
+Twisted==22.10.0
 txaio==2.10.0
 typing_extensions==4.3.0
 u-msgpack-python==2.1
