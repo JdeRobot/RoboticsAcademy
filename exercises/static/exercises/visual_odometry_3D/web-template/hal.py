@@ -20,8 +20,8 @@ class HAL:
         self.cameraL = ListenerCamera("/TurtlebotROS/cameraL/image_raw")
         self.cameraR = ListenerCamera("/TurtlebotROS/cameraR/image_raw")
 
-        self.camLeftP = ListenerParameters("3d_reconstruction_conf.yml", "CamACalibration")
-        self.camRightP = ListenerParameters("3d_reconstruction_conf.yml", "CamBCalibration")
+        self.camLeftP = ListenerParameters("visual_odometry_3D_conf.yml", "CamACalibration")
+        self.camRightP = ListenerParameters("visual_odometry_3D_conf.yml", "CamBCalibration")
 
     # Get Image from ROS Driver Camera
     def getImage(self, lr):

@@ -52,7 +52,7 @@ class ListenerParameters:
     def __init__(self,configFile,cam):
 
         if os.getcwd() == "/":
-            f = open("/RoboticsAcademy/exercises/3d_reconstruction/web-template/" + configFile, "r")
+            f = open("/RoboticsAcademy/exercises/visual_odometry_3D/web-template/" + configFile, "r")
         else:
             f = open(configFile, "r")
 
