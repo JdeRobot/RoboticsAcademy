@@ -14,11 +14,9 @@ import importlib
 
 import rospy
 from std_srvs.srv import Empty
-import cv2
 
-from gui import GUI, ThreadGUI
-from hal import HAL
-from turtlebot import Turtlebot
+from gui_guest import GUI, ThreadGUI
+from hal_guest import HAL
 from console import start_console, close_console
 
 
@@ -30,8 +28,6 @@ class Template:
         self.measure_thread = None
         self.thread = None
         self.reload = False
-        self.stop_brain = True
-        self.user_code = ""
 
         # Time variables
         self.ideal_cycle = 80
@@ -46,8 +42,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.turtlebot = Turtlebot()
-        self.gui = GUI(self.host, self.turtlebot)
+        self.gui = GUI(self.host, self.hal)
 
     # Function to parse the code
     # A few assumptions:
@@ -75,11 +70,6 @@ class Template:
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
             iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
-            # Add newlines to match line on bug report
-            extra_lines = sequential_code.count('\n')
-            while (extra_lines >= 0):
-                iterative_code = '\n' + iterative_code
-                extra_lines -= 1
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
@@ -102,20 +92,11 @@ class Template:
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
-        while (self.stop_brain == True):
-            if (self.reload == True):
-                return
-            time.sleep(0.1)
         exec(sequential_code, reference_environment)
 
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
-            while (self.stop_brain == True):
-                if (self.reload == True):
-                    return
-                time.sleep(0.1)
-
             start_time = datetime.now()
 
             # Execute the iterative portion
@@ -214,12 +195,12 @@ class Template:
         brain_frequency = 0; gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.measured_cycle, 1)
-        except:
+        except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.measured_cicle, 1)
-        except:
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
+        except ZeroDivisionError:
             gui_frequency = 0
 
         self.frequency_message["brain"] = brain_frequency
@@ -228,13 +209,6 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
-
-    def send_ping_message(self):
-        self.server.send_message(self.client, "#ping")
-
-    # Function to notify the front end that the code was received and sent to execution
-    def send_code_message(self):
-        self.server.send_message(self.client, "#exec")
 
     # Function to track the real time factor from Gazebo statistics
     # https://stackoverflow.com/a/17698359
@@ -264,7 +238,6 @@ class Template:
         # New thread execution
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
-        self.send_code_message()
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
@@ -277,7 +250,7 @@ class Template:
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.ideal_cicle = 1000.0 / frequency
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
 
@@ -290,34 +263,14 @@ class Template:
             time.sleep(1)
             return
 
-        elif(message[:5] == "#ping"):
-            time.sleep(1)
-            self.send_ping_message()
-            return
-
-        elif (message[:5] == "#code"):
-            try:
-                # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message[6:]
-                # print(repr(code))
-                self.reload = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#rest"):
-            try:
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#stop"):
-            self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
+        try:
+            # Once received turn the reload flag up and send it to execute_thread function
+            code = message
+            # print(repr(code))
+            self.reload = True
+            self.execute_thread(code)
+        except:
+            pass
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
@@ -341,7 +294,7 @@ class Template:
         print(client, 'closed')
 
     def run_server(self):
-        self.server = WebsocketServer(port=1905, host=self.host)
+        self.server = WebsocketServer(port=1904, host=self.host)
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
@@ -349,8 +302,8 @@ class Template:
         logged = False
         while not logged:
             try:
-                f = open("/ws_code.log", "w")
-                f.write("websocket_code=ready")
+                f = open("/ws_code_guest.log", "w")
+                f.write("websocket_code_guest=ready")
                 f.close()
                 logged = True
             except:

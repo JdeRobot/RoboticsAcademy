@@ -14,11 +14,9 @@ import importlib
 
 import rospy
 from std_srvs.srv import Empty
-import cv2
 
 from gui import GUI, ThreadGUI
 from hal import HAL
-from turtlebot import Turtlebot
 from console import start_console, close_console
 
 
@@ -46,8 +44,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.turtlebot = Turtlebot()
-        self.gui = GUI(self.host, self.turtlebot)
+        self.gui = GUI(self.host, self.hal)
 
     # Function to parse the code
     # A few assumptions:
@@ -214,12 +211,12 @@ class Template:
         brain_frequency = 0; gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.measured_cycle, 1)
-        except:
+        except ZeroDivisionError:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.thread_gui.measured_cicle, 1)
-        except:
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
+        except ZeroDivisionError:
             gui_frequency = 0
 
         self.frequency_message["brain"] = brain_frequency
@@ -243,7 +240,7 @@ class Template:
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
         # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE, universal_newlines=True)
         # bufsize=1 enables line-bufferred mode (the input buffer is flushed
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
@@ -277,7 +274,7 @@ class Template:
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.thread_gui.ideal_cicle = 1000.0 / frequency
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
 

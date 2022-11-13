@@ -7,7 +7,7 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 import numpy as np
-from hal_guest import HAL
+from hal import HAL
 
 # Graphical User Interface Class
 class GUI:
@@ -141,8 +141,8 @@ class GUI:
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
         # Add position to payload
-        mouse_x, mouse_y, mouse_z = self.hal.get_position()
-        self.payload["pos"] = [mouse_x, mouse_y, mouse_z]
+        cat_x, cat_y, cat_z = self.hal.get_position()
+        self.payload["pos"] = [cat_x, cat_y, cat_z]
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -184,15 +184,15 @@ class GUI:
 
     # Activate the server
     def run_server(self):
-        self.server = WebsocketServer(port=2304, host=self.host)
+        self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
 
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui_code.log", "w")
-                f.write("websocket_gui_code=ready")
+                f = open("/ws_gui.log", "w")
+                f.write("websocket_gui=ready")
                 f.close()
                 logged = True
             except:

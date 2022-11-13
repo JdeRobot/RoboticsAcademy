@@ -10,10 +10,10 @@ class HAL:
     IMG_HEIGHT = 240
 
     def __init__(self):
-        rospy.init_node("HAL_mouse")
+        rospy.init_node("HAL_cat")
 
         self.image = None
-        self.mouse = DroneWrapper(name="rqt", ns="mouse/")
+        self.cat = DroneWrapper(name="rqt", ns="cat/")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -24,58 +24,58 @@ class HAL:
 
     # Get Image from ROS Driver Camera
     def get_frontal_image(self):
-        image = self.mouse.get_frontal_image()
+        image = self.cat.get_frontal_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
 
     def get_ventral_image(self):
-        image = self.mouse.get_ventral_image()
+        image = self.cat.get_ventral_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
 
     def get_position(self):
-        pos = self.mouse.get_position()
+        pos = self.cat.get_position()
         return pos
 
     def get_velocity(self):
-        vel = self.mouse.get_velocity()
+        vel = self.cat.get_velocity()
         return vel
 
     def get_yaw_rate(self):
-        yaw_rate = self.mouse.get_yaw_rate()
+        yaw_rate = self.cat.get_yaw_rate()
         return yaw_rate
 
     def get_orientation(self):
-        orientation = self.mouse.get_orientation()
+        orientation = self.cat.get_orientation()
         return orientation
 
     def get_roll(self):
-        roll = self.mouse.get_roll()
+        roll = self.cat.get_roll()
         return roll
 
     def get_pitch(self):
-        pitch = self.mouse.get_pitch()
+        pitch = self.cat.get_pitch()
         return pitch
 
     def get_yaw(self):
-        yaw = self.mouse.get_yaw()
+        yaw = self.cat.get_yaw()
         return yaw
 
     def get_landed_state(self):
-        state = self.mouse.get_landed_state()
+        state = self.cat.get_landed_state()
         return state
 
     def set_cmd_pos(self, x, y, z, az):
-        self.mouse.set_cmd_pos(x, y, z, az)
+        self.cat.set_cmd_pos(x, y, z, az)
 
     def set_cmd_vel(self, vx, vy, vz, az):
-        self.mouse.set_cmd_vel(vx, vy, vz, az)
+        self.cat.set_cmd_vel(vx, vy, vz, az)
 
     def set_cmd_mix(self, vx, vy, z, az):
-        self.mouse.set_cmd_mix(vx, vy, z, az)
+        self.cat.set_cmd_mix(vx, vy, z, az)
 
     def takeoff(self, h=3):
-        self.mouse.takeoff(h)
+        self.cat.takeoff(h)
 
     def land(self):
-        self.mouse.land()
+        self.cat.land()

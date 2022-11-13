@@ -6,19 +6,17 @@ import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
-import numpy as np
-from hal_guest import HAL
+
 
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal):
+    def __init__(self, host, turtlebot):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': ''}
         self.left_payload = {'image': ''}
-        self.dist = {'dist': '', 'ready': ''}
         self.server = None
         self.client = None
         
@@ -37,7 +35,7 @@ class GUI:
         self.acknowledge_lock = threading.Lock()
         
         # Take the console object to set the same websocket and client
-        self.hal = hal
+        self.turtlebot = turtlebot
         t.start()
 
     # Explicit initialization function
@@ -140,9 +138,6 @@ class GUI:
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        # Add position to payload
-        mouse_x, mouse_y, mouse_z = self.hal.get_position()
-        self.payload["pos"] = [mouse_x, mouse_y, mouse_z]
         
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -154,45 +149,31 @@ class GUI:
         message = "#gul" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
             
-    # Update distance between cat and mouse drones
-    def update_dist(self):
-        cat_x, cat_y, cat_z = self.hal.get_position()
-        mouse_x, mouse_y, mouse_z = self.mouse.get_position()
-
-        if mouse_z > 0.1: self.dist["ready"] = "true"
-        else: self.dist["ready"] = "false"
-
-        dist = np.sqrt((mouse_x+2-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
-        dist = int(dist*100)/100
-        self.dist["dist"] = dist
-
-        message = '#dst' + json.dumps(self.dist)
-        self.server.send_message(self.client, message)
-
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
         if message[:4] == "#ack":
             self.set_acknowledge(True)
-        # elif message[:4] == "#mou":
-        #     self.mouse.start_mouse(int(message[4:5]))
-        # elif message[:4] == "#stp":
-        #     self.mouse.stop_mouse()
-        # elif message[:4] == "#rst":
-        #     self.mouse.reset_mouse()
+        elif message[:4] == "#tur":
+            self.turtlebot.start_turtlebot()
+        elif message[:4] == "#stp":
+            self.turtlebot.stop_turtlebot()
+        elif message[:4] == "#rst":
+            self.turtlebot.reset_turtlebot()
+
 
     # Activate the server
     def run_server(self):
-        self.server = WebsocketServer(port=2304, host=self.host)
+        self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
 
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui_code.log", "w")
-                f.write("websocket_gui_code=ready")
+                f = open("/ws_gui.log", "w")
+                f.write("websocket_gui=ready")
                 f.close()
                 logged = True
             except:
@@ -260,7 +241,6 @@ class ThreadGUI:
         while True:
             start_time = datetime.now()
             self.gui.update_gui()
-            #self.gui.update_dist()
             acknowledge_message = self.gui.get_acknowledge()
             
             while not acknowledge_message:
