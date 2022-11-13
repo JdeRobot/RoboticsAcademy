@@ -60,8 +60,9 @@
     },
     "labyrinth_escape": {
         "gazebo_path": "/RoboticsAcademy/exercises/labyrinth_escape/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/labyrinth_escape/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/labyrinth_escape/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/labyrinth_escape/web-template/launch/labyrinth_escape.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/labyrinth_escape/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/labyrinth_escape/web-template/gui.py 0.0.0.0 {}"
     },
     "position_control": {
         "gazebo_path": "/RoboticsAcademy/exercises/position_control/web-template/launch",
