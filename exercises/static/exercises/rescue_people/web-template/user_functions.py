@@ -94,6 +94,12 @@ class HALFunctions:
     def get_landed_state(self):
         landed_state = self.shared_landed_state.get(type_name = "value")
         return landed_state
+    
+    def set_cmd_on(self):
+        pass
+
+    def set_cmd_off(self):
+        pass
 
 # Define GUI functions
 class GUIFunctions:

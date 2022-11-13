@@ -122,9 +122,9 @@ class BrainProcess(multiprocessing.Process):
         hal_module.HAL.get_yaw = self.hal.get_yaw
         hal_module.HAL.get_landed_state = self.hal.get_landed_state
         hal_module.HAL.get_yaw_rate = self.hal.get_yaw_rate
+        hal_module.HAL.set_cmd_on = self.hal.set_cmd_on
+        hal_module.HAL.set_cmd_off = self.hal.set_cmd_off
         
-        
-
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

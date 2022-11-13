@@ -10,6 +10,8 @@
   <arg name="headless" default="true"/>
   <arg name="use_sim_time" value="true"/>
   <arg name="enable_camera_sensor" default="true"/>
+  <arg name="enable_flashlight" default="true"/>
+
   <!-- The following line causes gzmsg and gzerr messages to be printed to the console
       (even when Gazebo is started through roslaunch) -->
   <arg name="verbose" default="true"/>
@@ -37,6 +39,8 @@
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="enable_camera_sensor" value="$(arg enable_camera_sensor)"/>
+      <arg name="enable_flashlight" value="$(arg enable_flashlight)"/>
+
       <arg name="log_file" value="$(arg log_file)"/>
     </include>
     <!-- The Firefly position controller -->
