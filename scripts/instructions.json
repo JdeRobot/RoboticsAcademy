@@ -65,8 +65,9 @@
     },
     "position_control": {
         "gazebo_path": "/RoboticsAcademy/exercises/position_control/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/position_control/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/position_control/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/position_control/web-template/launch/position_control.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/position_control/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/position_control/web-template/gui.py 0.0.0.0 {}"
     },
     "car_junction": {
         "gazebo_path": "/RoboticsAcademy/exercises/car_junction/web-template/launch",
