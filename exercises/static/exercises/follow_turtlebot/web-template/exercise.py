@@ -53,12 +53,10 @@ class Template:
         self.server = None
         self.client = None
         self.host = sys.argv[1]
-        print("before hal")
+
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        print("after hal")
         self.turtlebot = Turtlebot()
-        print("After tbbbbbbbbbbbbb")
        # self.gui = GUI(self.host, self.turtlebot)
         self.paused = False
 
