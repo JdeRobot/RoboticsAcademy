@@ -138,7 +138,8 @@
     },
     "power_tower_inspection": {
         "gazebo_path": "/RoboticsAcademy/exercises/power_tower_inspection/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/power_tower_inspection/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/power_tower_inspection/web-template/exercise.py 0.0.0.0"
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/power_tower_inspection/web-template/launch/power_tower_inspection.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/power_tower_inspection/web-template/exercise.py 0.0.0.0",
+        "instructions_gui": "python3 /RoboticsAcademy/exercises/power_tower_inspection/web-template/gui.py 0.0.0.0 {}"
     }
 }
