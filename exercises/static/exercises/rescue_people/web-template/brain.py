@@ -125,8 +125,6 @@ class BrainProcess(multiprocessing.Process):
         hal_module.HAL.set_cmd_on = self.hal.set_cmd_on
         hal_module.HAL.set_cmd_off = self.hal.set_cmd_off
         
-        
-
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
