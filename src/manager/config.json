@@ -1,9 +1,14 @@
 {
-  "template": "react",
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/web-template/entry_point/exercise.py",
+    "class_name": "Exercise",
+    "params": ""
+  },
   "launch": {
     "0": {
       "type": "module",
-      "module": "ros",
+      "module": "ros_api",
       "resource_folders": [
         "$EXERCISE_FOLDER/web-template/launch"
       ],
@@ -13,11 +18,7 @@
       "plugin_folders": [
       ],
       "parameters": [],
-      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_default.launch"
-    },
-    "1": {
-      "type": "command",
-      "command": "mkdir /tmp/output_directory"
+      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
     }
   }
 }

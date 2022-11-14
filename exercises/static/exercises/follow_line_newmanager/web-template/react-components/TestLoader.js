@@ -44,6 +44,11 @@ const TestLoader = (props) => {
         setWaiting(true);
         const config = JSON.parse(document.getElementById("exercise-config").textContent);
 
+        // Setting up circuit name into configuration
+        config.application.params = "default";
+        let launch_file = config.launch['0'].launch_file.interpolate({ circuit: 'default' });
+        config.launch['0'].launch_file = launch_file;
+
         RoboticsExerciseComponents.commsManager.launch(config)
             .then((message) => {
                 setState('ready');
