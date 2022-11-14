@@ -234,8 +234,11 @@ To use it, only two actions must be carried out:
 
 **Laser**
 
+The following function parses laser data taking in to accoun 1) laser only has 180º coverage and 2) the measure red at 90º corresponds to the 'front' of the robot.
+
+You must apply the conversions needed to transform that laser data to a vector in the relavite coodinate system of the robot.
+
 ```python
-laser_data = self.getLaserData ()
 
 def parse_laser_data (laser_data):
     laser = []
@@ -250,17 +253,6 @@ def parse_laser_data (laser_data):
     return laser
 ```
 
-```python
-laser_vectorized = []
-for d, a in laser:
-    # (4.2.1) laser into GUI reference system
-    x = d * math.cos (a) * -1
-    y = d * math.sin (a) * -1
-    v = (x, y)
-    laser_vectorized += [v]
-
-laser_mean = np.mean (laser_vectorized, axis = 0)
-```
 
 **Coordinate system**
 
