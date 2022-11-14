@@ -7,7 +7,7 @@ import HomepageContext from "../contexts/HomepageContext";
 const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
 
 const ExerciseList = () => {
-  const { getSearchBarText } = useContext(HomepageContext);
+  const { getSearchBarText, getFilterItemsList } = useContext(HomepageContext);
   // const [listState, setListState] = useState({
   //   loading: true,
   //   exercises: null,
@@ -36,7 +36,13 @@ const ExerciseList = () => {
     if (filterText === "") {
       return el;
     } else {
-      return el.name.toLowerCase().includes(filterText);
+      const filterItemsList = getFilterItemsList();
+      for (var i in filterItemsList) {
+        const filterItem = filterItemsList[i];
+        if (el[filterItem].toLowerCase().includes(filterText) === true) {
+          return true;
+        }
+      }
     }
   });
 
