@@ -12,7 +12,7 @@ const ExerciseList = (props) => {
   
   useEffect(() => {
     setListState({ loading: true, exercises: null });
-    const apiURL = `${serverBase}/api/v1/exercises/`;
+    const apiURL = `${serverBase}/api/v1/exercises`;
     fetch(apiURL)
       .then((res) => res.json())
       .then((exercises) => {

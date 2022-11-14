@@ -34,16 +34,14 @@ class ManagerConsumerMessage(BaseModel):
 
 
 class ManagerConsumerMessageException(BaseException):
-    @singledispatchmethod
     def __init__(self, id: str, message: str = None):
         super(ManagerConsumerMessageException, self).__init__(message)
         self.id = id
         self.command = 'error'
         self.message = message
 
-    @__init__.register(ManagerConsumerMessage)
-    def _from_consumer_message(self, message: ManagerConsumerMessage):
-        self.id = message.id
+    def consumer_message(self):
+        return ManagerConsumerMessage(id=self.id, command=self.command, data={'message': self.message})
 
     def __str__(self):
-        return str(ManagerConsumerMessage(id=self.id, command=self.command, message={'message': self.message}))
+        return str(ManagerConsumerMessage(id=self.id, command=self.command, data={'message': self.message}))

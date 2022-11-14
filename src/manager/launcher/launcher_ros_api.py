@@ -29,7 +29,7 @@ class LauncherRosApi(ILauncher):
     launch: Any = None
     listener: Any = None
 
-    def run(self, callback: callable):
+    def run(self, callback: callable = None):
         # expand variables in configuration paths
         self._set_environment()
 
@@ -48,12 +48,10 @@ class LauncherRosApi(ILauncher):
         return self.launch.pm.is_alive()
 
     def terminate(self):
-        self.launch.shutdown()
+        if self.is_running():
+            self.launch.shutdown()
 
     def _set_environment(self):
-        # generate exercise environment variable
-        os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FOLDER')}/{self.exercise_id}"
-
         resource_folders = [os.path.expandvars(path) for path in self.resource_folders]
         model_folders = [os.path.expandvars(path) for path in self.model_folders]
         plugin_folders = [os.path.expandvars(path) for path in self.plugin_folders]

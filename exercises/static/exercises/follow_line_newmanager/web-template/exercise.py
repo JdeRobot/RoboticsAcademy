@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import logging
+import os
 
 from websocket_server import WebsocketServer
 import time
@@ -308,14 +309,17 @@ while True:
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_code.log", "w")
+                f = open(f"{home_dir}/ws_code.log", "w")
                 f.write("websocket_code=ready")
                 f.close()
                 logged = True
             except:
+                print("~/ws_code.log could not be opened for write")
                 time.sleep(0.1)
 
         self.server.run_forever()

@@ -3,7 +3,11 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from src.libs.launch_utils import get_class, class_from_module
+import logging
+from src.libs.process_utils import get_class, class_from_module
+from src.logging.log_manager import LogManager
+
+logger = LogManager(loglevel=logging.INFO).logger
 
 
 class LauncherEngine(BaseModel):
@@ -19,7 +23,7 @@ class LauncherEngine(BaseModel):
             launcher_data = self.launch[key]
             launcher_type = launcher_data['type']
 
-            # extend launcher data with exercise id
+            # extend launcher data with
             # TODO: Review, maybe there's a better way to do this
             launcher_data["exercise_id"] = self.exercise_id
 
@@ -36,13 +40,13 @@ class LauncherEngine(BaseModel):
         for key in keys:
             launcher_data = self.launch[key]
             launcher_class = launcher_data.get('launcher', None)
-            print(f"Terminating {key}")
+            logger.info(f"Terminating {key}")
             if launcher_class is not None and launcher_class.is_running():
                 launcher_class.terminate()
 
     def launch_module(self, configuration):
         def process_terminated(name, exit_code):
-            print(f"LauncherEngine: {name} exited with code {exit_code}")
+            logger.info(f"LauncherEngine: {name} exited with code {exit_code}")
             if self.terminated_callback is not None:
                 self.terminated_callback(name, exit_code)
 

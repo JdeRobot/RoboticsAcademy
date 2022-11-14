@@ -1,4 +1,6 @@
 import json
+import os
+
 import rospy
 import cv2
 import sys
@@ -149,10 +151,12 @@ class GUI:
         self.server.set_fn_message_received(self.get_message)
         self.server.set_fn_client_left(self.handle_close)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui.log", "w")
+                f = open(f"{home_dir}/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
                 f.close()
                 logged = True

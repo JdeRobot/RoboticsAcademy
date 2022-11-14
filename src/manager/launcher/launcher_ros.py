@@ -42,7 +42,7 @@ class LauncherRos(ILauncher):
 
     def run(self):
         try:
-            # generate exercise environment variable
+            # generate entry_point environment variable
             os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FOLDER')}/{self.exercise_id}"
 
             # expand variables in configuration paths
