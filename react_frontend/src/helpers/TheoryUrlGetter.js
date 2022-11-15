@@ -15,7 +15,7 @@ export const THEORY_URL = {
   MonteCarloVisualLoc: BaseUrl + "ComputerVision/montecarlo_visual_loc",
   DroneCatMouse: BaseUrl + "Drones/drone_cat_mouse",
   DroneGymKhana: BaseUrl + "Drones/drone_gymkhana",
-  DroneHanger: BaseUrl + "Drones/drone_hangar",
+  DroneHangar: BaseUrl + "Drones/drone_hangar",
   FollowRoad: BaseUrl + "Drones/follow_road",
   PowerTowerInspection: BaseUrl + "Drones/power_tower_inspection",
   PackageDelivery: BaseUrl + "Drones/package_delivery",

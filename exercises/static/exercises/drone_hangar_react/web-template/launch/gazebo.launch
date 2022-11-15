@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- world -->
+    <arg name="world" default="/RoboticsAcademy/exercises/drone_hangar/web-template/drone_hangar.world"/>
+
+    <!-- gazebo configs -->
+    <arg name="gui" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="true"/>
+    <arg name="paused" default="false"/>
+    <arg name="headless" default="true"/>
+    <arg name="use_sim_time" default="true"/>
+
+    <!-- Gazebo Sim -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    </include>
+</launch>
