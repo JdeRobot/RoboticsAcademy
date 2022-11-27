@@ -1,6 +1,3 @@
-import '../style.css'
-import * as THREE from 'three'
-
 function createLine(a, b, color = 0xff00ff) {
     const material = new THREE.LineBasicMaterial({ color: color });
 
@@ -14,7 +11,7 @@ function createLine(a, b, color = 0xff00ff) {
     return line;
 }
 
-export function createFrame(width = 16, height = 9, scale = 1, color = 0xff0000) {
+function createFrame(width = 16, height = 9, scale = 1, color = 0xff0000) {
     const frame = new THREE.Group();
 
     // set camare center

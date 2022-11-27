@@ -1,6 +1,3 @@
-import '../style.css'
-import * as THREE from 'three'
-
 function createWheels(scale) {
     const geometry = new THREE.BoxBufferGeometry(12 * scale, 12 * scale, 33 * scale);
     const material = new THREE.MeshLambertMaterial({ color: 0x333333 });
@@ -8,7 +5,7 @@ function createWheels(scale) {
     return wheel;
 }
 
-export function createCar(scale = 1) {
+function createCar(scale = 1) {
     const car = new THREE.Group();
 
     const backWheel = createWheels(scale);
