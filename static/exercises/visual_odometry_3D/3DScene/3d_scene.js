@@ -1,12 +1,13 @@
 var camera, scene, renderer, controls;
 var axes, grid, particles;
+var windowWidth, windowHeight;
 var rotationx = 0.0;
 var rotationy = 0.0;
 var toDegrees = 180 / Math.PI;
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
 
 function init() {
+	windowWidth = document.getElementById("canvas").offsetWidth
+	windowHeight = document.getElementById("canvas").offsetHeight
 	camera = new THREE.PerspectiveCamera(45, windowWidth / windowHeight, 1, 1000);
 	camera.position.z = config.camera.z;
 	camera.position.y = config.camera.y;
@@ -35,6 +36,9 @@ function init() {
 }
 
 function onWindowResize() {
+	windowWidth = document.getElementById("canvas").offsetWidth
+	windowHeight = document.getElementById("canvas").offsetHeight
+
 	camera.aspect = windowWidth / windowHeight;
 	camera.updateProjectionMatrix();
 	renderer.setSize(windowWidth, windowHeight);
@@ -195,4 +199,3 @@ function webGLStart() {
 	addAxis();
 	console.log(windowWidth, windowHeight)
 }
-
