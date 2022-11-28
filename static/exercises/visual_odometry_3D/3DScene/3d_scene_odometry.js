@@ -197,5 +197,4 @@ function webGLStart() {
 	addGrid();
 	animate();
 	addAxis();
-	console.log(windowWidth, windowHeight)
 }
