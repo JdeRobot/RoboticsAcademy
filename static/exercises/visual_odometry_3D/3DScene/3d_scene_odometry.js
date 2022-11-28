@@ -1,9 +1,14 @@
 var camera, scene, renderer, controls;
 var axes, grid, particles;
 var windowWidth, windowHeight;
+var userFrame, trueFrame;
 var rotationx = 0.0;
 var rotationy = 0.0;
 var toDegrees = 180 / Math.PI;
+
+const ARRAY_LENGHT = 300
+const USER_COLOR = 0xff0000 // Red
+const TRUE_COLOR = 0x00ff00 // Green
 
 function init() {
 	windowWidth = document.getElementById("canvas").offsetWidth
@@ -13,7 +18,7 @@ function init() {
 	camera.position.y = config.camera.y;
 	camera.position.x = config.camera.x;
 	scene = new THREE.Scene();
-	renderer = new THREE.WebGLRenderer();
+	renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 	renderer.setSize(windowWidth, windowHeight);
 	renderer.setClearColor(0x58D3F7);
 	document.getElementById("canvas").appendChild(renderer.domElement);
@@ -145,31 +150,8 @@ function moveObj(pose3d) {
 
 
 function addAxis() {
-	const origin = new THREE.Vector3(0, 0, 0);
-	const length = 40;
-	const headLength = 3;
-	const headWidth = 3;
-
-	/* Axles Y */
-	const dirY = new THREE.Vector3(0, 1, 0);
-	dirY.normalize();
-	const hexY = 0x037c12; /* Verde */
-	const arrowHelperY = new THREE.ArrowHelper(dirY, origin, length, hexY, headLength, headWidth);
-	scene.add(arrowHelperY);
-
-	/* Axles X */
-	const dirX = new THREE.Vector3(1, 0, 0);
-	dirX.normalize();
-	const hexX = 0xff0000; /* Rojo */
-	const arrowHelperX = new THREE.ArrowHelper(dirX, origin, length, hexX, headLength, headWidth);
-	scene.add(arrowHelperX);
-
-	/* Axles Z */
-	const dirZ = new THREE.Vector3(0, 0, 1);
-	dirZ.normalize();
-	const hexZ = 0x004dff; /* Azul */
-	const arrowHelperZ = new THREE.ArrowHelper(dirZ, origin, length, hexZ, headLength, headWidth);
-	scene.add(arrowHelperZ);
+	const axesHelper = new THREE.AxesHelper(10); // The X axis is red. The Y axis is green. The Z axis is blue.
+	scene.add(axesHelper);
 }
 
 
@@ -182,6 +164,13 @@ function addSphere(point) {
 	sphere.position.set(point.x, point.y, point.z);
 	scene.add(sphere);
 
+}
+
+function addFrames() {
+	userFrame = createFrame(1241, 356, 1, USER_COLOR);
+	scene.add(userFrame)
+	trueFrame = createFrame(1241, 356, 1, TRUE_COLOR);
+	scene.add(trueFrame)
 }
 
 function reset_scene3d() {
@@ -197,4 +186,5 @@ function webGLStart() {
 	addGrid();
 	animate();
 	addAxis();
+	addFrames();
 }
