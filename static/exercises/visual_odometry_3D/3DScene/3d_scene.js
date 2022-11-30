@@ -6,14 +6,17 @@ var rotationx = 0.0;
 var rotationy = 0.0;
 var toDegrees = 180 / Math.PI;
 
-const ARRAY_LENGHT = 300
+const TRACKER_LENGHT = 300
 const USER_COLOR = 0xff0000 // Red
 const TRUE_COLOR = 0x00ff00 // Green
+
+const user_tracker = new CBuffer(TRACKER_LENGHT)
+const true_tracker = new CBuffer(TRACKER_LENGHT)
 
 function init() {
 	windowWidth = document.getElementById("canvas").offsetWidth
 	windowHeight = document.getElementById("canvas").offsetHeight
-	camera = new THREE.PerspectiveCamera(45, windowWidth / windowHeight, 1, 1000);
+	camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.01, 1000);
 	camera.position.z = config.camera.z;
 	camera.position.y = config.camera.y;
 	camera.position.x = config.camera.x;
@@ -180,6 +183,15 @@ function reset_scene3d() {
 		}
 	}
 }
+
+
+function plotTrack(track, color = 0xff0000) {
+	const material = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
+	const geometry = new THREE.BufferGeometry().setFromPoints(track.getPoints());
+	const line = new THREE.Line(geometry, material);
+	return line
+}
+
 
 function webGLStart() {
 	init();
