@@ -58,11 +58,11 @@ class ListenerParameters:
 
         cfg = yaml.safe_load(f)
         #starting comm
-        #jdrc= comm.init(cfg, '3DReconstruction')
+        #jdrc= comm.init(cfg, 'VisualOdometry3D')
         #ic = jdrc.getIc()
         #properties = ic.getProperties()
 
-        data = cfg["3DReconstruction"][cam]["data"]
+        data = cfg["VisualOdometry3D"][cam]["data"]
         print(data)
 
         self.K = np.array([data["K"][0],data["K"][1],data["K"][2],data["K"][4], data["K"][5],data["K"][6],data["K"][8],data["K"][9],data["K"][10]],dtype=np.double).reshape(3,3)
