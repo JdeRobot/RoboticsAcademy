@@ -5,9 +5,9 @@
     <arg name="debug" default="false"/>
     <arg name="verbose" default="true"/>
     <arg name="paused" default="false"/>
-	<arg name="headless" default="true"/>
+	  <arg name="headless" default="true"/>
     <arg name="use_sim_time" default="true"/>
-    <arg name="world" default="kobuki_1_reconstruccion3d.world"/>
+    <arg name="world" default="kobuki_1_visualodometry3d.world"/>
 
     <!-- Gazebo sim -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
