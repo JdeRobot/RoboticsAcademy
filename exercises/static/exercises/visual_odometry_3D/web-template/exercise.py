@@ -1,21 +1,20 @@
 #!/usr/bin/env python
-from websocket_server import WebsocketServer
-import time
-import threading
+import importlib
+import json
+import re
 import subprocess
 import sys
+import threading
+import time
 from datetime import datetime
-import re
-import json
-import importlib
 
-import rospy
-from std_srvs.srv import Empty
 import cv2
-
+import rospy
+from console import close_console, start_console
 from gui import GUI, ThreadGUI
 from hal import HAL
-from console import start_console, close_console
+from std_srvs.srv import Empty
+from websocket_server import WebsocketServer
 
 
 class Template:
@@ -176,13 +175,8 @@ class Template:
         hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
 
         # Add HAL functions
-        hal_module.HAL.getImage = self.hal.getImage
-        hal_module.HAL.graficToOptical = self.hal.graficToOptical
-        hal_module.HAL.backproject = self.hal.backproject
-        hal_module.HAL.getCameraPosition = self.hal.getCameraPosition
-        hal_module.HAL.project = self.hal.project
-        hal_module.HAL.opticalToGrafic = self.hal.opticalToGrafic
-        hal_module.HAL.project3DScene = self.hal.project3DScene
+        hal_module.HAL.get_image = self.hal.get_image
+        hal_module.HAL.advance = self.hal.advance
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

@@ -1,12 +1,13 @@
-import json
-import cv2
 import base64
+import json
+import logging
 import threading
 import time
 from datetime import datetime
-from websocket_server import WebsocketServer
-import logging
+
+import cv2
 import numpy as np
+from websocket_server import WebsocketServer
 
 
 # Graphical User Interface Class
@@ -38,7 +39,6 @@ class GUI:
         self.duplicate_matching = False
         self.matching_to_send = []
         self.paint_matching = "F"
-
 
         # Get HAL object
         self.hal = hal
