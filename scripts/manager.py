@@ -562,7 +562,7 @@ class Manager:
             self.commands.start_console(1920, 1080)
             print("> Console started")
         else:
-            print("> Starting exercise")
+            print("> Starting exercise", self.exercise)
             self.commands.start_exercise(exercise)
             print("> Exercise started")
             self.launch_level = 3
