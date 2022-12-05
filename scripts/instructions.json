@@ -190,10 +190,6 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/power_tower_inspection/web-template/exercise.py 0.0.0.0"
     },
     "visual_odometry_3D": {
-        "gazebo_path": "/RoboticsAcademy/exercises/visual_odometry_3D/web-template/launch",
-        "instructions_ros": [
-            "/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/visual_odometry_3D/web-template/launch/visual_odometry_3D_ros.launch"
-        ],
         "instructions_host": "python3 /RoboticsAcademy/exercises/visual_odometry_3D/web-template/exercise.py 0.0.0.0"
     }
 }
