@@ -17,7 +17,7 @@ class HAL:
     DATASET = 'kitti'
 
     # Paths
-    DATASET_PATH = "exercises/static/exercises/assets/kitti/dataset/"
+    DATASET_PATH = "/RoboticsAcademy/exercises/static/exercises/assets/kitti/dataset/"
     SEQUENCE_PATH = DATASET_PATH + "sequences/" + SEQUENCE_NUMBER
     LEFT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_0/*.png"
     RIGHT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_1/*.png"
@@ -26,7 +26,7 @@ class HAL:
     GROUNDTRUTH_FILE = DATASET_PATH + "poses/" + SEQUENCE_NUMBER + "/.txt"
     CALIBRATION_FILE = SEQUENCE_PATH + "/calib.txt"
 
-    # Class variables
+    # Class global variables
     IMAGE_COUNTER = 0
     LEFT_IMAGE_FILES_ARRAY = sorted(glob(LEFT_CAMERA_IMAGES_PATH))
     RIGHT_IMAGE_FILES_ARRAY = sorted(glob(RIGHT_CAMERA_IMAGES_PATH))
@@ -39,7 +39,8 @@ class HAL:
     # Get Image from ROS Driver Camera
     def getImage(self, lr):
 
-        print("\t<", lr, IMAGE_COUNTER)
+        print("\t< LEFT_IMAGE_FILES_ARRAY >", LEFT_IMAGE_FILES_ARRAY)
+        print("\t< RIGHT_IMAGE_FILES_ARRAY >", RIGHT_IMAGE_FILES_ARRAY)
 
         if (lr == 'left'):
             image = cv2.imread(LEFT_IMAGE_FILES_ARRAY[IMAGE_COUNTER], 0)
