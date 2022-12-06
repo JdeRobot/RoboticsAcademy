@@ -31,6 +31,8 @@ function declare_gui(websocket_address) {
     // What to do when a message from server is received
     websocket_gui.onmessage = function (event) {
         operation = event.data.substring(0, 4);
+        console.log(operation)
+        console.log(event.data)
 
         if (operation == "#gui") {
             // Parse the entire Object

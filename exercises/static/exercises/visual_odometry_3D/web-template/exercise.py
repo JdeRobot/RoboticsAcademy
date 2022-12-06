@@ -8,12 +8,9 @@ import threading
 import time
 from datetime import datetime
 
-import cv2
-import rospy
 from console import close_console, start_console
 from gui import GUI, ThreadGUI
 from hal import HAL
-from std_srvs.srv import Empty
 from websocket_server import WebsocketServer
 
 
@@ -175,7 +172,7 @@ class Template:
         hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
 
         # Add HAL functions
-        hal_module.HAL.get_image = self.hal.get_image
+        hal_module.HAL.getImage = self.hal.getImage
         hal_module.HAL.advance = self.hal.advance
 
         # Define GUI module
@@ -183,11 +180,7 @@ class Template:
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
-        gui_module.GUI.showImages = self.gui.showImages
-        gui_module.GUI.ShowNewPoints = self.gui.ShowNewPoints
-        gui_module.GUI.ShowAllPoints = self.gui.ShowAllPoints
-        gui_module.GUI.showImageMatching = self.gui.showImageMatching
-        gui_module.GUI.ClearAllPoints = self.gui.ClearAllPoints
+        gui_module.GUI.showImage = self.gui.showImage
 
         # Adding modules to system
         # Protip: The names should be different from
