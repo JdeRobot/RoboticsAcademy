@@ -17,7 +17,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image': '', 'shape': []}
+        self.payload = {'image': '', 'shape': [], 'counter': '-1'}
         self.server = None
         self.client = None
 
@@ -44,7 +44,7 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {'image': '', 'shape': '', 'counter': '-1'}
 
         if(image_to_be_shown_updated == False):
             return payload
@@ -56,6 +56,7 @@ class GUI:
 
         payload['img'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+        payload['counter'] = self.hal.counter
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False

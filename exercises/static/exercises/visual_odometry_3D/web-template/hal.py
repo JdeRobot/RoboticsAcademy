@@ -34,6 +34,7 @@ class HAL:
     def __init__(self):
 
         self.image = None
+        self.counter = IMAGE_COUNTER
 
 
     # Get Image from ROS Driver Camera
@@ -48,6 +49,8 @@ class HAL:
             image = cv2.imread(RIGHT_IMAGE_FILES_ARRAY[IMAGE_COUNTER], 0)
         else:
             print("Invalid camera")
+        
+        self.counter += 1
 
         return image
 
