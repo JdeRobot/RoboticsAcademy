@@ -1,13 +1,16 @@
 #!/usr/bin/env python
+
+from __future__ import print_function
+
 import importlib
 import json
 import re
-import subprocess
 import sys
 import threading
 import time
 from datetime import datetime
 
+import cv2
 from console import close_console, start_console
 from gui import GUI, ThreadGUI
 from hal import HAL
@@ -19,24 +22,20 @@ class Template:
     # self.ideal_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
-        self.measure_thread = None
         self.thread = None
         self.reload = False
-        self.stop_brain = False
-        self.user_code = ""
 
         # Time variables
         self.ideal_cycle = 80
         self.measured_cycle = 80
         self.iteration_counter = 0
-        self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {'brain': '', 'gui': ''}
 
         self.server = None
         self.client = None
         self.host = sys.argv[1]
 
-        # Initialize the GUI and Console behind the scenes
+        # Initialize the GUI, WEBRTC and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
 
@@ -58,27 +57,37 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         # Check for save/load
-        if (source_code[:5] == "#save"):
+        if(source_code[:5] == "#save"):
             source_code = source_code[5:]
             self.save_code(source_code)
 
             return "", "", 1
 
-        elif (source_code[:5] == "#load"):
+        elif(source_code[:5] == "#load"):
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
 
-            return "", "", 1       
+            return "", "", 1
 
         else:
             # Get the frequency of operation, convert to time_cycle and strip
+            try:
+        		# Get the debug level and strip the debug part
+                debug_level = int(source_code[5])
+                source_code = source_code[12:]
+            except:
+                debug_level = 1
+                source_code = ""
+
+                source_code = self.debug_parse(source_code, debug_level)
 
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
-            return iterative_code, sequential_code
+            return iterative_code, sequential_code, debug_level
+
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
-        if (debug_level == 1):
+        if(debug_level == 1):
             # If debug level is 0, then all the GUI operations should not be called
             source_code = re.sub(r'GUI\..*', '', source_code)
 
@@ -102,11 +111,6 @@ class Template:
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
             iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
-            # Add newlines to match line on bug report
-            extra_lines = sequential_code.count('\n')
-            while (extra_lines >= 0):
-                iterative_code = '\n' + iterative_code
-                extra_lines -= 1
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
 
         except:
@@ -120,12 +124,7 @@ class Template:
         # Redirect the information to console
         start_console()
 
-        # Reference Environment for the exec() function
-        iterative_code, sequential_code = self.parse_code(source_code)
-
-        # print("The debug level is " + str(debug_level)
-        # print(sequential_code)
-        # print(iterative_code)
+        iterative_code, sequential_code, debug_code_level = self.parse_code(source_code)
 
         # The Python exec function
         # Run the sequential part
@@ -136,11 +135,6 @@ class Template:
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
-            while (self.stop_brain == True):
-                if (self.reload == True):
-                    break
-                time.sleep(0.1)
-
             start_time = datetime.now()
 
             # Execute the iterative portion
@@ -194,7 +188,7 @@ class Template:
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
-        while True:
+        while self.reload == False:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -214,14 +208,10 @@ class Template:
             # Reset the counter
             self.iteration_counter = 0
 
-            # Send to client
-            self.send_frequency_message()
-
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0
-        gui_frequency = 0
+        brain_frequency = 0; gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.measured_cycle, 1)
         except ZeroDivisionError:
@@ -234,7 +224,6 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
-        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
@@ -246,34 +235,21 @@ class Template:
     def send_code_message(self):
         self.server.send_message(self.client, "#exec")
 
-    # Function to track the real time factor from Gazebo statistics
-    # https://stackoverflow.com/a/17698359
-    # (For reference, Python3 solution specified in the same answer)
-    def track_stats(self):
-        args = ["gz", "stats", "-p"]
-        # Prints gz statistics. "-p": Output comma-separated values containing-
-        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
-        # bufsize=1 enables line-bufferred mode (the input buffer is flushed
-        # automatically on newlines if you would write to process.stdin )
-        with stats_process.stdout:
-            for line in iter(stats_process.stdout.readline, b''):
-                stats_list = [x.strip() for x in line.split(b',')]
-                self.real_time_factor = stats_list[0].decode("utf-8")
-
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if (self.thread != None):
-            while self.thread.is_alive():
-                time.sleep(0.2)
+        if(self.thread != None):
+            while self.thread.is_alive() or self.measure_thread.is_alive():
+                pass
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
+        self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
+        self.measure_thread.start()
         self.send_code_message()
         print("New Thread Started!")
 
@@ -290,14 +266,14 @@ class Template:
         self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
-
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if (message[:5] == "#freq"):
+        if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
+            self.send_frequency_message()
             return
 
         elif(message[:5] == "#ping"):
@@ -308,27 +284,12 @@ class Template:
         elif (message[:5] == "#code"):
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message[6:]
+                code = message
                 # print(repr(code))
                 self.reload = True
-                self.execute_thread(self.user_code)
+                self.execute_thread(code)
             except:
                 pass
-
-        
-        elif (message[:5] == "#rest"):
-            try:
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#stop"):
-            self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
@@ -337,13 +298,8 @@ class Template:
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
 
-        # Start the real time factor tracker thread
-        self.stats_thread = threading.Thread(target=self.track_stats)
-        self.stats_thread.start()
-
-        # Start measure frequency
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.measure_thread.start()
+        # Initialize the ping message
+        self.send_frequency_message()
 
         print(client, 'connected')
 
@@ -372,6 +328,5 @@ class Template:
 
 # Execute!
 if __name__ == "__main__":
-    print('holaaaaa caracolaaaaaa')
     server = Template()
     server.run_server()
