@@ -40,7 +40,7 @@ class Mouse:
         self.mouse.land()
 
         req = ModelState()
-        req.model_name = "firefly_1"
+        req.model_name = "iris_red"
         req.pose.position.x = 2.0
         req.pose.position.y = 0.0
         req.pose.position.z = 0.05

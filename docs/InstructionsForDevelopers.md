@@ -34,13 +34,18 @@ pip install djangorestframework
 pip install django-webpack-loader
 ```
 
-4) Now we are ready to launch the Django webserver
+4) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
+```
+cd react_frontend/ && yarn install && yarn run dev
+```
+
+5) Now at the root of the project we are ready to launch the Django webserver
 ```
 python3 manage.py runserver
 ```
 The webserver is not connected with the RADI.
 
-5) To connect the webserver with RADI, Run:
+6) To connect the webserver with RADI, Run:
 ```
 docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy --no-server
 ```
