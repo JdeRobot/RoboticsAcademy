@@ -115,5 +115,3 @@ webpack-stats.json
 *.DS_Store
 react_frontend/static
 developer_scripts
-
-static/exercises/assets/kitti/
