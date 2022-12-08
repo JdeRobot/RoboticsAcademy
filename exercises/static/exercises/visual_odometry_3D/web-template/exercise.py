@@ -252,6 +252,7 @@ class Template:
         self.measure_thread.start()
         self.send_code_message()
         print("New Thread Started!")
+        print(source_code)
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -285,7 +286,6 @@ class Template:
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
                 code = message
-                print(repr(code))
                 self.reload = True
                 self.execute_thread(code)
             except:
