@@ -52,7 +52,7 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': '', 'counter': self.hal.left_image_files_array}
+        payload = {'image': '', 'shape': '', 'counter': ''}
 
         if(image_to_be_shown_updated == False):
             return payload
@@ -63,6 +63,7 @@ class GUI:
 
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+        payload['counter'] = self.hal.left_image_files_array[self.hal.image_counter]
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
