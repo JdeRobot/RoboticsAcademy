@@ -285,7 +285,7 @@ class Template:
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
                 code = message
-                # print(repr(code))
+                print(repr(code))
                 self.reload = True
                 self.execute_thread(code)
             except:
