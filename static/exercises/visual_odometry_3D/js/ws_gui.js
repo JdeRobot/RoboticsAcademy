@@ -38,12 +38,8 @@ function declare_gui(websocket_address) {
             // Parse the entire Object
             var data = JSON.parse(event.data.substring(4,));
 
-            console.log(data)
-            console.log(data.image)
-            console.log(data.shape)
-
             // Parse the Image Data
-            var image_data = JSON.parse(data.img),
+            var image_data = JSON.parse(data.image),
                 source = decode_utf8(image_data.image),
                 shape = image_data.shape,
                 counter = image_data.counter;

@@ -6,7 +6,6 @@ import time
 from datetime import datetime
 
 import cv2
-import numpy as np
 from websocket_server import WebsocketServer
 
 
@@ -17,7 +16,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'img': ''}
+        self.payload = {'image': ''}
         self.server = None
         self.client = None
 
@@ -27,13 +26,22 @@ class GUI:
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
-
+        
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
 
         # Take the console object to set the same websocket and client
         self.hal = hal
         t.start()
+
+
+    # Explicit initialization function
+    # Class method, so user can call it without instantiation
+    @classmethod
+    def initGUI(cls, host):
+        # self.payload = {'image': '', 'shape': []}
+        new_instance = cls(host)
+        return new_instance
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -49,19 +57,17 @@ class GUI:
         if(image_to_be_shown_updated == False):
             return payload
 
-        # Encode the image
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
 
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-        payload['counter'] = self.hal.image_counter
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
-
+        
         return payload
 
     # Function for student to call
@@ -81,10 +87,10 @@ class GUI:
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-
+        
         return acknowledge
 
-    # Function to get value of Acknowledge
+    # Function to set value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
@@ -92,19 +98,20 @@ class GUI:
 
     # Update the gui
     def update_gui(self):
+        # Payload Image Message
         payload = self.payloadImage()
-        self.payload["img"] = json.dumps(payload)
+        self.payload["image"] = json.dumps(payload)
 
-        # Payload Point Message
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
-        # Acknowledge Message for GUI Thread
-        if (message[:4] == "#ack"):
-            self.set_acknowledge(True)
+		# Acknowledge Message for GUI Thread
+        if(message[:4] == "#ack"):
+            self.set_acknowledge(True)		
 
     # Activate the server
     def run_server(self):
@@ -124,15 +131,14 @@ class GUI:
 
         self.server.run_forever()
 
-
 # This class decouples the user thread
 # and the GUI update thread
-class ThreadGUI:
+class ThreadGUI(threading.Thread):
     def __init__(self, gui):
         self.gui = gui
         # Time variables
         self.ideal_cycle = 80
-        self.measured_cycle = 80
+        self.measured_cycle = 90
         self.iteration_counter = 0
 
     # Function to start the execution of threads
@@ -147,11 +153,11 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while (self.gui.client == None):
+        while(self.gui.client == None):
             pass
 
         previous_time = datetime.now()
-        while (True):
+        while(True):
             # Sleep for 2 seconds
             time.sleep(2)
 
