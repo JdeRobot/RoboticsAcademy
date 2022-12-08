@@ -252,7 +252,8 @@ class Template:
         self.measure_thread.start()
         self.send_code_message()
         print("New Thread Started!")
-
+        print("Caracola")
+        
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
         frequency_message = json.loads(message)
