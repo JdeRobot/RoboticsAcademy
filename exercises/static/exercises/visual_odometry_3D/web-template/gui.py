@@ -52,7 +52,7 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': '', 'counter': ''}
+        payload = {'image': '', 'shape': '', 'counter': str(self.hal.image_counter)}
 
         if(image_to_be_shown_updated == False):
             return payload
