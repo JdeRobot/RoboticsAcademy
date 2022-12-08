@@ -37,9 +37,6 @@ class HAL:
     # Get Image from ROS Driver Camera
     def getImage(self, lr):
 
-        print("\t< LEFT_IMAGE_FILES_ARRAY >", self.left_image_files_array)
-        print("\t< RIGHT_IMAGE_FILES_ARRAY >", self.right_image_files_array)
-
         if (lr == 'left'):
             image = cv2.imread(self.left_image_files_array[self.image_counter], 0)
         elif (lr == 'right'):
