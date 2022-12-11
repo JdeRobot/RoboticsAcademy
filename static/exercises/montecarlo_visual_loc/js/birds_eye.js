@@ -1,15 +1,17 @@
 // Retreive the canvas elements and context
-var birdsEye = document.getElementById("birds-eye-montecarlo");
-var canvasCtx = birdsEye.getContext("2d");
+var mapCanvas = document.getElementById("birds-eye-montecarlo"),
+	ctx = mapCanvas.getContext("2d");
 	
 var trail = [],
 	coords = [-1, -1];;
 
+var initialPosition;
+
 // Complete draw function
 function draw(x, y, ax, ay){
-	canvasCtx.clearRect(0, 0, birdsEye.width, birdsEye.height);	
+	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);	
 
-	drawTrail(coords[0], coords[1]);
+	//drawTrail(coords[0], coords[1]);
 	coords = drawTriangle(x, y, ax, ay);
 }
 
@@ -20,29 +22,34 @@ function drawCircle(x, y){
 	cursor_x = x;
 	cursor_y = y;
 	
-	canvasCtx.beginPath();
-	canvasCtx.arc(x, y, 1.5, 0, 2 * Math.PI);
-	canvasCtx.closePath();
+	ctx.beginPath();
+	ctx.arc(x, y, 1.5, 0, 2 * Math.PI);
+	ctx.closePath();
 	
-	canvasCtx.lineWidth = 1.5;
-	canvasCtx.strokeStyle = "#0000FF";
-	canvasCtx.stroke();
+	ctx.lineWidth = 1.5;
+	ctx.strokeStyle = "#ff8c00";
+	ctx.stroke();
 	
-	canvasCtx.fillStyle = "#0000FF";
-	canvasCtx.fill();
+	ctx.fillStyle = "#ff8c00";
+	ctx.fill();
 }
 
 // Testing to be carried out with Python interface
-function drawTriangle(posx, posy, angx, angy){	
-	canvasCtx.beginPath();
+function drawTriangle(posx, posy, angx, angy){
+	// Store initial position
+	if (initialPosition == null) {
+		initialPosition = [posx, posy, angx, angy];
+	}
+
+	ctx.beginPath();
 	
 	px = posx;
 	py = posy;
 	
 	// The main line
-	canvasCtx.strokeStyle = '#FF0000';
-	//canvasCtx.moveTo(px, py);
-	//canvasCtx.lineTo(px, py);
+	ctx.strokeStyle = '#FF0000';
+	//ctx.moveTo(px, py);
+	//ctx.lineTo(px, py);
 	
 	// Sides
 	side = 1.5 * Math.hypot(2, 2);
@@ -61,20 +68,20 @@ function drawTriangle(posx, posy, angx, angy){
 	px3 = posx + side * Math.cos(ang);
 	py3 = posy - side * Math.sin(ang);
 	
-	canvasCtx.moveTo(px3, py3);
-	canvasCtx.lineTo(px1, py1);
-	//canvasCtx.moveTo(px, py);
-	canvasCtx.lineTo(px2, py2);
-	canvasCtx.lineTo(px3, py3);
+	ctx.moveTo(px3, py3);
+	ctx.lineTo(px1, py1);
+	//ctx.moveTo(px, py);
+	ctx.lineTo(px2, py2);
+	ctx.lineTo(px3, py3);
 	
 	rx = px;
 	ry = py;
 	
-	canvasCtx.stroke();
-	canvasCtx.closePath();
+	ctx.stroke();
+	ctx.closePath();
 	
-	canvasCtx.fillStyle = "#FF0000";
-	canvasCtx.fill();
+	ctx.fillStyle = "#FF0000";
+	ctx.fill();
 	
 	return [rx, ry];
 }
@@ -88,9 +95,18 @@ function drawTrail(px, py){
 }
 
 function clearMap(){
-	canvasCtx.clearRect(0, 0, birdsEye.width, birdsEye.height);
+	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 	trail = [];
 }
+
+function restoreInitialPosition() {
+	draw(initialPosition[0], initialPosition[1], initialPosition[2], initialPosition[3]);
+}
+
+const reset = document.getElementById("reset");
+    reset.addEventListener("click", function(){
+	clearMap();
+});
 
 
 // Print Particles
@@ -99,37 +115,38 @@ function printParticles(particles) {
     var point = [];
 
     for (var i = 0; i < particles.length; i++) {
-		printParticle(particles[i][0], particles[i][1], particles[i][2])
+        printParticle(particles[i][0], particles[i][1], particles[i][2])
     }
 }
 
 function printParticle(mapPositionX, mapPositionY, theta){
-	// Draw point
-	canvasCtx.beginPath();
-	canvasCtx.fillStyle = "blue";
-	canvasCtx.strokeStyle = 'blue';
-	canvasCtx.arc(mapPositionX, mapPositionY, 1, 0,2*Math.PI);
-	canvasCtx.fill();
-	canvasCtx.stroke();
+    // Draw point
+    ctx.beginPath();
+    ctx.fillStyle = "blue";
+    ctx.strokeStyle = 'blue';
+    ctx.arc(mapPositionX, mapPositionY, 1, 0,2*Math.PI);
+    ctx.fill();
+    ctx.stroke();
 
-	var length = 5;
-	var x2 = mapPositionX + Math.cos(Math.PI * -theta / 180) * length;
-	var y2 = mapPositionY + Math.sin(Math.PI * -theta / 180) * length;
+    var length = 5;
+    var x2 = mapPositionX + Math.cos(Math.PI * -theta / 180) * length;
+    var y2 = mapPositionY + Math.sin(Math.PI * -theta / 180) * length;
 
-	canvas_arrow(mapPositionX, mapPositionY, x2, y2);
+    canvas_arrow(mapPositionX, mapPositionY, x2, y2);
+	ctx.closePath();
 }
 
 function canvas_arrow(fromx, fromy, tox, toy) {
-	canvasCtx.beginPath();
-	var headlen = 5; // length of head in pixels
-	var dx = tox - fromx;
-	var dy = toy - fromy;
-	var angle = Math.atan2(dy, dx);
-	canvasCtx.moveTo(fromx, fromy);
-	canvasCtx.lineTo(tox, toy);
-//	canvasCtx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-//	canvasCtx.moveTo(tox, toy);
-//	canvasCtx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
-	canvasCtx.strokeStyle = 'blue';
-	canvasCtx.stroke();
+    ctx.beginPath();
+    var headlen = 5; // length of head in pixels
+    var dx = tox - fromx;
+    var dy = toy - fromy;
+    var angle = Math.atan2(dy, dx);
+    ctx.moveTo(fromx, fromy);
+    ctx.lineTo(tox, toy);
+//  canvasCtx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+//  canvasCtx.moveTo(tox, toy);
+//  canvasCtx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+	ctx.strokeStyle = 'blue';
+	ctx.stroke();
 }
