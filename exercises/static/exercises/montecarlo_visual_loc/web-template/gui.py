@@ -42,7 +42,7 @@ class GUI:
         t.start()
 
         # Create the lap object
-        pose3d_object = ListenerPose3d("/TurtlebotROS/odom")
+        pose3d_object = ListenerPose3d("/roombaROS/odom")
         self.map = Map(pose3d_object)
 
     # Explicit initialization function

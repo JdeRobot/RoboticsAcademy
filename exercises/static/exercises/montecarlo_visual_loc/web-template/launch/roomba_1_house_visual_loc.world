@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version='1.4'>
-	<world name='Vacuum Cleaner'>
+	<world name='Montecarlo Visual Loc'>
         <gui fullscreen=1></gui>
           <include>
 	        <uri>model://roombaROS_cam</uri>
