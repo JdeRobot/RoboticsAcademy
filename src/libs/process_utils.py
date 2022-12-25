@@ -55,3 +55,11 @@ def stop_process_and_children(process: Popen, signal: int = 9, timeout: int = No
 class classproperty(property):
     def __get__(self, cls, owner):
         return classmethod(self.fget).__get__(None, owner)()
+
+def singleton(cls):
+    instances = {}
+    def get_instance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return get_instance()

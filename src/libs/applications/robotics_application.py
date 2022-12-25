@@ -2,6 +2,9 @@ from src.manager.application.robotics_python_application_interface import IRobot
 
 
 class RoboticsApplication(IRoboticsPythonApplication):
+    def terminate(self):
+        pass
+
     def load_code(self, code: str):
         pass
 

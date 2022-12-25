@@ -8,7 +8,7 @@ const CommsManager = (address) => {
 
   const events = {
     RESPONSES: ['ack', 'error'],
-    UPDATE_GUI: 'update-gui',
+    UPDATE: 'update',
     STATE_CHANGED: 'state-changed'
   }
 

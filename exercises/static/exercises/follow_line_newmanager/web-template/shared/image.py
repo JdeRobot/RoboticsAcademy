@@ -47,13 +47,18 @@ class SharedImage:
         self.image_lock.acquire()
         md_buf[:] = self.md_buf
         memmove(addressof(metadata), md_buf, sizeof(metadata))
+        # print(f"Shared memory metadata: {metadata}")
+        size = metadata.size
         self.image_lock.release()
 
         # Try to retreive the image from shm_buffer
         # Otherwise return a zero image
         try:
             self.shm_region = SharedMemory(self.shm_name)
-            self.shm_buf = mmap.mmap(self.shm_region.fd, metadata.size)
+            # dmariaa70@gmail.com > With this change, error doesn't appear but screen is still black
+            # self.shm_region = SharedMemory(self.shm_name, size=size)
+            # print(f"Shared memory region size: {self.shm_region.size}")
+            self.shm_buf = mmap.mmap(self.shm_region.fd, size)
             self.shm_region.close_fd()
 
             self.image_lock.acquire()
@@ -63,10 +68,12 @@ class SharedImage:
 
             # Check for a None image
             if(image.size == 0):
+                # print("Zero image found")
                 image = np.zeros((3, 3, 3), np.uint8)
-
         except ExistentialError:
             image = np.zeros((3, 3, 3), np.uint8)
+        except Exception as e:
+            print(e)
 
         return image
 

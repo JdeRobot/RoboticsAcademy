@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 import os
 import time
 import traceback
@@ -9,13 +8,12 @@ from uuid import uuid4
 
 from transitions import Machine
 
+from src.logging.log_manager import LogManager
+
 from src.comms.consumer_message import ManagerConsumerMessageException
 from src.libs.process_utils import get_class, get_class_from_file
-from src.logging.log_manager import LogManager
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
-
-logger = LogManager(loglevel=logging.INFO).logger
 
 
 class Manager:
@@ -47,6 +45,7 @@ class Manager:
     ]
 
     def __init__(self):
+        self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
                                initial='idle', send_event=True, after_state_change=self.state_change)
@@ -60,9 +59,14 @@ class Manager:
         self.application = None
 
     def state_change(self, event):
-        logger.info(f"State changed to {self.state}")
+        LogManager.logger.info(f"State changed to {self.state}")
         if self.consumer is not None:
-            self.consumer.send_message({'state': self.state})
+            self.consumer.send_message({'state': self.state}, command="state-changed")
+
+    def update(self, data):
+        LogManager.logger.debug(f"Sending update to client")
+        if self.consumer is not None:
+            self.consumer.send_message({'update': data}, command="update")
 
     def on_launch(self, event):
         """
@@ -71,7 +75,7 @@ class Manager:
 
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
-            logger.info(f"Manager: Launcher {name} died with code {code}")
+            LogManager.logger.info(f"Manager: Launcher {name} died with code {code}")
             if self.state != 'ready':
                 self.terminate()
 
@@ -92,8 +96,8 @@ class Manager:
         if launchers_configuration is None:
             raise Exception("Launch configuration missing")
 
-        print(f"Launch transition started, configuration: {configuration}")
-        configuration['terminated_callback'] = terminated_callback
+        LogManager.logger.info(f"Launch transition started, configuration: {configuration}")
+        # configuration['terminated_callback'] = terminated_callback
         self.launcher = LauncherEngine(**configuration)
         self.launcher.run()
 
@@ -107,28 +111,31 @@ class Manager:
             self.launcher.terminate()
             raise Exception("The application must be an instance of IRoboticsPythonApplication")
 
-        self.application = application_class(params)
+        params['update_callback'] = self.update
+        self.application = application_class(**params)
 
     def on_terminate(self, event):
         try:
             self.application.terminate()
             self.launcher.terminate()
         except Exception as e:
-            logger.exception(f"Exception terminating instance")
+            LogManager.logger.exception(f"Exception terminating instance")
             print(traceback.format_exc())
 
     def on_enter_connected(self, event):
-        logger.info("Connect state entered")
+        LogManager.logger.info("Connect state entered")
 
     def on_enter_ready(self, event):
         configuration = event.kwargs.get('data', {})
-        logger.info(f"Start state entered, configuration: {configuration}")
+        LogManager.logger.info(f"Start state entered, configuration: {configuration}")
 
     def load_code(self, event):
-        logger.info("Internal transition load_code executed")
+        LogManager.logger.info("Internal transition load_code executed")
+        message_data = event.kwargs.get('data', {})
+        self.__code_loaded = self.application.load_code(message_data['code'])
 
     def code_loaded(self):
-        return True
+        return self.__code_loaded
 
     def process_messsage(self, message):
         self.trigger(message.command, data=message.data or None)
@@ -157,7 +164,7 @@ class Manager:
                 else:
                     ex = ManagerConsumerMessageException(id=str(uuid4()), message=str(e))
                 self.consumer.send_message(ex)
-                logging.error(e, exc_info=True)
+                LogManager.logger.error(e, exc_info=True)
 
 
 if __name__ == "__main__":

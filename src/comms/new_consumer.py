@@ -7,8 +7,6 @@ from websocket_server import WebsocketServer
 from src.comms.consumer_message import ManagerConsumerMessageException, ManagerConsumerMessage
 from src.logging.log_manager import LogManager
 
-logger = LogManager.logger
-
 
 class Client:
     def __init__(self, **kwargs):
@@ -35,7 +33,7 @@ class ManagerConsumer:
         self.manager_queue = manager_queue
 
     def handle_client_new(self, client, server):
-        logger.info(f"client connected: {client}")
+        LogManager.logger.info(f"client connected: {client}")
         self.client = client
         self.server.deny_new_connections()
 
@@ -43,14 +41,14 @@ class ManagerConsumer:
         if client is None:
             return
 
-        logger.info(f"client disconnected: {client}")
+        LogManager.logger.info(f"client disconnected: {client}")
         message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'reset'})
         self.manager_queue.put(message)
         self.client = None
         self.server.allow_new_connections()
 
     def handle_message_received(self, client, server, websocket_message):
-        logger.info(f"message received: {websocket_message} from client {client}")
+        LogManager.logger.info(f"message received: {websocket_message} from client {client}")
         message = None
         try:
             s = json.loads(websocket_message)
@@ -64,14 +62,14 @@ class ManagerConsumer:
             self.server.send_message(client, str(ex))
             raise e
 
-    def send_message(self, message_data):
+    def send_message(self, message_data, command=None):
         if self.client is not None and self.server is not None:
             if isinstance(message_data, ManagerConsumerMessage):
                 message = message_data
             elif isinstance(message_data, ManagerConsumerMessageException):
                 message = message_data.consumer_message()
             else:
-                message = ManagerConsumerMessage(id=str(uuid4()), command="state-changed", data=message_data)
+                message = ManagerConsumerMessage(id=str(uuid4()), command=command, data=message_data)
 
             self.server.send_message(self.client, str(message))
 

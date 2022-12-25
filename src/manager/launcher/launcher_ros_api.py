@@ -4,6 +4,8 @@ import roslaunch
 
 from src.manager.launcher.launcher_interface import ILauncher, LauncherException
 
+import logging
+
 
 class RosProcessListener(roslaunch.pmon.ProcessListener):
     def __init__(self, *args, **kwargs):
@@ -30,6 +32,8 @@ class LauncherRosApi(ILauncher):
     listener: Any = None
 
     def run(self, callback: callable = None):
+        logging.getLogger("roslaunch").setLevel(logging.CRITICAL)
+
         # expand variables in configuration paths
         self._set_environment()
 
@@ -48,7 +52,8 @@ class LauncherRosApi(ILauncher):
         return self.launch.pm.is_alive()
 
     def terminate(self):
-        if self.is_running():
+        if self.is_running():# add logger to internal roslaunch logging infrastructure
+
             self.launch.shutdown()
 
     def _set_environment(self):
