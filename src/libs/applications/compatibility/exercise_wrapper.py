@@ -2,6 +2,7 @@ import json
 import logging
 import os.path
 import subprocess
+import sys
 import threading
 import time
 import rosservice
@@ -46,7 +47,7 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         # test
 
     def _run_exercise_server(self, cmd, log_file, load_string, timeout: int = 5):
-        process = subprocess.Popen(f"exec {cmd}", shell=True, stdout=subprocess.PIPE, bufsize=1024,
+        process = subprocess.Popen(f"{cmd}", shell=True, stdout=sys.stdout, stderr=subprocess.STDOUT, bufsize=1024,
                                    universal_newlines=True)
 
         process_ready = False
@@ -78,7 +79,10 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         self.gui_connection.send("#ack")
 
     def _process_exercise_message(self, message):
-        pass
+        command = message[:4]
+        payload = json.loads(message[4:])
+        self.update_callback(payload)
+        self.exercise_connection.send("#ack")
 
     def run(self):
         rosservice.call_service("gazebo/unpause_physics")

@@ -53,11 +53,15 @@ const TestShowScreen = (props) => {
     };
 
     return (
-        <Fragment>
-            <textarea value={code} onChange={changeCode} cols={80}/>
-            <div className={classes} onClick={sendCode}>Load code</div>
-            <img src={image} alt={"Exercise screen"} className={classes}/>
-        </Fragment>
+        <div className={"panel-parent"}>
+            <div className={"panel"}>
+                <textarea value={code} onChange={changeCode} cols={80}/>
+                <div className={classes} onClick={sendCode}>Load code</div>
+            </div>
+            <div className={"panel"}>
+                <img src={image} alt={"Exercise screen"} className={classes}/>
+            </div>
+        </div>
     );
 };
 

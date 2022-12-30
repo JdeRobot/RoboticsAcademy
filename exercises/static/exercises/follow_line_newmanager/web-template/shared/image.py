@@ -1,3 +1,5 @@
+import traceback
+
 import numpy as np
 import mmap
 from posix_ipc import Semaphore, O_CREX, ExistentialError, O_CREAT, SharedMemory, unlink_shared_memory
@@ -54,10 +56,10 @@ class SharedImage:
         # Try to retreive the image from shm_buffer
         # Otherwise return a zero image
         try:
-            self.shm_region = SharedMemory(self.shm_name)
             # dmariaa70@gmail.com > With this change, error doesn't appear but screen is still black
             # self.shm_region = SharedMemory(self.shm_name, size=size)
             # print(f"Shared memory region size: {self.shm_region.size}")
+            self.shm_region = SharedMemory(self.shm_name)
             self.shm_buf = mmap.mmap(self.shm_region.fd, size)
             self.shm_region.close_fd()
 
@@ -68,18 +70,23 @@ class SharedImage:
 
             # Check for a None image
             if(image.size == 0):
-                # print("Zero image found")
                 image = np.zeros((3, 3, 3), np.uint8)
         except ExistentialError:
             image = np.zeros((3, 3, 3), np.uint8)
+        # dmariaa70@gmail.com
+        # when image size does not match expected size, we get an error
+        # on line 61
         except Exception as e:
-            print(e)
+            # if self.shm_name == "halimage":
+            #     print("halimage exception happened: ")
+            #     print(e)
+            image = np.zeros((3, 3, 3), np.uint8)
 
         return image
 
     # Add the shared image
     def add(self, image):
-        try:            
+        try:
             # Get byte size of the image
             byte_size = image.nbytes
 
@@ -98,8 +105,9 @@ class SharedImage:
             self.md_buf[:] = md_buf[:]
             self.shm_buf[:] = image.tobytes()
             self.image_lock.release()
-        except:
-            pass
+        except Exception as e:
+            print(f"Error in shared image add {repr(e)}")
+            print(traceback.format_exc())
 
     # Destructor function to unlink and disconnect
     def close(self):

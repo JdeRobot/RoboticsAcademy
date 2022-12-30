@@ -28,9 +28,11 @@ class HAL:
 
         # Update thread
         self.thread = ThreadHAL(self.update_hal)
+        print("HAL guest initialized")
 
     # Function to start the update thread
     def start_thread(self):
+        print("HAL guest thread started")
         self.thread.start()
 
     # Get Image from ROS Driver Camera

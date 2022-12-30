@@ -33,8 +33,8 @@ class Image:
 
     def __init__(self):
 
-        self.height = 3  # Image height [pixels]
-        self.width = 3  # Image width [pixels]
+        self.height = 480  # Image height [pixels]
+        self.width = 640  # Image width [pixels]
         self.timeStamp = 0 # Time stamp [s] */
         self.format = "" # Image format string (RGB8, BGR,...)
         self.data = np.zeros((self.height, self.width, 3), np.uint8) # The image data itself
@@ -72,7 +72,7 @@ class ListenerCamera:
 
         self.sub.unregister()
 
-    def start (self):
+    def start(self):
         self.sub = rospy.Subscriber(self.topic, ImageROS, self.__callback)
         
     def getImage(self):
@@ -84,7 +84,6 @@ class ListenerCamera:
         return image
 
     def hasproxy (self):
-
         return hasattr(self,"sub") and self.sub
 
 

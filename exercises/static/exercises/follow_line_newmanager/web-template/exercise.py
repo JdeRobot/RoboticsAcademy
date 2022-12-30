@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import logging
 import os
 
 from websocket_server import WebsocketServer
@@ -31,6 +30,7 @@ class Template:
     # self.time_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
+        print("Exercise initializing", flush=True)
         self.brain_process = None
         self.reload = multiprocessing.Event()
 
@@ -56,6 +56,7 @@ class Template:
         self.teleop_q = queue.Queue()
         self.teleop = TeleopThread(self.teleop_q,self.exit_signal_teleop,self.hal)
         self.paused = False
+        print("Exercise initialized", flush=True)
 
     # Function for saving
     def save_code(self, source_code):
@@ -134,8 +135,6 @@ class Template:
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
-        logging.debug("appy")
-        logging.debug(code)
         if code[0] == "" and code[1] == "":
             return
 
@@ -288,6 +287,7 @@ while True:
     def connected(self, client, server):
         self.client = client
         # Start the HAL update thread
+        self.server.send_message(self.client, "Starting HAL thread")
         self.hal.start_thread()
 
         # Start real time factor tracker thread
@@ -296,8 +296,8 @@ while True:
 
         # Initialize the ping message
         self.send_frequency_message()
-
-        print(client, 'connected')
+        self.server.send_message(self.client, "Client connected")
+        print("Client connected", flush=True)
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
@@ -319,7 +319,7 @@ while True:
                 f.close()
                 logged = True
             except:
-                print("~/ws_code.log could not be opened for write")
+                print("~/ws_code.log could not be opened for write", flush=True)
                 time.sleep(0.1)
 
         self.server.run_forever()
