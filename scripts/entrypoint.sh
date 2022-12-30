@@ -36,7 +36,9 @@ if [ $webserver == true ]; then
 else
     runserver=""
 fi
-runmanager="python3.8 manager.py"
+# TODO: check if both managers work fine together
+runmanager="python3.8 manager.py" 
+runram="python3.8 /RoboticsAcademy/src/manager/manager.py"
 
 # TEST LOGS
 if [ $log == true ]; then
@@ -50,6 +52,6 @@ else
     if [ $debug == true ]; then
       { bash ; }
     else
-      { $runserver & $runmanager ; }
+      { $runserver & $runmanager & $runram; }
     fi
 fi

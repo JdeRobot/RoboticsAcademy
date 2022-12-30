@@ -44,6 +44,9 @@ RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/
 # React
 RUN cd /RoboticsAcademy/react_frontend && npm install && npm run build && cd
 
+# TODO: move to requirements.txt
+RUN pip3 install transitions pydantic websocket-client
+
 # Scripts copy
 COPY [".env", "manager.py", "instructions.json", "pylint_checker.py", "entrypoint.sh", "./"]
 COPY pylintrc /etc/pylintrc
@@ -74,5 +77,10 @@ EXPOSE 6080
 # WebRtc
 EXPOSE 1831
 
+# RAM
+EXPOSE 7163
 
+# TODO: move to .env file
+ENV PYTHONPATH="/RoboticsAcademy:$PYTHONPATH"
+ENV EXERCISES_STATIC_FOLDER="/RoboticsAcademy/exercises/static/exercises/"
 ENTRYPOINT [ "./entrypoint.sh" ]
