@@ -1,7 +1,7 @@
 import threading
 import websocket
 
-from src.logging.log_manager import LogManager
+from src.ram_logging.log_manager import LogManager
 
 
 class Client(threading.Thread):
@@ -20,7 +20,7 @@ class Client(threading.Thread):
     def run(self) -> None:
         try:
             while True:
-                self.client.run_forever(ping_timeout=0, ping_interval=5)
+                self.client.run_forever(ping_timeout=None, ping_interval=0)
                 if self._stop.isSet():
                     return
         except Exception as ex:
@@ -30,17 +30,17 @@ class Client(threading.Thread):
         self._stop.set()
         self.client.close()
 
-    def on_message(self, message):
-        self.callback(self.name, message)
-
     def send(self, data):
         self.client.send(data)
 
-    def on_error(self, error):
+    def on_message(self, ws, message):
+        self.callback(self.name, message)
+
+    def on_error(self, ws, error):
         LogManager.logger.error(error)
 
-    def on_close(self, status, msg):
+    def on_close(self, ws, status, msg):
         LogManager.logger.info(f"Connection with {self.name} closed, status code: {status}, close message: {msg}")
 
-    def on_open(self):
+    def on_open(self, ws):
         LogManager.logger.info(f"Connection with {self.name} opened")

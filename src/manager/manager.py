@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from transitions import Machine
 
-from src.logging.log_manager import LogManager
+from src.ram_logging.log_manager import LogManager
 
 from src.comms.consumer_message import ManagerConsumerMessageException
 from src.libs.process_utils import get_class, get_class_from_file
@@ -44,7 +44,7 @@ class Manager:
         {'trigger': 'reset', 'source': '*', 'dest': 'idle'}
     ]
 
-    def __init__(self):
+    def __init__(self, host: str, port: int):
         self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
@@ -54,7 +54,7 @@ class Manager:
         self.queue = Queue()
 
         # TODO: review, hardcoded values
-        self.consumer = ManagerConsumer('0.0.0.0', 7163, self.queue)
+        self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
         self.application = None
 
@@ -83,7 +83,7 @@ class Manager:
 
         # generate exercise_folder environment variable
         self.exercise_id = configuration['exercise_id']
-        os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FOLDER')}/{self.exercise_id}"
+        os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FILES')}/{self.exercise_id}"
 
         # Check if application and launchers configuration is missing
         # TODO: Maybe encapsulate configuration as a data class with validation?
@@ -168,5 +168,11 @@ class Manager:
 
 
 if __name__ == "__main__":
-    RAM = Manager()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("host", type=str, help="Host to listen to  (0.0.0.0 or all hosts)")
+    parser.add_argument("port", type=int, help="Port to listen to")
+    args = parser.parse_args()
+
+    RAM = Manager(args.host, args.port)
     RAM.start()

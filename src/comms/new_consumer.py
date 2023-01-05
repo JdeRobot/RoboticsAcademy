@@ -5,7 +5,7 @@ from uuid import uuid4
 from websocket_server import WebsocketServer
 
 from src.comms.consumer_message import ManagerConsumerMessageException, ManagerConsumerMessage
-from src.logging.log_manager import LogManager
+from src.ram_logging.log_manager import LogManager
 
 
 class Client:

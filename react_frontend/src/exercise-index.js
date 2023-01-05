@@ -56,11 +56,13 @@ window.RoboticsExerciseComponents = (function() {
     }
   }
 
-  const commsManager = CommsManager('ws://127.0.0.1:7163');
+  const ramHost = window.location.hostname;
+  const ramPort = 7163;
+  const ramManager = CommsManager(`ws://${ramHost}:${ramPort}`);
 
   return {
     render: render,
-    commsManager: commsManager
+    commsManager: ramManager
   }
 })();
 

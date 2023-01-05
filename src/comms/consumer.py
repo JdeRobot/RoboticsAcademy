@@ -7,7 +7,7 @@ import websockets
 from websockets.server import WebSocketServerProtocol
 
 from src.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
-from src.logging.log_manager import LogManager
+from src.ram_logging.log_manager import LogManager
 
 logger = LogManager.logger
 

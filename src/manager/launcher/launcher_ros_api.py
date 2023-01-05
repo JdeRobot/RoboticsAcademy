@@ -36,7 +36,6 @@ class LauncherRosApi(ILauncher):
 
         # expand variables in configuration paths
         self._set_environment()
-
         launch_file = os.path.expandvars(self.launch_file)
 
         self.listener = RosProcessListener(callback=callback)
@@ -52,8 +51,7 @@ class LauncherRosApi(ILauncher):
         return self.launch.pm.is_alive()
 
     def terminate(self):
-        if self.is_running():# add logger to internal roslaunch logging infrastructure
-
+        if self.is_running():
             self.launch.shutdown()
 
     def _set_environment(self):
@@ -61,7 +59,6 @@ class LauncherRosApi(ILauncher):
         model_folders = [os.path.expandvars(path) for path in self.model_folders]
         plugin_folders = [os.path.expandvars(path) for path in self.plugin_folders]
 
-        os.environ[
-            "GAZEBO_RESOURCE_PATH"] = f"{os.environ.get('GAZEBO_RESOURCE_PATH', '')}:{':'.join(resource_folders)}"
+        os.environ["GAZEBO_RESOURCE_PATH"] = f"{os.environ.get('GAZEBO_RESOURCE_PATH', '')}:{':'.join(resource_folders)}"
         os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(model_folders)}"
         os.environ["GAZEBO_PLUGIN_PATH"] = f"{os.environ.get('GAZEBO_PLUGIN_PATH', '')}:{':'.join(plugin_folders)}"

@@ -2,7 +2,6 @@ FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu20.04
 
 ARG VIRTUALGL_VERSION=2.6.5
 ARG TURBOVNC_VERSION=3.0
-
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES all
@@ -140,7 +139,7 @@ RUN python3 -m pip install --upgrade pip wheel setuptools
 # Python 3 dependencies installed by pip
 RUN python3 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
 		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python netron seaborn
+		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
 
 # manual ccache setup
 RUN ln -sf /usr/bin/ccache /usr/lib/ccache/cc \
@@ -271,6 +270,9 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0
 RUN python3.8 -m pip install websockets asyncio
 
+# RAM dependencies
+RUN python3.8 -m pip install transitions pydantic websocket-client
+
 # pip install dependencies
 RUN pip install pylint
 
@@ -292,4 +294,5 @@ RUN wget https://xpra.org/xorg.conf \
 RUN apt-get install -y software-properties-common \
 && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
 && apt-get install -y nodejs \
-&& curl -L https://www.npmjs.com/install.sh | sh
+&& curl -L https://www.npmjs.com/install.sh | sh \
+&& npm install -g yarn

@@ -9,7 +9,7 @@ import rosservice
 
 from src.libs.applications.compatibility.client import Client
 from src.libs.process_utils import stop_process_and_children
-from src.logging.log_manager import LogManager
+from src.ram_logging.log_manager import LogManager
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 
 
