@@ -12,6 +12,7 @@
 - [User code processing](#User-code-processing)
 - [Threads used in the exercises](#Threads-used-in-the-exercises)
 - [Flow control](#Flow-control)
+- [Manager.py extended](#Manager.py extended)
 
 <a name="Robotics-Academy-frontend"></a>
 ## Robotics Academy frontend
@@ -127,3 +128,19 @@ In order to control the number of messages sent by the users, so the RADI is not
 - The code websocket responds with "#exec" after the sent code has been loaded in the brain of the robot.
 
 After any of the previous commands is requested by the user, the respective button is blocked until the completed response returns.
+
+<a name="Manager.py extended"></a>
+## Manager.py extended
+The manager is the one in charge of requesting exercises and controlling the simulation. The principal part of the manager can be found in the manager class. In this class values like the server, client, exercise and simulator used are inicializated and changed afterwards depending on the exercise the user is trying to use.
+
+The most important functions on the manager class are the following:
+
+- **Handle**: In charge of handling the request. Reads the command received from the websocket and executes parts of its code according to it. For example, the "open" command sets the value of the simulator (gazebo, stdr or none) depending of which exercise is being executed, finally calls the function open_simulation or open_accelerated_simulation. The "stop" command calls the function stop_simulation() which pauses the physics, etc.
+- **Open_simulation**: In charge of starting the servers, etc that are required. Its behaviour depends heavily on the selected exercise. For example, starts the gazebo server, the stdr server or simply calls the start_exercise function.
+- **run_sever**: Starts the websocket server
+
+There is anothe important class, called Commands. In this class, the function read_json_instructions recovers the file called instructions.json. In that file the paths the instructions to run ros or the config to run gazebo can be found. Each exercise object has the number of instructions/settings required to star it.
+
+When the exercise is being started, the functions inside the class Commands have differente behaviour depending of the type of exercise or if the acceleration is enabled or not.
+
+The function start_exercise() which es called in open_simulation() can be found in here. This function is in chargue of settings up the websocket server, exercise_guest.py, gui_guest.py and wait for all of them to be up before continuing with any other process.
