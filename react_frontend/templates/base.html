@@ -25,7 +25,7 @@
     {%  endblock %}
 </head>
 <body>
-
+    {{ exercise_config|json_script:"exercise-config" }}
     {% block content %}
         <!-- Here comes the main content of child pages -->
     {% endblock %}

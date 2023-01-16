@@ -270,6 +270,9 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0
 RUN python3.8 -m pip install websockets asyncio
 
+# RAM dependencies
+RUN python3.8 -m pip install transitions pydantic websocket-client
+
 # pip install dependencies
 RUN pip install pylint
 
