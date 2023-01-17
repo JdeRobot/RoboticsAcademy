@@ -1,4 +1,4 @@
-FROM jderobot/base:3.2
+FROM jderobot/robotics-applications:base
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
@@ -87,4 +87,4 @@ EXPOSE 1831
 # RAM
 EXPOSE 7163
 
-# ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
