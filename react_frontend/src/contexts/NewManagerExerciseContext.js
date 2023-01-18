@@ -10,7 +10,6 @@ export function ExerciseProvider({ children }) {
   const ramPort = 7163;
   CommsManager(`ws://${ramHost}:${ramPort}`);
 
-  const [exercise, setExercise] = React.useState(null);
   const [alertState, setAlertState] = useState({
     errorAlert: false,
     successAlert: false,
@@ -46,9 +45,12 @@ while True:
 
   const [playState, setPlayState] = useState(false);
 
-  const startSim = () => {
+  const [birdEyeClass, setBirdEyeClass] = useState("");
+
+  const startSim = async () => {
     if (connectionState === "Connect") {
-      RoboticsExerciseComponents.commsManager.connect().then(() => {
+      await RoboticsExerciseComponents.commsManager.connect().then(() => {
+        console.log("pepe");
         setConnectionState("Connected");
       });
     }
@@ -60,11 +62,11 @@ while True:
     }
   };
 
-  const doLaunch = () => {
+  const doLaunch = async () => {
     const config = JSON.parse(
       document.getElementById("exercise-config").textContent
     );
-    console.log(document.getElementById("exercise-config"));
+
     // Setting up circuit name into configuration
     config.application.params = { circuit: "default" };
     let launch_file = config.launch["0"].launch_file.interpolate({
@@ -72,7 +74,7 @@ while True:
     });
     config.launch["0"].launch_file = launch_file;
     console.log(config, "config");
-    RoboticsExerciseComponents.commsManager
+    await RoboticsExerciseComponents.commsManager
       .launch(config)
       .then((message) => {
         setLaunchState("Ready");
@@ -83,10 +85,6 @@ while True:
         setLaunchState("Launch");
       })
       .finally(() => {});
-  };
-
-  const editorCodeChange = (e) => {
-    setEditorCode(e);
   };
 
   const launchButtonClick = () => {
@@ -106,6 +104,23 @@ while True:
       );
     }
   };
+
+  const terminate = async () => {
+    await RoboticsExerciseComponents.commsManager
+      .terminate()
+      .then(() => {
+        console.log("terminated");
+        setLaunchState("Launching");
+      })
+      .catch((response) => {
+        console.log(response, "error terminating");
+      });
+  };
+
+  const editorCodeChange = (e) => {
+    setEditorCode(e);
+  };
+
   const onPageLoad = () => {
     console.log("onPageLoad");
   };
@@ -255,7 +270,7 @@ while True:
         openInfoModal,
         openLoadModal,
         exercise,
-        setExercise,
+
         alertState,
         alertContent,
         connectionState,
@@ -277,6 +292,9 @@ while True:
         stop,
         start,
         playState,
+        birdEyeClass,
+        terminate,
+        doLaunch,
       }}
     >
       {children}
