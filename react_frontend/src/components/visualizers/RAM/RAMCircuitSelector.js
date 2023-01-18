@@ -1,11 +1,29 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import PropTypes from "prop-types";
-import CanvasBirdEye from "../visualizers/CanvasBirdEye";
+import RAMCanvasBirdEye from "./RAMCanvasBirdEye";
 
 export default function CircuitSelector(props) {
-  const { handleCircuitChange } = React.useContext(props.context);
-  const circuitSelector = React.useRef(null);
+  const { terminate, doLaunch } = useContext(props.context);
+  const [circuit, setCircuit] = useState("default");
+
+  const handleCircuitChange = () => {
+    terminate().then(() => {
+      const config = JSON.parse(
+        document.getElementById("exercise-config").textContent
+      );
+
+      // Setting up circuit name into configuration
+      config.application.params = { circuit: circuit };
+      let launch_file = config.launch["0"].launch_file.interpolate({
+        circuit: circuit,
+      });
+      config.launch["0"].launch_file = launch_file;
+      console.log(config, "config");
+      doLaunch();
+    });
+  };
+
   return (
     <>
       <FormControl variant={"filled"} m={3} fullWidth>
@@ -19,8 +37,10 @@ export default function CircuitSelector(props) {
           sx={{
             textAlign: "left",
           }}
-          ref={circuitSelector}
-          onChange={(e) => handleCircuitChange(e, circuitSelector)}
+          onChange={(e) => {
+            setCircuit(e.target.value);
+            handleCircuitChange();
+          }}
         >
           <MenuItem value={"default"}>Default Line</MenuItem>
           <MenuItem value={"montmelo"}>Montmelo Line</MenuItem>
@@ -28,7 +48,7 @@ export default function CircuitSelector(props) {
           <MenuItem value={"nbg"}>Nürburgring Line</MenuItem>
         </Select>
       </FormControl>
-      <CanvasBirdEye context={props.context} />
+      <RAMCanvasBirdEye circuit={circuit} />
     </>
   );
 }

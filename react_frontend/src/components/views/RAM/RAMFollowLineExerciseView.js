@@ -2,8 +2,7 @@ import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import RAMExerciseControl from "../../common/RAM/RAMExerciseControl";
 import AceEditorRobot from "../../exercises/AceEditorRobot";
-import CircuitSelector from "../../exercises/CircuitSelector";
-import CanvasBirdEye from "../../visualizers/CanvasBirdEye";
+import RAMCircuitSelector from "../../visualizers/RAM/RAMCircuitSelector";
 import GazeboViewer from "../../exercises/GazeboViewer";
 import VncConsoleViewer from "../../exercises/VncConsoleViewer";
 import LoadModal from "../../modals/LoadModal";
@@ -39,9 +38,10 @@ function FollowLineExerciseView(props) {
         <Typography align={"center"} m={2} color={"primary"} variant={"h4"}>
           Visualization
         </Typography>
-        <CircuitSelector context={props.context} />
+        <div>
+          <RAMCircuitSelector context={props.context} />
+        </div>
         <VisualizationComponents>
-          <CanvasBirdEye context={props.context} />
           <RAMImgCanvas context={props.context} />
           <FrequencyMenu context={props.context} />
         </VisualizationComponents>

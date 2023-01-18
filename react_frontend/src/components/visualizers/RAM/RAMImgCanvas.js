@@ -50,18 +50,7 @@ export default function ImgCanvas(props) {
       }}
     >
       <Typography>{props.heading}</Typography>
-      <img
-        height={250}
-        width={500}
-        sx={{
-          // marginX: 15,
-          // marginY: 5,
-          border: "2px solid #d3d3d3",
-          backgroundRepeat: "no-repeat",
-        }}
-        src={image}
-        id="gui_canvas"
-      />
+      <img height={250} width={500} src={image} id="gui_canvas" />
     </Box>
   );
 }
