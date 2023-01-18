@@ -1,9 +1,9 @@
 import * as React from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import ExerciseContext from "../../contexts/ExerciseContext";
+import PropTypes from "prop-types";
 
-export default function CircuitSelector() {
-  const { handleCircuitChange } = React.useContext(ExerciseContext);
+export default function CircuitSelector(props) {
+  const { handleCircuitChange } = React.useContext(props.context);
   const circuitSelector = React.useRef(null);
   return (
     <FormControl variant={"filled"} m={3} fullWidth>
@@ -28,3 +28,7 @@ export default function CircuitSelector() {
     </FormControl>
   );
 }
+
+CircuitSelector.propTypes = {
+  context: PropTypes.any,
+};

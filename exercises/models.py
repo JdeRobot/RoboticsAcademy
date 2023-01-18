@@ -2,6 +2,13 @@ from django.db import models
 import json
 
 
+StatusChoice = (
+    ('ACTIVE', "ACTIVE"),
+    ('INACTIVE', "INACTIVE"),
+    ('PROTOTYPE', "PROTOTYPE")
+)
+
+
 # Create your models here.
 
 class Exercise(models.Model):
@@ -9,6 +16,8 @@ class Exercise(models.Model):
     name = models.CharField(max_length=40, blank=False, unique=True)
     description = models.CharField(max_length=400, blank=False)
     assets = models.CharField(max_length=2000, default=json.dumps({"notebook": ""}))  # JSON Object.
+    tags = models.CharField(max_length=2000, default=json.dumps({'tags': ""}))  # JSON Object for tags
+    status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
     configuration = models.TextField(default=json.dumps("{}"))
 
     def __str__(self):

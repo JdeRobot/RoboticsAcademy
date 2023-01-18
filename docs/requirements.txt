@@ -14,8 +14,9 @@ requests==2.22.0
 websocket-client==0.57.0
 pydiscourse==0.9.0
 django-taggit-autosuggest==0.3.8
-pillow==9.0.1
+pillow==9.3.0
 
+setuptools==65.5.1  # This should be removed after going to python 3.9
 
 djangorestframework==3.13.1
 django-webpack-loader==1.5.0
