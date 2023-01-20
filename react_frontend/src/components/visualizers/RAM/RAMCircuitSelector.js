@@ -7,21 +7,23 @@ export default function CircuitSelector(props) {
   const { terminate, doLaunch } = useContext(props.context);
   const [circuit, setCircuit] = useState("default");
 
-  const handleCircuitChange = () => {
+  const handleCircuitChange = (circuitPath) => {
+    setCircuit(circuitPath);
     terminate().then(() => {
-      const config = JSON.parse(
-        document.getElementById("exercise-config").textContent
-      );
-
-      // Setting up circuit name into configuration
-      config.application.params = { circuit: circuit };
-      let launch_file = config.launch["0"].launch_file.interpolate({
-        circuit: circuit,
-      });
-      config.launch["0"].launch_file = launch_file;
-      console.log(config, "config");
-      doLaunch();
+      const config = changeConfig(circuitPath);
+      doLaunch(config);
     });
+  };
+
+  const changeConfig = (circuitPath) => {
+    const config = JSON.parse(
+      document.getElementById("exercise-config").textContent
+    );
+    config.application.params = { circuit: circuitPath };
+    config.launch[
+      "0"
+    ].launch_file = `$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuitPath}.launch`;
+    return config;
   };
 
   return (
@@ -38,8 +40,7 @@ export default function CircuitSelector(props) {
             textAlign: "left",
           }}
           onChange={(e) => {
-            setCircuit(e.target.value);
-            handleCircuitChange();
+            handleCircuitChange(e.target.value);
           }}
         >
           <MenuItem value={"default"}>Default Line</MenuItem>

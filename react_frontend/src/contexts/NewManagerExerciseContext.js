@@ -62,18 +62,11 @@ while True:
     }
   };
 
-  const doLaunch = async () => {
-    const config = JSON.parse(
-      document.getElementById("exercise-config").textContent
-    );
+  const getConfig = () => {
+    return JSON.parse(document.getElementById("exercise-config").textContent);
+  };
 
-    // Setting up circuit name into configuration
-    config.application.params = { circuit: "default" };
-    let launch_file = config.launch["0"].launch_file.interpolate({
-      circuit: "default",
-    });
-    config.launch["0"].launch_file = launch_file;
-    console.log(config, "config");
+  const doLaunch = async (config) => {
     await RoboticsExerciseComponents.commsManager
       .launch(config)
       .then((message) => {
@@ -89,8 +82,9 @@ while True:
 
   const launchButtonClick = () => {
     if (connectionState === "Connected" && launchState === "Launch") {
+      const config = getConfig();
       setLaunchState("Launching");
-      doLaunch();
+      doLaunch(config);
     } else if (connectionState === "Connect") {
       setAlertState({
         ...alertState,
@@ -269,8 +263,6 @@ while True:
         handleInfoModalOpen,
         openInfoModal,
         openLoadModal,
-        exercise,
-
         alertState,
         alertContent,
         connectionState,
