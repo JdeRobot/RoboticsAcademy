@@ -5,6 +5,8 @@ import time
 import traceback
 from queue import Queue
 from uuid import uuid4
+import threading
+import subprocess
 
 from transitions import Machine
 
@@ -15,6 +17,16 @@ from src.libs.process_utils import get_class, get_class_from_file
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
 
+class DockerThread(threading.Thread):
+    def __init__(self, cmd):
+        threading.Thread.__init__(self)
+        self.cmd = cmd
+
+    def run(self):
+        subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
+
+    def call(self):
+        subprocess.call(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True) 
 
 class Manager:
     states = [
@@ -27,7 +39,7 @@ class Manager:
 
     transitions = [
         # Transitions for state idle
-        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected'},
+        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', },
         # Transitions for state connected
         {'trigger': 'launch', 'source': 'connected', 'dest': 'ready', 'before': 'on_launch'},
         # Transitions for state ready
@@ -68,10 +80,76 @@ class Manager:
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
 
+
+    def start_vnc(self, display, internal_port, external_port):
+        xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {display}"
+        xserver_thread = DockerThread(xserver_cmd)
+        xserver_thread.start()
+        # Start VNC server without password, forever running in background
+        x11vnc_cmd = f"x11vnc -display {display} -nopw -forever -xkb -bg -rfbport {internal_port}"
+        x11vnc_thread = DockerThread(x11vnc_cmd)
+        x11vnc_thread.start()
+
+         # Start noVNC with default port 6080 listening to VNC server on 5900
+        novnc_cmd = f"/noVNC/utils/launch.sh --listen {external_port} --vnc localhost:{internal_port}"
+        novnc_thread = DockerThread(novnc_cmd)
+        novnc_thread.start()
+
+    def start_console(self, width, height):
+        # Write display config and start the console
+        width = int(width) / 10; height = int(height) / 18
+        console_cmd = f"export DISPLAY=:1;"
+      
+        console_cmd += f"xterm -geometry {int(width)}x{int(height)} -fa 'Monospace' -fs 10 -bg black -fg white"
+
+        console_thread = DockerThread(console_cmd)
+        console_thread.start()
+
+    def start_gzserver(self, exercise):
+  
+		
+        roslaunch_thread = DockerThread(exercise)
+        roslaunch_thread.start()
+        repeat = True
+        while repeat:
+            try:
+                stats_output = str(subprocess.check_output(['gz', 'stats', '-p', '-d', '1'], timeout=5))
+                if "real-time factor" in str(stats_output):
+                    repeat = False
+                else:
+                    repeat = True
+                    time.sleep(0.2)
+            except:
+                repeat = False
+
+
+    def start_gzclient(self, exercise, width, height):
+        # Configure browser screen width and height for gzclient
+        gzclient_config_cmds = ["echo [geometry] > ~/.gazebo/gui.ini;",
+                                "echo x=0 >> ~/.gazebo/gui.ini;",
+                                "echo y=0 >> ~/.gazebo/gui.ini;",
+                                f"echo width={width} >> ~/.gazebo/gui.ini;",
+                                f"echo height={height} >> ~/.gazebo/gui.ini;"]
+
+        print(f"exercise: {exercise}")
+	    # Write display config and start gzclient
+        gzclient_cmd = (f"export DISPLAY=:0;{exercise}" + "".join(gzclient_config_cmds) + "gzclient --verbose")
+        gzclient_thread = DockerThread(gzclient_cmd)
+        gzclient_thread.start()
+
     def on_launch(self, event):
         """
         Transition executed on launch trigger activ
         """
+        
+      
+        self.start_vnc(":0", 5900, 6080)
+        self.start_vnc(":1", 5901, 1108)
+        print('vnc started')
+        time.sleep(2)
+        print("> Starting console")
+        self.start_console(1920, 1080)
+        print("> Console started")
 
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
@@ -80,7 +158,9 @@ class Manager:
                 self.terminate()
 
         configuration = event.kwargs.get('data', {})
-
+     
+       
+        
         # generate exercise_folder environment variable
         self.exercise_id = configuration['exercise_id']
         os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FILES')}/{self.exercise_id}"
@@ -100,7 +180,8 @@ class Manager:
         # configuration['terminated_callback'] = terminated_callback
         self.launcher = LauncherEngine(**configuration)
         self.launcher.run()
-
+        self.start_gzserver(configuration["launch"]["0"]["launch_file"])
+        self.start_gzclient(configuration["launch"]["0"]["launch_file"], 1920, 1080)
         # TODO: launch application
         application_file = application_configuration['entry_point']
         params = application_configuration.get('params', None)
@@ -124,6 +205,7 @@ class Manager:
 
     def on_enter_connected(self, event):
         LogManager.logger.info("Connect state entered")
+     
 
     def on_enter_ready(self, event):
         configuration = event.kwargs.get('data', {})
@@ -148,6 +230,7 @@ class Manager:
         RAM must be run in main thread to be able to handle signaling other processes, for instance ROS launcher.
         """
         LogManager.logger.info(f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
+       
         self.consumer.start()
         # TODO: change loop end condition
         while True:
