@@ -16,7 +16,8 @@ from src.comms.consumer_message import ManagerConsumerMessageException
 from src.libs.process_utils import get_class, get_class_from_file
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
-from src.manager.vnc.vnc import Vnc
+from vnc.console_view import Console_view
+from vnc.gzb_view import Gzb_view
 
 
 class Manager:
@@ -80,11 +81,10 @@ class Manager:
         Transition executed on launch trigger activ
         """
         
-        gzb_viewer = Vnc(":0", 5900, 6080)
-        console_viewer = Vnc(":1", 5901, 1108)
+        gzb_viewer = Gzb_view(":0", 5900, 6080)
+        console_viewer = Console_view(":1", 5901, 1108)
         print('vnc started')
         time.sleep(2)
-        print("> Starting console")
         console_viewer.start_console(1920, 1080)
         print("> Console started")
 
