@@ -1,4 +1,4 @@
-from src.manager.vnc.vnc_server import Vnc_server
+from vnc.vnc_server import Vnc_server
 from vnc.docker_thread import DockerThread
 import subprocess
 import time

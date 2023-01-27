@@ -1,4 +1,4 @@
-from src.manager.vnc.vnc_server import Vnc_server
+from vnc.vnc_server import Vnc_server
 from vnc.docker_thread import DockerThread
 
 class Console_view(Vnc_server):
@@ -14,3 +14,4 @@ class Console_view(Vnc_server):
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
+        
