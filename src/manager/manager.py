@@ -7,6 +7,7 @@ from queue import Queue
 from uuid import uuid4
 import threading
 import subprocess
+from vnc.docker_thread import DockerThread
 
 from transitions import Machine
 
@@ -25,8 +26,6 @@ class Manager:
         "idle",
         "connected",
         "ready",
-        "checking",
-        "brain_loaded",
         "running",
         "paused"
     ]
@@ -38,15 +37,14 @@ class Manager:
         {'trigger': 'launch', 'source': 'connected', 'dest': 'ready', 'before': 'on_launch'},
         # Transitions for state ready
         {'trigger': 'terminate', 'source': 'ready', 'dest': 'connected', 'before': 'on_terminate'},
-        {'trigger': 'load', 'source': 'ready', 'dest': 'checking', 'before': 'load_code'},
-        
-        # Transitions for state brain_loaded
-        {'trigger': 'run', 'source': 'brain_loaded', 'dest': 'running', 'conditions': 'code_loaded'},
+        {'trigger': 'load', 'source': ['ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
+        # Transitions for state brain_loadedchecking
+        {'trigger': 'run', 'source': 'ready', 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
         # Transitions for state running
         {'trigger': 'stop', 'source': 'running', 'dest': 'ready'},
-        {'trigger': 'pause', 'source': 'running', 'dest': 'paused'},
+        {'trigger': 'pause', 'source': 'running', 'dest': 'paused', 'before': 'on_pause'},
         # Transitions for state paused
-        {'trigger': 'resume', 'source': 'paused', 'dest': 'running'},
+        {'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
         {'trigger': 'stop', 'source': 'paused', 'dest': 'ready'},
         # Global transitions
         {'trigger': 'reset', 'source': '*', 'dest': 'idle'}
@@ -65,6 +63,7 @@ class Manager:
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
         self.application = None
+        
 
     def state_change(self, event):
         LogManager.logger.info(f"State changed to {self.state}")
@@ -120,6 +119,8 @@ class Manager:
         gzb_viewer.start_gzserver(configuration["launch"]["0"]["launch_file"])
         gzb_viewer.start_gzclient(configuration["launch"]["0"]["launch_file"], 1920, 1080)
 
+       
+
         # TODO: launch application
         application_file = application_configuration['entry_point']
         params = application_configuration.get('params', None)
@@ -132,6 +133,12 @@ class Manager:
 
         params['update_callback'] = self.update
         self.application = application_class(**params)
+        print(self.application, 'application')
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.call()
+       
+        
 
     def on_terminate(self, event):
         try:
@@ -143,6 +150,11 @@ class Manager:
 
     def on_enter_connected(self, event):
         LogManager.logger.info("Connect state entered")
+
+    def on_run(self, event):
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.call()
      
 
     def on_enter_ready(self, event):
@@ -150,17 +162,35 @@ class Manager:
         LogManager.logger.info(f"Start state entered, configuration: {configuration}")
 
     def load_code(self, event):
-        LogManager.logger.info("Internal transition load_code executed")
-        message_data = event.kwargs.get('data', {})
-        self.__code_loaded = self.application.load_code(message_data['code'])
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.call()
+        try:
+            LogManager.logger.info("Internal transition load_code executed")
+            message_data = event.kwargs.get('data', {})
+            self.application.load_code(message_data['code'])
+            self.__code_loaded = True
+        except:
+            self.__code_loaded = False
 
-    def code_loaded(self):
+    def code_loaded(self, event):
+        print(self.__code_loaded)
         return self.__code_loaded
 
     def process_messsage(self, message):
         self.trigger(message.command, data=message.data or None)
         response = {"message": f"Exercise state changed to {self.state}"}
         self.consumer.send_message(message.response(response))
+
+    def on_pause(self, msg):
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.call()
+
+    def on_resume(self, msg):
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.call()
 
     def start(self):
         """
