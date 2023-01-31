@@ -128,7 +128,7 @@ while True:
           code: editorCode,
         })
         .then((message) => {
-          console.log("code loaded", { code: editorCode });
+          console.log(message);
         })
         .catch((response) => {
           console.error(response);
