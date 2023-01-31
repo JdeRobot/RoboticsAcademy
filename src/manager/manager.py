@@ -5,8 +5,6 @@ import time
 import traceback
 from queue import Queue
 from uuid import uuid4
-import threading
-import subprocess
 from vnc.docker_thread import DockerThread
 
 from transitions import Machine
@@ -19,6 +17,7 @@ from src.manager.application.robotics_python_application_interface import IRobot
 from src.manager.launcher.launcher_engine import LauncherEngine
 from vnc.console_view import Console_view
 from vnc.gzb_view import Gzb_view
+from lint.linter import Lint
 
 
 class Manager:
@@ -38,7 +37,6 @@ class Manager:
         # Transitions for state ready
         {'trigger': 'terminate', 'source': 'ready', 'dest': 'connected', 'before': 'on_terminate'},
         {'trigger': 'load', 'source': ['ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
-        # Transitions for state brain_loadedchecking
         {'trigger': 'run', 'source': 'ready', 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
         # Transitions for state running
         {'trigger': 'stop', 'source': 'running', 'dest': 'ready'},
@@ -63,6 +61,7 @@ class Manager:
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
         self.application = None
+        self.linter = None
         
 
     def state_change(self, event):
@@ -99,6 +98,7 @@ class Manager:
         # generate exercise_folder environment variable
         self.exercise_id = configuration['exercise_id']
         os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FILES')}/{self.exercise_id}"
+        self.linter = Lint(self.exercise_id)
 
         # Check if application and launchers configuration is missing
         # TODO: Maybe encapsulate configuration as a data class with validation?
@@ -120,7 +120,6 @@ class Manager:
         gzb_viewer.start_gzclient(configuration["launch"]["0"]["launch_file"], 1920, 1080)
 
        
-
         # TODO: launch application
         application_file = application_configuration['entry_point']
         params = application_configuration.get('params', None)
@@ -133,13 +132,12 @@ class Manager:
 
         params['update_callback'] = self.update
         self.application = application_class(**params)
-        print(self.application, 'application')
+
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
         rosservice_thread = DockerThread(cmd)
         rosservice_thread.call()
        
         
-
     def on_terminate(self, event):
         try:
             self.application.terminate()
@@ -165,16 +163,22 @@ class Manager:
         cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
         rosservice_thread = DockerThread(cmd)
         rosservice_thread.call()
+        
         try:
             LogManager.logger.info("Internal transition load_code executed")
             message_data = event.kwargs.get('data', {})
-            self.application.load_code(message_data['code'])
-            self.__code_loaded = True
-        except:
+            errors = self.linter.evaluate_code(message_data['code'])
+            if errors is None:
+                self.application.load_code(message_data['code'])
+                self.__code_loaded = True
+            else:
+                self.consumer.send_message({'linter': errors}, command="linter")
+                raise Exception
+        except Exception as e:
             self.__code_loaded = False
+        
 
     def code_loaded(self, event):
-        print(self.__code_loaded)
         return self.__code_loaded
 
     def process_messsage(self, message):
