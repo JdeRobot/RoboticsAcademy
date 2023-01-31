@@ -5,14 +5,12 @@ import AceEditorRobot from "../../exercises/AceEditorRobot";
 import RAMCircuitSelector from "../../visualizers/RAM/RAMCircuitSelector";
 import GazeboViewer from "../../exercises/GazeboViewer";
 import VncConsoleViewer from "../../exercises/VncConsoleViewer";
-import LoadModal from "../../modals/LoadModal";
-import CustomAlert from "../../common/CustomAlert";
-import ErrorModal from "../../modals/ErrorModal";
 import VisualizationComponents from "../../common/VisualizationComponents";
 import FrequencyMenu from "../../common/FrequencyMenu";
 import RAMImgCanvas from "../../visualizers/RAM/RAMImgCanvas";
 import PropTypes from "prop-types";
-import InfoModal from "../../modals/InfoModal";
+
+import { LinterModal } from "../../modals/LInterModal";
 
 function FollowLineExerciseView(props) {
   return (
@@ -73,10 +71,11 @@ function FollowLineExerciseView(props) {
           <VncConsoleViewer context={props.context} />
         </Box>
       </Box>
-      <LoadModal context={props.context} />
+      {/*       <LoadModal context={props.context} />
       <CustomAlert context={props.context} />
       <ErrorModal context={props.context} />
-      <InfoModal context={props.context} />
+      <InfoModal context={props.context} /> */}
+      <LinterModal></LinterModal>
     </Box>
   );
 }

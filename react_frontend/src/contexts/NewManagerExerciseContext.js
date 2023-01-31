@@ -18,8 +18,8 @@ export function ExerciseProvider({ children }) {
   });
   const [launchLevel, setLaunchLevel] = useState(0);
   const [alertContent, setAlertContent] = useState("");
-  const [gazebo, setGazebo] = useState(false);
-  const [consoleView, setConsoleView] = useState(false);
+  const [openGazebo, setOpenGazebo] = useState(false);
+  const [openConsole, setOpenConsole] = useState(false);
 
   // connectionState - Connect, Connecting, Connected
   const [connectionState, setConnectionState] = useState("Connect");
@@ -45,12 +45,9 @@ while True:
 
   const [playState, setPlayState] = useState(false);
 
-  const [birdEyeClass, setBirdEyeClass] = useState("");
-
   const startSim = async () => {
     if (connectionState === "Connect") {
       await RoboticsExerciseComponents.commsManager.connect().then(() => {
-        console.log("pepe");
         setConnectionState("Connected");
       });
     }
@@ -67,7 +64,7 @@ while True:
   };
 
   const doLaunch = async (config) => {
-    await RoboticsExerciseComponents.commsManager
+    await window.RoboticsExerciseComponents.commsManager
       .launch(config)
       .then((message) => {
         setLaunchState("Ready");
@@ -122,16 +119,16 @@ while True:
     console.log("onUnload");
   };
 
-  const submitCode = () => {
+  const submitCode = async () => {
     try {
       // Get the code from editor and add headers
       console.log({ code: editorCode });
-      RoboticsExerciseComponents.commsManager
+      await window.RoboticsExerciseComponents.commsManager
         .send("load", {
           code: editorCode,
         })
         .then((message) => {
-          console.log("code loaded", { code: editorCode });
+          console.log(message);
         })
         .catch((response) => {
           console.error(response);
@@ -187,7 +184,7 @@ while True:
 
   const changeGzWeb = () => {
     console.log("gazebo");
-    if (!gazebo) {
+    if (!openGazebo) {
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -206,11 +203,11 @@ while True:
       });
       setAlertContent(`Gazebo Closed !!`);
     }
-    setGazebo(!gazebo);
+    setOpenGazebo(!openGazebo);
   };
 
   const changeConsole = () => {
-    if (!consoleView) {
+    if (!openConsole) {
       setAlertState({
         ...alertState,
         errorAlert: false,
@@ -229,7 +226,7 @@ while True:
       });
       setAlertContent(`Console Closed !!`);
     }
-    setConsoleView(!consoleView);
+    setOpenConsole(!openConsole);
   };
 
   const stop = () => {
@@ -278,13 +275,12 @@ while True:
         saveFileButton,
         handleFilename,
         changeGzWeb,
-        gazebo,
+        openGazebo,
         changeConsole,
-        consoleView,
+        openConsole,
         stop,
         start,
         playState,
-        birdEyeClass,
         terminate,
         doLaunch,
       }}
