@@ -64,7 +64,7 @@ while True:
   };
 
   const doLaunch = async (config) => {
-    await RoboticsExerciseComponents.commsManager
+    await window.RoboticsExerciseComponents.commsManager
       .launch(config)
       .then((message) => {
         setLaunchState("Ready");
@@ -119,11 +119,11 @@ while True:
     console.log("onUnload");
   };
 
-  const submitCode = () => {
+  const submitCode = async () => {
     try {
       // Get the code from editor and add headers
       console.log({ code: editorCode });
-      RoboticsExerciseComponents.commsManager
+      await window.RoboticsExerciseComponents.commsManager
         .send("load", {
           code: editorCode,
         })

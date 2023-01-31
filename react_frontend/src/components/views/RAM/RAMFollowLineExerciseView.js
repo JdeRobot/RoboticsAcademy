@@ -69,42 +69,6 @@ function FollowLineExerciseView(props) {
         >
           <GazeboViewer context={props.context} />
           <VncConsoleViewer context={props.context} />
-          <button
-            onClick={() => {
-              window.RoboticsExerciseComponents.commsManager
-                .pause()
-                .then(() => {
-                  console.log("paused");
-                })
-                .catch((response) => console.log(response));
-            }}
-          >
-            pause
-          </button>
-          <button
-            onClick={() => {
-              window.RoboticsExerciseComponents.commsManager
-                .run()
-                .then(() => {
-                  console.log("running");
-                })
-                .catch((response) => console.log(response));
-            }}
-          >
-            play
-          </button>
-          <button
-            onClick={() => {
-              window.RoboticsExerciseComponents.commsManager
-                .resume()
-                .then(() => {
-                  console.log("running");
-                })
-                .catch((response) => console.log(response));
-            }}
-          >
-            resume
-          </button>
         </Box>
       </Box>
       {/*       <LoadModal context={props.context} />

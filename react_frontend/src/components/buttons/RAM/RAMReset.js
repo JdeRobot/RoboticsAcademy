@@ -1,10 +1,9 @@
-import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import RestartAltOutlinedIcon from "@mui/icons-material/RestartAltOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-const RAMLoadIntoRobot = (props) => {
-  const { submitCode } = useContext(props.context);
+const RAMReset = () => {
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -33,26 +32,29 @@ const RAMLoadIntoRobot = (props) => {
   return (
     <LoadingButton
       disabled={disabled}
-      id={"loadIntoRobot"}
+      id={"play"}
       loading={loading}
       color={"secondary"}
+      loadingPosition="start"
       onClick={() => {
         setLoading(true);
-        submitCode().then(() => {
-          setLoading(false);
-        });
+        window.RoboticsExerciseComponents.commsManager
+          .reset()
+          .then(() => {
+            setLoading(false);
+          })
+          .catch((response) => console.log(response));
       }}
-      startIcon={<SmartToyOutlinedIcon />}
+      startIcon={<RestartAltOutlinedIcon />}
       sx={{ m: 0.5 }}
       variant={"outlined"}
-      loadingPosition="start"
     >
-      Load in robot
+      Reset
     </LoadingButton>
   );
 };
-RAMLoadIntoRobot.propTypes = {
+RAMReset.propTypes = {
   context: PropTypes.any,
 };
 
-export default RAMLoadIntoRobot;
+export default RAMReset;

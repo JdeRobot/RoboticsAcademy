@@ -45,7 +45,7 @@ class Manager:
         {'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
         {'trigger': 'stop', 'source': 'paused', 'dest': 'ready'},
         # Global transitions
-        {'trigger': 'reset', 'source': '*', 'dest': 'idle'}
+        {'trigger': 'reset', 'source': '*', 'dest': 'ready' ,'before': 'on_reset'}
     ]
 
     def __init__(self, host: str, port: int):
@@ -73,6 +73,12 @@ class Manager:
         LogManager.logger.debug(f"Sending update to client")
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
+
+    def on_reset(self, event):
+        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
+        rosservice_thread = DockerThread(cmd)
+        rosservice_thread.call()
+
 
     def on_launch(self, event):
         """
@@ -168,14 +174,15 @@ class Manager:
             LogManager.logger.info("Internal transition load_code executed")
             message_data = event.kwargs.get('data', {})
             errors = self.linter.evaluate_code(message_data['code'])
-            if errors is None:
+            if errors is "":
                 self.application.load_code(message_data['code'])
                 self.__code_loaded = True
             else:
-                self.consumer.send_message({'linter': errors}, command="linter")
                 raise Exception
         except Exception as e:
             self.__code_loaded = False
+        
+        self.consumer.send_message({'linter': errors}, command="linter")
         
 
     def code_loaded(self, event):

@@ -73,7 +73,7 @@ class Lint:
             # Returns an empty string if there are no errors
             error = re.search("error", result)
             if (error == None and not warnings):
-                return None
+                return ""
             else:
                 return result
         except Exception as ex:

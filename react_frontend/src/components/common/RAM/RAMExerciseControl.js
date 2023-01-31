@@ -11,6 +11,9 @@ import GazeboButton from "../../buttons/GazeboButton";
 import ConsoleButton from "../../buttons/ConsoleButton";
 import TeleOpButton from "../../buttons/TeleOpButton";
 import RAMLoadIntoRobot from "../../buttons/RAM/RAMLoadIntoRobot.js";
+import RAMPlay from "../../buttons/RAM/RAMPlay";
+import RAMPause from "../../buttons/RAM/RAMPause";
+import RAMReset from "../../buttons/RAM/RAMReset";
 
 function RAMExerciseControl(props) {
   const { guiFreq, brainFreq, keyHandleFrequency } = React.useContext(
@@ -34,7 +37,9 @@ function RAMExerciseControl(props) {
         </Box>
         <Box id={"robot-control"}>
           <RAMLoadIntoRobot context={props.context} />
-          <ResetButton context={props.context} />
+          <RAMPlay></RAMPlay>
+          <RAMPause></RAMPause>
+          <RAMReset></RAMReset>
         </Box>
         <Box id={"freq-control"}>
           <TextField
