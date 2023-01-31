@@ -1,5 +1,4 @@
 import tempfile
-import re
 from pylint import epylint as lint
 
 

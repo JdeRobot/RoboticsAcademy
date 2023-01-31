@@ -5,7 +5,7 @@ import time
 import traceback
 from queue import Queue
 from uuid import uuid4
-from vnc.docker_thread import DockerThread
+from src.manager.vnc.docker_thread import DockerThread
 
 from transitions import Machine
 
@@ -15,9 +15,9 @@ from src.comms.consumer_message import ManagerConsumerMessageException
 from src.libs.process_utils import get_class, get_class_from_file
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
-from vnc.console_view import Console_view
-from vnc.gzb_view import Gzb_view
-from lint.linter import Lint
+from src.manager.vnc.console_view import Console_view
+from src.manager.vnc.gzb_view import Gzb_view
+from src.manager.lint.linter import Lint
 
 
 class Manager:

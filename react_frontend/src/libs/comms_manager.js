@@ -1,5 +1,5 @@
-import * as log from 'loglevel';
-import { v4 as uuidv4 } from 'uuid';
+import * as log from "loglevel";
+import { v4 as uuidv4 } from "uuid";
 
 const CommsManager = (address) => {
   let websocket = null;
@@ -7,54 +7,55 @@ const CommsManager = (address) => {
   log.enableAll();
 
   const events = {
-    RESPONSES: ['ack', 'error'],
-    UPDATE: 'update',
-    STATE_CHANGED: 'state-changed'
-  }
+    RESPONSES: ["ack", "error"],
+    UPDATE: "update",
+    STATE_CHANGED: "state-changed",
+    LINTER: "linter",
+  };
 
   //region Observer pattern methods
-  const observers = {}
+  const observers = {};
 
   const subscribe = (events, callback) => {
-    if(typeof events === 'string') {
-      events = [ events ]
+    if (typeof events === "string") {
+      events = [events];
     }
-    for(let i=0, length=events.length; i < length; i++) {
+    for (let i = 0, length = events.length; i < length; i++) {
       observers[events[i]] = observers[events[i]] || [];
       observers[events[i]].push(callback);
     }
-  }
+  };
 
   const unsubscribe = (events, callback) => {
-    if(typeof events === 'string') {
-      events = [ events ]
+    if (typeof events === "string") {
+      events = [events];
     }
-    for(let i=0, length=events.length; i < length; i++) {
+    for (let i = 0, length = events.length; i < length; i++) {
       observers[events[i]] = observers[events[i]] || [];
-      observers[events[i]].splice(observers[events[i]].indexOf(callback))
+      observers[events[i]].splice(observers[events[i]].indexOf(callback));
     }
-  }
+  };
 
   const unsuscribeAll = () => {
-    for(const event in observers) {
+    for (const event in observers) {
       observers[event].length = 0;
     }
-  }
+  };
 
   const subscribeOnce = (event, callback) => {
     subscribe(event, (response) => {
       callback(response);
       unsubscribe(event, callback);
     });
-  }
+  };
 
   const dispatch = (message) => {
     const subscriptions = observers[message.command] || [];
-    let length=subscriptions.length;
-    while(length--) {
+    let length = subscriptions.length;
+    while (length--) {
       subscriptions[length](message);
     }
-  }
+  };
   //endregion
 
   // Send and receive method
@@ -64,9 +65,13 @@ const CommsManager = (address) => {
 
       websocket.onopen = () => {
         log.debug(`Connection with ${address} opened`);
-        send('connect')
-            .then(() => { resolve() })
-            .catch(() => { reject() });
+        send("connect")
+          .then(() => {
+            resolve();
+          })
+          .catch(() => {
+            reject();
+          });
       };
 
       websocket.onclose = (e) => {
@@ -75,7 +80,8 @@ const CommsManager = (address) => {
         unsuscribeAll();
         if (e.wasClean) {
           log.debug(
-              `Connection with ${address} closed, all suscribers cleared`);
+            `Connection with ${address} closed, all suscribers cleared`
+          );
         } else {
           log.debug(`Connection with ${address} interrupted`);
         }
@@ -84,54 +90,59 @@ const CommsManager = (address) => {
       websocket.onerror = (e) => {
         log.debug(`Error received from websocket: ${e.type}`);
         reject();
-      }
+      };
 
       websocket.onmessage = (e) => {
         const message = JSON.parse(e.data);
         dispatch(message);
       };
     });
-  }
+  };
 
   const send = (message, data) => {
     // Sending messages to remote manager
     return new Promise((resolve, reject) => {
       const id = uuidv4();
 
-      if(!websocket) {
-        reject({id: '', command: 'error', data: {
-            message: "Websocket not connected"}
-        })
+      if (!websocket) {
+        reject({
+          id: "",
+          command: "error",
+          data: {
+            message: "Websocket not connected",
+          },
+        });
       }
 
-      subscribeOnce(['ack', 'error'],(response) => {
-        if(id===response.id) {
-          if(response.command==='ack') {
+      subscribeOnce(["ack", "error"], (response) => {
+        if (id === response.id) {
+          if (response.command === "ack") {
             resolve(response);
           } else {
-            reject(response)
+            reject(response);
           }
         }
       });
 
       const msg = JSON.stringify({
-        'id': id,
-        'command': message,
-        'data': data });
+        id: id,
+        command: message,
+        data: data,
+      });
       websocket.send(msg);
-    })
-  }
+    });
+  };
 
   // Messages and events
   const commands = {
     connect: connect,
-    launch: (configuration) => send('launch', configuration),
-    run: () => send('run'),
-    stop: () => send('stop'),
-    pause: () => send('pause'),
-    resume: () => send('resume'),
-    reset: () => send('reset'),
-    terminate: () => send('terminate')
+    launch: (configuration) => send("launch", configuration),
+    run: () => send("run"),
+    stop: () => send("stop"),
+    pause: () => send("pause"),
+    resume: () => send("resume"),
+    reset: () => send("reset"),
+    terminate: () => send("terminate"),
   };
 
   return {
@@ -142,8 +153,8 @@ const CommsManager = (address) => {
     events: events,
     subscribe: subscribe,
     unsubscribe: unsubscribe,
-    suscribreOnce: subscribeOnce
-  }
-}
+    suscribreOnce: subscribeOnce,
+  };
+};
 
 export default CommsManager;
