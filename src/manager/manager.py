@@ -122,8 +122,9 @@ class Manager:
         # configuration['terminated_callback'] = terminated_callback
         self.launcher = LauncherEngine(**configuration)
         self.launcher.run()
+        print(configuration)
         gzb_viewer.start_gzserver(configuration["launch"]["0"]["launch_file"])
-        gzb_viewer.start_gzclient(configuration["launch"]["0"]["launch_file"], 1920, 1080)
+        gzb_viewer.start_gzclient(configuration["launch"]["0"]["launch_file"], configuration['width'], configuration['height'])
 
        
         # TODO: launch application

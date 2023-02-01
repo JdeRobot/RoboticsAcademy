@@ -25,14 +25,10 @@ class Gzb_view(Vnc_server):
 
     def start_gzclient(self, exercise, width, height):
         # Configure browser screen width and height for gzclient
-        gzclient_config_cmds = ["echo [geometry] > ~/.gazebo/gui.ini;",
-                                "echo x=0 >> ~/.gazebo/gui.ini;",
-                                "echo y=0 >> ~/.gazebo/gui.ini;",
-                                f"echo width={width} >> ~/.gazebo/gui.ini;",
-                                f"echo height={height} >> ~/.gazebo/gui.ini;"]
+        gzclient_config_cmds = f"echo [geometry] > ~/.gazebo/gui.ini; echo x=0 >> ~/.gazebo/gui.ini; echo y=0 >> ~/.gazebo/gui.ini; echo width={width} >> ~/.gazebo/gui.ini; echo height={height} >> ~/.gazebo/gui.ini;"
 
        
 	    # Write display config and start gzclient
-        gzclient_cmd = (f"export DISPLAY=:0;{exercise}" + "".join(gzclient_config_cmds) + "gzclient --verbose")
+        gzclient_cmd = (f"export DISPLAY=:0; {exercise}; {gzclient_config_cmds} gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start() 

@@ -80,6 +80,9 @@ while True:
   const launchButtonClick = () => {
     if (connectionState === "Connected" && launchState === "Launch") {
       const config = getConfig();
+      config.height = window.innerHeight / 2;
+      config.width = window.innerWidth / 2;
+      console.log(config);
       setLaunchState("Launching");
       doLaunch(config);
     } else if (connectionState === "Connect") {
