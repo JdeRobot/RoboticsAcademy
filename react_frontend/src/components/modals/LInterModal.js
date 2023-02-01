@@ -2,17 +2,21 @@ import { Box, Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 export const LinterModal = () => {
-  const [linter, setLinter] = useState(false);
+  const [linterMessage, setLinterMessage] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const callback = (message) => {
       if (!message.data.linter) {
-        setLinter("Code loaded");
+        setLinterMessage(["Code loaded"]);
       } else {
-        let linterMessage = JSON.stringify(message.data.linter);
-        setLinter(linterMessage);
+        let linterMessage = JSON.stringify(message.data.linter).split("\\n");
+        console.log(linterMessage);
+        setLinterMessage(linterMessage);
       }
+      setOpenModal(true);
     };
+
     window.RoboticsExerciseComponents.commsManager.subscribe(
       [window.RoboticsExerciseComponents.commsManager.events.LINTER],
       callback
@@ -39,15 +43,17 @@ export const LinterModal = () => {
 
   return (
     <Modal
-      open={!!linter}
+      open={openModal}
       onClose={() => {
-        setLinter(false);
+        setOpenModal(false);
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography>{linter}</Typography>
+        {linterMessage.map((line) => (
+          <Typography key={line}>{line}</Typography>
+        ))}
       </Box>
     </Modal>
   );

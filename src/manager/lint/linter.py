@@ -75,6 +75,6 @@ class Lint:
             if (error == None and not warnings):
                 return ""
             else:
-                return result
+                return result.strip()
         except Exception as ex:
             print(ex)
