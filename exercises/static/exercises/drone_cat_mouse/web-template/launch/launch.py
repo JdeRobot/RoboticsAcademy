@@ -73,7 +73,7 @@ class Launch():
     def start(self):
         ######## LAUNCH GAZEBO ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
+                "/RoboticsAcademy/exercises/static/exercises" + EXERCISE + "/web-template/launch/gazebo.launch", 
                 "--wait", 
                 "--log"
                 ]
