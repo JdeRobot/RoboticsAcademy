@@ -1,10 +1,8 @@
-import time
-import subprocess
 from vnc.docker_thread import DockerThread
 
 
 
-class Vnc_server:
+class VncServer:
     def start_vnc(self,display, internal_port, external_port):
         xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {display}"
         xserver_thread = DockerThread(xserver_cmd)

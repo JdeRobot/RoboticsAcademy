@@ -1,9 +1,9 @@
-from vnc.vnc_server import Vnc_server
+from vnc.vnc_server import VncServer
 from vnc.docker_thread import DockerThread
 import subprocess
 import time
 
-class Gzb_view(Vnc_server):
+class GzbView(VncServer):
     def __init__(self, display, internal_port, external_port):
         super().start_vnc(display, internal_port, external_port)
 
@@ -11,7 +11,6 @@ class Gzb_view(Vnc_server):
         roslaunch_thread = DockerThread(exercise)
         roslaunch_thread.start()
         repeat = True
-        print('testing gz')
         while repeat:
             try:
                 stats_output = str(subprocess.check_output(['gz', 'stats', '-p', '-d', '1'], timeout=5))
@@ -27,7 +26,6 @@ class Gzb_view(Vnc_server):
         # Configure browser screen width and height for gzclient
         gzclient_config_cmds = f"echo [geometry] > ~/.gazebo/gui.ini; echo x=0 >> ~/.gazebo/gui.ini; echo y=0 >> ~/.gazebo/gui.ini; echo width={width} >> ~/.gazebo/gui.ini; echo height={height} >> ~/.gazebo/gui.ini;"
 
-       
 	    # Write display config and start gzclient
         gzclient_cmd = (f"export DISPLAY=:0; {exercise}; {gzclient_config_cmds} gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)

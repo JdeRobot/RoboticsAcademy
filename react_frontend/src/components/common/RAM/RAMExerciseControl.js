@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import SaveButton from "../../buttons/SaveButton";
 import LoadFileButton from "../../buttons/LoadFileButton";
 import PlayStopButton from "../../buttons/PlayStopButton";
-import ResetButton from "../../buttons/ResetButton";
 import GazeboButton from "../../buttons/GazeboButton";
 import ConsoleButton from "../../buttons/ConsoleButton";
 import TeleOpButton from "../../buttons/TeleOpButton";

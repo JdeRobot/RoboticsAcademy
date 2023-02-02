@@ -1,7 +1,7 @@
-from vnc.vnc_server import Vnc_server
+from vnc.vnc_server import VncServer
 from vnc.docker_thread import DockerThread
 
-class Console_view(Vnc_server):
+class ConsoleView(VncServer):
     def __init__(self, display, internal_port, external_port):
         super().start_vnc(display, internal_port, external_port)
     
