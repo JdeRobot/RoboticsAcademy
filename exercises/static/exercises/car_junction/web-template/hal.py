@@ -29,7 +29,7 @@ class HAL:
         self.p3d = None
 
         if os.getcwd() == "/":
-            f = open("/RoboticsAcademy/exercises/car_junction/web-template/stop_conf.yml", "r")
+            f = open("/RoboticsAcademy/exercises/static/exercises/car_junction/web-template/stop_conf.yml", "r")
         else:
             f = open("stop_conf.yml", "r")
 

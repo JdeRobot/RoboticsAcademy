@@ -22,5 +22,5 @@
         <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     </include>
 
-    <rosparam command="load" file="/RoboticsAcademy/exercises/drone_cat_mouse/web-template/drone_cat_mouse.yaml" />
+    <rosparam command="load" file="/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/drone_cat_mouse.yaml" />
 </launch>
