@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/position_control/web-template/position_control.world"/>
+    <arg name="world" default="/RoboticsAcademy/static/exercises/exercises/position_control/web-template/position_control.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>
