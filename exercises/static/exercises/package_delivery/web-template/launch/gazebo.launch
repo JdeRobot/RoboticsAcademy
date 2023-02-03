@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/package_delivery/web-template/package_delivery.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/package_delivery/web-template/package_delivery.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>
@@ -22,5 +22,5 @@
         <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     </include>
 
-    <rosparam command="load" file="/RoboticsAcademy/exercises/package_delivery/web-template/package_delivery.yaml" />
+    <rosparam command="load" file="/RoboticsAcademy/exercises/static/exercises/package_delivery/web-template/package_delivery.yaml" />
 </launch>

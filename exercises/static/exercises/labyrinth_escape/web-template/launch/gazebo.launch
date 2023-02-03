@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/labyrinth_escape/web-template/labyrinth_escape.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/labyrinth_escape/web-template/labyrinth_escape.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>
