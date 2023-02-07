@@ -37,13 +37,13 @@ class Manager:
         # Transitions for state ready
         {'trigger': 'terminate', 'source': 'ready', 'dest': 'connected', 'before': 'on_terminate'},
         {'trigger': 'load', 'source': ['ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
-        {'trigger': 'run', 'source': 'ready', 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
+        {'trigger': 'run', 'source': ['ready', 'paused'], 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
         # Transitions for state running
-        {'trigger': 'stop', 'source': 'running', 'dest': 'ready'},
+        #{'trigger': 'stop', 'source': 'running', 'dest': 'ready'},
         {'trigger': 'pause', 'source': 'running', 'dest': 'paused', 'before': 'on_pause'},
         # Transitions for state paused
-        {'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
-        {'trigger': 'stop', 'source': 'paused', 'dest': 'ready'},
+        #{'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
+        #{'trigger': 'stop', 'source': 'paused', 'dest': 'ready'},
         # Global transitions
         {'trigger': 'reset', 'source': '*', 'dest': 'ready' ,'before': 'on_reset'}
     ]
@@ -135,7 +135,6 @@ class Manager:
         if not issubclass(application_class, IRoboticsPythonApplication):
             self.launcher.terminate()
             raise Exception("The application must be an instance of IRoboticsPythonApplication")
-
         params['update_callback'] = self.update
         self.application = application_class(**params)
 

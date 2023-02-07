@@ -7,7 +7,7 @@ const RAMPlay = () => {
   const [disabled, setDisabled] = useState(true);
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state === "ready" || message.data.state === "paused") {
         setDisabled(false);
       } else {
         setDisabled(true);
