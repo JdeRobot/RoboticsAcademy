@@ -35,7 +35,7 @@ docutils==0.16
 empy==3.3.4
 entrypoints==0.3
 flatbuffers==22.9.24
-future==0.18.2
+future==0.18.3
 httplib2==0.14.0
 humanfriendly==10.0
 hyperlink==19.0.0
