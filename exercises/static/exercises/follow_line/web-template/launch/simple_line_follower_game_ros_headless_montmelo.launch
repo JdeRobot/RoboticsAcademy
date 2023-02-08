@@ -12,5 +12,5 @@
   </include>  
 
   <!-- Spawn a robot into Gazebo -->
-  <node name="spawn_f1_guest_sdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find CustomRobots)/f1/f1_guest/model.sdf -sdf -z 1 -model model" -x 0 -y 0 -z 1 -Y 0 />
+  <node name="spawn_f1_guest_sdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find CustomRobots)/f1/f1_guest/model.sdf -sdf -x 26.3 -y -31.6 -z 0.004 -R 0 -P 0 -Y -3.17 -model model"/>
 </launch>
