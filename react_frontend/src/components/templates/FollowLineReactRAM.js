@@ -13,10 +13,7 @@ function FollowLineReactRAM() {
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <MainAppBar
-            exerciseName={" Follow Line "}
-            context={NewManagerExerciseContext}
-          />
+          <MainAppBar exerciseName={" Follow Line V2"} />
           <View
             url={THEORY_URL.FollowLine}
             exerciseId={

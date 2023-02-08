@@ -1,17 +1,13 @@
 import * as React from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@mui/material";
-import PropTypes from "prop-types";
 
-const SaveButton = (props) => {
-  const { onClickSave } = React.useContext(props.context);
-
+export const SaveButton = () => {
   return (
     <Button
       id={"save"}
       variant="contained"
       color={"secondary"}
-      onClick={onClickSave}
       startIcon={<SaveIcon />}
       sx={{ m: 1 }}
     >
@@ -19,8 +15,3 @@ const SaveButton = (props) => {
     </Button>
   );
 };
-
-SaveButton.propTypes = {
-  context: PropTypes.any,
-};
-export default SaveButton;

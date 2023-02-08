@@ -35,7 +35,7 @@ class Manager:
         # Transitions for state connected
         {'trigger': 'launch', 'source': 'connected', 'dest': 'ready', 'before': 'on_launch'},
         # Transitions for state ready
-        {'trigger': 'terminate', 'source': 'ready', 'dest': 'connected', 'before': 'on_terminate'},
+        
         {'trigger': 'load', 'source': ['ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
         {'trigger': 'run', 'source': ['ready', 'paused'], 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
         # Transitions for state running
@@ -45,7 +45,9 @@ class Manager:
         #{'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
         #{'trigger': 'stop', 'source': 'paused', 'dest': 'ready'},
         # Global transitions
-        {'trigger': 'reset', 'source': '*', 'dest': 'ready' ,'before': 'on_reset'}
+        {'trigger': 'reset', 'source': '*', 'dest': None ,'before': 'on_reset'},
+        {'trigger': 'terminate', 'source': '*', 'dest': 'idle', 'before': 'on_terminate'},
+        
     ]
 
     def __init__(self, host: str, port: int):
@@ -144,12 +146,15 @@ class Manager:
        
         
     def on_terminate(self, event):
-        try:
-            self.application.terminate()
-            self.launcher.terminate()
-        except Exception as e:
-            LogManager.logger.exception(f"Exception terminating instance")
-            print(traceback.format_exc())
+            try:
+                cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
+                rosservice_thread = DockerThread(cmd)
+                rosservice_thread.call()
+                self.__code_loaded = False
+                self.launcher.terminate()
+            except Exception as e:
+                LogManager.logger.exception(f"Exception terminating instance")
+                print(traceback.format_exc())
 
     def on_enter_connected(self, event):
         LogManager.logger.info("Connect state entered")

@@ -36,6 +36,7 @@ export default function AceEditorRobot(props) {
         width: "100%",
         flexDirection: "column",
         border: "2px solid",
+        padding: "0px",
       }}
       id="code-control"
     >
