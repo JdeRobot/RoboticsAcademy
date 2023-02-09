@@ -131,16 +131,22 @@ After any of the previous commands is requested by the user, the respective butt
 
 <a name="Manager.py extended"></a>
 ## Manager.py extended
+
+When the RADI container is opened, it starts the execution of the manager.py. Then wait for the user to pick an exercise. Once the exercise is selected the browser communicates to the manager.py the identifier of that exercise and differentes messages depending the user's actions.
+
+Once the manager.py receives the "start" message, it searches for the instructions.json file. Inside that file is a serie of instructions for each exercise in JSON format. This instructions include things as the path to the exercise.py file of each exercise or the route to the file for launching Gazebo, etc.
+
+Once the manager.py has the name of the exercise, it recovers from the instructions.json file the object whose key match the exercise name.
+
+One of the most important parts of the manager.py comes when the user clicks in the laun button. Then the browser sends a "open" message to the manager and it starts all the necessary things to make the exercise work. As there are many different exercises which require different things, depending on the type of the selected one, the manager.py does different things. For example, for the exercises that need a circuit starts the Gazebo server with that circuit. Meanwhile, for the exercises that dont require anything special it simply starts the VNC and the console.
+
+Once the user introduces and sends their code, the manager.py opens a subprocess to check it searching for possible mistakes. If there are any errors, a pop up will be showed indicating the erros found, a code with the type of error it is and the line in which they can be found. In case there is nothing to be changed, the manager.py executes the user code.
+
+
 The manager is the one in charge of requesting exercises and controlling the simulation. The principal part of the manager can be found in the manager class. In this class values like the server, client, exercise and simulator used are inicializated and changed afterwards depending on the exercise the user is trying to use.
 
-The most important functions on the manager class are the following:
+Ones of the most important function in the manager.py script are the following ones:
 
-- **Handle**: In charge of handling the request. Reads the command received from the websocket and executes parts of its code according to it. For example, the "open" command sets the value of the simulator (gazebo, stdr or none) depending of which exercise is being executed, finally calls the function open_simulation or open_accelerated_simulation. The "stop" command calls the function stop_simulation() which pauses the physics, etc.
-- **Open_simulation**: In charge of starting the servers, etc that are required. Its behaviour depends heavily on the selected exercise. For example, starts the gazebo server, the stdr server or simply calls the start_exercise function.
-- **run_sever**: Starts the websocket server
-
-There is anothe important class, called Commands. In this class, the function read_json_instructions recovers the file called instructions.json. In that file the paths the instructions to run ros or the config to run gazebo can be found. Each exercise object has the number of instructions/settings required to star it.
-
-When the exercise is being started, the functions inside the class Commands have differente behaviour depending of the type of exercise or if the acceleration is enabled or not.
-
-The function start_exercise() which es called in open_simulation() can be found in here. This function is in chargue of settings up the websocket server, exercise_guest.py, gui_guest.py and wait for all of them to be up before continuing with any other process.
+- **Handle**: The function in charge of handling the messages received from the browser. Depending the value of this message, it executes one function or another. For example, the "evaluate" command triggers the function to evaluate code sent by user. The "stop" command executes the stop_simulation function which stops the physics, etc
+- **Open_simulation**: This function starts everything that is necessary to run the selected exercise. Its behaviour depends on the selected exercise as explained before.
+- **Reset_simulation**: Its behaviour too depends on the selected exercise. Some of the exercises just require the drone or topics to be reseted after the "reset" message is sent to the manager.py and others may require a hard_reset, starting the exercise from 0.
