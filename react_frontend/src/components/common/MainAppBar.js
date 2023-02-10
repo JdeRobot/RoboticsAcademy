@@ -60,8 +60,10 @@ function MainAppBar(props) {
             }}
           >
             <Image src="/static/common/img/logo.gif" fit={"cover"} width={50} />
-            <ConnectionIndicator></ConnectionIndicator>
-            <LaunchIndicator></LaunchIndicator>
+            <Box sx={{ display: "flex", gap: "10px", marginLeft: "10px" }}>
+              <ConnectionIndicator></ConnectionIndicator>
+              <LaunchIndicator></LaunchIndicator>
+            </Box>
           </Box>
           <Typography variant="h5">{props.exerciseName}</Typography>
           <ButtonGroup color={"loading"} variant={"contained"}>

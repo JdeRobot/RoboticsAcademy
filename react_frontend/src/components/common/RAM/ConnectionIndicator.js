@@ -1,7 +1,7 @@
-import LoadingButton from "@mui/lab/LoadingButton";
-import ConnectingAirportsIcon from "@mui/icons-material/ConnectingAirports";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import Brightness1Icon from "@mui/icons-material/Brightness1";
 
 export const ConnectionIndicator = () => {
   const [connected, setConnected] = useState(false);
@@ -26,16 +26,24 @@ export const ConnectionIndicator = () => {
   }, []);
 
   return (
-    <LoadingButton
-      id={"connection-button"}
-      startIcon={<ConnectingAirportsIcon />}
-      variant="contained"
-      loadingPosition="start"
-      color={!connected ? "loading" : "success"}
-      sx={{ marginX: 1 }}
-      size={"small"}
-    >
-      Connected
-    </LoadingButton>
+    <>
+      <Typography>Connected</Typography>
+      {connected ? (
+        <Box
+          sx={{
+            display: "flex",
+            gap: "5px",
+            alignItems: "center",
+          }}
+        >
+          <Brightness1Icon
+            color={!connected ? "loading" : "success"}
+            fontSize={"small"}
+          ></Brightness1Icon>
+        </Box>
+      ) : (
+        <CircularProgress color="loading" size={20} />
+      )}
+    </>
   );
 };
