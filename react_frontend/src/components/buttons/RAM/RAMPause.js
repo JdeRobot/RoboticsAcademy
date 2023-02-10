@@ -19,7 +19,7 @@ const RAMPause = () => {
     );
     return () => {
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.LINTER],
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
         callback
       );
     };
@@ -34,7 +34,7 @@ const RAMPause = () => {
         window.RoboticsExerciseComponents.commsManager
           .pause()
           .then(() => {
-            console.log("running");
+            console.log("paused");
           })
           .catch((response) => console.log(response));
       }}

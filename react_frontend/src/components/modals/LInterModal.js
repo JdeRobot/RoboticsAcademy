@@ -7,13 +7,10 @@ export const LinterModal = () => {
 
   useEffect(() => {
     const callback = (message) => {
-      if (!message.data.linter) {
-        setLinterMessage(["Code loaded"]);
-      } else {
-        let linterMessage = JSON.stringify(message.data.linter).split("\\n");
-        console.log(linterMessage);
-        setLinterMessage(linterMessage);
-      }
+      let linterMessage = JSON.stringify(message.data.linter).split("\\n");
+      console.log(linterMessage);
+      setLinterMessage(linterMessage);
+
       setOpenModal(true);
     };
 

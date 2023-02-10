@@ -8,7 +8,6 @@ import { LoadFileButton } from "../../buttons/LoadFileButton";
 import PlayStopButton from "../../buttons/PlayStopButton";
 import GazeboButton from "../../buttons/GazeboButton";
 import ConsoleButton from "../../buttons/ConsoleButton";
-import RAMLoadIntoRobot from "../../buttons/RAM/RAMLoadIntoRobot.js";
 import RAMPlay from "../../buttons/RAM/RAMPlay";
 import RAMPause from "../../buttons/RAM/RAMPause";
 import RAMReset from "../../buttons/RAM/RAMReset";
@@ -31,8 +30,7 @@ function RAMExerciseControl(props) {
           <SaveButton context={props.context} />
         </Box>
         <Box id={"robot-control"}>
-          <RAMLoadIntoRobot context={props.context} />
-          <RAMPlay></RAMPlay>
+          <RAMPlay context={props.context}></RAMPlay>
           <RAMPause></RAMPause>
           <RAMReset></RAMReset>
         </Box>

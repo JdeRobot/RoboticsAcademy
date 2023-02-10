@@ -174,19 +174,20 @@ class Manager:
         rosservice_thread = DockerThread(cmd)
         rosservice_thread.call()
         
-        try:
-            LogManager.logger.info("Internal transition load_code executed")
-            message_data = event.kwargs.get('data', {})
-            errors = self.linter.evaluate_code(message_data['code'])
-            if errors is "":
-                self.application.load_code(message_data['code'])
-                self.__code_loaded = True
-            else:
-                raise Exception
-        except Exception as e:
-            self.__code_loaded = False
         
-        self.consumer.send_message({'linter': errors}, command="linter")
+        LogManager.logger.info("Internal transition load_code executed")
+        message_data = event.kwargs.get('data', {})
+        errors = self.linter.evaluate_code(message_data['code'])
+        if errors is "":
+            self.application.load_code(message_data['code'])
+            self.__code_loaded = True
+            self.consumer.send_message({'linter': 'Code loaded successfully'}, command="linter")
+        else:
+            self.consumer.send_message({'linter': errors}, command="linter")
+            raise Exception
+        
+        
+        
         
 
     def code_loaded(self, event):
