@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 
 const RAMPause = () => {
   const [disabled, setDisabled] = useState(true);
@@ -38,7 +38,7 @@ const RAMPause = () => {
           })
           .catch((response) => console.log(response));
       }}
-      startIcon={<PlayArrowIcon />}
+      startIcon={<PauseIcon />}
       sx={{ m: 0.5 }}
       variant={"outlined"}
     >
