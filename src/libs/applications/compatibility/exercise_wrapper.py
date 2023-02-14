@@ -44,7 +44,7 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
             self.gui_server.kill()
             raise RuntimeError(f"Exercise GUI {gui_command} could not be run")
 
-        # test
+        self.pause()
 
     def _run_exercise_server(self, cmd, log_file, load_string, timeout: int = 5):
         process = subprocess.Popen(f"{cmd}", shell=True, stdout=sys.stdout, stderr=subprocess.STDOUT, bufsize=1024,
@@ -88,10 +88,13 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         rosservice.call_service("gazebo/unpause_physics")
 
     def stop(self):
-        rosservice.call_service("gazebo/pause_physics")
+        rosservice.call_service("gazebo/reset_world")
 
     def resume(self):
         rosservice.call_service("gazebo/unpause_physics")
+
+    def pause(self):
+        rosservice.call_service("gazebo/pause_physics")
 
     def restart(self):
         pass

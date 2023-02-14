@@ -17,6 +17,9 @@ class RoboticsApplication(IRoboticsPythonApplication):
     def restart(self):
         pass
 
+    def pause(self):
+        pass
+
     @property
     def is_alive(self):
         pass

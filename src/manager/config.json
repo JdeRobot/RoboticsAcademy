@@ -19,6 +19,20 @@
       ],
       "parameters": [],
       "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
+    },
+    "1": {
+      "type": "module",
+      "module": "vnc",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/web-template/launch"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
     }
   }
 }
