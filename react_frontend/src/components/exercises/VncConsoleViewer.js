@@ -2,10 +2,9 @@ import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
-function VncConsoleViewer(props) {
-  const { openConsole } = React.useContext(props.context);
+function VncConsoleViewer() {
   return (
-    <Box display={openConsole ? "block" : "none"}>
+    <Box display={"block"}>
       <Typography color={"secondary"} borderBottom={2} m={0.4}>
         Console
       </Typography>
@@ -15,11 +14,7 @@ function VncConsoleViewer(props) {
           width: "40vw",
           height: "50vh",
         }}
-        src={
-          openConsole
-            ? "http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true"
-            : ""
-        }
+        src={"http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true"}
       />
     </Box>
   );

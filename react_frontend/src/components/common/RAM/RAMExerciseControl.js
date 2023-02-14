@@ -11,6 +11,7 @@ import ConsoleButton from "../../buttons/ConsoleButton";
 import RAMPlay from "../../buttons/RAM/RAMPlay";
 import RAMPause from "../../buttons/RAM/RAMPause";
 import RAMReset from "../../buttons/RAM/RAMReset";
+import CameraButton from "../../buttons/RAMVisualizatorButton";
 
 function RAMExerciseControl(props) {
   return (
@@ -35,6 +36,7 @@ function RAMExerciseControl(props) {
           <RAMReset></RAMReset>
         </Box>
         <Box id={"Sim-console-control"}>
+          <CameraButton context={props.context}></CameraButton>
           <GazeboButton context={props.context} />
           <ConsoleButton context={props.context} />
         </Box>

@@ -6,8 +6,6 @@ export default function VisualizationComponents(props) {
   return (
     <Box
       sx={{
-        m: 3,
-        p: 2,
         display: "flex",
         width: "100%",
         flexWrap: "wrap",

@@ -10,8 +10,7 @@ export function ExerciseProvider({ children }) {
   const ramPort = 7163;
   CommsManager(`ws://${ramHost}:${ramPort}`);
 
-  const [openGazebo, setOpenGazebo] = useState(false);
-  const [openConsole, setOpenConsole] = useState(false);
+  const [visualization, setVisualization] = useState("camera");
   const [filename, setFileName] = useState("filename");
   const [editorCode, setEditorCode] = useState(`from GUI import GUI
 from HAL import HAL
@@ -22,19 +21,6 @@ while True:
 
   const editorCodeChange = (e) => {
     setEditorCode(e);
-  };
-
-  const submitCode = async () => {
-    await window.RoboticsExerciseComponents.commsManager
-      .send("load", {
-        code: editorCode,
-      })
-      .then((message) => {
-        console.log(message);
-      })
-      .catch((response) => {
-        console.error(response);
-      });
   };
 
   const loadFileButton = (event) => {
@@ -54,27 +40,20 @@ while True:
     setFileName(e.target.value);
   };
 
-  const changeGzWeb = () => {
-    setOpenGazebo(!openGazebo);
-  };
-
-  const changeConsole = () => {
-    setOpenConsole(!openConsole);
+  const changeVisualization = (visual) => {
+    setVisualization(visual);
   };
 
   return (
     <NewManagerExerciseContext.Provider
       value={{
-        submitCode,
         editorCodeChange,
         editorCode,
         loadFileButton,
         saveFileButton,
         handleFilename,
-        changeGzWeb,
-        openGazebo,
-        changeConsole,
-        openConsole,
+        visualization,
+        changeVisualization,
       }}
     >
       {children}

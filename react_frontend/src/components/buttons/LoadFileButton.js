@@ -1,8 +1,10 @@
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { Button } from "@mui/material";
 import * as React from "react";
+import PropTypes from "prop-types";
 
-export const LoadFileButton = () => {
+export const LoadFileButton = (props) => {
+  const { loadFileButton } = React.useContext(props.context);
   return (
     <Button
       variant="contained"
@@ -12,7 +14,11 @@ export const LoadFileButton = () => {
       component="label"
     >
       Load file
-      <input hidden accept=".py" type="file" />
+      <input hidden accept=".py" type="file" onChange={loadFileButton} />
     </Button>
   );
+};
+
+LoadFileButton.propTypes = {
+  context: PropTypes.node,
 };
