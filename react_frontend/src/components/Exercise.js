@@ -5,7 +5,7 @@ import RoboticsTheme from "./RoboticsTheme";
 function Exercise() {
   return (
     <RoboticsTheme>
-      <div className="Exercise"></div>
+      <div className="Exercise" />
     </RoboticsTheme>
   );
 }
