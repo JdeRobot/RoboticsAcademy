@@ -35,18 +35,14 @@ class Manager:
         # Transitions for state connected
         {'trigger': 'launch', 'source': 'connected', 'dest': 'ready', 'before': 'on_launch'},
         # Transitions for state ready
-        
+        {'trigger': 'terminate', 'source': 'ready', 'dest': 'connected', 'before': 'on_terminate'},
         {'trigger': 'load', 'source': ['ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
         {'trigger': 'run', 'source': ['ready', 'paused'], 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
         # Transitions for state running
-        #{'trigger': 'stop', 'source': 'running', 'dest': 'ready'},
         {'trigger': 'pause', 'source': 'running', 'dest': 'paused', 'before': 'on_pause'},
-        # Transitions for state paused
-        #{'trigger': 'resume', 'source': 'paused', 'dest': 'running', 'before': 'on_resume'},
-        #{'trigger': 'stop', 'source': 'paused', 'dest': 'ready'},
+        {'trigger': 'stop', 'source': ['running', 'paused'], 'dest': 'ready', 'before': 'on_stop'},
         # Global transitions
-        {'trigger': 'reset', 'source': '*', 'dest': None ,'before': 'on_reset'},
-        {'trigger': 'terminate', 'source': '*', 'dest': 'idle', 'before': 'on_terminate'},
+        {'trigger': 'disconnect', 'source': '*', 'dest': 'idle' ,'before': 'on_disconnect'},
         
     ]
 
@@ -76,10 +72,9 @@ class Manager:
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
 
-    def on_reset(self, event):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
+    def on_stop(self, event):
+        self.application.stop()
+       
 
 
     def on_launch(self, event):
@@ -87,13 +82,6 @@ class Manager:
         Transition executed on launch trigger activ
         """
         
-        gzb_viewer = GzbView(":0", 5900, 6080)
-        console_viewer = ConsoleView(":1", 5901, 1108)
-        print('vnc started')
-        time.sleep(2)
-        console_viewer.start_console(1920, 1080)
-        print("> Console started")
-
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
             LogManager.logger.info(f"Manager: Launcher {name} died with code {code}")
@@ -101,8 +89,7 @@ class Manager:
                 self.terminate()
 
         configuration = event.kwargs.get('data', {})
-     
-       
+    
         # generate exercise_folder environment variable
         self.exercise_id = configuration['exercise_id']
         os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FILES')}/{self.exercise_id}"
@@ -124,8 +111,6 @@ class Manager:
         # configuration['terminated_callback'] = terminated_callback
         self.launcher = LauncherEngine(**configuration)
         self.launcher.run()
-        gzb_viewer.start_gzserver(configuration["launch"]["0"]["launch_file"])
-        gzb_viewer.start_gzclient(configuration["launch"]["0"]["launch_file"], configuration['width'], configuration['height'])
 
        
         # TODO: launch application
@@ -140,9 +125,7 @@ class Manager:
         params['update_callback'] = self.update
         self.application = application_class(**params)
 
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
+        self.application.pause()
        
         
     def on_terminate(self, event):
@@ -160,25 +143,19 @@ class Manager:
         LogManager.logger.info("Connect state entered")
 
     def on_run(self, event):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
+        self.application.run()
      
-
     def on_enter_ready(self, event):
         configuration = event.kwargs.get('data', {})
         LogManager.logger.info(f"Start state entered, configuration: {configuration}")
 
     def load_code(self, event):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
-        
+        self.application.pause()
         
         LogManager.logger.info("Internal transition load_code executed")
         message_data = event.kwargs.get('data', {})
         errors = self.linter.evaluate_code(message_data['code'])
-        if errors is "":
+        if errors == "":
             self.application.load_code(message_data['code'])
             self.__code_loaded = True
             self.consumer.send_message({'linter': 'Code loaded successfully'}, command="linter")
@@ -187,9 +164,6 @@ class Manager:
             raise Exception
         
         
-        
-        
-
     def code_loaded(self, event):
         return self.__code_loaded
 
@@ -199,14 +173,10 @@ class Manager:
         self.consumer.send_message(message.response(response))
 
     def on_pause(self, msg):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/pause_physics"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
+        self.application.pause()
 
     def on_resume(self, msg):
-        cmd = "/opt/ros/noetic/bin/rosservice call gazebo/unpause_physics"
-        rosservice_thread = DockerThread(cmd)
-        rosservice_thread.call()
+        self.application.resume()
 
     def start(self):
         """

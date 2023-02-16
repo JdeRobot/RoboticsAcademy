@@ -85,13 +85,17 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         self.exercise_connection.send("#ack")
 
     def run(self):
-        rosservice.call_service("gazebo/unpause_physics")
+        rosservice.call_service("/gazebo/unpause_physics", [])
 
     def stop(self):
-        rosservice.call_service("gazebo/pause_physics")
+        rosservice.call_service('/gazebo/pause_physics',[])
+        rosservice.call_service("/gazebo/reset_world", [])
 
     def resume(self):
-        rosservice.call_service("gazebo/unpause_physics")
+        rosservice.call_service("/gazebo/unpause_physics", []) 
+
+    def pause(self):
+        rosservice.call_service('/gazebo/pause_physics',[])
 
     def restart(self):
         pass
