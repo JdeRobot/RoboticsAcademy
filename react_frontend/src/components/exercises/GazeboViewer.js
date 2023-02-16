@@ -13,7 +13,7 @@ function GazeboViewer(props) {
       <iframe
         id={"iframe"}
         style={{
-          width: "40vw",
+          width: "50vw",
           height: "50vh",
         }}
         src={

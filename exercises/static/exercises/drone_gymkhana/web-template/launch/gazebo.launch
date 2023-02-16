@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/drone_gymkhana/web-template/drone_gymkhana.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/drone_gymkhana/web-template/drone_gymkhana.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>

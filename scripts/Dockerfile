@@ -1,4 +1,4 @@
-FROM jderobot/base:3.2
+FROM jderobot/robotics-applications:base
 
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
@@ -50,8 +50,8 @@ RUN cp -r /opt/jderobot/CustomRobots/SelfDrivingModels /catkin_ws/src/SelfDrivin
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build catvehicle'
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
-RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b new-architecture
+# RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # React
 RUN npm install -g yarn
@@ -63,6 +63,15 @@ COPY pylintrc /etc/pylintrc
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
     && ln -s /usr/bin/python3.8 /usr/bin/python
+
+# SSH for development
+RUN apt-get update && apt-get install -y openssh-server
+RUN mkdir /var/run/sshd
+RUN echo 'root:password' | chpasswd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+CMD ["/usr/sbin/sshd","-D"]
+EXPOSE 22
 
 # Django server
 EXPOSE 8000
@@ -87,5 +96,7 @@ EXPOSE 6080
 # WebRtc
 EXPOSE 1831
 
+# RAM
+EXPOSE 7163
 
 ENTRYPOINT [ "./entrypoint.sh" ]
