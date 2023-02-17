@@ -22,7 +22,7 @@ from HAL import HAL
 
 while True:
     # Enter iterative code!`);
-
+  const [linterMessage, setLinterMessage] = useState([]);
   const editorCodeChange = (e) => {
     setEditorCode(e);
   };
@@ -58,6 +58,8 @@ while True:
         handleFilename,
         visualization,
         changeVisualization,
+        linterMessage,
+        setLinterMessage,
       }}
     >
       {children}

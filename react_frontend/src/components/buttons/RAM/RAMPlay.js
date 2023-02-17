@@ -4,7 +4,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 const RAMPlay = (props) => {
-  const { editorCode } = useContext(props.context);
+  const { editorCode, setLinterMessage } = useContext(props.context);
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +45,8 @@ const RAMPlay = (props) => {
         setLoading(false);
       })
       .catch((response) => {
-        console.error(response);
+        let linterMessage = JSON.stringify(response.data.message).split("\\n");
+        setLinterMessage(linterMessage);
         setLoading(false);
       });
   };

@@ -2,7 +2,6 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import RAMExerciseControl from "../../common/RAM/RAMExerciseControl";
 import AceEditorRobot from "../../exercises/AceEditorRobot";
-import VisualizationComponents from "../../common/VisualizationComponents";
 
 import PropTypes from "prop-types";
 
@@ -24,13 +23,9 @@ function FollowLineExerciseView(props) {
         }}
       >
         <AceEditorRobot context={props.context} />
-        {/* <RAMCircuitSelector context={props.context} /> */}
-        <VisualizationComponents>
-          <Visualization context={props.context}></Visualization>
-        </VisualizationComponents>
+        <Visualization context={props.context}></Visualization>
       </Box>
-
-      <LinterModal></LinterModal>
+      <LinterModal context={props.context}></LinterModal>
     </Box>
   );
 }
