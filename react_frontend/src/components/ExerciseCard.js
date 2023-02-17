@@ -41,8 +41,7 @@ const ExerciseCard = (props) => {
   const teaser = configuration.academy.exercises.teaser;
 
   const navigateToExercise = () => {
-    const url = exerciseURL.interpolate(props);
-    window.location.href = url;
+    window.location.href = exerciseURL.interpolate(props);
   };
   const tagsList = JSON.parse(props.tags).tags.split(",");
   return (
@@ -67,8 +66,7 @@ const ExerciseCardV2 = (props) => {
   const teaser = configuration.academy.exercises.teaser;
 
   const navigateToExercise = () => {
-    const url = exerciseURL.interpolate(props);
-    window.location.href = url;
+    window.location.href = exerciseURL.interpolate(props);
   };
   const tagsList = JSON.parse(props.tags).tags.split(",");
 

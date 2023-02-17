@@ -1,7 +1,15 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { InputBase } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import {
+  Box,
+  Checkbox,
+  IconButton,
+  InputBase,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import HomepageContext from "../contexts/HomepageContext";
 
 const Search = styled("div")(({ theme }) => ({
@@ -44,6 +52,66 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const FilterMenu = () => {
+  const { appendFilterItem } = React.useContext(HomepageContext);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleFilterList = (e) => {
+    const item = e.target.name;
+    appendFilterItem(item);
+  };
+
+  return (
+    <>
+      <IconButton
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+      >
+        <FilterListIcon />
+      </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleFilterList}>
+          <Checkbox defaultChecked disabled size="small" name={"name"} /> Name
+        </MenuItem>
+        <MenuItem>
+          <Checkbox
+            defaultChecked
+            size="small"
+            onClick={handleFilterList}
+            name={"tags"}
+          />
+          tags
+        </MenuItem>
+        <MenuItem>
+          <Checkbox
+            size="small"
+            onClick={handleFilterList}
+            name={"description"}
+          />{" "}
+          description
+        </MenuItem>
+        <MenuItem>
+          <Checkbox size="small" onClick={handleFilterList} name={"status"} />{" "}
+          Status
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};
 const SearchBar = () => {
   const { setSearchBarText } = React.useContext(HomepageContext);
   let inputHandler = (e) => {
@@ -52,7 +120,13 @@ const SearchBar = () => {
   };
 
   return (
-    <div sx={{ display: "flex", maxWidth: 1200 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        maxHeight: 40,
+      }}
+    >
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
@@ -62,8 +136,9 @@ const SearchBar = () => {
           onChange={inputHandler}
           inputProps={{ "aria-label": "search" }}
         />
+        <FilterMenu />
       </Search>
-    </div>
+    </Box>
   );
 };
 

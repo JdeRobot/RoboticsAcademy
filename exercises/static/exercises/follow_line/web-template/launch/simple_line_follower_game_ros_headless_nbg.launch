@@ -2,7 +2,7 @@
 <launch>
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="prototype_f1_circuit_game_headless_nbg.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="world_name" value="prototype_f1_circuit_headless_nbg.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="false"/>
@@ -10,4 +10,6 @@
     <arg name="debug" value="false"/>
     <arg name="verbose" default="true"/>
   </include>  
+  <!-- Spawn a robot into Gazebo -->
+  <node name="spawn_f1_guest_sdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find CustomRobots)/f1/f1_guest/model.sdf -sdf -x 67 -y -21.2 -z 0.004 -R 0 -P 0 -Y -0.56 -model f1_guest"/>
 </launch>

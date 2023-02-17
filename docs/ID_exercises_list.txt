@@ -1,10 +1,11 @@
-RoboticsAcademy exercises's ID: 14/03/2022
+RoboticsAcademy exercises's ID: 24/01/2023
 
 2d_visual_odometry
 3d_reconstruction
 amazon_warehouse 
 assets 
 autoparking
+autoparking_v2
 bump_and_go
 car_junction
 chrono 
