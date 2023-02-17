@@ -52,6 +52,8 @@ while True:
     <NewManagerExerciseContext.Provider
       value={{
         editorCodeChange,
+        filename,
+        setFileName,
         editorCode,
         loadFileButton,
         saveFileButton,
