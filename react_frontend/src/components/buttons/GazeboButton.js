@@ -4,7 +4,9 @@ import * as React from "react";
 import PropTypes from "prop-types";
 
 const GazeboButton = (props) => {
-  const { changeVisualization } = React.useContext(props.context);
+  const { changeVisualization, visualization } = React.useContext(
+    props.context
+  );
   return (
     <Button
       id={"gazebo_button"}
@@ -15,7 +17,10 @@ const GazeboButton = (props) => {
       sx={{ m: 1 }}
       title={"Activate the simulation Screen"}
       onClick={() => {
-        changeVisualization("gazebo");
+        changeVisualization({
+          ...visualization,
+          gazebo: !visualization.gazebo,
+        });
       }}
       startIcon={<VrpanoOutlinedIcon />}
     >

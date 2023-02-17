@@ -34,6 +34,7 @@ export default function AceEditorRobot(props) {
         p: 2,
         flexGrow: 1,
         width: "100%",
+
         flexDirection: "column",
         border: "2px solid",
         padding: "0px",
@@ -72,6 +73,7 @@ export default function AceEditorRobot(props) {
             theme="dracula"
             name="code"
             width={"100%"}
+            height={"700px"}
             onChange={editorCodeChange}
             ref={editorRef}
             fontSize={fontSize}

@@ -11,8 +11,8 @@ function GazeboViewer() {
       <iframe
         id={"iframe"}
         style={{
-          width: "50vw",
-          height: "50vh",
+          width: "500px",
+          height: "250px",
         }}
         src={"http://127.0.0.1:6080/vnc.html?resize=remote&autoconnect=true"}
       />

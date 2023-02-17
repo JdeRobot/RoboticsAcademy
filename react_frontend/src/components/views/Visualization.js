@@ -7,18 +7,14 @@ import PropTypes from "prop-types";
 
 export const Visualization = (props) => {
   const { visualization } = useContext(props.context);
-  console.log(visualization);
 
-  if (visualization === "camera") {
-    return <RAMImgCanvas context={props.context} />;
-  }
-  if (visualization === "gazebo") {
-    return <GazeboViewer></GazeboViewer>;
-  }
-  if (visualization === "console") {
-    return <VncConsoleViewer></VncConsoleViewer>;
-  }
-  return "";
+  return (
+    <>
+      {visualization.specific ? <RAMImgCanvas context={props.context} /> : ""}
+      {visualization.gazebo ? <GazeboViewer></GazeboViewer> : ""}
+      {visualization.console ? <VncConsoleViewer></VncConsoleViewer> : ""}
+    </>
+  );
 };
 
 Visualization.propTypes = {

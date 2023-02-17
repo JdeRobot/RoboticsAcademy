@@ -10,7 +10,11 @@ export function ExerciseProvider({ children }) {
   const ramPort = 7163;
   CommsManager(`ws://${ramHost}:${ramPort}`);
 
-  const [visualization, setVisualization] = useState("camera");
+  const [visualization, setVisualization] = useState({
+    specific: true,
+    gazebo: false,
+    console: false,
+  });
   const [filename, setFileName] = useState("filename");
   const [editorCode, setEditorCode] = useState(`from GUI import GUI
 from HAL import HAL

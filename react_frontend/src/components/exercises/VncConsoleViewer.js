@@ -11,8 +11,8 @@ function VncConsoleViewer() {
       <iframe
         id={"console-vnc"}
         style={{
-          width: "40vw",
-          height: "50vh",
+          width: "500px",
+          height: "250px",
         }}
         src={"http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true"}
       />
