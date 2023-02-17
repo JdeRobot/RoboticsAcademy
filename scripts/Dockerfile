@@ -37,6 +37,18 @@ RUN apt update && \
 # FIXME: disable since not building rotorS (see issue #1840)
 # RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.h /catkin_ws/src/CrazyS/rotors_gazebo_plugins/src/ ; cp /catkin_ws/build/rotors_gazebo_plugins/libmav_msgs.so /catkin_ws/devel/lib/  
 
+#ROScontrol and LIDAR
+RUN apt update && \
+    apt install -y \
+        ros-noetic-gazebo-ros-control \
+        ros-noetic-controller-manager \
+        ros-noetic-ros-controllers \
+        ros-noetic-velodyne-pointcloud
+
+#Catvehicle
+RUN cp -r /opt/jderobot/CustomRobots/SelfDrivingModels /catkin_ws/src/SelfDrivingModels
+RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build catvehicle'
+
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b new-architecture
 # RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises

@@ -5,11 +5,20 @@ const HomepageContext = createContext();
 
 export function HomepageProvider({ children }) {
   const [inputText, setInputText] = useState("");
+  const [filterItemsList, setFilterItemsList] = useState(["name", "tags"]);
 
   const getSearchBarText = () => inputText;
 
   const setSearchBarText = (text) => {
     setInputText(text);
+  };
+  const getFilterItemsList = () => filterItemsList;
+  const appendFilterItem = (item) => {
+    setFilterItemsList(
+      filterItemsList.includes(item)
+        ? filterItemsList.filter((i) => i !== item)
+        : [...filterItemsList, item]
+    );
   };
 
   return (
@@ -17,6 +26,8 @@ export function HomepageProvider({ children }) {
       value={{
         getSearchBarText,
         setSearchBarText,
+        appendFilterItem,
+        getFilterItemsList,
       }}
     >
       {children}
