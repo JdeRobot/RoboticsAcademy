@@ -46,11 +46,11 @@ fi
 if $force_build || [[ "$(docker images -q jderobot/robotics-applications:base 2> /dev/null)" == "" ]]; then
   echo "BUILDING Jderobot BASE IMAGE ====================="
   echo
-  # docker build -f Dockerfile.base -t jderobot/base:3.2 .
-  make build-base
+  docker build -f Dockerfile.base -t jderobot/robotics-applications:base .
+  # make build-base
 fi
 
 echo "BUILDING RoboticsAcademy RADI IMAGE ====================="
 echo
-# docker build --no-cache=true -t jderobot/robotics-academy:$image_tag .
-make build VERSION=$image_tag
+docker build --no-cache=true -t jderobot/robotics-academy:$image_tag .
+# make build VERSION=$image_tag
