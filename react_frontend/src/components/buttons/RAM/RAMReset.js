@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import RestartAltOutlinedIcon from "@mui/icons-material/RestartAltOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
+import StopIcon from "@mui/icons-material/Stop";
 
 const RAMReset = () => {
   const [disabled, setDisabled] = useState(true);
@@ -39,17 +39,17 @@ const RAMReset = () => {
       onClick={() => {
         setLoading(true);
         window.RoboticsExerciseComponents.commsManager
-          .reset()
+          .stop()
           .then(() => {
             setLoading(false);
           })
           .catch((response) => console.log(response));
       }}
-      startIcon={<RestartAltOutlinedIcon />}
+      startIcon={<StopIcon />}
       sx={{ m: 0.5 }}
       variant={"outlined"}
     >
-      Reset
+      Stop
     </LoadingButton>
   );
 };
