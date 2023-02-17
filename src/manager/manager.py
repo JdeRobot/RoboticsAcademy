@@ -5,7 +5,7 @@ import time
 import traceback
 from queue import Queue
 from uuid import uuid4
-from src.manager.vnc.docker_thread import DockerThread
+
 
 from transitions import Machine
 
@@ -15,9 +15,7 @@ from src.comms.consumer_message import ManagerConsumerMessageException
 from src.libs.process_utils import get_class, get_class_from_file
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
-from src.manager.vnc.console_view import ConsoleView
-from src.manager.vnc.gzb_view import GzbView
-from src.manager.lint.linter import Lint
+
 
 
 class Manager:
@@ -59,7 +57,6 @@ class Manager:
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
         self.application = None
-        self.linter = None
         
 
     def state_change(self, event):
@@ -75,7 +72,6 @@ class Manager:
     def on_stop(self, event):
         self.application.stop()
        
-
 
     def on_launch(self, event):
         """
@@ -93,7 +89,6 @@ class Manager:
         # generate exercise_folder environment variable
         self.exercise_id = configuration['exercise_id']
         os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FILES')}/{self.exercise_id}"
-        self.linter = Lint(self.exercise_id)
 
         # Check if application and launchers configuration is missing
         # TODO: Maybe encapsulate configuration as a data class with validation?
@@ -130,9 +125,7 @@ class Manager:
         
     def on_terminate(self, event):
             try:
-                cmd = "/opt/ros/noetic/bin/rosservice call gazebo/reset_world"
-                rosservice_thread = DockerThread(cmd)
-                rosservice_thread.call()
+                self.application.terminate()
                 self.__code_loaded = False
                 self.launcher.terminate()
             except Exception as e:
@@ -143,7 +136,8 @@ class Manager:
         LogManager.logger.info("Connect state entered")
 
     def on_run(self, event):
-        self.application.run()
+        if self.code_loaded:
+            self.application.run()
      
     def on_enter_ready(self, event):
         configuration = event.kwargs.get('data', {})
@@ -151,18 +145,11 @@ class Manager:
 
     def load_code(self, event):
         self.application.pause()
-        
+        self.code_loaded = False
         LogManager.logger.info("Internal transition load_code executed")
         message_data = event.kwargs.get('data', {})
-        errors = self.linter.evaluate_code(message_data['code'])
-        if errors == "":
-            self.application.load_code(message_data['code'])
-            self.__code_loaded = True
-            self.consumer.send_message({'linter': 'Code loaded successfully'}, command="linter")
-        else:
-            self.consumer.send_message({'linter': errors}, command="linter")
-            raise Exception
-        
+        self.application.load_code(message_data['code'])
+        self.code_loaded = True
         
     def code_loaded(self, event):
         return self.__code_loaded

@@ -11,6 +11,7 @@ from src.libs.applications.compatibility.client import Client
 from src.libs.process_utils import stop_process_and_children
 from src.ram_logging.log_manager import LogManager
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
+from src.manager.lint.linter import Lint
 
 
 class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
@@ -19,7 +20,7 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
 
         home_dir = os.path.expanduser('~')
         self.running = False
-
+        self.linter = Lint()
         # TODO: review hardcoded values
         process_ready, self.exercise_server = self._run_exercise_server(f"python {exercise_command}",
                                                                         f'{home_dir}/ws_code.log',
@@ -105,7 +106,11 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         return self.running
 
     def load_code(self, code: str):
-        self.exercise_connection.send(f"#code {code}")
+        errors = self.linter.evaluate_code(code)
+        if errors == "":
+            self.exercise_connection.send(f"#code {code}")
+        else:
+            raise Exception(errors)
 
     def terminate(self):
         self.running = False

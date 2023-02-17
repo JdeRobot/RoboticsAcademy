@@ -1,5 +1,5 @@
 from src.manager.launcher.launcher_interface import ILauncher, LauncherException
-from src.manager.vnc.docker_thread import DockerThread
+from src.manager.docker_thread.docker_thread import DockerThread
 
 
 class LauncherGazeboView(ILauncher):

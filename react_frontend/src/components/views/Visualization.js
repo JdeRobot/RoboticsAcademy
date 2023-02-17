@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 
 export const Visualization = (props) => {
   const { visualization } = useContext(props.context);
-  console.log(visualization);
 
   if (visualization === "camera") {
     return <RAMImgCanvas context={props.context} />;
