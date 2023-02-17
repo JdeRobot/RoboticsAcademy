@@ -10,7 +10,7 @@ import GazeboButton from "../../buttons/GazeboButton";
 import ConsoleButton from "../../buttons/ConsoleButton";
 import RAMPlay from "../../buttons/RAM/RAMPlay";
 import RAMPause from "../../buttons/RAM/RAMPause";
-import RAMReset from "../../buttons/RAM/RAMReset";
+import RAMStop from "../../buttons/RAM/RAMStop";
 import CameraButton from "../../buttons/RAMVisualizatorButton";
 
 function RAMExerciseControl(props) {
@@ -33,7 +33,7 @@ function RAMExerciseControl(props) {
         <Box id={"robot-control"}>
           <RAMPlay context={props.context}></RAMPlay>
           <RAMPause></RAMPause>
-          <RAMReset></RAMReset>
+          <RAMStop></RAMStop>
         </Box>
         <Box id={"Sim-console-control"}>
           <CameraButton context={props.context}></CameraButton>

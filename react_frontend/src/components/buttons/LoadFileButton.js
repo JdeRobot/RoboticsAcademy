@@ -20,5 +20,5 @@ export const LoadFileButton = (props) => {
 };
 
 LoadFileButton.propTypes = {
-  context: PropTypes.node,
+  context: PropTypes.any,
 };

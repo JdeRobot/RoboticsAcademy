@@ -9,7 +9,6 @@ const RAMReset = () => {
   useEffect(() => {
     const callback = (message) => {
       if (
-        (message.data.state === "ready") |
         (message.data.state === "running") |
         (message.data.state === "paused")
       ) {
