@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
+import React from "react";
 
 const ViewContext = createContext();
 

@@ -5,7 +5,7 @@ from .models import Exercise
 import ast
 import json
 
-# Create your views here.
+#TODO: Too many hardcoded strings, review
 def index(request):
     exercises = Exercise.objects.all()
     context = {"exercises": exercises}
@@ -14,10 +14,7 @@ def index(request):
 
 def load_exercise(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
-    assets = json.loads(exercise.assets)
-    context = {"exercise_base": "exercise_base_2_RA.html", "exercise_id": exercise.exercise_id, "indexs": ast.literal_eval(assets.get("indexs", '[]')),
-               "statics": ast.literal_eval(assets.get("statics", '[]'))}
-    return render(request, 'exercises/' + exercise_id + '/exercise.html', context)
+    return render(request, 'exercises/' + exercise_id + '/exercise.html', exercise.context)
 
 
 def request_code(request, exercise_id):

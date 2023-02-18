@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/follow_road/web-template/follow_road.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/follow_road/web-template/follow_road.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>

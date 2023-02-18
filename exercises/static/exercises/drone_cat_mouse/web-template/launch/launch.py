@@ -73,7 +73,7 @@ class Launch():
     def start(self):
         ######## LAUNCH GAZEBO ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
                 "--wait", 
                 "--log"
                 ]
@@ -91,7 +91,7 @@ class Launch():
 
         ######## LAUNCH PX4_CAT (INSTANCE 0) ######## 
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", 
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", 
                 "--log"
                 ]
 
@@ -108,7 +108,7 @@ class Launch():
 
         ######## LAUNCH MAVROS_CAT ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch", 
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch", 
                 "--log"
                 ]
 
@@ -124,7 +124,7 @@ class Launch():
 
         ######## LAUNCH PX4_MOUSE  (INSTANCE 1) ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", 
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", 
                 "--log"
                 ]
 
@@ -141,7 +141,7 @@ class Launch():
 
         ######## LAUNCH MAVROS_MOUSE ########
         args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", 
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", 
                 "--log"
                 ]
 

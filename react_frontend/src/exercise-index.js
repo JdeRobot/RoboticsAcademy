@@ -5,6 +5,7 @@ import Exercise from './components/Exercise';
 import {createRoot} from 'react-dom/client';
 import './libs/tools.js';
 import {flushSync} from 'react-dom';
+import CommsManager from './libs/comms_manager';
 
 const container = document.getElementById('exercise');
 const root = createRoot(container);
@@ -55,8 +56,13 @@ window.RoboticsExerciseComponents = (function() {
     }
   }
 
+  const ramHost = window.location.hostname;
+  const ramPort = 7163;
+  const ramManager = CommsManager(`ws://${ramHost}:${ramPort}`);
+
   return {
-    render: render
+    render: render,
+    commsManager: ramManager
   }
 })();
 
