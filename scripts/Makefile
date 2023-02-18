@@ -52,7 +52,7 @@ release: build publish  ## Build and publish the `{version}` and `latest` tagged
 publish: --publish-version --publish-latest  ## Publish the `{version}` and `latest` tagged containers to dockerhub
 
 --publish-version: tag-version
-	@docker push $(DOCKER_USERNAME)/$(APP_NAME):$(VERSION)
+	@docker push $(DOCKER_USERNAME)/$(APP_NAME):$(RADI_TAG)
 
 --publish-latest: tag-latest
 	@docker push $(DOCKER_USERNAME)/$(APP_NAME):latest
@@ -62,13 +62,13 @@ publish: --publish-version --publish-latest  ## Publish the `{version}` and `lat
 tag: --tag-version --tag-latest  ## Generate container tags for the `{version}` ans `latest` tags
 
 --tag-version: version
-	@docker tag jderobot/robotics-academy:$(BUILD_TAG) $(DOCKER_USERNAME)/$(APP_NAME):$(VERSION)
+	@docker tag $(DOCKER_USERNAME)/$(APP_NAME):$(BUILD_TAG) $(DOCKER_USERNAME)/$(APP_NAME):$(RADI_TAG)
 
 --tag-latest:
-	@docker tag jderobot/robotics-academy:$(BUILD_TAG) $(DOCKER_USERNAME)/$(APP_NAME):latest
+	@docker tag $(DOCKER_USERNAME)/$(APP_NAME):$(BUILD_TAG) $(DOCKER_USERNAME)/$(APP_NAME):latest
 
 
 # Version
 version:  ## Output the current version
-	@if [ -z "${VERSION}" ] ; then echo "VERSION must be set, try 'make version VERSION=tag'" ; false ; fi
-	@echo Using VERSION=$(VERSION)
+	@if [ -z "${RADI_TAG}" ] ; then echo "RADI_TAG must be set, try 'make version RADI_TAG=version'" ; false ; fi
+	@echo Using RADI_TAG=$(RADI_TAG)
