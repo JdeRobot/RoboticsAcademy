@@ -15,22 +15,18 @@ export default function ImgCanvas(props) {
       if (update.image) {
         const image = JSON.parse(update.image);
         setImage(`data:image/png;base64,${image.image}`);
-      } else {
-        setImage(
-          "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"
-        );
       }
     };
 
-    RoboticsExerciseComponents.commsManager.subscribe(
-      [RoboticsExerciseComponents.commsManager.events.UPDATE],
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
     );
 
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      RoboticsExerciseComponents.commsManager.unsubscribe(
-        [RoboticsExerciseComponents.commsManager.events.UPDATE],
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
         callback
       );
     };
