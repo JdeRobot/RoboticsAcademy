@@ -55,7 +55,7 @@ const RAMPlay = (props) => {
     window.RoboticsExerciseComponents.commsManager
       .run()
       .then(() => {
-        console.log("running test");
+        console.log("running");
       })
       .catch((response) => console.error(response));
   };

@@ -10,7 +10,6 @@ const CommsManager = (address) => {
     RESPONSES: ["ack", "error"],
     UPDATE: "update",
     STATE_CHANGED: "state-changed",
-    LINTER: "linter",
   };
 
   //region Observer pattern methods
@@ -143,6 +142,7 @@ const CommsManager = (address) => {
     resume: () => send("resume"),
     reset: () => send("reset"),
     terminate: () => send("terminate"),
+    disconnect: () => send("disconnect"),
   };
 
   return {

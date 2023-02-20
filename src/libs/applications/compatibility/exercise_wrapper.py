@@ -6,6 +6,7 @@ import sys
 import threading
 import time
 import rosservice
+from threading import Thread
 
 from src.libs.applications.compatibility.client import Client
 from src.libs.process_utils import stop_process_and_children
@@ -48,7 +49,7 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
             self.gui_server.kill()
             raise RuntimeError(f"Exercise GUI {gui_command} could not be run")
 
-        # test
+        self.running = True
 
     def _run_exercise_server(self, cmd, log_file, load_string, timeout: int = 5):
         process = subprocess.Popen(f"{cmd}", shell=True, stdout=sys.stdout, stderr=subprocess.STDOUT, bufsize=1024,
@@ -90,11 +91,17 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         self.exercise_connection.send("#ack")
 
     def run(self):
+        def send_freq():
+
+            while self.is_alive:
+                self.exercise_connection.send(
+                    """#freq{"brain": 20, "gui": 10, "rtf": 100}""")
+                time.sleep(1)
+
         rosservice.call_service("/gazebo/unpause_physics", [])
-        while True:
-            self.exercise_connection.send(
-                """#freq{"brain": 20, "gui": 10, "rtf": 100}""")
-            time.sleep(1)
+        daemon = Thread(target=send_freq, daemon=False,
+                        name='Monitor frequencies')
+        daemon.start()
 
     def stop(self):
         rosservice.call_service('/gazebo/pause_physics', [])

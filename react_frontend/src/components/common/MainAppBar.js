@@ -38,7 +38,7 @@ function MainAppBar(props) {
   });
 
   useUnload(() => {
-    window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
+    window.RoboticsExerciseComponents.commsManager.disconnect().then(() => {
       console.log("terminated");
     });
   });
