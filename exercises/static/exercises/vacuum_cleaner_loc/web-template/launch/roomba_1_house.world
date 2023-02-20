@@ -1,7 +1,13 @@
 <?xml version="1.0" ?>
 <sdf version='1.4'>
 	<world name='Vacuum Cleaner'>
-        <gui fullscreen=1></gui>
+		<gui fullscreen='1'>
+			<camera name='user_camera'>
+				<pose frame=''>-3.83 1.40 8.37 0.00 1.16 -0.01</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+        </gui>
           <include>
 	        <uri>model://roombaROS</uri>
             <pose>5.04 3.80 0 0 0 -1.57</pose>
