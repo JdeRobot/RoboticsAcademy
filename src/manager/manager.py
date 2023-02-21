@@ -9,12 +9,15 @@ from uuid import uuid4
 
 from transitions import Machine
 
+from src.comms.new_consumer import ManagerConsumer
 from src.ram_logging.log_manager import LogManager
 
 from src.comms.consumer_message import ManagerConsumerMessageException
-from src.libs.process_utils import get_class, get_class_from_file
+from src.libs.process_utils import get_class_from_file
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
+
+# pylint: disable=unused-argument
 
 
 class Manager:
@@ -55,7 +58,6 @@ class Manager:
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
                                initial='idle', send_event=True, after_state_change=self.state_change)
-        from src.comms.new_consumer import ManagerConsumer
 
         self.queue = Queue()
 
@@ -126,8 +128,19 @@ class Manager:
                 "The application must be an instance of IRoboticsPythonApplication")
         params['update_callback'] = self.update
         self.application = application_class(**params)
-
+        time.sleep(1)
         self.application.pause()
+
+    def on_terminate(self, event):
+        """Terminates the application and the launcher \
+            and sets the variable __code_loaded to False"""
+        try:
+            self.application.terminate()
+            self.__code_loaded = False
+            self.launcher.terminate()
+        except Exception:
+            LogManager.logger.exception(f"Exception terminating instance")
+            print(traceback.format_exc())
 
     def on_disconnect(self, event):
         try:
