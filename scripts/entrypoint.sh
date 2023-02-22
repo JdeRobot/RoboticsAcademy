@@ -29,7 +29,6 @@ while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
 esac; shift; done
 if [[ "$1" == '--' ]]; then shift; fi
 
-( /usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf :0 & )
 
 ros_setup=" source /opt/ros/noetic/setup.bash ; source /catkin_ws/devel/setup.bash ; source /.env ; "
 if [ $webserver == true ]; then

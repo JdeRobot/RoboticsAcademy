@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 
 import { LinterModal } from "../../modals/LInterModal";
 import { Visualization } from "../Visualization";
+import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
 
 function FollowLineExerciseView(props) {
   return (
@@ -25,6 +26,7 @@ function FollowLineExerciseView(props) {
         <AceEditorRobot context={props.context} />
         <Visualization context={props.context}></Visualization>
       </Box>
+      <Frequencies></Frequencies>
       <LinterModal context={props.context}></LinterModal>
     </Box>
   );

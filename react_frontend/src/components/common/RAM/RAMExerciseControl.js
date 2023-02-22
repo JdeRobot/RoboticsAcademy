@@ -5,7 +5,6 @@ import RoboticsTheme from "../../RoboticsTheme";
 import PropTypes from "prop-types";
 import { SaveButton } from "../../buttons/SaveButton";
 import { LoadFileButton } from "../../buttons/LoadFileButton";
-import PlayStopButton from "../../buttons/PlayStopButton";
 import GazeboButton from "../../buttons/GazeboButton";
 import ConsoleButton from "../../buttons/ConsoleButton";
 import RAMPlay from "../../buttons/RAM/RAMPlay";
@@ -41,7 +40,6 @@ function RAMExerciseControl(props) {
           <ConsoleButton context={props.context} />
         </Box>
       </Toolbar>
-      <PlayStopButton context={props.context} />
     </RoboticsTheme>
   );
 }
