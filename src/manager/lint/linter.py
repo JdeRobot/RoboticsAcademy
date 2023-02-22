@@ -3,8 +3,8 @@ import subprocess
 
 
 class Lint: 
-    def __init__(self, exercise):
-        self.exercise = exercise
+   
+        
     def evaluate_code(self, code, warnings=False):
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
@@ -26,7 +26,8 @@ class Lint:
             f.close()
             
             open("user_code.py", "r")
-            command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 RoboticsAcademy/src/manager/lint/pylint_checker.py".format(self.exercise)
+            
+            command = "export PYTHONPATH=$PYTHONPATH:/$EXERCISE_FOLDER/web-template; python3 RoboticsAcademy/src/manager/lint/pylint_checker.py"
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"

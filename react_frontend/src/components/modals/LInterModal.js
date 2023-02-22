@@ -1,33 +1,9 @@
 import { Box, Modal, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
+import PropTypes from "prop-types";
 
-export const LinterModal = () => {
-  const [linterMessage, setLinterMessage] = useState([]);
-  const [openModal, setOpenModal] = useState(false);
-
-  useEffect(() => {
-    const callback = (message) => {
-      if (!message.data.linter) {
-        setLinterMessage(["Code loaded"]);
-      } else {
-        let linterMessage = JSON.stringify(message.data.linter).split("\\n");
-        console.log(linterMessage);
-        setLinterMessage(linterMessage);
-      }
-      setOpenModal(true);
-    };
-
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.LINTER],
-      callback
-    );
-    return () => {
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.LINTER],
-        callback
-      );
-    };
-  }, []);
+export const LinterModal = (props) => {
+  const { linterMessage, setLinterMessage } = useContext(props.context);
 
   const style = {
     position: "absolute",
@@ -43,9 +19,9 @@ export const LinterModal = () => {
 
   return (
     <Modal
-      open={openModal}
+      open={!!linterMessage.length}
       onClose={() => {
-        setOpenModal(false);
+        setLinterMessage([]);
       }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -57,4 +33,8 @@ export const LinterModal = () => {
       </Box>
     </Modal>
   );
+};
+
+LinterModal.propTypes = {
+  context: PropTypes.any,
 };

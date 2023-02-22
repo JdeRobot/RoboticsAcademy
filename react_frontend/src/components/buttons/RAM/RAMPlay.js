@@ -1,48 +1,81 @@
-import { Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import LoadingButton from "@mui/lab/LoadingButton";
 
-const RAMPlay = () => {
+const RAMPlay = (props) => {
+  const { editorCode, setLinterMessage } = useContext(props.context);
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (
+        message.data.state === "ready" ||
+        message.data.state === "paused" ||
+        message.data.state === "running"
+      ) {
         setDisabled(false);
       } else {
         setDisabled(true);
       }
     };
+
     window.RoboticsExerciseComponents.commsManager.subscribe(
       [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
       callback
     );
+
     return () => {
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.LINTER],
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
         callback
       );
     };
   }, []);
+
+  const loadCode = () => {
+    setLoading(true);
+    window.RoboticsExerciseComponents.commsManager
+      .send("load", {
+        code: editorCode,
+      })
+      .then(() => {
+        runCode();
+        setLoading(false);
+      })
+      .catch((response) => {
+        let linterMessage = JSON.stringify(response.data.message).split("\\n");
+        setLinterMessage(linterMessage);
+        setLoading(false);
+      });
+  };
+
+  const runCode = () => {
+    window.RoboticsExerciseComponents.commsManager
+      .run()
+      .then(() => {
+        console.log("running test");
+      })
+      .catch((response) => console.error(response));
+  };
+
   return (
-    <Button
+    <LoadingButton
       disabled={disabled}
-      id={"play"}
+      id={"loadIntoRobot"}
+      loading={loading}
       color={"secondary"}
       onClick={() => {
-        window.RoboticsExerciseComponents.commsManager
-          .run()
-          .then(() => {
-            console.log("running");
-          })
-          .catch((response) => console.log(response));
+        loadCode();
       }}
       startIcon={<PlayArrowIcon />}
       sx={{ m: 0.5 }}
       variant={"outlined"}
+      loadingPosition="start"
     >
-      Play
-    </Button>
+      play
+    </LoadingButton>
   );
 };
 RAMPlay.propTypes = {
@@ -50,42 +83,3 @@ RAMPlay.propTypes = {
 };
 
 export default RAMPlay;
-
-{
-  /* <button
-onClick={() => {
-  window.RoboticsExerciseComponents.commsManager
-    .pause()
-    .then(() => {
-      console.log("paused");
-    })
-    .catch((response) => console.log(response));
-}}
->
-pause
-</button>
-<button
-onClick={() => {
-  window.RoboticsExerciseComponents.commsManager
-    .run()
-    .then(() => {
-      console.log("running");
-    })
-    .catch((response) => console.log(response));
-}}
->
-play
-</button>
-<button
-onClick={() => {
-  window.RoboticsExerciseComponents.commsManager
-    .resume()
-    .then(() => {
-      console.log("running");
-    })
-    .catch((response) => console.log(response));
-}}
->
-resume
-</button> */
-}

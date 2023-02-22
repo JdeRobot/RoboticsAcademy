@@ -4,21 +4,28 @@ import PropTypes from "prop-types";
 import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
 
 const ConsoleButton = (props) => {
-  const { changeConsole } = React.useContext(props.context);
+  const { changeVisualization, visualization } = React.useContext(
+    props.context
+  );
   return (
     <Button
-            id={"console_button"}
-            size={"medium"}
-            variant="contained"
-            color={"secondary"}
-            component="span"
-            sx={{ m: 1 }}
-            title={"Open the console"}
-            onClick={changeConsole}
-            startIcon={<TerminalOutlinedIcon />}
-          >
-            View Console
-          </Button>
+      id={"console_button"}
+      size={"medium"}
+      variant="contained"
+      color={"secondary"}
+      component="span"
+      sx={{ m: 1 }}
+      title={"Open the console"}
+      onClick={() => {
+        changeVisualization({
+          ...visualization,
+          console: !visualization.console,
+        });
+      }}
+      startIcon={<TerminalOutlinedIcon />}
+    >
+      View Console
+    </Button>
   );
 };
 ConsoleButton.propTypes = {

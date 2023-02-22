@@ -19,6 +19,15 @@
       ],
       "parameters": [],
       "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
+    },
+    "1": {
+      "type": "module",
+      "module": "console",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108,
+      "height": 1080,
+      "width": 1920
     }
   }
 }

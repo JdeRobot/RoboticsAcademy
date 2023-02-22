@@ -1,19 +1,21 @@
 import * as React from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@mui/material";
+import { saveCode } from "../../helpers/utils";
 import PropTypes from "prop-types";
 
-const SaveButton = (props) => {
-  const { onClickSave } = React.useContext(props.context);
-
+export const SaveButton = (props) => {
+  const { editorCode, filename } = React.useContext(props.context);
   return (
     <Button
       id={"save"}
       variant="contained"
       color={"secondary"}
-      onClick={onClickSave}
       startIcon={<SaveIcon />}
       sx={{ m: 1 }}
+      onClick={() => {
+        saveCode(filename, editorCode);
+      }}
     >
       Save file
     </Button>
@@ -23,4 +25,3 @@ const SaveButton = (props) => {
 SaveButton.propTypes = {
   context: PropTypes.any,
 };
-export default SaveButton;

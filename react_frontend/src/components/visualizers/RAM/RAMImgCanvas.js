@@ -9,9 +9,6 @@ export default function ImgCanvas(props) {
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
-    setImage(
-      "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"
-    );
 
     const callback = (message) => {
       const update = message.data.update;
@@ -41,8 +38,6 @@ export default function ImgCanvas(props) {
   return (
     <Box
       sx={{
-        m: 3,
-        p: 2,
         display: "flex",
         flexDirection: "column",
         border: "2px solid",
