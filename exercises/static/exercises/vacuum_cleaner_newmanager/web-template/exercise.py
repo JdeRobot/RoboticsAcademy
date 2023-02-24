@@ -11,6 +11,7 @@ from datetime import datetime
 import re
 import json
 import importlib
+import os
 
 import rospy
 from std_srvs.srv import Empty
@@ -77,7 +78,8 @@ class Template:
             return "", ""
 
         else:
-            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+            sequential_code, iterative_code = self.seperate_seq_iter(
+                source_code)
             return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
@@ -94,7 +96,8 @@ class Template:
             return "", ""
 
         # Search for an instance of while True
-        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
+        infinite_loop = re.search(
+            r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -105,7 +108,8 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
+            iterative_code = re.sub(
+                r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
             # Add newlines to match line on bug report
             extra_lines = sequential_code.count('\n')
             while (extra_lines >= 0):
@@ -159,7 +163,8 @@ class Template:
             # Template specifics to run!
             finish_time = datetime.now()
             dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
 
             # Keep updating the iteration counter
             if (iterative_code == ""):
@@ -179,9 +184,12 @@ class Template:
 
     def generate_modules(self):
         # Define HAL module
-        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
+        hal_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL.motors = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("motors", None))
 
         # Add HAL functions
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
@@ -192,8 +200,10 @@ class Template:
         hal_module.HAL.getBumperData = self.hal.bumper.getBumperData
 
         # Define GUI module
-        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
-        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage
@@ -217,7 +227,8 @@ class Template:
             # Measure the current time and subtract from the previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
             previous_time = current_time
 
             # Get the time period
@@ -288,7 +299,8 @@ class Template:
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.thread = threading.Thread(target=self.process_code, args=[source_code])
+        self.thread = threading.Thread(
+            target=self.process_code, args=[source_code])
         self.thread.start()
         self.send_code_message()
         print("New Thread Started!")
@@ -314,7 +326,7 @@ class Template:
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
-            #self.send_frequency_message()
+            # self.send_frequency_message()
             return
 
         elif (message[:5] == "#ping"):
@@ -362,7 +374,7 @@ class Template:
         self.measure_thread.start()
 
         # Initialize the ping message
-        #self.send_frequency_message()
+        # self.send_frequency_message()
 
         print(client, 'connected')
 
@@ -375,11 +387,13 @@ class Template:
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
-        
+
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_code.log", "w")
+                f = open(f"{home_dir}/ws_code.log", "w")
                 f.write("websocket_code=ready")
                 f.close()
                 logged = True

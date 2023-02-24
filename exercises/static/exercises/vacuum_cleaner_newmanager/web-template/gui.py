@@ -6,7 +6,7 @@ import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
-
+import os
 from interfaces.pose3d import ListenerPose3d
 
 from map import Map
@@ -78,7 +78,7 @@ class GUI:
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if(message[:4] == "#ack"):
+        if (message[:4] == "#ack"):
             self.set_acknowledge(True)
 
     # Activate the server
@@ -87,11 +87,13 @@ class GUI:
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
-        
+
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui.log", "w")
+                f = open(f"{home_dir}/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
                 f.close()
                 logged = True
@@ -128,18 +130,19 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while(self.gui.client == None):
+        while (self.gui.client == None):
             pass
 
         previous_time = datetime.now()
-        while(True):
+        while (True):
             # Sleep for 2 seconds
             time.sleep(2)
 
             # Measure the current time and subtract from previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
             previous_time = current_time
 
             # Get the time period
@@ -154,15 +157,15 @@ class ThreadGUI:
 
     # The main thread of execution
     def run(self):
-        while(self.gui.client == None):
+        while (self.gui.client == None):
             pass
 
-        while(True):
+        while (True):
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
-            while(acknowledge_message == False):
+            while (acknowledge_message == False):
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
@@ -171,6 +174,7 @@ class ThreadGUI:
             self.iteration_counter = self.iteration_counter + 1
 
             dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.ideal_cycle):
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
+            if (ms < self.ideal_cycle):
                 time.sleep((self.ideal_cycle-ms) / 1000.0)

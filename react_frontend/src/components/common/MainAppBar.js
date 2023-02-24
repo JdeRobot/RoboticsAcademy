@@ -32,8 +32,10 @@ function MainAppBar(props) {
 
   useLoad(() => {
     window.RoboticsExerciseComponents.commsManager.connect().then(() => {
-      window.RoboticsExerciseComponents.commsManager.launch(config);
       console.log("connected");
+      window.RoboticsExerciseComponents.commsManager.launch(config).then(() => {
+        console.log("launched");
+      });
     });
   });
 
