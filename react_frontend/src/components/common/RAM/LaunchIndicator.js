@@ -8,8 +8,14 @@ export const LaunchIndicator = () => {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (
+        (message.data.state === "ready") |
+        (message.data.state === "paused") |
+        (message.data.state === "running")
+      ) {
         setConnected(true);
+      } else {
+        setConnected(false);
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(

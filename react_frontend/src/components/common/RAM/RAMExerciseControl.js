@@ -11,6 +11,7 @@ import RAMPlay from "../../buttons/RAM/RAMPlay";
 import RAMPause from "../../buttons/RAM/RAMPause";
 import RAMStop from "../../buttons/RAM/RAMStop";
 import CameraButton from "../../buttons/RAMVisualizatorButton";
+import CircuitSelector from "../../buttons/RAM/RAMExerciseConfiguration";
 
 function RAMExerciseControl(props) {
   return (
@@ -26,6 +27,7 @@ function RAMExerciseControl(props) {
         }}
       >
         <Box id={"editor-control"}>
+          <CircuitSelector></CircuitSelector>
           <LoadFileButton context={props.context} />
           <SaveButton context={props.context} />
         </Box>
