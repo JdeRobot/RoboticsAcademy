@@ -2,11 +2,12 @@
 
 import stat
 import rospy
-from os import lstat
+import os
 from subprocess import Popen, PIPE
 
 
-DRI_PATH = "/dev/dri/card0"
+# If DRI_NAME is not set by user, use card0
+DRI_PATH = os.path.join("/dev/dri", os.environ.get("DRI_NAME", "card0"))
 EXERCISE = "visual_lander"
 TIMEOUT = 30
 MAX_ATTEMPT = 2
@@ -15,7 +16,7 @@ MAX_ATTEMPT = 2
 # Check if acceleration can be enabled
 def check_device(device_path):
     try:
-        return stat.S_ISCHR(lstat(device_path)[stat.ST_MODE])
+        return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
     except:
         return False
 
