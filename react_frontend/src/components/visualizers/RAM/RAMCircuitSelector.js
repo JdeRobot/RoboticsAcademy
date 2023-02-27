@@ -1,11 +1,10 @@
 import React, { useContext, useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import PropTypes from "prop-types";
-import RAMCanvasBirdEye from "./RAMCanvasBirdEye";
 
 export default function CircuitSelector(props) {
   const { terminate, doLaunch } = useContext(props.context);
-  const [circuit, setCircuit] = useState("default");
+  const [setCircuit] = useState("default");
 
   const handleCircuitChange = (circuitPath) => {
     setCircuit(circuitPath);
@@ -49,7 +48,6 @@ export default function CircuitSelector(props) {
           <MenuItem value={"nbg"}>Nürburgring Line</MenuItem>
         </Select>
       </FormControl>
-      <RAMCanvasBirdEye circuit={circuit} />
     </>
   );
 }

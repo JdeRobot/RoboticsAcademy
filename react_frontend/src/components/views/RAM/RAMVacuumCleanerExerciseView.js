@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { LinterModal } from "../../modals/LInterModal";
 import { Visualization } from "../Visualization";
 import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
-import RAMImgCanvas from "../../visualizers/RAM/RAMImgCanvas";
+import SpecificVacuumCleaner from "../../visualizers/RAM/RAMSpecificVacuumCleaner";
 
 function VacuumCleanerExerciseView(props) {
   return (
@@ -27,7 +27,7 @@ function VacuumCleanerExerciseView(props) {
         <AceEditorRobot context={props.context} />
         <Visualization
           context={props.context}
-          specificVisualizator={<RAMImgCanvas context={props.context} />}
+          specificVisualizator={<SpecificVacuumCleaner />}
         ></Visualization>
       </Box>
       <Frequencies></Frequencies>
