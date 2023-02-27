@@ -5,8 +5,8 @@ import { ViewProvider } from "../../contexts/ViewContext";
 import MainAppBar from "../common/MainAppBar";
 import View from "../common/View";
 import NewManagerExerciseContext from "../../contexts/NewManagerExerciseContext";
-import RAMFollowLineExerciseView from "../views/RAM/RAMFollowLineExerciseView";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
+import VacuumCleanerExerciseView from "../views/RAM/RAMVacuumCleanerExerciseView";
 
 const VacuumCleanerReactRAM = () => {
   return (
@@ -17,7 +17,7 @@ const VacuumCleanerReactRAM = () => {
           <View
             url={THEORY_URL.FollowLine}
             exerciseId={
-              <RAMFollowLineExerciseView context={NewManagerExerciseContext} />
+              <VacuumCleanerExerciseView context={NewManagerExerciseContext} />
             }
           />
         </ExerciseProvider>

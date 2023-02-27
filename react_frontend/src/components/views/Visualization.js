@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import RAMImgCanvas from "../visualizers/RAM/RAMImgCanvas";
 import React from "react";
 import GazeboViewer from "../exercises/GazeboViewer";
 import VncConsoleViewer from "../exercises/VncConsoleViewer";
@@ -19,7 +18,7 @@ export const Visualization = (props) => {
         justifyContent: "space-around",
       }}
     >
-      {visualization.specific ? <RAMImgCanvas context={props.context} /> : ""}
+      {visualization.specific ? props.specificVisualizator : ""}
       {visualization.gazebo ? <GazeboViewer></GazeboViewer> : ""}
       {visualization.console ? <VncConsoleViewer></VncConsoleViewer> : ""}
     </Box>
@@ -28,4 +27,5 @@ export const Visualization = (props) => {
 
 Visualization.propTypes = {
   context: PropTypes.any,
+  specificVisualizator: PropTypes.any,
 };
