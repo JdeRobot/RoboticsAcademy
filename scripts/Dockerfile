@@ -50,7 +50,7 @@ RUN cp -r /opt/jderobot/CustomRobots/SelfDrivingModels /catkin_ws/src/SelfDrivin
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build catvehicle'
 
 # RoboticsAcademy
-RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b new-architecture
+RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 # RUN rsync -a --exclude 'ace-builds' /RoboticsAcademy/exercises/static/exercises/* /RoboticsAcademy/exercises
 
 # React
