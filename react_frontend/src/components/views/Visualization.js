@@ -11,11 +11,12 @@ export const Visualization = (props) => {
   return (
     <Box
       sx={{
+        m: 1,
         display: "flex",
+        flexDirection: "column",
         width: "100%",
         flexWrap: "wrap",
-        alignItems: "stretch",
-        justifyContent: "space-around",
+        alignItems: "center",
       }}
     >
       {visualization.specific ? props.specificVisualizator : ""}

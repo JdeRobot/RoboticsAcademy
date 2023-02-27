@@ -7,11 +7,13 @@ import "../../../../static/common/ace-builds/src-noconflict/mode-python";
 import "../../../../static/common/ace-builds/src-noconflict/theme-dracula";
 import "../../../../static/common/ace-builds/src-noconflict/snippets/python";
 import PropTypes from "prop-types";
+import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 
 export default function AceEditorRobot(props) {
   const [fontSize, setFontSize] = React.useState(14);
   const { filename, setFileName, editorCode, editorCodeChange, editorRef } =
     React.useContext(props.context);
+  const { height } = useWindowDimensions();
 
   const setFontSize_ = (augm) => {
     const ftSize = editorRef.current?.props.fontSize;
@@ -29,10 +31,8 @@ export default function AceEditorRobot(props) {
         p: 2,
         flexGrow: 1,
         width: "100%",
-
         flexDirection: "column",
         border: "2px solid",
-        padding: "0px",
       }}
       id="code-control"
     >
@@ -70,7 +70,8 @@ export default function AceEditorRobot(props) {
             theme="dracula"
             name="code"
             width={"100%"}
-            height={"700px"}
+            height={height * 0.8}
+            hei
             onChange={editorCodeChange}
             ref={editorRef}
             fontSize={fontSize}

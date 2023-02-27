@@ -49,11 +49,11 @@ export default function SpecificVacuumCleaner() {
       style={{
         backgroundImage:
           "url('/static/exercises/vacuum_cleaner_newmanager/resources/images/mapgrannyannie.png')",
-        margin: "20px",
+
         border: "2px solid #d3d3d3",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
-        width: "80%",
+        width: "100%",
         height: "80%",
       }}
     />

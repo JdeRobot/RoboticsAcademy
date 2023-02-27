@@ -17,11 +17,12 @@ function VacuumCleanerExerciseView(props) {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           justifyContent: "space-around",
           p: 1,
           m: 1,
           background: "linear-gradient(#EOECDE, #FFFFFF)",
+          height: "100%",
         }}
       >
         <AceEditorRobot context={props.context} />
