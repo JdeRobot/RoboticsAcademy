@@ -9,11 +9,15 @@ import { LinterModal } from "../../modals/LInterModal";
 import { Visualization } from "../Visualization";
 import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
 import RAMImgCanvas from "../../visualizers/RAM/RAMImgCanvas";
+import CircuitSelector from "../../buttons/RAM/RAMExerciseConfiguration";
 
 function FollowLineExerciseView(props) {
   return (
     <Box id="exercise-view">
-      <RAMExerciseControl context={props.context} />
+      <RAMExerciseControl
+        context={props.context}
+        specificConfiguration={<CircuitSelector></CircuitSelector>}
+      />
       <Box
         sx={{
           display: "flex",
