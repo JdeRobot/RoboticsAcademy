@@ -51,10 +51,10 @@ release: build publish  ## Build and publish the `{version}` and `latest` tagged
 # Docker publish
 publish: --publish-version --publish-latest  ## Publish the `{version}` and `latest` tagged containers to dockerhub
 
---publish-version: tag-version
+--publish-version: --tag-version
 	@docker push $(DOCKER_USERNAME)/$(APP_NAME):$(RADI_TAG)
 
---publish-latest: tag-latest
+--publish-latest: --tag-latest
 	@docker push $(DOCKER_USERNAME)/$(APP_NAME):latest
 
 
