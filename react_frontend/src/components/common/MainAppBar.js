@@ -32,17 +32,12 @@ function MainAppBar(props) {
 
   useLoad(() => {
     window.RoboticsExerciseComponents.commsManager.connect().then(() => {
-      console.log("connected");
-      window.RoboticsExerciseComponents.commsManager.launch(config).then(() => {
-        console.log("launched");
-      });
+      window.RoboticsExerciseComponents.commsManager.launch(config);
     });
   });
 
   useUnload(() => {
-    window.RoboticsExerciseComponents.commsManager.disconnect().then(() => {
-      console.log("terminated");
-    });
+    window.RoboticsExerciseComponents.commsManager.terminate();
   });
   return (
     <RoboticsTheme>
