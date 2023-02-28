@@ -1,8 +1,7 @@
-import { Box, Typography } from "@mui/material";
 import * as React from "react";
 import PropTypes from "prop-types";
 
-export default function ImgCanvas(props) {
+export default function ImgCanvas() {
   const [image, setImage] = React.useState(
     "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"
   );
@@ -32,21 +31,12 @@ export default function ImgCanvas(props) {
     };
   }, []);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        border: "2px solid",
-        alignItems: "center",
-      }}
-    >
-      <Typography>{props.heading}</Typography>
-      <img height={250} width={500} src={image} id="gui_canvas" />
-    </Box>
+    <>
+      <img height={"400px"} width={"100%"} src={image} id="gui_canvas" />
+    </>
   );
 }
 
 ImgCanvas.propTypes = {
   context: PropTypes.any,
-  heading: PropTypes.string,
 };

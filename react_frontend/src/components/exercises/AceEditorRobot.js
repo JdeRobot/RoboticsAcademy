@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import AceEditor from "react-ace";
 import "../../../../static/common/ace-builds/src-noconflict/ace.js";
 import "../../../../static/common/ace-builds/src-noconflict/ext-language_tools";
@@ -7,12 +7,13 @@ import "../../../../static/common/ace-builds/src-noconflict/mode-python";
 import "../../../../static/common/ace-builds/src-noconflict/theme-dracula";
 import "../../../../static/common/ace-builds/src-noconflict/snippets/python";
 import PropTypes from "prop-types";
-import useWindowDimensions from "../../hooks/useWindowDimensions.js";
-
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 export default function AceEditorRobot(props) {
   const [fontSize, setFontSize] = React.useState(14);
-  const { filename, setFileName, editorCode, editorCodeChange, editorRef } =
-    React.useContext(props.context);
+  const { editorCode, editorCodeChange } = React.useContext(props.context);
+
+  const editorRef = React.useRef();
+
   const { height } = useWindowDimensions();
 
   const setFontSize_ = (augm) => {
@@ -26,81 +27,47 @@ export default function AceEditorRobot(props) {
 
   return (
     <Box
+      id="code_container"
       sx={{
         m: 1,
-        p: 2,
-        flexGrow: 1,
         width: "100%",
         flexDirection: "column",
-        border: "2px solid",
       }}
-      id="code-control"
     >
-      <Box
-        sx={{
-          m: 1,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+      <AceEditor
+        border="2px solid"
+        mode="python"
+        theme="dracula"
+        name="code"
+        width={"100%"}
+        height={height * 0.9 + "px"}
+        onChange={editorCodeChange}
+        ref={editorRef}
+        fontSize={fontSize}
+        showPrintMargin={true}
+        showGutter={true}
+        highlightActiveLine={true}
+        value={editorCode}
+        setOptions={{
+          enableBasicAutocompletion: true,
+          enableLiveAutocompletion: true,
+          enableSnippets: true,
+          showLineNumbers: true,
+          tabSize: 2,
         }}
-      >
-        <Typography
-          align={"center"}
-          variant={"h5"}
-          sx={{ fontFamily: "Raleway" }}
-          color={"secondary"}
-        >
-          Editor
-        </Typography>
-        <TextField
-          size={"small"}
-          id="filename"
-          label="Filename"
-          color={"secondary"}
-          value={filename}
-          onChange={(e) => {
-            setFileName(e.target.value);
-          }}
-        />
-      </Box>
-      <Box id="code_container">
-        <div id={"editor"}>
-          <AceEditor
-            mode="python"
-            theme="dracula"
-            name="code"
-            width={"100%"}
-            height={height * 0.8}
-            hei
-            onChange={editorCodeChange}
-            ref={editorRef}
-            fontSize={fontSize}
-            showPrintMargin={true}
-            showGutter={true}
-            highlightActiveLine={true}
-            value={editorCode}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: true,
-              enableSnippets: true,
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-          />
-        </div>
-        <input
-          type="button"
-          id="aug_font"
-          onClick={() => setFontSize_(true)}
-          defaultValue={"+"}
-        />
-        <input
-          type="button"
-          id="red_font"
-          onClick={() => setFontSize_(false)}
-          defaultValue={"-"}
-        />
-      </Box>
+      />
+      <input
+        type="button"
+        id="aug_font"
+        onClick={() => setFontSize_(true)}
+        defaultValue={"+"}
+      />
+      <input
+        type="button"
+        id="red_font"
+        onClick={() => setFontSize_(false)}
+        defaultValue={"-"}
+      />
     </Box>
   );
 }

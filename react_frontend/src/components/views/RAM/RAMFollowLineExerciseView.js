@@ -17,7 +17,7 @@ function FollowLineExerciseView(props) {
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
+
           justifyContent: "space-around",
           p: 1,
           m: 1,
@@ -27,7 +27,7 @@ function FollowLineExerciseView(props) {
         <AceEditorRobot context={props.context} />
         <Visualization
           context={props.context}
-          specificVisualizator={<RAMImgCanvas context={props.context} />}
+          specificVisualizator={<RAMImgCanvas />}
         ></Visualization>
       </Box>
       <Frequencies></Frequencies>

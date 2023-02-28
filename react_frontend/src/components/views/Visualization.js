@@ -15,8 +15,8 @@ export const Visualization = (props) => {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        flexWrap: "wrap",
         alignItems: "center",
+        justifyContent: "flex-start",
       }}
     >
       {visualization.specific ? props.specificVisualizator : ""}

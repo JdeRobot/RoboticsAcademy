@@ -1,6 +1,6 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
-import { Box } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import RoboticsTheme from "../../RoboticsTheme";
 import PropTypes from "prop-types";
 import { SaveButton } from "../../buttons/SaveButton";
@@ -13,6 +13,8 @@ import RAMStop from "../../buttons/RAM/RAMStop";
 import CameraButton from "../../buttons/RAMVisualizatorButton";
 
 function RAMExerciseControl(props) {
+  const { filename, setFileName } = React.useContext(props.context);
+
   return (
     <RoboticsTheme>
       <Toolbar
@@ -28,6 +30,17 @@ function RAMExerciseControl(props) {
         <Box id={"editor-control"}>
           <LoadFileButton context={props.context} />
           <SaveButton context={props.context} />
+          <TextField
+            sx={{ m: "6px" }}
+            size={"small"}
+            id="filename"
+            label="Filename"
+            color={"secondary"}
+            value={filename}
+            onChange={(e) => {
+              setFileName(e.target.value);
+            }}
+          />
         </Box>
         <Box id={"robot-control"}>
           <RAMPlay context={props.context}></RAMPlay>
