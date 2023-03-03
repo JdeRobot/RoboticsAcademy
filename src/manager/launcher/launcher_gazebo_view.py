@@ -1,5 +1,6 @@
 from src.manager.launcher.launcher_interface import ILauncher
 from src.manager.docker_thread.docker_thread import DockerThread
+import time
 
 
 class LauncherGazeboView(ILauncher):
@@ -14,6 +15,7 @@ class LauncherGazeboView(ILauncher):
         xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {self.display}"
         xserver_thread = DockerThread(xserver_cmd)
         xserver_thread.start()
+        time.sleep(0.1)
         # Start VNC server without password, forever running in background
         x11vnc_cmd = f"x11vnc -display {self.display} -nopw -forever -xkb -bg -rfbport {self.internal_port}"
         x11vnc_thread = DockerThread(x11vnc_cmd)
@@ -26,7 +28,7 @@ class LauncherGazeboView(ILauncher):
 
         # Configure browser screen width and height for gzclient
         gzclient_config_cmds = f"echo [geometry] > ~/.gazebo/gui.ini; echo x=0 >> ~/.gazebo/gui.ini; echo y=0 >> ~/.gazebo/gui.ini; echo width={self.width} >> ~/.gazebo/gui.ini; echo height={self.height} >> ~/.gazebo/gui.ini;"
-
+        time.sleep(0.1)
         # Write display config and start gzclient
         gzclient_cmd = (
             f"export DISPLAY=:0;  {gzclient_config_cmds} gzclient --verbose")
