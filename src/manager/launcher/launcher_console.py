@@ -6,8 +6,6 @@ class LauncherConsole(ILauncher):
     display: str
     internal_port: str
     external_port: str
-    height: int
-    width: int
     running = False
 
     def run(self, callback):
@@ -25,7 +23,7 @@ class LauncherConsole(ILauncher):
         novnc_thread.start()
 
         # Write display config and start the console
-        console_cmd = f"export DISPLAY=:1;xterm -geometry {int(self.width)}x{int(self.height)} -fa 'Monospace' -fs 10 -bg black -fg white"
+        console_cmd = "export DISPLAY=:1;xterm -geometry 100x10+0+0 -fa 'Monospace' -fs 10 -bg black -fg white"
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()
