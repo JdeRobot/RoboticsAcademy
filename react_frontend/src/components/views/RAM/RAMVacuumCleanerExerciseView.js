@@ -8,20 +8,17 @@ import PropTypes from "prop-types";
 import { LinterModal } from "../../modals/LInterModal";
 import { Visualization } from "../Visualization";
 import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
-import RAMImgCanvas from "../../visualizers/RAM/RAMImgCanvas";
-import CircuitSelector from "../../buttons/RAM/RAMExerciseConfiguration";
+import SpecificVacuumCleaner from "../../visualizers/RAM/RAMSpecificVacuumCleaner";
 
-function FollowLineExerciseView(props) {
+function VacuumCleanerExerciseView(props) {
   return (
     <Box id="exercise-view">
-      <RAMExerciseControl
-        context={props.context}
-        specificConfiguration={<CircuitSelector></CircuitSelector>}
-      />
+      <RAMExerciseControl context={props.context} />
       <Box
         sx={{
           display: "flex",
-
+          alignItems: "strech",
+          height: "100%",
           justifyContent: "space-around",
           p: 1,
           m: 1,
@@ -31,7 +28,7 @@ function FollowLineExerciseView(props) {
         <AceEditorRobot context={props.context} />
         <Visualization
           context={props.context}
-          specificVisualizator={<RAMImgCanvas />}
+          specificVisualizator={<SpecificVacuumCleaner />}
         ></Visualization>
       </Box>
       <Frequencies></Frequencies>
@@ -39,8 +36,8 @@ function FollowLineExerciseView(props) {
     </Box>
   );
 }
-FollowLineExerciseView.propTypes = {
+VacuumCleanerExerciseView.propTypes = {
   context: PropTypes.any,
 };
 
-export default FollowLineExerciseView;
+export default VacuumCleanerExerciseView;

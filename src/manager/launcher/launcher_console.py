@@ -1,19 +1,19 @@
 from src.manager.launcher.launcher_interface import ILauncher
 from src.manager.docker_thread.docker_thread import DockerThread
+import time
 
 
 class LauncherConsole(ILauncher):
     display: str
     internal_port: str
     external_port: str
-    height: int
-    width: int
     running = False
 
     def run(self, callback):
         xserver_cmd = f"/usr/bin/Xorg -noreset +extension GLX +extension RANDR +extension RENDER -logfile ./xdummy.log -config ./xorg.conf {self.display}"
         xserver_thread = DockerThread(xserver_cmd)
         xserver_thread.start()
+        time.sleep(0.1)
         # Start VNC server without password, forever running in background
         x11vnc_cmd = f"x11vnc -display {self.display} -nopw -forever -xkb -bg -rfbport {self.internal_port}"
         x11vnc_thread = DockerThread(x11vnc_cmd)
@@ -25,7 +25,7 @@ class LauncherConsole(ILauncher):
         novnc_thread.start()
 
         # Write display config and start the console
-        console_cmd = f"export DISPLAY=:1;xterm -geometry {int(self.width)}x{int(self.height)} -fa 'Monospace' -fs 10 -bg black -fg white"
+        console_cmd = "export DISPLAY=:1;xterm -geometry 100x10+0+0 -fa 'Monospace' -fs 10 -bg black -fg white"
 
         console_thread = DockerThread(console_cmd)
         console_thread.start()

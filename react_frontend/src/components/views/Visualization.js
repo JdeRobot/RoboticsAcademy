@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import RAMImgCanvas from "../visualizers/RAM/RAMImgCanvas";
 import React from "react";
 import GazeboViewer from "../exercises/GazeboViewer";
 import VncConsoleViewer from "../exercises/VncConsoleViewer";
@@ -12,14 +11,15 @@ export const Visualization = (props) => {
   return (
     <Box
       sx={{
+        m: 1,
         display: "flex",
+        flexDirection: "column",
         width: "100%",
-        flexWrap: "wrap",
-        alignItems: "stretch",
-        justifyContent: "space-around",
+        alignItems: "center",
+        justifyContent: "flex-start",
       }}
     >
-      {visualization.specific ? <RAMImgCanvas context={props.context} /> : ""}
+      {visualization.specific ? props.specificVisualizator : ""}
       {visualization.gazebo ? <GazeboViewer></GazeboViewer> : ""}
       {visualization.console ? <VncConsoleViewer></VncConsoleViewer> : ""}
     </Box>
@@ -28,4 +28,5 @@ export const Visualization = (props) => {
 
 Visualization.propTypes = {
   context: PropTypes.any,
+  specificVisualizator: PropTypes.any,
 };
