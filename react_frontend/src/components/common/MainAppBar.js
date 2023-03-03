@@ -37,7 +37,7 @@ function MainAppBar(props) {
   });
 
   useUnload(() => {
-    window.RoboticsExerciseComponents.commsManager.terminate();
+    window.RoboticsExerciseComponents.commsManager.disconnect();
   });
   return (
     <RoboticsTheme>
