@@ -97,7 +97,6 @@ This is the preferred way for running the exercise once it is finished.
 
 - For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
 
-
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
