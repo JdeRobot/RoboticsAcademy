@@ -11,8 +11,8 @@ export function ExerciseProvider({ children }) {
   CommsManager(`ws://${ramHost}:${ramPort}`);
 
   const [visualization, setVisualization] = useState({
-    specific: true,
-    gazebo: false,
+    specific: false,
+    gazebo: true,
     console: false,
   });
   const [filename, setFileName] = useState("filename");

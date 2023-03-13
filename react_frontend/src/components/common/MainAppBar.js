@@ -57,21 +57,22 @@ function MainAppBar(props) {
             }}
           >
             <Image src="/static/common/img/logo.gif" fit={"cover"} width={50} />
-            <Box sx={{ display: "flex", gap: "10px", marginLeft: "10px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "10px",
+                marginLeft: "10px",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <ConnectionIndicator></ConnectionIndicator>
               <LaunchIndicator></LaunchIndicator>
+              {props.specificConfiguration}
             </Box>
           </Box>
           <Typography variant="h5">{props.exerciseName}</Typography>
           <ButtonGroup color={"loading"} variant={"contained"}>
-            <IconButton
-              component={"span"}
-              id={"open-theory"}
-              onClick={openTheory}
-              color={theoryMode ? "success" : "secondary"}
-            >
-              <SchoolOutlinedIcon />
-            </IconButton>
             <IconButton
               component={"span"}
               id={"open-exercise"}
@@ -79,6 +80,14 @@ function MainAppBar(props) {
               color={codeMode ? "success" : "secondary"}
             >
               <CodeOutlinedIcon />
+            </IconButton>
+            <IconButton
+              component={"span"}
+              id={"open-theory"}
+              onClick={openTheory}
+              color={theoryMode ? "success" : "secondary"}
+            >
+              <SchoolOutlinedIcon />
             </IconButton>
             <IconButton
               id={"open-forum"}
@@ -98,6 +107,7 @@ function MainAppBar(props) {
 MainAppBar.propTypes = {
   context: PropTypes.any,
   exerciseName: PropTypes.string,
+  specificConfiguration: PropTypes.any,
 };
 
 export default MainAppBar;

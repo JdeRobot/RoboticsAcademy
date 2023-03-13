@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import MenuItem from "@mui/material/MenuItem";
-import SettingsIcon from "@mui/icons-material/Settings";
+import LandscapeIcon from "@mui/icons-material/Landscape";
 
 import { FormControl, InputLabel, Select } from "@mui/material";
 
@@ -51,7 +51,7 @@ export default function CircuitSelector() {
     <>
       <FormControl>
         <InputLabel id={"circuit-selector-label"}>
-          <SettingsIcon></SettingsIcon>
+          <LandscapeIcon></LandscapeIcon>
         </InputLabel>
         <Select
           disabled={disabled}

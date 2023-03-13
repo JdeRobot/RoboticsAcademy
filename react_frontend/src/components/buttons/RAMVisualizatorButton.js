@@ -24,7 +24,7 @@ const CameraButton = (props) => {
       }}
       startIcon={<TerminalOutlinedIcon />}
     >
-      View Camera
+      GUI
     </Button>
   );
 };

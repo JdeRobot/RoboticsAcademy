@@ -24,7 +24,7 @@ const ConsoleButton = (props) => {
       }}
       startIcon={<TerminalOutlinedIcon />}
     >
-      View Console
+      Console
     </Button>
   );
 };
