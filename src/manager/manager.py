@@ -1,3 +1,5 @@
+from __future__ import annotations
+from transitions import Machine
 
 import sys
 import signal
@@ -7,8 +9,7 @@ import traceback
 from queue import Queue
 from uuid import uuid4
 
-from __future__ import annotations
-from transitions import Machine
+
 
 from src.manager.launcher.launcher_engine import LauncherEngine
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
