@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import * as React from "react";
 import PropTypes from "prop-types";
-import TerminalOutlinedIcon from "@mui/icons-material/TerminalOutlined";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 const CameraButton = (props) => {
   const { changeVisualization, visualization } = React.useContext(
@@ -45,7 +45,7 @@ const CameraButton = (props) => {
           specific: !visualization.specific,
         });
       }}
-      startIcon={<TerminalOutlinedIcon />}
+      startIcon={<PreviewIcon />}
     >
       GUI
     </Button>

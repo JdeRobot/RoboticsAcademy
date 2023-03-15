@@ -15,6 +15,7 @@ export function ExerciseProvider({ children }) {
     gazebo: true,
     console: false,
   });
+  const [enableGazebo, setEnableGazebo] = useState(false);
   const [filename, setFileName] = useState("filename");
   const [editorCode, setEditorCode] = useState(`from GUI import GUI
 from HAL import HAL
@@ -34,6 +35,10 @@ while True:
       setEditorCode(fr.result);
     };
     fr.readAsText(event.target.files[0]);
+  };
+
+  const handleEnableGazebo = () => {
+    setEnableGazebo(true);
   };
 
   const saveFileButton = () => {
@@ -62,6 +67,8 @@ while True:
         changeVisualization,
         linterMessage,
         setLinterMessage,
+        handleEnableGazebo,
+        enableGazebo,
       }}
     >
       {children}

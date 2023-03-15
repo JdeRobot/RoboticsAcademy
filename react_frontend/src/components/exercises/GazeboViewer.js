@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { Box } from "@mui/system";
 import { CircularProgress, Typography } from "@mui/material";
 
-function GazeboViewer() {
-  const [active, setActive] = React.useState(false);
+function GazeboViewer(props) {
+  const { enableGazebo, handleEnableGazebo } = React.useContext(props.context);
   React.useEffect(() => {
     const callback = (message) => {
       if (message.data.state === "ready") {
-        setActive(true);
+        handleEnableGazebo();
       }
     };
 
@@ -26,7 +26,7 @@ function GazeboViewer() {
   }, []);
   return (
     <>
-      {active ? (
+      {enableGazebo ? (
         <iframe
           id={"iframe"}
           style={{
