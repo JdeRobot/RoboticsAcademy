@@ -1,5 +1,8 @@
 from __future__ import annotations
+from transitions import Machine
 
+import sys
+import signal
 import os
 import time
 import traceback
@@ -7,15 +10,18 @@ from queue import Queue
 from uuid import uuid4
 
 
-from transitions import Machine
 
-from src.comms.new_consumer import ManagerConsumer
-from src.ram_logging.log_manager import LogManager
-
-from src.comms.consumer_message import ManagerConsumerMessageException
-from src.libs.process_utils import get_class_from_file
-from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.manager.launcher.launcher_engine import LauncherEngine
+from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
+from src.libs.process_utils import get_class_from_file
+from src.comms.consumer_message import ManagerConsumerMessageException
+from src.ram_logging.log_manager import LogManager
+from src.comms.new_consumer import ManagerConsumer
+
+
+
+
+
 
 # pylint: disable=unused-argument
 
@@ -65,6 +71,7 @@ class Manager:
         self.consumer = ManagerConsumer(host, port, self.queue)
         self.launcher = None
         self.application = None
+        self.running = True
 
     def state_change(self, event):
         LogManager.logger.info(f"State changed to {self.state}")
@@ -194,8 +201,17 @@ class Manager:
             f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
 
         self.consumer.start()
-        # TODO: change loop end condition
-        while True:
+        
+        def signal_handler(sign, frame):
+                print("\nprogram exiting gracefully")
+                self.running = False
+                self.application.terminate()
+                self.__code_loaded = False
+                self.launcher.terminate()
+
+        signal.signal(signal.SIGINT, signal_handler)
+
+        while self.running:
             message = None
             try:
                 if self.queue.empty():
