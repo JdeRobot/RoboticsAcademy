@@ -201,8 +201,8 @@ class Manager:
             f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
 
         self.consumer.start()
-        # TODO: change loop end condition
-        def signal_handler(signal, frame):
+        
+        def signal_handler(sign, frame):
                 print("\nprogram exiting gracefully")
                 self.running = False
                 self.application.terminate()
@@ -212,7 +212,6 @@ class Manager:
         signal.signal(signal.SIGINT, signal_handler)
 
         while self.running:
-        
             message = None
             try:
                 if self.queue.empty():
