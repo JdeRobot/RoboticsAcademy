@@ -2,5 +2,8 @@
 {% load react_component %}
 
 {% block react-content %}
-{% react_component components/templates/FollowLineReactRAM %} {% end_react_component %}
+{% react_component contexts/NewManagerExerciseContext %} 
+    {% react_component exercise/follow_line_newmanager/FollowLineReactRAM %} {% end_react_component %}
+{% end_react_component %}
+
 {% endblock %}

@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleTrackerPlugin = require("webpack-bundle-tracker");
+
 const path = require("path");
 const glob = require("glob");
 
@@ -14,6 +15,9 @@ const aliases = () => {
       "./src/components/contexts",
     ],
     exercise: [],
+    Contexts: path.resolve(__dirname, "src/contexts"),
+    Components: path.resolve(__dirname, "src/components"),
+    Helpers: path.resolve(__dirname, "src/helpers"),
   };
 
   exercises.map((exercise) => {
