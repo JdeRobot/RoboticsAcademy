@@ -7,17 +7,12 @@ import PropTypes from "prop-types";
 
 import { LinterModal } from "../../modals/LInterModal";
 import { Visualization } from "../Visualization";
-import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
 import RAMImgCanvas from "../../visualizers/RAM/RAMImgCanvas";
-import CircuitSelector from "../../buttons/RAM/RAMExerciseConfiguration";
 
 function FollowLineExerciseView(props) {
   return (
     <Box id="exercise-view">
-      <RAMExerciseControl
-        context={props.context}
-        specificConfiguration={<CircuitSelector></CircuitSelector>}
-      />
+      <RAMExerciseControl context={props.context} />
       <Box
         sx={{
           display: "flex",
@@ -34,7 +29,6 @@ function FollowLineExerciseView(props) {
           specificVisualizator={<RAMImgCanvas />}
         ></Visualization>
       </Box>
-      <Frequencies></Frequencies>
       <LinterModal context={props.context}></LinterModal>
     </Box>
   );

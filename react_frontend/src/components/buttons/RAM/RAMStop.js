@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import LoadingButton from "@mui/lab/LoadingButton";
-import StopIcon from "@mui/icons-material/Stop";
+import ReplayIcon from "@mui/icons-material/Replay";
 
 const RAMReset = () => {
   const [disabled, setDisabled] = useState(true);
@@ -34,7 +34,6 @@ const RAMReset = () => {
       id={"play"}
       loading={loading}
       color={"secondary"}
-      loadingPosition="start"
       onClick={() => {
         setLoading(true);
         window.RoboticsExerciseComponents.commsManager
@@ -44,11 +43,10 @@ const RAMReset = () => {
           })
           .catch((response) => console.log(response));
       }}
-      startIcon={<StopIcon />}
       sx={{ m: 0.5 }}
       variant={"outlined"}
     >
-      Stop
+      <ReplayIcon />
     </LoadingButton>
   );
 };

@@ -35,8 +35,8 @@ export const Frequencies = () => {
         color: "blue",
       }}
     >
-      <Typography title="BRAIN">{frequencies.brain}</Typography>
-      <Typography title="GUI">{frequencies.gui}</Typography>
+      <Typography title="BRAIN">{frequencies.brain.toFixed(0)}</Typography>
+      <Typography>/</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
     </Box>
   );
