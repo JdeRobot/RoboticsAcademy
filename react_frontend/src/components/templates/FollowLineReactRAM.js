@@ -7,17 +7,13 @@ import MainAppBar from "../common/MainAppBar";
 import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import RAMFollowLineExerciseView from "../views/RAM/RAMFollowLineExerciseView";
-import CircuitSelector from "../buttons/RAM/RAMExerciseConfiguration";
 
 function FollowLineReactRAM() {
   return (
     <Box>
       <ViewProvider>
         <ExerciseProvider>
-          <MainAppBar
-            exerciseName={" Follow Line RR"}
-            specificConfiguration={<CircuitSelector></CircuitSelector>}
-          />
+          <MainAppBar exerciseName={" Follow Line RR"} />
           <View
             url={THEORY_URL.FollowLine}
             exerciseId={

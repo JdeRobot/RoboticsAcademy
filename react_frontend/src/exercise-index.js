@@ -40,7 +40,8 @@ window.RoboticsExerciseComponents = (function() {
     const children = Array.from(container.childNodes);
 
     if(path[0]==='exercise') {
-      await import(`exercise/${path[path.length-1]}.js`).then((component) => {
+      const component_path = `${path.slice(2).join("/")}.js`;
+      await import(`exercises/${component_path}`).then((component) => {
         renderComponent(component.default, container, props, children, callback);
       });
     } else {

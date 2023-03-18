@@ -1,0 +1,12 @@
+{% extends "react_frontend/exercise_base.html" %}
+{% load react_component %}
+
+{% block react-content %}
+    {% react_component exercise/follow_line_react_refactor/components/MaterialBox %}
+        {% react_component exercise/follow_line_react_refactor/components/MainAppBar exerciseName="Follow Line React Refactored" %}
+            {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}
+            {% end_react_component %}
+        {% end_react_component %}
+    {% end_react_component %}
+    {# {% react_component components/templates/FollowLineReactRAM %} {% end_react_component %} #}
+{% endblock %}
