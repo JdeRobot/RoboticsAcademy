@@ -19,8 +19,12 @@ export const Visualization = (props) => {
         justifyContent: "flex-start",
       }}
     >
+      {visualization.gazebo ? (
+        <GazeboViewer context={props.context}></GazeboViewer>
+      ) : (
+        ""
+      )}
       {visualization.specific ? props.specificVisualizator : ""}
-      {visualization.gazebo ? <GazeboViewer></GazeboViewer> : ""}
       {visualization.console ? <VncConsoleViewer></VncConsoleViewer> : ""}
     </Box>
   );

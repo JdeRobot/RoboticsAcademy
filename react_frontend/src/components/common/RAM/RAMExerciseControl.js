@@ -7,10 +7,10 @@ import { SaveButton } from "../../buttons/SaveButton";
 import { LoadFileButton } from "../../buttons/LoadFileButton";
 import GazeboButton from "../../buttons/GazeboButton";
 import ConsoleButton from "../../buttons/ConsoleButton";
-import RAMPlay from "../../buttons/RAM/RAMPlay";
-import RAMPause from "../../buttons/RAM/RAMPause";
 import RAMStop from "../../buttons/RAM/RAMStop";
 import CameraButton from "../../buttons/RAMVisualizatorButton";
+import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
+import { PlayPause } from "../../buttons/RAM/RAMPlayPause";
 
 function RAMExerciseControl(props) {
   const { filename, setFileName } = React.useContext(props.context);
@@ -28,7 +28,6 @@ function RAMExerciseControl(props) {
         }}
       >
         <Box id={"editor-control"}>
-          {props.specificConfiguration}
           <LoadFileButton context={props.context} />
           <SaveButton context={props.context} />
           <TextField
@@ -43,14 +42,23 @@ function RAMExerciseControl(props) {
             }}
           />
         </Box>
-        <Box id={"robot-control"}>
-          <RAMPlay context={props.context}></RAMPlay>
-          <RAMPause></RAMPause>
+        <Box
+          id={"robot-control"}
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            alignItems: "center",
+            m: 1,
+          }}
+        >
+          <PlayPause context={props.context}></PlayPause>
           <RAMStop></RAMStop>
+          <Frequencies></Frequencies>
         </Box>
         <Box id={"Sim-console-control"}>
-          <CameraButton context={props.context}></CameraButton>
           <GazeboButton context={props.context} />
+          <CameraButton context={props.context}></CameraButton>
           <ConsoleButton context={props.context} />
         </Box>
       </Toolbar>
