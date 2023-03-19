@@ -16,28 +16,8 @@
 
 		<include>
 			<uri>model://gas_station</uri>
-			<pose>5 36.0 0 0 0 0</pose>
+			<pose>25 25 0 0 0 0.717</pose>
 		</include>
-
-		<!-- Target Houses -->
-        <include>
-			<uri>model://house_3</uri>
-            <pose>35 16 0 0 0 0</pose>
-            <name>house1</name>
-		</include>
-
-        <include>
-			<uri>model://house_3</uri>
-            <pose>60 -16 0 0 0 0</pose>
-            <name>house2</name>
-		</include>
-
-        <include>
-			<uri>model://house_3</uri>
-            <pose>80 16 0 0 0 0</pose>
-            <name>house3</name>
-		</include>
-
 
 		<!-- Grass plane -->
 		<include>
