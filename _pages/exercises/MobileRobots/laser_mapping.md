@@ -33,25 +33,21 @@ The objective of this practice is to implement the logic of a navigation algorit
 ## Instructions
 This is the preferred way for running the exercise.
 
-### Installation
-- Clone the Robotics Academy repository on your local machine
+### Installing and Launching
+1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
+
+2. Pull the current distribution of Robotics Academy Docker Image:
 
 	```bash
-git clone https://github.com/JdeRobot/RoboticsAcademy
-	```
-
-- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
-
-- Pull the current distribution of Robotics Academy Docker Image
-
-	```bash
-docker pull jderobot/robotics-academy:latest
-	```
+  docker pull jderobot/robotics-academy:latest
+  ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background
+- It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+
+### How to perform the exercises?
+- Start a new docker container of the image and keep it running in the background:
 
 	```bash
   docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy
@@ -59,9 +55,12 @@ docker pull jderobot/robotics-academy:latest
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Click the connect button and wait for some time until an alert appears with the message `Connection Established` and button displays connected.
+- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
 
 - The exercise can be used after the alert.
+
+### Enable GPU Acceleration
+- Follow the advanced launching instructions from [here](/gpu_acceleration).
 
 **Where to insert the code?**
 
