@@ -19,9 +19,9 @@ function MainAppBar(props) {
   config.width = window.innerWidth / 2;
 
   useLoad(() => {
-    window.RoboticsExerciseComponents.commsManager.connect().then(() => {
-      window.RoboticsExerciseComponents.commsManager.launch(config);
-    });
+    // window.RoboticsExerciseComponents.commsManager.connect().then(() => {
+    //   window.RoboticsExerciseComponents.commsManager.launch(config);
+    // });
   });
 
   useUnload(() => {

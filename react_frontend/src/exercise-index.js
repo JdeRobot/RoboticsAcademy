@@ -1,14 +1,10 @@
 import React, {lazy} from 'react';
 import convertHtmlToReact from '@hedgedoc/html-to-react';
 import './exercise-index.css';
-import Exercise from './components/Exercise';
 import {createRoot} from 'react-dom/client';
 import './libs/tools.js';
 import {flushSync} from 'react-dom';
 import CommsManager from './libs/comms_manager';
-
-const container = document.getElementById('exercise');
-const root = createRoot(container);
 
 window.RoboticsExerciseComponents = (function() {
   const createElement = function(element) {
@@ -67,8 +63,14 @@ window.RoboticsExerciseComponents = (function() {
   }
 })();
 
+/*
+// TODO: This is old, should be removed. Check.
+const container = document.getElementById('exercise');
+const root = createRoot(container);
+
 root.render(
     <React.StrictMode>
       <Exercise></Exercise>
     </React.StrictMode>
 );
+*/
