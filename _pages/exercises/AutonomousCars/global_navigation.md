@@ -311,8 +311,8 @@ Global Navigation teletaxi with OMPL:
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References
-[1](https://en.wikipedia.org/wiki/Motion_planning)
-[2](http://ompl.kavrakilab.org/OMPL_Primer.pdf)
-[3](https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-vanessa_fernandez-2017.pdf)
-[4](https://www.cs.cmu.edu/~motionplanning/lecture/Chap4-Potential-Field_howie.pdf)
+1. [https://en.wikipedia.org/wiki/Motion_planning](https://en.wikipedia.org/wiki/Motion_planning)
+2. [http://ompl.kavrakilab.org/OMPL_Primer.pdf](http://ompl.kavrakilab.org/OMPL_Primer.pdf)
+3. [https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-vanessa_fernandez-2017.pdf](https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-vanessa_fernandez-2017.pdf)
+4. [https://www.cs.cmu.edu/~motionplanning/lecture/Chap4-Potential-Field_howie.pdf](https://www.cs.cmu.edu/~motionplanning/lecture/Chap4-Potential-Field_howie.pdf)
 

@@ -140,5 +140,5 @@ Optical flow has many applications in areas like:
 
 ## References
 
-[1](https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html)   
-[2](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468)   
+1. [https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html](https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html)
+2. [https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468)   

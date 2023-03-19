@@ -194,11 +194,11 @@ Turning is a challenging part of this exercise. The parameters have to be tuned 
 
 ## References
 
-[1](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)
-[2](https://en.wikipedia.org/wiki/PID_controller)
-[3](https://www.elprocus.com/the-working-of-a-pid-controller/)
-[4](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)
-[5](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)
-[6](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)
-[7](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)
+1. [https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)
+2. [https://en.wikipedia.org/wiki/PID_controller](https://en.wikipedia.org/wiki/PID_controller)
+3. [https://www.elprocus.com/the-working-of-a-pid-controller/](https://www.elprocus.com/the-working-of-a-pid-controller/)
+4. [https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)
+5. [https://instrumentationtools.com/open-loop-and-closed-animation-loop/](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)
+6. [https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)
+7. [http://homepages.math.uic.edu/~kauffman/DCalc.pdf](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)
 

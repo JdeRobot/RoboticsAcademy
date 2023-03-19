@@ -162,7 +162,7 @@ When you launch the docker via docker-compose, it fetches everything needed and 
 Click on `2D Pose estimate` button and estimate our pose on the map. Approximate is fine. This will initialize our nav stack. Then, click on `waypoint mode` and estimate the pose again. Usually, this initializes the waypoint tool but as we have overloaded this nav button, it will initialize our plugin.  Then, set your pickup and dropoff points using `Navigation Goal` button and click on `Start Navigation`
 
 
-![Setting Pose](/assets/images/exercises/single_robot_amazon_warehouse/setting_pose.gif)
+![Setting Pose](/RoboticsAcademy/assets/images/exercises/single_robot_amazon_warehouse/setting_pose.gif)
 
 
 The robot will start moving. When it reaches our first goal point, it will actuate the lift joint to `Load` position- making the pallet loaded on the robot. It will go on to the next point and unload the pallet. This actuation, by default, will happen alternately. For example first load, then unload then again load and so on.  The robot will also carry the pallet with it as it moves.
@@ -215,7 +215,7 @@ Two components of navigation are planning a path and executing the motion. Tradi
 
 Consider this scenario: You want to buy something, say a toothbrush, online. You find one which you like and now you want to order it. But you find out that the system wants you to go on the warehouse's site and tell the admins that you need this particular item, then tell the packing station to pack it, then order delivery services to pick this package and then drop it at your doorstep, all by yourself. You will think that this is crazy as all you want is the package delivered and you really don't care about the steps in between. Sure, you would *like* to have updates regarding the shipment, but the whole purpose of ordering online is not to deal with the stuff in-between. Well, this is exactly what ROS action does.
 
-![ROS2 Actions](/assets/images/exercises/single_robot_amazon_warehouse/ros2_actions.png)
+![ROS2 Actions](/RoboticsAcademy/assets/images/exercises/single_robot_amazon_warehouse/ros2_actions.png)
 
 Credits: [Actions Tutorial ROS2](https://index.ros.org/doc/ros2/Tutorials/Understanding-ROS2-Actions/)
 
@@ -295,14 +295,9 @@ Following action servers might be useful:
 
 ## References
 
-[1]	“astarNilsson.pdf.” Accessed: Mar. 26, 2020. [Online]. Available: https://www.cs.auckland.ac.nz/courses/compsci709s2c/resources/Mike.d/astarNilsson.pdf.
-
-[2]	K. Daniel, A. Nash, S. Koenig, and A. Felner, “Theta*: Any-Angle Path Planning on Grids,” *J. Artif. Intell. Res.*, vol. 39, pp. 533–579, Oct. 2010, doi: 10.1613/jair.2994.
-
-[3]	“Lav98c.pdf.” Accessed: Mar. 26, 2020. [Online]. Available: http://msl.cs.illinois.edu/~lavalle/papers/Lav98c.pdf.
-
-[4]	V. R. Desaraju and J. P. How, “Decentralized path planning for multi-agent teams in complex environments using rapidly-exploring random trees,” in *2011 IEEE International Conference on Robotics and Automation* , May 2011, pp. 4956–4961, doi: 10.1109/ICRA.2011.5980392.
-
-[5]	“Coordination strategies for multi-robot exploration and mapping - Carlos Nieto-Granda, John G. Rogers, Henrik I. Christensen, 2014.” https://journals.sagepub.com/doi/abs/10.1177/0278364913515309 (accessed Mar. 28, 2020).
-
-[6]	“explore_multirobot - ROS Wiki.” http://wiki.ros.org/explore_multirobot (accessed Mar. 28, 2020).
+1. “astarNilsson.pdf.” Accessed: Mar. 26, 2020. [Online]. Available: [https://www.cs.auckland.ac.nz/courses/compsci709s2c/resources/Mike.d/astarNilsson.pdf](https://www.cs.auckland.ac.nz/courses/compsci709s2c/resources/Mike.d/astarNilsson.pdf).
+2. K. Daniel, A. Nash, S. Koenig, and A. Felner, “Theta*: Any-Angle Path Planning on Grids,” *J. Artif. Intell. Res.*, vol. 39, pp. 533–579, Oct. 2010, doi: [10.1613/jair.2994](https://doi.org/10.48550/arXiv.1401.3843).
+3. “Lav98c.pdf.” Accessed: Mar. 26, 2020. [Online]. Available: [http://msl.cs.illinois.edu/~lavalle/papers/Lav98c.pdf](http://msl.cs.illinois.edu/~lavalle/papers/Lav98c.pdf).
+4. V. R. Desaraju and J. P. How, “Decentralized path planning for multi-agent teams in complex environments using rapidly-exploring random trees,” in *2011 IEEE International Conference on Robotics and Automation* , May 2011, pp. 4956–4961, doi: [10.1109/ICRA.2011.5980392](https://doi.org/10.1109/ICRA.2011.5980392).
+5. “Coordination strategies for multi-robot exploration and mapping - Carlos Nieto-Granda, John G. Rogers, Henrik I. Christensen, 2014.” [https://journals.sagepub.com/doi/abs/10.1177/0278364913515309](https://journals.sagepub.com/doi/abs/10.1177/0278364913515309) (accessed Mar. 28, 2020).
+6. “explore_multirobot - ROS Wiki.” [http://wiki.ros.org/explore_multirobot](http://wiki.ros.org/explore_multirobot) (accessed Mar. 28, 2020).

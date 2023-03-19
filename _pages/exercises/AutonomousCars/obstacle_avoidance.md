@@ -399,13 +399,13 @@ Also, please note that this is **not the only solution** to this problem. We may
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna).
 
 ## References
-[1](http://www-personal.umich.edu/~johannb/vff&vfh.htm)
-[2](https://en.wikibooks.org/wiki/Robotics/Navigation)
-[3](https://en.wikipedia.org/wiki/Robot_navigation)
-[4](https://www.hindawi.com/journals/jat/2018/6392697/)
-[5](https://link.springer.com/chapter/10.1007/978-3-319-62533-1_7)
-[6](https://www.researchgate.net/figure/The-virtual-force-field-VFF-concept-Occupied-cells-exert-repulsive-forces-onto-the_fig1_224749557)
-[7](http://www.cs.cmu.edu/~./motionplanning/papers/sbp_papers/integrated1/borenstein_cluttered_obstacle_avoid.pdf)
-[8](https://www.mathsisfun.com/algebra/vectors.html)
-[9](https://matthew-brett.github.io/teaching/rotation_2d.html)
+1. [http://www-personal.umich.edu/~johannb/vff&vfh.htm](http://www-personal.umich.edu/~johannb/vff&vfh.htm)
+2. [https://en.wikibooks.org/wiki/Robotics/Navigation](https://en.wikibooks.org/wiki/Robotics/Navigation)
+3. [https://en.wikipedia.org/wiki/Robot_navigation](https://en.wikipedia.org/wiki/Robot_navigation)
+4. [https://www.hindawi.com/journals/jat/2018/6392697/](https://www.hindawi.com/journals/jat/2018/6392697/)
+5. [https://link.springer.com/chapter/10.1007/978-3-319-62533-1_7](https://link.springer.com/chapter/10.1007/978-3-319-62533-1_7)
+6. [https://www.researchgate.net/figure/The-virtual-force-field-VFF-concept-Occupied-cells-exert-repulsive-forces-onto-the_fig1_224749557](https://www.researchgate.net/figure/The-virtual-force-field-VFF-concept-Occupied-cells-exert-repulsive-forces-onto-the_fig1_224749557)
+7. [http://www.cs.cmu.edu/~./motionplanning/papers/sbp_papers/integrated1/borenstein_cluttered_obstacle_avoid.pdf](http://www.cs.cmu.edu/~./motionplanning/papers/sbp_papers/integrated1/borenstein_cluttered_obstacle_avoid.pdf)
+8. [https://www.mathsisfun.com/algebra/vectors.html](https://www.mathsisfun.com/algebra/vectors.html)
+9. [https://matthew-brett.github.io/teaching/rotation_2d.html](https://matthew-brett.github.io/teaching/rotation_2d.html)
  

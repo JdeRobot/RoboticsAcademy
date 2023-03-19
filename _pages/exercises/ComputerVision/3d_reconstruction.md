@@ -266,12 +266,10 @@ Due to varied implementations of users, the user may have to **adjust the scale 
 
 ## References
 
-[1](https://www.researchgate.net/publication/330183516_3D_Computer_Vision_Stereo_and_3D_Reconstruction_from_Disparity)
-[2](https://www.iitr.ac.in/departments/MA/uploads/Stereo-updated.pdf)
-[3](https://www.cs.auckland.ac.nz/courses/compsci773s1c/lectures/CS773S1C-3DReconstruction.pdf)
-[4](https://cs.nyu.edu/~fergus/teaching/vision/9_10_Stereo.pdf)
-[5](https://mil.ufl.edu/nechyba/www/eel6562/course_materials/t9.3d_vision/lecture_multiview1x2.pdf)
-[6](https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/)
-[7](https://medium.com/@dc.aihub/3d-reconstruction-with-stereo-images-part-1-camera-calibration-d86f750a1ade)
-
-
+1. [https://www.researchgate.net/publication/330183516_3D_Computer_Vision_Stereo_and_3D_Reconstruction_from_Disparity](https://www.researchgate.net/publication/330183516_3D_Computer_Vision_Stereo_and_3D_Reconstruction_from_Disparity)
+2. [https://www.iitr.ac.in/departments/MA/uploads/Stereo-updated.pdf](https://www.iitr.ac.in/departments/MA/uploads/Stereo-updated.pdf)
+3. [https://www.cs.auckland.ac.nz/courses/compsci773s1c/lectures/CS773S1C-3DReconstruction.pdf](https://www.cs.auckland.ac.nz/courses/compsci773s1c/lectures/CS773S1C-3DReconstruction.pdf)
+4. [https://cs.nyu.edu/~fergus/teaching/vision/9_10_Stereo.pdf](https://cs.nyu.edu/~fergus/teaching/vision/9_10_Stereo.pdf)
+5. [https://mil.ufl.edu/nechyba/www/eel6562/course_materials/t9.3d_vision/lecture_multiview1x2.pdf](https://mil.ufl.edu/nechyba/www/eel6562/course_materials/t9.3d_vision/lecture_multiview1x2.pdf)
+6. [https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/](https://learnopencv.com/introduction-to-epipolar-geometry-and-stereo-vision/)
+7. [https://medium.com/@dc.aihub/3d-reconstruction-with-stereo-images-part-1-camera-calibration-d86f750a1ade](https://medium.com/@dc.aihub/3d-reconstruction-with-stereo-images-part-1-camera-calibration-d86f750a1ade)
