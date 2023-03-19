@@ -10,24 +10,7 @@
 
 		<road name="my_road">
 			<width>3</width>
-			<point>5 0 0.01</point>
-			<point>10 0 0.01</point>
-			<point>15 0 0.01</point>
-			<point>25 0 0.01</point>
-			<point>30 0 0.01</point>
-			<point>35 0 0.01</point>
-			<point>40 0 0.01</point>
-			<point>45 0 0.01</point>
-			<point>50 0 0.01</point>
-			<point>55 0 0.01</point>
-			<point>60 0 0.01</point>
-			<point>65 0 0.01</point>
-			<point>70 0 0.01</point>
-			<point>75 0 0.01</point>
-			<point>80 0 0.01</point>
-			<point>85 0 0.01</point>
-			<point>90 0 0.01</point>
-			<point>95 0 0.01</point>
+			<point>0 0 0.01</point>
 			<point>100 0 0.01</point>
 		</road>
 
