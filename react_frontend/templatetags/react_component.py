@@ -37,15 +37,30 @@ class ReactComponent(template.Node):
         return properties
 
     def render(self, context):
-        id = f"{self.node_to_render.lower()}-{uuid.uuid4()}"
-        properties = self.__parse_properties()
-
-        content = self.child_nodes.render(context)
+        react_component = {
+            "component": self.node_to_render,
+            "dom_id": f"{self.node_to_render.lower()}-{uuid.uuid4()}",
+            "properties": self.__parse_properties(),
+            "children": []
+        }
 
         if 'react-components' not in context.render_context:
             context.render_context['react-components'] = []
+            context.render_context['parent-react-component'] = None
 
-        context.render_context['react-components'].append((id, self.node_to_render, properties))
+        if context.render_context['parent-react-component'] is None:
+            context.render_context['react-components'].append(react_component)
+            parent_component = None
+        else:
+            context.render_context['parent-react-component']["children"].append(react_component)
+            parent_component = context.render_context['parent-react-component']
+
+        if self.child_nodes:
+            context.render_context['parent-react-component'] = react_component
+            content = self.child_nodes.render(context)
+            context.render_context['parent-react-component'] = parent_component
+        else:
+            content = ""
 
         return f"<div id='{id}'>{str(content)}</div>"
 
@@ -59,13 +74,10 @@ class ReactComponentsRenderer(template.Node):
     def __init__(self):
         pass
 
+    # TODO: This function now returns array of components where each one is a javascript prototype, maybe it could
+    #  return a root prototype with the list inside it's children array
     def render(self, context):
-        components = ""
-        for react_component in context.render_context['react-components']:
-            component = f"['{react_component[1]}', " \
-                        f"document.getElementById('{react_component[0]}')," \
-                        f"{json.dumps(react_component[2])}],"
-            components += f"{component}\n"
+        components = json.dumps(context.render_context['react-components'])
         return f"""
 <script>
     RoboticsExerciseComponents.render([{components}]);

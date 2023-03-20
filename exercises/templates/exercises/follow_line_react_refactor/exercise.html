@@ -6,17 +6,19 @@
         {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}{% end_react_component %}
     {% end_react_component %}
 
-{#    {% react_component exercise/follow_line_react_refactor/components/MaterialBox %}#}
-{#        {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}{% end_react_component %}#}
-{#        {% react_component exercise/follow_line_react_refactor/components/MainAppBar exerciseName="Follow Line React Refactored" %}#}
-{#            {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}#}
-{#            {% end_react_component %}#}
-{#        {% end_react_component %}#}
-{#        {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="content" %}#}
-{#            {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="content_exercise" %}{% end_react_component %}#}
-{#            {% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}#}
-{#            {% react_component components/views/ForumView %}{% end_react_component %}#}
-{#        {% end_react_component %}#}
-{#    {% end_react_component %}#}
+{% comment %}
+    {% react_component exercise/follow_line_react_refactor/components/MaterialBox %}
+        {% react_component exercise/follow_line_react_refactor/components/MainAppBar exerciseName="Follow Line React Refactored" %}
+            {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}
+            {% end_react_component %}
+        {% end_react_component %}
+        {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="content" %}
+            {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="content_exercise" %}{% end_react_component %}
+            {% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
+            {% react_component components/views/ForumView %}{% end_react_component %}
+        {% end_react_component %}
+    {% end_react_component %}
+{% endcomment %}
+
     {# {% react_component components/templates/FollowLineReactRAM %} {% end_react_component %} #}
 {% endblock %}
