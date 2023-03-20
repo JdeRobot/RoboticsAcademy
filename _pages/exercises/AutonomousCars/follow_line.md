@@ -179,8 +179,8 @@ Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Thos
 
 ### Real Life Example
 
-[1](https://accautomation.ca/tag/pid-control-car-analogy/)
-[2](https://www.youtube.com/watch?v=UR0hOmjaHp0)
+1. [https://accautomation.ca/tag/pid-control-car-analogy/](https://accautomation.ca/tag/pid-control-car-analogy/)
+2. [https://www.youtube.com/watch?v=UR0hOmjaHp0](https://www.youtube.com/watch?v=UR0hOmjaHp0)
 
 ## Hints
 Simple hints provided to help you solve the follow_line exercise.
@@ -188,9 +188,9 @@ Simple hints provided to help you solve the follow_line exercise.
 ### Detecting the Line to Follow
 The first task of the assignment is to detect the line to be followed. This can be achieved easily by **filtering the color of the line** from the image and applying basic image processing to find the point or line to follow, or in Control terms our *Set Point*. Refer to these links for more information:
 
-[1](https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/)
-[2](https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image)
-[3](https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv)
+1. [https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/](https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/)
+2. [https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image](https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image)
+3. [https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv](https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv)
 
 ### Coding the Controller
 The Controller can be designed in various configurations. 3 configurations have been described in detail below:
@@ -222,10 +222,10 @@ This is the complete implemented controller. Now, to add the I Controller we nee
 
 ## References
 
-[1](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)
-[2](https://en.wikipedia.org/wiki/PID_controller)
-[3](https://www.elprocus.com/the-working-of-a-pid-controller/)
-[4](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)
-[5](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)
-[6](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)
-[7](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)
+1. [https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)  
+2. [https://en.wikipedia.org/wiki/PID_controller](https://en.wikipedia.org/wiki/PID_controller)  
+3. [https://www.elprocus.com/the-working-of-a-pid-controller/](https://www.elprocus.com/the-working-of-a-pid-controller/)  
+4. [https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)  
+5. [https://instrumentationtools.com/open-loop-and-closed-animation-loop/](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)  
+6. [https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)  
+7. [http://homepages.math.uic.edu/~kauffman/DCalc.pdf](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)  

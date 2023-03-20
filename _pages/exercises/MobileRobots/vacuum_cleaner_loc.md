@@ -280,11 +280,11 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 ## References
 The major credit for this coverage algorithm goes to [Jose María Cañas](https://github.com/jmplaza) and his student [Irene Lope](https://github.com/ilope236).
 
-[1](https://onlinelibrary.wiley.com/doi/full/10.1002/047134608X.W8318)
-[2](https://en.wikipedia.org/wiki/Transformation_(function))
-[3](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf)
-[4](http://correll.cs.colorado.edu/?p=965)
-[5](https://homepages.inf.ed.ac.uk/rbf/HIPR2/dilate.htm)
-[6](https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-irene_lope-2018.pdf)
+1. [https://onlinelibrary.wiley.com/doi/full/10.1002/047134608X.W8318](https://onlinelibrary.wiley.com/doi/full/10.1002/047134608X.W8318)
+2. [https://en.wikipedia.org/wiki/Transformation_(function)](https://en.wikipedia.org/wiki/Transformation_(function))
+3. [https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf)
+4. [http://correll.cs.colorado.edu/?p=965](http://correll.cs.colorado.edu/?p=965)
+5. [https://homepages.inf.ed.ac.uk/rbf/HIPR2/dilate.htm](https://homepages.inf.ed.ac.uk/rbf/HIPR2/dilate.htm)
+6. [https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-irene_lope-2018.pdf](https://gsyc.urjc.es/jmplaza/students/tfg-Robotics_Academy-irene_lope-2018.pdf)
 
 One of the best [video series on Linear Algebra](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab)

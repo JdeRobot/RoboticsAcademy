@@ -153,8 +153,8 @@ The following figure shows an example of probabilistic localisation. In the firs
 
 ## References
 
-[1](http://www.natalnet.br/lars2013/WGWR-WUWR/122602.pdf)    
-[2](https://robotica.unileon.es/vmo/pubs/robocity2009.pdf)    
-[3](https://core.ac.uk/download/pdf/60433799.pdf)   
-[4](http://intranet.ceautomatica.es/old/actividades/jornadas/XXIX/pdf/315.pdf)   
-[5](https://www.researchgate.net/publication/283623730_Calculo_de_incertidumbre_en_un_filtro_de_particulas_para_mejorar_la_localizacion_en_robots_moviles)   
+1. [http://www.natalnet.br/lars2013/WGWR-WUWR/122602.pdf](http://www.natalnet.br/lars2013/WGWR-WUWR/122602.pdf)
+2. [https://robotica.unileon.es/vmo/pubs/robocity2009.pdf](https://robotica.unileon.es/vmo/pubs/robocity2009.pdf)
+3. [https://core.ac.uk/download/pdf/60433799.pdf](https://core.ac.uk/download/pdf/60433799.pdf)
+4. [http://intranet.ceautomatica.es/old/actividades/jornadas/XXIX/pdf/315.pdf](http://intranet.ceautomatica.es/old/actividades/jornadas/XXIX/pdf/315.pdf)
+5. [https://www.researchgate.net/publication/283623730_Calculo_de_incertidumbre_en_un_filtro_de_particulas_para_mejorar_la_localizacion_en_robots_moviles](https://www.researchgate.net/publication/283623730_Calculo_de_incertidumbre_en_un_filtro_de_particulas_para_mejorar_la_localizacion_en_robots_moviles)

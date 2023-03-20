@@ -171,12 +171,12 @@ In reality, color is a continuous phenomenon, meaning that there are an infinite
 
 ## References
 
-[1](https://www.geeksforgeeks.org/color-spaces-in-opencv-python/) 
-[2](https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/) 
-[3](https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/)
-[4](https://opencv-python-tutroals.readthedocs.io/en/latest/index.html)
-[5](https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp)
-[6](https://realpython.com/python-opencv-color-spaces/)
-[7](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468)
+1. [https://www.geeksforgeeks.org/color-spaces-in-opencv-python/](https://www.geeksforgeeks.org/color-spaces-in-opencv-python/) 
+2. [https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/](https://www.learnopencv.com/invisibility-cloak-using-color-detection-and-segmentation-with-opencv/) 
+3. [https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/](https://www.learnopencv.com/color-spaces-in-opencv-cpp-python/)
+4. [https://opencv-python-tutroals.readthedocs.io/en/latest/index.html](https://opencv-python-tutroals.readthedocs.io/en/latest/index.html)
+5. [https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp](https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp)
+6. [https://realpython.com/python-opencv-color-spaces/](https://realpython.com/python-opencv-color-spaces/)
+7. [https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468)
 
 

@@ -340,6 +340,6 @@ Following three errors can be ignored in the beginning, but if it keep spawning 
 {% include youtubePlayer.html id=page.youtubeId %}
 
 ## References
-[1] https://docs.neobotix.de/display/ROSSim/ROS-Simulation
+1. [https://docs.neobotix.de/display/ROSSim/ROS-Simulation](https://docs.neobotix.de/display/ROSSim/ROS-Simulation)
 {% include gallery id="neobotix_logo"%}
 Thanks for Neobotix engineer Pradheep Krishna Muthukrishnan Padmanabhan's help with setting up the simulation package from Neobotix.

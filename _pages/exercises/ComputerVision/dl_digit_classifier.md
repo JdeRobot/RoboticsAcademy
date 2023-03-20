@@ -105,8 +105,9 @@ For solving the particular task of digit classification, we don't need complex a
 - Maintained by [David Pascual](https://github.com/dpascualhe)
 
 ## References
-1. https://onnx.ai/
-2. https://pytorch.org/
-3. http://yann.lecun.com/exdb/mnist/
-4. https://towardsdatascience.com/machine-learning-classifiers-a5cc4e1b0623
-5. https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/
+
+1. [https://onnx.ai/](https://onnx.ai/)
+2. [https://pytorch.org/](https://pytorch.org/)
+3. [http://yann.lecun.com/exdb/mnist/](http://yann.lecun.com/exdb/mnist/)
+4. [https://towardsdatascience.com/machine-learning-classifiers-a5cc4e1b0623](https://towardsdatascience.com/machine-learning-classifiers-a5cc4e1b0623)
+5. [https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/](https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/)
