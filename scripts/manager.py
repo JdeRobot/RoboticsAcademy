@@ -15,11 +15,14 @@ import re
 from pylint import epylint as lint
 
 # Function to check if a device exists
+
+
 def check_device(device_path):
     try:
         return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
     except:
         return False
+
 
 RADI_VERSION = "3.2.9"
 
@@ -35,16 +38,20 @@ HARD_RESET_EX = ["obstacle_avoidance"]
 STDR_EX = ["laser_mapping", "laser_loc"]
 
 # Docker Thread class for running commands on threads
+
+
 class DockerThread(threading.Thread):
     def __init__(self, cmd):
         threading.Thread.__init__(self)
         self.cmd = cmd
 
     def run(self):
-        subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
+        subprocess.Popen(self.cmd, shell=True, stdout=subprocess.PIPE,
+                         bufsize=1024, universal_newlines=True)
 
     def call(self):
-        subprocess.call(self.cmd, shell=True, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True) 
+        subprocess.call(self.cmd, shell=True, stdout=subprocess.PIPE,
+                        bufsize=1024, universal_newlines=True)
 
 
 # Class to store the commands
@@ -68,12 +75,12 @@ class Commands:
         roslaunch_cmd = ""
         if ACCELERATION_ENABLED:
             roslaunch_cmd = f"export VGL_DISPLAY={DRI_PATH}"
-        
+
         for instruction in self.instructions[exercise]["instructions_ros"]:
             if exercise in CIRCUIT_EX:
                 instruction = instruction.format(circuit)
-            print('INSTRUCTION: ', instruction)    
-            
+            print('INSTRUCTION: ', instruction)
+
             if not (ACCELERATION_ENABLED):
                 roslaunch_cmd = roslaunch_cmd + instruction + ";"
             else:
@@ -91,13 +98,14 @@ class Commands:
                                 f"echo height={height} >> ~/.gazebo/gui.ini;"]
 
         if not (ACCELERATION_ENABLED):
-	    # Write display config and start gzclient
-            gzclient_cmd = (f"export DISPLAY=:0;" + self.get_gazebo_path(exercise) + "".join(gzclient_config_cmds) + "gzclient --verbose")
+            # Write display config and start gzclient
+            gzclient_cmd = (f"export DISPLAY=:0;" + self.get_gazebo_path(exercise) +
+                            "".join(gzclient_config_cmds) + "gzclient --verbose")
         else:
             gzclient_cmd = (f"export DISPLAY=:0;" +
-		    self.get_gazebo_path(exercise) +
-		    "".join(gzclient_config_cmds) +
-		    f"export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
+                            self.get_gazebo_path(exercise) +
+                            "".join(gzclient_config_cmds) +
+                            f"export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)
         gzclient_thread.start()
 
@@ -109,7 +117,8 @@ class Commands:
     # Function to start the console
     def start_console(self, width, height):
         # Write display config and start the console
-        width = int(width) / 10; height = int(height) / 18
+        width = int(width) / 10
+        height = int(height) / 18
         console_cmd = f"export DISPLAY=:1;"
         if ACCELERATION_ENABLED:
             console_cmd += f"vglrun xterm -fullscreen -sb -fa 'Monospace' -fs 10 -bg black -fg white"
@@ -153,7 +162,8 @@ class Commands:
     def start_exercise(self, exercise, circuit=None):
         # ROS logs are only generated in drone ex. Then, only cleaning them too.
         if exercise in DRONE_EX:
-            self.run_subprocess(['rosclean', 'purge', '-y'])  # Clears ROS logs dir
+            # Clears ROS logs dir
+            self.run_subprocess(['rosclean', 'purge', '-y'])
 
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
@@ -167,7 +177,7 @@ class Commands:
                     server_ready = True
                 f.close()
                 time.sleep(0.2)
-            except Exception as e: 
+            except Exception as e:
                 print("waiting for ws code server...")
                 time.sleep(0.2)
 
@@ -175,7 +185,7 @@ class Commands:
             gui_cmd = self.instructions[exercise]["instructions_gui"]
             if exercise in CIRCUIT_EX:
                 gui_cmd = gui_cmd.format(circuit)
-                print('GUI: ',gui_cmd)
+                print('GUI: ', gui_cmd)
             gui_thread = DockerThread(gui_cmd)
             gui_thread.start()
             # Wait until websocket server is set up
@@ -187,7 +197,7 @@ class Commands:
                         server_ready = True
                     f.close()
                     time.sleep(0.2)
-                except Exception as e: 
+                except Exception as e:
                     print("waiting for ws guest server...")
                     time.sleep(0.2)
         except KeyError:
@@ -207,7 +217,7 @@ class Commands:
                         server_ready = True
                     f.close()
                     time.sleep(0.2)
-                except Exception as e: 
+                except Exception as e:
                     print("waiting for ws code guest server...")
                     time.sleep(0.2)
         except KeyError:
@@ -218,7 +228,7 @@ class Commands:
             gui_cmd_guest = self.instructions[exercise]["instructions_gui_guest"]
             if exercise in CIRCUIT_EX:
                 gui_cmd_guest = gui_cmd_guest.format(circuit)
-                print('GUI guest: ',gui_cmd_guest)
+                print('GUI guest: ', gui_cmd_guest)
             gui_thread_guest = DockerThread(gui_cmd_guest)
             gui_thread_guest.start()
             # Wait until websocket server is set up
@@ -230,7 +240,7 @@ class Commands:
                         server_ready = True
                     f.close()
                     time.sleep(0.2)
-                except Exception as e: 
+                except Exception as e:
                     print("waiting for ws gui guest server...")
                     time.sleep(0.2)
         except KeyError:
@@ -246,18 +256,20 @@ class Commands:
     def start_gzserver(self, exercise, circuit):
         if os.path.exists("/drones_launch.log"):
             os.remove("/drones_launch.log")
-        
+
         if exercise in CIRCUIT_EX:
-            roslaunch_cmd = self.get_ros_instructions(exercise, circuit=circuit)
+            roslaunch_cmd = self.get_ros_instructions(
+                exercise, circuit=circuit)
         else:
             roslaunch_cmd = self.get_ros_instructions(exercise)
-		
+
         roslaunch_thread = DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
         repeat = True
         while repeat:
             try:
-                stats_output = str(subprocess.check_output(['gz', 'stats', '-p', '-d', '1'], timeout=5))
+                stats_output = str(subprocess.check_output(
+                    ['gz', 'stats', '-p', '-d', '1'], timeout=5))
                 if "real-time factor" in str(stats_output):
                     repeat = False
                 else:
@@ -275,10 +287,10 @@ class Commands:
                         launch_ready = True
                     f.close()
                     time.sleep(0.2)
-                except: 
+                except:
                     time.sleep(0.2)
 
-    def start_stdrserver(self,exercise):
+    def start_stdrserver(self, exercise):
         roslaunch_cmd = self.get_ros_instructions(exercise)
         roslaunch_thread = DockerThread(roslaunch_cmd)
         roslaunch_thread.start()
@@ -322,7 +334,8 @@ class Commands:
         while (attempt < 20):
             stats_output = ""
             try:
-                stats_output = str(subprocess.check_output(cmd_wait, timeout=5))
+                stats_output = str(
+                    subprocess.check_output(cmd_wait, timeout=5))
             except Exception:
                 print("Timeout reached")
             if ("armed: False" in stats_output):
@@ -342,7 +355,7 @@ class Commands:
         cmd = ['pkill', '-9', '-f']
         cmd_exercise = cmd + ['exercise.py']
         self.call_subprocess(cmd_exercise)
-        
+
         # Launch exercise.py
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
@@ -356,21 +369,23 @@ class Commands:
                     server_ready = True
                 f.close()
                 time.sleep(0.2)
-            except Exception as e: 
+            except Exception as e:
                 print("waiting for ws code server...")
                 time.sleep(0.2)
-        
+
         # Reset simulation
         self.reset_physics("gazebo")
         self.pause_physics()
 
     # Function to start subprocess
     def run_subprocess(self, cmd):
-        subprocess.Popen(cmd, stdout=subprocess.PIPE, bufsize=1, universal_newlines=True)
+        subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                         bufsize=1, universal_newlines=True)
 
     # Function to wait subprocess
     def call_subprocess(self, cmd):
-        subprocess.call(cmd, stdout=subprocess.PIPE, bufsize=1024, universal_newlines=True)
+        subprocess.call(cmd, stdout=subprocess.PIPE,
+                        bufsize=1024, universal_newlines=True)
 
     # Function to kill every program
     async def kill_all(self):
@@ -474,18 +489,20 @@ class Manager:
                     self.simulator = "none"
                 else:
                     self.simulator = "gazebo"
-            
+
                 try:
                     circuit = data["circuit"]
                     print('CIRCUIT: ')
                     print(circuit)
                 except KeyError:
                     circuit = "default"
-                
+
                 if not (ACCELERATION_ENABLED) or (self.exercise in STDR_EX):
-                    self.open_simulation(self.exercise, self.width, self.height, circuit)
+                    self.open_simulation(
+                        self.exercise, self.width, self.height, circuit)
                 else:
-                    self.open_accelerated_simulation(self.exercise, self.width, self.height, circuit)
+                    self.open_accelerated_simulation(
+                        self.exercise, self.width, self.height, circuit)
             elif command == "resume":
                 self.resume_simulation()
                 await websocket.send("PingDone{}".format(self.launch_level))
@@ -687,19 +704,21 @@ class Manager:
     async def kill_simulation(self):
         print("Kill simulation")
         await self.commands.kill_all()
-    
+
     def evaluate_code(self, code, warnings=False):
         try:
             code = re.sub(r'from HAL import HAL', 'from hal import HAL', code)
             code = re.sub(r'from GUI import GUI', 'from gui import GUI', code)
             code = re.sub(r'from MAP import MAP', 'from map import MAP', code)
             code = re.sub(r'\nimport cv2\n', '\nfrom cv2 import cv2\n', code)
-            
+
             # Avoids EOF error when iterative code is empty (which prevents other errors from showing)
-            while_position = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)
+            while_position = re.search(
+                r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)
             sequential_code = code[:while_position.start()]
             iterative_code = code[while_position.start():]
-            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '\n', iterative_code, 1)
+            iterative_code = re.sub(
+                r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '\n', iterative_code, 1)
             iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
             code = sequential_code + iterative_code
 
@@ -711,47 +730,60 @@ class Manager:
             if self.exercise in CIRCUIT_EX:
                 self.exercise = 'follow_line'
 
-            command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(self.exercise)
+            command = f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}; python3 pylint_checker.py"
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
 
             # Removes convention, refactor and warning messages
             if not warnings:
-                convention_messages = re.search(":[0-9]+: convention.*\n", result)
+                convention_messages = re.search(
+                    ":[0-9]+: convention.*\n", result)
                 while (convention_messages != None):
-                    result = result[:convention_messages.start()] + result[convention_messages.end():]
-                    convention_messages = re.search(":[0-9]+: convention.*\n", result)
+                    result = result[:convention_messages.start(
+                    )] + result[convention_messages.end():]
+                    convention_messages = re.search(
+                        ":[0-9]+: convention.*\n", result)
                 warning_messages = re.search(":[0-9]+: warning.*\n", result)
                 while (warning_messages != None):
-                    result = result[:warning_messages.start()] + result[warning_messages.end():]
-                    warning_messages = re.search(":[0-9]+: warning.*\n", result)
+                    result = result[:warning_messages.start()] + \
+                        result[warning_messages.end():]
+                    warning_messages = re.search(
+                        ":[0-9]+: warning.*\n", result)
                 refactor_messages = re.search(":[0-9]+: refactor.*\n", result)
                 while (refactor_messages != None):
-                    result = result[:refactor_messages.start()] + result[refactor_messages.end():]
-                    refactor_messages = re.search(":[0-9]+: refactor.*\n", result)
+                    result = result[:refactor_messages.start()] + \
+                        result[refactor_messages.end():]
+                    refactor_messages = re.search(
+                        ":[0-9]+: refactor.*\n", result)
 
             # Removes unexpected EOF error
             eof_exception = re.search(":[0-9]+: error.*EOF.*\n", result)
             if (eof_exception != None):
-                result = result[:eof_exception.start()] + result[eof_exception.end():]
+                result = result[:eof_exception.start()] + \
+                    result[eof_exception.end():]
 
             # Removes no value for argument 'self' error
-            self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+            self_exception = re.search(
+                ":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
             while (self_exception != None):
-                result = result[:self_exception.start()] + result[self_exception.end():]    
-                self_exception = re.search(":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
+                result = result[:self_exception.start()] + \
+                    result[self_exception.end():]
+                self_exception = re.search(
+                    ":[0-9]+:.*value.*argument.*unbound.*method.*\n", result)
 
             # Removes assignment from no return error
             self_exception = re.search(":[0-9]+:.*E1111.*\n", result)
             while (self_exception != None):
-                result = result[:self_exception.start()] + result[self_exception.end():]    
+                result = result[:self_exception.start()] + \
+                    result[self_exception.end():]
                 self_exception = re.search(":[0-9]+:.*E1111.*\n", result)
 
             # Removes E1136 until issue https://github.com/PyCQA/pylint/issues/1498 is closed
             self_exception = re.search(":[0-9]+:.*E1136.*\n", result)
             while (self_exception != None):
-                result = result[:self_exception.start()] + result[self_exception.end():]    
+                result = result[:self_exception.start()] + \
+                    result[self_exception.end():]
                 self_exception = re.search(":[0-9]+:.*E1136.*\n", result)
 
             # Returns an empty string if there are no errors
