@@ -11,9 +11,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/launch",
-        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/launch",
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner_loc": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch",
