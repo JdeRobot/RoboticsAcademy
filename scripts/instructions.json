@@ -16,9 +16,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner_loc": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch",
-        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/launch/vacuum_cleaner_headless.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/launch",
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/launch/vacuum_cleaner_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/exercise.py 0.0.0.0"
     },
     "color_filter": {
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/color_filter/web-template/exercise.py 0.0.0.0"
