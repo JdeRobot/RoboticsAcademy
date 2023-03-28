@@ -73,7 +73,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 - The exercise can be used after the alert.
 
 ### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](/gpu_acceleration).
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
 
 **Where to insert the code?**
 

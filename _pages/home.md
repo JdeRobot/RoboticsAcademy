@@ -22,9 +22,9 @@ feature_row:
 
   - image_path: /assets/images/cover/cover_column_2.png
     alt: "fully responsive"
-    title: "Installation"
+    title: "User Guide"
     excerpt: "Instructions for installing Robotics-Academy dependencies (ROS, Gazebo, assets...)"
-    url: "/installation"
+    url: "/user_guide"
     btn_class: "btn--primary"
     btn_label: "Go!"
 

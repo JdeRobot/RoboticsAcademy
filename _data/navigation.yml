@@ -4,14 +4,14 @@ main:
   - title: "Exercises"
     url: /exercises/
 
-  - title: "Installation"
-    url: /installation/
+  - title: "User Guide"
+    url: /user_guide/
 
 #  - title: "Web release"
 #    url: /webrelease
 
   - title: "Forum"
-    url: https://forum.jderobot.org/c/english/roboticsacademy
+    url: https://forum.unibotics.org/
 #    url: https://developers.unibotics.org
 #    url: https://academy.jderobot.org/forum
 
