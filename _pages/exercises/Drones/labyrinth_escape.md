@@ -52,7 +52,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to e
 - The exercise can be used after the alert.
 
 ### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](/gpu_acceleration).
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
 
 ### Optional: Store terminal output
 - To store the terminal output of manager.py and launch.py to a file execute the following docker run command and keep it running in the background:
