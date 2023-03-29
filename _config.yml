@@ -16,11 +16,11 @@ minimal_mistakes_skin    : "air"
 
 # Site Settings
 #locale                   : "en-US"
-title                    : "Robotics-Academy"
+title                    : "Robotics Academy"
 title_separator          : "-"
 subtitle                 : "by JdeRobot organization"
 name                     : "JdeRobot"
-description              : "A practical and fun way of learning Robotics and Computer Vision"
+description              : "Learn Robotics, Artificial Intelligence and Computer Vision in a practical way"
 url                      : # the base hostname & protocol for your site e.g. "http://jderobot.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "RoboticsAcademy"
@@ -109,7 +109,7 @@ analytics:
 #author:
 #  name             : "JdeRobot"
 #  avatar           : "/images/logo.png"
-#  bio              : "Learn Robotics and Computer Vision with JdeRobot."
+#  bio              : "Learn Robotics, AI and Computer Vision with JdeRobot"
 #  location         : #"Somewhere"
 #  email            :
 #  links:

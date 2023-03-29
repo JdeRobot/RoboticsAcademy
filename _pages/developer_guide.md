@@ -1,6 +1,7 @@
 ---
-permalink: /contribute/
-title: "# How to contribute to Robotics Academy?"
+permalink: /developer_guide
+title: "Contributor Guide"
+
 
 sidebar:
   nav: "docs"
@@ -10,14 +11,55 @@ toc_label: "TOC installation"
 toc_icon: "cog"
 ---
 
-This section describes the steps to include an exercise in the Robotics-Academy documentation.
-
-The objective of having documentation in this format is to simplify the developer having to add information from their software, speeding up the process and showing results that fit the structure of Robotics-Academy.
+This page contains information useful to understand how to contribute to Robotics Academy: creating a new exercise, improving the documentation, fixing bugs... Become a developer, not only a Robotics Academy user :-)
 
 
-## Where do I add the documentation for a new exercise?
+# Roadmap
 
-By default, the information added to the documentation is split in two:
+1. Migrate all exercises to Robotics-Academy 4 release (ROS2 Foxy)
+2. Develop new exercises
+    + map building: occupancy grid
+    + localization algorithm with particle filter and laser sensor
+    + Computer Vision exercises
+4. Improve RADI for ROS1-Noetic and ROS2-Foxy
+
+
+# Releases
+* 3.3
+    + Browser for edition and execution
+    + REACT based frontend
+    + Robotics Application Manager 
+    + based in ROS-Noetic and Gazebo11
+* 3.2
+    + Browser for edition and execution
+    + based in ROS-Noetic and Gazebo11
+* 2.3
+    + Web pages for exercise templates
+    + Browser for editing user code and execution monitoring
+    + Dependencies are pre-installed in [RADI Docker Image](https://hub.docker.com/r/jderobot/robotics-academy/tags)
+    + based in ROS-Melodic and Gazebo9
+    + works on Linux, Windows and MacOS
+* 2.1
+    + ROS nodes for exercise templates
+    + File editing for user code
+    + Dependencies should be installed locally, debian and ROS packages
+    + based in ROS-Melodic and Gazebo9
+* 2.0
+
+
+# Developer documentation
+
+Check all the documents at the [docs directory at Robotics Academy repository](https://github.com/JdeRobot/RoboticsAcademy/tree/master/docs)
+
+# Creating a new exercise
+
+Just use [Robotics Academy Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) to propose a new exercise to be included. Also contact us at *jderobot@gmail.com*
+
+
+
+# Adding or improving the user documentation for an exercise?
+
+The user documentation for each exercise has to be in GitHub Pages [gh-pages branch at the RoboticsAcademy repository](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages), in markdown format. By default, the information added to the documentation is split in two:
 
 - A `.md` file with the description of the exercise, steps for execution, comments, etc.
 - A folder with resources. Typically images and videos that are associated to the exercise.
@@ -98,12 +140,12 @@ bundle exec jekyll serve
 
 If in the process of building the server there is a dependency problem, for example, there is a missing library to install, it is **necessary to delete** the `Gemfile.lock` file so that it is rebuilt with the installed dependency. This list of dependencies is found in the `Gemfile` file (in Python it would be equivalent to the `requirements.txt` file) and the version of each of the installed gems (packages) is specified. Having a list of dependencies is important for future updates as well as knowing the libraries needed to run the server. Once the `Gemfile.lock` file is deleted, the command shown above is launched again and the dependency errors should end.
 
-### Installing Ruby and Jekyll on Mac OS X
+### Installing Ruby and Jekyll on MacOS
 
 Follow the Jekyll [page installation guide](https://jekyllrb.com/docs/installation/macos/).
 
 
-## FAQ
+### FAQ
 
 - Error building Jekyll server: 
 

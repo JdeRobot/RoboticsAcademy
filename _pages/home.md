@@ -15,7 +15,7 @@ feature_row:
   - image_path: /assets/images/cover/cover_column_1.png
     alt: "Exercises"
     title: "Exercises"
-    excerpt: "Learn robot programming solving the Robotics-Academy challenges"
+    excerpt: "Learn robot programming solving the Robotics Academy challenges"
     url: "/exercises/"
     btn_class: "btn--primary"
     btn_label: "Go!"
@@ -23,7 +23,7 @@ feature_row:
   - image_path: /assets/images/cover/cover_column_2.png
     alt: "fully responsive"
     title: "User Guide"
-    excerpt: "Instructions for installing Robotics-Academy dependencies (ROS, Gazebo, assets...)"
+    excerpt: "Instructions for using Robotics Academy"
     url: "/user_guide"
     btn_class: "btn--primary"
     btn_label: "Go!"
@@ -31,7 +31,7 @@ feature_row:
 #  - image_path: /assets/images/cover/cover_column_3.png
 #    alt: "100% free"
 #    title: "Web release (beta)"
-#    excerpt: "Use RoboticsAcademy from your browser, no installation required"
+#    excerpt: "Use Robotics Academy from your browser, no installation required"
 #    url: "/webrelease"
 #    btn_class: "btn--primary"
 #    btn_label: "Learn more"
@@ -40,16 +40,16 @@ feature_row:
     alt: "100% free"
     title: "Forum"
     excerpt: "Receive support, show your results and help others at the community forum"
-    url: "https://forum.jderobot.org/c/english/roboticsacademy"
+    url: "https://forum.unibotics.org"
 #    url: "/webrelease"
     btn_class: "btn--primary"
     btn_label: "Go!"
 
   - image_path: /assets/images/cover/cover_column_2.png
     alt: "fully responsive"
-    title: "Do you want to contribute?"
-    excerpt: "Info for Robotics-Academy *developers*: create a new exercise, improve documentation, fix bugs.... Contributors are welcome!"
-    url: "/contribute"
+    title: "Contributor Guide"
+    excerpt: "Info for RoboticsAcademy *developers*: create a new exercise, improve documentation, fix bugs.... Contributors are welcome!"
+    url: "/developer_guide"
     btn_class: "btn--primary"
     btn_label: "Go!"
 
@@ -57,7 +57,7 @@ youTube_id: ID7qaEcIu4k
 ---
 
 
-Robotics-Academy is an **open source** collection of exercises and challenges to learn robotics in a practical way.
+Robotics Academy is an **open source** collection of exercises and challenges to learn robotics in a practical way.
 There are exercises about drone programming, about computer vision, about mobile robots, about autonomous cars, etc. 
 It is mainly based on [Gazebo simulator](http://gazebosim.org) and [ROS](https://www.ros.org). The students program their solutions in **Python** language.
 
@@ -69,28 +69,21 @@ For execution the student launches a Docker image containing a Gazebo simulation
 
 {% include video id="Y6CoOK9WtDQ" provider="youtube" %}
 
-## Releases
 
-* 2.3
-    + Web pages for exercise templates
-    + Browser for editing user code and execution monitoring
-    + Dependencies are pre-installed in [RADI Docker Image](https://hub.docker.com/r/jderobot/robotics-academy/tags)
-    + based in ROS-Melodic and Gazebo9
-    + works on Linux, Windows and MacOS
-* 2.1
-    + ROS nodes for exercise templates
-    + File editing for user code
-    + Dependencies should be installed locally, debian and ROS packages
-    + based in ROS-Melodic and Gazebo9
-* 2.0
+# Scientific papers
 
-## Scientific papers
+1. *Automatic Competitions in the Unibotics open online robot programming web*.
+Raúl Fernández-Ruiz, Daniel Palacios-Alonso, José Marı́a Cañas-Plaza, David Roldán-Álvarez. D. Tardioli et al. (Eds.): ROBOT 2022, LNNS 589, pp. 463–474, 2023. Springer Nature Switzerland AG. [DOI: https://doi.org/10.1007/978-3-031-21065-5_38](https://doi.org/10.1007/978-3-031-21065-5_38)
 
-1. *Open-Source Drone Programming Course for Distance Engineering Education*. José M. Cañas, Diego Martín-Martín, Pedro Arias, Julio Vega, David Roldán-Álvarez, Lía García-Pérez, Jesús Fernández-Conde. Electronics 2020, 9(12), 2163, MDPI 2020 (Special Issue Open Source Software in Learning Environments). [DOI: https://doi.org/10.3390/electronics9122163](https://doi.org/10.3390/electronics9122163)
-2. *A ROS‐Based Open Tool for Intelligent Robotics Education*. José M. Cañas, Eduardo Perdices, Lía García-Pérez, Jesús Fernández-Conde. Applied Sciences 10(21), 7419, MDPI 2020 (Special Issue Advances in Artificial Intelligence Learning Technologies). [DOI: https://doi.org/10.3390/app10217419](https://doi.org/10.3390/app10217419)
-3. *Entorno docente universitario para la programación de robots*. José M.Cañas, Alberto Martín, Eduardo Perdices, Francisco Rivas, Roberto Calvo. Revista Iberoamericana de Automática e Informática Industrial, 15, 404-415, 2018 [DOI: https://doi.org/10.4995/riai.2018.8962](https://doi.org/10.4995/riai.2018.8962)
+2. *A ROS-based open web platform for Intelligent Robotics education*. David Roldán, Sakshay Mahna José M. Cañas. International Conference on Robotics in Education (RiE-2021), pp 243-255, Advances in Intelligent Systems and Computing, vol 1359. Springer, 2022. [DOI: https://doi.org/10.1007/978-3-030-82544-7_23](https://doi.org/10.1007/978-3-030-82544-7_23)
 
-## Sponsors
+3. *Open-Source Drone Programming Course for Distance Engineering Education*. José M. Cañas, Diego Martín-Martín, Pedro Arias, Julio Vega, David Roldán-Álvarez, Lía García-Pérez, Jesús Fernández-Conde. Electronics 2020, 9(12), 2163, MDPI 2020 (Special Issue Open Source Software in Learning Environments). [DOI: https://doi.org/10.3390/electronics9122163](https://doi.org/10.3390/electronics9122163)
+
+4. *A ROS‐Based Open Tool for Intelligent Robotics Education*. José M. Cañas, Eduardo Perdices, Lía García-Pérez, Jesús Fernández-Conde. Applied Sciences 10(21), 7419, MDPI 2020 (Special Issue Advances in Artificial Intelligence Learning Technologies). [DOI: https://doi.org/10.3390/app10217419](https://doi.org/10.3390/app10217419)
+
+5. *Entorno docente universitario para la programación de robots*. José M.Cañas, Alberto Martín, Eduardo Perdices, Francisco Rivas, Roberto Calvo. Revista Iberoamericana de Automática e Informática Industrial, 15, 404-415, 2018 [DOI: https://doi.org/10.4995/riai.2018.8962](https://doi.org/10.4995/riai.2018.8962)
+
+# Sponsors
 
 <figure class="third">
     <a href="https://www.urjc.es/" target="_blank"><img src="{{ site.url }}{{ site.baseurl }}/assets/images/cover/logoURJC.jpg" style="width:400px;"></a>
