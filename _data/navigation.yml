@@ -2,7 +2,7 @@
 main:
 
   - title: "Contributor Guide"
-    url: /developer_guide/
+    url: /developer_guide
     
   - title: "Exercises"
     url: /exercises/
