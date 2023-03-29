@@ -1,6 +1,9 @@
 # main links
 main:
 
+  - title: "Contributor Guide"
+    url: /developer_guide/
+    
   - title: "Exercises"
     url: /exercises/
 
@@ -34,12 +37,13 @@ docs:
       - title: Industrial Robots
         url: /exercises/industrial_robots_section
 
-  - title: "Contribute"
-    children:
+#  - title: "User Guide"
+#    url: /user_guide/
+#    children:
 #      - title: "Status"
 #        url: /status/
-      - title: "Roadmap"
-        url: /roadmap/
-      - title: "How to contribute"
-        url: /contribute/
+#      - title: "Roadmap"
+#        url: /roadmap/
+#      - title: "How to contribute"
+#        url: /contribute/
 
