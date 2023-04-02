@@ -42,9 +42,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/3d_reconstruction/exercise.py 0.0.0.0"
     },
     "follow_turtlebot": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch",
-        "instructions_ros": ["python3 /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/launch",
+        "instructions_ros": ["python3 /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/follow_turtlebot/exercise.py 0.0.0.0"
     },
     "follow_turtlebot_rotors": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/launch",

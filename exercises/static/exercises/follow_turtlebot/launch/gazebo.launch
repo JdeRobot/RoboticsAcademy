@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/web-template/follow_turtlebot.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/follow_turtlebot/follow_turtlebot.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>

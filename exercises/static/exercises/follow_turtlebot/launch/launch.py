@@ -13,6 +13,8 @@ TIMEOUT = 30
 MAX_ATTEMPT = 2
 
 # Check if acceleration can be enabled
+
+
 def check_device(device_path):
     try:
         return stat.S_ISCHR(os.lstat(device_path)[stat.ST_MODE])
@@ -40,7 +42,8 @@ class Test():
     def px4(self):
         rospy.logwarn("[PX4-SITL] Launching")
         start_time = rospy.get_time()
-        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander","--instance", "0", "check"]
+        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander",
+                "--instance", "0", "check"]
         while rospy.get_time() - start_time < TIMEOUT:
             process = spawn_process(args, insert_vglrun=False)
             with process.stdout:
@@ -72,9 +75,10 @@ class Launch():
 
     def start(self):
         ######## LAUNCH GAZEBO ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
-                "--wait", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/gazebo.launch",
+                "--wait",
                 "--log"
                 ]
 
@@ -88,10 +92,9 @@ class Launch():
                 return
             attempt = attempt + 1
 
-
         ######## LAUNCH PX4 ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/px4.launch", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/launch/px4.launch",
                 "--log"
                 ]
 
@@ -104,11 +107,11 @@ class Launch():
                 rospy.logerr("[PX4] Launch Failed")
                 return
             attempt = attempt + 1
-        
 
         ######## LAUNCH MAVROS ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/mavros_and_turtlebot.launch", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/mavros_and_turtlebot.launch",
                 "--log"
                 ]
 
@@ -126,6 +129,6 @@ class Launch():
 if __name__ == "__main__":
     launch = Launch()
     launch.start()
-    
+
     with open("/drones_launch.log", "w") as f:
-            f.write("success")
+        f.write("success")
