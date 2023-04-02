@@ -77,7 +77,7 @@ class HAL:
         self.cameraR = ListenerCamera(topicCameraR)
 
         self.template = cv2.imread(
-            '/RoboticsAcademy/exercises/static/exercises/car_junction/web-template/assets/img/template.png', 0)
+            '/RoboticsAcademy/exercises/static/exercises/car_junction/assets/img/template.png', 0)
 
         # Dummy Cars Controller
         self.dummy_speed_1 = -2
