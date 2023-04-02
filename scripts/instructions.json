@@ -6,9 +6,9 @@
         "instructions_gui": "python3 /RoboticsAcademy/exercises/static/exercises/follow_line/gui.py 0.0.0.0 {}"
     },
     "obstacle_avoidance": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch",
-        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/launch/obstacle_avoidance_f1_headless.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/launch",
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/launch/obstacle_avoidance_f1_headless.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/exercise.py 0.0.0.0"
     },
     "vacuum_cleaner": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner/launch",
