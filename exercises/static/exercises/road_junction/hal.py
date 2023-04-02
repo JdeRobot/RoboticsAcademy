@@ -9,7 +9,7 @@ from datetime import datetime
 from interfaces.camera import ListenerCamera
 from interfaces.pose3d import ListenerPose3d
 from interfaces.motors import PublisherMotors
-from gazebo_msgs.msg import ModelState 
+from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 
 # Hardware Abstraction Layer
@@ -29,7 +29,8 @@ class HAL:
         self.p3d = None
 
         if os.getcwd() == "/":
-            f = open("/RoboticsAcademy/exercises/car_junction/web-template/stop_conf.yml", "r")
+            f = open(
+                "/RoboticsAcademy/exercises/static/exercises/car_junction/stop_conf.yml", "r")
         else:
             f = open("stop_conf.yml", "r")
 
@@ -44,12 +45,14 @@ class HAL:
         maxW = cfg['Stop']["Motors"]["maxW"]
         if not maxW:
             maxW = 0.5
-            print("Stop.Motors"+".maxW not provided, the default value is used: " + repr(maxW))
+            print(
+                "Stop.Motors"+".maxW not provided, the default value is used: " + repr(maxW))
 
         maxV = cfg['Stop']["Motors"]["maxV"]
         if not maxV:
             maxV = 5
-            print("Stop.Motors"+".maxV not provided, the default value is used: " + repr(maxV))
+            print(
+                "Stop.Motors"+".maxV not provided, the default value is used: " + repr(maxV))
 
         self.motors = PublisherMotors(topicM, maxV, maxW)
 
@@ -73,7 +76,8 @@ class HAL:
         topicCameraR = cfg['Stop']["CameraR"]["Topic"]
         self.cameraR = ListenerCamera(topicCameraR)
 
-        self.template = cv2.imread('/RoboticsAcademy/exercises/static/exercises/car_junction/web-template/assets/img/template.png', 0)
+        self.template = cv2.imread(
+            '/RoboticsAcademy/exercises/static/exercises/car_junction/web-template/assets/img/template.png', 0)
 
         # Dummy Cars Controller
         self.dummy_speed_1 = -2
@@ -145,7 +149,8 @@ class HAL:
         newPose.pose.orientation.w = pose3d.q[2]
         rospy.wait_for_service('/gazebo/set_model_state')
         try:
-            set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+            set_state = rospy.ServiceProxy(
+                '/gazebo/set_model_state', SetModelState)
             resp = set_state(newPose)
         except rospy.ServiceException:
             print("Service call failed")
@@ -163,35 +168,41 @@ class HAL:
         if self.state_msg_2.pose.position.x > 70:
             self.reset_dummies()
         if car == 1:
-            self.state_msg_1.pose.position.x = self.state_msg_1.pose.position.x + time * self.dummy_speed_1
+            self.state_msg_1.pose.position.x = self.state_msg_1.pose.position.x + \
+                time * self.dummy_speed_1
             rospy.wait_for_service('/gazebo/set_model_state')
             try:
-                set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+                set_state = rospy.ServiceProxy(
+                    '/gazebo/set_model_state', SetModelState)
                 resp = set_state(self.state_msg_1)
             except rospy.ServiceException:
                 print("Service call failed")
         if car == 2:
-            self.state_msg_2.pose.position.x = self.state_msg_2.pose.position.x + time * self.dummy_speed_2
+            self.state_msg_2.pose.position.x = self.state_msg_2.pose.position.x + \
+                time * self.dummy_speed_2
             rospy.wait_for_service('/gazebo/set_model_state')
             try:
-                set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+                set_state = rospy.ServiceProxy(
+                    '/gazebo/set_model_state', SetModelState)
                 resp = set_state(self.state_msg_2)
             except rospy.ServiceException:
                 print("Service call failed")
-    
+
     def reset_dummies(self):
         self.reset_poses()
-        
+
         rospy.wait_for_service('/gazebo/set_model_state')
         try:
-            set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+            set_state = rospy.ServiceProxy(
+                '/gazebo/set_model_state', SetModelState)
             resp = set_state(self.state_msg_1)
         except rospy.ServiceException:
             print("Service call failed")
 
         rospy.wait_for_service('/gazebo/set_model_state')
         try:
-            set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+            set_state = rospy.ServiceProxy(
+                '/gazebo/set_model_state', SetModelState)
             resp = set_state(self.state_msg_2)
         except rospy.ServiceException:
             print("Service call failed")
