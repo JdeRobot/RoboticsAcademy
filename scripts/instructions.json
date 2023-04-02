@@ -24,10 +24,10 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/color_filter/web-template/exercise.py 0.0.0.0"
     },
     "drone_cat_mouse": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch",
-        "instructions_ros": ["python3 /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/exercise.py 0.0.0.0",
-        "instructions_guest": "python3 /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/exercise_guest.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/launch",
+        "instructions_ros": ["python3 /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/exercise.py 0.0.0.0",
+        "instructions_guest": "python3 /RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/exercise_guest.py 0.0.0.0"
     },
     "drone_cat_mouse_rotors": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/web-template/launch",

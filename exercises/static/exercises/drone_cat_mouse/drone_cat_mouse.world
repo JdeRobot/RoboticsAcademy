@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
 	<world name="default">
+		<gui fullscreen="1"></gui>
 		<include>
 			<uri>model://sun</uri>
 		</include>
@@ -16,6 +17,9 @@
 		</include>
 
 		<scene>
+            <shadows>0</shadows>
+            <ambient>0.4 0.4 0.4 1.0</ambient>
+            <background>0.7 0.7 0.7 1</background>
 			<sky>
 				<clouds>
 					<speed>12</speed>
