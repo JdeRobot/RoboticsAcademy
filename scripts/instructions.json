@@ -70,9 +70,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/human_detection/web-template/exercise.py 0.0.0.0"
     },
     "labyrinth_escape": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/labyrinth_escape/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/labyrinth_escape/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/labyrinth_escape/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/labyrinth_escape/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/labyrinth_escape/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/labyrinth_escape/exercise.py 0.0.0.0"
     },
     "position_control": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/position_control/web-template/launch",
