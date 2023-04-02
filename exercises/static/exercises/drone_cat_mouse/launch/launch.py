@@ -41,7 +41,8 @@ class Test():
     def px4(self, instance):
         rospy.logwarn("[PX4-SITL] Launching")
         start_time = rospy.get_time()
-        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander","--instance", str(instance), "check"]
+        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander",
+                "--instance", str(instance), "check"]
         while rospy.get_time() - start_time < TIMEOUT:
             process = spawn_process(args, insert_vglrun=False)
             with process.stdout:
@@ -73,9 +74,10 @@ class Launch():
 
     def start(self):
         ######## LAUNCH GAZEBO ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/gazebo.launch", 
-                "--wait", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/gazebo.launch",
+                "--wait",
                 "--log"
                 ]
 
@@ -89,10 +91,10 @@ class Launch():
                 return
             attempt = attempt + 1
 
-
-        ######## LAUNCH PX4_CAT (INSTANCE 0) ######## 
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/px4_cat.launch", 
+        ######## LAUNCH PX4_CAT (INSTANCE 0) ########
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/px4_cat.launch",
                 "--log"
                 ]
 
@@ -105,11 +107,11 @@ class Launch():
                 rospy.logerr("[PX4_CAT] Launch Failed")
                 return
             attempt = attempt + 1
-        
 
         ######## LAUNCH MAVROS_CAT ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/mavros_cat.launch", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/mavros_cat.launch",
                 "--log"
                 ]
 
@@ -124,8 +126,9 @@ class Launch():
             attempt = attempt + 1
 
         ######## LAUNCH PX4_MOUSE  (INSTANCE 1) ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/px4_mouse.launch", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/px4_mouse.launch",
                 "--log"
                 ]
 
@@ -138,11 +141,11 @@ class Launch():
                 rospy.logerr("[PX4_MOUSE] Launch Failed")
                 return
             attempt = attempt + 1
-        
 
         ######## LAUNCH MAVROS_MOUSE ########
-        args = ["/opt/ros/noetic/bin/roslaunch", 
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/web-template/launch/mavros_mouse.launch", 
+        args = ["/opt/ros/noetic/bin/roslaunch",
+                "/RoboticsAcademy/exercises/static/exercises/" +
+                EXERCISE + "/launch/mavros_mouse.launch",
                 "--log"
                 ]
 
@@ -160,6 +163,6 @@ class Launch():
 if __name__ == "__main__":
     launch = Launch()
     launch.start()
-    
+
     with open("/drones_launch.log", "w") as f:
-            f.write("success")
+        f.write("success")
