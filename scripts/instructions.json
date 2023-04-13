@@ -100,9 +100,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/drone_hangar/exercise.py 0.0.0.0"
     },
     "drone_gymkhana": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_gymkhana/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/drone_gymkhana/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/drone_gymkhana/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_gymkhana/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/drone_gymkhana/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/drone_gymkhana/exercise.py 0.0.0.0"
     },
     "visual_lander": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/visual_lander/web-template/launch",

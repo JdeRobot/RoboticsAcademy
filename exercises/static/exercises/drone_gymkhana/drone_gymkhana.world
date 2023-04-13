@@ -1,22 +1,19 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.5">
-	<world name="default">	
-		<!-- GUI + Ground -->
-		<gui fullscreen='0'>
-      			<camera name='user_camera'>
-        		  <pose frame=''>18.377 -12.9995 8.68736 0 0.383644 2.52736</pose>
-        		  <view_controller>orbit</view_controller>
-        		  <projection_type>perspective</projection_type>
-      			</camera>
-    		</gui>		
-		<scene>
-			<grid>false</grid>
-      			<shadows>1</shadows>
-		</scene>		
+	<world name="default">
+
+		<gui fullscreen='1'>
+			<camera name='user_camera'>
+				<pose frame=''>18.377 -12.9995 8.68736 0 0.383644 2.52736</pose>
+				<view_controller>orbit</view_controller>
+				<projection_type>perspective</projection_type>
+			</camera>
+		</gui>
+
 		<include>
 			<uri>model://grass_plane</uri>
 		</include>
-		
+
 		<!-- Numbers -->
 		<include>
 			<name>number1</name>
@@ -112,11 +109,28 @@
 			<pose>0 8 0.5 0 0 0</pose>
 		</include>
 
+		<!-- JdeRobot logo -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<pose>-12.0.0 0.0 0.0 0.0 0.0 0.0</pose>
+		</include>
+
+		<scene>
+            <shadows>0</shadows>
+            <ambient>0.4 0.4 0.4 1.0</ambient>
+            <background>0.7 0.7 0.7 1</background>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+		</scene>
+
 		<!-- A global light source -->
 		<include>
 			<uri>model://sun</uri>
 		</include>
-		
+
 		<!-- Gazebo required specifications -->
 		<physics name='default_physics' default='0' type='ode'>
 			<gravity>0 0 -9.8066</gravity>
