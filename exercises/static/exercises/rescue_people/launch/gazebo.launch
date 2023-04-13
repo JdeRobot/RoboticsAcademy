@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/rescue_people/web-template/rescue_people.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/rescue_people/rescue_people.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>
