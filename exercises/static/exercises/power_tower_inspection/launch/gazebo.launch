@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/power_tower_inspection/web-template/power_tower_inspection.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/power_tower_inspection/power_tower_inspection.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>
