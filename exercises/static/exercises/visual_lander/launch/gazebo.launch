@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/visual_lander/web-template/visual_lander.world"/>
+    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/visual_lander/visual_lander.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>

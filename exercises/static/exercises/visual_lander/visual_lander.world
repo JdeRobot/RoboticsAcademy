@@ -1,28 +1,50 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.5">
 	<world name="default">
+		<gui fullscreen='1'></gui>
+
+		<include>
+			<uri>model://car_color_beacon</uri>
+			<pose>5 0 0.12 0 0 0</pose>
+		</include>
+
+		<road name="my_road">
+			<width>3</width>
+			<point>0 0 0.01</point>
+			<point>100 0 0.01</point>
+		</road>
+
+		<include>
+			<uri>model://gas_station</uri>
+			<pose>25 25 0 0 0 0.717</pose>
+		</include>
+
+		<!-- Grass plane -->
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- JdeRobot logo -->
+		<include>
+			<uri>model://logoJdeRobot</uri>
+			<pose>-5.4041 0.171664 0.0 0.0 0.0 0.0</pose>
+		</include>
 
 		<scene>
-			<grid>false</grid>
+            <shadows>0</shadows>
+            <ambient>0.4 0.4 0.4 1.0</ambient>
+            <background>0.7 0.7 0.7 1</background>
+			<grid>0</grid>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
 		</scene>
 
 		<!-- A global light source -->
 		<include>
 			<uri>model://sun</uri>
-		</include>
-
-		<include>
-			<uri>model://grass_plane</uri>
-		</include>
-
-		<include>
-			<uri>model://logoJdeRobot</uri>
-			<pose>-5.4041 0.171664 0 0 -0 0</pose>
-		</include>
-
-		<include>
-			<uri>model://car_color_beacon</uri>
-			<pose>5 0 0.12 0 0 0</pose>
 		</include>
 
 		<!-- Gazebo required specifications -->
