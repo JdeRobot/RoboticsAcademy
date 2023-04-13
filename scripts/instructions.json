@@ -148,9 +148,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/laser_loc/web-template/exercise.py 0.0.0.0"
     },
     "package_delivery": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/package_delivery/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/package_delivery/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/package_delivery/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/package_delivery/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/package_delivery/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/package_delivery/exercise.py 0.0.0.0"
     },
     "power_tower_inspection": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/power_tower_inspection/launch",
