@@ -90,9 +90,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/road_junction/exercise.py 0.0.0.0"
     },
     "rescue_people": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/rescue_people/web-template/launch",
-        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/rescue_people/web-template/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/rescue_people/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/rescue_people/launch",
+        "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/rescue_people/launch/launch.py"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/rescue_people/exercise.py 0.0.0.0"
     },
     "drone_hangar": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_hangar/web-template/launch",
