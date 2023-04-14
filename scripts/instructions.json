@@ -138,14 +138,14 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/montecarlo_visual_loc/exercise.py 0.0.0.0"
     },
     "laser_mapping": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/laser_mapping/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/laser_mapping/launch",
         "instructions_ros": ["/opt/ros/noetic/bin/roslaunch /opt/jderobot/CustomRobots/stdr_simulator/stdr_launchers/launch/amigobot_without_gui.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/laser_mapping/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/laser_mapping/exercise.py 0.0.0.0"
     },
     "laser_loc": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/laser_loc/web-template/launch",
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/laser_loc/launch",
         "instructions_ros": ["/opt/ros/noetic/bin/roslaunch /opt/jderobot/CustomRobots/stdr_simulator/stdr_launchers/launch/amigobot_without_gui.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/laser_loc/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/laser_loc/exercise.py 0.0.0.0"
     },
     "package_delivery": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/package_delivery/launch",
