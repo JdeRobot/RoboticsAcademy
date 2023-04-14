@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def get_python_code(request):
     python_code = request.GET.get('python_code', None)
+    print("A", python_code)
     if not python_code:
         body_unicode = request.body.decode('utf-8')
         body_unicode = body_unicode[0:18] + body_unicode[18: len(body_unicode) - 2].replace('"',
@@ -21,6 +22,8 @@ def get_python_code(request):
         body = json.loads(body_unicode, strict=False)
         
         python_code = body['python_code']
+        print("B")
+        print(python_code)
     python_code = python_code.lstrip('\\').lstrip('"')
     python_code = python_code.replace('\\n', '\n')
     python_code = python_code.replace('\\"', '"').replace("\\'", "'")
@@ -48,7 +51,7 @@ def evaluate_style(request):
         if init_index != -1:
             init_index += len('rated at ')
             final_index = result.find('/10', init_index)
-            score = round(float(result[init_index:final_index]) * 10, 2)
+            score = round(float(result[init_index:final_index]), 2)
         response = HttpResponse(result+"\n"+str(score), content_type="text/plain")
         return response
     except Exception as ex:
