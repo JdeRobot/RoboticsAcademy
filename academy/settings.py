@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'webpack_loader',                                       # Integrate React webpack bundles with Django
     'rest_framework',                                       # Django Rest Framework
     'academy.academy_rest_api.apps.AcademyRestApiConfig',   # Academy rest api application
-    'react_frontend.apps.ReactFrontendConfig'               # React frontend application
+    'react_frontend.apps.ReactFrontendConfig',               # React frontend application
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'academy.urls'
@@ -156,4 +158,21 @@ WEBPACK_LOADER = {
   }
 }
 
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
+CORS_ALLOW_CREDENTIALS = True
+

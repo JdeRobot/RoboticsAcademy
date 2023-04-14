@@ -9,6 +9,7 @@ import tempfile
 from pylint import epylint as lint
 from django.views.decorators.csrf import csrf_exempt
 
+
 def get_python_code(request):
     python_code = request.GET.get('python_code', None)
     if not python_code:
@@ -56,6 +57,8 @@ def evaluate_style(request):
         response = HttpResponse("Error", content_type="text/plain")
         return response
 
+
+
 #TODO: Too many hardcoded strings, review
 def index(request):
     exercises = Exercise.objects.all()
@@ -81,3 +84,5 @@ def request_code(request, exercise_id):
     if difficulty != None:
         print('EXERCISE: ', exercise_id, 'DIFFICULTY: ', difficulty)
         return HttpResponse(data, content_type="text/plain")
+
+

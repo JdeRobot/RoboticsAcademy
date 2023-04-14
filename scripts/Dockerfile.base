@@ -267,7 +267,7 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 # websocket server dependency
-RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0
+RUN pip3 install websocket_server posix-ipc django djangorestframework==3.13.1 django-webpack-loader==1.5.0 django-cors-headers==3.14.0
 RUN python3.8 -m pip install websockets asyncio
 
 # RAM dependencies
