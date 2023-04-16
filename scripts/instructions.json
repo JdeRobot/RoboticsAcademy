@@ -64,7 +64,7 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/follow_road/exercise.py 0.0.0.0"
     },
     "dl_digit_classifier": {
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/dl_digit_classifier/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/dl_digit_classifier/exercise.py 0.0.0.0"
     },
     "human_detection": {
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/human_detection/web-template/exercise.py 0.0.0.0"
