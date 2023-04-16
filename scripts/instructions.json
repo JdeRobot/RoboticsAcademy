@@ -123,9 +123,9 @@
         "instructions_gui_guest": "python3 /RoboticsAcademy/exercises/static/exercises/follow_line/web-template/gui_guest.py 0.0.0.0"
     },
     "autoparking": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/autoparking/web-template/launch",
-        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/autoparking/web-template/launch/autoparking.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/autoparking/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/autoparking/launch",
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/autoparking/launch/autoparking.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/autoparking/exercise.py 0.0.0.0"
     },
     "autoparking_v2": {
         "gazebo_path": "/RoboticsAcademy/exercises/autoparking_v2/web-template/launch",
