@@ -21,7 +21,7 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/exercise.py 0.0.0.0"
     },
     "color_filter": {
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/color_filter/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/color_filter/exercise.py 0.0.0.0"
     },
     "drone_cat_mouse": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/drone_cat_mouse/launch",
