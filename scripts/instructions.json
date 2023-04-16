@@ -110,9 +110,9 @@
         "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/visual_lander/exercise.py 0.0.0.0"
     },
     "opticalflow_teleop": {
-        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/opticalflow_teleop/web-template/launch",
-        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/opticalflow_teleop/web-template/launch/simple_line_follower_ros_headless_default.launch"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/opticalflow_teleop/web-template/exercise.py 0.0.0.0"
+        "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/opticalflow_teleop/launch",
+        "instructions_ros": ["/opt/ros/noetic/bin/roslaunch ./RoboticsAcademy/exercises/static/exercises/opticalflow_teleop/launch/simple_line_follower_ros_headless_default.launch"],
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/opticalflow_teleop/exercise.py 0.0.0.0"
     },
     "follow_line_game": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/follow_line/web-template/launch",
