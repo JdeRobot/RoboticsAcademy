@@ -29,4 +29,8 @@ repositories:
     type: git
     url: https://github.com/RUFFY-369/mav_comm.git
     version: main
-  
+
+  kobuki_plugins:
+    type: git
+    url: https://github.com/pawanw17/kobuki_plugins.git
+    version: noetic
