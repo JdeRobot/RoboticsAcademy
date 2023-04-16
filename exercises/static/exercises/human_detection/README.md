@@ -1,1 +1,1 @@
-[Exercise Documentation Website](https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection)
+[Exercise Documentation Webpage](https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection)
