@@ -5,7 +5,7 @@ const glob = require("glob");
 
 const aliases = () => {
   const exercises_folder =
-    "../exercises/static/exercises/**/web-template/react-components/";
+    "../exercises/static/exercises/**/react-components/";
   const exercises = glob.sync(path.resolve(__dirname, exercises_folder));
   const aliasConfig = {
     _: [

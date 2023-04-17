@@ -21,7 +21,7 @@ export default function CircuitSelector(props) {
     config.application.params = { circuit: circuitPath };
     config.launch[
       "0"
-    ].launch_file = `$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuitPath}.launch`;
+    ].launch_file = `$EXERCISE_FOLDER/launch/simple_line_follower_ros_headless_${circuitPath}.launch`;
     return config;
   };
 

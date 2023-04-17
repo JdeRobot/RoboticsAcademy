@@ -1,13 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings
-from .models import Exercise
-import ast
-import sys
 import json
 import tempfile
 from pylint import epylint as lint
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from .models import Exercise
 
 
 def get_python_code(request):
@@ -17,10 +15,9 @@ def get_python_code(request):
         body_unicode = request.body.decode('utf-8')
         body_unicode = body_unicode[0:18] + body_unicode[18: len(body_unicode) - 2].replace('"',
                                                                                             "'") + body_unicode[-2:]
-        
-        
+
         body = json.loads(body_unicode, strict=False)
-        
+
         python_code = body['python_code']
         print("B")
         print(python_code)
@@ -28,6 +25,7 @@ def get_python_code(request):
     python_code = python_code.replace('\\n', '\n')
     python_code = python_code.replace('\\"', '"').replace("\\'", "'")
     return python_code
+
 
 @csrf_exempt
 def evaluate_style(request):
@@ -52,7 +50,8 @@ def evaluate_style(request):
             init_index += len('rated at ')
             final_index = result.find('/10', init_index)
             score = round(float(result[init_index:final_index]), 2)
-        response = HttpResponse(result+"\n"+str(score), content_type="text/plain")
+        response = HttpResponse(result+"\n"+str(score),
+                                content_type="text/plain")
         return response
     except Exception as ex:
         print("2º")
@@ -61,8 +60,7 @@ def evaluate_style(request):
         return response
 
 
-
-#TODO: Too many hardcoded strings, review
+# TODO: Too many hardcoded strings, review
 def index(request):
     exercises = Exercise.objects.all()
     context = {"exercises": exercises}
@@ -76,16 +74,14 @@ def load_exercise(request, exercise_id):
 
 def request_code(request, exercise_id):
     difficulty = request.GET.get('diff')
-    path = '/exercises/static/exercises/{}/web-template/assets/{}.py'.format(exercise_id, difficulty)
+    path = f'/exercises/static/exercises/{exercise_id}/assets/{difficulty}.py'
     path = str(settings.BASE_DIR) + path
     print('PATH: ', path)
-    with open(path) as f:
-        data = f.read().replace('\\n', '\n')
+    with open(path, encoding='utf-8') as file:
+        data = file.read().replace('\\n', '\n')
 
     print(data)
 
-    if difficulty != None:
+    if difficulty is not None:
         print('EXERCISE: ', exercise_id, 'DIFFICULTY: ', difficulty)
         return HttpResponse(data, content_type="text/plain")
-
-
