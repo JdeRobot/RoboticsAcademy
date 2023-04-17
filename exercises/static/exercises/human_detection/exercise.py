@@ -21,11 +21,10 @@ from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
 
-import _init_paths #Set up path for the benchamrking folder 
-# importing required dependencies from benchmarking folder     
+import _init_paths  # Set up path for the benchamrking folder
+# importing required dependencies from benchmarking folder
 from Evaluator import *
-import benchmark 
-
+import benchmark
 
 
 class Template:
@@ -46,7 +45,8 @@ class Template:
         self.client = None
         self.host = sys.argv[1]
 
-        self.aux_model_fname = "uploaded_model.onnx"  # internal name for temporary model uploaded by user
+        # internal name for temporary model uploaded by user
+        self.aux_model_fname = "uploaded_model.onnx"
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
         self.hal = HAL()
@@ -55,7 +55,6 @@ class Template:
         # The current path is somehow required everytime for accessing files, when the exercise is running in the docker container
         self.current_path = os.path.dirname(os.path.abspath(__file__))
 
-    
     def saveModel(self, raw_dl_model):
         # Receive model
         print("Received raw model")
@@ -69,7 +68,6 @@ class Template:
             self.server.send_message(self.client, "#modl")
         except:
             print("Error saving model to file")
-
 
     def saveVideo(self, raw_video):
         print("Received raw video")
@@ -88,7 +86,7 @@ class Template:
         """Draw box and label for the detections."""
         # The output detections received from the model are in form [ymin, xmin, ymax, xmax]
         height, width = img.shape[0], img.shape[1]
-        for i,detection in enumerate(detections):
+        for i, detection in enumerate(detections):
             # the box is relative to the image size so we multiply with height and width to get pixels.
             top = detection[0] * height
             left = detection[1] * width
@@ -98,10 +96,10 @@ class Template:
             left = max(0, np.floor(left + 0.5).astype('int32'))
             bottom = min(height, np.floor(bottom + 0.5).astype('int32'))
             right = min(width, np.floor(right + 0.5).astype('int32'))
-            cv2.rectangle(img, (left, top), (right, bottom), (0,0,255), 2)
-            cv2.putText(img, 'Human', (left, top-10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,0,255), 1)
+            cv2.rectangle(img, (left, top), (right, bottom), (0, 0, 255), 2)
+            cv2.putText(img, 'Human', (left, top-10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 1)
             #cv2.putText(img, str(scores[i])+"%", (left+150, top-10), cv2.FONT_HERSHEY_DUPLEX, 0.4, (255,0,0), 1)
-
 
     def display_gt_detection(self, img, gt_detections):
         # The ground truth detections received are in the format [xmin, ymin, xmax, ymax]
@@ -110,28 +108,28 @@ class Template:
             top = int(gt_detection[2])
             right = int(gt_detection[3])
             bottom = int(gt_detection[4])
-            cv2.rectangle(img, (left, top), (right, bottom), (0,255,0), 2)
-
+            cv2.rectangle(img, (left, top), (right, bottom), (0, 255, 0), 2)
 
     def visualizeModel(self):
         try:
-            netron.start(os.path.join(self.current_path, self.aux_model_fname), address= 8081, browse=False)
+            netron.start(os.path.join(self.current_path,
+                         self.aux_model_fname), address=8081, browse=False)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print(str(exc_value))
             print("ERROR: Model couldn't be loaded to the visualizer")
 
-
     def video_infer(self):
         # Load ONNX model
         try:
             self.hal.frame_number = 0
-            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
+            sess = rt.InferenceSession(os.path.join(
+                self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
             output_layers_names = []
-            for i in range( len(sess.get_outputs()) ):
+            for i in range(len(sess.get_outputs())):
                 output_layers_names.append(sess.get_outputs()[i].name)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -145,12 +143,14 @@ class Template:
                 success, img = self.hal.getVid()
                 if not success:
                     break
-                img_resized = cv2.resize(img, (300,300))
-                img_data = np.reshape(img_resized, (1, img_resized.shape[0], img_resized.shape[1], img_resized.shape[2]))
+                img_resized = cv2.resize(img, (300, 300))
+                img_data = np.reshape(
+                    img_resized, (1, img_resized.shape[0], img_resized.shape[1], img_resized.shape[2]))
 
                 # Inference
                 # We will get output in the order of output_layers_names
-                result = sess.run(output_layers_names, {input_layer_name: img_data})
+                result = sess.run(output_layers_names, {
+                                  input_layer_name: img_data})
                 detection_boxes, detection_classes, detection_scores, num_detections = result
                 count = 0
                 detections = []
@@ -174,13 +174,15 @@ class Template:
                     end = time.time()
                     frame_time = round(end-start, 3)
                     fps = 1.0/frame_time
-                    cv2.putText(img, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255,255,255), 1)
+                    cv2.putText(img, "FPS: {}".format(int(fps)), (7, 25),
+                                cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255), 1)
                     self.gui.showResult(img, str(count))
 
                 # Template specifics to run!
                 finish_time = datetime.now()
                 dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                    1000 + dt.microseconds / 1000.0
 
                 self.iteration_counter += 1
 
@@ -196,8 +198,8 @@ class Template:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print(str(exc_value))
 
-
     # The process function
+
     def process_dl_model(self):
         """
         Given a DL model in onnx format, yield prediction per frame.
@@ -205,12 +207,13 @@ class Template:
 
         # Load ONNX model
         try:
-            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
+            sess = rt.InferenceSession(os.path.join(
+                self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
             output_layers_names = []
-            for i in range( len(sess.get_outputs()) ):
+            for i in range(len(sess.get_outputs())):
                 output_layers_names.append(sess.get_outputs()[i].name)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -224,12 +227,14 @@ class Template:
 
                 # Get input webcam image
                 img = self.hal.getImage()
-                img_resized = cv2.resize(img, (300,300))
-                img_data = np.reshape(img_resized, (1, img_resized.shape[0], img_resized.shape[1], img_resized.shape[2]))
+                img_resized = cv2.resize(img, (300, 300))
+                img_data = np.reshape(
+                    img_resized, (1, img_resized.shape[0], img_resized.shape[1], img_resized.shape[2]))
 
                 # Inference
                 # We will get output in the order of output_layers_names
-                result = sess.run(output_layers_names, {input_layer_name: img_data})
+                result = sess.run(output_layers_names, {
+                                  input_layer_name: img_data})
                 detection_boxes, detection_classes, detection_scores, num_detections = result
                 count = 0
                 detections = []
@@ -251,13 +256,15 @@ class Template:
                     end = time.time()
                     frame_time = round(end-start, 3)
                     fps = 1.0/frame_time
-                    cv2.putText(img, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255,255,255), 1)
+                    cv2.putText(img, "FPS: {}".format(int(fps)), (7, 25),
+                                cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255), 1)
                     self.gui.showResult(img, str(count))
 
                 # Template specifics to run!
                 finish_time = datetime.now()
                 dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                    1000 + dt.microseconds / 1000.0
 
                 self.iteration_counter += 1
 
@@ -273,7 +280,6 @@ class Template:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print(str(exc_value))
 
-
     def perform_benchmark(self):
         currentPath = os.path.dirname(os.path.abspath(__file__))
         acc_AP = 0
@@ -283,41 +289,45 @@ class Template:
         boundingboxes = benchmark.getBoundingBoxes()
         # getBoundingBoxes() changes the current directory, so we need to change it back
         os.chdir(currentPath)
-        savePath = os.path.join(currentPath, 'exercises/static/exercises/human_detection/web-template/benchmarking/results')
-        print (savePath)
-        print (currentPath)
+        savePath = os.path.join(
+            currentPath, 'exercises/static/exercises/human_detection/benchmarking/results')
+        print(savePath)
+        print(currentPath)
         shutil.rmtree(savePath, ignore_errors=True)
         os.makedirs(savePath)
         # Create an evaluator object in order to obtain the metrics
         evaluator = Evaluator()
         # Plot 11-pt Precision x Recall curve
         detections = evaluator.PlotPrecisionRecallCurve(
-            boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
+            # Object containing all bounding boxes (ground truths and detections)
+            boundingboxes,
             IOUThreshold=0.3,  # IOU threshold
-            method=MethodAveragePrecision.ElevenPointInterpolation,  # As the official matlab code
+            # As the official matlab code
+            method=MethodAveragePrecision.ElevenPointInterpolation,
             showAP=True,  # Show Average Precision in the title of the plot
-            showInterpolatedPrecision= True, # Plot the interpolated precision curve
-            savePath = savePath, showGraphic=False)
+            showInterpolatedPrecision=True,  # Plot the interpolated precision curve
+            savePath=savePath, showGraphic=False)
         global plot_img
-        plot_img=cv2.imread(os.path.join(savePath, "person_11.png"))
+        plot_img = cv2.imread(os.path.join(savePath, "person_11.png"))
         #self.gui.showResult(plot_img, "Plot")
         f = open(os.path.join(savePath, 'results11.txt'), 'w')
-        f.write('11-point Average Precision (AP), Precision and Recall: ') 
+        f.write('11-point Average Precision (AP), Precision and Recall: ')
 
-        #Plot 11-pt Precision x Recall curve
-        
+        # Plot 11-pt Precision x Recall curve
+
         detections = evaluator.PlotPrecisionRecallCurve(
-            boundingboxes,  # Object containing all bounding boxes (ground truths and detections)
+            # Object containing all bounding boxes (ground truths and detections)
+            boundingboxes,
             IOUThreshold=0.3,  # IOU threshold
             method=MethodAveragePrecision.EveryPointInterpolation,  # As the official matlab code
             showAP=True,  # Show Average Precision in the title of the plot
-            showInterpolatedPrecision= True, # Plot the interpolated precision curve
-            savePath = savePath, showGraphic=False)
-        global plot_img1  
-        plot_img1= cv2.imread(os.path.join(savePath, "person_every.png"))
+            showInterpolatedPrecision=True,  # Plot the interpolated precision curve
+            savePath=savePath, showGraphic=False)
+        global plot_img1
+        plot_img1 = cv2.imread(os.path.join(savePath, "person_every.png"))
         self.gui.showResult(plot_img1, "Plot1")
         f = open(os.path.join(savePath, 'results_every.txt'), 'w')
-        f.write('Mean Average Precision (mAP), Precision and Recall: ') 
+        f.write('Mean Average Precision (mAP), Precision and Recall: ')
 
         # each detection is a class
         for metricsPerClass in detections:
@@ -356,17 +366,17 @@ class Template:
         print("#"*40)
         f.close()
 
-
     def eval_dl_model(self):
         # Load ONNX model
         try:
             self.hal.frame_number = 0
-            sess = rt.InferenceSession(os.path.join(self.current_path, self.aux_model_fname))
+            sess = rt.InferenceSession(os.path.join(
+                self.current_path, self.aux_model_fname))
             # input layer name in the model
             input_layer_name = sess.get_inputs()[0].name
             # list for storing names of output layers of the model
             output_layers_names = []
-            for i in range( len(sess.get_outputs()) ):
+            for i in range(len(sess.get_outputs())):
                 output_layers_names.append(sess.get_outputs()[i].name)
         except Exception:
             exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -381,17 +391,20 @@ class Template:
                 if not success:
                     break
                 #img_resized = cv2.resize(img, (300,300))
-                img_data = np.reshape(img, (1, img.shape[0], img.shape[1], img.shape[2]))
+                img_data = np.reshape(
+                    img, (1, img.shape[0], img.shape[1], img.shape[2]))
 
                 # Inference
                 # We will get output in the order of output_layers_names
-                result = sess.run(output_layers_names, {input_layer_name: img_data})
+                result = sess.run(output_layers_names, {
+                                  input_layer_name: img_data})
                 detection_boxes, detection_classes, detection_scores, num_detections = result
                 #count = 0
                 detections = []
                 scores = []
                 height, width = img.shape[0], img.shape[1]
-                f = open(self.current_path + "/benchmarking/detections/" + str(frame_number) + ".txt", "w")
+                f = open(self.current_path + "/benchmarking/detections/" +
+                         str(frame_number) + ".txt", "w")
                 batch_size = num_detections.shape[0]
                 for batch in range(0, batch_size):
                     for detection in range(0, int(num_detections[batch])):
@@ -422,13 +435,15 @@ class Template:
                     end = time.time()
                     frame_time = round(end-start, 3)
                     fps = 1.0/frame_time
-                    cv2.putText(img, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255,255,255), 1)
+                    cv2.putText(img, "FPS: {}".format(int(fps)), (7, 25),
+                                cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 255), 1)
                     self.gui.showResult(img, str(len(gt_detections)))
 
                 # Template specifics to run!
                 finish_time = datetime.now()
                 dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                    1000 + dt.microseconds / 1000.0
 
                 self.iteration_counter += 1
 
@@ -437,7 +452,6 @@ class Template:
                 if (ms < self.ideal_cycle):
                     time.sleep((self.ideal_cycle - ms) / 1000.0)
 
-            
             self.hal.frame_number = 0
             self.perform_benchmark()
             print("Benchmarking process thread closed!")
@@ -447,9 +461,8 @@ class Template:
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print(str(exc_value))
 
-
-
     # Function to measure the frequency of iterations
+
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
@@ -460,7 +473,8 @@ class Template:
             # Measure the current time and subtract from the previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
             previous_time = current_time
 
             # Get the time period
@@ -514,22 +528,22 @@ class Template:
         self.reload = False
         # New thread execution
         self.measure_thread = threading.Thread(target=self.measure_frequency)
-        if(message == "#infer"):
+        if (message == "#infer"):
             self.thread = threading.Thread(target=self.process_dl_model)
             print("Live infer process thread started!")
-        if(message == "#eval"):
-            self.thread = threading.Thread(target= self.eval_dl_model)
+        if (message == "#eval"):
+            self.thread = threading.Thread(target=self.eval_dl_model)
             print("Benchmarking process thread started!")
-        if(message == "#video_infer"):
-            self.thread = threading.Thread(target= self.video_infer)
+        if (message == "#video_infer"):
+            self.thread = threading.Thread(target=self.video_infer)
             print("Video infer process thread started!")
         self.thread.start()
         self.measure_thread.start()
         self.send_code_message()
         print("Frequency Thread started!")
 
-
     # Function to read and set frequency from incoming message
+
     def read_frequency_message(self, message):
         frequency_message = json.loads(message)
 
@@ -541,7 +555,7 @@ class Template:
         frequency = float(frequency_message["gui"])
         self.thread_gui.ideal_cycle = 1000.0 / frequency
 
-        return  
+        return
 
     # The websocket function
     # Gets called when there is an incoming message from the client
@@ -552,7 +566,7 @@ class Template:
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
             return
-        if(message[:5] == "#ping"):
+        if (message[:5] == "#ping"):
             time.sleep(1)
             self.send_ping_message()
             return
@@ -589,18 +603,18 @@ class Template:
                 self.gui.showResult(plot_img, "Plot1")
                 print('worked!!')
             except:
-                pass            
-        if(message[:11] == "#save_model"):
+                pass
+        if (message[:11] == "#save_model"):
             try:
                 self.saveModel(message[11:])
             except:
                 pass
-        if(message[:11] == "#save_video"):
+        if (message[:11] == "#save_video"):
             try:
                 self.saveVideo(message[11:])
             except:
                 pass
-        if(message[:12] == "#video_infer"):
+        if (message[:12] == "#video_infer"):
             try:
                 self.reload = True
                 self.execute_thread(message[:12])
@@ -622,7 +636,8 @@ class Template:
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
         if os.path.isfile(self.aux_model_fname):
-            os.remove(self.aux_model_fname)  # remove temporary model file when closing
+            # remove temporary model file when closing
+            os.remove(self.aux_model_fname)
         print(client, 'closed')
 
     def run_server(self):
