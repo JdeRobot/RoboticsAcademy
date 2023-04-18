@@ -2,7 +2,7 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Image from "mui-image";
+import HomeIcon from "@mui/icons-material/Home";
 import { Box, ButtonGroup, Typography } from "@mui/material";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
@@ -56,7 +56,10 @@ function MainAppBar(props) {
               alignItems: "center",
             }}
           >
-            <Image src="/static/common/img/logo.gif" fit={"cover"} width={50} />
+            {" "}
+            <a href="https://jderobot.github.io/">
+              <img src="/static/common/img/logo.gif" width={50} alt="" />
+            </a>
             <Box
               sx={{
                 display: "flex",
@@ -73,6 +76,9 @@ function MainAppBar(props) {
           </Box>
           <Typography variant="h5">{props.exerciseName}</Typography>
           <ButtonGroup color={"loading"} variant={"contained"}>
+            <IconButton href="/exercises">
+              <HomeIcon fontSize="small" />
+            </IconButton>
             <IconButton
               component={"span"}
               id={"open-exercise"}
