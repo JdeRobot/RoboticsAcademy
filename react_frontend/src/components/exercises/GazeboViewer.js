@@ -16,7 +16,7 @@ function GazeboViewer(props) {
       [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
       callback
     );
-    window.RoboticsExerciseComponents.commsManager.send("get_state");
+    /*  window.RoboticsExerciseComponents.commsManager.send("get_state"); */
 
     return () => {
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
