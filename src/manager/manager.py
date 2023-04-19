@@ -37,7 +37,7 @@ class Manager:
 
     transitions = [
         # Transitions for state idle
-        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', },
+        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', 'before': 'on_connect'},
         # Transitions for state connected
         {'trigger': 'launch', 'source': 'connected',
             'dest': 'ready', 'before': 'on_launch'},
@@ -60,6 +60,7 @@ class Manager:
     ]
 
     def __init__(self, host: str, port: int):
+        self.version = "3.3.2"
         self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
@@ -83,6 +84,9 @@ class Manager:
         LogManager.logger.debug(f"Sending update to client")
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
+
+    def on_connect(self, event):
+        self.consumer.send_message({'version': self.version}, command="version")
 
     def on_stop(self, event):
         self.application.stop()

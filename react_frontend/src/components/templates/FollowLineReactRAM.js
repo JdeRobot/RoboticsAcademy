@@ -8,6 +8,7 @@ import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import RAMFollowLineExerciseView from "../views/RAM/RAMFollowLineExerciseView";
 import CircuitSelector from "../buttons/RAM/RAMExerciseConfiguration";
+import { Footer } from "../common/RAM/Footer";
 
 function FollowLineReactRAM() {
   return (
@@ -24,6 +25,7 @@ function FollowLineReactRAM() {
               <RAMFollowLineExerciseView context={NewManagerExerciseContext} />
             }
           />
+          <Footer></Footer>
         </ExerciseProvider>
       </ViewProvider>
     </Box>

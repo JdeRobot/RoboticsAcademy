@@ -10,6 +10,7 @@ const CommsManager = (address) => {
     RESPONSES: ["ack", "error"],
     UPDATE: "update",
     STATE_CHANGED: "state-changed",
+    VERSION: "version",
   };
 
   //region Observer pattern methods
