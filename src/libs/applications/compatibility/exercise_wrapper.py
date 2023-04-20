@@ -22,6 +22,7 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         home_dir = os.path.expanduser('~')
         self.running = False
         self.linter = Lint()
+        self.brain_ready_event = threading.Event()
         # TODO: review hardcoded values
         process_ready, self.exercise_server = self._run_exercise_server(f"python {exercise_command}",
                                                                         f'{home_dir}/ws_code.log',
@@ -48,12 +49,28 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         else:
             self.gui_server.kill()
             raise RuntimeError(f"Exercise GUI {gui_command} could not be run")
-
+        
         self.running = True
 
+        self.start_send_freq_thread()
+
+
+    def send_freq(self, exercise_connection, is_alive):
+        """Send the frequency of the brain and gui to the exercise server"""
+        while is_alive():
+            exercise_connection.send(
+                """#freq{"brain": 20, "gui": 10, "rtf": 100}""")
+            time.sleep(1)
+
+    def start_send_freq_thread(self):
+        """Start a thread to send the frequency of the brain and gui to the exercise server"""
+        daemon = Thread(target=lambda: self.send_freq(self.exercise_connection,
+                        lambda: self.is_alive), daemon=False, name='Monitor frequencies')
+        daemon.start()
+
     def _run_exercise_server(self, cmd, log_file, load_string, timeout: int = 5):
-        process = subprocess.Popen(f"{cmd}", shell=True, stdout=sys.stdout, stderr=subprocess.STDOUT, bufsize=1024,
-                                   universal_newlines=True)
+        process = subprocess.Popen(f"{cmd}", shell=True, stdout=sys.stdout, stderr=subprocess.STDOUT,
+                                   bufsize=1024, universal_newlines=True)
 
         process_ready = False
         while not process_ready:
@@ -76,6 +93,8 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
                 f"Message received from gui: {message[:30]}")
             self._process_gui_message(message)
         elif name == "exercise":  # message received from EXERCISE server
+            if message.startswith("#exec"):
+                self.brain_ready_event.set()
             LogManager.logger.info(
                 f"Message received from exercise: {message[:30]}")
             self._process_exercise_message(message)
@@ -91,17 +110,7 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
         self.exercise_connection.send("#ack")
 
     def run(self):
-        def send_freq():
-
-            while self.is_alive:
-                self.exercise_connection.send(
-                    """#freq{"brain": 20, "gui": 10, "rtf": 100}""")
-                time.sleep(1)
-
         rosservice.call_service("/gazebo/unpause_physics", [])
-        daemon = Thread(target=send_freq, daemon=False,
-                        name='Monitor frequencies')
-        daemon.start()
 
     def stop(self):
         rosservice.call_service('/gazebo/pause_physics', [])
@@ -123,7 +132,9 @@ class CompatibilityExerciseWrapper(IRoboticsPythonApplication):
     def load_code(self, code: str):
         errors = self.linter.evaluate_code(code)
         if errors == "":
+            self.brain_ready_event.clear()
             self.exercise_connection.send(f"#code {code}")
+            self.brain_ready_event.wait()
         else:
             raise Exception(errors)
 
