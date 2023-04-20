@@ -56,6 +56,7 @@ class Manager:
         # Global transitions
         {'trigger': 'disconnect', 'source': '*',
             'dest': 'idle', 'before': 'on_disconnect'},
+        #{'trigger': 'get_state', 'source': '*', 'dest': '='},
 
     ]
 
