@@ -1,6 +1,8 @@
 import os
+import time
 from typing import List, Any
 import roslaunch
+import rospy
 
 from src.manager.launcher.launcher_interface import ILauncher, LauncherException
 
@@ -49,10 +51,22 @@ class LauncherRosApi(ILauncher):
 
     def is_running(self):
         return self.launch.pm.is_alive()
+    
+    def wait_for_shutdown(self, timeout=30):
+        print("Waiting for ROS and Gazebo to shutdown")
+        start_time = rospy.Time.now().to_sec()
+        while not rospy.is_shutdown() and self.is_running():
+            if rospy.Time.now().to_sec() - start_time > timeout:
+                print("Timeout while waiting for ROS and Gazebo to shutdown")
+                break
+            rospy.sleep(0.5)
 
     def terminate(self):
-        if self.is_running():
+        try:
             self.launch.shutdown()
+            self.wait_for_shutdown()
+        except roslaunch.RLException:
+            print("Exception shutting down ROS")
 
     def _set_environment(self):
         resource_folders = [os.path.expandvars(path) for path in self.resource_folders]

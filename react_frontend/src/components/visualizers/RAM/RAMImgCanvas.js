@@ -21,7 +21,6 @@ export default function ImgCanvas() {
       [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
     );
-    /*  window.RoboticsExerciseComponents.commsManager.send("get_state"); */
 
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");

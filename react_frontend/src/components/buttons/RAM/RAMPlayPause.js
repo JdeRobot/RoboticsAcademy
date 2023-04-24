@@ -38,8 +38,6 @@ export const PlayPause = (props) => {
       callback
     );
 
-    /*    window.RoboticsExerciseComponents.commsManager.send("get_state"); */
-
     return () => {
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
         [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],

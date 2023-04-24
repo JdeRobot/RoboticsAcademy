@@ -96,7 +96,6 @@ class Manager:
         """
         Transition executed on launch trigger activ
         """
-
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
             LogManager.logger.info(
@@ -156,9 +155,11 @@ class Manager:
 
     def on_disconnect(self, event):
         try:
-            self.application.terminate()
             self.__code_loaded = False
+            self.application.terminate()
+            self.application = None
             self.launcher.terminate()
+            self.launcher = None
         except Exception as e:
             LogManager.logger.exception(f"Exception terminating instance")
             print(traceback.format_exc())
@@ -189,7 +190,8 @@ class Manager:
     def process_messsage(self, message):
         self.trigger(message.command, data=message.data or None)
         response = {"message": f"Exercise state changed to {self.state}"}
-        self.consumer.send_message(message.response(response))
+        if not message.command == "disconnect":
+            self.consumer.send_message(message.response(response))
 
     def on_pause(self, msg):
         self.application.pause()
