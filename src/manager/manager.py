@@ -9,19 +9,15 @@ import traceback
 from queue import Queue
 from uuid import uuid4
 
-
-
 from src.manager.launcher.launcher_engine import LauncherEngine
 from src.manager.application.robotics_python_application_interface import IRoboticsPythonApplication
 from src.libs.process_utils import get_class_from_file
 from src.comms.consumer_message import ManagerConsumerMessageException
-from src.ram_logging.log_manager import LogManager
 from src.comms.new_consumer import ManagerConsumer
 
+from src.ram_logging.log_manager import LogManager
 
-
-
-
+logger = LogManager.getLogger("Ram Manager")
 
 # pylint: disable=unused-argument
 
@@ -39,23 +35,16 @@ class Manager:
         # Transitions for state idle
         {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', },
         # Transitions for state connected
-        {'trigger': 'launch', 'source': 'connected',
-            'dest': 'ready', 'before': 'on_launch'},
+        {'trigger': 'launch', 'source': 'connected', 'dest': 'ready', 'before': 'on_launch'},
         # Transitions for state ready
-        {'trigger': 'terminate', 'source': 'ready',
-            'dest': 'connected', 'before': 'on_terminate'},
-        {'trigger': 'load', 'source': [
-            'ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
-        {'trigger': 'run', 'source': [
-            'ready', 'paused'], 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
+        {'trigger': 'terminate', 'source': 'ready', 'dest': 'connected', 'before': 'on_terminate'},
+        {'trigger': 'load', 'source': ['ready', 'running', 'paused'], 'dest': 'ready', 'before': 'load_code'},
+        {'trigger': 'run', 'source': ['ready', 'paused'], 'dest': 'running', 'conditions': 'code_loaded', 'after': 'on_run'},
         # Transitions for state running
-        {'trigger': 'pause', 'source': 'running',
-            'dest': 'paused', 'before': 'on_pause'},
-        {'trigger': 'stop', 'source': [
-            'running', 'paused'], 'dest': 'ready', 'before': 'on_stop'},
+        {'trigger': 'pause', 'source': 'running', 'dest': 'paused', 'before': 'on_pause'},
+        {'trigger': 'stop', 'source': ['running', 'paused'], 'dest': 'ready', 'before': 'on_stop'},
         # Global transitions
-        {'trigger': 'disconnect', 'source': '*',
-            'dest': 'idle', 'before': 'on_disconnect'},
+        {'trigger': 'disconnect', 'source': '*', 'dest': 'idle', 'before': 'on_disconnect'},
 
     ]
 
@@ -74,13 +63,12 @@ class Manager:
         self.running = True
 
     def state_change(self, event):
-        LogManager.logger.info(f"State changed to {self.state}")
+        logger.info(f"State changed to {self.state}")
         if self.consumer is not None:
-            self.consumer.send_message(
-                {'state': self.state}, command="state-changed")
+            self.consumer.send_message({'state': self.state}, command="state-changed")
 
     def update(self, data):
-        LogManager.logger.debug(f"Sending update to client")
+        logger.debug(f"Sending update to client")
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
 
@@ -94,8 +82,7 @@ class Manager:
 
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
-            LogManager.logger.info(
-                f"Manager: Launcher {name} died with code {code}")
+            logger.info(f"Manager: Launcher {name} died with code {code}")
             if self.state != 'ready':
                 self.terminate()
 
@@ -116,8 +103,7 @@ class Manager:
         if launchers_configuration is None:
             raise Exception("Launch configuration missing")
 
-        LogManager.logger.info(
-            f"Launch transition started, configuration: {configuration}")
+        logger.info(f"Launch transition started, configuration: {configuration}")
 
         # configuration['terminated_callback'] = terminated_callback
         self.launcher = LauncherEngine(**configuration)
@@ -131,35 +117,29 @@ class Manager:
 
         if not issubclass(application_class, IRoboticsPythonApplication):
             self.launcher.terminate()
-            raise Exception(
-                "The application must be an instance of IRoboticsPythonApplication")
+            raise Exception("The application must be an instance of IRoboticsPythonApplication")
+
         params['update_callback'] = self.update
         self.application = application_class(**params)
-        time.sleep(1)
-        self.application.pause()
 
     def on_terminate(self, event):
         """Terminates the application and the launcher \
             and sets the variable __code_loaded to False"""
         try:
-            self.application.terminate()
-            self.__code_loaded = False
-            self.launcher.terminate()
+            self._terminate_application_and_launchers()
         except Exception:
-            LogManager.logger.exception(f"Exception terminating instance")
+            logger.exception(f"Exception terminating")
             print(traceback.format_exc())
 
     def on_disconnect(self, event):
         try:
-            self.application.terminate()
-            self.__code_loaded = False
-            self.launcher.terminate()
+            self._terminate_application_and_launchers()
         except Exception as e:
-            LogManager.logger.exception(f"Exception terminating instance")
+            logger.exception(f"Exception disconnecting")
             print(traceback.format_exc())
 
     def on_enter_connected(self, event):
-        LogManager.logger.info("Connect state entered")
+        logger.info("Connect state entered")
 
     def on_run(self, event):
         if self.code_loaded:
@@ -167,13 +147,12 @@ class Manager:
 
     def on_enter_ready(self, event):
         configuration = event.kwargs.get('data', {})
-        LogManager.logger.info(
-            f"Start state entered, configuration: {configuration}")
+        logger.info(f"Start state entered, configuration: {configuration}")
 
     def load_code(self, event):
         self.application.pause()
         self.code_loaded = False
-        LogManager.logger.info("Internal transition load_code executed")
+        logger.info("Internal transition load_code executed")
         message_data = event.kwargs.get('data', {})
         self.application.load_code(message_data['code'])
         self.code_loaded = True
@@ -197,16 +176,22 @@ class Manager:
         Starts the RAM
         RAM must be run in main thread to be able to handle signaling other processes, for instance ROS launcher.
         """
-        LogManager.logger.info(
-            f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
+        logger.info("=====================================================================")
+        logger.info("=====================================================================")
+        logger.info(f"Starting RAM consumer in {self.consumer.server}:{self.consumer.port}")
 
         self.consumer.start()
-        
+
         def signal_handler(sign, frame):
-                print("\nprogram exiting gracefully")
-                self.running = False
+            logger.info("Program exiting gracefully")
+            self.running = False
+
+            if self.application:
                 self.application.terminate()
-                self.__code_loaded = False
+
+            self.__code_loaded = False
+
+            if self.launcher:
                 self.launcher.terminate()
 
         signal.signal(signal.SIGINT, signal_handler)
@@ -221,17 +206,29 @@ class Manager:
                     self.process_messsage(message)
             except Exception as e:
                 if message is not None:
-                    ex = ManagerConsumerMessageException(
-                        id=message.id, message=str(e))
+                    ex = ManagerConsumerMessageException(id=message.id, message=str(e))
                 else:
-                    ex = ManagerConsumerMessageException(
-                        id=str(uuid4()), message=str(e))
+                    ex = ManagerConsumerMessageException(id=str(uuid4()), message=str(e))
                 self.consumer.send_message(ex)
-                LogManager.logger.error(e, exc_info=True)
+                logger.error(e, exc_info=True)
+
+    def _terminate_application_and_launchers(self):
+        self.__code_loaded = False
+
+        if self.application:
+            self.application.terminate()
+        else:
+            logger.info(f"I want to terminate application but there is no application instance")
+
+        if self.launcher:
+            self.launcher.terminate()
+        else:
+            logger.info(f"I want to terminate launcher engine but there is no launcher engine instance")
 
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "host", type=str, help="Host to listen to  (0.0.0.0 or all hosts)")

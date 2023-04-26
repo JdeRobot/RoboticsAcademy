@@ -37,9 +37,11 @@ class ReactComponent(template.Node):
         return properties
 
     def render(self, context):
+        element_to_render = self.node_to_render.lower().split('/')[-1]
+        dom_id = f"{element_to_render}-{uuid.uuid4()}"
         react_component = {
             "component": self.node_to_render,
-            "dom_id": f"{self.node_to_render.lower()}-{uuid.uuid4()}",
+            "dom_id": dom_id,
             "properties": self.__parse_properties(),
             "children": []
         }
@@ -62,7 +64,7 @@ class ReactComponent(template.Node):
         else:
             content = ""
 
-        return f"<div id='{id}'>{str(content)}</div>"
+        return f"<div id='{dom_id}'>{str(content)}</div>"
 
 
 @register.tag(name="react_components_render")
@@ -74,12 +76,17 @@ class ReactComponentsRenderer(template.Node):
     def __init__(self):
         pass
 
-    # TODO: This function now returns array of components where each one is a javascript prototype, maybe it could
-    #  return a root prototype with the list inside it's children array
     def render(self, context):
-        components = json.dumps(context.render_context['react-components'])
+        root_component = {
+            "component": "root",
+            "dom_id": "",
+            "properties": "",
+            "children": context.render_context['react-components']
+        }
+
+        components = json.dumps(root_component)
         return f"""
 <script>
-    RoboticsExerciseComponents.render([{components}]);
+    RoboticsExerciseComponents.render({components});
 </script>            
 """

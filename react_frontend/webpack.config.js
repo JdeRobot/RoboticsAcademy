@@ -14,6 +14,7 @@ const aliases = () => {
     Components: path.resolve(__dirname, 'src/components'),
     Helpers: path.resolve(__dirname, 'src/helpers'),
     Hooks: path.resolve(__dirname, 'src/hooks'),
+    Common: path.resolve(__dirname, '../static/common'),
     exercises: [],
   };
 
@@ -73,6 +74,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        type: "asset/resource",
       },
     ],
   },

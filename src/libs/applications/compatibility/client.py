@@ -3,6 +3,8 @@ import websocket
 
 from src.ram_logging.log_manager import LogManager
 
+logger = LogManager.getLogger(__name__)
+
 
 class Client(threading.Thread):
     def __init__(self, url, name, callback):
@@ -24,7 +26,7 @@ class Client(threading.Thread):
                 if self._stop.isSet():
                     return
         except Exception as ex:
-            LogManager.logger.exception(ex)
+            logger.exception(ex)
 
     def stop(self) -> None:
         self._stop.set()
@@ -37,10 +39,10 @@ class Client(threading.Thread):
         self.callback(self.name, message)
 
     def on_error(self, ws, error):
-        LogManager.logger.error(error)
+        logger.error(error)
 
     def on_close(self, ws, status, msg):
-        LogManager.logger.info(f"Connection with {self.name} closed, status code: {status}, close message: {msg}")
+        logger.info(f"Connection with {self.name} closed, status code: {status}, close message: {msg}")
 
     def on_open(self, ws):
-        LogManager.logger.info(f"Connection with {self.name} opened")
+        logger.info(f"Connection with {self.name} opened")

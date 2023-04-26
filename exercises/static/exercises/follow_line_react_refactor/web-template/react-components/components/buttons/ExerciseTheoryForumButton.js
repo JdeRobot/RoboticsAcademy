@@ -7,6 +7,8 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import RoboticsTheme from "Components/RoboticsTheme";
 import {useEffect, useState} from "react";
 
+import "../../css/buttons/ExerciseTheoryForumButton.css";
+
 const ExerciseTheoryForumButton = (props) => {
   const [mode, setMode] = useState("exercise");
 
@@ -16,7 +18,7 @@ const ExerciseTheoryForumButton = (props) => {
 
   function setView() {
     const views = {
-      "exercise": document.getElementById('content_exercise'),
+      "exercise": document.getElementById('content-exercise'),
       "theory": document.getElementById('theory-view'),
       "forum": document.getElementById('forum-view')
     };
@@ -26,7 +28,11 @@ const ExerciseTheoryForumButton = (props) => {
     for(let i=0, length=keys.length; i < length; ++i) {
       let key = keys[i];
       if(views[key]) {
-        views[key].style.display = key==mode ? "block" : "none";
+        if(key==mode) {
+          views[key].classList.remove("view-hidden");
+        } else {
+          views[key].classList.add("view-hidden");
+        }
       }
     }
   }
@@ -41,13 +47,16 @@ const ExerciseTheoryForumButton = (props) => {
   return (
     <RoboticsTheme>
       <ButtonGroup color={"loading"} variant={"contained"}>
-        <IconButton component={"span"} id={"exercise"} onClick={buttonClick}>
+        <IconButton component={"span"} id={"exercise"} onClick={buttonClick}
+                    color={mode==="exercise" ? "success" : "secondary"}>
           <CodeOutlinedIcon/>
         </IconButton>
-        <IconButton component={"span"} id={"theory"} onClick={buttonClick}>
+        <IconButton component={"span"} id={"theory"} onClick={buttonClick}
+                    color={mode==="theory" ? "success" : "secondary"}>
           <SchoolOutlinedIcon/>
         </IconButton>
-        <IconButton id={"forum"} component={"span"}  onClick={buttonClick}>
+        <IconButton id={"forum"} component={"span"}  onClick={buttonClick}
+                    color={mode==="forum" ? "success" : "secondary"}>
           <CommentOutlinedIcon/>
         </IconButton>
       </ButtonGroup>

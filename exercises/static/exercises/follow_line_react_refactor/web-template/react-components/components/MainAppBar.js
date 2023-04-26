@@ -18,15 +18,41 @@ function MainAppBar(props) {
   config.height = window.innerHeight / 2;
   config.width = window.innerWidth / 2;
 
-  useLoad(() => {
-    // window.RoboticsExerciseComponents.commsManager.connect().then(() => {
-    //   window.RoboticsExerciseComponents.commsManager.launch(config);
-    // });
-  });
+  const connect = ()  => {
+    window.RoboticsReactComponents.MessageSystem.Loading.showLoading("Conectando y lanzando el ejercicio");
+
+    window.RoboticsExerciseComponents.commsManager.connect().then(() => {
+      window.RoboticsExerciseComponents.commsManager.launch(config)
+        .then(() => {
+          RoboticsReactComponents.MessageSystem.Loading.hideLoading();
+          RoboticsReactComponents.MessageSystem.Alert.showAlert("Ejercicio cargado correctamente");
+        })
+        .catch((e) => {
+          RoboticsReactComponents.MessageSystem.Alert.showAlert(e.data.message);
+        });
+    }).catch((e) => {
+      RoboticsReactComponents.MessageSystem.Alert.showAlert("Error conectando, prueba a recargar la página", () => {
+        console.log("Reloading");
+        window.location.reload();
+      }, "RECARGAR");
+    });
+  };
+
+  const disconnect = () => {
+    window.RoboticsExerciseComponents.commsManager.disconnect();
+  }
+
+  React.useEffect(() => {
+    RoboticsExerciseComponents.suscribeOnLoad(() => {
+      connect();
+    })
+  }, []);
+
 
   useUnload(() => {
-    window.RoboticsExerciseComponents.commsManager.disconnect();
+    disconnect();
   });
+
   return (
     <RoboticsTheme>
       <AppBar position="static">

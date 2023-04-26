@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import React, {useEffect} from "react";
+import {useState} from "react";
+import {Box, CircularProgress, Typography} from "@mui/material";
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 
 export const ConnectionIndicator = () => {
@@ -12,6 +12,7 @@ export const ConnectionIndicator = () => {
         setConnected(true);
       }
     };
+
     window.RoboticsExerciseComponents.commsManager.subscribe(
       [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
       callback
@@ -42,7 +43,7 @@ export const ConnectionIndicator = () => {
           ></Brightness1Icon>
         </Box>
       ) : (
-        <CircularProgress color="loading" size={20} />
+        <CircularProgress color="loading" size={20}/>
       )}
     </>
   );

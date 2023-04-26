@@ -21,6 +21,7 @@ from shared.value import SharedValue
 from lap import Lap
 from map import Map
 
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
@@ -28,22 +29,22 @@ class GUI:
     def __init__(self, host, circuit):
         rospy.init_node("GUI")
 
-        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
+        self.payload = {'image': '', 'lap': '', 'map': '', 'v': '', 'w': ''}
         self.server = None
         self.client = None
-        
+
         self.host = host
-        
+
         # Circuit
         self.circuit = circuit
 
         # Image variable host
         self.shared_image = SharedImage("guiimage")
-        
+
         # Get HAL variables
         self.shared_v = SharedValue("velocity")
         self.shared_w = SharedValue("angular")
-        
+
         # Create the lap object
         pose3d_object = ListenerPose3d("/F1ROS/odom")
         self.lap = Lap(pose3d_object)
@@ -66,14 +67,14 @@ class GUI:
     def payloadImage(self):
         image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-    	
+
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
-        
+
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-        
+
         return payload
 
     # Function for student to call
@@ -90,23 +91,23 @@ class GUI:
         self.cli_event.set()
 
         print(client, 'connected')
-        
+
     # Update the gui
     def update_gui(self):
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        
+
         # Payload Lap Message
         lapped = self.lap.check_threshold()
         self.payload["lap"] = ""
-        if(lapped != None):
+        if (lapped != None):
             self.payload["lap"] = str(lapped)
-            
+
         # Payload Map Message
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
-        
+
         # Payload Map Message Guest
         pos_message_guest = str(self.map_guest.getFormulaCoordinates())
         self.payload["map_guest"] = pos_message_guest
@@ -118,31 +119,30 @@ class GUI:
         # Payload W Message
         w_message = str(self.shared_w.get())
         self.payload["w"] = w_message
-        
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
-            
+
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if(message[:4] == "#ack"):
+        if (message[:4] == "#ack"):
             # Set acknowledgement flag
             self.ack_event.set()
         # Pause message
-        elif(message[:5] == "#paus"):
+        elif (message[:5] == "#paus"):
             self.lap.pause()
         # Unpause message
-        elif(message[:5] == "#resu"):
+        elif (message[:5] == "#resu"):
             self.lap.unpause()
         # Reset message
-        elif(message[:5] == "#rest"):
+        elif (message[:5] == "#rest"):
             self.reset_gui()
 
-    	
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-        print(client, 'closed')
+        print(f"GUI client [{client}] connection closed")
 
     # Activate the server
     def run_server(self):
@@ -170,7 +170,6 @@ class GUI:
         self.lap.reset()
         self.map.reset()
 
-        
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -216,7 +215,7 @@ class ProcessGUI(multiprocessing.Process):
     # The measuring thread to measure frequency
     def measure_thread(self):
         previous_time = datetime.now()
-        while(True):
+        while (True):
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -238,7 +237,7 @@ class ProcessGUI(multiprocessing.Process):
 
     # The main thread of execution
     def run_gui(self):
-        while(True):
+        while (True):
             start_time = datetime.now()
             # Send update signal
             self.gui.update_gui()
@@ -246,27 +245,27 @@ class ProcessGUI(multiprocessing.Process):
             # Wait for acknowldege signal
             self.ack_event.wait()
             self.ack_event.clear()
-            
+
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
-            
+
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            
+
             time_cycle = self.time_cycle.get()
 
-            if(ms < time_cycle):
-                time.sleep((time_cycle-ms) / 1000.0)
+            if (ms < time_cycle):
+                time.sleep((time_cycle - ms) / 1000.0)
 
         self.exit_signal.set()
 
     # Functions to handle auxillary GUI functions
     def reset_gui():
         self.gui.reset_gui()
-    
+
     def lap_pause():
         self.gui.lap.pause()
-    
+
     def lap_unpause():
         self.gui.lap.unpause()
 

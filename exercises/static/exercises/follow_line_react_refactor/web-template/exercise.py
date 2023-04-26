@@ -285,18 +285,31 @@ while True:
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
-        self.client = client
-        # Start the HAL update thread
-        self.server.send_message(self.client, "Starting HAL thread")
-        self.hal.start_thread()
+        if self.client is None:
+            self.client = client
+        else:
+            message = f"Another client is trying to connect [{client}], current client [{self.client}]"
+            self.server.send_message(self.client, message)
+            print(message, flush=True)
+            return
 
-        # Start real time factor tracker thread
-        self.stats_thread = threading.Thread(target=self.track_stats)
-        self.stats_thread.start()
+        if not self.hal.thread_started():
+            # Start the HAL update thread
+            self.server.send_message(self.client, "Starting HAL thread")
+            self.hal.start_thread()
 
-        # Initialize the ping message
-        self.send_frequency_message()
-        self.server.send_message(self.client, "Client connected")
+            # Start real time factor tracker thread
+            self.stats_thread = threading.Thread(target=self.track_stats)
+            self.stats_thread.start()
+
+            # Initialize the ping message
+            self.send_frequency_message()
+            self.server.send_message(self.client, "Client connected")
+        else:
+            message = f"Hal thread is already started, client [{client}]"
+            self.server.send_message(self.client, message)
+            print(message, flush=True)
+
         print("Client connected", flush=True)
 
     # Function that gets called when the connected closes

@@ -34,11 +34,17 @@ class HAL:
         self.thread = ThreadHAL(self.update_hal)
         print("HAL initialized", flush=True)
 
+        self._thread_started = False
+
+    def thread_started(self):
+        return self._thread_started
+
     # Function to start the update thread
     def start_thread(self):
         print("HAL thread starting", flush=True)
         self.start_time = time.time()
         self.thread.start()
+        self._thread_started = True
 
     # Get Image from ROS Driver Camera
     def getImage(self):

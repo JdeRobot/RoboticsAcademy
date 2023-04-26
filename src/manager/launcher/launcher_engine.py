@@ -5,6 +5,8 @@ from pydantic import BaseModel
 from src.libs.process_utils import get_class, class_from_module
 from src.ram_logging.log_manager import LogManager
 
+logger = LogManager.getLogger(__name__)
+
 
 class LauncherEngine(BaseModel):
     exercise_id: str
@@ -36,13 +38,13 @@ class LauncherEngine(BaseModel):
         for key in keys:
             launcher_data = self.launch[key]
             launcher_class = launcher_data.get('launcher', None)
-            LogManager.logger.info(f"Terminating {key}")
+            logger.info(f"Terminating {key}")
             if launcher_class is not None and launcher_class.is_running():
                 launcher_class.terminate()
 
     def launch_module(self, configuration):
         def process_terminated(name, exit_code):
-            LogManager.logger.info(f"LauncherEngine: {name} exited with code {exit_code}")
+            logger.info(f"LauncherEngine: {name} exited with code {exit_code}")
             if self.terminated_callback is not None:
                 self.terminated_callback(name, exit_code)
 

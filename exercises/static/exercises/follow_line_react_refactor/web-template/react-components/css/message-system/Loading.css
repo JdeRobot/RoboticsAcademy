@@ -1,0 +1,12 @@
+.MuiBackdrop-root {
+    flex-direction: column;
+}
+
+.MuiBackdrop-root .backdrop-message {
+    color: white;
+    font-size: 40px;
+}
+
+.MuiBackdrop-root .MuiCircularProgress-root {
+    color: white;
+}

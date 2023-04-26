@@ -9,7 +9,7 @@ from websockets.server import WebSocketServerProtocol
 from src.comms.consumer_message import ManagerConsumerMessage, ManagerConsumerMessageException
 from src.ram_logging.log_manager import LogManager
 
-logger = LogManager.logger
+logger = LogManager.getLogger(__name__)
 
 class ManagerConsumer:
     """
@@ -44,7 +44,7 @@ class ManagerConsumer:
         @param websocket: websocket
         """
         if self.client is not None and websocket != self.client:
-            LogManager.logger.debug("Client already connected, rejecting connection")
+            logger.debug("Client already connected, rejecting connection")
             await self.reject_connection(websocket)
         else:
             # self.client gets reassigned every time, but code is more clear
@@ -52,7 +52,7 @@ class ManagerConsumer:
             self.client = websocket
 
         if self.client and self.client.closed:
-            LogManager.logger.debug("Client disconnected, machine state reset")
+            logger.debug("Client disconnected, machine state reset")
             self.manager.reset()
             self.client = None
             return
@@ -83,7 +83,7 @@ class ManagerConsumer:
         Starts the consumer and listens for connections
         """
         self.server = websockets.serve(self.handler, self.host, self.port)
-        LogManager.logger.debug(f"Websocket server listening in {self.host}:{self.port}")
+        logger.debug(f"Websocket server listening in {self.host}:{self.port}")
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()
 
