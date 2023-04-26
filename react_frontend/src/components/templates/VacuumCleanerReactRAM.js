@@ -7,6 +7,7 @@ import View from "../common/View";
 import NewManagerExerciseContext from "../../contexts/NewManagerExerciseContext";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
 import VacuumCleanerExerciseView from "../views/RAM/RAMVacuumCleanerExerciseView";
+import { Footer } from "../common/RAM/Footer";
 
 const VacuumCleanerReactRAM = () => {
   return (
@@ -20,6 +21,7 @@ const VacuumCleanerReactRAM = () => {
               <VacuumCleanerExerciseView context={NewManagerExerciseContext} />
             }
           />
+          <Footer></Footer>
         </ExerciseProvider>
       </ViewProvider>
     </Box>
