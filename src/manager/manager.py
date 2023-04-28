@@ -61,7 +61,7 @@ class Manager:
     ]
 
     def __init__(self, host: str, port: int):
-        self.version = "3.3.4"
+        self.version = "3.3.5"
         self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
