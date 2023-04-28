@@ -61,7 +61,7 @@ class Manager:
     ]
 
     def __init__(self, host: str, port: int):
-        self.version = "3.3.2"
+        self.version = "3.3.4"
         self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
@@ -96,7 +96,6 @@ class Manager:
         """
         Transition executed on launch trigger activ
         """
-
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
             LogManager.logger.info(
@@ -156,8 +155,8 @@ class Manager:
 
     def on_disconnect(self, event):
         try:
-            self.application.terminate()
             self.__code_loaded = False
+            self.application.terminate()
             self.launcher.terminate()
         except Exception as e:
             LogManager.logger.exception(f"Exception terminating instance")

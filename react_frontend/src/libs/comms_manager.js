@@ -113,7 +113,7 @@ const CommsManager = (address) => {
     return new Promise((resolve, reject) => {
       const id = uuidv4();
 
-      if (!websocket) {
+      if (!websocket || websocket.readyState !== WebSocket.OPEN) {
         reject({
           id: "",
           command: "error",
