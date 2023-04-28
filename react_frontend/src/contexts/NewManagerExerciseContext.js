@@ -1,15 +1,10 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import CommsManager from "../libs/comms_manager";
 import { useState } from "react";
 import { saveCode } from "../helpers/utils";
 const NewManagerExerciseContext = React.createContext();
 
 export function ExerciseProvider({ children }) {
-  const ramHost = window.location.hostname;
-  const ramPort = 7163;
-  CommsManager(`ws://${ramHost}:${ramPort}`);
-
   const [visualization, setVisualization] = useState({
     specific: false,
     gazebo: true,

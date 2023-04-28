@@ -1,6 +1,8 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.5">
 	<world name="default">
+		<gui fullscreen='1'></gui>
+
 		<!-- Beacons -->
 		<include>
 			<name>beacon1</name>
@@ -28,14 +30,37 @@
 			<pose>10 0 0 0 0 0</pose>
 		</include>
 
+		<!-- Slab -->
+		<include>
+			<uri>model://slab</uri>
+		</include>
+
+		<!-- Grass plane -->
+		<include>
+			<uri>model://grass_plane</uri>
+		</include>
+
+		<!-- JdeRobot Logo -->
+		<include>
+			<name>logo</name>
+			<uri>model://logoJdeRobot</uri>
+			<pose>-12.0 0.0 0.0 0.0 0.0 0.0</pose>
+		</include>
+
+		<scene>
+            <shadows>0</shadows>
+            <ambient>0.4 0.4 0.4 1.0</ambient>
+            <background>0.7 0.7 0.7 1</background>
+			<sky>
+				<clouds>
+					<speed>12</speed>
+				</clouds>
+			</sky>
+		</scene>
+
 		<!-- A global light source -->
 		<include>
 			<uri>model://sun</uri>
-		</include>
-
-		<!-- Ground -->
-		<include>
-			<uri>model://ground_plane</uri>
 		</include>
 
 		<!-- Gazebo required specifications -->

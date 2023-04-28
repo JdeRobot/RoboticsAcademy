@@ -40,9 +40,8 @@ class ManagerConsumer:
     def handle_client_disconnect(self, client, server):
         if client is None:
             return
-
         LogManager.logger.info(f"client disconnected: {client}")
-        message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'reset'})
+        message = ManagerConsumerMessage(**{'id': str(uuid4()), 'command': 'disconnect'})
         self.manager_queue.put(message)
         self.client = None
         self.server.allow_new_connections()

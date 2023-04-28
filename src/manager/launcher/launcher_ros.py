@@ -17,7 +17,7 @@ class LauncherRos(ILauncher):
       "type": "module",
       "module": "ros",
       "resource_folders": [
-        "$EXERCISE_FOLDER/web-template/launch"
+        "$EXERCISE_FOLDER/launch"
       ],
       "model_folders": [
         "$CUSTOM_ROBOTS/f1/models"
@@ -25,7 +25,7 @@ class LauncherRos(ILauncher):
       "plugin_folders": [
       ],
       "parameters": [],
-      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_default.launch"
+      "launch_file": "$EXERCISE_FOLDER/launch/simple_line_follower_ros_headless_default.launch"
     }
     """
     exercise_id: str
@@ -46,9 +46,12 @@ class LauncherRos(ILauncher):
             os.environ["EXERCISE_FOLDER"] = f"{os.environ.get('EXERCISES_STATIC_FOLDER')}/{self.exercise_id}"
 
             # expand variables in configuration paths
-            resource_folders = [os.path.expandvars(path) for path in self.resource_folders]
-            model_folders = [os.path.expandvars(path) for path in self.model_folders]
-            plugin_folders = [os.path.expandvars(path) for path in self.plugin_folders]
+            resource_folders = [os.path.expandvars(
+                path) for path in self.resource_folders]
+            model_folders = [os.path.expandvars(
+                path) for path in self.model_folders]
+            plugin_folders = [os.path.expandvars(
+                path) for path in self.plugin_folders]
             launch_file = os.path.expandvars(self.launch_file)
 
             env = dict(os.environ)

@@ -99,10 +99,13 @@ class Commands:
 
         if not (ACCELERATION_ENABLED):
             # Write display config and start gzclient
-            gzclient_cmd = (f"export DISPLAY=:0;" +
+
+            gzclient_cmd = (f"export DISPLAY=:0;" + self.get_gazebo_path(exercise) +
                             "".join(gzclient_config_cmds) + "gzclient --verbose")
         else:
             gzclient_cmd = (f"export DISPLAY=:0;" +
+                            self.get_gazebo_path(exercise) +
+
                             "".join(gzclient_config_cmds) +
                             f"export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)
@@ -729,8 +732,14 @@ class Manager:
             if self.exercise in CIRCUIT_EX:
                 self.exercise = 'follow_line'
 
+
             command = "export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{}/web-template; python3 pylint_checker.py".format(
                 self.exercise)
+
+            # TODO: temp
+            command = f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}/web-template;"
+            command += f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}; python3 pylint_checker.py"
+
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"

@@ -2,8 +2,18 @@
 <sdf version="1.5">
 	<world name="default">
 
+        <gui fullscreen="1"></gui>
+
 		<scene>
 			<grid>false</grid>
+            <shadows>0</shadows>
+            <ambient>0.4 0.4 0.4 1.0</ambient>
+            <background>0.7 0.7 0.7 1</background>
+			<sky>
+		        <clouds>
+		            <speed>12</speed>
+		        </clouds>
+		    </sky>
 		</scene>
 
 		<!-- A global light source -->
@@ -11,23 +21,10 @@
 			<uri>model://sun</uri>
 		</include>
 
+        <!-- Grass -->
 		<include>
 			<uri>model://grass_plane</uri>
 		</include>
-
-		<!--<include>
-			<uri>model://house_3</uri>
-			<pose>3 6.43 0 0 0 0</pose>
-		</include>
-		-->
-		<!-- Sky -->
-		<scene>
-		    <sky>
-		        <clouds>
-		            <speed>12</speed>
-		        </clouds>
-		    </sky>
-		</scene>
 
 		<!-- JdeRobot Logo -->
         <include>
@@ -46,7 +43,6 @@
 			<pose>-19 -12.57 0 0 0 1.55</pose>
 		</include>
 		 -->
-		
 
 		<include>
 			<uri>model://polaris_ranger_ev</uri>
@@ -59,13 +55,13 @@
 			<pose>4.48 -12 0.1 0 0 0</pose>
 			<static>true</static>
 		</include>
-		
+
 		<include>
 			<uri>model://person_standing</uri>
 			<pose>-3 2 0.1 0 0 0</pose>
 			<static>true</static>
 		</include> -->
-		
+
 
 		<include>
 			<name>lampost1</name>

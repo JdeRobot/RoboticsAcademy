@@ -37,7 +37,7 @@ class Manager:
 
     transitions = [
         # Transitions for state idle
-        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', },
+        {'trigger': 'connect', 'source': 'idle', 'dest': 'connected', 'before': 'on_connect'},
         # Transitions for state connected
         {'trigger': 'launch', 'source': 'connected',
             'dest': 'ready', 'before': 'on_launch'},
@@ -56,10 +56,12 @@ class Manager:
         # Global transitions
         {'trigger': 'disconnect', 'source': '*',
             'dest': 'idle', 'before': 'on_disconnect'},
+        #{'trigger': 'get_state', 'source': '*', 'dest': '='},
 
     ]
 
     def __init__(self, host: str, port: int):
+        self.version = "3.3.5"
         self.__code_loaded = False
         self.exercise_id = None
         self.machine = Machine(model=self, states=Manager.states, transitions=Manager.transitions,
@@ -84,6 +86,9 @@ class Manager:
         if self.consumer is not None:
             self.consumer.send_message({'update': data}, command="update")
 
+    def on_connect(self, event):
+        self.consumer.send_message({'version': self.version}, command="version")
+
     def on_stop(self, event):
         self.application.stop()
 
@@ -91,7 +96,6 @@ class Manager:
         """
         Transition executed on launch trigger activ
         """
-
         def terminated_callback(name, code):
             # TODO: Prototype, review this callback
             LogManager.logger.info(
@@ -151,8 +155,8 @@ class Manager:
 
     def on_disconnect(self, event):
         try:
-            self.application.terminate()
             self.__code_loaded = False
+            self.application.terminate()
             self.launcher.terminate()
         except Exception as e:
             LogManager.logger.exception(f"Exception terminating instance")

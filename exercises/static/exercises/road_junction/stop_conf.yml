@@ -26,8 +26,8 @@ Stop:
     Proxy: "Motors:default -h localhost -p 9999"
     Topic: "/opel/cmd_vel"
     Name: StopMotors
-    maxV: 250
-    maxW: 20
+    maxV: 5
+    maxW: 0.5
 
   Pose3D:
     Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS

@@ -10,18 +10,24 @@ const CommsManager = (address) => {
     RESPONSES: ["ack", "error"],
     UPDATE: "update",
     STATE_CHANGED: "state-changed",
+    VERSION: "version",
   };
 
   //region Observer pattern methods
   const observers = {};
+  let currentState = null;
 
-  const subscribe = (events, callback) => {
-    if (typeof events === "string") {
-      events = [events];
+  const subscribe = (suscribingEvents, callback) => {
+    if (typeof suscribingEvents === "string") {
+      suscribingEvents = [suscribingEvents];
     }
-    for (let i = 0, length = events.length; i < length; i++) {
-      observers[events[i]] = observers[events[i]] || [];
-      observers[events[i]].push(callback);
+    for (let i = 0, length = suscribingEvents.length; i < length; i++) {
+      let event = suscribingEvents[i];
+      observers[event] = observers[event] || [];
+      observers[event].push(callback);
+      if (event === events.STATE_CHANGED && currentState !== null) {
+        callback({ command: events.STATE_CHANGED, data: currentState });
+      }
     }
   };
 
@@ -49,6 +55,10 @@ const CommsManager = (address) => {
   };
 
   const dispatch = (message) => {
+    if (message.command === events.STATE_CHANGED) {
+      currentState = message.data;
+    }
+
     const subscriptions = observers[message.command] || [];
     let length = subscriptions.length;
     while (length--) {
@@ -103,7 +113,7 @@ const CommsManager = (address) => {
     return new Promise((resolve, reject) => {
       const id = uuidv4();
 
-      if (!websocket) {
+      if (!websocket || websocket.readyState !== WebSocket.OPEN) {
         reject({
           id: "",
           command: "error",
