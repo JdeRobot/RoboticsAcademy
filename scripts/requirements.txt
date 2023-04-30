@@ -130,7 +130,7 @@ service-identity==18.1.0
 simplejson==3.16.0
 sip==4.19.21
 six==1.14.0
-sqlparse==0.4.3
+sqlparse==0.4.4
 sympy==1.11.1
 systemd-python==234
 toml==0.10.2
