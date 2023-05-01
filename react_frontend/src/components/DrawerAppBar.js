@@ -25,7 +25,7 @@ export default function DrawerAppBar(props) {
     setMobileOpen(!mobileOpen);
   };
   const goToForum = () => {
-    const url = "https://forum.jderobot.org/c/english/roboticsacademy/12";
+    const url = "https://forum.unibotics.org/";
     window.location.href = url;
   };
 
