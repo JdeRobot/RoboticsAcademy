@@ -5,7 +5,7 @@ import Exercise from "./components/Exercise";
 import { createRoot } from "react-dom/client";
 import "./libs/tools.js";
 import { flushSync } from "react-dom";
-import CommsManager from "RoboticsAcademy/src/client_libraries/comms_manager";
+import CommsManager from "../../../src/client_libraries/comms_manager";
 
 const container = document.getElementById("exercise");
 const root = createRoot(container);
