@@ -1,7 +1,7 @@
 import os.path
 from typing import Callable
 
-from src.libs.applications.compatibility.exercise_wrapper import CompatibilityExerciseWrapper
+from src.manager.libs.applications.compatibility.exercise_wrapper import CompatibilityExerciseWrapper
 
 
 class Exercise(CompatibilityExerciseWrapper):
