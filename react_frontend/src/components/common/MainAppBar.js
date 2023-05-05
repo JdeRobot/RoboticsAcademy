@@ -12,8 +12,6 @@ import RoboticsTheme from "../RoboticsTheme.js";
 import PropTypes from "prop-types";
 import { ConnectionIndicator } from "./RAM/ConnectionIndicator";
 import { LaunchIndicator } from "./RAM/LaunchIndicator";
-import { useLoad } from "../../hooks/useLoad";
-import { useUnload } from "../../hooks/useUnload";
 
 function MainAppBar(props) {
   const {
@@ -30,15 +28,37 @@ function MainAppBar(props) {
   config.height = window.innerHeight / 2;
   config.width = window.innerWidth / 2;
 
-  useLoad(() => {
-    window.RoboticsExerciseComponents.commsManager.connect().then(() => {
-      window.RoboticsExerciseComponents.commsManager.launch(config);
-    });
-  });
+  const retryInterval = 1000;
 
-  useUnload(() => {
-    window.RoboticsExerciseComponents.commsManager.disconnect();
-  });
+  React.useEffect(() => {
+    const connectRetry = setInterval(() => {
+      window.RoboticsExerciseComponents.commsManager
+        .connect()
+        .then(() => {
+          console.log("Successfully connected");
+          clearInterval(connectRetry);
+
+          const launchRetry = setInterval(() => {
+            window.RoboticsExerciseComponents.commsManager
+              .launch(config)
+              .then(() => {
+                console.log("Successfully launched");
+                clearInterval(launchRetry);
+              })
+              .catch((error) => {
+                console.error("Launch failed, retrying...", error);
+              });
+          }, retryInterval);
+        })
+        .catch((error) => {
+          console.error("Connection failed, retrying...", error);
+        });
+    }, retryInterval);
+
+    return () => {
+      clearInterval(connectRetry);
+    };
+  }, []);
   return (
     <RoboticsTheme>
       <AppBar position="static">
