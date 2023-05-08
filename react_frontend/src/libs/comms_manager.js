@@ -86,7 +86,7 @@ const CommsManager = (address) => {
       websocket.onclose = (e) => {
         // TODO: Rethink what to do when connection is interrupted,
         //  maybe try to reconnect and not clear the suscribers?
-        unsuscribeAll();
+        
         if (e.wasClean) {
           log.debug(
             `Connection with ${address} closed, all suscribers cleared`
