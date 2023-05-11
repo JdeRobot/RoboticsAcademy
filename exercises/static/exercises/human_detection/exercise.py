@@ -204,7 +204,9 @@ class Template:
         """
         Given a DL model in onnx format, yield prediction per frame.
         """
-
+        # Redirect the information to console
+        start_console()
+        
         # Load ONNX model
         try:
             sess = rt.InferenceSession(os.path.join(
@@ -560,7 +562,6 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        start_console()
         if (message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
