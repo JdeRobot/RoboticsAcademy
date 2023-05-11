@@ -1,15 +1,17 @@
 import React, {Fragment} from "react";
 import updateRenderer from "./UpdateRenderer";
 
-import defaultCircuit from "../../images/default_circuit.jpg"
+import defaultCircuit from "../../images/default_circuit.png"
 import "../../css/viewers/RAMUpdateView.css";
 
 const RAMUpdateView = (props) => {
   const canvasRef = React.useRef(null);
   const requestIdRef = React.useRef(null);
   const updateImageRef = React.useRef(new Image());
-  const circuitImage = React.useRef(new Image());
+  const circuitImageRef = React.useRef(new Image());
+  const carPositionRef = React.useRef([0, 0])
   const noImage = "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise";
+
 
   React.useEffect(() => {
     const callback = (message) => {
@@ -17,6 +19,7 @@ const RAMUpdateView = (props) => {
       if (update.image) {
         const image = JSON.parse(update.image);
         updateImageRef.current.src = `data:image/png;base64,${image.image}`;
+        carPositionRef.current = update.map.slice(1,).slice(0,-1).split(',');
       } else if(!update.brain) {
         updateImageRef.current.src = noImage;
       }
@@ -28,9 +31,12 @@ const RAMUpdateView = (props) => {
       ],
       callback);
 
-    circuitImage.current.src = defaultCircuit;
-    initCanvas();
-    requestIdRef.current = requestAnimationFrame(tickCanvas);
+    circuitImageRef.current.src = defaultCircuit;
+
+    circuitImageRef.current.onload = () => {
+      initCanvas();
+      requestIdRef.current = requestAnimationFrame(tickCanvas);
+    }
 
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
@@ -53,13 +59,12 @@ const RAMUpdateView = (props) => {
   const initCanvas = () => {
     canvasRef.current.width = canvasRef.current.offsetWidth;
     canvasRef.current.height = canvasRef.current.offsetHeight;
-    updateImageRef.current.src = circuitImage.current.src;
+    // updateImageRef.current.src = circuitImage.current.src;
   };
 
   const updateCanvas = () => {
     const ctx = canvasRef.current.getContext("2d");
-    const image = updateImageRef.current;
-    updateRenderer.call(ctx, image);
+    updateRenderer.call(ctx, updateImageRef.current, circuitImageRef.current, carPositionRef.current);
   }
 
   return (
