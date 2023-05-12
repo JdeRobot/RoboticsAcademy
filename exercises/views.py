@@ -1,10 +1,12 @@
 import json
 import tempfile
+import subprocess
 from pylint import epylint as lint
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 from .models import Exercise
 
 
@@ -26,6 +28,12 @@ def get_python_code(request):
     python_code = python_code.replace('\\"', '"').replace("\\'", "'")
     return python_code
 
+def ros_version(request):    
+    output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
+    output_str = output.decode('utf-8')
+    version = output_str[0]
+    data = {'version': version}
+    return JsonResponse(data)
 
 @csrf_exempt
 def evaluate_style(request):
