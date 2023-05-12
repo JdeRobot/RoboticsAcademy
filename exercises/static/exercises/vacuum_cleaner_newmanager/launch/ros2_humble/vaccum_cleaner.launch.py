@@ -17,7 +17,7 @@ def generate_launch_description():
 
   # Set the path to the world file
   world_file_name = 'roomba_1_house_followingcam.world'
-  current_dir = "/RoboticsAcademy/exercises/static/exercises/vaccum_cleaner_newmanager/launch/ros2_humble"
+  current_dir = "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_newmanager/launch/ros2_humble"
   world_path = os.path.join(current_dir, world_file_name)
    
   # Set the path to the SDF model files.
