@@ -35,7 +35,7 @@ def generate_launch_description():
 
   world_path = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/launch/ros2_humble/hospital_follow_person.world"
 
-  # Set the path to the SDF model files.
+  # Set the path to the SDF model files
   gazebo_models_path = os.path.join(pkg_turtlebot2, 'models')
   os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
 
