@@ -1,7 +1,7 @@
 import os.path
 from typing import Callable
 
-from src.libs.applications.compatibility.exercise_wrapper import CompatibilityExerciseWrapper
+from src.manager.libs.applications.compatibility.exercise_wrapper import CompatibilityExerciseWrapper
 
 
 class Exercise(CompatibilityExerciseWrapper):
@@ -9,4 +9,5 @@ class Exercise(CompatibilityExerciseWrapper):
         current_path = os.path.dirname(__file__)
 
         super(Exercise, self).__init__(exercise_command=f"{current_path}/../../python_template/ros2_humble/exercise.py 0.0.0.0",
+                                       gui_command=f"{current_path}/../../python_template/ros2_humble/gui.py 0.0.0.0 {circuit}",
                                        update_callback=update_callback)
