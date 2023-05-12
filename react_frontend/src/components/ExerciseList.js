@@ -19,17 +19,28 @@ const ExerciseList = () => {
   const filterText = getSearchBarText();
 
   const filterByVersion = (data) => {
+    // Requests ROS version and filters exercises by ROS tag
     const rosVersionURL = `${serverBase}/exercises/ros_version/`;
     fetch(rosVersionURL)
         .then((res) => res.json())
         .then((msg) => {
           ros_version = msg.version;
-          console.log("Backend using ROS" + ros_version);
-          data = data.filter((exercise) => (exercise.tags.includes(`ROS${ros_version}`) || !exercise.tags.includes("ROS")));
+          // If ROS is installed
+          if (!isNaN(parseInt(ros_version))) {          
+            data = data.filter((exercise) => (exercise.tags.includes(`ROS${ros_version}`) || !exercise.tags.includes("ROS")));
+            setExerciseList(data);
+            setLoading(false);
+          }
+          // If ROS is not installed (local + RADI developer)
+          else {
+            setExerciseList(data);
+            setLoading(false);
+          }
+        })
+        .catch((error) => {
           setExerciseList(data);
           setLoading(false);
         })
-        .catch(error => ros_version = "")
   };
 
   useEffect(() => {
@@ -39,8 +50,6 @@ const ExerciseList = () => {
       .then((res) => res.json())
       .then((exercises) => {
         const filteredExercises = filterByVersion(exercises);
-        //setExerciseList(filteredExercises);        
-        //setLoading(false);
         // setListState({ loading: false, exercises: exercises });
       });
   }, [setExerciseList]);
