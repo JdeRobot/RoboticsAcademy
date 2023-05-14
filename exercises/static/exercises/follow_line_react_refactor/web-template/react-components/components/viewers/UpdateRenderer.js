@@ -1,36 +1,81 @@
-function drawCar(ctx, x, y)
+function UpdateRenderer()
 {
-  ctx.beginPath();
-  ctx.arc(x, y, 3, 0, 2 * Math.PI, false);
+  const circuitReferenceWidth = 300;
+  const circuitReferenceHeight = 150;
+  const circuitScaleX = 0.5;
+  const circuitScaleY = 0.5;
+  const circuitMarginX = 16;
+  const circuitMarginY = 16;
 
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = "#666666";
-  ctx.stroke();
+  let currentTick = null;
 
-  ctx.fillStyle = "#FF0000";
-  ctx.fill();
+  this.init = (width, height, canvas, imageRef, circuitImageRef, circuitPositionRef) => {
+    this.ctx = canvas.getContext("2d");
+    this.canvas = canvas;
+    this.imageRef = imageRef;
+    this.circuitImageRef = circuitImageRef;
+    this.circuitPositionRef = circuitPositionRef;
+
+    this.width = width;
+    this.height = height;
+    this.circuitWidth = (this.width * circuitScaleX) - (2 * circuitMarginX);
+    this.circuitHeight = (this.height * circuitScaleY) - (2 * circuitScaleY);
+
+    this.scaleX = this.circuitWidth / circuitReferenceWidth;
+    this.scaleY = this.circuitHeight / circuitReferenceHeight;
+  }
+
+  this.run = () => {
+    currentTick = requestAnimationFrame(this.tick);
+  }
+
+  this.stop = () => {
+    if(currentTick != null) {
+      cancelAnimationFrame(currentTick);
+    }
+  }
+
+  this.tick = () => {
+    // clear canvas
+    this.ctx.canvas.width = this.width;
+    this.ctx.canvas.height = this.height;
+
+    // Draw current image
+    this.drawCameraImage();
+
+    // Draw circuit image and car position point
+    this.drawAerialView();
+
+    currentTick = requestAnimationFrame(this.tick);
+  };
+
+  this.drawCameraImage = () => {
+    this.ctx.drawImage(this.imageRef.current, 0, 0, this.width, this.height);
+  };
+
+  this.drawAerialView = () => {
+    this.ctx.drawImage(this.circuitImageRef.current, circuitMarginX, circuitMarginY, this.circuitWidth,
+      this.circuitHeight);
+
+    const position = this.circuitPositionRef.current;
+    this.drawCar(circuitMarginX + (position[0] * this.scaleX), circuitMarginY + (position[1] * this.scaleY));
+  }
+
+  this.drawCar = (x, y) => {
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, 3 * this.scaleX, 0, 2 * Math.PI, false);
+    this.ctx.lineWidth = 1.5;
+    this.ctx.strokeStyle = "#666666";
+    this.ctx.stroke();
+    this.ctx.fillStyle = "#FF0000";
+    this.ctx.fill();
+  }
+
+  return {
+    init: this.init,
+    run: this.run,
+    stop: this.stop
+  }
 }
 
-function updateRenderer(image, circuitImage, carPosition) {
-  const width = 300;
-  const height = 150;
-
-  this.canvas.width = width;
-  this.canvas.height = height;
-  // this.clearRect(0, 0, width, height);
-  this.drawImage(image, 0, 0, width, height);
-  this.drawImage(circuitImage, 0, 0, width, height);
-  drawCar(this, carPosition[0], carPosition[1]);
-}
-
-function updateRendererNew(image, circuitImage, carPosition) {
-  const width = this.canvas.width;
-  const height = this.canvas.height;
-
-  this.clearRect(0, 0, width, height);
-  this.drawImage(image, 0, 0, width, height);
-  this.drawImage(circuitImage, 16, 16, width, circuitImage.height);
-  drawCar(this, carPosition[0], carPosition[1]);
-}
-
-export default updateRenderer;
+export default UpdateRenderer;

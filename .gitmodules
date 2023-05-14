@@ -1,0 +1,3 @@
+[submodule "manager"]
+	path = ram
+	url = https://github.com/JdeRobot/RoboticsApplicationManager.git

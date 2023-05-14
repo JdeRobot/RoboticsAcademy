@@ -30,14 +30,19 @@
     background-color: #f0f0f0;
     flex-shrink: 0;
     flex-grow: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .flex-container-column > .flex-container-divider {
     height: 8px;
     cursor: ns-resize;
+    flex-direction: row;
 }
 
 .flex-container-row > .flex-container-divider {
     width: 8px;
     cursor: ew-resize;
+    flex-direction: column;
 }

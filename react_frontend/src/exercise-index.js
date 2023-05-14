@@ -3,7 +3,8 @@ import './exercise-index.css';
 import {createRoot} from 'react-dom/client';
 import './libs/tools.js';
 import {flushSync} from 'react-dom';
-import CommsManager from './libs/comms_manager';
+// import CommsManager from './libs/comms_manager';
+import CommsManager from '../../ram/client_libraries/comms_manager';
 
 window.RoboticsExerciseComponents = (function() {
   let components = [];

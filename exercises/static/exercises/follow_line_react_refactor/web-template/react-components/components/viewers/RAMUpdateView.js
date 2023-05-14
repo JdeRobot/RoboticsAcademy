@@ -5,15 +5,17 @@ import defaultCircuit from "../../images/default_circuit.png"
 import "../../css/viewers/RAMUpdateView.css";
 
 const RAMUpdateView = (props) => {
+  const { width, height } = props;
   const canvasRef = React.useRef(null);
-  const requestIdRef = React.useRef(null);
   const updateImageRef = React.useRef(new Image());
   const circuitImageRef = React.useRef(new Image());
-  const carPositionRef = React.useRef([0, 0])
+  const carPositionRef = React.useRef([0, 0]);
+  const rendererRef = React.useRef(new updateRenderer());
   const noImage = "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise";
 
 
   React.useEffect(() => {
+    // Callback doesn't update renderer, it only stores the new image and position
     const callback = (message) => {
       const update = message.data.update;
       if (update.image) {
@@ -25,51 +27,39 @@ const RAMUpdateView = (props) => {
       }
     };
 
+    // Subscribe update event
     console.log("TestShowScreen subscribing to ['update'] events");
     RoboticsExerciseComponents.commsManager.subscribe([
         RoboticsExerciseComponents.commsManager.events.UPDATE
       ],
       callback);
 
+    // Init renderer when circuit image is loaded
     circuitImageRef.current.src = defaultCircuit;
-
     circuitImageRef.current.onload = () => {
-      initCanvas();
-      requestIdRef.current = requestAnimationFrame(tickCanvas);
+      rendererRef.current.init(width, height, canvasRef.current, updateImageRef, circuitImageRef, carPositionRef);
+      rendererRef.current.run();
     }
 
+    // Unsubscribe update event and stop renderer
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-
       RoboticsExerciseComponents.commsManager.unsubscribe([
           RoboticsExerciseComponents.commsManager.events.UPDATE
         ],
         callback);
-
-      cancelAnimationFrame(requestIdRef.current);
+      rendererRef.current.stop();
     }
   }, []);
-
-  const tickCanvas = () => {
-    if(!canvasRef.current) return;
-    updateCanvas();
-    requestIdRef.current = requestAnimationFrame(tickCanvas);
-  };
-
-  const initCanvas = () => {
-    canvasRef.current.width = canvasRef.current.offsetWidth;
-    canvasRef.current.height = canvasRef.current.offsetHeight;
-    // updateImageRef.current.src = circuitImage.current.src;
-  };
-
-  const updateCanvas = () => {
-    const ctx = canvasRef.current.getContext("2d");
-    updateRenderer.call(ctx, updateImageRef.current, circuitImageRef.current, carPositionRef.current);
-  }
 
   return (
     <canvas ref={canvasRef} className={"exercise-canvas"}></canvas>
   );
+};
+
+RAMUpdateView.defaultProps = {
+  width: 800,
+  height: 600
 };
 
 export default RAMUpdateView;
