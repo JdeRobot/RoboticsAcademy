@@ -1,0 +1,49 @@
+VisualOdometry3D:
+
+  CameraLeft:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraL:default -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/VisualOdometry3D/image_rawL"
+    Name: VisualOdometry3DCameraL
+
+  CameraRight:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraR:default -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/VisualOdometry3D/image_rawR"
+    Name: VisualOdometry3DCameraR
+
+  Motors:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:default -h localhost -p 9001"
+    Topic: "/VisualOdometry3D/Motos"
+    Name: VisualOdometry3DMotors
+
+  Encoders:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Encoders:default -h localhost -p 9001"
+    Topic: "/VisualOdometry3D/Encoders"
+    Name: VisualOdometry3DEncoders
+
+  Viewer:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Endpoint: "default -h localhost -p 9957:ws -h localhost -p 11000"
+    Proxy: "3DVizA"
+    Refresh: True
+    Topic: "/VisualOdometry3D/Viewer"
+    Name: VisualOdometry3DViewer
+
+  CamACalibration: 
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    data: {"K":[240,0,320,0,0,240,240,0,0,0,1,0],
+           "RT":[1,0,0,-110,0,1,0,0,0,0,-1,0,0,0,0,1],
+           "Size":[640,480]}
+
+  CamBCalibration: 
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    data: {"K":[240,0,320,0,0,240,240,0,0,0,1,0],
+           "RT":[1,0,0,110,0,1,0,0,0,0,-1,0,0,0,0,1],
+           "Size":[640,480]}
+ 
+  NodeName: "VisualOdometry3D"

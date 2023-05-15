@@ -485,7 +485,7 @@ class Manager:
                 self.exercise = data["exercise"]
                 if (self.exercise in STDR_EX):
                     self.simulator = "stdr"
-                elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier"):
+                elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier" or self.exercise == "visual_odometry_3D"):
                     self.simulator = "none"
                 else:
                     self.simulator = "gazebo"
@@ -543,7 +543,7 @@ class Manager:
         print("> XServer started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "visual_odometry_3D"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
@@ -582,7 +582,7 @@ class Manager:
             self.commands.start_console(1920, 1080)
             print("> Console started")
         else:
-            print("> Starting exercise")
+            print("> Starting exercise 0", self.exercise)
             self.commands.start_exercise(exercise)
             print("> Exercise started")
             self.launch_level = 3
@@ -607,7 +607,7 @@ class Manager:
         print("> VNC started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "visual_odometry_3D"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
@@ -645,7 +645,7 @@ class Manager:
             self.commands.start_console(1920, 1080)
             print("> Console started")
         else:
-            print("> Starting exercise")
+            print("> Starting exercise 1", self.exercise)
             self.commands.start_exercise(exercise)
             print("> Exercise started")
             self.launch_level = 3
