@@ -1,5 +1,13 @@
 FROM jderobot/robotics-applications:base
 
+#ROScontrol and LIDAR, TODO: move to base
+RUN apt update && \
+    apt install -y \
+        ros-noetic-gazebo-ros-control \
+        ros-noetic-controller-manager \
+        ros-noetic-ros-controllers \
+        ros-noetic-velodyne-pointcloud
+
 # Custom Robot Repository
 RUN mkdir -p /opt/jderobot && cd /opt/jderobot && \
 	git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/CustomRobots.git
@@ -18,36 +26,9 @@ RUN rm -rf /catkin_ws && \
 
 COPY .rosinstall /tmp/
 RUN vcs import /catkin_ws/src  < /tmp/.rosinstall
-# FIXME: rotorS makes PX4 linking error (see issue #1840)
-RUN touch /catkin_ws/src/CrazyS/CATKIN_IGNORE /catkin_ws/src/mav_comm/CATKIN_IGNORE
 
 RUN cd /catkin_ws && rosdep update && rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
 RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build'
-
-#CrazyS
-RUN apt update && \
-    apt install -y \
-        ros-noetic-joy \
-        ros-noetic-octomap-mapping \
-        ros-noetic-control-toolbox \
-        libgoogle-glog-dev
-        # libgoogle-glog-dev --> already in rotos_gazebo_plugins¿?
-
-# This solves the plugin error that occurred while running rotors simulation for drone based exercises
-# FIXME: disable since not building rotorS (see issue #1840)
-# RUN cp /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.cc /catkin_ws/build/rotors_gazebo_plugins/Actuators.pb.h /catkin_ws/src/CrazyS/rotors_gazebo_plugins/src/ ; cp /catkin_ws/build/rotors_gazebo_plugins/libmav_msgs.so /catkin_ws/devel/lib/  
-
-#ROScontrol and LIDAR
-RUN apt update && \
-    apt install -y \
-        ros-noetic-gazebo-ros-control \
-        ros-noetic-controller-manager \
-        ros-noetic-ros-controllers \
-        ros-noetic-velodyne-pointcloud
-
-#Catvehicle
-RUN cp -r /opt/jderobot/CustomRobots/SelfDrivingModels /catkin_ws/src/SelfDrivingModels
-RUN /bin/bash -c '. /opt/ros/$ROS_DISTRO/setup.bash; cd /catkin_ws; catkin build catvehicle'
 
 # RoboticsAcademy
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
