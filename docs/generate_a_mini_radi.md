@@ -27,5 +27,5 @@ The Dockerfile used for building the image is configured to use a base image tha
 
 To build a RADI from a different branch, you will need to modify the Dockerfile to point to the desired branch. For example, if you want to clone from the issue-100 branch, the corresponding line in the Dockerfile would look like:
 ```dockerfile
-RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -bissue-100
+RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b issue-100
 ```
