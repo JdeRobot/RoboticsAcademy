@@ -37,7 +37,7 @@ else
     runserver=""
 fi
 runmanager="python3.8 manager.py"
-runram="python3.8 RoboticsAcademy/src/manager/manager.py 0.0.0.0 7163"
+runram="python3.8 -r RoboticsAcademy.ram.src.manager.manager.py 0.0.0.0 7163"
 
 # TEST LOGS
 if [ $log == true ]; then
