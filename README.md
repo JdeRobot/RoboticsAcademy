@@ -17,9 +17,11 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 - [Client side.][] (Robotics Academy architecture)
 - [Repository Architecture.][]
 - [Generate a mini RADI.][]
+- [Generate mini RADI base and pre-base.][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
 [Client side.]: ./docs/clientside.md
 [Repository Architecture.]: ./docs/RepositoryArchitecture.md
 [Generate a mini RADI.]: ./docs/generate_a_mini_radi.md
+[Generate mini RADI base and pre-base.]: ./docs/generate_radi_base_and_pre-base.md
 
