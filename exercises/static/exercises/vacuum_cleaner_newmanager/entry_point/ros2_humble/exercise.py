@@ -1,8 +1,6 @@
 import os.path
 from typing import Callable
-
 from src.manager.libs.applications.compatibility.exercise_wrapper_ros2 import CompatibilityExerciseWrapperRos2
-
 
 class Exercise(CompatibilityExerciseWrapperRos2):
     def __init__(self, circuit: str, update_callback: Callable):
