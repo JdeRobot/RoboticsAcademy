@@ -485,7 +485,7 @@ class Manager:
                 self.exercise = data["exercise"]
                 if (self.exercise in STDR_EX):
                     self.simulator = "stdr"
-                elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier"):
+                elif (self.exercise == "color_filter" or self.exercise == "human detection" or self.exercise == "digit_classifier" or self.exercise == "image_processing"):
                     self.simulator = "none"
                 else:
                     self.simulator = "gazebo"
@@ -543,7 +543,7 @@ class Manager:
         print("> XServer started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "image_processing"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
@@ -607,7 +607,7 @@ class Manager:
         print("> VNC started")
 
         # Start the exercise
-        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection"] and exercise not in STDR_EX:
+        if exercise not in ["color_filter", "dl_digit_classifier", "human_detection", "image_processing"] and exercise not in STDR_EX:
             print("> Starting GZServer")
             self.commands.start_gzserver(exercise, circuit)
             print("> GZServer started")
