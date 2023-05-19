@@ -1,0 +1,11 @@
+.test-exercise-manager-message {
+    display: inline-block;
+    font-size: 18px;
+    color: #009000;
+    vertical-align: middle;
+    margin: 0 16px;
+}
+
+.test-exercise-manager-message.error {
+    color: #ff0000;
+}
