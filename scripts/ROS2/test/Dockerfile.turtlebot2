@@ -1,0 +1,51 @@
+FROM humble_base
+
+# Turtlebot2 simulated and hospital world
+
+RUN mkdir -p /home/turtlebot2_ws/src && cd /home/turtlebot2_ws/src && \
+	git clone -b humble-devel https://github.com/JdeRobot/CustomRobots.git
+
+RUN echo 'source /home/turtlebot2_ws/install/setup.bash' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/CustomRobots/CustomRobots/amazon_hospital/models' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/CustomRobots/CustomRobots/amazon_hospital/fuel_models' >> ~/.bashrc
+RUN echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:/home/turtlebot2_ws/src/CustomRobots/CustomRobots/amazon_hospital/hospital_world/models' >> ~/.bashrc
+RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
+
+WORKDIR /home/turtlebot2_ws
+RUN sudo rosdep fix-permissions 
+#RUN rosdep update && rosdep install --from-paths src --ignore-src -r -y
+RUN colcon build --symlink-install
+COPY empty_world_robot.sh /home/turtlebot2_ws
+
+# files to run xserver, vnc and novnc
+COPY xserver.sh /
+COPY vnc_novnc.sh /
+
+# Django server
+EXPOSE 8000
+
+# Manager websocket
+EXPOSE 8765
+
+# Code websocket
+EXPOSE 1905
+EXPOSE 1904
+
+# GUI websockets
+EXPOSE 2303
+EXPOSE 2304
+
+# noVNC Console
+EXPOSE 1108
+
+# noVNC Gazebo
+EXPOSE 6080
+
+# noVNC Rviz
+EXPOSE 6081
+
+# noVNC GUI
+EXPOSE 6082
+
+# WebRtc
+EXPOSE 1831
