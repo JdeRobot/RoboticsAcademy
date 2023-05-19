@@ -1,0 +1,4 @@
+[submodule "ram"]
+	path = ram
+	url = git@github.com:JdeRobot/RoboticsApplicationManager.git
+	branch = submodule-refactoring
