@@ -6,11 +6,10 @@ FROM jderobot/robotics-applications:base
 WORKDIR /
 
 # RoboticsAcademy
-RUN git clone -b master https://github.com/JdeRobot/RoboticsAcademy.git /RoboticsAcademy
+RUN git clone -b issue-2072 https://github.com/JdeRobot/RoboticsAcademy.git /RoboticsAcademy
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src/ && mv /RoboticsApplicationManager/* /RoboticsAcademy/src && rm -rf /RoboticsApplicationManager
-#RUN mv /RoboticsAcademy/src/manager/manager/manager.py /RoboticsAcademy/manager.py
 
 # React
 RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
