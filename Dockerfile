@@ -1,12 +1,12 @@
 FROM jderobot/robotics-academy:latest
 
-ARG CACHEBUST=0
-
 RUN cd / 
 
 # RoboticsAcademy
 RUN rm -rf RoboticsAcademy/
 RUN git clone https://github.com/JdeRobot/RoboticsAcademy.git -b exercise/visual_odometry_3D/dev
+RUN cd RoboticsAcademy/ && git pull
+RUN cd RoboticsAcademy/react_frontend/ && yarn install && yarn run build
 
 # instructions.json
 RUN rm instructions.json

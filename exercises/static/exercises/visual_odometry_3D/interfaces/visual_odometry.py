@@ -4,7 +4,7 @@ import numpy as np
 
 from .maths.cv_maths import feature_tracking
 from .maths import rotation2Euler
-from .pinhole_camera import PinholeCamera
+from ...visual_odometry_3D.interfaces.pinhole_camera import PinholeCamera
 from .scales import (get_absolute_scale_euromav, get_absolute_scale_kitti,
                      get_absolute_scale_vkitti2)
 from .scales import (get_true_rotation_kitti)

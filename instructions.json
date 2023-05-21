@@ -160,6 +160,6 @@
     "visual_odometry_3D": {
         "gazebo_path": "/RoboticsAcademy/exercises/static/exercises/visual_odometry_3D/launch",
         "instructions_ros": ["python3 ./RoboticsAcademy/exercises/static/exercises/visual_odometry_3D/launch/launch.py"],
-        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/visual_odometry_3D/web-template/exercise.py 0.0.0.0"
+        "instructions_host": "python3 /RoboticsAcademy/exercises/static/exercises/visual_odometry_3D/web/exercise.py 0.0.0.0"
     }
 }

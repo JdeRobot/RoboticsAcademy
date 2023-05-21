@@ -1,1 +1,1 @@
-[Exercise Documentation Website](https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/visual_odometry_3D)
+[Exercise Documentation Website](https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction)

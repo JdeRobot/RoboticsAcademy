@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 
 import cv2
+import numpy as np
 from websocket_server import WebsocketServer
 
 
@@ -33,15 +34,6 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.hal = hal
         t.start()
-
-
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initGUI(cls, host):
-        # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host)
-        return new_instance
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -73,10 +65,10 @@ class GUI:
 
     # Function for student to call
     def showImage(self, image):
-    	self.image_show_lock.acquire()
-    	self.image_to_be_shown = image
-    	self.image_to_be_shown_updated = True
-    	self.image_show_lock.release()
+        self.image_show_lock.acquire()
+        self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+        self.image_show_lock.release()
 
     # Function to get the client
     # Called when a new client is received
