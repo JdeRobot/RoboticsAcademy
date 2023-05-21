@@ -327,7 +327,6 @@ class Commands:
         # Reset gz world
         self.unpause_physics()
 
-        # Not used with CrazyS (rotorS), see issue #1840
         cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
         attempt = 0
         while (attempt < 20):
