@@ -19,7 +19,7 @@ class HAL:
         DATASET = 'kitti'
 
         # Paths
-        DATASET_PATH = "/datasets/kitti/"
+        DATASET_PATH = "/datasets/kitti/dataset/"
         SEQUENCE_PATH = DATASET_PATH + "sequences/" + SEQUENCE_NUMBER
         LEFT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_0/*.png"
         RIGHT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_1/*.png"
