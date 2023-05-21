@@ -19,7 +19,7 @@ class HAL:
         DATASET = 'kitti'
 
         # Paths
-        DATASET_PATH = "/RoboticsAcademy/exercises/static/exercises/assets/kitti/dataset/"
+        DATASET_PATH = "/datasets/kitti/"
         SEQUENCE_PATH = DATASET_PATH + "sequences/" + SEQUENCE_NUMBER
         LEFT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_0/*.png"
         RIGHT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_1/*.png"
@@ -34,16 +34,16 @@ class HAL:
         self.left_image_files_array = sorted(glob(LEFT_CAMERA_IMAGES_PATH))
         self.right_image_files_array = sorted(glob(RIGHT_CAMERA_IMAGES_PATH))
 
+        print("BENITOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
     # Get Image from ROS Driver Camera
     def getImage(self, lr):
-
         if (lr == 'left'):
             image = cv2.imread(self.left_image_files_array[self.image_counter], 0)
         elif (lr == 'right'):
             image = cv2.imread(self.right_image_files_array[self.image_counter], 0)
         else:
             print("Invalid camera")
-
         return image
 
     def advance(self):

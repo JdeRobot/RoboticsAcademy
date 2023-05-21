@@ -94,8 +94,6 @@ class GUI:
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-
-
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
