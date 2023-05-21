@@ -24,7 +24,7 @@ Be sure to explain in details the context and the outcome that you are lookign f
 
 ## How to contribute in exercises documentation?
 
-Take a look at our [documentation guide lines](https://jderobot.github.io/RoboticsAcademy/contribute/) to contribute in github pages related issues.
+Take a look at our [documentation guide lines](https://jderobot.github.io/RoboticsAcademy/developer_guide) to contribute in github pages related issues.
 
 Thanks! :heart: :heart:
 RoboticsAcademy Team

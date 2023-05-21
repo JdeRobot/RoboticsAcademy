@@ -12,8 +12,8 @@ import RoboticsTheme from "../RoboticsTheme.js";
 import PropTypes from "prop-types";
 import { ConnectionIndicator } from "./RAM/ConnectionIndicator";
 import { LaunchIndicator } from "./RAM/LaunchIndicator";
-import { useLoad } from "../../hooks/useLoad";
-import { useUnload } from "../../hooks/useUnload";
+
+const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
 
 function MainAppBar(props) {
   const {
@@ -24,21 +24,82 @@ function MainAppBar(props) {
     openExercise,
     openForum,
   } = React.useContext(ViewContext);
-  const config = JSON.parse(
-    document.getElementById("exercise-config").textContent
-  );
-  config.height = window.innerHeight / 2;
-  config.width = window.innerWidth / 2;
 
-  useLoad(() => {
-    window.RoboticsExerciseComponents.commsManager.connect().then(() => {
-      window.RoboticsExerciseComponents.commsManager.launch(config);
-    });
-  });
+  const retryInterval = 1000;
 
-  useUnload(() => {
-    window.RoboticsExerciseComponents.commsManager.disconnect();
-  });
+  let ros_version = 1;
+
+  const fetchRosVersion = (data) => {
+    // Requests ROS version and filters exercises by ROS tag
+    const rosVersionURL = `${serverBase}/exercises/ros_version/`;
+    fetch(rosVersionURL)
+        .then((res) => res.json())
+        .then((msg) => {
+          ros_version = msg.version;
+          // If ROS is not installed
+          if (isNaN(parseInt(ros_version))) {          
+            ros_version = 1;
+          }
+        })
+        .catch((error) => {
+          ros_version = 1
+        })
+  };
+
+  React.useEffect(() => {
+    const connectRetry = setInterval(() => {
+      fetchRosVersion();
+      window.RoboticsExerciseComponents.commsManager
+        .connect()
+        .then(() => {
+          console.log("Successfully connected");
+          clearInterval(connectRetry);        
+
+          const launchRetry = setInterval(() => {
+            const config = JSON.parse(
+              document.getElementById("exercise-config").textContent
+            );
+            // Selects the configs for the ROS installed
+            const rosConfig = {};
+            let key = "ROS" + ros_version;
+            for (const [configKey, configValue] of Object.entries(config)) {
+              if (configKey === key) {
+                rosConfig[configKey] = configValue;
+              }
+            }            
+            // Creates the config to send
+            const launchConfig = {};
+            // Compatibility, if there is no ROS data, send the complete object
+            if (Object.keys(rosConfig).length == 0) {
+              launchConfig = config;
+            }
+            for (const [configKey, configValue] of Object.entries(rosConfig[key])) {
+              launchConfig[configKey] = configValue;
+            }
+            launchConfig['exercise_id'] = config['exercise_id'];            
+            launchConfig.height = window.innerHeight / 2;
+            launchConfig.width = window.innerWidth / 2;         
+            console.log(launchConfig);   
+            window.RoboticsExerciseComponents.commsManager
+              .launch(launchConfig)
+              .then(() => {
+                console.log("Successfully launched");
+                clearInterval(launchRetry);
+              })
+              .catch((error) => {
+                console.error("Launch failed, retrying...", error);
+              });
+          }, retryInterval);
+        })
+        .catch((error) => {
+          console.error("Connection failed, retrying...", error);
+        });
+    }, retryInterval);
+
+    return () => {
+      clearInterval(connectRetry);
+    };
+  }, []);
   return (
     <RoboticsTheme>
       <AppBar position="static">
