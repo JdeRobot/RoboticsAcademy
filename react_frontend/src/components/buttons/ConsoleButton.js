@@ -11,7 +11,7 @@ const ConsoleButton = (props) => {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state !== "idle" && message.data.state !== "connected") {
         setDisabled(false);
       }
     };
