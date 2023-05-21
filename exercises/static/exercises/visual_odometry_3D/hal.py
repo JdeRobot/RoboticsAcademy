@@ -38,7 +38,6 @@ class HAL:
     def getImage(self, lr):
         image = None
         if (lr == 'left'):
-            print(self.LEFT_CAMERA_IMAGES_PATH)
             image = cv2.imread(self.left_image_files_array[self.image_counter], 0)
         elif (lr == 'right'):
             image = cv2.imread(self.right_image_files_array[self.image_counter], 0)
