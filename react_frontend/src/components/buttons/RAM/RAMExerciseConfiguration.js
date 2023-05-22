@@ -64,11 +64,15 @@ export default function CircuitSelector() {
       .then((response) => response.json())
       .then((data) => {    
         const rosVersionURL = `${serverBase}/exercises/ros_version/`;    
-        let ros_version;    
+        let ros_version = 1;
         fetch(rosVersionURL)
         .then((res) => res.json())
-        .then((msg) => {
+        .then((msg) => {          
           ros_version = msg.version;
+          // If returns no version, assume 1
+          if (isNaN(parseInt(ros_version))) {          
+            ros_version = 1;
+          }
           const config = data;
           // Selects the configs available for the ROS version installed          
           const availableConfigs = {};
@@ -76,7 +80,8 @@ export default function CircuitSelector() {
           setCircuitOptions(availableConfigs[`ROS${ros_version}`]);          
         })
         .catch((error) => {
-          ros_version = 1
+          const availableConfigs = {};
+          availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
           setCircuitOptions(availableConfigs[`ROS${ros_version}`]);
         })        
       })
