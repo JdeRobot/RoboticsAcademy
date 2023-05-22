@@ -59,29 +59,26 @@ function MainAppBar(props) {
             const config = JSON.parse(
               document.getElementById("exercise-config").textContent
             );
-            // Selects the configs for the ROS installed
-            const rosConfig = {};
-            let key = "ROS" + ros_version;
-            for (const [configKey, configValue] of Object.entries(config)) {
-              if (configKey === key) {
-                rosConfig[configKey] = configValue;
+            // Selects the configs available for the ROS version installed          
+            const launchConfigs = {};
+            var selectedConfig = {};
+            launchConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
+            if (launchConfigs.hasOwnProperty(`ROS${ros_version}`)) {
+              if (Array.isArray(launchConfigs[`ROS${ros_version}`])) {                
+                selectedConfig = launchConfigs[`ROS${ros_version}`][0];
+              } else {
+                selectedConfig = launchConfigs[`ROS${ros_version}`];
               }
-            }            
-            // Creates the config to send
-            const launchConfig = {};
-            // Compatibility, if there is no ROS data, send the complete object
-            if (Object.keys(rosConfig).length == 0) {
-              launchConfig = config;
             }
-            for (const [configKey, configValue] of Object.entries(rosConfig[key])) {
-              launchConfig[configKey] = configValue;
+            else {  // Compatibility, if there is no ROS data, send the complete object              
+              selectedConfig = config;
             }
-            launchConfig['exercise_id'] = config['exercise_id'];            
-            launchConfig.height = window.innerHeight / 2;
-            launchConfig.width = window.innerWidth / 2;         
-            console.log(launchConfig);   
+            // Adds necessary fields               
+            selectedConfig['exercise_id'] = config['exercise_id'];
+            selectedConfig.height = window.innerHeight / 2;
+            selectedConfig.width = window.innerWidth / 2;         
             window.RoboticsExerciseComponents.commsManager
-              .launch(launchConfig)
+              .launch(selectedConfig)
               .then(() => {
                 console.log("Successfully launched");
                 clearInterval(launchRetry);

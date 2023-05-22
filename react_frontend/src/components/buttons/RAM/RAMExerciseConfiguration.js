@@ -5,6 +5,12 @@ import LandscapeIcon from "@mui/icons-material/Landscape";
 
 import { FormControl, InputLabel, Select } from "@mui/material";
 
+const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
+const exerciseConfig = JSON.parse(
+  document.getElementById("exercise-config").textContent
+);
+const exerciseId = exerciseConfig.exercise_id;
+
 export default function CircuitSelector() {
   const changeConfig = (circuitPath) => {
     const config = JSON.parse(
@@ -18,13 +24,18 @@ export default function CircuitSelector() {
   };
 
   const handleCircuitChange = (e) => {
-    const config = changeConfig(e);
+    const config = e;
+    console.log(JSON.stringify(config));
+    config['exercise_id'] = exerciseId;
+    config.height = window.innerHeight / 2;
+    config.width = window.innerWidth / 2;         
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
       window.RoboticsExerciseComponents.commsManager.launch(config);
     });
   };
 
   const [disabled, setDisabled] = useState(true);
+  const [circuitOptions, setCircuitOptions] = useState([]);
 
   useEffect(() => {
     const callback = (message) => {
@@ -47,6 +58,33 @@ export default function CircuitSelector() {
     };
   }, []);
 
+  useEffect(() => {
+    const mapsAvailableURL = `${serverBase}/exercises/exercise/${exerciseId}/launch_files`;
+    fetch(mapsAvailableURL)
+      .then((response) => response.json())
+      .then((data) => {    
+        const rosVersionURL = `${serverBase}/exercises/ros_version/`;    
+        let ros_version;    
+        fetch(rosVersionURL)
+        .then((res) => res.json())
+        .then((msg) => {
+          ros_version = msg.version;
+          const config = data;
+          // Selects the configs available for the ROS version installed          
+          const availableConfigs = {};
+          availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
+          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);          
+        })
+        .catch((error) => {
+          ros_version = 1
+          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);
+        })        
+      })
+      .catch((error) => {
+        console.log("Error fetching circuit options:", error);
+      });
+  }, []);
+
   return (
     <>
       <FormControl>
@@ -63,10 +101,11 @@ export default function CircuitSelector() {
             handleCircuitChange(e.target.value);
           }}
         >
-          <MenuItem value={"default"}>Default</MenuItem>
-          <MenuItem value={"montmelo"}>Montmelo</MenuItem>
-          <MenuItem value={"montreal"}>Montreal</MenuItem>
-          <MenuItem value={"nbg"}>Nürburgring</MenuItem>
+          {circuitOptions.map((option) => (
+            <MenuItem key={option.launch["0"].name} value={option}>
+              {option.launch["0"].name}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </>
