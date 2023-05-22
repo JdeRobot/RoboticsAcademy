@@ -31,8 +31,6 @@ function declare_gui(websocket_address) {
     // What to do when a message from server is received
     websocket_gui.onmessage = function (event) {
         operation = event.data.substring(0, 4);
-        console.log(operation)
-        console.log(event.data)
 
         if (operation == "#gui") {
             // Parse the entire Object
@@ -41,15 +39,9 @@ function declare_gui(websocket_address) {
             // Parse the Image Data
             var image_data = JSON.parse(data.image),
                 source = decode_utf8(image_data.image),
-                shape = image_data.shape,
-                counter = image_data.counter;
-
-            console.log(source)
-            console.log(shape)
-            console.log(counter)
+                shape = image_data.shape;
 
             if (source != "") {
-                console.log("image received");
                 image.src = "data:image/jpeg;base64," + source;
                 canvas.width = shape[1];
                 canvas.height = shape[0];
