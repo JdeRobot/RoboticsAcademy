@@ -64,6 +64,23 @@ function declare_gui(websocket_address) {
 image.onload = function () {
     update_image();
 }
+
+image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
+
+window.onload = function() {
+    var canvas = document.getElementById("gui_canvas"),
+        context = canvas.getContext('2d');
+    var image = new Image();
+  
+    image.onload = function() {
+      context.drawImage(image, 0, 0);
+    };
+  
+    image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
+    canvas.width = 1241;
+    canvas.height = 376;
+  };
+
 // Request Animation Frame to remove the flickers
 function update_image() {
     animation_id = window.requestAnimationFrame(update_image);
