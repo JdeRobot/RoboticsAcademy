@@ -77,8 +77,6 @@ window.onload = function() {
     };
   
     image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
-    canvas.width = 1241;
-    canvas.height = 376;
   };
 
 // Request Animation Frame to remove the flickers
