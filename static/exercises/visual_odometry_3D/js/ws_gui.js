@@ -54,7 +54,7 @@ function declare_gui(websocket_address) {
     }
 }
 
-var canvas = document.getElementById("gui_canvas"),
+var canvas = document.getElementById("odometry-frame.odometry-frame"),
     context = canvas.getContext('2d');
 image = new Image();
 
