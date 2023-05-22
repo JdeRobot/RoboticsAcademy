@@ -35,6 +35,11 @@ def ros_version(request):
     data = {'version': version}
     return JsonResponse(data)
 
+def launch_files(request, exercise_id):
+    exercise = Exercise.objects.get(exercise_id="follow_line_newmanager")
+    data = json.loads(exercise.configuration)
+    return JsonResponse(data)
+
 @csrf_exempt
 def evaluate_style(request):
     print("1º")
