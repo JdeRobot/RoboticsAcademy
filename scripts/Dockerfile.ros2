@@ -40,4 +40,6 @@ EXPOSE 6082
 # WebRtc
 EXPOSE 1831
 
+# make sure that entrypoint has execution permissions
+RUN chmod +x ./entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
