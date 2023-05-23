@@ -52,11 +52,25 @@ docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:
 
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
-To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions. Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
+To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
+- ```entry_point/ros_version```: used for the entrypoint of an exercise run by the RAM
+- ```launch/ros_version```: used for world launch files (.launch)
+- ```python_template/ros_version```: used for the python templates needed to compose the user code
+- ```react-components```: exercise specific react components
+
+Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
 1)  Run ```python3.8 manage.py runserver```.
 2)  Access http://127.0.0.1:8000/admin/ on a browser and log in with "user" and "pass".
-3)  Click on "add exercise" and fill the fields: exercise id (folder name), name (name to display), tags ("ROS1" to be shown when using ROS1 backend, "ROS2" for ROS2 backend), state, language and description (description to display). Save and exit.
+3)  Click on "add exercise" and fill the required fields specified below. Save and exit.
 4)  Commit db.sqlite3 changes.
+
+An exercise entry in the database must include the following data:
+- ```exercise id```: unique exercise identifier, must match the folder name
+- ```name```: name to display on the exercise list
+- ```description```: description to display on the exercise list
+- ```tags```: an exercise must include at least one ROS tag ("ROS1" or "ROS2"). The exercise will only be shown on the exercise list when the RADI ROS version installed is listed in the tags. Tags are also used by the search bar.
+- ```state```: changes the state indicator (active = green; prototype = yellow; inactive = red)
+- ```language```: programming language used
 
 <a name="How-to-update-static-files-version"></a>
 ## How to update static files version
