@@ -37,7 +37,7 @@ class GUI:
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
-    def payloadImage(self):
+    def payload_image(self):
         self.image_show_lock.acquire()
         image_to_be_shown_updated = self.image_to_be_shown_updated
         image_to_be_shown = self.image_to_be_shown
@@ -63,8 +63,9 @@ class GUI:
         
         return payload
 
+    # User method
     # Function for student to call
-    def showImage(self, image):
+    def show_image(self, image):
         self.image_show_lock.acquire()
         self.image_to_be_shown = image
         self.image_to_be_shown_updated = True
@@ -92,7 +93,7 @@ class GUI:
     # Update the gui
     def update_gui(self):
         # Payload Image Message
-        payload = self.payloadImage()
+        payload = self.payload_image()
         self.payload["image"] = json.dumps(payload)
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)

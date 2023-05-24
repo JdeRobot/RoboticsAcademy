@@ -175,15 +175,16 @@ class Template:
         hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
 
         # Add HAL functions
-        hal_module.HAL.getImage = self.hal.getImage
         hal_module.HAL.advance = self.hal.advance
+        hal_module.HAL.get_current_groundtruth = self.hal.get_current_groundtruth
+        hal_module.HAL.get_image = self.hal.get_image
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
-        gui_module.GUI.showImage = self.gui.showImage
+        gui_module.GUI.show_image = self.gui.show_image
 
         # Adding modules to system
         # Protip: The names should be different from
