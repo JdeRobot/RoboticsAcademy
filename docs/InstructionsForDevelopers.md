@@ -71,6 +71,137 @@ An exercise entry in the database must include the following data:
 - ```tags```: an exercise must include at least one ROS tag ("ROS1" or "ROS2"). The exercise will only be shown on the exercise list when the RADI ROS version installed is listed in the tags. Tags are also used by the search bar.
 - ```state```: changes the state indicator (active = green; prototype = yellow; inactive = red)
 - ```language```: programming language used
+- ```configuration```: available launch options to run the exercise written in JSON. If the generic react components are used, the exercise frontend will automatically request to launch the exercise using the first configuration that matches the key ROSX (X = ROS version detected by django). If the generic circuit selector react component is used, it will automatically display all the launch options items of the array that matches the key ROSX (X = ROS version detected by django), displaying the name stored under the key "name". Sample configuration JSON including 2 launch options for ROS1 and 1 launch option for ROS2:
+```
+{"ROS1":[
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/exercise.py",
+    "params": { "circuit": "default"}
+
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros1_noetic"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/launch/ros1_noetic/simple_line_follower_ros_headless_default.launch",
+      "name": "Default"
+    },
+    "1": {
+      "type": "module",
+      "module": "console",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+},
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/exercise.py",
+    "params": { "circuit": "default"}
+
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros1_noetic"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/launch/ros1_noetic/simple_line_follower_ros_headless_nbg.launch",
+      "name": "Nürburgring"
+    },
+    "1": {
+      "type": "module",
+      "module": "console",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+}],
+"ROS2":
+[
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
+    "params": { "circuit": "default"}
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros2_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros2_humble"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],      
+      "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/simple_line_follower_default.launch.py",
+      "name": "Default"
+
+    },
+    "1": {
+      "type": "module",
+      "module": "console_ros2",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view_ros2",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+}
+]
+}
+```
 
 <a name="How-to-update-static-files-version"></a>
 ## How to update static files version
