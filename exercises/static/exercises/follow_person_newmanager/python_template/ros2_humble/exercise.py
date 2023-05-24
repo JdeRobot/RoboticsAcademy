@@ -85,7 +85,7 @@ class Template:
 
         else:
             sequential_code, iterative_code = self.seperate_seq_iter(source_code[6:])
-            return iterative_code, sequential_code
+            return sequential_code, iterative_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -127,13 +127,11 @@ class Template:
                 pass
 
         # Turn the flag down, the iteration has successfully stopped!
-        
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
         if code[0] == "" and code[1] == "":
             return
-
         self.brain_process = BrainProcess(code, self.reload, self.stop_brain)
         self.brain_process.start()
         self.send_code_message()
@@ -205,17 +203,19 @@ class Template:
         w = float(teleop_message["w"])
 
         return v, w
-
+    
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            time.sleep(1)
             self.send_frequency_message()
             return
         
         elif(message[:5] == "#ping"):
+            time.sleep(1)
             self.send_ping_message()
             return
         
@@ -245,15 +245,17 @@ class Template:
 
         elif (message[:5] == "#code"):
             try:
+                print("\n\n LOAD CODE\n\n",self.brain_process)
                 # First pause the teleoperator thread if exists
-                if self.teleop.is_alive():
-                    self.exit_signal_teleop.set()
+                #if self.teleop.is_alive():
+                #    self.exit_signal_teleop.set()
 
                 # Once received turn the reload flag up and send it to execute_thread function
                 self.user_code = message
                 self.reload.set()
                 self.stop_brain.clear()
                 self.execute_thread(self.user_code)
+                print("\n\n LOAD CODE5\n\n")
             except:
                 pass
 

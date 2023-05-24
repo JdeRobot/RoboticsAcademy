@@ -28,17 +28,15 @@ class BrainProcess(multiprocessing.Process):
         self.iteration_counter = 0
 
         # Get the sequential and iterative code
-        # Something wrong over here! The code is reversing
-        # Found a solution but could not find the reason for this
-        self.sequential_code = code[1]
-        self.iterative_code = code[0]
+        self.sequential_code = code[0]
+        self.iterative_code = code[1]
 
     # Function to run to start the process
     def run(self):
         # Two threads for running and measuring
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.thread = threading.Thread(target=self.process_code)
-
+        
         self.measure_thread.start()
         self.thread.start()
 

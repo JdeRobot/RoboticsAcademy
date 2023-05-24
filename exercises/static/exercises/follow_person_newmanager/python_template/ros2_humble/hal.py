@@ -16,6 +16,8 @@ from shared.value import SharedValue
 from shared.laserdata import SharedLaserData
 from shared.pose3d import SharedPose3D
 
+from user_functions import HALFunctions
+
 # Hardware Abstraction Layer
 
 class HAL:
@@ -98,6 +100,9 @@ class HAL:
     def setW(self):
         angular = self.shared_w.get()
         self.motors.sendW(angular)
+
+    def getBoundingBoxes(self, img):
+        return HALFunctions.getBoundingBoxes(img)
 
     def update_hal(self):
         self.getLaserData()
