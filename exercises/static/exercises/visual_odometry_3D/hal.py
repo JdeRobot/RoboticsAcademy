@@ -29,7 +29,7 @@ class HAL:
         RIGHT_CAMERA_IMAGES_PATH = SEQUENCE_PATH + "/image_1/*.png"
     
         # Files
-        GROUNDTRUTH_FILE = DATASET_PATH + "poses/" + SEQUENCE_NUMBER + "/.txt"
+        GROUNDTRUTH_FILE = DATASET_PATH + "poses/" + SEQUENCE_NUMBER + ".txt"
         CALIBRATION_FILE = SEQUENCE_PATH + "/calib.txt"
 
         # Images paths list
