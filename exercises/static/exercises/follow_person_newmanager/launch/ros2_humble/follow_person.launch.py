@@ -18,7 +18,7 @@ def generate_launch_description():
   # Set Turtlebot2 Arguments
   x_turtlebot2_position = '0'
   y_turtlebot2_position = '10'
-  z_turtlebot2_position = '1'
+  z_turtlebot2_position = '0'
 
   declare_x_position_cmd = DeclareLaunchArgument(
     '-x', default_value=x_turtlebot2_position,
