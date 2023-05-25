@@ -16,7 +16,7 @@ function FollowLineReactRAM() {
       <ViewProvider>
         <ExerciseProvider>
           <MainAppBar
-            exerciseName={" Follow Person"}
+            exerciseName={"Follow Person"}
             specificConfiguration={<CircuitSelector></CircuitSelector>}
           />
           <View

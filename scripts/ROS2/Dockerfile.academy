@@ -2,7 +2,7 @@
 # Create a miniRADI with RoboticsAcademy and some usefull scripts for developers #
 ##################################################################################
 
-FROM jderobot/robotics-applications:base-2
+FROM jderobot/robotics-applications:base
 WORKDIR /
 
 # Scripts copy
@@ -12,16 +12,13 @@ RUN mv /opt/jderobot/scripts/pylintrc /etc/pylintrc
 RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
 
 # RoboticsAcademy
-RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b master /RoboticsAcademy/
+RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b issue-2072 /RoboticsAcademy/
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src/ && mv /RoboticsApplicationManager/* /RoboticsAcademy/src && rm -rf /RoboticsApplicationManager
 
 # build react_fronted
 RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
-
-# Pylint checker
-RUN mv /opt/jderobot/scripts/pylintrc /etc/pylintrc
 
 # Django server
 EXPOSE 8000
