@@ -53,9 +53,13 @@ class GUI:
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-        payload['counter'] = self.hal.left_image_files_array[self.hal.image_counter]
+        payload['image']                    = encoded_image.decode('utf-8')
+        payload['shape']                    = shape
+        payload['counter']                  = self.hal.left_image_files_array[self.hal.image_counter]
+        payload['true_euler_angles']        = self.hal.get_true_euler_angles_corrected()
+        payload['true_position']            = self.hal.get_current_groundtruth_position()
+        payload['estimated_euler_angles']   = self.hal.get_estimated_euler_angles()
+        payload['estimated_position']       = self.hal.get_estimated_position()
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False

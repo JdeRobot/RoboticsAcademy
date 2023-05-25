@@ -43,14 +43,23 @@ function declare_gui(websocket_address) {
             // Parse the Image Data
             var image_data = JSON.parse(data.image),
                 source = decode_utf8(image_data.image),
-                shape = image_data.shape;
+                shape = image_data.shape,
+                counter = image_data.counter,
+                true_euler_angles = image_data.true_euler_angles,
+                true_position = image_data.true_position,
+                estimated_euler_angles = image_data.estimated_euler_angles,
+                estimated_position = image_data.estimated_position;
     
             if (source != "") {
                 image.src = "data:image/jpeg;base64," + source;
                 canvas.width = shape[1];
                 canvas.height = shape[0];
 
-                console.log(canvas.width, canvas.height)
+                console.log(counter);
+                console.log(true_euler_angles);
+                console.log(true_position);
+                console.log(estimated_euler_angles);
+                console.log(estimated_position);
             }
     
             // Send the Acknowledgment Message

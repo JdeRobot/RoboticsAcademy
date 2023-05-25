@@ -160,6 +160,9 @@ class HAL:
     
     def get_estimated_euler_angles(self):
         return self.estimated_euler_angles
+    
+    def get_estimated_position(self):
+        return self.estimated_position
 
     # User method
     # Set estimated position calculated by user
