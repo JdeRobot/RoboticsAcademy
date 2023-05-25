@@ -8,21 +8,20 @@ var websocket_gui, animation_id;
 var canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
 var image = new Image();
+image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
 
 function declare_gui(websocket_address) {
     websocket_gui = new WebSocket(websocket_address);
   
     websocket_gui.onopen = function (event) {
+        //alert("[open] Connection established!");
         set_launch_level(get_launch_level() + 1);
         if (websocket_code.readyState == 1) {
             alert("[open] Connection established!");
             connectionUpdate({ connection: 'exercise', command: 'up' }, '*');
         }
-        image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
-        canvas.width = 1241;
-        canvas.height = 376;
-        update_image();
     }
+
   
     websocket_gui.onclose = function (event) {
         connectionUpdate({ connection: 'exercise', command: 'down' }, '*');
@@ -65,23 +64,8 @@ image.onload = function () {
     update_image();
 }
 
-image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
-
-window.onload = function() {
-    var canvas = document.getElementById("gui_canvas"),
-        context = canvas.getContext('2d');
-    var image = new Image();
-  
-    image.onload = function() {
-      context.drawImage(image, 0, 0);
-    };
-  
-    image.src = "/static/exercises/assets/kitti/dataset/sequences/01/image_0/000000.png";
-  };
-
 // Request Animation Frame to remove the flickers
 function update_image() {
     animation_id = window.requestAnimationFrame(update_image);
-    context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0);
 }
