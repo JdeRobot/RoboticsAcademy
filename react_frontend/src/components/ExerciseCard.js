@@ -68,7 +68,7 @@ const ExerciseCardV2 = (props) => {
   const navigateToExercise = () => {
     window.location.href = exerciseURL.interpolate(props);
   };
-  const tagsList = JSON.parse(props.tags).tags.split(",");
+  const tagsList = JSON.parse(props.tags).tags;
 
   return (
     <Card

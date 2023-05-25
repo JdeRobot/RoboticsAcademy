@@ -13,6 +13,8 @@ import PropTypes from "prop-types";
 import { ConnectionIndicator } from "./RAM/ConnectionIndicator";
 import { LaunchIndicator } from "./RAM/LaunchIndicator";
 
+const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
+
 function MainAppBar(props) {
   const {
     theoryMode,
@@ -22,25 +24,61 @@ function MainAppBar(props) {
     openExercise,
     openForum,
   } = React.useContext(ViewContext);
-  const config = JSON.parse(
-    document.getElementById("exercise-config").textContent
-  );
-  config.height = window.innerHeight / 2;
-  config.width = window.innerWidth / 2;
 
   const retryInterval = 1000;
 
+  let ros_version = 1;
+
+  const fetchRosVersion = (data) => {
+    // Requests ROS version and filters exercises by ROS tag
+    const rosVersionURL = `${serverBase}/exercises/ros_version/`;
+    fetch(rosVersionURL)
+        .then((res) => res.json())
+        .then((msg) => {
+          ros_version = msg.version;
+          // If ROS is not installed
+          if (isNaN(parseInt(ros_version))) {          
+            ros_version = 1;
+          }
+        })
+        .catch((error) => {
+          ros_version = 1
+        })
+  };
+
   React.useEffect(() => {
     const connectRetry = setInterval(() => {
+      fetchRosVersion();
       window.RoboticsExerciseComponents.commsManager
         .connect()
         .then(() => {
           console.log("Successfully connected");
-          clearInterval(connectRetry);
+          clearInterval(connectRetry);        
 
           const launchRetry = setInterval(() => {
+            const config = JSON.parse(
+              document.getElementById("exercise-config").textContent
+            );
+            // Selects the configs available for the ROS version installed          
+            const launchConfigs = {};
+            var selectedConfig = {};
+            launchConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
+            if (launchConfigs.hasOwnProperty(`ROS${ros_version}`)) {
+              if (Array.isArray(launchConfigs[`ROS${ros_version}`])) {                
+                selectedConfig = launchConfigs[`ROS${ros_version}`][0];
+              } else {
+                selectedConfig = launchConfigs[`ROS${ros_version}`];
+              }
+            }
+            else {  // Compatibility, if there is no ROS data, send the complete object              
+              selectedConfig = config;
+            }
+            // Adds necessary fields               
+            selectedConfig['exercise_id'] = config['exercise_id'];
+            selectedConfig.height = window.innerHeight / 2;
+            selectedConfig.width = window.innerWidth / 2;         
             window.RoboticsExerciseComponents.commsManager
-              .launch(config)
+              .launch(selectedConfig)
               .then(() => {
                 console.log("Successfully launched");
                 clearInterval(launchRetry);
