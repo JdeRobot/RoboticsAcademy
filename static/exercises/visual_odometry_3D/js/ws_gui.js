@@ -50,16 +50,16 @@ function declare_gui(websocket_address) {
                 estimated_euler_angles = image_data.estimated_euler_angles,
                 estimated_position = image_data.estimated_position;
     
+                console.log("Counter: ", counter);
+                // console.log(true_euler_angles);
+                // console.log(true_position);
+                // console.log(estimated_euler_angles);
+                // console.log(estimated_position);
+
             if (source != "") {
                 image.src = "data:image/jpeg;base64," + source;
                 canvas.width = shape[1];
                 canvas.height = shape[0];
-
-                console.log(counter);
-                console.log(true_euler_angles);
-                console.log(true_position);
-                console.log(estimated_euler_angles);
-                console.log(estimated_position);
             }
     
             // Send the Acknowledgment Message
