@@ -2,7 +2,7 @@
 # Create a miniRADI with RoboticsAcademy and some usefull scripts for developers #
 ##################################################################################
 
-FROM jderobot/robotics-applications:base
+FROM jderobot/robotics-applications:base-2
 WORKDIR /
 
 # Scripts copy
@@ -12,7 +12,7 @@ RUN mv /opt/jderobot/scripts/pylintrc /etc/pylintrc
 RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
 
 # RoboticsAcademy
-RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b issue-2072 /RoboticsAcademy/
+RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b master /RoboticsAcademy/
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src/ && mv /RoboticsApplicationManager/* /RoboticsAcademy/src && rm -rf /RoboticsApplicationManager
