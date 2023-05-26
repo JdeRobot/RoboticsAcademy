@@ -20,7 +20,7 @@ else
 fi
 
 # Build the Docker image
-docker build -f $DOCKERFILE \
+docker build --no-cache -f $DOCKERFILE \
   --build-arg ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY \
   --build-arg ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE \
   --build-arg RAM=$RAM \
