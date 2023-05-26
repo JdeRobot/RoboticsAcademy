@@ -10,7 +10,7 @@ import RAMFollowLineExerciseView from "../views/RAM/RAMFollowLineExerciseView";
 import CircuitSelector from "../buttons/RAM/RAMExerciseConfiguration";
 import { Footer } from "../common/RAM/Footer";
 
-function FollowLineReactRAM() {
+function FollowPersonRAM() {
   return (
     <Box>
       <ViewProvider>
@@ -32,4 +32,4 @@ function FollowLineReactRAM() {
   );
 }
 
-export default FollowLineReactRAM;
+export default FollowPersonRAM;
