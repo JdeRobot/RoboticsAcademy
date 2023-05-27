@@ -79,13 +79,15 @@ class Template:
             return "", "", 1
 
         elif (source_code[:5] == "#resu"):
-            restart_simulation = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            restart_simulation = rospy.ServiceProxy(
+                '/gazebo/unpause_physics', Empty)
             restart_simulation()
 
             return "", "", 1
 
         elif (source_code[:5] == "#paus"):
-            pause_simulation = rospy.ServiceProxy('/gazebo/pause_physics', Empty)
+            pause_simulation = rospy.ServiceProxy(
+                '/gazebo/pause_physics', Empty)
             pause_simulation()
 
             return "", "", 1
@@ -99,7 +101,8 @@ class Template:
         else:
             # Get the frequency of operation, convert to time_cycle and strip
 
-            sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+            sequential_code, iterative_code = self.seperate_seq_iter(
+                source_code)
             return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
@@ -117,7 +120,8 @@ class Template:
 
         # Search for an instance of while True
 
-        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
+        infinite_loop = re.search(
+            r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -128,7 +132,8 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
+            iterative_code = re.sub(
+                r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
             # Add newlines to match line on bug report
             extra_lines = sequential_code.count('\n')
             while (extra_lines >= 0):
@@ -160,7 +165,8 @@ class Template:
         # Run the sequential part
         gui_module, hal_module, map_module = self.generate_modules()
         # Reference Environment for the exec() function
-        reference_environment = {"GUI": gui_module, "HAL": hal_module, "MAP": map_module, "time": time}
+        reference_environment = {
+            "GUI": gui_module, "HAL": hal_module, "MAP": map_module, "time": time}
         exec(sequential_code, reference_environment)
 
         # Run the iterative part inside template
@@ -179,7 +185,8 @@ class Template:
             # Template specifics to run!
             finish_time = datetime.now()
             dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
 
             # Keep updating the iteration counter
             if (iterative_code == ""):
@@ -197,7 +204,8 @@ class Template:
         print("Current Thread Joined!")
 
     def getMap(self):
-        img = cv2.imread("/RoboticsAcademy/exercises/static/exercises/global_navigation/web-template/assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
+        img = cv2.imread(
+            "/RoboticsAcademy/exercises/static/exercises/global_navigation_react/assets/img/cityLargeBin.png", cv2.IMREAD_GRAYSCALE)
         return img
 
     def getPose(self):
@@ -211,13 +219,18 @@ class Template:
     def generate_modules(self):
         # Define HAL module
 
-        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
+        hal_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None))
+        hal_module.HAL.motors = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("motors", None))
         hal_module.HAL.getPose3d = self.getPose
 
-        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
-        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None))
+        gui_module.GUI = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None))
         # Add GUI functions
         gui_module.GUI.showNumpy = self.gui.showNumpy
         gui_module.GUI.showPath = self.gui.showPath
@@ -228,8 +241,10 @@ class Template:
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
 
         # Define GUI module
-        map_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
-        map_module.MAP = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("MAP", None))
+        map_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("MAP", None))
+        map_module.MAP = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("MAP", None))
         map_module.MAP.rowColumn = self.gui.map.rowColumn
         map_module.MAP.getMap = self.getMap
 
@@ -254,7 +269,8 @@ class Template:
             # Measure the current time and subtract from the previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
             previous_time = current_time
 
             # Get the time period
@@ -284,7 +300,7 @@ class Template:
 
         self.frequency_message["brain"] = brain_frequency
         self.frequency_message["gui"] = gui_frequency
-        self.frequency_message["rtf"] = self.real_time_factor 
+        self.frequency_message["rtf"] = self.real_time_factor
 
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
@@ -322,7 +338,8 @@ class Template:
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.thread = threading.Thread(target=self.process_code, args=[source_code])
+        self.thread = threading.Thread(
+            target=self.process_code, args=[source_code])
         self.thread.start()
         self.send_code_message()
         print("New Thread Started!")
@@ -350,7 +367,7 @@ class Template:
             time.sleep(1)
             return
 
-        elif(message[:5] == "#ping"):
+        elif (message[:5] == "#ping"):
             time.sleep(1)
             self.send_ping_message()
             return
