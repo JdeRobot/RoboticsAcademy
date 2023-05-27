@@ -5,44 +5,43 @@ import config
 from numpy.linalg import inv
 
 def param2Msg(K, RT, width, height):
+    param = CameraInfo()
+    param.height = height
+    param.width = width
+    param.K = K
+    param.R = RT
 
-	param = CameraInfo()
-	param.height = height
-	param.width = width
-	param.K = K
-	param.R = RT
-	
-	return param
-	
+    return param
+
 import numpy as np
 
 class CameraParameters:
-	
-	def __init__(self):
-		self.height = 3
-		self.width = 3
-		self.timeStamp = 0
-		self.K = np.zeros(9)
-		self.RT = np.zeros(9)
-	
-	def __str__(self):
-		s = "Camera: {\n   height: " + str(self.height) + "\n width: " + str(self.width)
-		s = s + "\n   K: " + str(self.K) + "\n   RT: " + str(self.RT)
-		s = s + "\n   timeStamp: " + str(self.timeStamp)
-		
-		return s
-	
+
+    def __init__(self):
+        self.height = 3
+        self.width = 3
+        self.timeStamp = 0
+        self.K = np.zeros(9)
+        self.RT = np.zeros(9)
+
+    def __str__(self):
+        s = "Camera: {\n   height: " + str(self.height) + "\n width: " + str(self.width)
+        s = s + "\n   K: " + str(self.K) + "\n   RT: " + str(self.RT)
+        s = s + "\n   timeStamp: " + str(self.timeStamp)
+
+        return s
+
 class PublisherCamera:
-	
-	def __init__(self, configFile, cam):
-		cfg = config.load(configFile)
-		data = cfg.getProperty("3DReconstruction."+cam+".data")
-		
-		self.K=np.array([data["K"][0],data["K"][1],data["K"][2],data["K"][4], data["K"][5],data["K"][6],data["K"][8],data["K"][9],data["K"][10]],dtype=np.double).reshape(3,3)
+
+    def __init__(self, configFile, cam):
+        cfg = config.load(configFile)
+        data = cfg.getProperty("3DReconstruction."+cam+".data")
+
+        self.K=np.array([data["K"][0],data["K"][1],data["K"][2],data["K"][4], data["K"][5],data["K"][6],data["K"][8],data["K"][9],data["K"][10]],dtype=np.double).reshape(3,3)
         self.RT=np.array([data["RT"][0],data["RT"][1],data["RT"][2],data["RT"][3], data["RT"][4],data["RT"][5],data["RT"][6],data["RT"][7],data["RT"][8],data["RT"][9],data["RT"][10],data["RT"][11],0,0,0,1],dtype=np.double).reshape(4,4)
         self.width=data["Size"][0]
         self.height=data["Size"][1]
-        
+
     def backproject(self, point2d):
         myin_h=self.K[0,0]
         myin_x=point2d[0]*self.K[0,0]/point2d[2]
@@ -99,7 +98,7 @@ class PublisherCamera:
         outPoint[2]=it31*b1+it32*b2+it33*b3+it34*b4;
         outPoint[3]=it41*b1+it42*b2+it43*b3+it44*b4;
         return outPoint
-        
+
     def backproject2(self, point2d):
         iK = inv(self.K)
         Pi=np.array([point2d[0]/point2d[2],point2d[1]/point2d[2],1.0],dtype=np.double).reshape(3,1)
@@ -154,7 +153,7 @@ class PublisherCamera:
         y = point2d[1]
         point = np.array([self.height-1-y,x, point2d[2]])
         return point
-             
+
     def opticalToGrafic(self,point2d):
         x = point2d[0]
         y = point2d[1]
@@ -163,4 +162,3 @@ class PublisherCamera:
 
     def getCameraPosition(self):
         return np.array([-self.RT[2,3],self.RT[1,3],-self.RT[0,3]])
-		

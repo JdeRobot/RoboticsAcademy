@@ -48,8 +48,8 @@ class PublisherMotors:
 
         self.topic = topic
         self.data = CMDVel()
-        self.pub = self.pub = rospy.Publisher(self.topic, Twist, queue_size=1)
-        rospy.init_node("GlobalNavigation")
+        self.pub = rospy.Publisher(self.topic, Twist, queue_size=1)
+       
         self.lock = threading.Lock()
 
         self.kill_event = threading.Event()

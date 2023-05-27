@@ -2,7 +2,7 @@
 <sdf version="1.5">
     <world name="default">
 
-        <gui>
+        <gui fullscreen="1">
             <camera name="user_camera">
                 <pose frame=''>-4.70385 10.895 16.2659 -0 0.921795 -1.12701</pose>
                 <view_controller>orbit</view_controller>
@@ -86,8 +86,7 @@
 		</include>
 
         
-
-		<!-- Rust Defect 1 Tower 1 -->
+<!-- Rust Defect 1 Tower 1 -->
         <include>
 			<uri>model://rust_defect_01</uri>
             <!-- <pose>-2.31 -4 3.79 0 1.74</pose> -->
