@@ -728,9 +728,7 @@ class Manager:
             if self.exercise in CIRCUIT_EX:
                 self.exercise = 'follow_line'
 
-            # TODO: temp
-            command = f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}/web-template;"
-            command += f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}; python3 pylint_checker.py"
+            command = f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}; python3 pylint_checker.py"
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"
