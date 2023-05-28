@@ -78,7 +78,6 @@ function declare_gui(websocket_address) {
                 
                 // console.log(estimated_euler_angles);
                 // console.log(estimated_position);
-                animate()
 
             if (source != "") {
                 image.src = "data:image/jpeg;base64," + source;
