@@ -56,18 +56,18 @@ function declare_gui(websocket_address) {
                 if (true_euler_angles)
                 {
                     console.log("True Euler Angles: ", true_euler_angles);
-                    trueFrame.rotation.x = true_euler_angles.yaw
-                    trueFrame.rotation.y = true_euler_angles.pitch
-                    trueFrame.rotation.z = true_euler_angles.roll
+                    trueFrame.rotation.x = true_euler_angles["yaw"]
+                    trueFrame.rotation.y = true_euler_angles["pitch"]
+                    trueFrame.rotation.z = true_euler_angles["roll"]
                 }
                 if (true_euler_angles)
                 {
-                    console.log("True Position X: ", true_position.x);
-                    console.log("True Position Y: ", true_position.y);
-                    console.log("True Position Z: ", true_position.z);
-                    trueFrame.position.x = true_position.x * 1.0
-                    trueFrame.position.y = true_position.y * 1.0
-                    trueFrame.position.z = true_position.z * 1.0
+                    console.log("True Position X: ", true_position["x"]);
+                    console.log("True Position Y: ", true_position["y"]);
+                    console.log("True Position Z: ", true_position["z"]);
+                    trueFrame.position.x = true_position["x"] * 1.0
+                    trueFrame.position.y = true_position["y"] * 1.0
+                    trueFrame.position.z = true_position["z"] * 1.0
                     true_tracker.push(trueFrame.position.clone())
                 }
 
