@@ -14,7 +14,7 @@ while True:
     true_t = HAL.get_current_groundtruth_position()
     HAL.set_estimated_position(true_t[0], true_t[1], true_t[2])
 
-    true_euler = HAL.get_true_euler_angles_corrected()
+    true_euler = HAL.get_true_euler_angles_corrected_array()
     HAL.set_estimated_euler_angles(true_euler[0], true_euler[1], true_euler[2])
     
     HAL.advance()

@@ -156,6 +156,10 @@ class HAL:
         self.true_rotation_matrix_corrected = np.linalg.inv(self.init_true_rotation_matrix) @ self.get_true_rotation_matrix(self.image_counter)
         return self.true_rotation_matrix_corrected
 
+    def get_true_euler_angles_corrected_array(self):
+        roll, pitch, yaw = rotation2Euler( self.get_true_rotation_matrix_corrected() )
+        return np.array([roll, pitch, yaw], dtype=np.float32).flatten().round(decimals=5)
+    
     def get_true_euler_angles_corrected(self):
         true_euler_angles_corrected = rotation2Euler( self.get_true_rotation_matrix_corrected() )
         trueRoll, truePitch, trueYaw = true_euler_angles_corrected
@@ -184,7 +188,7 @@ class HAL:
             }
         return json.dumps(message)
     
-    def get_true_position(self):
+    def get_true_position_corrected(self):
         x, y, z = self.get_current_groundtruth_position()
         message = {
             "x": str(x),

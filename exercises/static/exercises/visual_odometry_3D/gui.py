@@ -57,7 +57,7 @@ class GUI:
         payload['shape']                    = shape
         payload['counter']                  = str(self.hal.image_counter)
         payload['true_euler_angles']        = self.hal.get_true_euler_angles_corrected()
-        payload['true_position']            = self.hal.get_true_position()
+        payload['true_position']            = self.hal.get_true_position_corrected()
         payload['estimated_euler_angles']   = self.hal.get_estimated_euler_angles()
         payload['estimated_position']       = self.hal.get_estimated_position()
 
@@ -180,10 +180,7 @@ class ThreadGUI(threading.Thread):
         last_image = 0
         while (True):
             start_time = datetime.now()
-            # Update gui if image is different 
-            if last_image != self.gui.hal.image_counter or last_image == 0:
-                self.gui.update_gui()
-                last_image = self.gui.hal.image_counter
+            self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
             while (acknowledge_message == False):
