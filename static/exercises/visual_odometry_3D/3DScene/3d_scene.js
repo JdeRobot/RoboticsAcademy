@@ -12,8 +12,8 @@ const TRUE_COLOR = 0x00ff00 // Green
 
 let track = []
 let trackGT = []
-const user_tracker = new CBuffer(TRACKER_LENGHT)
-const true_tracker = new CBuffer(TRACKER_LENGHT)
+let user_tracker = new CBuffer(TRACKER_LENGHT)
+let true_tracker = new CBuffer(TRACKER_LENGHT)
 
 function init() {
 	windowWidth = document.getElementById("canvas").offsetWidth

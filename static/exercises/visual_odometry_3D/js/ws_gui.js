@@ -100,4 +100,6 @@ image.onload = function () {
 function update_image() {
     animation_id = window.requestAnimationFrame(update_image);
     context.drawImage(image, 0, 0);
+    renderer.render(scene, camera);
+    controls.update();
 }
