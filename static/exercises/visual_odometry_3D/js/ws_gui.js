@@ -51,8 +51,8 @@ function declare_gui(websocket_address) {
                 estimated_position = image_data.estimated_position;
     
                 console.log("Counter: ", counter);
-                console.log("True Euler Angles: ",true_euler_angles);
-                // console.log(true_position);
+                console.log("True Euler Angles: ", true_euler_angles);
+                console.log("True Position: ", true_position);
                 // console.log(estimated_euler_angles);
                 // console.log(estimated_position);
 
