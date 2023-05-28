@@ -70,8 +70,8 @@ function declare_gui(websocket_address) {
 
                 if (!(track === [])) {
                     scene.remove(track)
-                    track = createTrack(tracker, USER_COLOR)
-                    trackGT = createTrack(trackerGt, TRUE_COLOR)
+                    track = createTrack(user_tracker, USER_COLOR)
+                    trackGT = createTrack(true_tracker, TRUE_COLOR)
                     scene.add(track)
                     scene.add(trackGT)
                 }
