@@ -10,6 +10,8 @@ const TRACKER_LENGHT = 300
 const USER_COLOR = 0xff0000 // Red
 const TRUE_COLOR = 0x00ff00 // Green
 
+let track = []
+let trackGT = []
 const user_tracker = new CBuffer(TRACKER_LENGHT)
 const true_tracker = new CBuffer(TRACKER_LENGHT)
 
@@ -174,6 +176,13 @@ function addFrames() {
 	scene.add(userFrame)
 	trueFrame = createFrame(1241, 356, 1, TRUE_COLOR);
 	scene.add(trueFrame)
+}
+
+function createTrack(track, color = 0xff0000) {
+    const material = new THREE.LineBasicMaterial({ color: color, linewidth: 2 });
+    const geometry = new THREE.BufferGeometry().setFromPoints(track.getPoints());
+    const line = new THREE.Line(geometry, material);
+    return line
 }
 
 function reset_scene3d() {
