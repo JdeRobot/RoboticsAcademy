@@ -50,14 +50,19 @@ function declare_gui(websocket_address) {
                 estimated_euler_angles = image_data.estimated_euler_angles,
                 estimated_position = image_data.estimated_position;
 
-                trueFrame.rotation.x = true_euler_angles.yaw
-                trueFrame.rotation.y = true_euler_angles.pitch
-                trueFrame.rotation.z = true_euler_angles.roll
-                trueFrame.position.x = true_position.x * 1.0
-                trueFrame.position.y = true_position.y * 1.0
-                trueFrame.position.z = true_position.z * 1.0
-                true_tracker.push(trueFrame.position.clone())
-    
+                if (true_euler_angles)
+                {
+                    trueFrame.rotation.x = true_euler_angles.yaw
+                    trueFrame.rotation.y = true_euler_angles.pitch
+                    trueFrame.rotation.z = true_euler_angles.roll
+                }
+                if (true_euler_angles)
+                {
+                    trueFrame.position.x = true_position.x * 1.0
+                    trueFrame.position.y = true_position.y * 1.0
+                    trueFrame.position.z = true_position.z * 1.0
+                    true_tracker.push(trueFrame.position.clone())
+                }
                 console.log("Counter: ", counter);
                 console.log("True Euler Angles: ", true_euler_angles);
                 console.log("True Position: ", true_position);
