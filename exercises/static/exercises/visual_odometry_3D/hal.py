@@ -58,7 +58,7 @@ class HAL:
     def __init__(self):
 
         # Dataset data
-        SEQUENCE_NUMBER = "01"
+        SEQUENCE_NUMBER = "00"
         DATASET = 'kitti'
 
         # Paths
