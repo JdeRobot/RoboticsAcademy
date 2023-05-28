@@ -45,10 +45,10 @@ function declare_gui(websocket_address) {
                 source = decode_utf8(image_data.image),
                 shape = image_data.shape,
                 counter = image_data.counter,
-                true_euler_angles = image_data.true_euler_angles,
-                true_position = image_data.true_position,
-                estimated_euler_angles = image_data.estimated_euler_angles,
-                estimated_position = image_data.estimated_position;
+                true_euler_angles = JSON.parse(image_data.true_euler_angles),
+                true_position = JSON.parse(image_data.true_position),
+                estimated_euler_angles = JSON.parse(image_data.estimated_euler_angles),
+                estimated_position = JSON.parse(image_data.estimated_position);
 
                 console.log("Counter: ", counter);
                 console.log("True Frame Pos X: ", trueFrame.position.x)
@@ -62,8 +62,9 @@ function declare_gui(websocket_address) {
                 }
                 if (true_euler_angles)
                 {
+                    console.log("True Position: ", true_position);
                     console.log("True Position X: ", true_position["x"]);
-                    console.log("True Position Y: ", true_position["y"]);
+                    console.log("True Position Y: ", true_position.y);
                     console.log("True Position Z: ", true_position["z"]);
                     trueFrame.position.x = true_position["x"] * 1.0
                     trueFrame.position.y = true_position["y"] * 1.0
