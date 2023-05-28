@@ -62,7 +62,9 @@ function declare_gui(websocket_address) {
                 }
                 if (true_euler_angles)
                 {
-                    console.log("True Position: ", true_position);
+                    console.log("True Position X: ", true_position.x);
+                    console.log("True Position Y: ", true_position.y);
+                    console.log("True Position Z: ", true_position.z);
                     trueFrame.position.x = true_position.x * 1.0
                     trueFrame.position.y = true_position.y * 1.0
                     trueFrame.position.z = true_position.z * 1.0
