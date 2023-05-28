@@ -50,12 +50,9 @@ function declare_gui(websocket_address) {
                 estimated_euler_angles = image_data.estimated_euler_angles,
                 estimated_position = image_data.estimated_position;
 
-                console.log("Counter: ", counter);
-
                 if (true_euler_angles)
                 {
                     true_euler_angles = JSON.parse(image_data.true_euler_angles),
-                    console.log("True Euler Angles: ", true_euler_angles);
                     trueFrame.rotation.x = true_euler_angles.yaw
                     trueFrame.rotation.y = true_euler_angles.pitch
                     trueFrame.rotation.z = true_euler_angles.roll
@@ -63,14 +60,26 @@ function declare_gui(websocket_address) {
                 if (true_euler_angles)
                 {
                     true_position = JSON.parse(image_data.true_position),
-                    console.log("True Position: ", true_position);
                     trueFrame.position.x = true_position.x * 1.0
                     trueFrame.position.y = true_position.y * 1.0
                     trueFrame.position.z = true_position.z * 1.0
                     true_tracker.push(trueFrame.position.clone())
                 }
-
-                console.log("True Frame Pos X: ", trueFrame.position.x)
+                if (estimated_euler_angles)
+                {
+                    estimated_euler_angles = JSON.parse(image_data.estimated_euler_angles),
+                    userFrame.rotation.x = estimated_euler_angles.yaw
+                    userFrame.rotation.y = estimated_euler_angles.pitch
+                    userFrame.rotation.z = estimated_euler_angles.roll
+                }
+                if (estimated_position)
+                {
+                    estimated_position = JSON.parse(image_data.estimated_position),
+                    userFrame.position.x = estimated_position.x * 1.0
+                    userFrame.position.y = estimated_position.y * 1.0
+                    userFrame.position.z = estimated_position.z * 1.0
+                    true_tracker.push(userFrame.position.clone())
+                }
 
                 if (!(track === [])) {
                     scene.remove(track)
@@ -79,9 +88,6 @@ function declare_gui(websocket_address) {
                     scene.add(track)
                     scene.add(trackGT)
                 }
-                
-                // console.log(estimated_euler_angles);
-                // console.log(estimated_position);
                 
 
             if (source != "") {
