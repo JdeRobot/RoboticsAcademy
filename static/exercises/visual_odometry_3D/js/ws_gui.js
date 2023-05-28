@@ -78,6 +78,7 @@ function declare_gui(websocket_address) {
                 
                 // console.log(estimated_euler_angles);
                 // console.log(estimated_position);
+                console.log("User Frame: ", userFrame)
 
             if (source != "") {
                 image.src = "data:image/jpeg;base64," + source;
@@ -101,3 +102,16 @@ function update_image() {
     animation_id = window.requestAnimationFrame(update_image);
     context.drawImage(image, 0, 0);
 }
+
+const tick = () => {
+    // Update Orbital Controls
+    controls.update()
+
+    // Render
+    renderer.render(scene, camera)
+
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
+}
+
+tick()
