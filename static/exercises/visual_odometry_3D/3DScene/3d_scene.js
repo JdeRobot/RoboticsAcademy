@@ -1,7 +1,7 @@
 var camera, scene, renderer, controls;
 var axes, grid, particles;
 var windowWidth, windowHeight;
-var userFrame, trueFrame;
+let userFrame, trueFrame;
 var rotationx = 0.0;
 var rotationy = 0.0;
 var toDegrees = 180 / Math.PI;
