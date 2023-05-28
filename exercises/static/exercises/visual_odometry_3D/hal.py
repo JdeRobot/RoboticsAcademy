@@ -185,7 +185,7 @@ class HAL:
         return json.dumps(message)
     
     def get_true_position(self):
-        x, y, z = self.true_position
+        x, y, z = self.get_current_groundtruth_position()
         message = {
             "x": str(x),
             "y": str(y),
