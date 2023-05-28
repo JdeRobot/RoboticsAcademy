@@ -1,3 +1,4 @@
+import json
 import math
 import threading
 import time
@@ -156,13 +157,41 @@ class HAL:
         return self.true_rotation_matrix_corrected
 
     def get_true_euler_angles_corrected(self):
-        return rotation2Euler( self.get_true_rotation_matrix_corrected() )
+        true_euler_angles_corrected = rotation2Euler( self.get_true_rotation_matrix_corrected() )
+        trueRoll, truePitch, trueYaw = true_euler_angles_corrected
+        message = {
+            "yaw":   str(trueYaw),
+            "pitch": str(truePitch),
+            "roll":  str(trueRoll)
+            }
+        return json.dumps(message)
     
     def get_estimated_euler_angles(self):
-        return self.estimated_euler_angles
+        estimatedRoll, estimatedPitch, estimatedYaw = self.estimated_euler_angles
+        message = {
+            "yaw":   str(estimatedYaw),
+            "pitch": str(estimatedPitch),
+            "roll":  str(estimatedRoll)
+            }
+        return json.dumps(message)
     
     def get_estimated_position(self):
-        return self.estimated_position
+        x, y, z = self.estimated_position
+        message = {
+            "x": str(x),
+            "y": str(y),
+            "z": str(z)
+            }
+        return json.dumps(message)
+    
+    def get_true_position(self):
+        x, y, z = self.true_position
+        message = {
+            "x": str(x),
+            "y": str(y),
+            "z": str(z)
+            }
+        return json.dumps(message)
 
     # User method
     # Set estimated position calculated by user
