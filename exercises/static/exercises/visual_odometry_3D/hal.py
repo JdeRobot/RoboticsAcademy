@@ -180,7 +180,7 @@ class HAL:
         return json.dumps(message)
     
     def get_estimated_position(self):
-        x, y, z = self.estimated_position
+        x, y, z = ROTATION_CAMERA_TO_WORLD @ self.estimated_position
         message = {
             "x": str(x),
             "y": str(y),
@@ -189,7 +189,7 @@ class HAL:
         return json.dumps(message)
     
     def get_true_position_corrected(self):
-        x, y, z = self.get_current_groundtruth_position()
+        x, y, z = ROTATION_CAMERA_TO_WORLD @ self.get_current_groundtruth_position()
         message = {
             "x": str(x),
             "y": str(y),
