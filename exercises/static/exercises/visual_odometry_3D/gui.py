@@ -181,7 +181,7 @@ class ThreadGUI(threading.Thread):
         while (True):
             start_time = datetime.now()
             # Update gui if image is different 
-            if last_image != self.gui.hal.image_counter:
+            if last_image != self.gui.hal.image_counter or last_image == 0:
                 self.gui.update_gui()
                 last_image = self.gui.hal.image_counter
             acknowledge_message = self.gui.get_acknowledge()
