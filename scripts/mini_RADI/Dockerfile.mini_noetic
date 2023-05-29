@@ -18,7 +18,7 @@ RUN rm -rf /catkin_ws && \
     cd /catkin_ws && \
     catkin init
 
-COPY .rosinstall /tmp/
+RUN cp /opt/jderobot/scripts/.rosinstall /tmp/
 RUN vcs import /catkin_ws/src  < /tmp/.rosinstall
 
 RUN cd /catkin_ws && rosdep update && rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
