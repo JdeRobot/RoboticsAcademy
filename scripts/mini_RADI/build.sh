@@ -23,15 +23,11 @@ Help()
    echo "  -t, --tag        <value>  Tag name of the image.                   Default: test"
    echo
    echo "Example:"
+   echo "   ./build.sh -t my_image"
    echo "   ./build.sh -f -a master -i noetic-devel -m main -r noetic -t my_image" 
    echo "   ./build.sh -f --academy master --infra noetic-devel --ram main --ros noetic --tag my_image" 
    echo
 }
-
-# if [[ "$*" == *"-h"* ]] || [[ "$*" == *"--help"* ]]; then
-#     Help
-#     exit 0
-# fi
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -73,29 +69,30 @@ while [[ $# -gt 0 ]]; do
    esac
 done
 
-echo "ROBOTICS_ACADEMY:         $ROBOTICS_ACADEMY"
-echo "ROBOTICS_INFRASTRUCTURE:  $ROBOTICS_INFRASTRUCTURE"
-echo "RAM:                      $RAM"
-echo "ROS_DISTRO:               $ROS_DISTRO"
-echo "IMAGE_TAG:                $IMAGE_TAG"
+echo "ROBOTICS_ACADEMY:-------------:$ROBOTICS_ACADEMY"
+echo "ROBOTICS_INFRASTRUCTURE:------:$ROBOTICS_INFRASTRUCTURE"
+echo "RAM:--------------------------:$RAM"
+echo "ROS_DISTRO:-------------------:$ROS_DISTRO"
+echo "IMAGE_TAG:--------------------:$IMAGE_TAG"
 echo
 
 # Determine Dockerfile based on ROS_DISTRO
 if [[ $ROS_DISTRO == "noetic" ]]; then
-    DOCKERFILE_BASE="Dockerfile.noetic-base"
+    DOCKERFILE_BASE="Dockerfile.mini_noetic_base"
     DOCKERFILE="Dockerfile.mini_noetic"
 elif [[ $ROS_DISTRO == "humble" ]]; then
-    DOCKERFILE_BASE="Dockerfile.humble-base"
+    DOCKERFILE_BASE="Dockerfile.mini_humble_base"
     DOCKERFILE="Dockerfile.mini_humble"
 else
     echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'noetic' or 'humble'."
     exit 1
 fi
 
-if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:$ROS_DISTRO-base 2> /dev/null)" == "" ]]; then
-  echo "===================== BUILDING Jderobot BASE IMAGE ====================="
+# Build the Docker Base image
+if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:mini_$ROS_DISTRO-base 2> /dev/null)" == "" ]]; then
+  echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
-  docker build -f $DOCKERFILE_BASE -t jderobot/robotics-applications:$ROS_DISTRO-base .
+  docker build -f $DOCKERFILE_BASE -t jderobot/robotics-applications:mini_$ROS_DISTRO-base .
 fi
 
 # Build the Docker image
