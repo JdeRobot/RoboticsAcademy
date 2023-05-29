@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <gui fullscreen=1>
+     <camera name="user_camera">
+        <track_visual>
+          <name>f1_renault</name>
+          <static>true</static>
+          <use_model_frame>true</use_model_frame>
+          <xyz>-1 0 0.3</xyz>
+          <inherit_yaw>true</inherit_yaw>
+        </track_visual>
+      </camera>
+    </gui>
+    <scene>
+      <grid>false</grid>
+      <sky>
+        <clouds>
+          <speed>12</speed>
+        </clouds>
+      </sky>
+    </scene>
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+      <name>sun_1</name>
+      <pose>0 0 1 0 0 0</pose>
+    </include>
+    <include>
+	    <uri>model://nurburgring_line</uri>
+	    <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://f1_renault</uri>
+      <pose>-74.29 37.74 0 0 0 -0.51</pose>
+    </include>
+  </world>
+</sdf>

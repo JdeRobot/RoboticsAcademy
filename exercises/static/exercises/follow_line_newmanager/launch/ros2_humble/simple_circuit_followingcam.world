@@ -2,12 +2,12 @@
 <sdf version="1.5">
   <world name="default">
     <gui fullscreen=1>
-      <camera name="user_camera">
+     <camera name="user_camera">
         <track_visual>
           <name>f1_renault</name>
           <static>true</static>
           <use_model_frame>true</use_model_frame>
-          <xyz>-1 0 0.35</xyz>
+          <xyz>-1 0 0.3</xyz>
           <inherit_yaw>true</inherit_yaw>
         </track_visual>
       </camera>
