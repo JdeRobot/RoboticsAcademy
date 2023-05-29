@@ -1,181 +1,11 @@
-FROM nvidia/cuda:11.8.0-base-ubuntu22.04
+FROM jderobot/robotics-applications:humble-base
 
-# Make all NVIDIA GPUS visible
-ARG NVIDIA_VISIBLE_DEVICES=all
-ENV NVIDIA_DRIVER_CAPABILITIES all
-ENV VISRTUALGL_VERSION=3.0.2
-ENV TURBOVNC_VERSION=3.0.3
-
-# Setup NON INTERACTIVE ENVIRONMENT
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install locales to prevent errors
-RUN apt-get clean && \
-    apt-get update && \
-    apt-get install --no-install-recommends -y locales && \
-    rm -rf /var/lib/apt/lists/* && \
-    locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-  
-ARG ROS_DISTRO=$ROS_DISTRO
-ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
-ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:/usr/share/gazebo/../../lib/x86_64-linux-gnu/gazebo-11/plugins:
-ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
-ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
-ENV ROS_PYTHON_VERSION=3
-ENV ROS_VERSION=2
-
-# Install common tools
-RUN apt-get update && apt-get install -y \
-  software-properties-common \
-  bash-completion \    
-  apt-utils \
-  build-essential \
-  git curl wget cmake \
-  vim \
-  gnupg \
-  lsb-release \
-  sudo \
-  net-tools \
-  && rm -rf /var/lib/apt/lists/* 
-
-RUN apt-get update && apt-get install -y alsa-utils alsa-oss
-  
-# Install ROS2 and ROS packages
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
-  && apt-get update && apt-get install -y \
-    ros-${ROS_DISTRO}-ros-base \
-    ros-${ROS_DISTRO}-desktop \
-    ros-${ROS_DISTRO}-xacro \
-    ros-${ROS_DISTRO}-joint-state-publisher \
-    python3-colcon-common-extensions \
-    python3-pip python3-rosdep python3-vcstool \
-    python3-argcomplete \
-  && rosdep init \
-  && rm -rf /var/lib/apt/lists/*
-# Source ros humble
-RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
-
-# Install RVIZ2
-RUN apt-get update && apt-get install -y \
-    ros-${ROS_DISTRO}-rviz2 \
-  && rm -rf /var/lib/apt/lists/*
-
-# Install Gazebo 11
-RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && sudo rosdep fix-permissions \
-  && rosdep update \
-  && apt-get update && apt-get install -q -y \
-    ros-${ROS_DISTRO}-gazebo* \
-    ros-${ROS_DISTRO}-ros-gz* \
-  && apt-get -y autoremove \
-	&& apt-get clean autoclean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
-
-# websocket server dependency
-RUN pip3 install websocket_server posix-ipc django==4.1.7 djangorestframework==3.13.1 django-webpack-loader==1.5.0 django-cors-headers==3.14.0
-RUN python3.10 -m pip install websockets asyncio
-
-# pip install dependencies
-RUN python3.10 -m pip install pylint transitions pydantic websocket-client opencv-python
-
-# Install Python 3 pip build dependencies first
-RUN python3.10 -m pip install --upgrade pip wheel setuptools
-
-# Python 3 dependencies installed by pip
-RUN python3.10 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
-		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
-
-# Install VNC
-# Xorg segfault error mitigation
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        dbus-x11 \
-        libdbus-c++-1-0v5 && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y \
-  xvfb xauth xfonts-base xkb-data x11-xkb-utils \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get --no-install-recommends install -y \
-		x11vnc \
-		xterm \
-		xserver-xorg-video-dummy \
-		x11-apps \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
-
-RUN wget https://xpra.org/xorg.conf \
-    && rm -rf /tmp/*
-
-# Install noVNC and websockify
-RUN git clone https://github.com/novnc/noVNC.git
-RUN cd /noVNC/utils && git clone https://github.com/novnc/websockify.git
-
-# VirtualGL
-COPY ./gpu/virtualgl_${VISRTUALGL_VERSION}_amd64.deb /
-RUN apt-get update && apt-get install -y \
-    libegl1-mesa:amd64
-RUN apt-get update && dpkg -i /virtualgl_${VISRTUALGL_VERSION}_amd64.deb && \
-    rm /virtualgl_${VISRTUALGL_VERSION}_amd64.deb
-
-COPY ./gpu/virtualgl32_${VISRTUALGL_VERSION}_amd64.deb /
-RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
-    libxtst6:i386 \
-    libxv1:i386 \
-    libglu1-mesa:i386 \
-    libegl1-mesa:i386
-RUN apt-get update && dpkg -i /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb && \
-    rm /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb && \
-    chmod u+s /usr/lib/libvglfaker.so && \
-    chmod u+s /usr/lib/libdlfaker.so && \
-    chmod u+s /usr/lib32/libvglfaker.so && \
-    chmod u+s /usr/lib32/libdlfaker.so  &&\
-    chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
-    chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so 
-
-# TurboVNC
-COPY ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
-
-#RUN apt-get update && dpkg -i /turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
-#    rm /turbovnc_${TURBOVNC_VERSION}_amd64.deb
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    /turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
-    rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && \
-    apt-get install -y lxde-common && \
-    rm -rf /var/lib/apt/lists/*
-
-# RUN echo -e "no-remote-connections\n\
-# no-httpd\n\
-# no-x11-tcp-connections\n\
-# no-pam-sessions\n\
-# permitted-security-types = None, VNC, otp\
-# " > /etc/turbovncserver-security.conf
-
-ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
-
-# Node
-RUN apt-get install -y software-properties-common \
-&& curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-&& apt-get install -y nodejs \
-&& curl -L https://www.npmjs.com/install.sh | sh \
-&& npm install -g yarn
+WORKDIR /
 
 # RoboticsInfrasctructure Repository
+ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 RUN mkdir -p /opt/jderobot && \
-    git clone -b $ROS_DISTRO-devel https://github.com/JdeRobot/RoboticsInfraestructure.git /opt/jderobot
+    git clone https://github.com/JdeRobot/RoboticsInfraestructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
@@ -188,7 +18,6 @@ WORKDIR /home/ws
 RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
 RUN colcon build --symlink-install
 
-
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
 ARG RAM=$RAM
 RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager
@@ -199,16 +28,16 @@ COPY ./kill_all.sh /
 COPY ./entrypoint.sh /
 COPY ./start_vnc_gpu.sh /
 COPY ./check_device.py /
+
 # give execution permissions
 RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
 
 # environment
 COPY ./.env /.env
 
-
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
-RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
+RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src && mv /RoboticsApplicationManager/* /RoboticsAcademy/src
@@ -218,20 +47,25 @@ RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
 
 # Django server
 EXPOSE 8000
+
 # Manager websocket
 EXPOSE 7163
 
 # Exercise websocket
 EXPOSE 1905
+
 # GUI websockets
 EXPOSE 2303
 
 # noVNC Console
 EXPOSE 1108
+
 # noVNC Gazebo
 EXPOSE 6080
+
 # noVNC Rviz
 EXPOSE 6081
+
 # noVNC GUI
 EXPOSE 6082
 
@@ -239,4 +73,5 @@ EXPOSE 6082
 EXPOSE 1831
 
 WORKDIR /
+
 ENTRYPOINT ["./entrypoint.sh"]
