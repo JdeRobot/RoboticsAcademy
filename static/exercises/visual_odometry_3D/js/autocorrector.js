@@ -14,7 +14,7 @@ function autocorrector(truePosition, estimatedPosition) {
 
     var d = Math.sqrt(x * x + y * y + z * z);
   
-    var increment = 5 / (1 + Math.exp(-(Math.abs(d) - 30)));
+    var increment = int(5 / (1 + Math.exp(-(Math.abs(d) - 30))));
     
     updateScore(increment);
   }
