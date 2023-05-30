@@ -3,7 +3,7 @@ var scoreElement = document.getElementById("score-number");
 function updateScore(number) {
   var actualScore = parseInt(scoreElement.innerText.split(":")[1]);
   var newScore = actualScore + number;
-  scoreElement.innerText = "Score: " + int(newScore);
+  scoreElement.innerText = "Score: " + newScore;
 }
 
 function autocorrector(truePosition, estimatedPosition) {
