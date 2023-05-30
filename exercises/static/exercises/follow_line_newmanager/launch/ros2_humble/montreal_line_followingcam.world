@@ -7,7 +7,7 @@
           <name>f1_renault</name>
           <static>true</static>
           <use_model_frame>true</use_model_frame>
-          <xyz>-1 0 0.3</xyz>
+          <xyz>-1 0 0.25</xyz>
           <inherit_yaw>true</inherit_yaw>
         </track_visual>
       </camera>
