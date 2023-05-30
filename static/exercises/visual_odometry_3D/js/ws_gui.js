@@ -86,6 +86,10 @@ function declare_gui(websocket_address) {
                     console.log("Entra para el autocorrector")
                     autocorrector(true_position, estimated_position);
                 }
+                else
+                {
+                    console.log("NOOOOOOOOOO entra para el autocorrector")
+                }
 
                 if (!(track === [])) {
                     scene.remove(track)
