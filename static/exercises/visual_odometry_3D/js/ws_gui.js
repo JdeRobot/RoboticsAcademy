@@ -50,7 +50,6 @@ function declare_gui(websocket_address) {
                 estimated_euler_angles = image_data.estimated_euler_angles,
                 estimated_position = image_data.estimated_position;
 
-                console.log("Hola mundooooo");
                 if (true_euler_angles)
                 {
                     true_euler_angles = JSON.parse(image_data.true_euler_angles),
@@ -82,14 +81,9 @@ function declare_gui(websocket_address) {
                     true_tracker.push(userFrame.position.clone())
                 }
 
-                if (estimated_position && true_position)
+                if (estimated_position && true_position && (counter % 24) === 0)
                 {
-                    console.log("Entra para el autocorrector")
                     autocorrector(true_position, estimated_position);
-                }
-                else
-                {
-                    console.log("NOOOOOOOOOO entra para el autocorrector")
                 }
 
                 if (!(track === [])) {

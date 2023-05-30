@@ -1,10 +1,9 @@
 var scoreElement = document.getElementById("score-number");
 
 function updateScore(number) {
-  console.log("scoreElement: ", scoreElement)
   var actualScore = parseInt(scoreElement.innerText.split(":")[1]);
   var newScore = actualScore + number;
-  scoreElement.innerText = "Score: " + newScore;
+  scoreElement.innerText = "Score: " + int(newScore);
 }
 
 function autocorrector(truePosition, estimatedPosition) {
@@ -15,8 +14,7 @@ function autocorrector(truePosition, estimatedPosition) {
 
     var d = Math.sqrt(x * x + y * y + z * z);
   
-    var increment = 5 / (1 + Math.exp(-(Math.abs(d) - 10)));
-    console.log("Increment: ", increment)
+    var increment = 5 / (1 + Math.exp(-(Math.abs(d) - 30)));
     
     updateScore(increment);
   }
