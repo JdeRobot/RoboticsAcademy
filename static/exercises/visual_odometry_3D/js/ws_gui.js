@@ -83,6 +83,7 @@ function declare_gui(websocket_address) {
 
                 if (estimated_position && true_position)
                 {
+                    console.log("Entra para el autocorrector")
                     autocorrector(true_position, estimated_position);
                 }
 
