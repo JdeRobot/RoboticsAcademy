@@ -4,6 +4,7 @@ function updateScore(number) {
   var actualScore = parseInt(scoreElement.innerText.split(":")[1]);
   var newScore = actualScore + number;
   scoreElement.innerText = "Score: " + newScore;
+  console.log("scoreElement: ", scoreElement)
 }
 
 function autocorrector(truePosition, estimatedPosition) {
@@ -14,5 +15,6 @@ function autocorrector(truePosition, estimatedPosition) {
         truePosition.z * estimatedPosition.z);
   
     var increment = 5 / (1 + Math.exp(-(Math.abs(d) - 10)));
+    console.log("Increment: ", increment)
     updateScore(increment);
   }
