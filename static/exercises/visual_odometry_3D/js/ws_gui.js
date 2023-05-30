@@ -78,7 +78,7 @@ function declare_gui(websocket_address) {
                     userFrame.position.x = estimated_position.x * 1.0
                     userFrame.position.y = estimated_position.y * 1.0
                     userFrame.position.z = estimated_position.z * 1.0
-                    true_tracker.push(userFrame.position.clone())
+                    user_tracker.push(userFrame.position.clone())
                 }
 
                 if (estimated_position && true_position && (counter % 24) === 0)
