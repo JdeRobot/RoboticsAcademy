@@ -57,7 +57,7 @@ function declare_gui(websocket_address) {
                     trueFrame.rotation.y = true_euler_angles.pitch
                     trueFrame.rotation.z = true_euler_angles.roll
                 }
-                if (true_euler_angles)
+                if (true_position)
                 {
                     true_position = JSON.parse(image_data.true_position),
                     trueFrame.position.x = true_position.x * 1.0
@@ -79,6 +79,11 @@ function declare_gui(websocket_address) {
                     userFrame.position.y = estimated_position.y * 1.0
                     userFrame.position.z = estimated_position.z * 1.0
                     true_tracker.push(userFrame.position.clone())
+                }
+
+                if (estimated_position && true_position)
+                {
+                    autocorrector(true_position, estimated_position);
                 }
 
                 if (!(track === [])) {
@@ -110,5 +115,6 @@ image.onload = function () {
 // Request Animation Frame to remove the flickers
 function update_image() {
     animation_id = window.requestAnimationFrame(update_image);
+    context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(image, 0, 0);
 }
