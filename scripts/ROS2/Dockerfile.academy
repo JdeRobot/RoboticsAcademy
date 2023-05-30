@@ -12,7 +12,7 @@ RUN mv /opt/jderobot/scripts/pylintrc /etc/pylintrc
 RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
 
 # RoboticsAcademy
-RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b issue-2089 /RoboticsAcademy/
+RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b master /RoboticsAcademy/
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src/ && mv /RoboticsApplicationManager/* /RoboticsAcademy/src && rm -rf /RoboticsApplicationManager
