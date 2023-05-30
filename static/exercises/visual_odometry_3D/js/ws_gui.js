@@ -50,6 +50,7 @@ function declare_gui(websocket_address) {
                 estimated_euler_angles = image_data.estimated_euler_angles,
                 estimated_position = image_data.estimated_position;
 
+                console.log("Hola mundooooo");
                 if (true_euler_angles)
                 {
                     true_euler_angles = JSON.parse(image_data.true_euler_angles),
