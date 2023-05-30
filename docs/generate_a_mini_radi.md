@@ -19,7 +19,7 @@ The build.sh script is designed to build a Docker mini RADI image, from specific
     Run the script using the following command:
     
     ```bash
-    ./build.sh [ROBOTICS_ACADEMY] [ROBOTICS_INFRASTRUCTURE] [RAM] [ROS_DISTRO] [IMAGE_TAG]
+    ./build.sh -a [ROBOTICS_ACADEMY] -i [ROBOTICS_INFRASTRUCTURE] -m [RAM] -r [ROS_DISTRO] -t [IMAGE_TAG]
 
     ```
 
@@ -39,9 +39,9 @@ The build.sh script is designed to build a Docker mini RADI image, from specific
 For instance, to build a Docker image using the master branch of the Robotics Academy repository, the noetic-devel branch of the Robotics Infrastructure repository, the main branch of the RAM repository, the noetic ROS distribution, and tag the image as my_image, you would run:
 
 ```bash
-./build.sh master noetic-devel main noetic my_image
+./build.sh -f -a master -i noetic-devel -m main -r noetic -t my_image
 ```
-
+Use '-f' to force build the base image. If omitted, the base image is created only if it doesn't exist.
 ## Troubleshooting
 
 If an error occurs while running the script, ensure that:
@@ -52,4 +52,9 @@ If an error occurs while running the script, ensure that:
 
 ```bash
 chmod +x build.sh
+```
+- For more information about the build script:
+
+```bash
+./build.sh -h
 ```
