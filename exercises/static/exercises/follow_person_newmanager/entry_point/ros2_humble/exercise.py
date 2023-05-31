@@ -1,10 +1,10 @@
 import os.path
 from typing import Callable
 
-from src.manager.libs.applications.compatibility.exercise_wrapper_ros2 import CompatibilityExerciseWrapperRos2
+from src.manager.libs.applications.compatibility.exercise_wrapper_ros2_teleop import CompatibilityExerciseWrapperTeleopRos2
 
 
-class Exercise(CompatibilityExerciseWrapperRos2):
+class Exercise(CompatibilityExerciseWrapperTeleopRos2):
     def __init__(self, circuit: str, update_callback: Callable):
         current_path = os.path.dirname(__file__)
 
