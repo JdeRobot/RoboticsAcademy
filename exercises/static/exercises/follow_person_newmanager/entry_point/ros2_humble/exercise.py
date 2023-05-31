@@ -11,5 +11,5 @@ class Exercise(CompatibilityExerciseWrapperTeleopRos2):
 
         super(Exercise, self).__init__(exercise_command=f"{current_path}/../../python_template/ros2_humble/exercise.py 0.0.0.0",
                                        gui_command=f"{current_path}/../../python_template/ros2_humble/gui.py 0.0.0.0 {circuit}",
-                                       teleop_command=f"{current_path}/../python_template/ros2_humble/person_teleoperator.py 0.0.0.0",
+                                       teleop_command=f"{current_path}/../../python_template/ros2_humble/person_teleoperator.py 0.0.0.0",
                                        update_callback=update_callback)

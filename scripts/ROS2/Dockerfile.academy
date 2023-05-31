@@ -27,7 +27,6 @@ EXPOSE 7163
 
 # Teleoperator websocket
 EXPOSE 7164
-
 # Exercise websocket
 EXPOSE 1905
 # GUI websockets
