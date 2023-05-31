@@ -11,6 +11,7 @@ import RAMStop from "../../buttons/RAM/RAMStop";
 import CameraButton from "../../buttons/RAMVisualizatorButton";
 import { Frequencies } from "../../visualizers/RAM/RAMFrequency";
 import { PlayPause } from "../../buttons/RAM/RAMPlayPause";
+import PersonTeleop from "../../buttons/RAM/RAMPersonTeleop";
 
 function RAMExerciseControl(props) {
   const { filename, setFileName } = React.useContext(props.context);
@@ -57,6 +58,7 @@ function RAMExerciseControl(props) {
           <Frequencies></Frequencies>
         </Box>
         <Box id={"Sim-console-control"}>
+          {props.teleOpMode && <PersonTeleop context={props.context} />}
           <GazeboButton context={props.context} />
           <CameraButton context={props.context}></CameraButton>
           <ConsoleButton context={props.context} />
@@ -68,6 +70,11 @@ function RAMExerciseControl(props) {
 RAMExerciseControl.propTypes = {
   context: PropTypes.any.isRequired,
   specificConfiguration: PropTypes.any,
+  teleOpMode: PropTypes.bool,
+};
+
+RAMExerciseControl.defaultProps = {
+  teleOpMode: false,
 };
 
 export default RAMExerciseControl;

@@ -6,9 +6,8 @@ import NewManagerExerciseContext from "../../contexts/NewManagerExerciseContext"
 import MainAppBar from "../common/MainAppBar";
 import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
-import RAMFollowLineExerciseView from "../views/RAM/RAMFollowLineExerciseView";
+import RAMFollowPersonExerciseView from "../views/RAM/RAMFollowPersonExerciseView";
 import CircuitSelector from "../buttons/RAM/RAMExerciseConfiguration";
-import { Footer } from "../common/RAM/Footer";
 
 function FollowPersonRAM() {
   return (
@@ -17,15 +16,13 @@ function FollowPersonRAM() {
         <ExerciseProvider>
           <MainAppBar
             exerciseName={"Follow Person"}
-            specificConfiguration={<CircuitSelector></CircuitSelector>}
           />
           <View
-            url={THEORY_URL.FollowLine}
+            url={THEORY_URL.FollowPerson}
             exerciseId={
-              <RAMFollowLineExerciseView context={NewManagerExerciseContext} />
+              <RAMFollowPersonExerciseView context={NewManagerExerciseContext} />
             }
           />
-          <Footer></Footer>
         </ExerciseProvider>
       </ViewProvider>
     </Box>

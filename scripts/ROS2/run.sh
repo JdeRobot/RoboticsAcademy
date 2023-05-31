@@ -61,7 +61,7 @@ if [ -z $name ]; then
 fi
 
 if $volume && [ ! -z $path ] && [ -d $path ] ; then
-    docker run --name $name $device -e DRI_NAME=$device_name -v $path:/home/shared_dir --rm -it $serverport -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:$tag $debug $logs $server
+    docker run --name $name $device -e DRI_NAME=$device_name -v $path:/home/shared_dir --rm -it $serverport -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:$tag $debug $logs $server
 else
-    docker run --name $name $device -e DRI_NAME=$device_name --rm -it $serverport -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:$tag $debug $logs $server
+    docker run --name $name $device -e DRI_NAME=$device_name --rm -it $serverport -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:$tag $debug $logs $server
 fi

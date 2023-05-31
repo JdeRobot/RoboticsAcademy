@@ -12,7 +12,7 @@ RUN mv /opt/jderobot/scripts/pylintrc /etc/pylintrc
 RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
 
 # RoboticsAcademy
-RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b master /RoboticsAcademy/
+RUN git clone --depth 10 https://github.com/JdeRobot/RoboticsAcademy.git -b issue-2096 /RoboticsAcademy/
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src/ && mv /RoboticsApplicationManager/* /RoboticsAcademy/src && rm -rf /RoboticsApplicationManager
@@ -24,6 +24,9 @@ RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
 EXPOSE 8000
 # Manager websocket
 EXPOSE 7163
+
+# Teleoperator websocket
+EXPOSE 7164
 
 # Exercise websocket
 EXPOSE 1905
