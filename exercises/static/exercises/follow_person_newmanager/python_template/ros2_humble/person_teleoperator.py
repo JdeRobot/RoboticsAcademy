@@ -16,6 +16,7 @@ class PersonTeleoperator:
 
     # Function to read the message from websocket
     def get_message(self, client, server, message):
+        print("\n\n RECEIVED MSG IN TLEOPERATOR!!\n\n")
         if (message[:7] == "#teleop"):
             mode = message[message.find('_')+1:]
             print("\n\nTeleoperate mode: " + str(mode) + "\n\n")
@@ -40,7 +41,8 @@ class PersonTeleoperator:
 
 
     # Function that gets called when the connected closes
-    def handle_close(self, client):
+    def handle_close(self, client, server):
+        print("\n\n CLOSED TOELEOPERWATOR CLIENTTTTT!!\n\n")
         self.client = None
         self.server.allow_new_connections()
         print(client, 'closed')
@@ -49,6 +51,7 @@ class PersonTeleoperator:
     def get_client(self, client, server):
         self.client = client
         self.server.deny_new_connections()
+        print("\n\n CONNECTED TOELEOPERWATOR CLIENTTTTT!!\n\n")
         print(client, 'connected')
 
 
