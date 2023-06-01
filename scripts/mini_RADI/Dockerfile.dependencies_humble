@@ -139,11 +139,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y \
-    lxde-common \
-  && rm -rf /var/lib/apt/lists/*
-
+  
 # RUN echo -e "no-remote-connections\n\
 # no-httpd\n\
 # no-x11-tcp-connections\n\
@@ -154,8 +150,7 @@ RUN apt-get update && apt-get install -y \
 ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Node
-RUN apt-get install -y software-properties-common \
-  && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs \
   && curl -L https://www.npmjs.com/install.sh | sh \
   && npm install -g yarn
