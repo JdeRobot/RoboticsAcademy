@@ -18,7 +18,7 @@ RUN apt-get clean && \
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-  
+
 ENV ROS_DISTRO=humble
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
 ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
@@ -31,7 +31,7 @@ ENV ROS_VERSION=2
 # Install common tools
 RUN apt-get update && apt-get install -y \
   software-properties-common \
-  bash-completion \    
+  bash-completion \
   apt-utils \
   build-essential \
   git curl wget cmake \
@@ -74,7 +74,7 @@ RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pk
     ros-${ROS_DISTRO}-gazebo* \
     ros-${ROS_DISTRO}-ros-gz* \
   && apt-get -y autoremove \
-	&& apt-get clean autoclean \
+  && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
@@ -90,31 +90,31 @@ RUN python3.10 -m pip install --upgrade pip wheel setuptools
 
 # Python 3 dependencies installed by pip
 RUN python3.10 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
-		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
+    matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
+    pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
 
 # Install VNC
 # Xorg segfault error mitigation
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        dbus-x11 \
-        libdbus-c++-1-0v5 && \
-    rm -rf /var/lib/apt/lists/*
+    dbus-x11 \
+    libdbus-c++-1-0v5 \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
-  xvfb xauth xfonts-base xkb-data x11-xkb-utils \
+    xvfb xauth xfonts-base xkb-data x11-xkb-utils \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get --no-install-recommends install -y \
-		x11vnc \
-		xterm \
-		xserver-xorg-video-dummy \
-		x11-apps \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
-	&& rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+    x11vnc \
+    xterm \
+    xserver-xorg-video-dummy \
+    x11-apps \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN wget https://xpra.org/xorg.conf \
-    && rm -rf /tmp/*
+  && rm -rf /tmp/*
 
 # Install noVNC and websockify
 RUN git clone https://github.com/novnc/noVNC.git
@@ -124,8 +124,8 @@ RUN cd /noVNC/utils && git clone https://github.com/novnc/websockify.git
 COPY ./gpu/virtualgl_${VISRTUALGL_VERSION}_amd64.deb /
 RUN apt-get update && apt-get install -y \
     libegl1-mesa:amd64
-RUN apt-get update && dpkg -i /virtualgl_${VISRTUALGL_VERSION}_amd64.deb && \
-    rm /virtualgl_${VISRTUALGL_VERSION}_amd64.deb
+RUN apt-get update && dpkg -i /virtualgl_${VISRTUALGL_VERSION}_amd64.deb \
+  && rm /virtualgl_${VISRTUALGL_VERSION}_amd64.deb
 
 COPY ./gpu/virtualgl32_${VISRTUALGL_VERSION}_amd64.deb /
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
@@ -133,14 +133,14 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     libxv1:i386 \
     libglu1-mesa:i386 \
     libegl1-mesa:i386
-RUN apt-get update && dpkg -i /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb && \
-    rm /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb && \
-    chmod u+s /usr/lib/libvglfaker.so && \
-    chmod u+s /usr/lib/libdlfaker.so && \
-    chmod u+s /usr/lib32/libvglfaker.so && \
-    chmod u+s /usr/lib32/libdlfaker.so  &&\
-    chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
-    chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so 
+RUN apt-get update && dpkg -i /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb \
+  && rm /virtualgl32_${VISRTUALGL_VERSION}_amd64.deb \
+  && chmod u+s /usr/lib/libvglfaker.so \
+  && chmod u+s /usr/lib/libdlfaker.so \
+  && chmod u+s /usr/lib32/libvglfaker.so \
+  && chmod u+s /usr/lib32/libdlfaker.so \
+  && chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so \
+  && chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so 
 
 # TurboVNC
 COPY ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
@@ -149,13 +149,13 @@ COPY ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 #    rm /turbovnc_${TURBOVNC_VERSION}_amd64.deb
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    /turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
-    rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
-    rm -rf /var/lib/apt/lists/*
+    /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
+  && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
+  && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-    apt-get install -y lxde-common && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    lxde-common \
+  && rm -rf /var/lib/apt/lists/*
 
 # RUN echo -e "no-remote-connections\n\
 # no-httpd\n\
@@ -168,7 +168,7 @@ ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Node
 RUN apt-get install -y software-properties-common \
-&& curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-&& apt-get install -y nodejs \
-&& curl -L https://www.npmjs.com/install.sh | sh \
-&& npm install -g yarn
+  && curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+  && apt-get install -y nodejs \
+  && curl -L https://www.npmjs.com/install.sh | sh \
+  && npm install -g yarn
