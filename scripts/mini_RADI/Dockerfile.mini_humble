@@ -1,4 +1,4 @@
-FROM jderobot/robotics-applications:mini_humble-base
+FROM jderobot/robotics-applications:dependencies-humble
 
 WORKDIR /
 
