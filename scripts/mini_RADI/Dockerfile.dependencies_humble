@@ -107,39 +107,29 @@ RUN wget https://xpra.org/xorg.conf \
 RUN git clone https://github.com/novnc/noVNC.git
 RUN cd /noVNC/utils && git clone https://github.com/novnc/websockify.git
 
-# VirtualGL
-COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb /
-RUN apt-get update && apt-get install -y \
-    libegl1-mesa:amd64
-RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb \
-  && rm /virtualgl_${VIRTUALGL_VERSION}_amd64.deb
+# VirtualGL and TurboVNC
+COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 
-COPY ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb /
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     libxtst6:i386 \
     libxv1:i386 \
     libglu1-mesa:i386 \
-    libegl1-mesa:i386
-RUN apt-get update && dpkg -i /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
-  && rm /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
+    libegl1-mesa:i386 \
+    libegl1-mesa:amd64
+
+RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
+  && rm /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
   && chmod u+s /usr/lib/libvglfaker.so \
   && chmod u+s /usr/lib/libdlfaker.so \
   && chmod u+s /usr/lib32/libvglfaker.so \
   && chmod u+s /usr/lib32/libdlfaker.so \
   && chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so \
-  && chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so 
-
-# TurboVNC
-COPY ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
-
-#RUN apt-get update && dpkg -i /turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
-#    rm /turbovnc_${TURBOVNC_VERSION}_amd64.deb
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
+  && chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so \
+  && apt-get update && apt-get install -y --no-install-recommends \
     /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm -rf /var/lib/apt/lists/*
-  
+
 # RUN echo -e "no-remote-connections\n\
 # no-httpd\n\
 # no-x11-tcp-connections\n\
