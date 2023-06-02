@@ -89,7 +89,7 @@ else
 fi
 
 # Build the Docker Base image
-if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:mini_$ROS_DISTRO-base 2> /dev/null)" == "" ]]; then
+if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
   docker build -f $DOCKERFILE_BASE -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
