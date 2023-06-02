@@ -135,10 +135,10 @@ RUN python3.10 -m pip install --upgrade pip wheel setuptools
 
 # pip install dependencies
 RUN python3.10 -m pip install \
-    pylint transitions pydantic websocket-client opencv-python \
-    argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
+    pylint transitions pydantic websocket-client \
+    argparse coverage cerberus empy jinja2 kconfiglib \
     matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-    pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
+    pyyaml requests serial six toml psutil onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
 
 # websocket server dependency
 RUN python3.10 -m pip install websocket_server posix-ipc django==4.1.7 djangorestframework==3.13.1 \
