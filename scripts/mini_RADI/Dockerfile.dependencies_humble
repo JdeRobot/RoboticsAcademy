@@ -71,21 +71,6 @@ RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pk
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
-# websocket server dependency
-RUN pip3 install websocket_server posix-ipc django==4.1.7 djangorestframework==3.13.1 django-webpack-loader==1.5.0 django-cors-headers==3.14.0
-RUN python3.10 -m pip install websockets asyncio
-
-# pip install dependencies
-RUN python3.10 -m pip install pylint transitions pydantic websocket-client opencv-python
-
-# Install Python 3 pip build dependencies first
-RUN python3.10 -m pip install --upgrade pip wheel setuptools
-
-# Python 3 dependencies installed by pip
-RUN python3.10 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
-    matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-    pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
-
 # Install VNC
 # Xorg segfault error mitigation
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -144,3 +129,17 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs \
   && curl -L https://www.npmjs.com/install.sh | sh \
   && npm install -g yarn
+
+# Install Python 3 pip build dependencies first
+RUN python3.10 -m pip install --upgrade pip wheel setuptools
+
+# pip install dependencies
+RUN python3.10 -m pip install \
+    pylint transitions pydantic websocket-client opencv-python \
+    argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
+    matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
+    pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
+
+# websocket server dependency
+RUN python3.10 -m pip install websocket_server posix-ipc django==4.1.7 djangorestframework==3.13.1 \
+    django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets asyncio
