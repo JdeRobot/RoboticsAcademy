@@ -28,4 +28,5 @@ export const THEORY_URL = {
   LaserMapping: BaseUrl + "MobileRobots/laser_mapping",
   VacuumCleaner: BaseUrl + "MobileRobots/vacuum_cleaner",
   VacuumCleanerLoc: BaseUrl + "MobileRobots/vacuum_cleaner_loc",
+  RealFollowPerson: BaseUrl + "MobileRobots/real_follow_person",
 };
