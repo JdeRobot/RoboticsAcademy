@@ -61,6 +61,7 @@ class PublisherMotors:
 
         self.lock.acquire()
         tw = cmdvel2Twist(self.data)
+        #print ("tw",tw)
         self.lock.release()
         self.pub.publish(tw)
         

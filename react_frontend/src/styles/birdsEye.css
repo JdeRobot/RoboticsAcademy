@@ -1,0 +1,39 @@
+#birds-eye{
+	background: url("/static/exercises/follow_line/img/map.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.default{
+	background: url("/static/exercises/follow_line/img/map.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.montreal{
+	background: url("/static/exercises/follow_line/img/montreal.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.montmelo{
+	background: url("/static/exercises/follow_line/img/montmelo.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+#birds-eye.nbg{
+	background: url("/static/exercises/follow_line/img/nbg.jpg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}

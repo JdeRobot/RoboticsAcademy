@@ -370,6 +370,11 @@ input[type=number]::-webkit-inner-spin-button {
     display: none;
 }
 
+#graph-upload {
+  display: none;
+  margin: 22px 0 22px 0;
+}
+
 #visualizer{
   font-size: 12px;
     width: 80px;

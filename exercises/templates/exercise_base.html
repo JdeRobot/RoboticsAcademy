@@ -226,8 +226,10 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <img src="{% static 'common/img/logo.png' %}" class="d-inline-block align-top"
-                height="28" alt="Academy">
+            <a href="http://0.0.0.0:8000/exercises/">
+                <img src="{% static 'common/img/logo.png' %}" class="d-inline-block align-top"
+                    height="28" alt="Academy">
+            </a>
 
             <div class="col-xs-3 ml-auto">
                 <button type="button" class="btn btn-secondary" style="padding-top: 2px; padding-bottom: 2px;" id="connection-button" value="local-connection" disabled="true"><span id="loading-connection"
@@ -552,7 +554,7 @@ let simulate_mode = false;
 		}
 
 
-    		// Car variables
+    	// Car variables
 		let v = 0;
 		let w = 0;
 

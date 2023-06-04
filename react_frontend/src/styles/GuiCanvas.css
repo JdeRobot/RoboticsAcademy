@@ -1,0 +1,31 @@
+#gui_canvas.globalnav-eye{
+	background: url("/static/exercises/global_navigation/img/globalnav.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+	margin-bottom: 5px;
+	margin: auto;
+}
+
+
+#gui_canvas.vacuum-eye{
+	background: url("/static/exercises/vacuum_cleaner/img/map.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center;
+	width: 100%;
+}
+
+/*#gui_canvas.vacuumloc-eye{*/
+/*	background: url("static/common/img/vacuum_loc.png");*/
+/*	background-repeat: no-repeat;*/
+/*	background-size: 100% 100%;*/
+/*	background-position: center;*/
+/*	height: 350px;*/
+/*    width: 340px;*/
+/*}*/
+
+#gui_canvas.local-map-lasers{
+	background: #0D488A;
+}

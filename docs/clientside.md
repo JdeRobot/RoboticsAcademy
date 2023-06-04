@@ -12,6 +12,7 @@
 - [User code processing](#User-code-processing)
 - [Threads used in the exercises](#Threads-used-in-the-exercises)
 - [Flow control](#Flow-control)
+- [Manager.py extended](#Manager.py extended)
 
 <a name="Robotics-Academy-frontend"></a>
 ## Robotics Academy frontend
@@ -127,3 +128,25 @@ In order to control the number of messages sent by the users, so the RADI is not
 - The code websocket responds with "#exec" after the sent code has been loaded in the brain of the robot.
 
 After any of the previous commands is requested by the user, the respective button is blocked until the completed response returns.
+
+<a name="Manager.py extended"></a>
+## Manager.py extended
+
+When the RADI container is opened, it starts the execution of the manager.py. Then wait for the user to pick an exercise. Once the exercise is selected the browser communicates to the manager.py the identifier of that exercise and differentes messages depending the user's actions.
+
+Once the manager.py receives the "start" message, it searches for the instructions.json file. Inside that file is a serie of instructions for each exercise in JSON format. This instructions include things as the path to the exercise.py file of each exercise or the route to the file for launching Gazebo, etc.
+
+Once the manager.py has the name of the exercise, it recovers from the instructions.json file the object whose key match the exercise name.
+
+One of the most important parts of the manager.py comes when the user clicks in the laun button. Then the browser sends a "open" message to the manager and it starts all the necessary things to make the exercise work. As there are many different exercises which require different things, depending on the type of the selected one, the manager.py does different things. For example, for the exercises that need a circuit starts the Gazebo server with that circuit. Meanwhile, for the exercises that dont require anything special it simply starts the VNC and the console.
+
+Once the user introduces and sends their code, the manager.py opens a subprocess to check it searching for possible mistakes. If there are any errors, a pop up will be showed indicating the erros found, a code with the type of error it is and the line in which they can be found. In case there is nothing to be changed, the manager.py executes the user code.
+
+
+The manager is the one in charge of requesting exercises and controlling the simulation. The principal part of the manager can be found in the manager class. In this class values like the server, client, exercise and simulator used are inicializated and changed afterwards depending on the exercise the user is trying to use.
+
+Ones of the most important function in the manager.py script are the following ones:
+
+- **Handle**: The function in charge of handling the messages received from the browser. Depending the value of this message, it executes one function or another. For example, the "evaluate" command triggers the function to evaluate code sent by user. The "stop" command executes the stop_simulation function which stops the physics, etc
+- **Open_simulation**: This function starts everything that is necessary to run the selected exercise. Its behaviour depends on the selected exercise as explained before.
+- **Reset_simulation**: Its behaviour too depends on the selected exercise. Some of the exercises just require the drone or topics to be reseted after the "reset" message is sent to the manager.py and others may require a hard_reset, starting the exercise from 0.
