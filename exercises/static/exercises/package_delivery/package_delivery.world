@@ -27,16 +27,23 @@
 			<pose>30 -5 0 0 0 0</pose>
 		</include>
 
-        <!-- Package Box -->
-        <include>
-			<uri>model://package_box</uri>
-            <pose>-1 -1 0.061 0 0 0</pose>
-		</include>
-
-        <!-- Package Box Pad -->
+        <!-- Package Box Pads -->
         <include>
 			<uri>model://logoPadRed</uri>
             <pose>-1 -1 0.05 0 0</pose>
+            <name>logoPadRed1</name>
+		</include>
+
+        <include>
+			<uri>model://logoPadRed</uri>
+            <pose>-1 2.4 0.05 0 0</pose>
+            <name>logoPadRed2</name>
+		</include>
+
+        <include>
+			<uri>model://logoPadRed</uri>
+            <pose>-1 5.5 0.05 0 0</pose>
+            <name>logoPadRed3</name>
 		</include>
 
         <!-- Drone Pad -->
@@ -45,16 +52,58 @@
             <pose>-1 -4 0.05 0 0</pose>
 		</include>
 
-        <!-- Target House -->
+        <!-- Target Houses -->
         <include>
 			<uri>model://house_3</uri>
             <pose>20 20 0 0 0 0</pose>
+            <name>house1</name>
 		</include>
 
-        <!-- Target Beacon -->
+        <include>
+			<uri>model://house_3</uri>
+            <pose>20 -20 0 0 0 0</pose>
+            <name>house2</name>
+		</include>
+
+        <include>
+			<uri>model://house_3</uri>
+            <pose>40 0 0 0 0 0</pose>
+            <name>house3</name>
+		</include>
+
+        <!-- Package Boxes -->
+        <include>
+			<uri>model://package_box_01</uri>
+            <pose>-1 -1 0.061 0 0 0</pose>
+		</include>
+
+        <include>
+			<uri>model://package_box_02</uri>
+            <pose>-1 2.4 0.061 0 0 0</pose>
+		</include>
+
+        <include>
+			<uri>model://package_box_03</uri>
+            <pose>-1 5.5 0.061 0 0 0</pose>
+		</include>
+
+        <!-- Target Beacons -->
         <include>
 			<uri>model://logoBeacon</uri>
             <pose>20 15 0 0 0 0</pose> 
+            <name>logoBeacon1</name>
+		</include>
+
+        <include>
+			<uri>model://logoBeacon</uri>
+            <pose>20 -15 0 0 0 0</pose> 
+            <name>logoBeacon2</name>
+		</include>
+
+        <include>
+			<uri>model://logoBeacon</uri>
+            <pose>40 -5 0 0 0 0</pose> 
+            <name>logoBeacon3</name>
 		</include>
 
         <model name="aws_robomaker_warehouse_ShelfF_01_001">
@@ -141,12 +190,7 @@
             </include>
             <pose frame=''>3.408638 8.616844 -0.017477 0 0 0</pose>
         </model>
-        <model name='aws_robomaker_warehouse_ClutteringA_01_018'>
-            <include>
-                <uri>model://aws_robomaker_warehouse_ClutteringA_01</uri>
-            </include>
-            <pose frame=''>-1.491287 5.222435 -0.017477 0 0 -1.583185</pose>
-        </model>
+        
         <model name="aws_robomaker_warehouse_ClutteringC_01_027">
             <include>
                 <uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
@@ -171,12 +215,7 @@
             </include>
             <pose frame="">3.236 6.137154 0 0 0 3.150000</pose>
         </model>
-        <model name="aws_robomaker_warehouse_ClutteringC_01_031">
-            <include>
-                <uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
-            </include>
-            <pose frame="">-1.573677 2.301994 -0.015663 0 0 -3.133191</pose>
-        </model>
+        
         <model name="aws_robomaker_warehouse_ClutteringC_01_032">
             <include>
                 <uri>model://aws_robomaker_warehouse_ClutteringC_01</uri>
