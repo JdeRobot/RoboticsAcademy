@@ -17,10 +17,11 @@
                     
                     {% react_component components/wrappers/FlexContainer row %}
                         {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
-                        {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% react_component components/wrappers/FlexContainer%} 
+                            {% react_component components/visualizers/UpdateView%}{% end_react_component %}
+                        {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-
 {% comment %}
                         {% react_component exercise/follow_line_react_refactor/components/FlexContainer %}
                             {% react_component exercise/follow_line_react_refactor/components/viewers/RAMUpdateView %}{% end_react_component %}
