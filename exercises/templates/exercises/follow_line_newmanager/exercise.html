@@ -9,6 +9,7 @@
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
             {% react_component components/layout_components/MainAppBar exerciseName="Follow Line RR" %} 
+            {% react_component exercise/follow_line_newmanager/MapSelector %} {% end_react_component %}  
                 {% react_component components/buttons/ExerciseTheoryForumButton %} {% end_react_component %}
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
@@ -22,23 +23,10 @@
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-{% comment %}
-                        {% react_component exercise/follow_line_react_refactor/components/FlexContainer %}
-                            {% react_component exercise/follow_line_react_refactor/components/viewers/RAMUpdateView %}{% end_react_component %}
-                            {% react_component exercise/follow_line_react_refactor/components/editors/AceEditorRobot %}{% end_react_component %}
-                        {% end_react_component %}
-                    {% end_react_component %}
-                {% end_react_component %}
-
-                {% react_component exercise/follow_line_react_refactor/components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
-                {% react_component exercise/follow_line_react_refactor/components/views/ForumView %}{% end_react_component %}
-
-            {% end_react_component %}
-        {% end_react_component %}
-{% endcomment %}
+{% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
+{% react_component components/views/ForumView %}{% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
-
 {% end_react_component %}
 {% end_react_component %}
     {% end_react_component %}
