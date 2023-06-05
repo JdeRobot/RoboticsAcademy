@@ -1,6 +1,34 @@
 {% extends "react_frontend/exercise_base.html" %}
 {% load react_component %}
 
+{% block exercise_header %}
+{% endblock %}
+
 {% block react-content %}
-{% react_component components/templates/FollowLineReactRAM %} {% end_react_component %}
+    {% react_component exercise/follow_line_react_refactor/FollowLineReactRefactor %}
+        {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="exercise-container" %}
+            {% react_component exercise/follow_line_react_refactor/components/MainAppBar exerciseName="Follow Line React Refactored" %}
+                {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}
+                {% end_react_component %}
+            {% end_react_component %}
+            {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="content" %}
+                {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="content-exercise" %}
+                    {% react_component exercise/follow_line_react_refactor/components/RAMExerciseControl %}{% end_react_component %}
+                    {% react_component exercise/follow_line_react_refactor/components/FlexContainer row %}
+                        {% react_component exercise/follow_line_react_refactor/components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% react_component exercise/follow_line_react_refactor/components/FlexContainer %}
+                            {% react_component exercise/follow_line_react_refactor/components/viewers/RAMUpdateView %}{% end_react_component %}
+                            {% react_component exercise/follow_line_react_refactor/components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% end_react_component %}
+                    {% end_react_component %}
+                {% end_react_component %}
+{% comment %}
+                {% react_component exercise/follow_line_react_refactor/components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
+                {% react_component exercise/follow_line_react_refactor/components/views/ForumView %}{% end_react_component %}
+{% endcomment %}
+            {% end_react_component %}
+        {% end_react_component %}
+        {% react_component exercise/follow_line_react_refactor/components/message-system/Loading %}{% end_react_component %}
+        {% react_component exercise/follow_line_react_refactor/components/message-system/Alert %}{% end_react_component %}
+    {% end_react_component %}
 {% endblock %}
