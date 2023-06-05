@@ -2,12 +2,12 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import AceEditor from "react-ace";
 import "../../../../static/common/ace-builds/src-noconflict/ace.js";
-import "../../../../static/common/ace-builds/src-noconflict/ext-language_tools";
-import "../../../../static/common/ace-builds/src-noconflict/mode-python";
-import "../../../../static/common/ace-builds/src-noconflict/theme-dracula";
-import "../../../../static/common/ace-builds/src-noconflict/snippets/python";
+import "../../../../static/common/ace-builds/src-noconflict/ext-language_tools.js";
+import "../../../../static/common/ace-builds/src-noconflict/mode-python.js";
+import "../../../../static/common/ace-builds/src-noconflict/theme-dracula.js";
+import "../../../../static/common/ace-builds/src-noconflict/snippets/python.js";
 import PropTypes from "prop-types";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
+import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 export default function AceEditorRobot(props) {
   const [fontSize, setFontSize] = React.useState(14);
   const { editorCode, editorCodeChange } = React.useContext(props.context);
