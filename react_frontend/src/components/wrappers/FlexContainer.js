@@ -7,6 +7,7 @@ const FlexContainer = (props) => {
   const containerRef = useRef();
   const separatorRef = useRef();
   const firstChildRef = useRef();
+  const iframeCoverRef = useRef();
 
   var containerClass = classNames({
     "flex-container": true,
@@ -31,6 +32,9 @@ const FlexContainer = (props) => {
     if (e.which === 1) {
       containerRef.current.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp, true);
+      if (iframeCoverRef.current) {
+        iframeCoverRef.current.style.display = "block";
+      }
     }
   };
 
@@ -38,6 +42,9 @@ const FlexContainer = (props) => {
     if (e.which === 1) {
       containerRef.current.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp, true);
+      if (iframeCoverRef.current) {
+        iframeCoverRef.current.style.display = "none";
+      }
       console.log(e);
     }
   };
@@ -63,6 +70,19 @@ const FlexContainer = (props) => {
       <div ref={firstChildRef} className={"flex-container-first"}>
         {props.children[0]}
       </div>
+      <div
+        ref={iframeCoverRef}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(0,0,0,0)",
+          display: "none",
+          zIndex: 9999,
+        }}
+      ></div>
       <div ref={separatorRef} className={"flex-container-divider"}>
         <i className={separatorClass}></i>
       </div>
