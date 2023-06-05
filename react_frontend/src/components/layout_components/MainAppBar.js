@@ -10,23 +10,55 @@ import { LaunchIndicator } from "Components/visualizers/LaunchIndicator";
 import { useUnload } from "Hooks/useUnload";
 
 function MainAppBar(props) {
-  const config = JSON.parse(
-    document.getElementById("exercise-config").textContent
-  );
+  const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
+  let ros_version = 1;
 
-  config.height = window.innerHeight / 2;
-  config.width = window.innerWidth / 2;
+  const fetchRosVersion = (data) => {
+    // Requests ROS version and filters exercises by ROS tag
+    const rosVersionURL = `${serverBase}/exercises/ros_version/`;
+    fetch(rosVersionURL)
+      .then((res) => res.json())
+      .then((msg) => {
+        ros_version = msg.version;
+        // If ROS is not installed
+        if (isNaN(parseInt(ros_version))) {
+          ros_version = 1;
+        }
+      })
+      .catch((error) => {
+        ros_version = 1;
+      });
+  };
 
   const connect = () => {
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Conectando y lanzando el ejercicio"
     );
 
+    fetchRosVersion();
     window.RoboticsExerciseComponents.commsManager
       .connect()
       .then(() => {
+        const config = JSON.parse(
+          document.getElementById("exercise-config").textContent
+        );
+        // Selects the configs available for the ROS version installed
+        const launchConfigs = {};
+        let selectedConfig = {};
+        launchConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
+        if (launchConfigs.hasOwnProperty(`ROS${ros_version}`)) {
+          if (Array.isArray(launchConfigs[`ROS${ros_version}`])) {
+            selectedConfig = launchConfigs[`ROS${ros_version}`][0];
+          } else {
+            selectedConfig = launchConfigs[`ROS${ros_version}`];
+          }
+        } else {
+          // Compatibility, if there is no ROS data, send the complete object
+          selectedConfig = config;
+        }
+        selectedConfig["exercise_id"] = config["exercise_id"];
         window.RoboticsExerciseComponents.commsManager
-          .launch(config)
+          .launch(selectedConfig)
           .then(() => {
             RoboticsReactComponents.MessageSystem.Loading.hideLoading();
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
