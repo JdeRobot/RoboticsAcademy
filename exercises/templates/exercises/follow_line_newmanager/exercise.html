@@ -5,9 +5,12 @@
 {% endblock %}
 
 {% block react-content %}
-    {% react_component exercise/follow_line_react_refactor/FollowLineReactRefactor %}
-        {% react_component exercise/follow_line_react_refactor/components/MaterialBox id="exercise-container" %}
-            {% react_component exercise/follow_line_react_refactor/components/MainAppBar exerciseName="Follow Line React Refactored" %}
+    {% react_component exercise/follow_line_newmanager/FollowLineRR %}
+
+        {% react_component components/wrappers/MaterialBox id="exercise-container" %}
+            {% react_component components/layout_components/MainAppBar exerciseName="Follow Line RR" %} {% end_react_component %}
+            {% end_react_component %}
+{% comment %}
                 {% react_component exercise/follow_line_react_refactor/components/buttons/ExerciseTheoryForumButton %}
                 {% end_react_component %}
             {% end_react_component %}
@@ -22,13 +25,14 @@
                         {% end_react_component %}
                     {% end_react_component %}
                 {% end_react_component %}
-{% comment %}
+
                 {% react_component exercise/follow_line_react_refactor/components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
                 {% react_component exercise/follow_line_react_refactor/components/views/ForumView %}{% end_react_component %}
-{% endcomment %}
+
             {% end_react_component %}
         {% end_react_component %}
         {% react_component exercise/follow_line_react_refactor/components/message-system/Loading %}{% end_react_component %}
         {% react_component exercise/follow_line_react_refactor/components/message-system/Alert %}{% end_react_component %}
+{% endcomment %}
     {% end_react_component %}
 {% endblock %}
