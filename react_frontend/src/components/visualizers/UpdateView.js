@@ -5,7 +5,6 @@ import "../../styles/visualizers/UpdateView.css";
 import { Box } from "@mui/material";
 
 const UpdateView = (props) => {
-  /*   const { width, height } = props; */
   const width = 1280;
   const height = 720;
   const canvasRef = React.useRef(null);
