@@ -1,0 +1,84 @@
+{"ROS2":
+[
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
+    "params": { "circuit": "default"}
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros2_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros2_humble"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/amazon_robot/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/amazon_robot.launch.py",
+      "name": "Default"
+    },
+    "1": {
+      "type": "module",
+      "module": "console_ros2",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view_ros2",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+},
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
+    "params": { "circuit": "World 2"}
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros2_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros2_humble"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/amazon_robot/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/pallet_warehouse.launch.py",
+      "name": "World 2"
+    },
+    "1": {
+      "type": "module",
+      "module": "console_ros2",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view_ros2",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+}
+]
+}
