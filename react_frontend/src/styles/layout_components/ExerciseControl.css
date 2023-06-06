@@ -7,3 +7,7 @@
   border: 2px solid #d3d3d3;
   padding: 0;
 }
+
+#editor-control {
+  display: flex;
+}
