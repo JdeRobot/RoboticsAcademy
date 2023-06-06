@@ -1,14 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <sdf version="1.6">
   <world name="default">
-
-    <gui fullscreen='1'>
-      <camera name='user_camera'>
-        <pose frame=''>-2 -2 10 0 1.57 0</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
     
     <gravity>0 0 -9.8</gravity>
     <physics default="0" name="default_physics" type="ode">
@@ -21,6 +13,18 @@
       <uri>model://amazon_robot</uri>
         <pose>0 0 0 0 0 0</pose>
     </include>
+
+    <gui fullscreen='1'>
+      <camera name="user_camera">
+        <track_visual>
+          <name>amazon_robot</name>
+          <static>true</static>
+          <use_model_frame>true</use_model_frame>
+          <xyz>-3 0 0.65</xyz>
+          <inherit_yaw>true</inherit_yaw>
+        </track_visual>
+      </camera>
+    </gui>
     
     <!--model name="aws_robomaker_warehouse_RoofB_01_001">
         <include>

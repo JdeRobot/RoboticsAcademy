@@ -16,7 +16,7 @@ def generate_launch_description():
   pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
-  world_file_name = 'no_roof_small_warehouse_with_robot.world'
+  world_file_name = 'no_roof_small_warehouse_with_robot_followingcam.world'
   current_path = "/RoboticsAcademy/exercises/static/exercises/amazon_warehouse/launch/ros2_humble"
   world_path = os.path.join(current_path, world_file_name)
    

@@ -15,10 +15,14 @@
     </scene>
 
     <gui fullscreen='1'>
-      <camera name='user_camera'>
-        <pose frame=''>0 0 10 0 1.57 0</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
+      <camera name="user_camera">
+        <track_visual>
+          <name>amazon_robot</name>
+          <static>true</static>
+          <use_model_frame>true</use_model_frame>
+          <xyz>-3 0 0.65</xyz>
+          <inherit_yaw>true</inherit_yaw>
+        </track_visual>
       </camera>
     </gui>
 
