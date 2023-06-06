@@ -2,9 +2,12 @@ import React from "react";
 import updateRenderer from "../../libs/UpdateRenderer";
 import defaultCircuit from "../../images/default_circuit.png";
 import "../../styles/visualizers/UpdateView.css";
+import { Box } from "@mui/material";
 
 const UpdateView = (props) => {
-  const { width, height } = props;
+  /*   const { width, height } = props; */
+  const width = 1280;
+  const height = 720;
   const canvasRef = React.useRef(null);
   const updateRef = React.useRef({});
   const rendererRef = React.useRef(new updateRenderer());
@@ -43,7 +46,11 @@ const UpdateView = (props) => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={"exercise-canvas"}></canvas>;
+  return (
+    <Box sx={{ height: "100%" }}>
+      <canvas ref={canvasRef} className={"exercise-canvas"}></canvas>
+    </Box>
+  );
 };
 
 UpdateView.defaultProps = {

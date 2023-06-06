@@ -1,8 +1,8 @@
 function UpdateRenderer() {
   const circuitReferenceWidth = 300;
   const circuitReferenceHeight = 150;
-  const circuitScaleX = 0.5;
-  const circuitScaleY = 0.5;
+  const circuitScaleX = 0.3;
+  const circuitScaleY = 0.3;
   const circuitMarginX = 16;
   const circuitMarginY = 16;
 
