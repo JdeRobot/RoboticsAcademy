@@ -6,7 +6,7 @@ import NewManagerExerciseContext from "../../contexts/NewManagerExerciseContext"
 import MainAppBar from "../common/MainAppBar";
 import View from "../common/View";
 import { THEORY_URL } from "../../helpers/TheoryUrlGetter";
-import RAMFollowLineExerciseView from "../views/RAM/RAMFollowLineExerciseView"; // same views as Follow Line
+import RAMAmazonWarehouseExerciseView from "../views/RAM/RAMAmazonWarehouseExerciseView"; // same views as Follow Line
 import CircuitSelector from "../buttons/RAM/RAMExerciseConfiguration";
 import { Footer } from "../common/RAM/Footer";
 
@@ -22,7 +22,7 @@ function AmazonWarehouseReactRAM() {
           <View
             url={THEORY_URL.AmazonWarehouse} // Theory URL missing
             exerciseId={
-              <RAMFollowLineExerciseView context={NewManagerExerciseContext} />
+              <RAMAmazonWarehouseExerciseView context={NewManagerExerciseContext} />
             }
           />
           <Footer></Footer>
