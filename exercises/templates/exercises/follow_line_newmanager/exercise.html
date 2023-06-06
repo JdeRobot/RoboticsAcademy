@@ -16,7 +16,10 @@
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
                     {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
                     {% react_component components/wrappers/FlexContainer row %}
+                    {% react_component components/wrappers/FlexContainer%} 
                         {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
+                        {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
                             {% react_component components/visualizers/UpdateView%}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
