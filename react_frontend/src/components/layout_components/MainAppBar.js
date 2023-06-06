@@ -99,7 +99,7 @@ function MainAppBar(props) {
 
   return (
     <RoboticsTheme>
-      <AppBar position="static">
+      <AppBar position="relative">
         <Toolbar
           sx={{
             display: "flex",

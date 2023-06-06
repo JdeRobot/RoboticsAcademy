@@ -52,6 +52,7 @@ const PlayPause = (props) => {
       })
       .catch((response) => {
         let linterMessage = JSON.stringify(response.data.message).split("\\n");
+        RoboticsReactComponents.MessageSystem.Alert.showAlert(linterMessage);
         console.log(`Received linter message ·${linterMessage}`);
       })
       .finally(() => {

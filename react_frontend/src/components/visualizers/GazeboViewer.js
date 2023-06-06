@@ -27,25 +27,38 @@ function GazeboViewer(props) {
   return (
     <>
       {enableGazebo ? (
-        <iframe
-          id={"iframe"}
-          style={{
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            maxHeight: "100%",
             width: "100%",
             height: "100%",
+            textAlign: "center",
           }}
-          src={"http://127.0.0.1:6080/vnc.html?resize=remote&autoconnect=true"}
-        />
+        >
+          <iframe
+            id={"iframe"}
+            style={{
+              width: "100%",
+              height: "100%",
+            }}
+            src={
+              "http://127.0.0.1:6080/vnc.html?resize=remote&autoconnect=true"
+            }
+          />
+        </Box>
       ) : (
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            border: "2px solid #d3d3d3",
+
             width: "100%",
-            height: "400px",
+            height: "100%",
             textAlign: "center",
-            gap: "15px",
           }}
         >
           <Typography>{"Loading simulation   "} </Typography>

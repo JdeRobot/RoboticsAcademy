@@ -34,9 +34,13 @@ const Alert = () => {
   React.useEffect(() => {
     RoboticsReactComponents.MessageSystem.Alert.setAlertHandler(
       (message, closeAction, closeText) => {
-        if (typeof message !== "string") {
+        if (Array.isArray(message)) {
+          message = message.map((msg, i) => <p key={i}>{msg}</p>);
+        } else if (typeof message !== "string") {
           console.error(`Bad message sent ${message}`);
           return;
+        } else {
+          message = <p>{message}</p>;
         }
 
         setMessage(message || "No message set");
@@ -72,7 +76,7 @@ const Alert = () => {
               </Button>
             }
           >
-            {message}
+            <div className="message-scroll">{message}</div>
           </MuiAlert>
         </Collapse>
       ) : null}
