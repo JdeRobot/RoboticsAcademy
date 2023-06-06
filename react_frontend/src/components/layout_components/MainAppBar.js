@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { ConnectionIndicator } from "Components/visualizers/ConnectionIndicator";
 import { LaunchIndicator } from "Components/visualizers/LaunchIndicator";
 import { useUnload } from "Hooks/useUnload";
+import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
 
 function MainAppBar(props) {
   const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
@@ -126,10 +127,13 @@ function MainAppBar(props) {
             >
               <ConnectionIndicator></ConnectionIndicator>
               <LaunchIndicator></LaunchIndicator>
+              {props.children}
             </Box>
           </Box>
           <Typography variant="h5">{props.exerciseName}</Typography>
-          {props.children}
+          <Box>
+            <ExerciseTheoryForumButton></ExerciseTheoryForumButton>
+          </Box>
         </Toolbar>
       </AppBar>
     </RoboticsTheme>

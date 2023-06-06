@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import LandscapeIcon from "@mui/icons-material/Landscape";
 
-import { FormControl, InputLabel, Select } from "@mui/material";
+import { FormControl, InputLabel, Select, Box } from "@mui/material";
 
 const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
 const exerciseConfig = JSON.parse(
@@ -91,7 +91,7 @@ export default function MapSelector(props) {
   }, []);
 
   return (
-    <>
+    <Box sx={{marginLeft: "20px"}}>
       <FormControl>
         <InputLabel id={"circuit-selector-label"}>
           <LandscapeIcon></LandscapeIcon>
@@ -113,6 +113,6 @@ export default function MapSelector(props) {
           ))}
         </Select>
       </FormControl>
-    </>
+    </Box>
   );
 }
