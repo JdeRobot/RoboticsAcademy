@@ -30,8 +30,6 @@ export const get_novnc_size = () => {
 };
 
 export const saveCode = (fileName, python_code) => {
-  // Get the code from editor and add header
-  console.log("Save Code ");
   const blob = new Blob([python_code], { type: "text/plain; charset=utf-8" });
   const a = document.createElement("a"),
     url = URL.createObjectURL(blob);

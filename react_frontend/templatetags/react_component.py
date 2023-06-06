@@ -37,17 +37,34 @@ class ReactComponent(template.Node):
         return properties
 
     def render(self, context):
-        id = f"{self.node_to_render.lower()}-{uuid.uuid4()}"
-        properties = self.__parse_properties()
-
-        content = self.child_nodes.render(context)
+        element_to_render = self.node_to_render.lower().split('/')[-1]
+        dom_id = f"{element_to_render}-{uuid.uuid4()}"
+        react_component = {
+            "component": self.node_to_render,
+            "dom_id": dom_id,
+            "properties": self.__parse_properties(),
+            "children": []
+        }
 
         if 'react-components' not in context.render_context:
             context.render_context['react-components'] = []
+            context.render_context['parent-react-component'] = None
 
-        context.render_context['react-components'].append((id, self.node_to_render, properties))
+        if context.render_context['parent-react-component'] is None:
+            context.render_context['react-components'].append(react_component)
+            parent_component = None
+        else:
+            context.render_context['parent-react-component']["children"].append(react_component)
+            parent_component = context.render_context['parent-react-component']
 
-        return f"<div id='{id}'>{str(content)}</div>"
+        if self.child_nodes:
+            context.render_context['parent-react-component'] = react_component
+            content = self.child_nodes.render(context)
+            context.render_context['parent-react-component'] = parent_component
+        else:
+            content = ""
+
+        return f"<div id='{dom_id}'>{str(content)}</div>"
 
 
 @register.tag(name="react_components_render")
@@ -60,14 +77,16 @@ class ReactComponentsRenderer(template.Node):
         pass
 
     def render(self, context):
-        components = ""
-        for react_component in context.render_context['react-components']:
-            component = f"['{react_component[1]}', " \
-                        f"document.getElementById('{react_component[0]}')," \
-                        f"{json.dumps(react_component[2])}],"
-            components += f"{component}\n"
+        root_component = {
+            "component": "root",
+            "dom_id": "",
+            "properties": "",
+            "children": context.render_context['react-components']
+        }
+
+        components = json.dumps(root_component)
         return f"""
 <script>
-    RoboticsExerciseComponents.render([{components}]);
+    RoboticsExerciseComponents.render({components});
 </script>            
 """
