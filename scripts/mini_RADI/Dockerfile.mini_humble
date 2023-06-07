@@ -5,7 +5,7 @@ WORKDIR /
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 RUN mkdir -p /opt/jderobot && \
-    git clone https://github.com/JdeRobot/RoboticsInfraestructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+    git clone https://github.com/JdeRobot/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
