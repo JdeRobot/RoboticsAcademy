@@ -37,10 +37,10 @@ class HAL:
         self.shared_pose = SharedPose3D("pose")
 
         # ROS Topics
-        #self.motors = PublisherMotors("/cmd_vel", 4, 0.3)
+        self.motors = PublisherMotors("/commands/velocity", 4, 0.3)
         self.camera = ListenerCamera("/camera_node/image_raw")
-        #self.laser = ListenerLaser("/scan")
-        #self.odometry = ListenerPose3d("/odom")
+        self.laser = ListenerLaser("/scan")
+        self.odometry = ListenerPose3d("/odom")
 
         self.start_time = 0
 
@@ -105,11 +105,11 @@ class HAL:
         return HALFunctions.getBoundingBoxes(img)
 
     def update_hal(self):
-        #self.getLaserData()
+        self.getLaserData()
         self.getImage()
-        #self.setV()
-        #self.setW()
-        #self.getPose3d()
+        self.setV()
+        self.setW()
+        self.getPose3d()
 
     # Destructor function to close all fds
     def __del__(self):
