@@ -4,10 +4,10 @@ import os
 import rclpy
 import cv2
 import sys
+import numpy as np
 import base64
 import threading
 import time
-import numpy as np
 from datetime import datetime
 from websocket_server import WebsocketServer
 import multiprocessing
@@ -15,38 +15,31 @@ import logging
 
 from interfaces.pose3d import ListenerPose3d
 from shared.image import SharedImage
-from shared.image import SharedImage
 from shared.value import SharedValue
 
 from map import Map
+
+
+IMG_WIDTH = 320
+IMG_HEIGHT = 240
 
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, circuit):
+    def __init__(self, host):
         rclpy.init()
         rclpy.create_node('GUI')
+        self.payload = {'map': '', 'nav': '','image': ''}
 
-        self.payload = {'image': '', 'map': '', 'v':'','w':''}
+        # GUI websocket
         self.server = None
         self.client = None
-        
         self.host = host
-        
-        # Circuit
-        self.circuit = circuit
 
-        # Image variable host
-        self.shared_image = SharedImage("guiimage")
-        
-        # Get HAL variables
-        self.shared_v = SharedValue("velocity")
-        self.shared_w = SharedValue("angular")
-        
         # Create the map object
         pose3d_object = ListenerPose3d("/odom")
-        self.map = Map(pose3d_object, self.circuit)
+        self.map = Map(pose3d_object)
 
         # Event objects for multiprocessing
         self.ack_event = multiprocessing.Event()
@@ -55,6 +48,16 @@ class GUI:
         # Start server thread
         t = threading.Thread(target=self.run_server)
         t.start()
+        
+        # Numpy matrix
+        self.user_mat = None
+        self.show_mat = False
+
+        # Image variable shared with GUIFunctions
+        self.shared_image = SharedImage("guiimage")
+        # self.shared_numpy = SharedImage("guiNumpy")
+
+#------------------------------------------------------------#
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -70,7 +73,7 @@ class GUI:
         payload['shape'] = shape
 
         return payload
-
+    
     # Function for student to call
     def showImage(self, image):
         self.image_show_lock.acquire()
@@ -78,35 +81,44 @@ class GUI:
         self.image_to_be_shown_updated = True
         self.image_show_lock.release()
 
-    # Function to get the client
-    # Called when a new client is received
-    def get_client(self, client, server):
-        self.client = client
-        self.cli_event.set()
+    # def loadNumpy(self):
+    #     self.user_mat = self.shared_numpy.get()
+    #     
+    # def showNumpy(self,mat,h,w):
+    #     self.user_mat = mat
+    #     self.show_mat = True
 
-        print(client, 'connected')
-        
+#------------------------------------------------------------#
+
     # Update the gui
     def update_gui(self):
+        # Payload Map Message
+        pos_message = self.map.getRobotCoordinates()
+        ang_message = self.map.getRobotAngle()
+        pos_message = str(pos_message + ang_message)
+        self.payload["map"] = pos_message
+
+        # Example Payload Navigation Data message (random data)
+        # 4 colors supported (0, 1, 2, 3)
+        #nav_mat = np.zeros((20, 20), int)
+        #nav_mat[2, 1] = 1
+        #nav_mat[3, 3] = 2
+        #nav_mat[5,9] = 3
+        #nav_message = str(nav_mat.tolist())
+        # self.loadNumpy()
+        # if (self.show_mat == True):
+        #     nav_message = str(self.user_mat.tolist())
+        #     self.payload["nav"] = nav_message
+        # else:
+        #     self.payload["nav"] = None
+
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-            
-        # Payload Map Message
-        pos_message = str(self.map.getFormulaCoordinates())
-        self.payload["map"] = pos_message
 
-        # Payload V Message
-        v_message = str(self.shared_v.get())
-        self.payload["v"] = v_message
-
-        # Payload W Message
-        w_message = str(self.shared_w.get())
-        self.payload["w"] = w_message
-        
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
-            
+
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
@@ -118,7 +130,14 @@ class GUI:
         elif(message[:5] == "#rest"):
             self.reset_gui()
 
-    	
+    # Function to get the client
+    # Called when a new client is received
+    def get_client(self, client, server):
+        self.client = client
+        self.cli_event.set()
+
+        print(client, 'connected')
+
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
         print(client, 'closed')
@@ -147,8 +166,8 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         self.map.reset()
+        self.user_mat = None
 
-        
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -175,7 +194,7 @@ class ProcessGUI(multiprocessing.Process):
     # Function to start the execution of threads
     def run(self):
         # Initialize GUI
-        self.gui = GUI(self.host, self.circuit)
+        self.gui = GUI(self.host)
         self.initialize_events()
 
         # Wait for client before starting
@@ -239,7 +258,7 @@ class ProcessGUI(multiprocessing.Process):
         self.exit_signal.set()
 
     # Functions to handle auxillary GUI functions
-    def reset_gui():
+    def reset_gui(self):
         self.gui.reset_gui()
 
 

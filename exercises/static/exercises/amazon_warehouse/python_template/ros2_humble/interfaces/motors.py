@@ -4,8 +4,6 @@ import threading
 from math import pi as PI
 from .threadPublisher import ThreadPublisher
 
-
-
 def cmdvel2Twist(vel):
 
     tw = Twist()
@@ -61,6 +59,7 @@ class PublisherMotors:
  
     def publish (self):
 
+        
         self.lock.acquire()
         tw = cmdvel2Twist(self.data)
         self.lock.release()
@@ -75,7 +74,6 @@ class PublisherMotors:
 
         self.kill_event.clear()
         self.thread.start()
-        
 
 
     def getMaxW(self):
@@ -92,7 +90,6 @@ class PublisherMotors:
         self.lock.release()
 
     def sendV(self, v):
-
         self.sendVX(v)
 
     def sendL(self, l):
