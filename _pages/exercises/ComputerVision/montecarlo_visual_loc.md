@@ -150,7 +150,6 @@ The following figure shows an example of probabilistic localisation. In the firs
 - Maintained by [David Valladares](https://github.com/dvalladaresv)     
 
 
-
 ## References
 
 1. [http://www.natalnet.br/lars2013/WGWR-WUWR/122602.pdf](http://www.natalnet.br/lars2013/WGWR-WUWR/122602.pdf)
