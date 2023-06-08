@@ -1,4 +1,4 @@
--
+---
 permalink: /exercises/ComputerVision/image_processing
 title: "Image Processing"
 
