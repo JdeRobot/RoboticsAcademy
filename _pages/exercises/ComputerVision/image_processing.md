@@ -9,17 +9,16 @@ toc: true
 toc_label: "TOC Image Processing"
 toc_icon: "cog"
 
-<!--- layout: archive --->
-
-<!--- classes: wide --->
+layout: archive
+classes: wide
 
 gallery:
   - url: /assets/images/exercises/image_processing/image_processing_teaser.png
     image_path: /assets/images/exercises/image_processing/image_processing_teaser.png
-    alt: "Image Processing
+    alt: "Image Processing"
     title: "Image Processing"
-
 ---
+
 
 ## Goal
 
@@ -152,8 +151,8 @@ After accumulating votes, the function identifies the most significant circles b
 
 1. [https://es.wikipedia.org/wiki/Procesamiento_digital_de_im%C3%A1genes](https://es.wikipedia.org/wiki/Procesamiento_digital_de_im%C3%A1genes)
 2. [https://www.delftstack.com/es/howto/python/opencv-blur/](https://www.delftstack.com/es/howto/python/opencv-blur/) 
-3. [https://docs.opencv.org/4.x/d4/d13/tutorial_py_filtering.html] (https://docs.opencv.org/4.x/d4/d13/tutorial_py_filtering.html)
-4. [https://docs.opencv.org/3.4/da/d22/tutorial_py_canny.html] (https://docs.opencv.org/3.4/da/d22/tutorial_py_canny.html)
+3. [https://docs.opencv.org/4.x/d4/d13/tutorial_py_filtering.html](https://docs.opencv.org/4.x/d4/d13/tutorial_py_filtering.html)
+4. [https://docs.opencv.org/3.4/da/d22/tutorial_py_canny.html](https://docs.opencv.org/3.4/da/d22/tutorial_py_canny.html)
 5. [https://docs.opencv.org/3.4/d4/d70/tutorial_hough_circle.html](https://docs.opencv.org/3.4/d4/d70/tutorial_hough_circle.html)
-6. [https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html] (https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html)
-7. [https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html] (https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html)
+6. [https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html)
+7. [https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_filtering/py_filtering.html)
