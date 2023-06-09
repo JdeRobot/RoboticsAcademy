@@ -2,9 +2,9 @@
 <sdf version="1.6">
   <world name="world">
 
-    <gui fullscreen=1>
+    <gui fullscreen='1'>
       <camera name='user_camera'>
-        <pose>-2 10 0.5 0 0 0</pose>
+        <pose>-2 10 0.6 0 0 0</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>

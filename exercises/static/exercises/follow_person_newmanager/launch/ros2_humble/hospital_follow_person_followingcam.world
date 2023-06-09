@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <world name="world">
 
-    <gui fullscreen=1>
+    <gui fullscreen='1'>
       <camera name="user_camera">
         <track_visual>
           <name>turtlebot2</name>

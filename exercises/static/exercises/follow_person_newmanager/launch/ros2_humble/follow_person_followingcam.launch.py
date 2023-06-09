@@ -33,7 +33,7 @@ def generate_launch_description():
     description="Position on the axis z of Turtlebot2"
   )
 
-  world_name = "hospital_follow_person.world"
+  world_name = "hospital_follow_person_followingcam.world"
   current_dir = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/launch/ros2_humble"
   world_path = os.path.join(current_dir, world_name)
 
