@@ -1,5 +1,6 @@
 import json
 import cv2
+import numpy as np
 import base64
 import threading
 import time
@@ -8,7 +9,6 @@ from websocket_server import WebsocketServer
 import logging
 
 from interfaces.pose3d import ListenerPose3d
-from interfaces.laser import ListenerLaser
 
 from map import Map
 
@@ -16,39 +16,36 @@ from map import Map
 
 
 class GUI:
-    map = None
-
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'map': ''}
+        self.payload = {'map': '', 'nav': ''}
         self.server = None
         self.client = None
+        self.user_mat = None
+        self.show_mat = False
 
         self.host = host
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
 
-        # Take the console object to set the same websocket and client
         self.hal = hal
         t.start()
 
-        # Create the map object
-        laser_object_f = ListenerLaser("/F1ROS/laser_f/scan")
-        laser_object_r = ListenerLaser("/F1ROS/laser_r/scan")
-        laser_object_b = ListenerLaser("/F1ROS/laser_b/scan")
-        pose3d_object = ListenerPose3d("/F1ROS/odom")
-        self.map = Map(laser_object_f, laser_object_r, laser_object_b, pose3d_object)
+        # Create the lap object
+        pose3d_object = ListenerPose3d("/roombaROS/odom")
+        self.map = Map(pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
     @classmethod
-    def initGUI(self):
+    def initGUI(cls, host, console):
         # self.payload = {'image': '', 'shape': []}
-        pass
+        new_instance = cls(host, console)
+        return new_instance
 
     # Function to get the client
     # Called when a new client is received
@@ -72,8 +69,23 @@ class GUI:
     # Update the gui
     def update_gui(self):
         # Payload Map Message
-        map_message = self.map.get_json_data()
-        self.payload["map"] = map_message
+        pos_message = self.map.getRobotCoordinates()
+        ang_message = self.map.getRobotAngle()
+        pos_message = str(pos_message + ang_message)
+        self.payload["map"] = pos_message
+
+        # Example Payload Navigation Data message (random data)
+        # 4 colors supported (0, 1, 2, 3)
+        #nav_mat = np.zeros((20, 20), int)
+        #nav_mat[2, 1] = 1
+        #nav_mat[3, 3] = 2
+        #nav_mat[5,9] = 3
+        #nav_message = str(nav_mat.tolist())
+        if (self.show_mat == True):
+            nav_message = str(self.user_mat.tolist())
+            self.payload["nav"] = nav_message
+        else:
+            self.payload["nav"] = None
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -84,6 +96,10 @@ class GUI:
         # Acknowledge Message for GUI Thread
         if(message[:4] == "#ack"):
             self.set_acknowledge(True)
+
+    def showNumpy(self, mat):
+        self.user_mat = mat
+        self.show_mat = True
 
     # Activate the server
     def run_server(self):
@@ -99,13 +115,14 @@ class GUI:
                 f.close()
                 logged = True
             except:
-                time.sleep(0.1)        
+                time.sleep(0.1)
 
         self.server.run_forever()
 
     # Function to reset
     def reset_gui(self):
         self.map.reset()
+        self.user_mat = None
 
 
 # This class decouples the user thread
