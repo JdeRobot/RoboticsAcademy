@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+import os
+
 from websocket_server import WebsocketServer
 import time
 import threading
@@ -371,10 +373,12 @@ class Template:
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_code.log", "w")
+                f = open(f"{home_dir}/ws_code.log", "w")
                 f.write("websocket_code=ready")
                 f.close()
                 logged = True

@@ -375,7 +375,7 @@ class Template:
         logged = False
         while not logged:
             try:
-                f = open(f"{home_dir}/ws_code.log", "w")
+                f = open("/ws_code.log", "w")
                 f.write("websocket_code=ready")
                 f.close()
                 logged = True
