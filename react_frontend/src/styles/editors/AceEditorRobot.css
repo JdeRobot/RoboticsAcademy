@@ -1,0 +1,14 @@
+#code-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px 8px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#code-container .MuiButtonGroup-root {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+}

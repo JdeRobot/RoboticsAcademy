@@ -1,0 +1,16 @@
+#message-container {
+  position: fixed;
+  z-index: 100;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#message-container.bottom {
+  bottom: 16px;
+  top: unset;
+}
+
+.message-scroll {
+  max-height: calc(100vh - 500px);
+  overflow-y: auto;
+}

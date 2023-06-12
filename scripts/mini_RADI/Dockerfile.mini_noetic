@@ -1,4 +1,4 @@
-FROM jderobot/robotics-applications:mini_noetic-base
+FROM jderobot/robotics-applications:dependencies-noetic
 
 # Robotics Infrastructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE

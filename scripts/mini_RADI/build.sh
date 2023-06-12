@@ -78,10 +78,10 @@ echo
 
 # Determine Dockerfile based on ROS_DISTRO
 if [[ $ROS_DISTRO == "noetic" ]]; then
-    DOCKERFILE_BASE="Dockerfile.mini_noetic_base"
+    DOCKERFILE_BASE="Dockerfile.dependencies_noetic"
     DOCKERFILE="Dockerfile.mini_noetic"
 elif [[ $ROS_DISTRO == "humble" ]]; then
-    DOCKERFILE_BASE="Dockerfile.mini_humble_base"
+    DOCKERFILE_BASE="Dockerfile.dependencies_humble"
     DOCKERFILE="Dockerfile.mini_humble"
 else
     echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'noetic' or 'humble'."
@@ -89,10 +89,10 @@ else
 fi
 
 # Build the Docker Base image
-if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:mini_$ROS_DISTRO-base 2> /dev/null)" == "" ]]; then
+if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
-  docker build -f $DOCKERFILE_BASE -t jderobot/robotics-applications:mini_$ROS_DISTRO-base .
+  docker build -f $DOCKERFILE_BASE -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
 fi
 
 # Build the Docker image
