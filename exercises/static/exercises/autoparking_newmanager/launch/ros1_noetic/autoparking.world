@@ -5,28 +5,26 @@
     <scene>
       <grid>true</grid>
     </scene>
-    <include>
-      <uri>model://ground_plane</uri>
-    </include>
+  
     <!-- A global light source -->
     <include>
       <uri>model://sun</uri>
     </include>
     
 
-    <!-- A taxi with lasers
+    <!-- A taxi with lasers-->
     <include>
       <uri>model://taxi_holo_laser_ROS</uri>
       <pose>-7 2.5 0.02 0 0 0</pose> 
-    </include>-->
+    </include>
     
     
     <!-- Cars -->
     <model name="car1">
         <pose>-20 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -46,9 +44,9 @@
 
     <model name="car2">
         <pose>-13.5 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -68,9 +66,9 @@
 
     <model name="car3">
         <pose>-7 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -90,9 +88,9 @@
 
     <model name="car4">
         <pose>0.5 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -112,9 +110,9 @@
 
     <model name="car5">
         <pose>14 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -134,9 +132,9 @@
 
     <model name="car6">
         <pose>21.5 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -156,9 +154,9 @@
 
     <model name="car7">
         <pose>29 -3 0 0 0 1.57</pose>
-        <static>true</static>
+        <static>false</static>
         <link name="car1">
-            <gravity>true</gravity>
+            <gravity>false</gravity>
             <collision name="collision">
                 <geometry>
                     <mesh>
@@ -205,5 +203,6 @@
       </script>
       </material>
     </road>
+
   </world>
 </sdf>
