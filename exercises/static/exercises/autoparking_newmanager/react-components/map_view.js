@@ -1,10 +1,13 @@
 // Retreive the canvas elements and context
 let carWidth = 40;
 let carHeight = 95;
+let ctx= null
+let mapCanvas = null
 
-export function paintEvent(car, obs, avg, lasers, ranges) {
-  var mapCanvas = document.getElementById("local-map-lasers"),
+export function paintEvent(canvas, car, obs, avg, lasers, ranges) {
+    mapCanvas = canvas
     ctx = mapCanvas.getContext("2d");
+    
 
   ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
@@ -20,8 +23,6 @@ export function paintEvent(car, obs, avg, lasers, ranges) {
 }
 
 function drawCar() {
-  var mapCanvas = document.getElementById("local-map-lasers"),
-    ctx = mapCanvas.getContext("2d");
 
   ctx.beginPath();
 
@@ -40,8 +41,6 @@ function drawCar() {
 }
 
 function drawLaser(laser, max_range, pos, color) {
-  var mapCanvas = document.getElementById("local-map-lasers"),
-    ctx = mapCanvas.getContext("2d");
   let originx = 0;
   let originy = 0;
   let resizeFactor = 0.8;

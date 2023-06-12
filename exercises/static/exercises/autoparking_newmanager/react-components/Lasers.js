@@ -1,13 +1,14 @@
 import { paintEvent } from "./map_view";
 import React from "react"
-
+import "./css/Lasers.css";
 const Lasers = (props) => {
+    const guiCanvasRef = React.useRef();
     React.useEffect(() => {
         const callback = (message) => {
             if(message.data.update.map){
             const map_data = JSON.parse(message.data.update.map);
             console.log(JSON.parse(message.data.update.map))
-            paintEvent(map_data.car, map_data.obstacle, map_data.average, map_data.lasers, map_data.ranges)
+            paintEvent(guiCanvasRef.current, map_data.car, map_data.obstacle, map_data.average, map_data.lasers, map_data.ranges)
             }
         };
         RoboticsExerciseComponents.commsManager.subscribe(
@@ -24,7 +25,12 @@ const Lasers = (props) => {
         };
       }, []);
     return (
-        <canvas id="local-map-lasers"></canvas>
+       <div      style={{
+        width: "100%",
+        height: "100%"
+      }}>
+		<canvas ref={guiCanvasRef} id="local-map-lasers" width="500" height="500" ></canvas>
+	</div>
     )
 }
 
