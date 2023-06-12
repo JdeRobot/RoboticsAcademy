@@ -21,6 +21,11 @@ const FlexContainer = (props) => {
     "fa-ellipsis-h": !props.row,
   });
 
+  var consoleClass = classNames({
+    "console-on": props.console,
+    "flex-container-first": !props.console,
+  });
+
   React.useEffect(() => {
     separatorRef.current.addEventListener("mousedown", onMouseDown, false);
     return () => {
@@ -67,7 +72,7 @@ const FlexContainer = (props) => {
 
   return (
     <div ref={containerRef} className={containerClass}>
-      <div ref={firstChildRef} className={"flex-container-first"}>
+      <div ref={firstChildRef} className={consoleClass}>
         {props.children[0]}
       </div>
       <div

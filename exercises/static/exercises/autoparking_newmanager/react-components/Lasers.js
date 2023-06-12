@@ -29,7 +29,7 @@ const Lasers = (props) => {
         width: "100%",
         height: "100%"
       }}>
-		<canvas ref={guiCanvasRef} id="local-map-lasers" width="500" height="500" ></canvas>
+		<canvas ref={guiCanvasRef} id="local-map-lasers" width="1280" height="720" ></canvas>
 	</div>
     )
 }
