@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+import os
+
 from websocket_server import WebsocketServer
 import time
 import threading
