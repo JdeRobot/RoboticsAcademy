@@ -15,6 +15,7 @@ const PersonTeleop = () => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
+
     const callback = (message) => {
       if (message.data.state === "running") {
         setDisabled(false);
@@ -26,6 +27,9 @@ const PersonTeleop = () => {
         setDisabled(true);
       }
     };
+
+    listen_key();
+    
     window.RoboticsExerciseComponents.commsManager.subscribe(
       [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
       callback
@@ -37,6 +41,7 @@ const PersonTeleop = () => {
         callback
       );
     };
+    
   }, []);
 
   function open_websocket_connection() {
@@ -57,6 +62,7 @@ const PersonTeleop = () => {
       } else {
         console.log(`Connection with ${address} interrupted`);
       }
+      websocket_connected = false;
     };
 
     websocket.onerror = function(e) {
@@ -66,53 +72,29 @@ const PersonTeleop = () => {
 
   function listen_key() {
     window.addEventListener("keypress", function (event) {
-      if (teleOpMode) {
+      if (websocket_connected){
         if (event.code === "KeyS") {
           websocket.send("#key_s");
+          console.log("PRESSED KEY S AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyW") {
           websocket.send("#key_w");
+          console.log("PRESSED KEY W AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyA") {
           websocket.send("#key_a");
+          console.log("PRESSED KEY A AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyD") {
           websocket.send("#key_d");
+          console.log("PRESSED KEY D AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyX") {
           websocket.send("#key_x");
+          console.log("PRESSED KEY X AND SENT THROUGH WEBSOCKET");
         }
       }
     });
   };
 
-  function teleOpButtonClick() {
-    if (!teleOpMode) {
-      teleOpMode = true;
-      websocket.send("#teleop_true");
-    } else {
-      teleOpMode = false;
-      websocket.send("#teleop_false");
-    }
 
-    console.log("Teleoperate clicked, mode=%s", teleOpMode);
-    listen_key();
-  }
-
-  return (
-    <Button
-      id={"teleop_button"}
-      size={"medium"}
-      variant="contained"
-      color={"secondary"}
-      component="span"
-      sx={{ m: 1 }}
-      onClick={() => {
-        teleOpButtonClick();
-      }}
-      title={"Use the arrow keys to operate the person"}
-      disabled={disabled}
-      startIcon={<VideogameAssetOutlinedIcon />}
-    >
-      Teleoperate
-    </Button>
-  );
+  return (true);
 };
 PersonTeleop.propTypes = {
   context: PropTypes.any,
