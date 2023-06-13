@@ -1,3 +1,4 @@
+import os
 import json
 import cv2
 import base64
@@ -37,9 +38,11 @@ class GUI:
         t.start()
 
         # Create the map object
-        laser_object_f = ListenerLaser("/F1ROS/front_laser_points")
-        pose3d_object = ListenerPose3d("/catvehicle/odom")
-        self.map = Map(laser_object_f,pose3d_object)
+        laser_object_f = ListenerLaser("/F1ROS/laser_f/scan")
+        laser_object_r = ListenerLaser("/F1ROS/laser_r/scan")
+        laser_object_b = ListenerLaser("/F1ROS/laser_b/scan")
+        pose3d_object = ListenerPose3d("/F1ROS/odom")
+        self.map = Map(laser_object_f, laser_object_r, laser_object_b, pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
@@ -89,10 +92,12 @@ class GUI:
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui.log", "w")
+                f = open(f"{home_dir}/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
                 f.close()
                 logged = True

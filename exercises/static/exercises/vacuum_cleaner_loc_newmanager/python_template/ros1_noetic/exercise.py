@@ -2,6 +2,8 @@
 
 from __future__ import print_function
 
+import os
+
 from websocket_server import WebsocketServer
 import time
 import threading
@@ -36,7 +38,7 @@ class Template:
         self.measured_cycle = 80
         self.iteration_counter = 0
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '',  'rtf': ''}
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
 
         self.server = None
         self.client = None
@@ -81,6 +83,7 @@ class Template:
             return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
+
     def debug_parse(self, source_code, debug_level):
         if(debug_level == 1):
             # If debug level is 0, then all the GUI operations should not be called
@@ -122,7 +125,6 @@ class Template:
     # The process function
 
     def process_code(self, source_code):
-
         # Redirect the information to console
         start_console()
 
@@ -176,7 +178,6 @@ class Template:
         print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
-
     def generate_modules(self):
         # Define HAL module
         hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
@@ -185,17 +186,21 @@ class Template:
 
         # Add HAL functions
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
-        hal_module.HAL.getFrontLaserData = self.hal.laser_front.getLaserData
-        hal_module.HAL.getRightLaserData = self.hal.lidar.getLidarData
         hal_module.HAL.setV = self.hal.motors.sendV
         hal_module.HAL.setW = self.hal.motors.sendW
+        hal_module.HAL.laser = self.hal.laser
+        hal_module.HAL.getLaserData = self.hal.laser.getLaserData
+        hal_module.HAL.getBumperData = self.hal.bumper.getBumperData
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
-        gui_module.GUI.map = self.gui.map
+        gui_module.GUI.showNumpy = self.gui.showNumpy
+
+        # Add GUI functions
+        # gui_module.GUI.showImage = self.gui.showImage
 
         # Adding modules to system
         # Protip: The names should be different from
@@ -254,9 +259,10 @@ class Template:
         message = "#freq" + json.dumps(self.frequency_message)
         self.server.send_message(self.client, message)
 
+    # Function to send ping message. Sends a boolean along to notify when the user code was executed
     def send_ping_message(self):
         self.server.send_message(self.client, "#ping")
-
+        
     # Function to notify the front end that the code was received and sent to execution
     def send_code_message(self):
         self.server.send_message(self.client, "#exec")
@@ -293,6 +299,7 @@ class Template:
         print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
+
     def read_frequency_message(self, message):
         frequency_message = json.loads(message)
 
@@ -308,11 +315,13 @@ class Template:
 
     # The websocket function
     # Gets called when there is an incoming message from the client
+
     def handle(self, client, server, message):
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
+            #self.send_frequency_message()
             return
 
         elif(message[:5] == "#ping"):
@@ -359,6 +368,9 @@ class Template:
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.measure_thread.start()
 
+        # Initialize the ping message
+        #self.send_frequency_message()
+
         print(client, 'connected')
 
     # Function that gets called when the connected closes
@@ -371,10 +383,12 @@ class Template:
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_code.log", "w")
+                f = open(f"{home_dir}/ws_code.log", "w")
                 f.write("websocket_code=ready")
                 f.close()
                 logged = True
