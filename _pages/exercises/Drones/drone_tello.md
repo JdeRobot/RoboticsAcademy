@@ -10,8 +10,8 @@ toc_label: "TOC Drone Tello"
 toc_icon: "cog"
 
 gallery:
-  - url: /assets/images/exercises/drone_tello/drone_tello1.jpg
-    image_path: /assets/images/exercises/drone_tello/drone_tello1.jpg
+  - url: /assets/images/exercises/drone_tello/drone_tello1.png
+    image_path: /assets/images/exercises/drone_tello/drone_tello1.png
     alt: "Drone Tello."
     title: "Drone Tello."
 
