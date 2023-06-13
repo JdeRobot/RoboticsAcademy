@@ -75,19 +75,14 @@ const PersonTeleop = () => {
       if (websocket_connected){
         if (event.code === "KeyS") {
           websocket.send("#key_s");
-          console.log("PRESSED KEY S AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyW") {
           websocket.send("#key_w");
-          console.log("PRESSED KEY W AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyA") {
           websocket.send("#key_a");
-          console.log("PRESSED KEY A AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyD") {
           websocket.send("#key_d");
-          console.log("PRESSED KEY D AND SENT THROUGH WEBSOCKET");
         } else if (event.code === "KeyX") {
           websocket.send("#key_x");
-          console.log("PRESSED KEY X AND SENT THROUGH WEBSOCKET");
         }
       }
     });
