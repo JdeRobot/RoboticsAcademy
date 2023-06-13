@@ -20,7 +20,7 @@ gallery:
 
 The goal of this exercise is to implement the logic to make the tello drone be able to take off, draw a square with its flight and land back in the same place from which it took off.
 
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/cloud.png" width="100%" height="60%"> -->
+<!-- <img src="/RoboticsAcademy/assets/images/exercises/drone_tello/drone_tello1.png" width="100%" height="60%"> -->
 
 {% include gallery caption="Gallery." %}
 
