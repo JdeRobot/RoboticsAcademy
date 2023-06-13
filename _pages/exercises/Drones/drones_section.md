@@ -141,7 +141,7 @@ feature_row:
     version: "v3.2"
     
   - image_path: /assets/images/exercises/drone_tello/drone_tello1.png
-    alt: "Real Drone Tello Square""
+    alt: "Real Drone Tello Square"
     title: "Real Drone Tello Square"
     excerpt: "Draw a square with its flight and land back in the same place."
     url: "/exercises/Drones/drone_tello"
