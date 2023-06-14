@@ -67,7 +67,7 @@ youtubeId2: "fDAU465eVxQ"
 
 ## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for follow a person in a hospital using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
+The objective of this practice is to implement the logic of a navigation algorithm that will be used to follow a person in a hospital using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
 
 {% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
 
@@ -151,7 +151,7 @@ The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
-* `HAL.getLaserData()` - it allows to obtain the data of the laser sensor. It returns a list of 180 measurements of the laser (0 - 180 degrees)
+* `HAL.getLaserData()` - it allows to obtain the data of the laser sensor. It returns a list of 180 laser measurements (0 - 180 degrees)
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
@@ -159,7 +159,7 @@ The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented
 
 ### Bounding Box attributes
 `HAL.getBoundingBoxes()` returns an instance a list of Bounding Box Classes with the following attributes:
-* `id` - identificator of the type of object (1, 2, 3)
+* `id` - identifier of the type of object (1, 2, 3)
 * `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in this link: (TODO)
 * `xmin` - x value of the top left point of the bounding box
 * `ymin` - y value of the top left point of the bounding box
@@ -190,13 +190,15 @@ while True:
 ## Theory
 When we are designing a robotic application that knows how to follow a person, the most important mission is knowing how to detect it and not lose it.
 
-The first step is the detection of persons. We perform this first task using a *Region-based Convolutional Neural Network (R-CNN)*. *CNN* are a type of networks where the first neurons capture groups of pixels and these neurons form new groups for next layers doing convolutions with *Kernel* filters. The neurons of the output layer return the percentage probability that the image belongs to a given class (*classification*). For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/). With a *R-CNN* we use a CNN on many regions of the image and we select those regions with more probability of success. There are many types of architectures based on R-CNN as Yolo or SSD. In this exercise you will use a SSD trained model. If you want to know how SSD works you can access this [link](https://developers.arcgis.com/python/guide/how-ssd-works/).
+
+First step is the detection of persons; we perform this first task using a *Region-based Convolutional Neural Network (R-CNN)*. *CNN* are a type of networks where the first neurons capture groups of pixels and these neurons form new groups for next layers doing convolutions with *Kernel* filters. The neurons of the output layer return the percentage probability of an image to belong to a given class (*classification*). For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/). With a *R-CNN* we use a CNN on many regions of the image and we select those regions with more probability of success. There are many types of architectures based on R-CNN as Yolo or SSD. In this exercise you will use a SSD trained model. If you want to know how SSD works you can access this [link](https://developers.arcgis.com/python/guide/how-ssd-works/)
 
 {% include gallery id="r-cnn" caption="Region-based Convolutional Neural Network (R-CNN)" %}
 
-Once we detect all the people in the image, we can establish several *criteria* to decide which person we are going to follow.
+Once we have detected all the people in the image, we can establish several *criteria* to decide which person we are going to follow
 
-In order not to lose it we can use *tracking* algorithms. A homemade method that usually works well is for each iteration to locate the Centroid of each Bounding Box and compare it with the chosen Centroid of the previous frame. We will stay with that bounding box that has the closest centroid and area most similar to the chosen bounding box of the previous frame.
+
+In order to dont lose our target we can use *tracking* algorithms. A homemade method that usually works well consists in locating the Centroid of every Bounding Box in each iteration and comparing it with the chosen Centroid of the previous frame. We will stay with that bounding box that has the closest centroid and most similar area to the chosen bounding box of the previous frame.
 
 The second step is to use the kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the *location* of the centroid of the candidate bounding box. Depending on the position we will establish a certain angular speed.
 
