@@ -5,7 +5,7 @@ WORKDIR /
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 RUN mkdir -p /opt/jderobot && \
-    git clone https://github.com/JdeRobot/RoboticsInfraestructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+    git clone https://github.com/JdeRobot/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
@@ -16,6 +16,31 @@ RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 WORKDIR /home/ws
 RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
 RUN colcon build --symlink-install
+
+# create workspace and add physical robot packages
+RUN mkdir -p /home/ws2/src
+RUN cp -r /opt/jderobot/CustomRobots/Turtlebot2/Turtlebot2_physical /home/ws2/src
+
+
+####################### Real Follow Person Exercise ###################################
+# Clone rplidar and kobuki repositories 
+WORKDIR /home/ws2/src/Turtlebot2_physical
+RUN vcs import . < rplidar_instructions/repos
+RUN vcs import . < kobuki_instructions/repos
+RUN touch /home/ws2/src/Turtlebot2_physical/kobuki_ros_iterfaces/COLCON_IGNORE
+
+# Compile workspace
+WORKDIR /home/ws2
+RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
+RUN colcon build --symlink-install
+
+# udev rules for kobuki base and rplidar
+RUN cp /home/ws2/src/Turtlebot2_physical/kobuki_ftdi/60-kobuki.rules /etc/udev/rules.d
+RUN cp /home/ws2/src/Turtlebot2_physical/rplidar_ros/scripts/rplidar.rules /etc/udev/rules.d
+WORKDIR /home/ws2/src/Turtlebot2_physical/rplidar_ros/scripts
+RUN ./create_udev_rules.sh
+###########################################################################################
+
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
 ARG RAM=$RAM
