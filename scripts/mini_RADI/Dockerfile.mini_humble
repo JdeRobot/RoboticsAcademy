@@ -24,6 +24,22 @@ RUN cp -r /opt/jderobot/CustomRobots/Turtlebot2/Turtlebot2_physical /home/ws2/sr
 
 
 ####################### Real Follow Person Exercise ###################################
+# Dependecies  for exercise Real Follow Person
+RUN add-apt-repository universe
+RUN apt-get update && apt-get install -y \
+  ros-${ROS_DISTRO}-usb-cam \
+  ros-${ROS_DISTRO}-ecl-* \
+  ros-${ROS_DISTRO}-pcl-* \
+  ros-${ROS_DISTRO}-kobuki-* \
+  ros-${ROS_DISTRO}-diagnostic-updater \
+  ros-${ROS_DISTRO}-rosidl-* \
+  ros-${ROS_DISTRO}-ros-core \
+  ros-${ROS_DISTRO}-ament-cmake \
+  ftdi-eeprom \
+  libusb-dev \
+  libftdi-dev \
+  && rm -rf /var/lib/apt/lists/*
+  
 # Clone rplidar and kobuki repositories 
 WORKDIR /home/ws2/src/Turtlebot2_physical
 RUN vcs import . < rplidar_instructions/repos
@@ -34,7 +50,7 @@ RUN touch /home/ws2/src/Turtlebot2_physical/kobuki_ros_iterfaces/COLCON_IGNORE
 WORKDIR /home/ws2
 RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
 RUN colcon build --symlink-install
-RUN echo 'source /home/ws2/install/setup.bash' >> ~/.bashrc
+#RUN echo 'source /home/ws2/install/setup.bash' >> ~/.bashrc
 
 # udev rules for kobuki base and rplidar
 RUN cp /home/ws2/src/Turtlebot2_physical/kobuki_ftdi/60-kobuki.rules /etc/udev/rules.d

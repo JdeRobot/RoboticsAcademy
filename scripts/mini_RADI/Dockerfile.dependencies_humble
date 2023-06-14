@@ -57,10 +57,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rm -rf /var/lib/apt/lists/*
 # Source ros humble
 RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
-
+  
 # Install Gazebo 11
 RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
+  && sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null' \
   && sudo rosdep fix-permissions \
   && rosdep update \
   && apt-get update && apt-get install -q -y \
@@ -145,7 +145,7 @@ RUN python3.10 -m pip install websocket_server posix-ipc django==4.1.7 djangores
     django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets asyncio
 
 
-# Dependecies  for exercise Real Follow Person
+# Dependecies for exercise Real Follow Person
 RUN add-apt-repository universe
 RUN apt-get update && apt-get install -y \
   ros-${ROS_DISTRO}-usb-cam \
