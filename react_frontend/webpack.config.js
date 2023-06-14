@@ -4,22 +4,26 @@ const path = require("path");
 const glob = require("glob");
 
 const aliases = () => {
-  const exercises_folder =
-    "../exercises/static/exercises/**/react-components/";
-  const exercises = glob.sync(path.resolve(__dirname, exercises_folder));
   const aliasConfig = {
     _: [
       "./src/components",
       "./src/components/exercises",
       "./src/components/contexts",
     ],
-    exercise: [],
+    Contexts: path.resolve(__dirname, "src/contexts"),
+    Components: path.resolve(__dirname, "src/components"),
+    Helpers: path.resolve(__dirname, "src/helpers"),
+    Hooks: path.resolve(__dirname, "src/hooks"),
+    Common: path.resolve(__dirname, "../static/common"),
+    exercises: [],
   };
 
+  const exercises_folder = "../exercises/static/exercises/**/react-components/";
+  const exercises = glob.sync(path.resolve(__dirname, exercises_folder));
   exercises.map((exercise) => {
     const exercisePath = exercise.split(path.sep);
     const exerciseName = exercisePath[exercisePath.length - 3];
-    aliasConfig[`exercise`].push(exercise);
+    aliasConfig[`exercises`].push(exercise);
   });
 
   return aliasConfig;
@@ -70,6 +74,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        type: "asset/resource",
       },
     ],
   },

@@ -1,0 +1,13 @@
+.MuiToolbar-root.exercise-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px;
+  border: 2px solid #d3d3d3;
+  padding: 0;
+}
+
+#editor-control {
+  display: flex;
+}
