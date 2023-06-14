@@ -8,7 +8,8 @@
     {% react_component exercise/autoparking_newmanager/AutoparkingRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Autoparking RR" %}   
+            {% react_component components/layout_components/MainAppBar exerciseName="Autoparking RR" %} 
+            {% react_component exercise/follow_line_newmanager/MapSelector %} {% end_react_component %} 
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
