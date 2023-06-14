@@ -36,7 +36,7 @@ def ros_version(request):
     return JsonResponse(data)
 
 def launch_files(request, exercise_id):
-    exercise = Exercise.objects.get(exercise_id="follow_line_newmanager")
+    exercise = Exercise.objects.get(exercise_id=exercise_id)
     data = json.loads(exercise.configuration)
     return JsonResponse(data)
 

@@ -33,9 +33,10 @@ def generate_launch_description():
     description="Position on the axis z of Turtlebot2"
   )
 
-  world_name = "hospital_follow_person_followingcam.world"
-  current_dir = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/launch/ros2_humble"
-  world_path = os.path.join(current_dir, world_name)
+  world_name = "hospital_follow_person.world"
+  #world_dir = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/launch/ros2_humble"
+  world_dir = os.path.join(pkg_share_dir, 'launch')
+  world_path = os.path.join(world_dir, world_name)
 
   # Set the path to the SDF model files
   gazebo_models_path = os.path.join(pkg_share_dir, 'models')
