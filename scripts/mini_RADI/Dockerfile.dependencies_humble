@@ -59,13 +59,11 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 
 # Install Gazebo 11
-RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && sudo rosdep fix-permissions \
+RUN sudo rosdep fix-permissions \
   && rosdep update \
   && apt-get update && apt-get install -q -y \
     ros-${ROS_DISTRO}-gazebo* \
-    ros-${ROS_DISTRO}-ros-gz* \
+    ros-${ROS_DISTRO}-ros-gz-* \
   && apt-get -y autoremove \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

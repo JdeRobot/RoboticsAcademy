@@ -3,8 +3,15 @@ import { Button } from "@mui/material";
 import * as React from "react";
 import PropTypes from "prop-types";
 
-export const LoadFileButton = (props) => {
-  const { loadFileButton } = React.useContext(props.context);
+const LoadFileButton = (props) => {
+  const loadFile = (event) => {
+    event.preventDefault();
+    var fr = new FileReader();
+    fr.onload = () => {
+      RoboticsReactComponents.CodeEditor.setCode(fr.result);
+    };
+    fr.readAsText(event.target.files[0]);
+  };
   return (
     <Button
       variant="contained"
@@ -14,7 +21,7 @@ export const LoadFileButton = (props) => {
       component="label"
     >
       Load file
-      <input hidden accept=".py" type="file" onChange={loadFileButton} />
+      <input hidden accept=".py" type="file" onChange={loadFile} />
     </Button>
   );
 };
@@ -22,3 +29,5 @@ export const LoadFileButton = (props) => {
 LoadFileButton.propTypes = {
   context: PropTypes.any,
 };
+
+export default LoadFileButton;
