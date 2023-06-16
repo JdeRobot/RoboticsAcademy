@@ -115,6 +115,11 @@ RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtual
   && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+  apt-get install -y lxde-common && \
+  rm -rf /var/lib/apt/lists/*
+
+
 # RUN echo -e "no-remote-connections\n\
 # no-httpd\n\
 # no-x11-tcp-connections\n\
