@@ -9,6 +9,8 @@ from interfaces.motors import PublisherMotors
 from interfaces.pose3d import ListenerPose3d
 from interfaces.laser import ListenerLaser
 from interfaces.camera import ListenerCamera
+from interfaces.platform_controller import PlatformCommandListener
+from interfaces.platform_publisher import PublisherPlatform
 
 # Hardware Abstraction Layer
 class HAL:
@@ -23,12 +25,15 @@ class HAL:
         self.pose3d = ListenerPose3d("/amazon_robot/odom")
         self.laser = ListenerLaser("/amazon_robot/scan")
         self.camera = ListenerCamera("/amazon_robot/camera_front/image_raw")
+        self.platform_listener = PlatformCommandListener()
+        self.platform_pub = PublisherPlatform("/send_effort")
 
         # Spin nodes so that subscription callbacks load topic data
         # Bumper has to be spinned differently so that GetEntityState works
         executor = rclpy.executors.MultiThreadedExecutor()
         executor.add_node(self.pose3d)
         executor.add_node(self.laser)
+        executor.add_node(self.platform_listener)
         executor_thread = threading.Thread(target=executor.spin, daemon=True)
         executor_thread.start()
 
@@ -60,3 +65,9 @@ class HAL:
             return image
         except Exception as e:
             print(f"Exception in hal getImage {repr(e)}")
+
+    def load(self):
+        self.platform_pub.load()
+
+    def unload(self):
+        self.platform_pub.unload()

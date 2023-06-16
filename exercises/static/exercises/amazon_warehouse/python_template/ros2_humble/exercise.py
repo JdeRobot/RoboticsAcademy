@@ -126,6 +126,8 @@ class Template:
         hal_module.HAL.laser = self.hal.laser
         hal_module.HAL.getLaserData = self.hal.getLaserData
         hal_module.HAL.getImage = self.hal.getImage
+        hal_module.HAL.load = self.hal.load
+        hal_module.HAL.unload = self.hal.unload
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(
