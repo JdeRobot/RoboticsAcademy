@@ -98,14 +98,14 @@ docker inspect test-ram
 {
   "application": {
     "type": "python",
-    "entry_point": "$EXERCISE_FOLDER/web-template/entry_point/exercise.py"
+    "entry_point": "$EXERCISE_FOLDER/entry_point/exercise.py"
   },
   "launch": {
     "0": {
       "type": "module",
       "module": "ros_api",
       "resource_folders": [
-        "$EXERCISE_FOLDER/web-template/launch"
+        "$EXERCISE_FOLDER/launch"
       ],
       "model_folders": [
         "$CUSTOM_ROBOTS_BASE/f1/models"
@@ -113,7 +113,7 @@ docker inspect test-ram
       "plugin_folders": [
       ],
       "parameters": [],
-      "launch_file": "$EXERCISE_FOLDER/web-template/launch/simple_line_follower_ros_headless_${circuit}.launch"
+      "launch_file": "$EXERCISE_FOLDER/launch/simple_line_follower_ros_headless_${circuit}.launch"
     }
   }
 }

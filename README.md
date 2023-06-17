@@ -16,8 +16,13 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 - [Instructions for developers.][]
 - [Client side.][] (Robotics Academy architecture)
 - [Repository Architecture.][]
+- [Generate a mini RADI.][]
+- [Humble mini RADI structure.][]
+- [Develop using volume binding.][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
 [Client side.]: ./docs/clientside.md
 [Repository Architecture.]: ./docs/RepositoryArchitecture.md
-
+[Generate a mini RADI.]: ./docs/generate_a_mini_radi.md
+[Humble mini RADI structure.]: ./scripts/mini_RADI/README.md
+[Develop using volume binding.]: ./docs/develop_binding_volumes.md

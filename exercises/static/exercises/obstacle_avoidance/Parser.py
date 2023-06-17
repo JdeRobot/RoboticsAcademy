@@ -17,7 +17,7 @@
 #       Eduardo Perdices <eperdices@gsyc.es>
 #
 
-import jderobot
+from interfaces.pose3d import Pose3d
 import json
 from Target import Target
 
@@ -29,7 +29,9 @@ class Parser:
     def getTargets(self):
         targets = []
         for t in self.data["targets"]:
-            targets.append(Target(t["name"],jderobot.Pose3DData(t["x"],t["y"],0,0,0,0,0,0),False,False))
+            pose = Pose3d()
+            pose.x = t["x"]; pose.y = t["y"]
+            targets.append(Target(t["name"],pose,False,False))
         return targets
 
 

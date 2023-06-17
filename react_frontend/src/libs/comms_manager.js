@@ -2,17 +2,10 @@ import * as log from "loglevel";
 import { v4 as uuidv4 } from "uuid";
 
 const CommsManager = (address) => {
-  let websocket = null;
-
   log.enableAll();
 
-  const events = {
-    RESPONSES: ["ack", "error"],
-    UPDATE: "update",
-    STATE_CHANGED: "state-changed",
-  };
-
   //region Observer pattern methods
+  // TODO: Maybe move to it's own class?
   const observers = {};
 
   const subscribe = (events, callback) => {
@@ -57,7 +50,9 @@ const CommsManager = (address) => {
   };
   //endregion
 
-  // Send and receive method
+  //region  Websocket handling, connect, send, receive
+  let websocket = null;
+
   const connect = () => {
     return new Promise((resolve, reject) => {
       websocket = new WebSocket(address);
@@ -131,8 +126,15 @@ const CommsManager = (address) => {
       websocket.send(msg);
     });
   };
+  //endregion
 
-  // Messages and events
+  // Events and commands
+  const events = {
+    RESPONSES: ["ack", "error"],
+    UPDATE: "update",
+    STATE_CHANGED: "state-changed",
+  };
+
   const commands = {
     connect: connect,
     launch: (configuration) => send("launch", configuration),
@@ -148,9 +150,9 @@ const CommsManager = (address) => {
   return {
     ...commands,
 
+    events: events,
     send: send,
 
-    events: events,
     subscribe: subscribe,
     unsubscribe: unsubscribe,
     suscribreOnce: subscribeOnce,

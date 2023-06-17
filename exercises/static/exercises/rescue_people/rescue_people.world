@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <sdf version="1.5">
 	<world name="default">
+		<gui fullscreen="1"></gui>
+
 		<!-- People -->
 		<include>
 			<uri>model://face1</uri>

@@ -25,7 +25,7 @@ export default function DrawerAppBar(props) {
     setMobileOpen(!mobileOpen);
   };
   const goToForum = () => {
-    const url = "https://forum.jderobot.org/c/english/roboticsacademy/12";
+    const url = "https://forum.unibotics.org/";
     window.location.href = url;
   };
 
@@ -60,6 +60,9 @@ export default function DrawerAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
+          <a href="https://jderobot.github.io/">
+            <img src="/static/common/img/logo.gif" width={50} alt="" />
+          </a>
           <Typography
             variant="h6"
             component="div"

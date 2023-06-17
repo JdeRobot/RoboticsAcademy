@@ -1,0 +1,70 @@
+FROM jderobot/robotics-applications:dependencies-humble
+
+WORKDIR /
+
+# RoboticsInfrasctructure Repository
+ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
+RUN mkdir -p /opt/jderobot && \
+    git clone https://github.com/JdeRobot/RoboticsInfraestructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+
+# create workspace and add Robot packages
+RUN mkdir -p /home/ws/src
+RUN cp -r /opt/jderobot/CustomRobots /home/ws/src/
+RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
+
+# Compile workspace
+WORKDIR /home/ws
+RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
+RUN colcon build --symlink-install
+
+# Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
+ARG RAM=$RAM
+RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager
+
+# copy scripts
+RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py
+
+# give execution permissions
+WORKDIR /
+RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
+
+# RoboticsAcademy
+ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
+RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
+
+# Relocate RAM
+RUN mkdir /RoboticsAcademy/src && mv /RoboticsApplicationManager/* /RoboticsAcademy/src
+
+# build react_fronted
+RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
+
+# Django server
+EXPOSE 8000
+
+# Manager websocket
+EXPOSE 7163
+
+# Exercise websocket
+EXPOSE 1905
+
+# GUI websockets
+EXPOSE 2303
+
+# noVNC Console
+EXPOSE 1108
+
+# noVNC Gazebo
+EXPOSE 6080
+
+# noVNC Rviz
+EXPOSE 6081
+
+# noVNC GUI
+EXPOSE 6082
+
+# WebRtc
+EXPOSE 1831
+
+WORKDIR /
+
+ENTRYPOINT ["./entrypoint.sh"]

@@ -47,16 +47,161 @@ The webserver is not connected with the RADI.
 
 6) To connect the webserver with RADI, Run:
 ```
-docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy --no-server
+docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy --no-server
 ```
 
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
-To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions. Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
+To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
+- ```entry_point/ros_version```: used for the entrypoint of an exercise run by the RAM
+- ```launch/ros_version```: used for world launch files (.launch)
+- ```python_template/ros_version```: used for the python templates needed to compose the user code
+- ```react-components```: exercise specific react components
+
+Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
 1)  Run ```python3.8 manage.py runserver```.
 2)  Access http://127.0.0.1:8000/admin/ on a browser and log in with "user" and "pass".
-3)  Click on "add exercise" and fill the fields: exercise id (folder name), name (name to display), state, language and description (description to display). Save and exit.
+3)  Click on "add exercise" and fill the required fields specified below. Save and exit.
 4)  Commit db.sqlite3 changes.
+
+An exercise entry in the database must include the following data:
+- ```exercise id```: unique exercise identifier, must match the folder name
+- ```name```: name to display on the exercise list
+- ```description```: description to display on the exercise list
+- ```tags```: an exercise must include at least one ROS tag ("ROS1" or "ROS2"). The exercise will only be shown on the exercise list when the RADI ROS version installed is listed in the tags. Tags are also used by the search bar.
+- ```state```: changes the state indicator (active = green; prototype = yellow; inactive = red)
+- ```language```: programming language used
+- ```configuration```: available launch options to run the exercise written in JSON. If the generic react components are used, the exercise frontend will automatically request to launch the exercise using the first configuration that matches the key ROSX (X = ROS version detected by django). If the generic circuit selector react component is used, it will automatically display all the launch options items of the array that matches the key ROSX (X = ROS version detected by django), displaying the name stored under the key "name". Sample configuration JSON including 2 launch options for ROS1 and 1 launch option for ROS2:
+```
+{"ROS1":[
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/exercise.py",
+    "params": { "circuit": "default"}
+
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros1_noetic"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/launch/ros1_noetic/simple_line_follower_ros_headless_default.launch",
+      "name": "Default"
+    },
+    "1": {
+      "type": "module",
+      "module": "console",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+},
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/exercise.py",
+    "params": { "circuit": "default"}
+
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros1_noetic"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],
+      "launch_file": "$EXERCISE_FOLDER/launch/ros1_noetic/simple_line_follower_ros_headless_nbg.launch",
+      "name": "Nürburgring"
+    },
+    "1": {
+      "type": "module",
+      "module": "console",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+}],
+"ROS2":
+[
+{
+  "application": {
+    "type": "python",
+    "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
+    "params": { "circuit": "default"}
+  },
+  "launch": {
+    "0": {
+      "type": "module",
+      "module": "ros2_api",
+      "resource_folders": [
+        "$EXERCISE_FOLDER/launch/ros2_humble"
+      ],
+      "model_folders": [
+        "$CUSTOM_ROBOTS_FOLDER/f1/models"
+      ],
+      "plugin_folders": [
+      ],
+      "parameters": [],      
+      "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/simple_line_follower_default.launch.py",
+      "name": "Default"
+
+    },
+    "1": {
+      "type": "module",
+      "module": "console_ros2",
+      "display": ":1",
+      "internal_port": 5901,
+      "external_port": 1108
+    },
+    "2": {
+      "type": "module",
+      "module": "gazebo_view_ros2",
+      "display": ":0",
+      "internal_port": 5900,
+      "external_port": 6080,
+      "height": 768,
+      "width": 1024
+    }
+  }
+}
+]
+}
+```
 
 <a name="How-to-update-static-files-version"></a>
 ## How to update static files version
