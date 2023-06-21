@@ -2,6 +2,9 @@ FROM jderobot/robotics-applications:dependencies-humble
 
 WORKDIR /
 
+
+COPY ./exercises/static/exercises/drone_tello/rviz_tello_cfg.rviz /
+
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 RUN mkdir -p /opt/jderobot && \
@@ -64,6 +67,12 @@ EXPOSE 6082
 
 # WebRtc
 EXPOSE 1831
+
+# Tello ports
+EXPOSE 8889
+EXPOSE 38065
+EXPOSE 8890
+EXPOSE 11111
 
 WORKDIR /
 
