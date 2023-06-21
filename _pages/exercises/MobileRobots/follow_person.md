@@ -1,6 +1,6 @@
 ---
 permalink: /exercises/MobileRobots/follow_person
-title: "Follow Person"
+title: "Follow Person RR"
 
 sidebar:
   nav: "docs"
@@ -18,8 +18,8 @@ follow_person_demo:
 simulated_turtlebot2:
   - url: /assets/images/exercises/follow_person/turtlebot2-sim.png
     image_path: /assets/images/exercises/follow_person/turtlebot2-sim.png
-    alt: "Simulated Turtlebot2 (ROS Foxy)"
-    title: "Simulated Turtlebot2 (ROS Foxy)"
+    alt: "Simulated Turtlebot2 (ROS Humble)"
+    title: "Simulated Turtlebot2 (ROS Humble)"
 
 r-cnn:
   - url: /assets/images/exercises/follow_person/r-cnn.png
@@ -94,7 +94,7 @@ docker pull jderobot/robotics-academy:latest
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
+  docker run --rm -it --device /dev/dri -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:latest 
   ```
 
 
@@ -104,18 +104,16 @@ docker pull jderobot/robotics-academy:latest
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
+  docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:latest
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
+- The exercise can be used after both *Connected* and *Ready* turn green. 
 
 **Where to insert the code?**
 
-In the launched webpage, type your code in the text editor,
+In the webpage, type your code in the text editor,
 
 ```python
 from GUI import GUI
@@ -127,9 +125,11 @@ while True:
     # Enter iterative code!
 ```
 
+Or, load a code from the local machine clicking on *LOAD FILE* button.
+
 ### Using the Interface
 
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Clicking again on the Play button stops the code that is currently running on the Robot. SAVE FILE button saves the code on the local machine with the filename written in the Filename textbox. LOAD BUTTON loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).
 
 * **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
 
@@ -137,8 +137,8 @@ while True:
 
 * **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the `print()` function.
 
-## Simulated Turtlebot 2 (ROS Foxy)
-The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
+## Simulated Turtlebot 2 (ROS Humble)
+The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy and ROS Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
 
 {% include gallery id="simulated_turtlebot2" caption="Simulated Turtlebot2" %}
 
@@ -190,17 +190,19 @@ while True:
 ## Theory
 When we are designing a robotic application that knows how to follow a person, the most important mission is knowing how to detect it and not lose it.
 
+
 First step is the detection of persons; we perform this first task using a *Region-based Convolutional Neural Network (R-CNN)*. *CNN* are a type of networks where the first neurons capture groups of pixels and these neurons form new groups for next layers doing convolutions with *Kernel* filters. The neurons of the output layer return the percentage probability of an image to belong to a given class (*classification*). For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/). With a *R-CNN* we use a CNN on many regions of the image and we select those regions with more probability of success. There are many types of architectures based on R-CNN as Yolo or SSD. In this exercise you will use a SSD trained model. If you want to know how SSD works you can access this [link](https://developers.arcgis.com/python/guide/how-ssd-works/)
 
 {% include gallery id="r-cnn" caption="Region-based Convolutional Neural Network (R-CNN)" %}
 
 Once we have detected all the people in the image, we can establish several *criteria* to decide which person we are going to follow
 
+
 In order to dont lose our target we can use *tracking* algorithms. A homemade method that usually works well consists in locating the Centroid of every Bounding Box in each iteration and comparing it with the chosen Centroid of the previous frame. We will stay with that bounding box that has the closest centroid and most similar area to the chosen bounding box of the previous frame.
 
 The second step is to use the kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the *location* of the centroid of the candidate bounding box. Depending on the position we will establish a certain angular speed.
 
-An easy method to implement is *discretized case-based behavior*. We take the width of an image and divide it into X number of columns. We assign a certain angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity
+An easy method to implement is *discretized case-based behavior*. We take the width of an image and divide it into X number of columns. We assign a certain angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity.
 
 {% include gallery id="how_to_follow_person" caption="How to follow a person" %}
 
@@ -249,7 +251,7 @@ Derivative Controller gives an output depending upon the rate of change or error
 {% include gallery id="pid" caption="Control Systems and PID" %}
 
 ## Person model teleoperator
-The web-template has a teleoperator that allows you to move the person inside the hospital. To Control the person click the button and then you will can use AWSD keys to move the model.
+The web-template has a teleoperator that allows you to move the person inside the hospital. To Control the person click the button and then you will can use AWSD keys to move the model. And clicking the button again can return to autonomous mode.
 
 {% include gallery id="joystick" %}
 
@@ -268,8 +270,8 @@ The web-template has a teleoperator that allows you to move the person inside th
 
 ## Contributors
 
-- Contributors: [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Jose María Cañas](https://github.com/jmplaza)
-- Maintained by [Carlos Caminero Abad](https://github.com/Carlosalpha1).
+- Contributors: [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Jose María Cañas](https://github.com/jmplaza), [Lucía Lishan Chen Huang](https://github.com/lu164)
+- Maintained by [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Lucía Lishan Chen Huang](https://github.com/lu164).
 
 ## References
 
