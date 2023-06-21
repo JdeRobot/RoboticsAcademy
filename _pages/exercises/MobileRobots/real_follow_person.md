@@ -1,6 +1,6 @@
 ---
 permalink: /exercises/MobileRobots/real_follow_person
-title: "Real Follow Person"
+title: "Real Follow Person RR"
 
 sidebar:
   nav: "docs"
@@ -23,8 +23,8 @@ r-cnn:
 real_turtlebot2:
   - url: /assets/images/exercises/real_follow_person/turtlebot2-lab.png
     image_path: /assets/images/exercises/real_follow_person/turtlebot2-lab.png
-    alt: "Simulated Turtlebot2 (ROS Foxy)"
-    title: "Simulated Turtlebot2 (ROS Foxy)"
+    alt: "Simulated Turtlebot2 (ROS Humble)"
+    title: "Simulated Turtlebot2 (ROS Humble)"
 
 how_to_follow_person:
   - url: /assets/images/exercises/real_follow_person/how_to_follow_person.png
@@ -64,8 +64,8 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 {% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
 
-## TurtleBot2 (ROS2 Foxy)
-The robot that we will use is a TurtleBot2 (a circular mobile robot) implemented and developed for ROS Foxy. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
+## TurtleBot2 (ROS 2 Humble)
+The robot that we will use is a TurtleBot2 (a circular mobile robot) implemented and developed for ROS Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
 
 {% include gallery id="real_turtlebot2" caption="TurtleBot2" %}
 
@@ -76,7 +76,7 @@ This is the preferred way for running the exercise.
 - Clone the Robotics Academy repository on your local machine
 
 	```bash
-git clone https://github.com/JdeRobot/RoboticsAcademy
+  h git clone https://github.com/JdeRobot/RoboticsAcademy
 	```
 
 - Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
@@ -84,7 +84,7 @@ git clone https://github.com/JdeRobot/RoboticsAcademy
 - Pull the current distribution of Robotics Academy Docker Image
 
 	```bash
-docker pull jderobot/robotics-academy:latest
+  docker pull jderobot/robotics-academy:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -98,7 +98,7 @@ To use the real *TurtleBot2* we have to follow this steps:
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video4:/dev/video0 --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
   ```
 
 
@@ -108,14 +108,12 @@ To use the real *TurtleBot2* we have to follow this steps:
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video4:/dev/video0 -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:4.3.0 ./start.sh
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
   ```
 
 - On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
 
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
+- The exercise can be used after both Connected and Ready turn green.
 
 **Where to insert the code?**
 
@@ -133,7 +131,7 @@ while True:
 
 ### Using the Interface
 
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Clicking again on the Play button stops the code that is currently running on the Robot. SAVE FILE button saves the code on the local machine with the filename written in the Filename textbox. LOAD BUTTON loads the code from the local machine. Reset button resets the simulation (primarily, the position of the robot).
 
 * **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
 
@@ -258,8 +256,8 @@ Derivative Controller gives an output depending upon the rate of change or error
 
 ## Contributors
 
-- Contributors: [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Jose María Cañas](https://github.com/jmplaza)
-- Maintained by [Carlos Caminero Abad](https://github.com/Carlosalpha1).
+- Contributors: [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Jose María Cañas](https://github.com/jmplaza), [Lucía Lishan Chen Huang](https://github.com/lu164)
+- Maintained by [Carlos Caminero Abad](https://github.com/Carlosalpha1), [Lucía Lishan Chen Huang](https://github.com/lu164).
 
 ## References
 
