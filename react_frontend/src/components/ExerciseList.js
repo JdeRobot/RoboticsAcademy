@@ -25,7 +25,6 @@ const ExerciseList = () => {
       .then((res) => res.json())
       .then((msg) => {
         ros_version = msg.version;
-        console.log(ros_version);
         // If ROS is installed
         if (!isNaN(parseInt(ros_version))) {
           data = data.filter((exercise) =>
