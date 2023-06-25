@@ -89,6 +89,27 @@ feature_row:
     order: 0;
     version: "v3.2"
 
+  - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
+    alt: "Simulated Follow Person"
+    title: "Follow Person (ROS2)"
+    excerpt: "Follow a Person in a hospital gazebo world using Deep Learning"
+    url: "/exercises/MobileRobots/follow_person"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
+  
+  - image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
+    alt: "Real Follow Person"
+    title: "Real Follow Person (ROS2)"
+    excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
+    url: "/exercises/MobileRobots/real_follow_person"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
 ---
 
 
