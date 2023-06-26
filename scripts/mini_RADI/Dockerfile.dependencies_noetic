@@ -291,8 +291,6 @@ RUN wget https://xpra.org/xorg.conf \
     && rm -rf /tmp/*
 
 # Node
-RUN apt-get install -y software-properties-common \
-&& curl -sL https://deb.nodesource.com/setup_16.x | bash - \
-&& apt-get install -y nodejs \
-&& curl -L https://www.npmjs.com/install.sh | sh \
-&& npm install -g yarn
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
+  && apt-get install -y nodejs \
+  && npm install -g yarn
