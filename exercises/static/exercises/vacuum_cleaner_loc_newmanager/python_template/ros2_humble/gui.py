@@ -1,13 +1,14 @@
+import os
 import json
 import cv2
+import numpy as np
 import base64
 import threading
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
-import os
-import rclpy
+
 from interfaces.pose3d import ListenerPose3d
 
 from map import Map
@@ -21,9 +22,11 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'map': ''}
+        self.payload = {'map': '', 'nav': ''}
         self.server = None
         self.client = None
+        self.user_mat = None
+        self.show_mat = False
 
         self.host = host
 
@@ -34,13 +37,14 @@ class GUI:
         t.start()
 
         # Create the lap object
-        self.map = Map(self.hal.pose3d)
+        pose3d_object = ListenerPose3d("/roombaROS/odom")
+        self.map = Map(pose3d_object)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
     @classmethod
     def initGUI(cls, host, console):
-        # self.payload = {'map': ''}
+        # self.payload = {'image': '', 'shape': []}
         new_instance = cls(host, console)
         return new_instance
 
@@ -71,6 +75,19 @@ class GUI:
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
 
+        # Example Payload Navigation Data message (random data)
+        # 4 colors supported (0, 1, 2, 3)
+        #nav_mat = np.zeros((20, 20), int)
+        #nav_mat[2, 1] = 1
+        #nav_mat[3, 3] = 2
+        #nav_mat[5,9] = 3
+        #nav_message = str(nav_mat.tolist())
+        if (self.show_mat == True):
+            nav_message = str(self.user_mat.tolist())
+            self.payload["nav"] = nav_message
+        else:
+            self.payload["nav"] = None
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
@@ -78,11 +95,14 @@ class GUI:
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if (message[:4] == "#ack"):
+        if(message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-    # Activate the server
+    def showNumpy(self, mat):
+        self.user_mat = mat
+        self.show_mat = True
 
+    # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
@@ -105,6 +125,7 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         self.map.reset()
+        self.user_mat = None
 
 
 # This class decouples the user thread
@@ -130,19 +151,18 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while (self.gui.client == None):
+        while(self.gui.client == None):
             pass
 
         previous_time = datetime.now()
-        while (True):
+        while(True):
             # Sleep for 2 seconds
             time.sleep(2)
 
             # Measure the current time and subtract from previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
-                1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
 
             # Get the time period
@@ -157,15 +177,15 @@ class ThreadGUI:
 
     # The main thread of execution
     def run(self):
-        while (self.gui.client == None):
+        while(self.gui.client == None):
             pass
 
-        while (True):
+        while(True):
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
-            while (acknowledge_message == False):
+            while(acknowledge_message == False):
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
@@ -174,7 +194,6 @@ class ThreadGUI:
             self.iteration_counter = self.iteration_counter + 1
 
             dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
-                1000 + dt.microseconds / 1000.0
-            if (ms < self.ideal_cycle):
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            if(ms < self.ideal_cycle):
                 time.sleep((self.ideal_cycle-ms) / 1000.0)
