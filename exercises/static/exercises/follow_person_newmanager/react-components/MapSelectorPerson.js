@@ -77,7 +77,7 @@ export default function MapSelector(props) {
           // Selects the configs available for the ROS version installed          
           const availableConfigs = {};
           availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
-          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);          
+          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);        
         })
         .catch((error) => {
           const availableConfigs = {};
@@ -107,8 +107,8 @@ export default function MapSelector(props) {
           }}
         >
           {circuitOptions.map((option) => (
-            <MenuItem key={option.launch["0"].name} value={option}>
-              {option.launch["0"].name}
+            <MenuItem key={option.application.params.circuit} value={option}>
+              {option.application.params.circuit}
             </MenuItem>
           ))}
         </Select>
