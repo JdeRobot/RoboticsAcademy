@@ -9,8 +9,6 @@ RUN mkdir -p /opt/jderobot && \
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
-RUN git clone https://github.com/PX4/px4_msgs.git /home/ws/src/px4_msgs
-RUN git clone https://github.com/PX4/px4_ros_com.git /home/ws/src/px4_ros_com
 RUN cp -r /opt/jderobot/CustomRobots /home/ws/src/
 RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
