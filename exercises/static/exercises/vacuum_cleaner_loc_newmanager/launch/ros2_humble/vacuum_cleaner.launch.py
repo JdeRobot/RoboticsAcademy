@@ -12,34 +12,16 @@ def generate_launch_description():
   # Set the path to the Gazebo ROS package
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')
 
-  # Set the path to the Turtlebot2 ROS package
-  pkg_share_dir = FindPackageShare(package='custom_robots').find('custom_robots')
+  # Set the path to custom_robots package.
+  pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
-  # Set Turtlebot2 Arguments
-  x_turtlebot2_position = '0'
-  y_turtlebot2_position = '10'
-  z_turtlebot2_position = '0'
-
-  declare_x_position_cmd = DeclareLaunchArgument(
-    '-x', default_value=x_turtlebot2_position,
-    description="Position on the axis x of Turtlebot2"
-  )
-  declare_y_position_cmd = DeclareLaunchArgument(
-    '-y', default_value=y_turtlebot2_position,
-    description="Position on the axis y of Turtlebot2"
-  )
-  declare_z_position_cmd = DeclareLaunchArgument(
-    '-z', default_value=z_turtlebot2_position,
-    description="Position on the axis z of Turtlebot2"
-  )
-
-  world_name = "hospital_follow_person.world"
-  #world_dir = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/launch/ros2_humble"
-  world_dir = os.path.join(pkg_share_dir, 'launch')
-  world_path = os.path.join(world_dir, world_name)
-
-  # Set the path to the SDF model files
-  gazebo_models_path = os.path.join(pkg_share_dir, 'models')
+  # Set the path to the world file
+  world_file_name = 'roomba_1_house_followingcam.world'
+  current_dir = "/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_newmanager/launch/ros2_humble"
+  world_path = os.path.join(current_dir, world_file_name)
+   
+  # Set the path to the SDF model files.
+  gazebo_models_path = os.path.join(pkg_share, 'models')
   os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
 
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
@@ -77,10 +59,6 @@ def generate_launch_description():
     condition=IfCondition(use_simulator),
     launch_arguments={'world': world}.items())
   
-  start_turtlebot2_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_share_dir, 'launch', 'spawn_model.launch.py')),
-    launch_arguments = {'-x': x_turtlebot2_position, '-y': y_turtlebot2_position, '-z': z_turtlebot2_position}.items())
-
   # Create the launch description and populate
   ld = LaunchDescription()
 
@@ -89,12 +67,8 @@ def generate_launch_description():
   ld.add_action(declare_use_sim_time_cmd)
   ld.add_action(declare_use_simulator_cmd)
   ld.add_action(declare_world_cmd)
-  ld.add_action(declare_x_position_cmd)
-  ld.add_action(declare_y_position_cmd)
-  ld.add_action(declare_z_position_cmd)
 
   # Add any actions
   ld.add_action(start_gazebo_server_cmd)
-  ld.add_action(start_turtlebot2_cmd)
 
   return ld
