@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw } from "Helpers/BirdEye";
+import { draw } from "./helpers/birds_eye_global_navigation";
 
 function SpecificGlobalNavigation(props) {
   const guiCanvasRef = React.useRef();
