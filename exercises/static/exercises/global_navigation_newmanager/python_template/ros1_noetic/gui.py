@@ -9,6 +9,7 @@ import logging
 import numpy as np
 from interfaces.pose3d import ListenerPose3d
 import re
+import os
 from map import MAP
 
 
@@ -166,7 +167,8 @@ class GUI:
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui.log", "w")
+                home_dir = os.path.expanduser('~')
+                f = open(f"{home_dir}/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
                 f.close()
                 logged = True
