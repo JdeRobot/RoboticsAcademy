@@ -9,12 +9,13 @@ let ctx = null;
 export function draw(map, x, y, ax, ay) {
   mapCanvas = map;
   ctx = mapCanvas.getContext("2d");
-  console.log(mapCanvas);
-  console.log(ctx);
+  ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height); 
+  console.log(x,y,ax,ay)
   drawTriangle(x, y, ax, ay);
 }
 
 function drawTriangle(posx, posy, angx, angy) {
+  console.log(ctx)
   ctx.clearRect(posx + 10, posy - 7, -20, 15);
   //ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
   ctx.beginPath();
