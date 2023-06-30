@@ -1,23 +1,25 @@
 // Retreive the canvas elements and context
-let mapCanvas = null;
-let ctx = null;
+let mapCanvas;
+let ctx;
+let initialPosition;
 
-// Function to draw triangle
-// Given the coordinates of center, and
-// the angle towards which it points
+// Complete draw function
 
-export function draw(map, x, y, ax, ay) {
-  mapCanvas = map;
-  ctx = mapCanvas.getContext("2d");
-  ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height); 
-  console.log(x,y,ax,ay)
-  drawTriangle(x, y, ax, ay);
+export function draw(canvas, x, y, ax, ay) {
+  mapCanvas = canvas;
+  ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+  coords = drawTriangle(x, y, ax, ay);
 }
 
+
+// Testing to be carried out with Python interface
 function drawTriangle(posx, posy, angx, angy) {
-  console.log(ctx)
-  ctx.clearRect(posx + 10, posy - 7, -20, 15);
-  //ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+  // Store initial position
+  if (initialPosition == null) {
+    initialPosition = [posx, posy, angx, angy];
+  }
+
   ctx.beginPath();
 
   let px = posx;
@@ -29,10 +31,9 @@ function drawTriangle(posx, posy, angx, angy) {
   //ctx.lineTo(px, py);
 
   // Sides
-  let side = 1.5 * Math.hypot(2, 2);
-  let ang = null;
-
-  if (angx != 0) {
+  const side = 1.5 * Math.hypot(2, 2);
+  let ang;
+  if (angx !== 0) {
     ang = Math.atan2(angy, angx);
   } else {
     ang = Math.PI / 2;
@@ -51,8 +52,8 @@ function drawTriangle(posx, posy, angx, angy) {
   ctx.lineTo(px2, py2);
   ctx.lineTo(px3, py3);
 
-  let rx = px;
-  let ry = py;
+  const rx = px;
+  const ry = py;
 
   ctx.stroke();
   ctx.closePath();
@@ -61,4 +62,14 @@ function drawTriangle(posx, posy, angx, angy) {
   ctx.fill();
 
   return [rx, ry];
+}
+
+
+export function restoreInitialPosition() {
+  draw(
+    initialPosition[0],
+    initialPosition[1],
+    initialPosition[2],
+    initialPosition[3]
+  );
 }
