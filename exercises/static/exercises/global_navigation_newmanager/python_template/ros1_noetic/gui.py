@@ -152,7 +152,7 @@ class GUI:
         # Check for mouse click data on the map
         elif (message[:5] == "#pick"):
             data = eval(message[5:])
-            self.mapXY = data["data"]
+            self.mapXY = data
             x, y = self.mapXY
             worldx, worldy = self.map.gridToWorld(x, y)
             self.worldXY = [worldx, worldy]

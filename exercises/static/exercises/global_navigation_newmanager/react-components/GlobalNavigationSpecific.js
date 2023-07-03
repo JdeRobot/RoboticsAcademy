@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {  draw } from "./helpers/birds_eye_global_navigation";
+import { draw, generatePath } from "./helpers/birds_eye_global_navigation";
+
 
 function SpecificGlobalNavigation(props) {
   const guiCanvasRef = React.useRef();
@@ -19,7 +20,6 @@ function SpecificGlobalNavigation(props) {
     }
     const getImageAndDisplay = (data) => {
       if(data.image) {
-        console.log(data.image)
       let canvas = document.getElementById("gui-canvas-numpy");
         //Parse encoded image data and decode it
       function decode_utf8(s) {
@@ -63,6 +63,7 @@ function SpecificGlobalNavigation(props) {
     let cursorY = (event.clientY - mapCanvas.getBoundingClientRect().top);
     let cursorXMap = cursorX/mapCanvas.width * 400;
     let cursorYMap = cursorY/mapCanvas.height * 400;
+    generatePath([cursorXMap, cursorYMap])
     return [cursorXMap, cursorYMap];
 }
 
@@ -83,7 +84,7 @@ function SpecificGlobalNavigation(props) {
       }}
       width= "400"
       height= "400"
-      onClick={function pickLoc(){
+      onClick={function pickLoc(event){
         var data = destinationPicker(event)
         console.log(data);
         let coords = {"data" : data};
