@@ -60,7 +60,7 @@ export function generatePath(data){
 	var mapCanvas = document.getElementById("globalnav-eye"),
 	ctx = mapCanvas.getContext("2d");
 	clearPath();
-	drawTargetPosition();
+	drawTargetPosition(data[0], data[1]);
 	data = data;
 	if (data == null){
 	   return null
@@ -99,7 +99,7 @@ function clearPath() {
  	ctx.clearRect(0,0,mapCanvas.width,mapCanvas.height);
 }
 
-function drawTargetPosition() {
+function drawTargetPosition(cursorXMap, cursorYMap) {
 	var mapCanvas = document.getElementById("globalnav-eye"),
 	ctx = mapCanvas.getContext("2d");
  if (cursorXMap != 0 || cursorYMap != 0) {
