@@ -7,9 +7,9 @@ export function draw(x, y, ax, ay){
 }
 
 function drawTriangle(posx, posy, angx, angy){
-  var mapCanvas = document.getElementById("globalnav-eye"),
-  ctx = mapCanvas.getContext("2d");
-	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+  let mapCanvas = document.getElementById("globalnav-eye");
+  let ctx = mapCanvas.getContext("2d");
+  ctx.clearRect(posx+10, posy-7, -20, 15);
 	ctx.beginPath();
 
 	let px = posx;
@@ -57,13 +57,11 @@ function drawTriangle(posx, posy, angx, angy){
 }
 
 export function generatePath(data){
-	var mapCanvas = document.getElementById("globalnav-eye"),
-	ctx = mapCanvas.getContext("2d");
-	clearPath();
-	drawTargetPosition(data[0], data[1]);
-	data = data;
+	let mapCanvas = document.getElementById("globalnav-eye");
+  	let ctx = mapCanvas.getContext("2d");
 	if (data == null){
-	   return null
+	   	return null
+
 	}
 	let minx,miny,maxx,maxy;
 	miny = minx = Infinity
@@ -94,14 +92,15 @@ export function generatePath(data){
 }
 
 function clearPath() {
-	var mapCanvas = document.getElementById("globalnav-eye"),
-	ctx = mapCanvas.getContext("2d");
+	let mapCanvas = document.getElementById("globalnav-eye");
+  	let ctx = mapCanvas.getContext("2d");
  	ctx.clearRect(0,0,mapCanvas.width,mapCanvas.height);
 }
 
-function drawTargetPosition(cursorXMap, cursorYMap) {
-	var mapCanvas = document.getElementById("globalnav-eye"),
-	ctx = mapCanvas.getContext("2d");
+export function drawTargetPosition(cursorXMap, cursorYMap) {
+	clearPath()
+	let mapCanvas = document.getElementById("globalnav-eye");
+  	let ctx = mapCanvas.getContext("2d");
  if (cursorXMap != 0 || cursorYMap != 0) {
 	ctx.beginPath();
 	ctx.strokeStyle = "#0000FF";

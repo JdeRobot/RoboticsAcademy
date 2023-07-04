@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw, generatePath } from "./helpers/birds_eye_global_navigation";
+import { draw, drawTargetPosition, generatePath } from "./helpers/birds_eye_global_navigation";
 
 
 function SpecificGlobalNavigation(props) {
@@ -36,11 +36,17 @@ function SpecificGlobalNavigation(props) {
 			}
       }
     }
+    const getPathAndDisplay = (data) => {
+      if(data.array){
+        generatePath(JSON.parse(data.array))
+      }
+    }
 
     const callback = (message) => {
       const data = message.data.update;
       getMapDataAndDraw(data)
       getImageAndDisplay(data)
+      getPathAndDisplay(data)
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -59,11 +65,19 @@ function SpecificGlobalNavigation(props) {
 
   function destinationPicker(event){
     let mapCanvas = document.getElementById("globalnav-eye");
-    let cursorX = (event.clientX - mapCanvas.getBoundingClientRect().left);
-    let cursorY = (event.clientY - mapCanvas.getBoundingClientRect().top);
-    let cursorXMap = cursorX/mapCanvas.width * 400;
-    let cursorYMap = cursorY/mapCanvas.height * 400;
-    generatePath([cursorXMap, cursorYMap])
+
+    let rect = mapCanvas.getBoundingClientRect();
+    let scaleX = mapCanvas.width / rect.width;
+    let scaleY = mapCanvas.height / rect.height;
+
+    let cursorX = (event.clientX - rect.left) * scaleX;
+    let cursorY = (event.clientY - rect.top) * scaleY;
+
+    let cursorXMap = cursorX / mapCanvas.width * 400;
+    let cursorYMap = cursorY / mapCanvas.height * 400;
+
+
+    drawTargetPosition(cursorXMap, cursorYMap);
     return [cursorXMap, cursorYMap];
 }
 
@@ -79,19 +93,15 @@ function SpecificGlobalNavigation(props) {
           border: "2px solid #d3d3d3",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100% 100%",
-          width: "100%",
-          height: "100%"
       }}
       width= "400"
       height= "400"
       onClick={function pickLoc(event){
         var data = destinationPicker(event)
-        console.log(data);
         let coords = {"data" : data};
         try {
           window.RoboticsExerciseComponents.commsManager.send("#pick", data)
         } catch (error) {
-          console.error(error)
         }
         
 }}
