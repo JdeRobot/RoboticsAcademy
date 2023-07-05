@@ -125,9 +125,8 @@ ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs \
-  && curl -L https://www.npmjs.com/install.sh | sh \
   && npm install -g yarn
-
+  
 # Install Python 3 pip build dependencies first
 RUN python3.10 -m pip install --upgrade pip wheel setuptools
 
