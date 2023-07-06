@@ -76,8 +76,11 @@ export default function MapSelector(props) {
           const config = data;
           // Selects the configs available for the ROS version installed          
           const availableConfigs = {};
-          availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
-          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);          
+          if(ros_version === 2){
+            availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
+            setCircuitOptions(availableConfigs[`ROS${ros_version}`]); 
+          }
+                   
         })
         .catch((error) => {
           const availableConfigs = {};
