@@ -91,7 +91,7 @@ export function generatePath(data){
 	   }
 }
 
-function clearPath() {
+export function clearPath() {
 	let mapCanvas = document.getElementById("globalnav-eye");
   	let ctx = mapCanvas.getContext("2d");
  	ctx.clearRect(0,0,mapCanvas.width,mapCanvas.height);

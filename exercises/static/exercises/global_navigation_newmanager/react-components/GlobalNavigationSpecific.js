@@ -1,16 +1,16 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw, drawTargetPosition, generatePath } from "./helpers/birds_eye_global_navigation";
+import { clearPath, draw, drawTargetPosition, generatePath } from "./helpers/birds_eye_global_navigation";
 
 
 function SpecificGlobalNavigation(props) {
   const guiCanvasRef = React.useRef();
-
+  let showMap = false
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const getMapDataAndDraw = (data) => {
-      if (data.map) {
+      if (data.map && showMap) {
         const pose = data.map.substring(1, data.map.length - 1);
         const content = pose.split(',').map(function(item) {
           return parseFloat(item);
@@ -37,7 +37,8 @@ function SpecificGlobalNavigation(props) {
       }
     }
     const getPathAndDisplay = (data) => {
-      if(data.array){
+      
+      if(data.array && showMap){
         generatePath(JSON.parse(data.array))
       }
     }
@@ -58,6 +59,27 @@ function SpecificGlobalNavigation(props) {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
         [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
+        callback
+      );
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const callback = (message) => {
+      console.log(message.data.state)
+      if (message.data.state === "ready") {
+        showMap = false
+      } else {
+        showMap = true
+      }
+    };
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+    return () => {
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
         callback
       );
     };
