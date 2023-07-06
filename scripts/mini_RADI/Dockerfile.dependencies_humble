@@ -74,6 +74,7 @@ RUN sudo rosdep fix-permissions \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
+RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -187,7 +188,8 @@ RUN git clone https://github.com/aerostack2/as2_platform_pixhawk.git /home/drone
 RUN git clone https://github.com/PX4/px4_msgs.git /home/drones_ws/src/px4_msgs
 RUN git clone https://github.com/PX4/px4_ros_com.git /home/drones_ws/src/px4_ros_com
 
-# Compiling the workspace
+# Compiling and sourcing the workspace
 WORKDIR /home/drones_ws/
 RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO}
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
+RUN echo 'source /home/drones_ws/install/setup.bash' >> ~/.bashrc
