@@ -1,48 +1,58 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { spawn } = require('child_process');
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-  });
+const rootPath = path.resolve(__dirname, '../../')
 
-  mainWindow.loadURL("http://127.0.0.1:8000")
+let childProcess;
 
-  // and load the index.html of the app.
-  // mainWindow.loadFile(path.join(__dirname, 'index.html'));
+createDjangoServer = () => {
+  const activateCommand = `source ${rootPath}/env/bin/activate && `;
+  const command = `python3 ${rootPath}/manage.py runserver`;
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  const fullCommand = activateCommand + command;
+  const fullArgs = ['-c', fullCommand];
+
+  childProcess = spawn('bash', fullArgs);
+}
+
+const killDjangoServer = () => {
+  if (childProcess) {
+    childProcess.kill();
+  }
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+const createWindow = () => {
+  const mainWindow = new BrowserWindow({
+    width: 1280,
+    height: 720,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  mainWindow.loadURL('http://127.0.0.1:8000/');
+};
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+app.on('ready', () => {
+  createDjangoServer()
+  setTimeout(() => {
+    createWindow()
+  }, 5000);
+});
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
+    killDjangoServer()
   }
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
