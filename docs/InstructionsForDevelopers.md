@@ -32,6 +32,8 @@ source env/bin/activate
 pip install django
 pip install djangorestframework
 pip install django-webpack-loader
+pip install django-cors-headers
+pip install pylint
 ```
 
 4) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
