@@ -18,7 +18,7 @@ from std_srvs.srv import Empty
 from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
-
+import os
 
 class Template:
     # Initialize class variables
@@ -378,11 +378,11 @@ class Template:
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
-
+        home_dir = os.path.expanduser('~')
         logged = False
         while not logged:
             try:
-                f = open("/ws_code.log", "w")
+                f = open(f"{home_dir}/ws_code.log", "w")
                 f.write("websocket_code=ready")
                 f.close()
                 logged = True
