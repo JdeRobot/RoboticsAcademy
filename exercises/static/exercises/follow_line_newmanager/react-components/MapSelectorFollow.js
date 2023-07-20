@@ -11,7 +11,7 @@ const exerciseConfig = JSON.parse(
 );
 const exerciseId = exerciseConfig.exercise_id;
 
-export default function MapSelector(props) {
+export default function MapSelectorFollow(props) {
   const changeConfig = (circuitPath) => {
     const config = JSON.parse(
       document.getElementById("exercise-config").textContent
@@ -25,7 +25,6 @@ export default function MapSelector(props) {
 
   const handleCircuitChange = (e) => {
     const config = e;
-    console.log(JSON.stringify(config));
     config['exercise_id'] = exerciseId;
     config.height = window.innerHeight / 2;
     config.width = window.innerWidth / 2;         
@@ -67,9 +66,11 @@ export default function MapSelector(props) {
         let ros_version = 1;
         fetch(rosVersionURL)
         .then((res) => res.json())
-        .then((msg) => {          
+        .then((msg) => {       
+       
           ros_version = msg.version;
           // If returns no version, assume 1
+         
           if (isNaN(parseInt(ros_version))) {          
             ros_version = 1;
           }
@@ -98,7 +99,7 @@ export default function MapSelector(props) {
         </InputLabel>
         <Select
           disabled={disabled}
-          defaultValue={"default"}
+          defaultValue={"1"}
           labelId="circuit-selector-label"
           id={"circuit-selector"}
           label={"Circuit"}
@@ -106,6 +107,7 @@ export default function MapSelector(props) {
             handleCircuitChange(e.target.value);
           }}
         >
+          <MenuItem disabled value="1">Select world</MenuItem>
           {circuitOptions.map((option) => (
             <MenuItem key={option.launch["0"].name} value={option}>
               {option.launch["0"].name}

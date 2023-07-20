@@ -93,15 +93,15 @@ export default function MapSelector(props) {
       });
   }, []);
 
-  return (
-    <Box sx={{marginLeft: "20px"}}>
+  return circuitOptions.length > 0 ? (
+    <Box sx={{ marginLeft: "20px" }}>
       <FormControl>
         <InputLabel id={"circuit-selector-label"}>
           <LandscapeIcon></LandscapeIcon>
         </InputLabel>
         <Select
           disabled={disabled}
-          defaultValue={"default"}
+          defaultValue={"1"}
           labelId="circuit-selector-label"
           id={"circuit-selector"}
           label={"Circuit"}
@@ -109,6 +109,9 @@ export default function MapSelector(props) {
             handleCircuitChange(e.target.value);
           }}
         >
+          <MenuItem disabled value="1">
+            Select world
+          </MenuItem>
           {circuitOptions.map((option) => (
             <MenuItem key={option.launch["0"].name} value={option}>
               {option.launch["0"].name}
@@ -117,5 +120,5 @@ export default function MapSelector(props) {
         </Select>
       </FormControl>
     </Box>
-  );
+  ) : null;
 }
