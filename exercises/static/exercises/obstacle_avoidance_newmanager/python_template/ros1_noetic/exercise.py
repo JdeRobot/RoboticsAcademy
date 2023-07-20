@@ -148,6 +148,7 @@ class Template:
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
         exec(sequential_code, reference_environment)
+        time.sleep(0.5)
 
         # Run the iterative part inside template
         # and keep the check for flag
@@ -295,6 +296,7 @@ class Template:
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
+        self.stop_brain = False
         # New thread execution        
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
@@ -350,8 +352,6 @@ class Template:
         elif (message[:5] == "#stop"):
             self.stop_brain = True
 
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
 
     # Function that gets called when the server is connected
     def connected(self, client, server):

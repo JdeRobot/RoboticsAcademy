@@ -45,7 +45,7 @@ function SpecificObstacleAvoidance(props) {
       width= "200"
       height= "200"
       style={{
-        backgroundColor: "#00a0d1",
+        backgroundColor: "#0e14c7",
       	marginTop: "5px",
         width: "100%",
         height: "100%",
