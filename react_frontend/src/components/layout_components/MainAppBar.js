@@ -31,7 +31,22 @@ function MainAppBar(props) {
       });
   };
 
-  const connect = () => {
+  const maxConnectionAttempts = 3;
+  let connectionAttempts = 0;
+
+  const connectWithRetry = () => {
+    if (connectionAttempts >= maxConnectionAttempts) {
+      RoboticsReactComponents.MessageSystem.Alert.showAlert(
+        "Error conectando, prueba a recargar la página",
+        () => {
+          console.log("Reloading");
+          window.location.reload();
+        },
+        "RECARGAR"
+      );
+      return;
+    }
+
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Conectando y lanzando el ejercicio"
     );
@@ -73,14 +88,9 @@ function MainAppBar(props) {
           });
       })
       .catch((e) => {
-        RoboticsReactComponents.MessageSystem.Alert.showAlert(
-          "Error conectando, prueba a recargar la página",
-          () => {
-            console.log("Reloading");
-            window.location.reload();
-          },
-          "RECARGAR"
-        );
+        // Connection failed, try again after a delay
+        connectionAttempts++;
+        setTimeout(connectWithRetry, 2000);
       });
   };
 
@@ -90,7 +100,7 @@ function MainAppBar(props) {
 
   React.useEffect(() => {
     RoboticsExerciseComponents.suscribeOnLoad(() => {
-      connect();
+      connectWithRetry();
     });
   }, []);
 
