@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import "./css/Reconstruction3DRR.css";
+import { draw } from "./helpers/ws_gui";
 
 const SpecificRecontruction3D = (props) => {
     React.useEffect(() => {
@@ -8,6 +9,7 @@ const SpecificRecontruction3D = (props) => {
         const callback = (message) => {
           const data = message.data.update;
           console.log(data)
+          draw(data)
         };
     
         window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -24,7 +26,7 @@ const SpecificRecontruction3D = (props) => {
         };
       }, []);
   return (
-    <div><p>testing</p></div>
+    <div><canvas id="gui_canvas"></canvas></div>
   );
 };
 
