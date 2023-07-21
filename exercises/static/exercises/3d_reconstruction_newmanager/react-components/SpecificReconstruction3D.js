@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import "./css/Recontruction3DRR.css";
+import "./css/Reconstruction3DRR.css";
 
 const SpecificRecontruction3D = (props) => {
     React.useEffect(() => {
