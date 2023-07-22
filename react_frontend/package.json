@@ -57,6 +57,7 @@
     "react-use": "^17.4.0",
     "react-vnc": "^0.5.1",
     "styled-components": "^5.3.6",
-    "three": "^0.144.0"
+    "three": "^0.144.0",
+    "uuid": "^9.0.0"
   }
 }
