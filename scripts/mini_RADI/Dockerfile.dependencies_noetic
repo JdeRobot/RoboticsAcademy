@@ -52,7 +52,7 @@ RUN wget --no-check-certificate https://deac-fra.dl.sourceforge.net/project/virt
     chmod u+s /usr/lib32/libdlfaker.so && \
     chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so && \
     chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so && \
-    wget --no-check-certificate https://sourceforge.net/projects/turbovnc/files/${TURBOVNC_VERSION}/turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
+    wget --no-check-certificate https://sourceforge.net/projects/turbovnc/files/3.0/turbovnc_3.0_amd64.deb/download?use_mirror=versaweb && \
     apt-get update && apt-get install -y --no-install-recommends ./turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     rm turbovnc_${TURBOVNC_VERSION}_amd64.deb && \
     rm -rf /var/lib/apt/lists/* && \
