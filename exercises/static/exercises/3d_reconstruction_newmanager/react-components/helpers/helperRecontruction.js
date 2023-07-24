@@ -57,7 +57,8 @@ export function draw (data){
             if (paint_matching === "T") {
                 paintMatching();
             }
-
+            
+         
 }
         
 
@@ -117,6 +118,8 @@ function line_matching_image(matching)
 
 function paintMatching()
 {
+    reset_matching()
+
     var matching = [];
 
     for (var i = 0; i < matching_history.length; i++)
@@ -129,6 +132,8 @@ function paintMatching()
 
         line_matching_image(matching);
     }
+    matching_history = []
+    matching_history_color=[]
 }
 
 function SetMatching(matching_received)
@@ -141,14 +146,23 @@ function SetMatching(matching_received)
 
 }
 
-function reset_matching (){
+function reset_matching() {
     let canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
-    canvas.height = 240;
-    canvas.width = 650;
 
-    matching_history = [];
-    matching_history_color = [];
+    // Clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Redraw the images
     context.drawImage(image1, 0, 0,320, 240);
     context.drawImage(image2, 320, 0,320, 240);
+}
+
+
+export function reset_all() {
+    let canvas = document.getElementById("gui_canvas"),
+    context = canvas.getContext('2d');
+
+    // Clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }
