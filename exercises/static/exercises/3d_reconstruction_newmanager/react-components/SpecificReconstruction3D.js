@@ -1,15 +1,18 @@
 import * as React from "react";
 
 import "./css/Reconstruction3DRR.css";
-import { draw } from "./helpers/ws_gui";
+import { draw } from "./helpers/helperRecontruction";
 
 const SpecificRecontruction3D = (props) => {
     React.useEffect(() => {
         console.log("TestShowScreen subscribing to ['update'] events");
         const callback = (message) => {
-          const data = message.data.update;
-          console.log(data)
-          draw(data)
+          if(message.data.update.img1){
+            const data = message.data.update;
+            console.log(data)
+            draw(data)
+          }
+          
         };
     
         window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -26,7 +29,10 @@ const SpecificRecontruction3D = (props) => {
         };
       }, []);
   return (
-    <div><canvas id="gui_canvas"></canvas></div>
+    <div style={{display: "flex", height: "100%", width: "100%"}}>
+       <div id="canvas" align = "center"  style={{flex: "1 1 auto", height: "100%", width: "100%"}}></div>
+      <canvas id="gui_canvas"></canvas>
+    </div>
   );
 };
 

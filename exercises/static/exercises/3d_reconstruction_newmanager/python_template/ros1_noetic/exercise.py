@@ -127,7 +127,6 @@ class Template:
 
         # Reference Environment for the exec() function
         iterative_code, sequential_code = self.parse_code(source_code)
-
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
@@ -137,7 +136,6 @@ class Template:
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
         exec(sequential_code, reference_environment)
-
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
@@ -150,7 +148,6 @@ class Template:
 
             # Execute the iterative portion
             exec(iterative_code, reference_environment)
-
             # Template specifics to run!
             finish_time = datetime.now()
             dt = finish_time - start_time
@@ -285,6 +282,7 @@ class Template:
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
+        self.stop_brain = False
         # New thread execution
         self.thread = threading.Thread(target=self.process_code, args=[source_code])
         self.thread.start()
@@ -341,8 +339,6 @@ class Template:
         elif (message[:5] == "#stop"):
             self.stop_brain = True
 
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
 
     # Function that gets called when the server is connected
     def connected(self, client, server):

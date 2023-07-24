@@ -1,5 +1,4 @@
 // Set the src of iframe tag
-import * as THREE from 'three';
 var matching_history = [];
 var matching_history_color = [];
 var paint_matching = 'false';
@@ -13,22 +12,33 @@ function decode_utf8(s){
 var image_data1, image_data2, source1, source2
 let image1 = new Image();
 let image2 = new Image();
+image1.onload = function(){
+    update_image();
+}
+
+image2.onload = function(){
+    update_image();
+}
 
 export function draw (data){
             image_data1 = JSON.parse(data.img1)
             source1 = decode_utf8(image_data1.img)
-
-            if(source1 !== ""){
-                image1.src = "data:image1/jpeg;base64," + source1;
-                update_image();
+            if(data.img1 !== null && data.img1 !== undefined){
+                image_data1 = JSON.parse(data.img1)
+                source1 = decode_utf8(image_data1.img)
+                if(source1.length > 10){
+                    image1.src = "data:image1/jpeg;base64," + source1;
+                    
+                }
             }
-            // Parse the Image Data
-            image_data2 = JSON.parse(data.img2)
-            source2 = decode_utf8(image_data2.img)
-
-            if(source2 !== ""){
-                image2.src = "data:image2/jpeg;base64," + source2;
-                update_image();
+            
+            if(data.img2 !== null && data.img2 !== undefined){
+                image_data2 = JSON.parse(data.img2)
+                source2 = decode_utf8(image_data2.img)
+                if(source2.length > 10){
+                    image2.src = "data:image2/jpeg;base64," + source2;
+                    
+                }
             }
 
             var point = JSON.parse(data.pts);
@@ -50,15 +60,7 @@ export function draw (data){
 
 }
         
-    
-// For image object
-image1.onload = function(){
-    update_image();
-}
 
-image2.onload = function(){
-    update_image();
-}
 
 // Request Animation Frame to remove the flickers
 function update_image(){
@@ -100,8 +102,7 @@ function line_matching_image(matching)
 {
     let canvas = document.getElementById("gui_canvas"),
     context = canvas.getContext('2d');
-    canvas.height = 240;
-    canvas.width = 650;
+
 
     context.beginPath();
     context.moveTo(matching.x1, matching.y1);
