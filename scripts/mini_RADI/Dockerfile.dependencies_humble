@@ -185,9 +185,9 @@ RUN git clone -b v2.4.1 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tm
 # Create workspace and add drone packages
 RUN mkdir -p /home/drones_ws/src/
 RUN git clone https://github.com/pawanw17/aerostack2.git -b pawan/jde_aerostack /home/drones_ws/src/aerostack2
-RUN git clone https://github.com/aerostack2/as2_platform_pixhawk.git /home/drones_ws/src/aerostack2/as2_platform_pixhawk
-RUN git clone https://github.com/PX4/px4_msgs.git /home/drones_ws/src/px4_msgs
-RUN git clone https://github.com/PX4/px4_ros_com.git /home/drones_ws/src/px4_ros_com
+RUN git clone https://github.com/pawanw17/as2_platform_pixhawk.git /home/drones_ws/src/aerostack2/as2_platform_pixhawk
+RUN git clone https://github.com/pawanw17/px4_msgs.git /home/drones_ws/src/px4_msgs
+RUN git clone https://github.com/pawanw17/px4_ros_com.git /home/drones_ws/src/px4_ros_com
 
 # Compiling and sourcing the workspace
 WORKDIR /home/drones_ws/
