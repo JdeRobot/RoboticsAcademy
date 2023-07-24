@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
+import os
 import numpy as np
 
 
@@ -150,10 +151,12 @@ class GUI:
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui.log", "w")
+                f = open(f"{home_dir}/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
                 f.close()
                 logged = True
