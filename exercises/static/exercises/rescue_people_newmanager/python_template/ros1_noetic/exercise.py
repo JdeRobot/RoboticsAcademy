@@ -106,6 +106,8 @@ class Template:
                 return
             time.sleep(0.1)
         exec(sequential_code, reference_environment)
+        self.stop_brain = False
+        time.sleep(1)
 
         # Run the iterative part inside template
         # and keep the check for flag
@@ -313,9 +315,7 @@ class Template:
 
         elif (message[:5] == "#stop"):
             self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
+            
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
