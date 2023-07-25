@@ -101,12 +101,12 @@ class Template:
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        self.stop_brain = False
         while (self.stop_brain == True):
             if (self.reload == True):
                 return
             time.sleep(0.1)
         exec(sequential_code, reference_environment)
-        self.stop_brain = False
         time.sleep(1)
 
         # Run the iterative part inside template
