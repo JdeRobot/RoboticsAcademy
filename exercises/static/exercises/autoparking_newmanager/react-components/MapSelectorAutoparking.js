@@ -39,7 +39,7 @@ export default function MapSelector(props) {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state !== "connected") {
         setDisabled(false);
       } else {
         setDisabled(true);

@@ -39,7 +39,7 @@ export default function MapSelector(props) {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state !== "connected") {
         setDisabled(false);
       } else {
         setDisabled(true);
@@ -90,15 +90,15 @@ export default function MapSelector(props) {
       });
   }, []);
 
-  return (
-    <Box sx={{marginLeft: "20px"}}>
+  return circuitOptions.length > 0 ? (
+    <Box sx={{ marginLeft: "20px" }}>
       <FormControl>
         <InputLabel id={"circuit-selector-label"}>
           <LandscapeIcon></LandscapeIcon>
         </InputLabel>
         <Select
           disabled={disabled}
-          defaultValue={"default"}
+          defaultValue={"1"}
           labelId="circuit-selector-label"
           id={"circuit-selector"}
           label={"Circuit"}
@@ -106,13 +106,16 @@ export default function MapSelector(props) {
             handleCircuitChange(e.target.value);
           }}
         >
+          <MenuItem disabled value="1">
+            Select world
+          </MenuItem>
           {circuitOptions.map((option) => (
-            <MenuItem key={option.application.params.circuit} value={option}>
-              {option.application.params.circuit}
+            <MenuItem key={option.launch["0"].name} value={option}>
+              {option.launch["0"].name}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
     </Box>
-  );
+  ) : null;
 }
