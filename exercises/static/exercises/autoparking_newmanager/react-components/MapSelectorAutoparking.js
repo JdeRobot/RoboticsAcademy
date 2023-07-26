@@ -11,7 +11,7 @@ const exerciseConfig = JSON.parse(
 );
 const exerciseId = exerciseConfig.exercise_id;
 
-export default function MapSelector(props) {
+export default function MapSelectorAutoparking(props) {
   const changeConfig = (circuitPath) => {
     const config = JSON.parse(
       document.getElementById("exercise-config").textContent
@@ -39,7 +39,7 @@ export default function MapSelector(props) {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state !== "connected") {
         setDisabled(false);
       } else {
         setDisabled(true);
@@ -76,7 +76,8 @@ export default function MapSelector(props) {
           const config = data;
           // Selects the configs available for the ROS version installed          
           const availableConfigs = {};
-          if(ros_version === 2){
+          if(ros_version === "2"){
+            console.log('pepe')
             availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
             setCircuitOptions(availableConfigs[`ROS${ros_version}`]); 
           }
