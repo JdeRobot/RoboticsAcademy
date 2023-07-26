@@ -25,7 +25,7 @@ def check_device(device_path):
 def spawn_process(args, insert_vglrun=False):
     if insert_vglrun:
         args.insert(0, "vglrun")
-    process = Popen(args, stdout=PIPE, bufsize=1, universal_newlines=True)
+    process = Popen(args, stdout=PIPE, bufsize=1, universal_newlines=True, start_new_session=True)
     return process
 
 
