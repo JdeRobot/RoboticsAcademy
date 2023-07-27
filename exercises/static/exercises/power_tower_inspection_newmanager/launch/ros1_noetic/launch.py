@@ -8,7 +8,7 @@ from subprocess import Popen, PIPE
 
 # If DRI_NAME is not set by user, use card0
 DRI_PATH = os.path.join("/dev/dri", os.environ.get("DRI_NAME", "card0"))
-EXERCISE = "power_tower_inspection"
+EXERCISE = "power_tower_inspection_newmanager"
 TIMEOUT = 30
 MAX_ATTEMPT = 2
 
@@ -76,7 +76,7 @@ class Launch():
         ######## LAUNCH GAZEBO ########
         args = ["/opt/ros/noetic/bin/roslaunch",
                 "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/gazebo.launch",
+                EXERCISE + "/launch/ros1_noetic/gazebo.launch",
                 "--wait",
                 "--log"
                 ]
@@ -93,7 +93,7 @@ class Launch():
 
         ######## LAUNCH PX4 ########
         args = ["/opt/ros/noetic/bin/roslaunch",
-                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/launch/px4.launch",
+                "/RoboticsAcademy/exercises/static/exercises/" + EXERCISE + "/launch/ros1_noetic/px4.launch",
                 "--log"
                 ]
 
@@ -110,7 +110,7 @@ class Launch():
         ######## LAUNCH MAVROS ########
         args = ["/opt/ros/noetic/bin/roslaunch",
                 "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/mavros.launch",
+                EXERCISE + "/launch/ros1_noetic/mavros.launch",
                 "--log"
                 ]
 

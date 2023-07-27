@@ -96,6 +96,9 @@ class Template:
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
         exec(sequential_code, reference_environment)
 
+        time.sleep(1)
+        self.stop_brain = False
+
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
@@ -306,8 +309,7 @@ class Template:
         elif (message[:5] == "#stop"):
             self.stop_brain = True
 
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
+            
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
