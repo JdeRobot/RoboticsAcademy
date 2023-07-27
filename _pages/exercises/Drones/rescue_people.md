@@ -90,6 +90,14 @@ while True:
     # Enter iterative code!
 ```
 
+---
+### Code Loading Time
+
+Please note that the code executing process might take a few seconds.
+
+---
+
+
 ### Using the Interface
 
 * **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
