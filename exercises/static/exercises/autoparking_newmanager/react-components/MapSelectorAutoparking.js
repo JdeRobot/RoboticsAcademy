@@ -77,7 +77,6 @@ export default function MapSelectorAutoparking(props) {
           // Selects the configs available for the ROS version installed          
           const availableConfigs = {};
           if(ros_version === "2"){
-            console.log('pepe')
             availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
             setCircuitOptions(availableConfigs[`ROS${ros_version}`]); 
           }
