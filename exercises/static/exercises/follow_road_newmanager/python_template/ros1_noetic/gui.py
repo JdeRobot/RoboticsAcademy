@@ -5,7 +5,7 @@ import threading
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
-import logging
+import os
 
 
 # Graphical User Interface Class
@@ -16,7 +16,7 @@ class GUI:
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'image': ''}
-        self.left_payload = {'image': ''}
+        self.left_payload = {'image_left': ''}
         self.server = None
         self.client = None
         
@@ -81,7 +81,7 @@ class GUI:
         self.left_image_show_lock.release()
 
         image = left_image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {'image_left': '', 'shape': ''}
 
         if not left_image_to_be_shown_updated:
             return payload
@@ -90,7 +90,7 @@ class GUI:
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
+        payload['image_left'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
 
         self.left_image_show_lock.acquire()
@@ -143,9 +143,9 @@ class GUI:
 
         # Payload Left Image Message
         left_payload = self.payloadLeftImage()
-        self.left_payload["image"] = json.dumps(left_payload)
+        self.left_payload["image_left"] = json.dumps(left_payload)
 
-        message = "#gul" + json.dumps(self.left_payload)
+        message = "#gui" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
             
     # Function to read the message from websocket
@@ -155,17 +155,18 @@ class GUI:
         if message[:4] == "#ack":
             self.set_acknowledge(True)
 
-
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
 
+        home_dir = os.path.expanduser('~')
+
         logged = False
         while not logged:
             try:
-                f = open("/ws_gui.log", "w")
+                f = open(f"{home_dir}/ws_gui.log", "w")
                 f.write("websocket_gui=ready")
                 f.close()
                 logged = True
