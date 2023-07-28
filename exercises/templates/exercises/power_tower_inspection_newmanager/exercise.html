@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block react-content %}
-    {% react_component exercise/power_tower_inspection/PowerTowerInspection %}
+    {% react_component exercise/power_tower_inspection_newmanager/PowerTowerInspection %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
             {% react_component components/layout_components/MainAppBar exerciseName="Power Tower Inspection RR" %} 
           
@@ -19,6 +19,7 @@
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
+                        {% react_component exercise/power_tower_inspection_newmanager/SpecificPowerTowerInspection %} {% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
