@@ -122,7 +122,7 @@ function SpecificGlobalNavigation(props) {
         var data = destinationPicker(event)
         let coords = {"data" : data};
         try {
-          window.RoboticsExerciseComponents.commsManager.send("#pick", data)
+          window.RoboticsExerciseComponents.commsManager.send("#gui", {msg: "#pick", data: data})
         } catch (error) {
         }
         
