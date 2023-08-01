@@ -1,6 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { drawImage, drawLeftImage} from "./helpers/showImagesVisualLander";
+import { PlayCar } from "./PlayCar";
+import { StopCar } from "./StopCar";
+import { ResetCar } from "./ResetCar";
 
 
 function SpecificVisualLander(props) {
@@ -43,11 +46,18 @@ function SpecificVisualLander(props) {
 
 
   return (
+    <>      
+      <div style={{display: "flex", justifyContent: "center", gap: "10px"}}>
+        <PlayCar></PlayCar>
+        <StopCar></StopCar>
+        <ResetCar></ResetCar>
+      </div>
     <div style={{display: "flex",   width: "100%",
-    height: "100%"}}>
+    height: "100%"}}>      
       <canvas id="gui_canvas_left"></canvas>
       <canvas id="gui_canvas_right"></canvas>
     </div>
+    </>
   );
 }
 
