@@ -24,6 +24,7 @@ export default function MapSelectorFollow(props) {
   };
 
   const handleCircuitChange = (e) => {
+    setSelectedCircuit(e);
     const config = e;
     config['exercise_id'] = exerciseId;
     config.height = window.innerHeight / 2;
@@ -35,6 +36,8 @@ export default function MapSelectorFollow(props) {
 
   const [disabled, setDisabled] = useState(true);
   const [circuitOptions, setCircuitOptions] = useState([]);
+  const [selectedCircuit, setSelectedCircuit] = useState("");
+
 
   useEffect(() => {
     const callback = (message) => {
@@ -78,12 +81,14 @@ export default function MapSelectorFollow(props) {
           // Selects the configs available for the ROS version installed          
           const availableConfigs = {};
           availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
-          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);          
+          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);   
+          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);       
         })
         .catch((error) => {
           const availableConfigs = {};
           availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
           setCircuitOptions(availableConfigs[`ROS${ros_version}`]);
+          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
         })        
       })
       .catch((error) => {
@@ -91,7 +96,11 @@ export default function MapSelectorFollow(props) {
       });
   }, []);
 
+  
+
   return (
+
+    circuitOptions ? 
     <Box sx={{marginLeft: "20px"}}>
       <FormControl>
         <InputLabel id={"circuit-selector-label"}>
@@ -99,15 +108,15 @@ export default function MapSelectorFollow(props) {
         </InputLabel>
         <Select
           disabled={disabled}
-          defaultValue={"1"}
+          value={selectedCircuit}
           labelId="circuit-selector-label"
           id={"circuit-selector"}
           label={"Circuit"}
           onChange={(e) => {
+            setSelectedCircuit(e.target.value);
             handleCircuitChange(e.target.value);
           }}
         >
-          <MenuItem disabled value="1">Select world</MenuItem>
           {circuitOptions.map((option) => (
             <MenuItem key={option.launch["0"].name} value={option}>
               {option.launch["0"].name}
@@ -115,6 +124,6 @@ export default function MapSelectorFollow(props) {
           ))}
         </Select>
       </FormControl>
-    </Box>
+    </Box> : null
   );
 }
