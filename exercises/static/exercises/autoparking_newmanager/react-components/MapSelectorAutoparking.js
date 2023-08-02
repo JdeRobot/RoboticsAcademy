@@ -24,6 +24,7 @@ export default function MapSelectorAutoparking(props) {
   };
 
   const handleCircuitChange = (e) => {
+    setSelectedCircuit(e);
     const config = e;
     console.log(JSON.stringify(config));
     config['exercise_id'] = exerciseId;
@@ -36,6 +37,7 @@ export default function MapSelectorAutoparking(props) {
 
   const [disabled, setDisabled] = useState(true);
   const [circuitOptions, setCircuitOptions] = useState([]);
+  const [selectedCircuit, setSelectedCircuit] = useState("");
 
   useEffect(() => {
     const callback = (message) => {
@@ -79,6 +81,7 @@ export default function MapSelectorAutoparking(props) {
           if(ros_version === "2"){
             availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
             setCircuitOptions(availableConfigs[`ROS${ros_version}`]); 
+            setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
           }
                    
         })
@@ -86,6 +89,7 @@ export default function MapSelectorAutoparking(props) {
           const availableConfigs = {};
           availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
           setCircuitOptions(availableConfigs[`ROS${ros_version}`]);
+          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
         })        
       })
       .catch((error) => {
@@ -101,11 +105,12 @@ export default function MapSelectorAutoparking(props) {
         </InputLabel>
         <Select
           disabled={disabled}
-          defaultValue={"1"}
+          value={selectedCircuit}
           labelId="circuit-selector-label"
           id={"circuit-selector"}
           label={"Circuit"}
           onChange={(e) => {
+            setSelectedCircuit(e.target.value);
             handleCircuitChange(e.target.value);
           }}
         >
