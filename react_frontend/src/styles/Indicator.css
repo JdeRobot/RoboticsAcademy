@@ -1,0 +1,42 @@
+.ready {
+  color: white;
+  background-color: #4caf50;
+  box-shadow: 0px 2px 3px -1px rgba(0, 0, 0, 0.2),
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  padding: 6px 16px;
+  font-size: 0.7rem;
+  min-width: 64px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  line-height: 1.75;
+  font-weight: 500;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+}
+
+.waiting {
+  color: white;
+  background-color: #f57f51;
+  box-shadow: 0px 2px 3px -1px rgba(0, 0, 0, 0.2),
+    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  padding: 6px 16px;
+  font-size: 0.7rem;
+  min-width: 64px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  line-height: 1.75;
+  font-weight: 500;
+  border-radius: 4px;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+}
+
+.word {
+  display: block;
+  margin: 0; /* Esto elimina cualquier margen */
+  padding: 0; /* Esto elimina cualquier relleno */
+  line-height: 1; /* Esto reduce el espacio entre líneas */
+}

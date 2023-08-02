@@ -9,6 +9,7 @@ import { ConnectionIndicator } from "Components/visualizers/ConnectionIndicator"
 import { LaunchIndicator } from "Components/visualizers/LaunchIndicator";
 import { useUnload } from "Hooks/useUnload";
 import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
+import { ApplicationIndicator } from "../visualizers/ApplicationIndicator";
 
 function MainAppBar(props) {
   const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
@@ -137,6 +138,7 @@ function MainAppBar(props) {
             >
               <ConnectionIndicator></ConnectionIndicator>
               <LaunchIndicator></LaunchIndicator>
+              <ApplicationIndicator></ApplicationIndicator>
               {props.children}
             </Box>
           </Box>
