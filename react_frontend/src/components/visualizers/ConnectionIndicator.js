@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
-import Brightness1Icon from "@mui/icons-material/Brightness1";
+import "../../styles/Indicator.css";
 
 export const ConnectionIndicator = () => {
   const [connected, setConnected] = useState(false);
@@ -26,24 +25,9 @@ export const ConnectionIndicator = () => {
   }, []);
 
   return (
-    <>
-      <Typography>Connected</Typography>
-      {connected ? (
-        <Box
-          sx={{
-            display: "flex",
-            gap: "5px",
-            alignItems: "center",
-          }}
-        >
-          <Brightness1Icon
-            color={!connected ? "loading" : "success"}
-            fontSize={"small"}
-          ></Brightness1Icon>
-        </Box>
-      ) : (
-        <CircularProgress color="loading" size={20} />
-      )}
-    </>
+    <div className={connected ? "ready" : "waiting"}>
+      <span className="word">Robotics</span>
+      <span className="word">Backend</span>
+    </div>
   );
 };
