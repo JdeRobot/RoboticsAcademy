@@ -11,6 +11,7 @@ from datetime import datetime
 import re
 import json
 import importlib
+
 import os
 
 import rospy
@@ -100,11 +101,13 @@ class Template:
         # Run the sequential part
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        self.stop_brain = False
         while (self.stop_brain == True):
             if (self.reload == True):
                 return
             time.sleep(0.1)
         exec(sequential_code, reference_environment)
+        time.sleep(1)
 
         # Run the iterative part inside template
         # and keep the check for flag
@@ -162,8 +165,6 @@ class Template:
         hal_module.HAL.set_cmd_mix = self.hal.set_cmd_mix
         hal_module.HAL.takeoff = self.hal.takeoff
         hal_module.HAL.land = self.hal.land
-        hal_module.HAL.init_beacons = self.hal.init_beacons
-        hal_module.HAL.get_next_beacon = self.hal.get_next_beacon
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
@@ -294,7 +295,6 @@ class Template:
             time.sleep(1)
             self.send_ping_message()
             return
-
         elif (message[:5] == "#code"):
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
@@ -304,7 +304,7 @@ class Template:
                 self.execute_thread(self.user_code)
             except:
                 pass
-        
+    
         elif (message[:5] == "#rest"):
             try:
                 self.reload = True
@@ -315,9 +315,7 @@ class Template:
 
         elif (message[:5] == "#stop"):
             self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
+            
 
     # Function that gets called when the server is connected
     def connected(self, client, server):
@@ -345,9 +343,9 @@ class Template:
         self.server.set_fn_new_client(self.connected)
         self.server.set_fn_client_left(self.handle_close)
         self.server.set_fn_message_received(self.handle)
-
+        
         home_dir = os.path.expanduser('~')
-
+        
         logged = False
         while not logged:
             try:
