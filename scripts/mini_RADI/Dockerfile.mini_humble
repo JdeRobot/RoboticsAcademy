@@ -9,8 +9,7 @@ RUN mkdir -p /opt/jderobot && \
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
-RUN cp -r /opt/jderobot/CustomRobots /home/ws/src/
-RUN mv /opt/jderobot/jderobot_drones /home/ws/src/
+RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
