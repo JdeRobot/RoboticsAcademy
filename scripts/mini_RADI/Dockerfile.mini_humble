@@ -14,7 +14,7 @@ RUN mv /opt/jderobot/jderobot_drones /home/ws/src/
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
-RUN rosdep install --from-paths src --ignore-src -r --rosdistro humble -y
+RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 RUN echo 'source /home/ws/install/setup.bash' >> ~/.bashrc
 
