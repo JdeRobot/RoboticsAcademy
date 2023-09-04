@@ -64,10 +64,6 @@ RUN sudo rosdep fix-permissions \
   && apt-get update && apt-get install -q -y \
     ros-${ROS_DISTRO}-gazebo* \
     ros-${ROS_DISTRO}-ros-gz-* \
-    gstreamer1.0-plugins-bad \
-    gstreamer1.0-plugins-good \
-    gstreamer1.0-plugins-ugly \
-    gstreamer1.0-libav \
     libgstreamer-plugins-base1.0-dev \
     libimage-exiftool-perl \
   && apt-get -y autoremove \
@@ -155,7 +151,7 @@ RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4
     django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
 
 # PX4 pip installs 
-RUN python3.10 -m pip install jsonschema==4.18.0 pymavlink==2.4.39 pyserial==3.5
+RUN python3.10 -m pip install jsonschema==4.18.0
 
 # PX4 Dependencies
 RUN apt-get update && apt-get install -y \
