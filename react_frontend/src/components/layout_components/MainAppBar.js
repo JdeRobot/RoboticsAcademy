@@ -144,7 +144,9 @@ function MainAppBar(props) {
           </Box>
           <Typography variant="h5">{props.exerciseName}</Typography>
           <Box>
-            <ExerciseTheoryForumButton></ExerciseTheoryForumButton>
+            <ExerciseTheoryForumButton
+              url={props.url}
+            ></ExerciseTheoryForumButton>
           </Box>
         </Toolbar>
       </AppBar>
