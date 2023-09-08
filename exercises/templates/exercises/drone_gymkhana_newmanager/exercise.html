@@ -7,7 +7,7 @@
 {% block react-content %}
     {% react_component exercise/drone_hangar_gymkhana/DroneGymkhana %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Drone Gymkhana" %} 
+            {% react_component components/layout_components/MainAppBar exerciseName="Drone Gymkhana" url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana" %} 
           
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
@@ -24,8 +24,6 @@
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-{% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana" %}{% end_react_component %}
-{% react_component components/views/ForumView %}{% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
 {% end_react_component %}
