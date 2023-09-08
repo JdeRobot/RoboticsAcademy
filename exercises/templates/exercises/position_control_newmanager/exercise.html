@@ -7,7 +7,7 @@
 {% block react-content %}
     {% react_component exercise/position_control_newmanager/PositionControl %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Position Control" %} 
+            {% react_component components/layout_components/MainAppBar exerciseName="Position Control" url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control" %} 
           
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
@@ -24,8 +24,6 @@
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-{% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/position_control" %}{% end_react_component %}
-{% react_component components/views/ForumView %}{% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
 {% end_react_component %}
