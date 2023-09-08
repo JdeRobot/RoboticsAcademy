@@ -18,7 +18,7 @@
     {% react_component exercise/3d_reconstruction_newmanager/Reconstruction3DRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="3D Recontruction" %} 
+            {% react_component components/layout_components/MainAppBar exerciseName="3D Recontruction" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction" %} 
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
@@ -34,8 +34,6 @@
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-{% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction" %}{% end_react_component %}
-{% react_component components/views/ForumView %}{% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
 {% end_react_component %}
