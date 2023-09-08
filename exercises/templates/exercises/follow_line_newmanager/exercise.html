@@ -8,7 +8,7 @@
     {% react_component exercise/follow_line_newmanager/FollowLineRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Follow Line" %} 
+            {% react_component components/layout_components/MainAppBar exerciseName="Follow Line" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/"%} 
             {% react_component exercise/follow_line_newmanager/MapSelectorFollow %} {% end_react_component %} 
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
@@ -25,8 +25,6 @@
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-{% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
-{% react_component components/views/ForumView %}{% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
 {% end_react_component %}
