@@ -28,6 +28,7 @@ def get_python_code(request):
     python_code = python_code.replace('\\"', '"').replace("\\'", "'")
     return python_code
 
+@csrf_exempt
 def ros_version(request):    
     output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
     output_str = output.decode('utf-8')
@@ -35,6 +36,7 @@ def ros_version(request):
     data = {'version': version}
     return JsonResponse(data)
 
+@csrf_exempt
 def launch_files(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
     data = json.loads(exercise.configuration)
