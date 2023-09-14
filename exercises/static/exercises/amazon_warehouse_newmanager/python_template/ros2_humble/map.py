@@ -28,23 +28,25 @@ class Map:
 		
 	def getRobotCoordinates(self):
 		pose = self.pose3d.getPose3d()
+
 		x = pose.x
 		y = pose.y
-		
-		scale_y = 15; offset_y = 63
-		y = scale_y * y + offset_y
-		
-		scale_x = -30; offset_x = 171
-		x = scale_x * x + offset_x
-		
-		return x, y
 
+		x = (6.8 - x) * 20.22 * 0.545
+		y = (10.31 - y) * 20.17 * 0.72
+		# print(" - Coordinate: " + str(x) + ", " + str(y))
+
+		return y, x
+	
 	def getRobotAngle(self):
 		pose = self.pose3d.getPose3d()
 		rt = pose.yaw
 
 		ty = math.cos(-rt) - math.sin(-rt)
 		tx = math.sin(-rt) + math.cos(-rt)
+
+		# print(" - Angle: " + str(tx) + ", " + str(ty))
+		# print(" -> rt: " + str(rt))
 
 		return tx, ty
 

@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block react-content %}
-    {% react_component exercise/amazon_warehouse/AmazonWarehouseRR %}
+    {% react_component exercise/amazon_warehouse_newmanager/AmazonWarehouseRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Amazon Warehouse" %}
-            {% react_component exercise/amazon_warehouse/MapSelector %} {% end_react_component %}   
+            {% react_component components/layout_components/MainAppBar exerciseName="Amazon Warehouse RR" %}
+            {% react_component exercise/amazon_warehouse_newmanager/MapSelector %} {% end_react_component %}   
             {% end_react_component %}  
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
@@ -20,13 +20,11 @@
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                            {% react_component exercise/amazon_warehouse/SpecificAmazonWarehouse %}{% end_react_component %}
+                            {% react_component exercise/amazon_warehouse_newmanager/SpecificAmazonWarehouse %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
-{% react_component components/views/TheoryView url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/" %}{% end_react_component %}
-{% react_component components/views/ForumView %}{% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
 {% end_react_component %}

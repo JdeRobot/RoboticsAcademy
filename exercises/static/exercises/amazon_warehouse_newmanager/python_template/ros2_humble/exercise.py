@@ -13,11 +13,9 @@ import json
 import importlib
 import os
 
+from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
-
-from shared.value import SharedValue
-from user_functions import GUIFunctions
 
 class Template:
     # Initialize class variables
@@ -38,17 +36,14 @@ class Template:
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
 
-        # GUI variables
-        self.gui_time_cycle = SharedValue('gui_time_cycle')
-        self.gui_ideal_cycle = SharedValue('gui_ideal_cycle')
-
         # EXERCISE websocket
         self.server = None
         self.client = None
         self.host = sys.argv[1]
 
-        self.hal = None # dont start HAL until exercise is connected
-        self.gui = GUIFunctions()
+        # Initialize the GUI, HAL and Console behind the scenes
+        self.hal = HAL()
+        self.gui = GUI(self.host, self.hal)
         
     ################ --- BRAIN --- ################
 
@@ -125,7 +120,6 @@ class Template:
         hal_module.HAL.setW = self.hal.setW
         hal_module.HAL.laser = self.hal.laser
         hal_module.HAL.getLaserData = self.hal.getLaserData
-        hal_module.HAL.getImage = self.hal.getImage
         hal_module.HAL.load = self.hal.load
         hal_module.HAL.unload = self.hal.unload
 
@@ -136,8 +130,7 @@ class Template:
             importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
-        gui_module.GUI.showImage = self.gui.showImage
-        # gui_module.GUI.showNumpy = self.gui.showNumpy
+        gui_module.GUI.showPath = self.gui.showPath
 
         # Adding modules to system
         # Protip: The names should be different from
@@ -257,7 +250,7 @@ class Template:
             brain_frequency = 0
 
         try:
-            gui_frequency = round(1000 / self.gui_ideal_cycle.get(), 1)
+            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
         except ZeroDivisionError:
             gui_frequency = 0
 
@@ -317,7 +310,7 @@ class Template:
 
         # Set gui frequency
         frequency = float(frequency_message["gui"])
-        self.gui_time_cycle.add(1000.0 / frequency)
+        self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
 
@@ -364,11 +357,9 @@ class Template:
     # Function that gets called when the server is connected
     def connected(self, client, server):
         self.client = client
-
-        # Start the HAL update thread
-        message ="#strt" +json.dumps("Starting HAL thread")
-        self.server.send_message(self.client, message)
-        self.hal = HAL()
+        # Start the GUI update thread
+        self.thread_gui = ThreadGUI(self.gui)
+        self.thread_gui.start()
 
         # Start the real time factor tracker thread
         self.stats_thread = threading.Thread(target=self.track_stats)
@@ -377,9 +368,6 @@ class Template:
         # Start measure frequency
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.measure_thread.start()
-
-        # Initialize the ping message
-        self.send_frequency_message()
 
         print(client, 'connected')
 

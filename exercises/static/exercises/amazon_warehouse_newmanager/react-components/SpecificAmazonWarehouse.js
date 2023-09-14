@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw } from "Helpers/BirdEye";
+import { clearPath, draw, drawTargetPosition, generatePath } from "./helpers/bird_eye_amazon_warehouse";
 
 function SpecificAmazonWarehouse(props) {
   const guiCanvasRef = React.useRef();
@@ -8,8 +8,7 @@ function SpecificAmazonWarehouse(props) {
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
-    const callback = (message) => {
-      const data = message.data.update;
+    const displayRobot = (data) => {
       if (data.map) {
         const pose = data.map.substring(1, data.map.length - 1);
         const content = pose.split(",").map(function (item) {
@@ -23,6 +22,18 @@ function SpecificAmazonWarehouse(props) {
           content[3]
         );
       }
+    };
+
+    const displayPath = (data) => {
+      if(data.array){
+        generatePath(JSON.parse(data.array), guiCanvasRef.current)
+      }
+    };
+
+    const callback = (message) => {
+      const data = message.data.update;
+      displayRobot(data)
+      displayPath(data)
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -44,7 +55,7 @@ function SpecificAmazonWarehouse(props) {
       ref={guiCanvasRef}
       style={{
         backgroundImage:
-          "url('/static/exercises/amazon_warehouse/resources/images/map.png')",
+          "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')",
         border: "2px solid #d3d3d3",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
