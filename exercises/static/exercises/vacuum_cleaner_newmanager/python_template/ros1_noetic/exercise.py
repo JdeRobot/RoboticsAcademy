@@ -29,7 +29,7 @@ class Template:
         self.measure_thread = None
         self.thread = None
         self.reload = False
-        self.stop_brain = False
+        self.stop_brain = True
         self.user_code = ""
 
         # Time variables

@@ -1,0 +1,44 @@
+{% extends "react_frontend/exercise_base.html" %}
+{% load react_component %}
+{% load static %}
+
+{% block exercise_header %}
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/three.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/OrbitControls.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/OBJLoader.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/ColladaLoader.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/3d_scene.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/3DViz.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/pose3d.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
+<script> window.onload = function() {webGLStart();}</script>
+{% endblock %}
+
+{% block react-content %}
+    {% react_component exercise/3d_reconstruction_newmanager/Reconstruction3DRR %}
+
+        {% react_component components/wrappers/MaterialBox id="exercise-container" %}
+            {% react_component components/layout_components/MainAppBar exerciseName="3D Recontruction" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction" %} 
+            {% end_react_component %}  
+            {% react_component components/wrappers/MaterialBox id="content" %}
+                {% react_component components/wrappers/MaterialBox id="content-exercise" %}
+                    {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                    {% react_component components/wrappers/FlexContainer row %}
+                    {% react_component components/wrappers/FlexContainer console %} 
+                        {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
+                        {% end_react_component%}
+                        {% react_component components/wrappers/FlexContainer%} 
+						{% react_component exercise/3d_reconstruction_newmanager/SpecificReconstruction3D%}{% end_react_component %}
+                            {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
+                        {% end_react_component %}
+                {% end_react_component %}
+            {% end_react_component %}
+        {% react_component components/message_system/Loading %}{% end_react_component %}
+        {% react_component components/message_system/Alert %}{% end_react_component %}
+{% end_react_component %}
+{% end_react_component %}
+    {% end_react_component %}
+{% endblock %}
+
+

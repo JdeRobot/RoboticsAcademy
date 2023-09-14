@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import Brightness1Icon from "@mui/icons-material/Brightness1";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import "../../styles/Indicator.css";
 
 export const LaunchIndicator = () => {
   const [connected, setConnected] = useState(false);
@@ -32,19 +31,9 @@ export const LaunchIndicator = () => {
   }, []);
 
   return (
-    <>
-      {" "}
-      <Typography>Ready</Typography>
-      {connected ? (
-        <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
-          <Brightness1Icon
-            color={"success"}
-            fontSize={"small"}
-          ></Brightness1Icon>
-        </Box>
-      ) : (
-        <CircularProgress color="loading" size={20} />
-      )}
-    </>
+    <div className={connected ? "ready" : "waiting"}>
+      <span className="word">World</span>
+      <span className="word">Launched</span>
+    </div>
   );
 };

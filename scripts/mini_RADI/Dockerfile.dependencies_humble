@@ -64,10 +64,13 @@ RUN sudo rosdep fix-permissions \
   && apt-get update && apt-get install -q -y \
     ros-${ROS_DISTRO}-gazebo* \
     ros-${ROS_DISTRO}-ros-gz-* \
+    libgstreamer-plugins-base1.0-dev \
+    libimage-exiftool-perl \
   && apt-get -y autoremove \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
+RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -87,8 +90,8 @@ RUN wget https://xpra.org/xorg.conf \
   && rm -rf /tmp/*
 
 # Install noVNC and websockify
-RUN git clone https://github.com/novnc/noVNC.git
-RUN cd /noVNC/utils && git clone https://github.com/novnc/websockify.git
+RUN git clone -b v1.4.0 https://github.com/novnc/noVNC.git
+RUN cd /noVNC/utils && git clone -b v0.11.0 https://github.com/novnc/websockify.git
 
 # VirtualGL and TurboVNC
 COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
@@ -113,6 +116,11 @@ RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtual
   && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+  apt-get install -y lxde-common && \
+  rm -rf /var/lib/apt/lists/*
+
+
 # RUN echo -e "no-remote-connections\n\
 # no-httpd\n\
 # no-x11-tcp-connections\n\
@@ -125,7 +133,6 @@ ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - \
   && apt-get install -y nodejs \
-  && curl -L https://www.npmjs.com/install.sh | sh \
   && npm install -g yarn
 
 # Install Python 3 pip build dependencies first
@@ -133,11 +140,54 @@ RUN python3.10 -m pip install --upgrade pip wheel setuptools
 
 # pip install dependencies
 RUN python3.10 -m pip install \
-    pylint transitions pydantic websocket-client \
-    argparse coverage cerberus empy jinja2 kconfiglib \
-    matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-    pyyaml requests serial six toml psutil onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
+    pylint==2.17.4 transitions==0.9.0 pydantic==1.10.8 websocket-client==1.5.2 \
+    argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
+    matplotlib==3.0.* numpy==1.24.3 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
+    pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
+    onnxruntime==1.15.0 Pillow==9.0.1 opencv-python==4.5.5.64 netron seaborn==0.11.2
 
 # websocket server dependency
-RUN python3.10 -m pip install websocket_server posix-ipc django==4.1.7 djangorestframework==3.13.1 \
-    django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets asyncio
+RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
+    django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
+
+# PX4 pip installs 
+RUN python3.10 -m pip install jsonschema==4.18.0
+
+# PX4 Dependencies
+RUN apt-get update && apt-get install -y \
+    astyle \
+    gdb \
+    lcov \
+    libfuse2 \
+    ninja-build \
+    rsync \
+    shellcheck \
+  && rm -rf /var/lib/apt/lists/* 
+
+# Install PX4
+RUN git clone -b v1.14.0-beta2 https://github.com/PX4/PX4-Autopilot.git --recursive \
+  && cd /PX4-Autopilot \
+  && DONT_RUN=1 make px4_sitl gazebo
+RUN echo 'export PX4_FOLDER=/PX4-Autopilot' >> ~/.bashrc
+
+RUN git clone -b v2.4.1 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tmp/MicroXRCEAgent \
+  && cd /tmp/MicroXRCEAgent \
+  && mkdir build && cd build \
+  && cmake .. \
+  && make -j $(nproc) \
+  && make install \
+  && ldconfig /usr/local/lib/ \
+  && rm -rf /tmp/*
+
+# Create workspace and add drone packages
+RUN mkdir -p /home/drones_ws/src/
+RUN git clone https://github.com/pawanw17/aerostack2.git -b pawan/jde_aerostack /home/drones_ws/src/aerostack2
+RUN git clone https://github.com/pawanw17/as2_platform_pixhawk.git /home/drones_ws/src/aerostack2/as2_platform_pixhawk
+RUN git clone https://github.com/pawanw17/px4_msgs.git /home/drones_ws/src/px4_msgs
+RUN git clone https://github.com/pawanw17/px4_ros_com.git /home/drones_ws/src/px4_ros_com
+
+# Compiling and sourcing the workspace
+WORKDIR /home/drones_ws/
+RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO}
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
+RUN echo 'source /home/drones_ws/install/setup.bash' >> ~/.bashrc
