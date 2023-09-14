@@ -38,18 +38,18 @@ function MainAppBar(props) {
   const connectWithRetry = () => {
     if (connectionAttempts >= maxConnectionAttempts) {
       RoboticsReactComponents.MessageSystem.Alert.showAlert(
-        "Error conectando, prueba a recargar la página",
+        "Error connecting, try reloading the page.",
         () => {
           console.log("Reloading");
           window.location.reload();
         },
-        "RECARGAR"
+        "RELOAD"
       );
       return;
     }
 
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
-      "Conectando y lanzando el ejercicio"
+      "Connecting and launching the exercise."
     );
 
     fetchRosVersion();
@@ -79,7 +79,7 @@ function MainAppBar(props) {
           .then(() => {
             RoboticsReactComponents.MessageSystem.Loading.hideLoading();
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              "Ejercicio cargado correctamente"
+              "Exercise loaded successfully."
             );
           })
           .catch((e) => {
