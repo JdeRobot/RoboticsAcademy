@@ -191,3 +191,9 @@ WORKDIR /home/drones_ws/
 RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO}
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 RUN echo 'source /home/drones_ws/install/setup.bash' >> ~/.bashrc
+
+# Download and install OMPL library
+COPY install-ompl-ubuntu.sh /
+WORKDIR /
+RUN chmod u+x install-ompl-ubuntu.sh
+RUN ./install-ompl-ubuntu.sh --python
