@@ -39,7 +39,7 @@ RUN mkdir /RoboticsAcademy/src && mv /RoboticsApplicationManager/* /RoboticsAcad
 RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
 
 # Django server
-EXPOSE 8000
+EXPOSE 7164
 
 # Manager websocket
 EXPOSE 7163

@@ -61,10 +61,10 @@ ssh root@172.17.0.2
 ### container creation
 ```commandline
 # creating container 
-docker create -it --name test-ram -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7163:7163 -p 2022:22 jderobot/robotics-academy:new-ram-v0.2
+docker create -it --name test-ram -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7163:7163 -p 2022:22 jderobot/robotics-academy:new-ram-v0.2
 
 # same but including local development folder as container one, to cross-develop inside container 
-docker create -it --name test-ram -v /home/dmariaa/Desarrollo/unibotics/RoboticsAcademy:/RoboticsAcademy -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7163:7163 -p 2022:22 jderobot/robotics-academy:new-ram-v0.2
+docker create -it --name test-ram -v /home/dmariaa/Desarrollo/unibotics/RoboticsAcademy:/RoboticsAcademy -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7163:7163 -p 2022:22 jderobot/robotics-academy:new-ram-v0.2
 ```
 
 ### starting container
