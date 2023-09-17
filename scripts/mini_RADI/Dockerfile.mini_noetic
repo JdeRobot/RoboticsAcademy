@@ -68,7 +68,7 @@ CMD ["/usr/sbin/sshd","-D"]
 EXPOSE 22
 
 # Django server
-EXPOSE 8000
+EXPOSE 7164
 
 # Manager websocket
 EXPOSE 8765

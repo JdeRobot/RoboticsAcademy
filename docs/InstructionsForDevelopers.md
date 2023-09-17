@@ -62,7 +62,7 @@ To include a new exercise, add the folder with the exercise contents in exercise
 
 Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
 1)  Run ```python3.8 manage.py runserver```.
-2)  Access http://127.0.0.1:8000/admin/ on a browser and log in with "user" and "pass".
+2)  Access http://127.0.0.1:7164/admin/ on a browser and log in with "user" and "pass".
 3)  Click on "add exercise" and fill the required fields specified below. Save and exit.
 4)  Commit db.sqlite3 changes.
 
@@ -247,7 +247,7 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
 
 2. On Terminal open the directory where your project or code is located at (Example:- ```cd ~/my_project```)
 
-3. Append ```-v $(pwd):/location_in_radi``` to your ```docker run``` cli command used to run your container. (Example:- ```docker run --rm -it -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -v $(pwd):/home jderobot/robotics-academy```)
+3. Append ```-v $(pwd):/location_in_radi``` to your ```docker run``` cli command used to run your container. (Example:- ```docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -v $(pwd):/home jderobot/robotics-academy```)
 
 4. This will import your local directory inside the docker container, if you have used the example command like above where the location the command is being run is mounted to the home folder inside the docker container you will simply be able to see all the local mounted directories inside the /home of the RADI.
 

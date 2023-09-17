@@ -73,7 +73,7 @@ function getCode(user){
 	if (server !== '127.0.0.1'){
 		path = window.location.protocol+'//'+server+'/academy/exercise/request/'+exercise_id+'?user='+user;
 	}else{
-		path = window.location.protocol+'//'+"127.0.0.1:8000"+'/academy/exercise/request/'+exercise_id+'?user='+user;
+		path = window.location.protocol+'//'+"127.0.0.1:7164"+'/academy/exercise/request/'+exercise_id+'?user='+user;
 	}
 
 	console.log('PATH: ' ,path);
