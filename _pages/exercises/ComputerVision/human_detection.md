@@ -47,10 +47,10 @@ The user is expected to upload a Deep Learning model which fits the required inp
 git clone https://github.com/JdeRobot/RoboticsAcademy.git -b master
 cd scripts
 docker build -t image-name .
-docker run -it --name=container_name -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy
+docker run -it --name=container_name -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-academy
 ```  
 
-- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 - Click the connect button and wait for some time until an alert appears with the message Connection Established and button displays connected.
 - The exercise can be used after the alert.
 - It is necessary to map the port where the camera is located to the docker container.
