@@ -98,7 +98,7 @@ To use the real *TurtleBot2* we have to follow this steps:
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 --device /dev/dri -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
   ```
 
 
@@ -108,10 +108,10 @@ To use the real *TurtleBot2* we have to follow this steps:
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 -p 8000:8000 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
   ```
 
-- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
 - The exercise can be used after both Connected and Ready turn green.
 

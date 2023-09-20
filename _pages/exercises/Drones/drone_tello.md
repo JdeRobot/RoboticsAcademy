@@ -47,7 +47,7 @@ This is the preferred way for running the exercise.
   docker run --name $name $device -e DRI_NAME=$device_name -v $route:/home/shared_dir --rm -it -p 8889:8889/udp -p 38065:38065/udp -p 8890:8890/udp -p 11111:11111/udp -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy
   ```
 
-- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
 - Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
 

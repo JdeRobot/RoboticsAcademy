@@ -107,7 +107,7 @@ docker pull jderobot/robotics-academy:latest
   docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:latest
   ```
 
-- On the local machine navigate to 127.0.0.1:8000/ in the browser and choose the desired exercise.
+- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
 - The exercise can be used after both *Connected* and *Ready* turn green. 
 
