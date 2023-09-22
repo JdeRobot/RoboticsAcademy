@@ -12,6 +12,14 @@ StatusChoice = (
     ('PROTOTYPE', "PROTOTYPE")
 )
 
+VisualizationType = (
+    ('none', "None"),
+    ('console', "Console"),
+    ('gazebo_gra', "Gazebo GRA"),
+    ('gazebo_rae', "Gazebo RAE"),
+    ('physic_gra', "Physic GRA"),
+    ('physic_rae', "Physic RAE")
+)
 
 # Create your models here.
 
@@ -35,6 +43,11 @@ class Exercise(models.Model):
         choices=StatusChoice,
         default="ACTIVE"
     )
+    visualization = models.CharField(
+        max_length=20,
+        choices=VisualizationType,
+        default="none"
+    )
     configuration = models.TextField(default=json.dumps({}))
 
     def __str__(self):
@@ -50,6 +63,7 @@ class Exercise(models.Model):
         # extend exercise configuration with some useful stuff
         # TODO: Review if there's a better way
         exercise_configuration["exercise_id"] = self.exercise_id
+        exercise_configuration["visualization"] = self.visualization
 
         # compatibility code for old assets field
         # TODO: Remove if not needed
