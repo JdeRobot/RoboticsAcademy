@@ -8,6 +8,7 @@ ROS_DISTRO="noetic"
 IMAGE_TAG="test"
 FORCE_BUILD=false
 
+
 Help()
 {
    # Display Help
@@ -104,4 +105,5 @@ docker build --no-cache -f $DOCKERFILE \
   --build-arg ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE \
   --build-arg RAM=$RAM \
   --build-arg ROS_DISTRO=$ROS_DISTRO \
+  --build-arg IMAGE_TAG=$IMAGE_TAG \
   -t jderobot/robotics-academy:$IMAGE_TAG .

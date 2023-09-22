@@ -1,5 +1,9 @@
 FROM jderobot/robotics-applications:dependencies-noetic
 
+ARG IMAGE_TAG
+ENV IMAGE_TAG=${IMAGE_TAG}
+
+
 # Robotics Infrastructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 RUN echo $ROBOTICS_INFRASTRUCTURE 
@@ -65,6 +69,7 @@ RUN echo 'root:password' | chpasswd
 RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 CMD ["/usr/sbin/sshd","-D"]
+
 EXPOSE 22
 
 # Django server
