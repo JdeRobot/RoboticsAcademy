@@ -28,6 +28,7 @@ export default function MapSelectorAutoparking(props) {
     const config = e;
     console.log(JSON.stringify(config));
     config['exercise_id'] = exerciseId;
+    config["visualization"] = "gazebo_rae";
     config.height = window.innerHeight / 2;
     config.width = window.innerWidth / 2;         
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {

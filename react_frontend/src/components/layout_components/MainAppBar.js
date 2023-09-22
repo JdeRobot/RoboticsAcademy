@@ -74,6 +74,7 @@ function MainAppBar(props) {
           selectedConfig = config;
         }
         selectedConfig["exercise_id"] = config["exercise_id"];
+        selectedConfig["visualization"] = config["visualization"];
         window.RoboticsExerciseComponents.commsManager
           .launch(selectedConfig)
           .then(() => {
