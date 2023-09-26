@@ -43,12 +43,5 @@
 		  	<background>0.7 0.7 0.7 1</background>
 		  	<shadows>1</shadows>
 		</scene>
-    
-		<gui fullscreen='0'>
-		  <camera name='user_camera'>
-		    <pose>-6.56 1.12 9.13 0.00 1.16 -0.01</pose>
-		    <view_controller>orbit</view_controller>
-		  </camera>
-		</gui>
   </world>
 </sdf>
