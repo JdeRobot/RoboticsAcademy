@@ -3,7 +3,7 @@
 	<world name='Vacuum Cleaner'>
 		<gui fullscreen='1'>
 			<camera name='user_camera'>
-				<pose frame=''>-3.83 1.40 8.37 0.00 1.16 -0.01</pose>
+				<pose frame=''>0.34 5.72 13.83 0.00 1.41 -1.58</pose>
 				<view_controller>orbit</view_controller>
 				<projection_type>perspective</projection_type>
 			</camera>
@@ -42,12 +42,5 @@
 		  	<background>0.7 0.7 0.7 1</background>
 		  	<shadows>1</shadows>
 		</scene>
-    
-		<gui fullscreen='0'>
-		  <camera name='user_camera'>
-		    <pose>0.126197 6.13852 18.8314 0 1.08764 -2.14299</pose>
-		    <view_controller>orbit</view_controller>
-		  </camera>
-		</gui>
   </world>
 </sdf>

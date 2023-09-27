@@ -24,6 +24,8 @@ class GUI:
         self.payload = {'map': ''}
         self.server = None
         self.client = None
+        self.init_coords = (171, 63)
+        self.start_coords = (201, 85.5)
 
         self.host = host
 
@@ -67,6 +69,8 @@ class GUI:
     def update_gui(self):
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
+        if (pos_message == self.init_coords):
+            pos_message = self.start_coords
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message

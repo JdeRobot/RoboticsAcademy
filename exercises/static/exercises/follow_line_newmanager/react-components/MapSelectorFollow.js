@@ -5,7 +5,7 @@ import LandscapeIcon from "@mui/icons-material/Landscape";
 
 import { FormControl, InputLabel, Select, Box } from "@mui/material";
 
-const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
+const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
 const exerciseConfig = JSON.parse(
   document.getElementById("exercise-config").textContent
 );
@@ -27,6 +27,7 @@ export default function MapSelectorFollow(props) {
     setSelectedCircuit(e);
     const config = e;
     config['exercise_id'] = exerciseId;
+    config["visualization"] = "gazebo_rae";
     config.height = window.innerHeight / 2;
     config.width = window.innerWidth / 2;         
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {

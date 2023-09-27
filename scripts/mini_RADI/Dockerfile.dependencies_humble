@@ -64,6 +64,10 @@ RUN sudo rosdep fix-permissions \
   && apt-get update && apt-get install -q -y \
     ros-${ROS_DISTRO}-gazebo* \
     ros-${ROS_DISTRO}-ros-gz-* \
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
     libgstreamer-plugins-base1.0-dev \
     libimage-exiftool-perl \
   && apt-get -y autoremove \

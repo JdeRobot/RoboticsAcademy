@@ -12,7 +12,7 @@ import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
 import { ApplicationIndicator } from "../visualizers/ApplicationIndicator";
 
 function MainAppBar(props) {
-  const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
+  const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
   let ros_version = 1;
 
   const fetchRosVersion = (data) => {
@@ -38,18 +38,18 @@ function MainAppBar(props) {
   const connectWithRetry = () => {
     if (connectionAttempts >= maxConnectionAttempts) {
       RoboticsReactComponents.MessageSystem.Alert.showAlert(
-        "Error conectando, prueba a recargar la página",
+        "Error connecting, try reloading the page.",
         () => {
           console.log("Reloading");
           window.location.reload();
         },
-        "RECARGAR"
+        "RELOAD"
       );
       return;
     }
 
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
-      "Conectando y lanzando el ejercicio"
+      "Connecting and launching the exercise."
     );
 
     fetchRosVersion();
@@ -74,12 +74,13 @@ function MainAppBar(props) {
           selectedConfig = config;
         }
         selectedConfig["exercise_id"] = config["exercise_id"];
+        selectedConfig["visualization"] = config["visualization"];
         window.RoboticsExerciseComponents.commsManager
           .launch(selectedConfig)
           .then(() => {
             RoboticsReactComponents.MessageSystem.Loading.hideLoading();
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              "Ejercicio cargado correctamente"
+              "Exercise loaded successfully."
             );
           })
           .catch((e) => {

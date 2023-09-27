@@ -4,7 +4,7 @@ import { ExerciseCardV2 } from "./ExerciseCard";
 import React from "react";
 import HomepageContext from "../contexts/HomepageContext";
 
-const serverBase = `${document.location.protocol}//${document.location.hostname}:8000`;
+const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
 
 let ros_version;
 
