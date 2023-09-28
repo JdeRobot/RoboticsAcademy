@@ -15,7 +15,6 @@ RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
-RUN echo 'source /home/ws/install/setup.bash' >> ~/.bashrc
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
