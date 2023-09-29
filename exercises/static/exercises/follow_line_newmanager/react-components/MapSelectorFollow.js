@@ -24,6 +24,7 @@ export default function MapSelectorFollow(props) {
   };
 
   const handleCircuitChange = (e) => {
+    context.mapSelected = e.launch["0"].name
     setSelectedCircuit(e);
     const config = e;
     config['exercise_id'] = exerciseId;
@@ -83,7 +84,8 @@ export default function MapSelectorFollow(props) {
           const availableConfigs = {};
           availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
           setCircuitOptions(availableConfigs[`ROS${ros_version}`]);   
-          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);       
+          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);    
+          context.mapSelected =   availableConfigs[`ROS${ros_version}`][0].launch["0"].name 
         })
         .catch((error) => {
           const availableConfigs = {};
