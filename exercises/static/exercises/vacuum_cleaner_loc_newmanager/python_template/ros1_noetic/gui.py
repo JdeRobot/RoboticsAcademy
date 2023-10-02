@@ -8,6 +8,7 @@ import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
+import matplotlib.pyplot as plt
 
 from interfaces.pose3d import ListenerPose3d
 
@@ -136,6 +137,9 @@ class GUI:
         self.image_to_be_shown = image
         self.image_to_be_shown_updated = True
         self.image_show_lock.release()
+
+    def getMap(self):        
+        return plt.imread('/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc_newmanager/resources/mapgrannyannie.png')
 
     # Activate the server
     def run_server(self):
