@@ -102,14 +102,15 @@ while True:
 * `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `GUI.showNumpy(mat)` - Displays the numpy matrix sent. It supports 3 different colors: 0 - grey, 1 - green, 2 - yellow, 3 - red. The tool button **Grid** must be turned on in order to visualize the grid.
+* `GUI.showNumpy(mat)` - Displays the grayscale numpy matrix sent.
+* `GUI.getMap()` - Returns a numpy array with the map data (R, G, B, A)
 
 ```python
-# Example of how to visualize a matrix
-nav_mat = np.zeros((20, 20), int) # grey color
-nav_mat[0, 0] = 1 # green color
-nav_mat[1, 1] = 2 # yellow color
-nav_mat[2, 2] = 3 # red color
+# Example of how to visualize the map
+nav_mat = np.zeros((1024, 1024), int) # grey color
+for i in range(512):
+  for j in range(512):
+    mat[i][j][0] = 255
 GUI.showNumpy(nav_mat)
 ```
 
