@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/position_control_newmanager/launch/ros1_noetic/position_control.world"/>
+    <arg name="world" default="position_control.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>
