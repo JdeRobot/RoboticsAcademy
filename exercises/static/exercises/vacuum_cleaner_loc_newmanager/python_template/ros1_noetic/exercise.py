@@ -198,6 +198,7 @@ class Template:
 
         # Add GUI functions
         gui_module.GUI.showNumpy = self.gui.showNumpy
+        gui_module.GUI.getMap = self.gui.getMap
 
         # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage
