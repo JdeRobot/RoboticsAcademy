@@ -106,11 +106,11 @@ while True:
 * `GUI.getMap()` - Returns a numpy array with the map data (R, G, B, A)
 
 ```python
-# Example of how to visualize the map
+import numpy as np
 nav_mat = np.zeros((1024, 1024), int) # grey color
 for i in range(512):
   for j in range(512):
-    mat[i][j][0] = 255
+    nav_mat[i][j] = 255
 GUI.showNumpy(nav_mat)
 ```
 
