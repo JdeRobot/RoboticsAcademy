@@ -102,16 +102,18 @@ while True:
 * `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
-* `GUI.showNumpy(mat)` - Displays the grayscale numpy matrix sent.
+* `GUI.showNumpy(mat)` - Displays the matrix sent. Accepts an int matrix, values ranging from 0 to 127 for grayscale and values 128 to 134 for predetermined colors (128 = red; 129 = orange; 130 = yellow; 131 = green; 132 = blue; 133 = indigo; 134 = violet). Matrix should be square and the dimensions bigger than 100\*100 for correct visualization. Dimensions bigger than 1000\*1000 may affect performance.
 * `GUI.getMap()` - Returns a numpy array with the map data (R, G, B, A)
 
 ```python
 import numpy as np
-nav_mat = np.zeros((1024, 1024), int) # grey color
-for i in range(512):
-  for j in range(512):
-    nav_mat[i][j] = 255
-GUI.showNumpy(nav_mat)
+# Create a 400x400 matrix with random values between 0 and 127 (grayscale)
+matrix = np.random.randint(0, 128, (400, 400), dtype=np.uint8)
+# Add a red square region to the matrix
+x = np.random.randint(0, 391)
+y = np.random.randint(0, 391)
+matrix[x:x+10, y:y+10] = 128
+GUI.showNumpy(matrix)
 ```
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
