@@ -7,7 +7,7 @@ RAM="main"
 ROS_DISTRO="noetic"
 IMAGE_TAG="test"
 FORCE_BUILD=false
-
+FORCE_BUILD_NO_CACHE=false
 
 Help()
 {
@@ -17,6 +17,7 @@ Help()
    echo "  -h                        Print this Help."
    echo "  -f                        Force creation of the base image. If omitted, the base image is created only if "
    echo "                            it doesn't exist."
+   echo "  -F                        Force creation of the base image without using docker cache."
    echo "  -a, --academy    <value>  Branch of RoboticsAcademy.               Default: master"
    echo "  -i, --infra      <value>  Branch of RoboticsInfrastructure.        Default: noetic-devel"
    echo "  -m, --ram        <value>  Branch of RoboticsApplicationManager.    Default: main"
@@ -56,6 +57,10 @@ while [[ $# -gt 0 ]]; do
             FORCE_BUILD=true
             shift
             ;;
+        -F | --force-no-cache)
+            FORCE_BUILD_NO_CACHE=true
+            shift
+            ;;
         -h | --help) # display Help
             echo "Generates RoboticsAcademy RADI image"
             echo
@@ -89,11 +94,17 @@ else
     exit 1
 fi
 
+if $FORCE_BUILD_NO_CACHE; then
+  NO_CACHE="--no-cache"
+else
+  NO_CACHE=""
+fi
+
 # Build the Docker Base image
-if $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
+if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
-  docker build -f $DOCKERFILE_BASE -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
+  docker build $NO_CACHE -f $DOCKERFILE_BASE -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
 fi
 
 # Build the Docker image
