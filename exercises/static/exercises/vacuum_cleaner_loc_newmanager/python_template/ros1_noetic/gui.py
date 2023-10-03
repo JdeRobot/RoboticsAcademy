@@ -186,8 +186,8 @@ class GUI:
         self.image_to_be_shown_updated = True
         self.image_show_lock.release()
 
-    def getMap(self):        
-        return plt.imread('/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc_newmanager/resources/mapgrannyannie.png')
+    def getMap(self, url):        
+        return plt.imread(url)
 
     # Activate the server
     def run_server(self):
