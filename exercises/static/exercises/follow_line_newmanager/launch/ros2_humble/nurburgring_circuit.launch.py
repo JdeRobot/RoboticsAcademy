@@ -17,8 +17,8 @@ def generate_launch_description():
 
   # Set the path to the world file
   world_file_name = 'nurburgring_line.world'
-  current_dir = "/RoboticsAcademy/exercises/static/exercises/follow_line_newmanager/launch/ros2_humble"
-  world_path = os.path.join(current_dir, world_file_name)
+  worlds_dir = "/opt/jderobots/Worlds"
+  world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
   gazebo_models_path = os.path.join(pkg_share, 'models')
