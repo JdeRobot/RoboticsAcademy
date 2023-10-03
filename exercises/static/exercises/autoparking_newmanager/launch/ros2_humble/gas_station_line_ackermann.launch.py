@@ -17,7 +17,8 @@ def generate_launch_description():
 
   # Set the path to the world file
   world_file_name = 'gas_station_line_ackermann.world'
-  world_path = os.path.join(pkg_share, 'worlds', world_file_name)
+  worlds_dir = "/opt/jderobot/Worlds"
+  world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
   gazebo_models_path = os.path.join(pkg_share, 'models')
