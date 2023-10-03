@@ -34,7 +34,7 @@ def generate_launch_description():
   )
 
   world_file_name = "hospital_follow_person.world"
-  worlds_dir = "/opt/jderobots/Worlds"
+  worlds_dir = "/opt/jderobot/Worlds"
   world_path = os.path.join(worlds_dir, world_file_name)
 
   # Set the path to the SDF model files

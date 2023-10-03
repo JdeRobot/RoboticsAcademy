@@ -17,7 +17,7 @@ def generate_launch_description():
 
   # Set the path to the world file
   world_file_name = 'bateria_prius_3laser.world'
-  worlds_dir = "/opt/jderobots/Worlds"
+  worlds_dir = "/opt/jderobot/Worlds"
   world_path = os.path.join(worlds_dir, world_file_name)
    
   # Set the path to the SDF model files.
