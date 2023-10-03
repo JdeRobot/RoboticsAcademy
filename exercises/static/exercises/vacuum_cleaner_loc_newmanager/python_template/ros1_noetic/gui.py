@@ -14,9 +14,16 @@ from interfaces.pose3d import ListenerPose3d
 
 from map import Map
 
+# Matrix colors
+red = [0, 0, 255]
+orange = [0, 165, 255]
+yellow = [0, 255, 255]
+green = [0, 255, 0]
+blue = [255, 0, 0]
+indigo = [130, 0, 75]
+violet = [211, 0, 148]
+
 # Graphical User Interface Class
-
-
 class GUI:
     # Initialization function
     # The actual initialization
@@ -88,8 +95,10 @@ class GUI:
         if (image_to_be_shown_updated == False):
             return payload
 
-        shape = image.shape
-        frame = cv2.imencode('.PNG', image)[1]
+        colored_image = self.process_colors(image)
+
+        shape = colored_image.shape
+        frame = cv2.imencode('.PNG', colored_image)[1]
         encoded_image = base64.b64encode(frame)
 
         payload['image'] = encoded_image.decode('utf-8')
@@ -101,6 +110,45 @@ class GUI:
 
         return payload
     
+    def process_colors(self, image):
+        colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+        for i in range(image.shape[0]):
+            for j in range(image.shape[1]):
+                value = image[i][j]                
+                if value < 128: # Grayscale for values < 128
+                    colored_image[i][j][0] = value * 2
+                    colored_image[i][j][1] = value * 2
+                    colored_image[i][j][2] = value * 2
+                elif value == 128:  # 128 = red
+                    colored_image[i][j][0] = red[0]
+                    colored_image[i][j][1] = red[1]
+                    colored_image[i][j][2] = red[2]
+                elif value == 129:  # 129 = orange
+                    colored_image[i][j][0] = orange[0]
+                    colored_image[i][j][1] = orange[1]
+                    colored_image[i][j][2] = orange[2]
+                elif value == 130:  # 130 = yellow
+                    colored_image[i][j][0] = yellow[0]
+                    colored_image[i][j][1] = yellow[1]
+                    colored_image[i][j][2] = yellow[2]
+                elif value == 131:  # 131 = green
+                    colored_image[i][j][0] = green[0]
+                    colored_image[i][j][1] = green[1]
+                    colored_image[i][j][2] = green[2]
+                elif value == 132:  # 132 = blue
+                    colored_image[i][j][0] = blue[0]
+                    colored_image[i][j][1] = blue[1]
+                    colored_image[i][j][2] = blue[2]
+                elif value == 133:  # 133 = indigo
+                    colored_image[i][j][0] = indigo[0]
+                    colored_image[i][j][1] = indigo[1]
+                    colored_image[i][j][2] = indigo[2]
+                elif value == 134:  # 134 = violet
+                    colored_image[i][j][0] = violet[0]
+                    colored_image[i][j][1] = violet[1]
+                    colored_image[i][j][2] = violet[2]
+        return colored_image
+
     # Update the gui
     def update_gui(self):
         # Payload Map Message
