@@ -14,7 +14,7 @@ requests==2.31.0
 websocket-client==0.57.0
 pydiscourse==0.9.0
 django-taggit-autosuggest==0.3.8
-pillow==9.3.0
+pillow==10.0.1
 
 setuptools==65.5.1  # This should be removed after going to python 3.9
 
