@@ -19,35 +19,49 @@ prerequisite - Python
 
 1) First create a virtual env
 ```
-virtualenv env
+virtualenv env_name
  ```
-Virtual environment with name "env" is created 
+Virtual environment with name "env_name" is created 
 
 2) Activate the environment
 ```
-source env/bin/activate
+source env_name/bin/activate
 ```
-3) Install required packages
+
+3) Confirm that the env is successfully selected
+```
+which python3
+```
+
+4) Install required packages
 ```
 pip install django
 pip install djangorestframework
 pip install django-webpack-loader
 pip install django-cors-headers
-pip install pylint
+pip install pylint==2.* # afaik not working for v3.*, tested on 2.17.4
 ```
 
-4) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
+5) Install node in venv
+```
+pip install nodeenv
+nodeenv -p
+npm install -g npm  # check installation
+npm -v
+```
+
+6) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
 ```
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
-5) Now at the root of the project we are ready to launch the Django webserver
+7) Now at the root of the project we are ready to launch the Django webserver
 ```
 python3 manage.py runserver
 ```
 The webserver is not connected with the RADI.
 
-6) To connect the webserver with RADI, Run:
+8) To connect the webserver with RADI, Run:
 ```
 docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy --no-server
 ```
