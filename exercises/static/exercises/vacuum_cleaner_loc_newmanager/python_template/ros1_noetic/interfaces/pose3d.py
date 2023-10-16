@@ -2,6 +2,7 @@ import rospy
 import threading
 from math import asin, atan2, pi
 from nav_msgs.msg import Odometry
+from gazebo_msgs.msg import ModelStates
 
 def quat2Yaw(qw, qx, qy, qz):
     '''
@@ -132,7 +133,7 @@ class ListenerPose3d:
         self.lock = threading.Lock()
         self.start()
  
-    def __callback (self, odom):
+    def __callback (self, model_states):
         '''
         Callback function to receive and save Pose3d. 
 
@@ -141,10 +142,19 @@ class ListenerPose3d:
         @type odom: Odometry
 
         '''
-        pose = odometry2Pose3D(odom)
+        index = model_states.name.index('roombaROS')
+        pose = model_states.pose[index]
 
+        # Translate the pose information to your Pose3d structure
         self.lock.acquire()
-        self.data = pose
+        self.data.x = pose.position.x
+        self.data.y = pose.position.y
+        self.data.z = pose.position.z
+        self.data.yaw = quat2Yaw(pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z)
+        self.data.pitch = quat2Pitch(pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z)
+        self.data.roll = quat2Roll(pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z)
+        self.data.q = [pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z]
+        self.data.timeStamp = rospy.Time.now().to_sec()
         self.lock.release()
         
     def stop(self):
@@ -159,7 +169,7 @@ class ListenerPose3d:
         Starts (Subscribes) the client.
 
         '''
-        self.sub = rospy.Subscriber(self.topic, Odometry, self.__callback)
+        self.sub = rospy.Subscriber(self.topic, ModelStates, self.__callback)
         
     def getPose3d(self):
         '''
