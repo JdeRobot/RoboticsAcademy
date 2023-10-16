@@ -14,12 +14,15 @@ function SpecificObstacleAvoidance(props) {
 
     const callback = (message) => {
       const data = message.data.update;
-      if (JSON.parse(data.image).image) {
+      if (data.image) {
+        if(JSON.parse(data.image).image) {
         const image = JSON.parse(data.image);
         setImage(`data:image/png;base64,${image.image}`);
+        }}
+      if(data.map){
+        const dataToDraw = JSON.parse(data.map)
+        paintEvent(dataToDraw.target, dataToDraw.car, dataToDraw.obstacle, dataToDraw.average, dataToDraw.laser, dataToDraw.max_range)
       }
-      const dataToDraw = JSON.parse(data.map)
-      paintEvent(dataToDraw.target, dataToDraw.car, dataToDraw.obstacle, dataToDraw.average, dataToDraw.laser, dataToDraw.max_range)
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -42,12 +45,11 @@ function SpecificObstacleAvoidance(props) {
     <canvas
       ref={guiCanvasRef}
       id="local-map"
-      width= "200"
-      height= "200"
+
       style={{
         backgroundColor: "#0e14c7",
       	marginTop: "5px",
-        width: "100%",
+        width: "50%",
         height: "100%",
         margin: "auto"
     }}
@@ -55,7 +57,7 @@ function SpecificObstacleAvoidance(props) {
     <img  width="200" height="200" src={image} style={{
       	marginTop: "5px",
         marginRight: "5px",
-        width: "100%",
+        width: "50%",
         height: "100%",
         margin: "auto"
     }}></img>
