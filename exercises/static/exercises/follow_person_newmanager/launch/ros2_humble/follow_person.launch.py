@@ -13,7 +13,7 @@ def generate_launch_description():
   pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')
 
   # Set the path to the Turtlebot2 ROS package
-  pkg_turtlebot2 = FindPackageShare(package='custom_robots').find('custom_robots')
+  pkg_share_dir = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set Turtlebot2 Arguments
   x_turtlebot2_position = '0'
@@ -33,10 +33,12 @@ def generate_launch_description():
     description="Position on the axis z of Turtlebot2"
   )
 
-  world_path = "/RoboticsAcademy/exercises/static/exercises/follow_person_newmanager/launch/ros2_humble/hospital_follow_person.world"
+  world_file_name = "hospital_follow_person.world"
+  worlds_dir = "/opt/jderobot/Worlds"
+  world_path = os.path.join(worlds_dir, world_file_name)
 
   # Set the path to the SDF model files
-  gazebo_models_path = os.path.join(pkg_turtlebot2, 'models')
+  gazebo_models_path = os.path.join(pkg_share_dir, 'models')
   os.environ["GAZEBO_MODEL_PATH"] = f"{os.environ.get('GAZEBO_MODEL_PATH', '')}:{':'.join(gazebo_models_path)}"
 
   ########### YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE ##############  
@@ -75,9 +77,8 @@ def generate_launch_description():
     launch_arguments={'world': world}.items())
   
   start_turtlebot2_cmd = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_turtlebot2, 'launch', 'spawn_model.launch.py')),
-    launch_arguments = {'-x': x_turtlebot2_position, '-y': y_turtlebot2_position, '-z': z_turtlebot2_position}.items()
-  )
+    PythonLaunchDescriptionSource(os.path.join(pkg_share_dir, 'launch', 'spawn_model.launch.py')),
+    launch_arguments = {'-x': x_turtlebot2_position, '-y': y_turtlebot2_position, '-z': z_turtlebot2_position}.items())
 
   # Create the launch description and populate
   ld = LaunchDescription()

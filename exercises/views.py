@@ -28,11 +28,18 @@ def get_python_code(request):
     python_code = python_code.replace('\\"', '"').replace("\\'", "'")
     return python_code
 
+@csrf_exempt
 def ros_version(request):    
     output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
     output_str = output.decode('utf-8')
     version = output_str[0]
     data = {'version': version}
+    return JsonResponse(data)
+
+@csrf_exempt
+def launch_files(request, exercise_id):
+    exercise = Exercise.objects.get(exercise_id=exercise_id)
+    data = json.loads(exercise.configuration)
     return JsonResponse(data)
 
 @csrf_exempt
@@ -43,7 +50,7 @@ def evaluate_style(request):
         code_file = tempfile.NamedTemporaryFile(delete=False)
         code_file.write(python_code.encode())
         code_file.seek(0)
-        options = code_file.name + ' --enable=similarities' + " --disable=C0114,C0116"
+        options = code_file.name + ' --enable=similarities' + " --disable=C0114,C0116" + " --ignore-imports=yes"
         (stdout, stderr) = lint.py_run(options, return_std=True)
         code_file.seek(0)
         code_file.close()

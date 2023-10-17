@@ -2,32 +2,19 @@ import * as log from "loglevel";
 import { v4 as uuidv4 } from "uuid";
 
 const CommsManager = (address) => {
-  let websocket = null;
-
   log.enableAll();
 
-  const events = {
-    RESPONSES: ["ack", "error"],
-    UPDATE: "update",
-    STATE_CHANGED: "state-changed",
-    VERSION: "version",
-  };
-
   //region Observer pattern methods
+  // TODO: Maybe move to it's own class?
   const observers = {};
-  let currentState = null;
 
-  const subscribe = (suscribingEvents, callback) => {
-    if (typeof suscribingEvents === "string") {
-      suscribingEvents = [suscribingEvents];
+  const subscribe = (events, callback) => {
+    if (typeof events === "string") {
+      events = [events];
     }
-    for (let i = 0, length = suscribingEvents.length; i < length; i++) {
-      let event = suscribingEvents[i];
-      observers[event] = observers[event] || [];
-      observers[event].push(callback);
-      if (event === events.STATE_CHANGED && currentState !== null) {
-        callback({ command: events.STATE_CHANGED, data: currentState });
-      }
+    for (let i = 0, length = events.length; i < length; i++) {
+      observers[events[i]] = observers[events[i]] || [];
+      observers[events[i]].push(callback);
     }
   };
 
@@ -55,10 +42,6 @@ const CommsManager = (address) => {
   };
 
   const dispatch = (message) => {
-    if (message.command === events.STATE_CHANGED) {
-      currentState = message.data;
-    }
-
     const subscriptions = observers[message.command] || [];
     let length = subscriptions.length;
     while (length--) {
@@ -67,7 +50,9 @@ const CommsManager = (address) => {
   };
   //endregion
 
-  // Send and receive method
+  //region  Websocket handling, connect, send, receive
+  let websocket = null;
+
   const connect = () => {
     return new Promise((resolve, reject) => {
       websocket = new WebSocket(address);
@@ -86,7 +71,7 @@ const CommsManager = (address) => {
       websocket.onclose = (e) => {
         // TODO: Rethink what to do when connection is interrupted,
         //  maybe try to reconnect and not clear the suscribers?
-        
+        //unsuscribeAll();
         if (e.wasClean) {
           log.debug(
             `Connection with ${address} closed, all suscribers cleared`
@@ -113,7 +98,7 @@ const CommsManager = (address) => {
     return new Promise((resolve, reject) => {
       const id = uuidv4();
 
-      if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+      if (!websocket) {
         reject({
           id: "",
           command: "error",
@@ -141,8 +126,15 @@ const CommsManager = (address) => {
       websocket.send(msg);
     });
   };
+  //endregion
 
-  // Messages and events
+  // Events and commands
+  const events = {
+    RESPONSES: ["ack", "error"],
+    UPDATE: "update",
+    STATE_CHANGED: "state-changed",
+  };
+
   const commands = {
     connect: connect,
     launch: (configuration) => send("launch", configuration),
@@ -158,9 +150,9 @@ const CommsManager = (address) => {
   return {
     ...commands,
 
+    events: events,
     send: send,
 
-    events: events,
     subscribe: subscribe,
     unsubscribe: unsubscribe,
     suscribreOnce: subscribeOnce,

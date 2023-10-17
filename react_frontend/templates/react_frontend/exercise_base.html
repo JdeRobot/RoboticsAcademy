@@ -4,12 +4,11 @@
 
 {% block header %}
     {% render_bundle 'exercise' 'css' %}
+    {% block exercise_header %}
+    {% endblock %}
 {%  endblock %}
 
 {% block content %}
-    <div id="exercise">
-    </div>
-
     {% block react-content %}
     {% endblock %}
 {% endblock %}

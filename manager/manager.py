@@ -99,11 +99,10 @@ class Commands:
 
         if not (ACCELERATION_ENABLED):
             # Write display config and start gzclient
-            gzclient_cmd = (f"export DISPLAY=:0;" + self.get_gazebo_path(exercise) +
+            gzclient_cmd = (f"export DISPLAY=:0;" +
                             "".join(gzclient_config_cmds) + "gzclient --verbose")
         else:
             gzclient_cmd = (f"export DISPLAY=:0;" +
-                            self.get_gazebo_path(exercise) +
                             "".join(gzclient_config_cmds) +
                             f"export VGL_DISPLAY={DRI_PATH}; vglrun gzclient --verbose")
         gzclient_thread = DockerThread(gzclient_cmd)
@@ -328,7 +327,6 @@ class Commands:
         # Reset gz world
         self.unpause_physics()
 
-        # Not used with CrazyS (rotorS), see issue #1840
         cmd_wait = ["rostopic", "echo", "/mavros/state", "-n", "1"]
         attempt = 0
         while (attempt < 20):
@@ -730,9 +728,7 @@ class Manager:
             if self.exercise in CIRCUIT_EX:
                 self.exercise = 'follow_line'
 
-            # TODO: temp
-            command = f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}/web-template;"
-            command += f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}; python3 pylint_checker.py"
+            command = f"export PYTHONPATH=$PYTHONPATH:/RoboticsAcademy/exercises/static/exercises/{self.exercise}; python3 pylint_checker.py"
             ret = subprocess.run(command, capture_output=True, shell=True)
             result = ret.stdout.decode()
             result = result + "\n"

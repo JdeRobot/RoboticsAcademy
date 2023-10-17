@@ -15,10 +15,6 @@ from shared.value import SharedValue
 from hal import HAL
 from brain import BrainProcess
 
-from teleoperator import TeleopThread
-
-
-
 class Template:
     # Initialize class variables
     # self.time_cycle to run an execution for atleast 1 second
@@ -47,10 +43,6 @@ class Template:
 
         # Initialize the GUI and HAL behind the scenes
         self.hal = HAL()
-
-        self.exit_signal_teleop = threading.Event()
-        self.teleop_q = queue.Queue()
-        self.teleop = TeleopThread(self.teleop_q,self.exit_signal_teleop,self.hal)
 
         print("Exercise initialized", flush=True)
 
@@ -85,7 +77,7 @@ class Template:
 
         else:
             sequential_code, iterative_code = self.seperate_seq_iter(source_code[6:])
-            return iterative_code, sequential_code
+            return sequential_code, iterative_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -127,13 +119,11 @@ class Template:
                 pass
 
         # Turn the flag down, the iteration has successfully stopped!
-        
         self.reload.clear()
         # New thread execution
         code = self.parse_code(source_code)
         if code[0] == "" and code[1] == "":
             return
-
         self.brain_process = BrainProcess(code, self.reload, self.stop_brain)
         self.brain_process.start()
         self.send_code_message()
@@ -197,58 +187,23 @@ class Template:
     def send_code_message(self):
         self.server.send_message(self.client, "#exec")
 
-    def read_teleop_message(self, teleop_message):
-        teleop_message = json.loads(teleop_message)
-
-        # Get V and W
-        v = float(teleop_message["v"])
-        w = float(teleop_message["w"])
-
-        return v, w
-
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
         if(message[:5] == "#freq"):
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
+            time.sleep(1)
             self.send_frequency_message()
             return
         
         elif(message[:5] == "#ping"):
+            time.sleep(1)
             self.send_ping_message()
-            return
-        
-        elif(message[:5] == "#tele"):
-            # Stop Brain code by sending an empty code
-            if not self.stop_brain.is_set():
-                self.reload.set()
-                self.stop_brain.set()
-                
-            # Parse message
-            teleop_message = message[5:]
-            v,w = self.read_teleop_message(teleop_message)
-            
-            # crear hebra de interacciones periódicas
-            # python thread
-            # Clear exit flag in order to continue executing the thread            
-            # envío última V y W recibida y me pongo a dormir
-            
-            # Recupero el flag
-            self.exit_signal_teleop.clear()
-            
-            if not self.teleop.is_alive():
-                self.teleop.start()
-            
-            self.teleop_q.put({"v":v,"w":w})
             return
 
         elif (message[:5] == "#code"):
             try:
-                # First pause the teleoperator thread if exists
-                if self.teleop.is_alive():
-                    self.exit_signal_teleop.set()
-
                 # Once received turn the reload flag up and send it to execute_thread function
                 self.user_code = message
                 self.reload.set()
