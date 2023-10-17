@@ -51,7 +51,7 @@ class GUI:
         t.start()
 
         # Create the lap object
-        pose3d_object = ListenerPose3d("/roombaROS/odom")
+        pose3d_object = ListenerPose3d("/gazebo/model_states")
         self.map = Map(pose3d_object)
 
     # Explicit initialization function
