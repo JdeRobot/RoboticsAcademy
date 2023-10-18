@@ -164,6 +164,7 @@ class Commands:
             # Clears ROS logs dir
             self.run_subprocess(['rosclean', 'purge', '-y'])
 
+        print(self.instructions)
         host_cmd = self.instructions[exercise]["instructions_host"]
         host_thread = DockerThread(host_cmd)
         host_thread.start()
