@@ -17,6 +17,10 @@ RUN mkdir /RoboticsAcademy/src/ && mv /RoboticsApplicationManager/* /RoboticsAca
 RUN npm install -g yarn
 RUN cd /RoboticsAcademy/react_frontend && yarn install && yarn run build
 
+# instructions.json
+RUN rm instructions.json
+RUN mv RoboticsAcademy/instructions.json /
+
 EXPOSE 8000
 EXPOSE 2303
 EXPOSE 1905
