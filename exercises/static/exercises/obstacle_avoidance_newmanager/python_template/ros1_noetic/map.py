@@ -54,11 +54,7 @@ class Map:
 
     # Get the JSON data as string
 	def get_json_data(self):
-		self.payload["target"] = self.setTarget(self.targetx, self.targety,
-								self.pose3d.getPose3d().x, 
-								self.pose3d.getPose3d().y,
-								self.pose3d.getPose3d().yaw)
-								
+		self.payload["target"] = self.setTarget(self.targetx, self.targety)
 		self.payload["car"] = self.setArrow(self.carx, self.cary)
 		self.payload["obstacle"] = self.setArrow(self.obsx, self.obsy)
 		self.payload["average"] = self.setArrow(self.avgx, self.avgy)
@@ -100,22 +96,8 @@ class Map:
 			target.setReached(False)
         
     # Interpret the Target values
-	def setTarget(self, x, y, rx, ry, rt):
-		# Convert to relatives
-		if x == 0.0 and y == 0.0:
-			return (0, 0)
-			
-		dx = rx - x
-		dy = ry - y
-
-		# Rotate with the current angle
-		ty = dx*math.cos(-rt) - dy*math.sin(-rt)
-		tx = dx*math.sin(-rt) + dy*math.cos(-rt)
-		
-		ty = (120 +  20 * ty)
-		tx = (146.5 + 7 * tx)
-
-		return (tx, ty)
+	def setTarget(self, x, y):
+		return [x, y]
     
     # Interpret the arrow values	
 	def setArrow(self, posx, posy):

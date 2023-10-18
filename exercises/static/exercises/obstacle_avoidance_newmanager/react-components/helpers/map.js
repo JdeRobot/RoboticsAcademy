@@ -173,35 +173,38 @@ function drawArrow(posx, posy, color){
 }
 
 function drawTarget(posx, posy){
-	var mapCanvas = document.getElementById("local-map"),
+    var mapCanvas = document.getElementById("local-map"),
     ctx = mapCanvas.getContext("2d");
 
-	if(posx == 0 && posy == 0){
-		return;
-	}
-	
-	ctx.beginPath();
-	
-	ctx.strokeStyle = 'yellow';
-	ctx.lineWidth = 2;
-	
-	let sx = posx - 7;
-	let sy = posy - 5;
-	let ex = posx + 7;
-	let ey = posy + 5;
-	
-	ctx.moveTo(sx, sy);
-	ctx.lineTo(ex, ey);
-	
-	sx = posx + 7;
-	sy = posy - 5;
-	ex = posx - 7;
-	ey = posy + 5;
-	
-	ctx.moveTo(sx, sy);
-	ctx.lineTo(ex, ey);
-	
-	ctx.stroke();
-	
-	ctx.closePath();
+    if(posx == 0 && posy == 0){
+        return;
+    }
+    
+    let px = 146.5 - posy * 20;
+    let py = 120 - posx * 20;
+
+    ctx.beginPath();
+    
+    ctx.strokeStyle = 'yellow';
+    ctx.lineWidth = 2;
+    
+    let sx = px - 7;
+    let sy = py - 5;
+    let ex = px + 7;
+    let ey = py + 5;
+    
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(ex, ey);
+    
+    sx = px + 7;
+    sy = py - 5;
+    ex = px - 7;
+    ey = py + 5;
+    
+    ctx.moveTo(sx, sy);
+    ctx.lineTo(ex, ey);
+    
+    ctx.stroke();
+    
+    ctx.closePath();
 }
