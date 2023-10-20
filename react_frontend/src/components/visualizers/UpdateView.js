@@ -70,7 +70,8 @@ const UpdateView = (props) => {
           height,
           canvasRef.current,
           updateRef,
-          circuit
+          circuit,
+          context.mapSelected
         );
       } else {
         try {
