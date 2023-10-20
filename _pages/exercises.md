@@ -443,6 +443,17 @@ feature_row:
     status: "prototype"
     order: 2;
 
+  - image_path: /assets/images/exercises/visual_odometry_3D/visual_odometry_3D_teaser.png
+    alt: "Visual Odometry 3D"
+    title: "Visual Odometry 3D"
+    excerpt: "Solving the Visual Odometry problem in a 3D world using the KITTI dataset"
+    url: "/exercises/ComputerVision/visual_odometry_3D"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    status: "prototype"
+    order: 2;
+
 ---
 
 
