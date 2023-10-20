@@ -17,7 +17,7 @@ class PinholeCamera:
         self.distortion_coefficients = distortion_coefficients
         self.extrinsics = extrinsics
         self.intrinsics = intrinsics
-        self.camera_matrix = self.cameraMatrix()
+        self.camera_matrix = self.get_camera_matrix()
 
 
     def get_camera_matrix(self):
