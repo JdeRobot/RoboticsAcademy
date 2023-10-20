@@ -5,11 +5,10 @@ import Image from "mui-image";
 import { Box, Typography } from "@mui/material";
 import RoboticsTheme from "Components/RoboticsTheme.js";
 import PropTypes from "prop-types";
-import { ConnectionIndicator } from "Components/visualizers/ConnectionIndicator";
-import { LaunchIndicator } from "Components/visualizers/LaunchIndicator";
 import { useUnload } from "Hooks/useUnload";
 import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
-import { ApplicationIndicator } from "../visualizers/ApplicationIndicator";
+import AppIndicator from "../visualizers/AppIndicator";
+import ConnectionIndicator from "../visualizers/ConnectionIndicator";
 
 function MainAppBar(props) {
   const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
@@ -128,22 +127,21 @@ function MainAppBar(props) {
             }}
           >
             <Image src="/static/common/img/logo.gif" fit={"cover"} width={50} />
-            <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-                marginLeft: "10px",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ConnectionIndicator></ConnectionIndicator>
-              <LaunchIndicator></LaunchIndicator>
-              <ApplicationIndicator></ApplicationIndicator>
-              {props.children}
-            </Box>
           </Box>
-          <Typography variant="h5">{props.exerciseName}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+              marginLeft: "10px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ConnectionIndicator></ConnectionIndicator>
+            {props.children}
+            <AppIndicator name={props.exerciseName}></AppIndicator>
+          </Box>
+
           <Box>
             <ExerciseTheoryForumButton
               url={props.url}

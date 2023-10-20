@@ -1,42 +1,53 @@
 .ready {
-  color: white;
+  color: black;
   background-color: #4caf50;
   box-shadow: 0px 2px 3px -1px rgba(0, 0, 0, 0.2),
     0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  padding: 6px 16px;
-  font-size: 0.7rem;
-  min-width: 64px;
-  box-sizing: border-box;
+  padding: 10px 30px;
   text-align: center;
+  min-width: 64px;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
   line-height: 1.75;
   font-weight: 500;
-  border-radius: 4px;
+  border-radius: 5px;
   letter-spacing: 0.02857em;
-  text-transform: uppercase;
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  border-color: #000000;
 }
 
 .waiting {
-  color: white;
+  color: black;
   background-color: #f57f51;
-  box-shadow: 0px 2px 3px -1px rgba(0, 0, 0, 0.2),
-    0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  padding: 6px 16px;
-  font-size: 0.7rem;
+
   min-width: 64px;
-  box-sizing: border-box;
+  padding: 10px 30px;
   text-align: center;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
   line-height: 1.75;
   font-weight: 500;
-  border-radius: 4px;
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  border-color: #000000;
+  border-radius: 5px;
   letter-spacing: 0.02857em;
-  text-transform: uppercase;
 }
 
 .word {
   display: block;
-  margin: 0; /* Esto elimina cualquier margen */
-  padding: 0; /* Esto elimina cualquier relleno */
-  line-height: 1; /* Esto reduce el espacio entre líneas */
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.title {
+  position: relative;
+  font-size: 0.8rem;
+  text-align: start;
+  top: -20px;
+  height: 0px;
+  left: -15px;
+  right: 0;
+  margin: 0;
 }
