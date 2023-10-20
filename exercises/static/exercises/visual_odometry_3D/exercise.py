@@ -182,7 +182,7 @@ class Template:
         hal_module.HAL.set_estimated_position = self.hal.set_estimated_position
         hal_module.HAL.set_estimated_euler_angles = self.hal.set_estimated_euler_angles
 
-        hal_module.HAL.get_true_euler_angles_corrected_array = self.hal.get_true_euler_angles_corrected_array # A BORRAR
+        hal_module.HAL.get_camera_model = self.hal.get_camera_model
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))

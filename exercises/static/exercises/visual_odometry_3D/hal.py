@@ -90,6 +90,9 @@ class HAL:
         self.estimated_position = np.array([0, 0, 0], dtype=np.float32).flatten().round(decimals=5)
         self.estimated_euler_angles = np.array([0, 0, 0], dtype=np.float32).flatten().round(decimals=5)
 
+        # camera
+        self.camera = PinholeCamera.from_kitti(file_path=CALIBRATION_FILE, width=1241, height=376)
+
     # User method
     # Advance current frame
     def advance(self):
@@ -206,4 +209,9 @@ class HAL:
     # Set estimated orientation in euler angles calculated by user
     def set_estimated_euler_angles(self, roll: float, pitch: float, yaw: float):
         self.estimated_euler_angles = np.array([roll, pitch, yaw], dtype=np.float32).flatten().round(decimals=5)
+
+    # User method
+    # Return the pinhole camera model
+    def get_camera_model(self):
+        return self.camera
     
