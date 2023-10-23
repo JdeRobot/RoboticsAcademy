@@ -18,7 +18,7 @@ class HAL:
         rospy.init_node("HAL")
 
         self.motors = PublisherMotors("/roombaROS/cmd_vel", 4, 0.3)
-        self.pose3d = ListenerPose3d("/roombaROS/odom")
+        self.pose3d = ListenerPose3d("/gazebo/model_states")
         self.laser = ListenerLaser("/roombaROS/laser/scan")
         self.bumper = ListenerBumper("/roombaROS/events/bumper")
         self.camera_lock = threading.Lock()

@@ -1,37 +1,33 @@
 import React, { useEffect, useState } from "react";
-
 import MenuItem from "@mui/material/MenuItem";
-import LandscapeIcon from "@mui/icons-material/Landscape";
-
 import { FormControl, InputLabel, Select, Box } from "@mui/material";
 
-const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
 const exerciseConfig = JSON.parse(
   document.getElementById("exercise-config").textContent
 );
 const exerciseId = exerciseConfig.exercise_id;
 
 export default function MapSelectorFollow(props) {
-  const changeConfig = (circuitPath) => {
-    const config = JSON.parse(
-      document.getElementById("exercise-config").textContent
-    );
-    config.application.params = { circuit: circuitPath };
-    config.launch[
-      "0"
-    ].launch_file = `$EXERCISE_FOLDER/launch/simple_line_follower_ros_headless_${circuitPath}.launch`;
-    return config;
-  };
 
   const handleCircuitChange = (e) => {
+    context.mapSelected = e.launch["0"].name
     setSelectedCircuit(e);
     const config = e;
     config['exercise_id'] = exerciseId;
-    config["visualization"] = "gazebo_rae";
+    config["visualization"] = "gazebo_rae"
     config.height = window.innerHeight / 2;
     config.width = window.innerWidth / 2;         
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
-      window.RoboticsExerciseComponents.commsManager.launch(config);
+      window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
+        "Launching World in Robotics Backend"
+      );
+      window.RoboticsExerciseComponents.commsManager.launch(config).then(()=> {
+        RoboticsReactComponents.MessageSystem.Loading.hideLoading();
+      }).catch((e) => {
+        RoboticsReactComponents.MessageSystem.Loading.showFailLoading(
+          `Error launching the world:${e.data.message}. Try changing the world or reloading the page`
+        );
+      });
     });
   };
 
@@ -62,53 +58,62 @@ export default function MapSelectorFollow(props) {
   }, []);
 
   useEffect(() => {
-    const mapsAvailableURL = `${serverBase}/exercises/exercise/${exerciseId}/launch_files`;
-    fetch(mapsAvailableURL)
-      .then((response) => response.json())
-      .then((data) => {    
-        const rosVersionURL = `${serverBase}/exercises/ros_version/`;    
+    const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
+    let requestUrl = `${serverBase}/exercises/exercise/${exerciseId}/launch_files`;
+    const request = new Request(requestUrl, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        'X-CSRFToken': context.csrf
+      },
+    })
+    fetch(request)
+        .then((response) => response.json())
+        .then((data) => {    
+          const rosVersionURL = `${serverBase}/exercises/ros_version/`;
         let ros_version = 1;
         fetch(rosVersionURL)
-        .then((res) => res.json())
-        .then((msg) => {       
-       
-          ros_version = msg.version;
-          // If returns no version, assume 1
-         
-          if (isNaN(parseInt(ros_version))) {          
-            ros_version = 1;
-          }
-          const config = data;
-          // Selects the configs available for the ROS version installed          
-          const availableConfigs = {};
-          availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
-          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);   
-          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);       
+          .then((res) => res.json())
+          .then((msg) => {
+            ros_version = msg.version;
+
+            if (isNaN(parseInt(ros_version))) {
+              ros_version = 1;
+            }
+            const config = data;
+            // Selects the configs available for the ROS version installed
+            const availableConfigs = {};
+            availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
+            console.log(availableConfigs);
+            setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
+            setCircuitOptions(availableConfigs[`ROS${ros_version}`])
+            context.mapSelected =
+              availableConfigs[`ROS${ros_version}`][0].launch["0"].name;
+          })
+            setCircuitOptions(data.launch);   
+                
         })
         .catch((error) => {
-          const availableConfigs = {};
-          availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
-          setCircuitOptions(availableConfigs[`ROS${ros_version}`]);
-          setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
-        })        
-      })
-      .catch((error) => {
-        console.log("Error fetching circuit options:", error);
-      });
+            console.log("Error fetching circuit options:", error);
+        });
   }, []);
 
   
 
   return (
-
-    circuitOptions ? 
-    <Box sx={{marginLeft: "20px"}}>
-      <FormControl>
+    <Box >
+      <FormControl   sx={{
+          m: 1,
+          minWidth: 120,
+          backgroundColor: disabled ?  "#f57f51":"#4caf50" ,
+          border: "solid 0.4px black",
+          borderRadius: "5px"
+        }} size="small">
         <InputLabel id={"circuit-selector-label"}>
-          <LandscapeIcon></LandscapeIcon>
+          World
         </InputLabel>
         <Select
-          disabled={disabled}
+          
           value={selectedCircuit}
           labelId="circuit-selector-label"
           id={"circuit-selector"}
@@ -118,13 +123,13 @@ export default function MapSelectorFollow(props) {
             handleCircuitChange(e.target.value);
           }}
         >
-          {circuitOptions.map((option) => (
+          {circuitOptions && circuitOptions.map((option) => (
             <MenuItem key={option.launch["0"].name} value={option}>
               {option.launch["0"].name}
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-    </Box> : null
+    </Box>
   );
 }

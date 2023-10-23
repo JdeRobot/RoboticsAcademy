@@ -133,6 +133,7 @@ const CommsManager = (address) => {
     RESPONSES: ["ack", "error"],
     UPDATE: "update",
     STATE_CHANGED: "state-changed",
+    INTROSPECTION: "introspection",
   };
 
   const commands = {

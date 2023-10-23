@@ -3,19 +3,21 @@ import rclpy
 import cv2
 
 from jderobot_drones.drone_wrapper import DroneWrapper
+from jderobot_drones.image_sub import ImageSubscriberNode
 
 
 # Hardware Abstraction Layer
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
         rclpy.init(args=None)
         node = rclpy.create_node('HAL')
 
         self.image = None
         self.drone = DroneWrapper()
+        self.cam = ImageSubscriberNode()
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -26,12 +28,12 @@ class HAL:
     
     # Get Image from ROS Driver Camera
     def get_frontal_image(self):
-        image = self.drone.get_frontal_image()
+        image = self.cam.get_frontal_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
 
     def get_ventral_image(self):
-        image = self.drone.get_ventral_image()
+        image = self.cam.get_ventral_image()
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         return image_rgb
 

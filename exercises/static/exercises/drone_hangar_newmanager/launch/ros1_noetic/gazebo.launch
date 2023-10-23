@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <!-- world -->
-    <arg name="world" default="/RoboticsAcademy/exercises/static/exercises/drone_hangar_newmanager/launch/ros1_noetic/drone_hangar.world"/>
+    <arg name="world" default="drone_hangar.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="false"/>

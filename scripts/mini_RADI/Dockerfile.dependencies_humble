@@ -55,8 +55,6 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     python3-argcomplete \
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
-# Source ros humble
-RUN echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc
 
 # Install Gazebo 11
 RUN sudo rosdep fix-permissions \
@@ -74,7 +72,6 @@ RUN sudo rosdep fix-permissions \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
-RUN echo 'source /usr/share/gazebo/setup.bash' >> ~/.bashrc
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -172,7 +169,6 @@ RUN apt-get update && apt-get install -y \
 RUN git clone -b v1.14.0-beta2 https://github.com/PX4/PX4-Autopilot.git --recursive \
   && cd /PX4-Autopilot \
   && DONT_RUN=1 make px4_sitl gazebo
-RUN echo 'export PX4_FOLDER=/PX4-Autopilot' >> ~/.bashrc
 
 RUN git clone -b v2.4.1 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tmp/MicroXRCEAgent \
   && cd /tmp/MicroXRCEAgent \
@@ -194,7 +190,6 @@ RUN git clone https://github.com/pawanw17/px4_ros_com.git /home/drones_ws/src/px
 WORKDIR /home/drones_ws/
 RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO}
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
-RUN echo 'source /home/drones_ws/install/setup.bash' >> ~/.bashrc
 
 # Download and install OMPL library
 COPY install-ompl-ubuntu.sh /
