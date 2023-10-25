@@ -6,7 +6,7 @@ import cv2
 class Map:
 	def __init__(self, pose3d, circuit):
 		self.pose3d = pose3d
-		self.circuit = circuit
+		self.circuit = circuit.lower()
 	
 	def RTx(self, angle, tx, ty, tz):
 		RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], 
@@ -33,7 +33,7 @@ class Map:
 		x = pose.x
 		y = pose.y
 		
-		if self.circuit == "default":
+		if self.circuit == "simple":
 			# Default
 			scale_y = 1.25; offset_y = 77
 			scale_x = -2.6; offset_x = 151
@@ -46,7 +46,7 @@ class Map:
 			#scale_y = 0.6; offset_y = 76
 			scale_y = 0.685; offset_y = 77
 			scale_x = -0.48; offset_x = 151
-		elif self.circuit == "nbg":
+		elif self.circuit == "nürburgring":
 			scale_y = 1.5; offset_y = 77
 			scale_x = -1.495; offset_x = 151
 		

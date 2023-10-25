@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 const UpdateView = (props) => {
   const width = 1280;
   const height = 720;
+
   const canvasRef = React.useRef(null);
   const updateRef = React.useRef({});
   const rendererRef = React.useRef(new updateRenderer());
@@ -17,7 +18,30 @@ const UpdateView = (props) => {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      updateRef.current = message.data.update;
+    };
+
+    console.log("TestShowScreen subscribing to ['update'] events");
+    RoboticsExerciseComponents.commsManager.subscribe(
+      [RoboticsExerciseComponents.commsManager.events.UPDATE],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['update'] events");
+      RoboticsExerciseComponents.commsManager.unsubscribe(
+        [RoboticsExerciseComponents.commsManager.events.UPDATE],
+        callback
+      );
+      rendererRef.current.stop();
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const callback = (message) => {
+      if (message.data.state === "running") {
+        rendererRef.current.run();
+      } else if (message.data.state === "ready") {
         switch (context.mapSelected) {
           case "Default":
           case "Default Ackermann":
@@ -38,9 +62,24 @@ const UpdateView = (props) => {
           default:
             setCircuit(defaultCircuit);
         }
+        try {
+          rendererRef.current.stop();
+        } catch (error) {}
+        rendererRef.current.init(
+          width,
+          height,
+          canvasRef.current,
+          updateRef,
+          circuit,
+          context.mapSelected
+        );
+      } else {
+        try {
+          rendererRef.current.stop();
+        } catch (error) {}
       }
     };
-    console.log("TestShowScreen subscribing to ['update'] events");
+
     RoboticsExerciseComponents.commsManager.subscribe(
       [RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
       callback
@@ -52,47 +91,16 @@ const UpdateView = (props) => {
         [RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
         callback
       );
-      rendererRef.current.stop();
-    };
-  }, []);
-
-  React.useEffect(() => {
-    // Callback doesn't update renderer, it only stores the new image and position
-    const callback = (message) => {
-      updateRef.current = message.data.update;
-    };
-
-    // Subscribe update event
-    console.log("TestShowScreen subscribing to ['update'] events");
-    RoboticsExerciseComponents.commsManager.subscribe(
-      [RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
-
-    // Init renderer when circuit image is loaded
-    rendererRef.current.init(
-      width,
-      height,
-      canvasRef.current,
-      updateRef,
-      circuit
-    );
-    rendererRef.current.run();
-
-    // Unsubscribe update event and stop renderer
-    return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      RoboticsExerciseComponents.commsManager.unsubscribe(
-        [RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
-      rendererRef.current.stop();
     };
   }, [circuit]);
 
   return (
     <Box sx={{ height: "100%" }}>
-      <canvas ref={canvasRef} className={"exercise-canvas"}></canvas>
+      <canvas
+        ref={canvasRef}
+        className={"exercise-canvas"}
+        id="canvas"
+      ></canvas>
     </Box>
   );
 };

@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Box, Typography, Tooltip } from "@mui/material";
 import "../../styles/Indicator.css";
+import PropTypes from "prop-types";
 
-export const ConnectionIndicator = () => {
+function ConnectionIndicator() {
+  const [radiVersion, setRadiVersion] = useState("");
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
@@ -24,10 +26,30 @@ export const ConnectionIndicator = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const callback = (message) => {
+      setRadiVersion(message.data.radi_version);
+    };
+    window.RoboticsExerciseComponents.commsManager.suscribreOnce(
+      [window.RoboticsExerciseComponents.commsManager.events.INTROSPECTION],
+      callback
+    );
+  }, []);
+
   return (
-    <div className={connected ? "ready" : "waiting"}>
-      <span className="word">Robotics</span>
-      <span className="word">Backend</span>
-    </div>
+    <Tooltip title="Robotics Backend">
+      <Box className={connected ? "ready" : "waiting"}>
+        <p className="title">Robotics Backend</p>
+        <Typography sx={{ fontSize: "0.8rem" }} className="word">
+          {radiVersion}
+        </Typography>
+      </Box>
+    </Tooltip>
   );
+}
+
+ConnectionIndicator.propTypes = {
+  exerciseName: PropTypes.string,
 };
+
+export default ConnectionIndicator;

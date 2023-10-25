@@ -7,7 +7,6 @@ const Lasers = (props) => {
         const callback = (message) => {
             if(message.data.update.map){
             const map_data = JSON.parse(message.data.update.map);
-            console.log(JSON.parse(message.data.update.map))
             paintEvent(guiCanvasRef.current, map_data.car, map_data.obstacle, map_data.average, map_data.lasers, map_data.ranges)
             }
         };
