@@ -6,17 +6,36 @@ const exerciseConfig = JSON.parse(
   document.getElementById("exercise-config").textContent
 );
 const exerciseId = exerciseConfig.exercise_id;
+var ros_version = 1;
 
 export default function MapSelectorFollow(props) {
 
   const handleCircuitChange = (e) => {
-    context.mapSelected = e.launch["0"].name
+    context.mapSelected = e.name
     setSelectedCircuit(e);
-    const config = e;
+    let full_config = JSON.parse(
+      document.getElementById("exercise-config").textContent
+    );
+    console.log(JSON.stringify(full_config));
+    let config = full_config[`ROS${ros_version}`][0];        
+    console.log(JSON.stringify(config));
+    config.application.params = { circuit: e.name };
+    config.launch_file = e.path;
     config['exercise_id'] = exerciseId;
-    config["visualization"] = "gazebo_rae"
+    config["world"] = "gazebo";
+    config["visualization"] = "gazebo_rae";
+    config["world"] = "gazebo";
+    if (ros_version == 1) {
+      config["resource_folders"] = "$EXERCISE_FOLDER/launch/ros1_noetic";      
+    }
+    if (ros_version == 2) {
+      config["resource_folders"] = "$EXERCISE_FOLDER/launch/ros2_humble";
+    }    
+    config["model_folders"] = "$CUSTOM_ROBOTS_FOLDER/autoparking/models";
+    config["launch_file"] = e.path;
+    config["visualization"] = "gazebo_rae";
     config.height = window.innerHeight / 2;
-    config.width = window.innerWidth / 2;         
+    config.width = window.innerWidth / 2;       
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
       window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
         "Launching World in Robotics Backend"
@@ -71,7 +90,7 @@ export default function MapSelectorFollow(props) {
         .then((response) => response.json())
         .then((data) => {    
           const rosVersionURL = `${serverBase}/exercises/ros_version/`;
-        let ros_version = 1;
+        ros_version = 1;
         fetch(rosVersionURL)
           .then((res) => res.json())
           .then((msg) => {
@@ -88,7 +107,7 @@ export default function MapSelectorFollow(props) {
             setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
             setCircuitOptions(availableConfigs[`ROS${ros_version}`])
             context.mapSelected =
-              availableConfigs[`ROS${ros_version}`][0].launch["0"].name;
+              availableConfigs[`ROS${ros_version}`][0].name;
           })
             setCircuitOptions(data.launch);   
                 
@@ -124,8 +143,8 @@ export default function MapSelectorFollow(props) {
           }}
         >
           {circuitOptions && circuitOptions.map((option) => (
-            <MenuItem key={option.launch["0"].name} value={option}>
-              {option.launch["0"].name}
+            <MenuItem key={option.name} value={option}>
+              {option.name}
             </MenuItem>
           ))}
         </Select>

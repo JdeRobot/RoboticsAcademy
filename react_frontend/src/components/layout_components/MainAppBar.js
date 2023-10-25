@@ -73,6 +73,12 @@ function MainAppBar(props) {
           selectedConfig = config;
         }
         selectedConfig["exercise_id"] = config["exercise_id"];
+        selectedConfig["world"] = config["world"];
+        let resource_folders = JSON.parse(config["resource_folders"]);
+        selectedConfig["resource_folders"] = resource_folders[`ROS${ros_version}`];
+        selectedConfig["model_folders"] = config["model_folders"];
+        let launch_files = JSON.parse(config["launch_files"]);
+        selectedConfig["launch_file"] = launch_files[`ROS${ros_version}`][0].path;
         selectedConfig["visualization"] = config["visualization"];
         window.RoboticsExerciseComponents.commsManager
           .launch(selectedConfig)

@@ -21,6 +21,13 @@ VisualizationType = (
     ('physic_rae', "Physic RAE")
 )
 
+WorldType = (
+    ('none', "None"),
+    ('gazebo', "Gazebo"),
+    ('drones', "Gazebo Drones"),
+    ('physical', "Physical")
+)
+
 # Create your models here.
 
 class Exercise(models.Model):
@@ -43,11 +50,20 @@ class Exercise(models.Model):
         choices=StatusChoice,
         default="ACTIVE"
     )
+    world = models.CharField(
+        max_length=20,
+        choices=WorldType,
+        default="none"
+    )
+    resource_folders = models.TextField(default=json.dumps({}))
+    model_folders = models.CharField(max_length=100, blank=False, default="$CUSTOM_ROBOTS_FOLDER/")
+    launch_files = models.TextField(default=json.dumps({}))
     visualization = models.CharField(
         max_length=20,
         choices=VisualizationType,
         default="none"
-    )
+    )    
+    
     configuration = models.TextField(default=json.dumps({}))
 
     def __str__(self):
@@ -63,6 +79,10 @@ class Exercise(models.Model):
         # extend exercise configuration with some useful stuff
         # TODO: Review if there's a better way
         exercise_configuration["exercise_id"] = self.exercise_id
+        exercise_configuration["world"] = self.world
+        exercise_configuration["resource_folders"] = self.resource_folders
+        exercise_configuration["model_folders"] = self.model_folders
+        exercise_configuration["launch_files"] = self.launch_files
         exercise_configuration["visualization"] = self.visualization
 
         # compatibility code for old assets field
