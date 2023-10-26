@@ -58,10 +58,9 @@ function LaunchIndicator(props) {
             // Selects the configs available for the ROS version installed
             const availableConfigs = {};
             availableConfigs[`ROS${ros_version}`] = config[`ROS${ros_version}`];
-            console.log(availableConfigs);
             setSelectedCircuit(availableConfigs[`ROS${ros_version}`][0]);
             context.mapSelected =
-              availableConfigs[`ROS${ros_version}`][0].launch["0"].name;
+              availableConfigs[`ROS${ros_version}`][0].name;
           })
           .catch((error) => {
             console.error(error);
@@ -77,7 +76,7 @@ function LaunchIndicator(props) {
       <Box className={connected ? "ready" : "waiting"}>
         <p className="title">World</p>
         <Typography sx={{ fontSize: "0.8rem" }} className="word">
-          {selectedCircuit && selectedCircuit.launch["0"].name}
+          {selectedCircuit && selectedCircuit.name}
         </Typography>
       </Box>
     </Tooltip>

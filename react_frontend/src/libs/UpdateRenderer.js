@@ -36,6 +36,10 @@ function UpdateRenderer() {
     circuitImage.onload = () => (circuitImageLoaded = true);
     circuitImage.src = circuitImageSrc;
     this.world = world.toLowerCase();
+    let spaceInd = this.world.indexOf(' ');  
+    if (spaceInd !== -1) {
+      this.world = this.world.slice(0, spaceInd);
+    }
   };
 
   this.run = () => {

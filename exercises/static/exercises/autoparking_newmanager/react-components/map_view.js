@@ -13,7 +13,6 @@ export function paintEvent(canvas, car, obs, avg, lasers, ranges) {
 
   // Draw Car
   drawCar();
-	console.log(lasers)
   // Draw Laser
   if (lasers.length){
   drawLaser(lasers[0], ranges[0], "f", "#FF0000");
