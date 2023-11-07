@@ -243,6 +243,7 @@ class Template:
         map_module.MAP = importlib.util.module_from_spec(
             importlib.machinery.ModuleSpec("MAP", None))
         map_module.MAP.rowColumn = self.gui.map.rowColumn
+        map_module.MAP.getMap = self.gui.map.getMap
 
         # Adding modules to system
         # Protip: The names should be different from
