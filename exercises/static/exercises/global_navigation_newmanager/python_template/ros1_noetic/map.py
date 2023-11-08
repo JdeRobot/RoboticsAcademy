@@ -2,6 +2,7 @@ import numpy as np
 import math
 from math import pi as pi
 import cv2
+import matplotlib.pyplot as plt
 
 class MAP:
 	def __init__(self, pose3d):
@@ -129,5 +130,5 @@ class MAP:
 	def robotPose(self):
 		pass
 
-	def getMap(self):
-		pass
+	def getMap(self, url):
+		return plt.imread(url)
