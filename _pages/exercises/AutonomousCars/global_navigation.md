@@ -191,7 +191,7 @@ while True:
 * `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
 * `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image
-* `MAP.getMap(url)` - - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The URL of the Global Navigation map is '/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png', so the instruction to get the map is
+* `MAP.getMap(url)` - - Returns a numpy array with the image data in grayscale as a 2 dimensional array. The URL of the Global Navigation map is '/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png', so the instruction to get the map is
 ```
 array = MAP.getMap('/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png')
 ```
