@@ -198,8 +198,6 @@ No, you can solve this exercise without taking care of the **land state** of the
 ## Videos
 
 {% include youtubePlayer.html id=page.youtubeId4 %}
-<br>
-{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ### Demonstrative video of the solution
 
@@ -210,4 +208,4 @@ No, you can solve this exercise without taking care of the **land state** of the
 ## Contributors
 
 - Contributors: [Nikhil Khedekar](https://github.com/nkhedekar), [JoseMaria Cañas](https://github.com/jmplaza), [Diego Martín](https://github.com/diegomrt), [Pedro Arias](https://github.com/pariaspe), [Arkajyoti Basak](https://github.com/iamarkaj) and [Pawan Wadhwani](https://github.com/pawanw17).
-- Maintained by [Pedro Arias](https://github.com/pariaspe), [Arkajyoti Basak](https://github.com/iamarkaj) and [Pawan Wadhwani](https://github.com/pawanw17).
+- Maintained by [Pedro Arias](https://github.com/pariaspe) and [Pawan Wadhwani](https://github.com/pawanw17).
