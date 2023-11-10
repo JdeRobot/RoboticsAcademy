@@ -131,4 +131,4 @@ class MAP:
 		pass
 
 	def getMap(self, url):
-		return plt.imread(url)
+		return cv2.imread(url, cv2.IMREAD_GRAYSCALE)
