@@ -33,7 +33,7 @@ pip install django
 pip install djangorestframework
 pip install django-webpack-loader
 pip install django-cors-headers
-pip install pylint
+pip install pylint==2.17.4
 ```
 
 4) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
@@ -43,7 +43,7 @@ cd react_frontend/ && yarn install && yarn run dev
 
 5) Now at the root of the project we are ready to launch the Django webserver
 ```
-python3 manage.py runserver
+python3 manage.py runserver 0.0.0.0:7164 
 ```
 The webserver is not connected with the RADI.
 
