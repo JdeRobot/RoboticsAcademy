@@ -36,10 +36,15 @@ export default function MapSelector(props) {
     config['exercise_id'] = exerciseId;
     config["world"] = "gazebo";
     config["visualization"] = "gazebo_rae";
-    config["world"] = "gazebo";
     config["resource_folders"] = "$EXERCISE_FOLDER/launch/ros2_humble";   
     config["model_folders"] = "$CUSTOM_ROBOTS_FOLDER/amazon_hospital/models";
     config["launch_file"] = e.path;
+    if (e.name == "World 2") {
+      document.getElementById("amazon_map_canvas").style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png')";
+    }
+    else {
+      document.getElementById("amazon_map_canvas").style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')";
+    }
     config["visualization"] = "gazebo_rae";
     config.height = window.innerHeight / 2;
     config.width = window.innerWidth / 2;    
