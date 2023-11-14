@@ -9,7 +9,7 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 import matplotlib.pyplot as plt
-
+from shared.image import SharedImage
 from interfaces.pose3d import ListenerPose3d
 
 from map import Map
@@ -43,9 +43,7 @@ class GUI:
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
 
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        self.shared_image = SharedImage("guiimage")
 
         self.hal = hal
         t.start()
@@ -84,69 +82,40 @@ class GUI:
     # encode the image data to be sent to websocket
     def payloadImage(self):
 
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
-
-        image = image_to_be_shown
+        image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-
-        if (image_to_be_shown_updated == False):
-            return payload
-
-        colored_image = self.process_colors(image)
-
-        shape = colored_image.shape
-        frame = cv2.imencode('.PNG', colored_image)[1]
+    	
+        shape = image.shape
+        frame = cv2.imencode('.PNG', image)[1]
         encoded_image = base64.b64encode(frame)
-
+        
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
-
+        
         return payload
     
     def process_colors(self, image):
         colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
-        for i in range(image.shape[0]):
-            for j in range(image.shape[1]):
-                value = image[i][j]                
-                if value < 128: # Grayscale for values < 128
-                    colored_image[i][j][0] = value * 2
-                    colored_image[i][j][1] = value * 2
-                    colored_image[i][j][2] = value * 2
-                elif value == 128:  # 128 = red
-                    colored_image[i][j][0] = red[0]
-                    colored_image[i][j][1] = red[1]
-                    colored_image[i][j][2] = red[2]
-                elif value == 129:  # 129 = orange
-                    colored_image[i][j][0] = orange[0]
-                    colored_image[i][j][1] = orange[1]
-                    colored_image[i][j][2] = orange[2]
-                elif value == 130:  # 130 = yellow
-                    colored_image[i][j][0] = yellow[0]
-                    colored_image[i][j][1] = yellow[1]
-                    colored_image[i][j][2] = yellow[2]
-                elif value == 131:  # 131 = green
-                    colored_image[i][j][0] = green[0]
-                    colored_image[i][j][1] = green[1]
-                    colored_image[i][j][2] = green[2]
-                elif value == 132:  # 132 = blue
-                    colored_image[i][j][0] = blue[0]
-                    colored_image[i][j][1] = blue[1]
-                    colored_image[i][j][2] = blue[2]
-                elif value == 133:  # 133 = indigo
-                    colored_image[i][j][0] = indigo[0]
-                    colored_image[i][j][1] = indigo[1]
-                    colored_image[i][j][2] = indigo[2]
-                elif value == 134:  # 134 = violet
-                    colored_image[i][j][0] = violet[0]
-                    colored_image[i][j][1] = violet[1]
-                    colored_image[i][j][2] = violet[2]
+
+        # Grayscale for values < 128
+        mask = image < 128
+        colored_image[mask] = image[mask][:, None] * 2
+
+        # Color lookup table
+        color_table = {
+            128: red,
+            129: orange,
+            130: yellow,
+            131: green,
+            132: blue,
+            133: indigo,
+            134: violet
+        }
+
+        for value, color in color_table.items():
+            mask = image == value
+            colored_image[mask] = color
+
         return colored_image
 
     # Update the gui
@@ -181,10 +150,7 @@ class GUI:
 
     # load the image data
     def showNumpy(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+        self.shared_image.add(self.process_colors(image))
 
     def getMap(self, url):        
         return plt.imread(url)
