@@ -7,6 +7,7 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 import numpy as np
+from shared.image import SharedImage
 from interfaces.pose3d import ListenerPose3d
 import re
 import os
@@ -26,10 +27,8 @@ class GUI:
 
         self.host = host
 
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
-
+        self.shared_image = SharedImage("numpyimage")
+        
         self.array_lock = threading.Lock()
         self.array = None
 
@@ -67,37 +66,21 @@ class GUI:
 
     # encode the image data to be sent to websocket
     def payloadImage(self):
-
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
-
-        image = image_to_be_shown
+        image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-
-        if (image_to_be_shown_updated == False):
-            return payload
-
+    	
         shape = image.shape
         frame = cv2.imencode('.PNG', image)[1]
         encoded_image = base64.b64encode(frame)
-
+        
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
-
+        
         return payload
 
-    # load the image data
     def showNumpy(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+        processed_image = np.stack((image,) * 3, axis=-1)
+        self.shared_image.add(processed_image)
 
     # Process the array(ideal path) to be sent to websocket
     def showPath(self, array):
