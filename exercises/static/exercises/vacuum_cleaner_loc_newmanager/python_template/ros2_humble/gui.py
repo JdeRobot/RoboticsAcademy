@@ -1,5 +1,6 @@
 import json
 import cv2
+import numpy as np
 import base64
 import threading
 import time
@@ -8,12 +9,22 @@ from websocket_server import WebsocketServer
 import logging
 import os
 import rclpy
+import matplotlib.pyplot as plt
+from shared.image import SharedImage
 from interfaces.pose3d import ListenerPose3d
 
 from map import Map
 
 # Graphical User Interface Class
 
+# Matrix colors
+red = [0, 0, 255]
+orange = [0, 165, 255]
+yellow = [0, 255, 255]
+green = [0, 255, 0]
+blue = [255, 0, 0]
+indigo = [130, 0, 75]
+violet = [211, 0, 148]
 
 class GUI:
     # Initialization function
@@ -31,6 +42,8 @@ class GUI:
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
+
+        self.shared_image = SharedImage("guiimage")
 
         self.hal = hal
         t.start()
@@ -65,6 +78,45 @@ class GUI:
         self.acknowledge = value
         self.acknowledge_lock.release()
 
+    # encode the image data to be sent to websocket
+    def payloadImage(self):
+
+        image = self.shared_image.get()
+        payload = {'image': '', 'shape': ''}
+    	
+        shape = image.shape
+        frame = cv2.imencode('.PNG', image)[1]
+        encoded_image = base64.b64encode(frame)
+        
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
+        
+        return payload
+
+    def process_colors(self, image):
+        colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+
+        # Grayscale for values < 128
+        mask = image < 128
+        colored_image[mask] = image[mask][:, None] * 2
+
+        # Color lookup table
+        color_table = {
+            128: red,
+            129: orange,
+            130: yellow,
+            131: green,
+            132: blue,
+            133: indigo,
+            134: violet
+        }
+
+        for value, color in color_table.items():
+            mask = image == value
+            colored_image[mask] = color
+
+        return colored_image
+
     # Update the gui
     def update_gui(self):
         # Payload Map Message
@@ -74,6 +126,9 @@ class GUI:
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
+
+        payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -85,8 +140,14 @@ class GUI:
         if (message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-    # Activate the server
+    # load the image data
+    def showNumpy(self, image):
+        self.shared_image.add(self.process_colors(image))
 
+    def getMap(self, url):        
+        return plt.imread(url)
+
+    # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)

@@ -126,6 +126,10 @@ class Template:
             importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(
             importlib.machinery.ModuleSpec("GUI", None))
+        
+        # Add GUI functions
+        gui_module.GUI.showNumpy = self.gui.showNumpy
+        gui_module.GUI.getMap = self.gui.getMap
 
         # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage
