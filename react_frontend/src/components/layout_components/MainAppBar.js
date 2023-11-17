@@ -7,7 +7,8 @@ import RoboticsTheme from "Components/RoboticsTheme.js";
 import PropTypes from "prop-types";
 import { useUnload } from "Hooks/useUnload";
 import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
-import AppIndicator from "./RAM/AppIndicator";
+import AppIndicator from "../visualizers/AppIndicator";
+import ConnectionIndicator from "../visualizers/ConnectionIndicator";
 
 function MainAppBar(props) {
   const maxConnectionAttempts = 3;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Tooltip } from "@mui/material";
-import "../../../css/Indicator.css";
+import "../../styles/Indicator.css";
 
 export default function WorldIndicator(props) {
   const exerciseConfig = JSON.parse(
