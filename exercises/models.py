@@ -104,7 +104,7 @@ class Exercise(models.Model):
                 }
                 configurations.append(config)
 
-                context = {'exercise_base': "exercise_base_2_RA.html",
+            context = {'exercise_base': "exercise_base_2_RA.html",
                    'exercise_id': self.exercise_id,
                    'exercise_config': configurations,
                 }
