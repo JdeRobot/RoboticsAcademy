@@ -80,9 +80,10 @@ class Exercise(models.Model):
         launch_files_dict = json.loads(self.launch_files)
         output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
         output_str = output.decode('utf-8')
-        ros_version = output_str[0]
-
-
+        if output_str.strip() == '1':
+            ros_version = 'ROS1'
+        else:
+            ros_version = 'ROS2'
         configurations = []
 
         if len(launch_files_dict[ros_version]) == len(exercise_configuration[ros_version]):

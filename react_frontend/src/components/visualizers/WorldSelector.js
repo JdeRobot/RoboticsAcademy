@@ -11,6 +11,9 @@ export default function WorldSelector(props) {
   const [configurations, setConfigurations] = useState(exerciseConfig);
 
   useEffect(() => {
+    context.mapSelected =
+    exerciseConfig[0].name;
+})
     const callback = (message) => {
       if (message.data.state !== "connected") {
         setDisabled(false);
@@ -32,6 +35,7 @@ export default function WorldSelector(props) {
   }, []);
 
   const handleCircuitChange = (config) => {
+    config.name
     setSelectedCircuit(config);
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
       window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
