@@ -4,6 +4,7 @@ models.py
 
 import json
 from django.db import models
+import subprocess
 
 
 StatusChoice = (
@@ -75,25 +76,35 @@ class Exercise(models.Model):
         Build and return context
         """
         exercise_configuration = json.loads(self.configuration)
+        resource_folders_dict = json.loads(self.resource_folders)
+        launch_files_dict = json.loads(self.launch_files)
+        output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
+        output_str = output.decode('utf-8')
+        ros_version = output_str[0]
 
-        # extend exercise configuration with some useful stuff
-        # TODO: Review if there's a better way
-        exercise_configuration["exercise_id"] = self.exercise_id
-        exercise_configuration["world"] = self.world
-        exercise_configuration["resource_folders"] = self.resource_folders
-        exercise_configuration["model_folders"] = self.model_folders
-        exercise_configuration["launch_files"] = self.launch_files
-        exercise_configuration["visualization"] = self.visualization
 
-        # compatibility code for old assets field
-        # TODO: Remove if not needed
-        exercise_assets = json.loads(self.assets)
+        configurations = []
 
-        # compatibility context
-        context = {'exercise_base': "exercise_base_2_RA.html",
+        if len(launch_files_dict[ros_version]) == len(exercise_configuration[ros_version]):
+            for i in range(len(launch_files_dict[ros_version])):
+                launch_file = launch_files_dict[ros_version][i]
+                application_config = exercise_configuration[ros_version][i]
+
+                config = {
+                    "launch": {},
+                    "application": application_config["application"],
+                    "exercise_id": str(self.exercise_id),
+                    "visualization": self.visualization,
+                    "world": self.world,
+                    "resource_folders": resource_folders_dict[ros_version],
+                    "model_folders": self.model_folders,
+                    "launch_file": launch_file["path"],
+                    "name": launch_file["name"]
+                }
+                configurations.append(config)
+
+                context = {'exercise_base': "exercise_base_2_RA.html",
                    'exercise_id': self.exercise_id,
-                   'exercise_config': exercise_configuration,
-                   'indexs': exercise_assets.get('indexs', []),
-                   'statics': exercise_assets.get('statics', [])}
-
+                   'exercise_config': configurations,
+                }
         return context
