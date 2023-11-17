@@ -34,7 +34,7 @@ export default function WorldSelector(props) {
   }, []);
 
   const handleCircuitChange = (config) => {
-    config.name;
+    context.mapSelected = config.name;
     setSelectedCircuit(config);
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
       window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
