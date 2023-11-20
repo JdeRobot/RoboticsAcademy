@@ -1,13 +1,13 @@
 // Retreive the canvas elements and context
-let carWidth = 40;
-let carHeight = 95;
+let carWidth = 28;
+let carHeight = 77;
 let ctx= null
 let mapCanvas = null
 
 export function paintEvent(canvas, car, obs, avg, lasers, ranges) {
     mapCanvas = canvas
     ctx = mapCanvas.getContext("2d");
-    
+
 
   ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 
@@ -42,7 +42,7 @@ function drawCar() {
 function drawLaser(laser, max_range, pos, color) {
   let originx = 0;
   let originy = 0;
-  let resizeFactor = 0.8;
+  let resizeFactor = 0.53;
   ctx.strokeStyle = color;
   switch (pos) {
     case "f":
