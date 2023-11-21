@@ -3,17 +3,41 @@ import PropTypes from "prop-types";
 import { drawImage, drawLeftImage} from "./helpers/showImageMontecarlo";
 
 
-function SpecificDroneHangar(props) {
-  const [image, setImage] = React.useState(null)
+function SpecificMontecarloVisualLoc(props) {
+  const guiCanvasRef = React.useRef();
+
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
+
     const callback = (message) => {
-      if(message.data.update.image){
-        const image = JSON.parse(message.data.update.image)
-        if(image.image){
-          drawImage(message.data.update)
-        } 
-      }     
+      const updateData = message.data.update;
+
+      // Lógica para manejar la imagen
+      if (updateData.image) {
+        const image = JSON.parse(updateData.image);
+        if (image.image) {
+          drawImage(updateData);
+        }
+      }
+
+      // Lógica para manejar el mapa
+      if (updateData.map) {
+        const pose = updateData.map.substring(1, updateData.map.length - 1);
+        const content = pose.split(",").map(item => parseFloat(item));
+        draw(
+          guiCanvasRef.current,
+          content[0],
+          content[1],
+          content[2],
+          content[3]
+        );
+      }
+      if (updateData.particles){
+        const particles = JSON.parse(updateData.particles);
+        if(particles != "") {
+            printParticles(guiCanvasRef.current, particles);
+        }
+      }
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -30,19 +54,28 @@ function SpecificDroneHangar(props) {
     };
   }, []);
 
-
-
   return (
-    <div style={{display: "flex",   width: "100%",
-    height: "100%"}}>
-      <canvas id="gui_canvas_left"></canvas>
+    <div style={{ display: "flex", width: "100%", height: "100%" }}>
+      <canvas
+        ref={guiCanvasRef}
+        style={{
+          backgroundImage:
+            "url('/static/exercises/montecarlo_visual_loc_newmanager/resources/mapgrannyannie.png')",
+          border: "2px solid #d3d3d3",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
+          width: "100%",
+          height: "100%"
+        }}
+      />
       <canvas id="gui_canvas_right"></canvas>
     </div>
   );
 }
 
-SpecificDroneHangar.propTypes = {
+
+SpecificMontecarloVisualLoc.propTypes = {
   circuit: PropTypes.string,
 };
 
-export default SpecificDroneHangar
+export default SpecificMontecarloVisualLoc
