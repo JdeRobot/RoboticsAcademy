@@ -6,6 +6,7 @@ import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
+import os
 
 from interfaces.pose3d import ListenerPose3d
 

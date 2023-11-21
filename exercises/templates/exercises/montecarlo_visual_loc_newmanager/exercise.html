@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block react-content %}
-    {% react_component exercise/vacuum_cleaner_newmanager/BasicVacuumCleaner %}
+    {% react_component exercise/montecarlo_visual_loc_newmanager/MontecarloVisualLoc %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
             {% react_component components/layout_components/MainAppBar exerciseName="Montecarlo Visual Loc" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc" %} 
             {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}   
@@ -19,7 +19,7 @@
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                            {% react_component exercise/vacuum_cleaner_newmanager/SpecificVacuumCleaner %}{% end_react_component %}
+                            {% react_component exercise/montecarlo_visual_loc_newmanager/SpecificMontecarloVisualLoc %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
