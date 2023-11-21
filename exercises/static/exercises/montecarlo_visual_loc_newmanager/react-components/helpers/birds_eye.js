@@ -5,7 +5,7 @@ var trail = [],
 var initialPosition;
 
 // Complete draw function
-function draw(mapCanvas, x, y, ax, ay){
+export function draw(mapCanvas, x, y, ax, ay){
 	let ctx = mapCanvas.getContext("2d")
 	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);	
 
@@ -109,7 +109,7 @@ const reset = document.getElementById("reset");
 
 // Print Particles
 
-function printParticles(canvas, particles) {
+export function printParticles(canvas, particles) {
     var point = [];
 
     for (var i = 0; i < particles.length; i++) {

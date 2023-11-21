@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { drawImage, drawLeftImage} from "./helpers/showImageMontecarlo";
+import { drawImage } from "./helpers/showImageMontecarlo";
+import {draw, printParticles} from "./helpers/birds_eye"
 
 
 function SpecificMontecarloVisualLoc(props) {
