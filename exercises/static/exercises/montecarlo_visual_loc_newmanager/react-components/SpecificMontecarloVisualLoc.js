@@ -65,8 +65,7 @@ function SpecificMontecarloVisualLoc(props) {
           border: "2px solid #d3d3d3",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100% 100%",
-          width: "100%",
-          height: "100%"
+          
         }}
       />
       <canvas id="gui_canvas_right"></canvas>
