@@ -41,8 +41,8 @@ function drawTriangle(ctx, posx, posy, angx, angy){
 
 	ctx.beginPath();
 	
-	px = posx;
-	py = posy;
+	let px = posx;
+	let py = posy;
 	
 	// The main line
 	ctx.strokeStyle = '#FF0000';
@@ -50,8 +50,8 @@ function drawTriangle(ctx, posx, posy, angx, angy){
 	//ctx.lineTo(px, py);
 	
 	// Sides
-	side = 1.5 * Math.hypot(2, 2);
-	
+	let side = 1.5 * Math.hypot(2, 2);
+	let ang
 	if(angx != 0){
 		ang = Math.atan2(angy, angx);
 	}
@@ -59,12 +59,12 @@ function drawTriangle(ctx, posx, posy, angx, angy){
 		ang = Math.PI / 2;
 	}
 	
-	px1 = posx + side * Math.cos(2 * Math.PI / 3 + ang);
-	py1 = posy - side * Math.sin(2 * Math.PI / 3 + ang);
-	px2 = posx + side * Math.cos(2 * Math.PI / 3 - ang);
-	py2 = posy + side * Math.sin(2 * Math.PI / 3 - ang);
-	px3 = posx + side * Math.cos(ang);
-	py3 = posy - side * Math.sin(ang);
+	let px1 = posx + side * Math.cos(2 * Math.PI / 3 + ang);
+	let py1 = posy - side * Math.sin(2 * Math.PI / 3 + ang);
+	let px2 = posx + side * Math.cos(2 * Math.PI / 3 - ang);
+	let py2 = posy + side * Math.sin(2 * Math.PI / 3 - ang);
+	let px3 = posx + side * Math.cos(ang);
+	let py3 = posy - side * Math.sin(ang);
 	
 	ctx.moveTo(px3, py3);
 	ctx.lineTo(px1, py1);
@@ -72,8 +72,8 @@ function drawTriangle(ctx, posx, posy, angx, angy){
 	ctx.lineTo(px2, py2);
 	ctx.lineTo(px3, py3);
 	
-	rx = px;
-	ry = py;
+	let rx = px;
+	let ry = py;
 	
 	ctx.stroke();
 	ctx.closePath();
@@ -101,15 +101,12 @@ function restoreInitialPosition() {
 	draw(initialPosition[0], initialPosition[1], initialPosition[2], initialPosition[3]);
 }
 
-const reset = document.getElementById("reset");
-    reset.addEventListener("click", function(){
-	clearMap();
-});
+
 
 
 // Print Particles
 
-export function printParticles(canvas, particles) {
+export function printParticles(mapCanvas, particles) {
     var point = [];
 
     for (var i = 0; i < particles.length; i++) {
