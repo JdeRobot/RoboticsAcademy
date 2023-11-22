@@ -142,7 +142,7 @@ class ListenerPose3d:
         @type odom: Odometry
 
         '''
-        index = model_states.name.index('roombaROS')
+        index = model_states.name.index('roombaROS_cam')
         pose = model_states.pose[index]
 
         # Translate the pose information to your Pose3d structure
