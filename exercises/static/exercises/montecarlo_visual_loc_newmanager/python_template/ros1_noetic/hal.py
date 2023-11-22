@@ -20,7 +20,7 @@ class HAL:
         self.image = None
         self.camera = ListenerCamera("/TurtlebotROS/cameraR/image_raw")
         self.motors = PublisherMotors("/roombaROS/cmd_vel", 4, 0.3)
-        self.pose3d = ListenerPose3d("/roombaROS/odom")
+        self.pose3d = ListenerPose3d("/gazebo/model_states")
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
