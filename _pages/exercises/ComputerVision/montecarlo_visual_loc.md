@@ -109,11 +109,14 @@ while True:
 * `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
 * `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image
-* `HAL.motors.sendV()` - to set the linear speed
-* `HAL.motors.sendW()` - to set the angular velocity   
+* `HAL.setV()` - to set the linear speed
+* `HAL.setW()` - to set the angular velocity
+* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
+* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
+* `HAL.getPose3d().yaw` - to get the orientation of the robot with regarding the map  
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 * `GUI.showParticles(particles)` - shows the particles on the map. It is necessary to pass a list of particles as an argument. Each particle must be a list with [positionx, positiony, angle].    
-* `GUI.showPose3D(pose)` - shows the estimated position in the 3D viewer. It is necessary to pass a list with [positionx, positiony, positionz]. The 3D viewer will also show the real position of the robot, so you can compare how good your algorithm is.   
+
 
 ## Theory
 
