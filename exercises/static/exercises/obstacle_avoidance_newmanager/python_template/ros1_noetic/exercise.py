@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-from websocket_server import WebsocketServer
+
 import time
 import threading
 import subprocess
@@ -13,8 +13,8 @@ import json
 import importlib
 import os
 
-import rospy
 from std_srvs.srv import Empty
+from websocket_server import WebsocketServer
 
 from gui import GUI, ThreadGUI
 from hal import HAL
