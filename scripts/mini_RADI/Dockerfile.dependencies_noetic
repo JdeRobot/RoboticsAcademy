@@ -134,12 +134,12 @@ RUN apt-get update && apt-get install -y libgtest-dev cmake && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Python 3 pip build dependencies first
-RUN python3 -m pip install --upgrade pip wheel setuptools
+RUN python3 -m pip install --upgrade pip==23.2.1 wheel==0.41.2 setuptools==68.2.2
 
 # Python 3 dependencies installed by pip
-RUN python3 -m pip install argparse argcomplete coverage cerberus empy jinja2 kconfiglib \
-		matplotlib==3.0.* numpy nunavut==1.1.0 packaging pkgconfig pyros-genmsg pyulog \
-		pyyaml requests serial six toml psutil pyulog wheel onnxruntime Pillow opencv-python==4.5.5.64 netron seaborn
+RUN python3 -m pip install argparse==1.4.0 argcomplete==3.1.2 coverage==7.3.2 cerberus==1.3.5 empy==3.3.4 jinja2==3.1.2 kconfiglib==14.1.0 \
+		matplotlib==3.0.* numpy nunavut==1.1.0 packaging==23.2 pkgconfig==1.5.5 pyros-genmsg==0.5.8 pyulog==1.0.1 \
+		pyyaml==6.0.1 requests==2.22.0 serial==0.0.97 six==1.14.0 toml==0.10.2 psutil==5.5.1 wheel==0.41.2 onnxruntime==1.16.1 Pillow==10.0.1 opencv-python==4.5.5.64 netron==7.2.3 seaborn==0.11.2
 
 # manual ccache setup
 RUN ln -sf /usr/bin/ccache /usr/lib/ccache/cc \
@@ -268,13 +268,13 @@ RUN apt-get update && apt-get -y --quiet --no-install-recommends install \
 
 # websocket server dependency
 RUN pip3 install websocket_server posix-ipc django==4.1.7 djangorestframework==3.13.1 django-webpack-loader==1.5.0 django-cors-headers==3.14.0
-RUN python3.8 -m pip install websockets asyncio
+RUN python3.8 -m pip install websockets==11.0.3 asyncio==3.4.3
 
 # RAM dependencies
-RUN python3.8 -m pip install transitions pydantic websocket-client
+RUN python3.8 -m pip install transitions==0.9.0 pydantic==2.4.2 websocket-client==1.6.4
 
 # pip install dependencies
-RUN pip install pylint
+RUN pip install pylint==2.17.7
 
 # apt-get install dependencies
 # Nodejs, x11vnc, xterm, xdummy
