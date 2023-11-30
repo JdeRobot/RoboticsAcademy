@@ -31,6 +31,7 @@ WorldType = (
 
 # Create your models here.
 
+
 class Exercise(models.Model):
     """
     RoboticsCademy Exercise model
@@ -38,10 +39,6 @@ class Exercise(models.Model):
     exercise_id = models.CharField(max_length=40, blank=False, unique=True)
     name = models.CharField(max_length=40, blank=False, unique=True)
     description = models.CharField(max_length=400, blank=False)
-    assets = models.CharField(
-        max_length=2000,
-        default=json.dumps({"notebook": ""})
-    )
     tags = models.CharField(
         max_length=2000,
         default=json.dumps({'tags': ""})
@@ -56,15 +53,12 @@ class Exercise(models.Model):
         choices=WorldType,
         default="none"
     )
-    resource_folders = models.TextField(default=json.dumps({}))
-    model_folders = models.CharField(max_length=100, blank=False, default="$CUSTOM_ROBOTS_FOLDER/")
-    launch_files = models.TextField(default=json.dumps({}))
     visualization = models.CharField(
         max_length=20,
         choices=VisualizationType,
         default="none"
-    )    
-    
+    )
+    launch_files = models.TextField(default=json.dumps({}))
     configuration = models.TextField(default=json.dumps({}))
 
     def __str__(self):
@@ -76,7 +70,6 @@ class Exercise(models.Model):
         Build and return context
         """
         exercise_configuration = json.loads(self.configuration)
-        resource_folders_dict = json.loads(self.resource_folders)
         launch_files_dict = json.loads(self.launch_files)
         output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
         output_str = output.decode('utf-8')
@@ -92,20 +85,17 @@ class Exercise(models.Model):
                 application_config = exercise_configuration[ros_version][i]
 
                 config = {
-                    "launch": {},
                     "application": application_config["application"],
                     "exercise_id": str(self.exercise_id),
                     "visualization": self.visualization,
                     "world": self.world,
-                    "resource_folders": resource_folders_dict[ros_version],
-                    "model_folders": self.model_folders,
-                    "launch_file": launch_file["path"],
+                    "launch_file_path": launch_file["path"],
                     "name": launch_file["name"]
                 }
                 configurations.append(config)
 
             context = {'exercise_base': "exercise_base_2_RA.html",
-                   'exercise_id': self.exercise_id,
-                   'exercise_config': configurations,
-                }
+                       'exercise_id': self.exercise_id,
+                       'exercise_config': configurations,
+                       }
         return context
