@@ -56,7 +56,7 @@ class ListenerParameters:
 
         if os.getcwd() == "/":
             f = open(
-                "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction/" + configFile, "r")
+                "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction_newmanager/python_template/ros1_noetic/" + configFile, "r")
         else:
             f = open(configFile, "r")
 
