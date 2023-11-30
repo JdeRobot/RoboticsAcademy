@@ -38,8 +38,10 @@ function MainAppBar(props) {
           document.getElementById("exercise-config").textContent
         );
         window.RoboticsExerciseComponents.commsManager
-          .launch(config[0])
+          .launchWorld(config[0])
           .then(() => {
+            window.RoboticsExerciseComponents.commsManager
+            .prepareVisualization(config[0].visualization)
             RoboticsReactComponents.MessageSystem.Loading.hideLoading();
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
               "Exercise loaded successfully."

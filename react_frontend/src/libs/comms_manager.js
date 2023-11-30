@@ -138,7 +138,8 @@ const CommsManager = (address) => {
 
   const commands = {
     connect: connect,
-    launch: (configuration) => send("launch", configuration),
+    launchWorld: (configuration) => send("launch_world", configuration),
+    prepareVisualization: (visualization) => send("prepare_visualization", visualization),
     run: () => send("run"),
     stop: () => send("stop"),
     pause: () => send("pause"),
