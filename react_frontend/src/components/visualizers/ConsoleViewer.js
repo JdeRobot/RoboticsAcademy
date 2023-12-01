@@ -7,7 +7,7 @@ function VncConsoleViewer() {
   const [active, setActive] = React.useState(false);
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state === "visualization_ready") {
         setTimeout(() => {
           setActive(true);
         }, 1000);

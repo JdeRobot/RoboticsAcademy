@@ -7,7 +7,7 @@ function GazeboViewer(props) {
   const [enableGazebo, handleEnableGazebo] = React.useState(false);
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state === "visualization_ready") {
         handleEnableGazebo(true);
       }
     };
