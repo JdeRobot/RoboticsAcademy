@@ -13,15 +13,14 @@ export default function MapSelectorFollow(props) {
   const handleCircuitChange = (e) => {
     context.mapSelected = e.name
     setSelectedCircuit(e);
-    let full_config = JSON.parse(
+    const full_config = JSON.parse(
       document.getElementById("exercise-config").textContent
     );
-    console.log(JSON.stringify(full_config));
-    let config = full_config[`ROS${ros_version}`][0];        
+    let config = full_config[0];        
     console.log(JSON.stringify(config));
     config.application.params = { circuit: e.name };
     config.launch_file = e.path;
-    config['exercise_id'] = exerciseId;
+    config['exercise_id'] = "autoparking_newmanager";
     config["world"] = "gazebo";
     config["visualization"] = "gazebo_rae";
     config["world"] = "gazebo";
@@ -78,7 +77,7 @@ export default function MapSelectorFollow(props) {
 
   useEffect(() => {
     const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
-    let requestUrl = `${serverBase}/exercises/exercise/${exerciseId}/launch_files`;
+    let requestUrl = `${serverBase}/exercises/exercise/autoparking_newmanager/launch_files`;
     const request = new Request(requestUrl, {
       method: "POST",
       headers: {
