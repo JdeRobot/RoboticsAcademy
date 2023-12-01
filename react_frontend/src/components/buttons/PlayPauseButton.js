@@ -43,11 +43,10 @@ const PlayPause = (props) => {
     const editorCode = RoboticsReactComponents.CodeEditor.getCode();
 
     window.RoboticsExerciseComponents.commsManager
-      .send("load", {
+      .send("run", {
         code: editorCode,
       })
       .then(() => {
-        runCode();
         setLoading(false);
       })
       .catch((response) => {
@@ -56,18 +55,6 @@ const PlayPause = (props) => {
         console.log(`Received linter message ·${linterMessage}`);
       })
       .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const runCode = () => {
-    window.RoboticsExerciseComponents.commsManager
-      .run()
-      .then(() => {
-        console.log("running");
-      })
-      .catch((response) => {
-        console.error(response);
         setLoading(false);
       });
   };
