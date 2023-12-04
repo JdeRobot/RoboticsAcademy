@@ -138,7 +138,7 @@ class Exercise(models.Model):
                     "world": self.world_type,
                     "resource_folders": resource_folders_dict[ros_version],
                     "model_folders": self.worlds.first().model_folders,
-                    "launch_file": launch_files_dict[ros_version][0]["path"],
+                    "launch_file": launch_files_dict[ros_version][i]["path"],
                     "name": launch_file["name"]
                 }
                 configurations.append(config)
