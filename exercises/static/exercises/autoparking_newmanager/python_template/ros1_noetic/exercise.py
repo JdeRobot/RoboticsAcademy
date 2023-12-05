@@ -44,12 +44,12 @@ class Template:
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
         self.client = websocket.WebSocketApp('ws://127.0.0.1:1905',
-                                on_open=self.on_open,
-                                on_message=self.on_message,
-                                on_error=self.on_error,
-                                on_close=self.on_close)
+                                             on_open=self.on_open,
+                                             on_message=self.on_message,
+                                             on_error=self.on_error,
+                                             on_close=self.on_close)
         self.client.run_forever(ping_timeout=None, ping_interval=0)
-        
+
     # Function that gets called when the server is connected
     def on_open(self, client, server):
         self.client = client
@@ -109,7 +109,7 @@ class Template:
 
         elif (message[:5] == "#play"):
             self.stop_brain = False
-            
+
     def on_error(ws, error):
         print("Error: ", error)
 
@@ -332,11 +332,10 @@ class Template:
 
     def send_ping_message(self):
         """pass"""
-        
 
     # Function to notify the front end that the code was received and sent to execution
     def send_code_message(self):
-        
+        self.client.send_message(self.client, "#exec")
 
     # Function to track the real time factor from Gazebo statistics
     # https://stackoverflow.com/a/17698359
@@ -384,8 +383,8 @@ class Template:
 
         return
 
-
     # Function that gets called when the connected closes
+
     def handle_close(self, client, server):
         print(client, 'closed')
 

@@ -45,9 +45,12 @@ const PlayPause = (props) => {
   
   };
 
+  const config = JSON.parse(
+    document.getElementById("exercise-config").textContent)
+
   const runCode = (code) => {
     window.RoboticsExerciseComponents.commsManager
-      .run(code)
+      .run({code: code, template:config[0].template})
       .then(() => {
         console.log("running");
       })
