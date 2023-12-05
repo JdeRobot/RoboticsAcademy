@@ -29,6 +29,36 @@ WorldType = (
     ('physical', "Physical")
 )
 
+RosVersion = (
+    ('ROS1', "ROS1"),
+    ('ROS2', "ROS2")
+)
+
+
+class World(models.Model):
+    """
+    Modelo World para RoboticsCademy
+    """
+    name = models.CharField(max_length=100, blank=False, unique=True)
+    launch_file_path = models.CharField(max_length=200, blank=False)
+    ros_version = models.CharField(
+        max_length=4, choices=RosVersion, default="none")
+    visualization = models.CharField(
+        max_length=50,
+        choices=VisualizationType,
+        default="none",
+        blank=False
+    )
+    world = models.CharField(
+        max_length=50,
+        choices=WorldType,
+        default="none",
+        blank=False
+    )
+
+    def __str__(self):
+        return str(self.name)
+
 # Create your models here.
 
 
@@ -48,18 +78,7 @@ class Exercise(models.Model):
         choices=StatusChoice,
         default="ACTIVE"
     )
-    world = models.CharField(
-        max_length=20,
-        choices=WorldType,
-        default="none"
-    )
-    visualization = models.CharField(
-        max_length=20,
-        choices=VisualizationType,
-        default="none"
-    )
-    launch_files = models.TextField(default=json.dumps({}))
-    configuration = models.TextField(default=json.dumps({}))
+    worlds = models.ManyToManyField(World, default=None)
 
     def __str__(self):
         return str(self.name)
@@ -69,33 +88,21 @@ class Exercise(models.Model):
         """
         Build and return context
         """
-        exercise_configuration = json.loads(self.configuration)
-        launch_files_dict = json.loads(self.launch_files)
-        output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
-        output_str = output.decode('utf-8')
-        if output_str.strip() == '1':
-            ros_version = 'ROS1'
-        else:
-            ros_version = 'ROS2'
         configurations = []
 
-        if len(launch_files_dict[ros_version]) == len(exercise_configuration[ros_version]):
-            for i in range(len(launch_files_dict[ros_version])):
-                launch_file = launch_files_dict[ros_version][i]
-                application_config = exercise_configuration[ros_version][i]
+        for world in self.worlds.all():
+            config = {
+                "name": world.name,
+                "launch_file_path": world.launch_file_path,
+                "ros_version": world.ros_version,
+                "visualization": world.visualization,
+                "world": world.world,
+            }
+            configurations.append(config)
 
-                config = {
-                    "application": application_config["application"],
-                    "exercise_id": str(self.exercise_id),
-                    "visualization": self.visualization,
-                    "world": self.world,
-                    "launch_file_path": launch_file["path"],
-                    "name": launch_file["name"]
-                }
-                configurations.append(config)
-
-            context = {'exercise_base': "exercise_base_2_RA.html",
-                       'exercise_id': self.exercise_id,
-                       'exercise_config': configurations,
-                       }
+        context = {
+            'exercise_base': "exercise_base_2_RA.html",
+            'exercise_id': self.exercise_id,
+            'exercise_config': configurations,
+        }
         return context
