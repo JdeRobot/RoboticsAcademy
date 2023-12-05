@@ -4,7 +4,6 @@ models.py
 
 import json
 from django.db import models
-import subprocess
 
 
 StatusChoice = (
@@ -79,6 +78,7 @@ class Exercise(models.Model):
         default="ACTIVE"
     )
     worlds = models.ManyToManyField(World, default=None)
+    template = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
         return str(self.name)
@@ -97,6 +97,7 @@ class Exercise(models.Model):
                 "ros_version": world.ros_version,
                 "visualization": world.visualization,
                 "world": world.world,
+                "template": self.template
             }
             configurations.append(config)
 
