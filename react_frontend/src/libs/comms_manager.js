@@ -140,7 +140,7 @@ const CommsManager = (address) => {
     connect: connect,
     launchWorld: (configuration) => send("launch_world", configuration),
     prepareVisualization: (visualization) => send("prepare_visualization", visualization),
-    run: () => send("run"),
+    run: (code) => send("run_application", code),
     stop: () => send("stop"),
     pause: () => send("pause"),
     resume: () => send("resume"),

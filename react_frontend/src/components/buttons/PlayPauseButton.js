@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
@@ -12,13 +12,13 @@ const PlayPause = (props) => {
     const callback = (message) => {
       const state = message.data.state;
       setPaused(
-        state === "paused" || state === "ready" || state === "connected"
+        state === "paused" || state === "visualization_ready" || state === "connected"
       );
       setDisabled(
         !(
           state === "connected" ||
-          state === "ready" ||
-          state === "running" ||
+          state === "visualization_ready" ||
+          state === "application_running" ||
           state === "paused"
         )
       );
@@ -41,33 +41,20 @@ const PlayPause = (props) => {
     console.log(`Play run`);
     setLoading(true);
     const editorCode = RoboticsReactComponents.CodeEditor.getCode();
+    runCode(editorCode);
+  
+  };
 
+  const runCode = (code) => {
     window.RoboticsExerciseComponents.commsManager
-      .send("load", {
-        code: editorCode,
-      })
+      .run(code)
       .then(() => {
-        runCode();
-        setLoading(false);
+        console.log("running");
       })
       .catch((response) => {
         let linterMessage = JSON.stringify(response.data.message).split("\\n");
         RoboticsReactComponents.MessageSystem.Alert.showAlert(linterMessage);
         console.log(`Received linter message ·${linterMessage}`);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const runCode = () => {
-    window.RoboticsExerciseComponents.commsManager
-      .run()
-      .then(() => {
-        console.log("running");
-      })
-      .catch((response) => {
-        console.error(response);
         setLoading(false);
       });
   };
