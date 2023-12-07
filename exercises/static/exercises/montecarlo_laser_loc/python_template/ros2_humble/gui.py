@@ -46,7 +46,7 @@ class GUI:
         self.particles = []
         # User position
         self.user_position = (0, 0)
-        self.user_angle = 0
+        self.user_angle = (0, 0)
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -102,8 +102,8 @@ class GUI:
         return payload
 
     def showPosition(self, x, y, ax, ay):
-        self.user_position = x, y
-        self.user_angle = ax, ay
+        self.user_position = (x, y)
+        self.user_angle = (ax, ay)
 
         # Function for student to call
     def showParticles(self, particles):
