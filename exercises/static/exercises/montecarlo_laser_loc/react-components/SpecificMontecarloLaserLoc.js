@@ -26,13 +26,13 @@ function SpecificMontecarloLaserLoc(props) {
       }
       if (updateData.user) {
         const pose = updateData.user.substring(1, updateData.user.length - 1);
-        const content = pose.split(",").map(item => parseFloat(item));
+        const userContent = pose.split(",").map(item => parseFloat(item));
         drawUserPosition(
           guiCanvasRef.current,
-          content[0],
-          content[1],
-          content[2],
-          content[3]
+          userContent[0],
+          userContent[1],
+          userContent[2],
+          userContent[3]
         );
       }
       if (updateData.particles){
