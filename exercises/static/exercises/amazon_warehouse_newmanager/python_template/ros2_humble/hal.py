@@ -23,7 +23,7 @@ class HAL:
         self.platform_listener = PlatformCommandListener()
         self.platform_pub = PublisherPlatform("/send_effort")
 
-        # Spin nodes so that subscription callbacks load topic data
+        # Spin nodes so that subscription callbacks lift topic data
         # Bumper has to be spinned differently so that GetEntityState works
         executor = rclpy.executors.MultiThreadedExecutor()
         executor.add_node(self.pose3d)
@@ -53,8 +53,8 @@ class HAL:
     def setW(self, velocity):
         self.motors.sendW(velocity)
 
-    def load(self):
-        self.platform_pub.load()
+    def lift(self):
+        self.platform_pub.lift()
 
-    def unload(self):
-        self.platform_pub.unload()
+    def putdown(self):
+        self.platform_pub.putdown()

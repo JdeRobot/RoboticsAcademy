@@ -73,14 +73,14 @@ class PlatformCommandListener(Node):
         Load/Unload logic so that effort is not accumulated in joint
         """
         command = event.data
-        if (command == "load"):
+        if (command == "lift"):
             if (self.applied_effort == 0):
                 effort = DEFAULT
             elif (self.applied_effort < 0):
                 effort = self.applied_effort*-2
             else:
                 return
-        elif (command == "unload"):
+        elif (command == "putdown"):
             if (self.applied_effort == DEFAULT):
                 effort = -DEFAULT
             elif (self.applied_effort > 0):
