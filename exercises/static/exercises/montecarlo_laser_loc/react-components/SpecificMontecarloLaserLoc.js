@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw } from "Helpers/BirdEye";
+import {draw, drawUserPosition, printParticles} from "./helpers/birds_eye"
+
 
 function SpecificMontecarloLaserLoc(props) {
   const guiCanvasRef = React.useRef();
@@ -9,12 +10,11 @@ function SpecificMontecarloLaserLoc(props) {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
-      const data = message.data.update;
-      if (data.map) {
-        const pose = data.map.substring(1, data.map.length - 1);
-        const content = pose.split(",").map(function (item) {
-          return parseFloat(item);
-        });
+      const updateData = message.data.update;
+      // Lógica para manejar el mapa
+      if (updateData.map) {
+        const pose = updateData.map.substring(1, updateData.map.length - 1);
+        const content = pose.split(",").map(item => parseFloat(item));
         draw(
           guiCanvasRef.current,
           content[0],
@@ -22,6 +22,23 @@ function SpecificMontecarloLaserLoc(props) {
           content[2],
           content[3]
         );
+      }
+      if (updateData.user) {
+        const pose = updateData.map.substring(1, updateData.map.length - 1);
+        const content = pose.split(",").map(item => parseFloat(item));
+        drawUserPosition(
+          guiCanvasRef.current,
+          content[0],
+          content[1],
+          content[2],
+          content[3]
+        );
+      }
+      if (updateData.particles){
+        const particles = JSON.parse(updateData.particles);
+        if(particles != "") {
+            printParticles(guiCanvasRef.current, particles);
+        }
       }
     };
 
@@ -40,20 +57,22 @@ function SpecificMontecarloLaserLoc(props) {
   }, []);
 
   return (
-    <canvas
-      ref={guiCanvasRef}
-      style={{
-        backgroundImage:
-          "url('/static/exercises/montecarlo_laser_loc/resources/images/mapgrannyannie.png')",
-        border: "2px solid #d3d3d3",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-        width: "100%",
-        height: "100%"
-      }}
-    />
+    <div style={{ display: "flex", width: "100%", height: "100%" }}>
+      <canvas
+        ref={guiCanvasRef}
+        style={{
+          backgroundImage:
+            "url('/static/exercises/montecarlo_visual_loc_newmanager/resources/mapgrannyannie.png')",
+          border: "2px solid #d3d3d3",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
+          
+        }}
+      />
+    </div>
   );
 }
+
 
 SpecificMontecarloLaserLoc.propTypes = {
   circuit: PropTypes.string,
