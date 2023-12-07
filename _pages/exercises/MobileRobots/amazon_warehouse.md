@@ -14,10 +14,6 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_general.png
-    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_general.png
-    alt: "Warehouse"
-    title: "Warehouse"
   - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
     image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
     alt: "Shelves to move"
@@ -27,18 +23,36 @@ gallery:
     alt: "Robot"
     title: "Robot"
 
+warehouse1:
+  - url: /assets/images/exercises/amazon_warehouse/warehouse1.png
+    image_path: /assets/images/exercises/amazon_warehouse/warehouse1.png
+    alt: "Warehouse 1"
+    title: "Warehouse 1"
+
+warehouse2:
+  - url: /assets/images/exercises/amazon_warehouse/warehouse2.png
+    image_path: /assets/images/exercises/amazon_warehouse/warehouse2.png
+    alt: "Warehouse 2"
+    title: "Warehouse 2"
+
 ompl:
   - url: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
     image_path: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
     alt: "OMPL structure"
     title: "OMPL structure"
 
+example:
+  - url: /assets/images/exercises/amazon_warehouse/example_plot.png
+    image_path: /assets/images/exercises/amazon_warehouse/example_plot.png
+    alt: "Example"
+    title: "Example"
+
 youtubeId: EVt9vYqEoDg
 ---
 
 ## Goal
 
-The objective of this practice is to implement the logic that allows a holonomic logistics robot to deliver a shelf to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
+The objective of this practice is to implement the logic that allows a holonomic logistics robot to deliver shelves to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
 
 {% include gallery caption="Gallery" %}
 
@@ -101,8 +115,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware (Gazebo).
+* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular speed
@@ -112,15 +126,26 @@ while True:
 
 ## Supporting information
 
-You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png
+There are two warehouses to choose from:
+#### Warehouse 1:
+* The warehouse size is 20.62 meters long and 13.6 meters wide.
+* The shelves coordinates from 1 to 6 are: (3.728, 0.579), (3.728, -1.242), (3.728, -3.039), (3.728, -4.827), (3.728, -6.781), (3.728, -8.665).
+* You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png
 
-The map image has a resolution of 415x279 pixels which corresponds to a space with a width of 20.62 meters and a height of 13.6 meters in Gazebo.
+{% include gallery id="warehouse1" caption="Warehouse 1" %}
 
-The shelves to be moved are at the following coordinates (from left to right): (3.72, 0.57), (3.72, -4.82), (3.72, -8.66), (3.72, -1.24), (3.72, -3.0), (3.72, -6.75)
+
+#### Warehouse 2: 
+* The warehouse size is 34 meters long and 22 meters wide.
+* The shelves coordinates from 1 to 9 are: (-8.5, -6.0), (-1.5, -6.0), (5.5, -6.0), (-8.5, 4.0), (-1.5, 4.0), (5.5, 4.0), (-1.0, -15.5), (-2, 11.5), (1.0, -15.0). 
+  * The separation distance between two neighboring shelves is 2 m on the x axis and 1.5 m on the y axis.
+* You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png
+
+{% include gallery id="warehouse2" caption="Warehouse 2" %}
 
 ## Theory
 
-This exercise is a motion planning problem. Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise is not to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
+This exercise is a motion planning problem. Motion planning is a  Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
 
 ### [Open Motion Planning Library]((https://ompl.kavrakilab.org/))
 
@@ -128,7 +153,7 @@ OMPL is a library for sampling-based motion planning, offering many state-of-the
 
 {% include gallery id="ompl" caption="OMPL structure" %}
 
-As you can see, some key components of OMPL are:
+As you can see in the diagram above, some key components of OMPL are:
 * **State Space** defines the possible configurations that a robot can have. For example:
   * RealVectorStateSpace: represents an Euclidean space
   * SO2StateSpace, SO3StateSpace: represents rotations in 2D and 3D
@@ -137,63 +162,166 @@ As you can see, some key components of OMPL are:
 * **State Validaty Checker** determines if the configuration is valid, that is to say the configuration doesn't collides with an enviroment obstacle and respects the constraints of the robot.
 * **Control Space** defines the movements that a robot can have.
 * **State Propagator** indicates the evolution of the system after applying a control.
-* **Space Information** is the container that holds that state space, the state validity checker, and other information needed for planning.
+* **Space Information** is the container that holds the state space, the state validity checker, and other information needed for planning.
 * **Planner** responsible for generating a path from the start to the goal in the configuration space. OMPL supports a variety of planners, such as RRT, PRM, and FMT*.
 * **Path** is the output of the planner, which is a sequence of states representing a trajectory for the robot to follow.
 
-Here's a mini example:
+The following example shows a 2D point robot inside a 10x10 space with an ovular obstacle at position (5.5, 5.5):
 ```
 from ompl import base as ob
 from ompl import geometric as og
+import math
+from math import sqrt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # specify valid state condition
 def isStateValid(state):
-    return state.getX() < .6
+  x = state.getX()
+  y = state.getY()
+  if sqrt(pow(x - obstacle[0], 2) + pow(y - obstacle[1], 2)) - obstacle[2] <= 0:
+    return False
+  return True
 
-# create a SE2 state space
-space = ob.SE2StateSpace()
+def plan():
+  # Construct the robot state space in which we're planning. We're
+  # planning in [0,1]x[0,1], a subset of R^2.
+  space = ob.SE2StateSpace()
 
-# set state space's lower and upper bounds
-bounds = ob.RealVectorBounds(2)
-bounds.setLow(-1)
-bounds.setHigh(1)
-space.setBounds(bounds)
+  # set state space's lower and upper bounds
+  bounds = ob.RealVectorBounds(2)
+  bounds.setLow(0, dimensions[0])
+  bounds.setLow(1, dimensions[1])
+  bounds.setHigh(0, dimensions[2])
+  bounds.setHigh(1, dimensions[3])
+  space.setBounds(bounds)
 
-# Set up the problem
-ss = og.SimpleSetup(space)
+  # construct a space information instance for this state space
+  si = ob.SpaceInformation(space)
+  # set state validity checking for this space
+  si.setStateValidityChecker(ob.StateValidityCheckerFn(isStateValid))
 
-# set up state validity checker
-ss.setStateValidityChecker(ob.StateValidityCheckerFn(isStateValid))
+  # Set our robot's starting and goal state
+  start = ob.State(space)
+  start().setX(0)
+  start().setY(0)
+  start().setYaw(math.pi / 4)
+  goal = ob.State(space)
+  goal().setX(10)
+  goal().setY(10)
+  goal().setYaw(math.pi / 4)
 
-# define start and goal states
-start = ob.State(space)
-start().setX(.0)
-start().setY(.0)
-start().setYaw(0)
-goal = ob.State(space)
-goal().setX(-.5)
-goal().setY(-.5)
-goal().setYaw(3.14)
-ss.setStartAndGoalStates(start, goal)
+  # create a problem instance
+  pdef = ob.ProblemDefinition(si)
 
-# solve the problem and print the solution if exists
-solved = ss.solve(1.0)
-if solved:
-  # try to shorten the path
-  ss.simplifySolution() 
-  print(ss.getSolutionPath())
+  # set the start and goal states
+  pdef.setStartAndGoalStates(start, goal)
+
+  # create a planner for the defined space
+  planner = og.RRTConnect(si)
+
+  # set the problem we are trying to solve for the planner
+  planner.setProblemDefinition(pdef)
+
+  # perform setup steps for the planner
+  planner.setup()
+
+  # solve the problem and print the solution if exists
+  solved = planner.solve(1.0)
+  if solved:
+    print(pdef.getSolutionPath())
+    plot_path(pdef.getSolutionPath(), dimensions)
+
+def create_numpy_path(states):
+    lines = states.splitlines()
+    length = len(lines) - 1
+    array = np.zeros((length, 2))
+
+    for i in range(length):
+        array[i][0] = float(lines[i].split(" ")[0])
+        array[i][1] = float(lines[i].split(" ")[1])
+    return array
+
+def plot_path(solution_path, dimensions):
+  matrix = solution_path.printAsMatrix()
+  path = create_numpy_path(matrix)
+  x, y = path.T
+  ax = plt.gca()
+  ax.plot(x, y, 'r--')
+  ax.plot(x, y, 'go') 
+  ax.axis(xmin=dimensions[0], xmax=dimensions[2], ymin=dimensions[1], ymax=dimensions[3])
+  ax.add_patch(plt.Circle((obstacle[0], obstacle[1]), radius=obstacle[2]))
+
+  plt.show()
+
+if __name__ == "__main__":
+  dimensions = [0, 0, 10, 10] 
+  obstacle = [5.5, 5.5, 1]   # [x, y, radius]
+  plan()
 ```
+
+Output:
+```
+Info:    RRTConnect: Space information setup was not yet called. Calling now.
+Debug:   RRTConnect: Planner range detected to be 3.142586
+Info:    RRTConnect: Starting planning with 1 states already in datastructure
+Info:    RRTConnect: Created 9 states (4 start + 5 goal)
+Geometric path with 7 states
+Compound state [
+RealVectorState [0 0]
+SO2State [0.785398]
+]
+Compound state [
+RealVectorState [1.26041 2.4087]
+SO2State [-0.0626893]
+]
+Compound state [
+RealVectorState [3.38076 4.59672]
+SO2State [0.128782]
+]
+Compound state [
+RealVectorState [3.66427 7.34115]
+SO2State [0.895879]
+]
+Compound state [
+RealVectorState [4.7318 7.51811]
+SO2State [0.808152]
+]
+Compound state [
+RealVectorState [7.7113 8.01201]
+SO2State [0.563304]
+]
+Compound state [
+RealVectorState [10 10]
+SO2State [0.785398]
+]
+
+```
+
+Plot:
+{% include gallery id="example" caption="Example" %}
+
+To better understand how to use the library, it is highly recommended to go to the [tutorials](https://ompl.kavrakilab.org/tutorials.html) and [demos](https://ompl.kavrakilab.org/group__demos.html) sections of the official website.
+
 
 ## Hints
 
 Simple hints provided to help you solve the Amazon Warehouse exercise. Please note that the **full solution has not been provided.** Also, the hints are more related to the reference solution, since multiple solutions are possible for this exercise.
 
-### Idea for solving the exercise
-Define the robot as a point and thicken the obstacles' edges to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states.
+### Ideas for solving the exercise
+Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
+
+#### How to find the shortest path?
+The library offers the possibility to set an optimization objective, which could be a great help in finding the shortest path. Check out in [this tutorial](https://ompl.kavrakilab.org/optimalPlanningTutorial.html) how to do it!
+
+#### Points to consider
+* The loaded shelf is no longer a obstacle but part of the robot, then:
+  * the robot's geometry changes, its "radius" increases
+  * remember to exclude the shelf itself when defining invalid states
 
 ### Important points to remember
 * Convert the coordinates from meter to pixel before representing with *GUI.showPath(array)*.
-* The robot's geometry changes when loading the shelf, its radius "increases".
+
 
 ## Videos
 
@@ -201,7 +329,7 @@ Define the robot as a point and thicken the obstacles' edges to avoid collision,
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
-- Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Runio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
+- Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 - Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164).
 
 ## References
