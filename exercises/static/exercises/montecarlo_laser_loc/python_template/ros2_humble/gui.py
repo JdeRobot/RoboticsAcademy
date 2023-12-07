@@ -101,15 +101,9 @@ class GUI:
 
         return payload
 
-    def showPosition(self, x, y, angle):
-        scale_y = 15
-        offset_y = 63
-        y = scale_y * y + offset_y
-        scale_x = -30
-        offset_x = 171
-        x = scale_x * x + offset_x
+    def showPosition(self, x, y, ax, ay):
         self.user_position = x, y
-        self.user_angle = angle
+        self.user_angle = ax, ay
 
         # Function for student to call
     def showParticles(self, particles):
@@ -131,10 +125,9 @@ class GUI:
 
         # Payload User Message
         pos_message_user = self.user_position
-        ang_message_user = (self.user_angle,)
+        ang_message_user = self.user_angle
         pos_message_user = pos_message_user + ang_message_user
         pos_message_user = str(pos_message_user)
-        print(pos_message_user)
         self.payload["user"] = pos_message_user
 
         # Payload Particles Message
