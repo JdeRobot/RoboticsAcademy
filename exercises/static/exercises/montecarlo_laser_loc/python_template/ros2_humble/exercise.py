@@ -125,10 +125,11 @@ class Template:
             importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(
             importlib.machinery.ModuleSpec("GUI", None))
-        
+
         # Add GUI functions
         gui_module.GUI.getMap = self.gui.getMap
         gui_module.GUI.showPosition = self.gui.showPosition
+        gui_module.GUI.showParticles = self.gui.showParticles
 
         # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage
@@ -169,10 +170,10 @@ class Template:
             # Send to client
             self.send_frequency_message()
 
-
     ################ --- EXERCISE --- ################
 
     # Function for saving
+
     def save_code(self, source_code):
         with open('code/academy.py', 'w') as code_file:
             code_file.write(source_code)

@@ -27,13 +27,14 @@ blue = [255, 0, 0]
 indigo = [130, 0, 75]
 violet = [211, 0, 148]
 
+
 class GUI:
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'map': ''}
+        self.payload = {'map': '', 'user': '', 'particles': ''}
         self.server = None
         self.client = None
         self.init_coords = (171, 63)
@@ -41,10 +42,10 @@ class GUI:
 
         self.host = host
 
-         # Particles
+        # Particles
         self.particles = []
         # User position
-        self.user_position = 0, 0
+        self.user_position = (0, 0)
         self.user_angle = 0
 
         self.acknowledge = False
@@ -90,26 +91,35 @@ class GUI:
 
         image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-    	
+
         shape = image.shape
         frame = cv2.imencode('.PNG', image)[1]
         encoded_image = base64.b64encode(frame)
-        
+
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-        
+
         return payload
 
     def showPosition(self, x, y, angle):
         scale_y = 15
         offset_y = 63
         y = scale_y * y + offset_y
-        scale_x = -30; offset_x = 171
-        x = scale_x * x + offset_x		
+        scale_x = -30
+        offset_x = 171
+        x = scale_x * x + offset_x
         self.user_position = x, y
         self.user_angle = angle
 
+        # Function for student to call
+    def showParticles(self, particles):
+        if len(particles) > 0:
+            self.particles = particles
+        else:
+            self.particles = []
+
     # Update the gui
+
     def update_gui(self):
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
@@ -121,7 +131,7 @@ class GUI:
 
         # Payload User Message
         pos_message_user = self.user_position
-        ang_message_user = self.user_angle
+        ang_message_user = (self.user_angle,)
         pos_message_user = str(str(pos_message_user) + str(ang_message_user))
         self.payload["user"] = pos_message_user
 
@@ -130,7 +140,6 @@ class GUI:
             self.payload["particles"] = json.dumps(self.particles)
         else:
             self.payload["particles"] = json.dumps([])
-
 
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
@@ -145,7 +154,7 @@ class GUI:
         if (message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-    def getMap(self, url):        
+    def getMap(self, url):
         return plt.imread(url)
 
     # Activate the server
