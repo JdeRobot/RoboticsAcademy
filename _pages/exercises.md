@@ -432,16 +432,17 @@ feature_row:
     status: "prototype"
     order: 2;
   
-  - image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
-    alt: "Real Follow Person"
-    title: "Real Follow Person (ROS2)"
+  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+    alt: "Amazon Warehouse"
+    title: "Amazon Warehouse (ROS2)"
     excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
-    url: "/exercises/MobileRobots/real_follow_person"
+    url: "/exercises/MobileRobots/amazon_warehouse/"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
+    status: "running"
     order: 2;
+    version: "v1.0"
 
 ---
 
