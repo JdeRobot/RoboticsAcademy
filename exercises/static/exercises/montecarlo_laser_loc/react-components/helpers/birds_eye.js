@@ -7,18 +7,17 @@ var initialPosition;
 // Complete draw function
 export function draw(mapCanvas, x, y, ax, ay){
 	let ctx = mapCanvas.getContext("2d")
-	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);	
-
 	
 	coords = drawTriangle(ctx, x, y, ax, ay, "#FF0000");
 }
 
 export function drawUserPosition(mapCanvas, x, y, ax, ay){
 	let ctx = mapCanvas.getContext("2d")
-	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);	
+	
 
 	
 	coords = drawTriangleUser(ctx, x, y, ax, ay, "#1b00e8");
+    ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 }
 // Function to draw triangle
 // Given the coordinates of center, and
