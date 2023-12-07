@@ -25,8 +25,8 @@ function SpecificMontecarloLaserLoc(props) {
         );
       }
       if (updateData.user) {
-        const pose = updateData.user.substring(1, updateData.user.length - 1);
-        const userContent = pose.split(",").map(item => parseFloat(item));
+        const poseUser = updateData.user.substring(1, updateData.user.length - 1);
+        const userContent = poseUser.split(",").map(item => parseFloat(item));
         drawUserPosition(
           guiCanvasRef.current,
           userContent[0],
