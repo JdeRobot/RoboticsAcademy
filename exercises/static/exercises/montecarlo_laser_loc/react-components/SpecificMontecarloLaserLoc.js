@@ -11,6 +11,7 @@ function SpecificMontecarloLaserLoc(props) {
 
     const callback = (message) => {
       const updateData = message.data.update;
+      console.log(updateData)
       // Lógica para manejar el mapa
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);

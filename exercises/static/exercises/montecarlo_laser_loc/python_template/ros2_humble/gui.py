@@ -132,7 +132,9 @@ class GUI:
         # Payload User Message
         pos_message_user = self.user_position
         ang_message_user = (self.user_angle,)
-        pos_message_user = str(str(pos_message_user) + str(ang_message_user))
+        pos_message_user = pos_message_user + ang_message_user
+        pos_message_user = str(pos_message_user)
+        print(pos_message_user)
         self.payload["user"] = pos_message_user
 
         # Payload Particles Message
