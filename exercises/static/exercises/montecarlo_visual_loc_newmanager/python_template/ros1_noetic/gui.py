@@ -7,6 +7,7 @@ from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
 import os
+import matplotlib.pyplot as plt
 
 from interfaces.pose3d import ListenerPose3d
 
@@ -34,6 +35,9 @@ class GUI:
 
         # Particles
         self.particles = []
+        # User position
+        self.user_position = 0, 0
+        self.user_angle = 0
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -94,6 +98,18 @@ class GUI:
         else:
             self.particles = []
 
+    def showPosition(self, x, y, angle):
+        scale_y = 15
+        offset_y = 63
+        y = scale_y * y + offset_y
+        scale_x = -30; offset_x = 171
+        x = scale_x * x + offset_x		
+        self.user_position = x, y
+        self.user_angle = angle
+
+    def getMap(self, url):        
+        return plt.imread(url)
+
     # Function to get the client
     # Called when a new client is received
     def get_client(self, client, server):
@@ -124,6 +140,12 @@ class GUI:
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
+
+        # Payload User Message
+        pos_message_user = self.user_position
+        ang_message_user = self.user_angle
+        pos_message_user = str(pos_message_user + ang_message_user)
+        self.payload["user"] = pos_message_user
 
         # Payload Particles Message
         if len(self.particles) > 0:

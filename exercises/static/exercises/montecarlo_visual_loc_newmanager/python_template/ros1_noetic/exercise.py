@@ -197,6 +197,8 @@ class Template:
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
         gui_module.GUI.showParticles = self.gui.showParticles
+        gui_module.GUI.getMap = self.gui.getMap
+        gui_module.GUI.showPosition = self.gui.showPosition
 
         # Adding modules to system
         # Protip: The names should be different from
