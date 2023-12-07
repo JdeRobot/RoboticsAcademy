@@ -120,8 +120,8 @@ while True:
 * `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular speed
-* `HAL.load()` - to load the platform
-* `HAL.unload()` - to unload the platform
+* `HAL.lift()` - to lift the platform
+* `HAL.putdown()` - to put down the platform
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
 
 ## Supporting information
