@@ -1,50 +1,44 @@
-import os
 import json
 import cv2
-import numpy as np
 import base64
 import threading
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
 import logging
-import matplotlib.pyplot as plt
-from shared.image import SharedImage
+import os
+
 from interfaces.pose3d import ListenerPose3d
 
 from map import Map
 
-# Matrix colors
-red = [0, 0, 255]
-orange = [0, 165, 255]
-yellow = [0, 255, 255]
-green = [0, 255, 0]
-blue = [255, 0, 0]
-indigo = [130, 0, 75]
-violet = [211, 0, 148]
-
 # Graphical User Interface Class
+
+
 class GUI:
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'map': '', 'nav': ''}
+        self.payload = {'image': '', 'map': '', 'particles': ''}
         self.server = None
         self.client = None
-        self.user_mat = None
-        self.show_mat = False
-        self.init_coords = (171, 63)
-        self.start_coords = (201, 85.5)
 
         self.host = host
+
+        # Image variables
+        self.image_to_be_shown = None
+        self.image_to_be_shown_updated = False
+        self.image_show_lock = threading.Lock()
+
+        # Particles
+        self.particles = []
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
 
-        self.shared_image = SharedImage("guiimage")
-
+        # Take the console object to set the same websocket and client
         self.hal = hal
         t.start()
 
@@ -57,8 +51,48 @@ class GUI:
     @classmethod
     def initGUI(cls, host, console):
         # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host, console)
-        return new_instance
+        pass
+
+    # Function to prepare image payload
+    # Encodes the image as a JSON string and sends through the WS
+    def payloadImage(self):
+        self.image_show_lock.acquire()
+        image_to_be_shown_updated = self.image_to_be_shown_updated
+        image_to_be_shown = self.image_to_be_shown
+        self.image_show_lock.release()
+
+        image = image_to_be_shown
+        payload = {'image': '', 'shape': ''}
+
+        if(image_to_be_shown_updated == False):
+            return payload
+
+        shape = image.shape
+        frame = cv2.imencode('.JPEG', image)[1]
+        encoded_image = base64.b64encode(frame)
+
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
+
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
+
+        return payload
+
+    # Function for student to call
+    def showImage(self, image):
+        self.image_show_lock.acquire()
+        self.image_to_be_shown = image
+        self.image_to_be_shown_updated = True
+        self.image_show_lock.release()
+
+    # Function for student to call
+    def showParticles(self, particles):
+        if len(particles) > 0:
+            self.particles = particles
+        else:
+            self.particles = []
 
     # Function to get the client
     # Called when a new client is received
@@ -79,64 +113,23 @@ class GUI:
         self.acknowledge = value
         self.acknowledge_lock.release()
 
-    # encode the image data to be sent to websocket
-    def payloadImage(self):
-
-        image = self.shared_image.get()
-        payload = {'image': '', 'shape': ''}
-    	
-        shape = image.shape
-        frame = cv2.imencode('.PNG', image)[1]
-        encoded_image = base64.b64encode(frame)
-        
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-        
-        return payload
-    
-    def process_colors(self, image):
-        colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
-
-        # Grayscale for values < 128
-        mask = image < 128
-        colored_image[mask] = image[mask][:, None] * 2
-
-        # Color lookup table
-        color_table = {
-            128: red,
-            129: orange,
-            130: yellow,
-            131: green,
-            132: blue,
-            133: indigo,
-            134: violet
-        }
-
-        for value, color in color_table.items():
-            mask = image == value
-            colored_image[mask] = color
-
-        return colored_image
-
     # Update the gui
     def update_gui(self):
+        # Payload Image Message
+        payload = self.payloadImage()
+        self.payload['image'] = json.dumps(payload)
+
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
-        if (pos_message == self.init_coords):
-            pos_message = self.start_coords
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
 
-        # Example Payload Navigation Data message (random data)
-        # 4 colors supported (0, 1, 2, 3)
-        #nav_mat = np.zeros((20, 20), int)
-        #nav_mat[2, 1] = 1
-        #nav_mat[3, 3] = 2
-        #nav_mat[5,9] = 3
-        #nav_message = str(nav_mat.tolist())
-        payload = self.payloadImage()
-        self.payload["image"] = json.dumps(payload)
+        # Payload Particles Message
+        if len(self.particles) > 0:
+            self.payload["particles"] = json.dumps(self.particles)
+        else:
+            self.payload["particles"] = json.dumps([])
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -148,14 +141,8 @@ class GUI:
         if(message[:4] == "#ack"):
             self.set_acknowledge(True)
 
-    # load the image data
-    def showNumpy(self, image):
-        self.shared_image.add(self.process_colors(image))
-
-    def getMap(self, url):        
-        return plt.imread(url)
-
     # Activate the server
+
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
@@ -178,7 +165,6 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         self.map.reset()
-        self.user_mat = None
 
 
 # This class decouples the user thread

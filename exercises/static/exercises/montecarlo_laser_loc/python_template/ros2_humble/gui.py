@@ -12,6 +12,7 @@ import rclpy
 import matplotlib.pyplot as plt
 from shared.image import SharedImage
 from interfaces.pose3d import ListenerPose3d
+import matplotlib.pyplot as plt
 
 from map import Map
 
@@ -39,6 +40,12 @@ class GUI:
         self.start_coords = (201, 85.5)
 
         self.host = host
+
+         # Particles
+        self.particles = []
+        # User position
+        self.user_position = 0, 0
+        self.user_angle = 0
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -93,29 +100,14 @@ class GUI:
         
         return payload
 
-    def process_colors(self, image):
-        colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
-
-        # Grayscale for values < 128
-        mask = image < 128
-        colored_image[mask] = image[mask][:, None] * 2
-
-        # Color lookup table
-        color_table = {
-            128: red,
-            129: orange,
-            130: yellow,
-            131: green,
-            132: blue,
-            133: indigo,
-            134: violet
-        }
-
-        for value, color in color_table.items():
-            mask = image == value
-            colored_image[mask] = color
-
-        return colored_image
+    def showPosition(self, x, y, angle):
+        scale_y = 15
+        offset_y = 63
+        y = scale_y * y + offset_y
+        scale_x = -30; offset_x = 171
+        x = scale_x * x + offset_x		
+        self.user_position = x, y
+        self.user_angle = angle
 
     # Update the gui
     def update_gui(self):
@@ -126,6 +118,19 @@ class GUI:
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
+
+        # Payload User Message
+        pos_message_user = self.user_position
+        ang_message_user = self.user_angle
+        pos_message_user = str(pos_message_user + ang_message_user)
+        self.payload["user"] = pos_message_user
+
+        # Payload Particles Message
+        if len(self.particles) > 0:
+            self.payload["particles"] = json.dumps(self.particles)
+        else:
+            self.payload["particles"] = json.dumps([])
+
 
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
@@ -139,10 +144,6 @@ class GUI:
         # Acknowledge Message for GUI Thread
         if (message[:4] == "#ack"):
             self.set_acknowledge(True)
-
-    # load the image data
-    def showNumpy(self, image):
-        self.shared_image.add(self.process_colors(image))
 
     def getMap(self, url):        
         return plt.imread(url)

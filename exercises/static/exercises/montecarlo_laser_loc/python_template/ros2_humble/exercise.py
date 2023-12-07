@@ -114,7 +114,6 @@ class Template:
             importlib.machinery.ModuleSpec("motors", None))
 
         # Add HAL functions
-        hal_module.HAL.getPose3d = self.hal.getPose3d
         hal_module.HAL.setV = self.hal.setV
         hal_module.HAL.setW = self.hal.setW
         hal_module.HAL.laser = self.hal.laser
@@ -128,8 +127,8 @@ class Template:
             importlib.machinery.ModuleSpec("GUI", None))
         
         # Add GUI functions
-        gui_module.GUI.showNumpy = self.gui.showNumpy
         gui_module.GUI.getMap = self.gui.getMap
+        gui_module.GUI.showPosition = self.gui.showPosition
 
         # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage
