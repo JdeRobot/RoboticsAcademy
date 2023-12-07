@@ -14,137 +14,314 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse.png
-    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse.png
-    alt: "Warehouse"
-    title: "Warehouse"
-  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
-    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
-    alt: "MobileRobot"
-    title: "MobileRobot"
-  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse_2.png
-    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_2.png
-    alt: "Amazon"
-    title: "Amazon"
+  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+    alt: "Shelves to move"
+    title: "Shelves to move"
+  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
+    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
+    alt: "Robot"
+    title: "Robot"
 
-theory:
-  - url: /assets/images/exercises/amazon_warehouse/navstack.png
-    image_path: /assets/images/exercises/amazon_warehouse/navstack.png
-    alt: "Navigation Stack"
-    title: "Navigation Stack"
-  - url: /assets/images/exercises/amazon_warehouse/action.png
-    image_path: /assets/images/exercises/amazon_warehouse/action.png
-    alt: "Action Server and Client"
-    title: "Action Server and Client"
+warehouse1:
+  - url: /assets/images/exercises/amazon_warehouse/warehouse1.png
+    image_path: /assets/images/exercises/amazon_warehouse/warehouse1.png
+    alt: "Warehouse 1"
+    title: "Warehouse 1"
 
-youtubeId: T1-6Y4ulEnQ
+warehouse2:
+  - url: /assets/images/exercises/amazon_warehouse/warehouse2.png
+    image_path: /assets/images/exercises/amazon_warehouse/warehouse2.png
+    alt: "Warehouse 2"
+    title: "Warehouse 2"
+
+ompl:
+  - url: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
+    image_path: /assets/images/exercises/amazon_warehouse/OMPL_structure.png
+    alt: "OMPL structure"
+    title: "OMPL structure"
+
+example:
+  - url: /assets/images/exercises/amazon_warehouse/example_plot.png
+    image_path: /assets/images/exercises/amazon_warehouse/example_plot.png
+    alt: "Example"
+    title: "Example"
+
+youtubeId: EVt9vYqEoDg
 ---
 
 ## Goal
 
-The objective of this practice is to implement the autonomous robot navigation and pick-and-place logic in warehouse.
+The objective of this practice is to implement the logic that allows a holonomic logistics robot to deliver shelves to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
 
 {% include gallery caption="Gallery" %}
 
-The students program an Amazon robot to navigate to the seleceted pallet, pick it, and deliver to the required zone. After completion of the task, go the charging area, and wait for the next tasks.
 
 ## Instructions
+This is the preferred way for running the exercise.
 
-### Installation
-Install the [General Infrastructure](https://jderobot.github.io/RoboticsAcademy/installation/#generic-infrastructure) of the JdeRobot Robotics Academy.
+### Installing and Launching
+1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-Add following packages if you don't have them already:
+2. Pull the current distribution of Robotics Academy Docker Image:
 
-```bash
-sudo wget https://raw.githubusercontent.com/tu-darmstadt-ros-pkg/hector_localization/catkin/hector_pose_estimation/hector_pose_estimation_nodelets.xml -P /opt/ros/kinetic/share/hector_pose_estimation/
-sudo apt-get install ros-melodic-kobuki-msgs
-sudo apt-get install ros-melodic-yocs-cmd-vel-mux
-sudo apt-get install ros-melodic-navigation
-```
+	```bash
+  docker pull jderobot/robotics-academy:latest
+  ```
 
-## How to run your solution?
+- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-Run Gazebo simulator:
+- It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
 
-```bash
-cd launch
-ROS_HOME=`pwd` roslaunch amazonrobot_1_warehouse.launch 
-```
+### How to perform the exercises?
+- Start a new docker container of the image and keep it running in the background:
 
-Navigate to exercise folder and run the practice and the user interface: 
+	```bash
+  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+  ```
 
-```bash
-python2 amazonWarehouse.py amazonMap.conf amazonConf.yml
-```
+- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
-To simplify the closure of the environment, just close the Amazon window (s). *`Ctrl + C` will give problems.*
+- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
 
-## How to do the practice
-To carry out the practice, you must edit the `MyAlgorithm.py` file and insert the control logic into it.
+- The exercise can be used after the alert.
 
-### Where to insert the code
-MyAlgorithm.py
+### Enable GPU Acceleration
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
+
+**Where to insert the code?**
+
+In the launched webpage, type your code in the text editor,
 
 ```python
-    def execute(self):
-        # Add your code here
-        print("Running")
+from GUI import GUI
+from HAL import HAL
+# Enter sequential code!
 
-        # LIFT PALLET
-        self.liftDropExecute()
 
-        # TO DO
+while True:
+    # Enter iterative code!
 ```
 
+### Using the Interface
+
+* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
+
+* **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
+
+* **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
+
+* **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the `print()` function.
+
 ## Robot API
-* `self.client.sendGoalToClient(x, y)` - to send goal to the move_base client
-* `self.client.getResultFromClient()` - to send get result from client. None if not reached the goal
-* `self.grid.getDestiny()` - to get destination of the robot after double click on GUI
-* `self.path.getPath()` - to obtain the path to the current goal
-* `self.liftDropExecute()` - to lift or drop pallet
-* `clearCostmaps()` - to clear costmaps after moving with pallet
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware (Gazebo).
+* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
+* `HAL.setV()` - to set the linear speed
+* `HAL.setW()` - to set the angular speed
+* `HAL.lift()` - to lift the platform
+* `HAL.putdown()` - to put down the platform
+* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
+
+## Supporting information
+
+There are two warehouses to choose from:
+#### Warehouse 1:
+* The warehouse size is 20.62 meters long and 13.6 meters wide.
+* The shelves coordinates from 1 to 6 are: (3.728, 0.579), (3.728, -1.242), (3.728, -3.039), (3.728, -4.827), (3.728, -6.781), (3.728, -8.665).
+* You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png
+
+{% include gallery id="warehouse1" caption="Warehouse 1" %}
+
+
+#### Warehouse 2: 
+* The warehouse size is 34 meters long and 22 meters wide.
+* The shelves coordinates from 1 to 9 are: (-8.5, -6.0), (-1.5, -6.0), (5.5, -6.0), (-8.5, 4.0), (-1.5, 4.0), (5.5, 4.0), (-1.0, -15.5), (-2, 11.5), (1.0, -15.0). 
+  * The separation distance between two neighboring shelves is 2 m on the x axis and 1.5 m on the y axis.
+* You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png
+
+{% include gallery id="warehouse2" caption="Warehouse 2" %}
 
 ## Theory
 
-ROS Navigation Stack forms the backbone of this exercise. The navigation stack is quite simple on a conceptual level. It takes information from odometry and sensor streams and outputs velocity commands to robot controller. The most difficult part of ROS Navigation Stack is configuring it to work with the robot, which has been taken care of, leaving the student with only using the Simple Action Client. Let's cover all these concepts one by one:
+This exercise is a motion planning problem. Motion planning is a  Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
 
-### Navigation Stack
+### [Open Motion Planning Library]((https://ompl.kavrakilab.org/))
 
-At its core, the navigation stack system allows a ROS enabled robot to move about the world to a specified goal position efficiently, without hitting the obstacles on its way. It integrates information from the map, localization system, sensors and odometry to plan a good path from the current position to the goal position, and then follows it to the best of robot's ability.
+OMPL is a library for sampling-based motion planning, offering many state-of-the-art planning algorithms such as PRM, RRT, KPIECE, etc.
 
-The basic steps in its working are:
+{% include gallery id="ompl" caption="OMPL structure" %}
 
-1. A navigation goal is sent to the navigation stack. This is done using an action call with a goal of type *MoveBaseGoal*, which specifies a goal pose (position and orientation) in some coordinate frame (commonly called the *map* frame).
+As you can see in the diagram above, some key components of OMPL are:
+* **State Space** defines the possible configurations that a robot can have. For example:
+  * RealVectorStateSpace: represents an Euclidean space
+  * SO2StateSpace, SO3StateSpace: represents rotations in 2D and 3D
+  * SE2StateSpace, SE3StateSpace: combines translations and rotations in 2D and 3D
+  * ...
+* **State Validaty Checker** determines if the configuration is valid, that is to say the configuration doesn't collides with an enviroment obstacle and respects the constraints of the robot.
+* **Control Space** defines the movements that a robot can have.
+* **State Propagator** indicates the evolution of the system after applying a control.
+* **Space Information** is the container that holds the state space, the state validity checker, and other information needed for planning.
+* **Planner** responsible for generating a path from the start to the goal in the configuration space. OMPL supports a variety of planners, such as RRT, PRM, and FMT*.
+* **Path** is the output of the planner, which is a sequence of states representing a trajectory for the robot to follow.
 
-2. The nav stack uses a path planning algorithm in the *global planner* to plan the shortest path from the current location to the goal, using the map. Global Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/). More about it over there!
+The following example shows a 2D point robot inside a 10x10 space with an ovular obstacle at position (5.5, 5.5):
+```
+from ompl import base as ob
+from ompl import geometric as og
+import math
+from math import sqrt
+import numpy as np
+import matplotlib.pyplot as plt
 
-3. This path is passed to the *local planner*, which tries to drive the robot along the path. The local planner uses information from the sensors in order to avoid obstacles that appear in front of the robot but that are not in the map, such as people. **If the local planner gets stuck and cannot make progress, it can ask the global planner to make a new plan and then attempt to follow that.** Local Path Planning is covered in another [exercise](https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance). More about it over there!
+# specify valid state condition
+def isStateValid(state):
+  x = state.getX()
+  y = state.getY()
+  if sqrt(pow(x - obstacle[0], 2) + pow(y - obstacle[1], 2)) - obstacle[2] <= 0:
+    return False
+  return True
 
-4. When the robot gets close to the goal pose, the action terminates and we're done.
+def plan():
+  # Construct the robot state space in which we're planning. We're
+  # planning in [0,1]x[0,1], a subset of R^2.
+  space = ob.SE2StateSpace()
 
+  # set state space's lower and upper bounds
+  bounds = ob.RealVectorBounds(2)
+  bounds.setLow(0, dimensions[0])
+  bounds.setLow(1, dimensions[1])
+  bounds.setHigh(0, dimensions[2])
+  bounds.setHigh(1, dimensions[3])
+  space.setBounds(bounds)
 
-### ROS Actions
+  # construct a space information instance for this state space
+  si = ob.SpaceInformation(space)
+  # set state validity checking for this space
+  si.setStateValidityChecker(ob.StateValidityCheckerFn(isStateValid))
 
-ROS system consists of a number of independent nodes that comprise a graph. In order for something useful to take place, the nodes have to communicate with each other. This is accomplished by use of **topics**. A topic is a name for a stream of messages with a defined type. Topics implement a *publish/subscribe* communication mechanism to exchange data in the distributed system. Before nodes start to transmit data over topics, they must first announce, or *advertise*, both the topic name and the types of messages that are going to be sent. Then they can start to send, or *publish* the actual data on the topic. Nodes that want to receive messages on a topic can *subscribe* to the topic.
+  # Set our robot's starting and goal state
+  start = ob.State(space)
+  start().setX(0)
+  start().setY(0)
+  start().setYaw(math.pi / 4)
+  goal = ob.State(space)
+  goal().setX(10)
+  goal().setY(10)
+  goal().setYaw(math.pi / 4)
 
-ROS Services provide a way to execute synchronous remote procedure calls; calling a function in one node that executes in another node. The server(which provides the service) specifies a callback to deal with the service request, and advertises the service. The client(which calls the service) then accesses the service through a local proxy.
+  # create a problem instance
+  pdef = ob.ProblemDefinition(si)
 
-ROS Actions provide a way to execute asynchronous remote procedure calls. Similar to the request and response of a service, an action uses a *goal* to initiate a behaviour and sends the *result* when the behaviour is complete. But the action further uses *feedback* to provide updates on the behaviour's progress toward the goal and also allows for goals to be cancelled. 
+  # set the start and goal states
+  pdef.setStartAndGoalStates(start, goal)
 
-Hence, services are handy for simple get/set instructions like querying status and managing configuration, they don't work well when we need to initiate a long running task like navigation. This is exactly where actions can be used.
+  # create a planner for the defined space
+  planner = og.RRTConnect(si)
 
-{% include gallery id="theory" caption="Theory" %}
+  # set the problem we are trying to solve for the planner
+  planner.setProblemDefinition(pdef)
+
+  # perform setup steps for the planner
+  planner.setup()
+
+  # solve the problem and print the solution if exists
+  solved = planner.solve(1.0)
+  if solved:
+    print(pdef.getSolutionPath())
+    plot_path(pdef.getSolutionPath(), dimensions)
+
+def create_numpy_path(states):
+    lines = states.splitlines()
+    length = len(lines) - 1
+    array = np.zeros((length, 2))
+
+    for i in range(length):
+        array[i][0] = float(lines[i].split(" ")[0])
+        array[i][1] = float(lines[i].split(" ")[1])
+    return array
+
+def plot_path(solution_path, dimensions):
+  matrix = solution_path.printAsMatrix()
+  path = create_numpy_path(matrix)
+  x, y = path.T
+  ax = plt.gca()
+  ax.plot(x, y, 'r--')
+  ax.plot(x, y, 'go') 
+  ax.axis(xmin=dimensions[0], xmax=dimensions[2], ymin=dimensions[1], ymax=dimensions[3])
+  ax.add_patch(plt.Circle((obstacle[0], obstacle[1]), radius=obstacle[2]))
+
+  plt.show()
+
+if __name__ == "__main__":
+  dimensions = [0, 0, 10, 10] 
+  obstacle = [5.5, 5.5, 1]   # [x, y, radius]
+  plan()
+```
+
+Output:
+```
+Info:    RRTConnect: Space information setup was not yet called. Calling now.
+Debug:   RRTConnect: Planner range detected to be 3.142586
+Info:    RRTConnect: Starting planning with 1 states already in datastructure
+Info:    RRTConnect: Created 9 states (4 start + 5 goal)
+Geometric path with 7 states
+Compound state [
+RealVectorState [0 0]
+SO2State [0.785398]
+]
+Compound state [
+RealVectorState [1.26041 2.4087]
+SO2State [-0.0626893]
+]
+Compound state [
+RealVectorState [3.38076 4.59672]
+SO2State [0.128782]
+]
+Compound state [
+RealVectorState [3.66427 7.34115]
+SO2State [0.895879]
+]
+Compound state [
+RealVectorState [4.7318 7.51811]
+SO2State [0.808152]
+]
+Compound state [
+RealVectorState [7.7113 8.01201]
+SO2State [0.563304]
+]
+Compound state [
+RealVectorState [10 10]
+SO2State [0.785398]
+]
+
+```
+
+Plot:
+{% include gallery id="example" caption="Example" %}
+
+To better understand how to use the library, it is highly recommended to go to the [tutorials](https://ompl.kavrakilab.org/tutorials.html) and [demos](https://ompl.kavrakilab.org/group__demos.html) sections of the official website.
+
 
 ## Hints
-Simple hints provided to help you solve the amazon_warehosue exercise.
 
-The main problem in this exercise is to correctly identify the goal and send it to the action server.
+Simple hints provided to help you solve the Amazon Warehouse exercise. Please note that the **full solution has not been provided.** Also, the hints are more related to the reference solution, since multiple solutions are possible for this exercise.
 
-### Locations
+### Ideas for solving the exercise
+Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
 
-* The locations of the pallets to be stored are already present in the `pallets_coords.yaml` file
-* The boundaries for *Pick-up room* are: `(x > 310) and (y > 125) and (y < 185)`
-* The boundaries for *Charging Point* are : `(y > 255) and (x < 315) and (x > 85)`
+#### How to find the shortest path?
+The library offers the possibility to set an optimization objective, which could be a great help in finding the shortest path. Check out in [this tutorial](https://ompl.kavrakilab.org/optimalPlanningTutorial.html) how to do it!
+
+#### Points to consider
+* The loaded shelf is no longer a obstacle but part of the robot, then:
+  * the robot's geometry changes, its "radius" increases
+  * remember to exclude the shelf itself when defining invalid states
+
+### Important points to remember
+* Convert the coordinates from meter to pixel before representing with *GUI.showPath(array)*.
+
 
 ## Videos
 
@@ -152,8 +329,10 @@ The main problem in this exercise is to correctly identify the goal and send it 
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
+- Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
+- Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164).
+
 ## References
 
-Programming Robots with ROS, by Morgan Quigley, Brian Gerkey & William D.Smart
-
-[The ROS Wiki](http://wiki.ros.org/navigation)
+1. [https://ompl.kavrakilab.org/](https://ompl.kavrakilab.org/)
+2. [https://ompl.kavrakilab.org/OMPL_Primer.pdf](https://ompl.kavrakilab.org/OMPL_Primer.pdf)
