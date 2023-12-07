@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {draw, drawUserPosition, printParticles} from "./helpers/birds_eye"
+import {clearMap, draw, drawUserPosition, printParticles} from "./helpers/birds_eye"
 
 
 function SpecificMontecarloLaserLoc(props) {
@@ -16,25 +16,23 @@ function SpecificMontecarloLaserLoc(props) {
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
         const content = pose.split(",").map(item => parseFloat(item));
+        const poseUser = updateData.user.substring(1, updateData.user.length - 1);
+        const userContent = poseUser.split(",").map(item => parseFloat(item));
+
         draw(
           guiCanvasRef.current,
           content[0],
           content[1],
           content[2],
-          content[3]
-        );
-      }
-      if (updateData.user) {
-        const poseUser = updateData.user.substring(1, updateData.user.length - 1);
-        const userContent = poseUser.split(",").map(item => parseFloat(item));
-        drawUserPosition(
-          guiCanvasRef.current,
+          content[3],
           userContent[0],
           userContent[1],
           userContent[2],
           userContent[3]
         );
       }
+
+      
       if (updateData.particles){
         const particles = JSON.parse(updateData.particles);
         if(particles != "") {
@@ -56,6 +54,29 @@ function SpecificMontecarloLaserLoc(props) {
       );
     };
   }, []);
+
+  React.useEffect(() => {
+    const callback = (message) => {
+      if (message.data.state === "ready") {
+        try {
+          clearMap(guiCanvasRef.current,)
+        } catch (error) {
+        }
+      }
+    }
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+        callback
+      );
+    };
+  }, [])
 
   return (
     <div style={{ display: "flex", width: "100%", height: "100%" }}>

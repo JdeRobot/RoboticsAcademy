@@ -5,20 +5,14 @@ var trail = [],
 var initialPosition;
 
 // Complete draw function
-export function draw(mapCanvas, x, y, ax, ay){
+export function draw(mapCanvas, x, y, ax, ay, xUser, yUser, axUser, ayUser){
 	let ctx = mapCanvas.getContext("2d")
-	
-	coords = drawTriangle(ctx, x, y, ax, ay, "#FF0000");
+	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+	drawTriangle(ctx, x, y, ax, ay, "#FF0000");
+    if(xUser > 0)
+    drawTriangle(ctx, xUser, yUser, axUser, ayUser, "#0010bf")
 }
 
-export function drawUserPosition(mapCanvas, x, y, ax, ay){
-	let ctx = mapCanvas.getContext("2d")
-	
-
-	
-	coords = drawTriangleUser(ctx, x, y, ax, ay, "#1b00e8");
-    ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
-}
 // Function to draw triangle
 // Given the coordinates of center, and
 // the angle towards which it points
@@ -82,49 +76,6 @@ function drawTriangle(ctx, posx, posy, angx, angy, color) {
 }
 
 
-function drawTriangleUser(ctx, posx, posy, angx, angy, color) {
-    if (initialPosition == null) {
-        initialPosition = [posx, posy, angx, angy];
-    }
-
-    ctx.beginPath();
-
-    let px = posx;
-    let py = posy;
-
-    // The main line
-    ctx.strokeStyle = color;
-
-    // Sides
-    let side = 1.5 * Math.hypot(2, 2);
-    let ang;
-    if (angx != 0) {
-        ang = Math.atan2(angy, angx);
-    } else {
-        ang = Math.PI / 2;
-    }
-
-    let px1 = posx + side * Math.cos(2 * Math.PI / 3 + ang);
-    let py1 = posy - side * Math.sin(2 * Math.PI / 3 + ang);
-    let px2 = posx + side * Math.cos(2 * Math.PI / 3 - ang);
-    let py2 = posy + side * Math.sin(2 * Math.PI / 3 - ang);
-    let px3 = posx + side * Math.cos(ang);
-    let py3 = posy - side * Math.sin(ang);
-
-    ctx.moveTo(px3, py3);
-    ctx.lineTo(px1, py1);
-    ctx.lineTo(px2, py2);
-    ctx.lineTo(px3, py3);
-
-    ctx.stroke();
-    ctx.closePath();
-
-    ctx.fillStyle = color;
-    ctx.fill();
-
-    return [px, py];
-}
-
 function drawTrail(px, py){
 	trail.push({x: px, y: py});
 
@@ -133,7 +84,8 @@ function drawTrail(px, py){
 	}
 }
 
-function clearMap(){
+export function clearMap(mapCanvas){
+    let ctx = mapCanvas.getContext("2d")
 	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 	trail = [];
 }
