@@ -11,7 +11,7 @@ class CMDLift ():
 
     def __init__(self):
         self.msg = String()
-        self.msg.data = "unload"
+        self.msg.data = "putdown"
     
     def cmd(self,cmd):
         self.msg.data = cmd
@@ -48,14 +48,14 @@ class PublisherPlatform:
         self.kill_event.clear()
         self.thread.start()
         
-    def load(self):
+    def lift(self):
         self.lock.acquire()
-        self.data.cmd("load")
+        self.data.cmd("lift")
         self.lock.release()
 
-    def unload(self):
+    def putdown(self):
         self.lock.acquire()
-        self.data.cmd("unload")
+        self.data.cmd("putdown")
         self.lock.release()
 
 
