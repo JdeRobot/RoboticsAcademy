@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
-    image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
+  - url: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
+    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
     alt: "Montecarlo Laser Loc"
     title: "Montecarlo Laser Loc"
 
@@ -139,9 +139,6 @@ The following figure shows an example of probabilistic localisation. In the firs
 - The following figure shows an example of the operation of the particulate filter. At the initial instant the particles are uniformly distributed in the environment. As new observations are obtained, the particles accumulate in probability zones until they converge to the probability zone [5].     
 
 {% include gallery id="evolution" caption="Probabilistic location model" %}   
-
-## Videos
-{% include youtubePlayer.html id=page.youtubeId %}
 
 ## Contributors
 

@@ -77,7 +77,7 @@ feature_row:
     status: "prototype"
     order: 2;
 
-  - image_path: /assets/images/exercises/laser_loc/autoloc_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
     alt: "Montecarlo Laser Loc"
     title: "Montecarlo Laser Loc"
     excerpt: "Robot self-localization using particle filter and laser sensor"
