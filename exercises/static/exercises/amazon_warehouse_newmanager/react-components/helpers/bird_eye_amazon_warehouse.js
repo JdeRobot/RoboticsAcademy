@@ -26,6 +26,7 @@ export function generatePath(data, canvas){
 	let minx,miny,maxx,maxy;
 	miny = minx = Infinity
 	maxx = maxy = -Infinity;
+
 	data.forEach(point => {
 		  minx = Math.min(minx,point[0]);
 		  miny = Math.min(miny,point[1]);
@@ -36,7 +37,6 @@ export function generatePath(data, canvas){
 	let rangeY = maxy - miny;
 	let range = Math.max(rangeX,rangeY);
 	let scale = Math.min(mapCanvas.width,mapCanvas.height);
-
 	for (let i = 0; i < data.length-1; i++) {
     ctx.beginPath();
     ctx.moveTo(data[i][0], data[i][1]);
@@ -131,9 +131,10 @@ function drawTrail(px, py) {
   }
 }
 
-export function clearMap() {
-  ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
-  trail = [];
+export function clearMap(mapCanvas){
+  let ctx = mapCanvas.getContext("2d")
+ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
+trail = [];
 }
 
 export function restoreInitialPosition() {
