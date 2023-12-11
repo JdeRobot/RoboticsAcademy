@@ -12,7 +12,7 @@ export default function WorldSelectorAmazonWarehouse(props) {
     const exerciseConfig = JSON.parse(
         document.getElementById("exercise-config").textContent
       );
-      const [disabled, setDisabled] = useState(false);
+      const [disabled, setDisabled] = useState(true);
       const [selectedCircuit, setSelectedCircuit] = useState(exerciseConfig[0]);
       const [configurations, setConfigurations] = useState(exerciseConfig);
     
