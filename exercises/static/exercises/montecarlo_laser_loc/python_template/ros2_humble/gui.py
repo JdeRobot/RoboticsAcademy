@@ -103,7 +103,7 @@ class GUI:
         return payload
 
     def showPosition(self, x, y, user_angle):
-        angle = 3.16*user_angle/180 + 180
+        angle = 3.16*user_angle/180
         ay = math.cos(-angle) - math.sin(-angle)
         ax = math.sin(-angle) + math.cos(-angle)
         self.user_position = x, y
