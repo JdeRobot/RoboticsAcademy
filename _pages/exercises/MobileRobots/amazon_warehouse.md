@@ -147,7 +147,7 @@ There are two warehouses to choose from:
 
 This exercise is a motion planning problem. Motion planning is a  Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
 
-### [Open Motion Planning Library]((https://ompl.kavrakilab.org/))
+### [Open Motion Planning Library](https://ompl.kavrakilab.org/)
 
 OMPL is a library for sampling-based motion planning, offering many state-of-the-art planning algorithms such as PRM, RRT, KPIECE, etc.
 
@@ -302,6 +302,42 @@ Plot:
 {% include gallery id="example" caption="Example" %}
 
 To better understand how to use the library, it is highly recommended to go to the [tutorials](https://ompl.kavrakilab.org/tutorials.html) and [demos](https://ompl.kavrakilab.org/group__demos.html) sections of the official website.
+
+### Conversion From 3D to 2D
+**Robot Localization** is the process of determining, where robot is located with respect to it's environment. Localization is a an important resource to us in solving this exercise. Localization can be accomplished in any way possible, be it Monte Carlo, Particle Filter, or even Offline Algorithms. Since, we have a map available to us, offline localization is the best way to move forward. Offline Localization will involve converting from a 3D environment scan to a 2D map. There are again numerous ways to do it, but the technique used in exercise is using **transformation matrices**.
+
+#### Transformation Matrices
+In simple terms, transformation is an invertible function that maps a set _X_ to itself. Geometrically, it moves a point to some other location in some space. Algebraically, all the transformations can be mapped using matrix representation. In order to apply transformation on a point, we multiply the point with the specific transformation matrix to get the new location. Some important transformations are:
+
+- **Translation**
+
+Translation of Euclidean Space(2D or 3D world) moves every point by a fixed distance in the same direction
+
+- **Rotation**
+
+Rotation spins the object around a fixed point, known as center of rotation.
+
+- **Scaling**
+
+Scaling enlarges or diminishes objects, by a certain given scale factor.
+
+- **Shear**
+
+Shear rotates one axis so that the axes are no longer perpendicular.
+
+In order to apply multiple transformations all at the same time, we use the concept of **Transformation Matrix** which enables us to multiply a single matrix for all the operations at once!
+
+![Transformation Matrix](https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRj8-LHyAz5s62zEx9fnQg_KLZX08E_rbdfHQ52kQZwh3BvPqMl)
+
+*Transformation Matrix*
+
+In our case we need to map a 3D Point in gazebo, to a 2D matrix map of our house. The equation used in the exercise was:
+
+![Coordinate to Pixel]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/coord2pix.png)
+
+*Coordinate to Pixel Conversion Equation*
+
+In order to carry out the inverse operation of 3D to 2D, we can simply multiply, the pixel vector with the inverse of the transformation matrix to get the gazebo vector. The inverse of the matrix exists because the **mapping is invertible** and we **do not care about the z coordinate of the environment**, implying that each point in gazebo corresponds to a single point in the map.
 
 
 ## Hints
