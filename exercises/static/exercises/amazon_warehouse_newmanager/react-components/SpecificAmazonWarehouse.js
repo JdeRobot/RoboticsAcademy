@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { clearPath, draw, drawTargetPosition, generatePath } from "./helpers/bird_eye_amazon_warehouse";
+import {  draw,  generatePath } from "./helpers/bird_eye_amazon_warehouse";
 
 function SpecificAmazonWarehouse(props) {
   const guiCanvasRef = React.useRef();
