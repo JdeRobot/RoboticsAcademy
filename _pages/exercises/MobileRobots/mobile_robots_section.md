@@ -76,6 +76,18 @@ feature_row:
     version_label: "btn--success"
     status: "prototype"
     order: 2;
+
+  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
+    alt: "Montecarlo Laser Loc"
+    title: "Montecarlo Laser Loc"
+    excerpt: "Robot self-localization using particle filter and laser sensor"
+    url: "/exercises/MobileRobots/montecarlo_laser_loc"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 0;
+    version: "v1.0"
   
   - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
     alt: "Laser Mapping"
