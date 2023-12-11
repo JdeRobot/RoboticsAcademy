@@ -409,17 +409,17 @@ feature_row:
     order: 0;
     version: "v3.2"
 
-  - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
-    alt: "MonteCarlo Laser Loc"
-    title: "MonteCarlo Laser Loc"
+  - image_path: /assets/images/exercises/laser_loc/autoloc_teaser.png
+    alt: "Montecarlo Laser Loc"
+    title: "Montecarlo Laser Loc"
     excerpt: "Robot self-localization using particle filter and laser sensor"
-    url: "/exercises/MobileRobots/laser_loc"
+    url: "/exercises/MobileRobots/montecarlo_laser_loc"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
     order: 0;
-    version: "v3.2"
+    version: "v1.0"
 
   - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
     alt: "Simulated Follow Person"
