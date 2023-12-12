@@ -107,6 +107,10 @@ class GUI:
         angle = 3.16*angle/180
         ay = math.cos(-angle) - math.sin(-angle)
         ax = math.sin(-angle) + math.cos(-angle)
+        scale_y = 15; offset_y = 63
+        y = scale_y * y + offset_y		
+        scale_x = -30; offset_x = 171
+        x = scale_x * x + offset_x
         self.user_position = x, y
         self.user_angle = (ax, ay)
 
@@ -114,8 +118,13 @@ class GUI:
     def showParticles(self, particles):
         if len(particles) > 0:
             self.particles = particles
+            scale_y = 15; offset_y = 63
+            scale_x = -30; offset_x = 171
+            for particle in self.particles:                
+                particle[1] = scale_y * particle[1] + offset_y                                
+                particle[0] = scale_x * particle[0] + offset_x                
         else:
-            self.particles = []
+            self.particles = []        
 
     # Update the gui
 
