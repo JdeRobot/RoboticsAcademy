@@ -109,7 +109,8 @@ while True:
 * `HAL.setW()` - to set the angular velocity 
 * `HAL.setV()` - to set the linear velocity 
 * `GUI.showParticles(particles)` - shows the particles on the map. It is necessary to pass a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_degrees].    
-* `GUI.showPosition(pose)` - shows the estimated user position in the map view. It is necessary to pass a list with [position_x, position_y, angle_in_degrees]. The map view will also show the real position of the robot, so you can compare how good your algorithm is.  
+* `GUI.showPosition(pose)` - shows the estimated user position in the map view. It is necessary to pass a list with [position_x, position_y, angle_in_degrees]. The map view will also show the real position of the robot, so you can compare how good your algorithm is.
+* `GUI.getMap('/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc_newmanager/resources/mapgrannyannie.png')` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A).
 
 
 ## Theory
