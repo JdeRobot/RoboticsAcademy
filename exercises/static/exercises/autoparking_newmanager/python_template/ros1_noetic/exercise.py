@@ -81,6 +81,16 @@ class Template:
             time.sleep(1)
             return
 
+        elif message.startswith("#run"):
+            try:
+
+                user_code = message[4:]
+
+                self.execute_user_code(user_code)
+            except Exception as e:
+                print("Error al ejecutar el código del usuario:", e)
+            return
+
         elif (message[:5] == "#ping"):
             time.sleep(1)
             self.send_ping_message()
@@ -387,6 +397,11 @@ class Template:
 
     def handle_close(self, client, server):
         print(client, 'closed')
+
+    def execute_user_code(self, code):
+        self.thread = threading.Thread(target=self.process_code, args=[code])
+        self.thread.start()
+        print("Código del usuario en ejecución.")
 
 
 # Execute!
