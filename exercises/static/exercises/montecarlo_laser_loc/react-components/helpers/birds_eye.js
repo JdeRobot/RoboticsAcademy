@@ -8,9 +8,9 @@ var initialPosition;
 export function draw(mapCanvas, x, y, ax, ay, xUser, yUser, axUser, ayUser){
 	let ctx = mapCanvas.getContext("2d")
 	ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
-	drawTriangle(ctx, x, y, ax, ay, "#FF0000");
+	drawTriangle(ctx, x, y, ax, ay, 2);
     if(xUser > 0)
-    drawTriangle(ctx, xUser, yUser, axUser, ayUser, "#0010bf")
+    drawTriangle(ctx, xUser, yUser, axUser, ayUser, 1)
 }
 
 // Function to draw triangle
@@ -32,7 +32,7 @@ function drawCircle(x, y){
 	ctx.fill();
 }
 
-function drawTriangle(ctx, posx, posy, angx, angy, color) {
+function drawTriangle(ctx, posx, posy, angx, angy, type) {
     if (initialPosition == null) {
         initialPosition = [posx, posy, angx, angy];
     }
@@ -42,17 +42,24 @@ function drawTriangle(ctx, posx, posy, angx, angy, color) {
     let px = posx;
     let py = posy;
 
-    // The main line
-    ctx.strokeStyle = color;
+    // Triangle type
+    let side;
+    if (type == 1) {
+        ctx.strokeStyle = "#0010bf";    
+        side = 1.32 * Math.hypot(2, 2);
+    }
+    else if (type == 2) {
+        ctx.strokeStyle = "#FF0000";    
+        side = 1.67 * Math.hypot(2, 2);
+    }
 
-    // Sides
-    let side = 1.5 * Math.hypot(2, 2);
     let ang;
     if (angx != 0) {
         ang = Math.atan2(angy, angx);
     } else {
         ang = Math.PI / 2;
     }
+    ang += 0.25;
 
     let px1 = posx + side * Math.cos(2 * Math.PI / 3 + ang);
     let py1 = posy - side * Math.sin(2 * Math.PI / 3 + ang);
@@ -69,8 +76,10 @@ function drawTriangle(ctx, posx, posy, angx, angy, color) {
     ctx.stroke();
     ctx.closePath();
 
-    ctx.fillStyle = color;
-    ctx.fill();
+    if (type == 1) {
+        ctx.fillStyle = "#0010bf";
+        ctx.fill();
+    }
 
     return [px, py];
 }
@@ -110,8 +119,8 @@ export function printParticles(mapCanvas, particles) {
 function printParticle(mapCanvas, mapPositionX, mapPositionY, theta){
 	let ctx = mapCanvas.getContext("2d")
     ctx.beginPath();
-    ctx.fillStyle = "blue";
-    ctx.strokeStyle = 'blue';
+    ctx.fillStyle = "#4553e8";
+    ctx.strokeStyle = '#4553e8';
     ctx.arc(mapPositionX, mapPositionY, 1, 0,2*Math.PI);
     ctx.fill();
     ctx.stroke();
@@ -136,6 +145,6 @@ function canvas_arrow(mapCanvas, fromx, fromy, tox, toy) {
 //  canvasCtx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
 //  canvasCtx.moveTo(tox, toy);
 //  canvasCtx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
-	ctx.strokeStyle = 'blue';
+	ctx.strokeStyle = '#4553e8';
 	ctx.stroke();
 }
