@@ -409,7 +409,7 @@ feature_row:
     order: 0;
     version: "v3.2"
 
- - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
+  - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
     alt: "MonteCarlo Laser Loc (old version)"
     title: "MonteCarlo Laser Loc (old version)"
     excerpt: "Robot self-localization using particle filter and laser sensor"
