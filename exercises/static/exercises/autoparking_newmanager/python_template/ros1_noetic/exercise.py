@@ -81,9 +81,9 @@ class Template:
             time.sleep(1)
             return
 
-        elif message.startswith("#run"):
+        elif (message[:4] == "#run"):
             try:
-
+                print('pasa en ejercicio')
                 user_code = message[4:]
 
                 self.execute_user_code(user_code)
@@ -123,39 +123,16 @@ class Template:
     def on_error(ws, error):
         print("Error: ", error)
 
-    # Function for saving
-    def save_code(self, source_code):
-        with open('code/academy.py', 'w') as code_file:
-            code_file.write(source_code)
-
-    # Function for loading
-    def load_code(self):
-        with open('code/academy.py', 'r') as code_file:
-            source_code = code_file.read()
-
-        return source_code
-
     # Function to parse the code
     # A few assumptions:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
+
     def parse_code(self, source_code):
-        # Check for save/load
-        if (source_code[:5] == "#save"):
-            source_code = source_code[5:]
-            self.save_code(source_code)
 
-            return "", ""
-
-        elif (source_code[:5] == "#load"):
-            source_code = source_code + self.load_code()
-
-            return "", ""
-
-        else:
-            sequential_code, iterative_code = self.seperate_seq_iter(
-                source_code)
-            return iterative_code, sequential_code
+        sequential_code, iterative_code = self.seperate_seq_iter(
+            source_code)
+        return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
