@@ -31,10 +31,6 @@ class GUI:
 
         # Take the console object to set the same websocket and client
         self.hal = hal
-        self.client = websocket.WebSocketApp('ws://127.0.0.1:1905',
-                                             on_open=self.on_open,
-                                             on_message=self.on_message)
-        self.client.run_forever(ping_timeout=None, ping_interval=0)
 
         # Create the map object
         laser_object_f = ListenerLaser("/F1ROS/laser_f/scan")
@@ -43,9 +39,18 @@ class GUI:
         pose3d_object = ListenerPose3d("/F1ROS/odom")
         self.map = Map(laser_object_f, laser_object_r,
                        laser_object_b, pose3d_object)
+        self.client_thread = threading.Thread(target=self.run_websocket)
+        self.client_thread.start()
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
+
+    def run_websocket(self):
+        self.client = websocket.WebSocketApp('ws://127.0.0.1:1905',
+                                             on_open=self.on_open,
+                                             on_message=self.on_message)
+        self.client.run_forever(ping_timeout=None, ping_interval=0)
+
     @classmethod
     def initGUI(self):
         # self.payload = {'image': '', 'shape': []}
@@ -53,8 +58,8 @@ class GUI:
 
     # Function to get the client
     # Called when a new client is received
-    def on_open(self, server, client):
-        self.server = server
+    def on_open(self, ws):
+        self.server = ws
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -81,7 +86,7 @@ class GUI:
 
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
-    def on_message(self, server, client, message):
+    def on_message(self, ws, message):
         # Acknowledge Message for GUI Thread
         if (message[:4] == "#ack"):
             self.set_acknowledge(True)

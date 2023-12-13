@@ -43,6 +43,11 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
+
+        self.client_thread = threading.Thread(target=self.run_websocket)
+        self.client_thread.start()
+
+    def run_websocket(self):
         self.client = websocket.WebSocketApp('ws://127.0.0.1:1905',
                                              on_open=self.on_open,
                                              on_message=self.on_message,
@@ -51,8 +56,8 @@ class Template:
         self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     # Function that gets called when the server is connected
-    def on_open(self, client, server):
-        self.client = client
+    def on_open(self, ws):
+
         # Start the GUI update thread
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
@@ -64,13 +69,12 @@ class Template:
         # Start measure frequency
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.measure_thread.start()
-        client.send("#con")
 
-        print(client, 'connected')
+        print('connected')
 
         # Function that gets called when the connected closes
-    def on_close(self, client, server):
-        print(client, 'closed')
+    def on_close(self, ws, close_status_code, close_msg):
+        print('closed')
 
     # The websocket function
     # Gets called when there is an incoming message from the client
@@ -85,7 +89,6 @@ class Template:
             try:
                 print('pasa en ejercicio')
                 user_code = message[4:]
-
                 self.execute_user_code(user_code)
             except Exception as e:
                 print("Error al ejecutar el código del usuario:", e)
@@ -120,7 +123,7 @@ class Template:
         elif (message[:5] == "#play"):
             self.stop_brain = False
 
-    def on_error(ws, error):
+    def on_error(self, ws, error):
         print("Error: ", error)
 
     # Function to parse the code
@@ -383,4 +386,5 @@ class Template:
 
 # Execute!
 if __name__ == "__main__":
+    print('nopasa')
     server = Template()
