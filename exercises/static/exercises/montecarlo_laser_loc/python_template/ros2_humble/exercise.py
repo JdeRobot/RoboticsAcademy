@@ -119,6 +119,7 @@ class Template:
         hal_module.HAL.laser = self.hal.laser
         hal_module.HAL.getLaserData = self.hal.getLaserData
         hal_module.HAL.getBumperData = self.hal.getBumperData
+        hal_module.HAL.getPose3d = self.hal.getPose3d
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(
@@ -130,6 +131,8 @@ class Template:
         gui_module.GUI.getMap = self.gui.getMap
         gui_module.GUI.showPosition = self.gui.showPosition
         gui_module.GUI.showParticles = self.gui.showParticles
+        gui_module.GUI.poseToMap = self.gui.poseToMap
+        gui_module.GUI.mapToPose = self.gui.mapToPose
 
         # Add GUI functions
         # gui_module.GUI.showImage = self.gui.showImage

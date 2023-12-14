@@ -103,9 +103,13 @@ class GUI:
         return payload
 
     def showPosition(self, x, y, angle):
-
+        angle = angle
         ay = math.cos(-angle) - math.sin(-angle)
         ax = math.sin(-angle) + math.cos(-angle)
+        scale_y = 15; offset_y = 63
+        y = scale_y * y + offset_y		
+        scale_x = -30; offset_x = 171
+        x = scale_x * x + offset_x
         self.user_position = x, y
         self.user_angle = (ax, ay)
 
@@ -113,8 +117,14 @@ class GUI:
     def showParticles(self, particles):
         if len(particles) > 0:
             self.particles = particles
+            scale_y = 15; offset_y = 63
+            scale_x = -30; offset_x = 171
+            for particle in self.particles:                
+                particle[1] = scale_y * particle[1] + offset_y                                
+                particle[0] = scale_x * particle[0] + offset_x
+                particle[2] = (particle[2] + math.pi) * 180/math.pi
         else:
-            self.particles = []
+            self.particles = []        
 
     # Update the gui
 
@@ -155,6 +165,22 @@ class GUI:
 
     def getMap(self, url):
         return plt.imread(url)
+    
+    def poseToMap(self, x, y, yaw):        
+        scale_y = 1024/9.928819; offset_y = 4.088577
+        y = scale_y * (y + offset_y)
+        scale_x = 1024/9.890785; offset_x = 5.650662
+        x = scale_x * (-x + offset_x)
+        return [y, x, -yaw]
+    
+    def mapToPose(self, x, y, yaw):
+        scale_x = 1024/9.890785
+        offset_x = 5.650662
+        x = -x / scale_x + offset_x
+        scale_y = 1024/9.928819
+        offset_y = 4.088577
+        y = (y / scale_y) - offset_y
+        return [y, x, -yaw]
 
     # Activate the server
     def run_server(self):

@@ -34,19 +34,14 @@ class Map:
 
 		x = (6.8 - x) * 20.22 * 0.545
 		y = (10.31 - y) * 20.17 * 0.72
-		# print(" - Coordinate: " + str(x) + ", " + str(y))
 
 		return y, x
 	
 	def getRobotAngle(self):
 		pose = self.pose3d.getPose3d()
 		rt = pose.yaw - 1.24
-
 		ty = math.cos(-rt) - math.sin(-rt)
 		tx = math.sin(-rt) + math.cos(-rt)
-
-		# print(" - Angle: " + str(tx) + ", " + str(ty))
-		# print(" -> rt: " + str(rt))
 
 		return tx, ty
 

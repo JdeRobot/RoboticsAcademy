@@ -117,11 +117,8 @@ class GUI:
         for wp in array:
             array_scaled.append([wp[0] * 0.72, wp[1] * 0.545])
 
-        print("Path array: " + str(array_scaled))
         self.array_lock.acquire()
-
         strArray = ''.join(str(e) for e in array_scaled)
-        print("strArray: " + str(strArray))
 
         # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
         strArray = re.sub(r"\[[ ]+", "[", strArray)
@@ -130,7 +127,6 @@ class GUI:
         strArray = re.sub(r",,", ",", strArray)
         strArray = re.sub(r"]\[", "],[", strArray)
         strArray = "[" + strArray + "]"
-        print("strArray2: " + str(strArray))
 
         self.array = strArray
         self.array_lock.release()
