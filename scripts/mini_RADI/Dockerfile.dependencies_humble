@@ -166,9 +166,12 @@ RUN apt-get update && apt-get install -y \
   && rm -rf /var/lib/apt/lists/* 
 
 # Install PX4
-RUN git clone -b v1.14.0-beta2 https://github.com/PX4/PX4-Autopilot.git --recursive \
+RUN git clone -b v1.14.0 https://github.com/PX4/PX4-Autopilot.git --recursive \
   && cd /PX4-Autopilot \
   && DONT_RUN=1 make px4_sitl gazebo
+
+# https://github.com/JdeRobot/RoboticsAcademy/issues/2310
+RUN echo 'param set-default COM_OF_LOSS_T 5' >> /PX4-Autopilot/build/px4_sitl_default/etc/init.d-posix/px4-rc.params
 
 RUN git clone -b v2.4.1 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tmp/MicroXRCEAgent \
   && cd /tmp/MicroXRCEAgent \
@@ -184,7 +187,6 @@ RUN mkdir -p /home/drones_ws/src/
 RUN git clone https://github.com/JdeRobot/aerostack2.git /home/drones_ws/src/aerostack2
 RUN git clone https://github.com/pawanw17/as2_platform_pixhawk.git /home/drones_ws/src/aerostack2/as2_platform_pixhawk
 RUN git clone https://github.com/pawanw17/px4_msgs.git /home/drones_ws/src/px4_msgs
-RUN git clone https://github.com/pawanw17/px4_ros_com.git /home/drones_ws/src/px4_ros_com
 
 # Compiling and sourcing the workspace
 WORKDIR /home/drones_ws/

@@ -185,7 +185,6 @@ class Template:
         hal_module.HAL.motors = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("motors", None))
 
         # Add HAL functions
-        hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
         hal_module.HAL.setV = self.hal.motors.sendV
         hal_module.HAL.setW = self.hal.motors.sendW
         hal_module.HAL.getImage = self.hal.getImage

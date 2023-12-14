@@ -17,26 +17,25 @@ from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
 
+
 class Template:
     # Initialize class variables
     # self.ideal_cycle to run an execution for atleast 1 second
     # self.process for the current running process
     def __init__(self):
-        # BRAIN 
         self.measure_thread = None
-        self.brain_thread = None
+        self.thread = None
         self.reload = False
         self.stop_brain = False
         self.user_code = ""
 
-        # Brain Time variables
+        # Time variables
         self.ideal_cycle = 80
         self.measured_cycle = 80
         self.iteration_counter = 0
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
 
-        # EXERCISE websocket
         self.server = None
         self.client = None
         self.host = sys.argv[1]
@@ -44,7 +43,7 @@ class Template:
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
-        
+
     ################ --- BRAIN --- ################
 
     # The process function
@@ -115,13 +114,12 @@ class Template:
             importlib.machinery.ModuleSpec("motors", None))
 
         # Add HAL functions
-        hal_module.HAL.getPose3d = self.hal.getPose3d
         hal_module.HAL.setV = self.hal.setV
         hal_module.HAL.setW = self.hal.setW
         hal_module.HAL.laser = self.hal.laser
         hal_module.HAL.getLaserData = self.hal.getLaserData
-        hal_module.HAL.lift = self.hal.lift
-        hal_module.HAL.putdown = self.hal.putdown
+        hal_module.HAL.getBumperData = self.hal.getBumperData
+        hal_module.HAL.getPose3d = self.hal.getPose3d
 
         # Define GUI module
         gui_module = importlib.util.module_from_spec(
@@ -130,7 +128,14 @@ class Template:
             importlib.machinery.ModuleSpec("GUI", None))
 
         # Add GUI functions
-        gui_module.GUI.showPath = self.gui.showPath
+        gui_module.GUI.getMap = self.gui.getMap
+        gui_module.GUI.showPosition = self.gui.showPosition
+        gui_module.GUI.showParticles = self.gui.showParticles
+        gui_module.GUI.poseToMap = self.gui.poseToMap
+        gui_module.GUI.mapToPose = self.gui.mapToPose
+
+        # Add GUI functions
+        # gui_module.GUI.showImage = self.gui.showImage
 
         # Adding modules to system
         # Protip: The names should be different from
@@ -144,7 +149,7 @@ class Template:
     def measure_frequency(self):
         previous_time = datetime.now()
         # An infinite loop
-        while True: #not self.reload:
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -168,10 +173,10 @@ class Template:
             # Send to client
             self.send_frequency_message()
 
-
     ################ --- EXERCISE --- ################
 
     # Function for saving
+
     def save_code(self, source_code):
         with open('code/academy.py', 'w') as code_file:
             code_file.write(source_code)
@@ -205,6 +210,14 @@ class Template:
             sequential_code, iterative_code = self.seperate_seq_iter(
                 source_code)
             return iterative_code, sequential_code
+
+    # Function to parse code according to the debugging level
+    def debug_parse(self, source_code, debug_level):
+        if (debug_level == 1):
+            # If debug level is 0, then all the GUI operations should not be called
+            source_code = re.sub(r'GUI\..*', '', source_code)
+
+        return source_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -287,18 +300,18 @@ class Template:
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if (self.brain_thread != None):
-            while self.brain_thread.is_alive():
+        if (self.thread != None):
+            while self.thread.is_alive():
                 time.sleep(0.2)
 
         # Turn the flag down, the iteration has successfully stopped!
         self.reload = False
         # New thread execution
-        self.brain_thread = threading.Thread( target=self.process_code, args=[source_code])
-        self.brain_thread.start()
+        self.thread = threading.Thread(
+            target=self.process_code, args=[source_code])
+        self.thread.start()
         self.send_code_message()
-
-        print("New Brain Thread Started!")
+        print("New Thread Started!")
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -368,6 +381,9 @@ class Template:
         # Start measure frequency
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.measure_thread.start()
+
+        # Initialize the ping message
+        # self.send_frequency_message()
 
         print(client, 'connected')
 

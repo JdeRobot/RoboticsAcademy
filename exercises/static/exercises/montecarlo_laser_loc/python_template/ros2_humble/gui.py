@@ -1,38 +1,63 @@
 import json
-import os
-import re
+import cv2
+import numpy as np
+import math
+import base64
 import threading
 import time
 from datetime import datetime
 from websocket_server import WebsocketServer
+import logging
+import os
+import rclpy
+import matplotlib.pyplot as plt
+from shared.image import SharedImage
+from interfaces.pose3d import ListenerPose3d
+import matplotlib.pyplot as plt
 
 from map import Map
 
 # Graphical User Interface Class
+
+# Matrix colors
+red = [0, 0, 255]
+orange = [0, 165, 255]
+yellow = [0, 255, 255]
+green = [0, 255, 0]
+blue = [255, 0, 0]
+indigo = [130, 0, 75]
+violet = [211, 0, 148]
+
+
 class GUI:
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
-        
-        self.payload = {'map': '', 'array': ''}
 
-        # GUI websocket
+        self.payload = {'map': '', 'user': '', 'particles': ''}
         self.server = None
         self.client = None
+        self.init_coords = (171, 63)
+        self.start_coords = (201, 85.5)
+
         self.host = host
 
-        # For path
-        self.array_lock = threading.Lock()
-        self.array = None
+        # Particles
+        self.particles = []
+        # User position
+        self.user_position = (0, 0)
+        self.user_angle = (0, 0)
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
 
+        self.shared_image = SharedImage("guiimage")
+
         self.hal = hal
         t.start()
 
-        # Create the map object    
+        # Create the lap object
         self.map = Map(self.hal.pose3d)
 
     # Explicit initialization function
@@ -42,12 +67,11 @@ class GUI:
         # self.payload = {'map': ''}
         new_instance = cls(host, console)
         return new_instance
-        
+
     # Function to get the client
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        print(client, 'connected')
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -63,17 +87,71 @@ class GUI:
         self.acknowledge = value
         self.acknowledge_lock.release()
 
+    # encode the image data to be sent to websocket
+    def payloadImage(self):
+
+        image = self.shared_image.get()
+        payload = {'image': '', 'shape': ''}
+
+        shape = image.shape
+        frame = cv2.imencode('.PNG', image)[1]
+        encoded_image = base64.b64encode(frame)
+
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
+
+        return payload
+
+    def showPosition(self, x, y, angle):
+        angle = angle
+        ay = math.cos(-angle) - math.sin(-angle)
+        ax = math.sin(-angle) + math.cos(-angle)
+        scale_y = 15; offset_y = 63
+        y = scale_y * y + offset_y		
+        scale_x = -30; offset_x = 171
+        x = scale_x * x + offset_x
+        self.user_position = x, y
+        self.user_angle = (ax, ay)
+
+        # Function for student to call
+    def showParticles(self, particles):
+        if len(particles) > 0:
+            self.particles = particles
+            scale_y = 15; offset_y = 63
+            scale_x = -30; offset_x = 171
+            for particle in self.particles:                
+                particle[1] = scale_y * particle[1] + offset_y                                
+                particle[0] = scale_x * particle[0] + offset_x
+                particle[2] = (particle[2] + math.pi) * 180/math.pi
+        else:
+            self.particles = []        
 
     # Update the gui
-    def update_gui(self):
-        # Payload path array
-        self.payload["array"] = self.array
 
+    def update_gui(self):
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
+        if (pos_message == self.init_coords):
+            pos_message = self.start_coords
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
+
+        # Payload User Message
+        pos_message_user = self.user_position
+        ang_message_user = self.user_angle
+        pos_message_user = pos_message_user + ang_message_user
+        pos_message_user = str(pos_message_user)
+        self.payload["user"] = pos_message_user
+
+        # Payload Particles Message
+        if len(self.particles) > 0:
+            self.payload["particles"] = json.dumps(self.particles)
+        else:
+            self.payload["particles"] = json.dumps([])
+
+        payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
 
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
@@ -84,6 +162,25 @@ class GUI:
         # Acknowledge Message for GUI Thread
         if (message[:4] == "#ack"):
             self.set_acknowledge(True)
+
+    def getMap(self, url):
+        return plt.imread(url)
+    
+    def poseToMap(self, x, y, yaw):        
+        scale_y = 1024/9.928819; offset_y = 4.088577
+        y = scale_y * (y + offset_y)
+        scale_x = 1024/9.890785; offset_x = 5.650662
+        x = scale_x * (-x + offset_x)
+        return [y, x, -yaw]
+    
+    def mapToPose(self, x, y, yaw):
+        scale_x = 1024/9.890785
+        offset_x = 5.650662
+        x = -x / scale_x + offset_x
+        scale_y = 1024/9.928819
+        offset_y = 4.088577
+        y = (y / scale_y) - offset_y
+        return [y, x, -yaw]
 
     # Activate the server
     def run_server(self):
@@ -108,30 +205,6 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         self.map.reset()
-
-
-#------------------------------------------------------------#    
-    # Process the array(ideal path) to be sent to websocket
-    def showPath(self, array):
-        array_scaled = []
-        for wp in array:
-            array_scaled.append([wp[0] * 0.72, wp[1] * 0.545])
-
-        self.array_lock.acquire()
-        strArray = ''.join(str(e) for e in array_scaled)
-
-        # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
-        strArray = re.sub(r"\[[ ]+", "[", strArray)
-        strArray = re.sub(r"[ ]+", ", ", strArray)
-        strArray = re.sub(r",[ ]+]", "]", strArray)
-        strArray = re.sub(r",,", ",", strArray)
-        strArray = re.sub(r"]\[", "],[", strArray)
-        strArray = "[" + strArray + "]"
-
-        self.array = strArray
-        self.array_lock.release()
-
-#------------------------------------------------------------#
 
 
 # This class decouples the user thread
@@ -168,7 +241,8 @@ class ThreadGUI:
             # Measure the current time and subtract from previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
             previous_time = current_time
 
             # Get the time period
@@ -204,6 +278,3 @@ class ThreadGUI:
                 1000 + dt.microseconds / 1000.0
             if (ms < self.ideal_cycle):
                 time.sleep((self.ideal_cycle-ms) / 1000.0)
-
-
-
