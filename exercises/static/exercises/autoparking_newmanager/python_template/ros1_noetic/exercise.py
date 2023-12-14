@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 
-import websocket
 import time
 import threading
 import subprocess
@@ -36,114 +35,18 @@ class Template:
         self.iteration_counter = 0
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '',  'rtf': ''}
-
-        self.client = None
         self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI(self.host, self.hal)
-
-        self.client_thread = threading.Thread(target=self.run_websocket)
-        self.client_thread.start()
-
-    def run_websocket(self):
-        self.client = websocket.WebSocketApp('ws://127.0.0.1:1905',
-                                             on_open=self.on_open,
-                                             on_message=self.on_message,
-                                             on_error=self.on_error,
-                                             on_close=self.on_close)
-        self.client.run_forever(ping_timeout=None, ping_interval=0)
-
-    # Function that gets called when the server is connected
-    def on_open(self, ws):
-
-        # Start the GUI update thread
-        self.thread_gui = ThreadGUI(self.gui)
-        self.thread_gui.start()
-
-        # Start the real time factor tracker thread
-        self.stats_thread = threading.Thread(target=self.track_stats)
-        self.stats_thread.start()
-
-        # Start measure frequency
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.measure_thread.start()
-
-        print('connected')
-
-        # Function that gets called when the connected closes
-    def on_close(self, ws, close_status_code, close_msg):
-        print('closed')
-
-    # The websocket function
-    # Gets called when there is an incoming message from the client
-    def on_message(self, ws, message):
-        if (message[:5] == "#freq"):
-            frequency_message = message[5:]
-            self.read_frequency_message(frequency_message)
-            time.sleep(1)
-            return
-
-        elif (message[:4] == "#run"):
-            try:
-                print('pasa en ejercicio')
-                user_code = message[4:]
-                self.execute_user_code(user_code)
-            except Exception as e:
-                print("Error al ejecutar el código del usuario:", e)
-            return
-
-        elif (message[:5] == "#ping"):
-            time.sleep(1)
-            self.send_ping_message()
-            return
-
-        elif (message[:5] == "#code"):
-            try:
-                # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message[6:]
-                # print(repr(code))
-                self.reload = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#rest"):
-            try:
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#stop"):
-            self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
-
-    def on_error(self, ws, error):
-        print("Error: ", error)
-
-    # Function to parse the code
-    # A few assumptions:
-    # 1. The user always passes sequential and iterative codes
-    # 2. Only a single infinite loop
+        self.execute_user_code()
 
     def parse_code(self, source_code):
 
         sequential_code, iterative_code = self.seperate_seq_iter(
             source_code)
         return iterative_code, sequential_code
-
-    # Function to parse code according to the debugging level
-    def debug_parse(self, source_code, debug_level):
-        if (debug_level == 1):
-            # If debug level is 0, then all the GUI operations should not be called
-            source_code = re.sub(r'GUI\..*', '', source_code)
-
-        return source_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -320,16 +223,6 @@ class Template:
 
         message = "#freq" + json.dumps(self.frequency_message)
 
-    def send_ping_message(self):
-        """pass"""
-
-    # Function to notify the front end that the code was received and sent to execution
-    def send_code_message(self):
-        self.client.send_message(self.client, "#exec")
-
-    # Function to track the real time factor from Gazebo statistics
-    # https://stackoverflow.com/a/17698359
-    # (For reference, Python3 solution specified in the same answer)
     def track_stats(self):
         args = ["gz", "stats", "-p"]
         # Prints gz statistics. "-p": Output comma-separated values containing-
@@ -342,24 +235,8 @@ class Template:
                 stats_list = [x.strip() for x in line.split(b',')]
                 self.real_time_factor = stats_list[0].decode("utf-8")
 
-    # Function to maintain thread execution
-    def execute_thread(self, source_code):
-        # Keep checking until the thread is alive
-        # The thread will die when the coming iteration reads the flag
-        if (self.thread != None):
-            while self.thread.is_alive():
-                time.sleep(0.2)
-
-        # Turn the flag down, the iteration has successfully stopped!
-        self.reload = False
-        # New thread execution
-        self.thread = threading.Thread(
-            target=self.process_code, args=[source_code])
-        self.thread.start()
-        self.send_code_message()
-        print("New Thread Started!")
-
     # Function to read and set frequency from incoming message
+
     def read_frequency_message(self, message):
         frequency_message = json.loads(message)
 
@@ -373,18 +250,16 @@ class Template:
 
         return
 
-    # Function that gets called when the connected closes
+    def execute_user_code(self):
+        with open('code/academy.py', 'r') as code_file:
+            source_code = code_file.read()
 
-    def handle_close(self, client, server):
-        print(client, 'closed')
-
-    def execute_user_code(self, code):
-        self.thread = threading.Thread(target=self.process_code, args=[code])
+        self.thread = threading.Thread(
+            target=self.process_code, args=[source_code])
         self.thread.start()
         print("Código del usuario en ejecución.")
 
 
 # Execute!
 if __name__ == "__main__":
-    print('nopasa')
     server = Template()
