@@ -16,7 +16,7 @@ def generate_launch_description():
   pkg_share = FindPackageShare(package='custom_robots').find('custom_robots')
 
   # Set the path to the world file
-  world_file_name = 'no_roof_small_warehouse_with_robot_followingcam.world'
+  world_file_name = 'pallet_warehouse_with_robot.world'
   worlds_dir = "/opt/jderobot/Worlds"
   world_path = os.path.join(worlds_dir, world_file_name)
    
