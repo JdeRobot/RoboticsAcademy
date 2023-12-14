@@ -3,6 +3,7 @@ models.py
 """
 
 import json
+import uuid
 from django.db import models
 import subprocess
 
@@ -29,7 +30,27 @@ WorldType = (
     ('physical', "Physical")
 )
 
+RosVersion = (
+    ('ROS1', "ROS1"),
+    ('ROS2', "ROS2")
+)
+
 # Create your models here.
+
+class World(models.Model):
+    name = models.CharField(max_length=40, default=uuid.uuid4, unique=True)
+    ros_version = models.CharField(max_length=4, choices=RosVersion, default="none")
+    world_type = models.CharField(
+        max_length=20,
+        choices=WorldType,
+        default="none"
+    )
+    resource_folders = models.TextField(default="")
+    model_folders = models.CharField(max_length=100, blank=False, default="$CUSTOM_ROBOTS_FOLDER/")
+    launch_file = models.TextField(default=json.dumps({}))
+
+    def __str__(self):
+        return self.name
 
 class Exercise(models.Model):
     """
@@ -46,19 +67,14 @@ class Exercise(models.Model):
         max_length=2000,
         default=json.dumps({'tags': ""})
     )
-    status = models.CharField(
-        max_length=20,
-        choices=StatusChoice,
-        default="ACTIVE"
-    )
-    world = models.CharField(
+    world_type = models.CharField(
         max_length=20,
         choices=WorldType,
         default="none"
     )
-    resource_folders = models.TextField(default=json.dumps({}))
-    model_folders = models.CharField(max_length=100, blank=False, default="$CUSTOM_ROBOTS_FOLDER/")
-    launch_files = models.TextField(default=json.dumps({}))
+    worlds = models.ManyToManyField(World, default=None)
+    status = models.CharField(
+        max_length=20, choices=StatusChoice, default="ACTIVE")        
     visualization = models.CharField(
         max_length=20,
         choices=VisualizationType,
@@ -67,6 +83,29 @@ class Exercise(models.Model):
     
     configuration = models.TextField(default=json.dumps({}))
 
+    def get_launch_files(self):
+        data = {}
+        for world in self.worlds.all():
+            ros_version = world.ros_version
+            launch_file = json.loads(world.launch_file)
+            if ros_version not in data:
+                data[ros_version] = []
+            data[ros_version].append(launch_file)
+        return data
+
+    def get_resource_folders(self):
+        data = {}
+        for world in self.worlds.all():
+            data[world.ros_version] = str(world.resource_folders)
+        return data
+
+    def get_model_folders(self):
+        try:
+            data = self.worlds.first().resource_folders
+        except:
+            data = ""
+        return data
+    
     def __str__(self):
         return str(self.name)
 
@@ -76,8 +115,8 @@ class Exercise(models.Model):
         Build and return context
         """
         exercise_configuration = json.loads(self.configuration)
-        resource_folders_dict = json.loads(self.resource_folders)
-        launch_files_dict = json.loads(self.launch_files)
+        resource_folders_dict = self.get_resource_folders()
+        launch_files_dict = self.get_launch_files()
         output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
         output_str = output.decode('utf-8')
         if output_str.strip() == '1':
@@ -96,10 +135,10 @@ class Exercise(models.Model):
                     "application": application_config["application"],
                     "exercise_id": str(self.exercise_id),
                     "visualization": self.visualization,
-                    "world": self.world,
+                    "world": self.world_type,
                     "resource_folders": resource_folders_dict[ros_version],
-                    "model_folders": self.model_folders,
-                    "launch_file": launch_file["path"],
+                    "model_folders": self.worlds.first().model_folders,
+                    "launch_file": launch_files_dict[ros_version][i]["path"],
                     "name": launch_file["name"]
                 }
                 configurations.append(config)

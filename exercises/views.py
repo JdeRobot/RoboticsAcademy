@@ -39,7 +39,7 @@ def ros_version(request):
 @csrf_exempt
 def launch_files(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
-    data = json.loads(exercise.launch_files)
+    data = exercise.get_launch_files()
     return JsonResponse(data)
 
 @csrf_exempt
