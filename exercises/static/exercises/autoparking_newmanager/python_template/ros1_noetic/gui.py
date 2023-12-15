@@ -82,7 +82,7 @@ class GUI:
         self.payload["map"] = map_message
 
         message = "#gui" + json.dumps(self.payload)
-        self.server.send_message(self.client, message)
+        self.server.send(message) 
 
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
@@ -110,10 +110,10 @@ class ThreadGUI:
 
     # Function to start the execution of threads
     def start(self):
-        self.measure_thread = threading.Thread(target=self.measure_thread)
+        self.measure_thread_instance = threading.Thread(target=self.measure_thread)
         self.thread = threading.Thread(target=self.run)
 
-        self.measure_thread.start()
+        self.measure_thread_instance.start()
         self.thread.start()
 
         print("GUI Thread Started!")
