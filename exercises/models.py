@@ -48,6 +48,7 @@ class World(models.Model):
     resource_folders = models.TextField(default="")
     model_folders = models.CharField(max_length=100, blank=False, default="$CUSTOM_ROBOTS_FOLDER/")
     launch_file = models.TextField(default=json.dumps({}))
+    auxiliar_components = models.TextField(default=json.dumps({}))
 
     def __str__(self):
         return self.name
@@ -106,6 +107,16 @@ class Exercise(models.Model):
             data = ""
         return data
     
+    def get_auxiliar_components(self):
+        data = {}
+        for world in self.worlds.all():
+            ros_version = world.ros_version
+            auxiliar_components = json.loads(world.auxiliar_components)
+            if ros_version not in data:
+                data[ros_version] = []
+            data[ros_version].append(auxiliar_components)
+        return data
+    
     def __str__(self):
         return str(self.name)
 
@@ -117,6 +128,7 @@ class Exercise(models.Model):
         exercise_configuration = json.loads(self.configuration)
         resource_folders_dict = self.get_resource_folders()
         launch_files_dict = self.get_launch_files()
+        auxiliar_components_dict = self.get_auxiliar_components()
         output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
         output_str = output.decode('utf-8')
         if output_str.strip() == '1':
@@ -128,7 +140,7 @@ class Exercise(models.Model):
         if len(launch_files_dict[ros_version]) == len(exercise_configuration[ros_version]):
             for i in range(len(launch_files_dict[ros_version])):
                 launch_file = launch_files_dict[ros_version][i]
-                application_config = exercise_configuration[ros_version][i]
+                application_config = exercise_configuration[ros_version][i]                
 
                 config = {
                     "launch": {},
@@ -141,7 +153,9 @@ class Exercise(models.Model):
                     "launch_file": launch_files_dict[ros_version][i]["path"],
                     "name": launch_file["name"]
                 }
-                configurations.append(config)
+                if ros_version in auxiliar_components_dict:
+                    config.update({"launch": auxiliar_components_dict[ros_version][i]})
+                configurations.append(config)  
 
             context = {'exercise_base': "exercise_base_2_RA.html",
                    'exercise_id': self.exercise_id,
