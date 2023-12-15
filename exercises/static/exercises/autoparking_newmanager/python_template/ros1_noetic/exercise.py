@@ -35,7 +35,6 @@ class Template:
         self.iteration_counter = 0
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '',  'rtf': ''}
-        self.host = sys.argv[1]
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
