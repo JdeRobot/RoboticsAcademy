@@ -46,10 +46,10 @@ class GUI:
     # Class method, so user can call it without instantiation
 
     def run_websocket(self):
-        self.server = websocket.WebSocketApp('ws://127.0.0.1:1905',
+        self.server = websocket.WebSocketApp('ws://127.0.0.1:2303',
                                              on_open=self.on_open,
                                              on_message=self.on_message)
-        self.client.run_forever(ping_timeout=None, ping_interval=0)
+        self.server.run_forever(ping_timeout=None, ping_interval=0)
 
     @classmethod
     def initGUI(self):
