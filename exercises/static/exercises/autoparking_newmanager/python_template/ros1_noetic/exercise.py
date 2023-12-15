@@ -39,7 +39,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.gui = GUI("0.0.0.0", self.hal)
         self.execute_user_code()
 
     def parse_code(self, source_code):
@@ -251,7 +251,7 @@ class Template:
         return
 
     def execute_user_code(self):
-        with open('code/academy.py', 'r') as code_file:
+        with open('/workspace/code/academy.py', 'r') as code_file:
             source_code = code_file.read()
 
         self.thread = threading.Thread(
