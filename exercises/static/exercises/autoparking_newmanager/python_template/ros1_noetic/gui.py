@@ -46,7 +46,7 @@ class GUI:
     # Class method, so user can call it without instantiation
 
     def run_websocket(self):
-        self.client = websocket.WebSocketApp('ws://127.0.0.1:1905',
+        self.server = websocket.WebSocketApp('ws://127.0.0.1:1905',
                                              on_open=self.on_open,
                                              on_message=self.on_message)
         self.client.run_forever(ping_timeout=None, ping_interval=0)
@@ -59,7 +59,7 @@ class GUI:
     # Function to get the client
     # Called when a new client is received
     def on_open(self, ws):
-        self.server = ws
+        print('connected')
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):
@@ -147,7 +147,7 @@ class ThreadGUI:
 
     # The main thread of execution
     def run(self):
-        while (self.gui.client == None):
+        while (self.gui.server == None):
             pass
 
         while (True):
