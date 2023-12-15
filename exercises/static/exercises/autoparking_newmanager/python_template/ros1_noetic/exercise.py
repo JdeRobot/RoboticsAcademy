@@ -252,6 +252,9 @@ class Template:
     def execute_user_code(self):
         with open('/workspace/code/academy.py', 'r') as code_file:
             source_code = code_file.read()
+        
+        self.thread_gui = ThreadGUI(self.gui)
+        self.thread_gui.start()
 
         self.thread = threading.Thread(
             target=self.process_code, args=[source_code])
