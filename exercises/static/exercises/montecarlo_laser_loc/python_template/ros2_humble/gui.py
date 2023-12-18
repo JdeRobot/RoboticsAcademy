@@ -166,21 +166,25 @@ class GUI:
     def getMap(self, url):
         return plt.imread(url)
     
-    def poseToMap(self, x, y, yaw):        
-        scale_y = 1024/9.928819; offset_y = 4.088577
-        y = scale_y * (y + offset_y)
-        scale_x = 1024/9.890785; offset_x = 5.650662
-        x = scale_x * (-x + offset_x)
-        return [y, x, -yaw]
+    def poseToMap(self, x_prime, y_prime, yaw_prime):
+        scale_x = 1024/9.885785
+        offset_x = 5.650662
+        x = 1169 - (x_prime + offset_x) * scale_x
+        scale_y = 1024/9.75819
+        offset_y = 4.088577
+        y = (y_prime + offset_y) * scale_y
+        yaw = -yaw_prime
+        return [x, y, yaw]
+
     
     def mapToPose(self, x, y, yaw):
-        scale_x = 1024/9.890785
+        scale_x = 1024/9.885785
         offset_x = 5.650662
-        x = -x / scale_x + offset_x
-        scale_y = 1024/9.928819
+        x = ((1169 - x) / scale_x) - offset_x
+        scale_y = 1024/9.75819
         offset_y = 4.088577
         y = (y / scale_y) - offset_y
-        return [y, x, -yaw]
+        return [x, y, -yaw]
 
     # Activate the server
     def run_server(self):
