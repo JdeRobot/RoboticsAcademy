@@ -97,7 +97,8 @@ class Exercise(models.Model):
                 "ros_version": world.ros_version,
                 "visualization": world.visualization,
                 "world": world.world,
-                "template": self.template
+                "template": self.template,
+                "exercise_id":self.exercise_id
             }
             configurations.append(config)
 
