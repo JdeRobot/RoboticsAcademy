@@ -50,9 +50,10 @@ const PlayPause = (props) => {
 
   const runCode = (code) => {
     window.RoboticsExerciseComponents.commsManager
-      .run({code: code, template:config[0].template})
+      .run({code: code, template:config[0].template, exercise_id: config[0].exercise_id})
       .then(() => {
         console.log("running");
+        setLoading(false);
       })
       .catch((response) => {
         let linterMessage = JSON.stringify(response.data.message).split("\\n");
