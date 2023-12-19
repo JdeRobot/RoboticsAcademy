@@ -131,6 +131,7 @@ class Template:
 
         # Add GUI functions
         gui_module.GUI.showPath = self.gui.showPath
+        gui_module.GUI.getMap = self.gui.getMap
 
         # Adding modules to system
         # Protip: The names should be different from
