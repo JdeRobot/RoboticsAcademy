@@ -123,6 +123,7 @@ while True:
 * `HAL.lift()` - to lift the platform
 * `HAL.putdown()` - to put down the platform
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
+* `GUI.getMap(url)` - returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The URL of the Amazon Warehouse World 1 is '/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png'. The URL of the Amazon Warehouse World 2 is '/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png'.
 
 ## Supporting information
 
