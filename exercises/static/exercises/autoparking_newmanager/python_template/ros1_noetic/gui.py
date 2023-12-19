@@ -107,6 +107,9 @@ class ThreadGUI:
         self.ideal_cycle = 80
         self.measured_cycle = 80
         self.iteration_counter = 0
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '',  'rtf': ''}
+
 
     # Function to start the execution of threads
     def start(self):
@@ -145,6 +148,57 @@ class ThreadGUI:
             # Reset the counter
             self.iteration_counter = 0
 
+        # Function to measure the frequency of iterations
+    def measure_frequency(self):
+        previous_time = datetime.now()
+        # An infinite loop
+        while True:
+            # Sleep for 2 seconds
+            time.sleep(2)
+
+            # Measure the current time and subtract from the previous time to get real time interval
+            current_time = datetime.now()
+            dt = current_time - previous_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
+            previous_time = current_time
+
+            # Get the time period
+            try:
+                # Division by zero
+                self.measured_cycle = ms / self.iteration_counter
+            except:
+                self.measured_cycle = 0
+
+            # Reset the counter
+            self.iteration_counter = 0
+
+            # Send to client
+            self.send_frequency_message()
+
+    # Function to generate and send frequency messages
+    def send_frequency_message(self):
+        # This function generates and sends frequency measures of the brain and gui
+        brain_frequency = 0
+        gui_frequency = 0
+        try:
+            brain_frequency = round(1000 / self.measured_cycle, 1)
+        except ZeroDivisionError:
+            brain_frequency = 0
+
+        try:
+            gui_frequency = round(1000 / self.measured_cycle, 1)
+        except ZeroDivisionError:
+            gui_frequency = 0
+
+        self.frequency_message["brain"] = brain_frequency
+        self.frequency_message["gui"] = gui_frequency
+        self.frequency_message["rtf"] = self.real_time_factor
+
+        message = "#freq" + json.dumps(self.frequency_message)
+        if self.gui.server:
+            self.gui.server.send(message)
+    
     # The main thread of execution
     def run(self):
         while (self.gui.server == None):
@@ -152,7 +206,8 @@ class ThreadGUI:
 
         while (True):
             start_time = datetime.now()
-            self.gui.update_gui()
+            self.gui.update_gui() 
+            self.send_frequency_message()
             acknowledge_message = self.gui.get_acknowledge()
 
             while (acknowledge_message == False):
