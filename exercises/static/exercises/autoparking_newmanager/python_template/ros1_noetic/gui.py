@@ -81,8 +81,8 @@ class GUI:
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
 
-        message = "#gui" + json.dumps(self.payload)
-        self.server.send(message) 
+        message = json.dumps(self.payload)
+        self.server.send(message)
 
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
@@ -195,7 +195,7 @@ class ThreadGUI:
         self.frequency_message["gui"] = gui_frequency
         self.frequency_message["rtf"] = self.real_time_factor
 
-        message = "#freq" + json.dumps(self.frequency_message)
+        message = json.dumps(self.frequency_message)
         if self.gui.server:
             self.gui.server.send(message)
     
