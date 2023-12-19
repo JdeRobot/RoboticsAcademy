@@ -169,10 +169,10 @@ class GUI:
     def poseToMap(self, x_prime, y_prime, yaw_prime):
         scale_x = 1024/9.885785
         offset_x = 5.650662
-        x = 1169 - (x_prime + offset_x) * scale_x
+        x = 1181 - (x_prime + offset_x) * scale_x
         scale_y = 1024/9.75819
         offset_y = 4.088577
-        y = (y_prime + offset_y) * scale_y
+        y = 24 + (y_prime + offset_y) * scale_y
         yaw = -yaw_prime
         return [x, y, yaw]
 
@@ -180,10 +180,10 @@ class GUI:
     def mapToPose(self, x, y, yaw):
         scale_x = 1024/9.885785
         offset_x = 5.650662
-        x = ((1169 - x) / scale_x) - offset_x
+        x = ((1181 - x) / scale_x) - offset_x
         scale_y = 1024/9.75819
         offset_y = 4.088577
-        y = (y / scale_y) - offset_y
+        y = ((-24 + y) / scale_y) - offset_y
         return [x, y, -yaw]
 
     # Activate the server

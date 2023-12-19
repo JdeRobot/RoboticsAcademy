@@ -121,15 +121,18 @@ function printParticle(mapCanvas, mapPositionX, mapPositionY, theta){
     ctx.beginPath();
     ctx.fillStyle = "#4553e8";
     ctx.strokeStyle = '#4553e8';
-    ctx.arc(mapPositionX, mapPositionY, 1, 0,2*Math.PI);
+    let side = 1.5 * Math.hypot(2, 2);
+    let x_2d = mapPositionX + side;
+    let y_2d = mapPositionY + side; 
+    ctx.arc(x_2d, y_2d, 1, 0,2*Math.PI);
     ctx.fill();
     ctx.stroke();
 
     var length = 5;
-    var x2 = mapPositionX + Math.cos(Math.PI * -theta / 180) * length;
-    var y2 = mapPositionY + Math.sin(Math.PI * -theta / 180) * length;
+    var x2 = x_2d + Math.cos(Math.PI * -theta / 180) * length;
+    var y2 = y_2d + Math.sin(Math.PI * -theta / 180) * length;
 
-    canvas_arrow(mapCanvas, mapPositionX, mapPositionY, x2, y2);
+    canvas_arrow(mapCanvas, x_2d, y_2d, x2, y2);
 	ctx.closePath();
 }
 
