@@ -28,11 +28,11 @@ class GUI:
         self.client_thread.start()
 
     def run_websocket(self):
-        """Runs the websocket server."""
-        self.server = websocket.WebSocketApp('ws://127.0.0.1:2303',
-                                             on_open=self.on_open,
-                                             on_message=self.on_message)
-        self.server.run_forever(ping_timeout=None, ping_interval=0)
+        while True:
+            self.server = websocket.WebSocketApp('ws://127.0.0.1:2303',
+                                                 on_open=self.on_open,
+                                                 on_message=self.on_message,)
+            self.server.run_forever(ping_timeout=None, ping_interval=0)
 
     @classmethod
     def initGUI(cls):
