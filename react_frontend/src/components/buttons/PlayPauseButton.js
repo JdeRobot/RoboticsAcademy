@@ -7,16 +7,16 @@ const PlayPause = (props) => {
   const [loading, setLoading] = useState(false);
   const [paused, setPaused] = useState(true);
   const [disabled, setDisabled] = useState(true);
+  const [editorChanged, setEditorChanged] = useState(false)
 
   useEffect(() => {
     const callback = (message) => {
       const state = message.data.state;
       setPaused(
-        state === "paused" || state === "visualization_ready" || state === "connected"
+        state === "paused" 
       );
       setDisabled(
         !(
-          state === "connected" ||
           state === "visualization_ready" ||
           state === "application_running" ||
           state === "paused"
@@ -41,7 +41,13 @@ const PlayPause = (props) => {
     console.log(`Play run`);
     setLoading(true);
     const editorCode = RoboticsReactComponents.CodeEditor.getCode();
-    runCode(editorCode);
+    if (editorChanged && paused){
+      window.RoboticsExerciseComponents.commsManager
+      .resume()
+      
+    } else {
+      runCode(editorCode)
+    }
   
   };
 
@@ -62,6 +68,11 @@ const PlayPause = (props) => {
         setLoading(false);
       });
   };
+
+  React.useEffect(() => {
+    RoboticsReactComponents.CodeEditor.OnEditorCodeChanged(() => setEditorChanged(true)
+    )
+  }, []);
 
   const pause = () => {
     console.log(`Pause run`);
