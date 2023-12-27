@@ -9,7 +9,7 @@ const ResetButton = () => {
   useEffect(() => {
     const callback = (message) => {
       if (
-        (message.data.state === "running") |
+        (message.data.state === "application_running") |
         (message.data.state === "paused")
       ) {
         setDisabled(false);

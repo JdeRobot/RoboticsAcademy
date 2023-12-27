@@ -9,6 +9,7 @@ import { useUnload } from "Hooks/useUnload";
 import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
 import AppIndicator from "../visualizers/AppIndicator";
 import ConnectionIndicator from "../visualizers/ConnectionIndicator";
+import VisualizationIndicator from "../visualizers/VisualizationIndicator";
 
 function MainAppBar(props) {
   const maxConnectionAttempts = 3;
@@ -41,11 +42,13 @@ function MainAppBar(props) {
           .launchWorld(config[0])
           .then(() => {
             window.RoboticsExerciseComponents.commsManager
-            .prepareVisualization(config[0].visualization)
-            RoboticsReactComponents.MessageSystem.Loading.hideLoading();
-            RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              "Exercise loaded successfully."
-            );
+            .prepareVisualization(config[0].visualization).then(() => {
+              RoboticsReactComponents.MessageSystem.Loading.hideLoading();
+              RoboticsReactComponents.MessageSystem.Alert.showAlert(
+                "Exercise loaded successfully."
+              );
+            })
+     
           })
           .catch((e) => {
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
@@ -104,6 +107,7 @@ function MainAppBar(props) {
           >
             <ConnectionIndicator></ConnectionIndicator>
             {props.children}
+            <VisualizationIndicator></VisualizationIndicator>
             <AppIndicator name={props.exerciseName}></AppIndicator>
           </Box>
 
