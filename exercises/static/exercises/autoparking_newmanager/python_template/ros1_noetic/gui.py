@@ -14,9 +14,7 @@ class GUI:
     def __init__(self, host, hal):
         """Initializes the GUI"""
         self.payload = {'map': ''}
-        self.server = None
         self.client = None
-        self.host = host
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
         self.hal = hal
@@ -29,19 +27,14 @@ class GUI:
 
     def run_websocket(self):
         while True:
-            self.server = websocket.WebSocketApp('ws://127.0.0.1:2303',
-                                                 on_open=self.on_open,
+            self.client = websocket.WebSocketApp('ws://127.0.0.1:2303',
                                                  on_message=self.on_message,)
-            self.server.run_forever(ping_timeout=None, ping_interval=0)
+            self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     @classmethod
     def initGUI(cls):
         """Initializes the GUI class."""
         pass
-
-    def on_open(self, ws):
-        """Handles new websocket client connections."""
-        print('connected')
 
     def get_acknowledge(self):
         """Gets the acknowledge status."""
@@ -61,9 +54,9 @@ class GUI:
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
         message = json.dumps(self.payload)
-        if self.server:
+        if self.client:
             try:
-                self.server.send(message)
+                self.client.send(message)
             except Exception as e:
                 print(f"Error sending message: {e}")
 
