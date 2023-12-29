@@ -23,13 +23,14 @@ class Template:
         self.measure_thread = None
         self.thread = None
         self.reload = False
-        self.stop_brain = True
+        self.stop_brain = False
         self.user_code = ""
         self.ideal_cycle = 20
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI("0.0.0.0", self.hal)
+        self.execute_user_code()
 
     # Function to parse the code
     # A few assumptions:
@@ -194,4 +195,3 @@ class Template:
 # Execute!
 if __name__ == "__main__":
     server = Template()
-    server.run_server()

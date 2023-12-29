@@ -140,9 +140,9 @@ class ThreadGUI:
             gui_frequency = round(1000 / self.ideal_cycle, 1)
             self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
             message = json.dumps(self.frequency_message)
-            if self.gui.server:
+            if self.gui.client:
                 try:
-                    self.gui.server.send(message)
+                    self.gui.client.send(message)
                 except Exception as e:
                     print(f"Error sending frequency message: {e}")
 
