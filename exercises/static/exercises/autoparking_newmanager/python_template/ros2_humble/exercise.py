@@ -30,19 +30,12 @@ class Template:
         self.user_code = ""
 
         # Time variables
-        self.ideal_cycle = 80
-        self.measured_cycle = 80
-        self.iteration_counter = 0
-        self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
-
-        self.server = None
-        self.client = None
-        self.host = sys.argv[1]
+        self.ideal_cycle = 20
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.gui = GUI("0.0.0.0", self.hal)
+        self.execute_thread()
 
     ################ --- BRAIN --- ################
 
@@ -186,23 +179,11 @@ class Template:
     # 1. The user always passes sequential and iterative codes
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
-        # Check for save/load
-        if (source_code[:5] == "#save"):
-            source_code = source_code[5:]
-            self.save_code(source_code)
-
-            return "", ""
-
-        elif (source_code[:5] == "#load"):
-            source_code = source_code + self.load_code()
-            self.server.send_message(self.client, source_code)
-
-            return "", ""
-
-        else:
-            sequential_code, iterative_code = self.seperate_seq_iter(
-                source_code)
-            return iterative_code, sequential_code
+        """
+        Parses the provided source code, separating the sequential and iterative parts.
+        """
+        sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+        return iterative_code, sequential_code
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
@@ -214,36 +195,27 @@ class Template:
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
+        """
+        Separates the source code into sequential and iterative components.
+        """
         if source_code == "":
             return "", ""
 
-        # Search for an instance of while True
         infinite_loop = re.search(
             r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
-
-        # Seperate the content inside while True and the other
-        # (Seperating the sequential and iterative part!)
         try:
             start_index = infinite_loop.start()
             iterative_code = source_code[start_index:]
             sequential_code = source_code[:start_index]
 
-            # Remove while True: syntax from the code
-            # And remove the the 4 spaces indentation before each command
             iterative_code = re.sub(
                 r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
-            # Add newlines to match line on bug report
             extra_lines = sequential_code.count('\n')
             while (extra_lines >= 0):
                 iterative_code = '\n' + iterative_code
-                extra_lines -= 1
-            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
-
-        except:
-            sequential_code = source_code
-            iterative_code = ""
-
-        return sequential_code, iterative_code
+            return sequential_code, iterative_code
+        except Exception as e:
+            return e
 
     # Function to generate and send frequency messages
     def send_frequency_message(self):
@@ -290,21 +262,19 @@ class Template:
                 self.real_time_factor = stats_list[0].decode("utf-8")
 
     # Function to maintain thread execution
-    def execute_thread(self, source_code):
-        # Keep checking until the thread is alive
-        # The thread will die when the coming iteration reads the flag
-        if (self.thread != None):
-            while self.thread.is_alive():
-                time.sleep(0.2)
+    def execute_thread(self):
+        """
+        Executes the provided user code, initializing the graphical interface and processing the code.
+        """
+        with open('/workspace/code/academy.py', 'r') as code_file:
+            source_code = code_file.read()
+        self.thread_gui = ThreadGUI(self.gui)
+        self.thread_gui.start()
 
-        # Turn the flag down, the iteration has successfully stopped!
-        self.reload = False
-        # New thread execution
         self.thread = threading.Thread(
             target=self.process_code, args=[source_code])
         self.thread.start()
-        self.send_code_message()
-        print("New Thread Started!")
+        print("Código del usuario en ejecución.")
 
     # Function to read and set frequency from incoming message
     def read_frequency_message(self, message):
@@ -320,92 +290,7 @@ class Template:
 
         return
 
-    # The websocket function
-    # Gets called when there is an incoming message from the client
-    def handle(self, client, server, message):
-        if (message[:5] == "#freq"):
-            frequency_message = message[5:]
-            self.read_frequency_message(frequency_message)
-            time.sleep(1)
-            self.send_frequency_message()
-            return
-
-        elif (message[:5] == "#ping"):
-            time.sleep(1)
-            self.send_ping_message()
-            return
-
-        elif (message[:5] == "#code"):
-            try:
-                # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message[6:]
-                # print(repr(code))
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#rest"):
-            try:
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#stop"):
-            self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
-
-    # Function that gets called when the server is connected
-    def connected(self, client, server):
-        self.client = client
-        # Start the GUI update thread
-        self.thread_gui = ThreadGUI(self.gui)
-        self.thread_gui.start()
-
-        # Start the real time factor tracker thread
-        self.stats_thread = threading.Thread(target=self.track_stats)
-        self.stats_thread.start()
-
-        # Start measure frequency
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.measure_thread.start()
-
-        # Initialize the ping message
-        # self.send_frequency_message()
-
-        print(client, 'connected')
-
-    # Function that gets called when the connected closes
-    def handle_close(self, client, server):
-        print(client, 'closed')
-
-    def run_server(self):
-        self.server = WebsocketServer(port=1905, host=self.host)
-        self.server.set_fn_new_client(self.connected)
-        self.server.set_fn_client_left(self.handle_close)
-        self.server.set_fn_message_received(self.handle)
-
-        home_dir = os.path.expanduser('~')
-
-        logged = False
-        while not logged:
-            try:
-                f = open(f"{home_dir}/ws_code.log", "w")
-                f.write("websocket_code=ready")
-                f.close()
-                logged = True
-            except:
-                time.sleep(0.1)
-
-        self.server.run_forever()
-
 
 # Execute!
 if __name__ == "__main__":
     server = Template()
-    server.run_server()
