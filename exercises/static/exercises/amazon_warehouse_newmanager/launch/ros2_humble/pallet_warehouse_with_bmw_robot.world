@@ -44,7 +44,7 @@
     </physics>
 
     <include>
-      <uri>model://bmw_logistic_robot_ackermann</uri>
+      <uri>model://ackermann_logistic_robot</uri>
         <pose>0 0 0 0 0 0</pose>
     </include>
 

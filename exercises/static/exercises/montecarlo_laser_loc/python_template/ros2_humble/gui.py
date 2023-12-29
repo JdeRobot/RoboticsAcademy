@@ -103,7 +103,7 @@ class GUI:
         return payload
 
     def showPosition(self, x, y, angle):
-        angle = angle
+        angle = angle + math.pi
         ay = math.cos(-angle) - math.sin(-angle)
         ax = math.sin(-angle) + math.cos(-angle)
         scale_y = 15; offset_y = 63
@@ -122,7 +122,7 @@ class GUI:
             for particle in self.particles:                
                 particle[1] = scale_y * particle[1] + offset_y                                
                 particle[0] = scale_x * particle[0] + offset_x
-                particle[2] = (particle[2] + math.pi) * 180/math.pi
+                particle[2] = (particle[2]) * 180/math.pi
         else:
             self.particles = []        
 
@@ -169,22 +169,22 @@ class GUI:
     def poseToMap(self, x_prime, y_prime, yaw_prime):
         scale_x = 1024/9.885785
         offset_x = 5.650662
-        x = 1169 - (x_prime + offset_x) * scale_x
+        x = 1181 - (x_prime + offset_x) * scale_x
         scale_y = 1024/9.75819
         offset_y = 4.088577
-        y = (y_prime + offset_y) * scale_y
-        yaw = -yaw_prime
+        y = 24 + (y_prime + offset_y) * scale_y
+        yaw = yaw_prime
         return [x, y, yaw]
 
     
     def mapToPose(self, x, y, yaw):
         scale_x = 1024/9.885785
         offset_x = 5.650662
-        x = ((1169 - x) / scale_x) - offset_x
+        x = ((1181 - x) / scale_x) - offset_x
         scale_y = 1024/9.75819
         offset_y = 4.088577
-        y = (y / scale_y) - offset_y
-        return [x, y, -yaw]
+        y = ((-24 + y) / scale_y) - offset_y
+        return [x, y, yaw]
 
     # Activate the server
     def run_server(self):

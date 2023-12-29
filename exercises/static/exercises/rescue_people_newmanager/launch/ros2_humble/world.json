@@ -1,9 +1,0 @@
-{
-    "world": "rescue_people",
-    "drones": [
-        {
-            "model": "iris_dual_cam",
-            "pose": [ 0.0, 0.0, 1.45, 0.0]
-        }
-    ]
-}

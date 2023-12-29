@@ -4,6 +4,7 @@ import re
 import threading
 import time
 from datetime import datetime
+import matplotlib.pyplot as plt
 from websocket_server import WebsocketServer
 
 from map import Map
@@ -130,6 +131,9 @@ class GUI:
 
         self.array = strArray
         self.array_lock.release()
+
+    def getMap(self, url):        
+        return plt.imread(url)
 
 #------------------------------------------------------------#
 
