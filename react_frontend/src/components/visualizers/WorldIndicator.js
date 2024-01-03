@@ -11,7 +11,7 @@ export default function WorldIndicator(props) {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      if (message.data.state === "visualization_ready") {
         setConnected(true);
       }
     };

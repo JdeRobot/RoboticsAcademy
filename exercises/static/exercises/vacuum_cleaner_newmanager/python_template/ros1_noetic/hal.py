@@ -29,18 +29,23 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
-
+    
+    @staticmethod
     def getBumperData(self):
         return self.bumper.getBumperData()
-
+    
+    @staticmethod
     def getPose3d(self):
         return self.pose3d.getPose3d()
-
+    
+    @staticmethod
     def getLaserData(self):
         return self.laser.getLaserData()
-
+    
+    @staticmethod
     def setV(self, velocity):
         self.motors.sendV(velocity)
-
+        
+    @staticmethod
     def setW(self, velocity):
         self.motors.sendW(velocity)
