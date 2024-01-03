@@ -21,6 +21,7 @@ class GUI:
     """Graphical User Interface class"""
 
     def __init__(self, host, hal):
+        print("GUI IS BEING CALLED\n\n\n\n")
         """Initializes the GUI"""
         self.payload = {'map': ''}
         self.server = None
@@ -50,12 +51,25 @@ class GUI:
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
 
+    def on_error(self, error):
+        f = open("/ws_gui_error.log", "a")
+        f.write(str(error))
+        f.close()
+    
+    def on_close(wsapp, close_status_code, close_msg):
+        f = open("/ws_gui_close.log", "a")
+        f.write(str(close_status_code))
+        f.write("\n")
+        f.write(str(close_msg))
+        f.close()
+
     def run_websocket(self):
-        while True:
-            self.server = websocket.WebSocketApp('ws://127.0.0.1:2303',
-                                                 on_open=self.on_open,
-                                                 on_message=self.on_message,)
-            self.server.run_forever(ping_timeout=None, ping_interval=0)
+        f = open("/ws_gui_open.log", "a")
+        f.write("WS GUI OPENED")
+        f.close()
+        self.server = websocket.WebSocketApp('ws://127.0.0.1:2303',
+                                                on_message=self.on_message,on_error=self.on_error, on_close=self.on_close)
+        self.server.run_forever(ping_timeout=None, ping_interval=0)
 
     @classmethod
     def initGUI(cls):

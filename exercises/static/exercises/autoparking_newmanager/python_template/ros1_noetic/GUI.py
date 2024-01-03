@@ -6,7 +6,7 @@ from datetime import datetime
 import websocket
 from interfaces.pose3d import ListenerPose3d
 from interfaces.laser import ListenerLaser
-from map import Map
+from MAP import Map
 
 class GUI:
     """Graphical User Interface class"""
@@ -118,11 +118,6 @@ class ThreadGUI:
             gui_frequency = round(1000 / self.ideal_cycle, 1)
             self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
             message = json.dumps(self.frequency_message)
-            if self.gui.client:
-                try:
-                    self.gui.client.send(message)
-                except Exception as e:
-                    print(f"Error sending frequency message: {e}")
 
     def run(self):
         """Main loop to update the GUI at regular intervals."""
