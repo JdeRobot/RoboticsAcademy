@@ -11,8 +11,8 @@ import os
 from interfaces.pose3d import ListenerPose3d
 from interfaces.laser import ListenerLaser
 
-from lap import Lap
-from map import Map
+from exercises.static.exercises.obstacle_avoidance_newmanager.python_template.ros1_noetic.LAP import Lap
+from exercises.static.exercises.obstacle_avoidance_newmanager.python_template.ros1_noetic.MAP import Map
 
 # Graphical User Interface Class
 
