@@ -28,20 +28,24 @@ class HAL:
     @classmethod
     def initRobot(self):
         pass
-    
+    @staticmethod
     def setV(self, velocity):
         self.motors.sendV(velocity)
     
+    @staticmethod
     def setW(self, velocity):
         self.motors.sendW(velocity)
 
+    @staticmethod
     def getPose3d(self):
         return self.pose3d.getPose3d()
 
+    @staticmethod
     def getLaserData(self):
         return self.laser.getLaserData()
 
     # Get Image from ROS Driver Camera
+    @staticmethod
     def getImage(self):
         image = self.camera.getImage().data
         return image
