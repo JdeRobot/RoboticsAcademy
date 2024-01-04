@@ -43,7 +43,7 @@ class Template:
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI("0.0.0.0", self.hal)
+        self.gui = GUI("0.0.0.0")
         self.execute_user_code()
 
     # Function to parse the code
