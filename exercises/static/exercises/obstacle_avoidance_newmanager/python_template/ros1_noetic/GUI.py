@@ -62,11 +62,11 @@ class GUI:
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
-    def payloadImage(cls):
-        cls.image_show_lock.acquire()
-        image_to_be_shown_updated = cls.image_to_be_shown_updated
-        image_to_be_shown = cls.image_to_be_shown
-        cls.image_show_lock.release()
+    def payloadImage():
+        GUI.image_show_lock.acquire()
+        image_to_be_shown_updated = GUI.image_to_be_shown_updated
+        image_to_be_shown = GUI.image_to_be_shown
+        GUI.image_show_lock.release()
 
         image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
@@ -81,9 +81,9 @@ class GUI:
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
 
-        cls.image_show_lock.acquire()
-        cls.image_to_be_shown_updated = False
-        cls.image_show_lock.release()
+        GUI.image_show_lock.acquire()
+        GUI.image_to_be_shown_updated = False
+        GUI.image_show_lock.release()
 
         return payload
 
