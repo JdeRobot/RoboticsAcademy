@@ -192,6 +192,12 @@ class GUI:
         self.matching_to_send = []
         self.server.send_message(self.client, "#res")
 
+    def on_message(self, ws, message):
+        """Handles incoming messages from the websocket client."""
+        if message.startswith("#ack"):
+            self.set_acknowledge(True)
+
+
     def reset_gui(self):
         self.ClearAllPoints()
 

@@ -75,9 +75,6 @@ class Template:
 
         iterative_code, sequential_code = self.parse_code(source_code)
 
-        self.hal.motors.sendV(0)
-        self.hal.motors.sendW(0)
-
         gui_module, hal_module = self.generate_modules()
         reference_environment = {"GUI": gui_module, "HAL": hal_module}
         exec(sequential_code, reference_environment)
