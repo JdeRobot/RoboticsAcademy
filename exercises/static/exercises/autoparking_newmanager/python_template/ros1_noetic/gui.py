@@ -22,6 +22,7 @@ class GUI:
                        ListenerLaser("/F1ROS/laser_r/scan"),
                        ListenerLaser("/F1ROS/laser_b/scan"),
                        ListenerPose3d("/F1ROS/odom"))
+        
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
 
