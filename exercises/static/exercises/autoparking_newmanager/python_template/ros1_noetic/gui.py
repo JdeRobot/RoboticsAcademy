@@ -1,48 +1,27 @@
 import json
-import cv2
-import base64
 import threading
+import subprocess
 import time
 from datetime import datetime
-import subprocess
 import websocket
-import os
-
 from interfaces.pose3d import ListenerPose3d
 from interfaces.laser import ListenerLaser
-
-from exercises.static.exercises.obstacle_avoidance_newmanager.python_template.ros1_noetic.LAP import Lap
-from exercises.static.exercises.obstacle_avoidance_newmanager.python_template.ros1_noetic.MAP import Map
-
-# Graphical User Interface Class
-
+from exercises.static.exercises.autoparking_newmanager.python_template.ros1_noetic.map import Map
 
 class GUI:
-    laser_object = ListenerLaser("/F1ROS/laser/scan")
-    pose3d_object = ListenerPose3d("/F1ROS/odom")
-    map = Map(laser_object, pose3d_object)
-    image_to_be_shown = None
-    image_to_be_shown_updated = False
-    image_show_lock = threading.Lock()
+    """Graphical User Interface class"""
 
-    # Initialization function
-    # The actual initialization
     def __init__(self, host, hal):
-        self.payload = {'image': '', 'lap': '', 'map': ''}
+        """Initializes the GUI"""
+        self.payload = {'map': ''}
         self.client = None
-
-        # Image variables
-
-
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-
-        # Take the console object to set the same websocket and client
         self.hal = hal
-   
-        # Create the lap object
-        self.lap = Lap(self.map)
-
+        self.map = Map(ListenerLaser("/F1ROS/laser_f/scan"),
+                       ListenerLaser("/F1ROS/laser_r/scan"),
+                       ListenerLaser("/F1ROS/laser_b/scan"),
+                       ListenerPose3d("/F1ROS/odom"))
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
 
@@ -52,92 +31,29 @@ class GUI:
                                                  on_message=self.on_message,)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
-
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
     @classmethod
-    def initGUI(self):
-        # self.payload = {'image': '', 'shape': []}
+    def initGUI(cls):
+        """Initializes the GUI class."""
         pass
 
-    # Function to prepare image payload
-    # Encodes the image as a JSON string and sends through the WS
-    def payloadImage():
-        GUI.image_show_lock.acquire()
-        image_to_be_shown_updated = GUI.image_to_be_shown_updated
-        image_to_be_shown = GUI.image_to_be_shown
-        GUI.image_show_lock.release()
-
-        image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
-
-        if image_to_be_shown_updated == False:
-            return payload
-
-        shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
-        encoded_image = base64.b64encode(frame)
-
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-
-        GUI.image_show_lock.acquire()
-        GUI.image_to_be_shown_updated = False
-        GUI.image_show_lock.release()
-
-        return payload
-
-    # Function for student to call
-    @staticmethod
-    def showForces(vec1, vec2, vec3):
-        GUI.map.setCar(vec1[0], vec1[1])
-        GUI.map.setObs(vec2[0], vec2[1])
-        GUI.map.setAvg(vec3[0], vec3[1])
-    
-    # Function for student to call
-    @staticmethod
-    def showLocalTarget(newVec):
-        GUI.map.setTargetPos(newVec[0], newVec[1])
-
-    # Function for student to call
-    @staticmethod
-    def showImage(image):
-        GUI.image_show_lock.acquire()
-        GUI.image_to_be_shown = image
-        GUI.image_to_be_shown_updated = True
-        GUI.image_show_lock.release()
-
-    # Function to get value of Acknowledge
     def get_acknowledge(self):
+        """Gets the acknowledge status."""
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-
         return acknowledge
 
-    # Function to get value of Acknowledge
     def set_acknowledge(self, value):
+        """Sets the acknowledge status."""
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
 
-    # Update the gui
     def update_gui(self):
-        # Payload Image Message
-        payload = self.payloadImage()
-        self.payload['image'] = json.dumps(payload)
-
-        # Payload Lap Message
-        lapped = self.lap.check_threshold()
-        lap_message = ""
-        if(lapped != None):
-            self.payload["lap"] = str(lapped)
-
-        # Payload Map Message
+        """Updates the GUI with the latest map information."""
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
-
-        message =json.dumps(self.payload)
+        message = json.dumps(self.payload)
         if self.client:
             try:
                 self.client.send(message)
@@ -149,10 +65,11 @@ class GUI:
         if message.startswith("#ack"):
             self.set_acknowledge(True)
 
+    def reset_gui(self):
+        """Resets the GUI to its initial state."""
+        self.map.reset()
 
 
-# This class decouples the user thread
-# and the GUI update thread
 class ThreadGUI:
     """Class to manage GUI updates and frequency measurements in separate threads."""
 
@@ -213,3 +130,5 @@ class ThreadGUI:
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             sleep_time = max(0, (50 - ms) / 1000.0)
             time.sleep(sleep_time)
+
+

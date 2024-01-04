@@ -9,8 +9,8 @@ import re
 import subprocess
 import importlib
 import os
-from GUI import GUI, ThreadGUI
-from HAL import HAL
+from exercises.static.exercises.autoparking_newmanager.python_template.ros1_noetic.gui import GUI, ThreadGUI
+from exercises.static.exercises.autoparking_newmanager.python_template.ros1_noetic.hal import HAL
 from console import start_console, close_console
 
 class Template:

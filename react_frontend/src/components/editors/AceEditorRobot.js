@@ -44,8 +44,8 @@ window.RoboticsReactComponents.CodeEditor = (function () {
 
 export default function AceEditorRobot(props) {
   const [fontSize, setFontSize] = React.useState(14);
-  const [editorCode, setEditorCode] = React.useState(`from GUI import GUI
-from HAL import HAL
+  const [editorCode, setEditorCode] = React.useState(`from gui import GUI
+from hal import HAL
 # Enter sequential code!
 
 while True:
