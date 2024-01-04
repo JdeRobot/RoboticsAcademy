@@ -18,7 +18,12 @@ from exercises.static.exercises.obstacle_avoidance_newmanager.python_template.ro
 
 
 class GUI:
-    map = None
+    laser_object = ListenerLaser("/F1ROS/laser/scan")
+    pose3d_object = ListenerPose3d("/F1ROS/odom")
+    map = Map(laser_object, pose3d_object)
+    image_to_be_shown = None
+    image_to_be_shown_updated = False
+    image_show_lock = threading.Lock()
 
     # Initialization function
     # The actual initialization
@@ -27,9 +32,7 @@ class GUI:
         self.client = None
 
         # Image variables
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
@@ -37,12 +40,6 @@ class GUI:
         # Take the console object to set the same websocket and client
         self.hal = hal
    
-
-        # Create the map object
-        laser_object = ListenerLaser("/F1ROS/laser/scan")
-        pose3d_object = ListenerPose3d("/F1ROS/odom")
-        self.map = Map(laser_object, pose3d_object)
-
         # Create the lap object
         self.lap = Lap(self.map)
 
@@ -65,16 +62,16 @@ class GUI:
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
-    def payloadImage(self):
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
+    def payloadImage(cls):
+        cls.image_show_lock.acquire()
+        image_to_be_shown_updated = cls.image_to_be_shown_updated
+        image_to_be_shown = cls.image_to_be_shown
+        cls.image_show_lock.release()
 
         image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
 
-        if(image_to_be_shown_updated == False):
+        if image_to_be_shown_updated == False:
             return payload
 
         shape = image.shape
@@ -84,31 +81,31 @@ class GUI:
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
 
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
+        cls.image_show_lock.acquire()
+        cls.image_to_be_shown_updated = False
+        cls.image_show_lock.release()
 
         return payload
 
     # Function for student to call
     @staticmethod
-    def showForces(self, vec1, vec2, vec3):
-        self.map.setCar(vec1[0], vec1[1])
-        self.map.setObs(vec2[0], vec2[1])
-        self.map.setAvg(vec3[0], vec3[1])
+    def showForces(vec1, vec2, vec3):
+        GUI.map.setCar(vec1[0], vec1[1])
+        GUI.map.setObs(vec2[0], vec2[1])
+        GUI.map.setAvg(vec3[0], vec3[1])
     
     # Function for student to call
     @staticmethod
-    def showLocalTarget(self, newVec):
-        self.map.setTargetPos(newVec[0], newVec[1])
+    def showLocalTarget(newVec):
+        GUI.map.setTargetPos(newVec[0], newVec[1])
 
     # Function for student to call
     @staticmethod
-    def showImage(self, image):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
+    def showImage(image):
+        GUI.image_show_lock.acquire()
+        GUI.image_to_be_shown = image
+        GUI.image_to_be_shown_updated = True
+        GUI.image_show_lock.release()
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):

@@ -14,38 +14,37 @@ class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
     
-    def __init__(self):
-    	rospy.init_node("HAL")
     
-    	self.image = None
-    	self.camera = ListenerCamera("/F1ROS/cameraL/image_raw")
-    	self.motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
-    	self.pose3d = ListenerPose3d("/F1ROS/odom")
-    	self.laser = ListenerLaser("/F1ROS/laser/scan")
+    rospy.init_node("HAL")
+    image = None
+    camera = ListenerCamera("/F1ROS/cameraL/image_raw")
+    motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
+    pose3d = ListenerPose3d("/F1ROS/odom")
+    laser = ListenerLaser("/F1ROS/laser/scan")
     	
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
     @classmethod
-    def initRobot(self):
+    def initRobot():
         pass
     @staticmethod
-    def setV(self, velocity):
-        self.motors.sendV(velocity)
+    def setV(velocity):
+        HAL.motors.sendV(velocity)
     
     @staticmethod
-    def setW(self, velocity):
-        self.motors.sendW(velocity)
+    def setW(velocity):
+        HAL.motors.sendW(velocity)
 
     @staticmethod
-    def getPose3d(self):
-        return self.pose3d.getPose3d()
+    def getPose3d():
+        return HAL.pose3d.getPose3d()
 
     @staticmethod
-    def getLaserData(self):
-        return self.laser.getLaserData()
+    def getLaserData():
+        return HAL.laser.getLaserData()
 
     # Get Image from ROS Driver Camera
     @staticmethod
-    def getImage(self):
-        image = self.camera.getImage().data
+    def getImage():
+        image = HAL.camera.getImage().data
         return image
