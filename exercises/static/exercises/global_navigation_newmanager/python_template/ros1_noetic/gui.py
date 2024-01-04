@@ -135,14 +135,12 @@ class GUI:
 
         return list(pos_message1)
 
-    # Function to read the message from websocket
-    # Gets called when there is an incoming message from the client
-    def get_message(self, client, server, message):
-        # Acknowledge Message for GUI Thread
-        if (message[:4] == "#ack"):
+
+    def on_message(self, ws, message):
+        """Handles incoming messages from the websocket client."""s
+        if message.startswith("#ack"):
             self.set_acknowledge(True)
 
-        # Check for mouse click data on the map
         elif (message[:5] == "#pick"):
             data = eval(message[5:])
             self.mapXY = data
@@ -150,11 +148,6 @@ class GUI:
             worldx, worldy = self.map.gridToWorld(x, y)
             self.worldXY = [worldx, worldy]
             print("World : {}".format(self.worldXY))
-
-    def on_message(self, ws, message):
-        """Handles incoming messages from the websocket client."""
-        if message.startswith("#ack"):
-            self.set_acknowledge(True)
 
 
     # Function to reset

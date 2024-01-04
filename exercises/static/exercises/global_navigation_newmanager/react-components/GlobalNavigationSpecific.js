@@ -67,7 +67,7 @@ function SpecificGlobalNavigation(props) {
   React.useEffect(() => {
     const callback = (message) => {
       console.log(message.data.state)
-      if (message.data.state === "ready") {
+      if (message.data.state === "visualization_ready") {
         showMap = false
       } else {
         showMap = true
@@ -122,7 +122,7 @@ function SpecificGlobalNavigation(props) {
         var data = destinationPicker(event)
         let coords = {"data" : data};
         try {
-          window.RoboticsExerciseComponents.commsManager.send("#gui", {msg: "#pick", data: data})
+          window.RoboticsExerciseComponents.commsManager.send("#gui", `#pick${data}`)
         } catch (error) {
         }
         
