@@ -14,12 +14,14 @@ class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
     
-    rospy.init_node("HAL")
-    motors = PublisherMotors("/roombaROS/cmd_vel", 4, 0.3)
-    pose3d = ListenerPose3d("/roombaROS/odom")
-    laser = ListenerLaser("/roombaROS/laser/scan")
-    bumper = ListenerBumper("/roombaROS/events/bumper")
-    camera_lock = threading.Lock()
+    def __init__(self):
+    	rospy.init_node("HAL")
+    
+    	self.motors = PublisherMotors("/roombaROS/cmd_vel", 4, 0.3)
+    	self.pose3d = ListenerPose3d("/roombaROS/odom")
+    	self.laser = ListenerLaser("/roombaROS/laser/scan")
+    	self.bumper = ListenerBumper("/roombaROS/events/bumper")
+    	self.camera_lock = threading.Lock()
     	
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -27,23 +29,18 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
-    
-    @staticmethod
-    def getBumperData():
-        return HAL.bumper.getBumperData()
-    
-    @staticmethod
-    def getPose3d():
-        return HAL.pose3d.getPose3d()
-    
-    @staticmethod
-    def getLaserData():
-        return HAL.laser.getLaserData()
-    
-    @staticmethod
-    def setV(velocity):
-        HAL.motors.sendV(velocity)
-        
-    @staticmethod
-    def setW(velocity):
-        HAL.motors.sendW(velocity)
+
+    def getBumperData(self):
+        return self.bumper.getBumperData()
+
+    def getPose3d(self):
+        return self.pose3d.getPose3d()
+
+    def getLaserData(self):
+        return self.laser.getLaserData()
+
+    def setV(self, velocity):
+        self.motors.sendV(velocity)
+
+    def setW(self, velocity):
+        self.motors.sendW(velocity)

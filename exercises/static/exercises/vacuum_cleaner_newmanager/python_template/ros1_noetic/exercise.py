@@ -26,47 +26,121 @@ class Template:
         self.stop_brain = False
         self.user_code = ""
         self.ideal_cycle = 20
+        self.iteration_counter = 0
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
         self.gui = GUI("0.0.0.0", self.hal)
         self.execute_user_code()
 
-    def add_frequency_control(self, code):
-        frequency_control_code_imports = """
-from datetime import datetime
-ideal_cycle = 20
-"""
-        code = frequency_control_code_imports + code
-        infinite_loop = re.search(
-            r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', code)        
-        frequency_control_code_pre = """
-    start_time = datetime.now()
-            """
-        code = code[:infinite_loop.end()] + frequency_control_code_pre + code[infinite_loop.end():]
-        frequency_control_code_post = """
-    finish_time = datetime.now()
-    dt = finish_time - start_time
-    ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+    # Function to parse the code
+    # A few assumptions:
+    # 1. The user always passes sequential and iterative codes
+    # 2. Only a single infinite loop
+    def parse_code(self, source_code):
+        """
+        Parses the provided source code, separating the sequential and iterative parts.
+        """
+        sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+        return iterative_code, sequential_code
 
-    if (ms < ideal_cycle):
-        time.sleep((ideal_cycle - ms) / 1000.0)
-"""        
-        code = code + frequency_control_code_post
-        return code
+    # Function to parse code according to the debugging level
+    def debug_parse(self, source_code, debug_level):
+        if (debug_level == 1):
+            # If debug level is 0, then all the GUI operations should not be called
+            source_code = re.sub(r'GUI\..*', '', source_code)
+
+        return source_code
+
+    # Function to seperate the iterative and sequential code
+    def seperate_seq_iter(self, source_code):
+        if source_code == "":
+            return "", ""
+
+        # Search for an instance of while True
+        infinite_loop = re.search(
+            r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
+
+        # Seperate the content inside while True and the other
+        # (Seperating the sequential and iterative part!)
+        try:
+            start_index = infinite_loop.start()
+            iterative_code = source_code[start_index:]
+            sequential_code = source_code[:start_index]
+
+            # Remove while True: syntax from the code
+            # And remove the the 4 spaces indentation before each command
+            iterative_code = re.sub(
+                r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
+            # Add newlines to match line on bug report
+            extra_lines = sequential_code.count('\n')
+            while (extra_lines >= 0):
+                iterative_code = '\n' + iterative_code
+                extra_lines -= 1
+            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
+
+        except:
+            sequential_code = source_code
+            iterative_code = ""
+
+        return sequential_code, iterative_code
+
+    # The process function
 
     def process_code(self, source_code):
-        """
-        Processes the provided source code, executing the sequential part first and then the iterative part.
-        """
+
+        # Redirect the information to console
         start_console()
 
+        # Reference Environment for the exec() function
+        iterative_code, sequential_code = self.parse_code(source_code)
+
+        # Whatever the code is, first step is to just stop!
         self.hal.motors.sendV(0)
         self.hal.motors.sendW(0)
 
-        processed_code = self.add_frequency_control(source_code)
-        exec(processed_code)
+        # print("The debug level is " + str(debug_level)
+        # print(sequential_code)
+        # print(iterative_code)
 
+        # The Python exec function
+        # Run the sequential part
+        gui_module, hal_module = self.generate_modules()
+        reference_environment = {"GUI": gui_module, "HAL": hal_module}
+        exec(sequential_code, reference_environment)
+
+        # Run the iterative part inside template
+        # and keep the check for flag
+        while self.reload == False:
+            while (self.stop_brain == True):
+                if (self.reload == True):
+                    break
+                time.sleep(0.1)
+
+            start_time = datetime.now()
+
+            # Execute the iterative portion
+            exec(iterative_code, reference_environment)
+
+            # Template specifics to run!
+            finish_time = datetime.now()
+            dt = finish_time - start_time
+            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
+                1000 + dt.microseconds / 1000.0
+
+            # Keep updating the iteration counter
+            if (iterative_code == ""):
+                self.iteration_counter = 0
+            else:
+                self.iteration_counter = self.iteration_counter + 1
+
+            # The code should be run for atleast the target time step
+            # If it's less put to sleep
+            if (ms < self.ideal_cycle):
+                time.sleep((self.ideal_cycle - ms) / 1000.0)
+
+        close_console()
+        print("Current Thread Joined!")
 
     # Function to generate the modules for use in ACE Editor
 
@@ -122,4 +196,3 @@ ideal_cycle = 20
 # Execute!
 if __name__ == "__main__":
     server = Template()
-
