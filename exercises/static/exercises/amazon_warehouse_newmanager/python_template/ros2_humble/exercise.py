@@ -35,15 +35,11 @@ class Template:
         self.iteration_counter = 0
         self.real_time_factor = 0
         self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
-
-        # EXERCISE websocket
-        self.server = None
-        self.client = None
-        self.host = sys.argv[1]
-
+     
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.gui = GUI('0.0.0.0', self.hal)
+        self.execute_user_code()
         
     ################ --- BRAIN --- ################
 
@@ -140,71 +136,10 @@ class Template:
 
         return gui_module, hal_module
 
-    # Function to measure the frequency of iterations
-    def measure_frequency(self):
-        previous_time = datetime.now()
-        # An infinite loop
-        while True: #not self.reload:
-            # Sleep for 2 seconds
-            time.sleep(2)
 
-            # Measure the current time and subtract from the previous time to get real time interval
-            current_time = datetime.now()
-            dt = current_time - previous_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * \
-                1000 + dt.microseconds / 1000.0
-            previous_time = current_time
-
-            # Get the time period
-            try:
-                # Division by zero
-                self.measured_cycle = ms / self.iteration_counter
-            except:
-                self.measured_cycle = 0
-
-            # Reset the counter
-            self.iteration_counter = 0
-
-            # Send to client
-            self.send_frequency_message()
-
-
-    ################ --- EXERCISE --- ################
-
-    # Function for saving
-    def save_code(self, source_code):
-        with open('code/academy.py', 'w') as code_file:
-            code_file.write(source_code)
-
-    # Function for loading
-    def load_code(self):
-        with open('code/academy.py', 'r') as code_file:
-            source_code = code_file.read()
-
-        return source_code
-
-    # Function to parse the code
-    # A few assumptions:
-    # 1. The user always passes sequential and iterative codes
-    # 2. Only a single infinite loop
     def parse_code(self, source_code):
-        # Check for save/load
-        if (source_code[:5] == "#save"):
-            source_code = source_code[5:]
-            self.save_code(source_code)
-
-            return "", ""
-
-        elif (source_code[:5] == "#load"):
-            source_code = source_code + self.load_code()
-            self.server.send_message(self.client, source_code)
-
-            return "", ""
-
-        else:
-            sequential_code, iterative_code = self.seperate_seq_iter(
-                source_code)
-            return iterative_code, sequential_code
+        sequential_code, iterative_code = self.seperate_seq_iter(source_code)
+        return iterative_code, sequential_code
 
     # Function to seperate the iterative and sequential code
     def seperate_seq_iter(self, source_code):
@@ -238,165 +173,26 @@ class Template:
             iterative_code = ""
 
         return sequential_code, iterative_code
-
-    # Function to generate and send frequency messages
-    def send_frequency_message(self):
-        # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0
-        gui_frequency = 0
-        try:
-            brain_frequency = round(1000 / self.measured_cycle, 1)
-        except ZeroDivisionError:
-            brain_frequency = 0
-
-        try:
-            gui_frequency = round(1000 / self.thread_gui.measured_cycle, 1)
-        except ZeroDivisionError:
-            gui_frequency = 0
-
-        self.frequency_message["brain"] = brain_frequency
-        self.frequency_message["gui"] = gui_frequency
-        self.frequency_message["rtf"] = self.real_time_factor
-
-        message = "#freq" + json.dumps(self.frequency_message)
-        self.server.send_message(self.client, message)
-
-    def send_ping_message(self):
-        self.server.send_message(self.client, "#ping")
-
-    # Function to notify the front end that the code was received and sent to execution
-    def send_code_message(self):
-        self.server.send_message(self.client, "#exec")
-
-    # Function to track the real time factor from Gazebo statistics
-    # https://stackoverflow.com/a/17698359
-    # (For reference, Python3 solution specified in the same answer)
-    def track_stats(self):
-        args = ["gz", "stats", "-p"]
-        # Prints gz statistics. "-p": Output comma-separated values containing-
-        # real-time factor (percent), simtime (sec), realtime (sec), paused (T or F)
-        stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
-        # bufsize=1 enables line-bufferred mode (the input buffer is flushed
-        # automatically on newlines if you would write to process.stdin )
-        with stats_process.stdout:
-            for line in iter(stats_process.stdout.readline, b''):
-                stats_list = [x.strip() for x in line.split(b',')]
-                self.real_time_factor = stats_list[0].decode("utf-8")
-
-    # Function to maintain thread execution
-    def execute_thread(self, source_code):
-        # Keep checking until the thread is alive
-        # The thread will die when the coming iteration reads the flag
-        if (self.brain_thread != None):
-            while self.brain_thread.is_alive():
-                time.sleep(0.2)
-
-        # Turn the flag down, the iteration has successfully stopped!
-        self.reload = False
-        # New thread execution
-        self.brain_thread = threading.Thread( target=self.process_code, args=[source_code])
-        self.brain_thread.start()
-        self.send_code_message()
-
-        print("New Brain Thread Started!")
-
-    # Function to read and set frequency from incoming message
-    def read_frequency_message(self, message):
-        frequency_message = json.loads(message)
-
-        # Set brain frequency
-        frequency = float(frequency_message["brain"])
-        self.ideal_cycle = 1000.0 / frequency
-
-        # Set gui frequency
-        frequency = float(frequency_message["gui"])
-        self.thread_gui.ideal_cycle = 1000.0 / frequency
-
-        return
-
-    # The websocket function
-    # Gets called when there is an incoming message from the client
-    def handle(self, client, server, message):
-        if (message[:5] == "#freq"):
-            frequency_message = message[5:]
-            self.read_frequency_message(frequency_message)
-            time.sleep(1)
-            self.send_frequency_message()
-            return
-
-        elif (message[:5] == "#ping"):
-            time.sleep(1)
-            self.send_ping_message()
-            return
-
-        elif (message[:5] == "#code"):
-            try:
-                # Once received turn the reload flag up and send it to execute_thread function
-                self.user_code = message[6:]
-                # print(repr(code))
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#rest"):
-            try:
-                self.reload = True
-                self.stop_brain = True
-                self.execute_thread(self.user_code)
-            except:
-                pass
-
-        elif (message[:5] == "#stop"):
-            self.stop_brain = True
-
-        elif (message[:5] == "#play"):
-            self.stop_brain = False
-
-    # Function that gets called when the server is connected
-    def connected(self, client, server):
-        self.client = client
-        # Start the GUI update thread
+    
+    def execute_user_code(self):
+        """
+        Executes the provided user code, initializing the graphical interface and processing the code.
+        """
+        with open('/workspace/code/academy.py', 'r') as code_file:
+            source_code = code_file.read()
+        
         self.thread_gui = ThreadGUI(self.gui)
         self.thread_gui.start()
 
-        # Start the real time factor tracker thread
-        self.stats_thread = threading.Thread(target=self.track_stats)
-        self.stats_thread.start()
+        self.thread = threading.Thread(
+            target=self.process_code, args=[source_code])
+        self.thread.start()
+        print("Código del usuario en ejecución.")
 
-        # Start measure frequency
-        self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.measure_thread.start()
 
-        print(client, 'connected')
-
-    # Function that gets called when the connected closes
-    def handle_close(self, client, server):
-        print(client, 'closed')
-
-    def run_server(self):
-        self.server = WebsocketServer(port=1905, host=self.host)
-        self.server.set_fn_new_client(self.connected)
-        self.server.set_fn_client_left(self.handle_close)
-        self.server.set_fn_message_received(self.handle)
-
-        home_dir = os.path.expanduser('~')
-
-        logged = False
-        while not logged:
-            try:
-                f = open(f"{home_dir}/ws_code.log", "w")
-                f.write("websocket_code=ready")
-                f.close()
-                logged = True
-            except:
-                time.sleep(0.1)
-
-        self.server.run_forever()
 
 
 # Execute!
 if __name__ == "__main__":
     server = Template()
-    server.run_server()
+
