@@ -7,7 +7,7 @@ function AppIndicator(props) {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "running") {
+      if (message.data.state === "application_running") {
         setRunning(true);
       } else {
         setRunning(false);
