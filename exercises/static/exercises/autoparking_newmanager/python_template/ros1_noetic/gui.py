@@ -11,13 +11,12 @@ from map import Map
 class GUI:
     """Graphical User Interface class"""
 
-    def __init__(self, host, hal):
+    def __init__(self, host):
         """Initializes the GUI"""
         self.payload = {'map': ''}
         self.client = None
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-        self.hal = hal
         self.map = Map(ListenerLaser("/F1ROS/laser_f/scan"),
                        ListenerLaser("/F1ROS/laser_r/scan"),
                        ListenerLaser("/F1ROS/laser_b/scan"),
@@ -91,7 +90,6 @@ class ThreadGUI:
         self.frequency_thread.start()
         self.gui_thread.start()
         self.rtf_thread.start()
-        print("GUI Thread Started!")
 
     def get_real_time_factor(self):
         """Continuously calculates the real-time factor."""
