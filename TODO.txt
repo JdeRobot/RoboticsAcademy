@@ -1,0 +1,40 @@
+RoboticsAcademy:
+
+
+1. Actualizar base de datos:
+    1.1 Diferenciar si se está utilizando un RADI noetic o humble. Dependiendo de esto habrá que lanzar una plantilla u otra 
+    (RoboticsAcademy/exercises/static/exercises/nombre_del_ejercicio/python_template/ros1_noetic/exercise.py)/
+    (RoboticsAcademy/exercises/static/exercises/nombre_del_ejercicio/python_template/ros2_humble/exercise.py)
+    1.2 Actualizar los World y establecer nombres claros para que sean reusables dentro de otras aplicaciones.
+
+2. Migrar los ejercicios que faltan. Ejercicios ya migrados:
+    ROS1:
+        1. Basic Vacuum Cleaner
+        2. Follow line
+        3. Obstacle Avoidance
+        4. GLobal Navigation
+        5. Localized Vacuum Cleaner
+        6. Autoparking
+        7. 3D recontruction
+
+    ROS2:
+        1. Amazon Warehouse (Problema con rclpy)
+        2. Drone Rescue People
+        3. Autoparking (Problema con rclpy)
+
+3. Arreglar el cambio de mundos. Ejercicios como el Follow Line o el Autoparking(ROS2), permiten cambiar el mundo del ejercicio.
+Para ello hay que matar, la aplicación, la visualización y el universo y volver a lanzarlo con la nueva configuración. 
+
+4. Extender plantillas simples usando como referencia el ejercicio autoparking en ROS1
+
+
+Unibotics:
+
+1. Actualizar base de datos:
+    1.1 Migrar los modelos de django y aplicar los mismos cambios que en RoboticsAcademy.
+    1.2 Actualizar rutas
+
+2.Actualizar Frontend:
+    El estado de algunos componentes REACT depende de los mensajes de RAM. Actualizar estos mensajes a partir de la máquina de estados.
+
+
