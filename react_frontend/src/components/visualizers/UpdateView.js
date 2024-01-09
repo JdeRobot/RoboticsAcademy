@@ -18,6 +18,7 @@ const UpdateView = (props) => {
 
   React.useEffect(() => {
     const callback = (message) => {
+      console.log(message)
       updateRef.current = message.data.update;
     };
 
@@ -39,9 +40,9 @@ const UpdateView = (props) => {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "running") {
+      if (message.data.state === "application_running") {
         rendererRef.current.run();
-      } else if (message.data.state === "ready") {
+      } else if (message.data.state === "visualization_ready") {
         switch (context.mapSelected) {
           case "Default":
           case "Default Ackermann":
@@ -71,7 +72,7 @@ const UpdateView = (props) => {
           canvasRef.current,
           updateRef,
           circuit,
-          context.mapSelected
+          "simple"
         );
       } else {
         try {
