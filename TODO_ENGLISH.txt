@@ -1,0 +1,35 @@
+RoboticsAcademy:
+
+1. Update database:
+    1.1 Differentiate whether a RADI noetic or humble is being used. Depending on this, you'll need to launch one template or another
+    (RoboticsAcademy/exercises/static/exercises/exercise_name/python_template/ros1_noetic/exercise.py)/
+    (RoboticsAcademy/exercises/static/exercises/exercise_name/python_template/ros2_humble/exercise.py)
+    1.2 Update the Worlds and establish clear names for reusability within other applications.
+
+2. Migrate the missing exercises. Exercises already migrated:
+    ROS1:
+        1. Basic Vacuum Cleaner
+        2. Follow line
+        3. Obstacle Avoidance
+        4. Global Navigation
+        5. Localized Vacuum Cleaner
+        6. Autoparking
+        7. 3D reconstruction
+
+    ROS2:
+        1. Amazon Warehouse (Issue with rclpy)
+        2. Drone Rescue People
+        3. Autoparking (Issue with rclpy)
+
+3. Fix world change. Exercises like Follow Line or Autoparking (ROS2) allow changing the exercise world. To do this, you need to kill the application, visualization, and the universe and relaunch it with the new configuration.
+
+4. Extend simple templates using the Autoparking exercise in ROS1 as a reference.
+
+Unibotics:
+
+1. Update database:
+    1.1 Migrate django models and apply the same changes as in RoboticsAcademy.
+    1.2 Update routes.
+
+2. Update Frontend:
+    The state of some REACT components depends on RAM messages. Update these messages based on the state machine.
