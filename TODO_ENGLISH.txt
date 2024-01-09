@@ -23,7 +23,7 @@ RoboticsAcademy:
 
 3. Fix world change. Exercises like Follow Line or Autoparking (ROS2) allow changing the exercise world. To do this, you need to kill the application, visualization, and the universe and relaunch it with the new configuration.
 
-4. Extend simple templates using the Autoparking exercise in ROS1 as a reference.
+4. Extend simple templates using the Autoparking exercise in ROS1 as a reference. The GUI modules of exercises that contain functions for the user (such as GUI.showImage()) must be adapted to be instantiated and initialized by the user code rather than the exercise template; or must be separated in two classes: one with user related methods and the other one with webserver related methods.
 
 Unibotics:
 
