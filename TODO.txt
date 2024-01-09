@@ -25,7 +25,7 @@ RoboticsAcademy:
 3. Arreglar el cambio de mundos. Ejercicios como el Follow Line o el Autoparking(ROS2), permiten cambiar el mundo del ejercicio.
 Para ello hay que matar, la aplicación, la visualización y el universo y volver a lanzarlo con la nueva configuración. 
 
-4. Extender plantillas simples usando como referencia el ejercicio autoparking en ROS1
+4. Extender plantillas simples usando como referencia el ejercicio autoparking en ROS1. Los módulos GUI de ejercicios que contengan métodos para el uso de los usuarios deben ser adaptados para ser instanciados e inicializados en el código de usuario en vez de en la plantilla del ejercicio; o deben separarse en dos clases: una con métodos para los usuarios y otra con los métodos relativos al webserver.
 
 
 Unibotics:
