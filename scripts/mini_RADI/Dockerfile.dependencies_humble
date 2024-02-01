@@ -141,7 +141,7 @@ RUN python3.10 -m pip install --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69
 
 # pip install dependencies
 RUN python3.10 -m pip install \
-    pylint==2.17.4 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
+    pylint==2.17.4 transitions==0.9.0 pydantic==1.10.8 websocket-client==1.5.2 \
     argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
     matplotlib==3.0.* numpy==1.24.3 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
     pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
