@@ -47,7 +47,16 @@ example:
     alt: "Example"
     title: "Example"
 
-youtubeId: EVt9vYqEoDg
+holonomicrobot:
+  - url: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
+    image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_robot.png
+    alt: "Robot"
+    title: "Robot"
+
+pashe1: EVt9vYqEoDg
+ackermannRobot: NCC9bn-v_Ro
+robotgeometry: FPPF27QIRHw
+
 ---
 
 ## Goal
@@ -123,10 +132,11 @@ while True:
 * `HAL.lift()` - to lift the platform
 * `HAL.putdown()` - to put down the platform
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
+* `GUI.getMap(url)` - returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The URL of the Amazon Warehouse World 1 is '/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png'. The URL of the Amazon Warehouse World 2 is '/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png'.
 
 ## Supporting information
 
-There are two warehouses to choose from:
+There are two **warehouses** to choose from:
 #### Warehouse 1:
 * The warehouse size is 20.62 meters long and 13.6 meters wide.
 * The shelves coordinates from 1 to 6 are: (3.728, 0.579), (3.728, -1.242), (3.728, -3.039), (3.728, -4.827), (3.728, -6.781), (3.728, -8.665).
@@ -142,6 +152,22 @@ There are two warehouses to choose from:
 * You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png
 
 {% include gallery id="warehouse2" caption="Warehouse 2" %}
+
+There are two two **robots** to choose from:
+
+#### Holonomic logistic robot
+* holonomic movement
+* square geometry
+* lifting platform
+
+{% include gallery id="holonomicrobot" caption="Holonomic logistic robot" %}
+
+#### Ackermann logistic robot
+* ackermann movement
+* rectangular geometry
+* lifting platform
+
+{% include youtubePlayer.html id=page.pashe1 %}
 
 ## Theory
 
@@ -160,6 +186,7 @@ As you can see in the diagram above, some key components of OMPL are:
   * SE2StateSpace, SE3StateSpace: combines translations and rotations in 2D and 3D
   * ...
 * **State Validaty Checker** determines if the configuration is valid, that is to say the configuration doesn't collides with an enviroment obstacle and respects the constraints of the robot.
+* **Motion Validator** checks the validity of motions between two states.
 * **Control Space** defines the movements that a robot can have.
 * **State Propagator** indicates the evolution of the system after applying a control.
 * **Space Information** is the container that holds the state space, the state validity checker, and other information needed for planning.
@@ -345,12 +372,23 @@ In order to carry out the inverse operation of 3D to 2D, we can simply multiply,
 Simple hints provided to help you solve the Amazon Warehouse exercise. Please note that the **full solution has not been provided.** Also, the hints are more related to the reference solution, since multiple solutions are possible for this exercise.
 
 ### Ideas for solving the exercise
-Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
 
-#### How to find the shortest path?
+There are different ways to solve the exercise
+
+* #### Phase 1: Euclidean planning 
+  Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
+
+* #### Phase 2: Planning taking into consideration robot's geometry
+  Since the robot's geometry is not always suitable to be approximated as a point, as in the case when the rectangular shelving is loaded, it would be a better way to solve the problem taking into consideration the robot's geometry. And this is the challenge of this phase!
+  
+  You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into account the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as SE2StateSpace. And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
+
+{% include youtubePlayer.html id=page.robotgeometry %}
+
+### How to find the shortest path?
 The library offers the possibility to set an optimization objective, which could be a great help in finding the shortest path. Check out in [this tutorial](https://ompl.kavrakilab.org/optimalPlanningTutorial.html) how to do it!
 
-#### Points to consider
+### Points to consider
 * The loaded shelf is no longer a obstacle but part of the robot, then:
   * the robot's geometry changes, its "radius" increases
   * remember to exclude the shelf itself when defining invalid states
@@ -363,7 +401,7 @@ The library offers the possibility to set an optimization objective, which could
 
 ### Demonstrative video of completed solution
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.pashe1 %}
 
 - Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 - Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164).
