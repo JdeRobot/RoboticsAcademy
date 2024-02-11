@@ -26,7 +26,7 @@ export default function DrawerAppBar(props) {
   };
   const goToForum = () => {
     const url = "https://forum.unibotics.org/";
-    window.location.href = url;
+    window.open(url, '_blank');
   };
 
   const drawer = (
