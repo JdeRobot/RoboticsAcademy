@@ -1,7 +1,7 @@
 RoboticsAcademy:
 
 1. Update database:
-    1.1 Differentiate whether a RADI noetic or humble is being used. Depending on this, you'll need to launch one template or another
+    1.1 (Done) Differentiate whether a RADI noetic or humble is being used. Depending on this, you'll need to launch one template or another
     (RoboticsAcademy/exercises/static/exercises/exercise_name/python_template/ros1_noetic/exercise.py)/
     (RoboticsAcademy/exercises/static/exercises/exercise_name/python_template/ros2_humble/exercise.py)
     1.2 Update the Worlds and establish clear names for reusability within other applications.
