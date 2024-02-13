@@ -32,10 +32,6 @@ class HAL:
 
         self.start_time = 0
 
-        # Update thread
-        self.thread = ThreadHAL(self.update_hal)
-        print("HAL initialized", flush=True)
-
     # Function to start the update thread
     def start_thread(self):
         print("HAL thread starting", flush=True)
@@ -49,60 +45,17 @@ class HAL:
             image = self.camera.getImage().data
             # image = self._get_test_image()
             # print(f"HAL image set, shape: {image.shape}, bytes: {image.nbytes}", flush=True)
-            self.shared_image.add(image)
+            return image
         except Exception as e:
             print(f"Exception in hal getImage {repr(e)}")
 
-    def _get_test_image(self):
-        image = np.zeros((640, 480, 3), np.uint8)
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        bottomLeftCornerOfText = (10, 500)
-        fontScale = 0.5
-        fontColor = (255, 255, 255)
-        thickness = 1
-        lineType = 2
-
-        cv2.putText(image, f"Image generated in hal.py, running time: {time.time()-self.start_time}",
-                    bottomLeftCornerOfText,
-                    font,
-                    fontScale,
-                    fontColor,
-                    thickness,
-                    lineType)
-
-        return image
-
     # Set the velocity
-    def setV(self):
-        velocity = self.shared_v.get()
+    def setV(self, velocity):
         self.motors.sendV(velocity)
 
-    # Get the velocity
-    def getV(self):
-        velocity = self.shared_v.get()
-        return velocity
-
-    # Get the angular velocity
-    def getW(self):
-        angular = self.shared_w.get()
-        return angular
-
     # Set the angular velocity
-    def setW(self):
-        angular = self.shared_w.get()
-        self.motors.sendW(angular)
-
-    def update_hal(self):
-        self.getImage()
-        self.setV()
-        self.setW()
-
-    # Destructor function to close all fds
-    def __del__(self):
-        self.shared_image.close()
-        self.shared_v.close()
-        self.shared_w.close()
-
+    def setW(self, velocity):
+        self.motors.sendW(velocity)
 
 class ThreadHAL(threading.Thread):
     def __init__(self, update_function):
