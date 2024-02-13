@@ -4,7 +4,7 @@ models.py
 
 import json
 from django.db import models
-
+import subprocess
 
 StatusChoice = (
     ('ACTIVE', "ACTIVE"),
@@ -90,17 +90,25 @@ class Exercise(models.Model):
         """
         configurations = []
 
+        output = subprocess.check_output(['bash', '-c', 'echo $ROS_VERSION'])
+        output_str = output.decode('utf-8')
+        if output_str.strip() == '1':
+            ros_version = 'ROS1'
+        else:
+            ros_version = 'ROS2'
+
         for world in self.worlds.all():
-            config = {
-                "name": world.name,
-                "launch_file_path": world.launch_file_path,
-                "ros_version": world.ros_version,
-                "visualization": world.visualization,
-                "world": world.world,
-                "template": self.template,
-                "exercise_id":self.exercise_id
-            }
-            configurations.append(config)
+            if world.ros_version == ros_version:
+                config = {
+                    "name": world.name,
+                    "launch_file_path": world.launch_file_path,
+                    "ros_version": world.ros_version,
+                    "visualization": world.visualization,
+                    "world": world.world,
+                    "template": self.template,
+                    "exercise_id":self.exercise_id
+                }
+                configurations.append(config)
 
         context = {
             'exercise_base': "exercise_base_2_RA.html",
