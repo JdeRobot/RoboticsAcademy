@@ -8,7 +8,7 @@ from gazebo_msgs.srv import ApplyJointEffort
 from std_msgs.msg import String
 import time
 
-DEFAULT = 2
+DEFAULT = 50
 
 class PlatformController(Node):
     def __init__(self, joint):
