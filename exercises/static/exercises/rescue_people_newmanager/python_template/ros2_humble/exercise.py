@@ -115,26 +115,14 @@ class Template:
                     return
                 time.sleep(0.1)
 
-            start_time = datetime.now()
-
             # Execute the iterative portion
             exec(iterative_code, reference_environment)
-
-            # Template specifics to run!
-            finish_time = datetime.now()
-            dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
             # Keep updating the iteration counter
             if (iterative_code == ""):
                 self.iteration_counter = 0
             else:
                 self.iteration_counter = self.iteration_counter + 1
-
-            # The code should be run for atleast the target time step
-            # If it's less put to sleep
-            if (ms < self.ideal_cycle):
-                time.sleep((self.ideal_cycle - ms) / 1000.0)
 
         close_console()
         print("Current Thread Joined!")

@@ -111,16 +111,7 @@ class Template:
                     break
                 time.sleep(0.1)
 
-            start_time = datetime.now()
-
             exec(iterative_code, reference_environment)
-
-            finish_time = datetime.now()
-            dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-
-            if (ms < self.ideal_cycle):
-                time.sleep((self.ideal_cycle - ms) / 1000.0)
 
         close_console()
         print("Current Thread Joined!")
