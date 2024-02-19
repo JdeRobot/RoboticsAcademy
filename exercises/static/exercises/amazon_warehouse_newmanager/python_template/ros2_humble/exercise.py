@@ -40,10 +40,11 @@ class Template:
         self.server = None
         self.client = None
         self.host = sys.argv[1]
+        self.circuit = sys.argv[2]
 
         # Initialize the GUI, HAL and Console behind the scenes
         self.hal = HAL()
-        self.gui = GUI(self.host, self.hal)
+        self.gui = GUI(self.host, self.hal, self.circuit)
         
     ################ --- BRAIN --- ################
 
