@@ -4,8 +4,9 @@ from math import pi as pi
 import cv2
 
 class Map:
-	def __init__(self, pose3d):
+	def __init__(self, pose3d, circuit):
 		self.pose3d = pose3d
+		self.circuit = circuit
 	
 	def RTx(self, angle, tx, ty, tz):
 		RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], 
@@ -32,14 +33,27 @@ class Map:
 		x = pose.x
 		y = pose.y
 
-		x = (6.8 - x) * 20.22 * 0.545
-		y = (10.31 - y) * 20.17 * 0.72
+		if self.circuit == "World2" or self.circuit == "World4":  # Warehouse 2
+			'''
+			x = (h_gazebo / 2 - x) * (h_image / h_gazebo) * (h_canvas / h_image)
+			y = (w_gazebo / 2 - y) * (w_image / w_gazebo) * (w_canvas / w_image)
+			'''
+			x = (12.0 - x) * 29.13 * 0.22
+			y = (17.0 - y) * 31.62 * 0.28
+
+		else:	# Warehouse 1 (small one)
+			x = (6.8 - x) * 20.22 * 0.545
+			y = (10.31 - y) * 20.17 * 0.72
 
 		return y, x
 	
 	def getRobotAngle(self):
 		pose = self.pose3d.getPose3d()
-		rt = pose.yaw - 1.24
+
+		if self.circuit == "World3" or self.circuit == "World4":  # Warehouses with Ackermann robot 
+			rt = pose.yaw - 1.74
+		else: # Warehouses with holonomic robot
+			rt = pose.yaw - 1.24
 		ty = math.cos(-rt) - math.sin(-rt)
 		tx = math.sin(-rt) + math.cos(-rt)
 

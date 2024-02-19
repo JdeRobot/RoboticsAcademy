@@ -8,6 +8,6 @@ class Exercise(CompatibilityExerciseWrapperRos2):
     def __init__(self, circuit: str, update_callback: Callable):
         current_path = os.path.dirname(__file__)
 
-        super(Exercise, self).__init__(exercise_command=f"{current_path}/../../python_template/ros2_humble/exercise.py 0.0.0.0",
+        super(Exercise, self).__init__(exercise_command=f"{current_path}/../../python_template/ros2_humble/exercise.py 0.0.0.0 {circuit}",
                                        gui_command=f"{current_path}/../../python_template/ros2_humble/gui.py 0.0.0.0 {circuit}",
                                        update_callback=update_callback)

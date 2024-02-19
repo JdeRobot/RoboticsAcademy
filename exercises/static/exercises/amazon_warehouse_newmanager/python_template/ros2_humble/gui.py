@@ -13,7 +13,7 @@ from map import Map
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal):
+    def __init__(self, host, hal, circuit):
         t = threading.Thread(target=self.run_server)
         
         self.payload = {'map': '', 'array': ''}
@@ -30,11 +30,13 @@ class GUI:
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
 
+        self.circuit = circuit
+
         self.hal = hal
         t.start()
 
         # Create the map object    
-        self.map = Map(self.hal.pose3d)
+        self.map = Map(self.hal.pose3d, self.circuit)
 
     # Explicit initialization function
     # Class method, so user can call it without instantiation
