@@ -34,23 +34,38 @@ export default function WorldSelector(props) {
   }, []);
 
   const handleCircuitChange = (config) => {
+    
     context.mapSelected = config.name;
     setSelectedCircuit(config);
-    window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
-      window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
-        "Launching World"
-      );
-      window.RoboticsExerciseComponents.commsManager
-        .launch(config)
+    console.log(config.visualization);
+    window.RoboticsExerciseComponents.commsManager
+      .terminate_application()
+      .then(() => {
+        window.RoboticsExerciseComponents.commsManager
+        .terminate_visualization()
         .then(() => {
-          RoboticsReactComponents.MessageSystem.Loading.hideLoading();
+          window.RoboticsExerciseComponents.commsManager
+          .terminate_universe()
+          .then(() => {
+            window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
+              "Launching World"
+            );
+            window.RoboticsExerciseComponents.commsManager
+              .launchWorld(config)
+              .then(() => {
+                window.RoboticsExerciseComponents.commsManager
+                .prepareVisualization(config.visualization)
+                .then(() => {
+                  RoboticsReactComponents.MessageSystem.Loading.hideLoading();
+                  RoboticsReactComponents.MessageSystem.Alert.showAlert(
+                    "Exercise loaded successfully."
+                  );
+                })
+         
+              })
+          });
         })
-        .catch((e) => {
-          RoboticsReactComponents.MessageSystem.Loading.showFailLoading(
-            `Error launching the world:${e.data.message}. Try changing the world or reloading the page`
-          );
-        });
-    });
+      })
   };
 
   return exerciseConfig.length > 0 ? (

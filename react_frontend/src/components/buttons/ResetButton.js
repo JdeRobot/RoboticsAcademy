@@ -37,7 +37,7 @@ const ResetButton = () => {
       onClick={() => {
         setLoading(true);
         window.RoboticsExerciseComponents.commsManager
-          .stop()
+          .terminate_application()
           .then(() => {
             setLoading(false);
           })

@@ -145,7 +145,9 @@ const CommsManager = (address) => {
     pause: () => send("pause"),
     resume: () => send("resume"),
     reset: () => send("reset"),
-    terminate: () => send("terminate"),
+    terminate_application: () => send("terminate_application"),
+    terminate_visualization: () => send("terminate_visualization"),
+    terminate_universe: () => send("terminate_universe"),
     disconnect: () => send("disconnect"),
   };
 

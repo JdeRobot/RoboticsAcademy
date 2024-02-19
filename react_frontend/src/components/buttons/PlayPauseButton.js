@@ -64,7 +64,10 @@ const PlayPause = (props) => {
   };
 
   const runCode = (code) => {
-    window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
+    setLoading(true);
+    window.RoboticsExerciseComponents.commsManager
+    .terminate_application()
+    .then(() => {
       window.RoboticsExerciseComponents.commsManager
       .run({code: code, template:config[0].template, exercise_id: config[0].exercise_id})
       .then(() => {
