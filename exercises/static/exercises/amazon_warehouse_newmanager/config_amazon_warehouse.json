@@ -44,7 +44,7 @@
   "application": {
     "type": "python",
     "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
-    "params": { "circuit": "World 2"}
+    "params": { "circuit": "World2"}
   },
   "launch": {
     "0": {
@@ -60,7 +60,7 @@
       ],
       "parameters": [],
       "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/pallet_warehouse.launch.py",
-      "name": "World 2"
+      "name": "World2"
     },
     "1": {
       "type": "module",
@@ -84,7 +84,7 @@
   "application": {
     "type": "python",
     "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
-    "params": { "circuit": "World 3"}
+    "params": { "circuit": "World3"}
   },
   "launch": {
     "0": {
@@ -100,7 +100,7 @@
       ],
       "parameters": [],
       "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/small_warehouse_with_ackermann_logistic_robot.launch.py",
-      "name": "World 3"
+      "name": "World3"
     },
     "1": {
       "type": "module",
@@ -124,7 +124,7 @@
   "application": {
     "type": "python",
     "entry_point": "$EXERCISE_FOLDER/entry_point/ros2_humble/exercise.py",
-    "params": { "circuit": "World 4"}
+    "params": { "circuit": "World4"}
   },
   "launch": {
     "0": {
@@ -140,7 +140,7 @@
       ],
       "parameters": [],
       "launch_file": "$EXERCISE_FOLDER/launch/ros2_humble/pallet_warehouse_with_akcermann_logistic_robot.launch.py",
-      "name": "World 4"
+      "name": "World4"
     },
     "1": {
       "type": "module",

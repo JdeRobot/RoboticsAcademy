@@ -41,7 +41,7 @@ export default function WorldSelectorAmazonWarehouse(props) {
     
       const handleCircuitChange = (config) => {
         context.mapSelected = config.name;
-        if (config.name == "World 2" || config.name == "World 4") {
+        if (config.name == "World2" || config.name == "World4") {
             document.getElementById("amazon_map_canvas").style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png')";
           }
           else {
