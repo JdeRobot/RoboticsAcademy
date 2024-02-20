@@ -107,6 +107,13 @@ if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robo
   docker build $NO_CACHE -f $DOCKERFILE_BASE -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
 fi
 
+if [ $? -eq 0 ]; then
+    echo "Docker Base Image Build Successful"
+else
+    echo "Docker Base Image Build FAILED...exiting"
+    exit
+fi
+
 # Build the Docker image
 echo "===================== BUILDING $ROS_DISTRO RADI ====================="
 echo "Building RADI using $DOCKERFILE for ROS $ROS_DISTRO"
