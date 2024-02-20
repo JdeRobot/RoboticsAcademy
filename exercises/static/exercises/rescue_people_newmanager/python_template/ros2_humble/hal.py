@@ -5,81 +5,70 @@ import cv2
 from jderobot_drones.drone_wrapper import DroneWrapper
 from jderobot_drones.image_sub import ImageSubscriberNode
 
+# ROS init
+rclpy.init(args=None)
+node = rclpy.create_node('HAL')
 
-# Hardware Abstraction Layer
-class HAL:
-    IMG_WIDTH = 320
-    IMG_HEIGHT = 240
+# Global variables
+IMG_WIDTH = 320
+IMG_HEIGHT = 240
+drone = DroneWrapper()
+cam = ImageSubscriberNode()
+  
+# Get Image from ROS Driver Camera
+def get_frontal_image():
+    image = cam.get_frontal_image()
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image_rgb
 
-    def __init__(self):
-        rclpy.init(args=None)
-        node = rclpy.create_node('HAL')
+def get_ventral_image():
+    image = cam.get_ventral_image()
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image_rgb
 
-        self.image = None
-        self.drone = DroneWrapper()
-        self.cam = ImageSubscriberNode()
+def get_position():
+    pos = drone.get_position()
+    return pos
 
-    # Explicit initialization functions
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initRobot(cls):
-        new_instance = cls()
-        return new_instance
-    
-    # Get Image from ROS Driver Camera
-    def get_frontal_image(self):
-        image = self.cam.get_frontal_image()
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        return image_rgb
+def get_velocity():
+    vel = drone.get_velocity()
+    return vel
 
-    def get_ventral_image(self):
-        image = self.cam.get_ventral_image()
-        image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        return image_rgb
+def get_yaw_rate():
+    yaw_rate = drone.get_yaw_rate()
+    return yaw_rate
 
-    def get_position(self):
-        pos = self.drone.get_position()
-        return pos
+def get_orientation():
+    orientation = drone.get_orientation()
+    return orientation
 
-    def get_velocity(self):
-        vel = self.drone.get_velocity()
-        return vel
+def get_roll():
+    roll = drone.get_roll()
+    return roll
 
-    def get_yaw_rate(self):
-        yaw_rate = self.drone.get_yaw_rate()
-        return yaw_rate
+def get_pitch():
+    pitch = drone.get_pitch()
+    return pitch
 
-    def get_orientation(self):
-        orientation = self.drone.get_orientation()
-        return orientation
+def get_yaw():
+    yaw = drone.get_yaw()
+    return yaw
 
-    def get_roll(self):
-        roll = self.drone.get_roll()
-        return roll
+def get_landed_state():
+    state = drone.get_landed_state()
+    return state
 
-    def get_pitch(self):
-        pitch = self.drone.get_pitch()
-        return pitch
+def set_cmd_pos(x, y, z, az):
+    drone.set_cmd_pos(x, y, z, az)
 
-    def get_yaw(self):
-        yaw = self.drone.get_yaw()
-        return yaw
+def set_cmd_vel(vx, vy, vz, az):
+    drone.set_cmd_vel(vx, vy, vz, az)
 
-    def get_landed_state(self):
-        state = self.drone.get_landed_state()
-        return state
+def set_cmd_mix(vx, vy, z, az):
+    drone.set_cmd_mix(vx, vy, z, az)
 
-    def set_cmd_pos(self, x, y, z, az):
-        self.drone.set_cmd_pos(x, y, z, az)
+def takeoff(h=3):
+    drone.takeoff(h)
 
-    def set_cmd_vel(self, vx, vy, vz, az):
-        self.drone.set_cmd_vel(vx, vy, vz, az)
-
-    def set_cmd_mix(self, vx, vy, z, az):
-        self.drone.set_cmd_mix(vx, vy, z, az)
-
-    def takeoff(self, h=3):
-        self.drone.takeoff(h)
-
-    def land(self):
-        self.drone.land()
+def land():
+    drone.land()

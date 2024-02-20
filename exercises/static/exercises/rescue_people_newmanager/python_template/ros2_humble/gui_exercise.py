@@ -1,79 +1,107 @@
 import json
-import os
-
-import rclpy
 import cv2
-import sys
 import base64
 import threading
 import time
-import numpy as np
 from datetime import datetime
 import websocket
 import subprocess
-import logging
 
-from interfaces.pose3d import ListenerPose3d
-from shared.image import SharedImage
-from shared.image import SharedImage
-from shared.value import SharedValue
 
-from lap import Lap
-from map import Map
 
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self):
-
-        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
+    def __init__(self, host):
         
-        # Circuit
-        self.circuit = "simple"
-
-        # Image variable host
-        self.shared_image = SharedImage("guiimage")
+        self.payload = {'image': ''}
+        self.left_payload = {'image_left': ''}
+        self.server = None
+        self.client = None
         
-        # Get HAL variables
-        self.shared_v = SharedValue("velocity")
-        self.shared_w = SharedValue("angular")
+        self.host = host
 
+        # Image variables
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
+        self.left_image_to_be_shown = None
+        self.left_image_to_be_shown_updated = False
+        self.left_image_show_lock = threading.Lock()
+        
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
         
-        # Create the lap object
-        pose3d_object = ListenerPose3d("/odom")
-        self.lap = Lap(pose3d_object)
-        self.map = Map(pose3d_object, self.circuit)
-
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
 
     def run_websocket(self):
         while True:
-            print("GUI WEBSOCKET CONNECTED")
             self.client = websocket.WebSocketApp('ws://127.0.0.1:2303',
                                                  on_message=self.on_message,)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
+    # Explicit initialization function
+    # Class method, so user can call it without instantiation
+    @classmethod
+    def initGUI(cls, host):
+        # self.payload = {'image': '', 'shape': []}
+        new_instance = cls(host)
+        return new_instance
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        image = self.shared_image.get()
+        self.image_show_lock.acquire()
+        image_to_be_shown_updated = self.image_to_be_shown_updated
+        image_to_be_shown = self.image_to_be_shown
+        self.image_show_lock.release()
+
+        image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
-    	
+
+        if not image_to_be_shown_updated:
+            return payload
+
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
-        
+
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
+
+        return payload
+
+    # Function to prepare image payload
+    # Encodes the image as a JSON string and sends through the WS
+    def payloadLeftImage(self):
+        self.left_image_show_lock.acquire()
+        left_image_to_be_shown_updated = self.left_image_to_be_shown_updated
+        left_image_to_be_shown = self.left_image_to_be_shown
+        self.left_image_show_lock.release()
+
+        image = left_image_to_be_shown
+        payload = {'image_left': '', 'shape': ''}
+
+        if not left_image_to_be_shown_updated:
+            return payload
+
+        shape = image.shape
+        frame = cv2.imencode('.JPEG', image)[1]
+        encoded_image = base64.b64encode(frame)
+
+        payload['image_left'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
+
+        self.left_image_show_lock.acquire()
+        self.left_image_to_be_shown_updated = False
+        self.left_image_show_lock.release()
 
         return payload
 
@@ -84,58 +112,68 @@ class GUI:
         self.image_to_be_shown_updated = True
         self.image_show_lock.release()
 
+    # Function for student to call
+    def showLeftImage(self, image):
+        self.left_image_show_lock.acquire()
+        self.left_image_to_be_shown = image
+        self.left_image_to_be_shown_updated = True
+        self.left_image_show_lock.release()
+
+    # Function to get the client
+    # Called when a new client is received
+    def get_client(self, client, server):
+        self.client = client
+        
+    # Function to get value of Acknowledge
+    def get_acknowledge(self):
+        self.acknowledge_lock.acquire()
+        acknowledge = self.acknowledge
+        self.acknowledge_lock.release()
+        
+        return acknowledge
+        
+    # Function to get value of Acknowledge
+    def set_acknowledge(self, value):
+        self.acknowledge_lock.acquire()
+        self.acknowledge = value
+        self.acknowledge_lock.release()
+        
     # Update the gui
     def update_gui(self):
-        print("GUI update")
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        
-        # Payload Lap Message
-        lapped = self.lap.check_threshold()
-        self.payload["lap"] = ""
-        if(lapped != None):
-            self.payload["lap"] = str(lapped)
-            
-        # Payload Map Message
-        pos_message = str(self.map.getFormulaCoordinates())
-        self.payload["map"] = pos_message
-
-        # Payload V Message
-        v_message = str(self.shared_v.get())
-        self.payload["v"] = v_message
-
-        # Payload W Message
-        w_message = str(self.shared_w.get())
-        self.payload["w"] = w_message
         
         message = json.dumps(self.payload)
         if self.client:
             try:
                 self.client.send(message)
-                print(message)
             except Exception as e:
                 print(f"Error sending message: {e}")
 
+        # Payload Left Image Message
+        left_payload = self.payloadLeftImage()
+        self.left_payload["image_left"] = json.dumps(left_payload)
+
+        message = json.dumps(self.left_payload)
+        if self.client:
+            try:
+                self.client.send(message)
+            except Exception as e:
+                print(f"Error sending message: {e}")
+
+            
     def on_message(self, ws, message):
         """Handles incoming messages from the websocket client."""
         if message.startswith("#ack"):
-            print("on message" + str(message))
             self.set_acknowledge(True)
 
-    def get_acknowledge(self):
-        """Gets the acknowledge status."""
-        self.acknowledge_lock.acquire()
-        acknowledge = self.acknowledge
-        self.acknowledge_lock.release()
-        return acknowledge
 
-    def set_acknowledge(self, value):
-        """Sets the acknowledge status."""
-        self.acknowledge_lock.acquire()
-        self.acknowledge = value
-        self.acknowledge_lock.release()
 
+    # Function to reset
+    def reset_gui(self):
+        pass
+        
 class ThreadGUI:
     """Class to manage GUI updates and frequency measurements in separate threads."""
 
@@ -174,7 +212,6 @@ class ThreadGUI:
         previous_time = datetime.now()
         while self.running:
             time.sleep(2)
-
             current_time = datetime.now()
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
@@ -195,12 +232,11 @@ class ThreadGUI:
         """Main loop to update the GUI at regular intervals."""
         while self.running:
             start_time = datetime.now()
-
             self.gui.update_gui()
             self.iteration_counter += 1
             finish_time = datetime.now()
-
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             sleep_time = max(0, (50 - ms) / 1000.0)
             time.sleep(sleep_time)
+
