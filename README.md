@@ -27,4 +27,4 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 [Generate a mini RADI.]: ./docs/generate_a_mini_radi.md
 [Humble mini RADI structure.]: ./scripts/mini_RADI/README.md
 [Develop using volume binding.]: ./docs/develop_binding_volumes.md
-[ROS2 and superthin templates migration]: ./docs/exercise-status.md
+[ROS2 and superthin templates migration.]: ./docs/exercise-status.md
