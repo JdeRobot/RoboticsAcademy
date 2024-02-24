@@ -10,6 +10,7 @@ ROS2 Humble + new RAM + (super)thin templates = RADI 4.5.X
 
 <br/>
 ## Mobile Robotics collection
+
 | Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
 | :--- | :---: | :---: | :---: | :---: |
 | (Basic) Vacuum Cleaner | OK | OK | OK | | 
@@ -22,6 +23,7 @@ Upcoming: Laser mapping, MonteCarlo Visual Loc
 
 <br/>
 ## Service Robotics collection
+
 | Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
 | :--- | :---: | :---: | :---: | :---: |
 | Localized Vacuum Cleaner |OK| ? | OK | | 
@@ -32,6 +34,7 @@ Upcoming: Laser mapping, MonteCarlo Visual Loc
 
 <br/>
 ## Drones collection
+
 | Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
 | :--- | :---: | :---: | :---: | :---: |
 | Drone Cat and Mouse | bugs | | | | 
@@ -48,6 +51,7 @@ Upcoming: Laser mapping, MonteCarlo Visual Loc
 
 <br/>
 ## Vision based robotics collection
+
 | Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
 | :--- | :---: | :---: | :---: | :---: |
 | Follow Line | OK | ? | OK | OK | 
