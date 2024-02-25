@@ -54,7 +54,7 @@ class CameraNode(Node):
         self.last_img_ = sensor_msgs.msg.Image()
         self.bridge_ = cv_bridge.CvBridge()
  
-    def listener_callback (self, msg):        
+    def listener_callback(self, msg):       
         self.last_image_ = msg
         
     def getImage(self):
