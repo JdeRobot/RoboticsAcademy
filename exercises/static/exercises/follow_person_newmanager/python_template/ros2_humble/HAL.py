@@ -1,56 +1,62 @@
 import rclpy
 import sys
 
-from interfaces.camera import ListenerCamera
-from interfaces.laser import ListenerLaser
-from user_functions import HALFunctions
+from hal_interfaces.motors import MotorsNode
+from hal_interfaces.odometry import OdometryNode
+from hal_interfaces.laser import LaserNode
+from hal_interfaces.camera import CameraNode
+import hal_interfaces.neural_network
 
-IMG_WIDTH = 320
-IMG_HEIGHT = 240
+### HAL INIT ###
 
 print("HAL initializing", flush=True)
 rclpy.init(args=sys.argv)
 
-motor = MotorDriver("/cmd_vel", 4, 0.3)
-camera = ListenerCamera("/depth_camera/image_raw")
-laser = ListenerLaser("/scan")
-odometry = ListenerPose3d("/odom")
+motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/odom")
+laser_node = LaserNode("/scan")
+camera_node = CameraNode("/depth_camera/image_raw")
+neural_network = hal_interfaces.neural_network.NeuralNetwork()
 
-# Get laser data from ROS Driver
+### GETTERS ###
+
+# Laser
 def getLaserData():
     try:
-        rclpy.spin_once(laser)
-        values = laser.getLaserData().values
+        rclpy.spin_once(laser_node)
+        values = laser_node.getLaserData().values
         return values
     except Exception as e:
         print(f"Exception in hal getLaserData {repr(e)}")
 
-# Get pose from ROS Driver 
+# Pose
 def getPose3d():
     try:
-        rclpy.spin_once(odometry)
-        pose = odometry.getPose3d()
+        rclpy.spin_once(odometry_node)
+        pose = odometry_node.getPose3d()
         return pose
     except Exception as e:
         print(f"Exception in hal getPose3d {repr(e)}")
 
-# Get Image from ROS Driver Camera
+# Image
 def getImage():
     try:
-        rclpy.spin_once(camera)
-        image = camera.getImage().data
+        rclpy.spin_once(camera_node)
+        image = camera_node.getImage().data
         return image
     except Exception as e:
         print(f"Exception in hal getImage {repr(e)}")
 
-# Set the linear velocity
+# Bounding boxes
+def getBoundingBoxes(img):
+    neural_network.getBoundingBoxes(img)
+
+### SETTERS ###
+
+# Linear speed
 def setV(v):
-    motor.sendV(v)
+    motor_node.sendV(v)
 
-# Set the angular velocity
+# Angular speed
 def setW(w):
-    motor.sendW(w)
-
-# Get the velocity
-def getV(self):
-    return last_twist.linear.x
+    motor_node.sendW(w)

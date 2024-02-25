@@ -1,7 +1,7 @@
 from geometry_msgs.msg import Twist
 from rclpy.node import Node
 
-# Initialize motor node
+### HAL INTERFACE ###
 class MotorsNode(Node):
 
     def __init__(self, topic, maxV, maxW):

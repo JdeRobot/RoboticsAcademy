@@ -4,7 +4,7 @@ from shared.laserdata import SharedLaserData
 from shared.pose3d import SharedPose3D
 
 from interfaces.ssd_detection import NeuralNetwork, BoundingBox
-from coco_labels import LABEL_MAP    
+from RoboticsAcademy.exercises.static.exercises.follow_person_newmanager.python_template.ros2_humble.coco_labels import LABEL_MAP    
 
 import cv2
 

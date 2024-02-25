@@ -2,6 +2,28 @@ from rclpy.node import Node
 from math import asin, atan2, pi
 import nav_msgs.msg
 
+### AUXILIARY FUNCTIONS ###
+class Pose3d():
+
+	def __init__(self):
+
+		self.x = 0 # X coord [meters]
+		self.y = 0 # Y coord [meters]
+		self.z = 0 # Z coord [meters]
+		self.h = 1 # H param
+		self.yaw = 0 #Yaw angle[rads]
+		self.pitch = 0 # Pitch angle[rads]
+		self.roll = 0 # Roll angle[rads]
+		self.q = [0,0,0,0] # Quaternion
+		self.timeStamp = 0 # Time stamp [s]
+
+	def __str__(self):
+		s = "Pose3D: {\n   x: " + str(self.x) + "\n   y: " + str(self.y)
+		s = s + "\n   z: " + str(self.z) + "\n   H: " + str(self.h) 
+		s = s + "\n   Yaw: " + str(self.yaw) + "\n   Pitch: " + str(self.pitch) + "\n   Roll: " + str(self.roll)
+		s = s + "\n   quaternion: " + str(self.q) + "\n   timeStamp: " + str(self.timeStamp)  + "\n}"
+		return s 
+
 def quat2Yaw(qw, qx, qy, qz):
     '''
     Translates from Quaternion to Yaw. 
@@ -74,89 +96,18 @@ def odometry2Pose3D(odom):
     pose.timeStamp = odom.header.stamp.sec + (odom.header.stamp.nanosec *1e-9)
 
     return pose
-    
+
+### HAL INTERFACE ###
 class OdometryNode(Node):
 
     def __init__(self, topic):
-
         super().__init__("odometry_node")
-        self.sub = self.create_subscription(nav_msgs.msg.Odometry, topic, self.__callback, 10)
-        self.last_pose_ = Pose
+        self.sub = self.create_subscription(nav_msgs.msg.Odometry, topic, self.listener_callback, 10)
+        self.last_pose_ = nav_msgs.msg.Odometry()
 
-        self.x = 0 # X coord [meters]
-        self.y = 0 # Y coord [meters]
-        self.z = 0 # Z coord [meters]
-        self.h = 1 # H param
-        self.yaw = 0 # Yaw angle[rads]
-        self.pitch = 0 # Pitch angle[rads]
-        self.roll = 0 # Roll angle[rads]
-        self.q = [0,0,0,0] # Quaternion
-        self.timeStamp = 0 # Time stamp[s]
-
-
-
-
-class ListenerPose3d(Node):
-    '''
-        ROS Pose3D Subscriber. Pose3D Client to Receive pose3d from ROS nodes.
-    '''
-    def __init__(self, topic):
-        '''
-        ListenerPose3d Constructor.
-
-        @param topic: ROS topic to subscribe
-        
-        @type topic: String
-
-        '''
-        super().__init__("pose3d_subscriber_node")
-        self.topic = topic
-        self.data = Pose3d()
-        self.sub = None
-        self.lock = threading.Lock()
-        self.start()
- 
-    def __callback (self, odom):
-        '''
-        Callback function to receive and save Pose3d. 
-
-        @param odom: ROS Odometry received
-        
-        @type odom: Odometry
-
-        '''
-        pose = odometry2Pose3D(odom)
-        
-
-        self.lock.acquire()
-        self.data = pose
-        self.lock.release()
-        
-    def stop(self):
-        '''
-        Stops (Unregisters) the client.
-
-        '''
-        self.sub.unregister()
-
-    def start (self):
-        '''
-        Starts (Subscribes) the client.
-
-        '''
-        self.sub = self.create_subscription(nav_msgs.msg.Odometry, self.topic, self.__callback, 10)
-
-        
+    def listener_callback(self, msg):
+        self.last_pose_ = msg
+    
     def getPose3d(self):
-        '''
-        Returns last Pose3d. 
-
-        @return last JdeRobotTypes Pose3d saved
-
-        '''
-        self.lock.acquire()
-        pose = self.data
-        self.lock.release()
-        
-        return pose
+        return odometry2Pose3D(self.last_pose_)
 

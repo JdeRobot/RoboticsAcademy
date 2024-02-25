@@ -1,14 +1,9 @@
 from rclpy.node import Node
 import sensor_msgs.msg
-import threading
 from math import pi as PI
-
-def debug(cad):
-    f = open("mydebug", "a")
-    f.write(cad)
-    f.close()
     
-class LaserData ():
+### AUXILIARY FUNCTIONS
+class LaserData():
 
     def __init__(self):
 
@@ -19,24 +14,18 @@ class LaserData ():
         self.maxRange = 0 #Min Range posible (meters)
         self.timeStamp = 0 # seconds
 
-
     def __str__(self):
         s = "LaserData: {\n   minAngle: " + str(self.minAngle) + "\n   maxAngle: " + str(self.maxAngle)
         s = s + "\n   minRange: " + str(self.minRange) + "\n   maxRange: " + str(self.maxRange) 
         s = s + "\n   timeStamp: " + str(self.timeStamp) + "\n   values: " + str(self.values) + "\n}"
         return s 
 
-
 def laserScan2LaserData(scan):
     '''
     Translates from ROS LaserScan to JderobotTypes LaserData. 
-
     @param scan: ROS LaserScan to translate
-
     @type scan: LaserScan
-
     @return a LaserData translated from scan
-
     '''
     laser = LaserData()
     laser.values = scan.ranges
@@ -56,64 +45,16 @@ def laserScan2LaserData(scan):
     laser.timeStamp = scan.header.stamp.sec + (scan.header.stamp.nanosec *1e-9)
     return laser
 
-class ListenerLaser(Node):
-    '''
-        ROS Laser Subscriber. Laser Client to Receive Laser Scans from ROS nodes.
-    '''
+### HAL INTERFACE ###
+class LaserNode(Node):
+
     def __init__(self, topic):
-        '''
-        ListenerLaser Constructor.
-
-        @param topic: ROS topic to subscribe
-        
-        @type topic: String
-
-        '''
-        super().__init__("laser_subscriber_node")
-        self.topic = topic
-        self.data = LaserData()
-        self.sub= None
-        self.lock = threading.Lock()
-        self.start()
+        super().__init__("laser_node")
+        self.sub = self.create_subscription(sensor_msgs.msg.LaserScan, topic, self.listener_callback, 10)
+        self.last_scan_ = sensor_msgs.msg.LaserScan()
  
-    def __callback (self, scan):
-        '''
-        Callback function to receive and save Laser Scans. 
-
-        @param scan: ROS LaserScan received
-        
-        @type scan: LaserScan
-
-        '''
-        laser = laserScan2LaserData(scan)
-
-        self.lock.acquire()
-        self.data = laser
-        self.lock.release()
-        
-    def stop(self):
-        '''
-        Stops (Unregisters) the client.
-
-        '''
-        self.sub.unregister()
-
-    def start (self):
-        '''
-        Starts (Subscribes) the client.
-
-        '''
-        self.sub = self.create_subscription(sensor_msgs.msg.LaserScan, self.topic, self.__callback, 10)
+    def listener_callback(self, scan):
+        self.last_scan_ = scan
         
     def getLaserData(self):
-        '''
-        Returns last LaserData. 
-
-        @return last JdeRobotTypes LaserData saved
-
-        '''
-        self.lock.acquire()
-        laser = self.data
-        self.lock.release()
-        
-        return laser
+        return laserScan2LaserData(self.last_scan_)
