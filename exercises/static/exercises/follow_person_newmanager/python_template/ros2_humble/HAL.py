@@ -49,7 +49,7 @@ def getImage():
 
 # Bounding boxes
 def getBoundingBoxes(img):
-    neural_network.getBoundingBoxes(img)
+    return neural_network.getBoundingBoxes(img)
 
 ### SETTERS ###
 
