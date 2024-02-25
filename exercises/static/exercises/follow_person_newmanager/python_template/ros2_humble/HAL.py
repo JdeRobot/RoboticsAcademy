@@ -2,10 +2,7 @@ import rclpy
 import sys
 
 from interfaces.camera import ListenerCamera
-from interfaces.motors import PublisherMotors
 from interfaces.laser import ListenerLaser
-from interfaces.pose3d import ListenerPose3d
-
 from user_functions import HALFunctions
 
 IMG_WIDTH = 320
@@ -14,8 +11,7 @@ IMG_HEIGHT = 240
 print("HAL initializing", flush=True)
 rclpy.init(args=sys.argv)
 
-# ROS Topics
-motors = PublisherMotors("/cmd_vel", 4, 0.3)
+motor = MotorDriver("/cmd_vel", 4, 0.3)
 camera = ListenerCamera("/depth_camera/image_raw")
 laser = ListenerLaser("/scan")
 odometry = ListenerPose3d("/odom")
@@ -23,7 +19,7 @@ odometry = ListenerPose3d("/odom")
 # Get laser data from ROS Driver
 def getLaserData():
     try:
-        rclpy.spin_once(self.laser)
+        rclpy.spin_once(laser)
         values = laser.getLaserData().values
         return values
     except Exception as e:
@@ -47,6 +43,14 @@ def getImage():
     except Exception as e:
         print(f"Exception in hal getImage {repr(e)}")
 
-# Set the velocity
+# Set the linear velocity
 def setV(v):
-    motors.sendV(v)
+    motor.sendV(v)
+
+# Set the angular velocity
+def setW(w):
+    motor.sendW(w)
+
+# Get the velocity
+def getV(self):
+    return last_twist.linear.x
