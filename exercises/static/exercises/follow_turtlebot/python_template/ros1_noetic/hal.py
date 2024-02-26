@@ -1,8 +1,6 @@
+import numpy as np
 import rospy
 import cv2
-import threading
-import time
-from datetime import datetime
 
 from drone_wrapper import DroneWrapper
 
@@ -77,7 +75,7 @@ class HAL:
     def set_cmd_mix(self, vx, vy, z, az):
         self.drone.set_cmd_mix(vx, vy, z, az)
 
-    def takeoff(self, h=5):
+    def takeoff(self, h=3):
         self.drone.takeoff(h)
 
     def land(self):
