@@ -99,6 +99,14 @@ RUN cd /noVNC/utils && git clone -b v0.11.0 https://github.com/novnc/websockify.
 # VirtualGL and TurboVNC
 COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 
+# BT Studio
+RUN python3.10 -m pip install py-trees autopep8
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+  && apt-get update && apt-get install -y \
+    ros-humble-py-trees \
+    ros-humble-py-trees-ros
+
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     libxtst6:i386 \
     libxv1:i386 \

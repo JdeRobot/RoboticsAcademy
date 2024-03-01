@@ -11,6 +11,14 @@ RUN mkdir -p /opt/jderobot && \
 RUN mkdir -p /home/ws/src
 RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
 
+# BT STUDIO hotfix
+RUN python3.10 -m pip install py-trees autopep8
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+  && apt-get update && apt-get install -y \
+    ros-humble-py-trees \
+    ros-humble-py-trees-ros
+
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
