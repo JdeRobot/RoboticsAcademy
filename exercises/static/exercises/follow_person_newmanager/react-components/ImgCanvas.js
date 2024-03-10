@@ -10,6 +10,7 @@ export default function ImgCanvas() {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
+      console.log("I received something");
       const update = message.data.update;
       if (update.image) {
         const image = JSON.parse(update.image);
