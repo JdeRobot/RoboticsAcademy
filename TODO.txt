@@ -1,40 +1,36 @@
 RoboticsAcademy:
 
+1. Update database:
+    1.1 (Done) Differentiate whether a RADI noetic or humble is being used. Depending on this, you'll need to launch one template or another
+    (RoboticsAcademy/exercises/static/exercises/exercise_name/python_template/ros1_noetic/exercise.py)/
+    (RoboticsAcademy/exercises/static/exercises/exercise_name/python_template/ros2_humble/exercise.py)
+    1.2 Update the Worlds and establish clear names for reusability within other applications.
 
-1. Actualizar base de datos:
-    1.1 Diferenciar si se está utilizando un RADI noetic o humble. Dependiendo de esto habrá que lanzar una plantilla u otra 
-    (RoboticsAcademy/exercises/static/exercises/nombre_del_ejercicio/python_template/ros1_noetic/exercise.py)/
-    (RoboticsAcademy/exercises/static/exercises/nombre_del_ejercicio/python_template/ros2_humble/exercise.py)
-    1.2 Actualizar los World y establecer nombres claros para que sean reusables dentro de otras aplicaciones.
-
-2. Migrar los ejercicios que faltan. Ejercicios ya migrados:
+2. Migrate the missing exercises. Exercises already migrated:
     ROS1:
         1. Basic Vacuum Cleaner
         2. Follow line
         3. Obstacle Avoidance
-        4. GLobal Navigation
+        4. Global Navigation
         5. Localized Vacuum Cleaner
         6. Autoparking
-        7. 3D recontruction
+        7. 3D reconstruction
 
     ROS2:
-        1. Amazon Warehouse (Problema con rclpy)
+        1. Amazon Warehouse (Issue with rclpy)
         2. Drone Rescue People
-        3. Autoparking (Problema con rclpy)
+        3. Autoparking (Issue with rclpy)
+	4. Follow line
 
-3. Arreglar el cambio de mundos. Ejercicios como el Follow Line o el Autoparking(ROS2), permiten cambiar el mundo del ejercicio.
-Para ello hay que matar, la aplicación, la visualización y el universo y volver a lanzarlo con la nueva configuración. 
+3. Fix world change. Exercises like Follow Line or Autoparking (ROS2) allow changing the exercise world. To do this, you need to kill the application, visualization, and the universe and relaunch it with the new configuration.
 
-4. Extender plantillas simples usando como referencia el ejercicio autoparking en ROS1. Los módulos GUI de ejercicios que contengan métodos para el uso de los usuarios deben ser adaptados para ser instanciados e inicializados en el código de usuario en vez de en la plantilla del ejercicio; o deben separarse en dos clases: una con métodos para los usuarios y otra con los métodos relativos al webserver.
-
+4. Extend simple templates using the Autoparking exercise in ROS1 as a reference. The GUI modules of exercises that contain functions for the user (such as GUI.showImage()) must be adapted to be instantiated and initialized by the user code rather than the exercise template; or must be separated in two classes: one with user related methods and the other one with webserver related methods.
 
 Unibotics:
 
-1. Actualizar base de datos:
-    1.1 Migrar los modelos de django y aplicar los mismos cambios que en RoboticsAcademy.
-    1.2 Actualizar rutas
+1. Update database:
+    1.1 Migrate django models and apply the same changes as in RoboticsAcademy.
+    1.2 Update routes.
 
-2.Actualizar Frontend:
-    El estado de algunos componentes REACT depende de los mensajes de RAM. Actualizar estos mensajes a partir de la máquina de estados.
-
-
+2. Update Frontend:
+    The state of some REACT components depends on RAM messages. Update these messages based on the state machine.
