@@ -1,99 +1,72 @@
-import multiprocessing
-import cv2
-import numpy as np
-import websocket
-import base64
 import json
-from src.manager.ram_logging.log_manager import LogManager
+import cv2
+import base64
+import threading
 import time
+import websocket
 
-class GUIInterface:
-
-    def __init__(self):
-        self.image_lock = multiprocessing.Lock()
-        self.key_lock = multiprocessing.Lock()
-        self.ack_lock = multiprocessing.Lock()
-        self.client_lock = multiprocessing.Lock()
-
-        self.last_img = np.zeros((400, 400, 3), np.uint8)
-        self.last_key = 0
-        self.ack_received = True
-
+class UnifiedGUI:
+    def __init__(self, host='ws://127.0.0.1:2303', ideal_cycle=80):
+        self.host = host
+        self.ideal_cycle = ideal_cycle
+        self.image_lock = threading.Lock()
+        self.acknowledge_lock = threading.Lock()
+        self.acknowledge = False
+        self.image = None
+        self.msg = {'image': ''}
+        self.running = True
         self.client = None
-        self.client_process = None
-        self.gui_out_process = None
+        
+        # Initialize and start the WebSocket client thread
+        threading.Thread(target=self.run_websocket, daemon=True).start()
+        
+        # Initialize and start the image sending thread (GUI output thread)
+        threading.Thread(target=self.gui_out_thread, name="gui_out_thread", daemon=True).start()
 
-        self.start_gui_interface()
-
-    def client_process_function(self):
-        while True:
-            try:
-                self.client.run_forever(ping_timeout=None, ping_interval=0)
-            except websocket.WebSocketConnectionClosedException:
-                LogManager.logger.error("WebSocket connection closed, attempting to reconnect.")
-                time.sleep(5)  # Wait a bit before retrying to avoid spamming connection attempts
-                self.start_gui_interface()  # Restart the interface to reconnect
-
-    def gui_out_process_function(self):
-        while True:
-            with self.ack_lock:
-                send_msg = self.ack_received
-
-            if send_msg:
-                LogManager.logger.info("Hello there, sending msg")
-
-                with self.image_lock:
-                    last_img_copy = self.last_img.copy()
-
-                payload = {'image': '', 'shape': ''}
-                shape = last_img_copy.shape
-                frame = cv2.imencode('.JPEG', last_img_copy)[1]
-                encoded_image = base64.b64encode(frame)
-                payload['image'] = encoded_image.decode('utf-8')
-                payload['shape'] = shape
-                message = json.dumps(payload)
-
-                try:
-                    if self.client.sock and self.client.sock.connected:
-                        with self.client_lock:
-                            self.client.send(message)
-                        with self.ack_lock:
-                            self.ack_received = False
-                    else:
-                        raise websocket.WebSocketConnectionClosedException("WebSocket is not connected.")
-                except Exception as e:
-                    print(f"Error sending message: {e}")
-            
-            time.sleep(1)
+    def run_websocket(self):
+        """Runs the WebSocket client."""
+        self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
+        self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     def on_message(self, ws, message):
-        LogManager.logger.info("GUI received a msg: " + str(message))
+        """Handles incoming WebSocket messages."""
         if message.startswith("#ack"):
-            with self.ack_lock:
-                self.ack_received = True
+            with self.acknowledge_lock:
+                self.acknowledge = True
 
-    def showImage(self, img):
+    def showImage(self, image):
+        """Sets the image to be shown."""
         with self.image_lock:
-            self.last_img = img
+            self.image = image
 
-    def start_gui_interface(self):
-        LogManager.logger.info("Ultra hiper patatoncia")
+    def gui_out_thread(self):
+        """Sends the image to the server at a fixed interval."""
+        while self.running:
+            start_time = time.time()
+            self.send_image()
+            elapsed = time.time() - start_time
+            sleep_time = max(0, (self.ideal_cycle / 1000.0) - elapsed)
+            time.sleep(sleep_time)
 
-        self.client = websocket.WebSocketApp('ws://127.0.0.1:2303',
-                                             on_message=self.on_message,
-                                             on_close=lambda ws: LogManager.logger.info("WebSocket connection closed."),
-                                             on_open=lambda ws: LogManager.logger.info("WebSocket connection opened."))
+    def send_image(self):
+        """Prepares and sends the current image to the WebSocket server."""
+        with self.image_lock:
+            if self.image is not None:
+                _, encoded_image = cv2.imencode('.JPEG', self.image)
+                payload = {
+                    'image': base64.b64encode(encoded_image).decode('utf-8'),
+                    'shape': self.image.shape
+                }
+                self.msg['image'] = json.dumps(payload)
+                message = json.dumps(self.msg)
+                try:
+                    if self.client:
+                        self.client.send(message)
+                except Exception as e:
+                    print(f"Error sending message: {e}")
 
-        self.client_process = multiprocessing.Process(target=self.client_process_function)
-        self.client_process.start()
+host = 'ws://127.0.0.1:2303'
+gui = UnifiedGUI(host)
 
-        self.gui_out_process = multiprocessing.Process(target=self.gui_out_process_function)
-        self.gui_out_process.start()
-
-
-# Create the interface object
-gui_interface = GUIInterface()
-
-# Expose the showImage method
 def showImage(img):
-    gui_interface.showImage(img)
+    gui.showImage(img)
