@@ -1,78 +1,99 @@
 import json
 import cv2
 import base64
-from multiprocessing import Process, Manager, Value
+import threading
 import time
 import websocket
-import threading
+from src.manager.ram_logging.log_manager import LogManager
+from gazebo_msgs.srv import SetEntityState
+from geometry_msgs.msg import Pose
+import rclpy
 
 
-def websocket_thread(shared_data, host):
-    """This function runs in its own thread to handle WebSocket events."""
-
-    def on_message(ws, message):
-        """Handles incoming WebSocket messages."""
-        print(f"Received message: {message}")
-        if message.startswith("#ack"):
-            shared_data["acknowledge"] = True
-
-    def on_error(ws, error):
-        print(f"WebSocket error: {error}")
-
-    def on_close(ws, close_status_code, close_msg):
-        print("WebSocket closed")
-
-    def on_open(ws):
-        print("WebSocket connection opened.")
-        while not ws.sock.connected:
-            time.sleep(1)  # Wait for connection before proceeding
-        while True:
-            if shared_data["new_image"]:
-                send_image(ws, shared_data["image"])
-                shared_data["new_image"] = False
-            time.sleep(0.1)  # Prevent this loop from consuming too much CPU
-
-    def send_image(ws, image):
-        """Encodes and sends the image via WebSocket."""
-        _, encoded_image = cv2.imencode(".JPEG", image)
-        payload = {
-            "image": base64.b64encode(encoded_image).decode("utf-8"),
-            "shape": image.shape,
-        }
-        message = json.dumps({"image": json.dumps(payload)})
-        ws.send(message)
-
-    ws = websocket.WebSocketApp(
-        host, on_message=on_message, on_error=on_error, on_close=on_close
-    )
-    ws.on_open = on_open
-    ws.run_forever()
-
-
-class UnifiedGUI:
-    def __init__(self, host="ws://127.0.0.1:2303"):
+class ThreadGUI:
+    def __init__(self, host="ws://127.0.0.1:2303", ideal_cycle=30):
         self.host = host
-        manager = Manager()
-        self.shared_data = manager.dict(image=None, new_image=False, acknowledge=False)
+        self.ideal_cycle = ideal_cycle
+        self.image_lock = threading.Lock()
+        self.acknowledge_lock = threading.Lock()
+        self.acknowledge = False
+        self.image = None
+        self.msg = {"image": ""}
+        self.running = True
+        self.node = rclpy.create_node("person_mover")
+        self.service_client = None
+        self.person_pose = Pose()
 
-        # Start the WebSocket communication in a separate process
-        self.comm_process = Process(
-            target=self.run_comm_process,
-            args=(self.shared_data, self.host),
-            daemon=True,
+        # Initialize and start the WebSocket client thread
+        threading.Thread(target=self.run_websocket, daemon=True).start()
+
+        # Initialize and start the image sending thread (GUI output thread)
+        threading.Thread(
+            target=self.gui_out_thread, name="gui_out_thread", daemon=True
+        ).start()
+
+        # Initialize the service client
+        self.service_client = self.node.create_client(
+            SetEntityState, "/follow_person/set_entity_state"
         )
-        self.comm_process.start()
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("Service not available, waiting...")
+        self.request = SetEntityState.Request()
 
-    def run_comm_process(self, shared_data, host):
-        """Runs the communication process."""
-        websocket_thread(shared_data, host)
+    def run_websocket(self):
+        self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+        self.client.run_forever(ping_timeout=None, ping_interval=0)
+
+    def move_object(self):
+        self.request.state.name = "PersonToFollow"
+        self.request.state.pose = self.person_pose
+        self.request.state.reference_frame = "world"
+        future = self.service_client.call_async(self.request)
+        rclpy.spin_until_future_complete(self.node, future)
+
+    def gui_in_thread(self, ws, message):
+        if message.startswith("#ack"):
+            with self.acknowledge_lock:
+                self.acknowledge = True
+        else:
+            self.person_pose.position.x += 1
+            self.move_object()
+            LogManager.logger.info(f"Message {message}")
 
     def showImage(self, image):
-        """Sets the image to be shown in shared memory."""
-        self.shared_data["image"] = image
-        self.shared_data["new_image"] = True
+        with self.image_lock:
+            self.image = image
+
+    def gui_out_thread(self):
+        while self.running:
+            start_time = time.time()
+            self.send_image()
+            elapsed = time.time() - start_time
+            sleep_time = max(0, (self.ideal_cycle / 1000.0) - elapsed)
+            time.sleep(sleep_time)
+
+    def send_image(self):
+        """Prepares and sends the current image to the WebSocket server."""
+        with self.image_lock:
+            if self.image is not None:
+                _, encoded_image = cv2.imencode(".JPEG", self.image)
+                payload = {
+                    "image": base64.b64encode(encoded_image).decode("utf-8"),
+                    "shape": self.image.shape,
+                }
+                self.msg["image"] = json.dumps(payload)
+                message = json.dumps(self.msg)
+                try:
+                    if self.client:
+                        self.client.send(message)
+                except Exception as e:
+                    LogManager.logger.info(f"Error sending message: {e}")
 
 
-# Example usage:
 host = "ws://127.0.0.1:2303"
-gui = UnifiedGUI(host)
+gui = ThreadGUI(host)
+
+
+# Expose the gui showImage function
+def showImage(img):
+    gui.showImage(img)

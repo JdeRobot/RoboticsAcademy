@@ -6,20 +6,20 @@ import PauseIcon from "@mui/icons-material/Pause";
 const PlayPause = (props) => {
   const [loading, setLoading] = useState(false);
   const [applicationRunning, setApplicationRunning] = useState(true);
-  const [applicationPaused, setApplicationPaused] = useState(false)
+  const [applicationPaused, setApplicationPaused] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [editorChanged, setEditorChanged] = useState(false)
+  const [editorChanged, setEditorChanged] = useState(false);
 
   const commsManager = window.RoboticsExerciseComponents.commsManager;
-  const config = JSON.parse(document.getElementById("exercise-config").textContent);
+  const config = JSON.parse(
+    document.getElementById("exercise-config").textContent
+  );
 
   useEffect(() => {
     const callback = (message) => {
       const state = message.data.state;
-      setApplicationPaused(state === "paused")
-      setApplicationRunning(
-        state === "application_running" 
-      );
+      setApplicationPaused(state === "paused");
+      setApplicationRunning(state === "application_running");
       setDisabled(
         !(
           state === "visualization_ready" ||
@@ -29,63 +29,60 @@ const PlayPause = (props) => {
       );
     };
 
-    commsManager.subscribe(
-      [commsManager.events.STATE_CHANGED],
-      callback
-    );
+    commsManager.subscribe([commsManager.events.STATE_CHANGED], callback);
 
     return () => {
-      commsManager.unsubscribe(
-        [commsManager.events.STATE_CHANGED],
-        callback
-      );
+      commsManager.unsubscribe([commsManager.events.STATE_CHANGED], callback);
     };
   }, []);
 
   React.useEffect(() => {
     RoboticsReactComponents.CodeEditor.OnEditorCodeChanged(() => {
-      setEditorChanged(true)
-    }
-    )
+      setEditorChanged(true);
+    });
   }, []);
 
   const play = () => {
     setLoading(true);
     const editorCode = RoboticsReactComponents.CodeEditor.getCode();
-    if (!editorChanged && applicationPaused){
-      commsManager
-      .resume()
-      
+    if (!editorChanged && applicationPaused) {
+      commsManager.resume();
     } else {
-      runCode(editorCode)
+      runCode(editorCode);
     }
-    setLoading(false)
-    setEditorChanged(false)
+    setLoading(false);
+    setEditorChanged(false);
   };
 
   const runCode = (code) => {
     setLoading(true);
     window.RoboticsExerciseComponents.commsManager
-    .terminate_application()
-    .then(() => {
-      window.RoboticsExerciseComponents.commsManager
-      .run({code: code, template:config[0].template, exercise_id: config[0].exercise_id})
+      .terminate_application()
       .then(() => {
-      })
-      .catch((response) => {
-        let linterMessage = JSON.stringify(response.data.message).split("\\n");
-        RoboticsReactComponents.MessageSystem.Alert.showAlert(linterMessage);
-        console.log(`Received linter message ·${linterMessage}`);
+        window.RoboticsExerciseComponents.commsManager
+          .run({
+            code: code,
+            template: config[0].template,
+            exercise_id: config[0].exercise_id,
+          })
+          .then(() => {})
+          .catch((response) => {
+            let linterMessage = JSON.stringify(response.data.message).split(
+              "\\n"
+            );
+            RoboticsReactComponents.MessageSystem.Alert.showAlert(
+              linterMessage
+            );
+            console.log(`Received linter message ·${linterMessage}`);
+          });
       });
-    })
   };
 
   const pause = () => {
     setLoading(true);
     window.RoboticsExerciseComponents.commsManager
       .pause()
-      .then(() => {
-      })
+      .then(() => {})
       .catch((response) => console.log(response))
       .finally(() => setLoading(false));
   };
@@ -96,7 +93,7 @@ const PlayPause = (props) => {
       id={"loadIntoRobot"}
       loading={loading}
       color={"secondary"}
-      onClick={applicationRunning ? pause :  play }
+      onClick={applicationRunning ? pause : play}
       sx={{ m: 0.5 }}
       variant={"outlined"}
     >

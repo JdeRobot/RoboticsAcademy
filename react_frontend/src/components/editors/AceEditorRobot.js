@@ -4,11 +4,11 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import AceEditor from "react-ace";
-import "Common/ace-builds/src-noconflict/ace.js";
-import "Common/ace-builds/src-noconflict/ext-language_tools";
-import "Common/ace-builds/src-noconflict/mode-python";
-import "Common/ace-builds/src-noconflict/theme-dracula";
-import "Common/ace-builds/src-noconflict/snippets/python";
+import "ace-builds/src-noconflict/ace.js";
+import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-dracula";
+import "ace-builds/src-noconflict/snippets/python";
 
 import "../../styles/editors/AceEditorRobot.css";
 
