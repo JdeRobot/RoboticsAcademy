@@ -11,9 +11,9 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    devices:
-      - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/renderD128:/dev/dri/renderD128
+    # devices:
+    #   - /dev/dri/card0:/dev/dri/card0
+    #   - /dev/dri/renderD128:/dev/dri/renderD128
     ports:
       - "7164:7164"
       - "2303:2303"
