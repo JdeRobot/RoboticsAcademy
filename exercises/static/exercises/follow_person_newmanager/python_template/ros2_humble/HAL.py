@@ -5,20 +5,22 @@ from hal_interfaces.motors import MotorsNode
 from hal_interfaces.odometry import OdometryNode
 from hal_interfaces.laser import LaserNode
 from hal_interfaces.camera import CameraNode
-import hal_interfaces.neural_network
+from hal_interfaces.neural_network import NeuralNetwork
 
 ### HAL INIT ###
 
 print("HAL initializing", flush=True)
-rclpy.init(args=sys.argv)
+if not rclpy.ok():
+    rclpy.init(args=sys.argv)
 
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/odom")
 laser_node = LaserNode("/scan")
 camera_node = CameraNode("/depth_camera/image_raw")
-neural_network = hal_interfaces.neural_network.NeuralNetwork()
+neural_network = NeuralNetwork()
 
 ### GETTERS ###
+
 
 # Laser
 def getLaserData():
@@ -29,6 +31,7 @@ def getLaserData():
     except Exception as e:
         print(f"Exception in hal getLaserData {repr(e)}")
 
+
 # Pose
 def getPose3d():
     try:
@@ -37,6 +40,7 @@ def getPose3d():
         return pose
     except Exception as e:
         print(f"Exception in hal getPose3d {repr(e)}")
+
 
 # Image
 def getImage():
@@ -47,15 +51,19 @@ def getImage():
     except Exception as e:
         print(f"Exception in hal getImage {repr(e)}")
 
+
 # Bounding boxes
 def getBoundingBoxes(img):
     return neural_network.getBoundingBoxes(img)
 
+
 ### SETTERS ###
+
 
 # Linear speed
 def setV(v):
     motor_node.sendV(v)
+
 
 # Angular speed
 def setW(w):
