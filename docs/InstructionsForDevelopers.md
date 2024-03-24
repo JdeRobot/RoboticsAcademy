@@ -47,23 +47,17 @@ cp RoboticsAplicationManager/* RoboticsAcademy/src/
 5) Start Docker Compose
 ```
 cd RoboticsAcademy
-docker-compose up
+sudo bash scripts/develop_academy.sh
 ```
 
-Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes without having to regenerate a new image. Please keep in mind that this method works using a given RADI version as the base. If you need any other version, just change the first lines of the `docker-compose.yaml` file to the version you need. The only difference for developing between RADI versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RADI-on-the-go).
+Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RADI version as the base. If you need any other version, just change the first lines of the `docker-compose.yaml` file to the version you need. The only difference for developing between RADI versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RADI-on-the-go).
 
-After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, simply copy the src folde back to the RAM folder. 
+After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, simply copy the src folder contents back to the RAM folder. 
 ```
 cp src/* ../RoboticsApplicationManager/
 ```
 
-5) Stop Docker Compose
-
-Whenever you finish developing, you have to execute this command to clean resources, inside the RA folder:
-```
-cd RoboticsAcademy
-docker-compose down
-```
+To finish developing, you can just close the process with Crtl+C. 
 
 ### Local installation
 
