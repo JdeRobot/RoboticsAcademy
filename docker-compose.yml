@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-academy:4.5.3.beta
-    container_name: radi-4.5.3.beta
+    image: jderobot/robotics-academy:testing
+    container_name: testing
     # deploy:
     #   resources:
     #     reservations:
@@ -11,9 +11,9 @@ services:
     #         - driver: nvidia
     #           count: all
     #           capabilities: [gpu]
-    devices:
-      - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/renderD128:/dev/dri/renderD128
+    # devices:
+    #   - /dev/dri/card0:/dev/dri/card0
+    #   - /dev/dri/renderD128:/dev/dri/renderD128
     ports:
       - "7164:7164"
       - "2303:2303"

@@ -12,8 +12,12 @@ export default function ImgCanvas() {
     const callback = (message) => {
       const update = message.data.update;
       if (update.image) {
+        console.log("New img received");
         const image = JSON.parse(update.image);
         setImage(`data:image/png;base64,${image.image}`);
+
+        // Send the ACK of the img
+        window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
       }
     };
 
