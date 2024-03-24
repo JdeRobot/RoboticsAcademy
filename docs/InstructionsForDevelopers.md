@@ -13,9 +13,59 @@
 
 <a name="How-to-setup-the-developer-environment"></a>
 ## How to setup the developer environment 
-To get started with developing exercise in Robotics Academy, a developers needs to follow these steps:
 
-prerequisite - Python
+Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are two different ways of developing in RA: 
+
+### Using Docker Compose (recommended)
+
+Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RADI container, where all the dependencies are installed. 
+
+The steps for setting up a development environment using Docker Compose are:
+
+1) Install Docker Compose
+```
+sudo apt install docker-compose
+ ```
+
+2) Clone RoboticsAcademy repo (or your fork) and create src folder
+```
+git clone https://github.com/JdeRobot/RoboticsAcademy.git -b <src-branch>
+cd RoboticsAcademy
+mkdir src
+```
+
+3) Clone RAM repo (or your fork) outside of RA folder
+```
+git clone https://github.com/JdeRobot/RoboticsAcademy.git -b <src-branch>
+```
+
+4) Copy the contents of RAM inside the src folder in RA
+```
+cp RoboticsAplicationManager/* RoboticsAcademy/src/
+```
+
+5) Start Docker Compose
+```
+cd RoboticsAcademy
+docker-compose up
+```
+
+Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes without having to regenerate a new image. Please keep in mind that this method works using a given RADI version as the base. If you need any other version, just change the first lines of the `docker-compose.yaml` file to the version you need. The only difference for developing between RADI versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RADI-on-the-go).
+
+After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, simply copy the src folde back to the RAM folder. 
+```
+cp src/* ../RoboticsApplicationManager/
+```
+
+5) Stop Docker Compose
+
+Whenever you finish developing, you have to execute this command to clean resources, inside the RA folder:
+```
+cd RoboticsAcademy
+docker-compose down
+```
+
+### Local installation
 
 1) First create a virtual env
 ```
@@ -229,6 +279,7 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
 - You need to change the launcher.js file in the case that the exercise has a map selector or not.
 - Finally, if the exercise need an specific plugin that isn't installed in the container you need to modify the [Dockerfile](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/Dockerfile) an add the commands that allows the installation of the .cc and .hh files of the CustomRobots repository.
 
+<a name="edit-code-on-RADI-on-the-go"></a>
 ## Edit code on RADI On The GO.
 
 1. If your IDE of choice is VSCode then this method is for you, visit [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) to download the extenstion.
