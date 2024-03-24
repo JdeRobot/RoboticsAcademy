@@ -6,11 +6,17 @@ JdeRobot Academy is an **open source** platform that provides a collection of ex
 
 If you are a contributor, please note that we use GitHub Pages and a Jekyll theme (MinimalMistakes) for the Academy web page. Feel free to install Jekyll locally, so that, you can test your changes before submitting your pull-request.
 
-## How to contribute?
+# Running RoboticsAcademy
+
+```
+curl -s https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/master/scripts/run_academy.sh | sudo bash
+```
+
+# How to contribute?
 
 Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 
-### Development resources
+## Development resources
 
 - [Instructions for developers.][]
 - [Client side.][] (Robotics Academy architecture)
