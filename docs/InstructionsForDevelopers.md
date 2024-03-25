@@ -64,7 +64,7 @@ pip install pylint==2.17.4
 
 8) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
 ```
-cd react_frontend/ && yarn install && yarn run dev
+cd RoboticsAcademy/react_frontend/ && yarn install && yarn run dev
 ```
 
 9) Start Docker Compose
