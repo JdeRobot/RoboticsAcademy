@@ -21,6 +21,7 @@ from shared.value import SharedValue
 from lap import Lap
 from map import Map
 
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
@@ -29,6 +30,10 @@ class GUI:
 
         self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
         
+        # ROS2 init
+        rclpy.init(args=None)
+        node = rclpy.create_node('GUI')
+
         # Circuit
         self.circuit = "simple"
 
@@ -61,19 +66,30 @@ class GUI:
                                                  on_message=self.on_message,)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
-
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        image = self.shared_image.get()
+        self.image_show_lock.acquire()
+        image_to_be_shown_updated = self.image_to_be_shown_updated
+        image_to_be_shown = self.image_to_be_shown
+        self.image_show_lock.release()
+
+        image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
-    	
+
+        if not image_to_be_shown_updated:
+            return payload
+
         shape = image.shape
         frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
-        
+
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
+
+        self.image_show_lock.acquire()
+        self.image_to_be_shown_updated = False
+        self.image_show_lock.release()
 
         return payload
 
@@ -86,7 +102,7 @@ class GUI:
 
     # Update the gui
     def update_gui(self):
-        print("GUI update")
+        # print("GUI update")
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
@@ -113,14 +129,14 @@ class GUI:
         if self.client:
             try:
                 self.client.send(message)
-                print(message)
+                # print(message)
             except Exception as e:
                 print(f"Error sending message: {e}")
 
     def on_message(self, ws, message):
         """Handles incoming messages from the websocket client."""
         if message.startswith("#ack"):
-            print("on message" + str(message))
+            # print("on message" + str(message))
             self.set_acknowledge(True)
 
     def get_acknowledge(self):
@@ -135,6 +151,7 @@ class GUI:
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
+
 
 class ThreadGUI:
     """Class to manage GUI updates and frequency measurements in separate threads."""
