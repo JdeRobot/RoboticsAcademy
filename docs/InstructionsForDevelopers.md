@@ -36,15 +36,38 @@ mkdir src
 
 3) Clone RAM repo (or your fork) outside of RA folder
 ```
-git clone https://github.com/JdeRobot/RoboticsAcademy.git -b <src-branch>
+git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b <src-branch>
 ```
 
 4) Copy the contents of RAM inside the src folder in RA
 ```
-cp RoboticsAplicationManager/* RoboticsAcademy/src/
+cp -r RoboticsApplicationManager/* RoboticsAcademy/src/
+```
+5) Create a virtual env
+```
+virtualenv env
+ ```
+Virtual environment with name "env" is created 
+
+6) Activate the environment
+```
+source env/bin/activate
+```
+7) Install required packages
+```
+pip install django
+pip install djangorestframework
+pip install django-webpack-loader
+pip install django-cors-headers
+pip install pylint==2.17.4
 ```
 
-5) Start Docker Compose
+8) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
+```
+cd react_frontend/ && yarn install && yarn run dev
+```
+
+9) Start Docker Compose
 ```
 cd RoboticsAcademy
 sudo bash scripts/develop_academy.sh
@@ -54,7 +77,7 @@ Now you can open the RoboticsAcademy folder in your preferred code editor and te
 
 After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, simply copy the src folder contents back to the RAM folder. 
 ```
-cp src/* ../RoboticsApplicationManager/
+cp -r src/* ../RoboticsApplicationManager/
 ```
 
 To finish developing, you can just close the process with Crtl+C. 
