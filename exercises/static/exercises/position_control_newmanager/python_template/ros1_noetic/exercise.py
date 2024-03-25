@@ -166,6 +166,10 @@ class Template:
         hal_module.HAL.takeoff = self.hal.takeoff
         hal_module.HAL.land = self.hal.land
 
+        # Add beacon functions
+        hal_module.HAL.init_beacons = self.hal.init_beacons
+        hal_module.HAL.get_next_beacon = self.hal.get_next_beacon
+
         # Define GUI module
         gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
         gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
