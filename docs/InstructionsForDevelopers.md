@@ -16,7 +16,7 @@
 
 Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are two different ways of developing in RA: 
 
-### Using automatic script
+### Using automatic script (recommended)
 
 We provide an sh script that configures and runs automatically a developing environment:
 
@@ -40,7 +40,7 @@ You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.
 
 After running the script, the src folder will be created, which contains all the files of the RoboticsApplicationManager. You can create branches and commit normally to the RAM repo from inside that folder. For the rest of the changes, you can also work normally from the RoboticsAcademy folder, the contents of the src folder together with common boilerplate files are automatically ignored. 
 
-### Using Docker Compose (recommended)
+### Using Docker compose
 
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RADI container, where all the dependencies are installed. 
 
@@ -64,14 +64,25 @@ git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b <src-bra
 
 For the moment, the RAM folder MUST be called src, and the previous command takes care of that. You can create branches and commits from that folder without any issues. 
 
-4) Copy the desired compose config into the main RA folder
+4) Build the REACT frontend
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 16
+nvm use 16
+cd react_frontend/ && yarn install && yarn run dev
+```
+
+Please take into consideration that the `yarn run dev` script will continously watch for changes in the frontend, so you should execute this commands in a separate terminal. 
+
+5) Copy the desired compose config into the main RA folder
 ```
 cp compose_cfg/<your desired compose cfg> docker-compose.yaml
 ```
 
 Feel free to study the configs, and adapt/create new ones suitable for your needs
 
-5) Start Docker Compose
+6) Start Docker Compose
 ```
 docker-compose up
 ```
