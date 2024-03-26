@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-academy:4.4.32
-    container_name: radi-4.4.32
+    image: jderobot/robotics-academy:3.4.30
+    container_name: developer-container
     # deploy:
     #   resources:
     #     reservations:
@@ -22,5 +22,9 @@ services:
       - "6080:6080"
       - "1108:1108"
       - "7163:7163"
+    volumes:
+      - type: bind
+        source: ./
+        target: /RoboticsAcademy
     tty: true
     stdin_open: true

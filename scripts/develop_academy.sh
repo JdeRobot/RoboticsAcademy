@@ -1,20 +1,23 @@
 #!/bin/sh
 
 # Initialize variables with default values
-version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
+ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
 branch=main
+radi_version="humble"
 
 # Loop through the arguments using a while loop
-while getopts "rb" opt; do
+while getopts ":r:b:i:" opt; do
   case $opt in
-    l) version="$OPTARG" ;;   # If -l option is provided, set list to true
-    b) branch="$OPTARG" ;;   # If -b option is provided, set boolean to true
+    r) ram_version="$OPTARG" ;;
+    b) branch="$OPTARG" ;;
+    i) radi_version="$OPTARG" ;; 
     \?) echo "Invalid option: -$OPTARG" >&2 ;;   # If an invalid option is provided, print an error message
   esac
 done
 
-echo "RAM src: $version"
+echo "RAM src: $ram_version"
 echo "RAM branch: $branch"
+echo "RADI version: $radi_version"
 
 # Install docker-compose if not installed
 if ! command -v docker-compose &> /dev/null; then
@@ -23,7 +26,7 @@ fi
 
 # Clone the desired RAM fork and branch
 if ! [ -d src ]; then
-  git clone $version -b $branch src;
+  git clone $ram_version -b $branch src;
   chown -R $(id -u):$(id -g) src/
 fi
 
@@ -44,6 +47,15 @@ yarn install
 yarn build
 cd ..
 
+# Prepare the compose file
+compose_file="dev_humble_cpu.yaml"
+if [ $radi_version != "humble" ]; then
+  compose_file="dev_noetic_cpu.yaml"
+fi
+cp compose_cfg/$compose_file docker-compose.yaml
+
+
 # Proceed with docker-compose commands
 docker-compose up; 
-docker-compose down
+docker-compose down;
+rm docker-compose.yaml
