@@ -16,7 +16,31 @@
 
 Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are two different ways of developing in RA: 
 
-### Using Docker Compose (recommended)
+### Using automatic script (recommended)
+
+We provide an sh script that configures and runs automatically a developing environment:
+
+1) Clone RA repo
+```
+git clone https://github.com/JdeRobot/RoboticsAcademy.git -b <src-branch>
+cd RoboticsAcademy/
+```
+
+You can ignore the -b arg if you want to start working from main. 
+
+2) Run the script with your desired config
+```
+sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble/noetic>
+```
+If you don't provide any arguments, it will prepare a humble environment with the current stable branch of RAM. You may start working from that and then create the branch you need. 
+
+You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.1:7164/exercises/) 
+
+3) Developing procedure
+
+After running the script, the src folder will be created, which contains all the files of the RoboticsApplicationManager. You can create branches and commit normally to the RAM repo from inside that folder. For the rest of the changes, you can also work normally from the RoboticsAcademy folder, the contents of the src folder together with common boilerplate files are automatically ignored. 
+
+### Using Docker compose
 
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RADI container, where all the dependencies are installed. 
 
@@ -30,71 +54,48 @@ sudo apt install docker-compose
 2) Clone RoboticsAcademy repo (or your fork) and create src folder
 ```
 git clone https://github.com/JdeRobot/RoboticsAcademy.git -b <src-branch>
-cd RoboticsAcademy
-mkdir src
+cd RoboticsAcademy/
 ```
 
-3) Clone RAM repo (or your fork) outside of RA folder
+3) Clone RAM repo (or your fork) inside RA
 ```
-git clone https://github.com/JdeRobot/RoboticsAcademy.git -b <src-branch>
-```
-
-4) Copy the contents of RAM inside the src folder in RA
-```
-cp RoboticsAplicationManager/* RoboticsAcademy/src/
+git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b <src-branch> src
 ```
 
-5) Start Docker Compose
-```
-cd RoboticsAcademy
-sudo bash scripts/develop_academy.sh
-```
+For the moment, the RAM folder MUST be called src, and the previous command takes care of that. You can create branches and commits from that folder without any issues. 
 
-Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RADI version as the base. If you need any other version, just change the first lines of the `docker-compose.yaml` file to the version you need. The only difference for developing between RADI versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RADI-on-the-go).
+4) Build the REACT frontend
 
-After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, simply copy the src folder contents back to the RAM folder. 
 ```
-cp src/* ../RoboticsApplicationManager/
-```
-
-To finish developing, you can just close the process with Crtl+C. 
-
-### Local installation
-
-1) First create a virtual env
-```
-virtualenv env
- ```
-Virtual environment with name "env" is created 
-
-2) Activate the environment
-```
-source env/bin/activate
-```
-3) Install required packages
-```
-pip install django
-pip install djangorestframework
-pip install django-webpack-loader
-pip install django-cors-headers
-pip install pylint==2.17.4
-```
-
-4) Install dependencies for REACT (with Yarn or npm, required Node.JS >= 14.16)     
-```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 16
+nvm use 16
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
-5) Now at the root of the project we are ready to launch the Django webserver
-```
-python3 manage.py runserver 0.0.0.0:7164 
-```
-The webserver is not connected with the RADI.
+Please take into consideration that the `yarn run dev` script will continously watch for changes in the frontend, so you should execute this commands in a separate terminal. 
 
-6) To connect the webserver with RADI, Run:
+5) Copy the desired compose config into the main RA folder
 ```
-docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy --no-server
+cp compose_cfg/<your desired compose cfg> docker-compose.yaml
 ```
+
+Feel free to study the configs, and adapt/create new ones suitable for your needs
+
+6) Start Docker Compose
+```
+docker-compose up
+```
+
+Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RADI version as the base. The only difference for developing between RADI versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RADI-on-the-go).
+
+After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, just get inside the src/ folder and work from there (remember, this is the RAM repo with another name).
+
+6) Stop docker compose
+```
+docker-compose down
+```
+When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution.  
 
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
