@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# ANSI color codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' 
+
 # Initialize variables with default values
 ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
 branch=main
@@ -43,8 +49,17 @@ fi
 nvm install 16
 nvm use 16
 cd react_frontend/
-yarn install
-yarn build
+if command -v npm &> /dev/null; then
+    npm install --force
+    npm run dev & 
+    sleep 10
+
+else
+    yarn install 
+    yarn dev run &
+    sleep 10
+fi
+
 cd ..
 
 # Prepare the compose file
@@ -56,6 +71,27 @@ cp compose_cfg/$compose_file docker-compose.yaml
 
 
 # Proceed with docker-compose commands
-docker-compose up; 
-docker-compose down;
-rm docker-compose.yaml
+while true; do
+    echo -e "${GREEN}Enter your choice${NC}"
+    echo -e "${GREEN}1.For docker-compose up : up${NC}"
+    echo -e "${GREEN}2.For docker-compose down : down${NC}"
+    echo -e "${GREEN}3.For remove docker-compose.yaml : rm${NC}"
+
+    read choice 
+    
+    case $choice in
+        up)
+            docker-compose up & 
+            ;;
+        down)
+            docker-compose down &
+            ;;
+        rm)
+            rm docker-compose.yaml &
+            echo -e "${YELLOW}Removing docker-compose.yaml and closing this
+            process${NC}"
+            exit 0
+            ;;
+    esac
+    sleep 10
+done
