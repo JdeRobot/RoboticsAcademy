@@ -39,6 +39,11 @@ if ! command -v nvm &> /dev/null; then
   source $NVM_DIR/nvm.sh;
 fi
 
+# Prepare yarn 
+if ! command -v yarn --version &> /dev/null; then
+  npm install --global yarn
+fi
+
 # Prepare the frontend
 nvm install 16
 nvm use 16
@@ -54,8 +59,7 @@ if [ $radi_version != "humble" ]; then
 fi
 cp compose_cfg/$compose_file docker-compose.yaml
 
-
 # Proceed with docker-compose commands
-docker-compose up; 
-docker-compose down;
+docker compose up; 
+docker compose down;
 rm docker-compose.yaml
