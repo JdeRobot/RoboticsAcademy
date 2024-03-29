@@ -38,7 +38,9 @@ You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.
 
 3) Developing procedure
 
-After running the script, the src folder will be created, which contains all the files of the RoboticsApplicationManager. You can create branches and commit normally to the RAM repo from inside that folder. For the rest of the changes, you can also work normally from the RoboticsAcademy folder, the contents of the src folder together with common boilerplate files are automatically ignored. 
+After running the script, the src folder will be created, which contains all the files of the RoboticsApplicationManager. You can create branches and commit normally to the RAM repo from inside that folder. For the rest of the changes, you can also work normally from the RoboticsAcademy folder, the contents of the src folder together with common boilerplate files are automatically ignored.
+
+Whenever you want to finish developing, you just can close the script with Crtl+C. It will take care of cleaning files so you can restart again without any additional config. 
 
 ### Using Docker compose
 
