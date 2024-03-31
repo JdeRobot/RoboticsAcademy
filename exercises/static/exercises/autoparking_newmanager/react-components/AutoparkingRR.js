@@ -3,7 +3,7 @@ import {Fragment} from "react";
 
 import "./css/AutoparkingRR.css";
 
-const FollowLineRR = (props) => {
+const AutoparkingRR = (props) => {
   return (
     <Fragment>
     {props.children}
@@ -11,4 +11,4 @@ const FollowLineRR = (props) => {
   );
 };
 
-export default FollowLineRR;
+export default AutoparkingRR;
