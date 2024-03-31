@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-academy:4.5.6.beta
-    container_name: 4.5.6.beta
+    image: jderobot/robotics-academy:hal_test
+    container_name: hal_test
     # deploy:
     #   resources:
     #     reservations:

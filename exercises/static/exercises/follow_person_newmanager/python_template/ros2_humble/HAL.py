@@ -1,11 +1,11 @@
 import rclpy
 import sys
 
-from hal_interfaces.motors import MotorsNode
-from hal_interfaces.odometry import OdometryNode
-from hal_interfaces.laser import LaserNode
-from hal_interfaces.camera import CameraNode
-from hal_interfaces.neural_network import NeuralNetwork
+from hal_interfaces.general.motors import MotorsNode
+from hal_interfaces.general.odometry import OdometryNode
+from hal_interfaces.general.laser import LaserNode
+from hal_interfaces.general.camera import CameraNode
+from hal_interfaces.general.detection_network import NeuralNetwork
 
 ### HAL INIT ###
 

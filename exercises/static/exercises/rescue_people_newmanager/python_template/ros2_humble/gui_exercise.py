@@ -8,18 +8,17 @@ import websocket
 import subprocess
 
 
-
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
     def __init__(self, host):
-        
-        self.payload = {'image': ''}
-        self.left_payload = {'image_left': ''}
+
+        self.payload = {"image": ""}
+        self.left_payload = {"image_left": ""}
         self.server = None
         self.client = None
-        
+
         self.host = host
 
         # Image variables
@@ -30,17 +29,19 @@ class GUI:
         self.left_image_to_be_shown = None
         self.left_image_to_be_shown_updated = False
         self.left_image_show_lock = threading.Lock()
-        
+
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-        
+
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
 
     def run_websocket(self):
         while True:
-            self.client = websocket.WebSocketApp('ws://127.0.0.1:2303',
-                                                 on_message=self.on_message,)
+            self.client = websocket.WebSocketApp(
+                "ws://127.0.0.1:2303",
+                on_message=self.on_message,
+            )
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     # Explicit initialization function
@@ -60,17 +61,17 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
@@ -87,17 +88,17 @@ class GUI:
         self.left_image_show_lock.release()
 
         image = left_image_to_be_shown
-        payload = {'image_left': '', 'shape': ''}
+        payload = {"image_left": "", "shape": ""}
 
         if not left_image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image_left'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image_left"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         self.left_image_show_lock.acquire()
         self.left_image_to_be_shown_updated = False
@@ -123,27 +124,27 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        
+
     # Function to get value of Acknowledge
     def get_acknowledge(self):
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-        
+
         return acknowledge
-        
+
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
-        
+
     # Update the gui
     def update_gui(self):
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        
+
         message = json.dumps(self.payload)
         if self.client:
             try:
@@ -162,18 +163,16 @@ class GUI:
             except Exception as e:
                 print(f"Error sending message: {e}")
 
-            
     def on_message(self, ws, message):
         """Handles incoming messages from the websocket client."""
         if message.startswith("#ack"):
             self.set_acknowledge(True)
 
-
-
     # Function to reset
     def reset_gui(self):
         pass
-        
+
+
 class ThreadGUI:
     """Class to manage GUI updates and frequency measurements in separate threads."""
 
@@ -182,7 +181,7 @@ class ThreadGUI:
         self.gui = gui
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {"brain": "", "gui": "", "rtf": ""}
         self.iteration_counter = 0
         self.running = True
 
@@ -203,8 +202,8 @@ class ThreadGUI:
             args = ["gz", "stats", "-p"]
             stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
             with stats_process.stdout:
-                for line in iter(stats_process.stdout.readline, b''):
-                    stats_list = [x.strip() for x in line.split(b',')]
+                for line in iter(stats_process.stdout.readline, b""):
+                    stats_list = [x.strip() for x in line.split(b",")]
                     self.real_time_factor = stats_list[0].decode("utf-8")
 
     def measure_and_send_frequency(self):
@@ -216,11 +215,19 @@ class ThreadGUI:
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
-            measured_cycle = ms / self.iteration_counter if self.iteration_counter > 0 else 0
+            measured_cycle = (
+                ms / self.iteration_counter if self.iteration_counter > 0 else 0
+            )
             self.iteration_counter = 0
-            brain_frequency = round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
+            brain_frequency = (
+                round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
+            )
             gui_frequency = round(1000 / self.ideal_cycle, 1)
-            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
+            self.frequency_message = {
+                "brain": brain_frequency,
+                "gui": gui_frequency,
+                "rtf": self.real_time_factor,
+            }
             message = json.dumps(self.frequency_message)
             if self.gui.client:
                 try:
@@ -239,4 +246,3 @@ class ThreadGUI:
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             sleep_time = max(0, (50 - ms) / 1000.0)
             time.sleep(sleep_time)
-
