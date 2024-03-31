@@ -39,6 +39,11 @@ if ! command -v nvm &> /dev/null; then
   source $NVM_DIR/nvm.sh;
 fi
 
+# Prepare yarn 
+if ! command -v yarn --version &> /dev/null; then
+  npm install --global yarn
+fi
+
 # Prepare the frontend
 nvm install 16
 nvm use 16
@@ -57,33 +62,22 @@ new_checksum=$(find "$DIRECTORY_TO_MONITOR" \( -path "*/node_modules" -o \
             md5sum | \
             awk '{print $1}')
 
-echo $new_checksum
-
 existing_checksum_file="$DIRECTORY_TO_MONITOR/checksum.txt"
-echo $existing_checksum_file
 
 if [ -f "$existing_checksum_file" ]; then
     existing_checksum=$(cat "$existing_checksum_file")
-    echo $existing_checksum
     if [ "$existing_checksum" != "$new_checksum" ]; then
         echo "$new_checksum" > "$existing_checksum_file"
-        if command -v npm &> /dev/null; then
-            npm install --force
-            npm run dev & 
-            sleep 10
-
-        else
-            yarn install 
-            yarn dev run &
-            sleep 10
-        fi
+        yarn install 
+        yarn dev run &
+        sleep 10
     else
         echo "No Compilation needed"
     fi
 else
     echo "$new_checksum" > "$existing_checksum_file"
-    npm install --force
-    npm run dev & 
+    yarn install 
+    yarn dev run &
     sleep 10
 fi
 
