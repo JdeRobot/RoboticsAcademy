@@ -5,7 +5,7 @@ from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.camera import CameraNode
-from hal_interfaces.general.detection_network import NeuralNetwork
+from hal_interfaces.general.classnet import NeuralNetwork
 
 ### HAL INIT ###
 

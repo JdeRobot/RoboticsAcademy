@@ -2,8 +2,8 @@ import numpy as np
 import rclpy
 import cv2
 
+from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
-from jderobot_drones.image_sub import ImageSubscriberNode
 
 
 ### HAL INIT ###
@@ -15,22 +15,32 @@ if not rclpy.ok():
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
+CAM_FRONTAL_TOPIC = "/" + "drone0" + "/sensor_measurements/frontal_camera/image_raw"
+CAM_VENTRAL_TOPIC = "/" + "drone0" + "/sensor_measurements/ventral_camera/image_raw"
+
 drone = DroneWrapper()
-cam = ImageSubscriberNode()
+frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
+ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
 ### GETTERS ###
 
 
 def get_frontal_image():
-    image = cam.get_frontal_image()
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    return image_rgb
+    try:
+        rclpy.spin_once(frontal_camera_node)
+        image = frontal_camera_node.getImage().data
+        return image
+    except Exception as e:
+        print(f"Exception in hal get_frontal_image {repr(e)}")
 
 
 def get_ventral_image():
-    image = cam.get_ventral_image()
-    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    return image_rgb
+    try:
+        rclpy.spin_once(ventral_camera_node)
+        image = ventral_camera_node.getImage().data
+        return image
+    except Exception as e:
+        print(f"Exception in hal get_ventral_image {repr(e)}")
 
 
 def get_position():

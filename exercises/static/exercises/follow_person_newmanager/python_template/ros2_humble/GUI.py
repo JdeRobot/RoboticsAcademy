@@ -7,6 +7,7 @@ import websocket
 from src.manager.ram_logging.log_manager import LogManager
 from gazebo_msgs.srv import SetEntityState, GetEntityState
 import rclpy
+from console import start_console
 
 
 class ThreadingGUI:
@@ -130,6 +131,9 @@ class ThreadingGUI:
 
 host = "ws://127.0.0.1:2303"
 gui = ThreadingGUI(host)
+
+# Redirect the console
+start_console()
 
 
 # Expose the gui setImage function

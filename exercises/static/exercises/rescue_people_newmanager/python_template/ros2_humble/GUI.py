@@ -5,6 +5,8 @@ import threading
 import time
 import websocket
 from src.manager.ram_logging.log_manager import LogManager
+from console import start_console
+import numpy as np
 
 
 class ThreadingGUI:
@@ -21,8 +23,10 @@ class ThreadingGUI:
         self.running = True
 
         self.host = host
-        self.msg_right = {"image_right": ""}
-        self.msg_left = {"image_left": ""}
+        self.msg = {"image_right": "", "image_left": ""}
+
+        # Initialize and start the WebSocket client thread
+        threading.Thread(target=self.run_websocket, daemon=True).start()
 
         # Initialize and start the image sending thread (GUI out thread)
         threading.Thread(
@@ -53,8 +57,8 @@ class ThreadingGUI:
             with self.ack_lock:
                 with self.image_lock:
                     if self.ack:
-                        if self.left_image != None or self.right_image != None:
-                            self.send_image()
+                        if np.any(self.left_image) or np.any(self.right_image):
+                            self.send_images()
                             self.ack = False
 
             # Maintain desired frequency
@@ -65,26 +69,32 @@ class ThreadingGUI:
     # Prepares and send image to the websocket server
     def send_images(self):
 
-        # Codify the images
-        if self.left_image != None:
-            _, jpg_left_img = cv2.imencode(".JPEG", self.left_image)
-            b64_left_img = base64.b64encode(jpg_left_img).decode("utf-8")
+        if np.any(self.left_image):
+            _, encoded_left_image = cv2.imencode(".JPEG", self.left_image)
+            b64_left = base64.b64encode(encoded_left_image).decode("utf-8")
+            shape_left = self.left_image.shape
         else:
-            b64_left_img = None
+            b64_left = None
+            shape_left = 0
 
-        if self.right_image != None:
-            _, jpg_right_img = cv2.imencode(".JPEG", self.right_image)
-            b64_right_img = base64.b64encode(jpg_right_img).decode("utf-8")
+        if np.any(self.right_image):
+            _, encoded_right_image = cv2.imencode(".JPEG", self.right_image)
+            b64_right = base64.b64encode(encoded_right_image).decode("utf-8")
+            shape_right = self.right_image.shape
         else:
-            b64_right_img = None
+            b64_right = None
+            shape_right = 0
 
-        payload = {
-            "image_left": b64_left_img,
-            "shape_left": self.left_image.shape,
-            "image_right": b64_right_img,
-            "shape_right": self.right_image.shape,
+        payload_left = {
+            "image_left": b64_left,
+            "shape_left": shape_left,
         }
-        self.msg["image"] = json.dumps(payload)
+        payload_right = {
+            "image_right": b64_right,
+            "shape_right": shape_right,
+        }
+        self.msg["image_left"] = json.dumps(payload_left)
+        self.msg["image_right"] = json.dumps(payload_right)
         message = json.dumps(self.msg)
         try:
             if self.client:
@@ -106,7 +116,11 @@ host = "ws://127.0.0.1:2303"
 gui = ThreadingGUI(host)
 
 
-# Expose the functions that the users need to use
+# Redirect the console
+start_console()
+
+
+# Expose the user functions
 def showImage(image):
     gui.setRightImage(image)
 

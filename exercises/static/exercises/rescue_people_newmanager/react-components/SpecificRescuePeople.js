@@ -7,22 +7,18 @@ function SpecificRescuePeople(props) {
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
-      if (message.data.update.image) {
+      console.log(message);
+
+      if (message.data.update.image_right) {
         console.log("image_right");
-        const image = JSON.parse(message.data.update.image_right);
-        if (image.image) {
-          drawImage(message.data.update);
-        }
+        drawImage(message.data.update);
       }
       if (message.data.update.image_left) {
         console.log("image_left");
-        const image = JSON.parse(message.data.update.image_left);
-        if (image.image_left) {
-          drawLeftImage(message.data.update);
-        }
+        drawLeftImage(message.data.update);
       }
 
-      // Send the ACK of the imgs
+      // Send the ACK of the msg
       window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
