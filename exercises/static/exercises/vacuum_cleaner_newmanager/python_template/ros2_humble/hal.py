@@ -10,19 +10,20 @@ from interfaces.pose3d import ListenerPose3d
 from interfaces.laser import ListenerLaser
 from interfaces.bumper import ListenerBumper
 
+
 # Hardware Abstraction Layer
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
         rclpy.init(args=sys.argv)
-        rclpy.create_node('HAL')
+        rclpy.create_node("HAL")
 
         self.motors = PublisherMotors("/cmd_vel", 4, 0.3)
         self.pose3d = ListenerPose3d("/odom")
         self.laser = ListenerLaser("/roombaROS/laser/scan")
-        self.bumper = ListenerBumper("/roombaROS/events/bumper","roombaROS")
+        self.bumper = ListenerBumper("/roombaROS/events/bumper", "roombaROS")
 
         # Spin nodes so that subscription callbacks load topic data
         # Bumper has to be spinned differently so that GetEntityState works
