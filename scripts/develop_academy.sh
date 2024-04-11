@@ -47,9 +47,41 @@ fi
 # Prepare the frontend
 nvm install 16
 nvm use 16
+
+# Checking if the frontend needs compilation
 cd react_frontend/
-yarn install
-yarn build
+DIRECTORY_TO_MONITOR="."
+
+new_checksum=$(find "$DIRECTORY_TO_MONITOR" \( -path "*/node_modules" -o \
+            -path "*/__pycache__" -o \
+            -path "*/migrations" -o \
+            -name "yarn.lock" -o \
+            -name "checksum.txt" \) -prune \
+            -o -type f -exec md5sum {} + | \
+            sort | \
+            md5sum | \
+            awk '{print $1}')
+
+existing_checksum_file="$DIRECTORY_TO_MONITOR/checksum.txt"
+
+if [ -f "$existing_checksum_file" ]; then
+    existing_checksum=$(cat "$existing_checksum_file")
+    if [ "$existing_checksum" != "$new_checksum" ]; then
+        echo "$new_checksum" > "$existing_checksum_file"
+        yarn install 
+        yarn dev run &
+        sleep 10
+    else
+        echo "No Compilation needed"
+    fi
+else
+    echo "$new_checksum" > "$existing_checksum_file"
+    yarn install 
+    yarn dev run &
+    sleep 10
+fi
+
+
 cd ..
 
 # Prepare the compose file
@@ -59,7 +91,8 @@ if [ $radi_version != "humble" ]; then
 fi
 cp compose_cfg/$compose_file docker-compose.yaml
 
+
 # Proceed with docker-compose commands
-docker compose up; 
-docker compose down;
+docker-compose up
+docker-compose down
 rm docker-compose.yaml
