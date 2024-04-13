@@ -94,7 +94,7 @@ function MainAppBar(props) {
               alignItems: "center",
             }}
           >
-            <Image src="/static/common/img/logo.gif" fit={"cover"} width={50} />
+            <Image src="/static/exercises/assets/img/logo.gif" fit={"cover"} width={50} />
           </Box>
           <Box
             sx={{
