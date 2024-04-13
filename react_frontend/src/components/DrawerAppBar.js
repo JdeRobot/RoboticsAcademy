@@ -61,7 +61,7 @@ export default function DrawerAppBar(props) {
             <MenuIcon />
           </IconButton>
           <a href="https://jderobot.github.io/">
-            <img src="/static/common/img/logo.gif" width={50} alt="" />
+            <img src="/static/exercises/assets/img/logo.gif" width={50} alt="" />
           </a>
           <Typography
             variant="h6"
