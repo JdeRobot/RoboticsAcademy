@@ -3,10 +3,12 @@ import { Box, Typography, Tooltip } from "@mui/material";
 import "../../styles/Indicator.css";
 
 export default function WorldIndicator(props) {
-  const exerciseConfig = JSON.parse(
+  const config = JSON.parse(
     document.getElementById("exercise-config").textContent
   );
-  const circuitName = exerciseConfig[0].name;
+  console.log("PATATILLA");
+  console.log(config);
+  const circuitName = config[0].name;
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
