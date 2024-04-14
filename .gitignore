@@ -116,3 +116,4 @@ webpack-stats.json
 react_frontend/static
 developer_scripts
 src
+compose.yaml

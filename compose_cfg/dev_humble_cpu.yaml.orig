@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  robotics-academy:
+<<<<<<< HEAD:compose_cfg/dev_humble_cpu.yaml
+    image: jderobot/robotics-academy:4.5.9
+    container_name: developer-container
+=======
+    image: jderobot/robotics-academy:bumper_test
+    container_name: bumper_test_v3
+>>>>>>> 9d2394d8 (Fixing outdated entry):docker-compose.yml
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    # devices:
+    #   - /dev/dri/card0:/dev/dri/card0
+    #   - /dev/dri/renderD128:/dev/dri/renderD128
+    ports:
+      - "7164:7164"
+      - "2303:2303"
+      - "1905:1905"
+      - "8765:8765"
+      - "6080:6080"
+      - "1108:1108"
+      - "7163:7163"
+    # volumes:
+    #   - type: bind
+    #     source: ./
+    #     target: /RoboticsAcademy
+    tty: true
+    stdin_open: true
