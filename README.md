@@ -9,7 +9,7 @@ If you are a contributor, please note that we use GitHub Pages and a Jekyll them
 # Running RoboticsAcademy
 
 ```
-curl -s https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble_devel/scripts/run_academy.sh | sudo bash
+curl -s https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/scripts/run_academy.sh | sudo bash
 ```
 
 # How to contribute?
