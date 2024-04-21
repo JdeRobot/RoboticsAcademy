@@ -2,7 +2,7 @@
 
 # Initialize variables with default values
 ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
-branch=main
+branch="humble-devel"
 radi_version="humble"
 gpu_mode="false"
 compose_file="dev_humble_cpu"
