@@ -8,6 +8,7 @@ from src.manager.ram_logging.log_manager import LogManager
 from gazebo_msgs.srv import SetEntityState, GetEntityState
 import rclpy
 from console import start_console
+from math import cos, sin, atan2
 
 
 class ThreadingGUI:
@@ -74,14 +75,24 @@ class ThreadingGUI:
             pose = get_future.result().state.pose
 
             # Update accordingly
-            if "key_w" in message:
-                pose.position.x += 0.1
-            elif "key_s" in message:
-                pose.position.x -= 0.1
-            elif "key_a" in message:
-                pose.position.y += 0.1
-            elif "key_d" in message:
-                pose.position.y -= 0.1
+            mov_dist = 0.1
+            rot_angle = 0.17 # radians
+
+            if "key_w" in message or  "key_s" in message:   # forward or backward movement
+                if  "key_w" in message:     # backward
+                    mov_dist *= -1
+                siny_cosp = 2 * (pose.orientation.w * pose.orientation.z - pose.orientation.x * pose.orientation.y)
+                cosy_cosp = 1 - 2 * (pose.orientation.y * pose.orientation.y + pose.orientation.z * pose.orientation.z)
+                yaw = atan2(siny_cosp, cosy_cosp)
+                pose.position.x += mov_dist * (0 * cos(yaw) - 1 * sin(yaw))
+                pose.position.y += mov_dist * (0 * sin(yaw) + 1 * cos(yaw))
+            elif "key_a" in message or "key_d" in message:  # turning movement
+                if "key_d" in message:      # turn right
+                    rot_angle *= -1
+                pose.orientation.w = pose.orientation.w * cos(rot_angle / 2) - pose.orientation.z * sin(rot_angle / 2)
+                pose.orientation.x = pose.orientation.x * cos(rot_angle / 2) + pose.orientation.y * sin(rot_angle / 2)
+                pose.orientation.y = pose.orientation.y * cos(rot_angle / 2) - pose.orientation.x * sin(rot_angle / 2)
+                pose.orientation.z = pose.orientation.w * sin(rot_angle / 2) + pose.orientation.z * cos(rot_angle / 2)
 
             # Send the new pose
             self.set_request.state.name = "PersonToControl"
