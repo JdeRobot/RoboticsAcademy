@@ -35,7 +35,7 @@ class GUI:
         self.ack_lock = threading.Lock()
         self.array = None
         self.array_lock = threading.Lock()
-        # self.hal = hal #TODO: check if necessary
+        # self.hal = hal
         self.mapXY = None
         self.worldXY = None
 
