@@ -137,7 +137,7 @@ class GUI:
 
 
     def on_message(self, ws, message):
-        """Handles incoming messages from the websocket client."""s
+        """Handles incoming messages from the websocket client."""
         if message.startswith("#ack"):
             self.set_acknowledge(True)
 
