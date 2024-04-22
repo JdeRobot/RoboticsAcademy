@@ -1,0 +1,181 @@
+import GUI
+import HAL
+import numpy as np
+import math
+from queue import PriorityQueue
+from queue import Queue
+import time
+
+def normalize_grid(grid):
+  return np.clip(grid, 0, 255).astype('uint8')
+
+def init_grid():
+  grid = [[-1 for x in range(400)] for y in range(400)] 
+  return grid
+
+def add_value_to_grid(queue, item, grid):
+  x , y = item[1]
+  value = item[0]
+
+  if y + 1 < 400 and grid[y + 1][x] == -1 and map_img[y + 1][x] != 0:
+    queue.put((value + 1, (x, y + 1)))
+    grid[y+1][x] = value + 1
+
+  if y - 1 >= 0 and grid[y - 1][x] == -1 and map_img[y - 1][x] != 0:
+    queue.put((value + 1, (x, y - 1)))
+    grid[y-1][x] = value + 1
+
+  if x + 1 < 400 and grid[y][x + 1] == -1 and map_img[y][x + 1] != 0:
+    queue.put((value + 1, (x + 1, y)))
+    grid[y][x+1] = value + 1
+
+  if x - 1 >= 0 and grid[y][x - 1] == -1 and map_img[y][x - 1] != 0:
+    queue.put((value + 1, (x - 1, y)))
+    grid[y][x-1] = value + 1
+
+  if y + 1 < 400 and x + 1 < 400 and grid[y + 1][x + 1] == -1 and map_img[y + 1][x + 1] != 0:
+    queue.put((value + math.sqrt(2), (x + 1, y + 1)))
+    grid[y+1][x+1] = value + math.sqrt(2)
+
+  if y + 1 < 400 and x - 1 >= 0 and grid[y + 1][x - 1] == -1 and map_img[y + 1][x - 1] != 0:
+    queue.put((value + math.sqrt(2), (x - 1, y + 1)))
+    grid[y+1][x+1] = value + math.sqrt(2)
+
+  if y - 1 >= 0 and x + 1 < 400 and grid[y - 1][x + 1] == -1 and map_img[y - 1][x + 1] != 0:
+    queue.put((value + math.sqrt(2), (x + 1, y - 1)))
+    grid[y-1][x+1] = value + math.sqrt(2)
+
+  if y - 1 >= 0 and x - 1 >= 0 and grid[y - 1][x - 1] == -1 and map_img[y - 1][x - 1] != 0:
+    queue.put((value + math.sqrt(2), (x - 1, y - 1)))
+    grid[y-1][x-1] = value + math.sqrt(2)
+  
+  return queue
+
+def gridToWorld(map_cell):
+  world_x = map_cell[1] *500/400 -250
+  world_y = map_cell[0] *500/400 -250
+  
+  return (world_x, world_y)
+
+def go_to_target(grid):
+  lowest_coord = (0,0)
+  
+  while True:
+    car = HAL.getPose3d()
+    x, y = GUI.rowColumn((car.x,car.y))
+    # Check if reached
+    if grid[y][x] == 0:
+      HAL.setV(0)
+      HAL.setW(0)
+      return
+    lowest_val = grid[y][x]
+    # Search around the car in a 11 by 11 and go to lowest point
+    for i in range(-11, 12, 1):
+      for j in range(-11, 12, 1):
+        #time.sleep(1)
+        print(lowest_val, grid[y + j][x + i], i, j)
+        try:
+          if map_img[y + j][x + i] != 0 and grid[y + j][x + i] >= 0  and grid[y + j][x + i] < lowest_val:
+            lowest_val = grid[y + j][x + i]
+            lowest_coord = (i, j)
+        except:
+          pass
+    # Sent speed
+    if lowest_coord[0] == 0:
+      theta = math.pi / 2
+      if lowest_coord[1] > 0:
+        theta = -theta
+    else:
+      theta = math.atan(-lowest_coord[1]/-lowest_coord[0])
+      
+    # 0,-1, Up, -1,0, Right, 1,0 Left -1,1 Down
+    # Ang
+    if lowest_coord[0] > 0:
+      theta = -theta + 2*math.pi
+    elif lowest_coord[0] < 0:
+      theta = -theta + math.pi
+    
+    real_ang = ((car.yaw + 3*math.pi/2) - theta)
+    if real_ang > math.pi:
+      real_ang = -(real_ang  % math.pi)
+    if real_ang < -math.pi:
+      real_ang = -real_ang -math.pi
+      
+    HAL.setW(-real_ang)
+    lin_speed = math.sqrt(lowest_coord[0]*lowest_coord[0] + lowest_coord[1]*lowest_coord[1])*(1/2)
+    if lin_speed < 2: lin_speed = 2
+    HAL.setV(lin_speed)
+  return
+
+map_img = GUI.getMap('/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png')
+
+while True:
+    # Get the map image and show the car and target positions
+    target = None
+    
+    while target == None:
+      target = GUI.getTargetPose()
+    
+    target_coords = GUI.rowColumn(target)
+    print(target_coords)
+
+    car = HAL.getPose3d()
+    car_coords = GUI.rowColumn((car.x,car.y))
+
+    # This is an example test grid
+    grid = init_grid()
+    
+    # Add border to obstacles
+    border_grid = [[0 for x in range(400)] for y in range(400)]
+    for x in range(400):
+      for y in range(400):
+        if map_img[y][x] == 0:
+          # Add border in -5, 5 aroud wall if not already wall
+          for i in range(-5,6,1):
+            for j in range(-5, 6, 1):
+              try:
+                if map_img[y + j][x + i] != 0: 
+                  border_grid[y + j][x + i] += 5 - abs(j) + 5 - abs(i)
+              except:
+                pass
+    
+    # Add gradient
+    q = PriorityQueue()
+    q.put((0, target_coords))
+
+    grid[target_coords[1]][target_coords[0]] = 0
+    
+    extra_steps = 10000
+    start_extra = False
+    
+    print_each = 0
+    while not q.empty() and extra_steps > 0:
+      item = q.get()
+      q = add_value_to_grid(q, item, grid)
+      if start_extra:
+        extra_steps -= 1
+      if item[1][0] == car_coords[0] and item[1][1] == car_coords[1]:
+        start_extra = True
+        
+      print_each += 1
+      if print_each > 250:
+        print_each = 0
+        GUI.showNumpy(normalize_grid(grid))
+    
+    # Normalize the grid to show it
+    for y in range(len(grid)):
+      for x in range(len(grid[0])):
+          if grid[y][x] == -1:
+              grid[y][x] = 0
+          else:
+              grid[y][x] += border_grid[y][x]
+    
+    grid[target_coords[1]][target_coords[0]] = 0
+    
+    grid_normalized = normalize_grid(grid)
+    GUI.showNumpy(grid_normalized)
+    
+    go_to_target(grid)
+    
+    print("Destination Reached")
+  

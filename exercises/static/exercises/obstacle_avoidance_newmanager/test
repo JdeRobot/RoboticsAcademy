@@ -1,0 +1,174 @@
+import GUI
+import HAL
+import math
+import numpy as np
+
+# Enter sequential code!
+MAX_SPEED = 3
+MAX_VEL = 4
+MAX_RANGE = 3
+
+MIN_SPEED = 1
+MIN_RANGE = 0.8
+
+def get_module (vector):
+
+    x = vector[0]
+    y = vector[1]
+
+    module = math.sqrt(x ** 2 + y ** 2)
+
+    return module
+
+def get_obstacle_force ():
+    laser_data = HAL.getLaserData()
+    laser = []
+    i = 0
+    
+    
+    if len(laser_data.values) == 0:
+      print("Porque")
+      return (0,0)
+
+    while i < 180:
+        dist = laser_data.values[i]
+        pos = i - 90 # To get the angle 0 in the middle-front of the robot
+
+        angle = math.radians(pos)
+
+        # It is a e^x type of function
+        importance = 15 / (2.7 ** (2 * dist)) # define the function that relates
+        # the distance to the object to the importance that reading gets,
+        # the nearest the obstacle, the greater the importance.
+
+        # get the components of the readings
+        x = importance * math.cos(angle) * -1
+        y = importance * math.sin(angle) * -1
+        v = (x, y)
+
+        laser += [v]
+        i+=1
+
+    # the mean will show the repulsion force because of the obstacles
+    laser_mean = np.mean (laser, axis = 0)
+
+    obs_x = laser_mean[0]
+    obs_y = laser_mean[1]
+
+    return (obs_x, obs_y)
+
+def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
+
+    # robotx, roboty are the absolute coordinates of the robot
+    # robott is its absolute orientation
+    # Convert to relatives
+    dx = x_abs - robotx
+    dy = y_abs - roboty
+
+    # Rotate with current angle
+    x_rel = dx * math.cos (-robott) - dy * math.sin (-robott)
+    y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
+
+    return [x_rel, y_rel]
+
+def get_target_pos(target):
+
+    # gets the target coords respect to the robot
+
+    t_abs_x = target.getPose().x
+    t_abs_y = target.getPose().y
+
+    r_x = HAL.getPose3d().x
+    r_y = HAL.getPose3d().y
+    r_t = HAL.getPose3d().yaw
+
+    [target_x, target_y] = absolute2relative(t_abs_x, t_abs_y, r_x, r_y, r_t)
+
+    return [target_x, target_y]
+
+def get_car_force (target):
+
+    [target_x, target_y] = get_target_pos(target)
+
+    target_module = get_module([target_x, target_y])
+
+    # get the angle of the target respecto to the robot
+    if target_x != 0:
+      car_angle = math.atan(target_y / target_x)
+    else:
+      car_angle = math.pi / 2
+      if target_y < 0:
+        car_angle *= -1
+        
+    # contain the module of the target within the maximum speed
+    if target_module > MAX_RANGE:
+        target_module = MAX_SPEED
+
+    # gets the coords of the target, with the module contained
+    car_x = target_module * math.cos(car_angle)
+    car_y = target_module * math.sin(car_angle)
+
+    # when the target is behind the robot, the coords will be backwards
+    if target_x < 0:
+        car_x *= -1
+        car_y *= -1
+
+    return [car_x, car_y]
+
+def get_force (car_f, obs_f):
+
+    f_x = ALPHA * car_f[0] + BETA * obs_f[0]
+
+    f_y = ALPHA * car_f[1] + BETA * obs_f[1]
+
+    avg_f = [f_x, f_y]
+
+    return avg_f
+
+ALPHA = 1
+BETA = 1.5
+REACHED = True
+
+while True:
+    # Enter iterative code!
+
+    if REACHED:
+        current_target = GUI.getNextTarget()
+        force = get_target_pos(current_target)
+        REACHED = False
+
+    else:
+        force = get_target_pos(current_target)
+        t_module = get_module(force)
+
+        if t_module < MIN_RANGE:
+            REACHED = True
+            current_target.setReached(True)
+
+    GUI.setTargetx = current_target.getPose().x
+    GUI.setTargety = current_target.getPose().y
+
+    img = HAL.getImage()
+    GUI.showImage(img)
+
+    # Target direction  (green line in the image below)
+    car_force = get_car_force(current_target)
+
+    # Obstacles direction (red line in the image below)
+    obs_force = get_obstacle_force()
+
+    # Average direction (black line in the image below)
+    avg_force = get_force(car_force, obs_force)
+
+    speed = avg_force[0]
+    vel = avg_force[1]
+
+    speed = max(speed, MIN_SPEED)
+
+    vel = min(vel, MAX_VEL)
+
+    #print("speed: ", speed, "vel: ", vel)
+
+    HAL.setV(speed)
+    HAL.setW(vel)
+    GUI.showForces(car_force, obs_force, avg_force)
