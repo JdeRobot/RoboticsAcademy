@@ -161,7 +161,7 @@ class ListenerPose3d(Node):
         Starts (Subscribes) the client.
 
         '''
-        self.sub = self.create_subscription(self.topic, Odometry, self.__callback)
+        self.sub = self.create_subscription(Odometry, self.topic, self.__callback,10)
         
     def getPose3d(self):
         '''
