@@ -8,6 +8,7 @@ from src.manager.ram_logging.log_manager import LogManager
 from gazebo_msgs.srv import SetEntityState, GetEntityState
 import rclpy
 from console import start_console
+from math import cos, sin, atan2
 
 
 class ThreadingGUI:
@@ -73,15 +74,29 @@ class ThreadingGUI:
             rclpy.spin_until_future_complete(self.node, get_future)
             pose = get_future.result().state.pose
 
+            # Define movement and rotation parameters
+            mov_dist = 0.1  # meters (default for forward movement)
+            rot_angle = 0.17 # radians (default for left rotation)
+
+            # Check for movement direction 
+            if  "key_s" in message:     
+                mov_dist *= -1          # reverse for backward movement
+            if "key_d" in message:      
+                rot_angle *= -1         # reverse for right rotation
+
             # Update accordingly
-            if "key_w" in message:
-                pose.position.x += 0.1
-            elif "key_s" in message:
-                pose.position.x -= 0.1
-            elif "key_a" in message:
-                pose.position.y += 0.1
-            elif "key_d" in message:
-                pose.position.y -= 0.1
+            if "key_w" in message or "key_s" in message:   # forward or backward movement
+                siny_cosp = 2 * (pose.orientation.w * pose.orientation.z - pose.orientation.x * pose.orientation.y)
+                cosy_cosp = 1 - 2 * (pose.orientation.y * pose.orientation.y + pose.orientation.z * pose.orientation.z)
+                yaw = atan2(siny_cosp, cosy_cosp)
+                pose.position.x += mov_dist * sin(yaw)
+                pose.position.y += -mov_dist * cos(yaw)
+            elif "key_a" in message or "key_d" in message:  # turning movement
+                w = pose.orientation.w * cos(rot_angle / 2) - pose.orientation.z * sin(rot_angle / 2)
+                x = pose.orientation.x * cos(rot_angle / 2) + pose.orientation.y * sin(rot_angle / 2)
+                y = pose.orientation.y * cos(rot_angle / 2) - pose.orientation.x * sin(rot_angle / 2)
+                z = pose.orientation.w * sin(rot_angle / 2) + pose.orientation.z * cos(rot_angle / 2)
+                pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z = w, x, y, z
 
             # Send the new pose
             self.set_request.state.name = "PersonToControl"
