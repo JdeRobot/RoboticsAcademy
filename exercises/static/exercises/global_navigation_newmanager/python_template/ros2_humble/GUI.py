@@ -36,26 +36,31 @@ class GUI:
         self.array = None
         self.array_lock = threading.Lock()
         # self.hal = hal #TODO: check if necessary
+        self.mapXY = None
+        self.worldXY = None
 
         self.shared_image = SharedImage("numpyimage")
 
         # Create Sensor objects
-        pose3d_object = ListenerPose3d("/taxi_holo/odom")
+        self.pose3d_object = ListenerPose3d("/odom")
 
         # Spin nodes so that subscription callbacks load topic data
         executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(pose3d_object)
+        executor.add_node(self.pose3d_object)
         executor_thread = threading.Thread(target=executor.spin, daemon=True)
         executor_thread.start()
 
         # create Map object
-        self.map = Map(pose3d_object)
+        self.map = Map(self.pose3d_object)
 
-        threading.Thread(target=self.run_websocket).start()
+        self.client_thread = threading.Thread(target=self.run_websocket)
+        self.client_thread.start()
+
 
     def run_websocket(self):
-        self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
-        self.client.run_forever(ping_timeout=None, ping_interval=0)
+        while True:
+            self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
+            self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     def payloadImage(self):
         """Encodes the image data to be sent to websocket"""
@@ -96,6 +101,12 @@ class GUI:
         else:
             return None
 
+    def getMap(self, url):
+        return self.map.getMap(url)
+    
+    def rowColumn(self, pose):
+        return self.map.rowColumn(pose)
+        
     def update_gui(self):
         """Updates the GUI with the latest map information."""
         # Payload Image Message
@@ -108,7 +119,7 @@ class GUI:
         # print(self.pose3d_object.getPose3d())
         ang_message = self.map.getTaxiAngle()
         pos_message = str(pos_message1 + ang_message)
-        # print("pos2 : {} ,  ang : {}".format(pos_message,ang_message))
+        #print("pos2 : {} ,  ang : {}".format(pos_message,ang_message))
         self.payload["map"] = pos_message
 
         message = json.dumps(self.payload)
@@ -122,16 +133,17 @@ class GUI:
 
     def on_message(self, ws, message):
         """Handles incoming messages from the websocket client."""
-        if message.startswith("#ack"):
+        if (message[:4] == "#ack"):
             with self.ack_lock:
-                self.ack=True
-        elif (message[:5] == "#pick"):
-            data = eval(message[5:])
-            self.mapXY = data
-            x, y = self.mapXY
-            worldx, worldy = self.map.gridToWorld(x, y)
-            self.worldXY = [worldx, worldy]
-            print("World : {}".format(self.worldXY))
+                self.ack = True
+        else:
+            if (message[:5] == "#pick"):
+                data = eval(message[5:])
+                self.mapXY = data
+                x, y = self.mapXY
+                worldx, worldy = self.map.gridToWorld(x, y)
+                self.worldXY = [worldx, worldy]
+                print("World : {}".format(self.worldXY))
 
     def reset_gui(self):
         """Resets the GUI to its initial state."""
@@ -175,3 +187,21 @@ thread_gui = ThreadGUI(gui_interface)
 thread_gui.start()
 
 start_console()
+
+def payloadImage():
+    gui_interface.payloadImage()
+
+def showNumpy(image):
+    gui_interface.showNumpy(image)
+
+def showPath(array):
+    return gui_interface.showPath(array)
+
+def getTargetPose():
+    return gui_interface.getTargetPose()
+
+def getMap(url):
+    return gui_interface.getMap(url)
+
+def rowColumn(pose):
+    return gui_interface.rowColumn(pose)
