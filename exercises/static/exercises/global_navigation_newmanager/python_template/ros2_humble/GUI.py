@@ -13,14 +13,12 @@ from shared.image import SharedImage
 import re
 
 from map import Map
-from interfaces.laser import ListenerLaser
-
 from console import start_console
 # Graphical User Interface Class
 class GUI:
     """Graphical User Interface class"""
 
-    def __init__(self, host, hal):
+    def __init__(self, host):
         """Initializes the GUI"""
 
         print("GUI IS BEING INITIALIZED\n\n\n\n")
@@ -37,7 +35,7 @@ class GUI:
         self.ack_lock = threading.Lock()
         self.array = None
         self.array_lock = threading.Lock()
-        self.hal = hal #TODO: check if necessary
+        # self.hal = hal #TODO: check if necessary
 
         self.shared_image = SharedImage("numpyimage")
 
