@@ -25,4 +25,4 @@ django-webpack-loader==1.5.0
 transitions==0.9.0
 websockets==10.3
 
-pydantic==1.10.2
+pydantic==1.10.13
