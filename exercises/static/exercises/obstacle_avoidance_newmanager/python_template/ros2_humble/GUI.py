@@ -47,7 +47,7 @@ class GUI:
 
         # Create Sensor objects
         self.pose3d_object = ListenerPose3d("/odom")
-        self.laser_object = ListenerLaser("/laser/scan")
+        self.laser_object = ListenerLaser("/f1/laser/scan")
 
         # Create the map and lap objects
         self.map = Map(self.laser_object, self.pose3d_object)
@@ -97,7 +97,6 @@ class GUI:
 
     def showImage(self, image):
         """Function for student to call"""
-        #TODO: is this necessary?
         self.image_show_lock.acquire()
         self.image_to_be_shown = image
         self.image_to_be_shown_updated = True
@@ -187,7 +186,6 @@ thread_gui.start()
 start_console()
 
 def showImage(image):
-    #TODO: is this necessary?
     gui_interface.showImage(image)
 
 def showForces(vec1, vec2, vec3):

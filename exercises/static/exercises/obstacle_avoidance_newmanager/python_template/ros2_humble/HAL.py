@@ -15,8 +15,8 @@ rclpy.create_node('HAL')
 
 pose3d = ListenerPose3d("/odom")
 motors = PublisherMotors("/cmd_vel", 4, 0.3)
-camera = ListenerCamera("/cam_f1_left/image_raw") #TODO: is this necessary?
-laser = ListenerLaser("/laser/scan")
+camera = ListenerCamera("/cam_f1_left/image_raw")
+laser = ListenerLaser("/f1/laser/scan")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
