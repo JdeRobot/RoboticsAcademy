@@ -32,6 +32,18 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.2"
+
+  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+    alt: "Amazon Warehouse"
+    title: "Amazon Warehouse (ROS2)"
+    excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
+    url: "/exercises/MobileRobots/amazon_warehouse/"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 2;
+    version: "v1.0"
     
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
