@@ -39,8 +39,6 @@ class GUI:
         self.ack_lock = threading.Lock()
 
         # self.hal = hal
-        self.mapXY = None
-        self.worldXY = None
 
         # Image variables
         self.image_to_be_shown = None
@@ -51,7 +49,8 @@ class GUI:
         self.pose3d_object = ListenerPose3d("/odom")
         self.laser_object = ListenerLaser("/laser/scan")
 
-        # Create the lap object
+        # Create the map and lap objects
+        self.map = Map(self.laser_object, self.pose3d_object)
         self.lap = Lap(self.map)
 
         # Spin nodes so that subscription callbacks load topic data
@@ -60,9 +59,6 @@ class GUI:
         executor.add_node(self.laser_object)
         executor_thread = threading.Thread(target=executor.spin, daemon=True)
         executor_thread.start()
-
-        # create Map object
-        self.map = Map(self.pose3d_object, self.laser_object)
 
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
@@ -199,3 +195,14 @@ def showForces(vec1, vec2, vec3):
 
 def showLocalTarget(newVec):
     return gui_interface.showLocalTarget(newVec)
+
+#TODO: change this to another file, not GUI
+
+def getNextTarget():
+    return gui_interface.map.getNextTarget()
+
+def setTargetx(x):
+    gui_interface.map.targetx = x
+
+def setTargety(y):
+    gui_interface.map.targety = y
