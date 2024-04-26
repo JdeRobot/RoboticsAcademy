@@ -6,6 +6,7 @@ from datetime import datetime
 import websocket
 import rclpy
 from console import start_console
+import matplotlib.pyplot as plt
 
 from map import Map
 from interfaces.pose3d import ListenerPose3d
@@ -113,7 +114,9 @@ class GUI:
 
         self.array = strArray
         self.array_lock.release()
-
+    
+    def getMap(self, url):
+        return plt.imread(url)
 #------------------------------------------------------------#
 
 
@@ -154,3 +157,9 @@ thread_gui = ThreadGUI(gui_interface)
 thread_gui.start()
 
 start_console()
+
+def showPath(array):
+    return gui_interface.showPath(array)
+
+def getMap(url):
+    return gui_interface.getMap(url)
