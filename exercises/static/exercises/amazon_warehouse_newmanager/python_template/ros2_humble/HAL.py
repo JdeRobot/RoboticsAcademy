@@ -40,8 +40,8 @@ def setV(velocity):
 def setW(velocity):
     motors.sendW(velocity)
 
-def load():
+def lift():
     platform_pub.load()
 
-def unload():
+def putdown():
     platform_pub.unload()
