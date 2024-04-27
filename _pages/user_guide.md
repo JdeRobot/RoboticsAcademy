@@ -22,9 +22,9 @@ The installation of ROS, Gazebo, etc. has been greatly simplified, as all the re
 
 2. Pull the current distribution of Robotics Academy Docker Image:
 
-	```bash
-  docker pull jderobot/robotics-academy:latest
-  ```
+```bash
+docker pull jderobot/robotics-academy:latest
+```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
@@ -35,9 +35,9 @@ The installation of ROS, Gazebo, etc. has been greatly simplified, as all the re
 
 1. Start a new docker container of the image and keep it running in the background:
 
-	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
-  ```
+```bash
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+```
 
 2. On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
@@ -54,17 +54,17 @@ ROS and Gazebo can be accelerated within RoboticsAcademy thanks to VirtualGL if 
 
 - **Intel:** For Linux machines and Intel GPUs, acceleration can be achieved by simply setting the ```--device``` argument when running the Docker container:
 ```bash
-docker run --rm -it --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
 ```
 
 - **NVIDIA:** For NVIDIA GPUs, acceleration can be achieved by [installing the nvidia-container-runtime package](https://docs.docker.com/config/containers/resource_constraints/#gpu), and then running the command above, but adding the ```--gpus all``` flag:
 ```bash
-docker run --rm -it --gpus all --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it --gpus all --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
 ```
 
 - **MULTIPLE GPUs:** If the PC has several GPUs, we can choose which one will be used by setting the ```DRI_NAME``` environment variable (e.g. ```card0``` or ```card1```)
 ```bash
-docker run --rm -it --gpus all --device /dev/dri -e DRI_NAME=card1 -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it --gpus all --device /dev/dri -e DRI_NAME=card1 -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
 ```
 You can check the names associated with your graphic cards by running:
 ```bash
