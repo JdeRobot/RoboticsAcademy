@@ -1,8 +1,8 @@
-from Parser import Parser
 import json
 import math
 import os
 import numpy as np
+from interfaces.pose3d import Pose3d
 from interfaces.laser import ListenerLaser
 
 class Map:
@@ -126,3 +126,44 @@ class Map:
 				laser[i] = (dist, angle)
 						
 		return laser, 20 * self.laser.maxRange
+
+class Parser:
+    def __init__(self,filename):
+        with open(filename) as data_file:
+            self.data = json.load(data_file)
+
+    def getTargets(self):
+        targets = []
+        for t in self.data["targets"]:
+            pose = Pose3d()
+            pose.x = t["x"]; pose.y = t["y"]
+            targets.append(Target(t["name"],pose,False,False))
+        return targets
+
+class Target:
+    def __init__(self,id,pose,active=False,reached=False):
+        self.id=id
+        self.pose=pose
+        self.active=active
+        self.reached=reached
+
+    def getPose(self):
+        return self.pose
+
+    def getId(self):
+        return self.id
+
+    def getPose(self):
+        return self.pose
+
+    def isReached(self):
+        return self.reached
+
+    def setReached(self,value):
+        self.reached=value
+
+    def isActive(self):
+        return self.active
+
+    def setActive(self,value):
+        self.active=True
