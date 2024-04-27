@@ -44,6 +44,7 @@ class GUI:
         self.image_show_lock = threading.Lock()
 
         self.host = host
+        self.client = None
 
         self.ack = False
         self.ack_lock = threading.Lock()
