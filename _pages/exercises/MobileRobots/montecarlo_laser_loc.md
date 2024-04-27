@@ -77,6 +77,8 @@ docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot
 
 - The exercise can be used after the alert.
 
+### Enable GPU Acceleration
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
 
 **Where to insert the code?**
 

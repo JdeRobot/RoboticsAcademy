@@ -91,19 +91,21 @@ docker pull jderobot/robotics-academy:latest
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
-
 ### How to perform the exercise?
 - Start a new docker container of the image and keep it running in the background:
 
 ```bash
-docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy:latest
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
 ```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
-- The exercise can be used after both *Connected* and *Ready* turn green. 
+- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
+
+- The exercise can be used after the alert.
+
+### Enable GPU Acceleration
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
 
 **Where to insert the code?**
 

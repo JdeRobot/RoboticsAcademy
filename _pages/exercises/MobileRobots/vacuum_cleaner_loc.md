@@ -47,9 +47,9 @@ docker pull jderobot/robotics-academy:latest
 ### How to perform the exercises?
 - Start a new docker container of the image and keep it running in the background:
 
-	```bash
-  docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
-  ```
+```bash
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
