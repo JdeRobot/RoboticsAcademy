@@ -1,4 +1,5 @@
-import rospy
+import rclpy
+from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 import threading
 from math import pi as PI
@@ -48,10 +49,10 @@ def laserScan2LaserData(scan):
     laser.maxAngle = scan.angle_max  + PI/2
     laser.maxRange = scan.range_max
     laser.minRange = scan.range_min
-    laser.timeStamp = scan.header.stamp.secs + (scan.header.stamp.nsecs *1e-9)
+    laser.timeStamp = scan.header.stamp.sec + (scan.header.stamp.nanosec *1e-9)
     return laser
 
-class ListenerLaser:
+class ListenerLaser(Node):
     '''
         ROS Laser Subscriber. Laser Client to Receive Laser Scans from ROS nodes.
     '''
@@ -64,6 +65,7 @@ class ListenerLaser:
         @type topic: String
 
         '''
+        super().__init__("laser_subscriber_node")
         self.topic = topic
         self.data = LaserData()
         self.sub = None
@@ -97,8 +99,8 @@ class ListenerLaser:
         Starts (Subscribes) the client.
 
         '''
-        self.sub = rospy.Subscriber(self.topic, LaserScan, self.__callback)
-        
+        self.sub = self.create_subscription(LaserScan, self.topic , self.__callback,10)
+
     def getLaserData(self):
         '''
         Returns last LaserData. 

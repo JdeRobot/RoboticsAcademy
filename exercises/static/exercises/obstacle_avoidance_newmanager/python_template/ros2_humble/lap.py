@@ -1,4 +1,3 @@
-import rospy
 from datetime import datetime
 
 class Lap:
