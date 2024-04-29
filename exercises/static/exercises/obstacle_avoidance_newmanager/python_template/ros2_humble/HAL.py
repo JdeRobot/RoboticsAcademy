@@ -32,7 +32,7 @@ def getPose3d():
 
 def getLaserData():
     laser_data = laser.getLaserData()
-    while laser_data.values == 0:
+    while len(laser_data.values) == 0:
         laser_data = laser.getLaserData()
     return laser_data
 
