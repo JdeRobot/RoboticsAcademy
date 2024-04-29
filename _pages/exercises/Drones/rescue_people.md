@@ -43,9 +43,9 @@ This is the preferred way for running the exercise.
 
 2. Pull the current distribution of Robotics Academy Docker Image:
 
-	```bash
-  docker pull jderobot/robotics-academy:latest
-  ```
+```bash
+docker pull jderobot/robotics-academy:latest
+```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
@@ -54,9 +54,9 @@ This is the preferred way for running the exercise.
 ### How to perform the exercises?
 - Start a new docker container of the image and keep it running in the background:
 
-	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
-  ```
+```bash
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
@@ -69,8 +69,9 @@ This is the preferred way for running the exercise.
 
 ### Optional: Store terminal output
 - To store the terminal output of manager.py and launch.py to a file execute the following docker run command and keep it running in the background:
+
 ```bash
-docker run -it --rm -v $HOME/.roboticsacademy/log/:/root/.roboticsacademy/log/ --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 2304:2304 -p 1904:1904 jderobot/robotics-academy --logs
+docker run -it --rm -v $HOME/.roboticsacademy/log/:/root/.roboticsacademy/log/ --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy --logs
 ```
 
 - The log files will be stored inside `$HOME/.roboticsacademy/{year-month-date-hours-mins}/`. After the session, use `more` to view the logs, for example:
@@ -83,8 +84,8 @@ more $HOME/.roboticsacademy/log/2021-11-06-14-45/manager.log
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import GUI
+import HAL
 # Enter sequential code!
 
 while True:
@@ -111,8 +112,8 @@ Please note that the code executing process might take a few seconds.
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
 ### Sensors and drone state
 

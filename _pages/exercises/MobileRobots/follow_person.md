@@ -77,47 +77,43 @@ This is the preferred way for running the exercise.
 ### Installation 
 - Clone the Robotics Academy repository on your local machine
 
-	```bash
+```bash
 git clone https://github.com/JdeRobot/RoboticsAcademy
-	```
+```
 
 - Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
 - Pull the current distribution of Robotics Academy Docker Image
 
-	```bash
+```bash
 docker pull jderobot/robotics-academy:latest
-	```
+```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-### Enable GPU Acceleration
-- For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
-  ```bash
-  docker run --rm -it --device /dev/dri -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:latest 
-  ```
-
-
-- For Windows machines, GPU acceleration to Docker is an experimental approach and can be implemented as per instructions given [here](https://www.docker.com/blog/wsl-2-gpu-support-is-here/)
-
 ### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
+- Start a new docker container of the image and keep it running in the background:
 
-	```bash
-  docker run --rm -it -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:latest
-  ```
+```bash
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
-- The exercise can be used after both *Connected* and *Ready* turn green. 
+- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
+
+- The exercise can be used after the alert.
+
+### Enable GPU Acceleration
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
 
 **Where to insert the code?**
 
 In the webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import GUI
+import HAL
 # Enter sequential code!
 
 
@@ -144,8 +140,8 @@ The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to obtain the current frame of the camera robot.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)

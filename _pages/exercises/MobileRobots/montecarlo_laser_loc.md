@@ -68,7 +68,7 @@ docker pull jderobot/robotics-academy:latest
 - Start a new docker container of the image and keep it running in the background.
 
 ```bash
-docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy 
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy 
 ```   
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
@@ -77,14 +77,16 @@ docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:
 
 - The exercise can be used after the alert.
 
+### Enable GPU Acceleration
+- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
 
 **Where to insert the code?**
 
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import GUI
+import HAL
 # Enter sequential code!
 
 
@@ -104,8 +106,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
-* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
+* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.setW()` - to set the angular velocity 
 * `HAL.setV()` - to set the linear velocity 
 * `GUI.showParticles(particles)` - shows the particles on the map. Accepts a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_radians]. The values must be in gazebo world coordinate system.  
