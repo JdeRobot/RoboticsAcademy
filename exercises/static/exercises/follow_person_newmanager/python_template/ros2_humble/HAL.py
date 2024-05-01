@@ -26,8 +26,8 @@ neural_network = NeuralNetwork()
 def getLaserData():
     try:
         rclpy.spin_once(laser_node)
-        values = laser_node.getLaserData().values
-        return values
+        laser_data = laser_node.getLaserData()
+        return laser_data
     except Exception as e:
         print(f"Exception in hal getLaserData {repr(e)}")
 
