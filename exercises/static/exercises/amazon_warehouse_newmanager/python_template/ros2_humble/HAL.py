@@ -32,7 +32,10 @@ def getPose3d():
     return pose3d.getPose3d()
 
 def getLaserData():
-    return laser.getLaserData()
+    laser_data = laser.getLaserData()
+    while len(laser_data.values) == 0:
+        laser_data = laser.getLaserData()
+    return laser_data
 
 def setV(velocity):
     motors.sendV(velocity)
