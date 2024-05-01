@@ -1,7 +1,7 @@
 import json
 import tempfile
 import subprocess
-from pylint import epylint as lint
+import pylint as lint
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
@@ -51,7 +51,7 @@ def evaluate_style(request):
         code_file.write(python_code.encode())
         code_file.seek(0)
         options = code_file.name + ' --enable=similarities' + " --disable=C0114,C0116" + " --ignore-imports=yes"
-        (stdout, stderr) = lint.py_run(options, return_std=True)
+        (stdout, stderr) = lint.run_pylint(options, return_std=True)
         code_file.seek(0)
         code_file.close()
         result = stdout.getvalue()
