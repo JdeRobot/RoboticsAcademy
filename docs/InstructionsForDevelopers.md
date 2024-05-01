@@ -42,7 +42,7 @@ After running the script, the src folder will be created, which contains all the
 
 Whenever you want to finish developing, you just can close the script with Crtl+C. It will take care of cleaning files so you can restart again without any additional config. 
 
-**Note: For Apple M1/M2 Chip Users,Docker provides the feature in-built in docker Desktop**
+**Note: For Apple M1/M2 Chip Users,Docker provides the feature in-built in docker Desktop to use Rosetta**
 
 Go to **Settings** > **General** :
 Enable Use Rosetta for x86_64/amd64 emulation on Apple Silicon
