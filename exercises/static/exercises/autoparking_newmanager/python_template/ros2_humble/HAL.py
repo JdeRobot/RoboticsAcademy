@@ -29,24 +29,24 @@ def getPose3d():
 def getFrontLaserData():
     try:
         rclpy.spin_once(laser_front)
-        values = laser_front.getLaserData().values
-        return values
+        laser_data = laser_front.getLaserData()
+        return laser_data
     except Exception as e:
         print(f"Exception in hal getFrontLaserData {repr(e)}")
 
 def getRightLaserData():
     try:
         rclpy.spin_once(laser_right)
-        values = laser_right.getLaserData().values
-        return values
+        laser_data = laser_right.getLaserData()
+        return laser_data
     except Exception as e:
         print(f"Exception in hal getRightLaserData {repr(e)}")
 
 def getBackLaserData():
     try:
         rclpy.spin_once(laser_back)
-        values = laser_back.getLaserData().values
-        return values
+        laser_data = laser_back.getLaserData()
+        return laser_data
     except Exception as e:
         print(f"Exception in hal getBackLaserData {repr(e)}")
 
