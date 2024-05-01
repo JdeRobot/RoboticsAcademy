@@ -42,6 +42,18 @@ After running the script, the src folder will be created, which contains all the
 
 Whenever you want to finish developing, you just can close the script with Crtl+C. It will take care of cleaning files so you can restart again without any additional config. 
 
+**Note: For Apple M1/M2 Chip Users,Docker provides the feature in-built in docker Desktop**
+
+Go to **Settings** > **General** :
+Enable Use Rosetta for x86_64/amd64 emulation on Apple Silicon
+- [x]  _Use Rosetta for x86_64/amd64 emulation on Apple Silicon_
+
+Please look at the attached image for reference.
+
+<img width="1440" alt="Screenshot 2024-05-01 at 10 35 55 PM" src="https://github.com/JdeRobot/RoboticsAcademy/assets/57873504/c4096ab4-f9c1-4ddf-b612-41e78074fb99">
+
+
+
 ### Using Docker compose
 
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RADI container, where all the dependencies are installed. 
