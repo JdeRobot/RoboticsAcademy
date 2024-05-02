@@ -153,6 +153,14 @@ The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented
 * `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
 * `GUI.showImage()` - to show an opencv image in the web template
 
+## Laser attributes
+`HAL.getLaserData()` returns an instance of a Class with the following attributes:
+* `minAngle` - Start angle of the scan [rad]
+* `maxAngle` - End angle of the scan [rad]
+* `minRange` - minimum range value [m]
+* `maxRange` - maximum range value [m]
+* `values` - A list of 180 measurements [m] (Note: values < minRange or > maxRange should be discarded)
+
 ### Bounding Box attributes
 `HAL.getBoundingBoxes()` returns an instance a list of Bounding Box Classes with the following attributes:
 * `id` - identifier of the type of object (1, 2, 3)

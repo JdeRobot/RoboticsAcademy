@@ -44,7 +44,18 @@ feature_row:
     status: "running"
     order: 2;
     version: "v1.0"
-    
+
+  - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
+    alt: "Simulated Follow Person"
+    title: "Follow Person (ROS2)"
+    excerpt: "Follow a Person in a hospital gazebo world using Deep Learning"
+    url: "/exercises/MobileRobots/follow_person"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "running"
+    order: 2;
+
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
     title: "Single Robot Amazon Warehouse (ROS2)"
@@ -112,17 +123,6 @@ feature_row:
     status: "running"
     order: 0;
     version: "v3.2"
-
-  - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
-    alt: "Simulated Follow Person"
-    title: "Follow Person (ROS2)"
-    excerpt: "Follow a Person in a hospital gazebo world using Deep Learning"
-    url: "/exercises/MobileRobots/follow_person"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
-    status: "prototype"
-    order: 2;
   
   - image_path: /assets/images/exercises/real_follow_person/real_follow_person_teaser.png
     alt: "Real Follow Person"
