@@ -88,7 +88,7 @@ This is the preferred way to run the exercise.
 - Start a new docker container of the image and keep it running in the background:
 
 	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+  docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
   ```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
@@ -105,8 +105,8 @@ This is the preferred way to run the exercise.
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import GUI
+import HAL
 # Enter sequential code!
 
 
@@ -131,8 +131,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
@@ -143,6 +143,10 @@ while True:
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
+* `GUI.getNextTarget()` - to obtain the next target on the scenario.
+* `GUI.setTargetx` - sets the x coordinate of the target on the GUI.
+* `GUI.setTargety` - sets the y coordinate of the target on the GUI.
+* `GUI.showForces` - shows the forces being appliend on the car in real time.
 
 **Own API**
 
@@ -150,7 +154,7 @@ To simplify, the implementation of control points is offered.
 To use it, only two actions must be carried out:
 1. Obtain the following point:
 
-   `currentTarget = GUI.map.getNextTarget()`
+   `currentTarget = GUI.getNextTarget()`
 2. Mark it as visited when necessary:
 
    `currentTarget.setReached(True)`
