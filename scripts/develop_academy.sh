@@ -5,15 +5,17 @@ ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
 branch="humble-devel"
 radi_version="humble"
 gpu_mode="false"
+nvidia_mode="false"
 compose_file="dev_humble_cpu"
 
 # Loop through the arguments using a while loop
-while getopts ":r:b:i:g" opt; do
+while getopts ":r:b:i:g:n" opt; do
   case $opt in
     r) ram_version="$OPTARG" ;;
     b) branch="$OPTARG" ;;
     i) radi_version="$OPTARG" ;; 
     g) gpu_mode="true" ;; 
+    n) nvidia_mode="true" ;;
     \?) echo "Invalid option: -$OPTARG" >&2 ;;   # If an invalid option is provided, print an error message
   esac
 done
@@ -56,7 +58,9 @@ yarn build
 cd ..
 
 # Prepare the compose file
-if [ "$gpu_mode" = "true" ]; then
+if [ "$nvidia_mode" = "true" ]; then
+  compose_file="dev_humble_nvidia"
+elif [ "$gpu_mode" = "true" ]; then
   compose_file="dev_humble_gpu"
 fi
 cp compose_cfg/$compose_file.yaml docker-compose.yaml

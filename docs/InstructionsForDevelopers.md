@@ -30,7 +30,7 @@ You can ignore the -b arg if you want to start working from the main branch.
 
 2) Run the script with your desired config
 ```
-sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble/noetic>
+sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble/noetic> -g/-n (for Intel GPU or Nvidia GPU)
 ```
 If you don't provide any arguments, it will prepare a humble environment with the current stable branch of RAM. You may start working from that and then create the branch you need. 
 
@@ -51,7 +51,7 @@ The steps for setting up a development environment using Docker Compose are:
 1) Install Docker Compose
 ```
 sudo apt install docker-compose
- ```
+```
 
 2) Clone RoboticsAcademy repo (or your fork) and create src folder
 ```
