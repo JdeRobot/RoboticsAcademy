@@ -13,7 +13,7 @@ toc_icon: "cog"
 **Robotics Academy** supports Linux (Ubuntu 18.04, 20.04, 22.04 and other distributions), MacOS and Windows.
 
 
-
+<a name="installation"></a>
 # 1. Installation
 
 The installation of ROS, Gazebo, etc. has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics-Academy Docker Image (RADI). The users should:
@@ -30,14 +30,19 @@ docker pull jderobot/robotics-academy:latest
 
 - It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
 
-
-# 2. How to use and perform the exercises?
+<a name="launch"></a>
+# 2. How to launch a RADI container?
 
 1. Start a new docker container of the image and keep it running in the background:
 
 ```bash
 docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
 ```
+
+To enable GPU acceleration on the docker container, follow the instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
+
+<a name="perform-exercise"></a>
+# 3. How to use and perform the exercises?
 
 2. On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
