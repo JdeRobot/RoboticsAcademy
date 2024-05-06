@@ -1,0 +1,49 @@
+3DReconstruction:
+
+  CameraLeft:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraL:default -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/3DReconstruction/image_rawL"
+    Name: 3DReconstructionCameraL
+
+  CameraRight:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "CameraR:default -h localhost -p 9001"
+    Format: RGB8
+    Topic: "/3DReconstruction/image_rawR"
+    Name: 3DReconstructionCameraR
+
+  Motors:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Motors:default -h localhost -p 9001"
+    Topic: "/3DReconstruction/Motos"
+    Name: 3DReconstructionMotors
+
+  Encoders:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Proxy: "Encoders:default -h localhost -p 9001"
+    Topic: "/3DReconstruction/Encoders"
+    Name: 3DReconstructionEncoders
+
+  Viewer:
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    Endpoint: "default -h localhost -p 9957:ws -h localhost -p 11000"
+    Proxy: "3DVizA"
+    Refresh: True
+    Topic: "/3DReconstruction/Viewer"
+    Name: 3DReconstructionViewer
+
+  CamACalibration: 
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    data: {"K":[240,0,320,0,0,240,240,0,0,0,1,0],
+           "RT":[1,0,0,-110,0,1,0,0,0,0,-1,0,0,0,0,1],
+           "Size":[640,480]}
+
+  CamBCalibration: 
+    Server: 2 # 0 -> Deactivate, 1 -> Ice , 2 -> ROS
+    data: {"K":[240,0,320,0,0,240,240,0,0,0,1,0],
+           "RT":[1,0,0,110,0,1,0,0,0,0,-1,0,0,0,0,1],
+           "Size":[640,480]}
+ 
+  NodeName: "3DReconstruction"
