@@ -42,7 +42,7 @@ youtubeId: BpHSDrFqpVk
 
 The objective of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must find a parking space and park properly.
 
-**Note**: If you haven't, follow the installation instructions [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#1.-installation)
+**Note**: If you haven't, follow the installation instructions [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation)
 
 {% include gallery caption="Gallery" %}
 
@@ -50,10 +50,12 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 ### Launching
 
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#launch).
+- Follow the launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#launch).
 
-### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
+### How to perform the exercises?
+
+- Follow the instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#perform-exercises).
+
 
 **Where to insert the code?**
 

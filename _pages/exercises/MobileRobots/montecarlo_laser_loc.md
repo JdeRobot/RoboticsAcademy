@@ -46,39 +46,18 @@ The aim of this practical is to develop a localization algorithm based on the pa
 
 {% include gallery caption="MonteCarlo Laser Location." %}
 
+**Note**: If you haven't, follow the installation instructions [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation)
+
 ## Instructions
 This is the preferred way for running the exercise.
 
-### Installation 
-- Clone the Robotics Academy repository on your local machine
+### Launching
 
-```bash
-git clone https://github.com/JdeRobot/RoboticsAcademy
-```
+- Follow the launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#launch).
 
-- Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
+### How to perform the exercises?
 
-- Pull the current distribution of Robotics Academy Docker Image
-
-```bash
-docker pull jderobot/robotics-academy:latest
-```
-
-### How to perform the exercise?
-- Start a new docker container of the image and keep it running in the background.
-
-```bash
-docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy 
-```   
-
-- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
-
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
-
-### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
+- Follow the instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#perform-exercises).
 
 **Where to insert the code?**
 
