@@ -42,7 +42,7 @@ Windows users should choose WSL 2 backend Docker installation if possible, as it
 
 3. Enable Docker Desktop WSL integration: In order to wsl2 to recognise Docker, you need to enable it. For that, go to Docker Desktop -> Settings -> Resources -> WSL integration. Click on the check box and the slider.
 
-![WSL integration](/assets/images/user_guide/wsl-integration-docker.png)
+![WSL integration](/RoboticsAcademy/assets/images/user_guide/wsl-integration-docker.png)
 
 4. Pull the current distribution of Robotics Academy Docker Image **(currently version 4.5.11)**:
 
@@ -105,13 +105,13 @@ For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as
 
 1. On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
-![Robotics Academy Main Page](/assets/images/user_guide/ra-main-page.png)
+![Robotics Academy Main Page](/RoboticsAcademy/assets/images/user_guide/ra-main-page.png)
 
 2. Click on the exercise you want to work with.
 
 3. Wait until the exercise is fully loaded. You know it is fully loaded when the `Robotics Backend`, `World` and `Visualization state` boxes are green.
 
-![Exercise-page](/assets/images/user_guide/exercise-page.png)
+![Exercise-page](/RoboticsAcademy/assets/images/user_guide/exercise-page.png)
 
 4. Let's take a look to the exercise page:
     1. **World Button**: Some exercises have multiple universes to test your code. Clicking on this button, a list of the universes appears and you can choose whichever you want.
