@@ -59,16 +59,16 @@ docker pull jderobot/robotics-academy:4.5.11
 <a name="launch"></a>
 # 2. How to launch a RADI container?
 
-1. Start a new docker container of the image and keep it running in the background:
+* Start a new docker container of the image and keep it running in the background:
 
 ```bash
 docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
 ```
 
-# Enable GPU Acceleration
+## Enable GPU Acceleration
 ROS and Gazebo can be accelerated within RoboticsAcademy thanks to VirtualGL if a GPU is available.
 
-## Linux
+### Linux
 
 
 - **Intel:** For Linux machines and Intel GPUs, acceleration can be achieved by simply setting the ```--device``` argument when running the Docker container:
@@ -97,7 +97,7 @@ You should get something like:
 }
 ```
 
-## Windows
+### Windows
 For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as per instructions given [here](https://docs.docker.com/desktop/gpu/#using-nvidia-gpus-with-wsl2).
 
 <a name="perform-exercise"></a>
@@ -129,5 +129,5 @@ For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as
 
     6. **VNC displays**: These VNC displays gives you info about the simulation. The one at the top usually has GUI info for the exercise. Below that is the Gazebo universe display and on the left you have a console where you can print info about the exercise.
 
-5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
+5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 

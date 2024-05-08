@@ -46,42 +46,7 @@ The aim of this practical is to develop a localization algorithm based on the pa
 
 {% include gallery caption="MonteCarlo Laser Location." %}
 
-**Note**: If you haven't, follow the installation instructions [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation)
-
-## Instructions
-This is the preferred way for running the exercise.
-
-### Launching
-
-- Follow the launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#launch).
-
-### How to perform the exercises?
-
-- Follow the instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#perform-exercises).
-
-**Where to insert the code?**
-
-In the launched webpage, type your code in the text editor,
-
-```python
-import GUI
-import HAL
-# Enter sequential code!
-
-
-while True:
-    # Enter iterative code!
-```
-
-### Using the Interface
-
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).
-
-* **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
-
-* **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
-
-* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RADI and how to perform the exercises.
 
 ## Robot API
 
