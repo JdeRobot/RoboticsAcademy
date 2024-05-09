@@ -1,8 +1,8 @@
-import rospy
-from nav_msgs.msg import Odometry
+import rclpy
+from rclpy.node import Node
 import threading
 from math import asin, atan2, pi
-
+from nav_msgs.msg import Odometry
 
 def quat2Yaw(qw, qx, qy, qz):
     '''
@@ -87,33 +87,34 @@ def odometry2Pose3D(odom):
     pose.pitch = quat2Pitch(ori.w, ori.x, ori.y, ori.z)
     pose.roll = quat2Roll(ori.w, ori.x, ori.y, ori.z)
     pose.q = [ori.w, ori.x, ori.y, ori.z]
-    pose.timeStamp = odom.header.stamp.secs + (odom.header.stamp.nsecs *1e-9)
+    pose.timeStamp = odom.header.stamp.sec + (odom.header.stamp.nanosec *1e-9)
 
     return pose
-
+    
 class Pose3d ():
 
-    def __init__(self):
+	def __init__(self):
 
-        self.x = 0 # X coord [meters]
-        self.y = 0 # Y coord [meters]
-        self.z = 0 # Z coord [meters]
-        self.h = 1 # H param
-        self.yaw = 0 #Yaw angle[rads]
-        self.pitch = 0 # Pitch angle[rads]
-        self.roll = 0 # Roll angle[rads]
-        self.q = [0,0,0,0] # Quaternion
-        self.timeStamp = 0 # Time stamp [s]
+		self.x = 0 # X coord [meters]
+		self.y = 0 # Y coord [meters]
+		self.z = 0 # Z coord [meters]
+		self.h = 1 # H param
+		self.yaw = 0 #Yaw angle[rads]
+		self.pitch = 0 # Pitch angle[rads]
+		self.roll = 0 # Roll angle[rads]
+		self.q = [0,0,0,0] # Quaternion
+		self.timeStamp = 0 # Time stamp [s]
 
 
-    def __str__(self):
-        s = "Pose3D: {\n   x: " + str(self.x) + "\n   Y: " + str(self.y)
-        s = s + "\n   Z: " + str(self.z) + "\n   H: " + str(self.h) 
-        s = s + "\n   Yaw: " + str(self.yaw) + "\n   Pitch: " + str(self.pitch) + "\n   Roll: " + str(self.roll)
-        s = s + "\n   quaternion: " + str(self.q) + "\n   timeStamp: " + str(self.timeStamp)  + "\n}"
-        return s 
+	def __str__(self):
+		s = "Pose3D: {\n   x: " + str(self.x) + "\n   Y: " + str(self.y)
+		s = s + "\n   Z: " + str(self.z) + "\n   H: " + str(self.h) 
+		s = s + "\n   Yaw: " + str(self.yaw) + "\n   Pitch: " + str(self.pitch) + "\n   Roll: " + str(self.roll)
+		s = s + "\n   quaternion: " + str(self.q) + "\n   timeStamp: " + str(self.timeStamp)  + "\n}"
+		return s 
 
-class ListenerPose3d:
+
+class ListenerPose3d(Node):
     '''
         ROS Pose3D Subscriber. Pose3D Client to Receive pose3d from ROS nodes.
     '''
@@ -126,6 +127,7 @@ class ListenerPose3d:
         @type topic: String
 
         '''
+        super().__init__("ListenerPose")
         self.topic = topic
         self.data = Pose3d()
         self.sub = None
@@ -159,7 +161,8 @@ class ListenerPose3d:
         Starts (Subscribes) the client.
 
         '''
-        self.sub = rospy.Subscriber(self.topic, Odometry, self.__callback)
+        self.sub = self.create_subscription(Odometry, self.topic, self.__callback,10)
+
         
     def getPose3d(self):
         '''

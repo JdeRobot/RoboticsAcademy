@@ -1,4 +1,4 @@
-import rospy
+import rclpy
 from geometry_msgs.msg import Twist
 import threading
 from math import pi as PI
@@ -9,12 +9,12 @@ from .threadPublisher import ThreadPublisher
 def cmdvel2Twist(vel):
 
     tw = Twist()
-    tw.linear.x = vel.vx
-    tw.linear.y = vel.vy
-    tw.linear.z = vel.vz
-    tw.angular.x = vel.ax
-    tw.angular.y = vel.ay
-    tw.angular.z = vel.az
+    tw.linear.x = float(vel.vx)
+    tw.linear.y = float(vel.vy)
+    tw.linear.z = float(vel.vz)
+    tw.angular.x = float(vel.ax)
+    tw.angular.y = float(vel.ay)
+    tw.angular.z = float(vel.az)
 
     return tw
 
@@ -46,9 +46,10 @@ class PublisherMotors:
         self.maxW = maxW
         self.maxV = maxV
 
+        self.node = rclpy.create_node('PublisherMotors')
         self.topic = topic
         self.data = CMDVel()
-        self.pub = rospy.Publisher(self.topic, Twist, queue_size=1)
+        self.pub = self.node.create_publisher(Twist, self.topic, 10)
        
         self.lock = threading.Lock()
 
@@ -59,65 +60,53 @@ class PublisherMotors:
         self.start()
  
     def publish (self):
-
         self.lock.acquire()
         tw = cmdvel2Twist(self.data)
         self.lock.release()
         self.pub.publish(tw)
         
     def stop(self):
-   
         self.kill_event.set()
         self.pub.unregister()
 
     def start (self):
-
         self.kill_event.clear()
         self.thread.start()
         
-
 
     def getMaxW(self):
         return self.maxW
 
     def getMaxV(self):
-        return self.maxV
-        
+        return self.maxV   
 
     def sendVelocities(self, vel):
-
         self.lock.acquire()
         self.data = vel
         self.lock.release()
 
     def sendV(self, v):
-
         self.sendVX(v)
 
     def sendL(self, l):
-
         self.sendVY(l)
 
     def sendW(self, w):
-
         self.sendAZ(w)
 
     def sendVX(self, vx):
-
         self.lock.acquire()
-        self.data.vx = vx
+        self.data.vx = float(vx)
         self.lock.release()
 
     def sendVY(self, vy):
-
         self.lock.acquire()
-        self.data.vy = vy
+        self.data.vy = float(vy)
         self.lock.release()
 
     def sendAZ(self, az):
-
         self.lock.acquire()
-        self.data.az = az
+        self.data.az = float(az)
         self.lock.release()
 
 
