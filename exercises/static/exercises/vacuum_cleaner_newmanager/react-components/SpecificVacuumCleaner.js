@@ -2,27 +2,27 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { draw } from "Helpers/BirdEye";
 
-function SpecificVacuumCleaner(props) {
+export default function SpecificVacuumCleaner() {
   const guiCanvasRef = React.useRef();
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
-      const data = message.data.update;
-      if (data.map) {
-        const pose = data.map.substring(1, data.map.length - 1);
-        const content = pose.split(",").map(function (item) {
-          return parseFloat(item);
-        });
-        draw(
-          guiCanvasRef.current,
-          content[0],
-          content[1],
-          content[2],
-          content[3]
-        );
-      }
+      console.log(message);
+      // if (data.map) {
+      //   const pose = data.map.substring(1, data.map.length - 1);
+      //   const content = pose.split(",").map(function (item) {
+      //     return parseFloat(item);
+      //   });
+      //   draw(
+      //     guiCanvasRef.current,
+      //     content[0],
+      //     content[1],
+      //     content[2],
+      //     content[3]
+      //   );
+      // }
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -49,7 +49,7 @@ function SpecificVacuumCleaner(props) {
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
         width: "100%",
-        height: "100%"
+        height: "100%",
       }}
     />
   );
@@ -58,5 +58,3 @@ function SpecificVacuumCleaner(props) {
 SpecificVacuumCleaner.propTypes = {
   circuit: PropTypes.string,
 };
-
-export default SpecificVacuumCleaner

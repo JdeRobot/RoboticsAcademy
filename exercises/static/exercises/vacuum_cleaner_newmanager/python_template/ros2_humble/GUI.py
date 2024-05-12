@@ -29,7 +29,7 @@ class ThreadingGUI:
         self.node = rclpy.create_node("node")
 
         # Payload vars
-        self.payload = {"map": ""}
+        self.msg = {"pos_msg": "", "ang_msg": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
         self.map = Map(getPose3d)
@@ -60,7 +60,7 @@ class ThreadingGUI:
         while self.running:
             start_time = time.time()
 
-            # Check if a new image should be sent
+            # Check if a new map should be sent
             with self.ack_lock:
                 if self.ack and self.map is not None:
                     self.send_map()
@@ -74,14 +74,15 @@ class ThreadingGUI:
     # Prepares and sends a map to the websocket server
     def send_map(self):
 
+        # Get the necessary info
         pos_message = self.map.getRobotCoordinates()
         if pos_message == self.init_coords:
             pos_message = self.start_coords
         ang_message = self.map.getRobotAngle()
-        pos_message = str(pos_message + ang_message)
-        self.payload["map"] = pos_message
 
-        message = "#gui" + json.dumps(self.payload)
+        self.msg["pos_msg"] = pos_message
+        self.msg["ang_msg"] = ang_message
+        message = json.dumps(self.msg)
         try:
             if self.client:
                 self.client.send(message)

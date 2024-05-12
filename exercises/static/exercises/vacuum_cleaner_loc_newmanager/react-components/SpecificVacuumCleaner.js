@@ -9,20 +9,22 @@ function SpecificVacuumCleaner(props) {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
+      console.log(message);
       const data = message.data.update;
-      if (data.map) {
-        const pose = data.map.substring(1, data.map.length - 1);
-        const content = pose.split(",").map(function (item) {
-          return parseFloat(item);
-        });
-        draw(
-          guiCanvasRef.current,
-          content[0],
-          content[1],
-          content[2],
-          content[3]
-        );
-      }
+      const pos_msg = data.pos_msg;
+      const ang_msg = data.ang_msg;
+      console.log(pos_msg);
+      console.log(ang_msg);
+      draw(
+        guiCanvasRef.current,
+        pos_msg[0],
+        pos_msg[1],
+        ang_msg[0],
+        ang_msg[1]
+      );
+
+      // Send the ACK of the img
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -49,7 +51,7 @@ function SpecificVacuumCleaner(props) {
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
         width: "100%",
-        height: "100%"
+        height: "100%",
       }}
     />
   );
@@ -59,4 +61,4 @@ SpecificVacuumCleaner.propTypes = {
   circuit: PropTypes.string,
 };
 
-export default SpecificVacuumCleaner
+export default SpecificVacuumCleaner;
