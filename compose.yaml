@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-academy:bumper_test_v3
+    image: jderobot/robotics-academy:bumper_test_def    
     container_name: developer-container
     # deploy:
     #   resources:
