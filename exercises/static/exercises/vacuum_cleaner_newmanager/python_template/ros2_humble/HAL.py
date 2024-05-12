@@ -13,9 +13,6 @@ print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
-# Redirect the console
-start_console()
-
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/odom")
 laser_node = LaserNode("/roombaROS/laser/scan")
@@ -51,7 +48,7 @@ def getPose3d():
 
 
 # Bumper
-def getBumper(index):
+def getBumperData():
     try:
         rclpy.spin_once(bumper_node)
         return bumper_node.getBumperData()
