@@ -9,6 +9,7 @@ from gazebo_msgs.srv import SetEntityState, GetEntityState
 import rclpy
 from console import start_console
 from map import Map
+from HAL import getPose3d
 
 
 class ThreadingGUI:
@@ -21,17 +22,17 @@ class ThreadingGUI:
 
         # Execution control vars
         self.out_period = 1.0 / freq
-        self.image = None
-        self.image_lock = threading.Lock()
         self.ack = True
         self.ack_lock = threading.Lock()
         self.running = True
-
         self.host = host
         self.node = rclpy.create_node("node")
+
+        # Payload vars
         self.payload = {"map": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
+        self.map = Map(getPose3d)
 
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()
@@ -41,21 +42,6 @@ class ThreadingGUI:
             target=self.gui_out_thread, name="gui_out_thread", daemon=True
         ).start()
 
-        # Initialize the services
-        self.set_client = self.node.create_client(
-            SetEntityState, "/follow_person/set_entity_state"
-        )
-        while not self.set_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("Service not available, waiting...")
-        self.set_request = SetEntityState.Request()
-
-        self.get_client = self.node.create_client(
-            GetEntityState, "/follow_person/get_entity_state"
-        )
-        while not self.get_client.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info("Service not available, waiting...")
-        self.get_request = GetEntityState.Request()
-
     # Init websocket client
     def run_websocket(self):
         self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
@@ -64,34 +50,10 @@ class ThreadingGUI:
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
 
-        # In this case, messages can be either acks or key strokes
+        # In this case, incoming msgs can only be acks
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
-        else:
-            # Get the current pose
-            self.get_request.name = "PersonToControl"
-            self.get_request.reference_frame = "world"
-            get_future = self.get_client.call_async(self.get_request)
-            rclpy.spin_until_future_complete(self.node, get_future)
-            pose = get_future.result().state.pose
-
-            # Update accordingly
-            if "key_w" in message:
-                pose.position.x += 0.1
-            elif "key_s" in message:
-                pose.position.x -= 0.1
-            elif "key_a" in message:
-                pose.position.y += 0.1
-            elif "key_d" in message:
-                pose.position.y -= 0.1
-
-            # Send the new pose
-            self.set_request.state.name = "PersonToControl"
-            self.set_request.state.pose = pose
-            self.set_request.state.reference_frame = "world"
-            set_future = self.set_client.call_async(self.set_request)
-            rclpy.spin_until_future_complete(self.node, set_future)
 
     # Process outcoming messages from the GUI
     def gui_out_thread(self):
@@ -100,36 +62,31 @@ class ThreadingGUI:
 
             # Check if a new image should be sent
             with self.ack_lock:
-                with self.image_lock:
-                    if self.ack and self.image is not None:
-                        self.send_image()
-                        self.ack = False
+                if self.ack and self.map is not None:
+                    self.send_map()
+                    self.ack = False
 
             # Maintain desired frequency
             elapsed = time.time() - start_time
             sleep_time = max(0, self.out_period - elapsed)
             time.sleep(sleep_time)
 
-    # Prepares and send image to the websocket server
-    def send_image(self):
+    # Prepares and sends a map to the websocket server
+    def send_map(self):
 
-        _, encoded_image = cv2.imencode(".JPEG", self.image)
-        payload = {
-            "image": base64.b64encode(encoded_image).decode("utf-8"),
-            "shape": self.image.shape,
-        }
-        self.msg["image"] = json.dumps(payload)
-        message = json.dumps(self.msg)
+        pos_message = self.map.getRobotCoordinates()
+        if pos_message == self.init_coords:
+            pos_message = self.start_coords
+        ang_message = self.map.getRobotAngle()
+        pos_message = str(pos_message + ang_message)
+        self.payload["map"] = pos_message
+
+        message = "#gui" + json.dumps(self.payload)
         try:
             if self.client:
                 self.client.send(message)
         except Exception as e:
             LogManager.logger.info(f"Error sending message: {e}")
-
-    # Function to set the next image to be sent
-    def setImage(self, image):
-        with self.image_lock:
-            self.image = image
 
 
 host = "ws://127.0.0.1:2303"
@@ -137,8 +94,3 @@ gui = ThreadingGUI(host)
 
 # Redirect the console
 start_console()
-
-
-# Expose the gui setImage function
-def showImage(img):
-    gui.setImage(img)
