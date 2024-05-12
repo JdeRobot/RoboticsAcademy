@@ -4,8 +4,7 @@ import sys
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
-from hal_interfaces.general.camera import CameraNode
-from hal_interfaces.general.classnet import NeuralNetwork
+from hal_interfaces.general.bumper import BumperNode
 
 ### HAL INIT ###
 
@@ -16,7 +15,13 @@ if not rclpy.ok():
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/odom")
 laser_node = LaserNode("/roombaROS/laser/scan")
-# bumper = ListenerBumper("/roombaROS/events/bumper", "roombaROS")
+bumper_node = BumperNode(
+    [
+        "/roombaROS/events/right_bumper",
+        "/roombaROS/events/center_bumper",
+        "/roombaROS/events/left_bumper",
+    ]
+)
 
 ### GETTERS ###
 
@@ -39,6 +44,11 @@ def getPose3d():
         return pose
     except Exception as e:
         print(f"Exception in hal getPose3d {repr(e)}")
+
+
+# Bumper
+def getBumper(index):
+    return bumper_node.get_contact(index)
 
 
 ### SETTERS ###
