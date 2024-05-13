@@ -6,15 +6,14 @@ function SpecificVacuumCleaner(props) {
   const guiCanvasRef = React.useRef();
 
   React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+    console.log("SpecificVacuumCleaner subscribing to ['update'] events");
 
     const callback = (message) => {
       console.log(message);
       const data = message.data.update;
       const pos_msg = data.pos_msg;
       const ang_msg = data.ang_msg;
-      console.log(pos_msg);
-      console.log(ang_msg);
+
       draw(
         guiCanvasRef.current,
         pos_msg[0],
