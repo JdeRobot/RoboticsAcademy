@@ -18,15 +18,15 @@ toc_icon: "cog"
 
 The installation of ROS, Gazebo, etc. has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics-Academy Docker Image (RADI).
 
-## Minimum system requirements
+## Minimum System Requirements
 
-* CPU: A 4-cored processor
-* RAM: 
-* Memory: 20 gb of disk space.
+* **CPU**: A 4-cored processor.
+* **RAM**: 2 gb RAM.
+* **Memory**: 20 gb of disk space.
 
 ## Linux Users
 
-1. Download [Docker](https://docs.docker.com/get-docker/) (minimum version of docker-py: 5.0.3).
+1. Download [Docker](https://docs.docker.com/get-docker/) **(minimum version of docker-py: 5.0.3)**.
 
 2. Pull the current distribution of Robotics Academy Docker Image **(currently version 4.5.11)**:
 
@@ -42,7 +42,7 @@ docker pull jderobot/robotics-academy:4.5.11
 
 Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-1. Install WSL2. Here's a link to the [tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) (minimum version of docker hub: 4.30.0).
+1. Install WSL2. Here's a link to the [tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) **(minimum version of docker hub: 4.30.0)**.
 
 2. Install Docker Desktop. Docker made an app for Windows users to adapt the user experience. You can download it from this [link](https://www.docker.com/products/docker-desktop/).
 
@@ -139,6 +139,6 @@ For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as
 
 5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 
-## Troubleshooting
+# 4. Troubleshooting
 
 
