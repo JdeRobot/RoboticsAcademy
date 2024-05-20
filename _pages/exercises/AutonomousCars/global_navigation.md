@@ -161,8 +161,8 @@ This is the preferred way for running the exercise.
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import GUI
+import HAL
 # Enter sequential code!
 
 
@@ -182,20 +182,19 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `from MAP import MAP` - This class contains functions that interact with data related to the map and Gazebo world. 
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
 * `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
 * `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image
-* `MAP.getMap(url)` - - Returns a numpy array with the image data in grayscale as a 2 dimensional array. The URL of the Global Navigation map is '/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png', so the instruction to get the map is
+* `GUI.getMap(url)` - - Returns a numpy array with the image data in grayscale as a 2 dimensional array. The URL of the Global Navigation map is '/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png', so the instruction to get the map is
 ```
-array = MAP.getMap('/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png')
+array = GUI.getMap('/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png')
 ```
-* `MAP.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter
+* `GUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter
     
 The map image has a resolution of 400x400 pixels and indicates wheter there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
 
@@ -272,7 +271,7 @@ Assignment of weights to the cells is arbitrary. Generally, diagonally neighbori
 
 **Important Points to Remember**
 
-- You may use `MAP.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
+- You may use `GUI.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
 
 - In order to assign those extra weights, we may take the obstacle points we saved earlier, and add extra values to the neighbors of the obstacle cell afterwards.
 
