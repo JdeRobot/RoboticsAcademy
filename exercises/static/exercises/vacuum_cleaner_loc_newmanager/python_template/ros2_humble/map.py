@@ -8,18 +8,36 @@ class Map:
 		self.pose3d = pose3d
 	
 	def RTx(self, angle, tx, ty, tz):
-		RT = np.matrix([[1, 0, 0, tx], [0, math.cos(angle), -math.sin(angle), ty], 
-						[0, math.sin(angle), math.cos(angle), tz], [0, 0, 0, 1]])
+		RT = np.matrix(
+			[
+				[1, 0, 0, tx],
+				[0, math.cos(angle), -math.sin(angle), ty], 
+				[0, math.sin(angle), math.cos(angle), tz], 
+				[0, 0, 0, 1]
+			]
+		)
 		return RT
 		
 	def RTy(self, angle, tx, ty, tz):
-		RT = np.matrix([[math.cos(angle), 0, math.sin(angle), tx], [0, 1, 0, ty],
-						[-math.sin(angle), 0, math.cos(angle), tz], [0, 0, 0, 1]])
+		RT = np.matrix(
+			[
+				[math.cos(angle), 0, math.sin(angle), tx], 
+				[0, 1, 0, ty],
+				[-math.sin(angle), 0, math.cos(angle), tz], 
+				[0, 0, 0, 1]
+			]
+		)
 		return RT
 		
 	def RTz(self, angle, tx, ty, tz):
-		RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle), 0, ty],
-						[0, 0, 1, tz], [0, 0, 0, 1]])
+		RT = np.matrix(
+			[
+				[math.cos(angle), -math.sin(angle), 0, tx], 
+				[math.sin(angle), math.cos(angle), 0, ty],
+				[0, 0, 1, tz], 
+				[0, 0, 0, 1]
+			]
+		)
 		return RT
 		
 	def RTVacuum(self):
