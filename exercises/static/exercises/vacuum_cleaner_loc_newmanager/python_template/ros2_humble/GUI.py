@@ -1,20 +1,18 @@
 import json
 import cv2
 import base64
+import numpy as np
+import matplotlib.pyplot as plt
 import threading
 import time
 import websocket
-import numpy as np
 from src.manager.ram_logging.log_manager import LogManager
 from gazebo_msgs.srv import SetEntityState, GetEntityState
 from shared.image import SharedImage
-import matplotlib.pyplot as plt
 import rclpy
 from console import start_console
 from map import Map
 from HAL import getPose3d
-
-from map import Map
 
 # Graphical User Interface Class
 
@@ -44,8 +42,7 @@ class ThreadingGUI:
         self.node = rclpy.create_node("node")
 
         # Payload vars
-        # self.msg = {"pos_msg": "", "ang_msg": ""}
-        self.msg = {'map': '', 'nav': ''}
+        self.msg = {"pos_msg": "", "ang_msg": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
         self.map = Map(getPose3d)
@@ -82,7 +79,7 @@ class ThreadingGUI:
             # Check if a new map should be sent
             with self.ack_lock:
                 if self.ack and self.map is not None:
-                    self.update_gui()
+                    self.send_map()
                     self.ack = False
 
             # Maintain desired frequency
@@ -90,67 +87,24 @@ class ThreadingGUI:
             sleep_time = max(0, self.out_period - elapsed)
             time.sleep(sleep_time)
 
-    # Update the gui
-    def update_gui(self):
-        # Payload Map Message
+    # Prepares and sends a map to the websocket server
+    def send_map(self):
+
+        # Get the necessary info
         pos_message = self.map.getRobotCoordinates()
-        if (pos_message == self.init_coords):
+        if pos_message == self.init_coords:
             pos_message = self.start_coords
         ang_message = self.map.getRobotAngle()
-        pos_message = str(pos_message + ang_message)
-        self.msg["map"] = pos_message
 
-        # Example Payload Navigation Data message (random data)
-        # 4 colors supported (0, 1, 2, 3)
-        #nav_mat = np.zeros((20, 20), int)
-        #nav_mat[2, 1] = 1
-        #nav_mat[3, 3] = 2
-        #nav_mat[5,9] = 3
-        #nav_message = str(nav_mat.tolist())
-        payload = self.payloadImage()
-        self.msg["image"] = json.dumps(payload)
-
+        self.msg["pos_msg"] = pos_message
+        self.msg["ang_msg"] = ang_message
         message = json.dumps(self.msg)
-        if self.client:
-            try:
+        try:
+            if self.client:
                 self.client.send(message)
-            except Exception as e:
-                print(f"Error sending message: {e}")
+        except Exception as e:
+            LogManager.logger.info(f"Error sending message: {e}")
 
-
-    # Prepares and sends a map to the websocket server
-    # def send_map(self):
-
-    #     # Get the necessary info
-    #     pos_message = self.map.getRobotCoordinates()
-    #     if pos_message == self.init_coords:
-    #         pos_message = self.start_coords
-    #     ang_message = self.map.getRobotAngle()
-
-    #     self.msg["pos_msg"] = pos_message
-    #     self.msg["ang_msg"] = ang_message
-    #     message = json.dumps(self.msg)
-    #     try:
-    #         if self.client:
-    #             self.client.send(message)
-    #     except Exception as e:
-    #         LogManager.logger.info(f"Error sending message: {e}")
-
-    # encode the image data to be sent to websocket
-    def payloadImage(self):
-
-        image = self.shared_image.get()
-        payload = {'image': '', 'shape': ''}
-    	
-        shape = image.shape
-        frame = cv2.imencode('.PNG', image)[1]
-        encoded_image = base64.b64encode(frame)
-        
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-        
-        return payload
-    
     def process_colors(self, image):
         colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
 
@@ -186,8 +140,12 @@ class ThreadingGUI:
 host = "ws://127.0.0.1:2303"
 gui = ThreadingGUI(host)
 
+# Expose to the user
 def showNumpy(image):
     gui.showNumpy(image)
+
+def getMap(self, url):        
+    return gui.image(url)
 
 # Redirect the console
 start_console()

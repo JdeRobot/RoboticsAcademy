@@ -47,6 +47,9 @@ class Map:
 
     def getRobotCoordinates(self):
         pose = self.pose_getter()
+        while pose != None:
+            pose = self.pose_getter()
+        print(pose)
         x = pose.x
         y = pose.y
 
@@ -62,6 +65,9 @@ class Map:
 
     def getRobotAngle(self):
         pose = self.pose_getter()
+        while pose != None:
+            pose = self.pose_getter()
+        print(pose)
         rt = pose.yaw
 
         ty = math.cos(-rt) - math.sin(-rt)
