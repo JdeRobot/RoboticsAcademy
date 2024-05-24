@@ -10,19 +10,19 @@ export default function SpecificVacuumCleaner() {
 
     const callback = (message) => {
       console.log(message);
-      if (data.map) {
-        const pose = data.map.substring(1, data.map.length - 1);
-        const content = pose.split(",").map(function (item) {
-          return parseFloat(item);
-        });
-        draw(
-          guiCanvasRef.current,
-          content[0],
-          content[1],
-          content[2],
-          content[3]
-        );
-      }
+      // if (data.map) {
+      //   const pose = data.map.substring(1, data.map.length - 1);
+      //   const content = pose.split(",").map(function (item) {
+      //     return parseFloat(item);
+      //   });
+      //   draw(
+      //     guiCanvasRef.current,
+      //     content[0],
+      //     content[1],
+      //     content[2],
+      //     content[3]
+      //   );
+      // }
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
