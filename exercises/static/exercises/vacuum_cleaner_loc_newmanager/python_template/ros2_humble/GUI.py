@@ -7,7 +7,6 @@ import threading
 import time
 import websocket
 from src.manager.ram_logging.log_manager import LogManager
-from gazebo_msgs.srv import SetEntityState, GetEntityState
 from shared.image import SharedImage
 import rclpy
 from console import start_console
@@ -55,7 +54,7 @@ class ThreadingGUI:
 
         # Initialize and start the image sending thread (GUI out thread)
         threading.Thread(
-            target=self.gui_out_thread, name="gui_out_thread", daemon=True
+            target=self.gui_out_thread, name="gui_out_thread_loc", daemon=True
         ).start()
 
     # Init websocket client
