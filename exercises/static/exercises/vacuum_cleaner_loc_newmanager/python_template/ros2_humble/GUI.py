@@ -4,6 +4,7 @@ import base64
 import threading
 import time
 import websocket
+import numpy as np
 from src.manager.ram_logging.log_manager import LogManager
 from gazebo_msgs.srv import SetEntityState, GetEntityState
 from shared.image import SharedImage
@@ -186,7 +187,7 @@ host = "ws://127.0.0.1:2303"
 gui = ThreadingGUI(host)
 
 def showNumpy(image):
-    gui.show(image)
+    gui.showNumpy(image)
 
 # Redirect the console
 start_console()

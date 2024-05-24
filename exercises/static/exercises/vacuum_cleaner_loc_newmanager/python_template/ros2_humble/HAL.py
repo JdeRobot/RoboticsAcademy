@@ -61,9 +61,9 @@ def getBumperData():
 
 # Linear speed
 def setV(v):
-    motor_node.sendV(v)
+    motor_node.sendV(float(v))
 
 
 # Angular speed
 def setW(w):
-    motor_node.sendW(w)
+    motor_node.sendW(float(w))
