@@ -1,5 +1,6 @@
 import numpy as np
-import rospy
+import rclpy
+from rclpy.node import Node
 from sensor_msgs.msg import Image as ImageROS
 import yaml
 import threading
@@ -56,7 +57,7 @@ class ListenerParameters:
 
         if os.getcwd() == "/":
             f = open(
-                "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction_newmanager/python_template/ros1_noetic/" + configFile, "r")
+                "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction_newmanager/python_template/ros2_humble/" + configFile, "r")
         else:
             f = open(configFile, "r")
 
@@ -179,10 +180,11 @@ class ListenerParameters:
         return np.array([self.RT[0, 3], self.RT[1, 3], self.RT[2, 3]])
 
 
-class ListenerCamera:
+class ListenerCamera(Node):
 
     def __init__(self, topic):
-
+        
+        super().__init__("ListenerCamera")
         self.topic = topic
         self.data = Image()
         self.sub = None
@@ -205,7 +207,8 @@ class ListenerCamera:
 
     def start(self):
 
-        self.sub = rospy.Subscriber(self.topic, ImageROS, self.__callback)
+        # self.sub = rospy.Subscriber(self.topic, ImageROS, self.__callback)
+        self.create_subscription(ImageROS, self.topic, self.__callback, 10)
 
     def getImage(self):
 
