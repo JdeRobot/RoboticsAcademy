@@ -18,6 +18,11 @@ class GUI:
     # The actual initialization
     def __init__(self, host):
         self.payload = {'img1': '', 'img2': '', 'pts': '', 'match': '', 'p_match': 'F'}
+
+        # ROS2 init
+        rclpy.init(args=None)
+        node = rclpy.create_node('GUI')
+
         self.server = None
         self.client = None
 

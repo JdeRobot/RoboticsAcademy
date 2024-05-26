@@ -1,5 +1,6 @@
 import rclpy
 from interfaces.camera import ListenerCamera, ListenerParameters
+import numpy as np
 
 
 # Hardware Abstraction Layer
@@ -8,7 +9,6 @@ IMG_WIDTH = 640
 IMG_HEIGHT = 480
 
 # ROS2 init
-rclpy.init(args=None)
 rclpy.create_node('HAL')
 
 image = None
