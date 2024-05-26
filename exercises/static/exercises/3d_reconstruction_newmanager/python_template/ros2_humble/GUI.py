@@ -1,3 +1,4 @@
+import rclpy
 import json
 import cv2
 import base64
@@ -9,13 +10,20 @@ import websocket
 import os
 import numpy as np
 
+from console import start_console
+
 
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal):
+    def __init__(self, host):
         self.payload = {'img1': '', 'img2': '', 'pts': '', 'match': '', 'p_match': 'F'}
+
+        # ROS2 init
+        rclpy.init(args=None)
+        node = rclpy.create_node('GUI')
+
         self.server = None
         self.client = None
 
@@ -27,8 +35,8 @@ class GUI:
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
-        self.acknowledge = False
-        self.acknowledge_lock = threading.Lock()
+        self.ack = False
+        self.ack_lock = threading.Lock()
 
         self.point_to_save = []
         self.point_to_send = []
@@ -38,27 +46,22 @@ class GUI:
         self.matching_to_send = []
         self.paint_matching = "F"
 
-
-        # Get HAL object
-        self.hal = hal
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
 
     def run_websocket(self):
         while True:
-            self.client = websocket.WebSocketApp('ws://127.0.0.1:2303',
-                                                 on_message=self.on_message,)
+            self.client = websocket.WebSocketApp(self.host, on_message=self.on_message,)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image1_to_be_shown = self.image1_to_be_shown
-        image2_to_be_shown = self.image2_to_be_shown
-        self.image_show_lock.release()
+        with self.image_show_lock:
+            image_to_be_shown_updated = self.image_to_be_shown_updated
+            image1_to_be_shown = self.image1_to_be_shown
+            image2_to_be_shown = self.image2_to_be_shown
 
         image1 = image1_to_be_shown
         payload1 = {'img': ''}
@@ -78,9 +81,9 @@ class GUI:
         encoded_image2 = base64.b64encode(frame2)
         payload2['img'] = encoded_image2.decode('utf-8')
 
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
+        with self.image_show_lock:
+            self.image_to_be_shown_updated = False
+
         return payload1, payload2
 
     # Function for student to call
@@ -91,25 +94,22 @@ class GUI:
         else:
             self.paint_matching = "F"
         if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
-            self.image_show_lock.acquire()
-            self.image1_to_be_shown = image1
-            self.image2_to_be_shown = image2
-            self.image_to_be_shown_updated = True
-            self.image_show_lock.release()
+            with self.image_show_lock:
+                self.image1_to_be_shown = image1
+                self.image2_to_be_shown = image2
+                self.image_to_be_shown_updated = True
 
     # Function to get value of Acknowledge
     def get_acknowledge(self):
-        self.acknowledge_lock.acquire()
-        acknowledge = self.acknowledge
-        self.acknowledge_lock.release()
+        with self.ack:
+            ack = self.acknowledge
 
-        return acknowledge
+        return ack
 
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
-        self.acknowledge_lock.acquire()
-        self.acknowledge = value
-        self.acknowledge_lock.release()
+        with self.ack_lock:
+            self.ack = value
 
     # Update the gui
     def update_gui(self):
@@ -268,3 +268,28 @@ class ThreadGUI:
             sleep_time = max(0, (50 - ms) / 1000.0)
             time.sleep(sleep_time)
 
+
+# Create a GUI interface
+host = "ws://127.0.0.1:2303"
+gui_interface = GUI(host)
+
+# Spin a thread to keep the interface updated
+thread_gui = ThreadGUI(gui_interface)
+thread_gui.start()
+
+start_console()
+
+def showImages(image1, image2, paint_matching):
+    gui_interface.showImages(image1, image2, paint_matching)
+
+def ShowNewPoints(points):
+    gui_interface.ShowNewPoints(points)
+
+def ShowAllPoints(points):
+    gui_interface.ShowAllPoints(points)
+
+def showImageMatching(x1, y1, x2, y2):
+    gui_interface.showImageMatching(x1, y1, x2, y2)
+
+def ClearAllPoints():
+    gui_interface.ClearAllPoints()
