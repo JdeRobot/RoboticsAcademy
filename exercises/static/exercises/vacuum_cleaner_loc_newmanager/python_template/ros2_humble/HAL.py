@@ -1,7 +1,5 @@
 import rclpy
 import sys
-import threading
-
 from console import start_console
 
 from hal_interfaces.general.motors import MotorsNode
@@ -26,48 +24,27 @@ bumper_node = BumperNode(
     ]
 )
 
-# Spin nodes so that subscription callbacks load topic data
-executor = rclpy.executors.MultiThreadedExecutor()
-executor.add_node(odometry_node)
-executor.add_node(laser_node)
-executor_thread = threading.Thread(target=executor.spin, daemon=True)
-executor_thread.start()
-
-print("HAL-Nodes Thread Started")
-
-def getPose3d():
-    return odometry_node.getPose3d()
-
-def getLaserData():
-    laser_data = laser_node.getLaserData()
-    while len(laser_data.values) == 0:
-        laser_data = laser_node.getLaserData()
-    return laser_data
-
 ### GETTERS ###
 
 
-# # Laser
-# def getLaserData():
-#     try:
-#         rclpy.spin_once(laser_node)
-#         values = laser_node.getLaserData().values
-#         return values
-#     except Exception as e:
-#         print(f"Exception in hal getLaserData {repr(e)}")
+# Laser
+def getLaserData():
+    try:
+        rclpy.spin_once(laser_node)
+        values = laser_node.getLaserData().values
+        return values
+    except Exception as e:
+        print(f"Exception in hal getLaserData {repr(e)}")
 
 
-# # Pose
-# def getPose3d():
-#     try:
-#         rclpy.spin_once(odometry_node)
-#         pose = odometry_node.getPose3d()
-#         while pose == None:
-#             pose = odometry_node.getPose3d()
-#         print(pose)
-#         return pose
-#     except Exception as e:
-#         print(f"Exception in hal getPose3d {repr(e)}")
+# Pose
+def getPose3d():
+    try:
+        rclpy.spin_once(odometry_node)
+        pose = odometry_node.getPose3d()
+        return pose
+    except Exception as e:
+        print(f"Exception in hal getPose3d {repr(e)}")
 
 
 # Bumper
