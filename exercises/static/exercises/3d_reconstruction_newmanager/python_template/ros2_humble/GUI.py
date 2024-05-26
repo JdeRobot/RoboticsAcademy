@@ -1,3 +1,4 @@
+import rclpy
 import json
 import cv2
 import base64
