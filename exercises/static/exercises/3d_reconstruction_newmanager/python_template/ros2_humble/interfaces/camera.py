@@ -20,7 +20,7 @@ def imageMsg2Image(img, bridge):
     image.width = img.width
     image.height = img.height
     image.format = "BGR8"
-    image.timeStamp = img.header.stamp.secs + (img.header.stamp.nsecs * 1e-9)
+    image.timeStamp = img.header.stamp.sec + (img.header.stamp.nanosec * 1e-9)
     cv_image = 0
     if (img.encoding[-2:] == "C1"):
         gray_img_buff = bridge.imgmsg_to_cv2(img, img.encoding)
@@ -207,7 +207,6 @@ class ListenerCamera(Node):
 
     def start(self):
 
-        # self.sub = rospy.Subscriber(self.topic, ImageROS, self.__callback)
         self.create_subscription(ImageROS, self.topic, self.__callback, 10)
 
     def getImage(self):
