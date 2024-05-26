@@ -9,20 +9,26 @@ export default function SpecificVacuumCleaner() {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
-      console.log(message);
-      // if (data.map) {
-      //   const pose = data.map.substring(1, data.map.length - 1);
-      //   const content = pose.split(",").map(function (item) {
-      //     return parseFloat(item);
-      //   });
-      //   draw(
-      //     guiCanvasRef.current,
-      //     content[0],
-      //     content[1],
-      //     content[2],
-      //     content[3]
-      //   );
-      // }
+      const updateData = message.data.update;
+      // Lógica para manejar el mapa
+      if (updateData.map) {
+        const pose = updateData.map.substring(1, updateData.map.length - 1);
+        const content = pose.split(",").map(item => parseFloat(item));
+        const poseUser = updateData.user.substring(1, updateData.user.length - 1);
+        const userContent = poseUser.split(",").map(item => parseFloat(item));
+
+        draw(
+          guiCanvasRef.current,
+          content[0],
+          content[1],
+          content[2],
+          content[3],
+          userContent[0],
+          userContent[1],
+          userContent[2],
+          userContent[3]
+        );
+      }
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -38,6 +44,29 @@ export default function SpecificVacuumCleaner() {
       );
     };
   }, []);
+
+  React.useEffect(() => {
+    const callback = (message) => {
+      if (message.data.state === "ready") {
+        try {
+          clearMap(guiCanvasRef.current,)
+        } catch (error) {
+        }
+      }
+    }
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+        callback
+      );
+    };
+  }, [])
 
   return (
     <canvas
