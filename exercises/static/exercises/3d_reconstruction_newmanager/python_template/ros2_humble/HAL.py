@@ -20,14 +20,16 @@ camRightP = ListenerParameters("3d_reconstruction_conf.yml", "CamBCalibration")
 
 # Get Image from ROS Driver Camera
 def getImage(lr):
-    if (lr == 'left'):
-        image = cameraL.getImage().data
-    elif (lr == 'right'):
-        image = cameraR.getImage().data
-    else:
-        print("Invalid camera")
-
-    return image
+    try:
+        if (lr == 'left'):
+            rclpy.spin_once(cameraL)
+            image = cameraL.getImage().data
+        elif (lr == 'right'):
+            rclpy.spin_once(cameraR)
+            image = cameraR.getImage().data
+        return image
+    except Exception as e:
+        print(f"Exception in hal getImage {repr(e)}")
 
 # Transform the Coordinate System to the Camera System
 def graficToOptical(lr, point2d):
@@ -88,4 +90,3 @@ def project3DScene(point3d):
     pz = point3d[2] / 100.0
     outPoint = np.array([px,py,pz]);
     return outPoint
-
