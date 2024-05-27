@@ -1,29 +1,28 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw } from "Helpers/BirdEye";
+import { draw, clearMap } from "Helpers/BirdEye";
 
-function SpecificVacuumCleaner(props) {
+export default function SpecificVacuumCleaner() {
   const guiCanvasRef = React.useRef();
 
   React.useEffect(() => {
-    console.log("SpecificVacuumCleaner subscribing to ['update'] events");
+    console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
-      console.log(message);
-      const data = message.data.update;
-      const pos_msg = data.pos_msg;
-      const ang_msg = data.ang_msg;
+      const updateData = message.data.update;
+      // Lógica para manejar el mapa
+      if (updateData.map) {
+        const pose = updateData.map.substring(1, updateData.map.length - 1);
+        const content = pose.split(",").map(item => parseFloat(item));
 
-      draw(
-        guiCanvasRef.current,
-        pos_msg[0],
-        pos_msg[1],
-        ang_msg[0],
-        ang_msg[1]
-      );
-
-      // Send the ACK of the img
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+        draw(
+          guiCanvasRef.current,
+          content[0],
+          content[1],
+          content[2],
+          content[3],
+        );
+      }
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -40,12 +39,36 @@ function SpecificVacuumCleaner(props) {
     };
   }, []);
 
+  React.useEffect(() => {
+    const callback = (message) => {
+      console.log(message);
+      if (message.data.state === "visualization_ready") {
+        try {
+          clearMap(guiCanvasRef.current,)
+        } catch (error) {
+        }
+      }
+    }
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+        callback
+      );
+    };
+  }, [])
+
   return (
     <canvas
       ref={guiCanvasRef}
       style={{
         backgroundImage:
-          "url('/static/exercises/vacuum_cleaner_newmanager/resources/images/mapgrannyannie.png')",
+          "url('/static/exercises/vacuum_cleaner_loc_newmanager/resources/images/mapgrannyannie.png')",
         border: "2px solid #d3d3d3",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
@@ -59,5 +82,3 @@ function SpecificVacuumCleaner(props) {
 SpecificVacuumCleaner.propTypes = {
   circuit: PropTypes.string,
 };
-
-export default SpecificVacuumCleaner;
