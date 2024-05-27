@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw } from "Helpers/BirdEye";
+import { draw, clearMap } from "Helpers/BirdEye";
 
 export default function SpecificVacuumCleaner() {
   const guiCanvasRef = React.useRef();
@@ -14,8 +14,6 @@ export default function SpecificVacuumCleaner() {
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
         const content = pose.split(",").map(item => parseFloat(item));
-        const poseUser = updateData.user.substring(1, updateData.user.length - 1);
-        const userContent = poseUser.split(",").map(item => parseFloat(item));
 
         draw(
           guiCanvasRef.current,
@@ -23,10 +21,6 @@ export default function SpecificVacuumCleaner() {
           content[1],
           content[2],
           content[3],
-          userContent[0],
-          userContent[1],
-          userContent[2],
-          userContent[3]
         );
       }
     };
@@ -47,7 +41,8 @@ export default function SpecificVacuumCleaner() {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
+      console.log(message);
+      if (message.data.state === "visualization_ready") {
         try {
           clearMap(guiCanvasRef.current,)
         } catch (error) {
