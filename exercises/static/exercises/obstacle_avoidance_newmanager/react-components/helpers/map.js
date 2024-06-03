@@ -42,11 +42,11 @@ function drawBorders() {
     ctx.strokeRect(f1_center[0] - (d25 * scale / 2), f1_center[1] - d25, d25 * scale, (d25 + 3) * scale / 2);
 
     // Text 10m & 25m local-map canvas
-    ctx.font = "14px Comic Sans MS";
-    ctx.fillStyle = "#AAAAAA";
+    ctx.font = "10px Comic Sans MS";
+    ctx.fillStyle = "#FFFFFF";
     ctx.textAlign = "center";
-    ctx.fillText(d10 + " m", mapCanvas.width / 2 + 50, f1_center[1] - d10);
-    ctx.fillText(d25 + " m", mapCanvas.width / 2 + 50, f1_center[1] - d25);
+    ctx.fillText("2.5 m", mapCanvas.width / 2 + 50, f1_center[1] - d10 + 5);
+    ctx.fillText("3.5 m", mapCanvas.width / 2 + 50, f1_center[1] - d25);
 }
 
 
