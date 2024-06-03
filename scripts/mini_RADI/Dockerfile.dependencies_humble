@@ -56,22 +56,14 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Gazebo 11
-RUN sudo rosdep fix-permissions \
-  && rosdep update \
-  && apt-get update && apt-get install -q -y \
-    ros-${ROS_DISTRO}-gazebo* \
-    ros-${ROS_DISTRO}-ros-gz-* \
-    gstreamer1.0-plugins-bad \
-    gstreamer1.0-plugins-good \
-    gstreamer1.0-plugins-ugly \
-    gstreamer1.0-libav \
-    libgstreamer-plugins-base1.0-dev \
-    libimage-exiftool-perl \
-  && apt-get -y autoremove \
-  && apt-get clean autoclean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
+# Install Gazebo Harmonic
+RUN apt-get update \
+  && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
+  && apt-get update && apt-get install -y -q \
+    gz-harmonic \
+    ros-humble-ros-gzharmonic \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -151,42 +143,9 @@ RUN python3.10 -m pip install \
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
     django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
 
-# PX4 pip installs 
-RUN python3.10 -m pip install jsonschema==4.18.0
-
-# PX4 Dependencies
-RUN apt-get update && apt-get install -y \
-    astyle \
-    gdb \
-    lcov \
-    libfuse2 \
-    ninja-build \
-    rsync \
-    shellcheck \
-  && rm -rf /var/lib/apt/lists/* 
-
-# Install PX4
-RUN git clone -b v1.14.0 https://github.com/PX4/PX4-Autopilot.git --recursive \
-  && cd /PX4-Autopilot \
-  && DONT_RUN=1 make px4_sitl gazebo
-
-# https://github.com/JdeRobot/RoboticsAcademy/issues/2310
-RUN echo 'param set-default COM_OF_LOSS_T 5' >> /PX4-Autopilot/build/px4_sitl_default/etc/init.d-posix/px4-rc.params
-
-RUN git clone -b v2.4.1 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tmp/MicroXRCEAgent \
-  && cd /tmp/MicroXRCEAgent \
-  && mkdir build && cd build \
-  && cmake .. \
-  && make -j $(nproc) \
-  && make install \
-  && ldconfig /usr/local/lib/ \
-  && rm -rf /tmp/*
-
 # Create workspace and add drone packages
 RUN mkdir -p /home/drones_ws/src/
 RUN git clone https://github.com/JdeRobot/aerostack2.git /home/drones_ws/src/aerostack2
-RUN git clone https://github.com/pawanw17/as2_platform_pixhawk.git /home/drones_ws/src/aerostack2/as2_platform_pixhawk
-RUN git clone https://github.com/pawanw17/px4_msgs.git /home/drones_ws/src/px4_msgs
 
 # Compiling and sourcing the workspace
 WORKDIR /home/drones_ws/
