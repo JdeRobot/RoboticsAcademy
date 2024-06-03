@@ -2,11 +2,10 @@ import json
 import math
 import os
 import numpy as np
-from interfaces.pose3d import Pose3d
-from interfaces.laser import ListenerLaser
+from hal_interfaces.general.odometry import Pose3d
 
 class Map:
-	def __init__(self, laser_object, pose3d_object):
+	def __init__(self, laser_object):
 		# Car direction
 		self.carx = 2.0
 		self.cary = 0.0
@@ -34,7 +33,6 @@ class Map:
 		self.payload = {}
 
 		self.laser_topic = laser_object
-		self.pose3d = pose3d_object
     
 	def setCar(self, newx, newy):
 		self.carx = newx
@@ -108,6 +106,8 @@ class Map:
 		# Init laser array
 		laser = []
 		self.laser = self.laser_topic.getLaserData()
+		while len(self.laser.values) == 0:
+			self.laser = self.laser_topic.getLaserData()
 
 		if(self.laser):
 			angle = int(round(math.degrees(self.laser.maxAngle)))
