@@ -8,8 +8,8 @@ import websocket
 import logging
 import rclpy
 
-from interfaces.pose3d import ListenerPose3d
-from interfaces.laser import ListenerLaser
+from hal_interfaces.general.odometry import OdometryNode
+from hal_interfaces.general.laser import LaserNode
 
 from lap import Lap
 from map import Map
@@ -29,7 +29,7 @@ class GUI:
         rclpy.init(args=None)
         node = rclpy.create_node('GUI')
 
-        self.payload = {'image': '', 'lap': '', 'map': ''}
+        self.payload = {'lap': '', 'map': ''}
 
         self.server = None
         self.client = None
@@ -38,24 +38,15 @@ class GUI:
         self.ack = False
         self.ack_lock = threading.Lock()
 
-        # self.hal = hal
-
-        # Image variables
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
-
         # Create Sensor objects
-        self.pose3d_object = ListenerPose3d("/odom")
-        self.laser_object = ListenerLaser("/f1/laser/scan")
+        self.laser_object = LaserNode("/f1/laser/scan")
 
         # Create the map and lap objects
-        self.map = Map(self.laser_object, self.pose3d_object)
+        self.map = Map(self.laser_object)
         self.lap = Lap(self.map)
 
         # Spin nodes so that subscription callbacks load topic data
         executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(self.pose3d_object)
         executor.add_node(self.laser_object)
         executor_thread = threading.Thread(target=executor.spin, daemon=True)
         executor_thread.start()
@@ -69,39 +60,6 @@ class GUI:
             self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
-    def payloadImage(self):
-        """Encodes the image data to be sent to websocket"""
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        self.image_show_lock.release()
-
-        image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
-
-        if not image_to_be_shown_updated:
-            return payload
-
-        shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
-        encoded_image = base64.b64encode(frame)
-
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
-
-        return payload
-
-    def showImage(self, image):
-        """Function for student to call"""
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
-
     def showForces(self, vec1, vec2, vec3):
         """Function for student to call"""
         self.map.setCar(vec1[0], vec1[1])
@@ -114,9 +72,6 @@ class GUI:
         
     def update_gui(self):
         """Updates the GUI with the latest map information."""
-        # Payload Image Message
-        payload = self.payloadImage()
-        self.payload["image"] = json.dumps(payload)
 
         # Payload Lap Message
         lapped = self.lap.check_threshold()

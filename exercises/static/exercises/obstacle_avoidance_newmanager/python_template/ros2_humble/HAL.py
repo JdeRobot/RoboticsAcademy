@@ -1,10 +1,9 @@
 import rclpy
 import threading
 
-from interfaces.camera import ListenerCamera
-from interfaces.motors import PublisherMotors
-from interfaces.pose3d import ListenerPose3d
-from interfaces.laser import ListenerLaser
+from hal_interfaces.general.motors import MotorsNode
+from hal_interfaces.general.odometry import OdometryNode
+from hal_interfaces.general.laser import LaserNode
 
 # Hardware Abstraction Layer
 IMG_WIDTH = 320
@@ -13,10 +12,9 @@ IMG_HEIGHT = 240
 # ROS2 init
 rclpy.create_node('HAL')
 
-pose3d = ListenerPose3d("/odom")
-motors = PublisherMotors("/cmd_vel", 4, 0.3)
-camera = ListenerCamera("/cam_f1_left/image_raw")
-laser = ListenerLaser("/f1/laser/scan")
+pose3d = OdometryNode("/odom")
+motors = MotorsNode("/cmd_vel", 4, 0.3)
+laser = LaserNode("/f1/laser/scan")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
@@ -36,19 +34,8 @@ def getLaserData():
         laser_data = laser.getLaserData()
     return laser_data
 
-# Get Image from ROS Driver Camera
-def getImage():
-    try:
-        rclpy.spin_once(camera)
-        image = camera.getImage().data
-        # image = self._get_test_image()
-        # print(f"HAL image set, shape: {image.shape}, bytes: {image.nbytes}", flush=True)
-        return image
-    except Exception as e:
-        print(f"Exception in hal getImage {repr(e)}")
-
 def setV(velocity):
-    motors.sendV(velocity)
+    motors.sendV(float(velocity))
 
 def setW(velocity):
-    motors.sendW(velocity)
+    motors.sendW(float(velocity))
