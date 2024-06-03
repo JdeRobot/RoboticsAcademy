@@ -80,10 +80,8 @@ The solution can integrate one or more of the following levels of difficulty, as
   regarding the map
 * `HAL.getLaserData()` - to obtain laser sensor data
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `HAL.getImage()` - to get the image
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
-* `GUI.showImage()` - allows you to view a debug image or with relevant information
 * `GUI.getNextTarget()` - to obtain the next target on the scenario.
 * `GUI.setTargetx` - sets the x coordinate of the target on the GUI.
 * `GUI.setTargety` - sets the y coordinate of the target on the GUI.
