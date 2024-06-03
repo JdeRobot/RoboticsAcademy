@@ -32,7 +32,7 @@ class Map:
 		# websocket communication
 		self.payload = {}
 
-		self.laser_topic = laser_object
+		self.laser_callback = laser_object
     
 	def setCar(self, newx, newy):
 		self.carx = newx
@@ -105,9 +105,7 @@ class Map:
 	def setLaserValues(self):
 		# Init laser array
 		laser = []
-		self.laser = self.laser_topic.getLaserData()
-		while len(self.laser.values) == 0:
-			self.laser = self.laser_topic.getLaserData()
+		self.laser = self.laser_callback()
 
 		if(self.laser):
 			angle = int(round(math.degrees(self.laser.maxAngle)))

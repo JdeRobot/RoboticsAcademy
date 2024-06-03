@@ -10,7 +10,9 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
 # ROS2 init
-rclpy.create_node('HAL')
+if not rclpy.ok():
+    rclpy.init(args=None)
+    rclpy.create_node('HAL')
 
 pose3d = OdometryNode("/odom")
 motors = MotorsNode("/cmd_vel", 4, 0.3)

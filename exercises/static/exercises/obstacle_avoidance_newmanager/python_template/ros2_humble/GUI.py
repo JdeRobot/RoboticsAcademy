@@ -8,8 +8,7 @@ import websocket
 import logging
 import rclpy
 
-from hal_interfaces.general.odometry import OdometryNode
-from hal_interfaces.general.laser import LaserNode
+from HAL import getLaserData
 
 from lap import Lap
 from map import Map
@@ -26,7 +25,8 @@ class GUI:
         print("GUI IS BEING INITIALIZED\n\n\n\n")
 
         # ROS2 init
-        rclpy.init(args=None)
+        if not rclpy.ok():
+            rclpy.init(args=None)
         node = rclpy.create_node('GUI')
 
         self.payload = {'lap': '', 'map': ''}
@@ -38,18 +38,9 @@ class GUI:
         self.ack = False
         self.ack_lock = threading.Lock()
 
-        # Create Sensor objects
-        self.laser_object = LaserNode("/f1/laser/scan")
-
         # Create the map and lap objects
-        self.map = Map(self.laser_object)
+        self.map = Map(getLaserData)
         self.lap = Lap(self.map)
-
-        # Spin nodes so that subscription callbacks load topic data
-        executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(self.laser_object)
-        executor_thread = threading.Thread(target=executor.spin, daemon=True)
-        executor_thread.start()
 
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
