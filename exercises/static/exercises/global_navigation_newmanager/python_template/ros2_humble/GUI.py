@@ -147,6 +147,9 @@ class GUI:
 
     def reset_gui(self):
         """Resets the GUI to its initial state."""
+        print("Resetting image")
+        image = [[0 for x in range(400)] for y in range(400)]
+        self.showNumpy(np.clip(image, 0, 255).astype('uint8'))
         self.map.reset()
 
 
@@ -156,6 +159,7 @@ class ThreadGUI:
     def __init__(self, gui):
         """Initializes the ThreadGUI with a reference to the GUI instance."""
         self.gui = gui
+        gui.reset_gui()
         self.iteration_counter = 0
         self.running = True
 

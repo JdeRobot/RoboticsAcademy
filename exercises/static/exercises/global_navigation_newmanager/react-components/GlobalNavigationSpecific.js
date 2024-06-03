@@ -69,6 +69,7 @@ function SpecificGlobalNavigation(props) {
       console.log(message.data.state)
       if (message.data.state === "visualization_ready") {
         showMap = false
+        clearPath()
       } else {
         showMap = true
       }
