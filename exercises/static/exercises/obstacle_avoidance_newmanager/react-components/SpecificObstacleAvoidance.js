@@ -14,11 +14,6 @@ function SpecificObstacleAvoidance(props) {
 
     const callback = (message) => {
       const data = message.data.update;
-      if (data.image) {
-        if(JSON.parse(data.image).image) {
-        const image = JSON.parse(data.image);
-        setImage(`data:image/png;base64,${image.image}`);
-        }}
       if(data.map){
         const dataToDraw = JSON.parse(data.map)
         paintEvent(dataToDraw.target, dataToDraw.car, dataToDraw.obstacle, dataToDraw.average, dataToDraw.laser, dataToDraw.max_range)
@@ -41,26 +36,19 @@ function SpecificObstacleAvoidance(props) {
 
   return (
     <div style={{display: "flex",   width: "100%",
-    height: "100%"}}>
+    height: "100%", backgroundColor: "#363233"}}>
     <canvas
       ref={guiCanvasRef}
       id="local-map"
 
       style={{
-        backgroundColor: "#0e14c7",
+        backgroundColor: "#363233",
       	marginTop: "5px",
         width: "50%",
         height: "100%",
         margin: "auto"
     }}
     />
-    <img  width="200" height="200" src={image} style={{
-      	marginTop: "5px",
-        marginRight: "5px",
-        width: "50%",
-        height: "100%",
-        margin: "auto"
-    }}></img>
     </div>
   );
 }
