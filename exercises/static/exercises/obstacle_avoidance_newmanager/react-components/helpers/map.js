@@ -28,8 +28,8 @@ function drawBorders() {
           ctx = mapCanvas.getContext("2d");
 
     const f1_center = [mapCanvas.width / 2, mapCanvas.height / 2];
-    const d10 = 10;
-    const d25 = 25;
+    const d2 = 10;
+    const d5 = 55;
     const scale = 5;
 
     ctx.lineWidth = 1;
@@ -37,16 +37,16 @@ function drawBorders() {
     ctx.stroke();
 
     // Rectangle for 10m
-    ctx.strokeRect(f1_center[0] - (d10 * scale / 2), f1_center[1] - 5, d10 * scale, d10 * scale);
+    ctx.strokeRect(f1_center[0] - (d2 * scale / 2), f1_center[1] - 5, d2 * scale, d2 * scale);
     // Rectangle for 25m
-    ctx.strokeRect(f1_center[0] - (d25 * scale / 2), f1_center[1] - d25, d25 * scale, (d25 + 3) * scale / 2);
+    ctx.strokeRect(f1_center[0] - (d5 * scale / 2), f1_center[1] - d5, d5 * scale, (d2 + 10) * scale);
 
     // Text 10m & 25m local-map canvas
     ctx.font = "10px Comic Sans MS";
     ctx.fillStyle = "#FFFFFF";
     ctx.textAlign = "center";
-    ctx.fillText("2.5 m", mapCanvas.width / 2 + 50, f1_center[1] - d10 + 5);
-    ctx.fillText("3.5 m", mapCanvas.width / 2 + 50, f1_center[1] - d25);
+    ctx.fillText("2.5 m", mapCanvas.width / 2 + 50, f1_center[1] - d2 + 5);
+    ctx.fillText("5 m", mapCanvas.width / 2 + 50, f1_center[1] - d5);
 }
 
 
