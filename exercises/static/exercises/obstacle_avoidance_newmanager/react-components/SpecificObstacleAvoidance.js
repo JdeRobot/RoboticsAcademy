@@ -36,7 +36,7 @@ function SpecificObstacleAvoidance(props) {
 
   return (
     <div style={{display: "flex",   width: "100%",
-    height: "100%", backgroundColor: "#FFA726"}}>
+    height: "100%", backgroundColor: "none"}}>
     <canvas
       ref={guiCanvasRef}
       id="local-map"
