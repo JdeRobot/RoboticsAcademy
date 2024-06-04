@@ -7,7 +7,7 @@ from datetime import datetime
 import websocket
 import logging
 import rclpy
-from interfaces.pose3d import ListenerPose3d
+from HAL import getPose3d
 import numpy as np
 from shared.image import SharedImage
 import re
@@ -24,8 +24,9 @@ class GUI:
         print("GUI IS BEING INITIALIZED\n\n\n\n")
 
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
+            node = rclpy.create_node('GUI')
 
         self.payload = {'image': '', 'map': '', 'array': ''}
         self.server = None
@@ -41,17 +42,8 @@ class GUI:
 
         self.shared_image = SharedImage("numpyimage")
 
-        # Create Sensor objects
-        self.pose3d_object = ListenerPose3d("/odom")
-
-        # Spin nodes so that subscription callbacks load topic data
-        executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(self.pose3d_object)
-        executor_thread = threading.Thread(target=executor.spin, daemon=True)
-        executor_thread.start()
-
         # create Map object
-        self.map = Map(self.pose3d_object)
+        self.map = Map(getPose3d)
 
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()

@@ -71,7 +71,7 @@ class Map:
 		
 	def getTaxiCoordinates(self):
 		
-		pose = self.pose3d.getPose3d()
+		pose = self.pose3d()
 		x = pose.x
 		y = pose.y
 		#print("x : {} , y : {}".format(x,y))
@@ -114,7 +114,7 @@ class Map:
 		return [y, x]
 
 	def getTaxiAngle(self):
-		pose = self.pose3d.getPose3d()
+		pose = self.pose3d()
 		rt = pose.yaw 
 		#print(rt)
 		ty = math.cos(-rt) - math.sin(-rt)
