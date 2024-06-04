@@ -159,7 +159,7 @@ class ThreadGUI:
     def __init__(self, gui):
         """Initializes the ThreadGUI with a reference to the GUI instance."""
         self.gui = gui
-        gui.reset_gui()
+        self.gui.reset_gui()
         self.iteration_counter = 0
         self.running = True
 

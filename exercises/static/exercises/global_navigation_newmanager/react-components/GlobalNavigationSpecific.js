@@ -5,6 +5,7 @@ import { clearPath, draw, drawTargetPosition, generatePath } from "./helpers/bir
 
 function SpecificGlobalNavigation(props) {
   const guiCanvasRef = React.useRef();
+  const [showImage, setShowImage] = React.useState(false);
   let showMap = false
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -69,9 +70,11 @@ function SpecificGlobalNavigation(props) {
       console.log(message.data.state)
       if (message.data.state === "visualization_ready") {
         showMap = false
+        setShowImage(false)
         clearPath()
       } else {
         showMap = true
+        setShowImage(true)
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -129,12 +132,24 @@ function SpecificGlobalNavigation(props) {
         
 }}
     />
-    <img id="gui-canvas-numpy" width="400" height="400" style={{
-      	marginTop: "5px",
-        width: "100%",
-        height: "100%",
-        margin: "auto"
-    }}></img>
+    { showImage ? 
+      (
+      <img id="gui-canvas-numpy" width="400" height="400" style={{
+          marginTop: "5px",
+          width: "100%",
+          height: "100%",
+          margin: "auto"
+      }}></img>
+      ) : (
+      <div id="gui-canvas-numpy-empty" width="400" height="400" style={{
+          marginTop: "5px",
+          width: "100%",
+          height: "100%",
+          margin: "auto",
+          backgroundColor: "#000000"
+      }}></div>
+      )
+    }
     </div>
   );
 }
