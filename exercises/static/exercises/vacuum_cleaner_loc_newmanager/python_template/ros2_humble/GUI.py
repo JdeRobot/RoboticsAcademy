@@ -9,7 +9,7 @@ import websocket
 import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
-from hal_interfaces.general.odometry import OdometryNode
+from HAL import getPose3d
 from shared.image import SharedImage
 from console import start_console
 from map import Map
@@ -32,8 +32,9 @@ class GUI:
     def __init__(self, host):
 
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
+            node = rclpy.create_node('GUI')
 
         self.payload = {'map': '', 'user': ''}
         self.server = None
@@ -48,16 +49,8 @@ class GUI:
 
         self.shared_image = SharedImage("guiimage")
 
-        self.pose3d_object = OdometryNode("/odom")
-
-        # Spin nodes so that subscription callbacks load topic data
-        executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(self.pose3d_object)
-        executor_thread = threading.Thread(target=executor.spin, daemon=True)
-        executor_thread.start()
-
         # Create the lap object
-        self.map = Map(self.pose3d_object)
+        self.map = Map(getPose3d)
 
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
@@ -107,6 +100,7 @@ class GUI:
         #nav_mat[5,9] = 3
         #nav_message = str(nav_mat.tolist())
         payload = self.payloadImage()
+        print(pos_message)
         self.payload["image"] = json.dumps(payload)
 
         message = json.dumps(self.payload)

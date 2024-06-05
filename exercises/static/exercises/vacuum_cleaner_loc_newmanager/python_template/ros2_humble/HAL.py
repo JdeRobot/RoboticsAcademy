@@ -1,5 +1,6 @@
 import rclpy
 import sys
+import threading
 from console import start_console
 
 from hal_interfaces.general.motors import MotorsNode
@@ -12,6 +13,7 @@ from hal_interfaces.general.bumper import BumperNode
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
+    rclpy.create_node('HAL')
 
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/odom")
@@ -23,6 +25,12 @@ bumper_node = BumperNode(
         "/roombaROS/events/left_bumper",
     ]
 )
+
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(odometry_node)
+executor_thread = threading.Thread(target=executor.spin, daemon=True)
+executor_thread.start()
 
 ### GETTERS ###
 
@@ -39,12 +47,7 @@ def getLaserData():
 
 # Pose
 def getPose3d():
-    try:
-        rclpy.spin_once(odometry_node)
-        pose = odometry_node.getPose3d()
-        return pose
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
+    return odometry_node.getPose3d()
 
 
 # Bumper
