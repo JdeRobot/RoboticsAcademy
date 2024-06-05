@@ -171,10 +171,10 @@ In this section, various cost tables will be provided showing the cost of each R
 
 |     WINDOWS     | Follow Line | Vacuum Cleaner | Autoparking |     Follow Person     | Localized Vacuum Cleaner | Global Navigation | Rescue People |     Obstacle Avoidance     | 3D Reconstruction | Amazon Warehouse | Montecarlo Laser Localized |
 |----------|-------------|-------------|-------------|----------|-------------|-------------|-------------|----------|-------------|-------------|-------------|
-| % CPU   | 73%        | 55%         | 65%         | 67%    | 68%         | 68%         | 77%         | 75%    | 77%         | 78%         | 73%         |
-| % GPU   | 5%        | 5%         | 8%         | 3%    | 5%         | 7%         | 10%         | 4%    | 8%         | 4%         | 18%         |
-| RTF      | 0.42         | 0.95         | 0.85         | 0.95      | 0.93         | 0.73         | 0.49         | 0.25      | 0.68         | 0.67         | 0.85         |
-| Gazebo's FPS      | 14          | 10          | 5         | 22      | 15          | 9          | 8          | 3      | 9         | 2          | 12          |
+| % CPU   | 72%        | 52%         | 61%         | 66%    | 66%         | 68%         | 72%         | 73%    | 76%         | 79%         | 63%         |
+| % GPU   | 5%        | 6%         | 9%         | 5%    | 7%         | 6%         | 10%         | 4%    | 9%         | 4%         | 17%         |
+| RTF      | 0.5         | 0.95         | 0.85         | 0.95      | 0.95         | 0.8         | 0.6         | 0.5      | 0.7         | 0.74         | 0.9         |
+| Gazebo's FPS      | 16          | 11          | 7         | 20      | 20          | 11          | 15          | 6      | 9         | 5          | 18          |
 - CPU 6 cores (Average Percentages up to 100%)
 - CPU: Intel Core i5
 - 16GB RAM
