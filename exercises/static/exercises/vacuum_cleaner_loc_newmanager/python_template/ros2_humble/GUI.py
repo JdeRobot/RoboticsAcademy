@@ -34,7 +34,6 @@ class GUI:
         # ROS2 init
         if not rclpy.ok():
             rclpy.init(args=None)
-            node = rclpy.create_node('GUI')
 
         self.payload = {'map': '', 'user': ''}
         self.server = None
