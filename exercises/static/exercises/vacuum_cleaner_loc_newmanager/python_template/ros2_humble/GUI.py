@@ -10,7 +10,6 @@ import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
 from HAL import getPose3d
-from shared.image import SharedImage
 from console import start_console
 from map import Map
 
