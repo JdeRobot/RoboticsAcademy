@@ -46,8 +46,6 @@ class GUI:
         self.ack = False
         self.ack_lock = threading.Lock()
 
-        self.shared_image = SharedImage("guiimage")
-
         # Create the lap object
         self.map = Map(getPose3d)
 
@@ -66,21 +64,6 @@ class GUI:
         with self.ack_lock:
             self.ack = value
 
-    # encode the image data to be sent to websocket
-    def payloadImage(self):
-
-        image = self.shared_image.get()
-        payload = {'image': '', 'shape': ''}
-    	
-        shape = image.shape
-        frame = cv2.imencode('.PNG', image)[1]
-        encoded_image = base64.b64encode(frame)
-        
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-        
-        return payload
-
     # Update the gui
     def update_gui(self):
         # Payload Map Message
@@ -98,9 +81,6 @@ class GUI:
         #nav_mat[3, 3] = 2
         #nav_mat[5,9] = 3
         #nav_message = str(nav_mat.tolist())
-        payload = self.payloadImage()
-        print(pos_message)
-        self.payload["image"] = json.dumps(payload)
 
         message = json.dumps(self.payload)
         if self.client:
