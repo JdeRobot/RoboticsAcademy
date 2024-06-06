@@ -145,6 +145,7 @@ In this section, various cost tables will be provided showing the cost of each R
 - CPU: 8 cores (Percentage up to 800%)
 - Mac Chip: M1
 
+
 |           MacOS           | % CPU | Gazebo's RTF  | Gazebo's FPS |
 |----------------------|-------|------|--------------|
 | Follow Line          | 620%  | 0.57 | 20           |
