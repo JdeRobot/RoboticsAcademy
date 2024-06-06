@@ -142,22 +142,27 @@ For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as
 # 4. Reference execution times
 In this section, various cost tables will be provided showing the cost of each RADI exercise on different PCs, both running without graphics acceleration and with graphics acceleration. The values collected will include the % of CPU usage, if running with graphics acceleration, the % of GPU usage, the RTF, and the FPS of Gazebo.
 
-
-| MAC              | Follow Line | Vacuum Cleaner | Autoparking | Follow Person | Localized Vacuum Cleaner | Global Navigation | Rescue People | Obstacle Avoidance | 3D Reconstruction | Amazon Warehouse | Montecarlo Laser Localized |
-|------------------|-------------|----------------|-------------|---------------|--------------------------|-------------------|---------------|--------------------|-------------------|------------------|----------------------------|
-| % CPU            | 620%        | 400%           | 530%        | 650%          | 500%                     | 650%              | -             | 600%               | 550%              | 660%             | 500%                       |
-| RTF              | 0.57        | 0.5            | 0.47        | 0.78          | 0.45                     | 0.6               | -             | 0.57               | 0.46              | 0.37             | 0.44                       |
-| Gazebo's FPS     | 20          | 15             | 5           | 13            | 20                       | 10                | -             | 3                  | 4                 | 3                | 18                         |
-
 - CPU: 8 cores (Percentage up to 800%)
 - Mac Chip: M1
 
+|           MacOS           | % CPU | Gazebo's RTF  | Gazebo's FPS |
+|----------------------|-------|------|--------------|
+| Follow Line          | 620%  | 0.57 | 20           |
+| Vacuum Cleaner       | 400%  | 0.5  | 15           |
+| Autoparking          | 530%  | 0.47 | 5            |
+| Follow Person        | 650%  | 0.78 | 13           |
+| Localized Vacuum Cleaner | 500%  | 0.45 | 20           |
+| Global Navigation    | 650%  | 0.6  | 10           |
+| Rescue People        | -     | -    | -            |
+| Obstacle Avoidance   | 600%  | 0.57 | 3            |
+| 3D Reconstruction    | 550%  | 0.46 | 4            |
+| Amazon Warehouse     | 660%  | 0.37 | 3            |
+| Montecarlo Laser Localized | 500%  | 0.44 | 18           |
 
-| WINDOWS          | Follow Line | Vacuum Cleaner | Autoparking | Follow Person | Localized Vacuum Cleaner | Global Navigation | Rescue People | Obstacle Avoidance | 3D Reconstruction | Amazon Warehouse | Montecarlo Laser Localized |
-|------------------|-------------|----------------|-------------|---------------|--------------------------|-------------------|---------------|--------------------|-------------------|------------------|----------------------------|
-| % CPU            | 79%         | 74%            | 77%         | 79%           | 77%                      | 78%               | 79%           | 80%                | 79%               | 79%              | 76%                        |
-| RTF              | 0.13        | 0.89           | 0.8         | 0.68          | 0.8                      | 0.73              | 0.59          | 0.29               | 0.56              | 0.56             | 0.8                        |
-| Gazebo's FPS     | 3           | 7              | 3           | 4             | 7                        | 7                 | 5             | 3                  | 3                 | 2                | 9                          |
+
+<br>
+<div style="border-bottom: 3px solid gray;"></div>
+<br>
 
 - CPU: 6 cores (Average Percentages up to 100%)
 - CPU: Intel Core i5
@@ -165,18 +170,47 @@ In this section, various cost tables will be provided showing the cost of each R
 - Windows: 64 bits
 
 
-| WINDOWS          | Follow Line | Vacuum Cleaner | Autoparking | Follow Person | Localized Vacuum Cleaner | Global Navigation | Rescue People | Obstacle Avoidance | 3D Reconstruction | Amazon Warehouse | Montecarlo Laser Localized |
-|------------------|-------------|----------------|-------------|---------------|--------------------------|-------------------|---------------|--------------------|-------------------|------------------|----------------------------|
-| % CPU            | 72%         | 52%            | 61%         | 66%           | 66%                      | 68%               | 72%           | 73%                | 76%               | 79%              | 63%                        |
-| % GPU            | 5%          | 6%             | 9%          | 5%            | 7%                       | 6%                | 10%           | 4%                 | 9%                | 4%               | 17%                        |
-| RTF              | 0.5         | 0.95           | 0.85        | 0.95          | 0.95                     | 0.8               | 0.6           | 0.5                | 0.7               | 0.74             | 0.9                        |
-| Gazebo's FPS     | 16          | 11             | 7           | 20            | 20                       | 11                | 15            | 6                  | 9                 | 5                | 18                         |
+|           Windows           | % CPU | Gazebo's RTF  | Gazebo's FPS |
+|----------------------|-------|------|--------------|
+| Follow Line          | 79%   | 0.13 | 3            |
+| Vacuum Cleaner       | 74%   | 0.89 | 7            |
+| Autoparking          | 77%   | 0.8  | 3            |
+| Follow Person        | 79%   | 0.68 | 4            |
+| Localized Vacuum Cleaner | 77%   | 0.8  | 7            |
+| Global Navigation    | 78%   | 0.73 | 7            |
+| Rescue People        | 79%   | 0.59 | 5            |
+| Obstacle Avoidance   | 80%   | 0.29 | 3            |
+| 3D Reconstruction    | 79%   | 0.56 | 3            |
+| Amazon Warehouse     | 79%   | 0.56 | 2            |
+| Montecarlo Laser Localized | 76%   | 0.8  | 9            |
+
+
+<br>
+<div style="border-bottom: 3px solid gray;"></div>
+<br>
 
 - CPU: 6 cores (Average Percentages up to 100%)
 - CPU: Intel Core i5
 - 16GB RAM
 - Windows: 64 bits
 - GPU: NVIDIA GeForce GTX 1660
+
+
+|          Windows            | % CPU | % GPU | Gazebo's RTF  | Gazebo's FPS |
+|----------------------|-------|-------|------|--------------|
+| Follow Line          | 72%   | 5%    | 0.5  | 16           |
+| Vacuum Cleaner       | 52%   | 6%    | 0.95 | 11           |
+| Autoparking          | 61%   | 9%    | 0.85 | 7            |
+| Follow Person        | 66%   | 5%    | 0.95 | 20           |
+| Localized Vacuum Cleaner | 66%   | 7%    | 0.95 | 20           |
+| Global Navigation    | 68%   | 6%    | 0.8  | 11           |
+| Rescue People        | 72%   | 10%   | 0.6  | 15           |
+| Obstacle Avoidance   | 73%   | 4%    | 0.5  | 6            |
+| 3D Reconstruction    | 76%   | 9%    | 0.7  | 9            |
+| Amazon Warehouse     | 79%   | 4%    | 0.74 | 5            |
+| Montecarlo Laser Localized | 63%   | 17%   | 0.9  | 18           |
+
+
 
 # 5. Troubleshooting
 
