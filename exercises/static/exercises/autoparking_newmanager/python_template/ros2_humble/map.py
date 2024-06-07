@@ -1,11 +1,9 @@
 import json
 import math
-import os
 import numpy as np
-from interfaces.laser import ListenerLaser
 
 class Map:
-	def __init__(self, laser_object_f, laser_object_r, laser_object_b, pose3d_object):
+	def __init__(self, laser_object_f, laser_object_r, laser_object_b):
 		# Car direction
 		self.carx = 2.0
 		self.cary = 0.0
@@ -25,7 +23,6 @@ class Map:
 		self.laser_topic_f = laser_object_f
 		self.laser_topic_r = laser_object_r
 		self.laser_topic_b = laser_object_b
-		self.pose3d = pose3d_object
         
     # Get the JSON data as string
 	def get_json_data(self):								
@@ -80,9 +77,9 @@ class Map:
 		laser_f = []
 		laser_r = []
 		laser_b = []
-		self.laser_f = self.laser_topic_f.getLaserData()
-		self.laser_r = self.laser_topic_r.getLaserData()
-		self.laser_b = self.laser_topic_b.getLaserData()
+		self.laser_f = self.laser_topic_f()
+		self.laser_r = self.laser_topic_r()
+		self.laser_b = self.laser_topic_b()
 
 		lasers = [self.setSingleLaserValue(self.laser_f), self.setSingleLaserValue(self.laser_r), self.setSingleLaserValue(self.laser_b)]
 		ranges = [20 * self.laser_f.maxRange, 20 * self.laser_r.maxRange, 20 * self.laser_b.maxRange]

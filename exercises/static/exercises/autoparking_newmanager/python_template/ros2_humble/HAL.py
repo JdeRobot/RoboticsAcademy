@@ -1,57 +1,72 @@
 import rclpy
+import threading
+import time
 
-from interfaces.motors import PublisherMotors
-from interfaces.pose3d import ListenerPose3d
-from interfaces.laser import ListenerLaser
+from hal_interfaces.general.motors import MotorsNode
+from hal_interfaces.general.odometry import OdometryNode
+from hal_interfaces.general.laser import LaserNode
 
 # Hardware Abstraction Layer
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
+freq = 30.0
 
 # ROS2 init
-rclpy.create_node('HAL')
 
-motors = PublisherMotors("/prius_autoparking/cmd_vel", 4, 0.3)
-laser_front = ListenerLaser("/prius_autoparking/scan_front")
-laser_right = ListenerLaser("/prius_autoparking/scan_side")
-laser_back = ListenerLaser("/prius_autoparking/scan_back")
-pose3d = ListenerPose3d("/prius_autoparking/odom")
+print("HAL initializing", flush=True)
+if not rclpy.ok():
+    rclpy.init(args=None)
+
+    ### HAL INIT ###
+    motor_node = MotorsNode("/prius_autoparking/cmd_vel", 4, 0.3)
+    odometry_node = OdometryNode("/prius_autoparking/odom")
+    laser_front_node = LaserNode("/prius_autoparking/scan_front")
+    laser_right_node = LaserNode("/prius_autoparking/scan_side")
+    laser_back_node = LaserNode("/prius_autoparking/scan_back")
+
+    # Spin nodes so that subscription callbacks load topic data
+    executor = rclpy.executors.MultiThreadedExecutor()
+    executor.add_node(odometry_node)
+    executor.add_node(laser_front_node)
+    executor.add_node(laser_right_node)
+    executor.add_node(laser_back_node)
+    def __auto_spin() -> None:
+        while rclpy.ok():
+            executor.spin_once(timeout_sec=0)
+            time.sleep(1/freq)
+    executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+    executor_thread.start()
 
 
 def getPose3d():
-    try:
-        rclpy.spin_once(pose3d)
-        values = pose3d.getPose3d()
-        return values
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
+    return odometry_node.getPose3d()
 
 def getFrontLaserData():
-    try:
-        rclpy.spin_once(laser_front)
-        laser_data = laser_front.getLaserData()
-        return laser_data
-    except Exception as e:
-        print(f"Exception in hal getFrontLaserData {repr(e)}")
+    laser = laser_front_node.getLaserData()
+    timestamp = laser.timeStamp
+    while timestamp == 0.0:
+        laser = laser_front_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 def getRightLaserData():
-    try:
-        rclpy.spin_once(laser_right)
-        laser_data = laser_right.getLaserData()
-        return laser_data
-    except Exception as e:
-        print(f"Exception in hal getRightLaserData {repr(e)}")
+    laser = laser_right_node.getLaserData()
+    timestamp = laser.timeStamp
+    while timestamp == 0.0:
+        laser = laser_right_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 def getBackLaserData():
-    try:
-        rclpy.spin_once(laser_back)
-        laser_data = laser_back.getLaserData()
-        return laser_data
-    except Exception as e:
-        print(f"Exception in hal getBackLaserData {repr(e)}")
+    laser = laser_back_node.getLaserData()
+    timestamp = laser.timeStamp
+    while timestamp == 0.0:
+        laser = laser_back_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 def setV(velocity):
-    motors.sendV(velocity)
+    motor_node.sendV(float(velocity))
 
 def setW(velocity):
-    motors.sendW(velocity)
+    motor_node.sendW(float(velocity))
