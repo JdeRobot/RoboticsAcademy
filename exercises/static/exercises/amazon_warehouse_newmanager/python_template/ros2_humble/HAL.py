@@ -5,9 +5,8 @@ import time
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
-
-from interfaces.platform_controller import PlatformCommandListener
-from interfaces.platform_publisher import PublisherPlatform
+from hal_interfaces.specific.amazon_warehouse.platform_publisher import PublisherPlatformNode
+from hal_interfaces.specific.amazon_warehouse.platform_controller import PlatformCommandNode
 
 # Hardware Abstraction Layer
 freq = 30.0
@@ -20,8 +19,9 @@ if not rclpy.ok():
     motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
     odometry_node = OdometryNode("/amazon_robot/odom")
     laser_node = LaserNode("/amazon_robot/scan")
-    platform_listener = PlatformCommandListener()
-    platform_pub = PublisherPlatform("/send_effort")
+    # TODO: maybe combine these 2 into 1
+    platform_listener = PlatformCommandNode("/send_effort")
+    platform_pub = PublisherPlatformNode("/send_effort")
 
     # Spin nodes so that subscription callbacks load topic data
     executor = rclpy.executors.MultiThreadedExecutor()
