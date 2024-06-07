@@ -45,7 +45,7 @@ class GUI:
         self.ack_lock = threading.Lock()
         
         # Create the lap object
-        pose3d_object = OdometryNode("/odom")
+        pose3d_object = OdometryNode("/odom") # TODO: use a thread or something, because this does nothing
         self.lap = Lap(pose3d_object)
         self.map = Map(pose3d_object, self.circuit)
 
