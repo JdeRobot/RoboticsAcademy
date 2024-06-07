@@ -1,48 +1,53 @@
 import rclpy
 import sys
-import numpy as np
-import cv2
 import threading
 import time
-from datetime import datetime
 
-from interfaces.motors import PublisherMotors
-from interfaces.camera import ListenerCamera
-from shared.image import SharedImage
-from shared.value import SharedValue
+from hal_interfaces.general.motors import MotorsNode
+from hal_interfaces.general.camera import CameraNode
 
 
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
-# ROS2 init
-rclpy.create_node('HAL')
+freq = 35.0
 
-shared_image = SharedImage("halimage")
-shared_v = SharedValue("velocity")
-shared_w = SharedValue("angular")
+# def __auto_spin() -> None:
+#     while rclpy.ok():
+#         executor.spin_once(timeout_sec=0)
+#         time.sleep(1/freq)
+
+# ROS2 init
+if not rclpy.ok():
+    rclpy.init(args=sys.argv)
 
 # ROS2 Topics
-camera = ListenerCamera("/cam_f1_left/image_raw")
-motors = PublisherMotors("/cmd_vel", 4, 0.3)
+motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+camera_node = CameraNode("/cam_f1_left/image_raw")
 
-start_time = 0
+# Spin nodes so that subscription callbacks load topic data
+# executor = rclpy.executors.MultiThreadedExecutor()
+# executor.add_node(camera_node)
+# executor_thread = threading.Thread(target=executor.spin, daemon=True)
+# executor_thread.start()
 
 # Get Image from ROS Driver Camera
+# def getImage():
+#     return camera_node.getImage().data
+
 def getImage():
     try:
-        rclpy.spin_once(camera)
-        image = camera.getImage().data
-        # image = self._get_test_image()
-        # print(f"HAL image set, shape: {image.shape}, bytes: {image.nbytes}", flush=True)
+        rclpy.spin_once(camera_node)
+        image = camera_node.getImage().data
         return image
     except Exception as e:
         print(f"Exception in hal getImage {repr(e)}")
 
+
 # Set the velocity
 def setV(velocity):
-    motors.sendV(velocity)
+    motor_node.sendV(float(velocity))
 
 # Set the angular velocity
 def setW(velocity):
-    motors.sendW(velocity)
+    motor_node.sendW(float(velocity))
