@@ -19,6 +19,7 @@ if not rclpy.ok():
     motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
     odometry_node = OdometryNode("/amazon_robot/odom")
     laser_node = LaserNode("/amazon_robot/scan")
+    
     # TODO: maybe combine these 2 into 1
     platform_listener = PlatformCommandNode("/send_effort")
     platform_pub = PublisherPlatformNode("/send_effort")
