@@ -10,12 +10,12 @@ from hal_interfaces.general.camera import CameraNode
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
-freq = 35.0
+freq = 60.0 # Less than this wont work
 
-# def __auto_spin() -> None:
-#     while rclpy.ok():
-#         executor.spin_once(timeout_sec=0)
-#         time.sleep(1/freq)
+def __auto_spin() -> None:
+    while rclpy.ok():
+        executor.spin_once(timeout_sec=0)
+        time.sleep(1/freq)
 
 # ROS2 init
 if not rclpy.ok():
@@ -26,23 +26,17 @@ motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 camera_node = CameraNode("/cam_f1_left/image_raw")
 
 # Spin nodes so that subscription callbacks load topic data
-# executor = rclpy.executors.MultiThreadedExecutor()
-# executor.add_node(camera_node)
-# executor_thread = threading.Thread(target=executor.spin, daemon=True)
-# executor_thread.start()
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(camera_node)
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
 
 # Get Image from ROS Driver Camera
-# def getImage():
-#     return camera_node.getImage().data
-
 def getImage():
-    try:
-        rclpy.spin_once(camera_node)
-        image = camera_node.getImage().data
-        return image
-    except Exception as e:
-        print(f"Exception in hal getImage {repr(e)}")
-
+    image = camera_node.getImage()
+    while image == None:
+        image = camera_node.getImage()
+    return image.data
 
 # Set the velocity
 def setV(velocity):

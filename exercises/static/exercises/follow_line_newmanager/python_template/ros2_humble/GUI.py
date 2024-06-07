@@ -45,6 +45,7 @@ class GUI:
         self.ack_lock = threading.Lock()
         
         # Create the lap object
+        # TODO: maybe move this to HAL and have it be hybrid
         pose3d_object = OdometryNode("/odom")
         executor = rclpy.executors.MultiThreadedExecutor()
         executor.add_node(pose3d_object)
