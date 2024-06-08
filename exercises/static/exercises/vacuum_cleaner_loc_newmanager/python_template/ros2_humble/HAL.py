@@ -2,7 +2,6 @@ import rclpy
 import sys
 import threading
 import time
-from console import start_console
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
@@ -31,6 +30,8 @@ if not rclpy.ok():
     # Spin nodes so that subscription callbacks load topic data
     executor = rclpy.executors.MultiThreadedExecutor()
     executor.add_node(odometry_node)
+    executor.add_node(laser_node)
+    executor.add_node(bumper_node) 
     def __auto_spin() -> None:
         while rclpy.ok():
             executor.spin_once(timeout_sec=0)
@@ -44,21 +45,20 @@ if not rclpy.ok():
 # Laser
 def getLaserData():
     try:
-        rclpy.spin_once(laser_node)
-        values = laser_node.getLaserData().values
-        return values
+        return laser_node.getLaserData()
     except Exception as e:
         print(f"Exception in hal getLaserData {repr(e)}")
 
-
 # Pose
 def getPose3d():
-    return odometry_node.getPose3d()
+    try:
+        return odometry_node.getPose3d()
+    except Exception as e:
+        print(f"Exception in hal getPose3d {repr(e)}")        
 
 # Bumper
 def getBumperData():
     try:
-        rclpy.spin_once(bumper_node)
         return bumper_node.getBumperData()
     except Exception as e:
         print(f"Exception in hal getBumper {repr(e)}")
@@ -66,11 +66,9 @@ def getBumperData():
 
 ### SETTERS ###
 
-
 # Linear speed
 def setV(v):
     motor_node.sendV(float(v))
-
 
 # Angular speed
 def setW(w):
