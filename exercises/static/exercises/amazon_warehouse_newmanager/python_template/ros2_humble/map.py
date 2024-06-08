@@ -27,7 +27,7 @@ class Map:
 		return RTz
 		
 	def getRobotCoordinates(self):
-		pose = self.pose3d.getPose3d()
+		pose = self.pose3d()
 
 		x = pose.x
 		y = pose.y
@@ -39,7 +39,7 @@ class Map:
 		return y, x
 	
 	def getRobotAngle(self):
-		pose = self.pose3d.getPose3d()
+		pose = self.pose3d()
 		rt = pose.yaw - 1.24
 
 		ty = math.cos(-rt) - math.sin(-rt)

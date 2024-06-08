@@ -1,47 +1,55 @@
 import rclpy
 import threading
+import time
 
-from interfaces.motors import PublisherMotors
-from interfaces.pose3d import ListenerPose3d
-from interfaces.laser import ListenerLaser
-from interfaces.platform_controller import PlatformCommandListener
-from interfaces.platform_publisher import PublisherPlatform
+from hal_interfaces.general.motors import MotorsNode
+from hal_interfaces.general.odometry import OdometryNode
+from hal_interfaces.general.laser import LaserNode
+from hal_interfaces.specific.amazon_warehouse.platform_publisher import PublisherPlatformNode
+from hal_interfaces.specific.amazon_warehouse.platform_controller import PlatformCommandNode
 
 # Hardware Abstraction Layer
-# rclpy.init(args=sys.argv)
-rclpy.create_node('HAL')
+freq = 30.0
 
-motors = PublisherMotors("/amazon_robot/cmd_vel", 4, 0.3)
-pose3d = ListenerPose3d("/amazon_robot/odom")
-laser = ListenerLaser("/amazon_robot/scan")
-platform_listener = PlatformCommandListener()
-platform_pub = PublisherPlatform("/send_effort")
+print("HAL initializing", flush=True)
+if not rclpy.ok():
+    rclpy.init(args=None)
 
-# Spin nodes so that subscription callbacks load topic data
-# Bumper has to be spinned differently so that GetEntityState works
-executor = rclpy.executors.MultiThreadedExecutor()
-executor.add_node(pose3d)
-executor.add_node(laser)
-executor.add_node(platform_listener)
-executor_thread = threading.Thread(target=executor.spin, daemon=True)
-executor_thread.start()
+    ### HAL INIT ###
+    motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
+    odometry_node = OdometryNode("/amazon_robot/odom")
+    laser_node = LaserNode("/amazon_robot/scan")
+    
+    # TODO: maybe combine these 2 into 1
+    platform_listener = PlatformCommandNode("/send_effort")
+    platform_pub = PublisherPlatformNode("/send_effort")
 
-print("HAL-Nodes Thread Started")
+    # Spin nodes so that subscription callbacks load topic data
+    executor = rclpy.executors.MultiThreadedExecutor()
+    executor.add_node(odometry_node)
+    executor.add_node(laser_node)
+    executor.add_node(platform_listener)
+    def __auto_spin() -> None:
+        while rclpy.ok():
+            executor.spin_once(timeout_sec=0)
+            time.sleep(1/freq)
+    executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+    executor_thread.start()
 
 def getPose3d():
-    return pose3d.getPose3d()
+    return odometry_node.getPose3d()
 
 def getLaserData():
-    laser_data = laser.getLaserData()
+    laser_data = laser_node.getLaserData()
     while len(laser_data.values) == 0:
-        laser_data = laser.getLaserData()
+        laser_data = laser_node.getLaserData()
     return laser_data
 
 def setV(velocity):
-    motors.sendV(velocity)
+    motor_node.sendV(float(velocity))
 
 def setW(velocity):
-    motors.sendW(velocity)
+    motor_node.sendW(float(velocity))
 
 def lift():
     platform_pub.load()
