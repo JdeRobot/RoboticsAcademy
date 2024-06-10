@@ -8,10 +8,10 @@ from datetime import datetime
 import websocket
 import rclpy
 import matplotlib.pyplot as plt
-from interfaces.pose3d import ListenerPose3d
-import matplotlib.pyplot as plt
-from console import start_console
+
+from HAL import getPose3d
 from map import Map
+from console import start_console
 
 # Graphical User Interface Class
 
@@ -31,8 +31,8 @@ class GUI:
     def __init__(self, host):
 
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
 
         self.payload = {'map': '', 'user': '', 'particles': ''}
         self.server = None
@@ -51,16 +51,8 @@ class GUI:
         self.ack = False
         self.ack_lock = threading.Lock()
 
-        self.pose3d_object = ListenerPose3d("/odom")
-
-        # Spin nodes so that subscription callbacks load topic data
-        executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(self.pose3d_object)
-        executor_thread = threading.Thread(target=executor.spin, daemon=True)
-        executor_thread.start()
-
         # Create the lap object
-        self.map = Map(self.pose3d_object)
+        self.map = Map(getPose3d)
 
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
