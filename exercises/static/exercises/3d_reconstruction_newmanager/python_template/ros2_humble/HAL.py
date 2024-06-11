@@ -1,5 +1,8 @@
 import rclpy
-from interfaces.camera import ListenerCamera, ListenerParameters
+import threading
+import time
+from hal_interfaces.general.camera import CameraNode
+from hal_interfaces.specific.threed_reconstruction.parameters_camera import ListenerParameters
 import numpy as np
 
 
@@ -7,13 +10,27 @@ import numpy as np
 
 IMG_WIDTH = 640
 IMG_HEIGHT = 480
+image = None
+freq = 15.0
+
 
 # ROS2 init
-rclpy.create_node('HAL')
+if not rclpy.ok():
+    rclpy.init(args=None)
 
-image = None
-cameraL = ListenerCamera("/cam_turtlebot_left/image_raw")
-cameraR = ListenerCamera("/cam_turtlebot_right/image_raw")
+cameraL = CameraNode("/cam_turtlebot_left/image_raw")
+cameraR = CameraNode("/cam_turtlebot_right/image_raw")
+
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(cameraL)
+executor.add_node(cameraR)
+def __auto_spin() -> None:
+    while rclpy.ok():
+        executor.spin_once(timeout_sec=0)
+        time.sleep(1/freq)
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
 
 camLeftP = ListenerParameters("3d_reconstruction_conf.yml", "CamACalibration")
 camRightP = ListenerParameters("3d_reconstruction_conf.yml", "CamBCalibration")
@@ -22,12 +39,16 @@ camRightP = ListenerParameters("3d_reconstruction_conf.yml", "CamBCalibration")
 def getImage(lr):
     try:
         if (lr == 'left'):
-            rclpy.spin_once(cameraL)
-            image = cameraL.getImage().data
+            image = cameraL.getImage()
+            while image == None:
+                print(image)
+                image = cameraL.getImage()
         elif (lr == 'right'):
-            rclpy.spin_once(cameraR)
-            image = cameraR.getImage().data
-        return image
+            image = cameraR.getImage()
+            while image == None:
+                print(image)
+                image = cameraR.getImage()
+        return image.data
     except Exception as e:
         print(f"Exception in hal getImage {repr(e)}")
 

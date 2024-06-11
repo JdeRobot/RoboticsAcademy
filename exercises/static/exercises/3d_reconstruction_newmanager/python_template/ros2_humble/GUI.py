@@ -21,8 +21,8 @@ class GUI:
         self.payload = {'img1': '', 'img2': '', 'pts': '', 'match': '', 'p_match': 'F'}
 
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
 
         self.server = None
         self.client = None
