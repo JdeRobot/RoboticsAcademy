@@ -41,12 +41,10 @@ def getImage(lr):
         if (lr == 'left'):
             image = cameraL.getImage()
             while image == None:
-                print(image)
                 image = cameraL.getImage()
         elif (lr == 'right'):
             image = cameraR.getImage()
             while image == None:
-                print(image)
                 image = cameraR.getImage()
         return image.data
     except Exception as e:
