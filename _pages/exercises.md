@@ -456,6 +456,17 @@ feature_row:
     order: 0;
     version: "v1.0"
 
+  - image_path: /assets/images/exercises/drone_tello/drone_tello1.png
+    alt: "Real Drone Tello Square"
+    title: "Real Drone Tello Square"
+    excerpt: "Draw a square with its flight and land back in the same place."
+    url: "/exercises/Drones/drone_tello"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--inverse"
+    status: "prototype"
+    order: 0;
+    version: "v3.2"
 ---
 
 
