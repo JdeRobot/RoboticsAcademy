@@ -1,5 +1,7 @@
 import rclpy
 import sys
+import threading
+import time
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
@@ -8,6 +10,8 @@ from hal_interfaces.general.camera import CameraNode
 from hal_interfaces.general.classnet import NeuralNetwork
 
 ### HAL INIT ###
+
+freq = 30.0
 
 print("HAL initializing", flush=True)
 if not rclpy.ok():
@@ -19,37 +23,43 @@ laser_node = LaserNode("/scan")
 camera_node = CameraNode("/depth_camera/image_raw")
 neural_network = NeuralNetwork()
 
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(odometry_node)
+executor.add_node(laser_node)
+executor.add_node(camera_node)
+def __auto_spin() -> None:
+    while rclpy.ok():
+        executor.spin_once(timeout_sec=0)
+        time.sleep(1/freq)
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
+
+
 ### GETTERS ###
 
 
 # Laser
 def getLaserData():
-    try:
-        rclpy.spin_once(laser_node)
-        laser_data = laser_node.getLaserData()
-        return laser_data
-    except Exception as e:
-        print(f"Exception in hal getLaserData {repr(e)}")
+    laser = laser_node.getLaserData()
+    timestamp = laser.timeStamp
+    while timestamp == 0.0:
+        laser = laser_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 
 # Pose
 def getPose3d():
-    try:
-        rclpy.spin_once(odometry_node)
-        pose = odometry_node.getPose3d()
-        return pose
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
+    return odometry_node.getPose3d()
 
 
 # Image
 def getImage():
-    try:
-        rclpy.spin_once(camera_node)
-        image = camera_node.getImage().data
-        return image
-    except Exception as e:
-        print(f"Exception in hal getImage {repr(e)}")
+    image = camera_node.getImage()
+    while image == None:
+        image = camera_node.getImage()
+    return image.data
 
 
 # Bounding boxes
