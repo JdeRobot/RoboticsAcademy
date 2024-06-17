@@ -217,12 +217,12 @@ SO: MacOS Sonoma 14.5, RAM: 8 GB, CPU: Apple M1 (8 cores)
 | **Autoparking**                | 0.47         | 5            | 530%        |
 | **Follow Person**              | 0.78         | 13           | 650%        |
 | **Localized Vacuum Cleaner**   | 0.45         | 20           | 500%        |
-| **Global Navigation**          | 0.60         | 10           | 650%        |
+| **Global Navigation**          | 0.63         | 15           | 550%        |
 | **Rescue People**              | -            | -            | -           |
-| **Obstacle Avoidance**         | 0.57         | 3            | 600%        |
+| **Obstacle Avoidance**         | 0.7          | 8            | 550%        |
 | **3D Reconstruction**          | 0.46         | 4            | 550%        |
-| **Amazon Warehouse**           | 0.37         | 3            | 660%        |
-| **Montecarlo Laser Localized** | 0.44         | 18           | 500%        |
+| **Amazon Warehouse**           | 0.5          | 6            | 620%        |
+| **Montecarlo Laser Localized** | 0.46         | 18           | 500%        |
 
 ## Intel GPU Acceleration
 
