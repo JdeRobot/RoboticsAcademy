@@ -12,8 +12,7 @@ import websocket
 import subprocess
 import logging
 
-from interfaces.pose3d import ListenerPose3d
-from shared.value import SharedValue
+from hal_interfaces.general.odometry import OdometryNode
 from console import start_console
 
 from lap import Lap
@@ -26,18 +25,14 @@ class GUI:
     # The actual initialization
     def __init__(self, host):
 
-        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
+        self.payload = {'image': '','lap': '', 'map': ''}
         
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
 
         # Circuit
         self.circuit = "simple"
-        
-        # Get HAL variables
-        self.shared_v = SharedValue("velocity")
-        self.shared_w = SharedValue("angular")
 
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
@@ -50,7 +45,12 @@ class GUI:
         self.ack_lock = threading.Lock()
         
         # Create the lap object
-        pose3d_object = ListenerPose3d("/odom")
+        # TODO: maybe move this to HAL and have it be hybrid
+        pose3d_object = OdometryNode("/odom")
+        executor = rclpy.executors.MultiThreadedExecutor()
+        executor.add_node(pose3d_object)
+        executor_thread = threading.Thread(target=executor.spin, daemon=True)
+        executor_thread.start()
         self.lap = Lap(pose3d_object)
         self.map = Map(pose3d_object, self.circuit)
 
@@ -110,14 +110,6 @@ class GUI:
         # Payload Map Message
         pos_message = str(self.map.getFormulaCoordinates())
         self.payload["map"] = pos_message
-
-        # Payload V Message
-        v_message = str(self.shared_v.get())
-        self.payload["v"] = v_message
-
-        # Payload W Message
-        w_message = str(self.shared_w.get())
-        self.payload["w"] = w_message
         
         message = json.dumps(self.payload)
         if self.client:
