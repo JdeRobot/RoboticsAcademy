@@ -8,7 +8,6 @@ const SpecificRecontruction3D = (props) => {
         console.log("TestShowScreen subscribing to ['update'] events");
         const callback = (message) => {
           if(message.data.update.img1){
-            console.log(message)
             const data = message.data.update;
             draw(data)
           }
