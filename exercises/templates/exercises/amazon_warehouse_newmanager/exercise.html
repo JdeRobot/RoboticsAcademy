@@ -8,9 +8,15 @@
     {% react_component exercise/amazon_warehouse_newmanager/AmazonWarehouseRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Amazon Warehouse" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse/" %}
-            {% react_component components/visualizers/WorldSelector %} {% end_react_component %}   
-            {% end_react_component %}  
+            {% if deployment %}
+                {% react_component components/layout_components/MainAppBarExtra exerciseName="Amazon Warehouse" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse/" %}
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}   
+                {% end_react_component %}
+            {% else %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Amazon Warehouse" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse/" %}
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}   
+                {% end_react_component %}
+            {% endif %}
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
                     {% if deployment %}

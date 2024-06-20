@@ -7,9 +7,15 @@
 {% block react-content %}
     {% react_component exercise/montecarlo_laser_loc/MontecarloLaserLoc %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Montecarlo Laser Loc" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc" %} 
-            {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
-            {% end_react_component %}  
+            {% if deployment %}
+                {% react_component components/layout_components/MainAppBarExtra exerciseName="Montecarlo Laser Loc" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc" %} 
+                {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
+                {% end_react_component %}
+            {% else %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Montecarlo Laser Loc" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc" %} 
+                {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
+                {% end_react_component %}
+            {% endif %}    
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
                     {% if deployment %}
