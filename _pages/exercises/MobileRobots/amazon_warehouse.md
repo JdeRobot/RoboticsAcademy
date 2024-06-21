@@ -53,7 +53,9 @@ original_axis:
     image_path: /assets/images/exercises/amazon_warehouse/original_axis.png
     title: "Warehouse 1"
 
-youtubeId: EVt9vYqEoDg
+solution1: EVt9vYqEoDg
+ackermannRobot: NCC9bn-v_Ro
+robotgeometry: FPPF27QIRHw
 ---
 
 ## Goal
@@ -300,14 +302,24 @@ In order to carry out the inverse operation of 3D to 2D, we can simply multiply,
 Simple hints provided to help you solve the Amazon Warehouse exercise. Please note that the **full solution has not been provided.** Also, the hints are more related to the reference solution, since multiple solutions are possible for this exercise.
 
 ### Ideas for solving the exercise
-Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
 
+There are different ways to solve the exercise:
+
+* #### Euclidean planning 
+  Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
+
+* #### Planning with robot's geometry constraints
+  Since the robot's geometry is not always suitable to be approximated as a point, as in the case when the rectangular shelving is loaded, it would be a better way to solve the problem taking into consideration the robot's geometry. And this is the challenge of this phase!
+  
+  You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into account the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as SE2StateSpace. And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
+
+{% include youtubePlayer.html id=page.robotgeometry %}
 #### How to find the shortest path?
 The library offers the possibility to set an optimization objective, which could be a great help in finding the shortest path. Check out in [this tutorial](https://ompl.kavrakilab.org/optimalPlanningTutorial.html) how to do it!
 
 #### Points to consider
 * The loaded shelf is no longer a obstacle but part of the robot, then:
-  * the robot's geometry changes, its "radius" increases
+  * the robot's geometry changes
   * remember to exclude the shelf itself when defining invalid states
 
 ### Important points to remember
@@ -318,7 +330,7 @@ The library offers the possibility to set an optimization objective, which could
 
 ### Demonstrative video of completed solution
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.solution1 %}
 
 - Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 - Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164).
