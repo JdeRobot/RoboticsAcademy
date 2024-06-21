@@ -47,6 +47,12 @@ example:
     alt: "Example"
     title: "Example"
 
+original_axis:
+  - url: /assets/images/exercises/amazon_warehouse/original_axis.png
+    alt: "Warehouse 1"
+    image_path: /assets/images/exercises/amazon_warehouse/original_axis.png
+    title: "Warehouse 1"
+
 solution1: EVt9vYqEoDg
 ackermannRobot: NCC9bn-v_Ro
 robotgeometry: FPPF27QIRHw
@@ -64,7 +70,10 @@ The objective of this practice is to implement the logic that allows a holonomic
 
 * `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware (Gazebo).
 * `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
+* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates. The function returns an x,y based in this axis reference, with (0,0) next to the robot spawn in Warehouse 1:
+
+{% include gallery id="original_axis" caption="HAL.getPose3d()" %}
+
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular speed
 * `HAL.lift()` - to lift the platform
@@ -83,9 +92,9 @@ There are two warehouses to choose from:
 {% include gallery id="warehouse1" caption="Warehouse 1" %}
 
 
-#### Warehouse 2: 
+#### Warehouse 2:
 * The warehouse size is 34 meters long and 22 meters wide.
-* The shelves coordinates from 1 to 9 are: (-8.5, -6.0), (-1.5, -6.0), (5.5, -6.0), (-8.5, 4.0), (-1.5, 4.0), (5.5, 4.0), (-1.0, -15.5), (-2, 11.5), (1.0, -15.0). 
+* The shelves coordinates from 1 to 9 are: (-8.5, -6.0), (-1.5, -6.0), (5.5, -6.0), (-8.5, 4.0), (-1.5, 4.0), (5.5, 4.0), (-1.0, -15.5), (-2, 11.5), (1.0, -15.0).
   * The separation distance between two neighboring shelves is 2 m on the x axis and 1.5 m on the y axis.
 * You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png
 
@@ -196,14 +205,14 @@ def plot_path(solution_path, dimensions):
   x, y = path.T
   ax = plt.gca()
   ax.plot(x, y, 'r--')
-  ax.plot(x, y, 'go') 
+  ax.plot(x, y, 'go')
   ax.axis(xmin=dimensions[0], xmax=dimensions[2], ymin=dimensions[1], ymax=dimensions[3])
   ax.add_patch(plt.Circle((obstacle[0], obstacle[1]), radius=obstacle[2]))
 
   plt.show()
 
 if __name__ == "__main__":
-  dimensions = [0, 0, 10, 10] 
+  dimensions = [0, 0, 10, 10]
   obstacle = [5.5, 5.5, 1]   # [x, y, radius]
   plan()
 ```
