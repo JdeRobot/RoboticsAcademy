@@ -50,7 +50,7 @@ example:
 original_axis:
   - url: /assets/images/exercises/amazon_warehouse/original_axis.png
     alt: "Warehouse 1"
-    image_path: /assets/images/exercises/amazon_warehouse/original_axis.png
+    image_path: /assets/images/exercises/amazon_warehouse/original_axis.JPG
     title: "Warehouse 1"
 
 solution1: EVt9vYqEoDg
