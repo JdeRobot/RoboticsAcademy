@@ -11,8 +11,6 @@ function SpecificMontecarloVisualLoc(props) {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
-      console.log("Apoorv");
-      console.log(message);
       const updateData = message.data.update;
 
       // Lógica para manejar la imagen
@@ -49,7 +47,7 @@ function SpecificMontecarloVisualLoc(props) {
     );
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['update'] events");
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
         [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
         callback

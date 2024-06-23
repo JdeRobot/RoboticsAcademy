@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-academy:4.5.13
+    image: jderobot/robotics-academy:4.5.9
     container_name: developer-container
     # deploy:
     #   resources:

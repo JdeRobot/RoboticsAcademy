@@ -45,8 +45,6 @@ function SpecificGlobalNavigation(props) {
     }
 
     const callback = (message) => {
-      console.log("Apoorv");
-      console.log(message);
       const data = message.data.update;
       getMapDataAndDraw(data)
       getImageAndDisplay(data)
@@ -59,7 +57,7 @@ function SpecificGlobalNavigation(props) {
     );
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['update'] events");
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
         [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
         callback
