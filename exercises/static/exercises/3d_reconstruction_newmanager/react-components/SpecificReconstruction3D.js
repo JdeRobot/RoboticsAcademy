@@ -53,8 +53,8 @@ const SpecificRecontruction3D = (props) => {
       }, [])
   return (
     <div style={{display: "flex", height: "100%", width: "100%"}}>
-       <div id="canvas" align = "center"  style={{flex: "1 1 auto", height: "100%", width: "100%"}}></div>
-      <canvas id="gui_canvas"></canvas>
+       <div id="canvas" align = "center"  style={{flex: "1 1 auto", height: "100%", width: "100%", minWidth:"400px"}}></div>
+      <canvas id="gui_canvas" style={{width: "100%"}}></canvas>
     </div>
   );
 };
