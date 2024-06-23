@@ -116,3 +116,6 @@ webpack-stats.json
 react_frontend/static
 developer_scripts
 src
+
+# Intermediate file created in root during development
+docker-compose.yaml
