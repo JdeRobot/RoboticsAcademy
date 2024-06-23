@@ -1,10 +1,14 @@
 import numpy as np
 import rclpy
-import cv2
+import threading
+import time
 
 from hal_interfaces.general.camera import CameraNode
 from jderobot_drones.drone_wrapper import DroneWrapper
 
+IMG_WIDTH = 320
+IMG_HEIGHT = 240
+freq = 15.0
 
 ### HAL INIT ###
 
@@ -12,35 +16,40 @@ print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
 
-IMG_WIDTH = 320
-IMG_HEIGHT = 240
 
-CAM_FRONTAL_TOPIC = "/" + "drone0" + "/sensor_measurements/frontal_camera/image_raw"
-CAM_VENTRAL_TOPIC = "/" + "drone0" + "/sensor_measurements/ventral_camera/image_raw"
+    CAM_FRONTAL_TOPIC = "/" + "drone0" + "/sensor_measurements/frontal_camera/image_raw"
+    CAM_VENTRAL_TOPIC = "/" + "drone0" + "/sensor_measurements/ventral_camera/image_raw"
 
-drone = DroneWrapper()
-frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
-ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
+    drone = DroneWrapper()
+    frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
+    ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
+
+    # Spin nodes so that subscription callbacks load topic data
+    executor = rclpy.executors.MultiThreadedExecutor()
+    executor.add_node(frontal_camera_node)
+    executor.add_node(ventral_camera_node)
+    def __auto_spin() -> None:
+        while rclpy.ok():
+            executor.spin_once(timeout_sec=0)
+            time.sleep(1/freq)
+    executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+    executor_thread.start()
 
 ### GETTERS ###
 
 
 def get_frontal_image():
-    try:
-        rclpy.spin_once(frontal_camera_node)
-        image = frontal_camera_node.getImage().data
-        return image
-    except Exception as e:
-        print(f"Exception in hal get_frontal_image {repr(e)}")
+    image = frontal_camera_node.getImage()
+    while image == None:
+        image = frontal_camera_node.getImage()
+    return image.data
 
 
 def get_ventral_image():
-    try:
-        rclpy.spin_once(ventral_camera_node)
-        image = ventral_camera_node.getImage().data
-        return image
-    except Exception as e:
-        print(f"Exception in hal get_ventral_image {repr(e)}")
+    image = ventral_camera_node.getImage()
+    while image == None:
+        image = ventral_camera_node.getImage()
+    return image.data
 
 
 def get_position():
