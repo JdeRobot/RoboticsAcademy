@@ -25,7 +25,11 @@
                     {% endif %}
                     {% react_component components/wrappers/FlexContainer row %}
                     {% react_component components/wrappers/FlexContainer console %} 
-                        {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% if deployment %}
+                            {% react_component components/editors/AceEditorRobotExtra %}{% end_react_component %}
+                        {% else %}
+                            {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% endif %}
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
