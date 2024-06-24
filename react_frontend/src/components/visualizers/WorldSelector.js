@@ -74,7 +74,9 @@ export default function WorldSelector(props) {
         sx={{
           m: 1,
           minWidth: 120,
+          maxWidth: 150,
           backgroundColor: disabled ? "#f57f51" : "#4caf50",
+          textOverFlow: "clip",
         }}
         size="small"
       >
