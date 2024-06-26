@@ -19,7 +19,7 @@ pylint==2.17.4
 
 setuptools==65.5.1  # This should be removed after going to python 3.9
 
-djangorestframework==3.13.1
+djangorestframework==3.15.2
 django-webpack-loader==1.5.0
 
 transitions==0.9.0
