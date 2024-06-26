@@ -8,15 +8,29 @@
     {% react_component exercise/follow_line_newmanager/FollowLineRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Follow Line" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/"%} 
-            {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
-            {% end_react_component %}  
+            {% if deployment %}
+                {% react_component components/layout_components/MainAppBarExtra exerciseName="Follow Line" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/"%} 
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
+                {% end_react_component %}
+            {% else %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Follow Line" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/"%} 
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
+                {% end_react_component %} 
+            {% endif %}
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
-                    {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                    {% if deployment %}
+                        {% react_component components/layout_components/ExerciseControlExtra %}{% end_react_component %}
+                    {% else %}
+                        {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                    {% endif %}
                     {% react_component components/wrappers/FlexContainer row %}
                     {% react_component components/wrappers/FlexContainer console %} 
-                        {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% if deployment %}
+                            {% react_component components/editors/AceEditorRobotExtra %}{% end_react_component %}
+                        {% else %}
+                            {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% endif %}
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 

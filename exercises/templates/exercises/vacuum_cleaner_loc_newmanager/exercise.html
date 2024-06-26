@@ -7,15 +7,29 @@
 {% block react-content %}
     {% react_component exercise/vacuum_cleaner_newmanager/BasicVacuumCleaner %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Localized Vacuum Cleaner" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner_loc" %} 
-            {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
-            {% end_react_component %}  
+            {% if deployment %}
+                {% react_component components/layout_components/MainAppBarExtra exerciseName="Localized Vacuum Cleaner" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner_loc" %} 
+                {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
+                {% end_react_component %}
+            {% else %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Localized Vacuum Cleaner" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner_loc" %} 
+                {% react_component components/visualizers/WorldIndicator %} {% end_react_component %}  
+                {% end_react_component %}
+            {% endif %} 
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
-                    {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                    {% if deployment %}
+                        {% react_component components/layout_components/ExerciseControlExtra %}{% end_react_component %}
+                    {% else %}
+                        {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                    {% endif %}
                     {% react_component components/wrappers/FlexContainer row %}
                     {% react_component components/wrappers/FlexContainer console %} 
-                        {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% if deployment %}
+                            {% react_component components/editors/AceEditorRobotExtra %}{% end_react_component %}
+                        {% else %}
+                            {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% endif %}
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
