@@ -98,6 +98,20 @@ window.RoboticsExerciseComponents = (function () {
     return rendered_component;
   };
 
+
+const consoleInput = document.getElementById('consoleInput');
+
+consoleInput.addEventListener('keydown', function(event) {
+    if (event.keyCode === 8) {
+        event.preventDefault();
+        let currentValue = consoleInput.value;
+        if (currentValue.length > 0) {
+            consoleInput.value = currentValue.substring(0, currentValue.length - 1);
+        }
+    }
+});
+
+  
   const render = async function (rootRenderer) {
     await renderImportNew(rootRenderer, false);
 
