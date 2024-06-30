@@ -33,7 +33,9 @@ window.RoboticsExerciseComponents = (function () {
     container_id,
     properties,
     children_elements
-  ) {
+  )
+    
+  {
     const container = document.getElementById(container_id);
     properties["key"] = container_id;
     let element = React.createElement(component, properties, children_elements);
@@ -63,7 +65,8 @@ window.RoboticsExerciseComponents = (function () {
 
     if (is_root) return rendered_component;
 
-    if (path[0] === "exercise") {
+    if (path[0] === "exercise") 
+    {
       const component_path = `${path.slice(2).join("/")}.js`;
       rendered_component = await import(`exercises/${component_path}`).then(
         (component) => {
