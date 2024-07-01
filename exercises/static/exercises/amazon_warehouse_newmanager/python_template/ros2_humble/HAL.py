@@ -4,9 +4,8 @@ import time
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
-from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.specific.amazon_warehouse.platform_controller import PlatformCommandNode, PublisherPlatformNode
-
+from hal_interfaces.specific.amazon_warehouse.simtime import SimTimeNode
 # Hardware Abstraction Layer
 freq = 30.0
 
@@ -17,15 +16,15 @@ if not rclpy.ok():
     ### HAL INIT ###
     motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
     odometry_node = OdometryNode("/amazon_robot/odom")
-    laser_node = LaserNode("/amazon_robot/scan")
     platform_listener = PlatformCommandNode("/send_effort")
     platform_pub = PublisherPlatformNode("/send_effort")
+    simtime_node = SimTimeNode("/clock")
 
     # Spin nodes so that subscription callbacks load topic data
     executor = rclpy.executors.MultiThreadedExecutor()
     executor.add_node(odometry_node)
-    executor.add_node(laser_node)
     executor.add_node(platform_listener)
+    executor.add_node(simtime_node)
     def __auto_spin() -> None:
         while rclpy.ok():
             executor.spin_once(timeout_sec=0)
@@ -36,11 +35,8 @@ if not rclpy.ok():
 def getPose3d():
     return odometry_node.getPose3d()
 
-def getLaserData():
-    laser_data = laser_node.getLaserData()
-    while len(laser_data.values) == 0:
-        laser_data = laser_node.getLaserData()
-    return laser_data
+def getSimTime():
+    return simtime_node.getSimTime()
 
 def setV(velocity):
     motor_node.sendV(float(velocity))
