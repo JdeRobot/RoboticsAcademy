@@ -9,7 +9,7 @@
         {% react_component exercise/follow_line_newmanager/FollowLineRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
             {% react_component components/common/MainAppBar exerciseName="Follow Line" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line/"%} 
-            {% react_component components/common/WorldSelector %} {% end_react_component %}  
+            {% react_component RA_links/WorldSelectorRA %} {% end_react_component %}  
             {% end_react_component %}
             {% react_component components/containers/MaterialBox id="content" %}
                 {% react_component components/containers/MaterialBox id="content-exercise" %}
@@ -17,11 +17,11 @@
                     {% react_component components/containers/FlexContainer row %}
                     {% react_component components/containers/FlexContainer console %} 
                     {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
-                        {% react_component RA_links/ConsoleViewerRA%}{% end_react_component %}
+                        {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
                             {% react_component exercise/follow_line_newmanager/SpecificFollowLine %}{% end_react_component %}
-                            {% react_component RA_links/GazeboViewerRA%}{% end_react_component %}
+                            {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
             {% end_react_component %}
