@@ -72,10 +72,10 @@ The students will program a Formula1 car in a race circuit to follow the red lin
 
 * `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getImage()` - to get the image
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-* `GUI.showImage()` - allows you to view a debug image or with relevant information
+* `HAL.getImage()` - to get the image (BGR8)
+* `HAL.setV(velocity)` - to set the linear speed
+* `HAL.setW(velocity)` - to set the angular velocity
+* `GUI.showImage(image)` - allows you to view a debug image or with relevant information
 
 ## Theory
 
