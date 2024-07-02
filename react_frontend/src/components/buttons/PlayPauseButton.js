@@ -71,7 +71,7 @@ const PlayPause = (props) => {
               "\\n"
             );
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              linterMessage
+              linterMessage, "error"
             );
             console.log(`Received linter message ·${linterMessage}`);
           });

@@ -15,9 +15,16 @@ window.RoboticsReactComponents.MessageSystem.Alert = (function () {
     alert_handler = callback;
   };
 
-  const showAlert = (message, closeAction, closeText) => {
+  /**
+   * Create alert component
+   * @param message string
+   * @param messageType defatult="error", One of the following: ("error", "success", "info", "warning")
+   * @param closeAction closeAction
+   * @param closeText closeText
+   */
+  const showAlert = (message, messageType, closeAction, closeText) => {
     if (alert_handler) {
-      alert_handler(message, closeAction, closeText);
+      alert_handler(message, messageType, closeAction, closeText);
     }
   };
 
@@ -29,11 +36,12 @@ window.RoboticsReactComponents.MessageSystem.Alert = (function () {
 
 const Alert = () => {
   const [message, setMessage] = React.useState("");
+  const [messageType, setMessageType] = React.useState("error");
   const [closeData, setCloseData] = React.useState(null);
 
   React.useEffect(() => {
     RoboticsReactComponents.MessageSystem.Alert.setAlertHandler(
-      (message, closeAction, closeText) => {
+      (message, messageType, closeAction, closeText) => {
         if (Array.isArray(message)) {
           message = message.map((msg, i) => <p key={i}>{msg}</p>);
         } else if (typeof message !== "string") {
@@ -44,6 +52,7 @@ const Alert = () => {
         }
 
         setMessage(message || "No message set");
+        setMessageType(messageType || "error");
 
         if (closeAction && closeText) {
           setCloseData({
@@ -57,6 +66,7 @@ const Alert = () => {
 
   const closeAlert = () => {
     setMessage(null);
+    setMessageType(null);
     setCloseData(null);
   };
 
@@ -65,14 +75,14 @@ const Alert = () => {
       {message ? (
         <Collapse in={message !== null}>
           <MuiAlert
-            severity="error"
+            severity={messageType ? messageType : "error"}
             action={
               <Button
                 color="inherit"
                 size="small"
                 onClick={closeData ? closeData.action : closeAlert}
               >
-                {closeData ? closeData.text : "CERRAR"}
+                {closeData ? closeData.text : "Close"}
               </Button>
             }
           >
