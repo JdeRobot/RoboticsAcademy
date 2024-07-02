@@ -33,7 +33,9 @@ window.RoboticsExerciseComponents = (function () {
     container_id,
     properties,
     children_elements
-  ) {
+  )
+    
+  {
     const container = document.getElementById(container_id);
     properties["key"] = container_id;
     let element = React.createElement(component, properties, children_elements);
@@ -63,7 +65,8 @@ window.RoboticsExerciseComponents = (function () {
 
     if (is_root) return rendered_component;
 
-    if (path[0] === "exercise") {
+    if (path[0] === "exercise") 
+    {
       const component_path = `${path.slice(2).join("/")}.js`;
       rendered_component = await import(`exercises/${component_path}`).then(
         (component) => {
@@ -98,6 +101,20 @@ window.RoboticsExerciseComponents = (function () {
     return rendered_component;
   };
 
+
+const consoleInput = document.getElementById('consoleInput');
+
+consoleInput.addEventListener('keydown', function(event) {
+    if (event.keyCode === 8) {
+        event.preventDefault();
+        let currentValue = consoleInput.value;
+        if (currentValue.length > 0) {
+            consoleInput.value = currentValue.substring(0, currentValue.length - 1);
+        }
+    }
+});
+
+  
   const render = async function (rootRenderer) {
     await renderImportNew(rootRenderer, false);
 
