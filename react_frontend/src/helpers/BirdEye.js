@@ -96,6 +96,7 @@ function drawTrail(px, py) {
 
 export function clearMap() {
   trail = [];
+  coords = [-1, -1];
   ctx.clearRect(0, 0, mapCanvas.width, mapCanvas.height);
 }
 
