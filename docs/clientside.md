@@ -16,11 +16,11 @@
 
 <a name="Robotics-Academy-frontend"></a>
 ## Robotics Academy frontend
-Robotics frontend is served from a Django webserver running inside the RADI. Each exercise page communicates with different elements of the RADI in order to interact with the simulation.
+Robotics frontend is served from a Django webserver running inside the RoboticsBackend. Each exercise page communicates with different elements of the RoboticsBackend in order to interact with the simulation.
 
 <a name="Robotics-Academy-backend"></a>
 ## Robotics Academy backend
-The **Robotics Academy Docker Image** (RADI) has several exercises available using **Gazebo** and **STDR**. In order to request and interact with the exercises, the container has a websocket **port (8765)** and a communication protocol (Robotics Academy Manager Protocol, or RAMP). Each exercise opens 1, 2 or more websockets to interact specifically with the exercise and receive data. The RAMP includes these commands:
+The **Robotics Backend** (RoboticsBackend) has several exercises available using **Gazebo** and **STDR**. In order to request and interact with the exercises, the container has a websocket **port (8765)** and a communication protocol (Robotics Academy Manager Protocol, or RAMP). Each exercise opens 1, 2 or more websockets to interact specifically with the exercise and receive data. The RAMP includes these commands:
 
     “open” in order to start an exercise specified on the field “exercise”
     “stop” to stop the simulation
@@ -31,7 +31,7 @@ The **Robotics Academy Docker Image** (RADI) has several exercises available usi
     “stopgz” to close the viewer GZClient
     “Ping” or "PingDone" to send Ping messages and to communicate that an order has been executed (ater resume, reset or stop commands)
 
-Each exercise is composed of an **exercise.html** and an **exercise.py**. The exercise.py is running inside the RADI whereas the exercise.html comes from the browser. Both communicate through **websockets**: bidirectional communication channels that allow communication between different programming languages.
+Each exercise is composed of an **exercise.html** and an **exercise.py**. The exercise.py is running inside the RoboticsBackend whereas the exercise.html comes from the browser. Both communicate through **websockets**: bidirectional communication channels that allow communication between different programming languages.
 Each exercise websocket (typically one for the GUI and one for the robot brain) has its own protocol. The first five characters are used to identify the type of the message.
 
 <a name="Protocol-between-exercise.py-and-browser"></a>
@@ -90,7 +90,7 @@ The connection between the backend and the frontend consists of these elements:
 <a name="User-code-processing"></a>
 ## User code processing
 When a user requests to load the code in the robot, the code follows these steps:
-1. The code is **sent from** the **ACE Editor** of the browser **to** the **manager.py** process of the RADI. The code is **checked** by Pylint and the **errors** are returned to the browser. If the browser receives an error, the error is displayed on a modal and the code is not sent to the brain.
+1. The code is **sent from** the **ACE Editor** of the browser **to** the **manager.py** process of the RoboticsBackend. The code is **checked** by Pylint and the **errors** are returned to the browser. If the browser receives an error, the error is displayed on a modal and the code is not sent to the brain.
 2. If there aren't any errors, the code is **sent from** the **browser to** the **exercise.py** through the code websocket. Exercise.py receives the user's source code as raw text and puts it to work.
 3. The exercise.py **separates** the **code** in two portions: the **sequential part** (executed once) and the **iterative part** (executed every brain interval). The code is separated by the first while True loop encountered. Within the iterative part the **brain measures** the **time after each iteration**, this is called **code management**, so as not to saturate the CPU and keep a **controlled rhythm** of iterations per second to leave the CPU free for other browser tasks. The iterative part is inserted into another template along with extra code that controls the iterations per second that are carried out, (computational skeleton) so this **computational engine** is tied to the user code to ensure that the code is executed at a **nominal frequency**.
 The user code is also enriched with some execution control elements in order to pause, reset and load a new code into the robot brain.
@@ -122,7 +122,7 @@ The user code is also enriched with some execution control elements in order to 
 
 <a name="Flow-Control"></a>
 ## Flow Control
-In order to control the number of messages sent by the users, so the RADI is not overflown with them, both the manager websocket and the code websocket have response messages for certain orders which are sent after the operetions are completed.
+In order to control the number of messages sent by the users, so the RoboticsBackend is not overflown with them, both the manager websocket and the code websocket have response messages for certain orders which are sent after the operetions are completed.
 
 - The manager websocket responds with "PingDone" after the operations "start", "stop" or "reset" are completed.
 - The code websocket responds with "#exec" after the sent code has been loaded in the brain of the robot.
@@ -132,7 +132,7 @@ After any of the previous commands is requested by the user, the respective butt
 <a name="Manager.py extended"></a>
 ## Manager.py extended
 
-When the RADI container is opened, it starts the execution of the manager.py. Then wait for the user to pick an exercise. Once the exercise is selected the browser communicates to the manager.py the identifier of that exercise and differentes messages depending the user's actions.
+When the RoboticsBackend container is opened, it starts the execution of the manager.py. Then wait for the user to pick an exercise. Once the exercise is selected the browser communicates to the manager.py the identifier of that exercise and differentes messages depending the user's actions.
 
 Once the manager.py receives the "start" message, it searches for the instructions.json file. Inside that file is a serie of instructions for each exercise in JSON format. This instructions include things as the path to the exercise.py file of each exercise or the route to the file for launching Gazebo, etc.
 

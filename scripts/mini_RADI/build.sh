@@ -62,7 +62,7 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         -h | --help) # display Help
-            echo "Generates RoboticsAcademy RADI image"
+            echo "Generates RoboticsAcademy RoboticsBackend image"
             echo
             Help
             exit 0
@@ -115,8 +115,8 @@ else
 fi
 
 # Build the Docker image
-echo "===================== BUILDING $ROS_DISTRO RADI ====================="
-echo "Building RADI using $DOCKERFILE for ROS $ROS_DISTRO"
+echo "===================== BUILDING $ROS_DISTRO RoboticsBackend ====================="
+echo "Building RoboticsBackend using $DOCKERFILE for ROS $ROS_DISTRO"
 
 docker build --no-cache -f $DOCKERFILE \
   --build-arg ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY \
