@@ -56,7 +56,7 @@ function SpecificAmazonWarehouse(props) {
       id="amazon_map_canvas"
       style={{
         backgroundImage:
-          "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')",
+          "url('../../static/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')",
         border: "2px solid #d3d3d3",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",

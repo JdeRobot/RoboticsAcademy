@@ -83,7 +83,7 @@ function SpecificMontecarloLaserLoc(props) {
         ref={guiCanvasRef}
         style={{
           backgroundImage:
-            "url('/static/exercises/montecarlo_visual_loc_newmanager/resources/mapgrannyannie.png')",
+            "url('../../static/RoboticsAcademy/exercises/static/exercises/montecarlo_visual_loc_newmanager/resources/mapgrannyannie.png')",
           border: "2px solid #d3d3d3",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100% 100%",

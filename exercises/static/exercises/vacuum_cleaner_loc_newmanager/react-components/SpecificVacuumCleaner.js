@@ -68,7 +68,7 @@ export default function SpecificVacuumCleaner() {
       ref={guiCanvasRef}
       style={{
         backgroundImage:
-          "url('/static/exercises/vacuum_cleaner_loc_newmanager/resources/images/mapgrannyannie.png')",
+          "url('../../static/RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc_newmanager/resources/images/mapgrannyannie.png')",
         border: "2px solid #d3d3d3",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%",
