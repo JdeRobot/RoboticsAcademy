@@ -21,7 +21,7 @@
 - **static** folder has all resources used by the codes in the exercises folder such as images and javascript and css files called by HTML codes. This folder is divided in:
 	1. Common folder, that holds all shared resources between the different exercises (common images, javascript, css...) --> (/static/common).
 	2. Exercise folder, that holds all specific resources that only a single exercise use that file. It's divided in folders with the exercise name --> (/static/exercises).
-- **scripts** folder, that hosts the dockerfile (file with the Docker commands to create a RADI), shell files, manager.py (file used to manage the exercises processes) and pyint_checker.py (file used to check if the code has been written properly).
+- **scripts** folder, that hosts the dockerfile (file with the Docker commands to create a RoboticsBackend), shell files, manager.py (file used to manage the exercises processes) and pyint_checker.py (file used to check if the code has been written properly).
 
 <a name="gh-pages-branch"></a>
 ## gh-pages branch

@@ -20,7 +20,7 @@ done
 
 echo "RAM src: $ram_version"
 echo "RAM branch: $branch"
-echo "RADI version: $radi_version"
+echo "RoboticsBackend version: $radi_version"
 
 # Install docker-compose if not installed
 if ! command -v docker-compose &> /dev/null; then
