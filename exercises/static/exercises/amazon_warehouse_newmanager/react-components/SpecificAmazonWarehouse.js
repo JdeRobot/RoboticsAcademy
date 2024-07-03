@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { clearPath, draw, drawTargetPosition, generatePath } from "./helpers/bird_eye_amazon_warehouse";
+import { clearPath, clearMap, draw, drawTargetPosition, generatePath } from "./helpers/bird_eye_amazon_warehouse";
 
 function SpecificAmazonWarehouse(props) {
   const guiCanvasRef = React.useRef();
@@ -49,6 +49,30 @@ function SpecificAmazonWarehouse(props) {
       );
     };
   }, []);
+
+  React.useEffect(() => {
+    const callback = (message) => {
+      console.log(message);
+      if (message.data.state === "visualization_ready") {
+        try {
+          clearMap()
+        } catch (error) {
+        }
+      }
+    }
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+        callback
+      );
+    };
+  }, [])
 
   return (
     <canvas
