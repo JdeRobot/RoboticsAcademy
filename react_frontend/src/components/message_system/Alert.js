@@ -15,9 +15,16 @@ window.RoboticsReactComponents.MessageSystem.Alert = (function () {
     alert_handler = callback;
   };
 
-  const showAlert = (message, closeAction, closeText) => {
+  /**
+   * Create alert component
+   * @param message string
+   * @param messageType defatult="error", One of the following: ("error", "success", "info", "warning")
+   * @param closeAction closeAction
+   * @param closeText closeText
+   */
+  const showAlert = (message, messageType, closeAction, closeText) => {
     if (alert_handler) {
-      alert_handler(message, closeAction, closeText);
+      alert_handler(message, messageType, closeAction, closeText);
     }
   };
 
@@ -29,50 +36,63 @@ window.RoboticsReactComponents.MessageSystem.Alert = (function () {
 
 const Alert = () => {
   const [message, setMessage] = React.useState("");
+  const [messageType, setMessageType] = React.useState("error");
   const [closeData, setCloseData] = React.useState(null);
+  const [show, setShow] = React.useState(true);
+  const timer = 5000;
 
   React.useEffect(() => {
-    RoboticsReactComponents.MessageSystem.Alert.setAlertHandler(
-      (message, closeAction, closeText) => {
-        if (Array.isArray(message)) {
-          message = message.map((msg, i) => <p key={i}>{msg}</p>);
-        } else if (typeof message !== "string") {
-          console.error(`Bad message sent ${message}`);
-          return;
-        } else {
-          message = <p>{message}</p>;
-        }
+      RoboticsReactComponents.MessageSystem.Alert.setAlertHandler(
+        (message, messageType, closeAction, closeText) => {
+            if (Array.isArray(message)) {
+              message = message.map((msg, i) => <p key={i}>{msg}</p>);
+            } else if (typeof message !== "string") {
+              console.error(`Bad message sent ${message}`);
+              return;
+            } else {
+              message = <p>{message}</p>;
+            }
 
-        setMessage(message || "No message set");
+            setMessage(message || "No message set");
+            setMessageType(messageType || "error");
 
-        if (closeAction && closeText) {
-          setCloseData({
-            text: closeText,
-            action: closeAction,
-          });
+            if (closeAction && closeText) {
+              setCloseData({
+                text: closeText,
+                action: closeAction,
+              });
+            }
+
+            setTimeout(() => {
+                setShow(false)
+            }, timer)
         }
-      }
-    );
+      );
   }, []);
 
   const closeAlert = () => {
     setMessage(null);
+    setMessageType(null);
     setCloseData(null);
   };
 
-  return (
+  if (!show) {
+    return null;
+  }
+  else{
+    return (
     <div id={"message-container"} className={"bottom"}>
       {message ? (
         <Collapse in={message !== null}>
           <MuiAlert
-            severity="error"
+            severity={messageType ? messageType : "error"}
             action={
               <Button
                 color="inherit"
                 size="small"
                 onClick={closeData ? closeData.action : closeAlert}
               >
-                {closeData ? closeData.text : "CERRAR"}
+                {closeData ? closeData.text : "Close"}
               </Button>
             }
           >
@@ -81,7 +101,9 @@ const Alert = () => {
         </Collapse>
       ) : null}
     </div>
-  );
+    );
+  }
+
 };
 
 export default Alert;
