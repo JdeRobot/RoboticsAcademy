@@ -30,21 +30,21 @@ This is the preferred way for running the exercise.
 ### Installing and Launching
 1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-2. Pull the current distribution of Robotics Academy Docker Image:
+2. Pull the current distribution of RoboticsBackend:
 
 	```bash
-  docker pull jderobot/robotics-academy:latest
+  docker pull jderobot/robotics-backend:latest
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-- It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
 
 ### How to perform the exercises?
 - Start a new docker container of the image and keep it running in the background:
 
 	```bash
-  docker run --name $name $device -e DRI_NAME=$device_name -v $route:/home/shared_dir --rm -it -p 8889:8889/udp -p 38065:38065/udp -p 8890:8890/udp -p 11111:11111/udp -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy
+  docker run --name $name $device -e DRI_NAME=$device_name -v $route:/home/shared_dir --rm -it -p 8889:8889/udp -p 38065:38065/udp -p 8890:8890/udp -p 11111:11111/udp -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-backend
   ```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
@@ -59,7 +59,7 @@ This is the preferred way for running the exercise.
 ### Optional: Store terminal output
 - To store the terminal output of manager.py and launch.py to a file execute the following docker run command and keep it running in the background:
 ```bash
-docker run --name $name $device -e DRI_NAME=$device_name -v $route:/home/shared_dir --rm -it -p 8889:8889/udp -p 38065:38065/udp -p 8890:8890/udp -p 11111:11111/udp -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy --logs
+docker run --name $name $device -e DRI_NAME=$device_name -v $route:/home/shared_dir --rm -it -p 8889:8889/udp -p 38065:38065/udp -p 8890:8890/udp -p 11111:11111/udp -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-backend --logs
 ```
 
 - The log files will be stored inside `$HOME/.roboticsacademy/{year-month-date-hours-mins}/`. After the session, use `more` to view the logs, for example:

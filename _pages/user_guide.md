@@ -16,7 +16,7 @@ toc_icon: "cog"
 <a name="installation"></a>
 # 1. Installation
 
-The installation of ROS, Gazebo, etc. has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics-Academy Docker Image (RADI).
+The installation of ROS, Gazebo, etc. has been greatly simplified, as all the required dependencies are already pre-installed in the Robotics Backend (RoboticsBackend).
 
 ## Minimum System Requirements
 
@@ -28,15 +28,15 @@ The installation of ROS, Gazebo, etc. has been greatly simplified, as all the re
 
 1. Download [Docker](https://docs.docker.com/get-docker/) **(minimum version of docker-py: 5.0.3)**.
 
-2. Pull the current distribution of Robotics Academy Docker Image **(currently version 4.5.11)**:
+2. Pull the current distribution of RoboticsBackend **(currently version 4.6.1)**:
 
 ```bash
-docker pull jderobot/robotics-academy:4.5.11
+docker pull jderobot/robotics-backend:4.6.1
 ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-- It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
 
 ## Windows Users
 
@@ -50,27 +50,27 @@ Windows users should choose WSL 2 backend Docker installation if possible, as it
 
     ![WSL integration](/RoboticsAcademy/assets/images/user_guide/wsl-integration-docker.png)
 
-4. Pull the current distribution of Robotics Academy Docker Image **(currently version 4.5.11)**:
+4. Pull the current distribution of RoboticsBackend **(currently version 4.6.1)**:
 
 ```bash
-docker pull jderobot/robotics-academy:4.5.11
+docker pull jderobot/robotics-backend:4.6.1
 ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-- It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
 
 ## MacOs (PLACEHOLDER!)
 
-* Remember to add minium docker version to run a RADI.
+* Remember to add minium docker version to run a RoboticsBackend.
 
 <a name="launch"></a>
-# 2. How to launch a RADI container?
+# 2. How to launch a RoboticsBackend container?
 
 * Start a new docker container of the image and keep it running in the background:
 
 ```bash
-docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
 ```
 
 ## Enable GPU Acceleration
@@ -81,17 +81,17 @@ ROS and Gazebo can be accelerated within RoboticsAcademy thanks to VirtualGL if 
 
 - **Intel:** For Linux machines and Intel GPUs, acceleration can be achieved by simply setting the ```--device``` argument when running the Docker container:
 ```bash
-docker run --rm -it --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
 ```
 
 - **NVIDIA:** For NVIDIA GPUs, acceleration can be achieved by [installing the nvidia-container-runtime package](https://docs.docker.com/config/containers/resource_constraints/#gpu), and then running the command above, but adding the ```--gpus all``` flag:
 ```bash
-docker run --rm -it --gpus all --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it --gpus all --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
 ```
 
 - **MULTIPLE GPUs:** If the PC has several GPUs, we can choose which one will be used by setting the ```DRI_NAME``` environment variable (e.g. ```card0``` or ```card1```)
 ```bash
-docker run --rm -it --gpus all --device /dev/dri -e DRI_NAME=card1 -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+docker run --rm -it --gpus all --device /dev/dri -e DRI_NAME=card1 -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
 ```
 You can check the names associated with your graphic cards by running:
 ```bash
@@ -140,7 +140,7 @@ For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as
 5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 
 # 4. Reference execution performance data
-In this section, various data tables will be provided showing the performance cost of each RADI exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
+In this section, various data tables will be provided showing the performance cost of each RoboticsBackend exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
 
 ## No GPU Acceleration
 

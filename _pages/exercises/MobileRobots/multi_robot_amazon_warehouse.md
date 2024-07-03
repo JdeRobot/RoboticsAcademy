@@ -78,7 +78,7 @@ For easy onboarding, docker images are provided. You can either clone from JdeRo
 Pull docker image
 
 ```bash
-docker pull jderobot/robotics-academy-ros2:amazon-warehouse-multi-robot
+docker pull jderobot/robotics-backend-ros2:amazon-warehouse-multi-robot
 ```
 
 Before deploying, elevate docker for xhost docker access. Keep in mind that this is a bit insecure way and don't forget to de-elevate the access once you are done.
@@ -95,7 +95,7 @@ sudo docker run -it  -e DISPLAY=$DISPLAY \
                      -v $XSOCK:$XSOCK \
                      -v $HOME/.Xauthority:/root/.Xauthority \
                      --privileged  --net=host --gpus all \
-                        jderobot/robotics-academy-ros2:amazon-warehouse-multi-robot /bin/bash
+                        jderobot/robotics-backend-ros2:amazon-warehouse-multi-robot /bin/bash
 ```
 
 To start and deploy containers on Intel drivers, run following:
@@ -106,7 +106,7 @@ sudo docker run -it \
                 --env="QT_X11_NO_MITSHM=1" \
                 --env="GAZEBO_MODEL_PATH=/opt/warehouse_ws/src/amazon_robot_gazebo/models:/opt/warehouse_ws/src/aws-robomaker-small-warehouse-world/models"\
                 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-	              jderobot/robotics-academy-ros2:amazon-warehouse-multi-robot /bin/bash
+	              jderobot/robotics-backend-ros2:amazon-warehouse-multi-robot /bin/bash
 ```
 
 Finally, run following **inside** the container to start our world

@@ -68,7 +68,7 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Robustness in situations of indecision (zero vector sum)
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RADI and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Robot API
 

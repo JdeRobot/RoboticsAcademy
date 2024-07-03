@@ -57,10 +57,10 @@ The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-rob
 
 - Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-- Pull the current distribution of Robotics Academy Docker Image
+- Pull the current distribution of  RoboticsBackend
 
 	```bash
-  docker pull jderobot/robotics-academy:2.4.2
+  docker pull jderobot/robotics-backend:2.4.2
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -68,7 +68,7 @@ The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-rob
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.2 ./start.sh
+  docker run --rm -it --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-backend:2.4.2 ./start.sh
   ```
 
 
@@ -78,7 +78,7 @@ The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-rob
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-academy:2.4.2 ./start.sh
+  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 jderobot/robotics-backend:2.4.2 ./start.sh
   ```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
