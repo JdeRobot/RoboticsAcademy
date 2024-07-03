@@ -124,4 +124,4 @@ docker build --no-cache -f $DOCKERFILE \
   --build-arg RAM=$RAM \
   --build-arg ROS_DISTRO=$ROS_DISTRO \
   --build-arg IMAGE_TAG=$IMAGE_TAG \
-  -t jderobot/robotics-academy:$IMAGE_TAG .
+  -t jderobot/robotics-backend:$IMAGE_TAG .
