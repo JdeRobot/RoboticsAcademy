@@ -115,7 +115,7 @@ function SpecificGlobalNavigation(props) {
       id="globalnav-eye"
       style={{
         backgroundImage:
-          "url('/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png')",
+          "url('../../static/RoboticsAcademy/exercises/static/exercises/global_navigation_newmanager/resources/images/cityLargenBin.png')",
           border: "2px solid #d3d3d3",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100% 100%",
