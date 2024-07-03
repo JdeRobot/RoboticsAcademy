@@ -8,11 +8,7 @@ import CommsManager from "./libs/comms_manager";
 window.RoboticsExerciseComponents = (function () {
   let components = [];
 
-  /**
-   * Creates a DOM element and include their children
-   * @param element
-   * @returns {*}
-   */
+
   const createElement = function (element) {
     const children = Array.from(element.childNodes).map((child) =>
       createElement(child)
