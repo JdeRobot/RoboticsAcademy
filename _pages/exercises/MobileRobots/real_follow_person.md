@@ -81,10 +81,10 @@ This is the preferred way for running the exercise.
 
 - Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-- Pull the current distribution of Robotics Academy Docker Image
+- Pull the current distribution of  RoboticsBackend
 
 	```bash
-  docker pull jderobot/robotics-academy:latest
+  docker pull jderobot/robotics-backend:latest
 	```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
@@ -98,7 +98,7 @@ To use the real *TurtleBot2* we have to follow this steps:
 ### Enable GPU Acceleration
 - For Linux machines with NVIDIA GPUs, acceleration can be enabled by using NVIDIA proprietary drivers, installing  [VirtualGL](https://virtualgl.org/) and executing the following docker run command:
   ```bash
-  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-backend:latest
   ```
 
 
@@ -108,7 +108,7 @@ To use the real *TurtleBot2* we have to follow this steps:
 - Start a new docker container of the image and keep it running in the background ([hardware accelerated version](#enable-gpu-acceleration))
 
 	```bash
-  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-academy:latest
+  docker run --rm -it --device /dev/ttyUSB0 --device /dev/ttyUSB1 --device /dev/video0 -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 6082:6082 -p 7163:7163 jderobot/robotics-backend:latest
   ```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.

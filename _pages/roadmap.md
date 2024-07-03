@@ -18,4 +18,4 @@ sidebar:
     + map building: occupancy grid
     + localization algorithm with particle filter and laser sensor
     + Computer Vision exercises
-4. Improve RADI for ROS1-Noetic and ROS2-Foxy
+4. Improve RoboticsBackend for ROS1-Noetic and ROS2-Foxy

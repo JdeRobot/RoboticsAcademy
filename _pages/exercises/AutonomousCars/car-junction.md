@@ -72,21 +72,21 @@ This is the preferred way for running the exercise.
 ### Installing and Launching
 1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
 
-2. Pull the current distribution of Robotics Academy Docker Image:
+2. Pull the current distribution of RoboticsBackend:
 
 	```bash
-  docker pull jderobot/robotics-academy:latest
+  docker pull jderobot/robotics-backend:latest
   ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
 
-- It is recommended to use the latest image. However, older distributions of RADI (Robotics-Academy Docker Image) can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
 
 ### How to perform the exercises?
 - Start a new docker container of the image and keep it running in the background:
 
 	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-academy
+  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
   ```
 
 - On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.

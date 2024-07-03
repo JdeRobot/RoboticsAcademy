@@ -21,7 +21,7 @@ This page contains information useful to understand how to contribute to Robotic
     + map building: occupancy grid
     + localization algorithm with particle filter and laser sensor
     + Computer Vision exercises
-4. Improve RADI for ROS1-Noetic and ROS2-Foxy
+4. Improve RoboticsBackend for ROS1-Noetic and ROS2-Foxy
 
 
 # Releases
@@ -36,7 +36,7 @@ This page contains information useful to understand how to contribute to Robotic
 * 2.3
     + Web pages for exercise templates
     + Browser for editing user code and execution monitoring
-    + Dependencies are pre-installed in [RADI Docker Image](https://hub.docker.com/r/jderobot/robotics-academy/tags)
+    + Dependencies are pre-installed in [RoboticsBackend Docker Image](https://hub.docker.com/r/jderobot/robotics-backend/tags)
     + based in ROS-Melodic and Gazebo9
     + works on Linux, Windows and MacOS
 * 2.1

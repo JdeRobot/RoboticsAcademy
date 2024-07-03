@@ -71,7 +71,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 {% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RADI and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Simulated Turtlebot 2 (ROS Humble)
 The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy and ROS Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
