@@ -173,7 +173,7 @@ RUN git clone -b v1.14.0 https://github.com/PX4/PX4-Autopilot.git --recursive \
 # https://github.com/JdeRobot/RoboticsAcademy/issues/2310
 RUN echo 'param set-default COM_OF_LOSS_T 5' >> /PX4-Autopilot/build/px4_sitl_default/etc/init.d-posix/px4-rc.params
 
-RUN git clone -b v2.4.1 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tmp/MicroXRCEAgent \
+RUN git clone -b v2.4.3 https://github.com/eProsima/Micro-XRCE-DDS-Agent.git /tmp/MicroXRCEAgent \
   && cd /tmp/MicroXRCEAgent \
   && mkdir build && cd build \
   && cmake .. \
