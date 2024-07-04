@@ -178,5 +178,5 @@ start_console()
 def showNumpy(image):
     gui_interface.showNumpy(image)
 
-def getMap(self, url):        
-    return gui_interface.image(url)
+def getMap(url):        
+    return gui_interface.getMap(url)

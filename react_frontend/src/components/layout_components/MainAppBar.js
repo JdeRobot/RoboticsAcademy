@@ -19,6 +19,7 @@ function MainAppBar(props) {
     if (connectionAttempts >= maxConnectionAttempts) {
       RoboticsReactComponents.MessageSystem.Alert.showAlert(
         "Error connecting, try reloading the page.",
+        "error",
         () => {
           console.log("Reloading");
           window.location.reload();
@@ -45,14 +46,14 @@ function MainAppBar(props) {
             .prepareVisualization(config[0].visualization).then(() => {
               RoboticsReactComponents.MessageSystem.Loading.hideLoading();
               RoboticsReactComponents.MessageSystem.Alert.showAlert(
-                "Exercise loaded successfully."
+                "Exercise loaded successfully.", "success"
               );
             })
      
           })
           .catch((e) => {
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              e.data.message
+              e.data.message, "error"
             );
           });
       })

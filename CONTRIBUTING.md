@@ -20,7 +20,7 @@ Please don't open an issue to ask a question or suggestion. Use the [GitHub Disc
 
 Feel free to [create a new issue](https://github.com/sayanarijit/xplr/issues/new) if you have some issue to report. But first, make sure that the issue has not been reported yet.
 
-Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RADI version and the exercise launched.
+Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RoboticsBackend version and the exercise launched.
 
 ## How to contribute in exercises documentation?
 

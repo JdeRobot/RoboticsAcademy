@@ -56,7 +56,7 @@ Please look at the attached image for reference.
 
 ### Using Docker compose
 
-Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RADI container, where all the dependencies are installed. 
+Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RoboticsBackend container, where all the dependencies are installed. 
 
 The steps for setting up a development environment using Docker Compose are:
 
@@ -101,7 +101,7 @@ Feel free to study the configs, and adapt/create new ones suitable for your need
 docker-compose up
 ```
 
-Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RADI version as the base. The only difference for developing between RADI versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RADI-on-the-go).
+Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RoboticsBackend version as the base. The only difference for developing between RoboticsBackend versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RoboticsBackend-on-the-go).
 
 After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, just get inside the src/ folder and work from there (remember, this is the RAM repo with another name).
 
@@ -129,7 +129,7 @@ An exercise entry in the database must include the following data:
 - ```exercise id```: unique exercise identifier, must match the folder name
 - ```name```: name to display on the exercise list
 - ```description```: description to display on the exercise list
-- ```tags```: an exercise must include at least one ROS tag ("ROS1" or "ROS2"). The exercise will only be shown on the exercise list when the RADI ROS version installed is listed in the tags. Tags are also used by the search bar.
+- ```tags```: an exercise must include at least one ROS tag ("ROS1" or "ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
 - ```state```: changes the state indicator (active = green; prototype = yellow; inactive = red)
 - ```language```: programming language used
 - ```configuration```: available launch options to run the exercise written in JSON. If the generic react components are used, the exercise frontend will automatically request to launch the exercise using the first configuration that matches the key ROSX (X = ROS version detected by django). If the generic circuit selector react component is used, it will automatically display all the launch options items of the array that matches the key ROSX (X = ROS version detected by django), displaying the name stored under the key "name". Sample configuration JSON including 2 launch options for ROS1 and 1 launch option for ROS2:
@@ -288,8 +288,8 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
 - You need to change the launcher.js file in the case that the exercise has a map selector or not.
 - Finally, if the exercise need an specific plugin that isn't installed in the container you need to modify the [Dockerfile](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/Dockerfile) an add the commands that allows the installation of the .cc and .hh files of the CustomRobots repository.
 
-<a name="edit-code-on-RADI-on-the-go"></a>
-## Edit code on RADI On The GO.
+<a name="edit-code-on-RoboticsBackend-on-the-go"></a>
+## Edit code on RoboticsBackend On The GO.
 
 1. If your IDE of choice is VSCode then this method is for you, visit [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) to download the extenstion.
 
@@ -301,17 +301,17 @@ For example: ```script src="{% static 'exercises/assets/js/utils.js``` would hav
    
    <img width="597" alt="remote-command-palette" src="https://user-images.githubusercontent.com/58532023/184609609-eb1c1a15-9666-46f9-bc9d-df099d3738b8.png">
 
-## How to add your local changes to RADI while persisting changes two-way
+## How to add your local changes to RoboticsBackend while persisting changes two-way
 
-1. This method is for you if you have worked your way till now in your local setup and looking to import all changes inside RADI while also being able to edit and persist further changes.
+1. This method is for you if you have worked your way till now in your local setup and looking to import all changes inside RoboticsBackend while also being able to edit and persist further changes.
 
 2. On Terminal open the directory where your project or code is located at (Example:- ```cd ~/my_project```)
 
 3. Append ```-v $(pwd):/location_in_radi``` to your ```docker run``` cli command used to run your container. (Example:- ```docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -v $(pwd):/home jderobot/robotics-academy```)
 
-4. This will import your local directory inside the docker container, if you have used the example command like above where the location the command is being run is mounted to the home folder inside the docker container you will simply be able to see all the local mounted directories inside the /home of the RADI.
+4. This will import your local directory inside the docker container, if you have used the example command like above where the location the command is being run is mounted to the home folder inside the docker container you will simply be able to see all the local mounted directories inside the /home of the RoboticsBackend.
 
-5. To make sure that your local directory has been mounted correctly to the correct location inside RADI, navigate to http://localhost:1108/vnc.html after launching an exercise(This involves clicking on the launch button of any exercise of your choice) and this will open an vnc console Instance where you may verify the integrity of the mount.
+5. To make sure that your local directory has been mounted correctly to the correct location inside RoboticsBackend, navigate to http://localhost:1108/vnc.html after launching an exercise(This involves clicking on the launch button of any exercise of your choice) and this will open an vnc console Instance where you may verify the integrity of the mount.
 
    ![Screenshot from 2022-08-22 01-31-16](https://user-images.githubusercontent.com/58532023/185808802-3a207cb5-b2df-466f-a7f1-70864ff34206.png)
 

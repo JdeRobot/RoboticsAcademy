@@ -58,7 +58,7 @@ export default function WorldSelector(props) {
                 .then(() => {
                   RoboticsReactComponents.MessageSystem.Loading.hideLoading();
                   RoboticsReactComponents.MessageSystem.Alert.showAlert(
-                    "Exercise loaded successfully."
+                    "Exercise loaded successfully.", "success"
                   );
                 })
          

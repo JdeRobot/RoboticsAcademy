@@ -1,12 +1,12 @@
 # New RAM development documentation
 
-## Building the new RAM RADI
+## Building the new RAM RoboticsBackend
 
 Now build.sh script supports some parameters and help.
 
 ```commandline
 scripts/> ./build.sh -h
-Generates RoboticsAcademy RADI image
+Generates RoboticsAcademy RoboticsBackend image
 
 Syntax: build.sh [-h] [-f] <tag>
 options:
@@ -16,7 +16,7 @@ options:
 ```           
 
 The DockerFile in the branch includes a commented out entrypoint by the end of the file. This has been done to
-ease development and debugging of the container. To start the RADI service just connect to
+ease development and debugging of the container. To start the RoboticsBackend service just connect to
 the running instance (view docker [command](#open-bash-connection-to-container) below) and run entrypoint.sh by hand or uncomment 
 the entrypoint line before creating the instance.
 
