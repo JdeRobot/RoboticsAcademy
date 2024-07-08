@@ -13,6 +13,7 @@ from HAL import getPose3d
 from console import start_console
 from map import Map
 from shared.image import SharedImage
+from PIL import Image
 
 # Graphical User Interface Class
 
@@ -116,6 +117,7 @@ class GUI:
             self.set_acknowledge(True)
 
     def process_colors(self, image):
+        # print(image)
         colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
 
         # Grayscale for values < 128
@@ -138,13 +140,21 @@ class GUI:
             colored_image[mask] = color
 
         return colored_image
-
+    
     # load the image data
     def showNumpy(self, image):
         self.shared_image.add(self.process_colors(image))
 
-    def getMap(self, url):        
-        return plt.imread(url)
+    def getMap(self, url):
+        try:
+        # Open with PIL
+            with Image.open(url) as img:
+                img = img.convert("RGB")
+                img_array = np.array(img)
+            return img_array
+        except Exception as e:
+            print(f"Error reading image from {url}: {e}")
+            return None
 
     def run_websocket(self):
         while True:
