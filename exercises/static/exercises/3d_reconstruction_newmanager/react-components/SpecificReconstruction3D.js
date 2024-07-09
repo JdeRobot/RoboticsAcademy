@@ -11,7 +11,8 @@ const SpecificRecontruction3D = (props) => {
             const data = message.data.update;
             draw(data)
           }
-          
+          // Send the ACK of the msg
+          window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
         };
     
         window.RoboticsExerciseComponents.commsManager.subscribe(
