@@ -67,7 +67,7 @@ class ThreadingGUI:
             start_time = time.time()
 
             # Check if a new map should be sent
-            self.send_map()
+            self.update_gui()
             # with self.ack_lock:
             #     if self.ack and self.map is not None:
             #         self.ack = False
@@ -78,7 +78,7 @@ class ThreadingGUI:
             time.sleep(sleep_time)
 
     # Prepares and sends a map to the websocket server
-    def send_map(self):
+    def update_gui(self):
         self.payload["array"] = self.array
 
         # Payload Map Message
@@ -92,7 +92,7 @@ class ThreadingGUI:
             try:
                 self.client.send(message)
             except Exception as e:
-                print(f"Error sending message: {e}")
+                LogManager.logger.info(f"Error sending message: {e}")
 
         # Process the array(ideal path) to be sent to websocket
     def showPath(self, array):
