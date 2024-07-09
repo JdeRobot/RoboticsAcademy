@@ -14,6 +14,7 @@ import re
 
 from map import Map
 from console import start_console
+
 # Graphical User Interface Class
 class GUI:
     """Graphical User Interface class"""
@@ -36,21 +37,24 @@ class GUI:
         self.ack_lock = threading.Lock()
         self.array = None
         self.array_lock = threading.Lock()
-        # self.hal = hal
         self.mapXY = None
         self.worldXY = None
+        self.running = True
+        self.iteration_counter = 0
 
         self.shared_image = SharedImage("numpyimage")
 
         # create Map object
         self.map = Map(getPose3d)
 
-        self.client_thread = threading.Thread(target=self.run_websocket)
-        self.client_thread.start()
-
+        # Start the websocket and GUI update threads
+        self.websocket_thread = threading.Thread(target=self.run_websocket)
+        self.update_thread = threading.Thread(target=self.run)
+        self.websocket_thread.start()
+        self.update_thread.start()
 
     def run_websocket(self):
-        while True:
+        while self.running:
             self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
@@ -58,7 +62,7 @@ class GUI:
         """Encodes the image data to be sent to websocket"""
         image = self.shared_image.get()
         payload = {'image': '', 'shape': ''}
-    	
+        
         shape = image.shape
         frame = cv2.imencode('.PNG', image)[1]
         encoded_image = base64.b64encode(frame)
@@ -75,20 +79,20 @@ class GUI:
     def showPath(self, array):
         """Process the array(ideal path) to be sent to websocket"""
         with self.array_lock:
-                strArray = ''.join(str(e) for e in array)
+            strArray = ''.join(str(e) for e in array)
 
-                # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
-                strArray = re.sub(r"\[[ ]+", "[", strArray)
-                strArray = re.sub(r"[ ]+", ", ", strArray)
-                strArray = re.sub(r",[ ]+]", "]", strArray)
-                strArray = re.sub(r",,", ",", strArray)
-                strArray = re.sub(r"]\[", "],[", strArray)
-                strArray = "[" + strArray + "]"
+            # Remove unnecessary spaces in the array to avoid JSON syntax error in JavaScript
+            strArray = re.sub(r"\[[ ]+", "[", strArray)
+            strArray = re.sub(r"[ ]+", ", ", strArray)
+            strArray = re.sub(r",[ ]+]", "]", strArray)
+            strArray = re.sub(r",,", ",", strArray)
+            strArray = re.sub(r"]\[", "],[", strArray)
+            strArray = "[" + strArray + "]"
 
-                self.array = strArray
+            self.array = strArray
 
     def getTargetPose(self):
-        if (self.worldXY != None):
+        if self.worldXY is not None:
             return [self.worldXY[1], self.worldXY[0]]
         else:
             return None
@@ -108,10 +112,8 @@ class GUI:
         self.payload["array"] = self.array
         # Payload Map Message
         pos_message1 = self.map.getTaxiCoordinates()
-        # print(self.pose3d_object.getPose3d())
         ang_message = self.map.getTaxiAngle()
         pos_message = str(pos_message1 + ang_message)
-        #print("pos2 : {} ,  ang : {}".format(pos_message,ang_message))
         self.payload["map"] = pos_message
 
         message = json.dumps(self.payload)
@@ -125,17 +127,17 @@ class GUI:
 
     def on_message(self, ws, message):
         """Handles incoming messages from the websocket client."""
-        if (message[:4] == "#ack"):
+        if message.startswith("#ack"):
             with self.ack_lock:
                 self.ack = True
         else:
-            if (message[:5] == "#pick"):
+            if message.startswith("#pick"):
                 data = eval(message[5:])
                 self.mapXY = data
                 x, y = self.mapXY
                 worldx, worldy = self.map.gridToWorld(x, y)
                 self.worldXY = [worldx, worldy]
-                print("World : {}".format(self.worldXY))
+                print(f"World : {self.worldXY}")
 
     def reset_gui(self):
         """Resets the GUI to its initial state."""
@@ -144,28 +146,11 @@ class GUI:
         self.showNumpy(np.clip(image, 0, 255).astype('uint8'))
         self.map.reset()
 
-
-class ThreadGUI:
-    """Class to manage GUI updates and frequency measurements in separate threads."""
-
-    def __init__(self, gui):
-        """Initializes the ThreadGUI with a reference to the GUI instance."""
-        self.gui = gui
-        self.gui.reset_gui()
-        self.iteration_counter = 0
-        self.running = True
-
-    def start(self):
-        """Starts the GUI, frequency measurement, and real-time factor threads."""
-        self.gui_thread = threading.Thread(target=self.run)
-        self.gui_thread.start()
-        print("GUI Thread Started!")
-
     def run(self):
         """Main loop to update the GUI at regular intervals."""
         while self.running:
             start_time = datetime.now()
-            self.gui.update_gui()
+            self.update_gui()
             self.iteration_counter += 1
             finish_time = datetime.now()
             dt = finish_time - start_time
@@ -178,20 +163,17 @@ class ThreadGUI:
 host = "ws://127.0.0.1:2303"
 gui_interface = GUI(host)
 
-# Spin a thread to keep the interface updated
-thread_gui = ThreadGUI(gui_interface)
-thread_gui.start()
-
+# Start the console
 start_console()
 
 def payloadImage():
-    gui_interface.payloadImage()
+    return gui_interface.payloadImage()
 
 def showNumpy(image):
     gui_interface.showNumpy(image)
 
 def showPath(array):
-    return gui_interface.showPath(array)
+    gui_interface.showPath(array)
 
 def getTargetPose():
     return gui_interface.getTargetPose()
