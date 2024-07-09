@@ -38,16 +38,22 @@ class GUI:
         self.ack = False
         self.ack_lock = threading.Lock()
 
+        self.iteration_counter = 0
+        self.running = True
+
         # Create the map and lap objects
         self.map = Map(getLaserData)
         self.lap = Lap(self.map)
 
-        self.client_thread = threading.Thread(target=self.run_websocket)
-        self.client_thread.start()
+        # Start the websocket and GUI update threads
+        self.websocket_thread = threading.Thread(target=self.run_websocket)
+        self.update_thread = threading.Thread(target=self.run)
+        self.websocket_thread.start()
+        self.update_thread.start()
 
 
     def run_websocket(self):
-        while True:
+        while self.running:
             self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
@@ -92,27 +98,11 @@ class GUI:
         self.map.reset()
         self.lap.reset()
 
-
-class ThreadGUI:
-    """Class to manage GUI updates and frequency measurements in separate threads."""
-
-    def __init__(self, gui):
-        """Initializes the ThreadGUI with a reference to the GUI instance."""
-        self.gui = gui
-        self.iteration_counter = 0
-        self.running = True
-
-    def start(self):
-        """Starts the GUI, frequency measurement, and real-time factor threads."""
-        self.gui_thread = threading.Thread(target=self.run)
-        self.gui_thread.start()
-        print("GUI Thread Started!")
-
     def run(self):
         """Main loop to update the GUI at regular intervals."""
         while self.running:
             start_time = datetime.now()
-            self.gui.update_gui()
+            self.update_gui()
             self.iteration_counter += 1
             finish_time = datetime.now()
             dt = finish_time - start_time
@@ -125,10 +115,7 @@ class ThreadGUI:
 host = "ws://127.0.0.1:2303"
 gui_interface = GUI(host)
 
-# Spin a thread to keep the interface updated
-thread_gui = ThreadGUI(gui_interface)
-thread_gui.start()
-
+# Start the console
 start_console()
 
 def showImage(image):
