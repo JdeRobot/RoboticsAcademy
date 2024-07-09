@@ -49,6 +49,9 @@ function SpecificGlobalNavigation(props) {
       getMapDataAndDraw(data)
       getImageAndDisplay(data)
       getPathAndDisplay(data)
+
+      // Send the ACK of the msg
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -126,7 +129,7 @@ function SpecificGlobalNavigation(props) {
         var data = destinationPicker(event)
         let coords = {"data" : data};
         try {
-          window.RoboticsExerciseComponents.commsManager.send("gui", `#pick${data}`)
+          window.RoboticsExerciseComponents.commsManager.send("gui", `pick${data}`)
         } catch (error) {
         }
         

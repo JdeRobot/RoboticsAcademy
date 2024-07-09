@@ -1,62 +1,116 @@
-import json
 import cv2
 import base64
-import threading
-import time
-from datetime import datetime
-import websocket
-import logging
-import rclpy
-from HAL import getPose3d
-import numpy as np
 from shared.image import SharedImage
 import re
-
-from map import Map
+import json
+import threading
+import time
+import websocket
+import rclpy
+import numpy as np
+import matplotlib.pyplot as plt
+from src.manager.ram_logging.log_manager import LogManager
 from console import start_console
+from map import Map
+from HAL import getPose3d
 
 # Graphical User Interface Class
-class GUI:
-    """Graphical User Interface class"""
 
-    def __init__(self, host):
-        """Initializes the GUI"""
+class ThreadingGUI:
 
-        print("GUI IS BEING INITIALIZED\n\n\n\n")
+    def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
-        # ROS2 init
+        # ROS 2 init
         if not rclpy.ok():
-            rclpy.init(args=None)
-            node = rclpy.create_node('GUI')
+            rclpy.init()
 
-        self.payload = {'image': '', 'map': '', 'array': ''}
-        self.server = None
-        self.client = None
-        self.host = host
-        self.ack = False
+        # Execution control vars
+        self.out_period = 1.0 / freq
+
+        self.ack = True
+        self.ack_frontend = False
         self.ack_lock = threading.Lock()
         self.array = None
         self.array_lock = threading.Lock()
         self.mapXY = None
         self.worldXY = None
+
         self.running = True
-        self.iteration_counter = 0
 
+        self.host = host
+        self.node = rclpy.create_node("node")
+
+        # Payload vars
+        self.payload = {'image': '', 'map': '', 'array': ''}
         self.shared_image = SharedImage("numpyimage")
-
-        # create Map object
         self.map = Map(getPose3d)
 
-        # Start the websocket and GUI update threads
-        self.websocket_thread = threading.Thread(target=self.run_websocket)
-        self.update_thread = threading.Thread(target=self.run)
-        self.websocket_thread.start()
-        self.update_thread.start()
+        # Initialize and start the WebSocket client thread
+        threading.Thread(target=self.run_websocket, daemon=True).start()
 
+        # Initialize and start the image sending thread (GUI out thread)
+        threading.Thread(
+            target=self.gui_out_thread, name="gui_out_thread", daemon=True
+        ).start()
+
+    # Init websocket client
     def run_websocket(self):
+        self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+        self.client.run_forever(ping_timeout=None, ping_interval=0)
+
+    # Process incoming messages to the GUI
+    def gui_in_thread(self, ws, message):
+
+        # In this case, incoming msgs can only be acks
+        if "ack" in message:
+            with self.ack_lock:
+                self.ack = True
+                self.ack_frontend = True
+        elif "pick" in message:
+            data = eval(message[5:])
+            self.mapXY = data
+            x, y = self.mapXY
+            worldx, worldy = self.map.gridToWorld(x, y)
+            self.worldXY = [worldx, worldy]
+            print(f"World : {self.worldXY}")
+
+    # Process outcoming messages from the GUI
+    def gui_out_thread(self):
+        self.reset_gui()
         while self.running:
-            self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
-            self.client.run_forever(ping_timeout=None, ping_interval=0)
+            start_time = time.time()
+
+            # Check if a new map should be sent
+            with self.ack_lock:
+                if self.ack:
+                    self.update_gui()
+                    if self.ack_frontend: 
+                        self.ack = False
+
+            # Maintain desired frequency
+            elapsed = time.time() - start_time
+            sleep_time = max(0, self.out_period - elapsed)
+            time.sleep(sleep_time)
+
+    # Prepares and sends a map to the websocket server
+    def update_gui(self):
+
+        payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
+
+        self.payload["array"] = self.array
+        # Payload Map Message
+        pos_message1 = self.map.getTaxiCoordinates()
+        ang_message = self.map.getTaxiAngle()
+        pos_message = str(pos_message1 + ang_message)
+        self.payload["map"] = pos_message
+
+        message = json.dumps(self.payload)
+        if self.client:
+            try:
+                self.client.send(message)
+            except Exception as e:
+                LogManager.logger.info(f"Error sending message: {e}")
 
     def payloadImage(self):
         """Encodes the image data to be sent to websocket"""
@@ -102,42 +156,6 @@ class GUI:
     
     def rowColumn(self, pose):
         return self.map.rowColumn(pose)
-        
-    def update_gui(self):
-        """Updates the GUI with the latest map information."""
-        # Payload Image Message
-        payload = self.payloadImage()
-        self.payload["image"] = json.dumps(payload)
-
-        self.payload["array"] = self.array
-        # Payload Map Message
-        pos_message1 = self.map.getTaxiCoordinates()
-        ang_message = self.map.getTaxiAngle()
-        pos_message = str(pos_message1 + ang_message)
-        self.payload["map"] = pos_message
-
-        message = json.dumps(self.payload)
-        if self.client:
-            try:
-                self.client.send(message)
-            except Exception as e:
-                print(f"Error sending message: {e}")
-
-        return list(pos_message1)
-
-    def on_message(self, ws, message):
-        """Handles incoming messages from the websocket client."""
-        if message.startswith("#ack"):
-            with self.ack_lock:
-                self.ack = True
-        else:
-            if message.startswith("#pick"):
-                data = eval(message[5:])
-                self.mapXY = data
-                x, y = self.mapXY
-                worldx, worldy = self.map.gridToWorld(x, y)
-                self.worldXY = [worldx, worldy]
-                print(f"World : {self.worldXY}")
 
     def reset_gui(self):
         """Resets the GUI to its initial state."""
@@ -146,40 +164,27 @@ class GUI:
         self.showNumpy(np.clip(image, 0, 255).astype('uint8'))
         self.map.reset()
 
-    def run(self):
-        """Main loop to update the GUI at regular intervals."""
-        while self.running:
-            start_time = datetime.now()
-            self.update_gui()
-            self.iteration_counter += 1
-            finish_time = datetime.now()
-            dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            sleep_time = max(0, (50 - ms) / 1000.0)
-            time.sleep(sleep_time)
-
-
-# Create a GUI interface
 host = "ws://127.0.0.1:2303"
-gui_interface = GUI(host)
+gui = ThreadingGUI(host)
 
-# Start the console
+# Redirect the console
 start_console()
 
+# Expose to the user
 def payloadImage():
-    return gui_interface.payloadImage()
+    return gui.payloadImage()
 
 def showNumpy(image):
-    gui_interface.showNumpy(image)
+    gui.showNumpy(image)
 
 def showPath(array):
-    gui_interface.showPath(array)
+    gui.showPath(array)
 
 def getTargetPose():
-    return gui_interface.getTargetPose()
+    return gui.getTargetPose()
 
 def getMap(url):
-    return gui_interface.getMap(url)
+    return gui.getMap(url)
 
 def rowColumn(pose):
-    return gui_interface.rowColumn(pose)
+    return gui.rowColumn(pose)
