@@ -1,11 +1,14 @@
 import json
 import threading
+import cv2
+import base64
 import time
 import websocket
 import rclpy
 import numpy as np
-import matplotlib.pyplot as plt
 from src.manager.ram_logging.log_manager import LogManager
+from shared.image import SharedImage
+from PIL import Image
 from console import start_console
 from map import Map
 from HAL import getPose3d
@@ -35,6 +38,8 @@ class ThreadingGUI:
         self.ack = True
         self.ack_frontend = False
         self.ack_lock = threading.Lock()
+
+        self.shared_image = SharedImage("guiimage")
 
         self.running = True
 
@@ -96,12 +101,30 @@ class ThreadingGUI:
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
 
+        payload = self.payloadImage()
+        self.payload["image"] = json.dumps(payload)
+
         message = json.dumps(self.payload)
         if self.client:
             try:
                 self.client.send(message)
             except Exception as e:
                 LogManager.logger.info(f"Error sending message: {e}")
+
+    # encode the image data to be sent to websocket
+    def payloadImage(self):
+
+        image = self.shared_image.get()
+        payload = {'image': '', 'shape': ''}
+    	
+        shape = image.shape
+        frame = cv2.imencode('.PNG', image)[1]
+        encoded_image = base64.b64encode(frame)
+        
+        payload['image'] = encoded_image.decode('utf-8')
+        payload['shape'] = shape
+        
+        return payload
 
     def process_colors(self, image):
         colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
@@ -131,8 +154,16 @@ class ThreadingGUI:
     def showNumpy(self, image):
         self.shared_image.add(self.process_colors(image))
 
-    def getMap(self, url):        
-        return plt.imread(url)
+    def getMap(self, url):
+        try:
+        # Open with PIL
+            with Image.open(url) as img:
+                img = img.convert("RGB")
+                img_array = np.array(img)
+            return img_array
+        except Exception as e:
+            print(f"Error reading image from {url}: {e}")
+            return None
 
     def reset_gui(self):
         self.map.reset()
