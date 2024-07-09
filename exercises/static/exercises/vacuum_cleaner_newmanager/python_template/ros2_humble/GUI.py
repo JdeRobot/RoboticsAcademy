@@ -21,6 +21,7 @@ class ThreadingGUI:
         self.out_period = 1.0 / freq
 
         self.ack = True
+        self.ack_frontend = False
         self.ack_lock = threading.Lock()
 
         self.running = True
@@ -54,6 +55,7 @@ class ThreadingGUI:
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
+                self.ack_frontend = True
 
     # Process outcoming messages from the GUI
     def gui_out_thread(self):
@@ -61,10 +63,11 @@ class ThreadingGUI:
             start_time = time.time()
 
             # Check if a new map should be sent
-            self.update_gui()
-            # with self.ack_lock:
-            #     if self.ack and self.map is not None:
-            #         self.ack = False
+            with self.ack_lock:
+                if self.ack:
+                    self.update_gui()
+                    if self.ack_frontend: 
+                        self.ack = False
 
             # Maintain desired frequency
             elapsed = time.time() - start_time
