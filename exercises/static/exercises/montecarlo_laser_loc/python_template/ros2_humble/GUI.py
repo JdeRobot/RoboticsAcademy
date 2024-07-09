@@ -1,45 +1,42 @@
 import json
-import cv2
-import math
-import base64
 import threading
 import time
-from datetime import datetime
+import math
 import websocket
 import rclpy
 import matplotlib.pyplot as plt
-
-from HAL import getPose3d
-from map import Map
+from src.manager.ram_logging.log_manager import LogManager
 from console import start_console
+from map import Map
+from HAL import getPose3d
 
-# Matrix colors
-red = [0, 0, 255]
-orange = [0, 165, 255]
-yellow = [0, 255, 255]
-green = [0, 255, 0]
-blue = [255, 0, 0]
-indigo = [130, 0, 75]
-violet = [211, 0, 148]
+# Graphical User Interface Class
 
+class ThreadingGUI:
 
-class GUI:
-    """Graphical User Interface class"""
+    def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
-    def __init__(self, host):
-        """Initializes the GUI"""
-
-        # ROS2 init
+        # ROS 2 init
         if not rclpy.ok():
-            rclpy.init(args=None)
+            rclpy.init()
 
-        self.payload = {'map': '', 'user': '', 'particles': ''}
-        self.server = None
-        self.client = None
-        self.init_coords = (171, 63)
-        self.start_coords = (201, 85.5)
+        # Execution control vars
+        self.out_period = 1.0 / freq
+
+        self.ack = True
+        self.ack_frontend = False
+        self.ack_lock = threading.Lock()
+
+        self.running = True
 
         self.host = host
+        self.node = rclpy.create_node("node")
+
+        # Payload vars
+        self.payload = {'map': '', 'user': '', 'particles': ''}
+        self.init_coords = (171, 63)
+        self.start_coords = (201, 85.5)
+        self.map = Map(getPose3d)
 
         # Particles
         self.particles = []
@@ -47,27 +44,48 @@ class GUI:
         self.user_position = (0, 0)
         self.user_angle = (0, 0)
 
-        self.ack = False
-        self.ack_lock = threading.Lock()
-        self.running = True
-        self.iteration_counter = 0
+        # Initialize and start the WebSocket client thread
+        threading.Thread(target=self.run_websocket, daemon=True).start()
 
-        # Create the map object
-        self.map = Map(getPose3d)
+        # Initialize and start the image sending thread (GUI out thread)
+        threading.Thread(
+            target=self.gui_out_thread, name="gui_out_thread", daemon=True
+        ).start()
 
-        # Start the websocket and GUI update threads
-        self.websocket_thread = threading.Thread(target=self.run_websocket)
-        self.update_thread = threading.Thread(target=self.run)
-        self.websocket_thread.start()
-        self.update_thread.start()
-
+    # Init websocket client
     def run_websocket(self):
-        while self.running:
-            self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
-            self.client.run_forever(ping_timeout=None, ping_interval=0)
+        self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+        self.client.run_forever(ping_timeout=None, ping_interval=0)
 
+    # Process incoming messages to the GUI
+    def gui_in_thread(self, ws, message):
+
+        # In this case, incoming msgs can only be acks
+        if "ack" in message:
+            with self.ack_lock:
+                self.ack = True
+                self.ack_frontend = True
+
+    # Process outcoming messages from the GUI
+    def gui_out_thread(self):
+        while self.running:
+            start_time = time.time()
+
+            # Check if a new map should be sent
+            with self.ack_lock:
+                if self.ack:
+                    self.update_gui()
+                    if self.ack_frontend: 
+                        self.ack = False
+
+            # Maintain desired frequency
+            elapsed = time.time() - start_time
+            sleep_time = max(0, self.out_period - elapsed)
+            time.sleep(sleep_time)
+
+    # Prepares and sends a map to the websocket server
     def update_gui(self):
-        """Updates the GUI with the latest map information."""
+
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
         if pos_message == self.init_coords:
@@ -94,21 +112,7 @@ class GUI:
             try:
                 self.client.send(message)
             except Exception as e:
-                print(f"Error sending message: {e}")
-
-    def on_message(self, ws, message):
-        """Handles incoming messages from the websocket client."""
-        if message.startswith("#ack"):
-            with self.ack_lock:
-                self.ack = True
-
-    def get_acknowledge(self):
-        with self.ack_lock:
-            return self.ack
-
-    def set_acknowledge(self, value):
-        with self.ack_lock:
-            self.ack = value
+                LogManager.logger.info(f"Error sending message: {e}")
 
     def showPosition(self, x, y, angle):
         angle += math.pi
@@ -158,37 +162,24 @@ class GUI:
         y = ((-24 + y) / scale_y) - offset_y
         return [x, y, yaw]
 
-    def run(self):
-        """Main loop to update the GUI at regular intervals."""
-        while self.running:
-            start_time = datetime.now()
-            self.update_gui()
-            self.iteration_counter += 1
-            finish_time = datetime.now()
-            dt = finish_time - start_time
-            ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            sleep_time = max(0, (50 - ms) / 1000.0)
-            time.sleep(sleep_time)
-
-
-# Create a GUI interface
 host = "ws://127.0.0.1:2303"
-gui_interface = GUI(host)
+gui = ThreadingGUI(host)
 
-# Start the console
+# Redirect the console
 start_console()
 
+# Expose to the user
 def showPosition(x, y, angle):
-    gui_interface.showPosition(x, y, angle)
+    gui.showPosition(x, y, angle)
 
 def showParticles(particles):
-    gui_interface.showParticles(particles)
+    gui.showParticles(particles)
 
 def getMap(url):
-    return gui_interface.getMap(url)
+    return gui.getMap(url)
 
 def poseToMap(x_prime, y_prime, yaw_prime):
-    return gui_interface.poseToMap(x_prime, y_prime, yaw_prime)
+    return gui.poseToMap(x_prime, y_prime, yaw_prime)
 
 def mapToPose(x, y, yaw):
-    return gui_interface.mapToPose(x, y, yaw)
+    return gui.mapToPose(x, y, yaw)
