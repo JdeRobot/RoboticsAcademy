@@ -1,17 +1,14 @@
 import json
-import cv2
-import math
-import base64
 import threading
 import time
-from datetime import datetime
 import websocket
 import rclpy
 import numpy as np
 import matplotlib.pyplot as plt
-from HAL import getPose3d
+from src.manager.ram_logging.log_manager import LogManager
 from console import start_console
 from map import Map
+from HAL import getPose3d
 
 # Graphical User Interface Class
 
@@ -23,18 +20,6 @@ green = [0, 255, 0]
 blue = [255, 0, 0]
 indigo = [130, 0, 75]
 violet = [211, 0, 148]
-
-
-import json
-import threading
-import time
-import websocket
-from src.manager.ram_logging.log_manager import LogManager
-import rclpy
-from console import start_console
-from map import Map
-from HAL import getPose3d
-
 
 class ThreadingGUI:
 
