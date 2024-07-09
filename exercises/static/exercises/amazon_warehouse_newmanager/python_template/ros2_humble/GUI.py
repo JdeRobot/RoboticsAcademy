@@ -24,6 +24,7 @@ class ThreadingGUI:
         self.out_period = 1.0 / freq
 
         self.ack = True
+        self.ack_frontend = False
         self.ack_lock = threading.Lock()
 
         self.array_lock = threading.Lock()
@@ -32,6 +33,7 @@ class ThreadingGUI:
         self.running = True
         
         self.host = host
+        self.client = None
         self.node = rclpy.create_node("node")
 
         # Payload vars
@@ -60,6 +62,9 @@ class ThreadingGUI:
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
+                self.ack_frontend = True
+        else:
+            LogManager.logger.error("Unsupported msg")
 
     # Process outcoming messages from the GUI
     def gui_out_thread(self):
@@ -67,10 +72,12 @@ class ThreadingGUI:
             start_time = time.time()
 
             # Check if a new map should be sent
-            self.update_gui()
-            # with self.ack_lock:
-            #     if self.ack and self.map is not None:
-            #         self.ack = False
+            with self.ack_lock:
+                print(self.ack)
+                if self.ack and self.client:
+                    self.update_gui()
+                    if self.ack_frontend: 
+                        self.ack = False
 
             # Maintain desired frequency
             elapsed = time.time() - start_time
