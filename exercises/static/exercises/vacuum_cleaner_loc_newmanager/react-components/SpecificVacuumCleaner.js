@@ -23,6 +23,26 @@ export default function SpecificVacuumCleaner() {
           content[3],
         );
       }
+
+      if(updateData.image) {
+        let canvas = document.getElementById("gui-canvas-numpy");
+          //Parse encoded image data and decode it
+        function decode_utf8(s) {
+            return decodeURIComponent(escape(s))
+        }
+        var image_data = JSON.parse(updateData.image),
+        source = decode_utf8(image_data.image),
+        shape = image_data.shape;
+
+        if(source !== ""){
+          canvas.src = "data:image/png;base64," + source;
+          canvas.width = shape[1];
+          canvas.height = shape[0];
+        }
+      }
+
+      // Send the ACK of the msg
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -64,18 +84,26 @@ export default function SpecificVacuumCleaner() {
   }, [])
 
   return (
-    <canvas
-      ref={guiCanvasRef}
-      style={{
-        backgroundImage:
-          "url('/static/exercises/vacuum_cleaner_loc_newmanager/resources/images/mapgrannyannie.png')",
-        border: "2px solid #d3d3d3",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-        width: "100%",
-        height: "100%",
-      }}
-    />
+    <div style={{display: "flex",   width: "100%", height: "100%"}}>
+      <canvas
+        ref={guiCanvasRef}
+        style={{
+          backgroundImage:
+            "url('/static/exercises/vacuum_cleaner_loc_newmanager/resources/images/mapgrannyannie.png')",
+          border: "2px solid #d3d3d3",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100% 100%",
+          width: "50%",
+          height: "100%",
+        }}
+      />
+      <img id="gui-canvas-numpy" width="400" height="400" style={{
+            marginTop: "5px",
+            width: "100%",
+            height: "100%",
+            margin: "auto"
+      }}></img>
+    </div>
   );
 }
 

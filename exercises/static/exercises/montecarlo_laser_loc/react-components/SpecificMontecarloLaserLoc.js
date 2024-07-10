@@ -38,6 +38,9 @@ function SpecificMontecarloLaserLoc(props) {
             printParticles(guiCanvasRef.current, particles);
         }
       }
+
+      // Send the ACK of the msg
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(

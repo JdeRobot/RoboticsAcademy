@@ -42,6 +42,9 @@ function SpecificAmazonWarehouse(props) {
       const data = message.data.update;
       displayRobot(data)
       displayPath(data)
+
+      // Send the ACK of the msg
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(

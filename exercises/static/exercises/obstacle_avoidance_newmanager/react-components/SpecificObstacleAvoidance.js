@@ -18,6 +18,9 @@ function SpecificObstacleAvoidance(props) {
         const dataToDraw = JSON.parse(data.map)
         paintEvent(dataToDraw.target, dataToDraw.car, dataToDraw.obstacle, dataToDraw.average, dataToDraw.laser, dataToDraw.max_range)
       }
+
+      // Send the ACK of the msg
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(

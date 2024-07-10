@@ -65,7 +65,7 @@ function drawCar(){
 	ctx.fillRect(135, 125, 24, 1);
 	
 	// Chassis
-	ctx.fillStyle = 'red';
+	ctx.fillStyle = 'orange';
 	ctx.fillRect(143, 120, 8, 12);
 	ctx.fillRect(140, 132, 15, 15);
 	
