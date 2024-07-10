@@ -1,13 +1,10 @@
 import json
-import threading
-import time
-import websocket
-import rclpy
+
 from gui_interfaces.general.threading_gui import ThreadingGUI
-from console import start_console
 from lap import Lap
 from map import Map
 from HAL import getLaserData
+from console import start_console
 
 # Graphical User Interface Class
 
