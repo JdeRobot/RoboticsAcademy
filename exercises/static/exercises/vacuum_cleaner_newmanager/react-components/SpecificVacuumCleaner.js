@@ -9,20 +9,23 @@ export default function SpecificVacuumCleaner() {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
-      console.log(message);
-      // if (data.map) {
-      //   const pose = data.map.substring(1, data.map.length - 1);
-      //   const content = pose.split(",").map(function (item) {
-      //     return parseFloat(item);
-      //   });
-      //   draw(
-      //     guiCanvasRef.current,
-      //     content[0],
-      //     content[1],
-      //     content[2],
-      //     content[3]
-      //   );
-      // }
+      const updateData = message.data.update;
+      // Lógica para manejar el mapa
+      if (updateData.map) {
+        const pose = updateData.map.substring(1, updateData.map.length - 1);
+        const content = pose.split(",").map(item => parseFloat(item));
+
+        draw(
+          guiCanvasRef.current,
+          content[0],
+          content[1],
+          content[2],
+          content[3],
+        );
+      }
+
+      // Send the ACK of the msg
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
