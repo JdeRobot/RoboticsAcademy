@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw } from "Helpers/BirdEye";
+import { draw, clearMap } from "Helpers/BirdEye";
 
 export default function SpecificVacuumCleaner() {
   const guiCanvasRef = React.useRef();
@@ -41,6 +41,30 @@ export default function SpecificVacuumCleaner() {
       );
     };
   }, []);
+
+  React.useEffect(() => {
+    const callback = (message) => {
+      console.log(message);
+      if (message.data.state === "visualization_ready") {
+        try {
+          clearMap(guiCanvasRef.current,)
+        } catch (error) {
+        }
+      }
+    }
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+        callback
+      );
+    };
+  }, [])
 
   return (
     <canvas
