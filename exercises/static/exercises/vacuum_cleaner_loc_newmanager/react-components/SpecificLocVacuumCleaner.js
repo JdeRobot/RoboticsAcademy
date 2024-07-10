@@ -2,7 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { draw, clearMap } from "Helpers/BirdEye";
 
-export default function SpecificVacuumCleaner() {
+export default function SpecificLocVacuumCleaner() {
   const guiCanvasRef = React.useRef();
 
   React.useEffect(() => {
@@ -107,6 +107,6 @@ export default function SpecificVacuumCleaner() {
   );
 }
 
-SpecificVacuumCleaner.propTypes = {
+SpecificLocVacuumCleaner.propTypes = {
   circuit: PropTypes.string,
 };

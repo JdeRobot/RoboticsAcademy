@@ -3,7 +3,7 @@ import {Fragment} from "react";
 
 import "./css/BasicVacuumCleaner.css";
 
-const BasicVacuumCleaner = (props) => {
+const LocVacuumCleaner = (props) => {
   return (
     <Fragment>
     {props.children}
@@ -11,4 +11,4 @@ const BasicVacuumCleaner = (props) => {
   );
 };
 
-export default BasicVacuumCleaner;
+export default LocVacuumCleaner;
