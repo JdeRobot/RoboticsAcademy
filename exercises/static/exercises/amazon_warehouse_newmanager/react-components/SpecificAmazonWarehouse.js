@@ -14,12 +14,20 @@ function SpecificAmazonWarehouse(props) {
         const content = pose.split(",").map(function (item) {
           return parseFloat(item);
         });
+        let resize_factor = 1;
+        let offset_x = 0;
+        let offset_y = 0;
+        if (guiCanvasRef.current.style.backgroundImage == "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png')") {
+          resize_factor = 0.62;
+          offset_x = 59;
+          offset_y = 36;
+        }              
         draw(
-          guiCanvasRef.current,
-          content[0],
-          content[1],
-          content[2],
-          content[3]
+            guiCanvasRef.current,
+            content[0] * resize_factor + offset_x,
+            content[1] * resize_factor + offset_y,
+            content[2] * resize_factor,
+            content[3] * resize_factor
         );
       }
     };
@@ -57,6 +65,13 @@ function SpecificAmazonWarehouse(props) {
     const callback = (message) => {
       console.log(message);
       if (message.data.state === "visualization_ready") {
+        let world = document.getElementById("circuit-selector").innerText;
+        if (world === "amazon_warehouse_ros2_world2_ackermann" || world === "amazon_warehouse_ros2_world2") {
+          console.log(world)
+          guiCanvasRef.current.style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png')";
+        } else {
+          guiCanvasRef.current.style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')";
+        }
         try {
           clearMap()
         } catch (error) {

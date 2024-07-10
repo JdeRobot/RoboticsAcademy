@@ -73,7 +73,6 @@ class ThreadingGUI:
 
             # Check if a new map should be sent
             with self.ack_lock:
-                print(self.ack)
                 if self.ack and self.client:
                     self.update_gui()
                     if self.ack_frontend: 
