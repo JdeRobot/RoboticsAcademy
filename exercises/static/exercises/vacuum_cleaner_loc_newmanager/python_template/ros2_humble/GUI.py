@@ -24,6 +24,8 @@ violet = [211, 0, 148]
 class GUI(ThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
+        super().__init__(host)
+
         self.shared_image = SharedImage("guiimage")
 
         # Payload vars
@@ -32,9 +34,7 @@ class GUI(ThreadingGUI):
         self.start_coords = (201, 85.5)
         self.map = Map(getPose3d)
 
-        # Initialize threading GUI
-        super().__init__(host)
-
+        self.start()
 
     # Prepares and sends a map to the websocket server
     def update_gui(self):
