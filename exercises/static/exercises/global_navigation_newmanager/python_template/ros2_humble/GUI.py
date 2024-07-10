@@ -67,7 +67,7 @@ class ThreadingGUI:
                 self.ack = True
                 self.ack_frontend = True
         elif "pick" in message:
-            data = eval(message[5:])
+            data = eval(message[4:])
             self.mapXY = data
             x, y = self.mapXY
             worldx, worldy = self.map.gridToWorld(x, y)
