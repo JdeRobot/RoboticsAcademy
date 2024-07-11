@@ -9,9 +9,10 @@ from gazebo_msgs.srv import SetEntityState, GetEntityState
 import rclpy
 from console import start_console
 from math import cos, sin, atan2
+from gui_interfaces.general.threading_gui import ThreadingGUI
 
 
-class ThreadingGUI:
+class GUI(ThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
@@ -32,12 +33,7 @@ class ThreadingGUI:
         self.node = rclpy.create_node("node")
 
         # Initialize and start the WebSocket client thread
-        threading.Thread(target=self.run_websocket, daemon=True).start()
-
-        # Initialize and start the image sending thread (GUI out thread)
-        threading.Thread(
-            target=self.gui_out_thread, name="gui_out_thread", daemon=True
-        ).start()
+        self.start()
 
         # Initialize the services
         self.set_client = self.node.create_client(
@@ -55,9 +51,7 @@ class ThreadingGUI:
         self.get_request = GetEntityState.Request()
 
     # Init websocket client
-    def run_websocket(self):
-        self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
-        self.client.run_forever(ping_timeout=None, ping_interval=0)
+    
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
@@ -114,7 +108,7 @@ class ThreadingGUI:
             with self.ack_lock:
                 with self.image_lock:
                     if self.ack and self.image is not None:
-                        self.send_image()
+                        self.update_gui()
                         self.ack = False
 
             # Maintain desired frequency
@@ -123,8 +117,8 @@ class ThreadingGUI:
             time.sleep(sleep_time)
 
     # Prepares and send image to the websocket server
-    def send_image(self):
-
+    def update_gui(self):
+        
         _, encoded_image = cv2.imencode(".JPEG", self.image)
         payload = {
             "image": base64.b64encode(encoded_image).decode("utf-8"),
@@ -145,7 +139,7 @@ class ThreadingGUI:
 
 
 host = "ws://127.0.0.1:2303"
-gui = ThreadingGUI(host)
+gui = GUI(host)
 
 # Redirect the console
 start_console()
