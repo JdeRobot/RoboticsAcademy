@@ -8,7 +8,7 @@ import rclpy
 from math import cos, sin, atan2
 
 from gui_interfaces.general.threading_gui import ThreadingGUI
-from console import start_console
+from console_interfaces.general.console import start_console
 
 class GUI(ThreadingGUI):
 

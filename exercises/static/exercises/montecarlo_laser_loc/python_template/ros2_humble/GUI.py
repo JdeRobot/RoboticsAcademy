@@ -3,9 +3,9 @@ import math
 import matplotlib.pyplot as plt
 
 from gui_interfaces.general.threading_gui import ThreadingGUI
+from console_interfaces.general.console import start_console
 from map import Map
 from HAL import getPose3d
-from console import start_console
 
 # Graphical User Interface Class
 

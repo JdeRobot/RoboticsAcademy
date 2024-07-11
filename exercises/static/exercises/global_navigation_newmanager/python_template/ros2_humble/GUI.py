@@ -6,10 +6,10 @@ import threading
 import numpy as np
 
 from gui_interfaces.general.threading_gui import ThreadingGUI
+from console_interfaces.general.console import start_console
 from shared.image import SharedImage
 from map import Map
 from HAL import getPose3d
-from console import start_console
 
 # Graphical User Interface Class
 

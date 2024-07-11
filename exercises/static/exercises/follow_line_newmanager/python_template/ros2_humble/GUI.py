@@ -4,10 +4,10 @@ import json
 import threading
 import rclpy
 from gui_interfaces.general.threading_gui import ThreadingGUI
+from console_interfaces.general.console import start_console
 from hal_interfaces.general.odometry import OdometryNode
 from lap import Lap
 from map import Map
-from console import start_console
 
 # Graphical User Interface Class
 

@@ -1,9 +1,9 @@
 import json
 
 from gui_interfaces.general.threading_gui import ThreadingGUI
+from console_interfaces.general.console import start_console
 from map import Map
 from HAL import getFrontLaserData, getRightLaserData, getBackLaserData
-from console import start_console
 
 # Graphical User Interface Class
 

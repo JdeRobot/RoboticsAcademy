@@ -6,9 +6,9 @@ from shared.image import SharedImage
 from PIL import Image
 
 from gui_interfaces.general.threading_gui import ThreadingGUI
+from console_interfaces.general.console import start_console
 from map import Map
 from HAL import getPose3d
-from console import start_console
 
 # Graphical User Interface Class
 

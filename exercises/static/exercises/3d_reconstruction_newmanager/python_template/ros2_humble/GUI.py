@@ -5,7 +5,7 @@ import threading
 import numpy as np
 
 from gui_interfaces.general.threading_gui import ThreadingGUI
-from console import start_console
+from console_interfaces.general.console import start_console
 
 class GUI(ThreadingGUI):
 
