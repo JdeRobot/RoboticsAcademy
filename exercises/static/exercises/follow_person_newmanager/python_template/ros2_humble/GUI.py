@@ -3,14 +3,12 @@ import cv2
 import base64
 import threading
 import time
-import websocket
-from src.manager.ram_logging.log_manager import LogManager
 from gazebo_msgs.srv import SetEntityState, GetEntityState
 import rclpy
-from console import start_console
 from math import cos, sin, atan2
-from gui_interfaces.general.threading_gui import ThreadingGUI
 
+from gui_interfaces.general.threading_gui import ThreadingGUI
+from console import start_console
 
 class GUI(ThreadingGUI):
 
@@ -32,9 +30,6 @@ class GUI(ThreadingGUI):
         self.msg = {"image": ""}
         self.node = rclpy.create_node("node")
 
-        # Initialize and start the WebSocket client thread
-        self.start()
-
         # Initialize the services
         self.set_client = self.node.create_client(
             SetEntityState, "/follow_person/set_entity_state"
@@ -50,8 +45,8 @@ class GUI(ThreadingGUI):
             self.get_logger().info("Service not available, waiting...")
         self.get_request = GetEntityState.Request()
 
-    # Init websocket client
-    
+        # Initialize and start the WebSocket client thread
+        self.start()
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
@@ -126,11 +121,7 @@ class GUI(ThreadingGUI):
         }
         self.msg["image"] = json.dumps(payload)
         message = json.dumps(self.msg)
-        try:
-            if self.client:
-                self.client.send(message)
-        except Exception as e:
-            LogManager.logger.info(f"Error sending message: {e}")
+        self.send_to_client(message)
 
     # Function to set the next image to be sent
     def setImage(self, image):
@@ -143,7 +134,6 @@ gui = GUI(host)
 
 # Redirect the console
 start_console()
-
 
 # Expose the gui setImage function
 def showImage(img):
