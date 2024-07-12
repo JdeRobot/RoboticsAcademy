@@ -52,7 +52,24 @@ Please look at the attached image for reference.
 
 <img width="1440" alt="Screenshot 2024-05-01 at 10 35 55 PM" src="https://github.com/JdeRobot/RoboticsAcademy/assets/57873504/c4096ab4-f9c1-4ddf-b612-41e78074fb99">
 
+### Some problems that can arise
 
+It is possible that the first time you follow the instructions, a dependency may not be installed correctly, or it may not be added to the path for some reason.
+
+One of the most frequent problems is that the frontend doesn't launch, you can solve it in two ways, the first one is to launch the frontend separately from another terminal:
+
+```
+cd /RoboticsAcademy
+```
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 16
+nvm use 16
+cd react_frontend/ && yarn install && yarn run dev
+```
+
+Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_mini_radi.md
 
 ### Using Docker compose
 
