@@ -58,3 +58,33 @@ chmod +x build.sh
 ```bash
 ./build.sh -h
 ```
+
+## Searching installed images
+If you want to see what images you have installed you can use the command:
+
+```bash
+docker images
+```
+You probably need root permissions to use any command with docker, run them with `sudo`.
+
+## Deleting installed images
+
+If you want to delete images you have installed (be careful not to delete the image you need or you will have to generate it again.) you can use the command:
+
+```bash
+docker rmi [image_id]
+```
+
+It is possible that an image is still running because it has not finished in some execution, if this happens, you will not be able to use this command. First, list the all the containers (also stopped) with this command:
+
+```bash
+docker ps -a
+```
+
+Then, remove the containers using the image you want to delete:
+
+```bash
+docker rm [docker_id]
+```
+
+Finally, you can delete the image.
