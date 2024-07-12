@@ -8,7 +8,7 @@ from jderobot_drones.drone_wrapper import DroneWrapper
 
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
-freq = 15.0
+freq = 30.0
 
 ### HAL INIT ###
 
