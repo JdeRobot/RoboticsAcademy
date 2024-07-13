@@ -131,8 +131,6 @@ When you finish developing, you can close the container with Ctrl+C, but after t
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
 To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
-- ```entry_point/ros_version```: used for the entrypoint of an exercise run by the RAM
-- ```launch/ros_version```: used for world launch files (.launch)
 - ```python_template/ros_version```: used for the python templates needed to compose the user code
 - ```react-components```: exercise specific react components
 
