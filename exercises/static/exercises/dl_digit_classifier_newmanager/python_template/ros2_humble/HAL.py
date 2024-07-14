@@ -1,41 +1,47 @@
-import cv2
 import rclpy
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge
+import sys
+import numpy as np  # Unused, consider removing if not needed later
+import cv2  # Unused, consider removing if not needed later
+import threading  # Unused, consider removing if not needed later
+import time  # Unused, consider removing if not needed later
+from datetime import datetime  # Unused, consider removing if not needed later
 
-class HAL:
-    def __init__(self):
-        self.cameraCapture = cv2.VideoCapture(0)
-        self.bridge = CvBridge()
-        self.image_subscriber = None
-        self.start_ros_subscription()
+from interfaces.camera import ListenerCamera
+from shared.image import SharedImage
 
-    def start_ros_subscription(self):
-        rclpy.init()
-        node = rclpy.create_node('image_subscriber')
-        self.image_subscriber = node.create_subscription(
-            Image,
-            'v4l2/raw_image',
-            self.image_callback,
-            10  
-        )
-        rclpy.spin(node)
+IMG_WIDTH = 320
+IMG_HEIGHT = 240
 
-    def image_callback(self, msg):
-        frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        cv2.imshow('ROS Image', frame)
-        cv2.waitKey(1)  
+def main():
+    # Initialize ROS2
+    rclpy.init(args=sys.argv)
 
-    def stop_ros_subscription(self):
-        if self.image_subscriber:
-            self.image_subscriber.destroy()
-        rclpy.shutdown()
+    # Create a node
+    node = rclpy.create_node('HAL')
 
-    def getImage(self):
-        success, frame = self.cameraCapture.read()
-        return frame
+    shared_image = SharedImage("halimage")
 
-    def __del__(self):
-        self.stop_ros_subscription()
+    # ROS2 Topics
+    camera = ListenerCamera("/v4l2_camera_node/image_raw")
 
+    # Get Image from ROS Driver Camera
+    def getImage():
+        try:
+            rclpy.spin_once(camera)
+            image = camera.getImage().data
+            # print(f"HAL image set, shape: {image.shape}, bytes: {image.nbytes}", flush=True)
+            return image
+        except Exception as e:
+            print(f"Exception in hal getImage {repr(e)}")
+
+    # Example usage
+    image = getImage()
+    if image is not None:
+        print(f"Image received with shape: {image.shape}")
+
+    # Shutdown ROS2
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
 

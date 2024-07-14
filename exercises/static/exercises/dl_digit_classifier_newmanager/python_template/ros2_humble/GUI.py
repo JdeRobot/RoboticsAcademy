@@ -1,59 +1,66 @@
 import json
+import os
+import rclpy
 import cv2
+import sys
 import base64
 import threading
 import time
+import numpy as np
 from datetime import datetime
-from websocket_server import WebsocketServer
+import websocket
+import subprocess
+import logging
+
+from shared.value import SharedValue
+from console import start_console
+
 
 
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
-    def __init__(self, host, hal):
-        t = threading.Thread(target=self.run_server)
+    def __init__(self, host):
 
-        self.payload = {'image': '', 'shape': []}
-        self.server = None
-        self.client = None
+        self.payload = {'image': ''}
+        
+        # ROS2 init
+        rclpy.init(args=None)
+        node = rclpy.create_node('GUI')
 
-        self.host = host
-
-        # Image variables
+	# Image variables
         self.image_to_be_shown = None
         self.digit_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
+        self.host = host
+        self.client = None
 
-        self.acknowledge = False
-        self.acknowledge_lock = threading.Lock()
+        self.ack = False
+        self.ack_lock = threading.Lock()
+       
 
-        # Take the console object to set the same websocket and client
-        self.hal = hal
-        t.start()
+        self.client_thread = threading.Thread(target=self.run_websocket)
+        self.client_thread.start()
 
-    # Explicit initialization function
-    # Class method, so user can call it without instantiation
-    @classmethod
-    def initGUI(cls, host):
-        # self.payload = {'image': '', 'shape': []}
-        new_instance = cls(host)
-        return new_instance
+    def run_websocket(self):
+        while True:
+            print("GUI WEBSOCKET CONNECTED")
+            self.client = websocket.WebSocketApp(self.host, on_message=self.on_message)
+            self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        self.image_show_lock.acquire()
-        image_to_be_shown_updated = self.image_to_be_shown_updated
-        image_to_be_shown = self.image_to_be_shown
-        digit_to_be_shown = self.digit_to_be_shown
-        self.image_show_lock.release()
+        with self.image_show_lock:
+            image_to_be_shown_updated = self.image_to_be_shown_updated
+            image_to_be_shown = self.image_to_be_shown
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': '', 'digit': ''}
+        payload = {'image': '', 'shape': ''}
 
-        if (image_to_be_shown_updated == False):
+        if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
@@ -62,140 +69,133 @@ class GUI:
 
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-        payload['digit'] = digit_to_be_shown
 
-        self.image_show_lock.acquire()
-        self.image_to_be_shown_updated = False
-        self.image_show_lock.release()
+        with self.image_show_lock:
+            self.image_to_be_shown_updated = False
 
         return payload
 
     # Function for student to call
-    def showResult(self, image, digit):
-        self.image_show_lock.acquire()
-        self.image_to_be_shown = image
-        self.digit_to_be_shown = digit
-        self.image_to_be_shown_updated = True
-        self.image_show_lock.release()
-
-    # Function to get the client
-    # Called when a new client is received
-    def get_client(self, client, server):
-        self.client = client
-
-    # Function to get value of Acknowledge
-    def get_acknowledge(self):
-        self.acknowledge_lock.acquire()
-        acknowledge = self.acknowledge
-        self.acknowledge_lock.release()
-
-        return acknowledge
-
-    # Function to get value of Acknowledge
-    def set_acknowledge(self, value):
-        self.acknowledge_lock.acquire()
-        self.acknowledge = value
-        self.acknowledge_lock.release()
+    def showImage(self, image):
+        with self.image_show_lock:
+            self.image_to_be_shown = image
+            self.image_to_be_shown_updated = True
 
     # Update the gui
     def update_gui(self):
+        # print("GUI update")
         # Payload Image Message
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
+        
+        
+        message = json.dumps(self.payload)
+        if self.client:
+            try:
+                self.client.send(message)
+                # print(message)
+            except Exception as e:
+                print(f"Error sending message: {e}")
 
-        message = "#gui" + json.dumps(self.payload)
-        self.server.send_message(self.client, message)
-
-    # Function to read the message from websocket
-    # Gets called when there is an incoming message from the client
-    def get_message(self, client, server, message):
-        # Acknowledge Message for GUI Thread
-        if (message[:4] == "#ack"):
+    def on_message(self, ws, message):
+        """Handles incoming messages from the websocket client."""
+        if message.startswith("#ack"):
+            # print("on message" + str(message))
             self.set_acknowledge(True)
 
-    # Activate the server
-    def run_server(self):
-        self.server = WebsocketServer(port=2303, host=self.host)
-        self.server.set_fn_new_client(self.get_client)
-        self.server.set_fn_message_received(self.get_message)
+    def get_acknowledge(self):
+        """Gets the acknowledge status."""
+        with self.ack_lock:
+            ack = self.ack
 
-        logged = False
-        while not logged:
-            try:
-                f = open("/ws_gui.log", "w")
-                f.write("websocket_gui=ready")
-                f.close()
-                logged = True
-            except:
-                time.sleep(0.1)
+        return ack
 
-        self.server.run_forever()
+    def set_acknowledge(self, value):
+        """Sets the acknowledge status."""
+        with self.ack_lock:
+            self.ack = value
 
 
-# This class decouples the user thread
-# and the GUI update thread
-class ThreadGUI(threading.Thread):
+class ThreadGUI:
+    """Class to manage GUI updates and frequency measurements in separate threads."""
+
     def __init__(self, gui):
+        """Initializes the ThreadGUI with a reference to the GUI instance."""
         self.gui = gui
-        # Time variables
         self.ideal_cycle = 80
-        self.measured_cycle = 90
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
         self.iteration_counter = 0
+        self.running = True
 
-    # Function to start the execution of threads
     def start(self):
-        self.measure_thread = threading.Thread(target=self.measure_thread)
-        self.thread = threading.Thread(target=self.run)
-
-        self.measure_thread.start()
-        self.thread.start()
-
+        """Starts the GUI, frequency measurement, and real-time factor threads."""
+        self.frequency_thread = threading.Thread(target=self.measure_and_send_frequency)
+        self.gui_thread = threading.Thread(target=self.run)
+        self.rtf_thread = threading.Thread(target=self.get_real_time_factor)
+        self.frequency_thread.start()
+        self.gui_thread.start()
+        self.rtf_thread.start()
         print("GUI Thread Started!")
 
-    # The measuring thread to measure frequency
-    def measure_thread(self):
-        while (self.gui.client == None):
-            pass
+    def get_real_time_factor(self):
+        """Continuously calculates the real-time factor."""
+        while True:
+            time.sleep(2)
+            args = ["gz", "stats", "-p"]
+            stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
+            with stats_process.stdout:
+                for line in iter(stats_process.stdout.readline, b''):
+                    stats_list = [x.strip() for x in line.split(b',')]
+                    self.real_time_factor = stats_list[0].decode("utf-8")
 
+    def measure_and_send_frequency(self):
+        """Measures and sends the frequency of GUI updates and brain cycles."""
         previous_time = datetime.now()
-        while (True):
-            # Sleep for 2 seconds
+        while self.running:
             time.sleep(2)
 
-            # Measure the current time and subtract from previous time to get real time interval
             current_time = datetime.now()
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
-
-            # Get the time period
-            try:
-                # Division by zero
-                self.measured_cycle = ms / self.iteration_counter
-            except:
-                self.measured_cycle = 0
-
-            # Reset the counter
+            measured_cycle = ms / self.iteration_counter if self.iteration_counter > 0 else 0
             self.iteration_counter = 0
+            brain_frequency = round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
+            gui_frequency = round(1000 / self.ideal_cycle, 1)
+            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
+            message = json.dumps(self.frequency_message)
+            if self.gui.client:
+                try:
+                    self.gui.client.send(message)
+                except Exception as e:
+                    print(f"Error sending frequency message: {e}")
 
     def run(self):
-        while (self.gui.client == None):
-            pass
-
-        while (True):
+        """Main loop to update the GUI at regular intervals."""
+        while self.running:
             start_time = datetime.now()
+
             self.gui.update_gui()
-            acknowledge_message = self.gui.get_acknowledge()
-
-            while (acknowledge_message == False):
-                acknowledge_message = self.gui.get_acknowledge()
-
-            self.gui.set_acknowledge(False)
-
+            self.iteration_counter += 1
             finish_time = datetime.now()
-            self.iteration_counter = self.iteration_counter + 1
 
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if (ms < self.ideal_cycle):
-                time.sleep((self.ideal_cycle - ms) / 1000.0)
+            sleep_time = max(0, (50 - ms) / 1000.0)
+            time.sleep(sleep_time)
+
+
+# Create a GUI interface
+host = "ws://0.0.0.0:2303"
+gui_interface = GUI(host)
+
+# Spin a thread to keep the interface updated
+thread_gui = ThreadGUI(gui_interface)
+thread_gui.start()
+
+# Redirect the console
+start_console()
+
+def showImage(image):
+    gui_interface.showImage(image)
