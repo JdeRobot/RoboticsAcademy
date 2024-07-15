@@ -19,6 +19,8 @@ class ThreadingGUI:
         self.ack_frontend = False
         self.ack_lock = Lock()
 
+        self.client = None
+
         self.running = True
 
         self.host = host
