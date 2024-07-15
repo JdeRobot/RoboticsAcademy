@@ -37,8 +37,9 @@ class ThreadingGUI:
 
     # Init websocket client
     def run_websocket(self):
-        self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
-        self.client.run_forever(ping_timeout=None, ping_interval=0)
+        while self.running:
+            self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+            self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
