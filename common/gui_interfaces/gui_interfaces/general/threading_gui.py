@@ -20,7 +20,7 @@ class ThreadingGUI:
         self.ack_frontend = False
         self.ack_lock = Lock()
 
-        self.client = RawValue(c_void_p, None)
+        # self.client = RawValue(c_void_p, None)
 
         self.running = True
 
@@ -30,24 +30,24 @@ class ThreadingGUI:
     def start(self):
         # Initialize and start the WebSocket client thread
         # threading.Thread(target=self.run_websocket, daemon=True).start()
-        client_process = Process(target=self.run_websocket, args=(self))
+        self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+        client_process = Process(target=self.run_websocket, args=(self.client))
         client_process.start()
 
         # Initialize and start the image sending thread (GUI out thread)
         # threading.Thread(
         #     target=self.gui_out_thread, name="gui_out_thread", daemon=True
         # ).start()
-        gui_process = Process(target=self.gui_out_thread, args=(self))
+        gui_process = Process(target=self.gui_out_thread)
         gui_process.start()
 
         # client_process.join()
         # gui_process.join()
 
     # Init websocket client
-    def run_websocket(self):
+    def run_websocket(self, client):
         while self.running:
-            self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
-            self.client.run_forever(ping_timeout=None, ping_interval=0)
+            client.run_forever(ping_timeout=None, ping_interval=0)
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
