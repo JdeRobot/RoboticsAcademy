@@ -1,7 +1,6 @@
 from rclpy.node import Node
 from rclpy import spin_until_future_complete
 import threading
-from multiprocessing import Lock
 from gazebo_msgs.srv import ApplyJointEffort
 from std_msgs.msg import String
 
@@ -48,7 +47,7 @@ class PlatformController(Node):
         @type joint: String
         '''
         super().__init__("platform_controller")
-        self.lock = Lock()
+        self.lock = threading.Lock()
 
         # Joint Effort Service
         self.client = self.create_client(ApplyJointEffort, '/apply_joint_effort')
@@ -59,7 +58,7 @@ class PlatformController(Node):
         self.req.joint_name = joint
         
         self.future = None
-        self.future_lock = Lock()
+        self.future_lock = threading.Lock()
     
     def send_effort(self,input_effort):
 
