@@ -1,5 +1,5 @@
 import rclpy
-from multiprocessing import Process, Lock
+from multiprocessing import Process, Lock, Value
 import time
 import websocket
 from src.manager.ram_logging.log_manager import LogManager
@@ -19,7 +19,7 @@ class ThreadingGUI:
         self.ack_frontend = False
         self.ack_lock = Lock()
 
-        self.client = None
+        self.client = Value(None)
 
         self.running = True
 
