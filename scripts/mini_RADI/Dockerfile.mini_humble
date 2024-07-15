@@ -11,11 +11,6 @@ RUN mkdir -p /opt/jderobot && \
 RUN mkdir -p /home/ws/src
 RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
 
-# Compiling and sourcing the workspace
-WORKDIR /home/ws
-RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
-
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
 
@@ -36,6 +31,11 @@ RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBO
 
 # Add common packages to workspace
 RUN mv /RoboticsAcademy/common/hal_interfaces /RoboticsAcademy/common/gui_interfaces /RoboticsAcademy/common/console_interfaces /home/ws/src/
+
+# Compiling and sourcing the workspace
+WORKDIR /home/ws
+RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 
 # Relocate RAM
 RUN mkdir /RoboticsAcademy/src && mv /RoboticsApplicationManager/* /RoboticsAcademy/src
