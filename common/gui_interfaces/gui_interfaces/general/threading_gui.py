@@ -1,5 +1,5 @@
 import rclpy
-import threading
+from multiprocessing import Process, Lock
 import time
 import websocket
 from src.manager.ram_logging.log_manager import LogManager
@@ -17,7 +17,7 @@ class ThreadingGUI:
 
         self.ack = True
         self.ack_frontend = False
-        self.ack_lock = threading.Lock()
+        self.ack_lock = Lock()
 
         self.running = True
 
@@ -26,12 +26,14 @@ class ThreadingGUI:
     
     def start(self):
         # Initialize and start the WebSocket client thread
-        threading.Thread(target=self.run_websocket, daemon=True).start()
+        # threading.Thread(target=self.run_websocket, daemon=True).start()
+        Process(target=self.run_websocket).start()
 
         # Initialize and start the image sending thread (GUI out thread)
-        threading.Thread(
-            target=self.gui_out_thread, name="gui_out_thread", daemon=True
-        ).start()
+        # threading.Thread(
+        #     target=self.gui_out_thread, name="gui_out_thread", daemon=True
+        # ).start()
+        Process(target=self.gui_out_thread).start()
 
     # Init websocket client
     def run_websocket(self):
