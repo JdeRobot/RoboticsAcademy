@@ -31,7 +31,7 @@ class ThreadingGUI:
         # Initialize and start the WebSocket client thread
         # threading.Thread(target=self.run_websocket, daemon=True).start()
         self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
-        client_process = Process(target=self.run_websocket, args=(self.client))
+        client_process = Process(target=self.run_websocket, args=(self.client,))
         client_process.start()
 
         # Initialize and start the image sending thread (GUI out thread)
