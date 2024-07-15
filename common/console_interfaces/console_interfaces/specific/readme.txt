@@ -1,0 +1,1 @@
+For specific components of an exercise, create a folder with the exercise name and add the components there. 
