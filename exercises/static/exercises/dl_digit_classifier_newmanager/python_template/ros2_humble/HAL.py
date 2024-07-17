@@ -12,36 +12,33 @@ from shared.image import SharedImage
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
-def main():
-    # Initialize ROS2
-    rclpy.init(args=sys.argv)
+
+# Initialize ROS2
+rclpy.init(args=sys.argv)
 
     # Create a node
-    node = rclpy.create_node('HAL')
+node = rclpy.create_node('HAL')
 
-    shared_image = SharedImage("halimage")
+shared_image = SharedImage("halimage")
 
     # ROS2 Topics
-    camera = ListenerCamera("/v4l2_camera_node/image_raw")
+camera = ListenerCamera("/v4l2_camera_node/image_raw")
 
     # Get Image from ROS Driver Camera
-    def getImage():
-        try:
-            rclpy.spin_once(camera)
-            image = camera.getImage().data
+def getImage():
+    try:
+        rclpy.spin_once(camera)
+        image = camera.getImage().data
             # print(f"HAL image set, shape: {image.shape}, bytes: {image.nbytes}", flush=True)
-            return image
-        except Exception as e:
-            print(f"Exception in hal getImage {repr(e)}")
+        return image
+    except Exception as e:
+        print(f"Exception in hal getImage {repr(e)}")
 
     # Example usage
-    image = getImage()
-    if image is not None:
-        print(f"Image received with shape: {image.shape}")
+image = getImage()
+if image is not None:
+    print(f"Image received with shape: {image.shape}")
 
     # Shutdown ROS2
-    rclpy.shutdown()
-
-if __name__ == '__main__':
-    main()
+rclpy.shutdown()
 

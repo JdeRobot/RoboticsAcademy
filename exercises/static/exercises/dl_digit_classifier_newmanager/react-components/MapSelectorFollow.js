@@ -14,7 +14,7 @@ export default function MapSelectorFollow(props) {
       document.getElementById("exercise-config").textContent
     );
     config.application.params = { circuit: circuitPath };
-    config.launch_file = `$EXERCISE_FOLDER/launch/simple_line_follower_ros_headless_${circuitPath}.launch`;
+    config.launch_file = `$EXERCISE_FOLDER/launch/digit_classifier.launch`;
     return config;
   };
 
@@ -28,18 +28,14 @@ export default function MapSelectorFollow(props) {
     config.application.params = { circuit: e.name };
     config.launch_file = e.path;
     config['exercise_id'] = exerciseId;
-    config["world"] = "gazebo";
-    config["visualization"] = "gazebo_rae";
-    config["world"] = "gazebo";
-    if (ros_version == 1) {
-      config["resource_folders"] = "$EXERCISE_FOLDER/launch/ros1_noetic";      
-    }
+    config["world"] = "physical";
+    config["visualization"] = "physical_rae";
     if (ros_version == 2) {
       config["resource_folders"] = "$EXERCISE_FOLDER/launch/ros2_humble";
     }    
-    config["model_folders"] = "$CUSTOM_ROBOTS_FOLDR/f1/models";
+    
     config["launch_file"] = e.path;
-    config["visualization"] = "gazebo_rae";
+    config["visualization"] = "physical_rae";
     config.height = window.innerHeight / 2;
     config.width = window.innerWidth / 2;       
     window.RoboticsExerciseComponents.commsManager.terminate().then(() => {
