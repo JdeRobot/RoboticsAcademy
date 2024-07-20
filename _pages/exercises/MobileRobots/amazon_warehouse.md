@@ -23,11 +23,44 @@ gallery:
     alt: "Robot"
     title: "Robot"
 
+holonomicrobot:
+  - url: /assets/images/exercises/amazon_warehouse/holonomico_robot.png
+    image_path: /assets/images/exercises/amazon_warehouse/holonomico_robot.png
+    alt: "Holonomic robot"
+    title: "Holonomic robot"
+
+ackermannrobot:
+  - url: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
+    image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
+    alt: "Ackermann robot"
+    title: "Ackermann robot"
+
+ackermannrobotmesh:
+  - url: /assets/images/exercises/amazon_warehouse/ackermann_robot_dae.png
+    image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot_dae.png
+    alt: "Ackermann robot mesh"
+    title: "Ackermann robot mesh"
+  - url: /assets/images/exercises/amazon_warehouse/ackermann_robot_shelf_dae.png
+    image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot_shelf_dae.png
+    alt: "Ackermann robot shelf mesh"
+    title: "Ackermann robot shelf mesh"
+
 warehouse1:
-  - url: /assets/images/exercises/amazon_warehouse/warehouse1.png
-    image_path: /assets/images/exercises/amazon_warehouse/warehouse1.png
-    alt: "Warehouse 1"
-    title: "Warehouse 1"
+  - url: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
+    image_path: /assets/images/exercises/amazon_warehouse/ackermann_robot.png
+    alt: "Ackermann logistics robot"
+    title: "Ackermann logistics robot"
+
+warehouse1mesh:
+  - url: /assets/images/exercises/amazon_warehouse/warehouse1_dae.png
+    image_path: /assets/images/exercises/amazon_warehouse/warehouse1_dae.png
+    alt: "Warehouse 1 mesh"
+    title: "Warehouse 1 mesh"
+  - url: /assets/images/exercises/amazon_warehouse/shelf_dae.png
+    image_path: /assets/images/exercises/amazon_warehouse/shelf_dae.png
+    alt: "Shelf mesh"
+    title: "Shelf mesh"
+
 
 warehouse2:
   - url: /assets/images/exercises/amazon_warehouse/warehouse2.png
@@ -54,13 +87,15 @@ original_axis:
     title: "Warehouse 1"
 
 solution1: EVt9vYqEoDg
+solution2: -2D90I-wZKs
+solution3: 0PO4S8Omn30
 ackermannRobot: NCC9bn-v_Ro
 robotgeometry: FPPF27QIRHw
 ---
 
 ## Goal
 
-The objective of this practice is to implement the logic that allows a holonomic logistics robot to deliver shelves to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
+The objective of this practice is to implement the logic that allows a logistics robot to deliver shelves to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
 
 {% include gallery caption="Gallery" %}
 
@@ -74,14 +109,37 @@ The objective of this practice is to implement the logic that allows a holonomic
 
 {% include gallery id="original_axis" caption="HAL.getPose3d()" %}
 
+* `HAL.getSimTime()` - returns simulation time
+```python
+# simulation time in second
+sec = HAL.getSimTime().sec + HAL.getSimTime().nanosec / 1000000000
+```
+
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular speed
 * `HAL.lift()` - to lift the platform
 * `HAL.putdown()` - to put down the platform
 * `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
-* `GUI.getMap(url)` - returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The URL of the Amazon Warehouse World 1 is '/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map.png'. The URL of the Amazon Warehouse World 2 is '/RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png'.
+* `GUI.getMap(url)` - returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The URLs of the worlds are in the **Supporting information** section.
 
 ## Supporting information
+There are two robots to choose from:
+#### Holonomic robot:
+* The robot size is 0.3 meters long and 0.3 meters wide.
+
+{% include gallery id="holonomicrobot" caption="Holonomic robot" %}
+
+#### Ackermann robot:
+* The robot size is 0.72 meters long and 0.32 meters wide.
+
+{% include gallery id="ackermannrobot" caption="Ackemann robot" %}
+
+* You can get the robot's mesh files from there: 
+  * Only robot: /home/ws/src/CustomRobots/ackermann_logistic_robot/models/ackermann_logistic_robot/meshes/ackermann_robot.dae
+  * Robot lifting a shelf: /home/ws/src/CustomRobots/ackermann_logistic_robot/models/ackermann_logistic_robot/meshes/ackermann_robot_lifting_shelf.dae
+
+{% include gallery id="ackermannrobotmesh" caption="Ackemann robot meshes" %}
+
 
 There are two warehouses to choose from:
 #### Warehouse 1:
@@ -91,6 +149,16 @@ There are two warehouses to choose from:
 
 {% include gallery id="warehouse1" caption="Warehouse 1" %}
 
+* You can get the warehouse's mesh file from there: 
+  * Warehouse without shelves: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/warehouse1.dae
+  * Shelf 1: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf1.dae
+  * Shelf 2: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf2.dae
+  * ...
+  * Shelf 6: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf6.dae
+
+{% include gallery id="warehouse1mesh" caption="Warehouse 1 meshes" %}
+
+
 
 #### Warehouse 2:
 * The warehouse size is 34 meters long and 22 meters wide.
@@ -99,6 +167,7 @@ There are two warehouses to choose from:
 * You can get the warehouse's map from there: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png
 
 {% include gallery id="warehouse2" caption="Warehouse 2" %}
+
 
 ## Theory
 
@@ -124,7 +193,7 @@ As you can see in the diagram above, some key components of OMPL are:
 * **Path** is the output of the planner, which is a sequence of states representing a trajectory for the robot to follow.
 
 The following example shows a 2D point robot inside a 10x10 space with an ovular obstacle at position (5.5, 5.5):
-```
+```python
 from ompl import base as ob
 from ompl import geometric as og
 import math
@@ -313,7 +382,11 @@ There are different ways to solve the exercise:
   
   You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into account the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as SE2StateSpace. And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
 
-{% include youtubePlayer.html id=page.robotgeometry %}
+* #### Control-based planning
+  In control-based planning, we need to define a control space and specify control propagation to set the robot movement constraints.
+
+  However, there is another approach using the OMPL app class. This class includes predefined robot types such as dynamic car, kinematic car, quadrotor, etc. And, we can define the state space using mesh files.
+
 #### How to find the shortest path?
 The library offers the possibility to set an optimization objective, which could be a great help in finding the shortest path. Check out in [this tutorial](https://ompl.kavrakilab.org/optimalPlanningTutorial.html) how to do it!
 
@@ -329,8 +402,14 @@ The library offers the possibility to set an optimization objective, which could
 ## Videos
 
 ### Demonstrative video of completed solution
-
+* #### Euclidean planning 
 {% include youtubePlayer.html id=page.solution1 %}
+
+* #### Planning with robot's geometry constraints
+{% include youtubePlayer.html id=page.solution2 %}
+
+* #### Control-based planning
+{% include youtubePlayer.html id=page.solution3 %}
 
 - Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 - Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164).
