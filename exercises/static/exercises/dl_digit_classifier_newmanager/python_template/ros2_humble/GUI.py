@@ -12,9 +12,8 @@ import websocket
 import subprocess
 import logging
 
-from shared.value import SharedValue
+from hal_interfaces.general.odometry import OdometryNode
 from console import start_console
-
 
 
 # Graphical User Interface Class
@@ -26,8 +25,9 @@ class GUI:
         self.payload = {'image': ''}
         
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
+	    node = rclpy.create_node('GUI')
 
 	# Image variables
         self.image_to_be_shown = None
@@ -37,8 +37,13 @@ class GUI:
         self.host = host
         self.client = None
 
+  
+
         self.ack = False
         self.ack_lock = threading.Lock()
+        
+        # Create the lap object
+        # TODO: maybe move this to HAL and have it be hybrid
        
 
         self.client_thread = threading.Thread(target=self.run_websocket)
@@ -124,30 +129,17 @@ class ThreadGUI:
         self.gui = gui
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {'brain': '', 'gui': ''}
         self.iteration_counter = 0
         self.running = True
 
     def start(self):
         """Starts the GUI, frequency measurement, and real-time factor threads."""
         self.frequency_thread = threading.Thread(target=self.measure_and_send_frequency)
-        self.gui_thread = threading.Thread(target=self.run)
-        self.rtf_thread = threading.Thread(target=self.get_real_time_factor)
+        self.gui_thread = threading.Thread(target=self.run)   
         self.frequency_thread.start()
         self.gui_thread.start()
-        self.rtf_thread.start()
         print("GUI Thread Started!")
-
-    def get_real_time_factor(self):
-        """Continuously calculates the real-time factor."""
-        while True:
-            time.sleep(2)
-            args = ["gz", "stats", "-p"]
-            stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
-            with stats_process.stdout:
-                for line in iter(stats_process.stdout.readline, b''):
-                    stats_list = [x.strip() for x in line.split(b',')]
-                    self.real_time_factor = stats_list[0].decode("utf-8")
 
     def measure_and_send_frequency(self):
         """Measures and sends the frequency of GUI updates and brain cycles."""
@@ -163,7 +155,7 @@ class ThreadGUI:
             self.iteration_counter = 0
             brain_frequency = round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
             gui_frequency = round(1000 / self.ideal_cycle, 1)
-            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
+            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency}
             message = json.dumps(self.frequency_message)
             if self.gui.client:
                 try:
@@ -187,7 +179,7 @@ class ThreadGUI:
 
 
 # Create a GUI interface
-host = "ws://0.0.0.0:2303"
+host = "ws://127.0.0.1:2303"
 gui_interface = GUI(host)
 
 # Spin a thread to keep the interface updated
