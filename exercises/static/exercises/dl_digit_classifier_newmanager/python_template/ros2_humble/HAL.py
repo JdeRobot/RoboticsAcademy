@@ -7,19 +7,15 @@ import time  # Unused, consider removing if not needed later
 from datetime import datetime  # Unused, consider removing if not needed later
 
 from interfaces.camera import ListenerCamera
+shared_image = SharedImage("halimage")
 from shared.image import SharedImage
 
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
 
-# Initialize ROS2
-rclpy.init(args=sys.argv)
-
     # Create a node
 node = rclpy.create_node('HAL')
-
-shared_image = SharedImage("halimage")
 
     # ROS2 Topics
 camera = ListenerCamera("/v4l2_camera_node/image_raw")
@@ -34,11 +30,4 @@ def getImage():
     except Exception as e:
         print(f"Exception in hal getImage {repr(e)}")
 
-    # Example usage
-image = getImage()
-if image is not None:
-    print(f"Image received with shape: {image.shape}")
-
-    # Shutdown ROS2
-rclpy.shutdown()
 
