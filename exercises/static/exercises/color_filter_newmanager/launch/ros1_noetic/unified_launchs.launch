@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Common Arguments -->
+    <arg name="world" default="$(eval env('PWD') + '/rescue_people.world')"/>
+    <arg name="solution_file_name" default="$(eval env('PWD') + '/my_solution.py')"/>
+    <arg name="perspective" default="$(find rqt_drone_teleop)/perspectives/drone_teleop_vel_cam.perspective"/>
+    <arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="iris"/>
+    <arg name="ID" value="0"/>
+    <arg name="fcu_url" default="udp://:14540@localhost:14580"/>
+
+
+    <!-- Gazebo Sim -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="false"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="false"/>
+        <arg name="verbose" value="true"/>
+        <arg name="paused" value="false"/>
+        <arg name="headless" value="true"/>
+        <arg name="use_sim_time" value="true"/>
+    </include>
+
+    <!-- MAVROS -->
+    <include file="$(find mavros)/launch/px4.launch">
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="gcs_url" value=""/>
+        <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+        <arg name="tgt_component" value="1"/>
+    </include>
+
+    <!-- Single Vehicle Spawn SDF -->
+    <include file="$(find drone_wrapper)/launch/single_vehicle_spawn_sdf.launch">
+        <arg name="z" value="1.45"/>
+        <arg name="Y" value="1.57"/>
+        <arg name="vehicle" value="$(arg vehicle)"/>
+        <arg name="model" value="iris_dual_cam"/>
+        <arg name="model_name" value="iris"/>
+        <arg name="mavlink_udp_port" value="14560"/>
+        <arg name="mavlink_tcp_port" value="4560"/>
+        <arg name="ID" value="$(arg ID)"/>
+    </include>
+</launch>
+
+
