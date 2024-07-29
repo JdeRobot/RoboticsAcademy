@@ -1,33 +1,41 @@
 import rclpy
-import sys
-import numpy as np  # Unused, consider removing if not needed later
-import cv2  # Unused, consider removing if not needed later
-import threading  # Unused, consider removing if not needed later
-import time  # Unused, consider removing if not needed later
-from datetime import datetime  # Unused, consider removing if not needed later
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+import threading
+import cv2
 
-from interfaces.camera import ListenerCamera
-shared_image = SharedImage("halimage")
-from shared.image import SharedImage
+current_frame = None  # Global variable to store the frame
 
-IMG_WIDTH = 320
-IMG_HEIGHT = 240
+class WebcamSubscriber(Node):
+    def __init__(self):
+        super().__init__('webcam_subscriber')
+        self.subscription = self.create_subscription(
+            Image,
+            '/image_raw',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+        self.bridge = CvBridge()
 
+    def listener_callback(self, msg):
+        global current_frame
+        self.get_logger().info('Receiving video frame')
+        current_frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
-    # Create a node
-node = rclpy.create_node('HAL')
+def run_webcam_node():
+    rclpy.init(args=None)
+    webcam_subscriber = WebcamSubscriber()
 
-    # ROS2 Topics
-camera = ListenerCamera("/v4l2_camera_node/image_raw")
+    rclpy.spin(webcam_subscriber)
+    webcam_subscriber.destroy_node()
+    rclpy.shutdown()
 
-    # Get Image from ROS Driver Camera
+# Start the ROS2 node in a separate thread
+thread = threading.Thread(target=run_webcam_node)
+thread.start()
+
 def getImage():
-    try:
-        rclpy.spin_once(camera)
-        image = camera.getImage().data
-            # print(f"HAL image set, shape: {image.shape}, bytes: {image.nbytes}", flush=True)
-        return image
-    except Exception as e:
-        print(f"Exception in hal getImage {repr(e)}")
-
+    global current_frame
+    return current_frame
 

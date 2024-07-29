@@ -27,7 +27,7 @@ class GUI:
         # ROS2 init
         if not rclpy.ok():
             rclpy.init(args=None)
-	    node = rclpy.create_node('GUI')
+	
 
 	# Image variables
         self.image_to_be_shown = None
