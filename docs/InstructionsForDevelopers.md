@@ -5,6 +5,7 @@
 # Instructions for developers
 - [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4) 
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
+- [How to use nvidia](#How-to-use-nvidia)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [How to update static files version](#How-to-update-static-files-version)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
@@ -69,7 +70,7 @@ nvm use 16
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
-Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_mini_radi.md
+Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a mini radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_mini_radi.md).
 
 ### Using Docker compose
 
@@ -126,7 +127,55 @@ After testing the changes, you can simply commit them from the RA repo. Please k
 ```
 docker-compose down
 ```
-When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution.  
+When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution.
+
+<a name="How-to-use-nvidia"></a>
+## How to use nvidia
+
+When launching the developer script you can use the options `-g` to use the integrated graphics card or `-n` to use the nvidia graphics card. Before you start, make sure you have the [NVIDIA Container Toolkit installed](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+Now we will have to install the nvidia runtime to use it with our docker:
+```bash
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+```
+
+Now we will check if docker recognises nvidia as a new runtime:
+
+```bash
+docker info | grep -i runtime
+```
+
+It will most likely not recognise it, so we will have to do it manually by editing or creating the `/etc/docker/daemon.json` file:
+
+```json
+{
+  "runtimes": {
+    "nvidia": {
+      "path": "nvidia-container-runtime",
+      "runtimeArgs": []
+    }
+  }
+}
+```
+It is also possible that nvidia-runtime is not installed, check and install it if it is not.
+
+```bash
+dpkg -l | grep nvidia-container-runtime
+```
+
+If it is not installed:
+
+```bash
+sudo apt-get install -y nvidia-container-runtime
+```
+
+Now everything should be ready to start using nvidia with our dockers, restart the docker service to update the configuration and check that everything works correctly.
+
+```bash
+sudo systemctl restart docker
+```
+
 
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
