@@ -2,7 +2,7 @@
 
 # Initialize variables with default values
 ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
-branch="humble-devel"
+branch="issue-137"
 radi_version="humble"
 gpu_mode="false"
 compose_file="dev_humble_cpu"
@@ -57,7 +57,7 @@ cd ..
 
 # Prepare the compose file
 if [ "$gpu_mode" = "true" ]; then
-  compose_file="dev_humble_gpu"
+  compose_file="dev_humble_cpu"
 fi
 cp compose_cfg/$compose_file.yaml docker-compose.yaml
 

@@ -191,3 +191,4 @@ start_console()
 
 def showImage(image):
     gui_interface.showImage(image)
+    

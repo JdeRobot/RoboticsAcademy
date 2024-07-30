@@ -24,12 +24,12 @@ class WebcamSubscriber(Node):
         current_frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
 def run_webcam_node():
-    rclpy.init(args=None)
+    
     webcam_subscriber = WebcamSubscriber()
 
     rclpy.spin(webcam_subscriber)
     webcam_subscriber.destroy_node()
-    rclpy.shutdown()
+    
 
 # Start the ROS2 node in a separate thread
 thread = threading.Thread(target=run_webcam_node)
