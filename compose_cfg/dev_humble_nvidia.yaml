@@ -4,9 +4,17 @@ services:
   robotics-academy:
     image: jderobot/robotics-backend:4.6.4
     container_name: developer-container
-    devices:
-      - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/renderD128:/dev/dri/renderD128
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
     ports:
       - "7164:7164"
       - "6080:6080"
