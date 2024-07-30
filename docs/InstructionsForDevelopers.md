@@ -140,9 +140,10 @@ sudo apt-get update
 sudo apt-get install -y nvidia-docker2
 ```
 
-Now we will check if docker recognises nvidia as a new runtime:
+Now we will check if docker recognises nvidia as a new runtime (restarting the docker service to update the new configuration):
 
 ```bash
+sudo systemctl restart docker
 docker info | grep -i runtime
 ```
 
