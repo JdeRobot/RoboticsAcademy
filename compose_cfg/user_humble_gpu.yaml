@@ -2,13 +2,23 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-backend:4.6.4
+    image: jderobot/robotics-backend:4.6.2
     container_name: user_container
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
     devices:
       - /dev/dri/card0:/dev/dri/card0
       - /dev/dri/renderD128:/dev/dri/renderD128
     ports:
       - "7164:7164"
+      - "2303:2303"
+      - "1905:1905"
+      - "8765:8765"
       - "6080:6080"
       - "1108:1108"
       - "7163:7163"
