@@ -8,9 +8,10 @@
     {% react_component exercise/human_detection_newmanager/FollowLineRR %}
 
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-        {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
             {% react_component components/layout_components/MainAppBar exerciseName="Human Detection" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection"%} 
+            {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
             {% end_react_component %}  
+            
             {% react_component components/wrappers/MaterialBox id="content" %}
                 {% react_component components/wrappers/MaterialBox id="content-exercise" %}
                     {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
