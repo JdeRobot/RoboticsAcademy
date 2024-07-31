@@ -17,7 +17,6 @@ class GUI(ThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
-
         self.array = None
         self.array_lock = threading.Lock()
         self.mapXY = None
@@ -42,8 +41,7 @@ class GUI(ThreadingGUI):
             data = eval(message[4:])
             self.mapXY = data
             x, y = self.mapXY
-            worldx, worldy = self.map.gridToWorld(x, y)
-            self.worldXY = [worldx, worldy]
+            self.worldXY = self.map.gridToWorld(x, y)
             print(f"World : {self.worldXY}")
 
     # Prepares and sends a map to the websocket server
@@ -97,15 +95,18 @@ class GUI(ThreadingGUI):
 
     def getTargetPose(self):
         if self.worldXY is not None:
-            return [self.worldXY[1], self.worldXY[0]]
+            return self.worldXY
         else:
             return None
 
     def getMap(self, url):
         return self.map.getMap(url)
     
-    def rowColumn(self, pose):
-        return self.map.rowColumn(pose)
+    def worldToGrid(self, pose):
+        return self.map.worldToGrid(*pose)
+
+    def gridToWorld(self, cell):
+        return self.map.gridToWorld(*cell)
 
     def reset_gui(self):
         """Resets the GUI to its initial state."""
@@ -137,4 +138,11 @@ def getMap(url):
     return gui.getMap(url)
 
 def rowColumn(pose):
-    return gui.rowColumn(pose)
+    # Deprecated. Still alive for backward compatibility.
+    return gui.worldToGrid(pose)
+
+def worldToGrid(pose):
+    return gui.worldToGrid(pose)
+
+def gridToWorld(cell):
+    return gui.gridToWorld(cell)
