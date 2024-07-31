@@ -6,11 +6,13 @@ import matplotlib.pyplot as plt
 
 class Map:
 	def __init__(self, pose3d):
+		# The world scenario is placed on 0,0. It has a size of 500x500
+		# The coordinates of the map are from 0 to 400, being 0,0 the top left corner
 		self.pose3d = pose3d
 		self.worldWidth = 500
 		self.worldHeight = 500
-		self.gridWidth = 450
-		self.gridHeight = 440
+		self.gridWidth = 400
+		self.gridHeight = 400
 		self.grid = np.empty([self.gridWidth, self.gridHeight], float)
 	
 	def RTx(self, angle, tx, ty, tz):
@@ -39,25 +41,19 @@ class Map:
 		return RTz*RTx
 
 	def worldToGrid(self, worldX, worldY):
-		# self.gWidth/self.wWidth is the scale
-		worldX = worldX * self.gridWidth/self.worldWidth
-		worldY = worldY * self.gridHeight/self.worldHeight
-		orig_poses = np.matrix([[worldX], [worldY], [0], [1]])
-		final_poses = self.RTWorldGrid() * orig_poses
-		gridX = int(final_poses.flat[0])
-		gridY = int(final_poses.flat[1])
+		""" Transform a world point to map cell coordinates """
+		gridX = (worldY + self.worldHeight/2) * self.gridHeight / self.worldHeight
+		gridY = (worldX + self.worldWidth/2) * self.gridWidth / self.worldWidth
+		gridX = int(np.clip(gridX, 0, self.gridWidth))
+		gridY = int(np.clip(gridY, 0, self.gridHeight))
 		return (gridX, gridY)
 
 	def gridToWorld(self, gridX, gridY):
-		# self.wWidth/self.gWidth is the scale
-		gridX = gridX / 400
-		gridX = gridX * 500
-		worldX = gridX - 250
-		gridY = gridY / 400
-		gridY = gridY * 500
-		worldY = gridY - 250		
+		""" Transform a map cell to world coordinates """
+		worldX = gridY * self.worldHeight / self.gridHeight - self.worldHeight/2
+		worldY = gridX * self.worldWidth / self.gridWidth - self.worldWidth/2
 		return (worldX, worldY)
-		
+
 	def RTFormula(self):
 		RTz = self.RTz(pi/2, 50, 70, 0)
 		return RTz
@@ -68,26 +64,14 @@ class Map:
 
 	def setGridVal(self, x, y, val):
 		self.grid[y][x] = val
-		
+
 	def getTaxiCoordinates(self):
-		
+		""" Return the taxi pose in map coordinates """
 		pose = self.pose3d()
-		x = pose.x
-		y = pose.y
-		#print("x : {} , y : {}".format(x,y))
-		# Transform from world coordinates to map coordinates
-		# The scenario is placed on 0,0. It has a length of 500x500
-		# The coordinates of the map are from 0 to 400, being 0,0 the top left corner
-		x = x + 250
-		x = x / 500
-		x = x * 400
-		y = y + 250
-		y = y / 500
-		y = y * 400
-		#print("x : {} , y : {}".format(x,y))
-		return y, x
+		return self.worldToGrid(pose.x, pose.y)
 
 	def rowColumn(self, pose):
+		# Deprecated. Use worldToGrid()
 		x = pose[0]
 		y = pose[1]
 		#print("x : {} , y : {}".format(x,y))
