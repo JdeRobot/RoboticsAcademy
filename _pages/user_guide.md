@@ -242,7 +242,23 @@ No data yet.
 
 ### Linux
 
-No data yet.
+SO: Ubuntu 22.04.4 LTS, RAM: 16 GB, CPU: AMD Ryzen 5 7535HS (6 cores), GPU: NVIDIA GeForce RTX 3050 Ti:
+
+
+*(Average Percentages up to 100%)*
+| Task                     | Gazebo’s RTF | Gazebo’s FPS | % CPU Usage | % GPU Usage |
+|:-------------------------:|:------------:|:-----------:|:----------:|:---:|
+| **Follow Line**        | 0.99         | 62          | 62%   | 8% |
+| **Vacuum Cleaner**      | 1.0          | 62          | 52%    | 7% |
+| **AutoParking**         | 0.97         | 37          | 54%   | 14% |
+| **Follow Person**       | 1.0          | 42          | 70%   | 15% |
+| **Localized Vacuum Cleaner**  | 1.0          | 62          | 65%    | 28% |
+| **Global Navegation**   | 1.0          | 62          | 53%   | 6% |
+| **Rescue People**       | 1.0          | 62          | 65%   | 16% |
+| **Obstacle Avoidance**  | 0.99         | 60          | 65%    | 5% |
+| **3D Reconstruction**   | 0.99         | 58          | 66%   | 9% |
+| **Amazon Warehouse**    | 1.0          | 60          | 54%    | 5% |
+| **Montecarlo Laser Localized**    | 1.0          | 62          | 53%    | 16% |
 
 ### Windows
 
