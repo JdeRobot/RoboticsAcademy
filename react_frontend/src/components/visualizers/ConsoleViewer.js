@@ -31,7 +31,7 @@ function VncConsoleViewer() {
           <iframe
             id={"iframe-console"}
             src={
-              "http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true"
+              "http://127.0.0.1:1108/vnc.html?resize=remote&autoconnect=true&reconnect=true"
             }
             style={{
               height: "100%",
