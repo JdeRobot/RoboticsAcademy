@@ -46,13 +46,13 @@ class Map:
 		gridY = (worldX + self.worldWidth/2) * self.gridWidth / self.worldWidth
 		gridX = int(np.clip(gridX, 0, self.gridWidth))
 		gridY = int(np.clip(gridY, 0, self.gridHeight))
-		return [gridX, gridY]
+		return (gridX, gridY)
 
 	def gridToWorld(self, gridX, gridY):
 		""" Transform a map cell to world coordinates """
 		worldX = gridY * self.worldHeight / self.gridHeight - self.worldHeight/2
 		worldY = gridX * self.worldWidth / self.gridWidth - self.worldWidth/2
-		return [worldX, worldY]
+		return (worldX, worldY)
 
 	def RTFormula(self):
 		RTz = self.RTz(pi/2, 50, 70, 0)
@@ -64,14 +64,14 @@ class Map:
 
 	def setGridVal(self, x, y, val):
 		self.grid[y][x] = val
-		
+
 	def getTaxiCoordinates(self):
 		""" Return the taxi pose in map coordinates """
 		pose = self.pose3d()
-		return worldToGrid(pose.x, pose.y)
+		return self.worldToGrid(pose.x, pose.y)
 
 	def rowColumn(self, pose):
-		# Deprecated. Use gridToWorld()
+		# Deprecated. Use worldToGrid()
 		x = pose[0]
 		y = pose[1]
 		#print("x : {} , y : {}".format(x,y))

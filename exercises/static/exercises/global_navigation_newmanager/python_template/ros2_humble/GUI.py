@@ -139,7 +139,7 @@ def getMap(url):
 
 def rowColumn(pose):
     # Deprecated. Still alive for backward compatibility.
-    return gui.worldToGrid(pose)
+    return list(gui.worldToGrid(pose))
 
 def worldToGrid(pose):
     return gui.worldToGrid(pose)
