@@ -2,11 +2,13 @@ import rclpy
 import threading
 import time
 import websocket
+import multiprocessing
 from src.manager.ram_logging.log_manager import LogManager
 
-class ProcessingGUI:
+class ProcessingGUI(multiprocessing.Process):
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
+        super(ProcessingGUI, self).__init__()
 
         # ROS 2 init
         if not rclpy.ok():
@@ -26,7 +28,7 @@ class ProcessingGUI:
         self.host = host
         self.node = rclpy.create_node("node")
     
-    def start(self):
+    def start_threads(self):
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()
 
