@@ -63,8 +63,8 @@ class ProcessingGUI(multiprocessing.Process):
             with self.ack_lock:
                 if self.ack:
                     self.update_gui()
-                    if self.ack_frontend: 
-                        self.ack = False
+                    self.ack = False
+                    # if self.ack_frontend: 
 
             # Maintain desired frequency
             elapsed = time.time() - start_time
