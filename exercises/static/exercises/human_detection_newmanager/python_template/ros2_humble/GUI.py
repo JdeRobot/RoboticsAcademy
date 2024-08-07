@@ -12,12 +12,8 @@ import websocket
 import subprocess
 import logging
 
-from interfaces.pose3d import ListenerPose3d
-from shared.value import SharedValue
+from hal_interfaces.general.odometry import OdometryNode
 from console import start_console
-
-from lap import Lap
-from map import Map
 
 
 # Graphical User Interface Class
@@ -26,33 +22,28 @@ class GUI:
     # The actual initialization
     def __init__(self, host):
 
-        self.payload = {'image': '','lap': '', 'map': '', 'v':'','w':''}
+        self.payload = {'image': '', 'shape': []}
         
         # ROS2 init
-        rclpy.init(args=None)
-        node = rclpy.create_node('GUI')
+        if not rclpy.ok():
+            rclpy.init(args=None)
+	
 
-        # Circuit
-        self.circuit = "simple"
-        
-        # Get HAL variables
-        self.shared_v = SharedValue("velocity")
-        self.shared_w = SharedValue("angular")
-
+	# Image variables
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
-
         self.host = host
         self.client = None
+
+  
 
         self.ack = False
         self.ack_lock = threading.Lock()
         
         # Create the lap object
-        pose3d_object = ListenerPose3d("/odom")
-        self.lap = Lap(pose3d_object)
-        self.map = Map(pose3d_object, self.circuit)
+        # TODO: maybe move this to HAL and have it be hybrid
+       
 
         self.client_thread = threading.Thread(target=self.run_websocket)
         self.client_thread.start()
@@ -82,7 +73,6 @@ class GUI:
 
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-
         with self.image_show_lock:
             self.image_to_be_shown_updated = False
 
@@ -101,23 +91,6 @@ class GUI:
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
         
-        # Payload Lap Message
-        lapped = self.lap.check_threshold()
-        self.payload["lap"] = ""
-        if(lapped != None):
-            self.payload["lap"] = str(lapped)
-            
-        # Payload Map Message
-        pos_message = str(self.map.getFormulaCoordinates())
-        self.payload["map"] = pos_message
-
-        # Payload V Message
-        v_message = str(self.shared_v.get())
-        self.payload["v"] = v_message
-
-        # Payload W Message
-        w_message = str(self.shared_w.get())
-        self.payload["w"] = w_message
         
         message = json.dumps(self.payload)
         if self.client:
@@ -154,30 +127,17 @@ class ThreadGUI:
         self.gui = gui
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {'brain': '', 'gui': ''}
         self.iteration_counter = 0
         self.running = True
 
     def start(self):
         """Starts the GUI, frequency measurement, and real-time factor threads."""
         self.frequency_thread = threading.Thread(target=self.measure_and_send_frequency)
-        self.gui_thread = threading.Thread(target=self.run)
-        self.rtf_thread = threading.Thread(target=self.get_real_time_factor)
+        self.gui_thread = threading.Thread(target=self.run)   
         self.frequency_thread.start()
         self.gui_thread.start()
-        self.rtf_thread.start()
         print("GUI Thread Started!")
-
-    def get_real_time_factor(self):
-        """Continuously calculates the real-time factor."""
-        while True:
-            time.sleep(2)
-            args = ["gz", "stats", "-p"]
-            stats_process = subprocess.Popen(args, stdout=subprocess.PIPE)
-            with stats_process.stdout:
-                for line in iter(stats_process.stdout.readline, b''):
-                    stats_list = [x.strip() for x in line.split(b',')]
-                    self.real_time_factor = stats_list[0].decode("utf-8")
 
     def measure_and_send_frequency(self):
         """Measures and sends the frequency of GUI updates and brain cycles."""
@@ -193,7 +153,7 @@ class ThreadGUI:
             self.iteration_counter = 0
             brain_frequency = round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
             gui_frequency = round(1000 / self.ideal_cycle, 1)
-            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf': self.real_time_factor}
+            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency}
             message = json.dumps(self.frequency_message)
             if self.gui.client:
                 try:
@@ -229,3 +189,4 @@ start_console()
 
 def showImage(image):
     gui_interface.showImage(image)
+    
