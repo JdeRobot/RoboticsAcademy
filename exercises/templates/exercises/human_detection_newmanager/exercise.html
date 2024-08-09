@@ -1,0 +1,46 @@
+{% extends "react_frontend/exercise_base.html" %}
+{% load react_component %}
+
+{% block exercise_header %}
+{% endblock %}
+
+{% block react-content %}
+    {% react_component exercise/human_detection_newmanager/FollowLineRR %}
+
+        {% react_component components/wrappers/MaterialBox id="exercise-container" %}
+            {% if deployment %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Human Detection" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection"%} 
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
+                {% end_react_component %}
+            {% else %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Human Detection" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection""%} 
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
+                {% end_react_component %} 
+            {% endif %}  
+            {% react_component components/wrappers/MaterialBox id="content" %}
+                {% react_component components/wrappers/MaterialBox id="content-exercise" %}
+                    {% if deployment %}
+                        {% react_component components/layout_components/ExerciseControlExtra %}{% end_react_component %}
+                    {% else %}
+                        {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                    {% endif %}
+                    {% react_component components/wrappers/FlexContainer row %}
+                    {% react_component components/wrappers/FlexContainer console %} 
+                        {% if deployment %}
+                            {% react_component components/editors/AceEditorRobotExtra %}{% end_react_component %}
+                        {% else %}
+                            {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
+                        {% endif %}
+                        {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
+                        {% end_react_component%}
+                        {% react_component components/wrappers/FlexContainer%} 
+                            {% react_component exercise/human_detection_newmanager/SpecificFollowLine %}{% end_react_component %}                            
+                        {% end_react_component %}                                               
+                {% end_react_component %}
+            {% end_react_component %}
+        {% react_component components/message_system/Loading %}{% end_react_component %}
+        {% react_component components/message_system/Alert %}{% end_react_component %}
+{% end_react_component %}
+{% end_react_component %}
+    {% end_react_component %}
+{% endblock %}
