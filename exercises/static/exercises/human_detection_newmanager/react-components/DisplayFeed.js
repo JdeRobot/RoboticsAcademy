@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Box } from "@mui/material";
 import "./css/GUICanvas.css";
-import { drawImage } from "./helpers/showImagesFollowLine";
+import { drawImage } from "./helpers/showImages";
 
 
-const SpecificFollowLine = (props) => {
+const DisplayFeed = (props) => {
   const [image, setImage] = React.useState(null)
   const canvasRef = React.useRef(null)
 
@@ -45,9 +45,9 @@ const SpecificFollowLine = (props) => {
   );
 };
 
-SpecificFollowLine.defaultProps = {
+DisplayFeed.defaultProps = {
   width: 800,
   height: 600,
 };
 
-export default SpecificFollowLine
+export default DisplayFeed
