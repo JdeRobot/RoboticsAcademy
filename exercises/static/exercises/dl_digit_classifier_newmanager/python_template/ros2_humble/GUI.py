@@ -13,7 +13,6 @@ import subprocess
 import logging
 
 from hal_interfaces.general.odometry import OdometryNode
-from console import start_console
 
 
 # Graphical User Interface Class
@@ -183,9 +182,6 @@ gui_interface = GUI(host)
 # Spin a thread to keep the interface updated
 thread_gui = ThreadGUI(gui_interface)
 thread_gui.start()
-
-# Redirect the console
-start_console()
 
 def showImage(image):
     gui_interface.showImage(image)
