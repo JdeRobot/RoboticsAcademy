@@ -13,6 +13,7 @@ import subprocess
 import logging
 
 from hal_interfaces.general.odometry import OdometryNode
+from console_interfaces.general.console import start_console
 
 
 # Graphical User Interface Class
@@ -178,6 +179,8 @@ class ThreadGUI:
 # Create a GUI interface
 host = "ws://127.0.0.1:2303"
 gui_interface = GUI(host)
+
+start_console()
 
 # Spin a thread to keep the interface updated
 thread_gui = ThreadGUI(gui_interface)
