@@ -17,6 +17,8 @@ VisualizationType = (
     ('console', "Console"),
     ('gazebo_gra', "Gazebo GRA"),
     ('gazebo_rae', "Gazebo RAE"),
+    ('gzsim_gra', "Gz Sim GRA"),
+    ('gzsim_rae', "Gz Sim RAE"),
     ('physic_gra', "Physic GRA"),
     ('physic_rae', "Physic RAE")
 )
@@ -25,6 +27,7 @@ WorldType = (
     ('none', "None"),
     ('gazebo', "Gazebo"),
     ('drones', "Gazebo Drones"),
+    ('gzsimdrones', "Gz Sim Drones"),
     ('physical', "Physical")
 )
 
