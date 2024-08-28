@@ -1,9 +1,9 @@
 import * as React from "react";
 import {Fragment} from "react";
 
-import "./css/DigClassRR.css";
+import "./css/HumanDetectionRR.css";
 
-const FollowLineRR = (props) => {
+const HumanDetectionRR = (props) => {
   return (
     <Fragment>
     {props.children}
@@ -11,4 +11,4 @@ const FollowLineRR = (props) => {
   );
 };
 
-export default FollowLineRR;
+export default HumanDetectionRR;
