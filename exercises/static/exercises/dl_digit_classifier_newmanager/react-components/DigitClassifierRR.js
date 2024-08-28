@@ -1,9 +1,9 @@
 import * as React from "react";
 import {Fragment} from "react";
 
-import "./css/DigClassMain.css";
+import "./css/DigitClassifierRR.css";
 
-const DigClassMain = (props) => {
+const DigitClassifierRR = (props) => {
   return (
     <Fragment>
     {props.children}
@@ -11,4 +11,4 @@ const DigClassMain = (props) => {
   );
 };
 
-export default DigClassMain;
+export default DigitClassifierRR;
