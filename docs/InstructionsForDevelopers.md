@@ -181,8 +181,15 @@ sudo systemctl restart docker
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
 To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
-- ```python_template/ros_version```: used for the python templates needed to compose the user code
+- ```python_template/ros2_humble```: used for the python templates needed to compose the user code
 - ```react-components```: exercise specific react components
+
+There are a three python packages to help the development of a new exercise:
+- [Gui Interfaces][./common/gui_interfaces/README.md]: provides with various base GUI's for easy development
+- [Hal Interfaces][./common/hal_interfaces/README.md]: provides the hardware abstraction layer for various components
+- [Console Interfaces][./common/console_interfaces/README.md]: provides control of the console
+
+For knowing how to use each package, please follow the links in the list above.
 
 Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
 1)  Run ```python3.8 manage.py runserver```.
