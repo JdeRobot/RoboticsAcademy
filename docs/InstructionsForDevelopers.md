@@ -181,7 +181,7 @@ sudo systemctl restart docker
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
 To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
-- ```python_template/ros2_humble```: used for the python templates needed to compose the user code
+- ```python_template/ros_version```: used for the python templates needed to compose the user code
 - ```react-components```: exercise specific react components
 
 There are a three python packages to help the development of a new exercise:
