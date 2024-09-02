@@ -185,8 +185,8 @@ To include a new exercise, add the folder with the exercise contents in exercise
 - ```react-components```: exercise specific react components
 
 There are a three python packages to help the development of a new exercise:
-- [Gui Interfaces][./common/gui_interfaces/README.md]: provides with various base GUI's for easy development
 - [Hal Interfaces][./common/hal_interfaces/README.md]: provides the hardware abstraction layer for various components
+- [Gui Interfaces][./common/gui_interfaces/README.md]: provides with various base GUI's for easy development
 - [Console Interfaces][./common/console_interfaces/README.md]: provides control of the console
 
 For knowing how to use each package, please follow the links in the list above.

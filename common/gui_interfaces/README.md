@@ -1,6 +1,6 @@
 # Gui Interfaces
 
-Gui interfaces is a python package that provides the hardware abstarction layer for the various sensors and actuators used in the exercises of Robotics Academy.
+Gui interfaces is a python package that provides with base GUI classes to be inherited in the GUI of the exercises in Robotics Academy.
 
 - [How to use](#How-to-use)
 - [How to add interfaces](#How-to-add-interfaces)

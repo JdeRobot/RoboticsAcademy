@@ -1,6 +1,6 @@
 # Console Interfaces
 
-Console interfaces is a python package that provides the hardware abstarction layer for the various sensors and actuators used in the exercises of Robotics Academy.
+Console interfaces is a python package that provides functions that are used in the exercises of Robotics Academy to manage the console.
 
 - [How to use](#How-to-use)
 - [How to add interfaces](#How-to-add-interfaces)

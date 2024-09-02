@@ -1,6 +1,6 @@
 # Hal Interfaces
 
-Hal interfaces is a python package that provides the hardware abstarction layer for the various sensors and actuators used in the exercises of Robotics Academy.
+Hal interfaces is a python package that provides the hardware abstraction layer for the various sensors and actuators used in the exercises of Robotics Academy.
 
 - [How to use](#How-to-use)
 - [How to add interfaces](#How-to-add-interfaces)
