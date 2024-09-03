@@ -82,10 +82,14 @@ The solution can integrate one or more of the following levels of difficulty, as
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
-* `GUI.getNextTarget()` - to obtain the next target on the scenario.
+* `GUI.getNextTarget()` - to obtain the next target object on the scenario.
 * `GUI.setTargetx` - sets the x coordinate of the target on the GUI.
 * `GUI.setTargety` - sets the y coordinate of the target on the GUI.
 * `GUI.showForces` - shows the forces being appliend on the car in real time.
+
+To access the target 'x' and 'y' coordinates use (target is the object obtained from GUI.getNextTarget):
+* `target.getPose().x` - to obtain the x position of the target
+* `target.getPose().y` - to obtain the y position of the target
 
 **Own API**
 
