@@ -4,7 +4,13 @@ import time
 import websocket
 from src.manager.ram_logging.log_manager import LogManager
 
+
 class ThreadingGUI:
+    """ GUI interface using threading:
+        
+        self.start() needs to be called at the end of the init method\n
+        The update_gui(self) method needs to be implemented
+    """
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
@@ -51,6 +57,12 @@ class ThreadingGUI:
                 self.ack_frontend = True
         else:
             LogManager.logger.error("Unsupported msg")
+    
+    def update_gui(self):
+        """Prepares the data and calls the following method at the end to send it:\n
+            · send_to_client(data)
+        """
+        pass
 
     # Process outcoming messages from the GUI
     def gui_out_thread(self):
