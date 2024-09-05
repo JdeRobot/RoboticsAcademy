@@ -25,11 +25,6 @@ export function drawImage(data) {
         if (data.lapTime) {
             drawLapTime(context, data.lapTime);
         }
-
-        // Not implemented
-        if (data.progress) {
-            drawProgressBar(context, data.progress);
-        }
     }
 
     // Parse the Image Data

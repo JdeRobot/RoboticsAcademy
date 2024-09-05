@@ -1,35 +1,32 @@
-import * as React from "react";
+import React, { useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import "./css/GUICanvas.css";
-import { drawImage } from "./helpers/showImagesFollowLine";
+import UpdateView from "./visualizers/UpdateView";
 
 const SpecificFollowLine = (props) => {
-  const canvasRef = React.useRef(null);
+  const canvasRef = useRef(null);
+  const updateRef = useRef({});
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
     const callback = (message) => {
       const updateData = message.data.update;
 
-      if (updateData.image) {
-        console.log('Received image data');
+      if (updateData) {
+        console.log('Received update data');
 
-        // Verify data, progress now unavaible
-        const imageData = {
+        // Update
+        updateRef.current = {
           image: updateData.image,
           lapTime: updateData.lap,
-          progress: updateData.progress
         };
 
-        drawImage(imageData);
+        // ACK
+        window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
       }
-
-      // ACK
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
-    // Update
     window.RoboticsExerciseComponents.commsManager.subscribe(
       [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
@@ -46,11 +43,11 @@ const SpecificFollowLine = (props) => {
 
   return (
     <Box sx={{ height: "100%" }}>
-      <canvas
-        ref={canvasRef}
-        className={"exercise-canvas"}
-        id="canvas"
-      ></canvas>
+      <UpdateView
+        updateRef={updateRef}
+        width={props.width}
+        height={props.height}
+      />
     </Box>
   );
 };
