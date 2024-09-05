@@ -65,8 +65,8 @@ cd /RoboticsAcademy
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 16
-nvm use 16
+nvm install 17
+nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
@@ -100,8 +100,8 @@ For the moment, the RAM folder MUST be called src, and the previous command take
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 16
-nvm use 16
+nvm install 17
+nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
