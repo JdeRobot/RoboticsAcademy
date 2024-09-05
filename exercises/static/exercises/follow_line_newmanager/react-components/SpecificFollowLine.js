@@ -3,33 +3,40 @@ import { Box } from "@mui/material";
 import "./css/GUICanvas.css";
 import { drawImage } from "./helpers/showImagesFollowLine";
 
-
 const SpecificFollowLine = (props) => {
-  const [image, setImage] = React.useState(null)
-  const canvasRef = React.useRef(null)
+  const canvasRef = React.useRef(null);
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
+
     const callback = (message) => {
-      if(message.data.update.image){
-        console.log('image')
-        const image = JSON.parse(message.data.update.image)
-        if(image.image){
-          drawImage(message.data.update)
-        } 
+      const updateData = message.data.update;
+
+      if (updateData.image) {
+        console.log('Received image data');
+
+        // Verify data, progress now unavaible
+        const imageData = {
+          image: updateData.image,
+          lapTime: updateData.lap,
+          progress: updateData.progress
+        };
+
+        drawImage(imageData);
       }
-      
-      // Send the ACK of the msg
+
+      // ACK
       window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
+    // Update
     window.RoboticsExerciseComponents.commsManager.subscribe(
       [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
     );
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      console.log("TestShowScreen unsubscribing from ['update'] events");
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
         [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
         callback
@@ -53,4 +60,4 @@ SpecificFollowLine.defaultProps = {
   height: 600,
 };
 
-export default SpecificFollowLine
+export default SpecificFollowLine;
