@@ -55,8 +55,7 @@ const UpdateView = (props) => {
       if (message.data.state === "application_running") {
         rendererRef.current.run();
       } else if (message.data.state === "visualization_ready") {
-        const mapSelected = message.data.mapSelected || "Default";
-        switch (mapSelected) {
+        switch (context.mapSelected) {
           case "Default":
           case "Default Ackermann":
             setCircuit(defaultCircuit);
