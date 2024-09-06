@@ -81,7 +81,6 @@ const SpecificFollowLine = (props) => {
         lapFinishedTime = null;
         laps = [];
         resetProgress()
-        setProgress(0)
         setCarPose(null)
         setLapTime(null)
         switch (context.mapSelected) {
