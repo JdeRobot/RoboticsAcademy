@@ -87,23 +87,23 @@ const SpecificFollowLine = (props) => {
         setCarPose(null)
         setLapTime(null)
         switch (context.mapSelected) {
-          case "Default":
-          case "follow_line_default_ros2":
+          case "Simple":
+          case "Simple Ackermann":
             circuitName = "simple";
             setCircuitImg(defaultCircuit);
             break;
           case "Montmelo":
-          case "follow_line_montmelo_ros2":
+          case "Montmelo Ackermann":
             circuitName = "montmelo";
             setCircuitImg(montmeloCircuit);
             break;
           case "Montreal":
-          case "follow_line_montreal_ros2":
+          case "Montreal Ackermann":
             circuitName = "montreal";
             setCircuitImg(montrealCircuit);
             break;
           case "Nürburgring":
-          case "follow_line_nurburgring_ros2":
+          case "Nürburgring Ackermann":
             circuitName = "nürburgring";
             setCircuitImg(ngbCircuit);
             break;
