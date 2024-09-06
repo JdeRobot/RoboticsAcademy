@@ -25,34 +25,6 @@
   color: red;
 }
 
-#progress-bar {
-  width: auto;
-  height: 20px;
-  bottom: 10px;
-  right: 30px;
-  left: 30px;
-  border: 1px solid white;
-  border-radius: 15px;
-  background: white !important;
-  overflow: hidden;
-}
-
-#progress-content {
-  height: 20px;
-  transition: width 3s ease;
-  background-color: rgb(255, 167, 38);
-}
-
-#progress-label {
-  color: black;
-  position: absolute;
-  top: -2px;
-  height: 20px;
-  width: 100%;
-  align-content: center;
-  text-align: center;
-}
-
 #circuit-aerial {
   width: 300px;
   height: 150px;
