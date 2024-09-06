@@ -27,7 +27,7 @@
 
 #progress-bar {
   width: auto;
-  height: 30px;
+  height: 20px;
   bottom: 30px;
   right: 30px;
   left: 30px;
@@ -38,7 +38,7 @@
 }
 
 #progress-content {
-  height: 30px;
+  height: 20px;
   transition: width 3s ease;
   background-color: rgb(255, 167, 38);
 }
@@ -46,8 +46,8 @@
 #progress-label {
   color: black;
   position: absolute;
-  top: 0;
-  height: 30px;
+  top: -2px;
+  height: 20px;
   width: 100%;
   align-content: center;
   text-align: center;

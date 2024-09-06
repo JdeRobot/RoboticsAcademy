@@ -6,6 +6,7 @@ import rclpy
 from gui_interfaces.general.threading_gui import ThreadingGUI
 from console_interfaces.general.console import start_console
 from hal_interfaces.general.odometry import OdometryNode
+from src.manager.ram_logging.log_manager import LogManager
 from lap import Lap
 from map import Map
 
@@ -34,6 +35,19 @@ class GUI(ThreadingGUI):
 
         self.start()
 
+    # Process incoming messages to the GUI
+    def gui_in_thread(self, ws, message):
+
+        # In this case, incoming msgs can only be acks
+        if "ack" in message:
+            with self.ack_lock:
+                self.ack = True
+                self.ack_frontend = True
+        elif "circuit" in message:
+            self.circuit = message.replace("circuit","")
+        else:
+            LogManager.logger.error("Unsupported msg")
+
     # Prepares and sends a map to the websocket server
     def update_gui(self):
 
@@ -47,7 +61,7 @@ class GUI(ThreadingGUI):
             self.payload["lap"] = str(lapped)
             
         # Payload Map Message
-        pos_message = str(self.map.getFormulaCoordinates())
+        pos_message = str(self.map.getFormulaCoordinates(self.circuit))
         self.payload["map"] = pos_message
         
         message = json.dumps(self.payload)

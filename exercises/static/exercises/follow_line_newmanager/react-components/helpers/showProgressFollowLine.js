@@ -57,3 +57,7 @@ export const getProgress = (world, position) => {
     return progress_bar;
   }
 };
+
+export const resetProgress = () => {
+  n = 0;
+}

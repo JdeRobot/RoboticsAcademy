@@ -2,7 +2,7 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import "./css/GUICanvas.css";
 import { drawImage } from "./helpers/showImagesFollowLine";
-import { getProgress } from "./helpers/showProgressFollowLine";
+import { getProgress, resetProgress } from "./helpers/showProgressFollowLine";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
 
 import defaultCircuit from "../resources/images/default_circuit.png";
@@ -31,9 +31,13 @@ const SpecificFollowLine = (props) => {
         if(image.image){
           drawImage(message.data.update)
         }
-        setLapTime(message.data.update.lap)
-        setProgress(getProgress(circuitName, message.data.update.map))
-        setCarPose(getCarPose(message.data.update.map))
+        try {
+          setLapTime(message.data.update.lap)
+          setProgress(getProgress(circuitName, message.data.update.map))
+          setCarPose(getCarPose(message.data.update.map))
+        } catch (error) {
+          
+        }
       }
       
       // Send the ACK of the msg
@@ -57,10 +61,13 @@ const SpecificFollowLine = (props) => {
   React.useEffect(() => {
     const callback = (message) => {
       console.log(message)
-      // if (message.data.state === "application_running") {
-      //   rendererRef.current.run();
-      // }
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "application_running") {
+        window.RoboticsExerciseComponents.commsManager.send("gui", `circuit${circuitName}`);
+      } else if (message.data.state === "visualization_ready") {
+        resetProgress()
+        setProgress(0)
+        setCarPose(null)
+        setLapTime(null)
         switch (context.mapSelected) {
           case "Default":
           case "follow_line_default_ros2":

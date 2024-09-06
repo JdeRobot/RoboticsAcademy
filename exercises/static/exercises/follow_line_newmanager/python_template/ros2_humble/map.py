@@ -31,26 +31,26 @@ class Map:
 		RTz = self.RTz(pi/2, 50, 70, 0)
 		return RTz
 		
-	def getFormulaCoordinates(self):
+	def getFormulaCoordinates(self, circuit):
 		
 		pose = self.pose3d.getPose3d()
 		x = pose.x
 		y = pose.y
 		
-		if self.circuit == "simple":
+		if circuit == "simple":
 			# Default
 			scale_y = 1.25; offset_y = 77
 			scale_x = -2.6; offset_x = 151
-		elif self.circuit == "montmelo":
+		elif circuit == "montmelo":
 			# Montmelo
 			scale_y = 2.1; offset_y = 77
 			scale_x = -1.3; offset_x = 151
-		elif self.circuit == "montreal":
+		elif circuit == "montreal":
 			# Montreal
 			#scale_y = 0.6; offset_y = 76
 			scale_y = 0.685; offset_y = 77
 			scale_x = -0.48; offset_x = 151
-		elif self.circuit == "nürburgring":
+		elif circuit == "nürburgring":
 			scale_y = 1.5; offset_y = 77
 			scale_x = -1.495; offset_x = 151
 		
