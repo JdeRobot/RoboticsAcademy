@@ -4,6 +4,7 @@ import "./css/GUICanvas.css";
 import { drawImage } from "./helpers/showImagesFollowLine";
 import { getProgress, resetProgress } from "./helpers/showProgressFollowLine";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
+import { displayLapTime } from "./helpers/showLapTimeFollowLine";
 
 import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
@@ -18,7 +19,6 @@ const SpecificFollowLine = (props) => {
   const [lapTime, setLapTime] = React.useState(null)
   const [carPose, setCarPose] = React.useState(null)
   const [circuitImg, setCircuitImg] = React.useState(defaultCircuit);
-  // const [circuitName, setCircuitName] = React.useState("simple");
   const canvasRef = React.useRef(null)
   var circuitName = "simple";
 
@@ -32,9 +32,10 @@ const SpecificFollowLine = (props) => {
           drawImage(message.data.update)
         }
         try {
-          setLapTime(message.data.update.lap)
-          setProgress(getProgress(circuitName, message.data.update.map))
-          setCarPose(getCarPose(message.data.update.map))
+          const pose = getCarPose(circuitName, message.data.update.map)
+          setLapTime(displayLapTime(circuitName, pose, message.data.update.lap))
+          setProgress(getProgress(circuitName, pose))
+          setCarPose(pose)
         } catch (error) {
           
         }
@@ -62,7 +63,9 @@ const SpecificFollowLine = (props) => {
     const callback = (message) => {
       console.log(message)
       if (message.data.state === "application_running") {
-        window.RoboticsExerciseComponents.commsManager.send("gui", `circuit${circuitName}`);
+        window.RoboticsExerciseComponents.commsManager.send("gui", "start");
+      } else if (message.data.state === "paused") {
+        window.RoboticsExerciseComponents.commsManager.send("gui", "pause");
       } else if (message.data.state === "visualization_ready") {
         resetProgress()
         setProgress(0)

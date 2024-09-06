@@ -8,7 +8,6 @@ from console_interfaces.general.console import start_console
 from hal_interfaces.general.odometry import OdometryNode
 from src.manager.ram_logging.log_manager import LogManager
 from lap import Lap
-from map import Map
 
 # Graphical User Interface Class
 
@@ -23,15 +22,13 @@ class GUI(ThreadingGUI):
 
         # Payload vars
         self.payload = {'image': '','lap': '', 'map': ''}
-        self.circuit = "simple"
         # TODO: maybe move this to HAL and have it be hybrid
-        pose3d_object = OdometryNode("/odom")
+        self.pose3d_object = OdometryNode("/odom")
         executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(pose3d_object)
+        executor.add_node(self.pose3d_object)
         executor_thread = threading.Thread(target=executor.spin, daemon=True)
         executor_thread.start()
-        self.lap = Lap(pose3d_object)
-        self.map = Map(pose3d_object, self.circuit)
+        self.lap = Lap(self.pose3d_object)
 
         self.start()
 
@@ -43,8 +40,10 @@ class GUI(ThreadingGUI):
             with self.ack_lock:
                 self.ack = True
                 self.ack_frontend = True
-        elif "circuit" in message:
-            self.circuit = message.replace("circuit","")
+        elif "start" in message:
+            self.lap.unpause()
+        elif "pause" in message:
+            self.lap.pause()
         else:
             LogManager.logger.error("Unsupported msg")
 
@@ -61,7 +60,8 @@ class GUI(ThreadingGUI):
             self.payload["lap"] = str(lapped)
             
         # Payload Map Message
-        pos_message = str(self.map.getFormulaCoordinates(self.circuit))
+        pose = self.pose3d_object.getPose3d()
+        pos_message = str((pose.x,pose.y))
         self.payload["map"] = pos_message
         
         message = json.dumps(self.payload)

@@ -5,13 +5,8 @@ let n = 0
 export const getProgress = (world, position) => {
   let checkpoints = CIRCUITS_CHECKPOINTS[world];
 
-  let pose = position.substring( 1, position.length - 1);
-  let pos = pose.split(",").map(function (item) {
-    return parseFloat(item);
-  });
-
-  var x = Math.round(pos[0]);
-  var y = Math.round(pos[1]);
+  var x = Math.round(position[0]);
+  var y = Math.round(position[1]);
 
   var d = Math.sqrt(
     Math.pow(checkpoints[n][1] - x, 2) + Math.pow(checkpoints[n][2] - y, 2)
