@@ -71,4 +71,5 @@
   height: 5px;
   border-radius: 5px;
   background-color: red;
+  transition: all 0.1s ease-out
 }

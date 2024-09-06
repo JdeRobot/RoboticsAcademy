@@ -4,7 +4,7 @@ import "./css/GUICanvas.css";
 import { drawImage } from "./helpers/showImagesFollowLine";
 import { getProgress, resetProgress } from "./helpers/showProgressFollowLine";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
-import { displayLapTime } from "./helpers/showLapTimeFollowLine";
+import { displayLapTime, isLapFinished, isInTimeoutLap, addLap } from "./helpers/showLapTimeFollowLine";
 
 import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
@@ -21,6 +21,8 @@ const SpecificFollowLine = (props) => {
   const [circuitImg, setCircuitImg] = React.useState(defaultCircuit);
   const canvasRef = React.useRef(null)
   var circuitName = "simple";
+  var lapFinishedTime = null;
+  var laps = [];
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -33,7 +35,18 @@ const SpecificFollowLine = (props) => {
         }
         try {
           const pose = getCarPose(circuitName, message.data.update.map)
-          setLapTime(displayLapTime(circuitName, pose, message.data.update.lap))
+
+          if (isLapFinished(circuitName, pose) && !isInTimeoutLap(lapFinishedTime, 6)) {
+            lapFinishedTime = Date.now()
+            laps.push(addLap(laps, message.data.update.lap))
+            resetProgress()
+            console.log(laps)
+          }
+
+          if (!isInTimeoutLap(lapFinishedTime, 6)) {
+            setLapTime(displayLapTime(message.data.update.lap))
+          }
+
           setProgress(getProgress(circuitName, pose))
           setCarPose(pose)
         } catch (error) {
@@ -67,6 +80,8 @@ const SpecificFollowLine = (props) => {
       } else if (message.data.state === "paused") {
         window.RoboticsExerciseComponents.commsManager.send("gui", "pause");
       } else if (message.data.state === "visualization_ready") {
+        lapFinishedTime = null;
+        laps = [];
         resetProgress()
         setProgress(0)
         setCarPose(null)
