@@ -2,7 +2,6 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import "./css/GUICanvas.css";
 import { drawImage } from "./helpers/showImagesFollowLine";
-import { getProgress, resetProgress } from "./helpers/showProgressFollowLine";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
 import { displayLapTime, isLapFinished, isInTimeoutLap, addLap } from "./helpers/showLapTimeFollowLine";
 
@@ -27,7 +26,6 @@ const SpecificFollowLine = (props) => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
       if(message.data.update.image){
-        console.log(message.data.update)
         const image = JSON.parse(message.data.update.image)
         if(image.image){
           drawImage(message.data.update)
@@ -38,7 +36,6 @@ const SpecificFollowLine = (props) => {
           if (isLapFinished(circuitName, pose) && !isInTimeoutLap(lapFinishedTime, 6)) {
             lapFinishedTime = Date.now()
             laps.push(addLap(laps, message.data.update.lap))
-            resetProgress()
             console.log(laps)
           }
 
@@ -80,7 +77,6 @@ const SpecificFollowLine = (props) => {
       } else if (message.data.state === "visualization_ready") {
         lapFinishedTime = null;
         laps = [];
-        resetProgress()
         setCarPose(null)
         setLapTime(null)
         switch (context.mapSelected) {

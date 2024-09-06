@@ -28,7 +28,7 @@ const SpecificFollowLine = (props) => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
       if(message.data.update.image){
-        console.log(message.data.update)
+        // console.log(message.data.update)
         const image = JSON.parse(message.data.update.image)
         if(image.image){
           drawImage(message.data.update)
