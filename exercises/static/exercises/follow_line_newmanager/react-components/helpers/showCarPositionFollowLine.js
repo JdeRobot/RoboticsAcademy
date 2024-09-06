@@ -1,5 +1,5 @@
-const scaleX = 0.2;
-const scaleY = 0.2;
+const scaleX = 1;
+const scaleY = 1;
 
 export const getCarPose = (position) => {
   let pose = position.substring( 1, position.length - 1);
@@ -7,8 +7,8 @@ export const getCarPose = (position) => {
     return parseFloat(item);
   });
 
-  var x = 16 + Math.round(pos[0]) * scaleX;
-  var y = 16 + Math.round(pos[1]) * scaleY;
+  var x = Math.round(pos[0]) * scaleX;
+  var y = Math.round(pos[1]) * scaleY;
 
   return [x,y];
 };

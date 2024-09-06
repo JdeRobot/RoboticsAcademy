@@ -6,12 +6,21 @@ import { getProgress } from "./helpers/showProgressFollowLine";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
 
 import defaultCircuit from "../resources/images/default_circuit.png";
+import montmeloCircuit from "../resources/images/montmelo_circuit.png";
+import montrealCircuit from "../resources/images/montreal_circuit.png";
+import ngbCircuit from "../resources/images/ngb_circuit.png";
+
+const width = 1280;
+const height = 720;
 
 const SpecificFollowLine = (props) => {
   const [progress, setProgress] = React.useState(0)
   const [lapTime, setLapTime] = React.useState(null)
   const [carPose, setCarPose] = React.useState(null)
+  const [circuitImg, setCircuitImg] = React.useState(defaultCircuit);
+  // const [circuitName, setCircuitName] = React.useState("simple");
   const canvasRef = React.useRef(null)
+  var circuitName = "simple";
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -23,7 +32,7 @@ const SpecificFollowLine = (props) => {
           drawImage(message.data.update)
         }
         setLapTime(message.data.update.lap)
-        setProgress(getProgress("simple", message.data.update.map))
+        setProgress(getProgress(circuitName, message.data.update.map))
         setCarPose(getCarPose(message.data.update.map))
       }
       
@@ -45,6 +54,52 @@ const SpecificFollowLine = (props) => {
     };
   }, []);
 
+  React.useEffect(() => {
+    const callback = (message) => {
+      console.log(message)
+      // if (message.data.state === "application_running") {
+      //   rendererRef.current.run();
+      // }
+      if (message.data.state === "visualization_ready") {
+        switch (context.mapSelected) {
+          case "Default":
+          case "follow_line_default_ros2":
+            circuitName = "simple";
+            setCircuitImg(defaultCircuit);
+            break;
+          case "Montmelo":
+          case "follow_line_montmelo_ros2":
+            circuitName = "montmelo";
+            setCircuitImg(montmeloCircuit);
+            break;
+          case "Montreal":
+          case "follow_line_montreal_ros2":
+            circuitName = "montreal";
+            setCircuitImg(montrealCircuit);
+            break;
+          case "Nürburgring":
+          case "follow_line_nurburgring_ros2":
+            circuitName = "nürburgring";
+            setCircuitImg(ngbCircuit);
+            break;
+        }
+      }
+    }
+
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+      callback
+    );
+
+    return () => {
+      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
+        callback
+      );
+    };
+  }, [])
+
   return (
     <Box sx={{ height: "100%", position: "relative"}}>
       <canvas
@@ -60,7 +115,7 @@ const SpecificFollowLine = (props) => {
         <label id="progress-label">{progress}%</label>
       </div>
       <div className="overlay" id="circuit-aerial">
-        <img src={defaultCircuit} alt="" id="circuit-img" />
+        <img src={circuitImg} alt="" id="circuit-img" />
         {carPose &&
           <div id="circuit-car-pos" style={{top: carPose[1], left: carPose[0]}}/>
         }
