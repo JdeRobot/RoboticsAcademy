@@ -10,7 +10,7 @@ from hal_interfaces.general.camera import CameraNode
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
-freq = 90.0 # Less than this wont work
+freq = 60.0 # Less than this wont work
 
 def __auto_spin() -> None:
     while rclpy.ok():
