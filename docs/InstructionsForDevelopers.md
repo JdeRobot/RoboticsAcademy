@@ -149,8 +149,9 @@ cd react_frontend/
 yarn install
 yarn run dev
  ```
+Now, you can continue using your local deployment with Node 17 and sass. 
 
-If you have problems during this process, use the following command before installing Node 17: 
+**Note:** If you have problems during this process, use the following command before installing Node 17: 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash 
  ```
