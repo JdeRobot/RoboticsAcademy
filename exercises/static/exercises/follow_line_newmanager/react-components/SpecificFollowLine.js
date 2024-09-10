@@ -67,7 +67,7 @@ const SpecificFollowLine = (props) => {
         setLapTime(null)
         switch (context.mapSelected) {
           case "follow_line_default_ros2":
-            circuitName = "simple";
+            circuitName = "default";
             setCircuitImg(defaultCircuit);
             break;
           case "follow_line_montmelo_ros2":
@@ -79,7 +79,23 @@ const SpecificFollowLine = (props) => {
             setCircuitImg(montrealCircuit);
             break;
           case "follow_line_nurburgring_ros2":
-            circuitName = "nürburgring";
+            circuitName = "ngb";
+            setCircuitImg(ngbCircuit);
+            break;
+          case "follow_line_default_ack_ros2":
+            circuitName = "default ack";
+            setCircuitImg(defaultCircuit);
+            break;
+          case "follow_line_montmelo_ack_ros2":
+            circuitName = "montmelo ack";
+            setCircuitImg(montmeloCircuit);
+            break;
+          case "follow_line_montreal_ack_ros2":
+            circuitName = "montreal ack";
+            setCircuitImg(montrealCircuit);
+            break;
+          case "follow_line_nurburgring_ack_ros2":
+            circuitName = "ngb ack";
             setCircuitImg(ngbCircuit);
             break;
         }
