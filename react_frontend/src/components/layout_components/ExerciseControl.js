@@ -8,16 +8,24 @@ import LoadFileButton from "Components/buttons/LoadFileButton";
 import ResetButton from "Components/buttons/ResetButton";
 import Frequencies from "Components/visualizers/Frequencies";
 import PlayPauseButton from "Components/buttons/PlayPauseButton";
+import monitor from "../../images/monitoring2.png";
 import "../../styles/layout_components/ExerciseControl.css";
 
 function ExerciseControl(props) {
-  const [editorRendered, setEditorRendered] = React.useState(false);
+  const [editorRendered, setEditorRendered] = React.useState(false);  
+  const [showFrequencies, setShowFrequencies] = React.useState(false);
+  const [buttonActive, setButtonActive] = React.useState(false);
 
   React.useEffect(() => {
     if (document.getElementById("code-container")) {
       setEditorRendered(true);
     }
   });
+
+  const handleToggleFrequencies = () => {
+    setButtonActive(!buttonActive);
+    setShowFrequencies(!showFrequencies);
+  };
 
   return (
     <RoboticsTheme>
@@ -40,7 +48,14 @@ function ExerciseControl(props) {
         >
           <PlayPauseButton></PlayPauseButton>
           <ResetButton></ResetButton>
-          <Frequencies></Frequencies>
+          <Frequencies style={showFrequencies ? "visible" : "hidden"} />
+          <button
+            className={`button ${buttonActive ? "toggledColor" : ""}`}
+            onClick={handleToggleFrequencies}
+            id="toggleButton"
+          >
+            <img src={monitor} className="monitor"></img>
+          </button>
         </Box>
       </Toolbar>
     </RoboticsTheme>

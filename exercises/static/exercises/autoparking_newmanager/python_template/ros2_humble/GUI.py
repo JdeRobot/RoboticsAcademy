@@ -1,13 +1,13 @@
 import json
 
-from gui_interfaces.general.threading_gui import ThreadingGUI
+from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from map import Map
 from HAL import getFrontLaserData, getRightLaserData, getBackLaserData
 
 # Graphical User Interface Class
 
-class GUI(ThreadingGUI):
+class GUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
