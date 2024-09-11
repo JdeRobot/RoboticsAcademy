@@ -50,8 +50,8 @@ if ! command -v yarn --version &> /dev/null; then
 fi
 
 # Prepare the frontend
-nvm install 16
-nvm use 16
+nvm install 17
+nvm use 17
 cd react_frontend/
 yarn install
 yarn build

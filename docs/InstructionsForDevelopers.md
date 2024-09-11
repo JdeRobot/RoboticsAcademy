@@ -65,8 +65,8 @@ cd /RoboticsAcademy
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 16
-nvm use 16
+nvm install 17
+nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
@@ -100,8 +100,8 @@ For the moment, the RAM folder MUST be called src, and the previous command take
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 16
-nvm use 16
+nvm install 17
+nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
@@ -127,7 +127,37 @@ After testing the changes, you can simply commit them from the RA repo. Please k
 ```
 docker-compose down
 ```
-When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution.
+When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution. 
+
+**Note: How to update Robotics Academy local deployment with Node 17 and sass** 
+
+Robotics Academy has been updated to use Node 17 and sass. If you have a Robotics Academy local deployment and you don't want to make a new one, you can follow the next instructions to update your local deployment in order to use both dependencies: 
+
+1) Go into RoboticsAcademy folder
+```
+cd RoboticsAcademy/ 
+ ```
+2) Pull the new changes from Robotics Academy humble-devel branch into your local branch
+3) Install and use Node 17
+ ```
+nvm install 17
+nvm use 17
+ ```
+4) Reinstall yarn and rebuild the REACT frontend
+ ```
+cd react_frontend/
+yarn install
+yarn run dev
+ ```
+Now, you can continue using your local deployment with Node 17 and sass. 
+
+**Note:** If you have problems during this process, use the following command before installing Node 17: 
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash 
+ ```
+
+**Note:** This steps are not necessary if you deploy Robotics Academy in developer mode using an automatic script. When the script is executed, it internally runs the commands. 
+
 
 <a name="How-to-use-nvidia"></a>
 ## How to use nvidia
