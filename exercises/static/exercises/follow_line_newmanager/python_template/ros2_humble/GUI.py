@@ -3,7 +3,7 @@ import base64
 import json
 import threading
 import rclpy
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.threading_gui import ThreadingGUI
 from console_interfaces.general.console import start_console
 from hal_interfaces.general.odometry import OdometryNode
 from src.manager.ram_logging.log_manager import LogManager
@@ -11,7 +11,7 @@ from lap import Lap
 
 # Graphical User Interface Class
 
-class GUI(MeasuringThreadingGUI):
+class GUI(ThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)

@@ -1,12 +1,9 @@
 import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useState } from "react";
-import "../../styles/visualizers/Frequencies.css";
 
-const Frequencies = (props) => {
+const Frequencies = () => {
   const [frequencies, setFrequencies] = useState({ brain: 0, gui: 0, rtf: 0 });
-  const [rosVersion, setRosVersion] = useState(null);
-  const [gpuAvaliable, setGpuAvaliable] = useState(false);
-
   React.useEffect(() => {
     const callback = (message) => {
       const update = message.data.update;
@@ -28,32 +25,20 @@ const Frequencies = (props) => {
     };
   }, []);
 
-  React.useEffect(() => {
-    const callback = (message) => {
-      if (message.data.ros_version.trim() === "noetic") {
-        setRosVersion("ROS Noetic");
-      } else if (message.data.ros_version.trim() === "humble") {
-        setRosVersion("ROS2 Humble");
-      }
-      setGpuAvaliable(message.data.gpu_avaliable);
-    };
-    window.RoboticsExerciseComponents.commsManager.suscribreOnce(
-      [window.RoboticsExerciseComponents.commsManager.events.INTROSPECTION],
-      callback
-    );
-  }, []);
-
   return (
-    <div className={props.style}>
+    <Box
+      sx={{
+        display: "flex",
+        gap: "5px",
+
+        paddingLeft: "25px",
+        color: "blue",
+      }}
+    >
       <Typography title="BRAIN">{frequencies.brain.toFixed(0)}</Typography>
       <Typography>/</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
-      <Typography>/</Typography>
-      <Typography>{rosVersion}</Typography>
-      <Typography>/</Typography>
-      <Typography>GPU</Typography>
-      <Typography>{gpuAvaliable ? "ON" : "OFF"}</Typography>
-    </div>
+    </Box>
   );
 };
 

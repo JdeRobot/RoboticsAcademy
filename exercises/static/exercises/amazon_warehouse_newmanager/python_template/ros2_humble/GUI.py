@@ -3,13 +3,13 @@ import json
 import threading
 import matplotlib.pyplot as plt
 
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.threading_gui import ThreadingGUI
 from map import Map
 from HAL import getPose3d
 from console_interfaces.general.console import start_console
 
 
-class GUI(MeasuringThreadingGUI):
+class GUI(ThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
