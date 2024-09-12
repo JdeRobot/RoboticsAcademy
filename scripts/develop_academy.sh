@@ -17,7 +17,7 @@ show_help() {
   echo "  -i  Specify the ROS2 version (default: humble)"
   echo "  -g  Enable GPU mode (default: false)"
   echo "  -n  Enable Nvidia support (default: false)"
-  echo "  -t  Specify the container image (default: jderobot/robotics-backend:latest)"
+  echo "  -t  Specify the container image (default: latest)"
   echo "  -h  Display this help message"
 }
 
