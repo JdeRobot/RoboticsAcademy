@@ -11,7 +11,7 @@ import PlayPauseButton from "Components/buttons/PlayPauseButton";
 import "../../styles/layout_components/ExerciseControl.css";
 
 function ExerciseControl(props) {
-  const [editorRendered, setEditorRendered] = React.useState(false);  
+  const [editorRendered, setEditorRendered] = React.useState(false);
 
   React.useEffect(() => {
     if (document.getElementById("code-container")) {
@@ -40,7 +40,7 @@ function ExerciseControl(props) {
         >
           <PlayPauseButton></PlayPauseButton>
           <ResetButton></ResetButton>
-          <Frequencies/>
+          <Frequencies></Frequencies>
         </Box>
       </Toolbar>
     </RoboticsTheme>
