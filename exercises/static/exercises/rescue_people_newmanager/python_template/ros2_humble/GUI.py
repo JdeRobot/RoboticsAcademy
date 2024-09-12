@@ -25,6 +25,11 @@ class GUI(MeasuringThreadingGUI):
         self.host = host
         self.msg = {"image_right": "", "image_left": ""}
 
+        self.ideal_cycle = 80
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.iteration_counter = 0
+
         self.start()
 
     # Process outcoming messages from the GUI
