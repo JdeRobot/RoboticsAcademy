@@ -55,3 +55,5 @@ export const Frequencies = (props) => {
     </div>
   );
 };
+
+export default Frequencies
