@@ -2,18 +2,10 @@ import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import "../../styles/visualizers/Frequencies.css";
 
-const Frequencies = () => {
+export const Frequencies = (props) => {
   const [frequencies, setFrequencies] = useState({ brain: 0, gui: 0, rtf: 0 });
   const [rosVersion, setRosVersion] = useState(null);
   const [gpuAvaliable, setGpuAvaliable] = useState(false);
-  const [showFrequencies, setShowFrequencies] = React.useState(false);
-  const [buttonActive, setButtonActive] = React.useState(false);
-
-  const handleToggleFrequencies = () => {
-    setButtonActive(!buttonActive);
-    setShowFrequencies(!showFrequencies);
-  };
-
   React.useEffect(() => {
     const callback = (message) => {
       const update = message.data.update;
@@ -51,7 +43,7 @@ const Frequencies = () => {
   }, []);
 
   return (
-    <div className={showFrequencies ? "visible" : "hidden"}>
+    <div className={props.style}>
       <Typography title="BRAIN">{frequencies.brain.toFixed(0)}</Typography>
       <Typography>/</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
@@ -63,5 +55,3 @@ const Frequencies = () => {
     </div>
   );
 };
-
-export default Frequencies;
