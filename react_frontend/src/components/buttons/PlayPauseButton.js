@@ -56,6 +56,8 @@ const PlayPause = (props) => {
 
   const runCode = (code) => {
     setLoading(true);
+    const errorMessage = "Syntax or dependency error, check details on the console.\n";
+
     window.RoboticsExerciseComponents.commsManager
       .terminate_application()
       .then(() => {
@@ -71,7 +73,7 @@ const PlayPause = (props) => {
               "\\n"
             );
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              linterMessage, "error"
+              errorMessage, "error"
             );
             console.log(`Received linter message ·${linterMessage}`);
           });

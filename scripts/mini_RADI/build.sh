@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Default branch if not specified
-ROBOTICS_ACADEMY="master"
-ROBOTICS_INFRASTRUCTURE="noetic-devel"
-RAM="main"
-ROS_DISTRO="noetic"
+ROBOTICS_ACADEMY="humble-devel"
+ROBOTICS_INFRASTRUCTURE="humble-devel"
+RAM="humble-devel"
+ROS_DISTRO="humble"
 IMAGE_TAG="test"
 FORCE_BUILD=false
 FORCE_BUILD_NO_CACHE=false
@@ -18,10 +18,10 @@ Help()
    echo "  -f                        Force creation of the base image. If omitted, the base image is created only if "
    echo "                            it doesn't exist."
    echo "  -F                        Force creation of the base image without using docker cache."
-   echo "  -a, --academy    <value>  Branch of RoboticsAcademy.               Default: master"
-   echo "  -i, --infra      <value>  Branch of RoboticsInfrastructure.        Default: noetic-devel"
-   echo "  -m, --ram        <value>  Branch of RoboticsApplicationManager.    Default: main"
-   echo "  -r, --ros        <value>  ROS Distro (humble or noetic).           Default: noetic"
+   echo "  -a, --academy    <value>  Branch of RoboticsAcademy.               Default: humble-devel"
+   echo "  -i, --infra      <value>  Branch of RoboticsInfrastructure.        Default: humble-devel"
+   echo "  -m, --ram        <value>  Branch of RoboticsApplicationManager.    Default: humble-devel"
+   echo "  -r, --ros        <value>  ROS Distro (humble or noetic).           Default: humble"
    echo "  -t, --tag        <value>  Tag name of the image.                   Default: test"
    echo
    echo "Example:"

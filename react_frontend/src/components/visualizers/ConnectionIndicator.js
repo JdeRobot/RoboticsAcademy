@@ -28,7 +28,7 @@ function ConnectionIndicator() {
 
   useEffect(() => {
     const callback = (message) => {
-      setRadiVersion(message.data.radi_version);
+      setRadiVersion(message.data.robotics_backend_version);
     };
     window.RoboticsExerciseComponents.commsManager.suscribreOnce(
       [window.RoboticsExerciseComponents.commsManager.events.INTROSPECTION],

@@ -5,6 +5,7 @@
 # Instructions for developers
 - [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4) 
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
+- [How to use nvidia](#How-to-use-nvidia)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [How to update static files version](#How-to-update-static-files-version)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
@@ -33,8 +34,22 @@ You can ignore the -b arg if you want to start working from the main branch.
 sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble/noetic>
 ```
 If you don't provide any arguments, it will prepare a humble environment with the current stable branch of RAM. You may start working from that and then create the branch you need. 
-
 You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.1:7164/exercises/) 
+
+
+\
+Sometimes it is likely to encounter a port occupied error, to solve this, the -t option has been added, where you must specify the miniradi tag you are going to use, by default it will be `latest`.
+
+```
+sh scripts/develop_academy.sh -t <miniradi tag>
+```
+\
+If you need more information about the options available for launching the script, you can use:
+```
+sh scripts/develop_academy.sh -h
+```
+Which will display a help message.
+
 
 3) Developing procedure
 
@@ -52,7 +67,24 @@ Please look at the attached image for reference.
 
 <img width="1440" alt="Screenshot 2024-05-01 at 10 35 55 PM" src="https://github.com/JdeRobot/RoboticsAcademy/assets/57873504/c4096ab4-f9c1-4ddf-b612-41e78074fb99">
 
+### Some problems that can arise
 
+It is possible that the first time you follow the instructions, a dependency may not be installed correctly, or it may not be added to the path for some reason.
+
+One of the most frequent problems is that the frontend doesn't launch, you can solve it in two ways, the first one is to launch the frontend separately from another terminal:
+
+```
+cd /RoboticsAcademy
+```
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 17
+nvm use 17
+cd react_frontend/ && yarn install && yarn run dev
+```
+
+Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a mini radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_mini_radi.md).
 
 ### Using Docker compose
 
@@ -82,8 +114,8 @@ For the moment, the RAM folder MUST be called src, and the previous command take
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 16
-nvm use 16
+nvm install 17
+nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
@@ -109,15 +141,103 @@ After testing the changes, you can simply commit them from the RA repo. Please k
 ```
 docker-compose down
 ```
-When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution.  
+When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution. 
+
+**Note: How to update Robotics Academy local deployment with Node 17 and sass** 
+
+Robotics Academy has been updated to use Node 17 and sass. If you have a Robotics Academy local deployment and you don't want to make a new one, you can follow the next instructions to update your local deployment in order to use both dependencies: 
+
+1) Go into RoboticsAcademy folder
+```
+cd RoboticsAcademy/ 
+ ```
+2) Pull the new changes from Robotics Academy humble-devel branch into your local branch
+3) Install and use Node 17
+ ```
+nvm install 17
+nvm use 17
+ ```
+4) Reinstall yarn and rebuild the REACT frontend
+ ```
+cd react_frontend/
+yarn install
+yarn run dev
+ ```
+Now, you can continue using your local deployment with Node 17 and sass. 
+
+**Note:** If you have problems during this process, use the following command before installing Node 17: 
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash 
+ ```
+
+**Note:** This steps are not necessary if you deploy Robotics Academy in developer mode using an automatic script. When the script is executed, it internally runs the commands. 
+
+
+<a name="How-to-use-nvidia"></a>
+## How to use nvidia
+
+When launching the developer script you can use the options `-g` to use the integrated graphics card or `-n` to use the nvidia graphics card. Before you start, make sure you have the [NVIDIA Container Toolkit installed](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+Now we will have to install the nvidia runtime to use it with our docker:
+```bash
+sudo apt-get update
+sudo apt-get install -y nvidia-docker2
+```
+
+Now we will check if docker recognises nvidia as a new runtime (restarting the docker service to update the new configuration):
+
+```bash
+sudo systemctl restart docker
+docker info | grep -i runtime
+```
+
+It will most likely not recognise it, so we will have to do it manually by editing or creating the `/etc/docker/daemon.json` file:
+
+```json
+{
+  "runtimes": {
+    "nvidia": {
+      "path": "nvidia-container-runtime",
+      "runtimeArgs": []
+    }
+  }
+}
+```
+It is also possible that nvidia-runtime is not installed, check and install it if it is not.
+
+```bash
+dpkg -l | grep nvidia-container-runtime
+```
+
+If it is not installed:
+
+```bash
+sudo apt-get install -y nvidia-container-runtime
+```
+
+Now everything should be ready to start using nvidia with our dockers, restart the docker service to update the configuration and check that everything works correctly.
+
+```bash
+sudo systemctl restart docker
+```
+
 
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
 To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
-- ```entry_point/ros_version```: used for the entrypoint of an exercise run by the RAM
-- ```launch/ros_version```: used for world launch files (.launch)
 - ```python_template/ros_version```: used for the python templates needed to compose the user code
 - ```react-components```: exercise specific react components
+
+There are a three python packages to help the development of a new exercise:
+- [Hal Interfaces][]: provides the hardware abstraction layer for various components
+- [Gui Interfaces][]: provides with various base GUI's for easy development
+- [Console Interfaces][]: provides control of the console
+
+[Hal Interfaces]: ../common/hal_interfaces/README.md
+[Gui Interfaces]: ../common/gui_interfaces/README.md
+[Console Interfaces]: ../common/console_interfaces/README.md
+
+For knowing how to use each package, please follow the links in the list above.
 
 Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
 1)  Run ```python3.8 manage.py runserver```.

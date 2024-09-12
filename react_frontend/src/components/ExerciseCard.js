@@ -171,7 +171,10 @@ ExerciseCard.propTypes = {
 };
 
 const ChipsArray = (props) => {
-  const chipData = props.tagList;
+  let chipData = props.tagList;
+  if(!Array.isArray(chipData)){
+    chipData = chipData.split(",");
+  }
   const chipsList = chipData.map((data) => (
     // eslint-disable-next-line react/jsx-key
     <Chip
