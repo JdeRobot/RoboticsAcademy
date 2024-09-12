@@ -7,7 +7,7 @@ radi_version="humble"
 gpu_mode="false"
 nvidia="false"
 compose_file="dev_humble_cpu"
-container_name="jderobot/robotics-backend:latest"
+container_name="latest"
 
 # Function to display help message
 show_help() {
@@ -17,7 +17,7 @@ show_help() {
   echo "  -i  Specify the ROS2 version (default: humble)"
   echo "  -g  Enable GPU mode (default: false)"
   echo "  -n  Enable Nvidia support (default: false)"
-  echo "  -t  Specify the container image (default: jderobot/robotics-backend:latest)"
+  echo "  -t  Specify the container image (default: latest)"
   echo "  -h  Display this help message"
 }
 
@@ -35,7 +35,7 @@ while getopts ":r:b:i:g:n:t:h" opt; do
 done
 
 # Check if a container with the name is running or exists and remove it if necessary
-running_container=$(docker ps -a --filter "ancestor=${container_name}" --format "{{.ID}}")
+running_container=$(docker ps -a --filter "ancestor=jderobot/robotics-backend:$container_name" --format "{{.ID}}")
 if [ -n "$running_container" ]; then
   echo "Removing existing container(s)..."
   docker rm $running_container
