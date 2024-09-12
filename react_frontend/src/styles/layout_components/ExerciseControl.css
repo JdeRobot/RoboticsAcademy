@@ -11,32 +11,3 @@
 #editor-control {
   display: flex;
 }
-
-.monitor {
-  height: 25px;
-}
-
-.button {
-  background: none;
-  border: 1px solid black;
-  border-radius: 4px;
-  padding: 5px;
-  margin: 0;
-  outline: none;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-.toggledColor {
-  background-color: #4caf50;
-}
-.button .monitor {
-  transition: box-shadow 0.3s ease;
-  box-shadow: none;
-}
-
-.button:hover .monitor {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-}
