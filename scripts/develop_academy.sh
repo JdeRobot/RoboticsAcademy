@@ -35,7 +35,7 @@ while getopts ":r:b:i:g:n:t:h" opt; do
 done
 
 # Check if a container with the name is running or exists and remove it if necessary
-running_container=$(docker ps -a --filter "ancestor=${container_name}" --format "{{.ID}}")
+running_container=$(docker ps -a --filter "ancestor=jderobot/robotics-backend:$container_name" --format "{{.ID}}")
 if [ -n "$running_container" ]; then
   echo "Removing existing container(s)..."
   docker rm $running_container
