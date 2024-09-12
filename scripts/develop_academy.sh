@@ -7,7 +7,7 @@ radi_version="humble"
 gpu_mode="false"
 nvidia="false"
 compose_file="dev_humble_cpu"
-container_name="jderobot/robotics-backend:latest"
+container_name="latest"
 
 # Function to display help message
 show_help() {
