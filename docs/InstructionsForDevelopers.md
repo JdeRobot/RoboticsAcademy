@@ -34,8 +34,22 @@ You can ignore the -b arg if you want to start working from the main branch.
 sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble/noetic>
 ```
 If you don't provide any arguments, it will prepare a humble environment with the current stable branch of RAM. You may start working from that and then create the branch you need. 
-
 You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.1:7164/exercises/) 
+
+
+\
+Sometimes it is likely to encounter a port occupied error, to solve this, the -t option has been added, where you must specify the miniradi tag you are going to use, by default it will be `latest`.
+
+```
+sh scripts/develop_academy.sh -t <miniradi tag>
+```
+\
+If you need more information about the options available for launching the script, you can use:
+```
+sh scripts/develop_academy.sh -h
+```
+Which will display a help message.
+
 
 3) Developing procedure
 
