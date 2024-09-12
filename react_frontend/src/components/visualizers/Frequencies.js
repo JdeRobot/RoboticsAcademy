@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import "../../styles/visualizers/Frequencies.css";
-import monitor from "../../images/monitoring2.png";
 
 const Frequencies = () => {
   const [frequencies, setFrequencies] = useState({ brain: 0, gui: 0, rtf: 0 });
@@ -52,25 +51,16 @@ const Frequencies = () => {
   }, []);
 
   return (
-    <>
-      <div className={showFrequencies ? "visible" : "hidden"}>
-        <Typography title="BRAIN">{frequencies.brain.toFixed(0)}</Typography>
-        <Typography>/</Typography>
-        <Typography title="RTF">{frequencies.rtf}</Typography>
-        <Typography>/</Typography>
-        <Typography>{rosVersion}</Typography>
-        <Typography>/</Typography>
-        <Typography>GPU</Typography>
-        <Typography>{gpuAvaliable ? "ON" : "OFF"}</Typography>
-      </div>
-      <button
-        className={`button ${buttonActive ? "toggledColor" : ""}`}
-        onClick={handleToggleFrequencies}
-        id="toggleButton"
-      >
-        <img src={monitor} className="monitor"></img>
-      </button>
-    </>
+    <div className={showFrequencies ? "visible" : "hidden"}>
+      <Typography title="BRAIN">{frequencies.brain.toFixed(0)}</Typography>
+      <Typography>/</Typography>
+      <Typography title="RTF">{frequencies.rtf}</Typography>
+      <Typography>/</Typography>
+      <Typography>{rosVersion}</Typography>
+      <Typography>/</Typography>
+      <Typography>GPU</Typography>
+      <Typography>{gpuAvaliable ? "ON" : "OFF"}</Typography>
+    </div>
   );
 };
 
