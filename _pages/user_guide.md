@@ -28,10 +28,10 @@ The installation of ROS, Gazebo, etc. has been greatly simplified, as all the re
 
 1. Download [Docker](https://docs.docker.com/get-docker/) **(minimum version of docker-py: 5.0.3)**.
 
-2. Pull the current distribution of RoboticsBackend **(currently version 4.6.1)**:
+2. Pull the current distribution of RoboticsBackend **(currently version 4.6.6)**:
 
 ```bash
-docker pull jderobot/robotics-backend:4.6.1
+docker pull jderobot/robotics-backend:latest
 ```
 
 - In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
