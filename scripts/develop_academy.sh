@@ -7,7 +7,6 @@ radi_version="humble"
 gpu_mode="false"
 nvidia="false"
 compose_file="dev_humble_cpu"
-container_name="latest"
 
 # Function to display help message
 show_help() {
@@ -17,8 +16,18 @@ show_help() {
   echo "  -i  Specify the ROS2 version (default: humble)"
   echo "  -g  Enable GPU mode (default: false)"
   echo "  -n  Enable Nvidia support (default: false)"
-  echo "  -t  Specify the container image (default: latest)"
   echo "  -h  Display this help message"
+}
+
+# Function to clean up the containers
+cleanup() {
+  echo "Cleaning up..."
+  if [ "$nvidia" = "true" ]; then
+    docker compose --compatibility down
+  else
+    docker compose down
+  fi
+  rm docker-compose.yaml
 }
 
 while getopts ":r:b:i:g:n:t:h" opt; do
@@ -28,18 +37,13 @@ while getopts ":r:b:i:g:n:t:h" opt; do
     i) radi_version="$OPTARG" ;; 
     g) gpu_mode="true" ;; 
     n) nvidia="true" ;;
-    t) container_name="$OPTARG" ;;
     h) show_help; exit 0 ;;  # Display help message and exit
     \?) echo "Invalid option: -$OPTARG" >&2 ;;   # If an invalid option is provided, print an error message
   esac
 done
 
-# Check if a container with the name is running or exists and remove it if necessary
-running_container=$(docker ps -a --filter "ancestor=jderobot/robotics-backend:$container_name" --format "{{.ID}}")
-if [ -n "$running_container" ]; then
-  echo "Removing existing container(s)..."
-  docker rm $running_container
-fi
+# Set up trap to catch interrupt signal (Ctrl+C) and execute cleanup function
+trap 'cleanup' INT
 
 echo "RAM src: $ram_version"
 echo "RAM branch: $branch"
@@ -93,5 +97,3 @@ if [ "$nvidia" = "true" ]; then
 else
   docker compose up
 fi 
-docker compose down;
-rm docker-compose.yaml
