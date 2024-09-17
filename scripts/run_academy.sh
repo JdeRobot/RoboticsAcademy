@@ -7,6 +7,20 @@ base_path_offline="compose_cfg/"
 compose_file="user_humble_cpu"
 base_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/compose_cfg/"
 
+
+# Function to clean up the containers
+cleanup() {
+  echo "Cleaning up..."
+  if [ "$nvidia" = "true" ]; then
+    docker compose --compatibility down
+  else
+    docker compose down
+  fi
+  rm docker-compose.yaml
+  
+  exit 0
+}
+
 # Loop through the arguments using a while loop
 while getopts ":g:n  " opt; do
   case $opt in
@@ -16,12 +30,15 @@ while getopts ":g:n  " opt; do
   esac
 done
 
+# Set up trap to catch interrupt signal (Ctrl+C) and execute cleanup function
+trap 'cleanup' INT
+
 # Set the compose file
 if [ "$gpu_mode" = "true" ]; then
   compose_file="user_humble_gpu"
 fi
 if [ "$nvidia" = "true" ]; then
-  compose_file="dev_humble_nvidia"
+  compose_file="user_humble_nvidia"
 fi
 
 # Check the mode
@@ -32,6 +49,8 @@ else
 fi
 
 # Execute docker compose
-docker-compose up; 
-docker-compose down; 
-rm docker-compose.yaml
+if [ "$nvidia" = "true" ]; then
+  docker compose --compatibility up
+else
+  docker compose up
+fi

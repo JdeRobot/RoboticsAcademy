@@ -28,6 +28,8 @@ cleanup() {
     docker compose down
   fi
   rm docker-compose.yaml
+  
+  exit 0
 }
 
 while getopts ":r:b:i:g:n:t:h" opt; do
