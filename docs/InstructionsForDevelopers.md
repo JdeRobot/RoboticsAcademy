@@ -38,12 +38,6 @@ You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.
 
 
 \
-Sometimes it is likely to encounter a port occupied error, to solve this, the -t option has been added, where you must specify the miniradi tag you are going to use, by default it will be `latest`.
-
-```
-sh scripts/develop_academy.sh -t <miniradi tag>
-```
-\
 If you need more information about the options available for launching the script, you can use:
 ```
 sh scripts/develop_academy.sh -h
