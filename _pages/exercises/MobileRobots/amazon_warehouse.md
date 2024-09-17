@@ -61,7 +61,6 @@ warehouse1mesh:
     alt: "Shelf mesh"
     title: "Shelf mesh"
 
-
 warehouse2:
   - url: /assets/images/exercises/amazon_warehouse/warehouse2.png
     image_path: /assets/images/exercises/amazon_warehouse/warehouse2.png
@@ -85,6 +84,22 @@ original_axis:
     alt: "Warehouse 1"
     image_path: /assets/images/exercises/amazon_warehouse/original_axis.JPG
     title: "Warehouse 1"
+
+eucliean_eg:
+  - url: /assets/images/exercises/amazon_warehouse/euclidean_solution_validity_eg.png
+    alt: "Validity checker"
+    image_path: /assets/images/exercises/amazon_warehouse/euclidean_solution_validity_eg.png
+    title: "Validity checker"
+  - url: /assets/images/exercises/amazon_warehouse/euclidean_solution_eg.png
+    alt: "Found path"
+    image_path: /assets/images/exercises/amazon_warehouse/euclidean_solution_eg.png
+    title: "Found path"
+
+geometry_eg:
+  - url: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
+    alt: "Path planning"
+    image_path: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
+    title: "Path planning"
 
 solution1: EVt9vYqEoDg
 solution2: -2D90I-wZKs
@@ -153,7 +168,9 @@ There are two warehouses to choose from:
   * Warehouse without shelves: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/warehouse1.dae
   * Shelf 1: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf1.dae
   * Shelf 2: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf2.dae
-  * ...
+  * Shelf 3: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf3.dae
+  * Shelf 4: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf4.dae
+  * Shelf 5: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf5.dae
   * Shelf 6: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf6.dae
 
 {% include gallery id="warehouse1mesh" caption="Warehouse 1 meshes" %}
@@ -171,7 +188,7 @@ There are two warehouses to choose from:
 
 ## Theory
 
-This exercise is a motion planning problem. Motion planning is a  Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
+This exercise is a motion planning problem. Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
 
 ### [Open Motion Planning Library](https://ompl.kavrakilab.org/)
 
@@ -377,15 +394,22 @@ There are different ways to solve the exercise:
 * #### Euclidean planning 
   Define the robot as a 2D point and thicken the obstacles' edges according to the robot's radius to avoid collision, in this case, the state space can simply be an Euclidean space and all those black pixels will be invalid states. Maybe this [demo](https://ompl.kavrakilab.org/Point2DPlanning_8cpp_source.html) can help you!
 
+  {% include gallery id="eucliean_eg" caption="Euclidean planning" %}
+
 * #### Planning with robot's geometry constraints
-  Since the robot's geometry is not always suitable to be approximated as a point, as in the case when the rectangular shelving is loaded, it would be a better way to solve the problem taking into consideration the robot's geometry. And this is the challenge of this phase!
+  Since the robot's geometry is not always suitable to be approximated as a point, as in the case when the rectangular shelving is loaded, it would be a better way to solve the problem taking into consideration the robot's geometry. 
   
-  You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into account the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as SE2StateSpace. And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
+  You can represent the robot as a set of pixels, so that a state will be valid when all pixels in the set are free. Now, it is no longer enough to use only Euclidean space but you must take into consideration the rotation of the robot. Therefore, it would be convenient to use a state space that includes that variable, such as [SE2StateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1SE2StateSpace.html). And what else? A motion validator will be also essential, to ensure the feasibility of transitioning between states. 
+  
+  You can make use of the [DubinsStateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1DubinsStateSpace.html) or [ReedsSheppStateSpace](https://ompl.kavrakilab.org/classompl_1_1base_1_1ReedsSheppStateSpace.html) to solve the exersice. Check this [demo](https://ompl.kavrakilab.org/GeometricCarPlanning_8cpp_source.html)!
+
+  {% include gallery id="geometry_eg" caption="Geometry constraints planning" %}
 
 * #### Control-based planning
   In control-based planning, we need to define a control space and specify control propagation to set the robot movement constraints.
 
-  However, there is another approach using the OMPL app class. This class includes predefined robot types such as dynamic car, kinematic car, quadrotor, etc. And, we can define the state space using mesh files.
+  However, there is another approach using the OMPL app class. This class includes predefined robot types such as dynamic car, kinematic car, quadrotor, etc. And, we can define the state space using mesh files. Check this [demo](https://ompl.kavrakilab.org/demos_2SE2RigidBodyPlanning_2SE2RigidBodyPlanning_8cpp_source.html)!
+
 
 #### How to find the shortest path?
 The library offers the possibility to set an optimization objective, which could be a great help in finding the shortest path. Check out in [this tutorial](https://ompl.kavrakilab.org/optimalPlanningTutorial.html) how to do it!
