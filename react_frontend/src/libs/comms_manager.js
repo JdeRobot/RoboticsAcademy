@@ -149,7 +149,7 @@ const CommsManager = (address) => {
     terminate_visualization: () => send("terminate_visualization"),
     terminate_universe: () => send("terminate_universe"),
     disconnect: () => send("disconnect"),
-    style_check: () => send("style_check"),
+    style_check: (code) => send("style_check", code),
   };
 
   return {
