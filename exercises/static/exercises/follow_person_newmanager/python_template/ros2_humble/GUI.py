@@ -45,6 +45,11 @@ class GUI(MeasuringThreadingGUI):
             self.get_logger().info("Service not available, waiting...")
         self.get_request = GetEntityState.Request()
 
+        self.ideal_cycle = 80
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.iteration_counter = 0
+
         # Initialize and start the WebSocket client thread
         self.start()
 
