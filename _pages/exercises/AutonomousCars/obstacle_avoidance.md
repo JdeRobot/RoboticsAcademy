@@ -79,7 +79,7 @@ The solution can integrate one or more of the following levels of difficulty, as
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
 * `HAL.getLaserData()` - to obtain laser sensor data
-  It is composed of 180 pairs of values: (0-180º distance in millimeters)
+  It is composed of 180 pairs of values: (0-180º distance in meters)
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `GUI.getNextTarget()` - to obtain the next target object on the scenario.
@@ -170,23 +170,49 @@ To use it, only two actions must be carried out:
 
 **Laser**
 
-The following function parses laser data taking in to accoun 1) laser only has 180º coverage and 2) the measure red at 90º corresponds to the 'front' of the robot.
+The following function parses laser data taking in to account 1) laser only has 180º coverage and 2) the measure read at 90º corresponds to the 'front' of the robot.
 
-You must apply the conversions needed to transform that laser data to a vector in the relavite coodinate system of the robot.
+You must apply the conversions needed to transform that laser data to a vector of the polar coordinates and a vector in the relavite coodinate system of the robot.
 
 ```python
+import math
+import numpy as np
 
-def parse_laser_data (laser_data):
-    laser = []
-    i = 0
-    while (i < 180):
+def parse_laser_data(laser_data):
+    """ Parses the LaserData object and returns a tuple with two lists:
+        1. List of  polar coordinates, with (distance, angle) tuples,
+           where the angle is zero at the front of the robot and increases to the left.
+        2. List of cartesian (x, y) coordinates, following the ref. system noted below.
+
+        Note: The list of laser values MUST NOT BE EMPTY.
+    """
+    laser_polar = []  # Laser data in polar coordinates (dist, angle)
+    laser_xy = []  # Laser data in cartesian coordinates (x, y)
+    for i in range(180):
+        # i contains the index of the laser ray, which starts at the robot's right
+        # The laser has a resolution of 1 ray / degree
+        #
+        #                (i=90)
+        #                 ^
+        #                 |x
+        #             y   |
+        # (i=180)    <----R      (i=0)
+
+        # Extract the distance at index i
         dist = laser_data.values[i]
-        if dist > 10:
-            dist = 10
-        angle = math.radians(i-90) # because the front of the robot is -90 degrees
-        laser += [(dist, angle)]
-        i+=1
-    return laser
+        # The final angle is centered (zeroed) at the front of the robot.
+        angle = math.radians(i - 90)
+        laser_polar += [(dist, angle)]
+        # Compute x, y coordinates from distance and angle
+        x = dist * math.cos(angle)
+        y = dist * math.sin(angle)
+        laser_xy += [(x, y)]
+    return laser_polar, laser_xy
+
+# Usage
+laser_data = HAL.getLaserData()
+if len(laser_data.values) > 0:
+    laser_polar, laser_xy = parse_laser_data(laser_data)
 ```
 
 
