@@ -67,29 +67,44 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 **Laser**
 
 ```python
-laser_data = HAL.getLaserData()
+import math
+import numpy as np
 
 def parse_laser_data(laser_data):
-    laser = []
+    """ Parses the LaserData object and returns a tuple with two lists:
+        1. List of  polar coordinates, with (distance, angle) tuples,
+           where the angle is zero at the front of the robot and increases to the left.
+        2. List of cartesian (x, y) coordinates, following the ref. system noted below.
+
+        Note: The list of laser values MUST NOT BE EMPTY.
+    """
+    laser_polar = []  # Laser data in polar coordinates (dist, angle)
+    laser_xy = []  # Laser data in cartesian coordinates (x, y)
     for i in range(180):
+        # i contains the index of the laser ray, which starts at the robot's right
+        # The laser has a resolution of 1 ray / degree
+        #
+        #                (i=90)
+        #                 ^
+        #                 |x
+        #             y   |
+        # (i=180)    <----R      (i=0)
+
+        # Extract the distance at index i
         dist = laser_data.values[i]
-        angle = math.radians(i)
-        laser += [(dist, angle)]
-    return laser
-```
+        # The final angle is centered (zeroed) at the front of the robot.
+        angle = math.radians(i - 90)
+        laser_polar += [(dist, angle)]
+        # Compute x, y coordinates from distance and angle
+        x = dist * math.cos(angle)
+        y = dist * math.sin(angle)
+        laser_xy += [(x, y)]
+    return laser_polar, laser_xy
 
-```python
-def laser_vector(laser):
-    laser_vectorized = []
-    for d,a in laser:
-        # (4.2.1) laser into GUI reference system
-        x = d * math.cos(a) * -1
-        y = d * math.sin(a) * -1
-        v = (x,y)
-        laser_vectorized += [v]
-
-    laser_mean = np.mean(laser_vectorized, axis=0)
-    return laser_mean
+# Usage
+laser_data = HAL.getLaserData()
+if len(laser_data.values) > 0:
+    laser_polar, laser_xy = parse_laser_data(laser_data)
 ```
 
 ## Videos
