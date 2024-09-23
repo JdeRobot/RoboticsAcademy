@@ -42,7 +42,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 * `HAL.getPose3d().y` - to get the Y coordinate of the robot
 * `HAL.getPose3d().yaw` - to get the orientation of the robot
 * `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its left and 2 if the collision is at its right.
+* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
 * `GUI.showNumpy(mat)` - Displays the matrix sent. Accepts an uint8 numpy matrix, values ranging from 0 to 127 for grayscale and values 128 to 134 for predetermined colors (128 = red; 129 = orange; 130 = yellow; 131 = green; 132 = blue; 133 = indigo; 134 = violet). Matrix should be square and the dimensions bigger than 100\*100 for correct visualization. Dimensions bigger than 1000\*1000 may affect performance.
 ```python
