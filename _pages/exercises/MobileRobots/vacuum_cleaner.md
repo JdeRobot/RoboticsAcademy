@@ -37,7 +37,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in millimeters).
+* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 
