@@ -44,7 +44,7 @@ export const Frequencies = (props) => {
 
   return (
     <div className={props.style}>
-      <Typography title="BRAIN">{frequencies.brain.toFixed(0)}</Typography>
+      <Typography title="AF">{frequencies.brain.toFixed(0)} Hz</Typography>
       <Typography>/</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
       <Typography>/</Typography>
