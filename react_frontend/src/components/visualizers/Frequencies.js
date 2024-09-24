@@ -48,9 +48,13 @@ export const Frequencies = (props) => {
       <Typography>Hz</Typography>
       <Typography>/</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
+      {rosVersion &&
+      <>
       <Typography>/</Typography>
       <Typography>{rosVersion[0]}</Typography>
       <Typography>{rosVersion[1]}</Typography>
+      </>
+      }
       <Typography>/</Typography>
       <Typography>GPU</Typography>
       <Typography>{gpuAvaliable ? "ON" : "OFF"}</Typography>
