@@ -30,9 +30,9 @@ export const Frequencies = (props) => {
   React.useEffect(() => {
     const callback = (message) => {
       if (message.data.ros_version.trim() === "noetic") {
-        setRosVersion("ROS Noetic");
+        setRosVersion(["ROS", "Noetic"]);
       } else if (message.data.ros_version.trim() === "humble") {
-        setRosVersion("ROS2 Humble");
+        setRosVersion(["ROS2", "Humble"]);
       }
       setGpuAvaliable(message.data.gpu_avaliable);
     };
@@ -44,11 +44,13 @@ export const Frequencies = (props) => {
 
   return (
     <div className={props.style}>
-      <Typography title="AF">{frequencies.brain.toFixed(0)} Hz</Typography>
+      <Typography title="AF">{frequencies.brain.toFixed(0)}</Typography>
+      <Typography>Hz</Typography>
       <Typography>/</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
       <Typography>/</Typography>
-      <Typography>{rosVersion}</Typography>
+      <Typography>{rosVersion[0]}</Typography>
+      <Typography>{rosVersion[1]}</Typography>
       <Typography>/</Typography>
       <Typography>GPU</Typography>
       <Typography>{gpuAvaliable ? "ON" : "OFF"}</Typography>
