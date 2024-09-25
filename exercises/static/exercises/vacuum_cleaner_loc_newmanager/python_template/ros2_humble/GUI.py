@@ -2,7 +2,7 @@ import json
 import cv2
 import base64
 import numpy as np
-from shared.image import SharedImage
+import threading
 from PIL import Image
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
@@ -26,7 +26,9 @@ class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
-        self.shared_image = SharedImage("guiimage")
+        self.image_to_be_shown = None
+        self.image_to_be_shown_updated = False
+        self.image_show_lock = threading.Lock()
 
         # Payload vars
         self.payload = {'map': '', 'user': ''}
@@ -52,19 +54,29 @@ class GUI(MeasuringThreadingGUI):
         message = json.dumps(self.payload)
         self.send_to_client(message)
 
-    # encode the image data to be sent to websocket
+    # Function to prepare image payload
+    # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
+        with self.image_show_lock:
+            image_to_be_shown_updated = self.image_to_be_shown_updated
+            image_to_be_shown = self.image_to_be_shown
 
-        image = self.shared_image.get()
+        image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
-    	
+
+        if not image_to_be_shown_updated:
+            return payload
+
         shape = image.shape
-        frame = cv2.imencode('.PNG', image)[1]
+        frame = cv2.imencode('.JPEG', image)[1]
         encoded_image = base64.b64encode(frame)
-        
+
         payload['image'] = encoded_image.decode('utf-8')
         payload['shape'] = shape
-        
+
+        with self.image_show_lock:
+            self.image_to_be_shown_updated = False
+
         return payload
 
     def process_colors(self, image):
@@ -93,7 +105,9 @@ class GUI(MeasuringThreadingGUI):
 
     # load the image data
     def showNumpy(self, image):
-        self.shared_image.add(self.process_colors(image))
+        with self.image_show_lock:
+            self.image_to_be_shown = self.process_colors(image)
+            self.image_to_be_shown_updated = True
 
     def getMap(self, url):
         try:
