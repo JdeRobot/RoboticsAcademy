@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   robotics-academy:
-    image: jderobot/robotics-backend:test
+    image: jderobot/robotics-backend:latest
     container_name: developer-container
     ports:
       - "7164:7164"
