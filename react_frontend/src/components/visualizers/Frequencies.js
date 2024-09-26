@@ -44,9 +44,11 @@ export const Frequencies = (props) => {
 
   return (
     <div className={props.style}>
+      <Typography>AF:</Typography>
       <Typography title="AF">{frequencies.brain.toFixed(0)}</Typography>
       <Typography>Hz</Typography>
       <Typography>/</Typography>
+      <Typography>RTF:</Typography>
       <Typography title="RTF">{frequencies.rtf}</Typography>
       {rosVersion &&
       <>
