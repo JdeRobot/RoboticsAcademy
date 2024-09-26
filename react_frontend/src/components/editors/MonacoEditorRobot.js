@@ -74,11 +74,15 @@ while True:
           fontSize: fontSize,
           minimap: { enabled: false },
           automaticLayout: true,
-          scrollBeyondLastLine: false,
+          scrollBeyondLastLine: true,
           wordWrap: "on",
           tabSize: 4,
+          rulers: [80],
+          suggestOnTriggerCharacters: true,
+          quickSuggestions: true,
+          wordBasedSuggestions: true,
         }}
-        onChange={editorCodeChange} // Simplified onChange
+        onChange={editorCodeChange}
         editorDidMount={(editor) => {
           editorRef.current = editor;
         }}
