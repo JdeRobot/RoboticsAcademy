@@ -5,6 +5,8 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import Editor, { loader } from "@monaco-editor/react"; 
 import "../../styles/editors/MonacoEditorRobot.css";
 
+import {createDependencyProposals} from "./MonacoEditorSnippets";
+
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 
 window.RoboticsReactComponents.CodeEditor = (function () {
@@ -60,82 +62,30 @@ while True:
       console.log("Monaco Editor loaded: ", monaco);
 
       monaco.languages.registerCompletionItemProvider("python", {
-        provideCompletionItems: (model, position) => {
-          const textUntilPosition = model.getValueInRange({
+        provideCompletionItems: function (model, position) {
+          // find out if we are completing a property in the 'dependencies' object.
+          var textUntilPosition = model.getValueInRange({
             startLineNumber: 1,
             startColumn: 1,
             endLineNumber: position.lineNumber,
             endColumn: position.column,
           });
-
-          const suggestions = [];
-          if (textUntilPosition.endsWith("for")) {
-            suggestions.push({
-              label: "for",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "for ${1:item} in ${2:iterable}:\n\t$0",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for a for loop",
-            });
-          } else if (textUntilPosition.endsWith("while")) {
-            suggestions.push({
-              label: "while",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "while ${1:condition}:\n\t$0",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for a while loop",
-            });
-          } else if (textUntilPosition.endsWith("if")) {
-            suggestions.push({
-              label: "if",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "if ${1:condition}:\n\t$0",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for an if statement",
-            });
-          } else if (textUntilPosition.endsWith("elif")) {
-            suggestions.push({
-              label: "elif",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "elif ${1:condition}:\n\t$0",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for an elif statement",
-            });
-          } else if (textUntilPosition.endsWith("print")) {
-            suggestions.push({
-              label: "print",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "print(${1:message})",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for a print statement",
-            });
-          } else if (textUntilPosition.endsWith("def")) {
-            suggestions.push({
-              label: "def",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "def ${1:function_name}(${2:params}):\n\t$0",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for a function definition",
-            });
-          } else if (textUntilPosition.endsWith("try")) {
-            suggestions.push({
-              label: "try",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "try:\n\t$0\nexcept ${1:Exception} as ${2:e}:\n\tpass",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for try-except block",
-            });
-          } else if (textUntilPosition.endsWith("class")) {
-            suggestions.push({
-              label: "class",
-              kind: monaco.languages.CompletionItemKind.Snippet,
-              insertText: "class ${1:ClassName}(${2:object}):\n\tdef __init__(self, ${3:args}):\n\t\t$0",
-              insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-              documentation: "Snippet for a class definition",
-            });
-          }
-
-          return { suggestions: suggestions };
+          // var match = textUntilPosition.match(
+          //   /"dependencies"\s*:\s*\{\s*("[^"]*"\s*:\s*"[^"]*"\s*,\s*)*([^"]*)?$/
+          // );
+          // if (!match) {
+          //   return { suggestions: [] };
+          // }
+          var word = model.getWordUntilPosition(position);
+          var range = {
+            startLineNumber: position.lineNumber,
+            endLineNumber: position.lineNumber,
+            startColumn: word.startColumn,
+            endColumn: word.endColumn,
+          };
+          return {
+            suggestions: createDependencyProposals(range),
+          };
         },
       });
     }).catch((error) => {
