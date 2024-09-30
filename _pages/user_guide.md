@@ -108,6 +108,22 @@ You should get something like:
 ### Windows
 For Windows machines, GPU acceleration to Docker can be implemented with WSL2 as per instructions given [here](https://docs.docker.com/desktop/gpu/#using-nvidia-gpus-with-wsl2).
 
+### Tips for Docker
+
+Make sure to remove the container if you have problems with the exercise not loading with the following commands.
+
+1. Locate the docker container used for RoboticsAcademy using
+
+```bash
+docker ps -a
+```
+
+2. Remove that container using
+
+```bash
+docker rm CONTAINER_ID
+```
+
 <a name="perform-exercise"></a>
 # 3. How to use and perform the exercises?
 
