@@ -1,6 +1,6 @@
-# Creating a mini RADI (Robotics Application Docker Image)
+# Creating a RADI (RoboticsAcademy Docker Image)
 
-The build.sh script is designed to build a Docker mini RADI image, from specific branches. It is customizable, allowing the user to choose the version of ROS (Robot Operating System) used, the branches of different repositories, and the tag of the Docker image. Below is a step-by-step guide on how to use the script.
+The build.sh script is designed to build a Docker RADI image, from specific branches. It is customizable, allowing the user to choose the version of ROS (Robot Operating System) used, the branches of different repositories, and the tag of the Docker image. Below is a step-by-step guide on how to use the script.
 
 ## Prerequisites
 - Docker installed on your machine. You can download Docker from [here](https://www.docker.com/products/docker-desktop).
@@ -11,7 +11,7 @@ The build.sh script is designed to build a Docker mini RADI image, from specific
 1. **Navigate to the scripts directory**
     
     ```bash
-    cd /scripts/mini_RADI
+    cd /scripts/RADI
     ```
 
 2. **Build the Docker image**
