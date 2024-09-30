@@ -1,6 +1,6 @@
-## Humble mini RADI structure
+## Humble RADI structure
 
-The Humble mini RADI is built from **Ubuntu 22.04**.
+The Humble RADI is built from **Ubuntu 22.04**.
 
 Main components of the RADI are:
 

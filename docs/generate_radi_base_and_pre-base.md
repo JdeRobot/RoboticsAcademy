@@ -1,6 +1,6 @@
 # Building the RADI Pre-base and Base Docker Images
 
-This guide will walk you through the process of building two Docker images, RADI pre-base and RADI base, which are essential building blocks for creating the mini RADI. This steps are not necesary if you just made changes in the RoboticsAcademy repository.
+This guide will walk you through the process of building two Docker images, RADI pre-base and RADI base, which are essential building blocks for creating the RADI. This steps are not necesary if you just made changes in the RoboticsAcademy repository.
 
 ## 1. RADI Pre-base Image
 The RADI pre-base Docker image includes all the necessary robotic dependencies for running robotic simulations, as well as the robot models within the CustomRobots directory. If you make any changes in the dependecies or the robot models (RoboticsInfrastructure repository), you will need to build the RADI pre-base image.
