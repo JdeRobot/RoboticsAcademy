@@ -37,7 +37,7 @@ export default function SpecificLocVacuumCleaner() {
 
         console.log(content[2])
 
-        setVacuumPose([content[1]*height,content[0]*width, -content[2] + 2*Math.PI]);
+        setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
       }
 
       if(updateData.image) {
