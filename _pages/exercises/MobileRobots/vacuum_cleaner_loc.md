@@ -192,7 +192,7 @@ The first step would be to apply erosion function on the map image. This is done
 
 The second task is to come up with a **transformation matrix**, that would convert our 3d gazebo positions into 2d map representations. A degree of rotation has to applied on the Y axis and add a translation of 0.6 on the X axis and -1 on the Y axis can be used to get the origin of coordinates (0, 0) of the image in the upper left hand corner.
 
-Once we get **specific positions** on our map. Using the dimensions of our vacuum cleaner, we can generate grid cells around those points. The size of vacuum cleaner can be taken as 16x16 pixel units. Take it as an exercise to calculate it on your own!
+Once we get **specific positions** on our map. Using the dimensions of our vacuum cleaner, we can generate grid cells around those points. The size of vacuum cleaner can be taken as 35x35 pixel units. Take it as an exercise to calculate it on your own!
 
 ### Obstacles and Color Coding
 Taking the map as a grayscale image, we can apply **color coding** to the map as well. It is convenient to separate **Obstacles**, **Virtual Obstacles**, **Return Points** and **Critical Points**
