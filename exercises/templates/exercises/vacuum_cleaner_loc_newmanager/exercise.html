@@ -13,14 +13,15 @@
             {% end_react_component %}
             {% react_component components/containers/MaterialBox id="content" %}
                 {% react_component components/containers/MaterialBox id="content-exercise" %}
-                    {% react_component components/containers/ExerciseControl %}{% end_react_component %}
+                    {% react_component components/containers/ExerciseControl efficacy %}{% end_react_component %}
+                    {% react_component uniboticsExtra/assets/exercises/vacuum_cleaner_loc_newmanager/GridLocVacuumCleaner %}{% end_react_component %}
                     {% react_component components/containers/FlexContainer row %}
                     {% react_component components/containers/FlexContainer console %} 
                     {% react_component components/editors/AceEditorRobot %}{% end_react_component %}
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
-                            {% react_component exercise/vacuum_cleaner_loc_newmanager/SpecificLocVacuumCleaner %}{% end_react_component %}
+                            {% react_component uniboticsExtra/assets/exercises/vacuum_cleaner_loc_newmanager/SpecificLocVacuumCleaner %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
