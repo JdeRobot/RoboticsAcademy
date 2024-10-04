@@ -12,6 +12,8 @@ function name(params) {
 export default function SpecificLocVacuumCleaner() {
   const guiCanvasRef = React.useRef();
   const [vacuumPose, setVacuumPose] = React.useState(null)
+  const [path, setPath] = React.useState("")
+  var trail = [];
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -35,9 +37,25 @@ export default function SpecificLocVacuumCleaner() {
         var width = (1013 / 300) / (1013 /img.clientWidth);
         var height = (1012 / 150) / (1012 /img.clientHeight);
 
-        console.log(content[2])
+        var newPath = "M ";
+
+        for (let index = 0; index < trail.length; index++) {
+          const element = trail[index];
+          var top  = element[0] * height;
+          var left = element[1] * width;
+          if (index === 0) {
+            newPath += left.toString()+ "," + top.toString();
+          } else {
+            newPath += " L " + left.toString() + "," + top.toString();
+          }
+        }
+
+        setPath(newPath)
 
         setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
+        if (!trail.includes([content[1],content[0]])) {
+          trail.push([content[1],content[0]]);
+        }
       }
 
       if(updateData.image) {
@@ -80,7 +98,8 @@ export default function SpecificLocVacuumCleaner() {
       console.log(message);
       if (message.data.state === "visualization_ready") {
         try {
-          clearMap(guiCanvasRef.current,)
+          setPath("")
+          trail = []
         } catch (error) {
         }
       }
@@ -120,6 +139,9 @@ export default function SpecificLocVacuumCleaner() {
             <div className="arrow"/>
           </div>
         }
+        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <path d={path} style={{strokeWidth: "20px", stroke: "blue", fill: "none"}}/>
+        </svg>
       </div>
       <img id="gui-canvas-numpy" width="400" height="400" style={{
             marginTop: "5px",
