@@ -45,7 +45,8 @@ class Map:
 
 		ty = math.cos(-rt) - math.sin(-rt)
 		tx = math.sin(-rt) + math.cos(-rt)
-
+		
+		# FIX: this should only return the yaw
 		return rt, 0
 
 	# Function to reset
