@@ -67,7 +67,7 @@ class Map:
         ty = math.cos(-rt) - math.sin(-rt)
         tx = math.sin(-rt) + math.cos(-rt)
 
-        return tx, ty
+        return rt, 0
 
     # Function to reset
     def reset(self):

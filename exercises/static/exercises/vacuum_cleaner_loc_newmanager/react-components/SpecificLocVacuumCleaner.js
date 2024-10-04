@@ -14,8 +14,6 @@ export default function SpecificLocVacuumCleaner() {
   var lastPose = undefined;
 
   const resizeObserver = new ResizeObserver((entries) => {
-    console.log(entries)
-
     var img = entries[0].target; 
     //or however you get a handle to the IMG
     var width = (1013 / 300) / (1013 /img.clientWidth);
@@ -23,7 +21,9 @@ export default function SpecificLocVacuumCleaner() {
 
     updatePath(trail, setPath, height, width);
 
-    setVacuumPose([lastPose[1]*height,lastPose[0]*width, -lastPose[2]]);
+    if (lastPose) {
+      setVacuumPose([lastPose[1]*height,lastPose[0]*width, -lastPose[2]]);
+    }
   });
 
   React.useEffect(() => {
@@ -128,7 +128,7 @@ export default function SpecificLocVacuumCleaner() {
               <path></path>
             )}
           </mask>
-          <image href={houseMapClean} height="100%" width="100%" mask="url(#svg-draw)"></image>
+          <image href={houseMapClean} height="100%" width="100%" mask="url(#svg-draw)" preserveAspectRatio="none"></image>
         </svg>
       </div>
       <img id="gui-canvas-numpy" width="400" height="400" style={{
