@@ -2,6 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { draw, clearMap } from "Helpers/BirdEye";
 import houseMap from "../resources/images/mapgrannyannie.png";
+import houseMap2 from "../resources/images/mapgrannyannie copy.png";
 
 import "./css/GUICanvas.css";
 
@@ -112,22 +113,31 @@ export default function SpecificLocVacuumCleaner() {
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img src={houseMap} alt="" className="exercise-canvas" id="exercise-img"/>
+      <img src={houseMap2} alt="" className="exercise-canvas" id="exercise-img"/>
       <div className="overlay" id="map-container">
         {vacuumPose &&
           <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -10 , left: vacuumPose[1] -10}}>
             <div className="arrow"/>
           </div>
         }
-        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
-          <path d={path} style={{strokeWidth: "20px", stroke: "blue", fill: "none"}}/>
+        <svg height="100%" width="100%">
+          <mask id="svg-draw">
+            {path ? (
+              <path d={path} style={{strokeWidth: "20px", strokeLinejoin:"round", stroke: "white", fill: "none"}}/>
+            ) : (
+              <path></path>
+            )}
+          </mask>
+          <image href={houseMap} height="100%" width="100%" mask="url(#svg-draw)"></image>
         </svg>
       </div>
       <img id="gui-canvas-numpy" width="400" height="400" style={{
-            marginTop: "5px",
-            width: "100%",
+            // marginTop: "5px",
+            position: "absolute",
+            left: "50%",
+            width: "50%",
             height: "100%",
-            margin: "auto"
+            // margin: "auto"
       }}></img>
     </div>
   );
