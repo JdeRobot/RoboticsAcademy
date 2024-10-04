@@ -11,6 +11,20 @@ export default function SpecificLocVacuumCleaner() {
   const [vacuumPose, setVacuumPose] = React.useState(null)
   const [path, setPath] = React.useState("")
   var trail = [];
+  var lastPose = undefined;
+
+  const resizeObserver = new ResizeObserver((entries) => {
+    console.log(entries)
+
+    var img = entries[0].target; 
+    //or however you get a handle to the IMG
+    var width = (1013 / 300) / (1013 /img.clientWidth);
+    var height = (1012 / 150) / (1012 /img.clientHeight);
+
+    updatePath(trail, setPath, height, width);
+
+    setVacuumPose([lastPose[1]*height,lastPose[0]*width, -lastPose[2]]);
+  });
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -21,6 +35,7 @@ export default function SpecificLocVacuumCleaner() {
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
         const content = pose.split(",").map(item => parseFloat(item));
+        lastPose = content;
 
         var img = document.getElementById('exercise-img'); 
         //or however you get a handle to the IMG
@@ -58,6 +73,8 @@ export default function SpecificLocVacuumCleaner() {
       [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
     );
+
+    resizeObserver.observe(document.getElementById('exercise-img'));
 
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
