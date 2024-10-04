@@ -1,14 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { draw, clearMap } from "Helpers/BirdEye";
-import houseMap from "../resources/images/mapgrannyannie.png";
-import houseMap2 from "../resources/images/mapgrannyannie copy.png";
+import {updatePath, addToPath} from "./helpers/VacuumCleanerHelper";
+import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
+import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
+import Vacuum from "../resources/images/vacuum.svg";
 
 import "./css/GUICanvas.css";
-
-function name(params) {
-  
-}
 
 export default function SpecificLocVacuumCleaner() {
   const [vacuumPose, setVacuumPose] = React.useState(null)
@@ -30,25 +27,10 @@ export default function SpecificLocVacuumCleaner() {
         var width = (1013 / 300) / (1013 /img.clientWidth);
         var height = (1012 / 150) / (1012 /img.clientHeight);
 
-        var newPath = "M ";
-
-        for (let index = 0; index < trail.length; index++) {
-          const element = trail[index];
-          var top  = element[0] * height;
-          var left = element[1] * width;
-          if (index === 0) {
-            newPath += left.toString()+ "," + top.toString();
-          } else {
-            newPath += " L " + left.toString() + "," + top.toString();
-          }
-        }
-
-        setPath(newPath)
+        updatePath(trail, setPath, height, width);
 
         setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
-        if (!trail.includes([content[1],content[0]])) {
-          trail.push([content[1],content[0]]);
-        }
+        addToPath(content[1], content[0], trail);
       }
 
       if(updateData.image) {
@@ -113,10 +95,11 @@ export default function SpecificLocVacuumCleaner() {
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img src={houseMap2} alt="" className="exercise-canvas" id="exercise-img"/>
+      <img src={houseMapDirty} alt="" className="exercise-canvas" id="exercise-img"/>
       <div className="overlay" id="map-container">
         {vacuumPose &&
           <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -10 , left: vacuumPose[1] -10}}>
+            <img src={Vacuum} id="vacuum-pos"/>
             <div className="arrow"/>
           </div>
         }
@@ -128,16 +111,14 @@ export default function SpecificLocVacuumCleaner() {
               <path></path>
             )}
           </mask>
-          <image href={houseMap} height="100%" width="100%" mask="url(#svg-draw)"></image>
+          <image href={houseMapClean} height="100%" width="100%" mask="url(#svg-draw)"></image>
         </svg>
       </div>
       <img id="gui-canvas-numpy" width="400" height="400" style={{
-            // marginTop: "5px",
             position: "absolute",
             left: "50%",
             width: "50%",
             height: "100%",
-            // margin: "auto"
       }}></img>
     </div>
   );
