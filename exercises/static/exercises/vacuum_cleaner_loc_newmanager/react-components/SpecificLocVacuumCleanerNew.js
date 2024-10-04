@@ -10,7 +10,6 @@ function name(params) {
 }
 
 export default function SpecificLocVacuumCleaner() {
-  const guiCanvasRef = React.useRef();
   const [vacuumPose, setVacuumPose] = React.useState(null)
   const [path, setPath] = React.useState("")
   var trail = [];
@@ -25,13 +24,6 @@ export default function SpecificLocVacuumCleaner() {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
         const content = pose.split(",").map(item => parseFloat(item));
 
-        // draw(
-        //   guiCanvasRef.current,
-        //   content[0],
-        //   content[1],
-        //   content[2],
-        //   content[3],
-        // );
         var img = document.getElementById('exercise-img'); 
         //or however you get a handle to the IMG
         var width = (1013 / 300) / (1013 /img.clientWidth);
@@ -120,18 +112,6 @@ export default function SpecificLocVacuumCleaner() {
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      {/* <canvas
-        ref={guiCanvasRef}
-        style={{
-          backgroundImage:
-            "url('/static/exercises/vacuum_cleaner_loc_newmanager/resources/images/mapgrannyannie.png')",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%",
-          border: "2px solid #d3d3d3",
-          width: "50%",
-          height: "100%",
-        }}
-      /> */}
       <img src={houseMap} alt="" className="exercise-canvas" id="exercise-img"/>
       <div className="overlay" id="map-container">
         {vacuumPose &&
