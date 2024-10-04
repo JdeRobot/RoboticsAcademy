@@ -7,9 +7,8 @@ export const updatePath = (trail, setPathCallback, height, width) => {
     var left = element[1] * width;
     if (index === 0) {
       newPath += left.toString()+ "," + top.toString();
-    } else {
-      newPath += " L " + left.toString() + "," + top.toString();
     }
+    newPath += " L " + left.toString() + "," + top.toString();
   }
 
   setPathCallback(newPath)
