@@ -26,7 +26,19 @@ const SpecificFollowLine = (props) => {
       if(message.data.update.image){
         const image = JSON.parse(message.data.update.image)
         if(image.image){
-          drawImage(message.data.update)
+          let canvas = document.getElementById("canvas");
+          //Parse encoded image data and decode it
+          function decode_utf8(s) {
+              return decodeURIComponent(escape(s))
+          }
+          var source = decode_utf8(image.image),
+          shape = image.shape;
+
+          if(source !== ""){
+            canvas.src = "data:image/png;base64," + source;
+            canvas.width = shape[1];
+            canvas.height = shape[0];
+          }
         }
         try {
           const pose = getCarPose(circuitName, message.data.update.map)
@@ -118,11 +130,7 @@ const SpecificFollowLine = (props) => {
 
   return (
     <Box sx={{ height: "100%", position: "relative"}}>
-      <canvas
-        ref={canvasRef}
-        className={"exercise-canvas"}
-        id="canvas"
-      ></canvas>
+      <img ref={canvasRef} className={"exercise-canvas"} id="canvas"></img>
       { lapTime &&
         <label className="overlay" id="lap-time">{lapTime} s</label>
       }
