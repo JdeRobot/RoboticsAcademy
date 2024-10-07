@@ -85,22 +85,15 @@ class GUI(MeasuringThreadingGUI):
         return plt.imread(url)
 
     def poseToMap(self, x_prime, y_prime, yaw_prime):
-        scale_x = 1024 / 9.885785
-        offset_x = 5.650662
-        x = 1181 - (x_prime + offset_x) * scale_x
-        scale_y = 1024 / 9.75819
-        offset_y = 4.088577
-        y = 24 + (y_prime + offset_y) * scale_y
-        yaw = yaw_prime
+        x = 101.25 * ( 4.2 + y_prime)
+        y = 101.1  * ( 5.7 - x_prime)
+        yaw = yaw_prime + math.pi/2
         return [x, y, yaw]
 
-    def mapToPose(self, x, y, yaw):
-        scale_x = 1024 / 9.885785
-        offset_x = 5.650662
-        x = ((1181 - x) / scale_x) - offset_x
-        scale_y = 1024 / 9.75819
-        offset_y = 4.088577
-        y = ((-24 + y) / scale_y) - offset_y
+    def mapToPose(self, map_x, map_y, map_yaw):
+        x = (map_y - 576.27) / -101.1
+        y = (map_x - 425.25) /  101.25
+        yaw = map_yaw - math.pi/2
         return [x, y, yaw]
 
 host = "ws://127.0.0.1:2303"
