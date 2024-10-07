@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Box } from "@mui/material";
 import "./css/GUICanvas.css";
-import { drawImage } from "./helpers/showImagesFollowLine";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
 import { displayLapTime} from "./helpers/showLapTimeFollowLine";
 
@@ -9,9 +8,6 @@ import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
 import montrealCircuit from "../resources/images/montreal_circuit.png";
 import ngbCircuit from "../resources/images/ngb_circuit.png";
-
-const width = 1280;
-const height = 720;
 
 const SpecificFollowLine = (props) => {
   const [lapTime, setLapTime] = React.useState(null)
