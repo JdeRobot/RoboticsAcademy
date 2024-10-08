@@ -11,6 +11,8 @@ import "ace-builds/src-noconflict/theme-dracula";
 import "ace-builds/src-noconflict/snippets/python";
 
 import "../../styles/editors/AceEditorRobot.css";
+import "./../../tailwind.css";
+import EditorTabs from "./EditorTabs";
 
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 
@@ -42,7 +44,10 @@ window.RoboticsReactComponents.CodeEditor = (function () {
   };
 })();
 
+export const editorList = ["ace", "monaco"];
+
 export default function AceEditorRobot(props) {
+  const [activeEditor, setActiveEditor] = React.useState(editorList[0]);
   const [fontSize, setFontSize] = React.useState(14);
   const [editorCode, setEditorCode] = React.useState(`import GUI
 import HAL
@@ -78,6 +83,10 @@ while True:
 
   return (
     <Box id="code-container">
+      <EditorTabs
+        activeEditor={activeEditor}
+        setActiveEditor={setActiveEditor}
+      />
       <AceEditor
         border="2px solid"
         mode="python"

@@ -5,6 +5,7 @@ import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { HomepageProvider } from "../contexts/HomepageContext";
 
+import "./../tailwind.css";
 const theme = createTheme({
   palette: {
     type: "light",

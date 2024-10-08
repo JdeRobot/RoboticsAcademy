@@ -9,13 +9,15 @@
     "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
     "build": "webpack --mode production --output-path ./static/react_frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src/**/*.js"
+    "lint": "eslint src/**/*.js",
+    "build:css": "NODE_ENV=production tailwindcss -o src/tailwind.css -m"
   },
   "keywords": [],
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-react": "^7.16.7",
+    "autoprefixer": "^10.4.20",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
     "eslint": "^8.19.0",
@@ -25,11 +27,13 @@
     "husky": "^8.0.1",
     "lint-staged": "13.1.0",
     "mini-css-extract-plugin": "^2.6.0",
-    "sass": "^1.78.0",
+    "postcss": "^8.4.47",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.1.0",
+    "sass": "^1.78.0",
     "sass-loader": "^12.6.0",
+    "tailwindcss": "^3.4.13",
     "webpack": "^5.94.0",
     "webpack-bundle-tracker": "^1.5.0",
     "webpack-cli": "^4.9.2"
