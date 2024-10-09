@@ -150,8 +150,8 @@ There are two robots to choose from:
 {% include gallery id="ackermannrobot" caption="Ackemann robot" %}
 
 * You can get the robot's mesh files from there: 
-  * Only robot: /home/ws/src/CustomRobots/ackermann_logistic_robot/models/ackermann_logistic_robot/meshes/ackermann_robot.dae
-  * Robot lifting a shelf: /home/ws/src/CustomRobots/ackermann_logistic_robot/models/ackermann_logistic_robot/meshes/ackermann_robot_lifting_shelf.dae
+  * Only robot: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/robot/ackermann_robot.dae
+  * Robot lifting a shelf: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/robot/ackermann_robot_lifting_shelf.dae
 
 {% include gallery id="ackermannrobotmesh" caption="Ackemann robot meshes" %}
 
@@ -165,13 +165,13 @@ There are two warehouses to choose from:
 {% include gallery id="warehouse1" caption="Warehouse 1" %}
 
 * You can get the warehouse's mesh file from there: 
-  * Warehouse without shelves: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/warehouse1.dae
-  * Shelf 1: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf1.dae
-  * Shelf 2: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf2.dae
-  * Shelf 3: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf3.dae
-  * Shelf 4: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf4.dae
-  * Shelf 5: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf5.dae
-  * Shelf 6: /home/ws/src/CustomRobots/amazon_robot/models/warehouse/mesh/shelf6.dae
+  * Warehouse without shelves: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/warehouse1.dae
+  * Shelf 1: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/shelf1.dae
+  * Shelf 2: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/shelf2.dae
+  * Shelf 3: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/shelf3.dae
+  * Shelf 4: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/shelf4.dae
+  * Shelf 5: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/shelf5.dae
+  * Shelf 6: /RoboticsAcademy/exercises/static/exercises/amazon_warehouse_newmanager/resources/meshes/world/warehouse1/shelf6.dae
 
 {% include gallery id="warehouse1mesh" caption="Warehouse 1 meshes" %}
 
@@ -409,6 +409,20 @@ There are different ways to solve the exercise:
   In control-based planning, we need to define a control space and specify control propagation to set the robot movement constraints.
 
   However, there is another approach using the OMPL app class. This class includes predefined robot types such as dynamic car, kinematic car, quadrotor, etc. And, we can define the state space using mesh files. Check this [demo](https://ompl.kavrakilab.org/demos_2SE2RigidBodyPlanning_2SE2RigidBodyPlanning_8cpp_source.html)!
+    * For now, only the meshes of the Ackermann robot and Warehouse 1 are available (listed in the **Supporting information** section).
+
+  In this case, the solution path is composed of a sequence of controls (v, w, duration), instead of coordinates:
+
+  ```python
+  At state Compound state [
+  RealVectorState [0 0]
+  SO2State [0]
+  ]
+  apply control RealVectorControl [3.76703 0.00946806]
+  for 1 steps
+  ```
+
+  Besides, the Gazebo RTF factor can impact the accurary of plan execution, so using simulated time can lead to better results.
 
 
 #### How to find the shortest path?
