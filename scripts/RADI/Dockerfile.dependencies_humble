@@ -57,20 +57,20 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rm -rf /var/lib/apt/lists/*
 
 # Install Gazebo 11
-RUN apt-get update \
-    && add-apt-repository ppa:openrobotics/gazebo11-gz-cli && \
-    apt-get update \
-    && apt-get install -y \
-    gazebo11 \
-    ros-${ROS_DISTRO}-ros-gz-* \
-    gstreamer1.0-plugins-bad \
-    gstreamer1.0-plugins-good \
-    gstreamer1.0-plugins-ugly \
-    gstreamer1.0-libav \
-    libgstreamer-plugins-base1.0-dev \
-    libimage-exiftool-perl \
-    && rm -rf /var/lib/apt/lists/*
-RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
+# RUN apt-get update \
+#     && add-apt-repository ppa:openrobotics/gazebo11-gz-cli && \
+#     apt-get update \
+#     && apt-get install -y \
+#     gazebo11 \
+#     ros-${ROS_DISTRO}-ros-gz-* \
+#     gstreamer1.0-plugins-bad \
+#     gstreamer1.0-plugins-good \
+#     gstreamer1.0-plugins-ugly \
+#     gstreamer1.0-libav \
+#     libgstreamer-plugins-base1.0-dev \
+#     libimage-exiftool-perl \
+#     && rm -rf /var/lib/apt/lists/*
+# RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
 # Install Gazebo Harmonic
 RUN apt-get update \
