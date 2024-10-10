@@ -56,9 +56,6 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
-def showImage(image):
-    gui.showImage(image)
-
 def showForces(vec1, vec2, vec3):
     gui.showForces(vec1, vec2, vec3)
 
