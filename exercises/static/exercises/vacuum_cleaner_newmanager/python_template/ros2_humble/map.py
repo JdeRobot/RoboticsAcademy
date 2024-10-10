@@ -61,14 +61,9 @@ class Map:
         return x, y
 
     def getRobotAngle(self):
-        pose = self.pose_getter()
-        rt = pose.yaw
+        pose = self.pose3d()
 
-        ty = math.cos(-rt) - math.sin(-rt)
-        tx = math.sin(-rt) + math.cos(-rt)
-
-        # FIX: this should only return the yaw
-        return rt, 0
+        return pose.yaw,
 
     # Function to reset
     def reset(self):
