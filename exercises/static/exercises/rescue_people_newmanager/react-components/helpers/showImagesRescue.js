@@ -19,7 +19,7 @@ export function drawImage(data) {
     source = decode_utf8(image_data.image_right),
     shape = image_data.shape_right;
 
-  if (source != "") {
+  if (source != "" && shape instanceof Array) {
     canvas.src = "data:image/jpeg;base64," + source;
     canvas.width = shape[1];
     canvas.height = shape[0];
@@ -39,7 +39,7 @@ export function drawLeftImage(data) {
     source = decode_utf8(image_data.image_left),
     shape = image_data.shape_left;
 
-  if (source != "") {
+  if (source != "" && shape instanceof Array) {
     canvas.src = "data:image/jpeg;base64," + source;
     canvas.width = shape[1];
     canvas.height = shape[0];

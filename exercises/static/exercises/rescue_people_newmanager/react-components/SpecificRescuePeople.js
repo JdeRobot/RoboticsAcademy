@@ -38,8 +38,10 @@ function SpecificRescuePeople(props) {
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img className="image" id="gui_canvas_left" style={{left: "0"}}/>
-      <img className="image" id="gui_canvas_right" style={{left: "50%"}}/>
+      <img className="image" id="gui_canvas_left" style={{left: "0"}}
+        src="https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"/>
+      <img className="image" id="gui_canvas_right" style={{left: "50%"}}
+        src="https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"/>
     </div>
   );
 }
