@@ -1,10 +1,14 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {clearMap, draw, drawUserPosition, printParticles} from "./helpers/birds_eye"
+import houseMap from "../resources/images/mapgrannyannie.png";
+import Vacuum from "../resources/images/vacuum.svg";
 
+import "./css/GUICanvas.css";
 
 function SpecificMontecarloLaserLoc(props) {
-  const guiCanvasRef = React.useRef();
+  const [vacuumPose, setVacuumPose] = React.useState(null)
+  const [userPose, setUserPose] = React.useState(null)
+  const [userParticles, setParticles] = React.useState([])
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -12,30 +16,28 @@ function SpecificMontecarloLaserLoc(props) {
     const callback = (message) => {
       const updateData = message.data.update;
       // Lógica para manejar el mapa
+      var img = document.getElementById('exercise-img'); 
+      var width = (1013 / 300) / (1013 /img.clientWidth);
+      var height = (1012 / 150) / (1012 /img.clientHeight);
+
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
         const content = pose.split(",").map(item => parseFloat(item));
         const poseUser = updateData.user.substring(1, updateData.user.length - 1);
         const userContent = poseUser.split(",").map(item => parseFloat(item));
 
-        draw(
-          guiCanvasRef.current,
-          content[0],
-          content[1],
-          content[2],
-          content[3],
-          userContent[0],
-          userContent[1],
-          userContent[2],
-          userContent[3]
-        );
+        setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
+        setUserPose([userContent[1]*height,userContent[0]*width, -userContent[2]]);
       }
 
-      
       if (updateData.particles){
         const particles = JSON.parse(updateData.particles);
         if(particles != "") {
-            printParticles(guiCanvasRef.current, particles);
+          var new_particles = [];
+          particles.forEach(element => {
+            new_particles.push([element[1]*height, element[0]*width, -element[2]])
+          });
+          setParticles(new_particles)
         }
       }
 
@@ -61,7 +63,8 @@ function SpecificMontecarloLaserLoc(props) {
     const callback = (message) => {
       if (message.data.state === "ready") {
         try {
-          clearMap(guiCanvasRef.current,)
+          setVacuumPose(null)
+          setUserPose(null)
         } catch (error) {
         }
       }
@@ -81,18 +84,29 @@ function SpecificMontecarloLaserLoc(props) {
   }, [])
 
   return (
-    <div style={{ display: "flex", width: "100%", height: "100%" }}>
-      <canvas
-        ref={guiCanvasRef}
-        style={{
-          backgroundImage:
-            "url('/static/exercises/montecarlo_visual_loc_newmanager/resources/mapgrannyannie.png')",
-          border: "2px solid #d3d3d3",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100% 100%",
-          
-        }}
-      />
+    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
+      <img src={houseMap} alt="" className="exercise-canvas" id="exercise-img"/>
+      <div className="overlay" id="map-container">
+        {vacuumPose &&
+          <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -15 , left: vacuumPose[1] -15}}>
+            <img src={Vacuum} id="vacuum-pos"/>
+            <div className="arrow arrow-real"/>
+          </div>
+        }
+        {userPose &&
+          <div id="user-pos" style={{rotate: "z "+ userPose[2]+"rad", top: userPose[0] -15 , left: userPose[1] -15}}>
+            <img src={Vacuum} id="user-pos"/>
+            <div className="arrow arrow-user"/>
+          </div>
+        }
+        {userParticles.map(element => {
+            return (
+              <div className="particle" style={{rotate: "z "+ element[2]+"rad", top: element[0] -5, left: element[1] -5}}>
+                <div className="particle-arrow"/>
+              </div>
+          )})
+        }
+      </div>
     </div>
   );
 }
