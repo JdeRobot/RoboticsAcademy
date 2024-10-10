@@ -50,8 +50,8 @@ function SpecificMontecarloLaserLoc(props) {
 
         setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
         console.log(userContent)
-        
-        if (userContent) {
+
+        if (!(userContent[0] === 0 && userContent[1] === 0 && userContent[2] === 0)) {
           lastUserPose = userContent;
           setUserPose([userContent[1]*height,userContent[0]*width, -userContent[2]]);
         }
