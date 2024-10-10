@@ -10,6 +10,26 @@ function SpecificMontecarloLaserLoc(props) {
   const [userPose, setUserPose] = React.useState(null)
   const [userParticles, setParticles] = React.useState([])
 
+  var lastRealPose = undefined;
+  var lastUserPose = undefined;
+
+  const resizeObserver = new ResizeObserver((entries) => {
+    var img = entries[0].target; 
+    //or however you get a handle to the IMG
+    var width = (1013 / 300) / (1013 /img.clientWidth);
+    var height = (1012 / 150) / (1012 /img.clientHeight);
+
+    if (lastRealPose) {
+      setVacuumPose([lastRealPose[1]*height,lastRealPose[0]*width, -lastRealPose[2]]);
+    }
+
+    if (lastUserPose) {
+      setUserPose([lastUserPose[1]*height,lastUserPose[0]*width, -lastUserPose[2]]);
+    }
+
+    setParticles([])
+  });
+
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
@@ -25,6 +45,9 @@ function SpecificMontecarloLaserLoc(props) {
         const content = pose.split(",").map(item => parseFloat(item));
         const poseUser = updateData.user.substring(1, updateData.user.length - 1);
         const userContent = poseUser.split(",").map(item => parseFloat(item));
+
+        lastRealPose = content;
+        lastUserPose = userContent;
 
         setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
         setUserPose([userContent[1]*height,userContent[0]*width, -userContent[2]]);
@@ -49,6 +72,8 @@ function SpecificMontecarloLaserLoc(props) {
       [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
     );
+
+    resizeObserver.observe(document.getElementById('exercise-img'));
 
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
