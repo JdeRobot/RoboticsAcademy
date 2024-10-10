@@ -47,10 +47,14 @@ function SpecificMontecarloLaserLoc(props) {
         const userContent = poseUser.split(",").map(item => parseFloat(item));
 
         lastRealPose = content;
-        lastUserPose = userContent;
 
         setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
-        setUserPose([userContent[1]*height,userContent[0]*width, -userContent[2]]);
+        console.log(userContent)
+        
+        if (userContent) {
+          lastUserPose = userContent;
+          setUserPose([userContent[1]*height,userContent[0]*width, -userContent[2]]);
+        }
       }
 
       if (updateData.particles){
