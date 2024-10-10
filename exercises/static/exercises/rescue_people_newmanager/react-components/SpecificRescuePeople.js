@@ -37,9 +37,19 @@ function SpecificRescuePeople(props) {
   }, []);
 
   return (
-    <div style={{ display: "flex", width: "100%", height: "100%" }}>
-      <canvas id="gui_canvas_left"></canvas>
-      <canvas id="gui_canvas_right"></canvas>
+    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
+      <img id="gui_canvas_left" style={{
+            position: "absolute",
+            left: "0",
+            width: "50%",
+            height: "100%",
+      }}/>
+      <img id="gui_canvas_right" style={{
+            position: "absolute",
+            left: "50%",
+            width: "50%",
+            height: "100%",
+      }}/>
     </div>
   );
 }
