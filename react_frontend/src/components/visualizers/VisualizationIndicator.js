@@ -27,7 +27,7 @@ export default function VisualizationIndicator(props) {
   return (
     <Tooltip title="Robotics Backend">
       <Box className={visualizationReady ? "ready" : "waiting"}>
-        <p className="title">Visualization State</p>
+        <p className="title">GUI</p>
         <Typography sx={{ fontSize: "0.8rem" }} className="word">
           {visualizationReady ? "ready" : "waiting"}
         </Typography>

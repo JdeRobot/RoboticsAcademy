@@ -48,7 +48,7 @@ export default function WorldSelector(props) {
           .terminate_universe()
           .then(() => {
             window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
-              "Launching World"
+              "Launching Universe"
             );
             window.RoboticsExerciseComponents.commsManager
               .launchWorld(config)
@@ -80,7 +80,7 @@ export default function WorldSelector(props) {
         }}
         size="small"
       >
-        <InputLabel id={"circuit-selector-label"}>World</InputLabel>
+        <InputLabel id={"circuit-selector-label"}>Universe</InputLabel>
         <Select
           disabled={disabled}
           value={selectedCircuit}
