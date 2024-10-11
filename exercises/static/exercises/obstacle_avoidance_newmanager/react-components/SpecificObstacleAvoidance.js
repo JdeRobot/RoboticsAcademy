@@ -2,12 +2,11 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { paintEvent } from "./helpers/map";
 
+import F1Car from "../resources/images/f1-car.svg";
+import "./css/GUICanvas.css";
 
 function SpecificObstacleAvoidance(props) {
   const guiCanvasRef = React.useRef();
-  const [image, setImage] = React.useState(
-    "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"
-  );
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -16,6 +15,10 @@ function SpecificObstacleAvoidance(props) {
       const data = message.data.update;
       if(data.map){
         const dataToDraw = JSON.parse(data.map)
+        // TODO: for lasers draw vertical from the center then rotate them accordingly
+        // TODO: circular lasers and also circular marks every meter
+        // TODO: For the arrows use the same as the lasers
+
         paintEvent(dataToDraw.target, dataToDraw.car, dataToDraw.obstacle, dataToDraw.average, dataToDraw.laser, dataToDraw.max_range)
       }
 
@@ -39,19 +42,20 @@ function SpecificObstacleAvoidance(props) {
 
   return (
     <div style={{display: "flex",   width: "100%",
-    height: "100%", backgroundColor: "#363233"}}>
-    <canvas
-      ref={guiCanvasRef}
-      id="local-map"
+    height: "100%", backgroundColor: "#363233", position:"relative"}}>
+      <canvas
+        ref={guiCanvasRef}
+        id="local-map"
 
-      style={{
-        backgroundColor: "#363233",
-      	marginTop: "5px",
-        width: "50%",
-        height: "100%",
-        margin: "auto"
-    }}
-    />
+        style={{
+          backgroundColor: "#363233",
+          marginTop: "5px",
+          width: "50%",
+          height: "100%",
+          margin: "auto"
+      }}
+      />
+      <img src={F1Car} id="f1-car"/>
     </div>
   );
 }

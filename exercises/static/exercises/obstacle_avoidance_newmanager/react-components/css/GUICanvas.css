@@ -1,0 +1,7 @@
+#f1-car {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  bottom: 10px;
+  left: calc(50% - 50px);
+}
