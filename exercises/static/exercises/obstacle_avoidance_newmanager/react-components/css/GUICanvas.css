@@ -22,3 +22,20 @@
   transform-origin: 0% 0%;
   z-index: 3;
 }
+
+.arrow {
+  position: absolute;
+  z-index: 5;
+  width: 36px;
+  bottom: 100px;
+  left: calc(50% - 18px);
+  transform-origin: center bottom;
+}
+
+.green {
+  filter: invert(82%) sepia(13%) saturate(6762%) hue-rotate(39deg) brightness(105%) contrast(107%);
+}
+
+.red {
+  filter: invert(13%) sepia(87%) saturate(6390%) hue-rotate(343deg) brightness(91%) contrast(89%);
+}
