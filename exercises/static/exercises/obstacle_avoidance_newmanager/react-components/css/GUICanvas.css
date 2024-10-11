@@ -1,7 +1,24 @@
 #f1-car {
   position: absolute;
-  width: 100px;
+  width: 50px;
   height: 100px;
   bottom: 10px;
-  left: calc(50% - 50px);
+  left: calc(50% - 25px);
+  z-index: 4;
+}
+
+.laser-beam {
+  position: absolute;
+  background: repeating-linear-gradient(
+    to right,
+    rgb(112, 138, 255),
+    rgb(112, 138, 255) 73px,
+    rgb(100, 198, 255) 73px,
+    rgb(100, 198, 255) 146px
+  );
+  background-size: 100% 1px;
+  bottom: 90px;
+  left: 50%;
+  transform-origin: 0% 0%;
+  z-index: 3;
 }

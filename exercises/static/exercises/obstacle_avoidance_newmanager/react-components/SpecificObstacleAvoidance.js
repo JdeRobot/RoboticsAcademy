@@ -7,6 +7,8 @@ import "./css/GUICanvas.css";
 
 function SpecificObstacleAvoidance(props) {
   const guiCanvasRef = React.useRef();
+  const [laser, setLaser] = React.useState([])
+  const [maxRange, setMaxRange] = React.useState([])
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -15,11 +17,11 @@ function SpecificObstacleAvoidance(props) {
       const data = message.data.update;
       if(data.map){
         const dataToDraw = JSON.parse(data.map)
-        // TODO: for lasers draw vertical from the center then rotate them accordingly
-        // TODO: circular lasers and also circular marks every meter
         // TODO: For the arrows use the same as the lasers
 
         paintEvent(dataToDraw.target, dataToDraw.car, dataToDraw.obstacle, dataToDraw.average, dataToDraw.laser, dataToDraw.max_range)
+        setLaser(dataToDraw.laser)
+        setMaxRange(dataToDraw.max_range)
       }
 
       // Send the ACK of the msg
@@ -42,7 +44,7 @@ function SpecificObstacleAvoidance(props) {
 
   return (
     <div style={{display: "flex",   width: "100%",
-    height: "100%", backgroundColor: "#363233", position:"relative"}}>
+    height: "100%", backgroundColor: "#363233", position:"relative", overflowY:"auto"}}>
       <canvas
         ref={guiCanvasRef}
         id="local-map"
@@ -52,10 +54,17 @@ function SpecificObstacleAvoidance(props) {
           marginTop: "5px",
           width: "50%",
           height: "100%",
-          margin: "auto"
+          margin: "auto",
       }}
       />
       <img src={F1Car} id="f1-car"/>
+      {laser.map(element => {
+        var ang = -element[1]
+        var length = (element[0] / maxRange)*100;
+        return (
+          <hr className="laser-beam" style={{rotate: "z "+ ang +"rad", width: "calc("+length + "%)"}}/>
+        )})
+      }
     </div>
   );
 }
