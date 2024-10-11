@@ -14,14 +14,11 @@ import "../../styles/editors/AceEditorRobot.css";
 
 // monaco editor import start
 import "./../../tailwind.css";
-// import MonacoEditor from "./monaco_editor/MonacoEditor";
-// import EditorTabs from "./monaco_editor/EditorTabs";
 import {
   MonacoEditor,
   EditorTabs,
-  defaultEditorSourceCode,
   editorList,
-  editorThemes,
+  defaultEditorSourceCode,
 } from "./monaco_editor/index";
 import useEditorReudcer from "../../hooks/useEditorReudcer";
 // monaco editor import end
