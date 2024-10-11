@@ -10,7 +10,7 @@
     "build": "webpack --mode production --output-path ./static/react_frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**/*.js",
-    "build:css": "NODE_ENV=production tailwindcss -o src/tailwind.css -m"
+    "tailwindcss": "NODE_ENV=production tailwindcss -o src/tailwind.css -m"
   },
   "keywords": [],
   "devDependencies": {
