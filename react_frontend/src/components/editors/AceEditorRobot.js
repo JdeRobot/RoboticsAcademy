@@ -139,7 +139,7 @@ while True:
     });
   }, []);
 
-  //! Monaco Code Editor Codes
+  //! Monaco Code Editor
   const [state, dispatch] = useEditorReudcer();
   React.useEffect(() => {
     if (state.activeEditor === editorList[0]) {
