@@ -1,9 +1,9 @@
 #f1-car {
   position: absolute;
-  width: 50px;
-  height: 120px;
-  bottom: 10px;
-  left: calc(50% - 25px);
+  width: 61px;
+  height: 146px;
+  bottom: 54px;
+  left: calc(50% - 30.5px);
   z-index: 4;
 }
 
@@ -17,7 +17,7 @@
     rgb(100, 198, 255) 146px
   );
   background-size: 100% 1px;
-  bottom: 110px;
+  bottom: 180px;
   left: 50%;
   transform-origin: 0% 0%;
   z-index: 3;
@@ -27,7 +27,7 @@
   position: absolute;
   z-index: 5;
   width: 36px;
-  bottom: 120px;
+  bottom: 190px;
   left: calc(50% - 18px);
   transform-origin: center bottom;
 }
@@ -44,7 +44,7 @@
   position: absolute;
   z-index: 4;
   width: 40px;
-  bottom: 120px;
+  bottom: 190px;
   left: calc(50% - 20px);
   transform-origin: center bottom;
 }
