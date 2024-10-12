@@ -13,6 +13,7 @@ function SpecificObstacleAvoidance(props) {
   const [carForce, setCarForce] = React.useState([2 * meter, 0])
   const [avgForce, setAvgForce] = React.useState([2 * meter, 0])
   const [obsForce, setObsForce] = React.useState([2 * meter, -Math.PI / 2])
+  const [targetPose, setTargetPose] = React.useState(null)
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -30,6 +31,9 @@ function SpecificObstacleAvoidance(props) {
         setAvgForce([avgForceDist * meter, getAng(dataToDraw.average[0], dataToDraw.average[1])])
         var obsForceDist = getDist(dataToDraw.obstacle[0], dataToDraw.obstacle[1])
         setObsForce([obsForceDist * meter, getAng(dataToDraw.obstacle[0], dataToDraw.obstacle[1])])
+        var targetDist = getDist(dataToDraw.pose[0] - dataToDraw.target[0], dataToDraw.pose[1] - dataToDraw.target[1])
+        var targetAng = getAng(dataToDraw.pose[0] - dataToDraw.target[0], dataToDraw.pose[1] - dataToDraw.target[1])
+        setTargetPose([targetDist*meter, targetAng - dataToDraw.pose[2] - Math.PI])
       }
 
       // Send the ACK of the msg
@@ -76,6 +80,11 @@ function SpecificObstacleAvoidance(props) {
       <img className="arrow green" src={Arrow} style={{height: carForce[0], rotate: "z "+ -carForce[1] +"rad"}}/>
       <img className="arrow red" src={Arrow} style={{height: obsForce[0], rotate: "z "+ -obsForce[1] +"rad"}}/>
       <img className="arrow" src={Arrow} style={{height: avgForce[0], rotate: "z "+ -avgForce[1] +"rad", zIndex: "6"}}/>
+      {targetPose &&
+        <div className="target-container" style={{height: targetPose[0], rotate: "z "+ -targetPose[1] +"rad"}}>
+          <div id="target"/>
+        </div>
+      }
     </div>
   );
 }

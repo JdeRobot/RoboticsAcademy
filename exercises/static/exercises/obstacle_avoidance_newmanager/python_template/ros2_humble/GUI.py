@@ -4,7 +4,7 @@ from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from lap import Lap
 from map import Map
-from HAL import getLaserData
+from HAL import getLaserData, getPose3d
 
 # Graphical User Interface Class
 
@@ -15,7 +15,7 @@ class GUI(MeasuringThreadingGUI):
 
         # Payload vars
         self.payload = {'lap': '', 'map': ''}
-        self.map = Map(getLaserData)
+        self.map = Map(getLaserData, getPose3d)
         self.lap = Lap(self.map)
         
         self.start()
