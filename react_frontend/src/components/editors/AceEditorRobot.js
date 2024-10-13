@@ -19,6 +19,7 @@ import {
   EditorTabs,
   editorList,
   defaultEditorSourceCode,
+  resizeList,
 } from "./monaco-editor";
 import { useEditorReudcer } from "../../hooks/useEditorReudcer";
 // monaco editor import end
@@ -155,9 +156,9 @@ while True:
 
   return (
     <Box
-      id={state.resizeEditor === "min" ? "code-container" : ""}
+      id={state.resizeEditor === resizeList[0] ? "code-container" : ""}
       className={`${
-        state.resizeEditor === "max"
+        state.resizeEditor === resizeList[1]
           ? "absolute left-[8px] top-[144px] z-50 w-[calc(100vw-16px)] h-[calc(100vh-144px)]"
           : ""
       }`}

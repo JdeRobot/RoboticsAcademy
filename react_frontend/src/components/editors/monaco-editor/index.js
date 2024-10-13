@@ -5,7 +5,8 @@ export { default as MonacoEditor } from "./MonacoEditor";
 export { default as EditorTabs } from "./../EditorTabs";
 // constants
 export {
+  resizeList,
   editorList,
-  monacoEditorTheme,
+  monacoEditorThemeList,
   defaultEditorSourceCode,
 } from "./constants";

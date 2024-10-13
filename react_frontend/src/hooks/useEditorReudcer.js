@@ -1,12 +1,14 @@
 import { useReducer } from "react";
 import {
   editorList,
-  monacoEditorTheme,
+  monacoEditorThemeList,
+  resizeList,
 } from "../components/editors/monaco-editor";
 
 const editorInitialState = {
   activeEditor: editorList[1], // monaco
-  monacoEditorTheme: monacoEditorTheme[1], // vs-dark
+  monacoEditorTheme: monacoEditorThemeList[1], // vs-dark
+  resizeEditor: resizeList[0],
   editorOptions: {
     //
     fontSize: 14,
@@ -41,14 +43,32 @@ const editorInitialState = {
   },
 };
 
-const reducer = ({ state, action }) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case "changeEditor":
       return {
         ...state,
         activeEditor: action.payload.editor,
       };
-
+    case "updateEditorResize":
+      return {
+        ...state,
+        resizeEditor:
+          state.resizeEditor === resizeList[0] ? resizeList[1] : resizeList[0],
+      };
+    case "updateLockEditor":
+      return {
+        ...state,
+        editorOptions: {
+          ...state.editorOptions,
+          readOnly: !state.editorOptions.readOnly,
+        },
+      };
+    case "updateMonacoEditorTheme":
+      return{
+        ...state,
+        monacoEditorTheme:action.payload.theme
+      }
     default:
       throw new Error("Unknown Action type!");
   }
