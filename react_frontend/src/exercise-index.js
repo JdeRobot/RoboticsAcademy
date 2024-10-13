@@ -5,6 +5,8 @@ import "./libs/tools.js";
 import { flushSync } from "react-dom";
 import CommsManager from "./libs/comms_manager";
 
+import "./styles/tailwindcss_base.css";
+
 window.RoboticsExerciseComponents = (function () {
   let components = [];
 

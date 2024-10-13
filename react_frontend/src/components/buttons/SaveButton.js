@@ -7,7 +7,10 @@ import PropTypes from "prop-types";
 const SaveFileButton = (props) => {
   const [fileName, setFileName] = React.useState("myCode");
   const saveFile = () => {
-    const userCode = RoboticsReactComponents.CodeEditor.getCode();
+    let userCode = "";
+    if (RoboticsReactComponentsMonaco.CodeEditor.getActive()) {
+      userCode = RoboticsReactComponentsMonaco.CodeEditor.getCode();
+    } else userCode = RoboticsReactComponents.CodeEditor.getCode();
     saveCode(fileName, userCode);
   };
   return (
