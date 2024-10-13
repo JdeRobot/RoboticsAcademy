@@ -7,6 +7,11 @@ export { default as EditorTabs } from "./../EditorTabs";
 // helper
 export { monacoEditorSnippet } from "./helper/monacoEditorSnippet";
 export { monacoEditorScroll } from "./helper/monacoEditorScroll";
+export {
+  monacoEditorGlyph,
+  filterLineNumber,
+  renderGlyphs,
+} from "./helper/monacoEditorGlyph";
 
 // constants
 export {
