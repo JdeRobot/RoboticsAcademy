@@ -7,28 +7,7 @@ import HAL
 
 while True:
     # Enter iterative code!
-    
-    class Room:
-        a = 3
-        b = 2
-
-        def Area(args):
-            pass
-    
-    class Room2:
-        a2 = 3
-        b2= 2
-
-        def Area2(args):
-            pass
-    
-    obj = Room();
-
-    obj.a
-
-    obj2 = Room2();
-
-    obj2.a2`;
+    `;
 
 /*`import GUI
 import HAL
