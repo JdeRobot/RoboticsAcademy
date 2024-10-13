@@ -14,8 +14,8 @@ const editorInitialState = {
     fontSize: 14,
     lineNumbers: "on",
     roundedSelection: false,
-    scrollBeyondLastLine: false,
-    readOnly: false, //F: Lock editor
+    scrollBeyondLastLine: true,
+    readOnly: false,
     // word warp
     wordWrap: "wordWrapColumn",
     wordWrapColumn: 100,
@@ -30,7 +30,7 @@ const editorInitialState = {
     wordBasedSuggestions: true,
     //
     hover: true,
-    glyphMargin: true, // Enable the glyph margin
+    glyphMargin: true, 
     lineNumbersMinChars: 3,
     // scroll
     smoothScrolling: true,

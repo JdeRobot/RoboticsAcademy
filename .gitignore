@@ -117,7 +117,6 @@ react_frontend/static
 developer_scripts
 src
 !/react_frontend/src
-!/react_frontend
- 
+
 # Intermediate file created in root during development
 docker-compose.yaml
