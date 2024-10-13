@@ -44,7 +44,12 @@ const PlayPause = (props) => {
 
   const play = () => {
     setLoading(true);
-    const editorCode = RoboticsReactComponents.CodeEditor.getCode();
+    let editorCode = "";
+    // when monaco editor active
+    if (RoboticsReactComponentsMonaco.CodeEditor.getActive()) {
+      editorCode = RoboticsReactComponentsMonaco.CodeEditor.getCode();
+    } else editorCode = RoboticsReactComponents.CodeEditor.getCode();
+
     if (!editorChanged && applicationPaused) {
       commsManager.resume();
     } else {
@@ -56,7 +61,8 @@ const PlayPause = (props) => {
 
   const runCode = (code) => {
     setLoading(true);
-    const errorMessage = "Syntax or dependency error, check details on the console.\n";
+    const errorMessage =
+      "Syntax or dependency error, check details on the console.\n";
 
     window.RoboticsExerciseComponents.commsManager
       .terminate_application()
@@ -73,7 +79,8 @@ const PlayPause = (props) => {
               "\\n"
             );
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              errorMessage, "error"
+              errorMessage,
+              "error"
             );
             console.log(`Received linter message ·${linterMessage}`);
           });
