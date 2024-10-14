@@ -238,7 +238,7 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
     x_rel = dx * math.cos (-robott) - dy * math.sin (-robott)
     y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
 
-    return x_rel and y_rel
+    return x_rel, y_rel
 ```
 
 
