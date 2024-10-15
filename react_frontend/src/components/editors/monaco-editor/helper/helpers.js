@@ -1,0 +1,59 @@
+// post and response code format
+export const fetchFormatCode = async ({
+  baseUrl,
+  monacoEditorSourceCode,
+  setMonacoEditorSourceCode,
+}) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/v1/format/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: monacoEditorSourceCode,
+      }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      //   console.log("Formatted code:", data.formatted_code);
+      setMonacoEditorSourceCode(data.formatted_code);
+    } else {
+      console.error("Error formatting code:", data.error);
+    }
+  } catch (error) {
+    console.log("error ", error);
+  }
+};
+
+// post and response code format
+export const fetchAnalysisCode = async ({
+  baseUrl,
+  monacoEditorSourceCode,
+  controller,
+}) => {
+  try {
+    const response = await fetch(`${baseUrl}/api/v1/analysis/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: monacoEditorSourceCode,
+      }),
+      signal: controller.signal,
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      return data;
+    } else {
+      console.error("Error formatting code:", data.error);
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") {
+      console.log(error);
+    }
+  }
+};
