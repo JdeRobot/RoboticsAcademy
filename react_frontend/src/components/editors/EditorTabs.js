@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { editorList, monacoEditorThemeList, resizeList } from "./monaco-editor";
 import {
+  ContrastThemeIcon,
+  DarkThemeIcon,
+  LightThemeIcon,
   LockIcon,
   MaximizeIcon,
   MinimizeIcon,
@@ -48,8 +51,19 @@ const EditorTabs = ({ state, dispatch }) => {
         {activeEditor === editorList[1] && (
           <>
             {/* Monaco Editor Theme */}
+            <div className="flex items-center gap-1">
+              {monacoEditorTheme === monacoEditorThemeList[0] && (
+                <LightThemeIcon cssClass="" />
+              )}
+              {monacoEditorTheme === monacoEditorThemeList[1] && (
+                <DarkThemeIcon cssClass="" />
+              )}
+              {monacoEditorTheme === monacoEditorThemeList[2] && (
+                <ContrastThemeIcon cssClass="" />
+              )}
+            </div>
             <select
-              className="text-sm text-[#333] bg-slate-300"
+              className="text-sm text-[#333] bg-slate-300 text-center px-2 py-[4px] rounded-md"
               value={monacoEditorTheme}
               onChange={(e) =>
                 dispatch({
