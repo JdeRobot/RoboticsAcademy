@@ -4,18 +4,6 @@ import numpy as np
 
 class Map:
 	def __init__(self, laser_object_f, laser_object_r, laser_object_b):
-		# Car direction
-		self.carx = 2.0
-		self.cary = 0.0
-
-		# Obstacles direction
-		self.obsx = 0.0
-		self.obsy = 2.0
-
-		# Average direction
-		self.avgx = -2.0
-		self.avgy = 0.0
-
 		# Define the object used for
 		# websocket communication
 		self.payload = {}
@@ -25,12 +13,8 @@ class Map:
 		self.laser_topic_b = laser_object_b
         
     # Get the JSON data as string
-	def get_json_data(self):								
-		self.payload["car"] = self.setArrow(self.carx, self.cary)
-		self.payload["obstacle"] = self.setArrow(self.obsx, self.obsy)
-		self.payload["average"] = self.setArrow(self.avgx, self.avgy)
+	def get_json_data(self):
 		self.payload["lasers"], self.payload["ranges"] = self.setLaserValues()
-		#self.payload["max_range"] = self.laser.maxRange
 
 		message = json.dumps(self.payload)
 		return message
@@ -46,31 +30,8 @@ class Map:
 	def RTz(self, angle, tx, ty, tz):
 		RT = np.matrix([[math.cos(angle), -math.sin(angle), 0, tx], [math.sin(angle), math.cos(angle),0, ty], [0, 0, 1, tz], [0,0,0,1]])
 		return RT  	
-
         
-    # Interpret the Target values
-	def setTarget(self, x, y, rx, ry, rt):
-		# Convert to relatives
-		if x == 0.0 and y == 0.0:
-			return (0, 0)
-			
-		dx = rx - x
-		dy = ry - y
-
-		# Rotate with the current angle
-		ty = dx*math.cos(-rt) - dy*math.sin(-rt)
-		tx = dx*math.sin(-rt) + dy*math.cos(-rt)
-		
-		ty = (120 +  20 * ty)
-		tx = (146.5 + 7 * tx)
-
-		return (tx, ty)
-    
-    # Interpret the arrow values	
-	def setArrow(self, posx, posy):
-		return (posx, posy)
-        
-    # Interpret the Laser values
+	# Interpret the Laser values
 	def setLaserValues(self):
 		# Init laser array
 		lasers = []
