@@ -40,7 +40,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
     alt: "Basic Vacuum Cleaner"
@@ -73,7 +73,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
@@ -84,7 +84,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/3d_reconstruction/3d_reconstruction_teaser.png
     alt: "3D Reconstruction"
@@ -106,7 +106,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
@@ -128,7 +128,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
     alt: "Position Control"
@@ -139,7 +139,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/rescue_people/rescue_people_teaser.png
     alt: "Rescue People"
@@ -161,7 +161,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/drone_gymkhana/drone_gymkhana_teaser.png
     alt: "Drone Gymkhana"
@@ -172,7 +172,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/drone_hangar/drone_hangar.jpg
     alt: "Drone Hangar"
@@ -183,7 +183,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
     
   - image_path: /assets/images/exercises/visual_lander/visual_lander.jpg
     alt: "Visual Lander"
@@ -194,7 +194,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
       
   - image_path: /assets/images/exercises/opticalflow_teleop/opticalflow_teleop_teaser.png
     alt: "OpticalFlow Teleop"
@@ -205,7 +205,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
     alt: "Montecarlo Visual Loc"
@@ -216,7 +216,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 2;
+    order: 0;
 
   - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
     alt: "Package Delivery"
@@ -227,7 +227,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/power_tower_inspection/power_tower_inspection_teaser.png
     alt: "Power Tower Inspection"
@@ -238,7 +238,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--inverse"
     status: "prototype"
-    order: 0;
+    order: 2;
 
   - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
     alt: "Amazon Warehouse"
@@ -249,7 +249,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 2;
+    order: 0;
 
   - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
     alt: "Simulated Follow Person"
@@ -260,7 +260,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 2;
+    order: 0;
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
     alt: "Single Robot Amazon Warehouse (ROS2)"
@@ -425,7 +425,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 2;
+    order: 0;
 
 ---
 
