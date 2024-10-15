@@ -104,11 +104,6 @@
           {% if f.url %}
             <p>
               <a href="{{ f_url }}" class="btn {{ f.btn_class }}" style="background-color: #9E1C00">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>              
-              {% if f.version and f.status == "running" %}
-                <i style="font-size: 12px">{{ f.status }} - {{ f.version | default: site.data.ui-text[site.locale].more_label | default:  }}</i>
-              {% else %}
-                <i style="font-size: 12px">{{ f.status }}</i>
-              {% endif %}
             </p>
           {% endif %}
         </div>
