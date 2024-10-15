@@ -85,14 +85,14 @@ class GUI(MeasuringThreadingGUI):
         return plt.imread(url)
 
     def poseToMap(self, x_prime, y_prime, yaw_prime):
-        x = 101.25 * ( 4.2 + y_prime)
+        x = 101.1 * ( 4.2 + y_prime)
         y = 101.1  * ( 5.7 - x_prime)
         yaw = yaw_prime + math.pi/2
         return [x, y, yaw]
 
     def mapToPose(self, map_x, map_y, map_yaw):
         x = (map_y - 576.27) / -101.1
-        y = (map_x - 425.25) /  101.25
+        y = (map_x - 425.25) /  101.1
         yaw = map_yaw - math.pi/2
         return [x, y, yaw]
 

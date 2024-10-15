@@ -37,7 +37,7 @@ function SpecificMontecarloLaserLoc(props) {
       const updateData = message.data.update;
       // Lógica para manejar el mapa
       var img = document.getElementById('exercise-img'); 
-      var width = (1013 / 300) / (1013 /img.clientWidth);
+      var width = (1012 / 300) / (1012 /img.clientWidth);
       var height = (1012 / 150) / (1012 /img.clientHeight);
 
       if (updateData.map) {

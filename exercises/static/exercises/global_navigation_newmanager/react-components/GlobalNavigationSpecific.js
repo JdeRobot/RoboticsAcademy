@@ -131,9 +131,8 @@ function SpecificGlobalNavigation(props) {
         try {
           window.RoboticsExerciseComponents.commsManager.send("gui", `pick${data}`)
         } catch (error) {
-        }
-        
-}}
+        }     
+      }}
     />
     { showImage ? 
       (
