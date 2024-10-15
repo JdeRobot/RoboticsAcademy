@@ -67,7 +67,7 @@ The aim of this practical is to develop a localization algorithm based on the pa
 * `GUI.showPosition(x, y, yaw)` - shows the estimated user position in the map view in blue. Accepts a list with [position_x, position_y, angle_in_radians]. The values must be in gazebo world coordinate system. The map view will also show the real position of the robot in red, so you can compare how good your algorithm is.
 * `GUI.mapToPose(x, y, yaw)`- converts a map pixel to gazebo world coordinate system position.
 * `GUI.poseToMap(x, y, yaw)`- converts a gazebo world coordinate system position to a map pixel.
-* `GUI.getMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The image is 1013x1012. The instruction to get the map is
+* `GUI.getMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The image is 1012x1012. The instruction to get the map is
 
 ```python
 array = GUI.getMap('/RoboticsAcademy/exercises/static/exercises/montecarlo_laser_loc/resources/mapgrannyannie.png')
