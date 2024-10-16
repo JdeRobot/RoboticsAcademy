@@ -1,0 +1,17 @@
+#car {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transition: all 0.1s ease-out;
+  z-index: 2;
+}
+
+.exercise-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* border: 2px solid #d3d3d3; */
+  width: 50%;
+  height: 100%;
+  max-height: 100%;
+}

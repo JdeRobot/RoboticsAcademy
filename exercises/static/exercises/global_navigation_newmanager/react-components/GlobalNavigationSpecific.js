@@ -1,11 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { clearPath, draw, drawTargetPosition, generatePath } from "./helpers/birds_eye_global_navigation";
+import Car from "../resources/images/car-top-view.svg";
+import CityMap from "../resources/images/cityLargenBin.png";
 
+import "./css/GUICanvas.css";
 
 function SpecificGlobalNavigation(props) {
   const guiCanvasRef = React.useRef();
   const [showImage, setShowImage] = React.useState(false);
+  const [carPose, setCarPose] = React.useState(null)
   let showMap = false
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -16,36 +20,45 @@ function SpecificGlobalNavigation(props) {
         const content = pose.split(',').map(function(item) {
           return parseFloat(item);
         })
-        draw((content[0] ), (content[1] ), content[2], content[3]);
+        // draw((content[0]), (content[1]), content[2], content[3]);
+
+        var img = document.getElementById('exercise-img'); 
+        //or however you get a handle to the IMG
+        var width = img.clientWidth / 400;
+        var height = img.clientHeight / 400;
+
+        setCarPose([content[1]*height,content[0]*width, Math.PI - content[2]]);
       }
     }
+
     const getImageAndDisplay = (data) => {
       if(data.image) {
-      let canvas = document.getElementById("gui-canvas-numpy");
-        //Parse encoded image data and decode it
-      function decode_utf8(s) {
-          return decodeURIComponent(escape(s))
-      }
-			var image_data = JSON.parse(data.image),
-			source = decode_utf8(image_data.image),
-			shape = image_data.shape;
+        let canvas = document.getElementById("gui-canvas-numpy");
+          //Parse encoded image data and decode it
+        function decode_utf8(s) {
+            return decodeURIComponent(escape(s))
+        }
+        var image_data = JSON.parse(data.image),
+        source = decode_utf8(image_data.image),
+        shape = image_data.shape;
 
-			if(source !== ""){
-				canvas.src = "data:image/png;base64," + source;
-				canvas.width = shape[1];
-				canvas.height = shape[0];
-			}
+        if(source !== ""){
+          canvas.src = "data:image/png;base64," + source;
+          canvas.width = shape[1];
+          canvas.height = shape[0];
+        }
       }
     }
-    const getPathAndDisplay = (data) => {
-      
+
+    const getPathAndDisplay = (data) => {  
       if(data.array && showMap){
-        generatePath(JSON.parse(data.array))
+        // generatePath(JSON.parse(data.array))
       }
     }
 
     const callback = (message) => {
       const data = message.data.update;
+      console.log(data)
       getMapDataAndDraw(data)
       getImageAndDisplay(data)
       getPathAndDisplay(data)
@@ -74,7 +87,7 @@ function SpecificGlobalNavigation(props) {
       if (message.data.state === "visualization_ready") {
         showMap = false
         setShowImage(false)
-        clearPath()
+        // clearPath()
       } else {
         showMap = true
         setShowImage(true)
@@ -92,7 +105,7 @@ function SpecificGlobalNavigation(props) {
     };
   }, []);
 
-  function destinationPicker(event){
+  function destinationPicker(event) {
     let mapCanvas = document.getElementById("globalnav-eye");
 
     let rect = mapCanvas.getBoundingClientRect();
@@ -108,12 +121,11 @@ function SpecificGlobalNavigation(props) {
 
     drawTargetPosition(cursorXMap, cursorYMap);
     return [cursorXMap, cursorYMap];
-}
+  }
 
   return (
-    <div style={{display: "flex",   width: "100%",
-    height: "100%"}}>
-    <canvas
+    <div style={{display: "flex",   width: "100%", height: "100%", position:"relative"}}>
+    {/* <canvas
       ref={guiCanvasRef}
       id="globalnav-eye"
       style={{
@@ -131,10 +143,13 @@ function SpecificGlobalNavigation(props) {
         try {
           window.RoboticsExerciseComponents.commsManager.send("gui", `pick${data}`)
         } catch (error) {
-        }
-        
-}}
-    />
+        }  
+      }}
+    /> */}
+    <img src={CityMap} alt="" className="exercise-canvas" id="exercise-img"/>
+    {carPose &&
+      <img src={Car} id="car" style={{rotate: "z "+ carPose[2]+"rad", top: carPose[0] -5 , left: carPose[1] -5}}/>
+    }
     { showImage ? 
       (
       <img id="gui-canvas-numpy" width="400" height="400" style={{
