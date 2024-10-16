@@ -50,30 +50,6 @@ const PlayPause = (props) => {
       editorCode = RoboticsReactComponentsMonaco.CodeEditor.getCode();
     } else editorCode = RoboticsReactComponents.CodeEditor.getCode();
 
-    console.log("====================================");
-    console.log(
-      "RoboticsReactComponentsMonaco.CodeEditor.getActive() ",
-      RoboticsReactComponentsMonaco.CodeEditor.getActive()
-    );
-    console.log(
-      "RoboticsReactComponentsMonaco.CodeEditor.getCode() ",
-      RoboticsReactComponentsMonaco.CodeEditor.getCode()
-    );
-    console.log(
-      "RoboticsReactComponents.CodeEditor.getCode() ",
-      RoboticsReactComponents.CodeEditor.getCode()
-    );
-    console.log("editorCode ", editorCode);
-
-    console.log("====================================");
-    //     editorCode = `import GUI
-    // import HAL
-    // # Enter sequential code!
-
-    // while True:
-    //     # Enter iterative code!
-    //     print("hello")`;
-
     if (!editorChanged && applicationPaused) {
       commsManager.resume();
     } else {

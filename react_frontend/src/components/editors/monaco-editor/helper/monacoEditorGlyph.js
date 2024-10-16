@@ -19,6 +19,8 @@ export const renderGlyphs = (
   allLineNumberDecorations
 ) => {
   const allGlyphs = [];
+  if (!allLineNumberDecorations) return;
+
   allLineNumberDecorations.forEach((line, i) => {
     const newDecoration = {
       range: new monaco.Range(line, 1, line, 1),

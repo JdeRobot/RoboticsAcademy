@@ -61,7 +61,7 @@ class Map:
         return x, y
 
     def getRobotAngle(self):
-        pose = self.pose3d()
+        pose = self.pose_getter()
 
         return pose.yaw,
 

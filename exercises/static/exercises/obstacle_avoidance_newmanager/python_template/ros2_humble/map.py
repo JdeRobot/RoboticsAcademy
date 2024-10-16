@@ -5,7 +5,7 @@ import numpy as np
 from hal_interfaces.general.odometry import Pose3d
 
 class Map:
-	def __init__(self, laser_object):
+	def __init__(self, laser_object, pose_callback):
 		# Car direction
 		self.carx = 2.0
 		self.cary = 0.0
@@ -33,6 +33,7 @@ class Map:
 		self.payload = {}
 
 		self.laser_callback = laser_object
+		self.pose_callback = pose_callback
     
 	def setCar(self, newx, newy):
 		self.carx = newx
@@ -52,6 +53,7 @@ class Map:
 
     # Get the JSON data as string
 	def get_json_data(self):
+		self.payload["pose"] = self.setPose(self.pose_callback())
 		self.payload["target"] = self.setTarget(self.targetx, self.targety)
 		self.payload["car"] = self.setArrow(self.carx, self.cary)
 		self.payload["obstacle"] = self.setArrow(self.obsx, self.obsy)
@@ -79,6 +81,7 @@ class Map:
 	def getNextTarget(self):
 		for target in self.targets:
 			if target.isReached() == False:
+				self.setTargetPos(target.pose.x, target.pose.y)
 				return target
 		return self.resetTargets()
 	
@@ -92,7 +95,11 @@ class Map:
 	def reset(self):
 		for target in self.targets:
 			target.setReached(False)
-        
+
+    # Interpret the Target values
+	def setPose(self, pose):
+		return [pose.x, pose.y, pose.yaw]
+
     # Interpret the Target values
 	def setTarget(self, x, y):
 		return [x, y]

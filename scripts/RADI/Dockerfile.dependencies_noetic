@@ -141,6 +141,9 @@ RUN python3 -m pip install argparse==1.4.0 argcomplete==3.1.2 coverage==7.3.2 ce
 		matplotlib==3.0.* numpy nunavut==1.1.0 packaging==23.2 pkgconfig==1.5.5 pyros-genmsg==0.5.8 pyulog==1.0.1 \
 		pyyaml==6.0.1 requests==2.22.0 serial==0.0.97 six==1.14.0 toml==0.10.2 psutil==5.5.1 wheel==0.41.2 onnxruntime==1.16.1 Pillow==10.0.1 opencv-python==4.5.5.64 netron==7.2.3 seaborn==0.11.2
 
+# monaco editor
+RUN python3.10 -m pip install black==24.10.0 pylint==3.3.1
+
 # manual ccache setup
 RUN ln -sf /usr/bin/ccache /usr/lib/ccache/cc \
 	&& ln -sf /usr/bin/ccache /usr/lib/ccache/c++

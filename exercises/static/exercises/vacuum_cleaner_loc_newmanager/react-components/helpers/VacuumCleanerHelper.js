@@ -11,7 +11,9 @@ export const updatePath = (trail, setPathCallback, height, width) => {
     newPath += " L " + left.toString() + "," + top.toString();
   }
 
-  setPathCallback(newPath)
+  if (trail.length > 0) {
+    setPathCallback(newPath)
+  }
 }
 
 export const addToPath = (x, y, trail) => {
