@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Install glmark if needed
 if [ -z "$(dpkg -l | grep glmark2)" ]; then
@@ -14,10 +14,10 @@ fi
 gpu_list=$(lspci | grep -E "VGA|3D")
 
 # Iterate over each GPU entry
-while IFS= read -r line; do
+echo "$gpu_list" | while IFS= read -r line; do
   # Extract the PCI address and GPU name
   pci=$(echo "$line" | awk '{print $1}')
-  gpu_name=$(echo "$line" | awk -F ': ' '{print $2}' | awk '{for(i=1;i<=NF-1;i++) printf "%s ", $i; print $NF}')
+  gpu_name=$(echo "$line" | awk -F ': ' '{print $2}' | awk '{for(i=1;i<NF;i++) printf "%s ", $i; print $NF}')
 
   # Find the corresponding /dev/dri/cardX device using PCI address
   gpu_path=$(ls /sys/bus/pci/devices/0000:$pci/drm | grep card)
@@ -33,4 +33,4 @@ while IFS= read -r line; do
   else
     echo -e "\nNo corresponding /dev/dri/card* found for PCI: $pci"
   fi
-done <<< "$gpu_list"
+done
