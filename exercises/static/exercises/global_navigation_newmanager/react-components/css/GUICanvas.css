@@ -3,7 +3,7 @@
   width: 10px;
   height: 10px;
   /* transition: all 0.1s ease-out; */
-  z-index: 2;
+  z-index: 3;
 }
 
 .exercise-canvas {
@@ -20,7 +20,7 @@
   position: absolute;
   height: 20px;
   width: 20px;
-  z-index: 4;
+  z-index: 3;
 }
 
 .target::before,
