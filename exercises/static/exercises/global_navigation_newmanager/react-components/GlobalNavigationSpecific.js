@@ -13,11 +13,34 @@ function SpecificGlobalNavigation(props) {
   const [path, setPath] = React.useState("")
   
   var trail = [];
+  var lastSize = undefined;
   var lastPose = undefined;
   let showMap = false;
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      var img = entries[0].target; 
+      //or however you get a handle to the IMG
+      var width = img.clientWidth / 400;
+      var height = img.clientHeight / 400;
+
+      updatePath(trail, setPath, height, width);
+
+      if (lastPose) {
+        setCarPose([lastPose[1]*height,lastPose[0]*width, Math.PI - lastPose[2]]);
+      }
+
+      // if (lastSize) {
+      //   let rect = img.getBoundingClientRect();
+
+      //   let cursorX = (lastSize.clientX - rect.left);
+      //   let cursorY = (lastSize.clientY - rect.top);
+
+      //   setDestination([cursorY, cursorX])
+      // }
+    });
 
     const getMapDataAndDraw = (data) => {
       if (data.map && showMap) {
@@ -82,6 +105,8 @@ function SpecificGlobalNavigation(props) {
       callback
     );
 
+    resizeObserver.observe(document.getElementById('exercise-img'));
+
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
@@ -99,6 +124,7 @@ function SpecificGlobalNavigation(props) {
         setShowImage(false)
         trail = []
         setPath("")
+        lastSize = undefined
       } else {
         showMap = true
         setShowImage(true)
@@ -126,11 +152,11 @@ function SpecificGlobalNavigation(props) {
 
     let cursorX = (event.clientX - rect.left);
     let cursorY = (event.clientY - rect.top);
-
+    
     let cursorXMap = cursorX / width;
     let cursorYMap = cursorY / height;
 
-    setDestination([cursorY, cursorX])
+    setDestination([(cursorY*100)/img.clientHeight, (cursorX*100)/img.clientWidth])
 
     return [cursorXMap, cursorYMap];
   }
@@ -150,7 +176,7 @@ function SpecificGlobalNavigation(props) {
         <img src={Car} id="car" style={{rotate: "z "+ carPose[2]+"rad", top: carPose[0] -5 , left: carPose[1] -5}}/>
       }
       {destination &&
-        <div className="target" style={{top: destination[0], left: destination[1] - 10}}/>
+        <div className="target" style={{top: `${destination[0]}%`, left: `calc(${destination[1]}% - ${10}px)`}}/>
       }
       {path &&
         <svg height="100%" width="50%" xmlns="http://www.w3.org/2000/svg" style={{zIndex:2}}>
