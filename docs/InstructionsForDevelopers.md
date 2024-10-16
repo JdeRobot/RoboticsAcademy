@@ -78,7 +78,7 @@ nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
-Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a mini radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_mini_radi.md).
+Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_radi.md).
 
 ### Using Docker compose
 
