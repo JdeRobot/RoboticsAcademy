@@ -141,6 +141,7 @@ while True:
   }, []);
 
   //! Monaco Code Editor
+
   const [state, dispatch] = useEditorReudcer();
   React.useEffect(() => {
     if (state.activeEditor === editorList[0]) {
@@ -163,7 +164,12 @@ while True:
           : ""
       }`}
     >
-      <EditorTabs state={state} dispatch={dispatch} />
+      <EditorTabs
+        state={state}
+        dispatch={dispatch}
+        monacoEditorSourceCode={monacoEditorSourceCode}
+        setMonacoEditorSourceCode={setMonacoEditorSourceCode}
+      />
       {state.activeEditor === editorList[0] ? (
         <>
           <AceEditor

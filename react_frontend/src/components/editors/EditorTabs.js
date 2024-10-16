@@ -4,6 +4,7 @@ import { editorList, monacoEditorThemeList, resizeList } from "./monaco-editor";
 import {
   ContrastThemeIcon,
   DarkThemeIcon,
+  LeftAlignIcon,
   LightThemeIcon,
   LockIcon,
   MaximizeIcon,
@@ -11,8 +12,13 @@ import {
   UnlockIcon,
 } from "../icons/Icons";
 
-const EditorTabs = ({ state, dispatch }) => {
-  const { activeEditor, resizeEditor, monacoEditorTheme } = state;
+const EditorTabs = ({
+  state,
+  dispatch,
+  monacoEditorSourceCode,
+  setMonacoEditorSourceCode,
+}) => {
+  const { activeEditor, resizeEditor, monacoEditorTheme, baseUrl } = state;
   const { readOnly } = state.editorOptions;
 
   return (
@@ -47,11 +53,11 @@ const EditorTabs = ({ state, dispatch }) => {
         </div>
       </div>
       {/* Editor Options Settings */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {activeEditor === editorList[1] && (
           <>
-            {/* Monaco Editor Theme */}
-            <div className="flex items-center gap-1">
+            {/* Theme */}
+            <div className="flex items-center bg-slate-300 rounded-md px-1">
               {monacoEditorTheme === monacoEditorThemeList[0] && (
                 <LightThemeIcon cssClass="" />
               )}
@@ -61,23 +67,24 @@ const EditorTabs = ({ state, dispatch }) => {
               {monacoEditorTheme === monacoEditorThemeList[2] && (
                 <ContrastThemeIcon cssClass="" />
               )}
+              <select
+                className="text-sm text-[#333] bg-slate-300 text-center py-[4px] "
+                value={monacoEditorTheme}
+                onChange={(e) =>
+                  dispatch({
+                    type: "updateMonacoEditorTheme",
+                    payload: { theme: e.target.value },
+                  })
+                }
+              >
+                {monacoEditorThemeList.map((theme, i) => (
+                  <option value={theme} key={i} className="text-sm text-[#333]">
+                    {theme.split("-").join(" ").toLocaleUpperCase()}
+                  </option>
+                ))}
+              </select>
             </div>
-            <select
-              className="text-sm text-[#333] bg-slate-300 text-center px-2 py-[4px] rounded-md"
-              value={monacoEditorTheme}
-              onChange={(e) =>
-                dispatch({
-                  type: "updateMonacoEditorTheme",
-                  payload: { theme: e.target.value },
-                })
-              }
-            >
-              {monacoEditorThemeList.map((theme, i) => (
-                <option value={theme} key={i} className="text-sm text-[#333]">
-                  {theme.split("-").join(" ").toLocaleUpperCase()}
-                </option>
-              ))}
-            </select>
+
             {/*  Lock Editor*/}
             <div
               className="p-2 rounded-full hover:bg-slate-200 cursor-pointer"
@@ -90,7 +97,7 @@ const EditorTabs = ({ state, dispatch }) => {
               )}
             </div>
           </>
-        )}{" "}
+        )}
         {/* Resize Editor */}
         <div
           className="p-2 rounded-full hover:bg-slate-200 cursor-pointer"
@@ -109,4 +116,6 @@ export default EditorTabs;
 EditorTabs.prototype = {
   state: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
+  monacoEditorSourceCode: PropTypes.string.isRequired,
+  setMonacoEditorSourceCode: PropTypes.func.isRequired,
 };

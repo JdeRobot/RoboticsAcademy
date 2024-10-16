@@ -9,6 +9,8 @@ const editorInitialState = {
   activeEditor: editorList[1], // monaco
   monacoEditorTheme: monacoEditorThemeList[1], // vs-dark
   resizeEditor: resizeList[0],
+  editorMinimap: false,
+  baseUrl: `${document.location.protocol}//${document.location.hostname}:7164`,
   editorOptions: {
     //
     fontSize: 14,
@@ -30,7 +32,7 @@ const editorInitialState = {
     wordBasedSuggestions: true,
     //
     hover: true,
-    glyphMargin: true, 
+    glyphMargin: true,
     lineNumbersMinChars: 3,
     // scroll
     smoothScrolling: true,
@@ -55,6 +57,10 @@ const reducer = (state, action) => {
         ...state,
         resizeEditor:
           state.resizeEditor === resizeList[0] ? resizeList[1] : resizeList[0],
+        editorOptions: {
+          ...state.editorOptions,
+          minimap: { enabled: state.resizeEditor === "min" },
+        },
       };
     case "updateLockEditor":
       return {
@@ -65,10 +71,10 @@ const reducer = (state, action) => {
         },
       };
     case "updateMonacoEditorTheme":
-      return{
+      return {
         ...state,
-        monacoEditorTheme:action.payload.theme
-      }
+        monacoEditorTheme: action.payload.theme,
+      };
     default:
       throw new Error("Unknown Action type!");
   }
