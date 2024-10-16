@@ -13,7 +13,6 @@ function SpecificGlobalNavigation(props) {
   const [path, setPath] = React.useState("")
   
   var trail = [];
-  var lastSize = undefined;
   var lastPose = undefined;
   let showMap = false;
 
@@ -31,15 +30,6 @@ function SpecificGlobalNavigation(props) {
       if (lastPose) {
         setCarPose([lastPose[1]*height,lastPose[0]*width, Math.PI - lastPose[2]]);
       }
-
-      // if (lastSize) {
-      //   let rect = img.getBoundingClientRect();
-
-      //   let cursorX = (lastSize.clientX - rect.left);
-      //   let cursorY = (lastSize.clientY - rect.top);
-
-      //   setDestination([cursorY, cursorX])
-      // }
     });
 
     const getMapDataAndDraw = (data) => {
@@ -124,7 +114,7 @@ function SpecificGlobalNavigation(props) {
         setShowImage(false)
         trail = []
         setPath("")
-        lastSize = undefined
+        setDestination(undefined)
       } else {
         showMap = true
         setShowImage(true)
@@ -156,7 +146,7 @@ function SpecificGlobalNavigation(props) {
     let cursorXMap = cursorX / width;
     let cursorYMap = cursorY / height;
 
-    setDestination([(cursorY*100)/img.clientHeight, (cursorX*100)/img.clientWidth])
+    setDestination([(cursorY*100)/img.clientHeight, (cursorX*100)/(img.clientWidth*2)])
 
     return [cursorXMap, cursorYMap];
   }
