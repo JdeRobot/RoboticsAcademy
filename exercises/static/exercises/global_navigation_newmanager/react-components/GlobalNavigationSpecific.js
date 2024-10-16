@@ -10,6 +10,7 @@ function SpecificGlobalNavigation(props) {
   const guiCanvasRef = React.useRef();
   const [showImage, setShowImage] = React.useState(false);
   const [carPose, setCarPose] = React.useState(null)
+  const [destination, setDestination] = React.useState(null)
   let showMap = false
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
@@ -58,7 +59,6 @@ function SpecificGlobalNavigation(props) {
 
     const callback = (message) => {
       const data = message.data.update;
-      console.log(data)
       getMapDataAndDraw(data)
       getImageAndDisplay(data)
       getPathAndDisplay(data)
@@ -105,21 +105,22 @@ function SpecificGlobalNavigation(props) {
     };
   }, []);
 
-  function destinationPicker(event) {
-    let mapCanvas = document.getElementById("globalnav-eye");
+  function destinationPicker2(event) {
+    var img = document.getElementById('exercise-img'); 
+    let rect = img.getBoundingClientRect();
 
-    let rect = mapCanvas.getBoundingClientRect();
-    let scaleX = mapCanvas.width / rect.width;
-    let scaleY = mapCanvas.height / rect.height;
+    //or however you get a handle to the IMG
+    var width = img.clientWidth / 400;
+    var height = img.clientHeight / 400;
 
-    let cursorX = (event.clientX - rect.left) * scaleX;
-    let cursorY = (event.clientY - rect.top) * scaleY;
+    let cursorX = (event.clientX - rect.left);
+    let cursorY = (event.clientY - rect.top);
 
-    let cursorXMap = cursorX / mapCanvas.width * 400;
-    let cursorYMap = cursorY / mapCanvas.height * 400;
+    let cursorXMap = cursorX / width;
+    let cursorYMap = cursorY / height;
 
+    setDestination([cursorY, cursorX])
 
-    drawTargetPosition(cursorXMap, cursorYMap);
     return [cursorXMap, cursorYMap];
   }
 
@@ -146,24 +147,35 @@ function SpecificGlobalNavigation(props) {
         }  
       }}
     /> */}
-    <img src={CityMap} alt="" className="exercise-canvas" id="exercise-img"/>
+    <img src={CityMap} alt="" className="exercise-canvas" id="exercise-img"
+    onClick={ function pickLoc(event){
+      var data = destinationPicker2(event)
+      try {
+        window.RoboticsExerciseComponents.commsManager.send("gui", `pick${data}`)
+      } catch (error) {
+      }  
+    }}
+    />
     {carPose &&
       <img src={Car} id="car" style={{rotate: "z "+ carPose[2]+"rad", top: carPose[0] -5 , left: carPose[1] -5}}/>
+    }
+    {destination &&
+      <div className="target" style={{top: destination[0], left: destination[1] - 10}}/>
     }
     { showImage ? 
       (
       <img id="gui-canvas-numpy" width="400" height="400" style={{
-          marginTop: "5px",
-          width: "100%",
+          position: "absolute",
+          left: "50%",
+          width: "50%",
           height: "100%",
-          margin: "auto"
       }}></img>
       ) : (
       <div id="gui-canvas-numpy-empty" width="400" height="400" style={{
-          marginTop: "5px",
-          width: "100%",
+          position: "absolute",
+          left: "50%",
+          width: "50%",
           height: "100%",
-          margin: "auto",
           backgroundColor: "#000000"
       }}></div>
       )
