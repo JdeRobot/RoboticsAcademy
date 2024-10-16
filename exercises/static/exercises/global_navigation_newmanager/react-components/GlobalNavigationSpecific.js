@@ -82,6 +82,7 @@ function SpecificGlobalNavigation(props) {
 
     const callback = (message) => {
       const data = message.data.update;
+      console.log(data)
       getMapDataAndDraw(data)
       getImageAndDisplay(data)
       getPathAndDisplay(data)
