@@ -13,6 +13,7 @@ function SpecificAmazonWarehouse(props) {
 
   const [map, setMap] = React.useState(Map1)
   const [mapSize, setMapSize] = React.useState(Map1Size)
+  const [vehicleType, setVehicleType] = React.useState(0) // 0=normal 1=ackermann
   const [vehiclePose, setVehiclePose] = React.useState(null)
   const [targetPose, setTargetPose] = React.useState(null)
   const [trail, setTrail] = React.useState("")
@@ -34,7 +35,9 @@ function SpecificAmazonWarehouse(props) {
       updateTrail(base_trail, setTrail, height, width);
 
       if (lastPose) {
-        setVehiclePose([lastPose[1]*height,lastPose[0]*width, -lastPose[2]+Math.PI/8]);
+        var ang = -lastPose[2]+Math.PI/8
+
+        setVehiclePose([lastPose[1]*height,lastPose[0]*width, ang]);
       }
     });
 
@@ -63,7 +66,9 @@ function SpecificAmazonWarehouse(props) {
 
         updateTrail(base_trail, setTrail, height, width);
 
-        setVehiclePose([convPose[1]*height,convPose[0]*width, -content[2]+Math.PI/8]);
+        var ang = -content[2]+Math.PI/8
+
+        setVehiclePose([convPose[1]*height,convPose[0]*width, ang]);
         addToTrail(convPose[1], convPose[0], base_trail);
       }
     };
@@ -121,6 +126,13 @@ function SpecificAmazonWarehouse(props) {
           setMap(Map1)
           setMapSize(Map1Size)
         }
+
+        if (world.includes("ackermann")) {
+          setVehicleType(1)
+        } else {
+          setVehicleType(0)
+        }
+
         try {
           base_path = []
           base_trail = []
@@ -149,9 +161,14 @@ function SpecificAmazonWarehouse(props) {
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
       <img src={map} alt="" className="exercise-canvas" id="exercise-img"/>
-      {vehiclePose &&
-        <div id="vacuum-pos" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}>
+      {vehiclePose && vehicleType == 0 &&
+        <div id="vehic-pos" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}>
           <div className="arrow"/>
+        </div>
+      }
+      {vehiclePose && vehicleType == 1 &&
+        <div id="vehic-pos-ack" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}>
+          <div className="arrow-ack arrow"/>
         </div>
       }
       {trail &&

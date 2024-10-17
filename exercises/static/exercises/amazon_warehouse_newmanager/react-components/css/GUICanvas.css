@@ -8,13 +8,24 @@
   max-height: 100%;
 }
 
-#vacuum-pos {
+#vehic-pos {
   position: absolute;
   width: 20px;
   height: 20px;
   border-radius: 5px;
   background-color: rgb(200, 0, 0);
   border: 1px solid black;
+  z-index: 4;
+  transition: left 0.1s ease-out, top 0.1s ease-out
+}
+
+#vehic-pos-ack {
+  position: absolute;
+  width: 20px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: #817f7c;
+  border: 3px solid rgb(255 152 0);
   z-index: 4;
   transition: left 0.1s ease-out, top 0.1s ease-out
 }
@@ -83,4 +94,10 @@
 
 .target::after {
     transform: rotate(-45deg);
+}
+
+.arrow-ack{
+    margin-top: 40px;
+    margin-left: -2px;
+    transform: rotate(-90deg);
 }
