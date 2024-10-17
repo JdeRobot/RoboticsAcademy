@@ -25,6 +25,19 @@ function SpecificAmazonWarehouse(props) {
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
+    const resizeObserver = new ResizeObserver((entries) => {
+      var img = entries[0].target; 
+      var width = (img.clientWidth / mapSize.width) * 1.38;
+      var height = (img.clientHeight / mapSize.height) * 1.9;
+
+      updatePath(base_path, setPath, height, width);
+      updateTrail(base_trail, setTrail, height, width);
+
+      if (lastPose) {
+        setVehiclePose([lastPose[1]*height,lastPose[0]*width, -lastPose[2]+Math.PI/8]);
+      }
+    });
+
     const displayRobot = (data) => {
       if (data.map) {
         const pose = data.map.substring(1, data.map.length - 1);
@@ -83,6 +96,8 @@ function SpecificAmazonWarehouse(props) {
       [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
       callback
     );
+
+    resizeObserver.observe(document.getElementById('exercise-img'));
 
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
