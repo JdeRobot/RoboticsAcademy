@@ -112,9 +112,9 @@ function SpecificAmazonWarehouse(props) {
     const callback = (message) => {
       console.log(message);
       if (message.data.state === "visualization_ready") {
-        let world = document.getElementById("circuit-selector").innerText;
+        let world = context.mapSelected;
+        //TODO: check if it works on Unibotics
         if (world === "amazon_warehouse_ros2_world2_ackermann" || world === "amazon_warehouse_ros2_world2") {
-          console.log(world)
           setMap(Map2)
           setMapSize(Map2Size)
         } else {
