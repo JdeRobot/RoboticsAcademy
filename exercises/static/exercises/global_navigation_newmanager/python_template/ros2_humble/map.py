@@ -104,7 +104,7 @@ class Map:
 		ty = math.cos(-rt) - math.sin(-rt)
 		tx = math.sin(-rt) + math.cos(-rt)
 		#print("tx : {} , ty : {}".format(tx,ty))
-		return tx, ty
+		return rt,
 
 	# Function to reset
 	def reset(self):

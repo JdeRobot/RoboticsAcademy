@@ -1,0 +1,42 @@
+#car {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+  z-index: 3;
+}
+
+.exercise-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* border: 2px solid #d3d3d3; */
+  width: 50%;
+  height: 100%;
+  max-height: 100%;
+}
+
+.target {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  z-index: 3;
+}
+
+.target::before,
+.target::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 2px; /* cross thickness */
+    border-radius: 6px;
+    background-color: blue;
+}
+
+.target::before {
+    transform: rotate(45deg);
+}
+
+.target::after {
+    transform: rotate(-45deg);
+}
