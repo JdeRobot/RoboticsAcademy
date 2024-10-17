@@ -9,7 +9,6 @@ const editorInitialState = {
   activeEditor: editorList[1], // monaco
   monacoEditorTheme: monacoEditorThemeList[1], // vs-dark
   resizeEditor: resizeList[0],
-  editorMinimap: false,
   baseUrl: `${document.location.protocol}//${document.location.hostname}:7164`,
   editorOptions: {
     //

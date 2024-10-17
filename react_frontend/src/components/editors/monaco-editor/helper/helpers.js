@@ -62,8 +62,6 @@ export const fetchAnalysisCode = async ({
     const data = await response.json();
 
     if (response.ok) {
-      console.log("data ",data);
-      
       return data;
     } else {
       console.error("Error formatting code:", data.error);
