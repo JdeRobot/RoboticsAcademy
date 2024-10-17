@@ -1,4 +1,4 @@
-FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
+FROM nvidia/cuda:11.8.0-base-ubuntu22.04
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
@@ -56,7 +56,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Gazebo 11
+# Install gazebo11
 RUN apt-get update \
     && add-apt-repository ppa:openrobotics/gazebo11-gz-cli && \
     apt-get update \
@@ -80,16 +80,6 @@ RUN apt-get update \
     gz-harmonic \
     ros-humble-ros-gzharmonic \
   && rm -rf /var/lib/apt/lists/*
-
-# Only Harmonic for Testing
-# RUN apt-get update && apt-get install -y \
-#     curl \
-#     lsb-release \
-#     gnupg
-# RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
-# RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list
-# RUN apt-get update && apt-get install -y \
-#     gz-harmonic
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -169,22 +159,13 @@ RUN python3.10 -m pip install \
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
     django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
 
-# BT STUDIO hotfix
-RUN python3.10 -m pip install py-trees autopep8
-RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
-  && apt-get update && apt-get install -y \
-    ros-humble-py-trees \
-    ros-humble-py-trees-ros
-
-
 # Create workspace and add drone packages
-# RUN mkdir -p /home/drones_ws/src/
-# RUN git clone https://github.com/aerostack2/aerostack2.git /home/drones_ws/src/
+RUN mkdir -p /home/drones_ws/src/
+RUN git clone https://github.com/aerostack2/aerostack2.git /home/drones_ws/src/
 
 # Compiling and sourcing the workspace
-# WORKDIR /home/drones_ws/
-# RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} 
+WORKDIR /home/drones_ws/
+RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO}
 # RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 
 # Download and install OMPL library
