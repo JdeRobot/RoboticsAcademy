@@ -1,12 +1,45 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { clearPath, clearMap, draw, drawTargetPosition, generatePath } from "./helpers/bird_eye_amazon_warehouse";
+import {updatePath, addToTrail, updateTrail} from "./helpers/AmazonWarehouseHelper";
+
+import Map1 from "../resources/images/map.png"
+import Map2 from "../resources/images/map_2.png"
+
+import "./css/GUICanvas.css";
 
 function SpecificAmazonWarehouse(props) {
-  const guiCanvasRef = React.useRef();
+  const Map1Size = {width: 415, height: 279}
+  const Map2Size = {width: 1075, height: 699}
+
+  const [map, setMap] = React.useState(Map1)
+  const [mapSize, setMapSize] = React.useState(Map1Size)
+  const [vehicleType, setVehicleType] = React.useState(0) // 0=normal 1=ackermann
+  const [vehiclePose, setVehiclePose] = React.useState(null)
+  const [targetPose, setTargetPose] = React.useState(null)
+  const [trail, setTrail] = React.useState("")
+  const [path, setPath] = React.useState("")
+
+  var base_path = [];
+  var base_trail = [];
+  var lastPose = undefined;
 
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      var img = entries[0].target; 
+      var width = (img.clientWidth / mapSize.width) * 1.38;
+      var height = (img.clientHeight / mapSize.height) * 1.9;
+
+      updatePath(base_path, setPath, height, width);
+      updateTrail(base_trail, setTrail, height, width);
+
+      if (lastPose) {
+        var ang = -lastPose[2]+Math.PI/8
+
+        setVehiclePose([lastPose[1]*height,lastPose[0]*width, ang]);
+      }
+    });
 
     const displayRobot = (data) => {
       if (data.map) {
@@ -14,27 +47,44 @@ function SpecificAmazonWarehouse(props) {
         const content = pose.split(",").map(function (item) {
           return parseFloat(item);
         });
-        let resize_factor = 1;
-        let offset_x = 0;
-        let offset_y = 0;
-        if (guiCanvasRef.current.style.backgroundImage == "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png')") {
+
+        let resize_factor = 1, offset_x = 0, offset_y = 0;
+        if (map == Map2) {
           resize_factor = 0.62;
           offset_x = 59;
           offset_y = 36;
-        }              
-        draw(
-            guiCanvasRef.current,
-            content[0] * resize_factor + offset_x,
-            content[1] * resize_factor + offset_y,
-            content[2] * resize_factor,
-            content[3] * resize_factor
-        );
+        }
+
+        let convPose = [content[0]*resize_factor + offset_x, content[1]*resize_factor + offset_y]
+
+        lastPose = convPose
+
+        var img = document.getElementById('exercise-img'); 
+        //or however you get a handle to the IMG
+        var width = (img.clientWidth / mapSize.width) * 1.38;
+        var height = (img.clientHeight / mapSize.height) * 1.9;
+
+        updateTrail(base_trail, setTrail, height, width);
+
+        var ang = -content[2]+Math.PI/8
+
+        setVehiclePose([convPose[1]*height,convPose[0]*width, ang]);
+        addToTrail(convPose[1], convPose[0], base_trail);
       }
     };
 
     const displayPath = (data) => {
       if(data.array){
-        generatePath(JSON.parse(data.array), guiCanvasRef.current)
+        var img = document.getElementById('exercise-img'); 
+        //or however you get a handle to the IMG
+        var width = (img.clientWidth / mapSize.width) * 1.38;
+        var height = (img.clientHeight / mapSize.height) * 1.9;
+
+        base_path = JSON.parse(data.array);
+        updatePath(base_path, setPath, height, width)
+
+        let target = base_path.at(-1)
+        setTargetPose([(target[1]*height*100)/img.clientHeight, (target[0]*width*100)/img.clientWidth])
       }
     };
 
@@ -52,6 +102,8 @@ function SpecificAmazonWarehouse(props) {
       callback
     );
 
+    resizeObserver.observe(document.getElementById('exercise-img'));
+
     return () => {
       console.log("TestShowScreen unsubscribing from ['state-changed'] events");
       window.RoboticsExerciseComponents.commsManager.unsubscribe(
@@ -65,15 +117,29 @@ function SpecificAmazonWarehouse(props) {
     const callback = (message) => {
       console.log(message);
       if (message.data.state === "visualization_ready") {
-        let world = document.getElementById("circuit-selector").innerText;
-        if (world === "amazon_warehouse_ros2_world2_ackermann" || world === "amazon_warehouse_ros2_world2") {
-          console.log(world)
-          guiCanvasRef.current.style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map_2.png')";
+        let world = context.mapSelected;
+        //TODO: check if it works on Unibotics
+        if (world === "amazon_warehouse_ros2_world2_ackermann" || world === "amazon_warehouse_ros2_world2" || world === "World 2") {
+          setMap(Map2)
+          setMapSize(Map2Size)
         } else {
-          guiCanvasRef.current.style.backgroundImage = "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')";
+          setMap(Map1)
+          setMapSize(Map1Size)
         }
+
+        if (world.includes("ackermann")) {
+          setVehicleType(1)
+        } else {
+          setVehicleType(0)
+        }
+
         try {
-          clearMap()
+          base_path = []
+          base_trail = []
+          setPath("")
+          setTrail("")
+          setVehiclePose(null)
+          setTargetPose(null)
         } catch (error) {
         }
       }
@@ -93,19 +159,36 @@ function SpecificAmazonWarehouse(props) {
   }, [])
 
   return (
-    <canvas
-      ref={guiCanvasRef}
-      id="amazon_map_canvas"
-      style={{
-        backgroundImage:
-          "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')",
-        border: "2px solid #d3d3d3",
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 100%",
-        width: "100%",
-        height: "100%"
-      }}
-    />
+    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
+      <img src={map} alt="" className="exercise-canvas" id="exercise-img"/>
+      {vehiclePose && vehicleType == 0 &&
+        <div id="vehic-pos" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}>
+          <div className="arrow"/>
+        </div>
+      }
+      {vehiclePose && vehicleType == 1 &&
+        <div id="vehic-pos-ack" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}>
+          <div className="arrow-ack arrow"/>
+        </div>
+      }
+      {trail &&
+        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg" style={{zIndex:3, position:"absolute"}}>
+          <path xmlns="http://www.w3.org/2000/svg" d={trail} 
+            style={{strokeWidth: "2px", strokeLinejoin:"round", stroke: "blue", fill: "none"}}
+          />
+        </svg>
+      }
+      {path &&
+        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg" style={{zIndex:2, position:"absolute"}}>
+          <path xmlns="http://www.w3.org/2000/svg" d={path} 
+            style={{strokeWidth: "2px", strokeLinejoin:"round", stroke: "green", fill: "none"}}
+          />
+        </svg>
+      }
+      {targetPose &&
+        <div className="target" style={{top: `${targetPose[0]}%`, left: `calc(${targetPose[1]}% - ${10}px)`}}/>
+      }
+    </div>    
   );
 }
 

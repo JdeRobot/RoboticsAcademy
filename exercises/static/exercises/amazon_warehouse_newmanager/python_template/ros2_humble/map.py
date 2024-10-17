@@ -48,7 +48,7 @@ class Map:
 		# print(" - Angle: " + str(tx) + ", " + str(ty))
 		# print(" -> rt: " + str(rt))
 
-		return tx, ty
+		return rt,
 
 	# Function to reset
 	def reset(self):
