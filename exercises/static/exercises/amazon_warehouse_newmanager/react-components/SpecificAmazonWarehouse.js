@@ -1,18 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { clearPath, clearMap, draw, drawTargetPosition, generatePath } from "./helpers/bird_eye_amazon_warehouse";
 import {updatePath, addToTrail, updateTrail} from "./helpers/AmazonWarehouseHelper";
 
 import Map1 from "../resources/images/map.png"
 import Map2 from "../resources/images/map_2.png"
-import Vacuum from "../resources/images/vacuum.svg";
 
 import "./css/GUICanvas.css";
 
 function SpecificAmazonWarehouse(props) {
   const Map1Size = {width: 415, height: 279}
   const Map2Size = {width: 1075, height: 699}
-  const guiCanvasRef = React.useRef();
 
   const [map, setMap] = React.useState(Map1)
   const [mapSize, setMapSize] = React.useState(Map1Size)
@@ -24,7 +21,6 @@ function SpecificAmazonWarehouse(props) {
   var base_trail = [];
   var lastPose = undefined;
 
-
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
 
@@ -34,38 +30,33 @@ function SpecificAmazonWarehouse(props) {
         const content = pose.split(",").map(function (item) {
           return parseFloat(item);
         });
-        let resize_factor = 1;
-        let offset_x = 0;
-        let offset_y = 0;
+
+        let resize_factor = 1, offset_x = 0, offset_y = 0;
         if (map == Map2) {
           resize_factor = 0.62;
           offset_x = 59;
           offset_y = 36;
         }
-        let convPose = [content[0]*resize_factor + offset_x, content[1]*resize_factor + offset_y]    
+
+        let convPose = [content[0]*resize_factor + offset_x, content[1]*resize_factor + offset_y]
+
+        lastPose = convPose
 
         var img = document.getElementById('exercise-img'); 
         //or however you get a handle to the IMG
         var width = (img.clientWidth / mapSize.width) * 1.38;
         var height = (img.clientHeight / mapSize.height) * 1.9;
-        console.log(width,height)
-        // draw(
-        //     guiCanvasRef.current,
-        //     content[0] * resize_factor + offset_x,
-        //     content[1] * resize_factor + offset_y,
-        //     content[2] * resize_factor,
-        //     content[3] * resize_factor
-        // );
+
         updateTrail(base_trail, setTrail, height, width);
 
-        setVehiclePose([convPose[1]*height,convPose[0]*width, -content[2]]);
+        setVehiclePose([convPose[1]*height,convPose[0]*width, -content[2]+Math.PI/8]);
         addToTrail(convPose[1], convPose[0], base_trail);
       }
     };
 
     const displayPath = (data) => {
       if(data.array){
-        // generatePath(JSON.parse(data.array), guiCanvasRef.current)
+        //TODO: draw target again
         var img = document.getElementById('exercise-img'); 
         //or however you get a handle to the IMG
         var width = (img.clientWidth / mapSize.width) * 1.38;
@@ -113,7 +104,11 @@ function SpecificAmazonWarehouse(props) {
           setMapSize(Map1Size)
         }
         try {
-          // clearMap()
+          base_path = []
+          base_trail = []
+          setPath("")
+          setTrail("")
+          setVehiclePose(null)
         } catch (error) {
         }
       }
@@ -133,24 +128,10 @@ function SpecificAmazonWarehouse(props) {
   }, [])
 
   return (
-    // <canvas
-    //   ref={guiCanvasRef}
-    //   id="amazon_map_canvas"
-    //   style={{
-    //     backgroundImage:
-    //       "url('/static/exercises/amazon_warehouse_newmanager/resources/images/map.png')",
-    //     border: "2px solid #d3d3d3",
-    //     backgroundRepeat: "no-repeat",
-    //     backgroundSize: "100% 100%",
-    //     width: "100%",
-    //     height: "100%"
-    //   }}
-    // />
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
       <img src={map} alt="" className="exercise-canvas" id="exercise-img"/>
       {vehiclePose &&
         <div id="vacuum-pos" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}>
-          <img src={Vacuum} id="vacuum-pos"/>
           <div className="arrow"/>
         </div>
       }
