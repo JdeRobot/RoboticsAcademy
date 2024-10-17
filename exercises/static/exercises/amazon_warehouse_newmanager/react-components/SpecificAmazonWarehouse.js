@@ -14,6 +14,7 @@ function SpecificAmazonWarehouse(props) {
   const [map, setMap] = React.useState(Map1)
   const [mapSize, setMapSize] = React.useState(Map1Size)
   const [vehiclePose, setVehiclePose] = React.useState(null)
+  const [targetPose, setTargetPose] = React.useState(null)
   const [trail, setTrail] = React.useState("")
   const [path, setPath] = React.useState("")
 
@@ -56,7 +57,6 @@ function SpecificAmazonWarehouse(props) {
 
     const displayPath = (data) => {
       if(data.array){
-        //TODO: draw target again
         var img = document.getElementById('exercise-img'); 
         //or however you get a handle to the IMG
         var width = (img.clientWidth / mapSize.width) * 1.38;
@@ -64,6 +64,9 @@ function SpecificAmazonWarehouse(props) {
 
         base_path = JSON.parse(data.array);
         updatePath(base_path, setPath, height, width)
+
+        let target = base_path.at(-1)
+        setTargetPose([(target[1]*height*100)/img.clientHeight, (target[0]*width*100)/img.clientWidth])
       }
     };
 
@@ -109,6 +112,7 @@ function SpecificAmazonWarehouse(props) {
           setPath("")
           setTrail("")
           setVehiclePose(null)
+          setTargetPose(null)
         } catch (error) {
         }
       }
@@ -148,6 +152,9 @@ function SpecificAmazonWarehouse(props) {
             style={{strokeWidth: "2px", strokeLinejoin:"round", stroke: "green", fill: "none"}}
           />
         </svg>
+      }
+      {targetPose &&
+        <div className="target" style={{top: `${targetPose[0]}%`, left: `calc(${targetPose[1]}% - ${10}px)`}}/>
       }
     </div>    
   );
