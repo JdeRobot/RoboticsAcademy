@@ -39,7 +39,6 @@ def ros_version(request):
 @csrf_exempt
 def launch_files(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
-    data = json.loads(exercise.launch_files)
     return JsonResponse(data)
 
 @csrf_exempt
@@ -84,6 +83,7 @@ def index(request):
 
 def load_exercise(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
+    print(exercise.worlds)
     return render(request, 'exercises/' + exercise_id + '/exercise.html', exercise.context)
 
 

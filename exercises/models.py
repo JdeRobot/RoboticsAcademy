@@ -97,7 +97,7 @@ class Exercise(models.Model):
         else:
             ros_version = 'ROS2'
 
-        for world in self.worlds.all():
+        for world in self.worlds.using("universes"):
             if world.ros_version == ros_version:
                 config = {
                     "name": world.name,
