@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from map import Map
-from HAL import getPose3d
+from HAL import getPose3d, getLiftState
 from console_interfaces.general.console import start_console
 
 
@@ -18,7 +18,7 @@ class GUI(MeasuringThreadingGUI):
         self.array = None
 
         # Payload vars
-        self.payload = {'map': '', 'array': ''}
+        self.payload = {'map': '', 'array': '', 'liftState': ''}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
         self.map = Map(getPose3d)
@@ -28,6 +28,7 @@ class GUI(MeasuringThreadingGUI):
     # Prepares and sends a map to the websocket server
     def update_gui(self):
         self.payload["array"] = self.array
+        self.payload["liftState"] = getLiftState()
 
         # Payload Map Message
         pos_message = self.map.getRobotCoordinates()

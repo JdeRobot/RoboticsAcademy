@@ -18,6 +18,7 @@ function SpecificAmazonWarehouse(props) {
   const [targetPose, setTargetPose] = React.useState(null)
   const [trail, setTrail] = React.useState("")
   const [path, setPath] = React.useState("")
+  const [liftState, setLiftState] = React.useState(false)
 
   var base_path = [];
   var base_trail = [];
@@ -88,10 +89,18 @@ function SpecificAmazonWarehouse(props) {
       }
     };
 
+    const displayLiftSquare = (data) => {
+      if(data.liftState === false || data.liftState){
+        setLiftState(data.liftState)
+        console.log(data.liftState)
+      }
+    };
+
     const callback = (message) => {
       const data = message.data.update;
       displayRobot(data)
       displayPath(data)
+      displayLiftSquare(data)
 
       // Send the ACK of the msg
       window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
@@ -162,12 +171,17 @@ function SpecificAmazonWarehouse(props) {
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
       <img src={map} alt="" className="exercise-canvas" id="exercise-img"/>
       {vehiclePose && vehicleType == 0 &&
-        <div id="vehic-pos" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}>
+        <div id="vehic-pos" className={(liftState) ? "" : "lifting"}
+          style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}
+        >
           <div className="arrow"/>
         </div>
       }
       {vehiclePose && vehicleType == 1 &&
-        <div id="vehic-pos-ack" style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}>
+        <div id="vehic-pos-ack"
+           className={(liftState) ? "" : "lifting-ack"}
+          style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}
+        >
           <div className="arrow-ack arrow"/>
         </div>
       }
