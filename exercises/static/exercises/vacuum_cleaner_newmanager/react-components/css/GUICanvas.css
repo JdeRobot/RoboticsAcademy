@@ -24,7 +24,7 @@
   height: 30px;
   border-radius: 30px;
   background-color: rgb(53, 53, 53);
-  transition: all 0.1s ease-out
+  transition: left 0.1s ease-out, top 0.1s ease-out
 }
 
 #map-img {
@@ -38,7 +38,7 @@
   height: 30px;
   cursor:pointer;
 /*   border:solid 1px white; */
-  transition: all 0.1s ease-out;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
   overflow:hidden;
   z-index: 2;
   margin-left: -15px;
