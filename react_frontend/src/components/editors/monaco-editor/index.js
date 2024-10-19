@@ -16,6 +16,8 @@ export {
   fetchAnalysisCode,
   fetchFormatCode,
   getMarkerSeverity,
+  getHalMethods,
+  getGuiMethods,
 } from "./helper/helpers";
 
 // constants
