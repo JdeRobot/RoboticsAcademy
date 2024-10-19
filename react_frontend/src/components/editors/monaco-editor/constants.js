@@ -20,8 +20,143 @@ export const pylint_convention = ["C0114", "C0303", "C0304", "C0305", "C0411"];
 export const pylint_refactor = [];
 export const pylint_fatal = [];
 
+// HAL & GUI Auto Complete Objects
+export const guiAndHalAutoCompleteObj = {
+  follow_line_newmanager: {
+    hal: [
+      {
+        type: "method",
+        label: "getImage()",
+        descriptions: "Get the image (BGR8).",
+      },
+      {
+        type: "method",
+        label: "setV(velocity)",
+        descriptions: "Set the linear speed.",
+      },
+      {
+        type: "method",
+        label: "setW(velocity)",
+        descriptions: "Set the angular velocity.",
+      },
+    ],
+    gui: [
+      {
+        type: "method",
+        label: "showImage(image)",
+        descriptions:
+          "Allows you to view a debug image or with relevant information.",
+      },
+    ],
+  },
+
+  vacuum_cleaner_newmanager: {
+    hal: [
+      {
+        type: "method",
+        label: "getBumperData().state",
+        descriptions:
+          "To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.",
+      },
+      {
+        type: "method",
+        label: "getBumperData().bumper",
+        descriptions:
+          "If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.",
+      },
+      {
+        type: "method",
+        label: "getPose3d().x",
+        descriptions: "Get the position of the robot (x coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().y",
+        descriptions: "Obtain the position of the robot (y coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().yaw",
+        descriptions:
+          "Get the orientation of the robot with regarding the map.",
+      },
+
+      {
+        type: "method",
+        label: "getLaserData()",
+        descriptions:
+          "It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).",
+      },
+      {
+        type: "method",
+        label: "setV()",
+        descriptions: "Set the linear speed).",
+      },
+      {
+        type: "method",
+        label: "setW()",
+        descriptions: "Set the angular velocity",
+      },
+    ],
+    gui: [],
+  },
+};
+
+/*
+{
+        type: "method",
+        label: "",
+        descriptions:
+          "",
+      },
+*/
+
 export const getAllSnippets = ({ monaco, range }) => {
   return [
+    // RA
+    {
+      label: "HAL",
+      kind: monaco.languages.CompletionItemKind.Class,
+      insertText: "HAL",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+      range: range,
+      documentation: "HAL",
+      sortText: "0001", // High priority
+      preselect: true, // Preselected suggestion
+    },
+    {
+      label: "GUI",
+      kind: monaco.languages.CompletionItemKind.Class,
+      insertText: "GUI",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+      range: range,
+      documentation: "GUI",
+      sortText: "0002", // High priority
+      preselect: true, // Preselected suggestion
+    },
+    // template
+    {
+      label: "RA: Template-01",
+      kind: monaco.languages.CompletionItemKind.Snippet,
+      insertText: `import GUI
+import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!`,
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+      range: range,
+      documentation: `import GUI
+import HAL
+# Enter sequential code!
+
+while True:
+    # Enter iterative code!`,
+    },
+    // python snippets
     {
       label: "def",
       kind: monaco.languages.CompletionItemKind.Snippet,
@@ -4550,26 +4685,6 @@ export const getAllSnippets = ({ monaco, range }) => {
         monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       range: range,
       documentation: "__name__: str",
-    },
-    // template
-    {
-      label: "RA: Template-01",
-      kind: monaco.languages.CompletionItemKind.Snippet,
-      insertText: `import GUI
-import HAL
-# Enter sequential code!
-
-while True:
-    # Enter iterative code!`,
-      insertTextRules:
-        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-      range: range,
-      documentation: `import GUI
-import HAL
-# Enter sequential code!
-
-while True:
-    # Enter iterative code!`,
     },
   ];
 };

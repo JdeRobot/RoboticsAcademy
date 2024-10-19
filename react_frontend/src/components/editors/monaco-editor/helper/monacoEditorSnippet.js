@@ -1,7 +1,11 @@
-import { getAllSnippets, getGuiMethods, getHalMethods } from "./../index";
+import { getAllSnippets } from "./../index";
 
 // Main Editor Snippets
-export const monacoEditorSnippet = ({ monaco }) => {
+export const monacoEditorSnippet = ({
+  monaco,
+  guiAutoComplete,
+  halAutoComplete,
+}) => {
   monaco.languages.register({ id: "python" });
   // Register a completion item provider for the new language
   monaco.languages.registerCompletionItemProvider("python", {
@@ -40,9 +44,9 @@ export const monacoEditorSnippet = ({ monaco }) => {
         // Define suggestions for GUI and HAL
         const suggestions =
           instanceName === "GUI"
-            ? getGuiMethods({ monaco })
+            ? guiAutoComplete
             : instanceName === "HAL"
-            ? getHalMethods({ monaco })
+            ? halAutoComplete
             : [];
 
         return { suggestions };

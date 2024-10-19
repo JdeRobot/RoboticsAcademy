@@ -16,8 +16,7 @@ export {
   fetchAnalysisCode,
   fetchFormatCode,
   getMarkerSeverity,
-  getHalMethods,
-  getGuiMethods,
+  getHalGuiMethods,
 } from "./helper/helpers";
 
 // constants
@@ -31,5 +30,6 @@ export {
   pylint_convention,
   pylint_refactor,
   pylint_fatal,
+  guiAndHalAutoCompleteObj,
   getAllSnippets,
 } from "./constants";

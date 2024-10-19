@@ -4,13 +4,7 @@ import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import { monacoEditorScroll } from "./helper/monacoEditorScroll";
 import { monacoEditorSnippet } from "./helper/monacoEditorSnippet";
 import "./../../../styles/editors/MonacoEditor.css";
-import {
-  fetchAnalysisCode,
-  filterLineNumber,
-  getMarkerSeverity,
-  monacoEditorGlyph,
-  renderGlyphs,
-} from "./index";
+import { getHalGuiMethods, monacoEditorGlyph } from "./index";
 import {
   useMonacoEditorCodeAnalysisEffect,
   useMonacoEditorCodeFormatEffect,
@@ -87,7 +81,9 @@ const MonacoEditor = ({
     monacoEditorScroll({ editor });
 
     // editor snippets
-    monacoEditorSnippet({ monaco });
+    const { guiAutoComplete, halAutoComplete } = getHalGuiMethods({ monaco });
+
+    monacoEditorSnippet({ monaco, guiAutoComplete, halAutoComplete });
 
     // Glyphs
     monacoEditorGlyph({ monaco, editor, setLineNumber });
