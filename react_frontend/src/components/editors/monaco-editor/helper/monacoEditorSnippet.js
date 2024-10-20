@@ -1,11 +1,7 @@
 import { getAllSnippets, getHalGuiMethods } from "./../index";
 
 // Main Editor Snippets
-export const monacoEditorSnippet = ({
-  monaco,
-  guiAutoComplete,
-  halAutoComplete,
-}) => {
+export const monacoEditorSnippet = ({ monaco }) => {
   monaco.languages.register({ id: "python" });
   // Register a completion item provider for the new language
   monaco.languages.registerCompletionItemProvider("python", {
@@ -60,15 +56,17 @@ export const monacoEditorSnippet = ({
         const className = findClassNameByInstance(text, instanceName);
 
         if (className && classes[className]) {
-          const classInfo = classes[className];
+          const attributesSet = [...new Set(classes[className].attributes)];
+          const methodsSet = [...new Set(classes[className].methods)];
+
           const suggestions = [
-            ...classInfo.attributes.map((attr) => ({
+            ...attributesSet.map((attr) => ({
               label: attr,
               kind: monaco.languages.CompletionItemKind.Field,
               insertText: attr,
               documentation: `Attribute of ${className}`,
             })),
-            ...classInfo.methods.map((method) => ({
+            ...methodsSet.map((method) => ({
               label: method,
               kind: monaco.languages.CompletionItemKind.Method,
               insertText: `${method}()`,
