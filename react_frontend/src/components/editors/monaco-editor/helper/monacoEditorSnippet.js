@@ -1,4 +1,117 @@
-import { getAllSnippets } from "./../index";
+import { getAllSnippets, getHalGuiMethods } from "./../index";
+
+// Main Editor Snippets
+export const monacoEditorSnippet = ({
+  monaco,
+  guiAutoComplete,
+  halAutoComplete,
+}) => {
+  monaco.languages.register({ id: "python" });
+  // Register a completion item provider for the new language
+  monaco.languages.registerCompletionItemProvider("python", {
+    triggerCharacters: ["."],
+    provideCompletionItems: async (model, position) => {
+      var word = model.getWordUntilPosition(position);
+      var range = {
+        startLineNumber: position.lineNumber,
+        endLineNumber: position.lineNumber,
+        startColumn: word.startColumn,
+        endColumn: word.endColumn,
+      };
+
+      // get text until position
+      const textUntilPosition = model.getValueInRange({
+        startLineNumber: 1,
+        startColumn: 1,
+        endLineNumber: position.lineNumber,
+        endColumn: position.column,
+      });
+
+      //* Class & Objects
+      const text = model.getValue();
+      const classes = extractClassesAndMembers(text);
+
+      // Match the instance name before the dot (e.g. obj.)
+      const classObjMatch = textUntilPosition.match(/(\w+)\.$/);
+
+      //* HAL & GUI autocomplete
+      const halGuiMatch = textUntilPosition.match(/(GUI|HAL)\.$/);
+
+      if (halGuiMatch) {
+        // HAL & GUI
+        const instanceName = halGuiMatch[1]; // either GUI or HAL
+
+        const { guiAutoComplete, halAutoComplete } = getHalGuiMethods({
+          monaco,
+        });
+
+        // Define suggestions for GUI and HAL
+        const suggestions =
+          instanceName === "GUI"
+            ? guiAutoComplete
+            : instanceName === "HAL"
+            ? halAutoComplete
+            : [];
+
+        return { suggestions };
+      } else if (classObjMatch) {
+        // class obj
+        const instanceName = classObjMatch[1];
+        const className = findClassNameByInstance(text, instanceName);
+
+        if (className && classes[className]) {
+          const classInfo = classes[className];
+          const suggestions = [
+            ...classInfo.attributes.map((attr) => ({
+              label: attr,
+              kind: monaco.languages.CompletionItemKind.Field,
+              insertText: attr,
+              documentation: `Attribute of ${className}`,
+            })),
+            ...classInfo.methods.map((method) => ({
+              label: method,
+              kind: monaco.languages.CompletionItemKind.Method,
+              insertText: `${method}()`,
+              documentation: `Method of ${className}`,
+            })),
+          ];
+
+          return { suggestions: suggestions };
+        }
+      } else {
+        // custom suggestions
+        // Class
+        const classesSet = new Set();
+        Object.keys(classes).forEach((key) => classesSet.add(key));
+
+        // custom suggestions
+        const lines = model.getLinesContent();
+        // func
+        const functions = getEditorFunctions({ lines, monaco, range });
+
+        // variable
+        const variables = getEditorVariables({ lines, monaco, range });
+
+        // Get all pre-defined snippets
+        const preDefinedSnippets = getAllSnippets({ monaco, range });
+
+        let suggestions = [
+          ...Array.from(classesSet).map((cls) => ({
+            label: cls,
+            kind: monaco.languages.CompletionItemKind.Class,
+            insertText: cls,
+            range: range,
+          })),
+          ...functions,
+          ...variables,
+          ...preDefinedSnippets,
+        ];
+
+        return { suggestions: suggestions };
+      }
+    },
+  });
+};
 
 // Extract Variables
 const getEditorVariables = ({ lines, monaco, range }) => {
@@ -37,92 +150,7 @@ const getEditorFunctions = ({ lines, monaco, range }) => {
   }));
 };
 
-// Main Editor Snippets
-export const monacoEditorSnippet = ({ monaco }) => {
-  monaco.languages.register({ id: "python" });
-  // Register a completion item provider for the new language
-  monaco.languages.registerCompletionItemProvider("python", {
-    triggerCharacters: ["."],
-    provideCompletionItems: async (model, position) => {
-      var word = model.getWordUntilPosition(position);
-      var range = {
-        startLineNumber: position.lineNumber,
-        endLineNumber: position.lineNumber,
-        startColumn: word.startColumn,
-        endColumn: word.endColumn,
-      };
-
-      //* Class & Objects
-      const text = model.getValue();
-      const classes = extractClassesAndMembers(text);
-
-      const textUntilPosition = model.getValueInRange({
-        startLineNumber: 1,
-        startColumn: 1,
-        endLineNumber: position.lineNumber,
-        endColumn: position.column,
-      });
-
-      // Match the instance name before the dot (e.g. obj.)
-      const match = textUntilPosition.match(/(\w+)\.$/);
-      if (match) {
-        const instanceName = match[1];
-        const className = findClassNameByInstance(text, instanceName);
-
-        if (className && classes[className]) {
-          const classInfo = classes[className];
-          const suggestions = [
-            ...classInfo.attributes.map((attr) => ({
-              label: attr,
-              kind: monaco.languages.CompletionItemKind.Field,
-              insertText: attr,
-              documentation: `Attribute of ${className}`,
-            })),
-            ...classInfo.methods.map((method) => ({
-              label: method,
-              kind: monaco.languages.CompletionItemKind.Method,
-              insertText: `${method}()`,
-              documentation: `Method of ${className}`,
-            })),
-          ];
-
-          return { suggestions: suggestions };
-        }
-      }
-
-      // custom suggestions
-      // Class
-      const classesSet = new Set();
-      Object.keys(classes).forEach((key) => classesSet.add(key));
-
-      // custom suggestions
-      const lines = model.getLinesContent();
-      // func
-      const functions = getEditorFunctions({ lines, monaco, range });
-
-      // variable
-      const variables = getEditorVariables({ lines, monaco, range });
-
-      // Get all pre-defined snippets
-      const preDefinedSnippets = getAllSnippets({ monaco, range });
-
-      let suggestions = [
-        ...Array.from(classesSet).map((cls) => ({
-          label: cls,
-          kind: monaco.languages.CompletionItemKind.Class,
-          insertText: cls,
-          range: range,
-        })),
-        ...functions,
-        ...variables,
-        ...preDefinedSnippets,
-      ];
-
-      return { suggestions: suggestions };
-    },
-  });
-};
-
+// Class Object
 const extractClassesAndMembers = (code) => {
   const classPattern = /class (\w+)\s*:/g;
   const methodPattern = /def (\w+)\(/g;
