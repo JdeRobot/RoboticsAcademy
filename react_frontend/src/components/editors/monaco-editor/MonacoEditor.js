@@ -1,10 +1,10 @@
-import { useRef, useState, useReducer, useEffect } from "react";
+import { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import { monacoEditorScroll } from "./helper/monacoEditorScroll";
 import { monacoEditorSnippet } from "./helper/monacoEditorSnippet";
 import "./../../../styles/editors/MonacoEditor.css";
-import { getHalGuiMethods, monacoEditorGlyph } from "./index";
+import { monacoEditorGlyph } from "./index";
 import {
   useMonacoEditorCodeAnalysisEffect,
   useMonacoEditorCodeFormatEffect,
@@ -81,9 +81,7 @@ const MonacoEditor = ({
     monacoEditorScroll({ editor });
 
     // editor snippets
-    const { guiAutoComplete, halAutoComplete } = getHalGuiMethods({ monaco });
-
-    monacoEditorSnippet({ monaco, guiAutoComplete, halAutoComplete });
+    monacoEditorSnippet({ monaco });
 
     // Glyphs
     monacoEditorGlyph({ monaco, editor, setLineNumber });

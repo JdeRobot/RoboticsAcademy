@@ -94,6 +94,7 @@ export const getHalGuiMethods = ({ monaco }) => {
   const pathName = window.location.pathname;
   let exerciseName = pathName.split("/").filter(Boolean);
   exerciseName = exerciseName[exerciseName.length - 1];
+  exerciseName = `_${exerciseName}`;
 
   // if no object found by exercise name
   if (!guiAndHalAutoCompleteObj[exerciseName]) {
@@ -108,7 +109,7 @@ export const getHalGuiMethods = ({ monaco }) => {
           g.type === "method"
             ? monaco.languages.CompletionItemKind.Method
             : monaco.languages.CompletionItemKind.Variable,
-        insertText: g.label,
+        insertText: g.code,
         documentation: g.descriptions,
       };
     }
@@ -122,7 +123,7 @@ export const getHalGuiMethods = ({ monaco }) => {
           h.type === "method"
             ? monaco.languages.CompletionItemKind.Method
             : monaco.languages.CompletionItemKind.Variable,
-        insertText: h.label,
+        insertText: h.code,
         documentation: h.descriptions,
       };
     }

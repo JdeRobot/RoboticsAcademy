@@ -1,4 +1,4 @@
-import { getAllSnippets } from "./../index";
+import { getAllSnippets, getHalGuiMethods } from "./../index";
 
 // Main Editor Snippets
 export const monacoEditorSnippet = ({
@@ -40,6 +40,10 @@ export const monacoEditorSnippet = ({
       if (halGuiMatch) {
         // HAL & GUI
         const instanceName = halGuiMatch[1]; // either GUI or HAL
+
+        const { guiAutoComplete, halAutoComplete } = getHalGuiMethods({
+          monaco,
+        });
 
         // Define suggestions for GUI and HAL
         const suggestions =
