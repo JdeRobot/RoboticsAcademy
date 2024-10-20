@@ -205,7 +205,7 @@ while True:
         </>
       ) : (
         <div
-          className="w-full h-[calc(100%-24px)] border border-slate-600 "
+          className="w-full h-[calc(100%-24px)] border border-slate-600 overflow-hidden"
           style={{
             display: state.activeEditor === "monaco" ? "block" : "none",
           }}
