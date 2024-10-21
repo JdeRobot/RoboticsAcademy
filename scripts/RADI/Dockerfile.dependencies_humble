@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y \
   lsb-release \
   sudo \
   net-tools \
+  pciutils \
   && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
