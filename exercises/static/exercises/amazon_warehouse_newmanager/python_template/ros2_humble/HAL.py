@@ -58,12 +58,15 @@ def setW(velocity):
     motor_node.sendW(float(velocity))
 
 def lift():
+    global liftState
     liftState = True
     platform_pub.load()
 
 def putdown():
+    global liftState
     liftState = False
     platform_pub.unload()
 
 def getLiftState():
+    global liftState
     return liftState

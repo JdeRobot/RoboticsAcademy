@@ -171,7 +171,7 @@ function SpecificAmazonWarehouse(props) {
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
       <img src={map} alt="" className="exercise-canvas" id="exercise-img"/>
       {vehiclePose && vehicleType == 0 &&
-        <div id="vehic-pos" className={(liftState) ? "" : "lifting"}
+        <div id="vehic-pos" className={(liftState) ? "lifting" : ""}
           style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}
         >
           <div className="arrow"/>
@@ -179,7 +179,7 @@ function SpecificAmazonWarehouse(props) {
       }
       {vehiclePose && vehicleType == 1 &&
         <div id="vehic-pos-ack"
-           className={(liftState) ? "" : "lifting-ack"}
+           className={(liftState) ? "lifting-ack" : ""}
           style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}
         >
           <div className="arrow-ack arrow"/>
