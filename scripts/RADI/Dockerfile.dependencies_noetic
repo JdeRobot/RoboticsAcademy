@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y \
         htop net-tools \
         xterm rsync \
         lxde-core \
-        pcituils \
+        pciutils \
         tasksel && \
     rm -rf /var/lib/apt/lists/*
 RUN tasksel install lubuntu-core lubuntu-desktop
