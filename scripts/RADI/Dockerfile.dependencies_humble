@@ -40,7 +40,8 @@ RUN apt-get update && apt-get install -y \
   lsb-release \
   sudo \
   net-tools \
-  && rm -rf /var/lib/apt/lists/* 
+  pciutils \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
