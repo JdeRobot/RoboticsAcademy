@@ -44,7 +44,7 @@ export function draw (data){
             var point = JSON.parse(data.pts);
             if(point != "")
             {
-                paintPoints(point);
+                paintPoints(point);  //TODO: DO NOT TOUCH
             }
             var matching = JSON.parse(data.match);
 
@@ -84,7 +84,7 @@ function paintPoints(points_received)
         point.r = points_received[i][3];
         point.g = points_received[i][4];
         point.b = points_received[i][5];
-		addPoint(point); //TODO: this prints in the other canvas?
+		addPoint(point);
     }
 }
 
