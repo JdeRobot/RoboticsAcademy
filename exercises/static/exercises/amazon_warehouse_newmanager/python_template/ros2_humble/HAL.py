@@ -11,6 +11,9 @@ from hal_interfaces.specific.amazon_warehouse.platform_controller import Platfor
 # Hardware Abstraction Layer
 freq = 30.0
 
+# Lift State
+liftState = False
+
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
@@ -55,7 +58,15 @@ def setW(velocity):
     motor_node.sendW(float(velocity))
 
 def lift():
+    global liftState
+    liftState = True
     platform_pub.load()
 
 def putdown():
+    global liftState
+    liftState = False
     platform_pub.unload()
+
+def getLiftState():
+    global liftState
+    return liftState
