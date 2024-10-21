@@ -44,7 +44,7 @@ export function draw (data){
             var point = JSON.parse(data.pts);
             if(point != "")
             {
-                paintPoints(point);
+                paintPoints(point);  //TODO: DO NOT TOUCH
             }
             var matching = JSON.parse(data.match);
 
@@ -57,8 +57,6 @@ export function draw (data){
             if (paint_matching === "T") {
                 paintMatching();
             }
-            
-         
 }
         
 
