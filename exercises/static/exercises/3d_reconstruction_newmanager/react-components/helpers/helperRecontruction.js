@@ -57,8 +57,6 @@ export function draw (data){
             if (paint_matching === "T") {
                 paintMatching();
             }
-            
-         
 }
         
 
@@ -86,7 +84,7 @@ function paintPoints(points_received)
         point.r = points_received[i][3];
         point.g = points_received[i][4];
         point.b = points_received[i][5];
-		addPoint(point);
+		addPoint(point); //TODO: this prints in the other canvas?
     }
 }
 
