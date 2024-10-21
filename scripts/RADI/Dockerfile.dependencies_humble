@@ -40,7 +40,8 @@ RUN apt-get update && apt-get install -y \
   lsb-release \
   sudo \
   net-tools \
-  && rm -rf /var/lib/apt/lists/* 
+  pciutils \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
@@ -159,7 +160,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     ros-humble-py-trees \
     ros-humble-py-trees-ros
 
-# PX4 pip installs 
+# PX4 pip installs
 RUN python3.10 -m pip install jsonschema==4.18.0
 
 # PX4 Dependencies
@@ -171,7 +172,7 @@ RUN apt-get update && apt-get install -y \
     ninja-build \
     rsync \
     shellcheck \
-  && rm -rf /var/lib/apt/lists/* 
+  && rm -rf /var/lib/apt/lists/*
 
 # Install PX4
 RUN git clone -b v1.14.0 https://github.com/PX4/PX4-Autopilot.git --recursive \

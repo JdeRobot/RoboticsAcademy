@@ -6,7 +6,7 @@ ENV IMAGE_TAG=${IMAGE_TAG}
 
 # Robotics Infrastructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
-RUN echo $ROBOTICS_INFRASTRUCTURE 
+RUN echo $ROBOTICS_INFRASTRUCTURE
 RUN mkdir -p /opt/jderobot && \
     git clone -b $ROBOTICS_INFRASTRUCTURE --depth 1 https://github.com/JdeRobot/RoboticsInfrastructure.git /opt/jderobot
 
@@ -56,7 +56,7 @@ RUN npm install -g yarn
 RUN cd /RoboticsAcademy/react_frontend && yarn install && yarn run build
 
 # Scripts copy
-RUN mv -t ./ /opt/jderobot/scripts/.env /opt/jderobot/scripts/instructions.json /opt/jderobot/scripts/pylint_checker.py /opt/jderobot/scripts/entrypoint.sh
+RUN mv -t ./ /opt/jderobot/scripts/.env /opt/jderobot/scripts/instructions.json /opt/jderobot/scripts/pylint_checker.py /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/set_dri_name.sh
 RUN mv /opt/jderobot/scripts/pylintrc /etc/pylintrc
 
 RUN rm -rf /usr/bin/python /usr/bin/python2 /usr/bin/python2.7 \
