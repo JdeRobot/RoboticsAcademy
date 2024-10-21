@@ -215,8 +215,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
-    order: 0;
+    status: "prototype"
+    order: 2;
 
   - image_path: /assets/images/exercises/package_delivery/package_delivery_teaser.png
     alt: "Package Delivery"
@@ -416,7 +416,7 @@ feature_row:
     status: "prototype"
     order: 2;
 
-  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
+  - image_path: /assets/images/exercises/montecarlo_visual_loc/montecarlo_visual_loc_teaser.png
     alt: "Montecarlo Laser Loc"
     title: "Montecarlo Laser Loc"
     excerpt: "Robot self-localization using particle filter and laser sensor"
@@ -424,8 +424,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
 
 ---
 
