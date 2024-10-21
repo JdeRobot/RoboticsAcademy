@@ -5,7 +5,7 @@ import "../../styles/visualizers/Frequencies.css";
 export const Frequencies = (props) => {
   const [frequencies, setFrequencies] = useState({ brain: 0, gui: 0, rtf: 0 });
   const [rosVersion, setRosVersion] = useState(null);
-  const [gpuAvaliable, setGpuAvaliable] = useState(false);
+  const [gpuVendor, setgpuVendor] = useState(false);
   React.useEffect(() => {
     const callback = (message) => {
       const update = message.data.update;
@@ -37,7 +37,8 @@ export const Frequencies = (props) => {
           setRosVersion(["ROS2", version.charAt(0).toUpperCase() + version.slice(1)]);
         }
       }
-      setGpuAvaliable(message.data.gpu_avaliable);
+      console.log(message.data.gpu_avaliable)
+      setgpuVendor(message.data.gpu_avaliable);
     };
     window.RoboticsExerciseComponents.commsManager.suscribreOnce(
       [window.RoboticsExerciseComponents.commsManager.events.INTROSPECTION],
@@ -62,7 +63,7 @@ export const Frequencies = (props) => {
       }
       <Typography>/</Typography>
       <Typography>GPU</Typography>
-      <Typography>{gpuAvaliable ? "ON" : "OFF"}</Typography>
+      <Typography>{gpuVendor}</Typography>
     </div>
   );
 };
