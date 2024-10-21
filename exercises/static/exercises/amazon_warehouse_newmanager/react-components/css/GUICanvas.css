@@ -20,11 +20,11 @@
 }
 
 .lifting {
-  border: 2px solid rgb(0, 255, 0);
+  border: 2px solid rgb(0, 255, 0) !important;
 }
 
 .lifting-ack {
-  border: 4px solid rgb(0, 255, 0);
+  border: 4px solid rgb(0, 255, 0) !important;
 }
 
 #vehic-pos-ack {
