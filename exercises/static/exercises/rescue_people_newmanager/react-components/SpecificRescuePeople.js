@@ -2,8 +2,8 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { drawImage, drawLeftImage } from "./helpers/showImagesRescue";
 
+import "./css/GUICanvas.css"
 function SpecificRescuePeople(props) {
-  const [image, setImage] = React.useState(null);
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
@@ -37,9 +37,11 @@ function SpecificRescuePeople(props) {
   }, []);
 
   return (
-    <div style={{ display: "flex", width: "100%", height: "100%" }}>
-      <canvas id="gui_canvas_left"></canvas>
-      <canvas id="gui_canvas_right"></canvas>
+    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
+      <img className="image" id="gui_canvas_left" style={{left: "0"}}
+        src="https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"/>
+      <img className="image" id="gui_canvas_right" style={{left: "50%"}}
+        src="https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"/>
     </div>
   );
 }

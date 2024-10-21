@@ -19,11 +19,11 @@ ARG RAM=$RAM
 RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager
 
 # copy scripts
-RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py
+RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh
 
 # give execution permissions
 WORKDIR /
-RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh
+RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh
 
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
@@ -49,26 +49,11 @@ EXPOSE 7164
 # Manager websocket
 EXPOSE 7163
 
-# Exercise websocket
-EXPOSE 1905
-
-# GUI websockets
-EXPOSE 2303
-
 # noVNC Console
 EXPOSE 1108
 
 # noVNC Gazebo
 EXPOSE 6080
-
-# noVNC Rviz
-EXPOSE 6081
-
-# noVNC GUI
-EXPOSE 6082
-
-# WebRtc
-EXPOSE 1831
 
 WORKDIR /
 

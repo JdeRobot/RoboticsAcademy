@@ -4,7 +4,7 @@ let carHeight = 77;
 let ctx= null
 let mapCanvas = null
 
-export function paintEvent(canvas, car, obs, avg, lasers, ranges) {
+export function paintEvent(canvas, lasers, ranges) {
     mapCanvas = canvas
     ctx = mapCanvas.getContext("2d");
 

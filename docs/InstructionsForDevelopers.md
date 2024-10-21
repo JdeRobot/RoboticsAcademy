@@ -78,7 +78,7 @@ nvm use 17
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
-Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a mini radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_mini_radi.md).
+Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_radi.md).
 
 ### Using Docker compose
 
@@ -234,7 +234,7 @@ There are a three python packages to help the development of a new exercise:
 For knowing how to use each package, please follow the links in the list above.
 
 Then, create the entry in db.sqlite3. A simple way to do this is by using the Django admin page:
-1)  Run ```python3.8 manage.py runserver```.
+1)  Run ```python3.8 manage.py runserver``` or launch the docker as normal.
 2)  Access http://127.0.0.1:7164/admin/ on a browser and log in with "user" and "pass".
 3)  Click on "add exercise" and fill the required fields specified below. Save and exit.
 4)  Commit db.sqlite3 changes.
