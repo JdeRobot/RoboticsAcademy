@@ -31,8 +31,11 @@ export const Frequencies = (props) => {
     const callback = (message) => {
       if (message.data.ros_version.trim() === "noetic") {
         setRosVersion(["ROS", "Noetic"]);
-      } else if (message.data.ros_version.trim() === "humble") {
-        setRosVersion(["ROS2", "Humble"]);
+      } else {
+        let version = message.data.ros_version.trim()
+        if (version) {
+          setRosVersion(["ROS2", version.charAt(0).toUpperCase() + version.slice(1)]);
+        }
       }
       setGpuAvaliable(message.data.gpu_avaliable);
     };
