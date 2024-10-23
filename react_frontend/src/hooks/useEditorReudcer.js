@@ -6,6 +6,7 @@ import {
 } from "../components/editors/monaco-editor";
 
 const editorInitialState = {
+  isLoading: true,
   activeEditor: editorList[1], // monaco
   monacoEditorTheme: monacoEditorThemeList[1], // vs-dark
   resizeEditor: resizeList[0],
@@ -46,6 +47,11 @@ const editorInitialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "updateEditorState":
+      return {
+        ...state,
+        isLoading: action.payload.loading,
+      };
     case "changeEditor":
       return {
         ...state,

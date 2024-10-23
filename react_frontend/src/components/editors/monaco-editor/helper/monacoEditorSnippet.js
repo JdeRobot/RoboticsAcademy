@@ -1,4 +1,10 @@
-import { getAllSnippets, getHalGuiMethods } from "./../index";
+import {
+  getAllSnippets,
+  getHalGuiMethods,
+  listed_python_packages,
+  snippetsBuilder,
+} from "./../index";
+import { extractPythonImports } from "./helpers";
 
 // Main Editor Snippets
 export const monacoEditorSnippet = ({ monaco }) => {
@@ -22,35 +28,65 @@ export const monacoEditorSnippet = ({ monaco }) => {
         endLineNumber: position.lineNumber,
         endColumn: position.column,
       });
+      // get all text data in editor
+      const text = model.getValue();
+
+      //! test import start
+      const allLines = text.split("\n").filter(Boolean);
+      const allImports = [];
+      allLines.forEach((line) => {
+        const importData = extractPythonImports(line);
+
+        if (importData.length) {
+          if (listed_python_packages.includes(importData[0].importName)) {
+            allImports.push(importData[0]);
+          }
+        }
+      });
+
+      // check
+      if (allImports.length) {
+        const importMatch = allImports.find((imp) => {
+          const match = textUntilPosition.match(
+            new RegExp(`(${imp.alias})\\.$`)
+          );
+          if (match) return imp;
+        });
+
+        if (importMatch) {
+          const { importName, alias } = importMatch;
+          if (importName === "GUI" || importName === "HAL") {
+            const { guiAutoComplete, halAutoComplete } = getHalGuiMethods({
+              monaco,
+              importName,
+            });
+
+            const suggestions =
+              importName === "GUI"
+                ? guiAutoComplete
+                : importName === "HAL"
+                ? halAutoComplete
+                : [];
+
+            return { suggestions };
+          } else {
+            const suggestions = snippetsBuilder({
+              monaco,
+              range,
+              importName,
+            });
+            return { suggestions };
+          }
+        }
+      }
+      //! test import end
 
       //* Class & Objects
-      const text = model.getValue();
       const classes = extractClassesAndMembers(text);
-
       // Match the instance name before the dot (e.g. obj.)
       const classObjMatch = textUntilPosition.match(/(\w+)\.$/);
 
-      //* HAL & GUI autocomplete
-      const halGuiMatch = textUntilPosition.match(/(GUI|HAL)\.$/);
-
-      if (halGuiMatch) {
-        // HAL & GUI
-        const instanceName = halGuiMatch[1]; // either GUI or HAL
-
-        const { guiAutoComplete, halAutoComplete } = getHalGuiMethods({
-          monaco,
-        });
-
-        // Define suggestions for GUI and HAL
-        const suggestions =
-          instanceName === "GUI"
-            ? guiAutoComplete
-            : instanceName === "HAL"
-            ? halAutoComplete
-            : [];
-
-        return { suggestions };
-      } else if (classObjMatch) {
+      if (classObjMatch) {
         // class obj
         const instanceName = classObjMatch[1];
         const className = findClassNameByInstance(text, instanceName);
@@ -78,6 +114,13 @@ export const monacoEditorSnippet = ({ monaco }) => {
         }
       } else {
         // custom suggestions
+
+        // import
+        const importSet = new Set();
+        allImports.forEach((imp) => {
+          // importSet.add(imp.importName);
+          importSet.add(imp.alias);
+        });
         // Class
         const classesSet = new Set();
         Object.keys(classes).forEach((key) => classesSet.add(key));
@@ -94,6 +137,15 @@ export const monacoEditorSnippet = ({ monaco }) => {
         const preDefinedSnippets = getAllSnippets({ monaco, range });
 
         let suggestions = [
+          // import snippet
+          // add import
+          ...Array.from(importSet).map((imp) => ({
+            label: imp,
+            kind: monaco.languages.CompletionItemKind.Class,
+            insertText: imp,
+            range: range,
+          })),
+          // class-obj
           ...Array.from(classesSet).map((cls) => ({
             label: cls,
             kind: monaco.languages.CompletionItemKind.Class,

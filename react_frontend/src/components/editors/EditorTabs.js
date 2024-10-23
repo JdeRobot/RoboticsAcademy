@@ -21,6 +21,15 @@ const EditorTabs = ({
   const { activeEditor, resizeEditor, monacoEditorTheme, baseUrl } = state;
   const { readOnly } = state.editorOptions;
 
+  const handleEditorThemeChange = (e) => {
+    const theme = e.target.value;
+    dispatch({
+      type: "updateMonacoEditorTheme",
+      payload: { theme: theme },
+    });
+
+    localStorage.setItem("editor-theme", theme);
+  };
   return (
     <div className="w-full h-[28px] flex items-center justify-between pr-1 border-b border-[rgba(33,33,0,.5)] bg-white">
       {/* Editor Tabs */}
@@ -70,12 +79,7 @@ const EditorTabs = ({
               <select
                 className="text-sm text-[#333] bg-slate-300 text-center py-[4px] "
                 value={monacoEditorTheme}
-                onChange={(e) =>
-                  dispatch({
-                    type: "updateMonacoEditorTheme",
-                    payload: { theme: e.target.value },
-                  })
-                }
+                onChange={(e) => handleEditorThemeChange(e)}
               >
                 {monacoEditorThemeList.map((theme, i) => (
                   <option value={theme} key={i} className="text-sm text-[#333]">

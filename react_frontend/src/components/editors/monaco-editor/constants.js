@@ -3,11 +3,12 @@ export const editorList = ["ace", "monaco"];
 export const monacoEditorThemeList = ["vs", "vs-dark", "hc-black"];
 export const defaultEditorSourceCode = `import GUI
 import HAL
+import numpy as np
 # Enter sequential code!
 
 while True:
     # Enter iterative code!
-    
+    print("Robotics Academy!")
 
 `;
 
@@ -19,6 +20,10 @@ export const pylint_warning = ["W0611"];
 export const pylint_convention = ["C0114", "C0303", "C0304", "C0305", "C0411"];
 export const pylint_refactor = [];
 export const pylint_fatal = [];
+
+// python packages autocomplete list
+
+export const listed_python_packages = ["numpy", "math", "cv2", "HAL", "GUI"];
 
 // HAL & GUI Auto Complete Objects
 export const guiAndHalAutoCompleteObj = {
@@ -767,26 +772,40 @@ export const getAllSnippets = ({ monaco, range }) => {
   return [
     // RA
     {
-      label: "HAL",
+      label: "import numpy as np",
       kind: monaco.languages.CompletionItemKind.Class,
-      insertText: "HAL",
+      insertText: "import numpy as np",
       insertTextRules:
         monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       range: range,
-      documentation: "HAL",
-      sortText: "0001", // High priority
-      preselect: true, // Preselected suggestion
+      documentation: "import numpy as np",
     },
     {
-      label: "GUI",
+      label: "import numpy",
       kind: monaco.languages.CompletionItemKind.Class,
-      insertText: "GUI",
+      insertText: "import numpy",
       insertTextRules:
         monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
       range: range,
-      documentation: "GUI",
-      sortText: "0002", // High priority
-      preselect: true, // Preselected suggestion
+      documentation: "import numpy",
+    },
+    {
+      label: "import math",
+      kind: monaco.languages.CompletionItemKind.Class,
+      insertText: "import math",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+      range: range,
+      documentation: "import math",
+    },
+    {
+      label: "import cv2",
+      kind: monaco.languages.CompletionItemKind.Class,
+      insertText: "import cv2",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+      range: range,
+      documentation: "import cv2",
     },
     // template
     {

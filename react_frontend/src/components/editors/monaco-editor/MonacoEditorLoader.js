@@ -109,15 +109,15 @@ const MonacoEditorLoader = ({ theme }) => {
   }, [theme]);
   return (
     <div
-      className={`w-full h-full px-6 py-2 select-none`}
+      className={`w-full h-full px-4 py-2 select-none`}
       style={{ backgroundColor: `${background}` }}
     >
       <div
-        className={`flex flex-col items-start p-4 animate-pulse w-full h-full `}
+        className={`flex flex-col items-start xp-4 animate-pulse w-full h-full `}
       >
         {lineTheme.map((line, i) => (
           <div
-            className="flex items-center justify-start gap-4  w-full h-[32px]"
+            className="flex items-center justify-start gap-4  w-full h-[20px]"
             key={i}
           >
             <span
