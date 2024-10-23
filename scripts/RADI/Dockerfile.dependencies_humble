@@ -166,7 +166,33 @@ RUN git clone https://github.com/aerostack2/aerostack2.git /home/drones_ws/src/
 # Compiling and sourcing the workspace
 WORKDIR /home/drones_ws/
 RUN apt-get update && rosdep update && rosdep install -y -r -q --from-paths src --ignore-src --rosdistro ${ROS_DISTRO}
-# RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
+#RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_msgs"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_core"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_cli"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_gazebo_assets"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_platform_gazebo"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_platform_multirotor_simulator"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behavior_tree"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_motion_reference_handlers"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behavior"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behaviors_motion"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behaviors_path_planning"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behaviors_perception"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behaviors_platform"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_behaviors_trajectory_generation"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_realsense_interface"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_usb_camera_interface"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_map_server"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_motion_controller"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_python_api"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_state_estimator"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_alphanumeric_viewer"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_keyboard_teleoperation"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_rviz_plugins"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_visualization"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_external_object_to_tf"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --packages-select as2_geozones"
 
 # Download and install OMPL library
 COPY install-ompl-ubuntu.sh /

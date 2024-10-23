@@ -34,7 +34,7 @@ RUN mv /RoboticsAcademy/common/hal_interfaces /RoboticsAcademy/common/gui_interf
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
-# RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
+RUN /bin/bash -c "source /home/drones_ws/install/setup.bash; rosdep install --from-paths src --ignore-src -r --rosdistro humble -y"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 
 # Relocate RAM
