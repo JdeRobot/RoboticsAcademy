@@ -9,3 +9,8 @@
   border-radius: 20px !important;
   padding-left: 8px !important;
 }
+
+.overlayWidgets .editor-widget {
+  display: flex !important;
+  flex-direction: column !important;
+}

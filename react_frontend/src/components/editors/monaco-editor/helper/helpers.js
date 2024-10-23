@@ -90,19 +90,22 @@ export const getMarkerSeverity = ({ type, monaco }) => {
 };
 
 // hal & gui auto complete
-export const getHalGuiMethods = ({ monaco }) => {
+export const getHalGuiMethods = ({ monaco, importName }) => {
   const pathName = window.location.pathname;
   let exerciseName = pathName.split("/").filter(Boolean);
   exerciseName = exerciseName[exerciseName.length - 1];
   exerciseName = `_${exerciseName}`;
 
+  let guiAutoComplete = [];
+  let halAutoComplete = [];
+
   // if no object found by exercise name
   if (!guiAndHalAutoCompleteObj[exerciseName]) {
-    return { guiAutoComplete: [], halAutoComplete: [] };
+    return { guiAutoComplete, halAutoComplete };
   }
 
-  const guiAutoComplete = guiAndHalAutoCompleteObj[exerciseName].gui.map(
-    (g, i) => {
+  if (importName === "GUI") {
+    guiAutoComplete = guiAndHalAutoCompleteObj[exerciseName].gui.map((g, i) => {
       return {
         label: g.label,
         kind:
@@ -112,11 +115,9 @@ export const getHalGuiMethods = ({ monaco }) => {
         insertText: g.code,
         documentation: g.descriptions,
       };
-    }
-  );
-
-  const halAutoComplete = guiAndHalAutoCompleteObj[exerciseName].hal.map(
-    (h, i) => {
+    });
+  } else if (importName === "HAL") {
+    halAutoComplete = guiAndHalAutoCompleteObj[exerciseName].hal.map((h, i) => {
       return {
         label: h.label,
         kind:
@@ -126,8 +127,24 @@ export const getHalGuiMethods = ({ monaco }) => {
         insertText: h.code,
         documentation: h.descriptions,
       };
-    }
-  );
+    });
+  }
 
   return { guiAutoComplete, halAutoComplete };
+};
+
+export const extractPythonImports = (code) => {
+  const importRegex =
+    /\bimport\s+([a-zA-Z_][\w]*)(?:\s+as\s+([a-zA-Z_][\w]*))?/g;
+
+  let imports = [];
+  let match;
+
+  while ((match = importRegex.exec(code)) !== null) {
+    const importName = match[1];
+    const alias = match[2] ? match[2] : importName;
+    imports.push({ importName, alias });
+  }
+
+  return imports;
 };

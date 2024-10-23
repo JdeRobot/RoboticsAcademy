@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import { monacoEditorScroll } from "./helper/monacoEditorScroll";
@@ -10,6 +10,7 @@ import {
   useMonacoEditorCodeFormatEffect,
   useMonacoEditorLineNumberDecorationsEffect,
 } from "../../../hooks/useMonacoEditorEffect";
+import MonacoEditorLoader from "./MonacoEditorLoader";
 
 const MonacoEditor = ({
   state,
@@ -22,8 +23,8 @@ const MonacoEditor = ({
   const monacoRef = useRef(null);
   const editorRef = useRef(null);
   const lineNumberDecorationRef = useRef(null);
-  //
-  const { monacoEditorTheme, editorOptions, baseUrl } = state;
+  // Rducer state
+  const { isLoading, monacoEditorTheme, editorOptions, baseUrl } = state;
   // USE STATE
   const [lineNumber, setLineNumber] = useState(-1);
   const [lineNumberDecorations, setLineNumberDecorations] = useState([]);
@@ -31,6 +32,32 @@ const MonacoEditor = ({
   const [maxEditorRows, setMaxEditorRows] = useState(-1);
 
   // USE Effects
+  // editor loading
+  useEffect(() => {
+    // get local storage theme data
+    const local_theme = localStorage.getItem("editor-theme");
+
+    if (!local_theme) {
+      localStorage.setItem("editor-theme", monacoEditorTheme);
+    } else {
+      dispatch({
+        type: "updateMonacoEditorTheme",
+        payload: { theme: local_theme },
+      });
+    }
+
+    //
+    loader
+      .init()
+      .then(() => {
+        setTimeout(() => {
+          dispatch({ type: "updateEditorState", payload: { loading: false } });
+        }, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   // UseEffect for Line Number Decorations
 
@@ -89,21 +116,25 @@ const MonacoEditor = ({
 
   return (
     <div className="w-full h-full">
-      <Editor
-        height="100%"
-        width="100%"
-        defaultLanguage="python"
-        theme={monacoEditorTheme}
-        defaultValue={monacoEditorSourceCode}
-        value={monacoEditorSourceCode}
-        onChange={(code) => handleMonacoEditorCodeChange(code)}
-        beforeMount={handleEditorWillMount}
-        onMount={handleEditorDidMount}
-        // onValidate={handleEditorValidation}
-        // Editor Options
-        options={editorOptions}
-        className=""
-      />
+      {isLoading ? (
+        <MonacoEditorLoader theme={monacoEditorTheme} />
+      ) : (
+        <Editor
+          height="100%"
+          width="100%"
+          defaultLanguage="python"
+          theme={monacoEditorTheme}
+          defaultValue={monacoEditorSourceCode}
+          value={monacoEditorSourceCode}
+          onChange={(code) => handleMonacoEditorCodeChange(code)}
+          beforeMount={handleEditorWillMount}
+          onMount={handleEditorDidMount}
+          // onValidate={handleEditorValidation}
+          // Editor Options
+          options={editorOptions}
+          className=""
+        />
+      )}
     </div>
   );
 };
