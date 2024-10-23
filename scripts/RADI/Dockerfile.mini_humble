@@ -58,6 +58,9 @@ EXPOSE 1108
 # noVNC Gazebo
 EXPOSE 6080
 
+#PostgreSQL Database
+EXPOSE 5432
+
 WORKDIR /
 
 # Setting environment in both interactive or non-interactive shells
