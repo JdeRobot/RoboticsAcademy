@@ -12,9 +12,6 @@ services:
   robotics-academy:
     image: jderobot/robotics-backend:test
     container_name: developer-container
-    devices:
-      - /dev/dri/card0:/dev/dri/card0
-      - /dev/dri/renderD128:/dev/dri/renderD128
     ports:
       - "7164:7164"
       - "7163:7163"
