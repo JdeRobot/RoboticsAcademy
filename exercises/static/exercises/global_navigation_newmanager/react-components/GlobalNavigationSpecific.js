@@ -6,11 +6,12 @@ import CityMap from "../resources/images/cityLargenBin.png";
 
 import "./css/GUICanvas.css";
 
+var coords = undefined;
+
 function SpecificGlobalNavigation(props) {
   const [showImage, setShowImage] = React.useState(false);
   const [carPose, setCarPose] = React.useState(null)
   const [destination, setDestination] = React.useState(null)
-  const [destinationWorld, setDestinationWorld] = React.useState(null)
   const [path, setPath] = React.useState("")
   
   var trail = [];
@@ -119,9 +120,10 @@ function SpecificGlobalNavigation(props) {
         showMap = true
         setShowImage(true)
         // Resend Target
-        if (destinationWorld) {
+        console.log("Resend target:", coords)
+        if (coords) {
           try {
-            window.RoboticsExerciseComponents.commsManager.send("gui", `pick${destinationWorld}`)
+            window.RoboticsExerciseComponents.commsManager.send("gui", `pick${coords}`)
           } catch (error) {
           }  
         }
@@ -154,7 +156,6 @@ function SpecificGlobalNavigation(props) {
     let cursorYMap = cursorY / height;
 
     setDestination([(cursorY*100)/img.clientHeight, (cursorX*100)/(img.clientWidth*2)])
-    setDestinationWorld([cursorXMap, cursorYMap])
     return [cursorXMap, cursorYMap];
   }
 
@@ -163,6 +164,7 @@ function SpecificGlobalNavigation(props) {
       <img src={CityMap} alt="" className="exercise-canvas" id="exercise-img"
         onClick={ function pickLoc(event){
           var data = destinationPicker(event)
+          coords = data
           try {
             window.RoboticsExerciseComponents.commsManager.send("gui", `pick${data}`)
           } catch (error) {

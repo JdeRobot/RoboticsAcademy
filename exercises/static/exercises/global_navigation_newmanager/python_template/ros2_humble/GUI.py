@@ -44,7 +44,6 @@ class GUI(MeasuringThreadingGUI):
             self.mapXY = data
             x, y = self.mapXY
             self.worldXY = self.map.gridToWorld(x, y)
-            print(f"World : {self.worldXY}")
 
     # Prepares and sends a map to the websocket server
     def update_gui(self):
