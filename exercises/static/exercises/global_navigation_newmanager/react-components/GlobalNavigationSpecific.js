@@ -114,7 +114,6 @@ function SpecificGlobalNavigation(props) {
         setShowImage(false)
         trail = []
         setPath("")
-        setDestination(undefined)
       } else {
         showMap = true
         setShowImage(true)
