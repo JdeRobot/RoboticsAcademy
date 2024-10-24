@@ -119,10 +119,12 @@ function SpecificGlobalNavigation(props) {
         showMap = true
         setShowImage(true)
         // Resend Target
-        try {
-          window.RoboticsExerciseComponents.commsManager.send("gui", `pick${destinationWorld}`)
-        } catch (error) {
-        }  
+        if (destinationWorld) {
+          try {
+            window.RoboticsExerciseComponents.commsManager.send("gui", `pick${destinationWorld}`)
+          } catch (error) {
+          }  
+        }
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
