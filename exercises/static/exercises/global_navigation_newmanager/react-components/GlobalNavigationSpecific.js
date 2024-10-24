@@ -10,6 +10,7 @@ function SpecificGlobalNavigation(props) {
   const [showImage, setShowImage] = React.useState(false);
   const [carPose, setCarPose] = React.useState(null)
   const [destination, setDestination] = React.useState(null)
+  const [destinationWorld, setDestinationWorld] = React.useState(null)
   const [path, setPath] = React.useState("")
   
   var trail = [];
@@ -117,6 +118,11 @@ function SpecificGlobalNavigation(props) {
       } else {
         showMap = true
         setShowImage(true)
+        // Resend Target
+        try {
+          window.RoboticsExerciseComponents.commsManager.send("gui", `pick${destinationWorld}`)
+        } catch (error) {
+        }  
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -146,7 +152,7 @@ function SpecificGlobalNavigation(props) {
     let cursorYMap = cursorY / height;
 
     setDestination([(cursorY*100)/img.clientHeight, (cursorX*100)/(img.clientWidth*2)])
-
+    setDestinationWorld([cursorXMap, cursorYMap])
     return [cursorXMap, cursorYMap];
   }
 
