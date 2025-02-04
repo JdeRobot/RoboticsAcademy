@@ -11,8 +11,8 @@ toc_icon: "cog"
 
 
 gallery:
-  - url: /assets/images/exercises/laser_mapping/laser_mapping.png
-    image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
+  - url: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
+    image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     alt: "Vacuum"
 
 Occupancy_grid:
@@ -30,91 +30,28 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 {% include gallery caption="Laser Mapping." %}
 
-## Instructions
-This is the preferred way for running the exercise.
-
-### Installing and Launching
-1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
-
-2. Pull the current distribution of RoboticsBackend:
-
-	```bash
-  docker pull jderobot/robotics-backend:latest
-  ```
-
-- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
-
-- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
-
-### How to perform the exercises?
-- Start a new docker container of the image and keep it running in the background:
-
-	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
-  ```
-
-- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
-
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
-
-### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
-
-**Where to insert the code?**
-
-In the launched webpage, type your code in the text editor,
-
-```python
-from GUI import GUI
-from HAL import HAL
-# Enter sequential code!
-
-
-while True:
-    # Enter iterative code!
-```
-
-### Using the Interface
-
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Robot. Stop button stops the code that is currently running on the Robot. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation(primarily, the position of the robot).
-
-* **Frequency Input**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
-
-* **RTF**: RTF (Real Time Factor): The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer.
-
-* **Debugging Console**: This shows the error messages related to the student’s code that is sent. The student can also use it to visualize the output of the print() function.
-
 ## Robot API
 
+* `import HAL` - to import the HAL library class. This class contains the functions that receives information from the sensors or to work with the actuators.
+* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d().x` - to get position x of the robot
 * `HAL.getPose3d().y` - to get position y of the robot
 * `HAL.getPose3d().yaw` - to get the orientation of the robot
+* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise)
+* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise)
+* `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise)
+* `HAL.getOdom2().x` - to get the approximated X coordinate of the robot (with more noise than getOdom)
+* `HAL.getOdom2().y` - to get the approximated Y coordinate of the robot (with more noise than getOdom)
+* `HAL.getOdom2().yaw` - to get the approximated orientation position of the robot (with more noise than getOdom)
+* `HAL.getOdom3().x` - to get the approximated X coordinate of the robot (with even more noise than getOdom)
+* `HAL.getOdom3().y` - to get the approximated Y coordinate of the robot (with even more noise than getOdom)
+* `HAL.getOdom3().yaw` - to get the approximated orientation position of the robot (with even more noise than getOdom)
 * `HAL.motors.sendW()` - to set the angular velocity
 * `HAL.motors.sendV()` - to set the linear velocity
-* `HAL.getLaserData()` - to get the data of the LIDAR
-* `HAL.getSonarData_0()` - to get the sonar data of the sonar 1
-* `HAL.getSonarData_1()` - to get the sonar data of the sonar 2
-* `HAL.getSonarData_2()` - to get the sonar data of the sonar 3
-* `HAL.getSonarData_3()` - to get the sonar data of the sonar 4
-* `HAL.getSonarData_4()` - to get the sonar data of the sonar 5
-* `HAL.getSonarData_5()` - to get the sonar data of the sonar 6
-* `HAL.getSonarData_6()` - to get the sonar data of the sonar 7
-* `HAL.getSonarData_7()` - to get the sonar data of the sonar 8
+* `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values
+* `GUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
+* `GUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
-```python
-# EXAMPLE OF HOW TO SEND INFORMATION TO THE ROBOT ACTUATORS
-vel = CMDVel()
-myW=x*(self.motors.getMaxW())
-myV=-y*(self.motors.getMaxV())
-vel.vx = myV
-vel.az = myW
-self.motors.sendVelocities(vel)
-# OR
-self.motors.sendAZ(vel.az)
-self.motors.sendV(vel.vx)
-```
 ## Theory
 Implementation of laser mapping for a vacuum is the basic requirement for this exercise. First, lets see how mapping with known possitions works.
 
