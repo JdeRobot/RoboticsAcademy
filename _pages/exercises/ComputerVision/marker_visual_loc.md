@@ -70,6 +70,13 @@ conf = yaml.safe_load(
 tags = conf["tags"]
 ```
 
+The content of the yaml file has this structure:
+```yaml
+tags:
+  tag_0:
+    position: [1.75, -3.535, -1.57079]
+```
+Being the position [X, Y, Yaw]
 ## Theory
 
 ### Visual Markers: AprilTags
