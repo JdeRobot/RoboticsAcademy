@@ -105,7 +105,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
+    status: "running"
     order: 2;
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
