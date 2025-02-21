@@ -106,7 +106,7 @@ feature_row:
     btn_label: "Go!"
     version_label: "btn--success"
     status: "running"
-    order: 2;
+    order: 0;
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
     alt: "Global Navigation"
