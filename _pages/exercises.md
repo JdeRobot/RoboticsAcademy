@@ -437,6 +437,17 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
+    
+  - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
+    alt: "Basic Computer Vision"
+    title: "Basic Computer Vision"
+    excerpt: "Develop some basic exercises about computer vision"
+    url: "/exercises/ComputerVision/basic_computer_vision"
+    btn_class: "btn--danger"
+    btn_label: "Go!"
+    version_label: "btn--success"
+    status: "prototype"
+    order: 2;
 
 ---
 
