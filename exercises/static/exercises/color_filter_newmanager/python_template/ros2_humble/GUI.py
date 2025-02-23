@@ -18,9 +18,9 @@ class GUI(MeasuringThreadingGUI):
         super().__init__(host)
 
         # Execution control vars
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        self.image = None
+        self.show_image_request = False
+        self.image_lock = threading.Lock()
         self.host = host
         self.payload = {"image": ""}
         self.frame_rgb = None
@@ -29,9 +29,8 @@ class GUI(MeasuringThreadingGUI):
 
     # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
-        # time frame size
         time_frame_size = 20
-        # In this case
+
         if "pick" in message:
             base64_buffer = message[4:-time_frame_size]
             time = message[-time_frame_size:]
@@ -39,26 +38,22 @@ class GUI(MeasuringThreadingGUI):
             if base64_buffer.startswith('data:image/jpeg;base64,'):
                 base64_buffer = base64_buffer[len('data:image/jpeg;base64,'):]
 
-            # Decodificar la cadena base64 a bytes
+            # Decode base64 string to bytes
             image_data = base64.b64decode(base64_buffer)
 
-            # Convertir los bytes a un array de numpy
+            # Convert bytes to a numpy array
             nparr = np.frombuffer(image_data, np.uint8)
 
-            # Decodificar la imagen (convertirla a formato OpenCV)
+            # Decode the image (convert it to OpenCV format)
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-
-            with self.image_show_lock:
+            with self.image_lock:
                 self.frame_rgb = img
-                self.image_to_be_shown_updated = True
                 ack_message = {'ack_img': 'ack','time':time}
                 self.send_to_client(json.dumps(ack_message))
 
-
     # Prepares and sends a map to the websocket server
     def update_gui(self):
-
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)  
 
@@ -68,44 +63,34 @@ class GUI(MeasuringThreadingGUI):
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        with self.image_show_lock:
-            image_to_be_shown_updated = self.image_to_be_shown_updated
-            image_to_be_shown = self.image_to_be_shown
+        with self.image_lock:
+            show_image_request = self.show_image_request
+            image = self.image
 
-        image = image_to_be_shown
         payload = {'image': '', 'shape': ''}
+        if show_image_request:
+            frame = cv2.imencode('.JPEG', image)[1]
+            encoded_image = base64.b64encode(frame)
 
-        if not image_to_be_shown_updated:
-            return payload
+            payload['image'] = encoded_image.decode('utf-8')
+            payload['shape'] = image.shape
 
-        shape = image.shape
-
-        frame = cv2.imencode('.JPEG', image)[1]
-        encoded_image = base64.b64encode(frame)
-
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-
-        with self.image_show_lock:
-            self.image_to_be_shown_updated = False
+            with self.image_lock:
+                self.show_image_request = False
 
         return payload
 
-    # Function for student to call
+    # Functions for student to call
     def showImage(self, image):
-        with self.image_show_lock:
-            self.image_to_be_shown = image
-            self.image_to_be_shown_updated = True
-
+        with self.image_lock:
+            self.image = image
+            self.show_image_request = True
 
     def getImage(self):
         if (self.frame_rgb is None):
-            # TEMPORAL PARA PROBAR EL ENVIO DE IMAGENES   
             self.frame_rgb = np.ones((240, 320, 3), dtype="uint8") * 255  # Blanco
 
-            return self.frame_rgb
-        else:
-            return self.frame_rgb
+        return self.frame_rgb
 
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)

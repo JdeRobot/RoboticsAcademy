@@ -65,7 +65,7 @@ const timeFrameSize = 20;
 const Camera = () => {
   const commsManager = window.RoboticsExerciseComponents.commsManager;
   const videoRef = useRef(null);
-  const streamRef = useRef(null); // Usamos useRef para manejar el stream
+  const streamRef = useRef(null); // use useRef to manage the stream
   const [imageData, setImageData] = React.useState("");
 
   // reducer
@@ -84,21 +84,21 @@ const Camera = () => {
     dispatch,
   ] = useReducer(reducer, initialState);
 
-  // Función para capturar un fotograma del video y convertirlo en una matriz CV_8UC4
+  // Function to capture a frame from the video and convert it to a CV_8UC4 matrix
   const captureFrame = () => {
     const video = videoRef.current;
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
     if (video && canvas && ctx) {
-      // Establecer el tamaño del canvas igual al tamaño del video
+      // Set the canvas size equal to the video size
       canvas.width = 320;
       canvas.height = 240;
 
-      // Dibujar el frame del video en el canvas
+      // Draw the video frame on the canvas
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Obtener los datos de la imagen (array de píxeles RGBA)
+      // Get the image data (RGBA pixel array)
       const imageDataURL = canvas.toDataURL("image/jpeg");
 
       const performance_t = performance.now();
@@ -106,8 +106,8 @@ const Camera = () => {
         .toFixed(5)
         .toString()
         .padStart(timeFrameSize, "0");
-      // Codificamos en base64
-      // Enviar la matriz por WebSocket
+      // Encode in base64
+      // Send the array via WebSocket
       window.RoboticsExerciseComponents.commsManager.send(
         "gui",
         `pick${imageDataURL}${time}`
@@ -115,7 +115,7 @@ const Camera = () => {
     }
   };
 
-  // Obtener el stream de la cámara
+  // Get the camera stream
   useEffect(() => {
     if (!isVisualReady) return;
 
@@ -131,11 +131,11 @@ const Camera = () => {
           .then((stream) => {
             dispatch({ type: "cameraReady", payload: true });
             dispatch({ type: "udpateMsg", payload: { msg: "" } });
-            // Establecer el stream y asignarlo al video
-
+            
+            // Set the stream and assign it to the video
             if (videoRef.current) {
               videoRef.current.srcObject = stream;
-              streamRef.current = stream; // Guardamos el stream en la referencia
+              streamRef.current = stream; // save the stream in the reference
             }
           })
           .catch((err) => {
@@ -155,7 +155,7 @@ const Camera = () => {
     };
 
     startCamera();
-    // Limpiar el stream cuando el componente se desmonte
+    // Clear stream when component is unmounted
     return () => {
       if ((streamRef, current)) {
         streamRef.getTracks().forEach((track) => track.stop());
@@ -200,17 +200,16 @@ const Camera = () => {
 
     const callback = (message) => {
       if (message.data.update.image) {
-        if (message.data.update.image) {
-          let image_data = JSON.parse(message.data.update.image);
-          let source = decode_utf8(image_data.image);
+        let image_data = JSON.parse(message.data.update.image);
+        let source = decode_utf8(image_data.image);
 
-          if (source.length > 0)
-            setImageData(`data:image/jpeg;base64,${source}`);
-        }
+        if (source.length > 0)
+          setImageData(`data:image/jpeg;base64,${source}`);
 
         // Send the ACK of the msg
-        //window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+        // window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
       }
+
       // receive ack from gui.py
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         // call next frame
