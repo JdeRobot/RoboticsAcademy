@@ -21,13 +21,13 @@ Help()
    echo "  -a, --academy    <value>  Branch of RoboticsAcademy.               Default: humble-devel"
    echo "  -i, --infra      <value>  Branch of RoboticsInfrastructure.        Default: humble-devel"
    echo "  -m, --ram        <value>  Branch of RoboticsApplicationManager.    Default: humble-devel"
-   echo "  -r, --ros        <value>  ROS Distro (humble or noetic).           Default: humble"
+   echo "  -r, --ros        <value>  ROS Distro (humble).                     Default: humble"
    echo "  -t, --tag        <value>  Tag name of the image.                   Default: test"
    echo
    echo "Example:"
    echo "   ./build.sh -t my_image"
-   echo "   ./build.sh -f -a master -i noetic-devel -m main -r noetic -t my_image" 
-   echo "   ./build.sh -f --academy master --infra noetic-devel --ram main --ros noetic --tag my_image" 
+   echo "   ./build.sh -f -a master -i humble-devel -m main -r humble -t my_image" 
+   echo "   ./build.sh -f --academy master --infra humble-devel --ram main --ros humble --tag my_image" 
    echo
 }
 
@@ -83,14 +83,11 @@ echo "IMAGE_TAG:--------------------:$IMAGE_TAG"
 echo
 
 # Determine Dockerfile based on ROS_DISTRO
-if [[ $ROS_DISTRO == "noetic" ]]; then
-    DOCKERFILE_BASE="Dockerfile.dependencies_noetic"
-    DOCKERFILE="Dockerfile.mini_noetic"
-elif [[ $ROS_DISTRO == "humble" ]]; then
+if [[ $ROS_DISTRO == "humble" ]]; then
     DOCKERFILE_BASE="Dockerfile.dependencies_humble"
     DOCKERFILE="Dockerfile.mini_humble"
 else
-    echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'noetic' or 'humble'."
+    echo "Error: Unknown ROS_DISTRO ($ROS_DISTRO). Please set it to 'humble'."
     exit 1
 fi
 

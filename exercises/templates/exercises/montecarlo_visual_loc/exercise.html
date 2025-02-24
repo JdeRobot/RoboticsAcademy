@@ -27,6 +27,9 @@
             {% end_react_component %}
         {% react_component components/message-system/Loading %}{% end_react_component %}
         {% react_component components/message-system/Alert %}{% end_react_component %}
+            {% end_react_component %}
+        {% end_react_component %}
+    {% end_react_component %}
     {% else %}
         {% react_component exercise/montecarlo_visual_loc/MontecarloVisualLoc %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
@@ -49,8 +52,8 @@
             {% end_react_component %}
         {% react_component components/message_system/Loading %}{% end_react_component %}
         {% react_component components/message_system/Alert %}{% end_react_component %}
-    {% endif %}
 {% end_react_component %}
 {% end_react_component %}
     {% end_react_component %}
+    {% endif %}
 {% endblock %}

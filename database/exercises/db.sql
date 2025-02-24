@@ -90,7 +90,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, templat
 4	follow_person	Follow Person	Follow a person with kobuki robot	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/follow_person/python_template/
 5	vacuum_cleaner_loc	Localized Vacuum Cleaner	Localiized vauum clenaer	{"tags": ["ROS2", "MOBILE ROBOTS", "SERVICE ROBOTS"]}	ACTIVE	RoboticsAcademy/exercises/static/exercises/vacuum_cleaner_loc/python_template/
 6	global_navigation	Global Navigation	Global navigation exercise using REACT and RAM	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/global_navigation/python_template/
-7	rescue_people	Rescue People	Rescue People exercise using React and RAM	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people/python_template/
+7	rescue_people	Rescue People	Rescue People exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people/python_template/
 8	obstacle_avoidance	Obstacle Avoidance	Obstacle Avoidance exercise using React and RAM	{"tags": ["ROS2","AUTONOMOUS DRIVING"]}	ACTIVE	RoboticsAcademy/exercises/static/exercises/obstacle_avoidance/python_template/
 9	3d_reconstruction	3D Reconstruction	3D Reconstruction exercise using React and RAM	{"tags": ["ROS2","COMPUTER VISION"]}	ACTIVE	RoboticsAcademy/exercises/static/exercises/3d_reconstruction/python_template/
 10	amazon_warehouse	Amazon Warehouse	Control an amazon-like robot to organize a warehouse	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/amazon_warehouse/python_template/
@@ -99,7 +99,9 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, templat
 13	marker_visual_loc	Marker Visual Loc	Calculate the position of the robot based on the	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/marker_visual_loc/python_template/
 14	laser_mapping	Laser Mapping	Build a map based on sensor readings	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/laser_mapping/python_template/
 15	color_filter_newmanager	Color Filter	Color Filter exercise using React and RAM	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/color_filter_newmanager/python_template/
+16	follow_road	Follow Road	Follow Road exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/follow_road/python_template/
 \.
+-- 16	rescue_people_classic	Rescue People Old	Rescue People exercise With Gazebo Classic	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people_classic/python_template/
 
 
 --
@@ -110,7 +112,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 1	2	1
 2	5	1
 3	6	2
-4	7	3
+4	7	31
 5	10	4
 6	1	5
 7	1	6
@@ -136,8 +138,9 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 27	12	27
 28	13	29
 29	14	30
-30	15	3
+30	16	32
 \.
+-- 30  16  3
 
 
 --

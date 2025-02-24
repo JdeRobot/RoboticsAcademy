@@ -120,3 +120,6 @@ src
 
 # Intermediate file created in root during development
 docker-compose.yaml
+
+# Zips
+*.zip

@@ -1,10 +1,10 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { drawImage, drawLeftImage } from "./helpers/showImagesRescue";
+import { drawImage, drawLeftImage } from "./helpers/showImagesFollowRoad";
 import noImage from "../../assets/img/noImage.png";
 
 import "./css/GUICanvas.css"
-function SpecificRescuePeople(props) {
+function SpecificFollowRoad(props) {
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
@@ -39,14 +39,16 @@ function SpecificRescuePeople(props) {
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img className="image" id="gui_canvas_left" style={{left: "0"}} src={noImage}/>
-      <img className="image" id="gui_canvas_right" style={{left: "50%"}} src={noImage}/>
+      <img className="image" id="gui_canvas_left" style={{left: "0"}}
+        src={noImage}/>
+      <img className="image" id="gui_canvas_right" style={{left: "50%"}}
+        src={noImage}/>
     </div>
   );
 }
 
-SpecificRescuePeople.propTypes = {
+SpecificFollowRoad.propTypes = {
   circuit: PropTypes.string,
 };
 
-export default SpecificRescuePeople;
+export default SpecificFollowRoad;

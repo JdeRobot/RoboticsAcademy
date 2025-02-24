@@ -17,8 +17,8 @@ if not rclpy.ok():
     rclpy.init()
 
 
-    CAM_FRONTAL_TOPIC = "/" + "drone0" + "/frontal_cam/image_raw"
-    CAM_VENTRAL_TOPIC = "/" + "drone0" + "/ventral_cam/image_raw"
+    CAM_FRONTAL_TOPIC = "/" + "drone0" + "/sensor_measurements/frontal_camera/image_raw"
+    CAM_VENTRAL_TOPIC = "/" + "drone0" + "/sensor_measurements/ventral_camera/image_raw"
 
     drone = DroneWrapper()
     frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)

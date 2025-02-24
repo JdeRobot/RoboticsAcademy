@@ -29,13 +29,9 @@ export const Frequencies = (props) => {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.ros_version.trim() === "noetic") {
-        setRosVersion(["ROS", "Noetic"]);
-      } else {
-        let version = message.data.ros_version.trim()
-        if (version) {
-          setRosVersion(["ROS2", version.charAt(0).toUpperCase() + version.slice(1)]);
-        }
+      let version = message.data.ros_version.trim()
+      if (version) {
+        setRosVersion(["ROS2", version.charAt(0).toUpperCase() + version.slice(1)]);
       }
       console.log(message.data.gpu_avaliable)
       setgpuVendor(message.data.gpu_avaliable);

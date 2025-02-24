@@ -142,6 +142,7 @@ const CommsManager = (address) => {
   const commands = {
     connect: connect,
     launchWorld: (configuration) => send("launch_world", configuration),
+    launchRobot: (configuration) => send("launch_robot", configuration),
     prepareVisualization: (visualization) =>
       send("prepare_visualization", visualization),
     run: (code) => send("run_application", code),

@@ -76,6 +76,19 @@ if ! command -v yarn --version &> /dev/null; then
   npm install --global yarn
 fi
 
+# Prepare the commons zip file
+cd common
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+
 # Prepare the frontend
 nvm install 17
 nvm use 17

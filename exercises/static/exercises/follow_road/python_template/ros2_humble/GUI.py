@@ -21,7 +21,7 @@ class GUI(MeasuringThreadingGUI):
         self.ack_frontend = True
         self.ack_lock = threading.Lock()
         self.running = True
-        
+
         self.world_name = "empty"
 
         self.host = host

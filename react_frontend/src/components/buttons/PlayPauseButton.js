@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import commons from "../../common.zip";
+import JSZip from "jszip";
 
 const PlayPause = (props) => {
   const [loading, setLoading] = useState(false);
@@ -49,76 +51,27 @@ const PlayPause = (props) => {
 
     if (applicationPaused) {
       if (editorChanged) {
-        await resetCode(editorCode);
+        await runCode(editorCode);
       }
       commsManager.resume();
     } else {
-      runCode(editorCode);
+      await runCode(editorCode);
     }
     setLoading(false);
     setEditorChanged(false);
   };
 
-  const resetCode = async (code) => {
-    setLoading(true);
-    const errorMessage =
-      "Syntax or dependency error, check details on the console.\n";
-    
-    const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
-    let requestUrl = `${serverBase}/exercises/exercise/${config[0].exercise_id}/user_code_zip`;
-
-    try {
-      const response = await fetch(requestUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          code: code
-        }),
-      });
-
-      const zipBlob = await response.blob();
-
-      if (!response.ok) {
-        console.error("Error formatting code:", zip.error);
-        return 
-      }
-      var reader = new FileReader();
-      reader.readAsDataURL(zipBlob);
-      reader.onloadend = async function () {
-        // Get the zip in base64
-        var base64data = reader.result;
-        window.RoboticsExerciseComponents.commsManager
-          .run({
-            type: "robotics-academy",
-            code: base64data
-          })
-          .then(() => {})
-          .catch((response) => {
-            let linterMessage = JSON.stringify(response.data.message).split(
-              "\\n"
-            );
-            RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              errorMessage,
-              "error"
-            );
-            console.log(`Received linter message ·${linterMessage}`);
-          });
-      };
-    } catch (error) {
-      console.log(error);
-      return 
-    }
-  }
-
   const runCode = async (code) => {
     setLoading(true);
     const errorMessage =
       "Syntax or dependency error, check details on the console.\n";
-    
+
     const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
     let requestUrl = `${serverBase}/exercises/exercise/${config[0].exercise_id}/user_code_zip`;
+
+    var zip = new JSZip();
+    const commonsZip = await zip.loadAsync(commons);
+    console.log(commonsZip)
 
     try {
       const response = await fetch(requestUrl, {
@@ -126,46 +79,46 @@ const PlayPause = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          code: code
-        }),
       });
-
-      const zipBlob = await response.blob();
 
       if (!response.ok) {
         console.error("Error formatting code:", zip.error);
-        return 
+        return;
       }
-      var reader = new FileReader();
-      reader.readAsDataURL(zipBlob);
-      reader.onloadend = async function () {
-        // Get the zip in base64
-        var base64data = reader.result;
-        window.RoboticsExerciseComponents.commsManager
-          .terminate_application()
-          .then(() => {
-            window.RoboticsExerciseComponents.commsManager
-              .run({
-                type: "robotics-academy",
-                code: base64data
-              })
-              .then(() => {})
-              .catch((response) => {
-                let linterMessage = JSON.stringify(response.data.message).split(
-                  "\\n"
-                );
-                RoboticsReactComponents.MessageSystem.Alert.showAlert(
-                  errorMessage,
-                  "error"
-                );
-                console.log(`Received linter message ·${linterMessage}`);
-              });
+
+      const responseJSON = await response.json();
+      const extraFiles = responseJSON.files;
+
+      extraFiles.forEach((file) => {
+        commonsZip.file(file.name, file.content);
+      });
+
+      commonsZip.file("academy.py", code);
+
+      // Convert the blob to base64 using FileReader
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64data = reader.result; // Get the zip in base64
+        // Send the base64 encoded blob
+        try {
+          await window.RoboticsExerciseComponents.commsManager.run({
+            type: "robotics-academy",
+            code: base64data,
           });
+        } catch (error) {
+          RoboticsReactComponents.MessageSystem.Alert.showAlert(
+            errorMessage,
+            "error"
+          );
+        }
       };
+
+      commonsZip.generateAsync({ type: "blob" }).then(function (content) {
+        reader.readAsDataURL(content);
+      });
     } catch (error) {
       console.log(error);
-      return 
+      return;
     }
   };
 
