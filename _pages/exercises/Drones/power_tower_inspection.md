@@ -23,10 +23,9 @@ youtubeId1: IAGZmqNrmio
 
 The goal of this exercise is to implement the logic that allows a quadrotor to perform navigation and an inspection of the power towers, the electrical wires connecting them and the insulators (spring like object) attached to them. The task for the drone to execute is to visualise these defects and locate them and then land or keep hovering (according to the student's choice) after the objective completion
 
-
 {% include gallery caption="Gallery." %}
 
-## Instructions
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 This is the preferred way for running the exercise.
 
 ### Installing and Launching

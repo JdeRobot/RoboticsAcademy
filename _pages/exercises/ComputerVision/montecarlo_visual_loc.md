@@ -47,62 +47,7 @@ The aim of this practice is to develop a visual localisation algorithm based on 
 
 {% include gallery caption="Gallery" %}
 
-
-## Instructions
-This is the preferred way for running the exercise.
-
-### Installing and Launching
-1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
-
-2. Pull the current distribution of RoboticsBackend:
-
-	```bash
-  docker pull jderobot/robotics-backend:latest
-  ```
-
-- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
-
-- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
-
-### How to perform the exercises?
-- Start a new docker container of the image and keep it running in the background:
-
-	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
-  ```
-
-- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
-
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
-
-### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
-
-**Where to insert the code?**
-
-In the launched webpage, type your code in the text editor,
-
-```python
-from GUI import GUI
-from HAL import HAL
-# Enter sequential code!
-
-
-while True:
-    # Enter iterative code!
-```
-
-### Using the Interface
-
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).
-
-* **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
-
-* **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
-
-* **Pseudo Console**: This shows the error messages related to the student's code that is sent. In order to print certain debugging information on this console. The student is provided with `console.print()` similar to `print()` command in the Python Interpreter. 
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Robot API
 
@@ -119,13 +64,12 @@ while True:
 * `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise)
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
-* `GUI.showParticles(particles)` - shows the particles on the map. Accepts a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_radians, weight]. The values must be in gazebo world coordinate system.    
+* `GUI.showParticles(particles)` - shows the particles on the map. Accepts a list of particles as an argument. Each particle must be a list with [position_x, position_y, angle_in_radians, weight]. The values must be in gazebo world coordinate system.
 * `GUI.showPosition(x, y, yaw)` - shows the estimated user position in the map view in blue. Accepts a list with [position_x, position_y, angle_in_radians]. The values must be in gazebo world coordinate system. The map view will also show the real position of the robot in red, so you can compare how good your algorithm is.
 * `GUI.mapToPose(x, y, yaw)`- converts a map pixel to gazebo world coordinate system position.
 * `GUI.poseToMap(x, y, yaw)`- converts a gazebo world coordinate system position to a map pixel.
-* `GUI.getMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A), each value ranging from 0 to 1. The image is 1012x1012. 
-* `GUI.getBGRMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (B, G, R), each value ranging from 0 to 255. The image is 1012x1012. 
-
+* `GUI.getMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A), each value ranging from 0 to 1. The image is 1012x1012.
+* `GUI.getBGRMap(url)` - Returns a numpy array with the image data in a 3 dimensional array (B, G, R), each value ranging from 0 to 255. The image is 1012x1012.
 
 The instruction to get the map is:
 
@@ -139,41 +83,38 @@ The instruction to get the image with the roof textures is:
 array = GUI.getColorMap('/RoboticsAcademy/exercises/static/exercises/montecarlo_visual_loc/resources/images/color_mapgrannyannie.png)
 ```
 
-
 ## Theory
 
-Probabilistic localisation seeks to estimate the position of the robot and the model of the surrounding environment:   
-- A. Probabilistic motion model. Due to various sources of noise (bumps, friction, imperfections of the robot, etc.) it is very difficult to predict the movement of the robot accurately. Therefore, it would be more convenient to describe this movement by means of a probability function, which will move with the robot's movements [1].    
-- B. Probabilistic model of sensory observation.  It is related to the sensor measurements at each instant of time. This model is built by taking observations at known positions in the environment and calculating the probability that the robot is in each of these positions [2].   
-- C. Probability fusion.  This consists of accumulating the information obtained at each time instant, something that can be done using Bayes' theorem. This fusion achieves that in each observation some modes of the probability function go up and others go down, so that as the number of iterations advances, the probability will be concentrated in only one of the modes, which will indicate the position of the robot [3].   
+Probabilistic localisation seeks to estimate the position of the robot and the model of the surrounding environment:
+
+* A. Probabilistic motion model. Due to various sources of noise (bumps, friction, imperfections of the robot, etc.) it is very difficult to predict the movement of the robot accurately. Therefore, it would be more convenient to describe this movement by means of a probability function, which will move with the robot's movements [1].
+* B. Probabilistic model of sensory observation.  It is related to the sensor measurements at each instant of time. This model is built by taking observations at known positions in the environment and calculating the probability that the robot is in each of these positions [2].
+* C. Probability fusion.  This consists of accumulating the information obtained at each time instant, something that can be done using Bayes' theorem. This fusion achieves that in each observation some modes of the probability function go up and others go down, so that as the number of iterations advances, the probability will be concentrated in only one of the modes, which will indicate the position of the robot [3].
 
 The following figure shows an example of probabilistic localisation. In the first phase, the robot does not know its initial state, the initial probability distribution is uniform. In the second phase, the robot is looking at a door, the sensory observation model determines that there are three zones or modes with equal probability of being the zone where the robot is.  In the third phase, the robot is moving forward so the probabilistic motion model is applied, the probability distribution should move the same distance that the robot has moved, but as estimating the motion is difficult, what is done is to smooth it.  In the last phase, the robot detects another door and this observation is merged with the accumulated information. This causes the probability to concentrate on a single possible area where it can be found, and thus ends the global localisation process.
 
-{% include gallery id="model" caption="Probabilistic location model" %}   
+{% include gallery id="model" caption="Probabilistic location model" %}
 
-#### Montecarlo
+### Montecarlo
 
-- Monte Carlo localisation is based on a collection of particles or samples. Particle filters allow the localisation problem to be solved by representing the a posteriori probability function, which estimates the most likely positions of the robot. The a posteriori probability distribution is sampled, where each sample is called a particle [4].     
-- Each particle represents a state (position) at time t and has an associated weight. At each movement of the robot, they perform a correction and decrease the accumulated error. After a number of iterations, the particles are grouped in the zones with the highest probability, until they converge to a single zone, which corresponds to the robot's position.    
-- When the programme starts, the robot does not know where it is. However, the actual samples are evenly distributed, and the importance weights are all equal. evenly distributed, and the importance weights are all equal. After a long time, the samples near the current the current position are more likely, and those further away are less likely. The basic algorithm is as follows:   
-  1. Initialise the set of samples. Their locations are evenly distributed and have the same weights.   
-  2. Repeat for each sample until: a) Move the robot a fixed distance and read the sensor. b) For each particle, update the location. c) Assign the importance weights of each particle to the probability of that sensor, and read that new location.    
-  3. Create a collection of samples, by sampling with replacement from the current set of samples, based on their importance weights.   
+* Monte Carlo localisation is based on a collection of particles or samples. Particle filters allow the localisation problem to be solved by representing the a posteriori probability function, which estimates the most likely positions of the robot. The a posteriori probability distribution is sampled, where each sample is called a particle [4].
+* Each particle represents a state (position) at time t and has an associated weight. At each movement of the robot, they perform a correction and decrease the accumulated error. After a number of iterations, the particles are grouped in the zones with the highest probability, until they converge to a single zone, which corresponds to the robot's position.
+* When the programme starts, the robot does not know where it is. However, the actual samples are evenly distributed, and the importance weights are all equal. evenly distributed, and the importance weights are all equal. After a long time, the samples near the current the current position are more likely, and those further away are less likely. The basic algorithm is as follows:
+  1. Initialise the set of samples. Their locations are evenly distributed and have the same weights.
+  2. Repeat for each sample until: a) Move the robot a fixed distance and read the sensor. b) For each particle, update the location. c) Assign the importance weights of each particle to the probability of that sensor, and read that new location.
+  3. Create a collection of samples, by sampling with replacement from the current set of samples, based on their importance weights.
   4. Let the group become the current round of samples.  
 
-{% include gallery id="diagram" caption="Diagram of the particle filter algorithm" %}   
+{% include gallery id="diagram" caption="Diagram of the particle filter algorithm" %}
 
+* The following figure shows an example of the operation of the particulate filter. At the initial instant the particles are uniformly distributed in the environment. As new observations are obtained, the particles accumulate in probability zones until they converge to the probability zone [5].
 
-- The following figure shows an example of the operation of the particulate filter. At the initial instant the particles are uniformly distributed in the environment. As new observations are obtained, the particles accumulate in probability zones until they converge to the probability zone [5].     
-
-{% include gallery id="evolution" caption="Probabilistic location model" %}   
-
+{% include gallery id="evolution" caption="Probabilistic location model" %}
 
 ## Contributors
 
-- Contributors: [Jose María Cañas](https://github.com/jmplaza), [David Valladares](https://github.com/dvalladaresv)   
-- Maintained by [David Valladares](https://github.com/dvalladaresv)     
-
+* Contributors: [Jose María Cañas](https://github.com/jmplaza), [David Valladares](https://github.com/dvalladaresv)
+* Maintained by [David Valladares](https://github.com/dvalladaresv)
 
 ## References
 

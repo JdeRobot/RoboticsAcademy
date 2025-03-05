@@ -35,32 +35,7 @@ In this exercise, we will train our own deep learning model to solve the widely 
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
-
-## Instructions
-- Clone the Robotics Academy repository on your local machine and checkout ``noetic`` branch:
-```bash
-git clone https://github.com/JdeRobot/RoboticsAcademy
-cd RoboticsAcademy && git checkout noetic
-```
-
-- Build noetic docker image. It is necessary to map the port where the camera is located to the docker container.  
-```bash
-cd scripts
-docker build -f Dockerfile-noetic -t image-name .
-```  
-
-- Run docker container. It is necessary to map the port where the camera is located
-  - For Ubuntu: the port to map will be in /dev/videoX, you should check the number where your camera is connected.
-    ```bash
-    docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 --device /dev/video0:/dev/video0 jderobot/robotics-backend
-    ```
-  - For MacOs and Windows: A number of configurations must be made in order to map the ports. You can visit this [documentation](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468) for it.
-
-- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
-
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Exercise Instructions
 - The uploaded model should adhere to the following input/output specifications, please keep that in mind while building your model.
@@ -77,17 +52,6 @@ torch.onnx.export(
   model, dummy_input, "mnist_cnn.onnx", verbose=True, export_params=True, input_names=['input'], output_names=['output']
 )
 ```
-
-### Using the Interface
-* **Browse Button**: The browse button is used to browse and upload the trained deep learning model from the local machine.
-  
-* **Control Buttons**: The control buttons enable the control of the interface. Play button sends the code written by User to the Image. Stop button stops the code that is currently running on the Image. Save button saves the code on the local machine. Load button loads the code from the local machine. Reset button resets the simulation (primarily, the image of the camera).
-
-* **Brain and GUI Frequency**: This input shows the running frequency of the iterative part of the code (under the `while True:`). A smaller value implies the code runs less number of times. A higher value implies the code runs a large number of times. The numerator is the one set as the Measured Frequency who is the one measured by the computer (a frequency of execution the computer is able to maintain despite the commanded one) and the input (denominator) is the Target Frequency which is the desired frequency by the student. The student should adjust the Target Frequency according to the Measured Frequency.
-
-* **RTF (Real Time Factor)**: The RTF defines how much real time passes with each step of simulation time. A RTF of 1 implies that simulation time is passing at the same speed as real time. The lower the value the slower the simulation will run, which will vary depending on the computer. 
-
-* **Pseudo Console**: This shows error messages and other logs about the exercise.
 
 ## Theory
 Digit classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits [[3]](http://yann.lecun.com/exdb/mnist/) is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.

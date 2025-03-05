@@ -38,13 +38,10 @@ In this practice the intention is to develop some basic exercises about computer
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
+## Exercise API
 
-## Robot API
-
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
-* `HAL.getImage()` - to get the image
-* `HAL.showImage()` - allows you to view a debug image or with relevant information
-
+* `GUI.getImage()` - to get the image. It can be None
+* `GUI.showImage()` - allows you to view a debug image or with relevant information
 
 ## Theory
 In this exercise it is proposed to implement different computer vision functionalities:
