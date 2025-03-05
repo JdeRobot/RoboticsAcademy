@@ -31,3 +31,4 @@ In this exercise, the intention is to use your knowledge in image processing to 
 
 {% include youtubePlayer.html id=page.youtubeId %}
 
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.

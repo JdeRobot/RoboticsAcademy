@@ -30,6 +30,8 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 {% include gallery caption="Laser Mapping." %}
 
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+
 ## Robot API
 
 * `import HAL` - to import the HAL library class. This class contains the functions that receives information from the sensors or to work with the actuators.

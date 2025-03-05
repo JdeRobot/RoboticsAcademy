@@ -72,7 +72,7 @@ The goal of this exercise is to learn how to use vision to assist industrial rob
 
 {% include gallery caption="Gallery." %}
 
-## Instructions
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 This is the preferred way for running the exercise once it is finished.
 
@@ -136,8 +136,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.back_to_home()` - Command the robot arm and gripper to move back to the home pose.
 * `HAL.pickup()` - to set the linear speed
 * `HAL.place()` - to set the angular velocity
