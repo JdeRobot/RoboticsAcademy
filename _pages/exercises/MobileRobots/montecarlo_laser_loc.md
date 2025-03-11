@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
-    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
+  - url: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
+    image_path: assets/images/exercises/montecarlo_laser_loc/montecarlo_laser_loc_teaser.png
     alt: "Montecarlo Laser Loc"
     title: "Montecarlo Laser Loc"
 
