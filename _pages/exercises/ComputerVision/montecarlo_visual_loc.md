@@ -74,13 +74,13 @@ The aim of this practice is to develop a visual localisation algorithm based on 
 The instruction to get the map is:
 
 ```python
-array = GUI.getMap('/resources/exercises/montecarlo_laser_loc/images/mapgrannyannie.png')
+array = GUI.getMap('/resources/exercises/montecarlo_visual_loc/images/mapgrannyannie.png')
 ```
 
 The instruction to get the image with the roof textures is:
 
 ```python
-array = GUI.getColorMap('/RoboticsAcademy/exercises/static/exercises/montecarlo_visual_loc/resources/images/color_mapgrannyannie.png)
+array = GUI.getColorMap('/resources/exercises/montecarlo_visual_loc/images/color_mapgrannyannie.png)
 ```
 
 ## Theory
