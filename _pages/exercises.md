@@ -64,6 +64,7 @@ feature_row:
     status: "running"
     order: 0;
     
+   
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
     title: "Follow Turtlebot"
@@ -435,8 +436,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
 
 ---
 

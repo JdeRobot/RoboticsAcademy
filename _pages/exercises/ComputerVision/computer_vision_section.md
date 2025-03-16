@@ -33,10 +33,10 @@ feature_row:
     version: "v3.2"
   
   - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
-    alt: "Color Filter"
-    title: "Color Filter"
-    excerpt: "Develop a color filter to segment some object in the image and track it"
-    url: "/exercises/ComputerVision/color_filter"
+    alt: "Basic Computer Vision"
+    title: "Basic Computer Vision"
+    excerpt: "Develop some basic exercises about computer vision"
+    url: "/exercises/ComputerVision/basic_computer_vision"
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
