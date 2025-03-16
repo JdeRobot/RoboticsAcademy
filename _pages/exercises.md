@@ -63,17 +63,6 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
-
-  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
-    alt: "Color Filter"
-    title: "Color Filter"
-    excerpt: "Develop a color filter to segment some object in the image and track it"
-    url: "/exercises/ComputerVision/color_filter"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
-    status: "prototype"
-    order: 2;
     
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
