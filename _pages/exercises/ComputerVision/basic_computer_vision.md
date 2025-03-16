@@ -46,34 +46,44 @@ In this practice the intention is to develop some basic exercises about computer
 ## Theory
 In this exercise it is proposed to implement different computer vision functionalities:
 * Change to grayscale
+* Morphological processing
 * Implement a color filter
 * Edge filters (for example canny or laplace)
 * Convolutions (smoothing and enhancing)
 * Optical flow
 * Corner detector
-* Hudge transform
-* Morphological processing
+* Hough transform
 
-### Color Space
-Color spaces are a way to represent the color channels present in the image that gives the image that particular hue. There are several different color spaces and each has its own significance.
-Some of the popular color spaces are RGB (Red, Green, Blue), CMYK (Cyan, Magenta, Yellow, Black), HSV (Hue, Saturation, Value), etc. In the figure below, a)RGB Color Space and b) HSV color space can be visualized.
+### Grayscale
+It is proposed to transform the image obtained from the camera into grayscale.
 
-{% include gallery id="colorspace" caption="RGB and HSV Color Spaces" %}
+### Morphological Processing
+It is proposed to apply different morphological filters to the image, such as dilation, erosion, etc. Morphological filters are a set of image processing techniques primarily used for binary or high-contrast images. These operations are based on the shape or structure of the objects within an image and are designed to transform the shapes of objects in a way that depends on their structure. Morphological filters are widely used in tasks such as noise removal, filling holes, edge detection, and image segmentation.
 
+Common Morphological Operations:
+* Erosion: Erosion reduces the size of the objects in an image. For each pixel in the image, it checks if all the pixels under the mask (structuring element) are 1 (white). If they are, the central pixel remains white; if not, it turns black. In practice, this operation "shrinks" the white regions in the image.
 
-**BGR color space**: OpenCV’s default color space is RGB. However, it actually stores color in the BGR format. It is an additive color model where the different intensities of Blue, Green and Red give different shades of color. It turns out that this will not work effectively since the RGB values are highly sensitive to illumination making them not great for color detection.
+* Dilation: Dilation increases the size of the objects in the image. For each pixel in the image, if at least one of the pixels under the mask is 1, the central pixel becomes white. In practice, this operation "expands" the white regions in the image.
 
-**HSV color space**: HSV(H : Hue represents dominant wavelength S : Saturation represents shades of color V : Value represents Intensity) stores color information in a cylindrical representation of RGB color points. In HSV, each "tint" of colour is assigned a particular number (the Hue). The "amount" of colour is assigned another number (the Saturation) and the brightness of the colour is assigned another number (the Intensity or Value. It attempts to depict the colors as perceived by the human eye. Hue value varies from 0-179, Saturation value varies from 0-255 and Value value varies from 0-255. 
+* Opening: The opening operation is a combination of erosion followed by dilation. It removes small objects and fine details from the image.
 
-- Hue : This channel encodes color color information. Hue can be thought of an angle where 0 degree corresponds to the red color, 120 degrees corresponds to the green color, and 240 degrees corresponds to the blue color.
-- Saturation : This channel encodes the intensity/purity of color. For example, pink is less saturated than red.
-- Value : This channel encodes the brightness of color. Shading and gloss components of an image appear in this channel.
+### Implement a Color Filter
+This involves creating a color filter, that is, filtering an object by its color. For example, you can show an object of a certain color and have that object appear boxed in the image. To do this, you'll need to threshold the image based on color. Perhaps a morphological filter could be applied to obtain a more precise representation of the object.
 
-It is mostly used for color segmentation purpose and for identifying contrast in images. These color spaces are frequently used in color selection tools in software and for web design. HSV is widely used for building color filters due to its good invariability to illumination.
+### Edge Filters
+An edge filter must be applied and displayed in the output image. This can be achieved using a Canny or Laplace filter. The Canny Edge Detector is an edge detection operator used in image processing to detect a wide range of edges in images. It is widely used for feature extraction and object detection due to its ability to identify sharp changes in intensity within an image, which correspond to the boundaries of objects. The Laplace Filter, also known as the Laplacian of Gaussian (LoG) filter, is a second-order derivative edge detection technique in image processing. Unlike the Sobel or Canny edge detectors, which detect edges by evaluating the first derivative (the rate of change), the Laplace filter detects edges by calculating the second derivative (the rate of change of the rate of change). This can help identify areas where the intensity changes sharply in the image.
 
-**CMYK color space**: Unlike, RGB it is a subtractive color space. The CMYK(cyan, magenta, yellow, and key (black)) model works by partially or entirely masking colors on a lighter, usually white, background. The ink reduces the light that would otherwise be reflected. Such a model is called subtractive because inks “subtract” the colors red, green and blue from white light. White light minus red leaves cyan, white light minus green leaves magenta, and white light minus blue leaves yellow.
+### Convolutions
+The proposal is to apply a convolution to the image obtained from the camera. This convolution can be used to generate a smoothed image or to enhance the image.
 
-In reality, color is a continuous phenomenon, meaning that there are an infinite number of colors. Color spaces, however, represent color through discrete structures (a fixed number of whole number integer values), which is acceptable since the human eye and perception are also limited. Color spaces are fully able to represent all the colors we are able to distinguish between.
+### Optical Flow
+Optical flow must be calculated from the camera image, thus depicting the motion of the image. Optical flow is a technique used in computer vision and image processing to estimate the motion of objects between two consecutive frames in a video or image sequence. It calculates the apparent motion of pixel intensities, which helps in understanding the movement of objects or the camera itself.
+
+### Corner Detector
+A corner detector needs to be implemented. A Harris corner detector could be used. The Harris corner detector is a popular algorithm used in image processing to identify corner points in an image.
+
+### Hough Transform
+The Hough transform must be applied to the image. The Hough Transform is a technique used in image processing and computer vision to detect simple shapes, such as lines, circles, and other parametric curves, in an image.
 
 
 ## Hints
