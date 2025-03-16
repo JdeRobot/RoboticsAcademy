@@ -63,6 +63,7 @@ feature_row:
     version_label: "btn--success"
     status: "running"
     order: 0;
+    
    
   - image_path: /assets/images/exercises/follow_turtlebot/follow_turtlebot.jpg
     alt: "Follow Turtlebot"
