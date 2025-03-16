@@ -77,9 +77,9 @@ The content of the yaml file has this structure:
 ```yaml
 tags:
   tag_0:
-    position: [1.75, -3.535, -1.57079]
+    position: [1.75, -3.535, 0.8, -1.57079]
 ```
-Being the position [X, Y, Yaw]
+Being the position [X, Y, Z, Yaw]
 ## Theory
 
 ### Visual Markers: AprilTags
