@@ -446,8 +446,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
 
 ---
 
