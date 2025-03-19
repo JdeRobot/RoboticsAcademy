@@ -89,7 +89,7 @@ class GUI(MeasuringThreadingGUI):
         image = image_to_be_shown
         payload = {"image": "", "shape": ""}
 
-        if not image_to_be_shown_updated:
+        if not image_to_be_shown_updated or image is None:
             return payload
 
         shape = image.shape
