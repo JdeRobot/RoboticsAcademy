@@ -25,9 +25,10 @@ colorspace:
     alt: "color space"
     title: "color space"
 
-youtubeId1: gzALLE2jlRI
-youtubeId2: Fv9s99IEIvc
-
+youtubeId1: mE3Ww0qo5N4
+youtubeId2: JgbPyjJuBVE
+youtubeId3: ZNDWv_oZRpE
+youtubeId4: pNV3SJCVXhk
 ---
 
 ## Goal
@@ -57,6 +58,8 @@ In this exercise it is proposed to implement different computer vision functiona
 ### Grayscale
 It is proposed to transform the image obtained from the camera into grayscale.
 
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
 ### Morphological Processing
 It is proposed to apply different morphological filters to the image, such as dilation, erosion, etc. Morphological filters are a set of image processing techniques primarily used for binary or high-contrast images. These operations are based on the shape or structure of the objects within an image and are designed to transform the shapes of objects in a way that depends on their structure. Morphological filters are widely used in tasks such as noise removal, filling holes, edge detection, and image segmentation.
 
@@ -73,14 +76,20 @@ This involves creating a color filter, that is, filtering an object by its color
 ### Edge Filters
 An edge filter must be applied and displayed in the output image. This can be achieved using a Canny or Laplace filter. The Canny Edge Detector is an edge detection operator used in image processing to detect a wide range of edges in images. It is widely used for feature extraction and object detection due to its ability to identify sharp changes in intensity within an image, which correspond to the boundaries of objects. The Laplace Filter, also known as the Laplacian of Gaussian (LoG) filter, is a second-order derivative edge detection technique in image processing. Unlike the Sobel or Canny edge detectors, which detect edges by evaluating the first derivative (the rate of change), the Laplace filter detects edges by calculating the second derivative (the rate of change of the rate of change). This can help identify areas where the intensity changes sharply in the image.
 
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
 ### Convolutions
 The proposal is to apply a convolution to the image obtained from the camera. This convolution can be used to generate a smoothed image or to enhance the image.
+
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 ### Optical Flow
 Optical flow must be calculated from the camera image, thus depicting the motion of the image. Optical flow is a technique used in computer vision and image processing to estimate the motion of objects between two consecutive frames in a video or image sequence. It calculates the apparent motion of pixel intensities, which helps in understanding the movement of objects or the camera itself.
 
 ### Corner Detector
 A corner detector needs to be implemented. A Harris corner detector could be used. The Harris corner detector is a popular algorithm used in image processing to identify corner points in an image.
+
+{% include youtubePlayer.html id=page.youtubeId4 %}
 
 ### Hough Transform
 The Hough transform must be applied to the image. The Hough Transform is a technique used in image processing and computer vision to detect simple shapes, such as lines, circles, and other parametric curves, in an image.
