@@ -28,7 +28,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v3.2"
   
@@ -40,7 +40,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v3.2"
 
@@ -52,7 +52,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v3.2"
 
@@ -64,7 +64,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v3.2"
 
@@ -76,7 +76,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v3.2"
 
@@ -88,7 +88,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: ""
-    status: "running"
+    status: "prototype"
     order: 0;
     version: "v3.2"
 

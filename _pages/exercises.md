@@ -17,7 +17,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
     
   - image_path: /assets/images/exercises/obstacle_avoidance/obstacle_avoidance_teaser_2.png
@@ -28,7 +28,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/drone_cat_mouse/drone_cat_mouse.jpg
@@ -50,7 +50,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
@@ -61,7 +61,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
     
    
@@ -84,7 +84,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--inverse"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
@@ -95,7 +95,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/global_navigation/global_navigation_teaser.png
@@ -106,7 +106,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/labyrinth_escape/labyrinth_escape.jpg
@@ -128,7 +128,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/position_control/position_control_teaser.png
@@ -150,7 +150,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/car_junction/car_junction_teaser.png
@@ -249,7 +249,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/follow_person/follow_person_teaser.png
@@ -260,7 +260,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/single_robot_amazon_warehouse/single_robot_amazon_warehouse_teaser.png
@@ -392,7 +392,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
   - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
@@ -425,7 +425,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
     
   - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
@@ -436,7 +436,7 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "running"
+    status: "prototype"
     order: 0;
 
 ---
