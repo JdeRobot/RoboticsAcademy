@@ -52,7 +52,8 @@ illustrations:
 
 youtubeId1: 11pxsE__DPw
 youtubeId2: cAqfb6qJvwI
-youtubeId3: dXm8mTMH3qY 
+youtubeId3: dXm8mTMH3qY
+youtubeId4: NZRQulhKQME
 ---
 
 ## Goal
@@ -76,11 +77,11 @@ In this practice, the intention is to program the necessary logic to allow kobuk
 * `HAL.project('left', point3d)` - to backprojects a 3D Point Space into the 2D Image Point
 * `HAL.opticalToGrafic('left', point2d)` - to transform the Camera System to the Image Coordinate System
 * `HAL.project3DScene(point3d)` - to transform 3D Point Space after triangulation to the 3D Point Viewer
-* `GUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
-* `GUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
-* `GUI.ClearAllPoints()` - to clear the 3D visor
 * `GUI.showImageMatching(x1, y1, x2, y2)` - to plot the matching between two images
 * `GUI.showImages(imageLeft,imageRight,True)` - allows you to view a debug images or with relevant information       
+* `GUI.ShowNewPoints(points)` - See 3D visor below
+* `GUI.ShowAllPoints(points)` - See 3D visor below
+* `GUI.ClearAllPoints()` - See 3D visor below
 
 ```python
 def algorithm(self):
@@ -94,7 +95,41 @@ def algorithm(self):
 	# self.point.plotPoint(position, color) 
 ```
 
-**3D Viewer**
+### 3D Viewer
+
+#### API
+
+All the points follow this structure: `[x,y,z,R,G,B]`.
+
+* `GUI.ShowNewPoints(points)` - to plot a array of plots in the 3D visor
+* `GUI.ShowAllPoints(points)` - to clear the 3D visor and plot new array of plots
+* `GUI.ClearAllPoints()` - to clear the 3D visor
+
+#### Example
+
+This code will create a red cube:
+
+```python
+import GUI
+import HAL
+
+while True:
+    points = [
+        (1, 1, 1, 255, 0, 0),
+        (-1, 1, 1, 255, 0, 0),
+        (1, 1, -1, 255, 0, 0),
+        (-1, 1, -1, 255, 0, 0),
+        (1, -1, 1, 255, 0, 0),
+        (-1, -1, 1, 255, 0, 0),
+        (1, -1, -1, 255, 0, 0),
+        (-1, -1, -1, 255, 0, 0),
+    ]
+    GUI.ShowAllPoints(points)
+```
+
+{% include youtubePlayer.html id=page.youtubeId4 %}
+
+#### Controls
 
 **Mouse**
 
