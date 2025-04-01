@@ -14,290 +14,320 @@ from utils import *
 
 
 class Evaluator:
-    def GetPascalVOCMetrics(self,
-                            boundingboxes,
-                            IOUThreshold=0.5,
-                            method=MethodAveragePrecision.EveryPointInterpolation):
-     
-        ret = []  # list containing metrics (precision, recall, average precision) of each class
-        # List with all ground truths (Ex: [imageName,class,confidence=1, (bb coordinates XYX2Y2)])
-        groundTruths = []
-        # List with all detections (Ex: [imageName,class,confidence,(bb coordinates XYX2Y2)])
+    """Class for evaluating object detection performance using Pascal VOC metrics."""
+    
+    def get_pascal_voc_metrics(
+        self,
+        bounding_boxes: BoundingBoxes,
+        iou_threshold: float = 0.5,
+        method: MethodAveragePrecision = MethodAveragePrecision.EveryPointInterpolation
+    ) -> List[Dict]:
+        """
+        Calculate Pascal VOC evaluation metrics for object detection.
+        
+        Args:
+            bounding_boxes: Collection of ground truth and detected bounding boxes
+            iou_threshold: IoU threshold for considering a detection as correct
+            method: Method for calculating average precision
+            
+        Returns:
+            List of dictionaries containing metrics for each class
+        """
+        if not isinstance(bounding_boxes, BoundingBoxes):
+            raise TypeError("bounding_boxes must be a BoundingBoxes instance")
+        if not 0 <= iou_threshold <= 1:
+            raise ValueError("iou_threshold must be between 0 and 1")
+            
+        ret = []
+        ground_truths = []
         detections = []
-        # Get all classes
-        classes = []
-        # Loop through all bounding boxes and separate them into GTs and detections
-        for bb in boundingboxes.getBoundingBoxes():
-            # [imageName, class, confidence, (bb coordinates XYX2Y2)]
-            if bb.getBBType() == BBType.GroundTruth:
-                groundTruths.append([
-                    bb.getImageName(),
-                    bb.getClassId(), 1,
-                    bb.getAbsoluteBoundingBox(BBFormat.XYX2Y2)
+        
+        # Separate ground truths and detections
+        for bb in bounding_boxes.bounding_boxes:
+            if bb.bb_type == BBType.GroundTruth:
+                ground_truths.append([
+                    bb.image_name,
+                    bb.class_id,
+                    1,  # confidence for ground truth is always 1
+                    bb.get_absolute_bounding_box(BBFormat.XYX2Y2)
                 ])
             else:
                 detections.append([
-                    bb.getImageName(),
-                    bb.getClassId(),
-                    bb.getConfidence(),
-                    bb.getAbsoluteBoundingBox(BBFormat.XYX2Y2)
+                    bb.image_name,
+                    bb.class_id,
+                    bb.confidence,
+                    bb.get_absolute_bounding_box(BBFormat.XYX2Y2)
                 ])
-            # get class
-            if bb.getClassId() not in classes:
-                classes.append(bb.getClassId())
-        classes = sorted(classes)
-        # Precision x Recall is obtained individually by each class
-        # Loop through by classes
-        for c in classes:
-            # Get only detection of class c
-            dects = []
-            [dects.append(d) for d in detections if d[1] == c]
-            # Get only ground truths of class c, use filename as key
-            gts = {}
-            npos = 0
-            for g in groundTruths:
-                if g[1] == c:
-                    npos += 1
-                    gts[g[0]] = gts.get(g[0], []) + [g]
-
-            # sort detections by decreasing confidence
-            dects = sorted(dects, key=lambda conf: conf[2], reverse=True)
-            TP = np.zeros(len(dects))
-            FP = np.zeros(len(dects))
-            # create dictionary with amount of gts for each image
-            det = {key: np.zeros(len(gts[key])) for key in gts}
-
-            # Loop through detections
-            for d in range(len(dects)):
-                # Find ground truth image
-                gt = gts[dects[d][0]] if dects[d][0] in gts else []
-                iouMax = sys.float_info.min
-                for j in range(len(gt)):
-                    iou = Evaluator.iou(dects[d][3], gt[j][3])
-                    if iou > iouMax:
-                        iouMax = iou
-                        jmax = j
-                # Assign detection as true positive/don't care/false positive
-                if iouMax >= IOUThreshold:
-                    if det[dects[d][0]][jmax] == 0:
-                        TP[d] = 1  # count as true positive
-                        det[dects[d][0]][jmax] = 1  # flag as already 'seen'
-                        # print("TP")
+        
+        classes = sorted(set(bb.class_id for bb in bounding_boxes.bounding_boxes))
+        
+        # Calculate metrics for each class
+        for class_id in classes:
+            # Get detections and ground truths for this class
+            class_detections = [d for d in detections if d[1] == class_id]
+            class_detections = sorted(class_detections, key=lambda x: x[2], reverse=True)
+            
+            # Create dictionary of ground truths per image
+            class_gts = {}
+            n_pos = 0
+            for gt in ground_truths:
+                if gt[1] == class_id:
+                    n_pos += 1
+                    class_gts[gt[0]] = class_gts.get(gt[0], []) + [gt]
+            
+            # Initialize true positives and false positives
+            tp = np.zeros(len(class_detections))
+            fp = np.zeros(len(class_detections))
+            
+            # Create dictionary to track which ground truths have been detected
+            detected_gt = {img_name: np.zeros(len(gts)) for img_name, gts in class_gts.items()}
+            
+            # Evaluate each detection
+            for i, detection in enumerate(class_detections):
+                img_name = detection[0]
+                max_iou = 0.0
+                best_gt_idx = -1
+                
+                # Find ground truth with highest IoU
+                if img_name in class_gts:
+                    for j, gt in enumerate(class_gts[img_name]):
+                        current_iou = Evaluator.iou(detection[3], gt[3])
+                        if current_iou > max_iou:
+                            max_iou = current_iou
+                            best_gt_idx = j
+                
+                # Assign as true positive or false positive
+                if max_iou >= iou_threshold:
+                    if detected_gt[img_name][best_gt_idx] == 0:
+                        tp[i] = 1  # True positive
+                        detected_gt[img_name][best_gt_idx] = 1  # Mark as detected
                     else:
-                        FP[d] = 1  # count as false positive
+                        fp[i] = 1  # False positive (duplicate detection)
                 else:
-                    FP[d] = 1  # count as false positive
-                    
-            # compute precision, recall and average precision
-            acc_FP = np.cumsum(FP)
-            acc_TP = np.cumsum(TP)
-            rec = acc_TP / npos
-            prec = np.divide(acc_TP, (acc_FP + acc_TP))
-            # Depending on the method, call the right implementation
+                    fp[i] = 1  # False positive (low IoU)
+            
+            # Compute cumulative sums
+            cum_fp = np.cumsum(fp)
+            cum_tp = np.cumsum(tp)
+            
+            # Compute precision and recall
+            recall = cum_tp / n_pos if n_pos > 0 else np.zeros_like(cum_tp)
+            precision = np.divide(cum_tp, (cum_fp + cum_tp), 
+                                out=np.zeros_like(cum_tp), 
+                                where=(cum_fp + cum_tp) != 0)
+            
+            # Calculate average precision
             if method == MethodAveragePrecision.EveryPointInterpolation:
-                [ap, mpre, mrec, ii] = Evaluator.CalculateAveragePrecision(rec, prec)
+                ap, mpre, mrec, _ = Evaluator.calculate_average_precision(recall, precision)
             else:
-                [ap, mpre, mrec, _] = Evaluator.ElevenPointInterpolatedAP(rec, prec)
-            # add class result in the dictionary to be returned
-            r = {
-                'class': c,
-                'precision': prec,
-                'recall': rec,
+                ap, mpre, mrec, _ = Evaluator.eleven_point_interpolated_ap(recall, precision)
+            
+            # Store results for this class
+            ret.append({
+                'class': class_id,
+                'precision': precision,
+                'recall': recall,
                 'AP': ap,
                 'interpolated precision': mpre,
                 'interpolated recall': mrec,
-                'total positives': npos,
-                'total TP': np.sum(TP),
-                'total FP': np.sum(FP)
-            }
-            ret.append(r)
+                'total positives': n_pos,
+                'total TP': np.sum(tp),
+                'total FP': np.sum(fp)
+            })
+        
         return ret
 
-    def PlotPrecisionRecallCurve(self,
-                                 boundingBoxes,
-                                 IOUThreshold=0.5,
-                                 method=MethodAveragePrecision.EveryPointInterpolation,
-                                 showAP=False,
-                                 showInterpolatedPrecision=False,
-                                 savePath=None,
-                                 showGraphic=True):
-   
-        results = self.GetPascalVOCMetrics(boundingBoxes, IOUThreshold, method)
-        result = None
-        # Each resut represents a class
+    def plot_precision_recall_curve(
+        self,
+        bounding_boxes: BoundingBoxes,
+        iou_threshold: float = 0.5,
+        method: MethodAveragePrecision = MethodAveragePrecision.EveryPointInterpolation,
+        show_ap: bool = False,
+        show_interpolated_precision: bool = False,
+        save_path: Optional[str] = None,
+        show_graphic: bool = True
+    ) -> List[Dict]:
+        """
+        Plot precision-recall curves for each class.
+        
+        Args:
+            bounding_boxes: Collection of ground truth and detected bounding boxes
+            iou_threshold: IoU threshold for considering a detection as correct
+            method: Method for calculating average precision
+            show_ap: Whether to show AP in the plot title
+            show_interpolated_precision: Whether to show interpolated precision
+            save_path: Directory to save plots (None to not save)
+            show_graphic: Whether to display the plot
+            
+        Returns:
+            List of evaluation results for each class
+        """
+        results = self.get_pascal_voc_metrics(bounding_boxes, iou_threshold, method)
+        
         for result in results:
-            if result is None:
-                raise IOError('Error: Class %d could not be found.' % classId)
-
-            classId = result['class']
+            class_id = result['class']
             precision = result['precision']
             recall = result['recall']
-            average_precision = result['AP']
+            ap = result['AP']
             mpre = result['interpolated precision']
             mrec = result['interpolated recall']
             npos = result['total positives']
             total_tp = result['total TP']
             total_fp = result['total FP']
-
-            plt.close()
-            if showInterpolatedPrecision:
+            
+            plt.figure(figsize=(10, 7))
+            plt.grid(True)
+            
+            if show_interpolated_precision:
                 if method == MethodAveragePrecision.EveryPointInterpolation:
                     plt.plot(mrec, mpre, '--r', label='Interpolated precision (every point)')
-                elif method == MethodAveragePrecision.ElevenPointInterpolation:
-                    nrec = []
-                    nprec = []
-                    for idx in range(len(mrec)):
-                        r = mrec[idx]
-                        if r not in nrec:
-                            idxEq = np.argwhere(mrec == r)
-                            nrec.append(r)
-                            nprec.append(max([mpre[int(id)] for id in idxEq]))
-                    plt.plot(nrec, nprec, 'or', label='11-point interpolated precision')
-            plt.plot(recall, precision, label='Precision')
-            plt.xlabel('recall')
-            plt.ylabel('precision')
-            if showAP:
-                ap_str = "{0:.2f}%".format(average_precision * 100)
-                plt.title('Precision x Recall curve \nClass: %s, AP: %s' % (str(classId), ap_str))
-            else:
-                plt.title('Precision x Recall curve \nClass: %s' % str(classId))
-            plt.legend(shadow=True)
-            plt.grid()
-            if showInterpolatedPrecision:
-                if method == MethodAveragePrecision.EveryPointInterpolation:
-                    plt.savefig(os.path.join(savePath, classId +'_every'+'.png'))
-                elif method == MethodAveragePrecision.ElevenPointInterpolation:
-                    plt.savefig(os.path.join(savePath, classId +'_11'+'.png'))
-            if showGraphic is True:
+                else:
+                    # For 11-point interpolation
+                    unique_recall = np.unique(mrec)
+                    max_precision = [max(mpre[mrec >= r]) for r in unique_recall]
+                    plt.plot(unique_recall, max_precision, 'or', label='11-point interpolated precision')
+            
+            plt.plot(recall, precision, label='Precision', linewidth=2)
+            plt.xlabel('Recall', fontsize=12)
+            plt.ylabel('Precision', fontsize=12)
+            
+            title = f'Precision x Recall curve\nClass: {class_id}'
+            if show_ap:
+                title += f', AP: {ap*100:.2f}%'
+            plt.title(title, fontsize=14)
+            
+            plt.legend(loc='upper right', fontsize=10)
+            plt.xlim([0, 1])
+            plt.ylim([0, 1])
+            
+            if save_path is not None:
+                os.makedirs(save_path, exist_ok=True)
+                suffix = '_every' if method == MethodAveragePrecision.EveryPointInterpolation else '_11'
+                plt.savefig(os.path.join(save_path, f'{class_id}{suffix}.png'), bbox_inches='tight')
+            
+            if show_graphic:
                 plt.show()
                 plt.pause(0.05)
+                plt.close()
+        
         return results
 
     @staticmethod
-    def CalculateAveragePrecision(rec, prec):
-        mrec = []
-        mrec.append(0)
-        [mrec.append(e) for e in rec]
-        mrec.append(1)
-        mpre = []
-        mpre.append(0)
-        [mpre.append(e) for e in prec]
-        mpre.append(0)
-        for i in range(len(mpre) - 1, 0, -1):
-            mpre[i - 1] = max(mpre[i - 1], mpre[i])
-        ii = []
-        for i in range(len(mrec) - 1):
-            if mrec[1+i] != mrec[i]:
-                ii.append(i + 1)
-        ap = 0
-        for i in ii:
-            ap = ap + np.sum((mrec[i] - mrec[i - 1]) * mpre[i])
-        return [ap, mpre[0:len(mpre) - 1], mrec[0:len(mpre) - 1], ii]
+    def calculate_average_precision(
+        rec: np.ndarray,
+        prec: np.ndarray
+    ) -> Tuple[float, np.ndarray, np.ndarray, List[int]]:
+        """
+        Calculate average precision using every-point interpolation.
+        
+        Args:
+            rec: Recall values
+            prec: Precision values
+            
+        Returns:
+            Tuple containing (ap, interpolated_precision, interpolated_recall, recall_indices)
+        """
+        mrec = np.concatenate(([0], rec, [1]))
+        mpre = np.concatenate(([0], prec, [0]))
+        
+        # Ensure precision decreases monotonically
+        for i in range(len(mpre)-2, -1, -1):
+            mpre[i] = max(mpre[i], mpre[i+1])
+        
+        # Find recall points where recall changes
+        recall_change_indices = np.where(mrec[1:] != mrec[:-1])[0] + 1
+        
+        # Calculate AP as area under the curve
+        ap = np.sum((mrec[recall_change_indices] - mrec[recall_change_indices-1]) * 
+                   mpre[recall_change_indices])
+        
+        return ap, mpre[:-1], mrec[:-1], recall_change_indices.tolist()
 
     @staticmethod
-    # 11-point interpolated average precision
-    def ElevenPointInterpolatedAP(rec, prec):
-        # def CalculateAveragePrecision2(rec, prec):
-        mrec = []
-        # mrec.append(0)
-        [mrec.append(e) for e in rec]
-        # mrec.append(1)
-        mpre = []
-        # mpre.append(0)
-        [mpre.append(e) for e in prec]
-        # mpre.append(0)
-        recallValues = np.linspace(0, 1, 11)
-        recallValues = list(recallValues[::-1])
-        rhoInterp = []
-        recallValid = []
-        # For each recallValues (0, 0.1, 0.2, ... , 1)
-        for r in recallValues:
-            # Obtain all recall values higher or equal than r
-            argGreaterRecalls = np.argwhere(mrec[:] >= r)
-            pmax = 0
-            # If there are recalls above r
-            if argGreaterRecalls.size != 0:
-                pmax = max(mpre[argGreaterRecalls.min():])
-            recallValid.append(r)
-            rhoInterp.append(pmax)
-        # By definition AP = sum(max(precision whose recall is above r))/11
-        ap = sum(rhoInterp) / 11
-        # Generating values for the plot
-        rvals = []
-        rvals.append(recallValid[0])
-        [rvals.append(e) for e in recallValid]
-        rvals.append(0)
-        pvals = []
-        pvals.append(0)
-        [pvals.append(e) for e in rhoInterp]
-        pvals.append(0)
-        # rhoInterp = rhoInterp[::-1]
-        cc = []
-        for i in range(len(rvals)):
-            p = (rvals[i], pvals[i - 1])
-            if p not in cc:
-                cc.append(p)
-            p = (rvals[i], pvals[i])
-            if p not in cc:
-                cc.append(p)
-        recallValues = [i[0] for i in cc]
-        rhoInterp = [i[1] for i in cc]
-        return [ap, rhoInterp, recallValues, None]
-
-    # For each detections, calculate IOU with reference
-    @staticmethod
-    def _getAllIOUs(reference, detections):
-        ret = []
-        bbReference = reference.getAbsoluteBoundingBox(BBFormat.XYX2Y2)
-        for d in detections:
-            bb = d.getAbsoluteBoundingBox(BBFormat.XYX2Y2)
-            iou = Evaluator.iou(bbReference, bb)
-            ret.append((iou, reference, d))  # iou, reference, detection
-        return sorted(ret, key=lambda i: i[0], reverse=True)  # sort by iou (from highest to lowest)
+    def eleven_point_interpolated_ap(
+        rec: np.ndarray,
+        prec: np.ndarray
+    ) -> Tuple[float, np.ndarray, np.ndarray, None]:
+        """
+        Calculate 11-point interpolated average precision.
+        
+        Args:
+            rec: Recall values
+            prec: Precision values
+            
+        Returns:
+            Tuple containing (ap, interpolated_precision, interpolated_recall, None)
+        """
+        recall_values = np.linspace(0, 1, 11)[::-1]
+        rho_interp = []
+        
+        for r in recall_values:
+            # Find precision values where recall >= r
+            prec_at_recall = prec[rec >= r]
+            if prec_at_recall.size > 0:
+                rho_interp.append(np.max(prec_at_recall))
+            else:
+                rho_interp.append(0)
+        
+        ap = np.mean(rho_interp)
+        
+        # Generate values for plotting
+        recall_plot = np.concatenate(([0], recall_values, [0]))
+        prec_plot = np.concatenate(([0], rho_interp, [0]))
+        
+        return ap, prec_plot, recall_plot, None
 
     @staticmethod
-    def iou(boxA, boxB):
-        # if boxes dont intersect
-        if Evaluator._boxesIntersect(boxA, boxB) is False:
-            return 0
-        interArea = Evaluator._getIntersectionArea(boxA, boxB)
-        union = Evaluator._getUnionAreas(boxA, boxB, interArea=interArea)
-        # intersection over union
-        iou = interArea / union
-        assert iou >= 0
-        return iou
-
-    # boxA = (Ax1,Ay1,Ax2,Ay2)
-    # boxB = (Bx1,By1,Bx2,By2)
-    @staticmethod
-    def _boxesIntersect(boxA, boxB):
-        if boxA[0] > boxB[2]:
-            return False  # boxA is right of boxB
-        if boxB[0] > boxA[2]:
-            return False  # boxA is left of boxB
-        if boxA[3] < boxB[1]:
-            return False  # boxA is above boxB
-        if boxA[1] > boxB[3]:
-            return False  # boxA is below boxB
-        return True
+    def iou(box_a: Tuple[float, float, float, float], box_b: Tuple[float, float, float, float]) -> float:
+        """
+        Calculate Intersection over Union (IoU) between two bounding boxes.
+        
+        Args:
+            box_a: First bounding box (x1, y1, x2, y2)
+            box_b: Second bounding box (x1, y1, x2, y2)
+            
+        Returns:
+            IoU value between 0 and 1
+        """
+        if not Evaluator._boxes_intersect(box_a, box_b):
+            return 0.0
+        
+        inter_area = Evaluator._get_intersection_area(box_a, box_b)
+        union_area = Evaluator._get_union_areas(box_a, box_b, inter_area)
+        
+        return inter_area / union_area
 
     @staticmethod
-    def _getIntersectionArea(boxA, boxB):
-        xA = max(boxA[0], boxB[0])
-        yA = max(boxA[1], boxB[1])
-        xB = min(boxA[2], boxB[2])
-        yB = min(boxA[3], boxB[3])
-        # intersection area
-        return (xB - xA + 1) * (yB - yA + 1)
+    def _boxes_intersect(box_a: Tuple[float, float, float, float], box_b: Tuple[float, float, float, float]) -> bool:
+        """Check if two boxes intersect."""
+        return not (box_a[0] > box_b[2] or 
+                   box_b[0] > box_a[2] or 
+                   box_a[3] < box_b[1] or 
+                   box_a[1] > box_b[3])
 
     @staticmethod
-    def _getUnionAreas(boxA, boxB, interArea=None):
-        area_A = Evaluator._getArea(boxA)
-        area_B = Evaluator._getArea(boxB)
-        if interArea is None:
-            interArea = Evaluator._getIntersectionArea(boxA, boxB)
-        return float(area_A + area_B - interArea)
+    def _get_intersection_area(box_a: Tuple[float, float, float, float], box_b: Tuple[float, float, float, float]) -> float:
+        """Calculate intersection area of two boxes."""
+        x_a = max(box_a[0], box_b[0])
+        y_a = max(box_a[1], box_b[1])
+        x_b = min(box_a[2], box_b[2])
+        y_b = min(box_a[3], box_b[3])
+        return max(0, x_b - x_a + 1) * max(0, y_b - y_a + 1)
 
     @staticmethod
-    def _getArea(box):
+    def _get_union_areas(
+        box_a: Tuple[float, float, float, float],
+        box_b: Tuple[float, float, float, float],
+        inter_area: Optional[float] = None
+    ) -> float:
+        """Calculate union area of two boxes."""
+        area_a = Evaluator._get_area(box_a)
+        area_b = Evaluator._get_area(box_b)
+        if inter_area is None:
+            inter_area = Evaluator._get_intersection_area(box_a, box_b)
+        return float(area_a + area_b - inter_area)
+
+    @staticmethod
+    def _get_area(box: Tuple[float, float, float, float]) -> float:
+        """Calculate area of a box."""
         return (box[2] - box[0] + 1) * (box[3] - box[1] + 1)
