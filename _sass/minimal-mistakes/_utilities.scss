@@ -556,3 +556,35 @@ a.reversefootnote {
     position: static;
   }
 }
+
+/*
+    Copy code button
+    ========================================================================== */
+
+.copy-code-button {
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+  padding: 0.5em;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+  
+  &:hover {
+    opacity: 1;
+    background-color: #e9ecef;
+  }
+  
+  i {
+    font-size: 1em;
+    color: #666;
+  }
+}
+
+pre {
+  position: relative;
+  padding-top: 2.5em;
+}
