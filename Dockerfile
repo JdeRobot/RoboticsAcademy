@@ -22,5 +22,5 @@ RUN bundle install
 EXPOSE 4000
 EXPOSE 35729
 
-# Default command to start Jekyll, binding to all interfaces so it's accessible from the host.
+# Default command to start Jekyll server
 CMD ["bundle", "exec", "jekyll", "serve"]
