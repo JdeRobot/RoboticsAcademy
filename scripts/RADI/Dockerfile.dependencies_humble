@@ -2,7 +2,7 @@ FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
 
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
-ENV NVIDIA_DRIVER_CAPABILITIES all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
 ENV VIRTUALGL_VERSION=3.0.2
 ENV TURBOVNC_VERSION=3.0.3
 
@@ -15,9 +15,9 @@ RUN apt-get clean && \
     apt-get install --no-install-recommends -y locales && \
     rm -rf /var/lib/apt/lists/* && \
     locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 ENV ROS_DISTRO=humble
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
@@ -133,7 +133,7 @@ RUN apt-get update && \
   apt-get install -y lxde-common && \
   rm -rf /var/lib/apt/lists/*
 
-ENV PATH "$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
