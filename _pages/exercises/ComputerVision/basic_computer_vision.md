@@ -33,6 +33,7 @@ youtubeId5: 2U6K_dgpjNA
 youtubeId6: 31HoUDv8_zI
 youtubeId7: otzet0RazOI
 youtubeId8: 3jDu4iyVPqc
+youtubeId9: 4u19cW4ecL4
 ---
 
 ## Goal
@@ -95,6 +96,15 @@ The proposal is to apply a convolution to the image obtained from the camera. Th
 
 ### Optical Flow
 Optical flow must be calculated from the camera image, thus depicting the motion of the image. Optical flow is a technique used in computer vision and image processing to estimate the motion of objects between two consecutive frames in a video or image sequence. It calculates the apparent motion of pixel intensities, which helps in understanding the movement of objects or the camera itself.
+
+OpenCV provides functions to calculate optical flow. Check this [tutorial](https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html)! 
+
+**Some tips:**
+* Pixel intensities and the frame rate (FPS) can influence the accuracy of the flow estimation.
+
+{% include youtubePlayer.html id=page.youtubeId9 %}
+
+For a more advanced implementation, you can select good feature points and track only those specific pixels, as shown in the following example:
 
 {% include youtubePlayer.html id=page.youtubeId7 %}
 
