@@ -114,6 +114,8 @@ function SpecificLaserMapping(props) {
           setNoisyPath("")
           realTrail=[]
           noisyTrail=[]
+          var canvas = document.getElementById("gui-canvas");
+          canvas.src = noImage;
         } catch (error) {
         }
         switch (context.mapSelected) {
