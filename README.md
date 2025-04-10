@@ -27,6 +27,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 - [Develop using volume binding.][]
 - [ROS2 and superthin templates migration.][]
 - [Troubleshooting Robotics Academy][]
+- [Square with Tello Drone Exercise][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
 [Client side.]: ./docs/clientside.md
@@ -37,3 +38,4 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 [Develop using volume binding.]: ./docs/develop_binding_volumes.md
 [ROS2 and superthin templates migration.]: ./docs/exercise-status.md
 [Troubleshooting Robotics Academy]: ./docs/troubleshooting.md
+[Square with Tello Drone Exercise]: ./docs/square_with_tello_drone.md
