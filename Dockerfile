@@ -1,5 +1,5 @@
 # Use the official Ruby image with version 2.7.6 on a slim Debian base
-FROM ruby:2.7.6-slim
+FROM ruby:2.7.8
 
 # Install essential packages
 RUN apt-get update -qq && apt-get install -y \
