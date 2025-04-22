@@ -36,10 +36,10 @@ Follow the Jekyll [page installation guide](https://jekyllrb.com/docs/installati
 
 Install [Docker](https://docs.docker.com/get-started/get-docker/)
 
-Run `docker-compose`:
+Run `docker-compose` using develop.sh:
 
 ```bash
-docker compose up --build
+./scripts/develop.sh
 ```
 
 ## Running Jekyll Serve

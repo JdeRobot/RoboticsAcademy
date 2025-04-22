@@ -1,6 +1,8 @@
 services:
   jekyll:
-    build: .
+    build: 
+      context: .
+      dockerfile: ./scripts/Dockerfile
     container_name: jekyll-dev
     volumes:
       - .:/app:cached

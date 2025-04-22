@@ -13,7 +13,8 @@ RUN apt-get update -qq && apt-get install -y \
 WORKDIR /app
 
 # Copy Gemfile and Gemfile.lock for dependency installation
-COPY Gemfile Gemfile.lock ./
+COPY ../Gemfile ./
+COPY ../Gemfile.lock ./
 
 # Install Ruby gems
 RUN bundle install
