@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
-import commons from "../../common.zip";
 import JSZip from "jszip";
 
 const PlayPause = (props) => {
@@ -46,8 +45,7 @@ const PlayPause = (props) => {
 
   const play = async () => {
     setLoading(true);
-    let editorCode = "";
-    editorCode = RoboticsReactComponents.CodeEditor.getCode();
+    let editorCode = RoboticsReactComponents.CodeEditor.getCode();
 
     if (applicationPaused) {
       if (editorChanged) {
@@ -69,11 +67,15 @@ const PlayPause = (props) => {
     const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
     let requestUrl = `${serverBase}/exercises/exercise/${config[0].exercise_id}/user_code_zip`;
 
-    var zip = new JSZip();
-    const commonsZip = await zip.loadAsync(commons);
-    console.log(commonsZip)
+    const zip = new JSZip();
 
     try {
+      const commonsResponse = await fetch("/common.zip");
+      if (!commonsResponse.ok) throw new Error("Failed to load common.zip");
+
+      const commonsBlob = await commonsResponse.blob();
+      const commonsZip = await zip.loadAsync(commonsBlob);
+
       const response = await fetch(requestUrl, {
         method: "POST",
         headers: {
@@ -82,7 +84,7 @@ const PlayPause = (props) => {
       });
 
       if (!response.ok) {
-        console.error("Error formatting code:", zip.error);
+        console.error("Error fetching extra files:", response.statusText);
         return;
       }
 
@@ -95,13 +97,11 @@ const PlayPause = (props) => {
 
       commonsZip.file("academy.py", code);
 
-      // Convert the blob to base64 using FileReader
       const reader = new FileReader();
       reader.onloadend = async () => {
-        const base64data = reader.result; // Get the zip in base64
-        // Send the base64 encoded blob
+        const base64data = reader.result;
         try {
-          await window.RoboticsExerciseComponents.commsManager.run({
+          await commsManager.run({
             type: "robotics-academy",
             code: base64data,
           });
@@ -113,20 +113,22 @@ const PlayPause = (props) => {
         }
       };
 
-      commonsZip.generateAsync({ type: "blob" }).then(function (content) {
+      commonsZip.generateAsync({ type: "blob" }).then((content) => {
         reader.readAsDataURL(content);
       });
     } catch (error) {
-      console.log(error);
-      return;
+      console.error("Run code error:", error);
+      RoboticsReactComponents.MessageSystem.Alert.showAlert(
+        "Failed to prepare and send user code.",
+        "error"
+      );
     }
   };
 
   const pause = () => {
     setLoading(true);
-    window.RoboticsExerciseComponents.commsManager
+    commsManager
       .pause()
-      .then(() => {})
       .catch((response) => console.log(response))
       .finally(() => setLoading(false));
   };
@@ -147,3 +149,4 @@ const PlayPause = (props) => {
 };
 
 export default PlayPause;
+
