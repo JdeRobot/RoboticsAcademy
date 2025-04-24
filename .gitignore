@@ -94,6 +94,7 @@ ENV/
 docs/.jekyll-cache/
 
 .jekyll-cache
+.sass-cache
 _site
 
 # IDEs
