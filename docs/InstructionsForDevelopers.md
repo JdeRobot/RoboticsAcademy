@@ -7,7 +7,6 @@
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
 - [How to use nvidia](#How-to-use-nvidia)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
-- [How to update static files version](#How-to-update-static-files-version)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
 - [How to create a React based exercise](#How-to-create-a-React-based-exercise)
 - [Guidelines to render a React based exercise](#Guidelines-to-render-a-React-based-exercise)
@@ -311,22 +310,6 @@ An exercise entry in the database must include the following data:
 - ```tags```: an exercise must include at least one ROS tag ("ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
 - ```status```: changes the state indicator (ACTIVE = green; PROTOTYPE = yellow; INACTIVE = red)
 - ```language```: programming language used
-
-<a name="How-to-update-static-files-version"></a>
-## How to update static files version
-Follow this steps after changing any js or css document in order to prevent the browser cache to be used:
-
-1º Make all the changes necesary to the required documents.
-
-2º When the changes are done and ready to commit, open settings.py (located on ```RoboticsAcademy/academy/settings.py```).
-
-3º In ```setting.py```, update VERSION with the current date (the format is DD/MM/YYYY so for example the date 17/06/2021 would look something like this ```VERSION = 17062021``` ).
-
-4º Save and commit the changes.
-
-If a new static file is created or you find a file that doesn't have (or updates) their version number, just add ```?v={{SYS_VERSION}}``` to the end of the src.
-
-For example: ```script src="{% static 'exercises/assets/js/utils.js``` would have his src update as follows: ```script src="{% static 'exercises/assets/js/utils.js?v={{SYS_VERSION}}' %}"```
 
 <a name="Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises"></a>
 ## Steps to change models from CustomRobots in RoboticsAcademy exercises.

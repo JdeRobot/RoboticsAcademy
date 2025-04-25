@@ -6,7 +6,7 @@
 
 {% block react-content %}
     {% if deployment %}
-        {% react_component exercise/vacuum_cleaner_newmanager/BasicVacuumCleaner %}
+        {% react_component exercise/vacuum_cleaner/BasicVacuumCleaner %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
             {% react_component components/common/MainAppBar exerciseName="Basic Vacuum Cleaner" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner"%} 
             {% react_component RA_links/WorldSelectorRA %} {% end_react_component %}  
@@ -14,14 +14,14 @@
             {% react_component components/containers/MaterialBox id="content" %}
                 {% react_component components/containers/MaterialBox id="content-exercise" %}
                     {% react_component components/containers/ExerciseControl efficacy %}{% end_react_component %}
-                    {% react_component uniboticsExtra/assets/exercises/vacuum_cleaner_newmanager/GridBasicVacuumCleaner %}{% end_react_component %}
+                    {% react_component uniboticsExtra/assets/exercises/vacuum_cleaner/GridBasicVacuumCleaner %}{% end_react_component %}
                     {% react_component components/containers/FlexContainer row %}
                     {% react_component components/containers/FlexContainer console %} 
                     {% react_component components/editors/EditorRobot %}{% end_react_component %}
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%}
-                            {% react_component uniboticsExtra/assets/exercises/vacuum_cleaner_newmanager/SpecificVacuumCleaner %}{% end_react_component %}
+                            {% react_component uniboticsExtra/assets/exercises/vacuum_cleaner/SpecificVacuumCleaner %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
@@ -32,7 +32,7 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-        {% react_component exercise/vacuum_cleaner_newmanager/BasicVacuumCleaner %}
+        {% react_component exercise/vacuum_cleaner/BasicVacuumCleaner %}
             {% react_component components/wrappers/MaterialBox id="exercise-container" %}
                 {% react_component components/layout_components/MainAppBar exerciseName="Basic Vacuum Cleaner" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner"%} 
                 {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
@@ -46,7 +46,7 @@
                     {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                            {% react_component exercise/vacuum_cleaner_newmanager/SpecificVacuumCleaner %}{% end_react_component %}
+                            {% react_component exercise/vacuum_cleaner/SpecificVacuumCleaner %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
