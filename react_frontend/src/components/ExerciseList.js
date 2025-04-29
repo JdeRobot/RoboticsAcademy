@@ -18,32 +18,32 @@ const ExerciseList = () => {
   const [exerciseList, setExerciseList] = useState();
   const filterText = getSearchBarText();
 
-  const filterByVersion = (data) => {
-    // Requests ROS version and filters exercises by ROS tag
-    const rosVersionURL = `${serverBase}/exercises/ros_version/`;
-    fetch(rosVersionURL)
-      .then((res) => res.json())
-      .then((msg) => {
-        ros_version = msg.version;
-        // If ROS is installed
-        if (!isNaN(parseInt(ros_version))) {
-          data = data.filter((exercise) =>
-            exercise.tags.includes(`ROS${ros_version}`)
-          );
-          setExerciseList(data);
-          setLoading(false);
-        }
-        // If ROS is not installed (local + RADI developer)
-        else {
-          setExerciseList(data);
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        setExerciseList(data);
-        setLoading(false);
-      });
-  };
+  // const filterByVersion = (data) => {
+  //   // Requests ROS version and filters exercises by ROS tag
+  //   const rosVersionURL = `${serverBase}/exercises/ros_version/`;
+  //   fetch(rosVersionURL)
+  //     .then((res) => res.json())
+  //     .then((msg) => {
+  //       ros_version = msg.version;
+  //       // If ROS is installed
+  //       if (!isNaN(parseInt(ros_version))) {
+  //         data = data.filter((exercise) =>
+  //           exercise.tags.includes(`ROS${ros_version}`)
+  //         );
+  //         setExerciseList(data);
+  //         setLoading(false);
+  //       }
+  //       // If ROS is not installed (local + RADI developer)
+  //       else {
+  //         setExerciseList(data);
+  //         setLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setExerciseList(data);
+  //       setLoading(false);
+  //     });
+  // };
 
   useEffect(() => {
     // setListState({ loading: true, exercises: null });
@@ -51,7 +51,9 @@ const ExerciseList = () => {
     fetch(apiURL)
       .then((res) => res.json())
       .then((exercises) => {
-        filterByVersion(exercises);
+        // filterByVersion(exercises);
+        setExerciseList(exercises);
+        setLoading(false);
         // setListState({ loading: false, exercises: exercises });
       });
   }, [setExerciseList]);

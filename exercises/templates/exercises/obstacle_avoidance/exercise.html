@@ -6,7 +6,7 @@
 
 {% block react-content %}
     {% if deployment %}
-        {% react_component exercise/obstacle_avoidance_newmanager/ObstacleAvoidanceRR %}
+        {% react_component exercise/obstacle_avoidance/ObstacleAvoidanceRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
             {% react_component components/common/MainAppBar exerciseName="Obstacle Avoidance" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance"%} 
             {% react_component RA_links/WorldSelectorRA %} {% end_react_component %}  
@@ -20,7 +20,7 @@
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
-                            {% react_component uniboticsExtra/assets/exercises/obstacle_avoidance_newmanager/SpecificObstacleAvoidance %}{% end_react_component %}
+                            {% react_component uniboticsExtra/assets/exercises/obstacle_avoidance/SpecificObstacleAvoidance %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
@@ -31,7 +31,7 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-        {% react_component exercise/obstacle_avoidance_newmanager/ObstacleAvoidanceRR %}
+        {% react_component exercise/obstacle_avoidance/ObstacleAvoidanceRR %}
             {% react_component components/wrappers/MaterialBox id="exercise-container" %}
                 {% react_component components/layout_components/MainAppBar exerciseName="Obstacle Avoidance" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance"%} 
                 {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
@@ -45,7 +45,7 @@
                     {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                            {% react_component exercise/obstacle_avoidance_newmanager/SpecificObstacleAvoidance %}{% end_react_component %}
+                            {% react_component exercise/obstacle_avoidance/SpecificObstacleAvoidance %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
