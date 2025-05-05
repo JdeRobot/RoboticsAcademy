@@ -43,7 +43,7 @@ const ExerciseCard = (props) => {
   const navigateToExercise = () => {
     window.location.href = exerciseURL.interpolate(props);
   };
-  const tagsList = JSON.parse(props.tags).tags.split(",");
+  const tagsList = JSON.parse(props.tags).tags;
   return (
     <div
       className="exercise-card"
@@ -155,6 +155,79 @@ const ExerciseCardV2 = (props) => {
   );
 };
 
+const ExerciseCardV3 = (props) => {
+  const exerciseURL = `${configuration.academy.exercises.exercise_url}`;
+  const teaser = configuration.academy.exercises.teaser;
+
+  const navigateToExercise = () => {
+    window.location.href = exerciseURL.interpolate(props);
+  };
+
+  const tagsList = JSON.parse(props.tags).tags;
+
+  return (
+    <div
+      className="exercise-card"
+      style={{
+        borderColor:
+          props.status === "ACTIVE"
+            ? "green"
+            : props.status === "INACTIVE"
+            ? "red"
+            : "orange",
+      }}
+    >
+      <div
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+        onClick={() => navigateToExercise()}
+      >
+        <CardMedia
+          component="img"
+          height="auto"
+          style={{ flexGrow: 1 }}
+          image={teaser.url.interpolate(props)}
+        />
+        <div className="exercise-info-container">
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            color={"white"}
+            sx={{ wordBreak: "break-word" }}
+            style={{ alignSelf: "center", pointerEvents: "none" }}
+          >
+            {props.name}
+          </Typography>
+          <Typography
+            id="exercise-info"
+            gutterBottom
+            variant="h7"
+            component="div"
+            color={"white"}
+            style={{ pointerEvents: "none" }}
+          >
+            {props.description}
+          </Typography>
+          <ChipsArray tagList={tagsList} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+ExerciseCardV3.propTypes = {
+  exerciseid: PropTypes.string,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  tags: PropTypes.string,
+  status: PropTypes.string,
+};
+
 ExerciseCardV2.propTypes = {
   exerciseid: PropTypes.string,
   name: PropTypes.string,
@@ -172,7 +245,7 @@ ExerciseCard.propTypes = {
 
 const ChipsArray = (props) => {
   let chipData = props.tagList;
-  if(!Array.isArray(chipData)){
+  if (!Array.isArray(chipData)) {
     chipData = chipData.split(",");
   }
   const chipsList = chipData.map((data) => (
@@ -186,23 +259,11 @@ const ChipsArray = (props) => {
     />
   ));
 
-  return (
-    <Box
-      sx={{
-        display: "inline-flex",
-        flexWrap: "wrap",
-        p: 0.5,
-        m: 0,
-      }}
-      component="ul"
-    >
-      {chipsList}
-    </Box>
-  );
+  return <div className="exercise-tag-list">{chipsList}</div>;
 };
 
 ChipsArray.propTypes = {
   tagList: PropTypes.any,
 };
 
-export { ExerciseCardV2, ExerciseCard };
+export { ExerciseCardV3, ExerciseCardV2, ExerciseCard };
