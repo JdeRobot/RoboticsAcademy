@@ -123,20 +123,6 @@
     }
 }
 
-@keyframes infinite-scroll {
-    0% {
-        left: 0%;
-    }
-
-    50% {
-        left: -100%;
-    }
-
-    100% {
-        left: 0%;
-    }
-}
-
 .exercise-tag-list {
     padding: 4px;
 }
