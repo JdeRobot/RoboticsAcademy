@@ -26,7 +26,7 @@ youtubeId1: obHhJ-_Y96c
 
 ## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for a vacuum using laser mapping. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
+The goal of this exercise is to develop a navigation algorithm that allows a robot to autonomously explore a warehouse environment while generating an accurate map of the area using LIDAR sensor data.
 
 {% include gallery caption="Laser Mapping." %}
 

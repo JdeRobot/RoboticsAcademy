@@ -395,7 +395,7 @@ feature_row:
     status: "running"
     order: 0;
 
-  - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
+  - image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     alt: "Laser Mapping"
     title: "Laser Mapping"
     excerpt: "Navigation algorithm for an autonomous vacuum."
@@ -403,8 +403,8 @@ feature_row:
     btn_class: "btn--danger"
     btn_label: "Go!"
     version_label: "btn--success"
-    status: "prototype"
-    order: 2;
+    status: "running"
+    order: 0;
 
   - image_path: /assets/images/exercises/laser_loc/montecarlo_laser_loc_teaser.png
     alt: "MonteCarlo Laser Loc (old version)"
