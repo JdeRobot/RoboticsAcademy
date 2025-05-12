@@ -133,11 +133,11 @@
     justify-content: spacebetween;
     background-color: black;
     border-radius: 20px;
-    border: 3px solid;
+    border: 5px solid;
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 300px;
+    aspect-ratio: 9/10;
 }
 
 .exercise-card-container {
@@ -149,7 +149,7 @@
 
 .exercise-info-container {
     width: 100%;
-    height: 20%;
+    height: 15%;
     position: absolute;
     background: rgba(0, 0, 0, 0.68);
     animation: position;
