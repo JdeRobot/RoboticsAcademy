@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import "../styles/ExerciseList.css";
-import { ExerciseCardV3 } from "./ExerciseCard";
-import React from "react";
+import { ExerciseCard } from "./ExerciseCard";
 import HomepageContext from "../contexts/HomepageContext";
 
 const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
@@ -80,9 +79,9 @@ const ExerciseList = () => {
     <div className={"exercise-list"}>
       {filteredData.map((exercise) => {
         return (
-          <ExerciseCardV3
+          <ExerciseCard
             key={exercise.exercise_id}
-            exerciseid={exercise.exercise_id}
+            id={exercise.exercise_id}
             name={exercise.name}
             description={exercise.description}
             tags={exercise.tags}
