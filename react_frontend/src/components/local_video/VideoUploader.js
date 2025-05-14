@@ -66,7 +66,7 @@ const VideoUploader = ({ onVideoSelected }) => {
 
   return (
     <div
-      className={`w-full mx-auto border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200 bg-red-600 ${
+      className={`w-[500px] mx-auto border-2 border-dashed rounded-lg p-8 text-center transition-all duration-200 ${
         isDragging
           ? "border-blue-500 bg-blue-50 scale-105"
           : "border-gray-300 hover:border-blue-400"

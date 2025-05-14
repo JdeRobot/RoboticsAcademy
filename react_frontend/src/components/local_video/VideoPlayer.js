@@ -45,48 +45,58 @@ const VideoPlayer = ({ videoUrl }) => {
     };
   }, []);
 
+  const captureFrame = () => {
+    console.log("frame");
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas) return;
+
+    canvas.width = 480; //video.videoWidth;
+    canvas.height = 320; //video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const frameUrl = canvas.toDataURL("image/jpeg", 1);
+
+    window.RoboticsExerciseComponents.commsManager.send(
+      "gui",
+      `pick${frameUrl}xxxxxxxxxxxxxxxxxxxx`
+    );
+  };
+
+  /* test start */
+
   useEffect(() => {
-    if (!isPlaying) {
-      if (frameIntervalRef.current) {
-        window.clearInterval(frameIntervalRef.current);
+    if (!isPlaying) return;
+
+    const callback = (message) => {
+      // receive ack from gui.py
+      if (message.data.update.ack_img === "ack") {
+        // call next frame
+        captureFrame();
       }
-      return;
-    }
-
-    const captureFrame = () => {
-      console.log("frame");
-
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      if (!video || !canvas) return;
-
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      const frameUrl = canvas.toDataURL("image/jpeg", 0.5);
-
-      window.RoboticsExerciseComponents.commsManager.subscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        () => {
-          window.RoboticsExerciseComponents.commsManager.send(
-            "gui",
-            `pick${frameUrl}xxxxxxxxxxxxxxxxxxxx`
-          );
-        }
-      );
     };
-
-    frameIntervalRef.current = window.setInterval(captureFrame, 3000);
+    window.RoboticsExerciseComponents.commsManager.subscribe(
+      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
+      callback
+    );
 
     return () => {
-      if (frameIntervalRef.current) {
-        window.clearInterval(frameIntervalRef.current);
-      }
+      window.RoboticsExerciseComponents.commsManager.unsubscribe(
+        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
+        callback
+      );
     };
   }, [isPlaying]);
+
+  // recived data
+  useEffect(() => {
+    const imageId = document.getElementById("gui_canvas");
+    console.log("gui_canvas ", imageId);
+  }, []);
+  /* test end */
 
   useEffect(() => {
     const hideControls = () => {
@@ -185,17 +195,17 @@ const VideoPlayer = ({ videoUrl }) => {
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex justify-center items-center gap-4">
       <div
         ref={containerRef}
-        className="relative w-full max-w-2xl bg-black rounded-lg overflow-hidden group"
+        className="relative  w-full max-w-2xl bg-black rounded-lg overflow-hidden group"
         onMouseMove={handleShowControls}
         onMouseLeave={() => isPlaying && setShowControls(false)}
       >
         <video
           ref={videoRef}
           src={videoUrl}
-          className="w-full h-auto rounded-lg cursor-pointer"
+          className="w-full xh-auto rounded-lg cursor-pointer"
           onClick={togglePlay}
         />
 

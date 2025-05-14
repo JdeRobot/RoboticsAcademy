@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./../../styles/tailwind.css";
 
 import VideoUploader from "../local_video/VideoUploader";
@@ -40,6 +40,11 @@ const LocalVideo = () => {
   //       callback
   //     );
   //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   const imageId = document.getElementById("gui_canvas");
+  //   console.log("gui_canvas ", imageId);
   // }, []);
 
   return (
