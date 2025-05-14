@@ -4,7 +4,7 @@ import CardMedia from "@mui/material/CardMedia";
 import "../styles/ExerciseList.css";
 import Typography from "@mui/material/Typography";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
-import FALLBACK_IMAGE from "../images/monitoring2.png";
+import FALLBACK_IMAGE from "../images/default_card.svg";
 
 const ExerciseCard = ({ id, name, description, tags, status }) => {
   const exerciseURL = `${configuration.academy.exercises.exercise_url}`;

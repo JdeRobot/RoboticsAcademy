@@ -153,7 +153,7 @@
     position: absolute;
     background: rgba(0, 0, 0, 0.68);
     animation: position;
-    transition: height 1s ease;
+    transition: height 0.8s ease;
     bottom: 0;
     padding: 8px;
     display: inline-flex;
