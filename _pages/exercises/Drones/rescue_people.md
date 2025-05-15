@@ -23,6 +23,7 @@ youtubeId: c0heCUeDm7I
 youtubeId2: ee_T46fpHN8
 youtubeId3: fISm9Q2_ogg
 youtubeId4: O8atiuEamp4
+youtubeId5: pwtvTTDCi2I
 ---
 ## Goal
 
@@ -30,7 +31,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to r
 
 {% include gallery caption="Gallery." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ### Orientative GPS Locations
 
@@ -40,7 +41,7 @@ While survivors are known to be close to **40º16'47.23" N**, **3º49'01.78" W**
 ### Sensors and drone state
 
 * `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
-* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s
+* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.
 * `HAL.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
 * `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad. 
 * `HAL.get_roll()` - Returns the roll angle of the drone, in rad
@@ -110,9 +111,9 @@ Also notice that UTM coordinates are global, while drone positions are local, re
 
 If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but what's not the best way of flying a drone.
 
-Another possibility is to use **Nose Forward Mode**, where the drone follows the path similar to a fixed-wing aircraft. Then, to accomplish it, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
+Another possibility is to use **Nose Forward Mode**, where the drone follows the path similar to a fixed-wing aircraft. Then, to accomplish th exercise's goal, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
 
-In this exercise, you can use the one you prefer.
+In this exercise, you can use whichever you prefer.
 
 ### Do I need to know when the drone is in the air?
 
@@ -124,7 +125,7 @@ No, you can solve this exercise without taking care of the **land state** of the
 
 ### Demonstrative video of the solution
 
-{% include youtubePlayer.html id=page.youtubeId3 %}
+{% include youtubePlayer.html id=page.youtubeId5 %}
 
 -------
 
