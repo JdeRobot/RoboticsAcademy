@@ -36,33 +36,34 @@ gifs:
     title: "Autoparking Web Template"
 
 
-youtubeId: BpHSDrFqpVk
+youtubeId1: BpHSDrFqpVk
+youtubeId2: EWTR9Y1QyBk
 ---
-## Objective
+## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must find a parking space and park properly.
+The objective of this exercise is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must find a parking space and park properly.
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 {% include gallery caption="Gallery" %}
 
 ## Robot API
 
-* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getPose3d()` - to get all the position information
-* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
-* `HAL.getPose3d().y` - to get the position of the robot (y coordinate)
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getPose3d()` - to get all the position information.
+* `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
+* `HAL.getPose3d().y` - to get the position of the robot (y coordinate).
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
-* `HAL.getFrontLaserData()` - to obtain the front laser sensor data
+* `HAL.getFrontLaserData()` - to obtain the front laser sensor data.
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `HAL.getRightLaserData()` - to obtain the right laser sensor data
+* `HAL.getRightLaserData()` - to obtain the right laser sensor data.
 It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `HAL.getBackLaserData()` - to obtain the back laser sensor data
+* `HAL.getBackLaserData()` - to obtain the back laser sensor data.
 It is composed of 180 pairs of values: (0-180º distance in millimeters)
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
+* `HAL.setV()` - to set the linear speed.
+* `HAL.setW()` - to set the angular velocity.
 
 ## Laser attributes
 `HAL.getFrontLaserData()`, `HAL.getRightLaserData()` and `HAL.getBackLaserData()` returns an instance of a Class with the following attributes:
@@ -78,7 +79,11 @@ It is composed of 180 pairs of values: (0-180º distance in millimeters)
 
 ## Videos
 
-{% include youtubePlayer.html id=page.youtubeId %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+### Demonstrative video of the solution
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 ## Contributors
 
