@@ -27,8 +27,12 @@ executor.add_node(cameraL)
 executor.add_node(cameraR)
 def __auto_spin() -> None:
     while rclpy.ok():
-        executor.spin_once(timeout_sec=0)
-        time.sleep(1/freq)
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
+        
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 

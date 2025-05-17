@@ -14,9 +14,12 @@ freq = 90.0 # Less than this wont work
 
 def __auto_spin() -> None:
     while rclpy.ok():
-        executor.spin_once(timeout_sec=0)
-        time.sleep(1/freq)
-
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
+        
 # ROS2 init
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
