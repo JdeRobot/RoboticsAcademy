@@ -101,22 +101,23 @@ youtubeId2: q6G6BHqljP4
 youtubeId3: itTbU4uLwfE
 youtubeId4: zcS4X-ZO68U
 youtubeId5: lO9Ru2mNAR4
+youtubeId6: FZ8bP_VW1AA
 
 ---
 
 ## Goal
 
-The objective of this practice is to implement the logic of a Gradient Path Planning (GPP) algorithm. Global navigation through GPP, consists of:
+The objective of this exercise is to implement the logic of a Gradient Path Planning (GPP) algorithm. Global navigation through GPP, consists of:
 
 {% include gallery caption="Gallery" %}
 
-* Selected a destination, the GPP algorithm is responsible for finding the shortest path to it, avoiding, in the case of this practice, everything that is not road.
+* Once selected a destination, the GPP algorithm is responsible for finding the shortest path to it, avoiding, in this our case, everything that is not road.
 
 * Once the path has been selected, the logic necessary to follow this path and reach the objective must be implemented in the robot.
 
 With this, it is possible for the robot to go to the marked destination autonomously and following the shortest path.
 
-The solution can integrate one or more of the following levels of difficulty, as well as any other one that occurs to you:
+The solution can integrate one or more of the following difficulty increasing goals, as well as any other one that occurs to you:
 
 * Reach the goal.
 
@@ -124,25 +125,25 @@ The solution can integrate one or more of the following levels of difficulty, as
 
 * Arrive as quickly as possible to the destination.
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates
-* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400
-* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
-* `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.setV()` - to set the linear speed.
+* `HAL.setW()` - to set the angular velocity.
+* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates.
+* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400.
+* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path.
+* `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image.
 * `GUI.getMap(url)` - - Returns a numpy array with the image data in grayscale as a 2 dimensional array. The URL of the Global Navigation map is '/resources/exercises/global_navigation/images/cityLargenBin.png', so the instruction to get the map is
 ```
 array = GUI.getMap('/resources/exercises/global_navigation/images/cityLargenBin.png')
 ```
-* `GUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter
+* `GUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter.
     
-The map image has a resolution of 400x400 pixels and indicates wheter there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
+The map image has a resolution of 400x400 pixels and indicates whether there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
 
 ## Videos
 
@@ -155,7 +156,7 @@ Motion Planning is a term used in robotics to find a sequence of valid configura
 There are mainly 2 methods to solve the exercise, **Gradient Path Planning**, **Sampling Based Path Planning**
 
 ### Gradient Path Planning
-One such method for Motion Planning is Gradient Path Planning. GPP works on the principle of potential fields. The obstacles in the path serve as potential wall to the path planner, and the target serve as potential well. By combining all the potential walls and wells, a path is constructed as a downward slope. The robot follows that path to reach it's destination.
+One such method for Motion Planning is Gradient Path Planning. GPP works on the principle of potential fields. The obstacles in the path serve as potential walls to the path planner, and the target serves as potential well. By combining all the potential walls and wells, a path is constructed as a downward slope. The robot follows that path to reach it's destination.
 
 {% include gallery id="potential" caption="Various illustrations based on potential" %}
 
@@ -223,17 +224,19 @@ Assignment of weights to the cells is arbitrary. Generally, diagonally neighbori
 
 ### Path Navigation
 
-The next step involves Path Navigation. We can start by defining the low level implementation like linear speed and angular speed. Using the orientation of the robot, distance and direction of the target, linear speed and angular speeds can be assigned to the robot.
+The next step involves Path Navigation. We can start by defining the low level implementation through linear speed and angular speed. Using the orientation of the robot, distance and direction of the target, linear speed and angular speeds can be assigned to the robot.
 
-For navigating effectively, we assign local goal points which eventually lead to the final destination. These local goal points can be selected by choosing 2 points, which occur one after the another **recursively**.
+To navigate effectively, we assign local goal points which eventually lead to the final destination. These local goal points can be selected by choosing 2 points, which occur one after another **recursively**.
 
-Also, make sure that the selection is done from a big enough radius, otherwise during navigation the robot may pass the grid and reach a **local minima**.
+Also, make sure that the selection is done from a big enough radius, otherwise during navigation the robot may pass the grid and reach a **local minimum value**.
 
 {% include gallery id="gifs" caption="Choose a large radius to avoid missing on turns (left) - Select the next point conditioned on the first point we select, and then plan accordingly (right)" %}
 
-All in all, the exercise is a little on the tough side. But spending time with this exercise, all the bugs, issues and hints provided may make sense!
+All in all, the exercise is a little on the tough side. But after spending some time working on this exercise, all the bugs, issues and hints provided may make sense!
 
 ## Demonstrative Video
+
+{% include youtubePlayer.html id=page.youtubeId6 %}
 
 Global Navigation with GPP:
 
