@@ -57,6 +57,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
 
+
 # Install Gazebo 11
 RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
 RUN apt-get update && apt-get install -y \
@@ -323,3 +324,111 @@ COPY install-ompl-ubuntu.sh /
 WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
+
+
+# O3DE installation
+
+ARG ROS_VERSION=humble
+
+ENV WORKSPACE=/data/workspace
+
+WORKDIR $WORKSPACE
+
+# O3DE Variables
+ARG O3DE_REPO=https://github.com/o3de/o3de.git
+ARG O3DE_BRANCH=development
+ARG O3DE_COMMIT=HEAD
+ENV O3DE_ROOT=$WORKSPACE/o3de
+
+# O3DE Extras Variables
+ARG O3DE_EXTRAS_REPO=https://github.com/o3de/o3de-extras.git
+ARG O3DE_EXTRAS_BRANCH=development
+ARG O3DE_EXTRAS_COMMIT=HEAD
+ENV O3DE_EXTRAS_ROOT=$WORKSPACE/o3de-extras
+
+# Project variables
+ENV PROJECT_NAME=Ros2
+ENV PROJECT_DEMO_ROOT=$WORKSPACE/$PROJECT_NAME
+
+# Install the required ubuntu packages
+RUN apt-get update \
+  && apt-get install -y \
+  binutils \
+  clang \
+  cmake \
+  git \
+  git-lfs \
+  libglu1-mesa-dev \
+  libxcb-xinerama0 \
+  libfontconfig1-dev \
+  libnvidia-gl-470 \
+  libxcb-xkb-dev \
+  libxkbcommon-x11-dev \
+  libxkbcommon-dev \
+  libxcb-xfixes0-dev \
+  libxcb-xinput-dev \
+  libxcb-xinput0 \
+  libpcre2-16-0 \
+  ninja-build \
+  python3-pip \
+  software-properties-common \
+  ros-${ROS_DISTRO}-ackermann-msgs \
+  ros-${ROS_DISTRO}-control-toolbox \
+  ros-${ROS_DISTRO}-gazebo-msgs \
+  ros-${ROS_DISTRO}-joy \
+  ros-${ROS_DISTRO}-navigation2 \
+  ros-${ROS_DISTRO}-rviz2 \
+  ros-${ROS_DISTRO}-tf2-ros \
+  ros-${ROS_DISTRO}-urdfdom \
+  ros-${ROS_DISTRO}-vision-msgs \
+  ros-${ROS_DISTRO}-cyclonedds \
+  ros-${ROS_DISTRO}-rmw-cyclonedds-cpp \
+  ros-${ROS_DISTRO}-slam-toolbox \
+  ros-${ROS_DISTRO}-nav2-bringup \
+  ros-${ROS_DISTRO}-pointcloud-to-laserscan \
+  ros-${ROS_DISTRO}-teleop-twist-keyboard \
+  ros-${ROS_DISTRO}-topic-tools \
+  python3-colcon-common-extensions \
+  && rm -rf /var/lib/apt/lists/*
+
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+
+# Clone and register all repositories
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
+  \
+  ############################################################### \
+  # Clone o3de \
+  ############################################################### \
+  \
+  && git clone --single-branch -b $O3DE_BRANCH $O3DE_REPO $O3DE_ROOT \
+  && git -C $O3DE_ROOT lfs install \
+  && git -C $O3DE_ROOT lfs pull \
+  && git -C $O3DE_ROOT reset --hard $O3DE_COMMIT \
+  \
+  ############################################################### \
+  # Clone o3de-extras   \
+  ############################################################### \
+  && git clone --single-branch -b $O3DE_EXTRAS_BRANCH $O3DE_EXTRAS_REPO $O3DE_EXTRAS_ROOT \
+  && git -C $O3DE_EXTRAS_ROOT lfs install \
+  && git -C $O3DE_EXTRAS_ROOT lfs pull \
+  && git -C $O3DE_EXTRAS_ROOT reset --hard $O3DE_EXTRAS_COMMIT \
+  \
+  ############################################################### \
+  # Get the O3DE python and register the gem paths and projects \
+  ############################################################### \
+  && $O3DE_ROOT/python/get_python.sh \
+  && $O3DE_ROOT/scripts/o3de.sh register -ep $O3DE_ROOT \
+  && $O3DE_ROOT/scripts/o3de.sh register -agp $O3DE_EXTRAS_ROOT/Gems/
+  
+
+# Create the project
+RUN $O3DE_ROOT/scripts/o3de.sh create-project --project-path $PROJECT_DEMO_ROOT --template-path $O3DE_EXTRAS_ROOT/Templates/Ros2ProjectTemplate/
+
+# Build the projects
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
+  \
+  ############################################################### \
+  # Build the Editor, Tools, and clients
+  ############################################################### \
+  && cd $PROJECT_DEMO_ROOT cmake -B build/linux_mono -S . -G "Ninja Multi-Config"  -DLY_MONOLITHIC_GAME=1 cmake --build build/linux_mono --target install --config release
+
