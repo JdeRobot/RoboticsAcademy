@@ -22,6 +22,7 @@ Occupancy_grid:
     title: "Occupancy Grid"
 
 youtubeId1: obHhJ-_Y96c
+youtubeId2: 8pDsqMVAsv0
 ---
 
 ## Goal
@@ -30,39 +31,39 @@ The goal of this exercise is to develop a navigation algorithm that allows a rob
 
 {% include gallery caption="Laser Mapping." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `import HAL` - to import the HAL library class. This class contains the functions that receives information from the sensors or to work with the actuators.
+* `import HAL` - to import the HAL library class. This class contains the functions that receive information from the sensors or work with the actuators.
 * `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getPose3d().x` - to get position x of the robot
-* `HAL.getPose3d().y` - to get position y of the robot
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
-* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise)
-* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise)
-* `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise)
-* `HAL.getOdom2().x` - to get the approximated X coordinate of the robot (with more noise than getOdom)
-* `HAL.getOdom2().y` - to get the approximated Y coordinate of the robot (with more noise than getOdom)
-* `HAL.getOdom2().yaw` - to get the approximated orientation position of the robot (with more noise than getOdom)
-* `HAL.getOdom3().x` - to get the approximated X coordinate of the robot (with even more noise than getOdom)
-* `HAL.getOdom3().y` - to get the approximated Y coordinate of the robot (with even more noise than getOdom)
-* `HAL.getOdom3().yaw` - to get the approximated orientation position of the robot (with even more noise than getOdom)
-* `HAL.motors.sendW()` - to set the angular velocity
-* `HAL.motors.sendV()` - to set the linear velocity
-* `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values
+* `HAL.getPose3d().x` - to get position x of the robot.
+* `HAL.getPose3d().y` - to get position y of the robot.
+* `HAL.getPose3d().yaw` - to get the orientation of the robot.
+* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
+* `HAL.getOdom().y` - to get the approximated Y coordinate of the robot (with noise).
+* `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise).
+* `HAL.getOdom2().x` - to get the approximated X coordinate of the robot (with more noise than getOdom).
+* `HAL.getOdom2().y` - to get the approximated Y coordinate of the robot (with more noise than getOdom).
+* `HAL.getOdom2().yaw` - to get the approximated orientation position of the robot (with more noise than getOdom).
+* `HAL.getOdom3().x` - to get the approximated X coordinate of the robot (with even more noise than getOdom).
+* `HAL.getOdom3().y` - to get the approximated Y coordinate of the robot (with even more noise than getOdom).
+* `HAL.getOdom3().yaw` - to get the approximated orientation position of the robot (with even more noise than getOdom).
+* `HAL.setW()` - to set the angular velocity.
+* `HAL.setV()` - to set the linear velocity.
+* `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
 * `GUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
 * `GUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
 ## Theory
-Implementation of laser mapping for a vacuum is the basic requirement for this exercise. First, lets see how mapping with known possitions works.
+Implementation of laser mapping for a vacuum is the basic requirement for this exercise. First, let's see how mapping with known possitions works.
 
 ### Mapping with known possitions
 Coverage Path Planning is an important area of research in Path Planning for robotics, which involves finding a path that passes through every reachable position in its environment. In this exercise, We are using a very basic coverage algorithm called Random Exploration.
 
 ## Analyzing Coverage Algorithms
-Mapping with known positions assumes that the current position of the robot is known. This technique consists of converting the distance measurements of the different laser beams into Cartesian coordinates relative to the robot. The distance of the beams reflects the existence of an obstacle; therefore, these Cartesian coordinates are inserted reflecting obstacles in an occupation grid with respect to the current position of the robot.
-This technique is not entirely real because in most cases, the position of the robot is unknown. Therefore, other techniques such as SLAM are used.
+Mapping with known positions assumes that the current position of the robot is known. This technique consists of converting the distance measurements of the different laser beams into Cartesian coordinates relative to the robot. The distance mesured by the beam can reflect the existence of an obstacle; therefore, these Cartesian coordinates are inserted reflecting obstacles in an occupation grid relative to the current position of the robot.
+This technique is not entirely real because in most cases, the position of the robot is unknown. Therefore, other techniques such as SLAM are used in real life.
 
 ### Occupancy grid
 An occupation grid is a discretization of the robot's environment in cells. This discretization will be given by the size of the world in which the robot is located. With an occupation grid, a matrix is handled whose cells will contain a probability value, which indicates the certainty that in that position there is an obstacle (1), there is free space (0), or it has not been explored for the moment (gray space).
@@ -74,6 +75,10 @@ On the other hand, the basic problem with this type of map is the large amount o
 {% include gallery id="Occupancy_grid" caption="An example of a map obtained with the Mapping technique with known positions." %}
 
 ## Videos
+
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
+*This is a demostrative solution on unibotics.org*
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 

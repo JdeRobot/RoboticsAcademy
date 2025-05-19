@@ -31,12 +31,13 @@ exampletag:
     title: "April Tag"
 
 youtubeId1: PtdqHpICMy0
+youtubeId2: NWrtngl1yng
 ---
 
 
 ## Goal
 
-The goal of this exercise is to estimate the position and orientation (pose) of a robot in a 2D space by detecting and analyzing visual markers, specifically AprilTags. This process involves using computer vision to identify the tags in the robot's environment and mathematical methods to derive its relative pose with respect to the detected tags.
+The goal of this exercise is to estimate the position and orientation (pose) of a robot in a 2D space by detecting and analyzing visual markers, specifically AprilTags. This process involves using computer vision to identify the tags in the robot's environment and mathematical methods to derive its relative pose to the detected tags.
 
 The green robot represents the real position.
 The blue robot represents the position from the odometry (with noise).
@@ -44,21 +45,20 @@ The red robot represents the user estimated position.
 
 {% include gallery caption="Gallery" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
+* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receive information from the webcam.
 * `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getImage()` - to get the image
-* `GUI.showImage()` - allows you to view a debug image or with relevant information
-* `GUI.showEstimatedPose((x, y, yaw))` - allows you to view your estimate pose in the map
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-
-* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise)
-* `HAL.getOdom().y` - to get the approximated XY coordinate of the robot (with noise)
-* `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise)
+* `HAL.getImage()` - to get the image.
+* `GUI.showImage()` - allows you to view an image with relevant information that can be used for debugging.
+* `GUI.showEstimatedPose((x, y, yaw))` - allows you to view your estimated position in the map.
+* `HAL.setV()` - to set the linear speed.
+* `HAL.setW()` - to set the angular velocity.
+* `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
+* `HAL.getOdom().y` - to get the approximated XY coordinate of the robot (with noise).
+* `HAL.getOdom().yaw` - to get the approximated orientation position of the robot (with noise).
 
 ### Load tags position
 
