@@ -11,7 +11,7 @@ header:
 excerpt: 
   A practical and fun way of learning Robotics and Computer Vision
   
-feature_row:
+feature_row_old:
   - image_path: /assets/images/cover/cover_column_1.png
     alt: "Exercises"
     title: "Exercises"
