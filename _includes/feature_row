@@ -12,6 +12,7 @@
   border-style: solid;
   display: inline-block;
   overflow: hidden;
+  aspect-ratio: 9/10;
 }
 
 #exercise_card_testing {
@@ -21,6 +22,7 @@
   border-style: solid;
   display: inline-block;
   overflow: hidden;
+  aspect-ratio: 9/10;
 }
 
 #exercise_card_prototype {
@@ -30,6 +32,7 @@
   border-style: solid;
   display: inline-block;
   overflow: hidden;
+  aspect-ratio: 9/10;
 }
 
 #exercise_card_idea {
@@ -39,6 +42,7 @@
   border-style: solid;
   display: inline-block;
   overflow: hidden;
+  aspect-ratio: 9/10;
 }
 
 #exercise_card_simple {
@@ -56,6 +60,63 @@
 #card_image {
   background-color: black;
   border-radius: 0px;
+  flex-grow: 1;
+  height: auto; 
+}
+
+.exercise-item {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.exercise-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: spacebetween;
+    background-color: black;
+    border-radius: 20px;
+    border: 5px solid;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 9/10;
+}
+
+.exercise-card-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.exercise-info-container {
+    width: 100%;
+    height: 15%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.68);
+    animation: position;
+    transition: height 0.8s ease;
+    bottom: 0;
+    padding: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    & #exercise-info,
+    .exercise-tag-list {
+        opacity: 0%;
+        transition: opacity 1s ease;
+    }
+
+    &:hover {
+        height: 100%;
+
+        & #exercise-info,
+        .exercise-tag-list {
+            opacity: 100%;
+        }
+    }
 }
 </style>
 
@@ -69,8 +130,12 @@
       {% capture f_url %}{{ f.url | relative_url }}{% endcapture %}
     {% endif %}
 
-    <div class="feature__item{% if include.type %}--{{ include.type }}{% endif %}" id="exercise_card_{% if f.status == "running" %}running{% elsif f.status == "testing" %}testing{% elsif f.status == "prototype" %}prototype{% elsif f.status == "idea" %}idea{% else %}simple{% endif %}">
-      <div class="archive__item">
+    <div
+      class="exercise-card"
+      style='border-color: {% if f.status == "running" %}green{% elsif f.status == "prototype" %}orange{% else %}red{% endif %};'
+      href="{{ f_url }}"
+    >
+      <div class="exercise-item">
         {% if f.image_path %}
           <div class="archive__item-teaser" id="card_image">
             <img src=
@@ -80,31 +145,19 @@
                 "{{ f.image_path | relative_url }}"
               {% endif %}
             alt="{% if f.alt %}{{ f.alt }}{% endif %}">
-            {% if f.image_caption %}
-              <span class="archive__item-caption">{{ f.image_caption | markdownify | remove: "<p>" | remove: "</p>" }}</span>
-            {% endif %}
           </div>
         {% endif %}
-
-        <hr id="inner_card_separator">
-
-        <div class="archive__item-body">
+        <div class="exercise-info-container">
           {% if f.title %}
-            <h2 class="archive__item-title">{{ f.title }}</h2>
+            <h6 class="archive__item-title" style="align-self: center;pointer-events: none;word-break: break-all; color: white;">
+              {{ f.title }}
+            </h6>
           {% endif %}
 
           {% if f.excerpt %}
-            <div class="archive__item-excerpt">
+            <h7 class="archive__item-excerpt" id="exercise-info" style="pointer-events: none; color: white;">
               {{ f.excerpt | markdownify }}
-            </div>
-          {% endif %}
-
-          
-
-          {% if f.url %}
-            <p>
-              <a href="{{ f_url }}" class="btn {{ f.btn_class }}" style="background-color: #9E1C00">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>              
-            </p>
+            </h7>
           {% endif %}
         </div>
       </div>
