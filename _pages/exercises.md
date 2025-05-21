@@ -9,7 +9,7 @@ classes: wide
 
 
 feature_row:
-  - image_path: /assets/images/exercises/follow_line/formula1_teaser.png
+  - image_path: /assets/images/exercises/follow_line/follow_line_teaser.png
     alt: "Follow Line Formula1"
     title: "Follow Line"
     excerpt: "Complete a lap following the line painted on the racing circuit."
@@ -42,7 +42,7 @@ feature_row:
     status: "prototype"
     order: 2;
 
-  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
     alt: "Basic Vacuum Cleaner"
     title: "Basic Vacuum Cleaner"
     excerpt: "Navigation algorithm for an autonomous vacuum."
@@ -53,7 +53,7 @@ feature_row:
     status: "running"
     order: 0;
 
-  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner_loc_teaser.png
     alt: "Localized Vacuum Cleaner"
     title: "Localized Vacuum Cleaner"
     excerpt: "Foraging algorithm for an autonomous vacuum with good localization."
@@ -87,7 +87,7 @@ feature_row:
     status: "running"
     order: 0;
 
-  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
+  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.png
     alt: "Follow Road"
     title: "Follow Road"
     excerpt: "Follow a road through color filter segmentation."
@@ -120,7 +120,7 @@ feature_row:
     status: "prototype"
     order: 2;
 
-  - image_path: /assets/images/exercises/marker_based_visual_loc/marker_teaser.png
+  - image_path: /assets/images/exercises/marker_based_visual_loc/marker_visual_loc_teaser.png
     alt: "Marker Based Visual Loc"
     title: "Marker Based Visual Loc"
     excerpt: "Visual localization using April-tags."

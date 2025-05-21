@@ -197,6 +197,10 @@ You may find interesting the following resources:
 
 ## Videos
 
+{% include youtubePlayer.html id=page.youtubeId2 %}
+
+*This is a demostrative solution on unibotics.org*
+
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
 ## Contributors
