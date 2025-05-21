@@ -123,7 +123,3 @@ export default function SpecificO3DEDemo() {
     </div>
   );
 }
-
-SpecificO3DEDemo.propTypes = {
-  circuit: PropTypes.string,
-};

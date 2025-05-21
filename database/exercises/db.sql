@@ -101,6 +101,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, templat
 15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/basic_computer_vision/python_template/
 16	follow_road	Follow Road	Follow Road exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/follow_road/python_template/
 17	pick_place	Pick and Place	Pick and Place exercise	{"tags": "ROS2"}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/pick_place/python_template/
+18	o3de_demo	o3de Demo 	o3de Demo exercise	{"tags": "ROS2"}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/o3de_demo/python_template/
 \.
 -- 16	rescue_people_classic	Rescue People Old	Rescue People exercise With Gazebo Classic	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people_classic/python_template/
 
@@ -142,6 +143,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 30	16	32
 31	14	33
 32	17	34
+33	18	35
 \.
 -- 30  16  3
 

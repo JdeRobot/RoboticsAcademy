@@ -14,14 +14,13 @@
             {% react_component components/containers/MaterialBox id="content" %}
                 {% react_component components/containers/MaterialBox id="content-exercise" %}
                     {% react_component components/containers/ExerciseControl efficacy %}{% end_react_component %}
-                    {% react_component uniboticsExtra/assets/exercises/o3de_demo_manager/GridO3DEDemo %}{% end_react_component %}
                     {% react_component components/containers/FlexContainer row %}
                     {% react_component components/containers/FlexContainer console %} 
                     {% react_component components/editors/EditorRobot %}{% end_react_component %}
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%}
-                            {% react_component uniboticsExtra/assets/exercises/o3de_demo_manager/SpecificO3DEDemo %}{% end_react_component %}
+                            {% react_component exercise/o3de_demo/SpecificO3DEDemo %}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
