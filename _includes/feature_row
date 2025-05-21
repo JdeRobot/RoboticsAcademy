@@ -106,11 +106,10 @@ assign feature_row = page.feature_row %} {% endif %}
   {% assign sorted = feature_row | sort: 'order' %} {% for f in sorted %} {% if
   f.url contains "://" %} {% capture f_url %}{{ f.url }}{% endcapture %} {% else
   %} {% capture f_url %}{{ f.url | relative_url }}{% endcapture %} {% endif %}
-
-  <div
+  <a
     class="exercise-card"
-    style='border-color: {% if f.status == "running" %}green{% elsif f.status == "prototype" %}orange{% else %}red{% endif %};'
     href="{{ f_url }}"
+    style='border-color: {% if f.status == "running" %}green{% elsif f.status == "prototype" %}orange{% else %}red{% endif %};'
   >
     <div class="exercise-item">
       {% if f.image_path %} <img src= {% if f.image_path contains "://" %} "{{
@@ -129,6 +128,6 @@ assign feature_row = page.feature_row %} {% endif %}
         {% endif %}
       </div>
     </div>
-  </div>
+  </a>
   {% endfor %}
 </div>
