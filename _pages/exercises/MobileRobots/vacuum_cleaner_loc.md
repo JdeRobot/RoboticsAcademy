@@ -19,28 +19,29 @@ gallery:
 
 youtubeId1: I967nzeSSZg
 youtubeId2: mT5PkgtDLDg
+youtubeId3: N5kQK9kWhIE
 ---
 
 ## Goal
 
-The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum cleaner by making use of the location of the robot. The robot is equipped with a map and knows it's current location in it. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
+The objective of this exercise is to implement the logic of a navigation algorithm for an autonomous vacuum cleaner by making use of the location of the robot. The robot is equipped with a map and knows it's current location in it. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
+* `HAL.setV()` - to set the linear speed.
+* `HAL.setW()` - to set the angular velocity.
 
-* `HAL.getPose3d().x` - to get the X coordinate of the robot
-* `HAL.getPose3d().y` - to get the Y coordinate of the robot
-* `HAL.getPose3d().yaw` - to get the orientation of the robot
+* `HAL.getPose3d().x` - to get the X coordinate of the robot.
+* `HAL.getPose3d().y` - to get the Y coordinate of the robot.
+* `HAL.getPose3d().yaw` - to get the orientation of the robot.
 * `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
 * `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
@@ -72,7 +73,7 @@ import numpy as np
 
 def parse_laser_data(laser_data):
     """ Parses the LaserData object and returns a tuple with two lists:
-        1. List of  polar coordinates, with (distance, angle) tuples,
+        1. List of polar coordinates, with (distance, angle) tuples,
            where the angle is zero at the front of the robot and increases to the left.
         2. List of cartesian (x, y) coordinates, following the ref. system noted below.
 
@@ -119,14 +120,14 @@ if len(laser_data.values) > 0:
 As the problem may have multiple solutions, only the theory behind the reference solution has been covered. 
 
 ### Conversion From 3D to 2D
-**Robot Localization** is the process of determining, where robot is located with respect to it's environment. Localization is a an important resource to us in solving this exercise. Localization can be accomplished in any way possible, be it Monte Carlo, Particle Filter, or even Offline Algorithms. Since, we have a map available to us, offline localization is the best way to move forward. Offline Localization will involve converting from a 3D environment scan to a 2D map. There are again numerous ways to do it, but the technique used in exercise is using **transformation matrices**.
+**Robot Localization** is the process of determining, where the robot is located regarding it's environment. Localization is an important resource to us in solving this exercise. Localization can be accomplished in any way possible, be it Monte Carlo, Particle Filter, or even Offline Algorithms. Since we have a map available to us, offline localization is the best way to move forward. Offline Localization will involve converting from a 3D environment scan to a 2D map. There are again numerous ways to do it, but the technique used in exercise is using **transformation matrices**.
 
 #### Transformation Matrices
 In simple terms, transformation is an invertible function that maps a set _X_ to itself. Geometrically, it moves a point to some other location in some space. Algebraically, all the transformations can be mapped using matrix representation. In order to apply transformation on a point, we multiply the point with the specific transformation matrix to get the new location. Some important transformations are:
 
 - **Translation**
 
-Translation of Euclidean Space(2D or 3D world) moves every point by a fixed distance in the same direction
+Translation of Euclidean Space(2D or 3D world) moves every point by a fixed distance in the same direction.
 
 - **Rotation**
 
@@ -152,17 +153,17 @@ In our case we need to map a 3D Point in gazebo, to a 2D matrix map of our house
 
 *Coordinate to Pixel Conversion Equation*
 
-In order to carry out the inverse operation of 3D to 2D, we can simply multiply, the pixel vector with the inverse of the transformation matrix to get the gazebo vector. The inverse of the matrix exists because the **mapping is invertible** and we **do not care about the z coordinate of the environment**, implying that each point in gazebo corresponds to a single point in the map.
+In order to carry out the inverse operation of 3D to 2D, we can simply multiply the pixel vector by the inverse of the transformation matrix to get the gazebo vector. The inverse of the matrix exists because the **mapping is invertible** and we **do not care about the z coordinate of the environment**, implying that each point in gazebo corresponds to a single point in the map.
 
 ### Coverage and Decomposition
-After the robot is localized in it's environment, we can employ decomposition techniques in our algorithm, to deal with the actual coverage of the surroundings. There are lot of [decomposition techniques](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf) available for our use. The Decomposition Algorithm, decomposes the map into separate segments, which our robot can cover one by one. Decomposition can be directly related to **Graph Theory**, where the segments are taken as nodes and the edges connecting nodes depict that the adjacent segments share a common boundary. The robot can path plan to the nearest node and then start the sweeping again! Most of the details regarding decomposition would be implementation
+After the robot is localized in it's environment, we can employ decomposition techniques in our algorithm, to deal with the actual coverage of the surroundings. There are lot of [decomposition techniques](https://www.cs.cmu.edu/~motionplanning/lecture/Chap6-CellDecomp_howie.pdf) available for our use. The Decomposition Algorithm, decomposes the map into separate segments, which our robot can cover one by one. Decomposition can be directly related to **Graph Theory**, where the segments are taken as nodes and the edges connecting nodes depict that the adjacent segments share a common boundary. The robot can path plan to the nearest node and then start sweeping again! Most of the details regarding decomposition would be implementation.
 
 ![Decomposition and Graph Theory]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/adj_graph.png)
 
 *Adjacency Graph*
 
 ### Travelling between segments
-Once, a certain segment has been swept. In order to reach the next segment(preferably nearest one) there are again a multitude of [path planning algorithms](http://correll.cs.colorado.edu/?p=965). The algorithm used in the reference solution is the **Visibility Algorithm**. As the name suggests, visibility of the target is the basic building block. So, let's define visibility first off all!
+Once a certain segment has been swept. In order to reach the next segment (preferably nearest one) there are again a multitude of [path planning algorithms](http://correll.cs.colorado.edu/?p=965). The algorithm used in the reference solution is the **Visibility Algorithm**. As the name suggests, visibility of the target is the basic building block. So, let's define visibility first off all!
 
 If a straight line exists between two points, and the line does not pass over obstacles, the two points are said to be visible to each other. Mathematically speaking, the two points under consideration must satisfy a common equation.
 
@@ -176,7 +177,7 @@ Starting from the destination cell, the robot can map it's path one cell at a ti
 
 *Visibility Error*
 
-But, sometimes due to close proximity to corner, the robot may collide with it. To avoid the occurrence of any such event, we may also consider dilation techniques, since the map used is a binary image. **Erosion** is a **Morphology Function** that erodes away the boundaries of foreground object(white is the object in foreground). Refer to this [link](https://homepages.inf.ed.ac.uk/rbf/HIPR2/erode.htm) for more information on erosion.
+But, sometimes due to close proximity to corner, the robot may collide with it. To avoid the occurrence of any such event, we may also consider dilation techniques, since the map used is a binary image. **Erosion** is a **Morphology Function** that erodes away the boundaries of foreground object (white is the object in foreground). Refer to this [link](https://homepages.inf.ed.ac.uk/rbf/HIPR2/erode.htm) for more information on erosion.
 
 ![Morphological Operations](https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTzn6m8Kkpb9OUy-mv70GpKRmsd3hySZBJZH8n5y-OLO4jBq9mW)
 
@@ -186,7 +187,7 @@ But, sometimes due to close proximity to corner, the robot may collide with it. 
 Simple hints provided to help you solve the vacuum_cleaner_loc exercise. Please note that the **full solution has not been provided.** Also, the hints are more related to the reference solution, since multiple solutions are possible for this exercise.
 
 ### Grid Representation
-Due to the involvement of Localization in this exercise, we are given a map of the surroundings of the robot, which it needs to cover. The map is present in the directory path `resources/images/`. But since, we are using path planning and decomposition algorithms. These are very easy to implement on a grid like structure. Although any data structure, representing adjacency graph would suffice. See the [illustrations](#Illustrations) for what happens without using any data structure(a brute force approach). To implement grids on images, we need to apply basic image processing, which can be accomplished easily using the `opencv` library.
+Due to the involvement of Localization in this exercise, we are given a map of the surroundings of the robot, which it needs to cover. The map is present in the directory path `resources/images/`. But since we are using path planning and decomposition algorithms. These are very easy to implement on a grid like structure. Although any data structure, representing adjacency graph would suffice. See the [illustrations](#Illustrations) for what happens without using any data structure(a brute force approach). To implement grids on images, we need to apply basic image processing, which can be accomplished easily using the `opencv` library.
 
 The first step would be to apply erosion function on the map image. This is done in order to ensure some degree of distance between our robot and obstacle during runtime.
 
@@ -198,9 +199,9 @@ Once we get **specific positions** on our map. Using the dimensions of our vacuu
 Taking the map as a grayscale image, we can apply **color coding** to the map as well. It is convenient to separate **Obstacles**, **Virtual Obstacles**, **Return Points** and **Critical Points**
 
 In the context of this exercise,
-- **Obstacles**: The obstacles in our map that our robot cannot go over
+- **Obstacles**: The obstacles in our map that our robot cannot go over.
 - **Virtual Obstacles**: The grid cell that our robot has covered.
-- **Return Points**: Starting points of the decomposed cells
+- **Return Points**: Starting points of the decomposed cells.
 - **Critical Points**: The points where our robot has stuck between obstacles and virtual obstacles. It is from critical points, that our robot has to start moving towards the next return point.
 
 ### Checking for Points
@@ -233,6 +234,11 @@ As a final note, quite a lot of tips and tricks regarding implementation have be
 ![PID Based]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/pid.gif)
 
 *PID Based(without grid) Approach*
+
+### Demonstrative video of the solution
+
+{% include youtubePlayer.html id=page.youtubeId3 %}
+
 
 ## Contributors
 
