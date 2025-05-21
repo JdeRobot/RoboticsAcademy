@@ -336,19 +336,21 @@ WORKDIR $WORKSPACE
 
 # O3DE Variables
 ARG O3DE_REPO=https://github.com/o3de/o3de.git
-ARG O3DE_BRANCH=development
+ARG O3DE_BRANCH=main
 ARG O3DE_COMMIT=HEAD
 ENV O3DE_ROOT=$WORKSPACE/o3de
 
 # O3DE Extras Variables
 ARG O3DE_EXTRAS_REPO=https://github.com/o3de/o3de-extras.git
-ARG O3DE_EXTRAS_BRANCH=development
+ARG O3DE_EXTRAS_BRANCH=main
 ARG O3DE_EXTRAS_COMMIT=HEAD
 ENV O3DE_EXTRAS_ROOT=$WORKSPACE/o3de-extras
 
 # Project variables
-ENV PROJECT_NAME=Ros2
+ENV PROJECT_NAME=ROS2O3DE
 ENV PROJECT_DEMO_ROOT=$WORKSPACE/$PROJECT_NAME
+
+ENV LANG=en_US.UTF-8
 
 # Install the required ubuntu packages
 RUN apt-get update \
@@ -419,7 +421,6 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
   && $O3DE_ROOT/python/get_python.sh \
   && $O3DE_ROOT/scripts/o3de.sh register -ep $O3DE_ROOT \
   && $O3DE_ROOT/scripts/o3de.sh register -agp $O3DE_EXTRAS_ROOT/Gems/
-  
 
 # Create the project
 RUN $O3DE_ROOT/scripts/o3de.sh create-project --project-path $PROJECT_DEMO_ROOT --template-path $O3DE_EXTRAS_ROOT/Templates/Ros2ProjectTemplate/
@@ -430,5 +431,33 @@ RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
   ############################################################### \
   # Build the Editor, Tools, and clients
   ############################################################### \
-  && cd $PROJECT_DEMO_ROOT cmake -B build/linux_mono -S . -G "Ninja Multi-Config"  -DLY_MONOLITHIC_GAME=1 cmake --build build/linux_mono --target install --config release
+  && cmake -B $PROJECT_DEMO_ROOT/build/linux -G "Ninja Multi-Config" \
+  -S $PROJECT_DEMO_ROOT \
+  -DLY_DISABLE_TEST_MODULES=ON \
+  -DLY_STRIP_DEBUG_SYMBOLS=ON
 
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh \
+  \
+  && cmake --build $PROJECT_DEMO_ROOT/build/linux --config profile \
+  --target $PROJECT_NAME.GameLauncher Editor $PROJECT_NAME.Assets \
+  \
+  ############################################################### \
+  # Remove build artifacts
+  ############################################################### \
+  && rm -rf ~/.o3de/3rdParty/ \
+  && rm -rf $O3DE_ROOT/.git \
+  && rm -rf $O3DE_ROOT/AutomatedTesting \
+  && rm -rf $O3DE_ROOT/python/downloaded_packages \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/Azcg/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/CMake \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/CMakeFiles/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/External/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/Testing/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/_deps/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/cmake \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/lib/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/o3de/ \
+  && rm -rf $PROJECT_DEMO_ROOT/build/linux/packages/
+
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
