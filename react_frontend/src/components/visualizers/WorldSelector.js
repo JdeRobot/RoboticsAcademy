@@ -45,10 +45,19 @@ export default function WorldSelector(props) {
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Launching Universe"
     );
-    await window.RoboticsExerciseComponents.commsManager.launchWorld({
-      world: config.world,
-      robot: config.robot,
-    });
+
+    if (config.zip) {
+      await window.RoboticsExerciseComponents.commsManager.launchWorld({
+        world: config.world,
+        robot: config.robot,
+        zip: config.zip
+      });
+    } else  {
+      await window.RoboticsExerciseComponents.commsManager.launchWorld({
+        world: config.world,
+        robot: config.robot,
+      });
+    }
     await window.RoboticsExerciseComponents.commsManager.prepareVisualization(
       {type: config.visualization, file: config.visualization_config_path}
     );
