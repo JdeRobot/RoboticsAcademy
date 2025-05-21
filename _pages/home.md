@@ -11,7 +11,7 @@ header:
 excerpt: 
   A practical and fun way of learning Robotics and Computer Vision
   
-feature_row_old:
+basic_row:
   - image_path: /assets/images/cover/cover_column_1.png
     alt: "Exercises"
     title: "Exercises"
@@ -65,7 +65,7 @@ Each exercise is composed of (a) Gazebo configuration files, (b) a web template 
 
 For execution the student launches a Docker image containing a Gazebo simulation and connects to a Django webserver to insert his code.
 
-{% include feature_row %}
+{% include basic_row %}
 
 {% include video id="Y6CoOK9WtDQ" provider="youtube" %}
 
