@@ -13,9 +13,6 @@ feature_row:
     title: "Drone Cat and Mouse"
     excerpt: "Game of cat and mouse with two quadrotors."
     url: "/exercises/Drones/drone_cat_mouse"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -25,9 +22,6 @@ feature_row:
     title: "Follow Turtlebot"
     excerpt: "Follow a turtlebot on the ground."
     url: "/exercises/Drones/follow_turtlebot"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -37,9 +31,6 @@ feature_row:
     title: "Follow Road"
     excerpt: "Follow a road through color filter segmentation."
     url: "/exercises/Drones/follow_road"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -49,9 +40,6 @@ feature_row:
     title: "Labyrinth Escape"
     excerpt: "Escape from a labyrinth through visual signals."
     url: "/exercises/Drones/labyrinth_escape"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -61,9 +49,6 @@ feature_row:
     title: "Position Control"
     excerpt: "Local navigation algorithm through the use of a PID controller."
     url: "/exercises/Drones/position_control"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -73,9 +58,6 @@ feature_row:
     title: "Rescue People"
     excerpt: "Recognition of faces of lost people and save their locations."
     url: "/exercises/Drones/rescue_people"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -85,9 +67,6 @@ feature_row:
     title: "Drone Gymkhana"
     excerpt: "Learn to control a drone and complete the gymkhana!"
     url: "/exercises/Drones/drone_gymkhana"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -97,9 +76,6 @@ feature_row:
     title: "Drone Hangar"
     excerpt: "Escape from a hangar filled with moving obstacles."
     url: "/exercises/Drones/drone_hangar"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -109,9 +85,6 @@ feature_row:
     title: "Visual Lander"
     excerpt: "Visualization of a beacon and land on it."
     url: "/exercises/Drones/visual_lander"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -121,9 +94,6 @@ feature_row:
     title: "Package Delivery"
     excerpt: "Deliver a package from the warehouse using a drone."
     url: "/exercises/Drones/package_delivery"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -133,9 +103,6 @@ feature_row:
     title: "Power Tower Inspection"
     excerpt: "Perform inspection of the power towers, electrical wires, insulators (spring like object) using a drone."
     url: "/exercises/Drones/power_tower_inspection"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -145,9 +112,6 @@ feature_row:
     title: "Real Drone Tello Square"
     excerpt: "Draw a square with its flight and land back in the same place."
     url: "/exercises/Drones/drone_tello"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
     status: "prototype"
     order: 0;
     version: "v3.2"

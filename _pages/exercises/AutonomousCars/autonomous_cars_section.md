@@ -14,9 +14,6 @@ feature_row:
     title: "Follow Line Formula1"
     excerpt: "Following the line painted on the racing circuit"
     url: "/exercises/AutonomousCars/follow_line/"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -26,9 +23,6 @@ feature_row:
     title: "Obstacle avoidance"
     excerpt: "Virtual Force Field navigation algorithm using a F1 race car"
     url: "/exercises/AutonomousCars/obstacle_avoidance"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -38,9 +32,6 @@ feature_row:
     title: "Global Navigation of a TeleTaxi"
     excerpt: "Navigating a Tele Taxi autonomously"
     url: "/exercises/AutonomousCars/global_navigation"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -50,9 +41,6 @@ feature_row:
     title: "Road Junction"
     excerpt: "Automated vehicle must stop and pass once the road is clear"
     url: "/exercises/AutonomousCars/car_junction"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -62,9 +50,6 @@ feature_row:
     title: "Autoparking"
     excerpt: "Logic of a navigation algorithm for an automated vehicle"
     url: "/exercises/AutonomousCars/autoparking"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -74,9 +59,6 @@ feature_row:
     title: "Qualifying Formula1"
     excerpt: "Complete a lap to the Nürburgring circuit as fast as it can"
     url: "/exercises/AutonomousCars/qualifying_formula1"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "prototype"
     order: 2;
 
