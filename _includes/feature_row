@@ -1,77 +1,22 @@
-{% if include.id %}
-  {% assign feature_row = page[include.id] %}
-{% else %}
-  {% assign feature_row = page.feature_row %}
-{% endif %}
+{% if include.id %} {% assign feature_row = page[include.id] %} {% else %} {%
+assign feature_row = page.feature_row %} {% endif %}
 
 <style>
-#exercise_card_running {
-  background-color: #80d870;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-  aspect-ratio: 9/10;
-}
+  #card_image {
+    background-color: black;
+    border-radius: 0px;
+    flex-grow: 1;
+    height: auto;
+  }
 
-#exercise_card_testing {
-  background-color: #ffd256;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-  aspect-ratio: 9/10;
-}
+  .exercise-item {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-#exercise_card_prototype {
-  background-color: #ff9477;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-  aspect-ratio: 9/10;
-}
-
-#exercise_card_idea {
-  background-color: #dedede;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-  aspect-ratio: 9/10;
-}
-
-#exercise_card_simple {
-
-}
-
-#inner_card_separator {
-  width: 100%;
-  text-align: left;
-  margin-left: 0;
-  margin-top: 0px;
-  border-top: 4px solid black;
-}
-
-#card_image {
-  background-color: black;
-  border-radius: 0px;
-  flex-grow: 1;
-  height: auto; 
-}
-
-.exercise-item {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.exercise-card {
+  .exercise-card {
     display: flex;
     flex-direction: column;
     justify-content: spacebetween;
@@ -81,16 +26,45 @@
     position: relative;
     overflow: hidden;
     aspect-ratio: 9/10;
-}
+    width: 30%;
+  }
 
-.exercise-card-container {
+  .exercise-card-container {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
+  }
 
-.exercise-info-container {
+  .exercise-info-title {
+    align-self: center;
+    pointer-events: none;
+    word-break: break-word;
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    margin-bottom: 0.35em;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
+  #exercise-info {
+    align-self: center;
+    pointer-events: none;
+    word-break: break-word;
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    margin-bottom: 0.35em;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
+
+  .exercise-info-container {
     width: 100%;
     height: 15%;
     position: absolute;
@@ -103,64 +77,57 @@
     flex-direction: column;
     flex-grow: 1;
 
-    & #exercise-info,
-    .exercise-tag-list {
-        opacity: 0%;
-        transition: opacity 1s ease;
+    & #exercise-info {
+      opacity: 0%;
+      transition: opacity 1s ease;
     }
 
     &:hover {
-        height: 100%;
+      height: 100%;
 
-        & #exercise-info,
-        .exercise-tag-list {
-            opacity: 100%;
-        }
+      & #exercise-info {
+        opacity: 100%;
+      }
     }
-}
+  }
 </style>
 
-<div class="feature__wrapper" style="flex-wrap: wrap; position: relative; flex-direction: row; display: flex;">
-  {% assign sorted = feature_row | sort: 'order' %}
-  {% for f in sorted %}
+<div
+  class="feature__wrapper"
+  style="
+    flex-wrap: wrap;
+    position: relative;
+    flex-direction: row;
+    display: flex;
+    gap: 1rem;
+  "
+>
+  {% assign sorted = feature_row | sort: 'order' %} {% for f in sorted %} {% if
+  f.url contains "://" %} {% capture f_url %}{{ f.url }}{% endcapture %} {% else
+  %} {% capture f_url %}{{ f.url | relative_url }}{% endcapture %} {% endif %}
 
-    {% if f.url contains "://" %}
-      {% capture f_url %}{{ f.url }}{% endcapture %}
-    {% else %}
-      {% capture f_url %}{{ f.url | relative_url }}{% endcapture %}
-    {% endif %}
-
-    <div
-      class="exercise-card"
-      style='border-color: {% if f.status == "running" %}green{% elsif f.status == "prototype" %}orange{% else %}red{% endif %};'
-      href="{{ f_url }}"
-    >
-      <div class="exercise-item">
-        {% if f.image_path %}
-          <img src=
-            {% if f.image_path contains "://" %}
-              "{{ f.image_path }}"
-            {% else %}
-              "{{ f.image_path | relative_url }}"
-            {% endif %}
-          alt="{% if f.alt %}{{ f.alt }}{% endif %}"
-          id="card_image">
-        {% endif %}
-        <div class="exercise-info-container">
-          {% if f.title %}
-            <h6 class="archive__item-title" style="align-self: center;pointer-events: none;word-break: break-all; color: white;">
-              {{ f.title }}
-            </h6>
-          {% endif %}
-
-          {% if f.excerpt %}
-            <h7 class="archive__item-excerpt" id="exercise-info" style="pointer-events: none; color: white;">
-              {{ f.excerpt | markdownify }}
-            </h7>
-          {% endif %}
+  <div
+    class="exercise-card"
+    style='border-color: {% if f.status == "running" %}green{% elsif f.status == "prototype" %}orange{% else %}red{% endif %};'
+    href="{{ f_url }}"
+  >
+    <div class="exercise-item">
+      {% if f.image_path %} <img src= {% if f.image_path contains "://" %} "{{
+        f.image_path
+      }}" {% else %} "{{ f.image_path | relative_url }}" {% endif %} alt="{% if
+      f.alt %}{{ f.alt }}{% endif %}" id="card_image"> {% endif %}
+      <div class="exercise-info-container">
+        {% if f.title %}
+        <div class="exercise-info-title">
+          {{ f.title }}
         </div>
+        {% endif %} {% if f.excerpt %}
+        <div id="exercise-info">
+          {{ f.excerpt | markdownify }}
+        </div>
+        {% endif %}
       </div>
     </div>
+  </div>
   {% endfor %}
-
 </div>
