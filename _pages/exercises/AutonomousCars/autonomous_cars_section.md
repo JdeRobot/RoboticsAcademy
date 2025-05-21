@@ -9,7 +9,7 @@ classes: wide
 
 
 feature_row:
-  - image_path: /assets/images/exercises/follow_line/formula1_teaser.png
+  - image_path: /assets/images/exercises/follow_line/follow_line_teaser.png
     alt: "Follow Line Formula1"
     title: "Follow Line Formula1"
     excerpt: "Following the line painted on the racing circuit"

@@ -32,7 +32,7 @@ feature_row:
     order: 0;
     version: "v3.2"
 
-  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.jpg
+  - image_path: /assets/images/exercises/follow_road/follow_road_teaser.png
     alt: "Follow Road"
     title: "Follow Road"
     excerpt: "Follow a road through color filter segmentation."

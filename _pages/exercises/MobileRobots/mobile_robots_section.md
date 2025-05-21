@@ -9,7 +9,7 @@ classes: wide
 
 
 feature_row:
-  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
     alt: "Basic Vacuum Cleaner"
     title: "Basic Vacuum Cleaner"
     excerpt: "Navigation algorithm for an autonomous vacuum"
@@ -21,7 +21,7 @@ feature_row:
     order: 0;
     version: "v3.2"
 
-  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner_loc_teaser.png
     alt: "Localized Vacuum Cleaner"
     title: "Localized Vacuum Cleaner"
     excerpt: "Foraging algorithm for an autonomous vacuum with good localization"
