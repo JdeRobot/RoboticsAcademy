@@ -137,15 +137,14 @@
     >
       <div class="exercise-item">
         {% if f.image_path %}
-          <div class="archive__item-teaser" id="card_image">
-            <img src=
-              {% if f.image_path contains "://" %}
-                "{{ f.image_path }}"
-              {% else %}
-                "{{ f.image_path | relative_url }}"
-              {% endif %}
-            alt="{% if f.alt %}{{ f.alt }}{% endif %}">
-          </div>
+          <img src=
+            {% if f.image_path contains "://" %}
+              "{{ f.image_path }}"
+            {% else %}
+              "{{ f.image_path | relative_url }}"
+            {% endif %}
+          alt="{% if f.alt %}{{ f.alt }}{% endif %}"
+          id="card_image">
         {% endif %}
         <div class="exercise-info-container">
           {% if f.title %}
