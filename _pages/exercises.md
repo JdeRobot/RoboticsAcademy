@@ -241,7 +241,7 @@ feature_row:
     status: "prototype"
     order: 2;
 
-  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse1_teaser.png
+  - image_path: /assets/images/exercises/amazon_warehouse/amazon_warehouse_teaser.png
     alt: "Amazon Warehouse"
     title: "Amazon Warehouse"
     excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"

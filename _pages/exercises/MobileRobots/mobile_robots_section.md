@@ -112,7 +112,7 @@ feature_row:
     order: 0;
     version: "v1.0"
   
-  - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
+  - image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     alt: "Laser Mapping"
     title: "Laser Mapping"
     excerpt: "Navigation algorithm for an autonomous vacuum."

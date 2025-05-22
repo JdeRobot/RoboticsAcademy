@@ -32,7 +32,7 @@ feature_row:
     order: 0;
     version: "v3.2"
   
-  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
+  - image_path: /assets/images/exercises/color_filter/basic_computer_vision_teaser.png
     alt: "Basic Computer Vision"
     title: "Basic Computer Vision"
     excerpt: "Develop some basic exercises about computer vision"

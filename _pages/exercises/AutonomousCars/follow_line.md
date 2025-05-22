@@ -87,7 +87,7 @@ A system or set of devices, that manages, commands, directs or regulates the beh
 
 ### Types of Control System
 #### Open Loop Control System
-A control system in which the control action is completely independent of the output of the system. A manual control system is on Open Loop System.
+A control system in which the control action is completely independent of the output of the system. An Open Loop System is a manual control system.
 
 #### Closed Loop Control System
 A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
@@ -97,7 +97,7 @@ A control loop mechanism using feedback. A PID Controller continuously calculate
 
 - **Proportional**
 
-A Proportional Controller uses an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, is 0 if the error is 0.
+A Proportional Controller gives an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, is 0 if the error is 0.
 
 - **Integral**
 
@@ -119,7 +119,7 @@ It is a simple method of PID controller tuning. While the system or controller i
 
 - **Zeigler-Nichols method**
 
-Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are: continuous cycling method and damped oscillation method. The procedures for both methods are the same but their oscillation is different. Therefore, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased until system oscillates at a constant amplitude.
+Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are: continuous cycling method and damped oscillation method. The procedures for both methods are the same but their oscillation is different. Therefore, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased until the system oscillates at a constant amplitude.
 
 ### Real Life Example
 
