@@ -16,6 +16,7 @@ gallery:
 
 youtubeId1: c90hmfkZRNY
 youtubeId2: Xcy84DhVjrY
+youtubeId3: qwBQ1B-05xU
 ---
 
 ## Goal
@@ -25,21 +26,20 @@ The objective of this practice is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getBumperData().state` - To establish if the robot has crashed or not. Returns a 1 if the robot collides and a 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.
-* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
-* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
-* `HAL.getPose3d().yaw` - to get the orientation of the robot with
-  regarding the map
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed.
+* `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left.
+* `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
+* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate).
+* `HAL.getPose3d().yaw` - to get the orientation of the robot regarding the map.
 * `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
+* `HAL.setV()` - to set the linear speed.
+* `HAL.setW()` - to set the angular velocity.
 
 ```python
 print ('Execute')
@@ -101,7 +101,7 @@ if len(laser_data.values) > 0:
 
 ## Theory
 
-Implementation of navigation algorithms for an autonomous vacuum is the basic requirement for this exercise. The main objective is to cover the largest area of a house. First, let us understand what is Coverage Algorithms.
+Implementation of navigation algorithms for an autonomous vacuum is the basic requirement for this exercise. The main objective is to cover the largest area of a house. First, let us understand what are Coverage Algorithms.
 
 ### Coverage Algorithms
 
@@ -113,7 +113,7 @@ Coverage Path Planning is an important area of research in Path Planning for rob
 Coverage algorithms are divided into two categories.
 
 - **Offline coverage**
-use fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.
+Uses fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.
 
 - **Online Coverage**
 
@@ -152,7 +152,7 @@ This involves the plan to move from one small subregion to another. The coverage
 
 ### Supplements
 
-Usually, coverage algorithms generate a linear, piecewise path composed of straight lines and sharp turns. This path is difficult for other autonomous drones like Underwater Vehicles, Aerial Vehicles and some Ground Vehicles difficult to follow. Path Smoothening is applied to these paths to effectively implement the algorithm.
+Usually, coverage algorithms generate a linear, piecewise path composed of straight lines and sharp turns. This path is difficult to follow for other autonomous drones like Underwater Vehicles, Aerial Vehicles and some Ground Vehicles. Path Smoothening is applied to these paths to effectively implement the algorithm.
 
 ## Hints
 
@@ -166,13 +166,13 @@ The most important task is the generation of a random angle. There are 2 ways to
 
 - **Random Angle**: This method requires calculation. We generate a random angle and then turn towards it. Approximately an angular speed of 3 turns the robot by 90 degrees.
 
-Among both the methods, Random Duration would be a preferable one as the Random Angle requires precision, which requires PID to be achieved successfully.
+Among both methods, Random Duration would be preferable as the Random Angle requires precision, which requires PID to be achieved successfully.
 
 Also, in order to achieve better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```.
 
 ### Dash Movement
 
-Once the direction has been decided, we move in that direction. This is the simplest part, we have to send velocity command to the robot, until a collision is detected.
+Once the direction has been decided, we move in that direction. This is the simplest part, we have to send a velocity changing command to the robot, and wait until a collision is detected.
 
 A word of caution though, whenever we have a change of state, we have to give a sleep duration to the robot to give it time to reset the commands given to it. [Illustrations](#Illustrations) section describes a visual representation.
 
@@ -202,6 +202,9 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 *Effect of increasing $v$ to generate spiral*
 
+### Demonstrative video of the solution
+ 
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 ## Videos
 
