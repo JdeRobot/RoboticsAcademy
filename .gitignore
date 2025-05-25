@@ -94,6 +94,7 @@ ENV/
 docs/.jekyll-cache/
 
 .jekyll-cache
+.sass-cache
 _site
 
 # IDEs
@@ -104,6 +105,7 @@ _site
 
 # react stuff
 node_modules/
+checksum.txt
 
 lerna-debug.log
 npm-debug.log*
@@ -120,3 +122,6 @@ src
 
 # Intermediate file created in root during development
 docker-compose.yaml
+
+# Zips
+*.zip

@@ -20,9 +20,9 @@ The Dockerfile required to build the RADI pre-base image is hosted on the Roboti
 
 3. **Build the image:**
 
-    This step is critical as it dictates the generation of the pre-base Docker image that's compatible with either ROS1 or ROS2. This is contingent upon whether changes have been integrated into the main branches of the different versions.
+    This step is critical as it dictates the generation of the pre-base Docker image that's compatible with either ROS2. This is contingent upon whether changes have been integrated into the main branches of the different versions.
 
-    If you're working from the main branches of ROS1 (`noteic-devel`) or ROS2 (`humble-devel`), simply run the Dockerfile from the corresponding branch. This will automatically generate the appropriate prebase image.
+    If you're working from the main branches of ROS2 (`humble-devel`), simply run the Dockerfile from the corresponding branch. This will automatically generate the appropriate prebase image.
 
     ```bash
     docker build -t jderobot/robotics-applications:<tag> -f Dockerfile.pre-base .

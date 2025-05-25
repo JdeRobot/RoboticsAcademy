@@ -673,6 +673,97 @@ export const guiAndHalAutoCompleteObj = {
     hal: [
       {
         type: "method",
+        label: "setV()",
+        code: "setV()",
+        descriptions: "Set the linear speed.",
+      },
+      {
+        type: "method",
+        label: "setW()",
+        code: "setW()",
+        descriptions: "Set the angular velocity.",
+      },
+      {
+        type: "method",
+        label: "getPose3d().x",
+        code: "getPose3d().x",
+        descriptions: "Get the position of the robot (x coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().y",
+        code: "getPose3d().y",
+        descriptions: "Obtain the position of the robot (y coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().yaw",
+        code: "getPose3d().yaw",
+        descriptions:
+          "Get the orientation of the robot with regarding the map.",
+      },
+      {
+        type: "method",
+        label: "getOdom()",
+        code: "getOdom()",
+        descriptions:
+          "Get the orientation of the robot with noise regarding the map.",
+      },
+      {
+        type: "method",
+        label: "getLaserData()",
+        code: "getLaserData()",
+        descriptions:
+          "Obtain laser sensor data It is composed of 180 pairs of values: (0-180º distance in meters).",
+      },
+      {
+        type: "method",
+        label: "getBumperData()",
+        code: "getBumperData()",
+        descriptions:
+          "If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.",
+      },
+    ],
+    gui: [
+      {
+        type: "method",
+        label: "showPosition(x, y, angle)",
+        code: "showPosition(x, y, angle)",
+        descriptions: "Shows the position on the map.",
+      },
+      {
+        type: "method",
+        label: "getMap(url)",
+        code: "getMap(url)",
+        descriptions:
+          "Returns a numpy array with the image data in a 3 dimensional array (R, G, B, A). The URL of the Vacuum Cleaner.",
+      },
+      {
+        type: "method",
+        label: "poseToMap(x_prime, y_prime, yaw_prime)",
+        code: "poseToMap(x_prime, y_prime, yaw_prime)",
+        descriptions:
+          "Returns the map coordinates of the given pose.",
+      },
+      {
+        type: "method",
+        label: "mapToPose(x, y, yaw)",
+        code: "mapToPose(x, y, yaw)",
+        descriptions:
+          "Returns the pose of the given map coordinates.",
+      },
+      {
+        type: "method",
+        label: "showParticles(particles)",
+        code: "showParticles(particles)",
+        descriptions: "Shows the particles on the map.",
+      },
+    ],
+  },
+  _montecarlo_visual_loc: {
+    hal: [
+      {
+        type: "method",
         label: "getImage()",
         code: "getImage()",
         descriptions: "Get the image.",
@@ -712,10 +803,40 @@ export const guiAndHalAutoCompleteObj = {
     gui: [
       {
         type: "method",
+        label: "showPosition(x, y, angle)",
+        code: "showPosition(x, y, angle)",
+        descriptions: "Shows the position on the map.",
+      },
+      {
+        type: "method",
         label: "showImage()",
         code: "showImage()",
         descriptions:
           "Allows you to view a debug image or with relevant information.",
+      },
+      {
+        type: "method",
+        label: "getMap(url)",
+        code: "getMap(url)",
+        descriptions: "Returns the map from the given url.",
+      },
+      {
+        type: "method",
+        label: "getBGRMap(url)",
+        code: "getBGRMap(url)",
+        descriptions: "Returns the map as a cv2 image from the given url.",
+      },
+      {
+        type: "method",
+        label: "poseToMap(x_prime, y_prime, yaw_prime)",
+        code: "poseToMap(x_prime, y_prime, yaw_prime)",
+        descriptions: "Converts the robot position to 2D coordinates in the map.",
+      },
+      {
+        type: "method",
+        label: "mapToPose(x, y, yaw)",
+        code: "mapToPose(x, y, yaw)",
+        descriptions: "Converts the robot 2D coordinates in the map to the real 3D position.",
       },
       {
         type: "method",
@@ -725,4 +846,267 @@ export const guiAndHalAutoCompleteObj = {
       },
     ],
   },
+  _marker_visual_loc: {
+    hal: [
+      {
+        type: "method",
+        label: "getImage()",
+        code: "getImage()",
+        descriptions: "Get the image.",
+      },
+      {
+        type: "method",
+        label: "setV()",
+        code: "setV()",
+        descriptions: "Set the linear speed.",
+      },
+      {
+        type: "method",
+        label: "setW()",
+        code: "setW()",
+        descriptions: "Set the angular velocity.",
+      },
+      {
+        type: "method",
+        label: "getPose3d().x",
+        code: "getPose3d().x",
+        descriptions: "Get the position of the robot (x coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().y",
+        code: "getPose3d().y",
+        descriptions: "Obtain the position of the robot (y coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().yaw",
+        code: "getPose3d().yaw",
+        descriptions:
+          "Get the orientation of the robot with regarding the map.",
+      },
+    ],
+    gui: [
+      {
+        type: "method",
+        label: "showEstimatedPose((x, y, angle))",
+        code: "showEstimatedPose((x, y, angle))",
+        descriptions: "Shows the estimated position on the map.",
+      },
+      {
+        type: "method",
+        label: "showImage()",
+        code: "showImage()",
+        descriptions:
+          "Allows you to view a debug image or with relevant information.",
+      }
+    ],
+  },
+  _laser_mapping: {
+    hal: [
+      {
+        type: "method",
+        label: "setV()",
+        code: "setV()",
+        descriptions: "Set the linear speed.",
+      },
+      {
+        type: "method",
+        label: "setW()",
+        code: "setW()",
+        descriptions: "Set the angular velocity.",
+      },
+      {
+        type: "method",
+        label: "getPose3d().x",
+        code: "getPose3d().x",
+        descriptions: "Get the position of the robot (x coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().y",
+        code: "getPose3d().y",
+        descriptions: "Obtain the position of the robot (y coordinate).",
+      },
+      {
+        type: "method",
+        label: "getPose3d().yaw",
+        code: "getPose3d().yaw",
+        descriptions:
+          "Get the orientation of the robot with regarding the map.",
+      },
+      {
+        type: "method",
+        label: "getOdom()",
+        code: "getOdom()",
+        descriptions:
+          "Obtain the position of the robot with a little noise.",
+      },
+      {
+        type: "method",
+        label: "getOdom2()",
+        code: "getOdom2()",
+        descriptions:
+          "Obtain the position of the robot with noise.",
+      },
+      {
+        type: "method",
+        label: "getOdom3()",
+        code: "getOdom3()",
+        descriptions:
+          "Obtain the position of the robot with a lot of noise.",
+      }
+    ],
+    gui: [
+      {
+        type: "method",
+        label: "setUserMap(image)",
+        code: "setUserMap(image)",
+        descriptions: "Allows you to view a debug image or with relevant information.",
+      },
+      {
+        type: "method",
+        label: "poseToMap(x, y, yaw)",
+        code: "poseToMap(x, y, yaw)",
+        descriptions:
+          "Converts the robot position to 2D coordinates in the map.",
+      }
+    ],
+  },
+  _follow_road: {
+    hal: [
+      {
+        type: "method",
+        label: "get_position()",
+        code: "get_position()",
+        descriptions:
+          "Returns the actual position of the drone as a numpy array [x, y, z], in m.",
+      },
+      {
+        type: "method",
+        label: "get_velocity()",
+        code: "get_velocity()",
+        descriptions:
+          "Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.",
+      },
+      {
+        type: "method",
+        label: "get_yaw_rate()",
+        code: "get_yaw_rate()",
+        descriptions: "Returns the actual yaw rate of the drone, in rad/s.",
+      },
+      {
+        type: "method",
+        label: "get_orientation()",
+        code: "get_orientation()",
+        descriptions:
+          "Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad.",
+      },
+      {
+        type: "method",
+        label: "get_roll()",
+        code: "get_roll()",
+        descriptions: "Returns the roll angle of the drone, in rad.",
+      },
+      {
+        type: "method",
+        label: "get_pitch()",
+        code: "get_pitch()",
+        descriptions: "Returns the pitch angle of the drone, in rad.",
+      },
+      {
+        type: "method",
+        label: "get_yaw()",
+        code: "get_yaw()",
+        descriptions: "Returns the yaw angle of the drone, in rad.",
+      },
+      {
+        type: "method",
+        label: "get_landed_state()",
+        code: "get_landed_state()",
+        descriptions:
+          "Returns 1 if the drone is on the ground (landed), 2 if the drone is in the air and 4 if the drone is landing. 0 could be also returned if the drone landed state is unknown.",
+      },
+      {
+        type: "method",
+        label: "set_cmd_pos(x, y, z, az)",
+        code: "set_cmd_pos(x, y, z, az)",
+        descriptions:
+          "Commands the position (x,y,z) of the drone, in m and the yaw angle (az) (in rad) taking as reference the first takeoff point (map frame).",
+      },
+      {
+        type: "method",
+        label: "set_cmd_vel(vx, vy, vz, az)",
+        code: "set_cmd_vel(vx, vy, vz, az)",
+        descriptions:
+          "Commands the linear velocity of the drone in the x, y and z directions (in m/s) and the yaw rate (az) (rad/s) in its body fixed frame.",
+      },
+      {
+        type: "method",
+        label: "set_cmd_mix(vx, vy, z, az)",
+        code: "set_cmd_mix(vx, vy, z, az)",
+        descriptions:
+          "Commands the linear velocity of the drone in the x, y directions (in m/s), the height (z) related to the takeoff point and the yaw rate (az) (in rad/s)",
+      },
+      {
+        type: "method",
+        label: "takeoff(height)",
+        code: "takeoff(height)",
+        descriptions:
+          "Takeoff at the current location, to the given height (in m).",
+      },
+      {
+        type: "method",
+        label: "land()",
+        code: "land()",
+        descriptions: "Land at the current location.",
+      },
+      {
+        type: "method",
+        label: "get_frontal_image()",
+        code: "get_frontal_image()",
+        descriptions:
+          "Returns the latest image from the frontal camera as a OpenCV cv2_image.",
+      },
+      {
+        type: "method",
+        label: "get_ventral_image()",
+        code: "get_ventral_image()",
+        descriptions:
+          "Returns the latest image from the ventral camera as a OpenCV cv2_image.",
+      },
+    ],
+    gui: [
+      {
+        type: "method",
+        label: "showImage(cv2_image)",
+        code: "showImage(cv2_image)",
+        descriptions: "Shows a image of the camera in the GUI.",
+      },
+      {
+        type: "method",
+        label: "showLeftImage(cv2_image)",
+        code: "showLeftImage(cv2_image)",
+        descriptions: "Shows another image of the camera in the GUI.",
+      },
+    ],
+  },
+  _basic_computer_vision: {
+    hal: [],
+    gui: [
+      {
+        type: "method",
+        label: "showImage(image)",
+        code: "showImage(image)",
+        descriptions: "Allows you to view a debug image or with relevant information.",
+      },
+      {
+        type: "method",
+        label: "getImage()",
+        code: "getImage()",
+        descriptions:
+          "Returns the image from the camera. Can be None.",
+      }
+    ],
+  }
 };

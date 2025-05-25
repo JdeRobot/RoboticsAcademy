@@ -62,7 +62,7 @@ function SpecificMontecarloLaserLoc(props) {
         if(particles != "") {
           var new_particles = [];
           particles.forEach(element => {
-            new_particles.push([element[1]*height, element[0]*width, -element[2]])
+            new_particles.push([element[1]*height, element[0]*width, -element[2], element[3]])
           });
           setParticles(new_particles)
         }
@@ -90,12 +90,12 @@ function SpecificMontecarloLaserLoc(props) {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "ready") {
-        try {
-          setVacuumPose(null)
-          setUserPose(null)
-        } catch (error) {
-        }
+      if (message.data.state === "visualization_ready") {
+        setVacuumPose(null)
+        setUserPose(null)
+        setParticles([])
+        lastRealPose = undefined;
+        lastUserPose = undefined;
       }
     }
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -130,7 +130,7 @@ function SpecificMontecarloLaserLoc(props) {
         }
         {userParticles.map(element => {
             return (
-              <div className="particle" style={{rotate: "z "+ element[2]+"rad", top: element[0] -5, left: element[1] -5}}>
+              <div className="particle" style={{rotate: "z "+ element[2]+"rad", top: element[0] -5, left: element[1] -5, opacity: element[3]}}>
                 <div className="particle-arrow"/>
               </div>
           )})

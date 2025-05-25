@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Default: cpu and offline
 gpu_mode="false"
@@ -6,10 +6,6 @@ nvidia="false"
 base_path_offline="compose_cfg/"
 compose_file="user_humble_cpu"
 base_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/compose_cfg/"
-RA_ex_db_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/database/exercises/db.sql"
-RA_django_db_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/database/django_auth.sql"
-RI_db_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsInfrastructure/database/database/universes.sql"
-
 
 # Function to clean up the containers
 cleanup() {
@@ -49,17 +45,8 @@ if [ -d compose_cfg ]; then
   # Offline mode
   cp $base_path_offline$compose_file.yaml docker-compose.yaml
 else
-  # Online mode: download all databases
+  # Online mode
   curl -sL $base_path_online$compose_file.yaml -o docker-compose.yaml
-  # Create folders
-  mkdir -p database
-  mkdir -p database/exercises
-  mkdir -p RoboticsInfrastructure
-  mkdir -p RoboticsInfrastructure/database
-  # Download Db
-  curl -sL $RA_ex_db_path_online -o database/exercises/db.sql
-  curl -sL $RA_django_db_path_online -o database/django_auth.sql
-  curl -sL $RI_db_path_online -o RoboticsInfrastructure/database/universes.sql
 fi
 
 # Execute docker compose
@@ -68,3 +55,5 @@ if [ "$nvidia" = "true" ]; then
 else
   docker compose up
 fi
+
+cleanup

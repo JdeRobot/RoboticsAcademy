@@ -6,7 +6,7 @@
 
 {% block react-content %}
     {% if deployment %}
-        {% react_component exercise/autoparking_newmanager/AutoparkingRR %}
+        {% react_component exercise/autoparking/AutoparkingRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
             {% react_component components/common/MainAppBar exerciseName="Autoparking" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/autoparking/"%} 
             {% react_component RA_links/WorldSelectorRA %} {% end_react_component %}  
@@ -20,7 +20,7 @@
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
-                            {% react_component exercise/autoparking_newmanager/Lasers%}{% end_react_component %}
+                            {% react_component exercise/autoparking/Lasers%}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
@@ -31,7 +31,7 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-        {% react_component exercise/autoparking_newmanager/AutoparkingRR %}
+        {% react_component exercise/autoparking/AutoparkingRR %}
             {% react_component components/wrappers/MaterialBox id="exercise-container" %}
                 {% react_component components/layout_components/MainAppBar exerciseName="Autoparking" url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/autoparking/"%} 
                 {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
@@ -45,7 +45,7 @@
                     {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                            {% react_component exercise/autoparking_newmanager/Lasers%}{% end_react_component %}
+                            {% react_component exercise/autoparking/Lasers%}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}

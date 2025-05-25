@@ -20,6 +20,7 @@
 
 #vacuum-pos {
   position: absolute;
+  z-index: 3;
   width: 20px;
   height: 20px;
   border-radius: 20px;
@@ -40,7 +41,7 @@
 /*   border:solid 1px white; */
   transition: left 0.1s ease-out, top 0.1s ease-out;
   overflow:hidden;
-  z-index: 2;
+  z-index: 4;
   margin-left: -10px;
 }
 

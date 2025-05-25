@@ -120,7 +120,7 @@ export default function SpecificLocVacuumCleaner() {
             <div className="arrow"/>
           </div>
         }
-        <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+        {/* <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
           <mask id="svg-draw" xmlns="http://www.w3.org/2000/svg">
             {path ? (
               <path xmlns="http://www.w3.org/2000/svg" d={path} style={{strokeWidth: "20px", strokeLinejoin:"round", stroke: "white", fill: "none"}}/>
@@ -129,7 +129,14 @@ export default function SpecificLocVacuumCleaner() {
             )}
           </mask>
           <image href={houseMapClean} height="100%" width="100%" mask="url(#svg-draw)" preserveAspectRatio="none"></image>
-        </svg>
+        </svg> */}
+        {path &&
+          <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg" style={{zIndex:2, position:"absolute"}}>
+            <path xmlns="http://www.w3.org/2000/svg" d={path} 
+              style={{strokeWidth: "20px", strokeLinejoin:"round", stroke: "white", fill: "none"}}
+            />
+          </svg>
+        }
       </div>
       <img id="gui-canvas-numpy" width="400" height="400" style={{
             position: "absolute",

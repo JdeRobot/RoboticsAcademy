@@ -134,12 +134,17 @@ const CommsManager = (address) => {
     UPDATE: "update",
     STATE_CHANGED: "state-changed",
     INTROSPECTION: "introspection",
+    CODE_FORMAT: "code-format",
+    CODE_ANALYSIS: "code-analysis",
+    CODE_AUTOCOMPLETE: "code-autocomplete",
   };
 
   const commands = {
     connect: connect,
     launchWorld: (configuration) => send("launch_world", configuration),
-    prepareVisualization: (visualization) => send("prepare_visualization", visualization),
+    launchRobot: (configuration) => send("launch_robot", configuration),
+    prepareVisualization: (visualization) =>
+      send("prepare_visualization", visualization),
     run: (code) => send("run_application", code),
     stop: () => send("stop"),
     pause: () => send("pause"),
@@ -150,6 +155,9 @@ const CommsManager = (address) => {
     terminate_universe: () => send("terminate_universe"),
     disconnect: () => send("disconnect"),
     style_check: (code) => send("style_check", code),
+    code_format: (code) => send("code_format", code),
+    code_analysis: (data) => send("code_analysis", data),
+    code_autocomplete: (data) => send("code_autocomplete", data),
   };
 
   return {

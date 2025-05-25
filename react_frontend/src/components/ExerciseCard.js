@@ -1,178 +1,81 @@
-import PropTypes from "prop-types";
 import configuration from "../config.json";
-import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import { Box, CardActionArea, Chip } from "@mui/material";
+import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import "../styles/ExerciseList.css";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import ExerciseStatusIndicator from "./ExerciseStatusIndicator";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import InfoIcon from "@mui/icons-material/Info";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import FALLBACK_IMAGE from "../images/default_card.svg";
 
-const Teaser = (props) => {
-  const teaser_type = props.type;
-  const teaser_url = props.url;
-
-  if (teaser_type === "video") {
-    return (
-      <video className="card-img" autoPlay muted loop>
-        <source src={teaser_url} alt={props.name} />
-      </video>
-    );
-  } else if (teaser_type === "image") {
-    return <img src={teaser_url} className={"card-img"} alt={""} />;
-  }
-};
-
-Teaser.propTypes = {
-  type: PropTypes.string,
-  url: PropTypes.string,
-  name: PropTypes.string,
-};
-
-const ExerciseCard = (props) => {
+const ExerciseCard = ({ id, name, description, tags, status }) => {
   const exerciseURL = `${configuration.academy.exercises.exercise_url}`;
   const teaser = configuration.academy.exercises.teaser;
+  const onMediaFallback = (event) => (event.target.src = FALLBACK_IMAGE);
 
   const navigateToExercise = () => {
-    window.location.href = exerciseURL.interpolate(props);
+    window.location.href = exerciseURL.interpolate({ exerciseid: id });
   };
-  const tagsList = JSON.parse(props.tags).tags.split(",");
+
+  const tagsList = JSON.parse(tags).tags;
+
   return (
     <div
       className="exercise-card"
-      card-id={props.exerciseid}
-      onClick={() => navigateToExercise()}
+      style={{
+        borderColor:
+          status === "ACTIVE"
+            ? "green"
+            : status === "INACTIVE"
+            ? "red"
+            : "orange",
+      }}
     >
-      <Teaser
-        type={configuration.academy.exercises.teaser.type}
-        url={teaser.url.interpolate(props)}
-      />
-      <div className="name">{props.name}</div>
-      <div className="description">{props.description}</div>
-      <ChipsArray tagList={tagsList} />
+      <div
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+        onClick={() => navigateToExercise()}
+      >
+        <CardMedia
+          component="img"
+          height="auto"
+          style={{ flexGrow: 1 }}
+          image={teaser.url.interpolate({ exerciseid: id })}
+          onError={onMediaFallback}
+        />
+        <div className="exercise-info-container">
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            color={"white"}
+            sx={{ wordBreak: "break-word" }}
+            style={{ alignSelf: "center", pointerEvents: "none" }}
+          >
+            {name}
+          </Typography>
+          <Typography
+            id="exercise-info"
+            gutterBottom
+            variant="h7"
+            component="div"
+            color={"white"}
+            style={{ pointerEvents: "none" }}
+          >
+            {description}
+          </Typography>
+          <ChipsArray tagList={tagsList} />
+        </div>
+      </div>
     </div>
   );
 };
-const ExerciseCardV2 = (props) => {
-  const [showDescription, setShowDescription] = useState(false);
-  const exerciseURL = `${configuration.academy.exercises.exercise_url}`;
-  const teaser = configuration.academy.exercises.teaser;
 
-  const navigateToExercise = () => {
-    window.location.href = exerciseURL.interpolate(props);
-  };
-  const tagsList = JSON.parse(props.tags).tags;
-
-  return (
-    <Card
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-      style={{ backgroundColor: "black" }}
-    >
-      {!showDescription && (
-        <CardActionArea onClick={() => navigateToExercise()}>
-          <CardMedia
-            component="img"
-            height="140"
-            image={teaser.url.interpolate(props)}
-          />
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="div"
-              color={"white"}
-              sx={{ wordBreak: "break-word" }}
-            >
-              {props.name}
-            </Typography>
-            <ExerciseStatusIndicator status={props.status} />
-          </CardContent>
-        </CardActionArea>
-      )}
-      {showDescription && (
-        <CardActionArea>
-          <CardContent>
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="div"
-              color={"white"}
-            >
-              {props.description}
-            </Typography>
-            <ChipsArray tagList={tagsList} />
-          </CardContent>
-        </CardActionArea>
-      )}
-      <CardActions
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "flex-start",
-        }}
-      >
-        <Button
-          variant="contained"
-          color={"success"}
-          startIcon={<PlayCircleOutlineIcon />}
-          size="small"
-          onClick={() => navigateToExercise()}
-          sx={{
-            m: 1,
-          }}
-        >
-          Start
-        </Button>
-        <Button
-          variant="contained"
-          color={showDescription === true ? "error" : "secondary"}
-          startIcon={
-            showDescription === true ? <ArrowBackIcon /> : <InfoIcon />
-          }
-          size="small"
-          onClick={() => {
-            setShowDescription(!showDescription);
-          }}
-          sx={{
-            m: 1,
-          }}
-        >
-          {showDescription === true ? "Back" : "Learn More"}
-        </Button>
-      </CardActions>
-    </Card>
-  );
-};
-
-ExerciseCardV2.propTypes = {
-  exerciseid: PropTypes.string,
-  name: PropTypes.string,
-  description: PropTypes.string,
-  tags: PropTypes.string,
-  status: PropTypes.string,
-};
-
-ExerciseCard.propTypes = {
-  exerciseid: PropTypes.string,
-  name: PropTypes.string,
-  description: PropTypes.string,
-  tags: PropTypes.string,
-};
-
-const ChipsArray = (props) => {
-  let chipData = props.tagList;
-  if(!Array.isArray(chipData)){
+const ChipsArray = ({ tagList }) => {
+  let chipData = tagList;
+  if (!Array.isArray(chipData)) {
     chipData = chipData.split(",");
   }
   const chipsList = chipData.map((data) => (
@@ -186,23 +89,7 @@ const ChipsArray = (props) => {
     />
   ));
 
-  return (
-    <Box
-      sx={{
-        display: "inline-flex",
-        flexWrap: "wrap",
-        p: 0.5,
-        m: 0,
-      }}
-      component="ul"
-    >
-      {chipsList}
-    </Box>
-  );
+  return <div className="exercise-tag-list">{chipsList}</div>;
 };
 
-ChipsArray.propTypes = {
-  tagList: PropTypes.any,
-};
-
-export { ExerciseCardV2, ExerciseCard };
+export { ExerciseCard };

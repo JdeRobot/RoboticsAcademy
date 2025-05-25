@@ -30,7 +30,7 @@ The [gh-pages branch](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages)
 
 - **_pages**: this folder stores all markdown files that are imported to other html files. in this folder you can find the exercise folder in which the markdown corresponding to the documentation of the various exercises of the repository can be found.
 	1. Autonomous Cars: text documentation of the exercises 'autoparking', 'car-junction', 'follow_line', 'global_navigation' and 'obstacle_avoidance'.
-	2. Computer Vision: text documentation of the exercises '3d_reconstruction', 'color_filter', 'follow_face', 'human_detection', 'montercarlo_visual_loc', 'opticalflow_teleop' and 'visual_odometry'.
+	2. Computer Vision: text documentation of the exercises '3d_reconstruction', 'color_filter', 'basic_computer_vision', 'follow_face', 'human_detection', 'montercarlo_visual_loc', 'opticalflow_teleop' and 'visual_odometry'.
 	3. Drones: text documentation of the exercises 'drone_cat_mouse', 'drone_gymkhana', 'drone_hangar', 'follow_road', 'follow_turtlebot', 'labyrinth_escape', 'package_delivery', 'position_control', 'rescue_people' and 'visual_lander'.
 	4. IndustrialRobots: text documentation of the exercises 'machine_vision', 'mobile_manipulation' and 'pick_place'.
 	5. MobileRobots: text documentation of the exercises 'amazon_warehouse', 'bump_and_go', 'laser_mapping', 'localization_laser', 'multi_robot_amazon_warehouse', 'vacuum_cleaner' and 'vacuum_cleaner_loc'.

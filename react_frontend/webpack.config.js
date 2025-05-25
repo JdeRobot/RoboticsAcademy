@@ -79,6 +79,10 @@ module.exports = {
         test: /\.(png|svg|jpg|gif)$/,
         type: "asset/resource",
       },
+      {
+        test: /\.(zip)$/,
+        use: "binary-loader",
+      },
     ],
   },
   plugins: [

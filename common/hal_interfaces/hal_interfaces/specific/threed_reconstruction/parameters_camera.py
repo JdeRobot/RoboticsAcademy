@@ -7,7 +7,7 @@ class ListenerParameters:
 
         if os.getcwd() == "/":
             f = open(
-                "/RoboticsAcademy/exercises/static/exercises/3d_reconstruction_newmanager/python_template/ros2_humble/" + configFile, "r")
+                "/workspace/code/" + configFile, "r")
         else:
             f = open(configFile, "r")
 

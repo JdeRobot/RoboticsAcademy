@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Editor, { loader } from "@monaco-editor/react";
 import PropTypes from "prop-types";
 import {
@@ -6,6 +6,8 @@ import {
   monacoEditorSnippet,
   monacoEditorGlyph,
   monacoEditorScroll,
+  setEditorSettingsWidgetsData,
+  getEditorSettingsWidgetsData,
 } from "./index";
 import {
   useMonacoEditorLoaderEffect,
@@ -14,6 +16,7 @@ import {
   useMonacoEditorLineNumberDecorationsEffect,
 } from "../../../hooks/useMonacoEditorEffect";
 import "./../../../styles/editors/MonacoEditor.css";
+import MonacoEditorInfo from "./editor-info/MonacoEditorInfo";
 
 const MonacoEditor = ({
   state,
@@ -27,7 +30,12 @@ const MonacoEditor = ({
   const editorRef = useRef(null);
   const lineNumberDecorationRef = useRef(null);
   // Rducer state
-  const { isLoading, monacoEditorTheme, editorOptions, baseUrl } = state;
+  const {
+    isLoading,
+    monacoEditorTheme,
+    editorOptions,
+    editorSettings,
+  } = state;
   // USE STATE
   const [lineNumber, setLineNumber] = useState(-1);
   const [lineNumberDecorations, setLineNumberDecorations] = useState([]);
@@ -35,6 +43,32 @@ const MonacoEditor = ({
   const [maxEditorRows, setMaxEditorRows] = useState(-1);
 
   // USE Effects
+  //localstorage
+  useEffect(() => {
+    const data = getEditorSettingsWidgetsData();
+
+    if (data) {
+      dispatch({
+        type: "udpateEditorSttingsWidgets",
+        payload: {
+          isCodeFormatEnable: data.isCodeFormatEnable,
+          isZoomingEnable: data.isZoomingEnable,
+        },
+      });
+    } else {
+      setEditorSettingsWidgetsData({
+        isCodeFormatEnable: editorSettings.isCodeFormatEnable,
+        isZoomingEnable: editorSettings.isZoomingEnable,
+      });
+    }
+  }, []);
+  // called when widgets changed
+  useEffect(() => {
+    setEditorSettingsWidgetsData({
+      isCodeFormatEnable: editorSettings.isCodeFormatEnable,
+      isZoomingEnable: editorSettings.isZoomingEnable,
+    });
+  }, [editorSettings.isCodeFormatEnable, editorSettings.isZoomingEnable]);
 
   // editor loading
   useMonacoEditorLoaderEffect({ loader, dispatch, monacoEditorTheme });
@@ -55,7 +89,6 @@ const MonacoEditor = ({
   });
   // code analysis (pylint)
   useMonacoEditorCodeAnalysisEffect({
-    baseUrl,
     monacoRef,
     editorRef,
     monacoEditorSourceCode,
@@ -63,7 +96,7 @@ const MonacoEditor = ({
 
   // Code format (black)
   useMonacoEditorCodeFormatEffect({
-    baseUrl,
+    editorRef,
     monacoEditorSourceCode,
     setMonacoEditorSourceCode,
     setUpdateGlyphs,
@@ -98,20 +131,27 @@ const MonacoEditor = ({
       {isLoading ? (
         <MonacoEditorLoader theme={monacoEditorTheme} />
       ) : (
-        <Editor
-          height="100%"
-          width="100%"
-          defaultLanguage="python"
-          theme={monacoEditorTheme}
-          defaultValue={monacoEditorSourceCode}
-          value={monacoEditorSourceCode}
-          onChange={(code) => handleMonacoEditorCodeChange(code)}
-          beforeMount={handleEditorWillMount}
-          onMount={handleEditorDidMount}
-          // Editor Options
-          options={editorOptions}
-          className=""
-        />
+        <>
+          <MonacoEditorInfo
+            editorSettings={editorSettings}
+            dispatch={dispatch}
+            editorRef={editorRef}
+          />
+          <Editor
+            height="100%"
+            width="100%"
+            defaultLanguage="python"
+            theme={monacoEditorTheme}
+            defaultValue={monacoEditorSourceCode}
+            value={monacoEditorSourceCode}
+            onChange={(code) => handleMonacoEditorCodeChange(code)}
+            beforeMount={handleEditorWillMount}
+            onMount={handleEditorDidMount}
+            // Editor Options
+            options={editorOptions}
+            className=""
+          />
+        </>
       )}
     </div>
   );

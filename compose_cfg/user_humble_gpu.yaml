@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   my-postgres:
-    image: postgres:latest
+    image: jderobot/robotics-database:latest
     container_name: universe_db
     environment:
       POSTGRES_DB: academy_db 
@@ -10,11 +8,6 @@ services:
       POSTGRES_PASSWORD: robotics-academy-dev
     ports:
       - "5432:5432"
-    volumes:
-      - ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql
-      - ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql
-      - ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql
-      - ./scripts:/scripts
     healthcheck:
       test: pg_isready -U user-dev -d academy_db
       interval: 3s

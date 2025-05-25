@@ -56,17 +56,14 @@ class GUI(MeasuringThreadingGUI):
         self.send_to_client(message)
 
     def showPosition(self, x, y, angle):
-        angle += math.pi
-        ay = math.cos(-angle) - math.sin(-angle)
-        ax = math.sin(-angle) + math.cos(-angle)
-        scale_y = 15
-        offset_y = 63
+        scale_y = 15; offset_y = 63
         y = scale_y * y + offset_y
-        scale_x = -30
-        offset_x = 171
+
+        scale_x = -30; offset_x = 171
         x = scale_x * x + offset_x
+
         self.user_position = x, y
-        self.user_angle = (ax, ay)
+        self.user_angle = angle,
 
     def showParticles(self, particles):
         if particles:
@@ -87,13 +84,13 @@ class GUI(MeasuringThreadingGUI):
     def poseToMap(self, x_prime, y_prime, yaw_prime):
         x = 101.1 * ( 4.2 + y_prime)
         y = 101.1  * ( 5.7 - x_prime)
-        yaw = yaw_prime + math.pi/2
+        yaw = yaw_prime - math.pi/2
         return [round(x), round(y), yaw]
 
     def mapToPose(self, map_x, map_y, map_yaw):
         x = (map_y - 576.27) / -101.1
         y = (map_x - 424.62) /  101.1
-        yaw = map_yaw - math.pi/2
+        yaw = map_yaw + math.pi/2
         return [x, y, yaw]
 
 host = "ws://127.0.0.1:2303"

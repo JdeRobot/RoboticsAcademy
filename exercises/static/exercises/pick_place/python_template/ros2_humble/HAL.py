@@ -1,0 +1,1 @@
+print("HAL initializing", flush=True)

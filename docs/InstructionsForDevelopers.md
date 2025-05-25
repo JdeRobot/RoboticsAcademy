@@ -7,7 +7,6 @@
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
 - [How to use nvidia](#How-to-use-nvidia)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
-- [How to update static files version](#How-to-update-static-files-version)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
 - [How to create a React based exercise](#How-to-create-a-React-based-exercise)
 - [Guidelines to render a React based exercise](#Guidelines-to-render-a-React-based-exercise)
@@ -31,7 +30,7 @@ You can ignore the -b arg if you want to start working from the main branch.
 
 2) Run the script with your desired config
 ```
-sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble/noetic>
+sh scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble>
 ```
 If you don't provide any arguments, it will prepare a humble environment with the current stable branch of RAM. You may start working from that and then create the branch you need. 
 You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.1:7164/exercises/) 
@@ -75,12 +74,30 @@ cd /RoboticsAcademy
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install 17
 nvm use 17
+npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
 Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_radi.md).
 
 ### Using Docker run
+
+If you are launching Robotics Academy this way you need to manually create the commons zip, that will be used to pass those files to the Robotics Backend.
+
+```
+# Prepare the commons zip file
+cd common
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+```
 
 You have 2 ways of launching Robotics Academy with docker run:
 
@@ -95,12 +112,8 @@ docker run --hostname my-postgres --name academy_db -d\
     -e POSTGRES_USER=user-dev \
     -e POSTGRES_PASSWORD=robotics-academy-dev \
     -e POSTGRES_PORT=5432 \
-    -v ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql \
-    -v ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql \
-    -v ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql \
-    -v ./scripts:/scripts \
     -d -p 5432:5432 \
-    postgres:latest
+    jderobot/robotics-database:latest
 ```
 
 If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
@@ -157,6 +170,7 @@ For the moment, the RAM folder MUST be called src, and the previous command take
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install 17
 nvm use 17
+npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
@@ -174,7 +188,7 @@ Feel free to study the configs, and adapt/create new ones suitable for your need
 docker-compose up
 ```
 
-Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RoboticsBackend version as the base. The only difference for developing between RoboticsBackend versions is the ROS version (humble or noetic) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RoboticsBackend-on-the-go).
+Now you can open the RoboticsAcademy folder in your preferred code editor and test the changes inside the docker without having to regenerate a new image. Please keep in mind that this method works using a given RoboticsBackend version as the base. The only difference for developing between RoboticsBackend versions is the ROS version (humble) and the branch of RoboticsInfrastructure. If you need to make changes in RI, we recommend that you follow [this procedure](##edit-code-on-RoboticsBackend-on-the-go).
 
 After testing the changes, you can simply commit them from the RA repo. Please keep in mind that the changes in RAM inside the src folder won't be commited, as they are not part of RoboticsAcademy. To commit those changes, just get inside the src/ folder and work from there (remember, this is the RAM repo with another name).
 
@@ -280,6 +294,8 @@ There are a three python packages to help the development of a new exercise:
 
 For knowing how to use each package, please follow the links in the list above.
 
+It is also necessary to add the template for the frontend in the folder exercises/templates/exercises.
+
 Then, create the entry in database/exercise/db.sql. This can be achieved in 2 ways, changing it directly on the database or using Django Web Admin:
 1)  Launch the docker as normal.
 2)  Access http://127.0.0.1:7164/admin/ on a browser and log in with "user" and "pass".
@@ -291,25 +307,9 @@ An exercise entry in the database must include the following data:
 - ```exercise id```: unique exercise identifier, must match the folder name
 - ```name```: name to display on the exercise list
 - ```description```: description to display on the exercise list
-- ```tags```: an exercise must include at least one ROS tag ("ROS1" or "ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
+- ```tags```: an exercise must include at least one ROS tag ("ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
 - ```status```: changes the state indicator (ACTIVE = green; PROTOTYPE = yellow; INACTIVE = red)
 - ```language```: programming language used
-
-<a name="How-to-update-static-files-version"></a>
-## How to update static files version
-Follow this steps after changing any js or css document in order to prevent the browser cache to be used:
-
-1º Make all the changes necesary to the required documents.
-
-2º When the changes are done and ready to commit, open settings.py (located on ```RoboticsAcademy/academy/settings.py```).
-
-3º In ```setting.py```, update VERSION with the current date (the format is DD/MM/YYYY so for example the date 17/06/2021 would look something like this ```VERSION = 17062021``` ).
-
-4º Save and commit the changes.
-
-If a new static file is created or you find a file that doesn't have (or updates) their version number, just add ```?v={{SYS_VERSION}}``` to the end of the src.
-
-For example: ```script src="{% static 'exercises/assets/js/utils.js``` would have his src update as follows: ```script src="{% static 'exercises/assets/js/utils.js?v={{SYS_VERSION}}' %}"```
 
 <a name="Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises"></a>
 ## Steps to change models from CustomRobots in RoboticsAcademy exercises.

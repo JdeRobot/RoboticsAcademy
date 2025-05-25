@@ -42,6 +42,11 @@ window.RoboticsReactComponents.CodeEditor = (function () {
   };
 })();
 
+const config = JSON.parse(
+  document.getElementById("exercise-config").textContent
+);
+const exerciseId = config[0].exercise_id;
+
 export default function EditorRobot(props) {
   const [monacoEditorSourceCode, setMonacoEditorSourceCode] = React.useState(
     defaultEditorSourceCode
@@ -49,10 +54,50 @@ export default function EditorRobot(props) {
 
   React.useEffect(() => {
     // monaco
-    RoboticsReactComponents.CodeEditor.setCode(monacoEditorSourceCode);
     RoboticsReactComponents.CodeEditor.OnEditorCodeChanged((code) => {
       setMonacoEditorSourceCode(code);
     });
+
+    let unibotics = undefined;
+    try {
+      unibotics = props.props.unibotics;
+    } catch {}
+
+    if (unibotics) {
+      // Request U code
+      const request = new Request("/academy/reload_code/" + exerciseId + "/");
+
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Error getting user code");
+          }
+        })
+        .then((result) => {
+          if (result.code != "") {
+            const code = result.code
+              .replace(/&quot;/g, '"')
+              .replace(/&#39;/g, "'")
+              .replace(/&gt;/g, ">")
+              .replace(/&lt;/g, "<")
+              .replace(/&amp;gt;/g, ">")
+              .replace(/&amp;lt;/g, "<")
+              .replace(/&amp;ge;/g, ">=")
+              .replace(/&amp;le;/g, "<=")
+              .replace(/&le;/g, "<=")
+              .replace(/&ge;/g, ">=")
+              .replace(/\\n/g, "\n");
+            RoboticsReactComponents.CodeEditor.setCode(code);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      RoboticsReactComponents.CodeEditor.setCode(monacoEditorSourceCode);
+    }
 
     const codeLoadedEvent = new CustomEvent("codeLoaded", {
       detail: { isLoading: false },
@@ -61,15 +106,7 @@ export default function EditorRobot(props) {
   }, []);
 
   //! Monaco Code Editor
-
   const [state, dispatch] = useEditorReudcer();
-
-  try {
-    let unibotics = props.props.unibotics;
-    if (unibotics) {
-      state.baseUrl = "";
-    }
-  } catch {}
 
   // monaco editor code change
   const handleMonacoEditorCodeChange = (code) => {

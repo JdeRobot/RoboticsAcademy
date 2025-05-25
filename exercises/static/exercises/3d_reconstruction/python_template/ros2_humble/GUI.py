@@ -21,9 +21,8 @@ class GUI(MeasuringThreadingGUI):
         self.point_to_save = []
         self.point_to_send = []
 
-        self.matching_to_save = []
         self.duplicate_matching = False
-        self.matching_to_send = []
+        self.matching = []
         self.paint_matching = "F"
 
         self.payload = {'img1': '', 'img2': '', 'pts': '', 'match': '', 'p_match': 'F'}
@@ -48,9 +47,8 @@ class GUI(MeasuringThreadingGUI):
         else:
             self.payload["pts"] = json.dumps([])
 
-        length_matching_send = len(self.matching_to_send)
-        self.payload["match"] = json.dumps(self.matching_to_send)
-        del self.matching_to_send[0:length_matching_send]
+        self.payload["match"] = json.dumps(self.matching)
+        self.matching = []
 
         self.payload["p_match"] = self.paint_matching
 
@@ -131,24 +129,14 @@ class GUI(MeasuringThreadingGUI):
 
     # Show image matching
     def showImageMatching(self, x1, y1, x2, y2):
-        matching = [x1, y1, x2, y2]
-
-        for i in range(0, len(self.matching_to_save)):
-            if ((self.matching_to_save[i] == matching) == True):
-                self.duplicate_matching = True
-
-        if (self.duplicate_matching == False):
-            self.matching_to_save.append(matching)
-            self.matching_to_send.append(matching)
-        else:
-            self.duplicate_matching = False
+        self.matching.append([x1, y1, x2, y2])
 
     # Function to reset
     def ClearAllPoints(self):
         self.point_to_save = []
         self.point_to_send = []
         self.matching_to_save = []
-        self.matching_to_send = []
+        self.matching = []
         self.server.send_message(self.client, "#res")
 
     def reset_gui(self):

@@ -6,9 +6,8 @@ import {
 
 const editorInitialState = {
   isLoading: true,
-  monacoEditorTheme: monacoEditorThemeList[0], // 
+  monacoEditorTheme: monacoEditorThemeList[0], //
   resizeEditor: resizeList[0],
-  baseUrl: `${document.location.protocol}//${document.location.hostname}:7164`,
   editorOptions: {
     //
     fontSize: 14,
@@ -17,7 +16,7 @@ const editorInitialState = {
     scrollBeyondLastLine: true,
     // word warp
     wordWrap: "wordWrapColumn",
-    wordWrapColumn: 100,
+    wordWrapColumn: 80,
     wrappingIndent: "indent",
     //
     minimap: { enabled: false },
@@ -40,10 +39,17 @@ const editorInitialState = {
       horizontalScrollbarSize: 8,
     },
   },
+  editorSettings: {
+    isModalOpen: false,
+    isCodeFormatEnable: true,
+    isZoomingEnable: true,
+    modalScreenState: "shortcuts", // widgets
+  },
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    // editor options
     case "updateEditorState":
       return {
         ...state,
@@ -68,6 +74,49 @@ const reducer = (state, action) => {
       return {
         ...state,
         monacoEditorTheme: action.payload.theme,
+      };
+
+    // editor settings
+    case "udpateEditorSttingsWidgets":
+      return {
+        ...state,
+        editorSettings: {
+          ...state.editorSettings,
+          isCodeFormatEnable: action.payload.isCodeFormatEnable,
+          isZoomingEnable: action.payload.isZoomingEnable,
+        },
+      };
+    case "changeSettingsModalState":
+      return {
+        ...state,
+        editorSettings: {
+          ...state.editorSettings,
+          isModalOpen: action.payload.isModalOpen,
+        },
+      };
+    case "changeModalScreenState":
+      return {
+        ...state,
+        editorSettings: {
+          ...state.editorSettings,
+          modalScreenState: action.payload.screen,
+        },
+      };
+    case "isCodeFormatEnable":
+      return {
+        ...state,
+        editorSettings: {
+          ...state.editorSettings,
+          isCodeFormatEnable: !state.editorSettings.isCodeFormatEnable,
+        },
+      };
+    case "isZoomingEnable":
+      return {
+        ...state,
+        editorSettings: {
+          ...state.editorSettings,
+          isZoomingEnable: !state.editorSettings.isZoomingEnable,
+        },
       };
     default:
       throw new Error("Unknown Action type!");

@@ -37,3 +37,4 @@ rescue_people
 vacuum_cleaner
 vacuum_cleaner_loc
 visual_lander 
+basic_computer_vision

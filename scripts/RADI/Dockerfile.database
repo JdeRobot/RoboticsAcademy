@@ -1,0 +1,17 @@
+FROM postgres:latest
+
+WORKDIR /
+
+# Download curl
+RUN apt-get update && apt-get install -y curl
+
+ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
+ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
+
+# Download databases
+RUN curl -sL https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/${ROBOTICS_ACADEMY}/database/exercises/db.sql -o /docker-entrypoint-initdb.d/2.sql
+RUN curl -sL https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/${ROBOTICS_ACADEMY}/database/django_auth.sql -o /docker-entrypoint-initdb.d/3.sql
+RUN curl -sL https://raw.githubusercontent.com/JdeRobot/RoboticsInfrastructure/${ROBOTICS_INFRASTRUCTURE}/database/universes.sql -o /docker-entrypoint-initdb.d/1.sql
+
+ARG IMAGE_TAG
+ENV IMAGE_TAG=${IMAGE_TAG}

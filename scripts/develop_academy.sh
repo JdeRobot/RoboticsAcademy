@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Initialize variables with default values
 ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
@@ -51,9 +51,9 @@ echo "RAM src: $ram_version"
 echo "RAM branch: $branch"
 echo "RoboticsBackend version: $radi_version"
 
-# Install docker-compose if not installed
-if ! command -v docker-compose &> /dev/null; then
-  sudo apt install docker-compose
+# Check docker compose installation
+if ! command -v docker compose &> /dev/null; then
+  echo "Docker Compose V2 is not installed. Please install it."
 fi
 
 # Clone the desired RAM fork and branch
@@ -76,12 +76,56 @@ if ! command -v yarn --version &> /dev/null; then
   npm install --global yarn
 fi
 
+# Prepare the commons zip file
+cd common
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+
 # Prepare the frontend
 nvm install 17
 nvm use 17
+
+# Checking if the frontend needs compilation
 cd react_frontend/
-yarn install
-yarn build
+DIRECTORY_TO_MONITOR="."
+
+new_checksum=$(find "$DIRECTORY_TO_MONITOR" \( -path "*/node_modules" -o \
+            -path "*/__pycache__" -o \
+            -path "*/migrations" -o \
+            -name "yarn.lock" -o \
+            -name "checksum.txt" \) -prune \
+            -o -type f -exec md5sum {} + | \
+            sort | \
+            md5sum | \
+            awk '{print $1}')
+
+existing_checksum_file="$DIRECTORY_TO_MONITOR/checksum.txt"
+
+if [ -f "$existing_checksum_file" ]; then
+    existing_checksum=$(cat "$existing_checksum_file")
+    if [ "$existing_checksum" != "$new_checksum" ]; then
+        echo "$new_checksum" > "$existing_checksum_file"
+        yarn install 
+        yarn dev &
+        sleep 10
+    else
+        echo "No Compilation needed"
+    fi
+else
+    echo "$new_checksum" > "$existing_checksum_file"
+    yarn install 
+    yarn dev &
+    sleep 10
+fi
+
 cd ..
 
 # Prepare the compose file
@@ -99,3 +143,5 @@ if [ "$nvidia" = "true" ]; then
 else
   docker compose up
 fi 
+
+cleanup

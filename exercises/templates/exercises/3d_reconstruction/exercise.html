@@ -3,20 +3,20 @@
 {% load static %}
 
 {% block exercise_header %}
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/three.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/OrbitControls.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/OBJLoader.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/ColladaLoader.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/3d_scene.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/3DViz.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'exercises/3d_reconstruction_newmanager/3DScene/pose3d.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/three.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/OrbitControls.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/OBJLoader.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/ColladaLoader.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/3d_scene.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/3DViz.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'exercises/3d_reconstruction/3DScene/pose3d.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src='https://huningxin.github.io/opencv.js/build/asm.js/opencv.js' async></script>
 <script> window.onload = function() {webGLStart();}</script>
 {% endblock %}
 
 {% block react-content %}
     {% if deployment %}
-        {% react_component exercise/3d_reconstruction_newmanager/Reconstruction3DRR %}
+        {% react_component exercise/3d_reconstruction/Reconstruction3DRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
             {% react_component components/common/MainAppBar exerciseName="3D Recontruction" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction"%} 
             {% react_component RA_links/WorldSelectorRA %} {% end_react_component %}  
@@ -30,7 +30,7 @@
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
-                            {% react_component exercise/3d_reconstruction_newmanager/SpecificReconstruction3D%}{% end_react_component %}
+                            {% react_component exercise/3d_reconstruction/SpecificReconstruction3D%}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
@@ -41,7 +41,7 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-        {% react_component exercise/3d_reconstruction_newmanager/Reconstruction3DRR %}
+        {% react_component exercise/3d_reconstruction/Reconstruction3DRR %}
             {% react_component components/wrappers/MaterialBox id="exercise-container" %}
                 {% react_component components/layout_components/MainAppBar exerciseName="3D Recontruction" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction"%} 
                 {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
@@ -55,7 +55,7 @@
                     {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                            {% react_component exercise/3d_reconstruction_newmanager/SpecificReconstruction3D%}{% end_react_component %}
+                            {% react_component exercise/3d_reconstruction/SpecificReconstruction3D%}{% end_react_component %}
                             {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}

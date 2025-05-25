@@ -31,12 +31,12 @@ The build.sh script is designed to build a Docker RADI image, from specific bran
 
 `RAM`: This is the branch name of the RoboticsApplicationManager repository to use. Default value is humble-devel.
 
-`ROS_DISTRO`: This is the ROS distribution to use. The script currently supports `noetic` and `humble`. Default value is humble.
+`ROS_DISTRO`: This is the ROS distribution to use. The script currently supports `humble`. Default value is humble.
 
 `IMAGE_TAG`: This is the tag of the Docker image that will be created. Default value is `test`.
 ## Example
 
-For instance, to build a Docker image using the master branch of the Robotics Academy repository, the noetic-devel branch of the Robotics Infrastructure repository, the main branch of the RAM repository, the noetic ROS distribution, and tag the image as my_image, you would run:
+For instance, to build a Docker image using the master branch of the Robotics Academy repository, the humble-devel branch of the Robotics Infrastructure repository, the humble-devel branch of the RAM repository, the humble ROS distribution, and tag the image as my_image, you would run:
 
 ```bash
 ./build.sh -f -a humble-devel -i humble-devel -m humble-devel -r humble -t my_image
@@ -47,7 +47,7 @@ Use '-f' to force build the base image. If omitted, the base image is created on
 If an error occurs while running the script, ensure that:
 
 - All the specified branches exist in their respective repositories.
-- The specified ROS distribution is either noetic or humble.
+- The specified ROS distribution is humble.
 - You have the necessary permissions to build Docker images on your machine. If not you can run:
 
 ```bash

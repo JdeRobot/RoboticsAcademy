@@ -1,0 +1,143 @@
+@font-face {
+  font-family: "Silkscreen";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./../Silkscreen-Regular.ttf") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* camera container */
+.camera_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* upper section */
+.video_section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* video */
+.camera_video {
+  width: 480px;
+  height: 360px;
+}
+
+/* output image  */
+.output_image {
+  width: 500px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+/* Camera Error */
+.camera_error {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* camera error msg */
+.camera_error_msg {
+  color: #fb2b36;
+}
+
+/* statics */
+.camera_static_section {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0.5px solid #414141;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: #dbdbdb;
+  margin-top: 12px;
+  user-select: none;
+}
+
+.camera_static_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+}
+.camera_static_box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 44px;
+}
+/* fps */
+.camera_static_fps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 0.5px solid;
+  font-family: "Silkscreen-Regular";
+  padding-bottom: 4px;
+}
+
+.camera_static_fps > p {
+  font-size: 18px;
+}
+
+.camera_static_fps > span {
+  font-size: 14px;
+}
+/* latency */
+.camera_static_lat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Silkscreen-Regular";
+  padding-top: 4px;
+}
+
+.camera_static_lat > div {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.camera_static_lat > div > p {
+  font-size: 18px;
+}
+
+.camera_static_lat > div > span {
+  font-size: 12px;
+}
+
+.camera_static_lat > span {
+  font-size: 14px;
+}
+
+/* horizontal parition */
+.camera_partition {
+  flex: 0 1 10px;
+  background-color: #fff;
+}
+
+/* camera output */
+.camera_output_section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

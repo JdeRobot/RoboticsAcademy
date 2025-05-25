@@ -3,6 +3,11 @@ export { default as MonacoEditor } from "./MonacoEditor";
 // Monaco Editor Loader
 export { default as MonacoEditorLoader } from "./MonacoEditorLoader";
 
+// Monaco Editor Info
+export { default as MonacoEditorInfoButtons } from "./editor-info/MonacoEditorInfoButtons";
+export { default as MonacoEditorInfoSidebar } from "./editor-info/MonacoEditorInfoSidebar";
+export { default as MonacoEditorInfoDetails } from "./editor-info/MonacoEditorInfoDetails";
+
 // helper
 export { monacoEditorSnippet } from "./helper/monacoEditorSnippet";
 export { monacoEditorScroll } from "./helper/monacoEditorScroll";
@@ -11,19 +16,18 @@ export {
   filterLineNumber,
   renderGlyphs,
 } from "./helper/monacoEditorGlyph";
+export {
+  getEditorSettingsWidgetsData,
+  setEditorSettingsWidgetsData,
+} from "./helper/helpers";
 
 // autocomplete-snippets
 export { basic_snippets } from "./autocomplete-snippets/basic_snippets";
 export { guiAndHalAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets";
-export { importSnippetsObj } from "./autocomplete-snippets/import_snippets";
 
 // helper
 export {
-  fetchAnalysisCode,
-  fetchFormatCode,
   getMarkerSeverity,
-  getHalGuiMethods,
-  snippetsBuilderV2,
 } from "./helper/helpers";
 
 // text extractor helper
@@ -39,7 +43,6 @@ export {
   resizeList,
   monacoEditorThemeList,
   defaultEditorSourceCode,
-  listed_python_packages,
   pylint_error,
   pylint_warning,
   pylint_convention,

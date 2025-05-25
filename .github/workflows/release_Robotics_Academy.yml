@@ -1,0 +1,57 @@
+# Generates and uploads an image of Robotics Academy and Robotics Academy database using the desired tag and branches
+name: Release new Robotics Academy Version manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker Image Tag'
+        required: true
+        default: test
+      latest:
+        description: 'Upload as latest'
+        required: true
+        default: true
+        type: boolean
+      RA:
+        description: 'Branch of RoboticsAcademy'
+        required: true
+        default: humble-devel
+      RI:
+        description: 'Branch of Robotics Infrastructure'
+        required: true
+        default: humble-devel
+      RIDB:
+        description: 'Branch of Robotics Infrastructure for Universes Database'
+        required: true
+        default: database
+      RAM:
+        description: 'Branch of Robotics Application Manager'
+        required: true
+        default: humble-devel
+      ROS:
+        description: 'ROS Distro (humble)'
+        required: true
+        default: humble
+
+jobs:
+  generate-RA-docker-image:
+    name: Generate Robotics Academy Image
+    uses: ./.github/workflows/generate_Robotics_Academy.yml
+    with:
+      tag: ${{ github.event.inputs.tag }}
+      latest: ${{ inputs.latest }}
+      RA: ${{ github.event.inputs.RA }}
+      RI: ${{ github.event.inputs.RI }}
+      RAM: ${{ github.event.inputs.RAM }}
+      ROS: ${{ github.event.inputs.ROS }}
+    secrets: inherit
+  generate-RA-database-docker-image:
+    name: Generate Robotics Academy Database Image
+    uses: ./.github/workflows/generate_Robotics_Academy_Database.yml
+    with:
+      tag: ${{ github.event.inputs.tag }}
+      latest: ${{ inputs.latest }}
+      RA: ${{ github.event.inputs.RA }}
+      RI: ${{ github.event.inputs.RIDB }}
+    secrets: inherit

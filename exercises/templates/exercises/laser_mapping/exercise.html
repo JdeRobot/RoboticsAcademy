@@ -1,380 +1,59 @@
-{% extends "exercise_base.html" %}
-{% load static %} <!-- Cargamos los archivos estaticos -->
-{% block content %}
+{% extends "react_frontend/exercise_base.html" %}
+{% load react_component %}
 
+{% block exercise_header %}
+{% endblock %}
 
-
-<div id="info-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-	  <div class="modal-content">
-		  <div id="carouselControls" class="carousel slide" data-ride="carousel" data-interval="false">
-		  <div class="carousel-inner">
-			<div class="modal-header">
-				<h5>Controls</h5>
-			</div>
-			<div class="modal-body" style="display: flex">
-				<div>
-				<ul>
-					<li>
-						<div class="d-flex flex-row">
-						<img src="{% static 'common/img/submit.png' %}" style="width: 30px; height: 30px;">
-						<p>- Execute your code</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row">
-						<img src="{% static 'common/img/pause.png' %}" style="width: 30px; height: 30px;">
-						<p>- Pause the simulation</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row">
-						<img src="{% static 'common/img/upload.png' %}" style="width: 30px; height: 30px;">
-						<p> - Save your code on the cloud</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row">
-						<img src="{% static 'common/img/reset.svg' %}" style="width: 30px; height: 30px;">
-						<p>- Reset the simulation</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row">
-						<img src="{% static 'common/img/gazebo.svg' %}" style="width: 30px; height: 30px;">
-						<p>- Open gzweb</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row">
-						<img src="{% static 'common/img/console.png' %}" style="width: 30px; height: 30px;">
-						<p style="padding-left: 12px;">- Open terminal</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row" style="margin-top: 20px">
-						<p><strong>Brain Frecuency:</strong>&nbspadjusts the running frecuency of the code</p>
-						</div>
-					</li>
-					<li>
-						<div class="d-flex flex-row">
-						<p><strong>GUI Frecuency:</strong>&nbspadjusts the running frecuency of the GUI</p>
-						</div>
-					</li>
-				</ul>
-				</div>
-			</div>
-	  </div>
-	</div>
-  </div>
-  </div>
-  </div>
-
-  <div class="modal" tabindex="-1" role="dialog" id="errorModal">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <p class="modal-header-text" style="font-weight: 700;"></p>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body" style="white-space: pre-wrap;">
-		  <p style="word-wrap: break-word;"></p>
-		</div>
-	  </div>
-	</div>
-</div>
-
-  <div id="theory-view" style="display: none;">
-	<iframe src="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping" id="iframe-tab"></iframe>
-  </div>
-
-
-		<!--<a id="letters">Sim RTF</a><output id="real_time_factor" style="color:red">0</output><span title="This value is the real time factor of the simulation, it let us know the rate of time in the simulation and real time. As you get closer to 1, the difference between real time and simulation time decreases."></span>-->
-	</div>
-</div>
-
-        <div class="content" id="exercise-view">
-            <div class="split a">
-
-	<br>
-	<div class="col-md-12 justify-content-center">
-		<div id="code-control">
-			<!-- Code Editor -->
-			<!-- Along with buttons -->
-			<div id="code_container">
-			<input type="button" id="aug_font" onclick="setFontSize(true)" value="+" />
-			<input type="button" id="red_font" onclick="setFontSize(false)" value="-" />
-			<div id="editor">from GUI import GUI
-from HAL import HAL
-# Enter sequential code!
-
-while True:
-    # Enter iterative code!</div>
-
-			</div>
-			<div id="myModal" class="modal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title">Enter a filename</h5>
-			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			  </button>
-			</div>
-			<div class="modal-body">
-			<div class="md-form ml-0 mr-0">
-				<input  type="text" id="form29" class="form-control form-control-sm validate ml-0">
-			  </div>
-			</div>
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-primary" onclick="downloadFile()">Download</button>
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			</div>
-		  </div>
-		</div>
-		</div>
-			</div>
-	</div>
-
-  </div>
-            <div class="split b">
-
-
-
-                <div id="visual">
-                    <!-- Canvas -->
-                    <canvas id="birds-eye-mapping"></canvas>
-                    <!-- <div id="mapping"> -->
-                    <canvas id="mapping" style="display: none;"></canvas>
-                    <!-- </div> -->
-                    <!-- <canvas id="gui_canvas"></canvas> -->
-                </div>
-
-				 <br>
-			   <iframe id="console-vnc" style="display:none;" src="" width="100%" height="100%"></iframe>
-
-                 <script type="text/javascript">
-				    var exercise = "laser_mapping";
-
-                     function changeconsole(){
-                        var console_display = document.getElementById('console-vnc').style.display
-                        console.log(console_display)
-                        if (console_display == "none" || console_display == "none" ) {
-							setIframeConsole();
-                          document.getElementById('console-vnc').style.display = 'block';
-                        } else{
-                          document.getElementById('console-vnc').style.display = 'none';
-                        }
-                     }
-                     function changegzweb(websocket_address){
-						changeMapping();
-                     }
-                     function HelpWindow(){
-                        var popup = document.getElementById("myPopup");
-                        popup.classList.toggle("show");
-                    }
-
-					function toggleSubmitButton(toggle) {
-						let submit_button = document.getElementById("submit");
-						if (toggle == false) {
-							submit_button.disabled = true;
-							submit_button.style.opacity = "0.4";
-							submit_button.style.cursor = "not-allowed";
-						} else {
-							submit_button.disabled = false;
-							submit_button.style.opacity = "1.0";
-							submit_button.style.cursor = "default";
-						}
-					}
-
-					function setFontSize(augm) {
-						if (augm) {
-							if (editorele.getFontSize() < 70)
-								editorele.setFontSize(editorele.getFontSize()+1);
-						} else {
-							if (editorele.getFontSize() > 2)
-								editorele.setFontSize(editorele.getFontSize()-1);
-						}
-					}
-                </script>
-            </div>
-        </div>
-
-        <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
-        <script>
-            Split(['.a', '.b'], {
-                gutterSize: 3,
-                sizes: [50,50]
-            });
-			window.addEventListener('load', function () {
-        window.top.postMessage('connect', '*');
-    })
-        </script>
-
-  <!-- Common -->
-  <script src="{% static 'common/js/utils.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'common/js/websocket_address.js' %}" type="text/javascript" charset="utf-8"></script>	
-  <script src="{% static 'common/js/setIframe.js' %}" type="text/javascript" charset="utf-8"></script>	
-  <script src="{% static 'common/js/local_functions.js' %}" type="text/javascript" charset="utf-8"></script>	
-
-  <!-- Exercise specific resources -->
-  <script src="{% static 'exercises/laser_mapping/js/ws_gui.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'exercises/laser_mapping/js/ws_code.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'exercises/laser_mapping/js/launcher.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'exercises/laser_mapping/js/controller.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'exercises/laser_mapping/js/birds_eye.js' %}" type="text/javascript" charset="utf-8"></script>
-  <script src="{% static 'exercises/laser_mapping/js/mapping.js' %}" type="text/javascript" charset="utf-8"></script>
-
-
-
-    <!--- Teleoperate mode script -->
-    <script>
-        function change_teleop_img() {
-        const teleop_img = document.querySelector('#teleop_img');
-        if (teleop_switch) {
-        teleop_img.src = "{% static 'common/img/joystick_on.png' %}";
-        }
-        else {
-        teleop_img.src = "{% static 'common/img/joystick_off.png' %}";
-        }
-    }
-    </script>
-
-    <!-- BOTON DE CONEXION CON RoboticsBackend-->
-    <script>
-		window.onload = function() {
-			startSim(0 );
-			$("#connection-button").prop('disabled', true);
-		}
-		window.onbeforeunload = function() {
-			startSim(2);
-		}
-        $(document).ready(function() {$("#launch-button").click(
-            function () {
-				if ($("#launch-button").attr('class') == 'btn btn-secondary' && $("#connection-button").attr('class') == 'btn btn-success') {
-					$("#launch-button").prop('disabled', true);
-					$("#launch-button").removeClass('btn-secondary').addClass('btn-warning');
-					$("#launch-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching');
-					startSim(1);
-				}
-				else if ($("#connection-button").attr('class') == 'btn btn-secondary') {
-					alert("A connection with the manager must be established before launching an exercise");
-				}
-			});
-        });
-		$(document).ready(function() {$("#connection-button").click(
-			function () {
-				if ($("#connection-button").attr('class') == 'btn btn-secondary') {
-					$("#connection-button").prop('disabled', true);
-					$("#connection-button").removeClass('btn-secondary').addClass('btn-warning');
-					$("#connection-button").html('<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Connecting');
-					startSim(0 );
-				}
-			});
-		});
-		function connectionUpdate(data){
-			if (data.connection == 'manager') {
-				if (data.command == 'up') {
-					$("#connection-button").removeClass("btn-warning btn-secondary").addClass("btn-success");
-					$("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connected');
-					$("#connection-button").prop('disabled', true);
-					$("#launch-button").prop('disabled', false);
-				}else if (data.command == 'down'){
-					$("#connection-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
-					$("#connection-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Connect');
-					$("#connection-button").prop('disabled', false);
-					if (websocket_code != null)
-						websocket_code.close();
-					if (websocket_gui != null)
-						websocket_gui.close();
-					$("#launch-button").removeClass("btn-success btn-warning").addClass("btn-secondary");
-					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
-				}
-			} else if (data.connection == 'exercise') {
-				if (data.command == 'available') {
-					$("#launch-button").removeClass('btn-secondary').addClass('btn-secondary');
-				}else if (data.command == 'up') {
-					$("#launch-button").removeClass("btn-warning").addClass("btn-success");
-					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Ready');
-					$("#launch-button").prop('disabled', true);
-					let submit_button = document.getElementById("submit");
-					submit_button.disabled = false;
-					submit_button.style.opacity = "1.0";
-					submit_button.style.cursor = "default";
-					let reset_button = document.getElementById("reset");
-					reset_button.disabled = false;
-					reset_button.style.opacity = "1.0";
-					reset_button.style.cursor = "default";
-				}else if (data.command == 'down'){
-					$("#launch-button").removeClass("btn-success").addClass("btn-secondary");
-					$("#launch-button").html('<span id="loading-connection" class="bi bi-arrow-down-up"></span> Launch');
-					$("#launch-button").prop('disabled', false);
-				}else if (data.command == 'launch_level'){
-					let level = data.level;
-					$("#launch-button").html(`<span id="loading-connection" class="fa fa-refresh fa-spin"></span> Launching <a id="launch_level">${level}</a>`);
-				}else if (data.command == 'error') {
-					$('#errorModal .modal-header .modal-header-text').text("Errors detected:");
-                    $('#errorModal .modal-body').text(data.text);
-                    $('#errorModal').modal({ show:true, backdrop: false});
-					$('#errorModal .modal-dialog').draggable({});
-					toggleSubmitButton(true);
-                }
-				else if (data.command == 'style') {
-					$('#errorModal .modal-header .modal-header-text').text("Style evaluation:");
-					if (data.text.replace(/\s/g, '').length)
-                    	$('#errorModal .modal-body').text(data.text);
-					else
-						$('#errorModal .modal-body').text("Everything is correct!");
-                    $('#errorModal').modal({ show:true, backdrop: false});
-					$('#errorModal .modal-dialog').draggable({});
-                }
-			}
-		}
-    </script>
-
-	<script type="text/javascript">
-		const editorele = ace.edit("editor");
-		function downloadCode() {
-			downloaded_code = downloadUserCode('{{exercise}}');
-		}
-		function showUserCode(downloaded_code){
-			if (downloaded_code != "") {
-				code = downloaded_code.replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;gt;/g, ">").replace(/&amp;lt;/g, "<").replace(/&amp;ge;/g, ">=").replace(/&amp;le;/g, "<=").replace(/&le;/g, "<=").replace(/&ge;/g, ">=").replace(/\n/g, "\n");
-				editorele.setValue(code);
-			}
-		}
-	</script>
-
-	<script>
-    document.getElementById('loadIntoRobot').style.display = 'none';
-    
-		editorele.getSession().on('change', function() {
-			editorChanged(true);
-		});
-
-		function editorChanged(toggle) {
-			if (firstCodeSent) {
-				if (toggle) {
-					document.getElementById("loadIntoRobotAlert").style.display = 'inline-block';
-					document.getElementById("submit").title = "Code changed since last sending";
-				} else {
-					document.getElementById("loadIntoRobotAlert").style.display = 'none';
-					document.getElementById("submit").title = "";
-				}
-			}
-		}
-	</script>
-
-    {% if user_code|length > 0 %}
-
-    <script type="text/javascript">
-		code = "{{user_code}}".replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&gt;/, ">").replace(/&lt;/, "<")
-		console.log(code);
-        editor.setValue(code)
-    </script>
-
+{% block react-content %}
+    {% if deployment %}
+        {% react_component exercise/laser_mapping/LaserMapping %}
+            {% react_component components/containers/MaterialBox id="exercise-container" %}
+                {% react_component components/common/MainAppBar exerciseName="Laser Mapping" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping"%} 
+                {% react_component RA_links/WorldSelectorRA %} {% end_react_component %} 
+                {% end_react_component %}
+                {% react_component components/containers/MaterialBox id="content" %}
+                    {% react_component components/containers/MaterialBox id="content-exercise" %}
+                        {% react_component components/containers/ExerciseControl %}{% end_react_component %}
+                        {% react_component components/containers/FlexContainer row %}
+                        {% react_component components/containers/FlexContainer console %} 
+                        {% react_component components/editors/EditorRobot %}{% end_react_component %}
+                        {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
+                        {% end_react_component%}
+                        {% react_component components/containers/FlexContainer%} 
+                            {% react_component exercise/laser_mapping/SpecificLaserMapping %}{% end_react_component %}
+                            {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
+                        {% end_react_component %}
+                    {% end_react_component %}
+                {% end_react_component %}
+            {% react_component components/message-system/Loading %}{% end_react_component %}
+            {% react_component components/message-system/Alert %}{% end_react_component %}
+        {% end_react_component %}
+        {% end_react_component %}
+        {% end_react_component %}
+    {% else %}
+        {% react_component exercise/laser_mapping/LaserMapping %}
+            {% react_component components/wrappers/MaterialBox id="exercise-container" %}
+                {% react_component components/layout_components/MainAppBar exerciseName="Laser Mapping" url="https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping"%} 
+                {% react_component components/visualizers/WorldSelector %} {% end_react_component %}  
+                {% end_react_component %} 
+                {% react_component components/wrappers/MaterialBox id="content" %}
+                    {% react_component components/wrappers/MaterialBox id="content-exercise" %}
+                        {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
+                        {% react_component components/wrappers/FlexContainer row %}
+                        {% react_component components/wrappers/FlexContainer console %} 
+                            {% react_component components/editors/EditorRobot %}{% end_react_component %}
+                            {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
+                            {% end_react_component%}
+                            {% react_component components/wrappers/FlexContainer%} 
+                                {% react_component exercise/laser_mapping/SpecificLaserMapping %}{% end_react_component %}
+                                {% react_component components/visualizers/GazeboViewer%}{% end_react_component %}
+                            {% end_react_component %}
+                        {% end_react_component %}
+                    {% end_react_component %}
+            {% react_component components/message_system/Loading %}{% end_react_component %}
+            {% react_component components/message_system/Alert %}{% end_react_component %}
+        {% end_react_component %}
+        {% end_react_component %}
+        {% end_react_component %}
     {% endif %}
 {% endblock %}

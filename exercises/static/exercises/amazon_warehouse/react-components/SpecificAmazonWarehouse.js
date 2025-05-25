@@ -73,8 +73,6 @@ function SpecificAmazonWarehouse(props) {
         addToTrail(convPose[1], convPose[0], base_trail);
       }
 
-      console.log(data)
-
       if(data.image) {
         let canvas = document.getElementById("exercise-img");
           //Parse encoded image data and decode it

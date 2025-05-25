@@ -1,9 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
+import noImage from "../../assets/img/noImage.png";
+import "./css/GUICanvas.css";
 
 export default function ImgCanvas() {
   const [image, setImage] = React.useState(
-    "https://via.placeholder.com/800x600.png?text=No%20image%20received%20from%20exercise"
+    noImage
   );
 
   React.useEffect(() => {
@@ -35,9 +37,9 @@ export default function ImgCanvas() {
     };
   }, []);
   return (
-    <>
-      <img height={"400px"} width={"100%"} src={image} id="gui_canvas" />
-    </>
+    <div style={{display: "flex", width: "100%", height: "100%", position:"relative", justifyContent: "center"}}>
+      <img className="image" id="gui_canvas" src={image}/>
+    </div>
   );
 }
 

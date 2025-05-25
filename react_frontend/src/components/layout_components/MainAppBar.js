@@ -40,20 +40,22 @@ function MainAppBar(props) {
           document.getElementById("exercise-config").textContent
         );
         window.RoboticsExerciseComponents.commsManager
-          .launchWorld(config[0])
+          .launchWorld({ world: config[0].world, robot: config[0].robot })
           .then(() => {
             window.RoboticsExerciseComponents.commsManager
-            .prepareVisualization(config[0].visualization).then(() => {
-              RoboticsReactComponents.MessageSystem.Loading.hideLoading();
-              RoboticsReactComponents.MessageSystem.Alert.showAlert(
-                "Exercise loaded successfully.", "success"
-              );
-            })
-     
+              .prepareVisualization({type: config[0].visualization, file: config[0].visualization_config_path})
+              .then(() => {
+                RoboticsReactComponents.MessageSystem.Loading.hideLoading();
+                RoboticsReactComponents.MessageSystem.Alert.showAlert(
+                  "Exercise loaded successfully.",
+                  "success"
+                );
+              });
           })
           .catch((e) => {
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              e.data.message, "error"
+              e.data.message,
+              "error"
             );
           });
       })
@@ -96,7 +98,11 @@ function MainAppBar(props) {
             }}
           >
             <a href="http://127.0.0.1:7164/exercises/">
-              <img src="/static/exercises/assets/img/logo.gif" fit={"cover"} width={50} />
+              <img
+                src="/static/exercises/assets/img/logo.gif"
+                fit={"cover"}
+                width={50}
+              />
             </a>
           </Box>
           <Box

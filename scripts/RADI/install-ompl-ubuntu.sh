@@ -82,6 +82,7 @@ install_ompl()
         ${SUDO} apt-get -y install git
         git clone --recurse-submodules https://github.com/ompl/${OMPL}.git
         cd $OMPL
+        git checkout 0f990886e9e40014e32ddee177c8d798adbc8fb7 # Temporary: with this commit works
     fi
     mkdir -p build/Release
     cd build/Release

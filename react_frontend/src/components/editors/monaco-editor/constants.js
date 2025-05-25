@@ -17,7 +17,3 @@ export const pylint_warning = ["W0611"];
 export const pylint_convention = ["C0114", "C0303", "C0304", "C0305", "C0411"];
 export const pylint_refactor = [];
 export const pylint_fatal = [];
-
-// python packages autocomplete list
-
-export const listed_python_packages = ["numpy", "math", "cv2", "HAL", "GUI"];

@@ -1,0 +1,95 @@
+# Generates and uploads an image of Robotics Academy and Robotics Academy database using the desired tag and branches
+name: Release new Robotics Academy Version on new version
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  generate-RA-docker-image:
+    name: Generate Robotics Academy Image
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Save the version tag
+        run: echo "TAG=${TAG#v}" >> $GITHUB_ENV
+      - run: echo ${TAG}
+      - name: Check out the repo # checking our the code at current commit that triggers the workflow
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch-webserver-id }}
+          fetch-depth: 1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build base image
+        run: |
+          sudo apt-get update
+          cd scripts/RADI
+          docker build -f Dockerfile.dependencies_humble -t jderobot/robotics-applications:dependencies-humble .
+      - name: Build and push RADI
+        run: |
+          cd scripts/RADI
+          docker build --no-cache -f Dockerfile.humble \
+            --build-arg ROBOTICS_ACADEMY=humble-devel\
+            --build-arg ROBOTICS_INFRASTRUCTURE=humble-devel \
+            --build-arg RAM=humble-devel \
+            --build-arg ROS_DISTRO=humble \
+            --build-arg IMAGE_TAG=${TAG} \
+            -t jderobot/robotics-academy:${TAG} .
+          docker push jderobot/robotics-academy:${TAG}
+      - name: Upload as Latest
+        run: |
+            docker image tag jderobot/robotics-academy:${TAG} jderobot/robotics-academy:latest
+            docker push jderobot/robotics-academy:latest
+  generate-RA-database-docker-image:
+    name: Generate Robotics Academy Database Image
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - name: Save the version tag
+        run: echo "TAG=${TAG#v}" >> $GITHUB_ENV
+      - run: echo ${TAG}
+      - name: Check out the repo # checking our the code at current commit that triggers the workflow
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch-webserver-id }}
+          fetch-depth: 1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push RA database
+        run: |
+          cd scripts/RADI
+          docker build --no-cache -f Dockerfile.database \
+            --build-arg IMAGE_TAG=${TAG}\
+            --build-arg ROBOTICS_ACADEMY=humble-devel\
+            --build-arg ROBOTICS_INFRASTRUCTURE=database \
+            -t jderobot/robotics-database:${TAG} .
+          docker push jderobot/robotics-database:${TAG}
+      - name: Upload as Latest
+        run: |
+            docker image tag jderobot/robotics-database:${TAG} jderobot/robotics-database:latest
+            docker push jderobot/robotics-database:latest

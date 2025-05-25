@@ -1,0 +1,5 @@
+.image {
+  position: absolute;
+  height: 100%;
+  border: 4px black solid;
+}

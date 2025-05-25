@@ -22,6 +22,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 - [Client side.][] (Robotics Academy architecture)
 - [Repository Architecture.][]
 - [Generate a RADI.][]
+- [Publishing a RADI.][]
 - [Humble RADI structure.][]
 - [Develop using volume binding.][]
 - [ROS2 and superthin templates migration.][]
@@ -31,6 +32,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 [Client side.]: ./docs/clientside.md
 [Repository Architecture.]: ./docs/RepositoryArchitecture.md
 [Generate a RADI.]: ./docs/generate_a_radi.md
+[Publishing a RADI.]: ./.github/workflows/README.md
 [Humble RADI structure.]: ./scripts/RADI/README.md
 [Develop using volume binding.]: ./docs/develop_binding_volumes.md
 [ROS2 and superthin templates migration.]: ./docs/exercise-status.md
