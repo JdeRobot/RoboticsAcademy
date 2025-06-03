@@ -58,32 +58,35 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   && rm -rf /var/lib/apt/lists/*
 
 # Install Gazebo 11
-RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
-RUN apt-get update && apt-get install -y \
-        gazebo11 \
-        ros-humble-gazebo-ros-pkgs \
-        gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-good \
-        gstreamer1.0-plugins-ugly \
-        gstreamer1.0-libav \
-        libgstreamer-plugins-base1.0-dev \
-        libimage-exiftool-perl \
-    && apt-get -y autoremove \
-    && apt-get clean autoclean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN sudo rosdep fix-permissions \
+  && rosdep update \
+  && apt-get update && apt-get install -q -y \
+    ros-humble-gazebo* \
+    ros-humble-ros-gz-* \
+    gazebo ros-humble-gazebo-ros2-control ros-humble-gazebo-ros-pkgs\
+    gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-ugly \
+    gstreamer1.0-libav \
+    libgstreamer-plugins-base1.0-dev \
+    libimage-exiftool-perl \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
 # Install Gazebo Harmonic
-RUN apt-get update \
-  && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && apt-get update && apt-get install -y -q \
-      gz-harmonic \
-  && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+#   && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+#   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
+#   && apt-get update && apt-get install -y -q \
+#       gz-harmonic \
+#   && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y \
-      ros-humble-ros-gzharmonic \
-  && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y \
+#       ros-humble-ros-gzharmonic \
+#   && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -207,17 +210,17 @@ RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mix
 RUN colcon mixin update default
 RUN rm -rf log 
 # remove log folder
-RUN mkdir -p /home/drones_ws/src/
-WORKDIR /home/drones_ws/src/
-RUN git clone https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
-RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
-RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
-RUN touch aerostack2/as2_map_server/COLCON_IGNORE
-RUN touch aerostack2/as2_behaviors/as2_behaviors_path_planning/COLCON_IGNORE
-RUN touch aerostack2/as2_utilities/as2_geozones/COLCON_IGNORE
-RUN touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLCON_IGNORE
+# RUN mkdir -p /home/drones_ws/src/
+# WORKDIR /home/drones_ws/src/
+# RUN git clone https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
+# RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
+# RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
+# RUN touch aerostack2/as2_map_server/COLCON_IGNORE
+# RUN touch aerostack2/as2_behaviors/as2_behaviors_path_planning/COLCON_IGNORE
+# RUN touch aerostack2/as2_utilities/as2_geozones/COLCON_IGNORE
+# RUN touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLCON_IGNORE
 
-WORKDIR /home/drones_ws/
+# WORKDIR /home/drones_ws/
 
 RUN apt-get update && \
     apt-get install -y \
@@ -290,7 +293,6 @@ RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
 
 # OLD Instalation for industrial robots
 
-<<<<<<< HEAD
 #RUN mkdir -p /home/industrial_ws/src/ABBDriver
 #WORKDIR /home/industrial_ws/src/ABBDriver
 #RUN git clone https://github.com/PickNikRobotics/abb_ros2.git -b humble
@@ -304,21 +306,6 @@ RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
 #RUN git clone https://github.com/IFRA-Cranfield/IFRA_ObjectPose.git
 #RUN git clone https://github.com/IFRA-Cranfield/IFRA_LinkPose.git
 #RUN git clone https://github.com/IFRA-Cranfield/ros2_RobotiqGripper.git
-=======
-RUN mkdir -p /home/industrial_ws/src/ABBDriver
-WORKDIR /home/industrial_ws/src/ABBDriver
-RUN git clone https://github.com/PickNikRobotics/abb_ros2.git -b rolling
-RUN . /opt/ros/$ROS_DISTRO/setup.sh && rosdep update
-RUN vcs import < abb_ros2/abb.repos
-RUN . /opt/ros/$ROS_DISTRO/setup.sh && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
-WORKDIR /home/industrial_ws/src
-RUN git clone https://github.com/ros-controls/gazebo_ros2_control.git
-RUN cd gazebo_ros2_control && git reset --hard 9a3736c # Commit for the 0.4.6 version!
-RUN git clone https://github.com/IFRA-Cranfield/IFRA_LinkAttacher.git
-RUN git clone https://github.com/IFRA-Cranfield/IFRA_ObjectPose.git
-RUN git clone https://github.com/IFRA-Cranfield/IFRA_LinkPose.git
-RUN git clone https://github.com/IFRA-Cranfield/ros2_RobotiqGripper.git
->>>>>>> 21759764e50aae731f6823dc22052f9b17e72ebf
 # Forked needed in order to read the parameters from main launcher
 #RUN git clone https://github.com/javizqh/ros2_SimRealRobotControl
 #RUN sudo cp /home/industrial_ws/src/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h

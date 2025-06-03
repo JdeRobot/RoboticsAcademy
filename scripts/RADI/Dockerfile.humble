@@ -32,13 +32,8 @@ RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBO
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
-<<<<<<< HEAD
 # RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
 RUN /bin/bash -c "source /home/dev_ws/install/local_setup.bash"
-=======
-RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
-RUN /bin/bash -c "source /home/industrial_ws/install/setup.bash"
->>>>>>> 21759764e50aae731f6823dc22052f9b17e72ebf
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
 
 # Compress commons
