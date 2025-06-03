@@ -61,7 +61,7 @@ Robotics Academy is an **open source** collection of exercises and challenges to
 
 Each exercise is composed of (a) Gazebo configuration files, (b) a webpage and (c) the user documentation with theory contents and hints. The students can edit, debug and run their robotics applications from the browser. Two auxiliary Python modules are provided for each exercise and may be (optionally) used: *HAL.py* for easy access to _sensor readings_ and _actuator commands_ and *GUI.py* for Graphical User Interface at the browser. 
 
-For successful execution the student launches a Docker image (named RADI, RoboticsAcademy Docker Image) containing all the robotics dependencies (ROS2 Humble, Gazebo simulator, OpenCV, PyTorch...) already preinstalled and then connects to a Django webserver running inside RADI from the browser to land in the corresponding exercise webpage.
+For successful *offline execution* the student launches a Docker image (named RADI, RoboticsAcademy Docker Image) containing all the robotics dependencies (ROS2 Humble, Gazebo simulator, OpenCV, PyTorch...) already preinstalled and then connects to a Django webserver running inside RADI from the browser to land in the corresponding exercise webpage. Alternatively it can also be used online at [Unibotics](https://unibotics.org), the JdeRobot robot programming website.
 
 {% include basic_row %}
 
