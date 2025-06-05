@@ -71,7 +71,7 @@ const PlayPause = (props) => {
 
     var zip = new JSZip();
     const commonsZip = await zip.loadAsync(commons);
-    console.log(commonsZip)
+    console.log(commonsZip);
 
     try {
       const response = await fetch(requestUrl, {
@@ -94,6 +94,12 @@ const PlayPause = (props) => {
       });
 
       commonsZip.file("academy.py", code);
+
+      //TODO: TEST START
+      // add onnx file to the zip if it exists
+      commonsZip.file("model.onnx", RoboticsReactComponents.model);
+      // add any other files needed for the exercise
+      //TODO: TEST END
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();
