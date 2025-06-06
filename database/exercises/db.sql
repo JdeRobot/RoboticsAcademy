@@ -101,7 +101,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, templat
 15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/basic_computer_vision/python_template/
 16	follow_road	Follow Road	Follow Road exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/follow_road/python_template/
 17	pick_place	Pick and Place	Pick and Place exercise	{"tags": "ROS2"}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/pick_place/python_template/
-18	dl_dig_test	dl_dig_test	dl_dig_test	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/dl_dig_test/python_template/
+18	basic_computer_vision_dl	Basic Computer Vision with DL	Basic Computer Vision With Deep learning model.	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/basic_computer_vision_dl/python_template/
 \.
 -- 16	rescue_people_classic	Rescue People Old	Rescue People exercise With Gazebo Classic	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people_classic/python_template/
 
