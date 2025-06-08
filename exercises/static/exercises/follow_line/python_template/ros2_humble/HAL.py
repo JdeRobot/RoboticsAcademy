@@ -12,6 +12,14 @@ IMG_HEIGHT = 240
 
 freq = 90.0 # Less than this wont work
 
+# Mutes exceptions
+def custom_thread_excepthook(args):
+    if "spin" in args.thread.name:
+        return
+    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
+threading.excepthook = custom_thread_excepthook
+
 def __auto_spin() -> None:
     while rclpy.ok():
         try:

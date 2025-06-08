@@ -1,6 +1,7 @@
 import rclpy
 import threading
 import time
+import sys
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
@@ -11,6 +12,13 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
+# Mutes exceptions
+def custom_thread_excepthook(args):
+    if "spin" in args.thread.name:
+        return
+    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
+threading.excepthook = custom_thread_excepthook
 # ROS2 init
 
 print("HAL initializing", flush=True)
