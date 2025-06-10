@@ -1,6 +1,7 @@
 import rclpy
 import threading
 import time
+import sys
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
@@ -13,6 +14,14 @@ freq = 30.0
 
 # Lift State
 liftState = False
+
+# Mutes exceptions
+def custom_thread_excepthook(args):
+    if "spin" in args.thread.name:
+        return
+    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
+threading.excepthook = custom_thread_excepthook
 
 print("HAL initializing", flush=True)
 if not rclpy.ok():
@@ -34,8 +43,12 @@ if not rclpy.ok():
     executor.add_node(platform_listener)
     def __auto_spin() -> None:
         while rclpy.ok():
-            executor.spin_once(timeout_sec=0)
-            time.sleep(1/freq)
+            try:
+                executor.spin_once(timeout_sec=0)
+            except Exception:
+                pass
+            time.sleep(1 / freq)
+
     executor_thread = threading.Thread(target=__auto_spin, daemon=True)
     executor_thread.start()
 

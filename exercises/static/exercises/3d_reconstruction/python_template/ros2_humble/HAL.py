@@ -1,6 +1,8 @@
 import rclpy
 import threading
 import time
+import sys
+
 from hal_interfaces.general.camera import CameraNode
 from hal_interfaces.specific.threed_reconstruction.parameters_camera import ListenerParameters
 import numpy as np
@@ -13,6 +15,13 @@ IMG_HEIGHT = 480
 image = None
 freq = 15.0
 
+# Mutes exceptions
+def custom_thread_excepthook(args):
+    if "spin" in args.thread.name:
+        return
+    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
+threading.excepthook = custom_thread_excepthook
 
 # ROS2 init
 if not rclpy.ok():
@@ -27,8 +36,12 @@ executor.add_node(cameraL)
 executor.add_node(cameraR)
 def __auto_spin() -> None:
     while rclpy.ok():
-        executor.spin_once(timeout_sec=0)
-        time.sleep(1/freq)
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
+        
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
