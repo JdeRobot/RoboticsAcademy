@@ -313,11 +313,7 @@ An exercise entry in the database must include the following data:
 
 <a name="Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises"></a>
 ## Steps to change models from CustomRobots in RoboticsAcademy exercises.
-- Upload the new model files to [CustomRobots repository](https://github.com/JdeRobot/CustomRobots)
-- Change the model name in .world file contained in static/exercises path that calls it.
-- If you have some .world files you need to create different .launch files and add a '{}' in the [instructions.json file](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/instructions.json) that will be replaced by the [manager.py file](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/manager.py) for the variable name of the selection list of the JS and HTML files of the exercise.
-- You need to change the launcher.js file in the case that the exercise has a map selector or not.
-- Finally, if the exercise need an specific plugin that isn't installed in the container you need to modify the [Dockerfile](https://github.com/JdeRobot/RoboticsAcademy/blob/master/scripts/Dockerfile) an add the commands that allows the installation of the .cc and .hh files of the CustomRobots repository.
+- Follow the guide in [Robotics Infrastructure](https://github.com/JdeRobot/RoboticsInfrastructure).
 
 <a name="edit-code-on-RoboticsBackend-on-the-go"></a>
 ## Edit code on RoboticsBackend On The GO.
