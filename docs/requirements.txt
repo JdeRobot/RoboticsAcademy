@@ -10,7 +10,7 @@ pygithub
 docker==4.1.0
 paramiko==3.4.0
 django-queryset-csv==1.0.3
-requests==2.32.0
+requests==2.32.4
 websocket-client==0.57.0
 pydiscourse==0.9.0
 django-taggit-autosuggest==0.3.8
