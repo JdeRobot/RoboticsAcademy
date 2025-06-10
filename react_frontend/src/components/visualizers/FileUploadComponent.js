@@ -82,7 +82,7 @@ const styles = {
     marginTop: "20px",
   },
 };
-
+// digit_classification;
 const UploadIcon = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
