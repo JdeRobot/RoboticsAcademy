@@ -9,12 +9,6 @@ import numpy as np
 
 # Graphical User Interface Class
 
-import os
-
-current_path = os.path.abspath(__file__)
-print("############################### Full path: ######################", current_path)
-
-
 class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
