@@ -13,6 +13,14 @@ from hal_interfaces.general.classnet import NeuralNetwork
 
 freq = 30.0
 
+# Mutes exceptions
+def custom_thread_excepthook(args):
+    if "spin" in args.thread.name:
+        return
+    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
+threading.excepthook = custom_thread_excepthook
+
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
@@ -30,8 +38,12 @@ executor.add_node(laser_node)
 executor.add_node(camera_node)
 def __auto_spin() -> None:
     while rclpy.ok():
-        executor.spin_once(timeout_sec=0)
-        time.sleep(1/freq)
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
+        
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
