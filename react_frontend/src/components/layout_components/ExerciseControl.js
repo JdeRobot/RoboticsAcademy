@@ -45,6 +45,7 @@ function ExerciseControl(props) {
             m: 1,
           }}
         >
+          <div>hello</div>
           <PlayPauseButton></PlayPauseButton>
           <ResetButton></ResetButton>
           <Frequencies style={showFrequencies ? "visible" : "hidden"} />
