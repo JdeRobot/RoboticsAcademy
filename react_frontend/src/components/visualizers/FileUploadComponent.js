@@ -41,7 +41,7 @@ const FileUploadComponent = () => {
     console.log("====================================");
 
     // Set the model in the DeepLearningModel component
-    window.RoboticsReactComponents.DeepLearningModel.setModel(buffer);
+    window.RoboticsReactComponents.DeepLearningModel.setModelBuffer(buffer);
     // Update the state with file details
     setFileName(file.name);
     setFileSize(file.size);

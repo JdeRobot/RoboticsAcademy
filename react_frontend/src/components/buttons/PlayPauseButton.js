@@ -96,9 +96,9 @@ const PlayPause = (props) => {
       commonsZip.file("academy.py", code);
 
       // add onnx file to the zip if it exists
-      if (RoboticsReactComponents.deepLearningModel) {
+      if (window.RoboticsReactComponents.DeepLearningModel) {
         const modelBuffer =
-          RoboticsReactComponents.deepLearningModel.getModelBuffer();
+          RoboticsReactComponents.DeepLearningModel.getModelBuffer();
         if (modelBuffer) {
           commonsZip.file("model.onnx", modelBuffer);
         } else {
