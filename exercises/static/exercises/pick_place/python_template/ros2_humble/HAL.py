@@ -17,7 +17,8 @@ print("HAL initializing", flush=True)
 ##############################################################################
 
 import sys, os, time, math
-import rclpy, tf_transformations
+import rclpy
+#import tf_transformations
 import numpy as np
 
 from rclpy.node import Node
@@ -48,76 +49,6 @@ from ros2srrc_data.msg import Robpose
 # Inicialization
 rclpy.init(args=None)
 UR5 = RBT()
-
-###################################### GET ROBOT INFO ###################################################
-class JointStateSubscriber(Node):
-
-    def __init__(self):
-        super().__init__('joint_info_node')
-        self.subscription = self.create_subscription(
-            JointState,
-            '/joint_states',
-            self.listener_callback,
-            4
-        )
-        self.subscription  # Prevent unused variable warning
-        self.joint_angles = None
-
-    def listener_callback(self, msg):
-        self.joint_angles = [round(math.degrees(msg.position[0]),1),
-                            round(math.degrees(msg.position[1]),1),
-                            round(math.degrees(msg.position[2]),1),
-                            round(math.degrees(msg.position[3]),1),
-                            round(math.degrees(msg.position[4]),1),
-                            round(math.degrees(msg.position[5]),1)]
-
-class RobotStateSubscriber(Node):
-
-    def __init__(self):
-        super().__init__('pose_info_node')
-        self.subscription = self.create_subscription(
-            Robpose,
-            '/Robpose',
-            self.listener_callback,
-            4
-        )
-        self.subscription  # Prevent unused variable warning
-        self.robot_cartesian_pose = None
-        self.robot_angular_pose = None
-
-    def listener_callback(self, msg):
-        self.robot_cartesian_pose = [round(msg.x,3),
-                                round(msg.y,3),
-                                round(msg.z,3)]
-        
-        roll, pitch, yaw = tf_transformations.euler_from_quaternion([msg.qx, msg.qy, msg.qz, msg.qw])
-        self.robot_angular_pose = [round(math.degrees(roll),1), 
-                              round(math.degrees(pitch),1),
-                              round(math.degrees(yaw),1)]
-        
-        
-# Get the TCP (Tool Center Point) position XYZ, in meters (rounded)
-# and the Gripper YPR orientation, in Euler angles (degrees, rounded)
-def get_TCP_pose():
-    robot_info = RobotStateSubscriber()
-    rclpy.spin_once(robot_info)
-    
-    print (f"Robot TCP XYZ is {robot_info.robot_cartesian_pose} m")
-    print (f"Robot gripper YPR is {robot_info.robot_angular_pose} degrees")
-    print ("")
-    
-    return robot_info.robot_cartesian_pose, robot_info.robot_angular_pose
-
-
-# Get the 6 robot joint values, in degrees (and rounded). 
-def get_Joint_states():
-    joint_info = JointStateSubscriber()
-    
-    rclpy.spin_once(joint_info)
-    print (f"UR5 six joint angles are {joint_info.joint_angles} degrees")
-    print ("")
-    
-    return joint_info.joint_angles
 
 #################################### ROBOT KINEMATICS ###################################################
 # MoveAbsJ. Absolute Joints in degrees, speed max 1.0, wait time after movement in seconds
@@ -345,10 +276,10 @@ def dettach():
     link_attacher_client = LinkAttacherClient()
     
     # Detach operation for all possible objects when gripper is set to 0%
-    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'red_box_small', 'red_box_small')
-    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'yellow_box_small', 'yellow_box_small')
-    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'blue_sphere_small', 'blue_sphere_small')
-    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'green_cylinder_small', 'green_cylinder_small')
+    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'red_box', 'red_box')
+    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'yellow_box', 'yellow_box')
+    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'blue_sphere', 'blue_sphere')
+    link_attacher_client.send_detach_request('ur5', 'EE_robotiq_2f85', 'green_cylinder', 'green_cylinder')
 
 # Gripper closing and opeining to a given percentage (100% full open, 0% full closed)
 # Speed max 1.0, wait time after movement in seconds    
