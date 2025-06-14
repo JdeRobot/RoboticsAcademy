@@ -6,9 +6,9 @@
 
 {% block react-content %}
     {% if deployment %}
-        {% react_component exercise/rescue_people/BasicComputerVisionRR %}
+        {% react_component exercise/basic_computer_vision/BasicComputerVisionRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
-            {% react_component components/common/MainAppBar exerciseName="Basic Computer Vision" url="https://jderobot.github.io/RoboticsAcademy/exercises/Drones/basic_computer_vision"%} 
+            {% react_component components/common/MainAppBar exerciseName="Basic Computer Vision" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision"%} 
             {% end_react_component %}
             {% react_component components/containers/MaterialBox id="content" %}
                 {% react_component components/containers/MaterialBox id="content-exercise" %}
@@ -19,7 +19,7 @@
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
-                            {% react_component exercise/rescue_people/SpecificBasicComputerVision %} {% end_react_component %}
+                            {% react_component exercise/basic_computer_vision/SpecificBasicComputerVision %} {% end_react_component %}
                             {% react_component components/visualizers/Camera%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
