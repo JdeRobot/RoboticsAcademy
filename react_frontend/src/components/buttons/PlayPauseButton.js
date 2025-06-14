@@ -95,11 +95,18 @@ const PlayPause = (props) => {
 
       commonsZip.file("academy.py", code);
 
-      //TODO: TEST START
       // add onnx file to the zip if it exists
-      commonsZip.file("model.onnx", RoboticsReactComponents.model);
-      // add any other files needed for the exercise
-      //TODO: TEST END
+      if (window.RoboticsReactComponents.DeepLearningModel) {
+        const modelBuffer =
+          RoboticsReactComponents.DeepLearningModel.getModelBuffer();
+        if (modelBuffer) {
+          commonsZip.file("model.onnx", modelBuffer);
+        } else {
+          console.warn("No ONNX model buffer found.");
+        }
+      } else {
+        console.warn("DeepLearningModel component not found.");
+      }
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();

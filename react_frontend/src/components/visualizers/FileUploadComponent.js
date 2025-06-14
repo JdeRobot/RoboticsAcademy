@@ -1,9 +1,24 @@
 import React from "react";
 import "./../../styles/tailwind.css"; // Ensure Tailwind CSS is imported
 
+const MB = 1024 * 1024;
+
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 
-const MB = 1024 * 1024;
+window.RoboticsReactComponents.DeepLearningModel = (function () {
+  let model_buffer = null;
+
+  const setModelBuffer = (modelBuffer) => {
+    model_buffer = modelBuffer;
+  };
+
+  const getModelBuffer = () => model_buffer;
+
+  return {
+    setModelBuffer: setModelBuffer,
+    getModelBuffer: getModelBuffer,
+  };
+})();
 
 const FileUploadComponent = () => {
   const [fileName, setFileName] = React.useState("");
@@ -19,13 +34,15 @@ const FileUploadComponent = () => {
 
     const buffer = await file.arrayBuffer(); // Binary buffer
 
-    window.RoboticsReactComponents.model = buffer;
     console.log("====================================");
     console.log("File uploaded:", file.name);
     console.log("File size:", (file.size / (1024 * 1024)).toFixed(2), "MB");
     console.log("File type:", file.type);
     console.log("====================================");
 
+    // Set the model in the DeepLearningModel component
+    window.RoboticsReactComponents.DeepLearningModel.setModelBuffer(buffer);
+    // Update the state with file details
     setFileName(file.name);
     setFileSize(file.size);
   };
