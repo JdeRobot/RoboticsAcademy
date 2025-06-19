@@ -5,10 +5,7 @@ import "../../styles/editors/EditorRobot.css";
 
 // monaco editor import start
 import "../../styles/tailwind.css";
-import {
-  MonacoEditor,
-  defaultEditorSourceCode,
-} from "./monaco-editor";
+import { MonacoEditor, defaultEditorSourceCode } from "./monaco-editor";
 import { useEditorReudcer } from "../../hooks/useEditorReudcer";
 // monaco editor import end
 
