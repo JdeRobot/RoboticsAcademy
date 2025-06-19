@@ -154,12 +154,3 @@ const UploadIcon = ({ cssClass, fillColor }) => (
     Add commentMore actions
   </svg>
 );
-
-/*
-TODO:
-//- update the button design
-//- filtering loading file upload button by exercise name
-//- return the button with the file name
-//- add tooltip to the button
-//- change color the button background when file is uploaded
-*/
