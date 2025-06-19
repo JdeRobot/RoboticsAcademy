@@ -8,7 +8,6 @@ from rest_framework.decorators import api_view
 from .models import Exercise
 from rest_framework.response import Response
 from rest_framework import status
-import base64
 
 
 # TODO: Too many hardcoded strings, review
