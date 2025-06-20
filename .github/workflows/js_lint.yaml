@@ -9,19 +9,20 @@ on:
             - "react_frontend/**"
 
 jobs:
-    setup-and-dev:
+    setup-and-lint:
+        name: Setup and Lint Frontend
         runs-on: ubuntu-latest
         steps:
             # 1) Checkout your code
             - name: Checkout repo
               uses: actions/checkout@v4
 
-            # 2) Install Node.js v17
-            - name: Setup Node.js
+            - name: Setup Node.js 17
               uses: actions/setup-node@v4
               with:
                   node-version: "17"
                   cache: "yarn"
+                  cache-dependency-path: react_frontend/yarn.lock
 
             # 3) Install Yarn globally (optional; setup-node gives you npm)
             - name: Install Yarn

@@ -81,7 +81,7 @@ export const useMonacoEditorCodeAnalysisEffect = ({
       if (!data) return;
 
       const model = editorRef.current.getModel();
-      // eslint-disable-next-line no-unused-vars
+      //eslint-disable-next-line no-unused-vars
       const pylint_data = data.pylint_output.map((pylint, i) => {
         return {
           startLineNumber: pylint.line,
