@@ -1,3 +1,4 @@
+import React from "react";
 import configuration from "../config.json";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
