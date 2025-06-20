@@ -9,9 +9,10 @@ def getBoundingBoxes():
     allBoundingBoxes = BoundingBoxes()
     import glob
     import os
+
     # Read ground truths
     currentPath = os.path.dirname(os.path.abspath(__file__))
-    folderGT = os.path.join(currentPath, 'groundtruths')
+    folderGT = os.path.join(currentPath, "groundtruths")
     os.chdir(folderGT)
     files = glob.glob("*.txt")
     files.sort()
@@ -19,7 +20,7 @@ def getBoundingBoxes():
     allBoundingBoxes = BoundingBoxes()
     # Read GT detections from txt file
     # Each line of the files in the groundtruths folder represents a ground truth bounding box
-    # (bounding boxes that a detector should detect) 
+    # (bounding boxes that a detector should detect)
     # Each value of each line is  "class_id, x_min, y_min, x_max, y_max" respectively
     # Class_id represents the class of the bounding box, which in this exercise is "person"
     # x_min, y_min represents the most top-left coordinates of the bounding box
@@ -29,11 +30,11 @@ def getBoundingBoxes():
         fh1 = open(f, "r")
         for line in fh1:
             line = line.replace("\n", "")
-            if line.replace(' ', '') == '':
+            if line.replace(" ", "") == "":
                 continue
             splitLine = line.split(" ")
             idClass = splitLine[0]  # class
-            x_min = float(splitLine[1]) 
+            x_min = float(splitLine[1])
             y_min = float(splitLine[2])
             x_max = float(splitLine[3])
             y_max = float(splitLine[4])
@@ -44,13 +45,15 @@ def getBoundingBoxes():
                 y_min,
                 x_max,
                 y_max,
-                CoordinatesType.Absolute, (0,0),
+                CoordinatesType.Absolute,
+                (0, 0),
                 BBType.GroundTruth,
-                format=BBFormat.XYWH)
+                format=BBFormat.XYWH,
+            )
             allBoundingBoxes.addBoundingBox(bb)
         fh1.close()
     # Read detections
-    folderDet = os.path.join(currentPath, 'detections')
+    folderDet = os.path.join(currentPath, "detections")
     os.chdir(folderDet)
     files = glob.glob("*.txt")
     files.sort()
@@ -67,7 +70,7 @@ def getBoundingBoxes():
         fh1 = open(f, "r")
         for line in fh1:
             line = line.replace("\n", "")
-            if line.replace(' ', '') == '':
+            if line.replace(" ", "") == "":
                 continue
             splitLine = line.split(" ")
             idClass = splitLine[0]  # class
@@ -83,13 +86,13 @@ def getBoundingBoxes():
                 y_min,
                 x_max,
                 y_max,
-                CoordinatesType.Absolute, (0,0),
+                CoordinatesType.Absolute,
+                (0, 0),
                 BBType.Detected,
                 confidence,
-                format=BBFormat.XYWH)
+                format=BBFormat.XYWH,
+            )
             allBoundingBoxes.addBoundingBox(bb)
         fh1.close()
 
     return allBoundingBoxes
-
-

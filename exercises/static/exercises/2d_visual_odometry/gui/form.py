@@ -8,12 +8,15 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1347, 904)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/jderobot.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(
+            QtGui.QPixmap(":/images/jderobot.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -191,6 +194,7 @@ class Ui_MainWindow(object):
         self.label_9.setText(_translate("MainWindow", "RGB Image"))
         self.label_10.setText(_translate("MainWindow", "Processed image"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
+
 
 from plotWidget import PlotWidget
 import resources_rc

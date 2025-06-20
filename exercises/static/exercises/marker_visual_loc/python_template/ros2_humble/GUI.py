@@ -8,10 +8,13 @@ import numpy as np
 
 from map import Map
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 
 from HAL import getPose3d, getOdom
+
 
 class GUI(MeasuringThreadingGUI):
 
@@ -23,9 +26,14 @@ class GUI(MeasuringThreadingGUI):
 
         self.predict_pose = None
         self.map = Map(getPose3d, getOdom)
-        
+
         # Payload vars
-        self.payload = {"image": "", "real_pose": "","noisy_pose": "", "estimate_pose": "" }
+        self.payload = {
+            "image": "",
+            "real_pose": "",
+            "noisy_pose": "",
+            "estimate_pose": "",
+        }
 
         self.start()
 
@@ -66,7 +74,7 @@ class GUI(MeasuringThreadingGUI):
     def setImage(self, image):
         with self.image_lock:
             self.image = image
-    
+
     def setEstimatedRobotPose(self, pose):
         self.predict_pose = pose
 
@@ -77,9 +85,11 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
+
 # Expose the user functions
 def showImage(image):
     gui.setImage(image)
+
 
 def showEstimatedPose(pose):
     """Pose must be (x, y, yaw)"""
@@ -89,13 +99,14 @@ def showEstimatedPose(pose):
     offset_y = -6.88
     y = scale_y * (offset_y - y)
 
-    scale_x =  83
+    scale_x = 83
     offset_x = 8
     x = scale_x * (offset_x - x)
 
     transformed_pose = (x, y, yaw)
-    
+
     gui.setEstimatedRobotPose(transformed_pose)
+
 
 def followRobot():
     # Execute Later: gz topic -t /gui/track -m gz.msgs.CameraTrack -p 'track_mode:2' to trigger the camera tracker
@@ -107,6 +118,7 @@ def followRobot():
             bufsize=1024,
             universal_newlines=True,
         )
+
 
 # TODO: if we add the ability to unfollow, then we need to put the robot name here
 # def unfollowRobot():

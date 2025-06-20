@@ -1,16 +1,26 @@
 import numpy as np
 import mmap
-from posix_ipc import Semaphore, O_CREX, ExistentialError, O_CREAT, SharedMemory, unlink_shared_memory
+from posix_ipc import (
+    Semaphore,
+    O_CREX,
+    ExistentialError,
+    O_CREAT,
+    SharedMemory,
+    unlink_shared_memory,
+)
 from ctypes import sizeof, memmove, addressof, create_string_buffer, c_float
 import struct
+
 
 class SharedValue:
     def __init__(self, name):
         # Initialize varaibles for memory regions and buffers and Semaphore
-        self.shm_buf = None; self.shm_region = None
+        self.shm_buf = None
+        self.shm_region = None
         self.value_lock = None
 
-        self.shm_name = name; self.value_lock_name = name
+        self.shm_name = name
+        self.value_lock_name = name
 
         # Initialize shared memory buffer
         try:
@@ -36,7 +46,7 @@ class SharedValue:
     def get(self):
         # Retreive the data from buffer
         self.value_lock.acquire()
-        value = struct.unpack('f', self.shm_buf)[0]
+        value = struct.unpack("f", self.shm_buf)[0]
         self.value_lock.release()
 
         return value
@@ -45,7 +55,7 @@ class SharedValue:
     def add(self, value):
         # Send the data to shared regions
         self.value_lock.acquire()
-        self.shm_buf[:] = struct.pack('f', value)
+        self.shm_buf[:] = struct.pack("f", value)
         self.value_lock.release()
 
     # Destructor function to unlink and disconnect

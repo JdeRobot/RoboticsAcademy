@@ -31,42 +31,46 @@ from gui.segmentWidget import SegmentWidget
 
 from gui.logoWidget import LogoWidget
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
-    
-    updGUI=pyqtSignal()
+
+    updGUI = pyqtSignal()
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.teleop=TeleopWidget(self)
+        self.teleop = TeleopWidget(self)
         self.tlLayout.addWidget(self.teleop)
         self.teleop.setVisible(True)
 
-        self.logo = LogoWidget(self, self.logoLayout.parent().width(), self.logoLayout.parent().height())
+        self.logo = LogoWidget(
+            self, self.logoLayout.parent().width(), self.logoLayout.parent().height()
+        )
         self.logoLayout.addWidget(self.logo)
         self.logo.setVisible(True)
 
         self.record = False
 
         self.updGUI.connect(self.updateGUI)
-        
-        self.segmentCheck.stateChanged.connect(self.showSegmentWidget)
-        
-        self.segmentWidget=SegmentWidget(self)
 
-        self.segmentCommunicator=Communicator()
+        self.segmentCheck.stateChanged.connect(self.showSegmentWidget)
+
+        self.segmentWidget = SegmentWidget(self)
+
+        self.segmentCommunicator = Communicator()
         self.trackingCommunicator = Communicator()
 
-        #self.stopButton.clicked.connect(self.stopClicked)
+        # self.stopButton.clicked.connect(self.stopClicked)
         self.playButton.clicked.connect(self.playClicked)
         self.playButton.setCheckable(True)
         self.resetButton.clicked.connect(self.resetClicked)
-        self.takeoff=False
-        self.reset=False
-      
+        self.takeoff = False
+        self.reset = False
+
     def setCamera(self, camera):
         self.camera = camera
-        #self.cameraWidget.show() #uncomment if wanted to see the image of the 
-                                  #camera whenever you start the execution
+        # self.cameraWidget.show() #uncomment if wanted to see the image of the
+        # camera whenever you start the execution
 
     def getCamera(self):
         return self.camera
@@ -75,17 +79,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.motors = motors
 
     def getMotors(self):
-		return self.motors
+        return self.motors
 
-    def setAlgorithm(self, algorithm ):
-        self.algorithm=algorithm
+    def setAlgorithm(self, algorithm):
+        self.algorithm = algorithm
 
     def getAlgorithm(self):
         return self.algorithm
-    
+
     def updateGUI(self):
         self.segmentWidget.imageUpdate.emit()
-    
+
     def playClicked(self):
         if self.playButton.isChecked():
             self.segmentWidget.show()
@@ -93,56 +97,60 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             icon = QtGui.QIcon()
             self.playButton.setText("Stop Code")
             self.playButton.setStyleSheet("background-color: #ec7063")
-            icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon.addPixmap(
+                QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+            )
             self.playButton.setIcon(icon)
             self.algorithm.play()
         else:
             icon = QtGui.QIcon()
             self.playButton.setStyleSheet("background-color: #7dcea0")
-            icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            icon.addPixmap(
+                QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+            )
             self.playButton.setIcon(icon)
             self.playButton.setText("Play Code")
             self.algorithm.stop()
             self.teleop.stopSIG.emit()
-    
-    #def stopClicked(self):        
-     #   self.algorithm.stop()
-     #   self.teleop.stopSIG.emit()
-        # ponerrrrr: self.teleop.returnToOrigin()
+
+    # def stopClicked(self):
+    #   self.algorithm.stop()
+    #   self.teleop.stopSIG.emit()
+    # ponerrrrr: self.teleop.returnToOrigin()
 
     def resetClicked(self):
         if self.reset == True:
             self.resetButton.setText("Reset")
-            self.reset=False
+            self.reset = False
         else:
             self.resetButton.setText("Unreset")
-            self.reset=True
+            self.reset = True
 
-    def showSegmentWidget(self,state):
+    def showSegmentWidget(self, state):
         if state == Qt.Checked:
             self.segmentWidget.show()
         else:
             self.segmentWidget.close()
-            
+
     def closeSegmentWidget(self):
         self.segmentCheck.setChecked(False)
 
     def setXYValues(self, newX, newY):
         limits = self.motors.getLimits()
-        pan =  newX*limits.maxPan
-        tilt = - newY*limits.maxTilt
+        pan = newX * limits.maxPan
+        tilt = -newY * limits.maxTilt
 
         self.YValue.setText(str(tilt))
         self.XValue.setText(str(pan))
-        #self.YValue.setText("{:.0f}".format(tilt))
-        #self.XValue.setText("{:.0f}".format(pan))
-        if (self.motors):
-            self.motors.setPTMotorsData(pan, tilt, limits.maxPanSpeed, limits.maxTiltSpeed)
+        # self.YValue.setText("{:.0f}".format(tilt))
+        # self.XValue.setText("{:.0f}".format(pan))
+        if self.motors:
+            self.motors.setPTMotorsData(
+                pan, tilt, limits.maxPanSpeed, limits.maxTiltSpeed
+            )
 
     def closeEvent(self, event):
         self.algorithm.kill()
         self.camera.client.stop()
         self.closeSegmentWidget()
         event.accept()
-
-

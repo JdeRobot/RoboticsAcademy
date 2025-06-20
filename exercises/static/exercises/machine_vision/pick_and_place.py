@@ -9,7 +9,7 @@ import os
 import numpy
 import math
 
-from moveit_commander import RobotCommander,PlanningSceneInterface
+from moveit_commander import RobotCommander, PlanningSceneInterface
 from moveit_commander import roscpp_initialize, roscpp_shutdown
 from moveit_commander.conversions import pose_to_list
 import moveit_commander
@@ -20,7 +20,11 @@ from moveit_msgs.msg import Grasp, PlaceLocation
 from trajectory_msgs.msg import JointTrajectoryPoint
 from std_msgs.msg import String, Bool
 
-from tf.transformations import euler_from_quaternion, quaternion_from_euler, euler_matrix
+from tf.transformations import (
+    euler_from_quaternion,
+    quaternion_from_euler,
+    euler_matrix,
+)
 import tf
 
 from geometry_msgs.msg import Pose, PoseStamped, PoseArray, Quaternion, Vector3, Point
@@ -53,12 +57,18 @@ class WorkSpace:
 
 
 class Pick_Place:
-    def __init__ (self):
+    def __init__(self):
         self.scene = PlanningSceneInterface()
         self.robot = RobotCommander()
 
         self.object_list = {}
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_vacuum_gripper', 'interfaces', 'models_info.yaml')
+        filename = os.path.join(
+            rospkg.RosPack().get_path("rqt_industrial_robot"),
+            "src",
+            "rqt_vacuum_gripper",
+            "interfaces",
+            "models_info.yaml",
+        )
         with open(filename) as file:
             objects_info = yaml.load(file)
             robot_x = objects_info["robot"]["pose"]["x"]
@@ -91,30 +101,48 @@ class Pick_Place:
                 p.pose.position.y = y - robot_y
                 p.pose.position.z = z - robot_z
 
-                q = quaternion_from_euler(roll,pitch,yaw)
+                q = quaternion_from_euler(roll, pitch, yaw)
                 p.pose.orientation = Quaternion(*q)
 
                 if shape == "box":
                     x = objects[name]["size"]["x"]
                     y = objects[name]["size"]["y"]
                     z = objects[name]["size"]["z"]
-                    p.pose.position.z += z/2
+                    p.pose.position.z += z / 2
 
                     height = z
                     width = y
                     length = x
-                    self.object_list[name] = Object(p.pose, object_pose, height, width, length, shape, color)
+                    self.object_list[name] = Object(
+                        p.pose, object_pose, height, width, length, shape, color
+                    )
 
                 elif shape == "cylinder":
                     height = objects[name]["size"]["height"]
                     radius = objects[name]["size"]["radius"]
-                    p.pose.position.z += height/2
-                    self.object_list[name] = Object(p.pose, object_pose, height, radius*2, radius*2, shape, color)
+                    p.pose.position.z += height / 2
+                    self.object_list[name] = Object(
+                        p.pose,
+                        object_pose,
+                        height,
+                        radius * 2,
+                        radius * 2,
+                        shape,
+                        color,
+                    )
 
                 elif shape == "sphere":
                     radius = objects[name]["size"]
                     p.pose.position.z += radius
-                    self.object_list[name] = Object(p.pose, object_pose, radius*2, radius*2, radius*2, shape, color)
+                    self.object_list[name] = Object(
+                        p.pose,
+                        object_pose,
+                        radius * 2,
+                        radius * 2,
+                        radius * 2,
+                        shape,
+                        color,
+                    )
 
         self.goal_list = {}
         self.set_target_info()
@@ -123,7 +151,9 @@ class Pick_Place:
         self.arm.set_max_velocity_scaling_factor(0.5)
         self.arm.set_goal_tolerance(0.01)
 
-        self.gripper_pub = rospy.Publisher("/ur5/vacuum_gripper/grasp", Bool, queue_size=0)
+        self.gripper_pub = rospy.Publisher(
+            "/ur5/vacuum_gripper/grasp", Bool, queue_size=0
+        )
 
         self.get_workspace()
 
@@ -132,10 +162,19 @@ class Pick_Place:
         self.message_pub = rospy.Publisher("/gui_message", String, queue_size=0)
         self.updatepose_pub = rospy.Publisher("/updatepose", Bool, queue_size=0)
 
-        self.color_filter_pub = rospy.Publisher("/start_color_filter", ColorFilter, queue_size=0)
-        self.shape_filter_pub = rospy.Publisher("/start_shape_filter", ShapeFilter, queue_size=0)
+        self.color_filter_pub = rospy.Publisher(
+            "/start_color_filter", ColorFilter, queue_size=0
+        )
+        self.shape_filter_pub = rospy.Publisher(
+            "/start_shape_filter", ShapeFilter, queue_size=0
+        )
 
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_vacuum_gripper', 'joints_setup.yaml')
+        filename = os.path.join(
+            rospkg.RosPack().get_path("rqt_industrial_robot"),
+            "src",
+            "rqt_vacuum_gripper",
+            "joints_setup.yaml",
+        )
         with open(filename) as file:
             joints_setup = yaml.load(file)
             jointslimit = joints_setup["joints_limit"]
@@ -156,7 +195,7 @@ class Pick_Place:
         self.color_shape_converter["yellow"] = 4
         self.color_shape_converter["sphere"] = 1
         self.color_shape_converter["cylinder"] = 2
-    
+
     def send_message(self, message):
         msg = String()
         msg.data = message
@@ -204,7 +243,13 @@ class Pick_Place:
         self.scene.remove_world_object(object_name)
 
     def set_target_info(self):
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_vacuum_gripper', 'interfaces', 'models_info.yaml')
+        filename = os.path.join(
+            rospkg.RosPack().get_path("rqt_industrial_robot"),
+            "src",
+            "rqt_vacuum_gripper",
+            "interfaces",
+            "models_info.yaml",
+        )
         with open(filename) as file:
             objects_info = yaml.load(file)
             robot_x = objects_info["robot"]["pose"]["x"]
@@ -243,7 +288,7 @@ class Pick_Place:
 
     def pose2msg(self, roll, pitch, yaw, x, y, z):
         pose = geometry_msgs.msg.Pose()
-        quat = quaternion_from_euler(roll,pitch,yaw)
+        quat = quaternion_from_euler(roll, pitch, yaw)
         pose.orientation.x = quat[0]
         pose.orientation.y = quat[1]
         pose.orientation.z = quat[2]
@@ -258,20 +303,24 @@ class Pick_Place:
         x = pose.position.x
         y = pose.position.y
         z = pose.position.z
-        quaternion = (pose.orientation.x,
-                      pose.orientation.y,
-                      pose.orientation.z,
-                      pose.orientation.w)
+        quaternion = (
+            pose.orientation.x,
+            pose.orientation.y,
+            pose.orientation.z,
+            pose.orientation.w,
+        )
         euler = euler_from_quaternion(quaternion)
         roll = euler[0]
         pitch = euler[1]
         yaw = euler[2]
 
-        return roll, pitch, yaw, x, y, z 
+        return roll, pitch, yaw, x, y, z
 
     def pose2msg_deg(self, roll, pitch, yaw, x, y, z):
         pose = geometry_msgs.msg.Pose()
-        quat = quaternion_from_euler(numpy.deg2rad(roll),numpy.deg2rad(pitch),numpy.deg2rad(yaw))
+        quat = quaternion_from_euler(
+            numpy.deg2rad(roll), numpy.deg2rad(pitch), numpy.deg2rad(yaw)
+        )
         pose.orientation.x = quat[0]
         pose.orientation.y = quat[1]
         pose.orientation.z = quat[2]
@@ -286,19 +335,26 @@ class Pick_Place:
         x = pose.position.x
         y = pose.position.y
         z = pose.position.z
-        quaternion = (pose.orientation.x,
-                      pose.orientation.y,
-                      pose.orientation.z,
-                      pose.orientation.w)
+        quaternion = (
+            pose.orientation.x,
+            pose.orientation.y,
+            pose.orientation.z,
+            pose.orientation.w,
+        )
         euler = euler_from_quaternion(quaternion)
         roll = numpy.rad2deg(euler[0])
         pitch = numpy.rad2deg(euler[1])
         yaw = numpy.rad2deg(euler[2])
 
-        return roll, pitch, yaw, x, y, z 
+        return roll, pitch, yaw, x, y, z
 
     def get_workspace(self):
-        filename = os.path.join(rospkg.RosPack().get_path('rqt_industrial_robot'), 'src','rqt_vacuum_gripper', 'joints_setup.yaml')
+        filename = os.path.join(
+            rospkg.RosPack().get_path("rqt_industrial_robot"),
+            "src",
+            "rqt_vacuum_gripper",
+            "joints_setup.yaml",
+        )
         with open(filename) as file:
             joints_setup = yaml.load(file)
             workspace = joints_setup["workspace"]
@@ -317,10 +373,10 @@ class Pick_Place:
             dx = x - self.workspace.x
             dy = y - self.workspace.y
             dz = z - self.workspace.z
-            r = math.sqrt(dx**2+dy**2+dz**2)
+            r = math.sqrt(dx**2 + dy**2 + dz**2)
             if self.workspace.min_r < r < self.workspace.max_r:
                 return True
-        
+
         return False
 
     def gripper2TCP(self, pose, length=0):
@@ -362,7 +418,7 @@ class Pick_Place:
         # self.send_message("Back to home")
 
     # Forward Kinematics (FK): move the arm by axis values
-    def move_joint_arm(self,joint_0,joint_1,joint_2,joint_3,joint_4,joint_5):
+    def move_joint_arm(self, joint_0, joint_1, joint_2, joint_3, joint_4, joint_5):
         joint_goal = self.arm.get_current_joint_values()
         joint_goal[0] = joint_0
         joint_goal[1] = joint_1
@@ -372,21 +428,21 @@ class Pick_Place:
         joint_goal[5] = joint_5
 
         self.arm.go(joint_goal, wait=True)
-        self.arm.stop() # To guarantee no residual movement
+        self.arm.stop()  # To guarantee no residual movement
         self.updatepose_trigger(True)
 
     # Inverse Kinematics: Move the robot arm to desired pose
     def move_pose_arm(self, pose_goal):
         position = pose_goal.position
         if not self.is_inside_workspace(position.x, position.y, position.z):
-            rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
+            rospy.loginfo("***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****")
             return
 
         self.arm.set_pose_target(pose_goal)
 
         self.arm.go(wait=True)
 
-        self.arm.stop() # To guarantee no residual movement
+        self.arm.stop()  # To guarantee no residual movement
         self.arm.clear_pose_targets()
         self.updatepose_trigger(True)
 
@@ -403,17 +459,23 @@ class Pick_Place:
     def get_object_position(self, object_name):
         frame_id = object_name
         try:
-            (trans,rot) = self.listener.lookupTransform('/world', frame_id, rospy.Time(0))
-        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            (trans, rot) = self.listener.lookupTransform(
+                "/world", frame_id, rospy.Time(0)
+            )
+        except (
+            tf.LookupException,
+            tf.ConnectivityException,
+            tf.ExtrapolationException,
+        ):
             rospy.loginfo("Cannot find desired object")
             return
-        
+
         position = Point()
         position.x = trans[0]
         position.y = trans[1]
         position.z = trans[2]
         print("*************************************")
-        print("Detected position of "+object_name+":")
+        print("Detected position of " + object_name + ":")
         print(trans)
         print("*************************************")
         return position
@@ -426,10 +488,10 @@ class Pick_Place:
         self.back_to_home()
 
     # pick up object
-    def pickup(self, object_name, position, distance = 0.2):
+    def pickup(self, object_name, position, distance=0.2):
         if not self.is_inside_workspace(position.x, position.y, position.z):
-            rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
-            rospy.loginfo('Stop placing')
+            rospy.loginfo("***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****")
+            rospy.loginfo("Stop placing")
             return
 
         pose = Pose()
@@ -451,13 +513,13 @@ class Pick_Place:
 
         self.arm.set_path_constraints(constraint)
 
-        rospy.loginfo('Start picking')
+        rospy.loginfo("Start picking")
         # self.send_message('Start picking')
         self.arm.set_max_velocity_scaling_factor(0.5)
         self.move_pose_arm(pose)
         rospy.sleep(1)
         self.arm.clear_path_constraints()
-        
+
         # move down
         waypoints = []
         wpose = self.arm.get_current_pose().pose
@@ -468,9 +530,8 @@ class Pick_Place:
         rospy.loginfo(wpose.position)
 
         (plan, fraction) = self.arm.compute_cartesian_path(
-                                        waypoints,   # waypoints to follow
-                                        0.01,        # eef_step
-                                        0.0)         # jump_threshold
+            waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
+        )  # jump_threshold
         self.arm.execute(plan, wait=True)
         # self.move_pose_arm(wpose)
         rospy.sleep(1)
@@ -488,14 +549,13 @@ class Pick_Place:
 
         self.arm.set_max_velocity_scaling_factor(0.2)
         (plan, fraction) = self.arm.compute_cartesian_path(
-                                        waypoints,   # waypoints to follow
-                                        0.01,        # eef_step
-                                        0.0)         # jump_threshold
+            waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
+        )  # jump_threshold
         self.arm.execute(plan, wait=True)
 
         self.arm.clear_path_constraints()
 
-        rospy.loginfo('Pick finished')
+        rospy.loginfo("Pick finished")
         # self.send_message('Pick finished')
 
     def get_joints_value(self):
@@ -503,10 +563,10 @@ class Pick_Place:
         return joints
 
     # place object to goal position
-    def place(self, object_name, position, distance = 0.1):
+    def place(self, object_name, position, distance=0.1):
         if not self.is_inside_workspace(position.x, position.y, position.z):
-            rospy.loginfo('***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****')
-            rospy.loginfo('Stop placing')
+            rospy.loginfo("***** GOAL POSE IS OUT OF ROBOT WORKSPACE *****")
+            rospy.loginfo("Stop placing")
             return
 
         pose = Pose()
@@ -568,7 +628,7 @@ class Pick_Place:
         self.arm.set_path_constraints(constraint)
         # self.arm.set_goal_position_tolerance(0.015)
 
-        rospy.loginfo('Start placing')
+        rospy.loginfo("Start placing")
         # self.send_message('Start placing')
         self.arm.set_max_velocity_scaling_factor(0.2)
         self.arm.set_workspace([-0.8, -0.8, -0.2, 0.8, 0.8, 0.3])
@@ -578,7 +638,7 @@ class Pick_Place:
 
         self.arm.clear_path_constraints()
         # self.arm.set_goal_tolerance(0.01)
-        
+
         # move down
         waypoints = []
         wpose = self.arm.get_current_pose().pose
@@ -586,9 +646,8 @@ class Pick_Place:
         waypoints.append(copy.deepcopy(wpose))
 
         (plan, fraction) = self.arm.compute_cartesian_path(
-                                        waypoints,   # waypoints to follow
-                                        0.01,        # eef_step
-                                        0.0)         # jump_threshold
+            waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
+        )  # jump_threshold
         self.arm.execute(plan, wait=True)
 
         # place
@@ -604,14 +663,11 @@ class Pick_Place:
         waypoints.append(copy.deepcopy(wpose))
 
         (plan, fraction) = self.arm.compute_cartesian_path(
-                                        waypoints,   # waypoints to follow
-                                        0.01,        # eef_step
-                                        0.0)         # jump_threshold
+            waypoints, 0.01, 0.0  # waypoints to follow  # eef_step
+        )  # jump_threshold
         self.arm.execute(plan, wait=True)
 
-        rospy.loginfo('Place finished')
+        rospy.loginfo("Place finished")
         # self.send_message('Place finished')
 
         self.arm.set_workspace([-1, -1, -0.2, 1, 1, 1.0])
-
-

@@ -31,7 +31,7 @@ def spawn_process(args, insert_vglrun=False):
     return process
 
 
-class Test():
+class Test:
     def gazebo(self):
         rospy.logwarn("[GAZEBO] Launching")
         try:
@@ -43,13 +43,17 @@ class Test():
     def px4(self, instance):
         rospy.logwarn("[PX4-SITL] Launching")
         start_time = rospy.get_time()
-        args = ["./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander",
-                "--instance", str(instance), "check"]
+        args = [
+            "./PX4-Autopilot/build/px4_sitl_default/bin/px4-commander",
+            "--instance",
+            str(instance),
+            "check",
+        ]
         while rospy.get_time() - start_time < TIMEOUT:
             process = spawn_process(args, insert_vglrun=False)
             with process.stdout:
-                for line in iter(process.stdout.readline, ''):
-                    if ("Prearm check: OK" in line):
+                for line in iter(process.stdout.readline, ""):
+                    if "Prearm check: OK" in line:
                         return True
             rospy.sleep(2)
         return False
@@ -63,7 +67,7 @@ class Test():
             return False
 
 
-class Launch():
+class Launch:
     def __init__(self):
         self.test = Test()
         self.acceleration_enabled = check_device(DRI_PATH)
@@ -76,12 +80,14 @@ class Launch():
 
     def start(self):
         ######## LAUNCH GAZEBO ########
-        args = ["/opt/ros/noetic/bin/roslaunch",
-                "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/gazebo.launch",
-                "--wait",
-                "--log"
-                ]
+        args = [
+            "/opt/ros/noetic/bin/roslaunch",
+            "/RoboticsAcademy/exercises/static/exercises/"
+            + EXERCISE
+            + "/launch/gazebo.launch",
+            "--wait",
+            "--log",
+        ]
 
         attempt = 1
         while True:
@@ -94,11 +100,13 @@ class Launch():
             attempt = attempt + 1
 
         ######## LAUNCH PX4_CAT (INSTANCE 0) ########
-        args = ["/opt/ros/noetic/bin/roslaunch",
-                "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/px4_cat.launch",
-                "--log"
-                ]
+        args = [
+            "/opt/ros/noetic/bin/roslaunch",
+            "/RoboticsAcademy/exercises/static/exercises/"
+            + EXERCISE
+            + "/launch/px4_cat.launch",
+            "--log",
+        ]
 
         attempt = 1
         while True:
@@ -111,11 +119,13 @@ class Launch():
             attempt = attempt + 1
 
         ######## LAUNCH MAVROS_CAT ########
-        args = ["/opt/ros/noetic/bin/roslaunch",
-                "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/mavros_cat.launch",
-                "--log"
-                ]
+        args = [
+            "/opt/ros/noetic/bin/roslaunch",
+            "/RoboticsAcademy/exercises/static/exercises/"
+            + EXERCISE
+            + "/launch/mavros_cat.launch",
+            "--log",
+        ]
 
         attempt = 1
         while True:
@@ -128,11 +138,13 @@ class Launch():
             attempt = attempt + 1
 
         ######## LAUNCH PX4_MOUSE  (INSTANCE 1) ########
-        args = ["/opt/ros/noetic/bin/roslaunch",
-                "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/px4_mouse.launch",
-                "--log"
-                ]
+        args = [
+            "/opt/ros/noetic/bin/roslaunch",
+            "/RoboticsAcademy/exercises/static/exercises/"
+            + EXERCISE
+            + "/launch/px4_mouse.launch",
+            "--log",
+        ]
 
         attempt = 1
         while True:
@@ -145,11 +157,13 @@ class Launch():
             attempt = attempt + 1
 
         ######## LAUNCH MAVROS_MOUSE ########
-        args = ["/opt/ros/noetic/bin/roslaunch",
-                "/RoboticsAcademy/exercises/static/exercises/" +
-                EXERCISE + "/launch/mavros_mouse.launch",
-                "--log"
-                ]
+        args = [
+            "/opt/ros/noetic/bin/roslaunch",
+            "/RoboticsAcademy/exercises/static/exercises/"
+            + EXERCISE
+            + "/launch/mavros_mouse.launch",
+            "--log",
+        ]
 
         attempt = 1
         while True:

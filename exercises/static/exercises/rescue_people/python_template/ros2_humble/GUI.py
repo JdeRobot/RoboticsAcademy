@@ -5,8 +5,11 @@ import threading
 import time
 import numpy as np
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
+
 
 class GUI(MeasuringThreadingGUI):
 
@@ -21,7 +24,7 @@ class GUI(MeasuringThreadingGUI):
         self.ack_frontend = True
         self.ack_lock = threading.Lock()
         self.running = True
-        
+
         self.world_name = "empty"
 
         self.host = host
@@ -29,7 +32,7 @@ class GUI(MeasuringThreadingGUI):
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {"brain": "", "gui": "", "rtf": ""}
         self.iteration_counter = 0
         self.fps = 0
         self.lat = 0
@@ -103,9 +106,11 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
+
 # Expose the user functions
 def showImage(image):
     gui.setRightImage(image)
+
 
 def showLeftImage(image):
     gui.setLeftImage(image)

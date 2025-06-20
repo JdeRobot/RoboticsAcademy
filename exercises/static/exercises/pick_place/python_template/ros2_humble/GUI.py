@@ -10,6 +10,7 @@ from HAL import getPose3d
 
 # Graphical User Interface Class
 
+
 class GUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -20,7 +21,7 @@ class GUI(MeasuringThreadingGUI):
         self.image_show_lock = threading.Lock()
 
         # Payload vars
-        self.payload = {'map': '', 'user': ''}
+        self.payload = {"map": "", "user": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
 
@@ -67,15 +68,18 @@ class GUI(MeasuringThreadingGUI):
         with self.image_lock:
             self.right_image = image
 
+
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)
 
 # Redirect the console
 start_console()
 
+
 # Expose the user functions
 def showImage(image):
     gui.setRightImage(image)
+
 
 def showLeftImage(image):
     gui.setLeftImage(image)

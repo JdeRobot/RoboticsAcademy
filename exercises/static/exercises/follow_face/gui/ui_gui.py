@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -19,15 +20,17 @@ class Ui_MainWindow(object):
         self.playButton = QtWidgets.QPushButton(self.centralwidget)
         self.playButton.setGeometry(QtCore.QRect(420, 50, 191, 75))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(
+            QtGui.QPixmap(":/images/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
         self.playButton.setIcon(icon)
         self.playButton.setObjectName("playButton")
-        #self.stopButton = QtWidgets.QPushButton(self.centralwidget)
-        #self.stopButton.setGeometry(QtCore.QRect(520, 50, 111, 75))
-        #icon1 = QtGui.QIcon()
-        #icon1.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #self.stopButton.setIcon(icon1)
-        #self.stopButton.setObjectName("stopButton")
+        # self.stopButton = QtWidgets.QPushButton(self.centralwidget)
+        # self.stopButton.setGeometry(QtCore.QRect(520, 50, 111, 75))
+        # icon1 = QtGui.QIcon()
+        # icon1.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # self.stopButton.setIcon(icon1)
+        # self.stopButton.setObjectName("stopButton")
         self.windowsLabel = QtWidgets.QLabel(self.centralwidget)
         self.windowsLabel.setGeometry(QtCore.QRect(490, 205, 71, 21))
         self.windowsLabel.setObjectName("windowsLabel")
@@ -55,11 +58,15 @@ class Ui_MainWindow(object):
         self.YLabel.setObjectName("YLabel")
         self.XValue = QtWidgets.QLabel(self.centralwidget)
         self.XValue.setGeometry(QtCore.QRect(135, 340, 41, 21))
-        self.XValue.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.XValue.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.XValue.setObjectName("XValue")
         self.YValue = QtWidgets.QLabel(self.centralwidget)
         self.YValue.setGeometry(QtCore.QRect(245, 340, 41, 21))
-        self.YValue.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.YValue.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.YValue.setObjectName("YValue")
         self.resetButton = QtWidgets.QPushButton(self.centralwidget)
         self.resetButton.setGeometry(QtCore.QRect(435, 140, 161, 41))
@@ -76,15 +83,15 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-    
+
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Follow Face"))
         self.playButton.setText(_translate("MainWindow", "Play Code"))
-        #self.stopButton.setText(_translate("MainWindow", "Stop"))
+        # self.stopButton.setText(_translate("MainWindow", "Stop"))
         self.windowsLabel.setText(_translate("MainWindow", "Windows:"))
 
         self.segmentCheck.setText(_translate("MainWindow", "Segmented Image"))
-        self.S1Label.setText(_translate("MainWindow", "Press Play Button to"))        
+        self.S1Label.setText(_translate("MainWindow", "Press Play Button to"))
         self.S2Label.setText(_translate("MainWindow", "see camera's Image"))
 
         self.XLabel.setText(_translate("MainWindow", "Pan:"))
@@ -92,5 +99,6 @@ class Ui_MainWindow(object):
         self.XValue.setText(_translate("MainWindow", "0"))
         self.YValue.setText(_translate("MainWindow", "0"))
         self.resetButton.setText(_translate("MainWindow", "Reset"))
+
 
 import resources_rc

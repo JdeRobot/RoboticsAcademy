@@ -21,6 +21,7 @@ import numpy as np
 import threading
 from parallelIce.cameraClient import CameraClient
 
+
 class CameraSegment:
 
     def __init__(self, camera):
@@ -29,17 +30,16 @@ class CameraSegment:
 
         img = self.client.getImage()
 
-        self.height= img.height*640
-        self.width = img.width*360
-
+        self.height = img.height * 640
+        self.width = img.width * 360
 
         if self.client.hasproxy():
-            self.trackImage = np.zeros((self.height, self.width,3), np.uint8)
+            self.trackImage = np.zeros((self.height, self.width, 3), np.uint8)
             self.trackImage.shape = self.height, self.width, 3
 
-            self.thresholdImage = np.zeros((self.height,self. width,3), np.uint8)
+            self.thresholdImage = np.zeros((self.height, self.width, 3), np.uint8)
             self.thresholdImage.shape = self.height, self.width, 3
-    
+
     def getImage(self):
         self.lock.acquire()
         img = self.client.getImage().data
@@ -49,14 +49,14 @@ class CameraSegment:
     def getColorImage(self):
         if self.client.hasproxy():
             self.lock.acquire()
-            img = np.zeros((self.height, self.width,3), np.uint8)
+            img = np.zeros((self.height, self.width, 3), np.uint8)
             img = self.trackImage
             img.shape = self.trackImage.shape
             self.lock.release()
             return img
         return None
 
-    def setColorImage(self,image):
+    def setColorImage(self, image):
         if self.client.hasproxy():
             self.lock.acquire()
             self.trackImage = image
@@ -66,14 +66,14 @@ class CameraSegment:
     def getThresholdImage(self):
         if self.client.hasproxy():
             self.lock.acquire()
-            img = np.zeros((self.height, self.width,3), np.uint8)
+            img = np.zeros((self.height, self.width, 3), np.uint8)
             img = self.thresholdImage
             img.shape = self.thresholdImage.shape
             self.lock.release()
             return img
         return None
 
-    def setThresholdImage(self,image):
+    def setThresholdImage(self, image):
         if self.client.hasproxy():
             self.lock.acquire()
             self.thresholdImage = image

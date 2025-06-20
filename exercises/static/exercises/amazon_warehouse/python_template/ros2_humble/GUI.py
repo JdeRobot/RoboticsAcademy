@@ -20,6 +20,7 @@ blue = [255, 0, 0]
 indigo = [130, 0, 75]
 violet = [211, 0, 148]
 
+
 class GUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -33,7 +34,7 @@ class GUI(MeasuringThreadingGUI):
         self.image_show_lock = threading.Lock()
 
         # Payload vars
-        self.payload = {'map': '', 'array': '', 'liftState': ''}
+        self.payload = {"map": "", "array": "", "liftState": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
         self.map = Map(getPose3d)
@@ -67,23 +68,23 @@ class GUI(MeasuringThreadingGUI):
             image_to_be_shown = self.image_to_be_shown
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         with self.image_show_lock:
             self.image_to_be_shown_updated = False
 
         return payload
-    
+
     def process_colors(self, image):
         colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
 
@@ -99,7 +100,7 @@ class GUI(MeasuringThreadingGUI):
             131: green,
             132: blue,
             133: indigo,
-            134: violet
+            134: violet,
         }
 
         for value, color in color_table.items():
@@ -122,7 +123,7 @@ class GUI(MeasuringThreadingGUI):
         print("Path array: " + str(array_scaled))
         self.array_lock.acquire()
 
-        strArray = ''.join(str(e) for e in array_scaled)
+        strArray = "".join(str(e) for e in array_scaled)
         print("strArray: " + str(strArray))
 
         # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
@@ -136,7 +137,7 @@ class GUI(MeasuringThreadingGUI):
 
         self.array = strArray
         self.array_lock.release()
-    
+
     def getMap(self, url):
         return plt.imread(url)
 
@@ -147,11 +148,14 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
+
 def showPath(array):
     return gui.showPath(array)
 
+
 def showNumpy(image):
     gui.showNumpy(image)
+
 
 def getMap(url):
     return gui.getMap(url)

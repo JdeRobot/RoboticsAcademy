@@ -20,7 +20,7 @@ class HAL:
 
     def setV(self, velocity):
         self.motors.sendV(velocity)
-    
+
     def setW(self, velocity):
         self.motors.sendW(velocity)
 

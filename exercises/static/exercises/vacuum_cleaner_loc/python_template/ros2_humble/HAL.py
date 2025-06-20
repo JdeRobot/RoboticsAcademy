@@ -11,11 +11,13 @@ from hal_interfaces.general.bumper import BumperNode
 
 freq = 30.0
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
 
 threading.excepthook = custom_thread_excepthook
 
@@ -39,7 +41,8 @@ if not rclpy.ok():
     executor = rclpy.executors.MultiThreadedExecutor()
     executor.add_node(odometry_node)
     executor.add_node(laser_node)
-    executor.add_node(bumper_node) 
+    executor.add_node(bumper_node)
+
     def __auto_spin() -> None:
         while rclpy.ok():
             try:
@@ -54,6 +57,7 @@ if not rclpy.ok():
 
 ### GETTERS ###
 
+
 # Laser
 def getLaserData():
     try:
@@ -61,12 +65,14 @@ def getLaserData():
     except Exception as e:
         print(f"Exception in hal getLaserData {repr(e)}")
 
+
 # Pose
 def getPose3d():
     try:
         return odometry_node.getPose3d()
     except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")        
+        print(f"Exception in hal getPose3d {repr(e)}")
+
 
 # Bumper
 def getBumperData():
@@ -78,9 +84,11 @@ def getBumperData():
 
 ### SETTERS ###
 
+
 # Linear speed
 def setV(v):
     motor_node.sendV(float(v))
+
 
 # Angular speed
 def setW(w):

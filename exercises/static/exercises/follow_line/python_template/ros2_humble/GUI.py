@@ -10,11 +10,12 @@ from lap import Lap
 
 import sys
 
-sys.path.insert(0, '/RoboticsApplicationManager')
+sys.path.insert(0, "/RoboticsApplicationManager")
 
 from manager.ram_logging.log_manager import LogManager
 
 # Graphical User Interface Class
+
 
 class GUI(MeasuringThreadingGUI):
 
@@ -26,7 +27,7 @@ class GUI(MeasuringThreadingGUI):
         self.image_show_lock = threading.Lock()
 
         # Payload vars
-        self.payload = {'image': '','lap': '', 'map': ''}
+        self.payload = {"image": "", "lap": "", "map": ""}
         # TODO: maybe move this to HAL and have it be hybrid
         self.pose3d_object = OdometryNode("/odom")
         executor = rclpy.executors.MultiThreadedExecutor()
@@ -57,18 +58,18 @@ class GUI(MeasuringThreadingGUI):
 
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
-        
+
         # Payload Lap Message
         lapped = self.lap.check_threshold()
         self.payload["lap"] = ""
-        if(lapped != None):
+        if lapped != None:
             self.payload["lap"] = str(lapped)
-            
+
         # Payload Map Message
         pose = self.pose3d_object.getPose3d()
-        pos_message = str((pose.x,pose.y))
+        pos_message = str((pose.x, pose.y))
         self.payload["map"] = pos_message
-        
+
         message = json.dumps(self.payload)
         self.send_to_client(message)
 
@@ -80,34 +81,36 @@ class GUI(MeasuringThreadingGUI):
             image_to_be_shown = self.image_to_be_shown
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         with self.image_show_lock:
             self.image_to_be_shown_updated = False
 
         return payload
-    
+
     # Function for student to call
     def showImage(self, image):
         with self.image_show_lock:
             self.image_to_be_shown = image
             self.image_to_be_shown_updated = True
 
+
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)
 
 # Redirect the console
 start_console()
+
 
 # Expose to the user
 def showImage(image):

@@ -21,18 +21,20 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal, QPointF, Qt, QPoint
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
+
 class LogoWidget(QWidget):
 
-    def __init__(self,winParent):    
+    def __init__(self, winParent):
         super(LogoWidget, self).__init__()
-        self.winParent=winParent
-        self.qimage=QtGui.QImage()
-        self.qimage.load(':images/jderobot.png')
-
+        self.winParent = winParent
+        self.qimage = QtGui.QImage()
+        self.qimage.load(":images/jderobot.png")
 
     def paintEvent(self, e):
 
-        painter=QtGui.QPainter(self)
-        painter.drawImage(self.width()/2-self.qimage.width()/2, self.height()/2-self.qimage.height()/2, self.qimage)
-
-
+        painter = QtGui.QPainter(self)
+        painter.drawImage(
+            self.width() / 2 - self.qimage.width() / 2,
+            self.height() / 2 - self.qimage.height() / 2,
+            self.qimage,
+        )

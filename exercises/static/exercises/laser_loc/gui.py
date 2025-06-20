@@ -10,6 +10,7 @@ from interfaces.laser import ListenerLaser
 from interfaces.sonar import ListenerSonar
 from map import Map
 
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
@@ -18,24 +19,24 @@ class GUI:
         t = threading.Thread(target=self.run_server)
 
         self.payload = {
-            'robot_coord': '',
-            'robot_contorno': '',
-            'laser': '',
-            'sonar_sensor': '',
-            'pos_vertices': '',
-            'laser_global': '',
-            'EnableMapping': '',
-            'approximated_robot_pose': '',
-            'particles': ''
+            "robot_coord": "",
+            "robot_contorno": "",
+            "laser": "",
+            "sonar_sensor": "",
+            "pos_vertices": "",
+            "laser_global": "",
+            "EnableMapping": "",
+            "approximated_robot_pose": "",
+            "particles": "",
         }
         self.server = None
         self.client = None
-        
+
         self.host = host
 
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-        
+
         # Take the console object to set the same websocket and client
         self.hal = hal
         t.start()
@@ -61,33 +62,37 @@ class GUI:
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-        
+
         return acknowledge
-        
+
     # Function to set value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
-   
+
     # Update the gui
     def update(self):
         # Payload Map Message
-        self.payload["robot_coord"], self.payload["robot_contorno"] = self.map.setRobotValues()
+        self.payload["robot_coord"], self.payload["robot_contorno"] = (
+            self.map.setRobotValues()
+        )
         # Payload the Sonar and Laser data
-        self.payload["pos_vertices"], self.payload["sonar_sensor"] = self.map.setSonarValues()
+        self.payload["pos_vertices"], self.payload["sonar_sensor"] = (
+            self.map.setSonarValues()
+        )
         self.payload["laser"], self.payload["laser_global"] = self.map.setLaserValues()
-        
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
-		# Acknowledge Message for GUI Thread
-        if(message[:4] == "#ack"):
+        # Acknowledge Message for GUI Thread
+        if message[:4] == "#ack":
             self.set_acknowledge(True)
-    
+
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
@@ -120,12 +125,12 @@ class GUI:
         self.payload["approximated_robot_pose"] = pose
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
-    
+
     # def showEstimatedLaser(self, laser):
     #     self.payload["estimated_laser"] = laser
     #     message = "#gui" + json.dumps(self.payload)
     #     self.server.send_message(self.client, message)
-        
+
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -150,11 +155,11 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while(self.gui.client == None):
+        while self.gui.client == None:
             pass
 
         previous_time = datetime.now()
-        while(True):
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -173,26 +178,26 @@ class ThreadGUI:
 
             # Reset the counter
             self.iteration_counter = 0
-        
+
     # The main thread of execution
     def run(self):
-        while(self.gui.client == None):
+        while self.gui.client == None:
             pass
-        
-        while(True):
+
+        while True:
             start_time = datetime.now()
             self.gui.update()
             acknowledge_message = self.gui.get_acknowledge()
-            
-            while(acknowledge_message == False):
+
+            while acknowledge_message == False:
                 acknowledge_message = self.gui.get_acknowledge()
-            
+
             self.gui.set_acknowledge(False)
-            
+
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
-            
+
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if(ms < self.ideal_cycle):
-                time.sleep((self.ideal_cycle-ms) / 1000.0)
+            if ms < self.ideal_cycle:
+                time.sleep((self.ideal_cycle - ms) / 1000.0)

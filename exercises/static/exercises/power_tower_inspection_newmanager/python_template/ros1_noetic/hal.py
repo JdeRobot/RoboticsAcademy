@@ -6,17 +6,17 @@ from datetime import datetime
 
 from drone_wrapper import DroneWrapper
 
+
 # Hardware Abstraction Layer
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
         rospy.init_node("HAL")
-    
+
         self.image = None
         self.drone = DroneWrapper(name="rqt")
-        
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -24,7 +24,7 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
-    
+
     # Get Image from ROS Driver Camera
     def get_frontal_image(self):
         image = self.drone.get_frontal_image()
@@ -82,5 +82,3 @@ class HAL:
 
     def land(self):
         self.drone.land()
-
-    

@@ -15,6 +15,7 @@ from gui import GUI, ThreadGUI
 from hal import HAL
 from console import start_console, close_console
 
+
 class Template:
     # Initialize class variables
     # self.ideal_cycle to run an execution for atleast 1 second
@@ -27,7 +28,7 @@ class Template:
         self.ideal_cycle = 80
         self.measured_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.frequency_message = {"brain": "", "gui": ""}
 
         self.server = None
         self.client = None
@@ -39,12 +40,12 @@ class Template:
 
     # Function for saving
     def save_code(self, source_code):
-        with open('code/academy.py', 'w') as code_file:
+        with open("code/academy.py", "w") as code_file:
             code_file.write(source_code)
 
     # Function for loading
     def load_code(self):
-        with open('code/academy.py', 'r') as code_file:
+        with open("code/academy.py", "r") as code_file:
             source_code = code_file.read()
 
         return source_code
@@ -55,13 +56,13 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         # Check for save/load
-        if(source_code[:5] == "#save"):
+        if source_code[:5] == "#save":
             source_code = source_code[5:]
             self.save_code(source_code)
 
             return "", "", 1
 
-        elif(source_code[:5] == "#load"):
+        elif source_code[:5] == "#load":
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
 
@@ -70,7 +71,7 @@ class Template:
         else:
             # Get the frequency of operation, convert to time_cycle and strip
             try:
-        		# Get the debug level and strip the debug part
+                # Get the debug level and strip the debug part
                 debug_level = int(source_code[5])
                 source_code = source_code[12:]
             except:
@@ -82,12 +83,11 @@ class Template:
             sequential_code, iterative_code = self.seperate_seq_iter(source_code)
             return iterative_code, sequential_code, debug_level
 
-
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
-        if(debug_level == 1):
+        if debug_level == 1:
             # If debug level is 0, then all the GUI operations should not be called
-            source_code = re.sub(r'GUI\..*', '', source_code)
+            source_code = re.sub(r"GUI\..*", "", source_code)
 
         return source_code
 
@@ -97,7 +97,10 @@ class Template:
             return "", ""
 
         # Search for an instance of while True
-        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
+        infinite_loop = re.search(
+            r"[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:",
+            source_code,
+        )
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -108,15 +111,18 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
-            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
+            iterative_code = re.sub(
+                r"[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:",
+                "",
+                iterative_code,
+            )
+            iterative_code = re.sub(r"^[ ]{4}", "", iterative_code, flags=re.M)
 
         except:
             sequential_code = source_code
             iterative_code = ""
 
         return sequential_code, iterative_code
-
 
     # The process function
     def process_code(self, source_code):
@@ -128,7 +134,6 @@ class Template:
         # print("The debug level is " + str(debug_level)
         # print(sequential_code)
         # print(iterative_code)
-
 
         # The Python exec function
         # Run the sequential part
@@ -150,14 +155,14 @@ class Template:
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
             # Keep updating the iteration counter
-            if (iterative_code == ""):
+            if iterative_code == "":
                 self.iteration_counter = 0
             else:
                 self.iteration_counter = self.iteration_counter + 1
 
             # The code should be run for atleast the target time step
             # If it's less put to sleep
-            if (ms < self.ideal_cycle):
+            if ms < self.ideal_cycle:
                 time.sleep((self.ideal_cycle - ms) / 1000.0)
 
         close_console()
@@ -166,14 +171,22 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None)
+        )
+        hal_module.HAL = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None)
+        )
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
 
         # Define GUI module
-        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
-        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None)
+        )
+        gui_module.GUI = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None)
+        )
         # Add GUI functions
         gui_module.GUI.showImage = self.gui.showImage
 
@@ -184,6 +197,7 @@ class Template:
         sys.modules["GUI"] = gui_module
 
         return gui_module, hal_module
+
     # Function to measure the frequency of iterations
     def measure_frequency(self):
         previous_time = datetime.now()
@@ -211,7 +225,8 @@ class Template:
     # Function to generate and send frequency messages
     def send_frequency_message(self):
         # This function generates and sends frequency measures of the brain and gui
-        brain_frequency = 0; gui_frequency = 0
+        brain_frequency = 0
+        gui_frequency = 0
         try:
             brain_frequency = round(1000 / self.measured_cycle, 1)
         except ZeroDivisionError:
@@ -239,7 +254,7 @@ class Template:
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if(self.thread != None):
+        if self.thread != None:
             while self.thread.is_alive() or self.measure_thread.is_alive():
                 pass
 
@@ -266,22 +281,23 @@ class Template:
         self.thread_gui.ideal_cycle = 1000.0 / frequency
 
         return
+
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if(message[:5] == "#freq"):
+        if message[:5] == "#freq":
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             self.send_frequency_message()
             return
 
-        elif(message[:5] == "#ping"):
+        elif message[:5] == "#ping":
             time.sleep(1)
             self.send_ping_message()
             return
 
-        elif (message[:5] == "#code"):
+        elif message[:5] == "#code":
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
                 code = message
@@ -301,11 +317,11 @@ class Template:
         # Initialize the ping message
         self.send_frequency_message()
 
-        print(client, 'connected')
+        print(client, "connected")
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-        print(client, 'closed')
+        print(client, "closed")
 
     def run_server(self):
         self.server = WebsocketServer(port=1905, host=self.host)
