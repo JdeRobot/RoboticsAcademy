@@ -88,7 +88,7 @@ export default function SpecificLocVacuumCleaner() {
   React.useEffect(() => {
     const callback = (message) => {
       console.log(message);
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         try {
           setPath("")
           trail = []

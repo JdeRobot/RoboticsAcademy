@@ -112,7 +112,7 @@ function SpecificGlobalNavigation(props) {
   React.useEffect(() => {
     const callback = (message) => {
       console.log(message.data.state)
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         showMap = false
         setShowImage(false)
         trail = []

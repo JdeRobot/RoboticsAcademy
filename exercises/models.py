@@ -13,15 +13,12 @@ StatusChoice = (
     ("PROTOTYPE", "PROTOTYPE"),
 )
 
-VisualizationType = (
-    ("none", "None"),
+ToolsType = (
     ("console", "Console"),
-    ("gazebo_gra", "Gazebo GRA"),
-    ("gazebo_rae", "Gazebo RAE"),
-    ("gzsim_gra", "Gz Sim GRA"),
-    ("gzsim_rae", "Gz Sim RAE"),
-    ("physic_gra", "Physic GRA"),
-    ("physic_rae", "Physic RAE"),
+    ("gazebo", "Gazebo"),
+    ("gzsim", "Gz Sim"),
+    ("web_gui", "Web GUI"),
+    ("state_monitor", "BT state monitor"),
 )
 
 UniverseType = (
@@ -57,11 +54,15 @@ class World(models.Model):
 
     name = models.CharField(max_length=100, blank=False, unique=True)
     launch_file_path = models.CharField(max_length=200, blank=False)
-    visualization_config_path = models.CharField(max_length=200, blank=False)
+    tools_config = models.CharField(max_length=200, blank=False)
     ros_version = models.CharField(max_length=4, choices=RosVersion, default="none")
-    visualization = models.CharField(
-        max_length=50, choices=VisualizationType, default="none", blank=False
+
+    tools = ArrayField(
+        ArrayField(
+            models.CharField(max_length=50, choices=ToolsType, default="none", blank=False)
+        )
     )
+
     world = models.CharField(
         max_length=50, choices=UniverseType, default="none", blank=False
     )
@@ -158,6 +159,10 @@ class Exercise(models.Model):
                         "start_pose": None,
                     }
 
+                tools_configuration = None
+                if universe.world.tools_config is not None:
+                    tools_configuration = json.loads(universe.world.tools_config)
+
                 config = {
                     "name": universe.name,
                     "world": {
@@ -166,8 +171,8 @@ class Exercise(models.Model):
                         "ros_version": universe.world.ros_version,
                         "world": universe.world.world,
                     },
-                    "visualization": universe.world.visualization,
-                    "visualization_config_path": universe.world.visualization_config_path,
+                    "tools": json.loads(universe.world.tools),
+                    "tools_config": tools_configuration,
                     "robot": robot_config,
                     "template": self.template,
                     "exercise_id": self.exercise_id,
@@ -192,8 +197,8 @@ class Exercise(models.Model):
                     "world": None,
                     "start_pose": None,
                 },
-                "visualization": "console",
-                "visualization_config_path": None,
+                "tools": ["console"],
+                "tools_config": None,
                 "template": self.template,
                 "exercise_id": self.exercise_id,
             }

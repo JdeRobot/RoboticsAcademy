@@ -38,9 +38,11 @@ export default function WorldSelector(props) {
     context.mapSelected = config.name;
     setSelectedUniverse(config);
     console.log(config);
+    var tools = config.tools
+    tools.push("web_gui")
 
     await window.RoboticsExerciseComponents.commsManager.terminate_application();
-    await window.RoboticsExerciseComponents.commsManager.terminate_visualization();
+    await window.RoboticsExerciseComponents.commsManager.terminate_tools();
     await window.RoboticsExerciseComponents.commsManager.terminate_universe();
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Launching Universe"
@@ -49,8 +51,8 @@ export default function WorldSelector(props) {
       world: config.world,
       robot: config.robot,
     });
-    await window.RoboticsExerciseComponents.commsManager.prepareVisualization(
-      {type: config.visualization, file: config.visualization_config_path}
+    await window.RoboticsExerciseComponents.commsManager.prepareTools(
+      {tools: tools, config: config.tools_config}
     );
     RoboticsReactComponents.MessageSystem.Loading.hideLoading();
     RoboticsReactComponents.MessageSystem.Alert.showAlert(

@@ -39,11 +39,13 @@ function MainAppBar(props) {
         const config = JSON.parse(
           document.getElementById("exercise-config").textContent
         );
+        var tools = config[0].tools
+        tools.push("web_gui")
         window.RoboticsExerciseComponents.commsManager
           .launchWorld({ world: config[0].world, robot: config[0].robot })
           .then(() => {
             window.RoboticsExerciseComponents.commsManager
-              .prepareVisualization({type: config[0].visualization, file: config[0].visualization_config_path})
+              .prepareTools({tools: tools, config: config[0].tools_config})
               .then(() => {
                 RoboticsReactComponents.MessageSystem.Loading.hideLoading();
                 RoboticsReactComponents.MessageSystem.Alert.showAlert(
