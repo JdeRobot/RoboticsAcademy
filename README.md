@@ -32,6 +32,16 @@ Notice that we don't use the `root` user :-)
 
 Follow the Jekyll [page installation guide](https://jekyllrb.com/docs/installation/macos/).
 
+### Using Docker
+
+Install [Docker](https://docs.docker.com/get-started/get-docker/)
+
+Run `docker-compose` using develop.sh:
+
+```bash
+./scripts/develop.sh
+```
+
 ## Running Jekyll Serve
 
 By default, the Jekyll server is launched with the following command (which is the one indicated on your website).

@@ -14,9 +14,6 @@ feature_row:
     title: "Visual Odometry"
     excerpt: "Solving the Visual Odometry problem in a given dataset"
     url: "/exercises/ComputerVision/visual_odometry"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "prototype"
     order: 2;
 
@@ -25,21 +22,15 @@ feature_row:
     title: "3D Reconstruction"
     excerpt: "Reconstruct a 3D scene from a stereo pair"
     url: "/exercises/ComputerVision/3d_reconstruction"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "running"
     order: 0;
     version: "v3.2"
   
-  - image_path: /assets/images/exercises/color_filter/color_filter_teaser.png
+  - image_path: /assets/images/exercises/basic_computer_vision/basic_computer_vision_teaser.png
     alt: "Basic Computer Vision"
     title: "Basic Computer Vision"
     excerpt: "Develop some basic exercises about computer vision"
     url: "/exercises/ComputerVision/basic_computer_vision"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "running"
     order: 0;
     version: "v3.2"
@@ -49,9 +40,6 @@ feature_row:
     title: "Human Detection"
     excerpt: "Develop a DL human detection model to perform inference and benchmarking in real time."
     url: "/exercises/ComputerVision/human_detection"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "prototype"
     order: 0;
     version: "v3.2"
@@ -61,9 +49,6 @@ feature_row:
     title: "Digit Classifier"
     excerpt: "Classify digits in real time using your own deep learning model."
     url: "/exercises/ComputerVision/dl_digit_classifier"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "prototype"
     order: 0;
     version: "v3.2"
@@ -73,9 +58,6 @@ feature_row:
     title: "OpticalFlow Teleop"
     excerpt: "Teleoperate to the robot using optical flow."
     url: "/exercises/ComputerVision/opticalflow_teleop"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "prototype"
     order: 0;
     version: "v3.2"
@@ -85,9 +67,6 @@ feature_row:
     title: "Montecarlo Visual Loc"
     excerpt: "Visual localisation based on the particle filter."
     url: "/exercises/ComputerVision/montecarlo_visual_loc"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: ""
     status: "running"
     order: 0;
     version: "v3.2"
@@ -97,9 +76,6 @@ feature_row:
     title: "Follow Face"
     excerpt: "Detect people faces and follow them through a camera"
     url: "/exercises/ComputerVision/follow_face"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "prototype"
     order: 2;
 

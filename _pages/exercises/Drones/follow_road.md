@@ -33,6 +33,7 @@ pid:
 
 youtubeId1: KLDX4OPTL_c
 youtubeId2: DdwsbH944M8
+youtubeId3: MKA5FcO0Jy8
 
 ---
 ## Goal
@@ -43,19 +44,19 @@ The goal of this exercise is to implement the logic that allows a quadrotor to f
 
 {% include gallery caption="Gallery." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `from HAL import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
 ### Sensors and drone state
 
-* `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
-* `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s
-* `HAL.get_yaw_rate()` - Returns the actual yaw rate of the drone, in rad/s.
-* `HAL.get_orientation()` - Returns the actual roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad. 
+* `HAL.get_position()` - Returns the current position of the drone as a numpy array [x, y, z], in m.
+* `HAL.get_velocity()` - Returns the current velocities of the drone as a numpy array [vx, vy, vz], in m/s.
+* `HAL.get_yaw_rate()` - Returns the current yaw rate of the drone, in rad/s.
+* `HAL.get_orientation()` - Returns the current roll, pitch and yaw of the drone as a numpy array [roll, pitch, yaw], in rad. 
 * `HAL.get_roll()` - Returns the roll angle of the drone, in rad
 * `HAL.get_pitch()` - Returns the pitch angle of the drone, in rad.
 * `HAL.get_yaw()` - Returns the yaw angle of the drone, in rad. 
@@ -67,63 +68,63 @@ The three following drone control functions are *non-blocking*, i.e. each time y
 
 #### 1. Position control
 
-* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame)
+* `HAL.set_cmd_pos(x, y, z, az)` - Commands the *position* (x,y,z) of the drone, in m and the *yaw angle (az)* (in rad) taking as reference the first takeoff point (map frame).
 
 #### 2. Velocity control
 
-* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame
+* `HAL.set_cmd_vel(vx, vy, vz, az)` - Commands the *linear velocity* of the drone in the x, y and z directions (in m/s) and the *yaw rate (az)* (rad/s) in its body fixed frame.
 
 #### 3. Mixed control
 
-* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s) 
+* `HAL.set_cmd_mix(vx, vy, z, az)` - Commands the *linear velocity* of the drone in the x, y directions (in m/s), the *height* (z) related to the takeoff point and the *yaw rate (az)* (in rad/s).
 
 ### Drone takeoff and land
 
-Besides using the buttons at the drone teleoperator GUI, taking off and landing can also be controlled from the following commands in your code:
+Besides through the buttons in the drone teleoperator GUI, take off and landing can also be controlled from the following commands in your code:
 
-* `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m)
+* `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m).
 * `HAL.land()` - Land at the current location. 
 
 ### Drone cameras
 
-* `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image
-* `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image
+* `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image.
+* `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image.
 
 ### GUI
 
-* `GUI.showImage(cv2_image)` - Shows a image of the camera  in the GUI
-* `GUI.showLeftImage(cv2_image)` - Shows another image of the camera in the GUI
+* `GUI.showImage(cv2_image)` - Shows a image of the camera  in the GUI.
+* `GUI.showLeftImage(cv2_image)` - Shows another image of the camera in the GUI.
 
 
 ## Theory
 
-PID Control is the main fundamental behind this exercise. To understand PID Control, let us first understand what is Control in general.
+PID Control is the main principle behind this exercise. To understand PID Control, let us first understand what is Control in general.
 
 ### Control System
 
-A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforeseen errors.
+A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforeseen errors or complications.
 
 ### Types of Control System
 #### Open Loop Control System
-A control system in which the control action is completely independent of the output of the system. A manual control system is on Open Loop System.
+A control system in which the control action is completely independent of the output of the system. An Open Loop System is a manual control system.
 
 #### Closed Loop Control System
 A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
 
 ### PID Control
-A control loop mechanism employing feedback. A PID Controller continuously calculates an error value as the difference between desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
+A control loop mechanism employing feedback. A PID Controller continuously calculates an error value as the difference between the desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
 
 - **Proportional**
 
-Proportional Controller gives an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, is 0 if the error is 0.
+A Proportional Controller gives an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, is 0 if the error is 0.
 
 - **Integral**
 
-Integral Controller provides a necessary action to eliminate the offset error which is accumulated by the P Controller.It integrates the error over a period of time until the error value reaches to zero.
+An Integral Controller provides a necessary action to eliminate the offset error which is accumulated by the P Controller. It integrates the error over a period of time until the error value reaches zero.
 
 - **Derivative**
 
-Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
+A Derivative Controller gives an output depending on the rate of change or error regarding time. It gives the kick start for the output thereby increasing system response.
 
 {% include gallery id="pid" caption="Control Systems and PID" %}
 
@@ -133,11 +134,11 @@ In order for the PID equation to work, we need to determine the constants of the
 
 - **Trial and Error**
 
-It is a simple method of PID controller tuning. While system or controller is working, we can tune the controller. In this method, first we have to set Ki and Kd values to zero and increase proportional term (Kp) until system reaches to oscillating behavior. Once it is oscillating, adjust Ki (Integral term) so that oscillations stops and finally adjust D to get fast response.
+It is a simple method of PID controller tuning. While the system or controller is working, we can tune the controller. In this method, first we have to set Ki and Kd values to zero and increase proportional term (Kp) until system reaches oscillating behavior. Once it is oscillating, we adjust Ki (Integral term) so that oscillations stops and finally adjust D to get a fast response.
 
-- **Zeigler Nichols method**
+- **Zeigler-Nichols method**
 
-Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are continuous cycling method and damped oscillation method. Procedures for both methods are same but oscillation behavior is different. In this, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased till system oscillates at constant amplitude.
+Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Those are: continuous cycling method and damped oscillation method. The procedures for both methods are the same but their oscillation is different. Therefore, first we have to set the p-controller constant, Kp to a particular value while Ki and Kd values are zero. Proportional gain is increased until the system oscillates at a constant amplitude.
 
 
 ## Hints
@@ -149,7 +150,7 @@ The first task of the assignment is to detect the line to be followed. This can 
 
 ### Directional control. How should drone yaw be handled? 
 
-If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but what's not the best way of flying a drone.
+If you don't take care of the drone yaw angle or yaw_rate in your code (keeping them always equal to zero), you will fly in what's generally called **Heads Free Mode**. The drone will always face towards its initial orientation, and it will fly sideways or even backwards when commanded towards a target destination. Multi-rotors can easily do that, but that's not the best way of flying a drone.
 
 In this exercise, your drone should follow the path similarly to how a fixed-wing aircraft would do, namely **nose forward**.  Then, you'll have to implement by yourself some kind of directional control, to rotate the nose of your drone left or right using yaw angle, or yaw_rate. 
 
@@ -157,13 +158,13 @@ In this exercise, your drone should follow the path similarly to how a fixed-win
 The Controller can be designed in various configurations. 3 configurations have been described in detail below:
 
 - **P Controller**
-The simplest way to do the assignment is using the P Controller. Just find the error which is the difference between our *Set Point* (the point where our drone should be heading) and the *Current Output* (where the drone is actually heading). Keep adjusting the value of the constant, till we get a value where there occurs no **unstable oscillations** and no **slow response**.
+The simplest way to do the assignment is using the P Controller. Just find the error which is the difference between our *Set Point* (the point where our drone should be heading) and the *Current Output* (where the drone is actually heading). Keep adjusting the value of the constant, until we get a value where there occurs no **unstable oscillations** and no **slow response**.
 
 - **PD Controller**
-This is an interesting way to see the effect of Derivative on the Control. For this, we need to calculate the derivative of the output we are receiving. Since, we are dealing with *discrete outputs in our case, we simply calculate the difference between our previous error and the present error*, then adjust the proportional constant. Adjust this value along with the P gain to get a good result.
+This is an interesting way to see the effects of Derivative on the Control. To do this, we need to calculate the derivative of the output we are receiving. Since we are dealing with *discrete outputs in our case, we simply calculate the difference between our previous error and the present error*, then adjust the proportional constant. Adjust this value along with the P gain to get a good result.
 
 - **PID Controller**
-This is the complete implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, to the present output. While dealing with discrete outputs, we can achieve this using *accumulated error*. Then, comes the task of adjustment of gain constants till we get our desired result.
+This is the completely implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, to the present output. While dealing with discrete outputs, we can achieve this using *accumulated error*. Then, comes the task of adjusting the gain constants until we get our desired result.
 
 ### Do I need to know when the drone is in the air?
 
@@ -175,7 +176,7 @@ No, you can solve this exercise without taking care of the **land state** of the
 
 ### Demonstrative video of the solution
  
-{% include youtubePlayer.html id=page.youtubeId1 %}
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 ---------
 

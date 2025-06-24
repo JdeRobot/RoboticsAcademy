@@ -1,114 +1,133 @@
-{% if include.id %}
-  {% assign feature_row = page[include.id] %}
-{% else %}
-  {% assign feature_row = page.feature_row %}
-{% endif %}
+{% if include.id %} {% assign feature_row = page[include.id] %} {% else %} {%
+assign feature_row = page.feature_row %} {% endif %}
 
 <style>
-#exercise_card_running {
-  background-color: #80d870;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-}
+  #card_image {
+    background-color: black;
+    border-radius: 0px;
+    flex-grow: 1;
+    height: auto;
+  }
 
-#exercise_card_testing {
-  background-color: #ffd256;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-}
+  .exercise-item {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-#exercise_card_prototype {
-  background-color: #ff9477;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-}
+  .exercise-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: spacebetween;
+    background-color: black;
+    border-radius: 20px;
+    border: 5px solid;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 9/10;
+    width: 30%;
+  }
 
-#exercise_card_idea {
-  background-color: #dedede;
-  margin-top: 20px;
-  border-radius: 20px;
-  border-style: solid;
-  display: inline-block;
-  overflow: hidden;
-}
+  .exercise-card-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-#exercise_card_simple {
+  .exercise-info-title {
+    align-self: center;
+    pointer-events: none;
+    word-break: break-word;
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.0075em;
+    margin-bottom: 0.35em;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
 
-}
+  #exercise-info {
+    align-self: center;
+    pointer-events: none;
+    word-break: break-word;
+    color: white;
+    margin: 0;
+    font-weight: 400;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    letter-spacing: 0.0075em;
+    margin-bottom: 0.35em;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  }
 
-#inner_card_separator {
-  width: 100%;
-  text-align: left;
-  margin-left: 0;
-  margin-top: 0px;
-  border-top: 4px solid black;
-}
+  .exercise-info-container {
+    width: 100%;
+    /* Change height to 15% if we only have one line of title */
+    height: 25%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.68);
+    animation: position;
+    transition: height 0.8s ease;
+    bottom: 0;
+    padding: 8px;
+    display: inline-flex;
+    flex-direction: column;
+    flex-grow: 1;
 
-#card_image {
-  background-color: black;
-  border-radius: 0px;
-}
+    & #exercise-info {
+      opacity: 0%;
+      transition: opacity 1s ease;
+    }
+
+    &:hover {
+      height: 100%;
+
+      & #exercise-info {
+        opacity: 100%;
+      }
+    }
+  }
 </style>
 
-<div class="feature__wrapper" style="flex-wrap: wrap; position: relative; flex-direction: row; display: flex;">
-  {% assign sorted = feature_row | sort: 'order' %}
-  {% for f in sorted %}
-
-    {% if f.url contains "://" %}
-      {% capture f_url %}{{ f.url }}{% endcapture %}
-    {% else %}
-      {% capture f_url %}{{ f.url | relative_url }}{% endcapture %}
-    {% endif %}
-
-    <div class="feature__item{% if include.type %}--{{ include.type }}{% endif %}" id="exercise_card_{% if f.status == "running" %}running{% elsif f.status == "testing" %}testing{% elsif f.status == "prototype" %}prototype{% elsif f.status == "idea" %}idea{% else %}simple{% endif %}">
-      <div class="archive__item">
-        {% if f.image_path %}
-          <div class="archive__item-teaser" id="card_image">
-            <img src=
-              {% if f.image_path contains "://" %}
-                "{{ f.image_path }}"
-              {% else %}
-                "{{ f.image_path | relative_url }}"
-              {% endif %}
-            alt="{% if f.alt %}{{ f.alt }}{% endif %}">
-            {% if f.image_caption %}
-              <span class="archive__item-caption">{{ f.image_caption | markdownify | remove: "<p>" | remove: "</p>" }}</span>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        <hr id="inner_card_separator">
-
-        <div class="archive__item-body">
-          {% if f.title %}
-            <h2 class="archive__item-title">{{ f.title }}</h2>
-          {% endif %}
-
-          {% if f.excerpt %}
-            <div class="archive__item-excerpt">
-              {{ f.excerpt | markdownify }}
-            </div>
-          {% endif %}
-
-          
-
-          {% if f.url %}
-            <p>
-              <a href="{{ f_url }}" class="btn {{ f.btn_class }}" style="background-color: #9E1C00">{{ f.btn_label | default: site.data.ui-text[site.locale].more_label | default: "Learn More" }}</a>              
-            </p>
-          {% endif %}
+<div
+  class="feature__wrapper"
+  style="
+    flex-wrap: wrap;
+    position: relative;
+    flex-direction: row;
+    display: flex;
+    gap: 1rem;
+  "
+>
+  {% assign sorted = feature_row | sort: 'order' %} {% for f in sorted %} {% if
+  f.url contains "://" %} {% capture f_url %}{{ f.url }}{% endcapture %} {% else
+  %} {% capture f_url %}{{ f.url | relative_url }}{% endcapture %} {% endif %}
+  <a
+    class="exercise-card"
+    href="{{ f_url }}"
+    style='border-color: {% if f.status == "running" %}green{% elsif f.status == "prototype" %}orange{% else %}red{% endif %};'
+  >
+    <div class="exercise-item">
+      {% if f.image_path %} <img src= {% if f.image_path contains "://" %} "{{
+        f.image_path
+      }}" {% else %} "{{ f.image_path | relative_url }}" {% endif %} alt="{% if
+      f.alt %}{{ f.alt }}{% endif %}" id="card_image"> {% endif %}
+      <div class="exercise-info-container">
+        {% if f.title %}
+        <div class="exercise-info-title">
+          {{ f.title }}
         </div>
+        {% endif %} {% if f.excerpt %}
+        <div id="exercise-info">
+          {{ f.excerpt | markdownify }}
+        </div>
+        {% endif %}
       </div>
     </div>
+  </a>
   {% endfor %}
-
 </div>

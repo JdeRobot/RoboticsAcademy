@@ -9,26 +9,20 @@ classes: wide
 
 
 feature_row:
-  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
     alt: "Basic Vacuum Cleaner"
     title: "Basic Vacuum Cleaner"
     excerpt: "Navigation algorithm for an autonomous vacuum"
     url: "/exercises/MobileRobots/vacuum_cleaner"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
 
-  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_teaser.png
+  - image_path: /assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner_loc_teaser.png
     alt: "Localized Vacuum Cleaner"
     title: "Localized Vacuum Cleaner"
     excerpt: "Foraging algorithm for an autonomous vacuum with good localization"
     url: "/exercises/MobileRobots/vacuum_cleaner_loc"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -38,9 +32,6 @@ feature_row:
     title: "Amazon Warehouse (ROS2)"
     excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
     url: "/exercises/MobileRobots/amazon_warehouse/"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 2;
     version: "v1.0"
@@ -50,9 +41,6 @@ feature_row:
     title: "Follow Person (ROS2)"
     excerpt: "Follow a Person in a hospital gazebo world using Deep Learning"
     url: "/exercises/MobileRobots/follow_person"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 2;
 
@@ -61,9 +49,6 @@ feature_row:
     title: "Single Robot Amazon Warehouse (ROS2)"
     excerpt: "Autonomous navigation and pick-and-place logic in ROS2"
     url: "/exercises/MobileRobots/single_robot_amazon_warehouse"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
     status: "prototype"
     order: 2;
 
@@ -72,9 +57,6 @@ feature_row:
     title: "Multi Robot Amazon Warehouse (ROS2)"
     excerpt: "Multi robot warehouse planning in ROS2"
     url: "/exercises/MobileRobots/multi_robot_amazon_warehouse"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--inverse"
     status: "prototype"
     order: 2;
 
@@ -83,9 +65,6 @@ feature_row:
     title: "Bump and Go"
     excerpt: "Basic behaviour of bump-spin using a finite state machine"
     url: "/exercises/MobileRobots/bump_and_go"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "prototype"
     order: 2;
 
@@ -94,9 +73,6 @@ feature_row:
     title: "Laser-based localization"
     excerpt: "Robot self-localization using particle filter and laser sensor"
     url: "/exercises/MobileRobots/laser_loc"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "prototype"
     order: 2;
 
@@ -105,21 +81,15 @@ feature_row:
     title: "Montecarlo Laser Loc"
     excerpt: "Robot self-localization using particle filter and laser sensor"
     url: "/exercises/MobileRobots/montecarlo_laser_loc"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v1.0"
   
-  - image_path: /assets/images/exercises/laser_mapping/laser_mapping.png
+  - image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     alt: "Laser Mapping"
     title: "Laser Mapping"
     excerpt: "Navigation algorithm for an autonomous vacuum."
     url: "/exercises/MobileRobots/laser_mapping"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "running"
     order: 0;
     version: "v3.2"
@@ -129,9 +99,6 @@ feature_row:
     title: "Real Follow Person (ROS2)"
     excerpt: "Follow a Person using a real TurtleBot2 robot with Deep Learning"
     url: "/exercises/MobileRobots/real_follow_person"
-    btn_class: "btn--danger"
-    btn_label: "Go!"
-    version_label: "btn--success"
     status: "prototype"
     order: 2;
 ---

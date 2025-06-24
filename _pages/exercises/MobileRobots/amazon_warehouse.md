@@ -101,40 +101,41 @@ geometry_eg:
     image_path: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
     title: "Path planning"
 
-solution1: EVt9vYqEoDg
-solution2: -2D90I-wZKs
-solution3: 0PO4S8Omn30
+youtubeId1: EVt9vYqEoDg
+youtubeId2: -2D90I-wZKs
+youtubeId3: 0PO4S8Omn30
+youtubeId4: xsitnQkU8Os
 ackermannRobot: NCC9bn-v_Ro
 robotgeometry: FPPF27QIRHw
 ---
 
 ## Goal
 
-The objective of this practice is to implement the logic that allows a logistics robot to deliver shelves to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
+The objective of this exercise is to implement the logic that allows a logistics robot to deliver shelves to the required place by making use of the location of the robot. The robot is equipped with a map and knows its current location in it. The main objective will be to find the shortest path to complete the task.
 
 {% include gallery caption="Gallery" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware (Gazebo).
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates. The function returns an x,y based in this axis reference, with (0,0) next to the robot spawn in Warehouse 1:
+* `HAL.getPose3d()` - returns x, y and theta components of the robot in world coordinates. The function returns an x,y based in this axis reference, with (0,0) next to the robot spawn in Warehouse 1:
 
 {% include gallery id="original_axis" caption="HAL.getPose3d()" %}
 
-* `HAL.getSimTime()` - returns simulation time
+* `HAL.getSimTime()` - returns simulation time.
 ```python
 # simulation time in second
 sec = HAL.getSimTime().sec + HAL.getSimTime().nanosec / 1000000000
 ```
 
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular speed
-* `HAL.lift()` - to lift the platform
-* `HAL.putdown()` - to put down the platform
-* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path
+* `HAL.setV()` - to set the linear speed.
+* `HAL.setW()` - to set the angular speed.
+* `HAL.lift()` - to lift the platform.
+* `HAL.putdown()` - to put down the platform.
+* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path.
 * `GUI.getMap(url)` - returns a numpy array with the image data in a 3 dimensional array (R, G, B) of values between 0-1. The URLs of the worlds are in the **Supporting information** section.
 * `GUI.showNumpy(mat)` - Displays the matrix sent. Accepts an uint8 numpy matrix, values ranging from 0 to 127 for grayscale and values 128 to 134 for predetermined colors (128 = red; 129 = orange; 130 = yellow; 131 = green; 132 = blue; 133 = indigo; 134 = violet).
 
@@ -223,7 +224,7 @@ There are two warehouses to choose from:
 
 ## Theory
 
-This exercise is a motion planning problem. Jderobot Academy already has [an exercise dedicated for this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check it out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
+This exercise is a motion planning problem. Jderobot Academy already has [an exercise dedicated to this](http://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation/), which I'd definitely recommend the readers to check out, so the challenge in this exercise isn't to implement a motion planning algorithm but learning to use the [OMPL](https://ompl.kavrakilab.org/) (Open Motion Planning Library) for our purpose.
 
 ### [Open Motion Planning Library](https://ompl.kavrakilab.org/)
 
@@ -233,12 +234,12 @@ OMPL is a library for sampling-based motion planning, offering many state-of-the
 
 As you can see in the diagram above, some key components of OMPL are:
 * **State Space** defines the possible configurations that a robot can have. For example:
-  * RealVectorStateSpace: represents an Euclidean space
-  * SO2StateSpace, SO3StateSpace: represents rotations in 2D and 3D
-  * SE2StateSpace, SE3StateSpace: combines translations and rotations in 2D and 3D
+  * RealVectorStateSpace: represents an Euclidean space.
+  * SO2StateSpace, SO3StateSpace: represents rotations in 2D and 3D.
+  * SE2StateSpace, SE3StateSpace: combines translations and rotations in 2D and 3D.
   * ...
-* **State Validaty Checker** determines if the configuration is valid, that is to say the configuration doesn't collides with an enviroment obstacle and respects the constraints of the robot.
-* **Control Space** defines the movements that a robot can have.
+* **State Validaty Checker** determines if the configuration is valid, that is to say the configuration doesn't collide with an enviroment obstacle and respects the constraints of the robot.
+* **Control Space** defines the movements that a robot can perform.
 * **State Propagator** indicates the evolution of the system after applying a control.
 * **Space Information** is the container that holds the state space, the state validity checker, and other information needed for planning.
 * **Planner** responsible for generating a path from the start to the goal in the configuration space. OMPL supports a variety of planners, such as RRT, PRM, and FMT*.
@@ -382,14 +383,14 @@ Plot:
 To better understand how to use the library, it is highly recommended to go to the [tutorials](https://ompl.kavrakilab.org/tutorials.html) and [demos](https://ompl.kavrakilab.org/group__demos.html) sections of the official website.
 
 ### Conversion From 3D to 2D
-**Robot Localization** is the process of determining, where robot is located with respect to it's environment. Localization is a an important resource to us in solving this exercise. Localization can be accomplished in any way possible, be it Monte Carlo, Particle Filter, or even Offline Algorithms. Since, we have a map available to us, offline localization is the best way to move forward. Offline Localization will involve converting from a 3D environment scan to a 2D map. There are again numerous ways to do it, but the technique used in exercise is using **transformation matrices**.
+**Robot Localization** is the process of determining, where the robot is located regarding it's environment. Localization is an important resource for us in solving this exercise. Localization can be accomplished in any way possible, be it Monte Carlo, Particle Filter, or even Offline Algorithms. Since we have a map available to us, offline localization is the best way to move forward. Offline Localization will involve converting from a 3D environment scan to a 2D map. There are again numerous ways to do it, but the technique used in exercise is using **transformation matrices**.
 
 #### Transformation Matrices
 In simple terms, transformation is an invertible function that maps a set _X_ to itself. Geometrically, it moves a point to some other location in some space. Algebraically, all the transformations can be mapped using matrix representation. In order to apply transformation on a point, we multiply the point with the specific transformation matrix to get the new location. Some important transformations are:
 
 - **Translation**
 
-Translation of Euclidean Space(2D or 3D world) moves every point by a fixed distance in the same direction
+Translation of Euclidean Space(2D or 3D world) moves every point by a fixed distance in the same direction.
 
 - **Rotation**
 
@@ -465,8 +466,8 @@ The library offers the possibility to set an optimization objective, which could
 
 #### Points to consider
 * The loaded shelf is no longer a obstacle but part of the robot, then:
-  * the robot's geometry changes
-  * remember to exclude the shelf itself when defining invalid states
+  * the robot's geometry changes.
+  * remember to exclude the shelf itself when defining invalid states.
 
 ### Important points to remember
 * Convert the coordinates from meter to pixel before representing with *GUI.showPath(array)*.
@@ -475,14 +476,17 @@ The library offers the possibility to set an optimization objective, which could
 ## Videos
 
 ### Demonstrative video of completed solution
+
+{% include youtubePlayer.html id=page.youtubeId4 %}
+
 * #### Euclidean planning 
-{% include youtubePlayer.html id=page.solution1 %}
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 * #### Planning with robot's geometry constraints
-{% include youtubePlayer.html id=page.solution2 %}
+{% include youtubePlayer.html id=page.youtubeId2 %}
 
 * #### Control-based planning
-{% include youtubePlayer.html id=page.solution3 %}
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 - Contributors: [Lucía Lishan Chen Huang](https://github.com/lu164), [Blanca Soria Rubio](https://github.com/Blancasr), [Jose María Cañas](https://github.com/jmplaza)
 - Maintained by [Lucía Lishan Chen Huang](https://github.com/lu164), [Javier Izquierdo](https://github.com/javizqh).

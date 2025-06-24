@@ -33,23 +33,25 @@ youtubeId5: 2U6K_dgpjNA
 youtubeId6: 31HoUDv8_zI
 youtubeId7: otzet0RazOI
 youtubeId8: 3jDu4iyVPqc
+youtubeId9: 4u19cW4ecL4
+youtubeId10: XtTHAN9zPr8
 ---
 
 ## Goal
 
-In this practice the intention is to develop some basic exercises about computer vision. You will have to get in contact with *OpenCV* (*Python*) library.
+Here the intention is to develop some basic exercises about computer vision. You will have to get in contact with the *OpenCV* (*Python*) library.
 
 {% include gallery caption="Tracking example" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Exercise API
 
-* `GUI.getImage()` - to get the image. It can be None
-* `GUI.showImage()` - allows you to view a debug image or with relevant information
+* `GUI.getImage()` - to get the image. It can be None.
+* `GUI.showImage()` - allows you to view a debug image or one with relevant information.
 
 ## Theory
-In this exercise it is proposed to implement different computer vision functionalities:
+In this exercise different computer vision functionalities are proposed for their implementation:
 * Change to grayscale
 * Morphological processing
 * Implement a color filter
@@ -60,7 +62,7 @@ In this exercise it is proposed to implement different computer vision functiona
 * Hough transform
 
 ### Grayscale
-It is proposed to transform the image obtained from the camera into grayscale.
+It is proposed to transform the image obtained from the camera into a grayscale image.
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
@@ -79,7 +81,7 @@ Common Morphological Operations:
 {% include youtubePlayer.html id=page.youtubeId5 %}
 
 ### Implement a Color Filter
-This involves creating a color filter, that is, filtering an object by its color. For example, you can show an object of a certain color and have that object appear boxed in the image. To do this, you'll need to threshold the image based on color. Perhaps a morphological filter could be applied to obtain a more precise representation of the object.
+This involves creating a color filter, that is, filtering an object by its color. For example, you can show the camera an object of a certain color and have that object appear boxed in the image. To do this, you'll need to threshold the image based on color. Perhaps a morphological filter could be applied to obtain a more precise representation of the object.
 
 {% include youtubePlayer.html id=page.youtubeId6 %}
 
@@ -95,6 +97,15 @@ The proposal is to apply a convolution to the image obtained from the camera. Th
 
 ### Optical Flow
 Optical flow must be calculated from the camera image, thus depicting the motion of the image. Optical flow is a technique used in computer vision and image processing to estimate the motion of objects between two consecutive frames in a video or image sequence. It calculates the apparent motion of pixel intensities, which helps in understanding the movement of objects or the camera itself.
+
+OpenCV provides functions to calculate optical flow. Check this [tutorial](https://docs.opencv.org/3.4/d4/dee/tutorial_optical_flow.html)! 
+
+**Some tips:**
+* Pixel intensities and the frame rate (FPS) can influence the accuracy of the flow estimation.
+
+{% include youtubePlayer.html id=page.youtubeId9 %}
+
+For a more advanced implementation, you can select good feature points and track only those specific pixels, as shown in the following example:
 
 {% include youtubePlayer.html id=page.youtubeId7 %}
 
@@ -118,7 +129,9 @@ The Hough transform must be applied to the image. The Hough Transform is a techn
 
 [Contour Features](https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contour_features/py_contour_features.html)
 
+### Demonstrative video of the solution
 
+{% include youtubePlayer.html id=page.youtubeId10 %}
 
 ## Contributors
 

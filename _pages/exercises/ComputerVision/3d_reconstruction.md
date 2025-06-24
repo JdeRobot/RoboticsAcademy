@@ -54,20 +54,21 @@ youtubeId1: 11pxsE__DPw
 youtubeId2: cAqfb6qJvwI
 youtubeId3: dXm8mTMH3qY
 youtubeId4: NZRQulhKQME
+youtubeId5: plvrxPzrrk8
 ---
 
 ## Goal
 
-In this practice, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.
+In this exercise, the intention is to program the necessary logic to allow kobuki robot to generate a 3D reconstruction of the scene that it is receiving throughout its left and right cameras.
 
 {% include gallery caption="Scene to reconstruct" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `from HAL import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage('left')` - to get the left image
 * `HAL.getImage('right')` - to get the right image
 * `HAL.getCameraPosition('left')` - to get the left camera position from ROS Driver Camera
@@ -169,16 +170,16 @@ In computer vision and computer graphics, [3D reconstruction](https://en.wikiped
 
 - **Software Based**: Software based approach relies on the computation abilities of the computer to determine the 3D properties of the object. Shape from shading, texture, stereo vision and homography are some good methods.
 
-In this exercise our main aim is to carry out 3d reconstruction using Software based approach, particularly stereo vision 3d reconstruction.
+In this exercise our main goal is to carry out 3d reconstruction using a Software based approach, particularly stereo vision 3d reconstruction.
 
 ### Epipolar Geometry
-When two cameras view a 3D scene from two different positions, there are a number of geometric relations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. The study of these properties and constraints is called Epipolar Geometries. The image and explanation below may generalize the idea:
+When two cameras view a 3D scene from two different positions, there are a number of geometric correlations between the 3D points and their projections onto the 2D images that lead to constraints between the image points. The study of these properties and constraints is called Epipolar Geometries. The image and explanation below may generalize the idea:
 
 {% include gallery id="epipolar" caption="Epipolar Geometry" %}
 
 Suppose a point `X` in 3d space is imaged in two views, at `x` in the first and `x'` in the second. Backprojecting the rays to their camera centers through the image planes, we obtain a plane surface, denoted by π.
 
-Supposing now that we know only `x`, we may ask how the corresponding point `x'` is constrained. The plane π is determined by the baseline(line connecting the camera centers) and the ray defined by `x`. From above, we know that the ray corresponding to the *unknown* point `x'` lies in π, hence the point `x'` lies on the line of intersection `l'` of π with second image plane. This line is called the epipolar line corresponding to `x`. This relation helps us to reduce the search space of the point in right image, from a plane to a line. Some important definitions to note are:
+Supposing now that we know only `x`, we may ask how the corresponding point `x'` is constrained. The plane π is determined by the baseline (line connecting the camera centers) and the ray defined by `x`. From above, we know that the ray corresponding to the *unknown* point `x'` lies in π, hence the point `x'` lies on the line of intersection `l'` of π with second image plane. This line is called the epipolar line corresponding to `x`. This relation helps us to reduce the search space of the point in right image, from a plane to a line. Some important definitions to note are:
 
 - The **epipole** is the point of intersection of the line joining the camera centers (the baseline) with the image plane.
 
@@ -191,13 +192,13 @@ Stereo reconstruction is a special case of the above 3d reconstruction where the
 
 {% include gallery id="stereo" caption="Stereo Reconstruction" %}
 
-In this case the epipolar line for both the image planes are same, and are parallel to the width of the planes, simplifying our constraint better.
+In this case the epipolar line for both the image planes are same, and are parallel to the width of the planes, simplifying our constraints better.
 
 ### 3D Reconstruction Algorithm
 The reconstruction algorithm consists of 3 steps:
 
 1. Detect the feature points in one image plane
-2. Detect the feature point corresponding the one found above
+2. Extract the corresponding feature points in the other plane
 3. Triangulate the point in 3d space
 
 Let's look at them one by one
@@ -205,7 +206,7 @@ Let's look at them one by one
 ### Feature Point Detection
 Feature Point Detection is a vast area of study where several algorithms are already studied. [Harris Corner Detection](https://medium.com/data-breach/introduction-to-harris-corner-detector-32a88850b3f6) and [Shi-Tomasi](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_shi_tomasi/py_shi_tomasi.html) algorithms use **eigen values** to get a good feature point. But, the problem is we need a lot of points for 3D Reconstruction, and these algorithms won't be able to provide us with such a large number of feature points.
 
-Therefore, we use edge points as our feature points. There may be ambiguity in their detection in the next stage of the algorithm. But, our problem is solved by taking edges as the feature points. One really cool edge detector is [Canny Edge Detection Algorithm](https://www.youtube.com/watch?v=sRFM5IEqR2w). The algorithm is quite simple and reliable in terms of generating the edges.
+Therefore, we use edge points as our feature points. There may be ambiguity in their detection in the next stage of the algorithm. But, our problem is solved by taking the edges as the feature points. One really cool edge detector is [Canny Edge Detection Algorithm](https://www.youtube.com/watch?v=sRFM5IEqR2w). The algorithm is quite simple and reliable in terms of generating the edges.
 
 ### Feature Point Extraction
 The use of the **epipolar constraint** really simplifies the time complexity of our algorithm. For general 3d reconstruction problems, we have to generate an epipolar line for every point in one image frame, and then search in that sample space the corresponding point in the other image frame. The generation of epipolar line is also very easy in our case, it is just the parallel line iterpolation from left image to right image plane.
@@ -213,9 +214,9 @@ The use of the **epipolar constraint** really simplifies the time complexity of 
 Checking the correspondence between images involves many algorithms, like **Sum of Squared Differences** or **Energy Minimization**. Without going much deep, using a simple **Correlation filter** also suffices our use case.
 
 ### Triangulation
-Triangulation in simple terms is just calculating where the 3d point is going to lie using the two determined points in the image planes.
+Triangulation, in simple terms, is just calculating where the 3d point is going to lay using the two previously determined points in the image planes.
 
-In reality, the position of the image points cannot be measured exactly. For general cameras, there may be geometric or physical distortions. Therefore, a lot of mathematics goes behind minimizing that error and calculating the most accurate 3d point projection. Refer to this [link](https://courses.cs.washington.edu/courses/cse455/09wi/Lects/lect16.pdf) for a simple model.
+Actually, the position of the image points cannot be measured exactly. For general cameras, there may be geometric or physical distortions. Therefore, a lot of mathematics goes behind minimizing that error and calculating the most accurate 3d point projection. Refer to this [link](https://courses.cs.washington.edu/courses/cse455/09wi/Lects/lect16.pdf) for a simple model.
 
 ## Hints
 Simple hints provided to help you solve the 3d_reconstruction exercise. The **OpenCV library** is used extensively for this exercise.
@@ -226,18 +227,22 @@ Using the exercise API, we can easily retrieve the images. Also, after getting t
 ### Calculating Correspondences
 OpenCV already has built-in correlation filters which can be called through `matchTemplate()`. Take care of extreme cases like edges and corners.
 
-One good observation is that the points on left will have correspondence in the left part and the points on right will have correspondence in the right part. Using this observation, we can easily speed up the calculation of correspondence.
+One good observation is that the points on the left will have correspondence in the left part and the points on right will have correspondence in the right part. Using this observation, we can easily speed up the calculation of correspondence.
 
 ### Plotting the Points
-Either manual or OpenCV based function `triangulatePoints` works good for triangulation. Just take care of all the matrix shapes and sizes while carrying out the algebraic implementations.
+Either manual or OpenCV based function `triangulatePoints` works good for triangulation. Just take care of all the matrices shapes and sizes while carrying out the algebraic implementations.
 
 Keep in mind the difference between simple 3D coordinates and homogenous 4D coordinates. Check out this [video](https://www.youtube.com/watch?v=JSLG8n_IY9s) for details. Simply dividing the complete 4d vector by its 4th coordinate gives us the 3d coordinates.
 
-Due to varied implementations of users, the user may have to **adjust the scale and offset of the triangulated points** in order to make them visible and representable in the GUI interface. Downscaling the 3D coordinate vector by a value between 500 to 1000 works well. Also an offset of 0 to 8 works good.
+Due to varied implementations of users, the user may have to **adjust the scale and offset of the triangulated points** in order to make them visible and representable in the GUI interface. Downscaling the 3D coordinate vector by a value between 500 to 1000 and an using an offset of 0 to 8 works well.
 
 ### Illustrations
 
 {% include gallery id="illustrations" caption="Illustrations" %}
+
+### Demonstrative video of the solution
+
+{% include youtubePlayer.html id=page.youtubeId5 %}
 
 
 ## Contributors
