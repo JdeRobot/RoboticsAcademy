@@ -321,7 +321,14 @@ feature_row:
     url: "/exercises/ComputerVision/basic_computer_vision"
     status: "running"
     order: 0;
-
+  # digit classification
+  - image_path: /assets/images/exercises/digit_classification/digit_classification.png
+    alt: "Digit Classifier"
+    title: "Digit Classifier"
+    excerpt: "Classify digits in real time using your own deep learning model."
+    url: "/exercises/ComputerVision/digit_classification"
+    status: "prototype"
+    order: 2;
 ---
 
 
