@@ -55,11 +55,6 @@ vff:
     alt: "Virtual Force Field (VFF)"
     title: "Virtual Force Field (VFF)"
 
-joystick:
-  - url: /assets/images/exercises/follow_person/joystick.png
-    image_path: /assets/images/exercises/follow_person/joystick.png
-    alt: "Joystick to move the person"
-    title: "Joystick to move the person"
 
 youtubeId1: "Tt7RkdUgm_U"
 youtubeId2: "fDAU465eVxQ"
@@ -74,9 +69,12 @@ The objective of this practice is to implement the logic of a navigation algorit
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Simulated Turtlebot 2 (ROS Humble)
-The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy and ROS Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
+The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy and ROS 2 Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
 
 {% include gallery id="simulated_turtlebot2" caption="Simulated Turtlebot2" %}
+
+## Person model teleoperation mode
+The web template includes a teleoperation mode that allows you to control a person within the hospital. To enable this, switch to the "Follow Person Teleop" universe and then you will can use the WASD keys to move the model.
 
 ## Robot API
 
@@ -193,11 +191,6 @@ Integral Controller provides a necessary action to eliminate the offset error wh
 Derivative Controller gives an output depending upon the rate of change or error with respect to time. It gives the kick start for the output thereby increasing system response.
 
 {% include gallery id="pid" caption="Control Systems and PID" %}
-
-## Person model teleoperator
-The web-template has a teleoperator that allows you to move the person inside the hospital. To Control the person click the button and then you will can use AWSD keys to move the model. And clicking the button again can return to autonomous mode.
-
-{% include gallery id="joystick" %}
 
 
 ## Videos
