@@ -71,13 +71,11 @@ const DLModelUploadButton = () => {
     <>
       {exerciseName && white_list_exercises.includes(exerciseName) ? (
         <div
-          className="tooltip-container m-1"
+          className={`tooltip-container m-1 border-[1px] hover:border-[1.8px] border-[#008D017F] hover:border-[#008D01] cursor-pointer duration-[250ms] transition-colors`}
           style={{
             ...styles.uploadButtonContainer,
             background:
-              fileName.length > 0 && fileSize > 0
-                ? "oklch(52.7% 0.154 150.069/ .85)"
-                : "white",
+              fileName.length > 0 && fileSize > 0 ? "#008D01" : "white",
           }}
         >
           <div
@@ -86,9 +84,7 @@ const DLModelUploadButton = () => {
           >
             <UploadIcon
               fillColor={
-                fileName.length > 0 && fileSize > 0
-                  ? "white"
-                  : "oklch(44.6% 0.03 256.802 / .5)"
+                fileName.length > 0 && fileSize > 0 ? "white" : "#008D01"
               }
             />
           </div>
@@ -137,7 +133,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "6px",
-    border: "1px solid #ccc",
   },
 };
 // digit_classification;
