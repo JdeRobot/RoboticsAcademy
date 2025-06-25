@@ -1,5 +1,5 @@
 ---
-permalink: /exercises/ComputerVision/human_detection
+permalink: /exercises/ComputerVision/human_detection_archive
 title: ""
 
 sidebar:
@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-  - url: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
-    image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
+  - url: /assets/images/exercises/human_detection_archive/human_detection_teaser.jpeg
+    image_path: /assets/images/exercises/human_detection_archive/human_detection_teaser.jpeg
     alt: "Human Detection"
     title: "Human Detection"
     
@@ -23,12 +23,10 @@ youtubeId1: vn4ahq8mElg
 
 ---
 
-<!-- title -->
-# Deep learning-based Human Detection Exercise
+# Human Detection Exercise using Deep Learning
 
-<!-- descriptions -->
-<p style="text-align:justify;">The primary goal of the human detection exercise is to identify individuals in the video feed from a webcam and to draw a rectangular boundary around each person. This exercise supports live webcam video stream inference, allowing users to observe real-time human detection performance using their own trained models.</p>
-<p style="text-align:justify;">Users are expected to upload a deep learning-based object detection model in the ONNX (Open Neural Network Exchange) format. Users are encouraged to build and train their own human detection models using libraries such as PyTorch or TensorFlow. After training, the model must be exported to the ONNX format to ensure compatibility with the exercise environment.</p>
+A Human Detection Exercise to identify the presence of humans and identification of the rectangular boundary around them. Apart from the live and video inference features, the exercise also includes model benchmarking and model visualization.
+The user is expected to upload a Deep Learning model which fits the required input and output specifications for inference. The input model is supposed to be in the ONNX format. We provide all the guidance in the exercise docs to the user, this includes everything from fine tuning pre built object detection models in different frameworks to its subsequent conversion to the ONNX format. For more information refer to the "Exercise Instructions" section below.
 
 {% include gallery caption="Detection Example" %}
 

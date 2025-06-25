@@ -241,11 +241,20 @@ feature_row:
     url: "/exercises/IndustrialRobots/mobile_manipulation"
     status: "prototype"
     order: 2;
-
+  
+  # archive human detection 
+  - image_path: /assets/images/exercises/human_detection_archive/human_detection_teaser.jpeg
+    alt: "Archive Human Detection"
+    title: "Archive Human Detection"
+    excerpt: "Develop a DL human detection model to perform inference and benchmarking in real time."
+    url: "/exercises/ComputerVision/human_detection_archive"
+    status: "prototype"
+    order: 2;
+  # new human detection exercise
   - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     alt: "Human Detection"
     title: "Human Detection"
-    excerpt: "Develop a DL human detection model to perform inference and benchmarking in real time."
+    excerpt: "Deep learning-based Human Detection Exercise."
     url: "/exercises/ComputerVision/human_detection"
     status: "prototype"
     order: 2;
