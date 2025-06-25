@@ -58,6 +58,32 @@ while True:
 ```
 - `GUI.showImage(image)` - allows you to view a debug image or one with relevant information.
 
+<!-- Model Path -->
+## File Path for Uploaded Model
+The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model.
+```python
+from model import model_path
+```
+
+## Example Code
+<!-- Load ONNX session -->
+Recommended to load the ONNX model session
+```python
+# Import the required package
+from model import model_path
+import onnxruntime
+import sys
+
+# Load ONNX model
+try:
+    ort_session = onnxruntime.InferenceSession(model_path)
+except Exception as e:
+    print("ERROR: Model couldn't be loaded")
+    print(str(e))
+    sys.exit(1)
+```
+
+<!-- Exercise Instructions -->
 ## Exercise Instructions
 - The uploaded model should adhere to the following input/output specifications, please keep that in mind while building your model.
   - The model must accept as input grayscale images with size 28x28 pixels. Input shape: 
@@ -74,20 +100,6 @@ torch.onnx.export(
 )
 ```
 
-<!--  -->
-
-<!-- code: load onnx session -->
-## Code
-```python
-# Load ONNX model
-try:
-    ort_session = onnxruntime.InferenceSession(model_path)
-except Exception as e:
-    print("ERROR: Model couldn't be loaded")
-    print(str(e))
-    sys.exit(1)
-```
-
 ## Theory
 Digit classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits [[3]](http://yann.lecun.com/exdb/mnist/) is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.
 
@@ -100,8 +112,8 @@ Image classification can be achieved using classic machine learning algorithms l
 For solving the particular task of digit classification, we don't need complex architectures. Here is an example of how you can build a CNN and train a model using MNIST database with Pytorch: [Basic MNIST Example](https://github.com/pytorch/examples/tree/master/mnist). If you want to further improve the accuracy of your model, try increasing the number of layers and play around with different regularization strategies, such as data augmentation [[5]]((https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/)).
 
 ## Contributors
-- Contributors: [David Pascual](https://github.com/dpascualhe), [Shashwat Dalakoti](https://github.com/shashwat623)
-- Maintained by [David Pascual](https://github.com/dpascualhe)
+- Contributors: [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro) ,[Shashwat Dalakoti](https://github.com/shashwat623)
+- Maintained by [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro)
 
 ## References
 
