@@ -14,8 +14,8 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 digitclassification:
-  - url: /assets/images/exercises/digit_classification/digit_classification_exercise.png
-    image_path: /assets/images/exercises/digit_classification/digit_classification_exercise.png
+  - url: /assets/images/exercises/digit_classification/digit_classification.png
+    image_path: /assets/images/exercises/digit_classification/digit_classification.png
     alt: "digit_classification_exercise"
     title: "Digit Classification"
 mnist:
@@ -30,22 +30,29 @@ cnn:
     alt: "Example of a Convolutional Neural Network"
     title: "Example of a Convolutional Neural Network"
 
+instruction:
+  - url: /assets/images/exercises/digit_classification/digit-classification-exercise-instruction-img-1.png
+    image_path: /assets/images/exercises/digit_classification/digit-classification-exercise-instruction-img-1.png
+    alt: "exercise instruction"
+    title: "exercise instruction"
+
+
+
 youtubeId1: 80K0Fd9GFkU
 
 ---
 
 # Deep learning-based Digit Classification Exercise
+{% include gallery id="digitclassification" caption="Digit Classification Exercise" %}
 
 <p style="text-align:justify;">The goal of this exercise is to create a deep learning model capable of classifying digital and handwritten digits from 0 to 9. You will train this model using a machine learning library or framework of your choice and then export it to the <a href="https://onnx.ai/" target="_blank"><strong>ONNX (Open Neural Network Exchange)</strong></a> format. You can upload your own ONNX model and use the editor to write Python code that processes input from a live video feed, which is captured using your browser's webcam. This allows you to classify both digital and handwritten digits in real time.</p>
 
 
-{% include gallery id="digitclassification" caption="Digit Classification Exercise" %}
-## Youtube Video
-{% include youtubePlayer.html id=page.youtubeId1 %}
+<!-- instruction -->
+{% include gallery id="instruction" caption="Digit Classification Exercise" %}
+
 
 <!-- Note Guide -->
-<br/>
-
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Exercise API
@@ -110,6 +117,10 @@ Image classification can be achieved using classic machine learning algorithms l
 {% include gallery id="cnn" caption="Example of a Convolutional Neural Network" %}
 
 For solving the particular task of digit classification, we don't need complex architectures. Here is an example of how you can build a CNN and train a model using MNIST database with Pytorch: [Basic MNIST Example](https://github.com/pytorch/examples/tree/master/mnist). If you want to further improve the accuracy of your model, try increasing the number of layers and play around with different regularization strategies, such as data augmentation [[5]]((https://debuggercafe.com/image-augmentation-using-pytorch-and-albumentations/)).
+
+<!-- videso -->
+## Tutorial Video
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 ## Contributors
 - Contributors: [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro) ,[Shashwat Dalakoti](https://github.com/shashwat623)
