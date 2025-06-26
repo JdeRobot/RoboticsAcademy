@@ -13,7 +13,7 @@ toc_icon: "cog"
 
 <!--- classes: wide --->
 
-gallery:
+teaser:
   - url: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     alt: "Human Detection"
@@ -32,7 +32,7 @@ youtubeId1: XC4yJYnX7y4
 <!-- title -->
 # Deep learning-based Human Detection Exercise
 <!-- cover photo -->
-{% include gallery caption="" %}
+{% include gallery id="teaser" caption="" %}
 <!-- descriptions -->
 <p style="text-align:justify;">The primary goal of the human detection exercise is to identify individuals in the video feed from a webcam and to draw a rectangular boundary around each person. This exercise supports live webcam video stream inference, allowing users to observe real-time human detection performance using their own trained models.</p>
 <p style="text-align:justify;">Users are expected to upload a deep learning-based object detection model in the <a href="https://onnx.ai/" target="_blank" ><strong>ONNX (Open Neural Network Exchange)</strong></a>  format. Users are encouraged to build and train their own human detection models using libraries such as <a href="https://pytorch.org/" target="_blank" ><strong>PyTorch</strong></a>  or <a href="https://www.tensorflow.org/" target="_blank" ><strong>TensorFlow</strong></a>. After training, the model must be exported to the ONNX format to ensure compatibility with the exercise environment.</p>
@@ -40,7 +40,7 @@ youtubeId1: XC4yJYnX7y4
 <p style="text-align:justify;">After training, the model must be exported to the ONNX format to ensure compatibility with the exercise environment, and you must use the editor to write Python code that processes input from a live video feed, which is captured using your browser's webcam.</p>
 
 <!-- instruction image --> 
-{% include instruction caption="exercise instruction" %}
+{% include gallery id="instruction" caption="exercise instruction" %}
 
 <!-- Note Guide -->
 <!-- <br/> -->
@@ -152,7 +152,7 @@ This guide walks you through using the TensorFlow object detection API to train 
 
 * **Pseudo Console**: This shows the error messages and a few intermediate outputs along the inference.
 
-## Videos
+## Tutorial Video
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
