@@ -4,9 +4,6 @@ on:
     push:
         paths:
             - "react_frontend/**"
-    pull_request:
-        paths:
-            - "react_frontend/**"
 
 jobs:
     setup-and-lint:

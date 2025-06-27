@@ -1,7 +1,7 @@
 # Ensure Python code is linted and formatted, matching the style guide
 name: Python Linting
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
     black-lint:
@@ -16,17 +16,17 @@ jobs:
         steps:
             - name: Check out source repository
               uses: actions/checkout@v3
-            
+
             - name: Set up Python environment
               uses: actions/setup-python@v4
               with:
-                python-version: "3.11"
-            
+                  python-version: "3.11"
+
             - name: flake8 Lint
               uses: py-actions/flake8@v2
               with:
-                ignore: "E701,W503,E203"
-                exclude: "docs,.idea"
-                max-line-length: "88"
-                path: "."
-                plugins: "flake8-docstrings flake8-black"
+                  ignore: "E701,W503,E203"
+                  exclude: "docs,.idea"
+                  max-line-length: "88"
+                  path: "."
+                  plugins: "flake8-docstrings flake8-black"
