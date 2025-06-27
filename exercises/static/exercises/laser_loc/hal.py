@@ -14,7 +14,6 @@ from interfaces.sonar import ListenerSonar
 
 # Hardware Abstraction Layer
 class HAL:
-
     def __init__(self):
         self.config = Config()
         self.motors = PublisherMotors(

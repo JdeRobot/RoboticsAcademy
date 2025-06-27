@@ -36,7 +36,6 @@ time_cycle = 80
 
 
 class MyAlgorithm(threading.Thread):
-
     def __init__(self, camera, motors):
         self.twist = Twist()
         self.camera = camera

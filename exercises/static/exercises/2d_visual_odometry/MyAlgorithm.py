@@ -11,7 +11,6 @@ time_cycle = 40  # 80
 
 
 class MyAlgorithm(threading.Thread):
-
     def __init__(self, bag_readings, pose_obj):
         self.bag_readings = bag_readings
         self.pose_obj = pose_obj

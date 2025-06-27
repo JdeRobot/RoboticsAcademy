@@ -169,9 +169,12 @@ class Template:
                 # Inference
                 # We will get output in the order of output_layers_names
                 result = sess.run(output_layers_names, {input_layer_name: img_data})
-                detection_boxes, detection_classes, detection_scores, num_detections = (
-                    result
-                )
+                (
+                    detection_boxes,
+                    detection_classes,
+                    detection_scores,
+                    num_detections,
+                ) = result
                 count = 0
                 detections = []
                 scores = []
@@ -272,9 +275,12 @@ class Template:
                 # Inference
                 # We will get output in the order of output_layers_names
                 result = sess.run(output_layers_names, {input_layer_name: img_data})
-                detection_boxes, detection_classes, detection_scores, num_detections = (
-                    result
-                )
+                (
+                    detection_boxes,
+                    detection_classes,
+                    detection_scores,
+                    num_detections,
+                ) = result
                 count = 0
                 detections = []
                 scores = []
@@ -452,9 +458,12 @@ class Template:
                 # Inference
                 # We will get output in the order of output_layers_names
                 result = sess.run(output_layers_names, {input_layer_name: img_data})
-                detection_boxes, detection_classes, detection_scores, num_detections = (
-                    result
-                )
+                (
+                    detection_boxes,
+                    detection_classes,
+                    detection_scores,
+                    num_detections,
+                ) = result
                 # count = 0
                 detections = []
                 scores = []

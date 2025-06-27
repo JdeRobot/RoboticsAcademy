@@ -10,7 +10,6 @@ from console_interfaces.general.console import start_console
 
 
 class GUI(MeasuringThreadingGUI):
-
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
         # Execution control vars

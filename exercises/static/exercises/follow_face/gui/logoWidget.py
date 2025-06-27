@@ -23,7 +23,6 @@ from PyQt5.QtWidgets import QWidget, QGridLayout
 
 
 class LogoWidget(QWidget):
-
     def __init__(self, winParent, width=0, height=0):
         super(LogoWidget, self).__init__()
         self.winParent = winParent

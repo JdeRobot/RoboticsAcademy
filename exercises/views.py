@@ -1,11 +1,4 @@
-import json
-import mimetypes
 import os
-import shutil
-import tempfile
-import subprocess
-import zipfile
-import pylint as lint
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings

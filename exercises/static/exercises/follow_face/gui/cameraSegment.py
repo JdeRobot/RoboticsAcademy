@@ -23,7 +23,6 @@ from parallelIce.cameraClient import CameraClient
 
 
 class CameraSegment:
-
     def __init__(self, camera):
         self.lock = threading.Lock()
         self.client = camera

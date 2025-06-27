@@ -74,13 +74,15 @@ class GUI:
     # Update the gui
     def update(self):
         # Payload Map Message
-        self.payload["robot_coord"], self.payload["robot_contorno"] = (
-            self.map.setRobotValues()
-        )
+        (
+            self.payload["robot_coord"],
+            self.payload["robot_contorno"],
+        ) = self.map.setRobotValues()
         # Payload the Sonar and Laser data
-        self.payload["pos_vertices"], self.payload["sonar_sensor"] = (
-            self.map.setSonarValues()
-        )
+        (
+            self.payload["pos_vertices"],
+            self.payload["sonar_sensor"],
+        ) = self.map.setSonarValues()
         self.payload["laser"], self.payload["laser_global"] = self.map.setLaserValues()
 
         message = "#gui" + json.dumps(self.payload)

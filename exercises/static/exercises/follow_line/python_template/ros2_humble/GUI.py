@@ -18,7 +18,6 @@ from manager.ram_logging.log_manager import LogManager
 
 
 class GUI(MeasuringThreadingGUI):
-
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 

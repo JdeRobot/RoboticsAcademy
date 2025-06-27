@@ -12,7 +12,6 @@ def cmdLift2String(cmdLift):
 
 
 class CMDLift:
-
     def __init__(self):
         self.msg = String()
         self.msg.data = "unload"
@@ -26,7 +25,6 @@ class CMDLift:
 
 ### HAL INTERFACE ###
 class PublisherPlatformNode(Node):
-
     def __init__(self, topic):
 
         super().__init__("PublisherPlatform")
@@ -81,7 +79,6 @@ class PlatformController(Node):
 
 
 class PlatformCommandNode(Node):
-
     def __init__(self, topic):
         super().__init__("platform_command_listener")
         self.sub = self.create_subscription(String, topic, self.listener_callback, 10)

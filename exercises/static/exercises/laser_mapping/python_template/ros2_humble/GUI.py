@@ -17,7 +17,6 @@ from HAL import getPose3d, getOdom
 
 
 class GUI(MeasuringThreadingGUI):
-
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
         super().__init__(host)
 

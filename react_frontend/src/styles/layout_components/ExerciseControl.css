@@ -40,3 +40,10 @@
 .button:hover .monitor {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
+
+.visible {
+  display: flex;
+}
+.hidden {
+  display: none;
+}

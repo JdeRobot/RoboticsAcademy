@@ -5,7 +5,6 @@ from math import pi as PI
 
 
 class LaserData:
-
     def __init__(self):
 
         self.values = []  # meters

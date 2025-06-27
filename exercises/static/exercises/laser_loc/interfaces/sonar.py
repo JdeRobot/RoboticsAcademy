@@ -5,7 +5,6 @@ from math import pi as PI
 
 
 class SonarData:
-
     def __init__(self):
         self.distances = []
         self.minRange = 0

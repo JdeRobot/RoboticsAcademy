@@ -3,7 +3,6 @@ import os
 
 
 class HAL:
-
     def __init__(self):
         # Saving the current path for later use.
         # The current path is somehow required everytime for accessing files, when the exercise is running in the docker container.

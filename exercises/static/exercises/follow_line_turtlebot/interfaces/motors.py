@@ -19,7 +19,6 @@ from copy import deepcopy
 
 
 class PublisherMotors:
-
     def __init__(self, topic, maxV, maxW):
         self.maxW = maxW
         self.maxV = maxV

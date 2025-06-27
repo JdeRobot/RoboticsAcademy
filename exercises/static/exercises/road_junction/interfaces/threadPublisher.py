@@ -25,7 +25,6 @@ time_cycle = 80
 
 
 class ThreadPublisher(threading.Thread):
-
     def __init__(self, pub, kill_event):
         self.pub = pub
         self.kill_event = kill_event

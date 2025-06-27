@@ -95,7 +95,6 @@ def odometry2Pose3D(odom):
 
 
 class Pose3d:
-
     def __init__(self):
 
         self.x = 0  # X coord [meters]

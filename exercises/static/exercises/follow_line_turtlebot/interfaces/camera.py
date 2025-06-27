@@ -39,7 +39,6 @@ def imageMsg2Image(img, bridge):
 
 
 class Image:
-
     def __init__(self):
         self.height = 3  # Image height [pixels]
         self.width = 3  # Image width [pixels]
@@ -63,7 +62,6 @@ class Image:
 
 
 class ListenerCamera:
-
     def __init__(self, topic):
         self.topic = topic
         self.data = Image()

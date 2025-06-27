@@ -5,7 +5,6 @@ from interfaces.motors import PublisherMotors
 
 # Hardware Abstraction Layer
 class HAL:
-
     def __init__(self):
         rospy.init_node("HAL")
 

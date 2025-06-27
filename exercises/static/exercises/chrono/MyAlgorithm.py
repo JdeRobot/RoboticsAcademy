@@ -24,7 +24,6 @@ rep_start = str(bag).split("start:       ")[1].split(" ")[4].split()[0][1:-1]
 
 
 class MyAlgorithm(threading.Thread):
-
     def __init__(self, camera, motors, pose3d):
         self.camera = camera
         self.motors = motors
