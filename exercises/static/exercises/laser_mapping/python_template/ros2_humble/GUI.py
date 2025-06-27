@@ -8,13 +8,15 @@ import math
 
 from map import Map
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 
 from HAL import getPose3d, getOdom
 
-class GUI(MeasuringThreadingGUI):
 
+class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
         super().__init__(host)
 
@@ -22,9 +24,9 @@ class GUI(MeasuringThreadingGUI):
         self.image_lock = threading.Lock()
 
         self.map = Map(getPose3d, getOdom)
-        
+
         # Payload vars
-        self.payload = {"user_map": "", "real_pose": "","noisy_pose": ""}
+        self.payload = {"user_map": "", "real_pose": "", "noisy_pose": ""}
 
         self.start()
 
@@ -58,15 +60,17 @@ class GUI(MeasuringThreadingGUI):
     # Function to set the next image to be sent
     def setUserMap(self, image):
         if image.shape[0] != 970 or image.shape[1] != 1500:
-            raise ValueError('map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide')
+            raise ValueError(
+                "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
+            )
         processed_image = np.stack((image,) * 3, axis=-1)
         with self.image_lock:
             self.user_map = processed_image
-    
+
     def poseToMap(self, x_prime, y_prime, yaw_prime):
-        y = -23.58 * ( -20.36 - x_prime)
-        x = -23.53  * ( -31.95 - y_prime)
-        yaw = yaw_prime - math.pi/2
+        y = -23.58 * (-20.36 - x_prime)
+        x = -23.53 * (-31.95 - y_prime)
+        yaw = yaw_prime - math.pi / 2
         return [round(x), round(y), yaw]
 
 
@@ -76,9 +80,11 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
+
 # Expose the user functions
 def setUserMap(image):
     gui.setUserMap(image)
+
 
 def poseToMap(x_prime, y_prime, yaw_prime):
     return gui.poseToMap(x_prime, y_prime, yaw_prime)

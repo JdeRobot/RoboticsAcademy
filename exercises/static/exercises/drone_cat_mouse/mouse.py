@@ -11,7 +11,7 @@ from gazebo_msgs.msg import ModelState
 class Mouse:
     def __init__(self):
         self.mouse = DroneWrapper(name="rqt", ns="mouse/")
-        self.reset_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+        self.reset_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
 
     # Explicit initialization functions
     # Class method, so user can call it without instantiation
@@ -66,4 +66,4 @@ class Mouse:
 
     def get_position(self):
         pos = self.mouse.get_position()
-        return pos 
+        return pos

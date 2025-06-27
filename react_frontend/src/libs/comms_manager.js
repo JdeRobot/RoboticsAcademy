@@ -28,6 +28,7 @@ const CommsManager = (address) => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const unsuscribeAll = () => {
     for (const event in observers) {
       observers[event].length = 0;

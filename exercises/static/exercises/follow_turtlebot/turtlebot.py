@@ -7,10 +7,11 @@ from gazebo_msgs.srv import GetModelState
 from gazebo_msgs.srv import SetModelState
 from interfaces.threadStoppable import StoppableThread
 
-class Turtlebot():
+
+class Turtlebot:
     def __init__(self):
-        self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
-        self.get_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
+        self.set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
+        self.get_state = rospy.ServiceProxy("/gazebo/get_model_state", GetModelState)
         self.play_event = Event()
         rospy.sleep(2)
         self.stop_turtlebot()
@@ -54,7 +55,7 @@ class Turtlebot():
         req.pose.orientation.w = 1.0
         while True:
             if self.play_event.is_set():
-                sys.exit() # kill stop_turtlebot thread
+                sys.exit()  # kill stop_turtlebot thread
             else:
                 self.set_state(req)
 
@@ -77,11 +78,3 @@ class Turtlebot():
         req.pose.orientation.w = 0.0
         self.set_state(req)
         self.stop_turtlebot()
-
-
-
-
-
-
-
-

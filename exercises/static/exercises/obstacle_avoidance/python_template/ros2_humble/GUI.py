@@ -8,16 +8,16 @@ from HAL import getLaserData, getPose3d
 
 # Graphical User Interface Class
 
-class GUI(MeasuringThreadingGUI):
 
+class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
         # Payload vars
-        self.payload = {'lap': '', 'map': ''}
+        self.payload = {"lap": "", "map": ""}
         self.map = Map(getLaserData, getPose3d)
         self.lap = Lap(self.map)
-        
+
         self.start()
 
     # Prepares and sends a map to the websocket server
@@ -25,7 +25,7 @@ class GUI(MeasuringThreadingGUI):
 
         lapped = self.lap.check_threshold()
         lap_message = ""
-        if(lapped != None):
+        if lapped != None:
             self.payload["lap"] = str(lapped)
 
         # Payload Map Message
@@ -50,25 +50,32 @@ class GUI(MeasuringThreadingGUI):
         self.map.reset()
         self.lap.reset()
 
+
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)
 
 # Redirect the console
 start_console()
 
+
 def showForces(vec1, vec2, vec3):
     gui.showForces(vec1, vec2, vec3)
+
 
 def showLocalTarget(newVec):
     return gui.showLocalTarget(newVec)
 
-#TODO: change this to another file, not GUI
+
+# TODO: change this to another file, not GUI
+
 
 def getNextTarget():
     return gui.map.getNextTarget()
 
+
 def setTargetx(x):
     gui.map.targetx = x
+
 
 def setTargety(y):
     gui.map.targety = y

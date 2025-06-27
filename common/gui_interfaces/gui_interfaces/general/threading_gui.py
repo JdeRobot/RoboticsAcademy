@@ -5,16 +5,16 @@ import websocket
 
 import sys
 
-sys.path.insert(0, '/RoboticsApplicationManager')
+sys.path.insert(0, "/RoboticsApplicationManager")
 
 from manager.ram_logging.log_manager import LogManager
 
 
 class ThreadingGUI:
-    """ GUI interface using threading:
-        
-        self.start() needs to be called at the end of the init method\n
-        The update_gui(self) method needs to be implemented
+    """GUI interface using threading:
+
+    self.start() needs to be called at the end of the init method\n
+    The update_gui(self) method needs to be implemented
     """
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
@@ -36,7 +36,7 @@ class ThreadingGUI:
 
         self.host = host
         self.node = rclpy.create_node("node")
-    
+
     def start(self):
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()
@@ -49,7 +49,9 @@ class ThreadingGUI:
     # Init websocket client
     def run_websocket(self):
         while self.running:
-            self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+            self.client = websocket.WebSocketApp(
+                self.host, on_message=self.gui_in_thread
+            )
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     # Process incoming messages to the GUI
@@ -62,10 +64,10 @@ class ThreadingGUI:
                 self.ack_frontend = True
         else:
             LogManager.logger.error("Unsupported msg")
-    
+
     def update_gui(self):
         """Prepares the data and calls the following method at the end to send it:\n
-            · send_to_client(data)
+        · send_to_client(data)
         """
         pass
 
@@ -78,7 +80,7 @@ class ThreadingGUI:
             with self.ack_lock:
                 if self.ack:
                     self.update_gui()
-                    if self.ack_frontend: 
+                    if self.ack_frontend:
                         self.ack = False
 
             # Maintain desired frequency

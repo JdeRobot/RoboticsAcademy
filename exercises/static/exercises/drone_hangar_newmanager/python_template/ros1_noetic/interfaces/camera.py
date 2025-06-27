@@ -32,35 +32,40 @@ import numpy as np
 
 
 class Image:
-
     def __init__(self):
 
         self.height = 3  # Image height [pixels]
         self.width = 3  # Image width [pixels]
         self.timeStamp = 0  # Time stamp [s] */
         self.format = ""  # Image format string (RGB8, BGR,...)
-        self.data = np.zeros((self.height, self.width, 3), np.uint8)  # The image data itself
+        self.data = np.zeros(
+            (self.height, self.width, 3), np.uint8
+        )  # The image data itself
         self.data.shape = self.height, self.width, 3
 
     def __str__(self):
-        s = "Image: {\n   height: " + str(self.height) + "\n   width: " + str(self.width)
-        s = s + "\n   format: " + self.format + "\n   timeStamp: " + str(self.timeStamp) 
+        s = (
+            "Image: {\n   height: "
+            + str(self.height)
+            + "\n   width: "
+            + str(self.width)
+        )
+        s = s + "\n   format: " + self.format + "\n   timeStamp: " + str(self.timeStamp)
         s = s + "\n   data: " + str(self.data) + "\n}"
-        return s 
+        return s
 
 
 class ListenerCamera:
- 
     def __init__(self, topic):
-        
+
         self.topic = topic
         self.data = Image()
         self.sub = None
         self.lock = threading.Lock()
-        
+
         self.bridge = CvBridge()
         self.start()
- 
+
     def __callback(self, img):
 
         image = imageMsg2Image(img, self.bridge)
@@ -68,20 +73,20 @@ class ListenerCamera:
         self.lock.acquire()
         self.data = image
         self.lock.release()
-        
+
     def stop(self):
 
         self.sub.unregister()
 
     def start(self):
         self.sub = rospy.Subscriber(self.topic, ImageROS, self.__callback)
-        
+
     def getImage(self):
-        
+
         self.lock.acquire()
         image = self.data
         self.lock.release()
-        
+
         return image
 
     def hasproxy(self):

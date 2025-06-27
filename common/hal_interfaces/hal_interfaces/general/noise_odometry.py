@@ -3,9 +3,9 @@ from rclpy.node import Node
 from math import asin, atan2, pi
 import nav_msgs.msg
 
+
 ### AUXILIARY FUNCTIONS ###
 class Pose3d:
-
     def __init__(self):
 
         self.x = 0  # X coord [meters]
@@ -93,12 +93,21 @@ def quat2Roll(qw, qx, qy, qz):
         rotateX = atan2(rotateXa0, rotateXa1)
     return rotateX
 
+
 def euler2quat(yaw, pitch, roll):
 
-    qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
-    qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
-    qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
-    qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+    qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.sin(yaw / 2)
+    qy = np.cos(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2) + np.sin(
+        roll / 2
+    ) * np.cos(pitch / 2) * np.sin(yaw / 2)
+    qz = np.cos(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2) - np.sin(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.cos(yaw / 2)
+    qw = np.cos(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) + np.sin(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.sin(yaw / 2)
 
     return [qx, qy, qz, qw]
 
@@ -126,17 +135,19 @@ def odometry2Pose3D(odom):
 
     return pose
 
-def gaussian_noise(x,mu=0.0,std=0.1, noise_level = 0.01):
+
+def gaussian_noise(x, mu=0.0, std=0.1, noise_level=0.01):
     noise = np.random.normal(mu, std) * noise_level
     x_noisy = x + noise
-    return x_noisy 
+    return x_noisy
+
 
 def add_noise(last_pose, new_pose, base_odom, noise_level):
-    
+
     # First odom is real
-    if (last_pose == None):
+    if last_pose == None:
         return new_pose
-    
+
     # Next odom is movement from last pose to new pose + noise + base odom
     mov_x = new_pose.pose.pose.position.x - last_pose.pose.pose.position.x
     mov_y = new_pose.pose.pose.position.y - last_pose.pose.pose.position.y
@@ -145,14 +156,20 @@ def add_noise(last_pose, new_pose, base_odom, noise_level):
     new_ori = new_pose.pose.pose.orientation
     old_ori = last_pose.pose.pose.orientation
 
-    mov_yaw = quat2Yaw(new_ori.w, new_ori.x, new_ori.y, new_ori.z) - quat2Yaw(old_ori.w, old_ori.x, old_ori.y, old_ori.z)
-    mov_pitch = quat2Pitch(new_ori.w, new_ori.x, new_ori.y, new_ori.z) - quat2Pitch(old_ori.w, old_ori.x, old_ori.y, old_ori.z)
-    mov_roll = quat2Roll(new_ori.w, new_ori.x, new_ori.y, new_ori.z) - quat2Roll(old_ori.w, old_ori.x, old_ori.y, old_ori.z)
+    mov_yaw = quat2Yaw(new_ori.w, new_ori.x, new_ori.y, new_ori.z) - quat2Yaw(
+        old_ori.w, old_ori.x, old_ori.y, old_ori.z
+    )
+    mov_pitch = quat2Pitch(new_ori.w, new_ori.x, new_ori.y, new_ori.z) - quat2Pitch(
+        old_ori.w, old_ori.x, old_ori.y, old_ori.z
+    )
+    mov_roll = quat2Roll(new_ori.w, new_ori.x, new_ori.y, new_ori.z) - quat2Roll(
+        old_ori.w, old_ori.x, old_ori.y, old_ori.z
+    )
 
     # Add noise
-    mov_x = gaussian_noise(mov_x, noise_level = noise_level)
-    mov_y = gaussian_noise(mov_y, noise_level = noise_level)
-    mov_yaw = gaussian_noise(mov_yaw, noise_level = noise_level)
+    mov_x = gaussian_noise(mov_x, noise_level=noise_level)
+    mov_y = gaussian_noise(mov_y, noise_level=noise_level)
+    mov_yaw = gaussian_noise(mov_yaw, noise_level=noise_level)
 
     # Get new odom angle
     ori = base_odom.pose.pose.orientation
@@ -164,7 +181,7 @@ def add_noise(last_pose, new_pose, base_odom, noise_level):
 
     # Generate new odom
     new_odom = nav_msgs.msg.Odometry()
-    
+
     new_odom.pose.pose.position.x = base_odom.pose.pose.position.x + mov_x
     new_odom.pose.pose.position.y = base_odom.pose.pose.position.y + mov_y
     new_odom.pose.pose.position.z = base_odom.pose.pose.position.z + mov_z
@@ -177,9 +194,9 @@ def add_noise(last_pose, new_pose, base_odom, noise_level):
 
     return new_odom
 
+
 ### HAL INTERFACE ###
 class NoisyOdometryNode(Node):
-
     def __init__(self, topic):
         super().__init__("noisy_odometry_node")
         self.sub = self.create_subscription(
@@ -189,13 +206,15 @@ class NoisyOdometryNode(Node):
         self.noisy_pose = nav_msgs.msg.Odometry()
 
         ### Control the amount of noise ###
-        self.noise_level = 0.01 # 0.1 = a lot
+        self.noise_level = 0.01  # 0.1 = a lot
 
     def listener_callback(self, msg):
         # First odom is real
         # Second odom is movement from first real to second real + noise + first odom
         # Third odom is movement from second real to third real + noise + second odom
-        self.noisy_pose = add_noise(self.last_pose_, msg, self.noisy_pose, self.noise_level)
+        self.noisy_pose = add_noise(
+            self.last_pose_, msg, self.noisy_pose, self.noise_level
+        )
         self.last_pose_ = msg
 
     def getPose3d(self):

@@ -5,7 +5,6 @@ from math import pi as PI
 
 ### AUXILIARY FUNCTIONS
 class LaserData:
-
     def __init__(self):
 
         self.values = []  # meters
@@ -68,7 +67,6 @@ def laserScan2LaserData(scan):
 
 ### HAL INTERFACE ###
 class LaserNode(Node):
-
     def __init__(self, topic):
         super().__init__("laser_node")
         self.sub = self.create_subscription(

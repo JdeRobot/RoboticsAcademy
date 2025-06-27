@@ -6,17 +6,16 @@ from gazebo_msgs.srv import SetModelState
 from threading import Event, Thread
 
 
-MIN_DIST = 2.0 # minimum distance required by drone to pick package
+MIN_DIST = 2.0  # minimum distance required by drone to pick package
 
 
 class Magnet:
     def __init__(self):
         # rospy.init_node("magnet")
         self.magnetize = Event()
-        self.get_state = rospy.ServiceProxy('/gazebo/get_model_state', GetModelState)
-        self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+        self.get_state = rospy.ServiceProxy("/gazebo/get_model_state", GetModelState)
+        self.set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
         self.set_pkg_state = False
-
 
     def start_magnet(self):
         req = ModelState()
@@ -39,18 +38,18 @@ class Magnet:
             req.pose.orientation.w = drone_pos.pose.orientation.w
             self.set_state(req)
 
-
     def stop_magnet(self):
         self.magnetize.clear()
-
 
     def set_cmd_pick(self):
         try:
             pkg_pos = self.get_state("package_box", "")
             drone_pos = self.get_state("typhoon_h480_dual_cam", "")
-            dist = sqrt(pow(pkg_pos.pose.position.x - drone_pos.pose.position.x, 2) + \
-                        pow(pkg_pos.pose.position.y - drone_pos.pose.position.y, 2) + \
-                        pow(pkg_pos.pose.position.z - drone_pos.pose.position.z, 2))
+            dist = sqrt(
+                pow(pkg_pos.pose.position.x - drone_pos.pose.position.x, 2)
+                + pow(pkg_pos.pose.position.y - drone_pos.pose.position.y, 2)
+                + pow(pkg_pos.pose.position.z - drone_pos.pose.position.z, 2)
+            )
 
             if dist < MIN_DIST:
                 self.magnetize.set()
@@ -59,7 +58,6 @@ class Magnet:
                 self.set_pkg_state = True
         except:
             pass
-
 
     def set_cmd_drop(self):
         try:

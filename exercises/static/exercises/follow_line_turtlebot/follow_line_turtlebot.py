@@ -36,25 +36,25 @@ from interfaces.motors import PublisherMotors
 
 if __name__ == "__main__":
     cfg = config.load(sys.argv[1])
-    #jdrc= comm.init(cfg, 'FollowLineTurtlebot')
+    # jdrc= comm.init(cfg, 'FollowLineTurtlebot')
 
     robot = cfg.getProperty("FollowLineTurtlebot.Robot")
 
     maxv = cfg.getPropertyWithDefault("FollowLineTurtlebot.MaxV", 2)
     maxw = cfg.getPropertyWithDefault("FollowLineTurtlebot.MaxV", 0.3)
 
-    if (robot == "simkobuki"):
+    if robot == "simkobuki":
         cam_path = cfg.getProperty("FollowLineTurtlebot.SimCameraPath")
         mot_path = cfg.getProperty("FollowLineTurtlebot.SimMotorsPath")
 
-    else: # realkobuki
+    else:  # realkobuki
         cam_path = cfg.getProperty("FollowLineTurtlebot.RealCameraPath")
         mot_path = cfg.getProperty("FollowLineTurtlebot.RealMotorsPath")
 
     camera = ListenerCamera(cam_path)
     motors = PublisherMotors(mot_path, maxv, maxw)
 
-    algorithm=MyAlgorithm(camera, motors)
+    algorithm = MyAlgorithm(camera, motors)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     myGUI.show()
 
     t2 = ThreadGUI(myGUI)
-    t2.daemon=True
+    t2.daemon = True
     t2.start()
 
     sys.exit(app.exec_())

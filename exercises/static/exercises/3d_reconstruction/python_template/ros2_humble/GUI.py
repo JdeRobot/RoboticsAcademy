@@ -7,8 +7,8 @@ import numpy as np
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
-class GUI(MeasuringThreadingGUI):
 
+class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
         super().__init__(host)
 
@@ -25,7 +25,7 @@ class GUI(MeasuringThreadingGUI):
         self.matching = []
         self.paint_matching = "F"
 
-        self.payload = {'img1': '', 'img2': '', 'pts': '', 'match': '', 'p_match': 'F'}
+        self.payload = {"img1": "", "img2": "", "pts": "", "match": "", "p_match": "F"}
 
         self.start()
 
@@ -37,8 +37,8 @@ class GUI(MeasuringThreadingGUI):
         self.payload["img2"] = json.dumps(payload2)
         length_point_send = len(self.point_to_send)
 
-        if (length_point_send != 0):
-            if (length_point_send > 100):
+        if length_point_send != 0:
+            if length_point_send > 100:
                 self.payload["pts"] = json.dumps(self.point_to_send[0:100])
                 del self.point_to_send[0:100]
             else:
@@ -65,22 +65,22 @@ class GUI(MeasuringThreadingGUI):
             image2_to_be_shown = self.image2_to_be_shown
 
         image1 = image1_to_be_shown
-        payload1 = {'img': ''}
+        payload1 = {"img": ""}
         image2 = image2_to_be_shown
-        payload2 = {'img': ''}
+        payload2 = {"img": ""}
 
-        if(image_to_be_shown_updated == False):
+        if image_to_be_shown_updated == False:
             return payload1, payload2
 
         image1 = cv2.resize(image1, (0, 0), fx=0.50, fy=0.50)
-        frame1 = cv2.imencode('.JPEG', image1)[1]
+        frame1 = cv2.imencode(".JPEG", image1)[1]
         encoded_image1 = base64.b64encode(frame1)
-        payload1['img'] = encoded_image1.decode('utf-8')
+        payload1["img"] = encoded_image1.decode("utf-8")
 
         image2 = cv2.resize(image2, (0, 0), fx=0.50, fy=0.50)
-        frame2 = cv2.imencode('.JPEG', image2)[1]
+        frame2 = cv2.imencode(".JPEG", image2)[1]
         encoded_image2 = base64.b64encode(frame2)
-        payload2['img'] = encoded_image2.decode('utf-8')
+        payload2["img"] = encoded_image2.decode("utf-8")
 
         with self.image_show_lock:
             self.image_to_be_shown_updated = False
@@ -94,7 +94,10 @@ class GUI(MeasuringThreadingGUI):
             self.paint_matching = "T"
         else:
             self.paint_matching = "F"
-        if (np.all(self.image1_to_be_shown == image1) == False or np.all(self.image2_to_be_shown == image2) == False):
+        if (
+            np.all(self.image1_to_be_shown == image1) == False
+            or np.all(self.image2_to_be_shown == image2) == False
+        ):
             with self.image_show_lock:
                 self.image1_to_be_shown = image1
                 self.image2_to_be_shown = image2
@@ -105,9 +108,9 @@ class GUI(MeasuringThreadingGUI):
         duplicate_point = False
         for i in range(0, len(points)):
             for j in range(0, len(self.point_to_save)):
-                if (self.point_to_save[j] == points[i]):
+                if self.point_to_save[j] == points[i]:
                     duplicate_point = True
-            if (duplicate_point == False):
+            if duplicate_point == False:
                 self.point_to_save.append(points[i])
                 self.point_to_send.append(points[i])
             else:
@@ -118,10 +121,10 @@ class GUI(MeasuringThreadingGUI):
         number_equal_points = 0
         for i in range(0, len(points)):
             for j in range(0, len(self.point_to_save)):
-                if (self.point_to_save[j] == points[i]):
+                if self.point_to_save[j] == points[i]:
                     number_equal_points += 1
 
-        if (number_equal_points != len(points)):
+        if number_equal_points != len(points):
             self.ClearAllPoints()
             for i in range(0, len(points)):
                 self.point_to_save.append(points[i])
@@ -142,23 +145,29 @@ class GUI(MeasuringThreadingGUI):
     def reset_gui(self):
         self.ClearAllPoints()
 
+
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)
 
 # Redirect the console
 start_console()
 
+
 def showImages(image1, image2, paint_matching):
     gui.showImages(image1, image2, paint_matching)
+
 
 def ShowNewPoints(points):
     gui.ShowNewPoints(points)
 
+
 def ShowAllPoints(points):
     gui.ShowAllPoints(points)
 
+
 def showImageMatching(x1, y1, x2, y2):
     gui.showImageMatching(x1, y1, x2, y2)
+
 
 def ClearAllPoints():
     gui.ClearAllPoints()

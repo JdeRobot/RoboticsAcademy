@@ -21,24 +21,25 @@ from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSignal, QPointF, Qt, QPoint
 from PyQt5.QtWidgets import QWidget, QGridLayout
 
+
 class LogoWidget(QWidget):
-
-    def __init__(self,winParent, width=0, height=0):    
+    def __init__(self, winParent, width=0, height=0):
         super(LogoWidget, self).__init__()
-        self.winParent=winParent
-        qimage=QtGui.QImage()
-        qimage.load(':images/jderobot.svg')
-        if (width != 0 and height != 0):
-        	self.qimage = qimage.scaled(0.8*width, 0.8*height, Qt.KeepAspectRatio)
-        	#self.qimage = qimage.scaled(0.8*width, 0.8*height)
-        	self.resize(width, height)
+        self.winParent = winParent
+        qimage = QtGui.QImage()
+        qimage.load(":images/jderobot.svg")
+        if width != 0 and height != 0:
+            self.qimage = qimage.scaled(0.8 * width, 0.8 * height, Qt.KeepAspectRatio)
+            # self.qimage = qimage.scaled(0.8*width, 0.8*height)
+            self.resize(width, height)
         else:
-        	self.qimage = qimage
-
+            self.qimage = qimage
 
     def paintEvent(self, e):
 
-        painter=QtGui.QPainter(self)
-        painter.drawImage(self.width()/2-self.qimage.width()/2, self.height()/2-self.qimage.height()/2, self.qimage)
-
-
+        painter = QtGui.QPainter(self)
+        painter.drawImage(
+            self.width() / 2 - self.qimage.width() / 2,
+            self.height() / 2 - self.qimage.height() / 2,
+            self.qimage,
+        )

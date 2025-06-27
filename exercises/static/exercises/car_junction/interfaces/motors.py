@@ -5,7 +5,6 @@ from math import pi as PI
 from .threadPublisher import ThreadPublisher
 
 
-
 def cmdvel2Twist(vel):
 
     tw = Twist()
@@ -19,28 +18,26 @@ def cmdvel2Twist(vel):
     return tw
 
 
-class CMDVel ():
-
+class CMDVel:
     def __init__(self):
 
-        self.vx = 0 # vel in x[m/s] (use this for V in wheeled robots)
-        self.vy = 0 # vel in y[m/s]
-        self.vz = 0 # vel in z[m/s]
-        self.ax = 0 # angular vel in X axis [rad/s]
-        self.ay = 0 # angular vel in Y axis [rad/s]
-        self.az = 0 # angular vel in Z axis [rad/s] (use this for W in wheeled robots)
-        self.timeStamp = 0 # Time stamp [s]
-
+        self.vx = 0  # vel in x[m/s] (use this for V in wheeled robots)
+        self.vy = 0  # vel in y[m/s]
+        self.vz = 0  # vel in z[m/s]
+        self.ax = 0  # angular vel in X axis [rad/s]
+        self.ay = 0  # angular vel in Y axis [rad/s]
+        self.az = 0  # angular vel in Z axis [rad/s] (use this for W in wheeled robots)
+        self.timeStamp = 0  # Time stamp [s]
 
     def __str__(self):
         s = "CMDVel: {\n   vx: " + str(self.vx) + "\n   vy: " + str(self.vy)
-        s = s + "\n   vz: " + str(self.vz) + "\n   ax: " + str(self.ax) 
+        s = s + "\n   vz: " + str(self.vz) + "\n   ax: " + str(self.ax)
         s = s + "\n   ay: " + str(self.ay) + "\n   az: " + str(self.az)
-        s = s + "\n   timeStamp: " + str(self.timeStamp)  + "\n}"
-        return s 
+        s = s + "\n   timeStamp: " + str(self.timeStamp) + "\n}"
+        return s
+
 
 class PublisherMotors:
- 
     def __init__(self, topic, maxV, maxW):
 
         self.maxW = maxW
@@ -56,33 +53,30 @@ class PublisherMotors:
 
         self.thread.daemon = True
         self.start()
- 
-    def publish (self):
+
+    def publish(self):
 
         self.lock.acquire()
         tw = cmdvel2Twist(self.data)
-        #print ("tw",tw)
+        # print ("tw",tw)
         self.lock.release()
         self.pub.publish(tw)
-        
+
     def stop(self):
-   
+
         self.kill_event.set()
         self.pub.unregister()
 
-    def start (self):
+    def start(self):
 
         self.kill_event.clear()
         self.thread.start()
-        
-
 
     def getMaxW(self):
         return self.maxW
 
     def getMaxV(self):
         return self.maxV
-        
 
     def sendVelocities(self, vel):
 
@@ -123,5 +117,3 @@ class PublisherMotors:
         self.lock.acquire()
         self.data.az = az
         self.lock.release()
-
-

@@ -11,11 +11,13 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
 
 threading.excepthook = custom_thread_excepthook
 
@@ -24,7 +26,6 @@ threading.excepthook = custom_thread_excepthook
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init()
-
 
     CAM_FRONTAL_TOPIC = "/" + "drone0" + "/sensor_measurements/frontal_camera/image_raw"
     CAM_VENTRAL_TOPIC = "/" + "drone0" + "/sensor_measurements/ventral_camera/image_raw"
@@ -37,6 +38,7 @@ if not rclpy.ok():
     executor = rclpy.executors.MultiThreadedExecutor()
     executor.add_node(frontal_camera_node)
     executor.add_node(ventral_camera_node)
+
     def __auto_spin() -> None:
         while rclpy.ok():
             try:

@@ -12,8 +12,8 @@ from HAL import getPose3d
 
 # Graphical User Interface Class
 
-class GUI(MeasuringThreadingGUI):
 
+class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
         self.array = None
@@ -26,7 +26,7 @@ class GUI(MeasuringThreadingGUI):
         self.image_show_lock = threading.Lock()
 
         # Payload vars
-        self.payload = {'image': '', 'map': '', 'array': ''}
+        self.payload = {"image": "", "map": "", "array": ""}
         self.map = Map(getPose3d)
 
         self.start()
@@ -69,17 +69,17 @@ class GUI(MeasuringThreadingGUI):
             image_to_be_shown = self.image_to_be_shown
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         with self.image_show_lock:
             self.image_to_be_shown_updated = False
@@ -95,7 +95,7 @@ class GUI(MeasuringThreadingGUI):
     def showPath(self, array):
         """Process the array(ideal path) to be sent to websocket"""
         with self.array_lock:
-            strArray = ''.join(str(e) for e in array)
+            strArray = "".join(str(e) for e in array)
 
             # Remove unnecessary spaces in the array to avoid JSON syntax error in JavaScript
             strArray = re.sub(r"\[[ ]+", "[", strArray)
@@ -115,7 +115,7 @@ class GUI(MeasuringThreadingGUI):
 
     def getMap(self, url):
         return self.map.getMap(url)
-    
+
     def worldToGrid(self, pose):
         return self.map.worldToGrid(*pose)
 
@@ -126,8 +126,9 @@ class GUI(MeasuringThreadingGUI):
         """Resets the GUI to its initial state."""
         print("Resetting image")
         image = [[0 for x in range(400)] for y in range(400)]
-        self.showNumpy(np.clip(image, 0, 255).astype('uint8'))
+        self.showNumpy(np.clip(image, 0, 255).astype("uint8"))
         self.map.reset()
+
 
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)
@@ -135,28 +136,36 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
+
 # Expose to the user
 def payloadImage():
     return gui.payloadImage()
 
+
 def showNumpy(image):
     gui.showNumpy(image)
+
 
 def showPath(array):
     gui.showPath(array)
 
+
 def getTargetPose():
     return gui.getTargetPose()
 
+
 def getMap(url):
     return gui.getMap(url)
+
 
 def rowColumn(pose):
     # Deprecated. Still alive for backward compatibility.
     return list(gui.worldToGrid(pose))
 
+
 def worldToGrid(pose):
     return gui.worldToGrid(pose)
+
 
 def gridToWorld(cell):
     return gui.gridToWorld(cell)
