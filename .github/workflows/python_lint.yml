@@ -3,8 +3,8 @@ name: Python Linting
 
 on:
     push:
-        paths:
-            - "**/*.py"
+        # paths:
+        #     - "**/*.py"
 
 jobs:
     black-lint:

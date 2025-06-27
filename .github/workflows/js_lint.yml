@@ -2,8 +2,8 @@ name: Frontend Lint Workflow
 
 on:
     push:
-        paths:
-            - "react_frontend/**"
+        # paths:
+        #     - "react_frontend/**"
 
 jobs:
     setup-and-lint:
