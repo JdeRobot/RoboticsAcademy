@@ -7,6 +7,7 @@ from gui_interfaces.general.measuring_threading_gui_no_sim import MeasuringThrea
 from console_interfaces.general.console import start_console
 import numpy as np
 
+
 # Graphical User Interface Class
 class GUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
