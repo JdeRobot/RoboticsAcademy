@@ -13,6 +13,8 @@ jobs:
         steps:
             - uses: actions/checkout@v4
             - uses: psf/black@stable
+              with:
+                  version: "22.3.0"
     # flake8-lint:
     #     runs-on: ubuntu-latest
     #     name: Python flake8 Lint
