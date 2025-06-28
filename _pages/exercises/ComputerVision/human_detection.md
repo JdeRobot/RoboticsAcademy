@@ -25,7 +25,7 @@ instruction:
     alt: "Exercise instruction"
     title: "Exercise instruction"
 
-youtubeId1: XC4yJYnX7y4
+youtubeId1: I0GhS3ePMHM
 
 ---
 
