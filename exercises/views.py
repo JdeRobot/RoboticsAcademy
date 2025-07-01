@@ -44,3 +44,15 @@ def user_code_zip(request, exercise_id):
 
     except Exception as e:
         return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+@csrf_exempt
+@api_view(["POST"])
+def get_exercise_config(request, exercise_id):
+    config_path = os.path.join(settings.BASE_DIR, f"exercises/static/exercises/{exercise_id}/config.json")
+
+    try:
+        with open(config_path) as f:
+            return JsonResponse({"success": True, "config": json.load(f)})
+
+    except Exception as e:
+        return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
