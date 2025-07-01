@@ -4,6 +4,10 @@ from math import pi as PI
 import numpy as np
 import cv_bridge
 import cv2
+import rclpy
+
+if not rclpy.ok():
+    rclpy.init()
 
 ### AUXILIARY FUNCTIONS ###
 

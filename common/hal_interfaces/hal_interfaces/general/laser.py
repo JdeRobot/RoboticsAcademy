@@ -1,6 +1,10 @@
 from rclpy.node import Node
 import sensor_msgs.msg
 from math import pi as PI
+import rclpy
+
+if not rclpy.ok():
+    rclpy.init()
 
 
 ### AUXILIARY FUNCTIONS

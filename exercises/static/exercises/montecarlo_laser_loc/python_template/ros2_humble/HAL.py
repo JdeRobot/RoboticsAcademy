@@ -27,34 +27,34 @@ print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
-    ### HAL INIT ###
-    motor_node = MotorsNode("/cmd_vel", 4, 0.3)
-    odometry_node = OdometryNode("/odom")
-    noisy_odometry_node = NoisyOdometryNode("/odom")
-    laser_node = LaserNode("/roombaROS/laser/scan")
-    bumper_node = BumperNode(
-        [
-            "/roombaROS/events/right_bumper",
-            "/roombaROS/events/center_bumper",
-            "/roombaROS/events/left_bumper",
-        ]
-    )
+### HAL INIT ###
+motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/odom")
+noisy_odometry_node = NoisyOdometryNode("/odom")
+laser_node = LaserNode("/roombaROS/laser/scan")
+bumper_node = BumperNode(
+    [
+        "/roombaROS/events/right_bumper",
+        "/roombaROS/events/center_bumper",
+        "/roombaROS/events/left_bumper",
+    ]
+)
 
-    # Spin nodes so that subscription callbacks load topic data
-    executor = rclpy.executors.MultiThreadedExecutor()
-    executor.add_node(odometry_node)
-    executor.add_node(noisy_odometry_node)
-    executor.add_node(laser_node)
-    def __auto_spin() -> None:
-        while rclpy.ok():
-            try:
-                executor.spin_once(timeout_sec=0)
-            except Exception:
-                pass
-            time.sleep(1 / freq)
-            
-    executor_thread = threading.Thread(target=__auto_spin, daemon=True)
-    executor_thread.start()
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(odometry_node)
+executor.add_node(noisy_odometry_node)
+executor.add_node(laser_node)
+def __auto_spin() -> None:
+    while rclpy.ok():
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
+        
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
 
 # Pose
 def getPose3d():

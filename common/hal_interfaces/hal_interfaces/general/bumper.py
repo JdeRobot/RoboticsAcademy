@@ -1,5 +1,9 @@
 from rclpy.node import Node
 from gazebo_msgs.msg import ContactsState
+import rclpy
+
+if not rclpy.ok():
+    rclpy.init()
 
 ### AUXILIARY FUNCTIONS ###
 

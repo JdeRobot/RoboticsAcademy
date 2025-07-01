@@ -1,6 +1,11 @@
 from rclpy.node import Node
 from rclpy.qos import ReliabilityPolicy, QoSProfile, HistoryPolicy
 import rosgraph_msgs.msg
+import rclpy
+
+if not rclpy.ok():
+    rclpy.init()
+
 
 ### AUXILIARY FUNCTIONS
 class SimTimeData:
@@ -19,6 +24,7 @@ class SimTimeData:
         )
         return s
 
+
 def simTime2SimTimeData(clock):
     """
     Translates from ROS Clock to JderobotTypes SimTimeData.
@@ -31,14 +37,22 @@ def simTime2SimTimeData(clock):
     clockData.nanoseconds = clock.clock.nanosec
     return clockData
 
+
 ### HAL INTERFACE ###
 class SimTimeNode(Node):
 
     def __init__(self):
         super().__init__("simulation_time_node")
-        qos_policy = QoSProfile(reliability= ReliabilityPolicy.BEST_EFFORT, history= HistoryPolicy.KEEP_LAST, depth=1)
+        qos_policy = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=1,
+        )
         self.sub = self.create_subscription(
-            rosgraph_msgs.msg.Clock, "/clock", self.listener_callback, qos_profile=qos_policy
+            rosgraph_msgs.msg.Clock,
+            "/clock",
+            self.listener_callback,
+            qos_profile=qos_policy,
         )
         self.last_sim_time_ = rosgraph_msgs.msg.Clock()
 

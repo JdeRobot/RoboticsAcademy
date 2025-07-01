@@ -25,10 +25,6 @@ class MeasuringThreadingGUI:
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0, world_name="default"):
 
-        # ROS 2 init
-        if not rclpy.ok():
-            rclpy.init()
-
         # Execution control vars
         self.out_period = 1.0 / freq
 
@@ -46,7 +42,6 @@ class MeasuringThreadingGUI:
         self.running = True
 
         self.host = host
-        self.node = rclpy.create_node("node")
 
         self.world_name = world_name
     

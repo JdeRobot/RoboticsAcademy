@@ -27,30 +27,30 @@ print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
-    ### HAL INIT ###
-    motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
-    odometry_node = OdometryNode("/amazon_robot/odom")
-    laser_node = LaserNode("/amazon_robot/scan")
-    sim_time_node = SimTimeNode()
-    platform_listener = PlatformCommandNode("/send_effort")
-    platform_pub = PublisherPlatformNode("/send_effort")
+### HAL INIT ###
+motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/amazon_robot/odom")
+laser_node = LaserNode("/amazon_robot/scan")
+sim_time_node = SimTimeNode()
+platform_listener = PlatformCommandNode("/send_effort")
+platform_pub = PublisherPlatformNode("/send_effort")
 
-    # Spin nodes so that subscription callbacks load topic data
-    executor = rclpy.executors.MultiThreadedExecutor()
-    executor.add_node(odometry_node)
-    executor.add_node(laser_node)
-    executor.add_node(sim_time_node)
-    executor.add_node(platform_listener)
-    def __auto_spin() -> None:
-        while rclpy.ok():
-            try:
-                executor.spin_once(timeout_sec=0)
-            except Exception:
-                pass
-            time.sleep(1 / freq)
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(odometry_node)
+executor.add_node(laser_node)
+executor.add_node(sim_time_node)
+executor.add_node(platform_listener)
+def __auto_spin() -> None:
+    while rclpy.ok():
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
 
-    executor_thread = threading.Thread(target=__auto_spin, daemon=True)
-    executor_thread.start()
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
 
 def getPose3d():
     return odometry_node.getPose3d()

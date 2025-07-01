@@ -26,27 +26,27 @@ if not rclpy.ok():
     rclpy.init()
 
 
-    CAM_FRONTAL_TOPIC = "/" + "drone0" + "/frontal_cam/image_raw"
-    CAM_VENTRAL_TOPIC = "/" + "drone0" + "/ventral_cam/image_raw"
+CAM_FRONTAL_TOPIC = "/" + "drone0" + "/frontal_cam/image_raw"
+CAM_VENTRAL_TOPIC = "/" + "drone0" + "/ventral_cam/image_raw"
 
-    drone = DroneWrapper()
-    frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
-    ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
+drone = DroneWrapper()
+frontal_camera_node = CameraNode(CAM_FRONTAL_TOPIC)
+ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 
-    # Spin nodes so that subscription callbacks load topic data
-    executor = rclpy.executors.MultiThreadedExecutor()
-    executor.add_node(frontal_camera_node)
-    executor.add_node(ventral_camera_node)
-    def __auto_spin() -> None:
-        while rclpy.ok():
-            try:
-                executor.spin_once(timeout_sec=0)
-            except Exception:
-                pass
-            time.sleep(1 / freq)
-            
-    executor_thread = threading.Thread(target=__auto_spin, daemon=True)
-    executor_thread.start()
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(frontal_camera_node)
+executor.add_node(ventral_camera_node)
+def __auto_spin() -> None:
+    while rclpy.ok():
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1 / freq)
+        
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
 
 ### GETTERS ###
 
