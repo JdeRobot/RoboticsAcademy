@@ -3,7 +3,11 @@ import "./../../styles/buttons/DLModelUploadButton.css";
 import "./../../styles/tailwind.css";
 
 // Constants
-const white_list_exercises = ["digit_classification", "human_detection"];
+const white_list_exercises = [
+  "follow_line",
+  "digit_classification",
+  "human_detection",
+];
 const MB = 1024 * 1024;
 
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
