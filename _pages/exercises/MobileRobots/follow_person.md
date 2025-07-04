@@ -55,44 +55,48 @@ vff:
     alt: "Virtual Force Field (VFF)"
     title: "Virtual Force Field (VFF)"
 
-joystick:
-  - url: /assets/images/exercises/follow_person/joystick.png
-    image_path: /assets/images/exercises/follow_person/joystick.png
-    alt: "Joystick to move the person"
-    title: "Joystick to move the person"
 
 youtubeId1: "Tt7RkdUgm_U"
 youtubeId2: "fDAU465eVxQ"
-youtubeId3: "IzDaiki_fKo"
 ---
 
 ## Goal
 
-The objective of this exercise is to implement the logic of a navigation algorithm that will be used to follow a person in a hospital using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
+The objective of this practice is to implement the logic of a navigation algorithm that will be used to follow a person in a hospital using a R-CNN (Region based Convolutional Neural Network) called SSD (Single Shot Detector)
 
 {% include gallery id="follow_person_demo" caption="Follow Person Cover" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
+**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
 ## Simulated Turtlebot 2 (ROS Humble)
-The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy and ROS Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implementing algorithms such as VFF if you need to avoid obstacles.
+The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented and developed for ROS Foxy and ROS 2 Humble. It has a RGBD camera so that we can detect objects or people, and it has a laser 360º for implement algorithms as VFF if you need to avoid obstacles.
 
 {% include gallery id="simulated_turtlebot2" caption="Simulated Turtlebot2" %}
 
+## Person model teleoperation mode
+The web template includes a teleoperation mode that allows you to control a person within the hospital. To enable this, switch to the "Follow Person Teleop" universe and then you will can use the WASD keys to move the model. 
+* **W**: forward movement
+* **S**: backward movement
+* **A**: left rotation
+* **D**: right rotation
+
+
+If it doesn't react, click on the area where the image is shown and try again.
+
 ## Robot API
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to obtain the current frame of the camera robot.
-* `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
-* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate).
+* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
+* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
 * `HAL.getLaserData()` - it allows to obtain the data of the laser sensor. It returns a list of 180 laser measurements (0 - 180 degrees)
-* `HAL.setV()` - to set the linear speed.
-* `HAL.setW()` - to set the angular velocity.
+* `HAL.setV()` - to set the linear speed
+* `HAL.setW()` - to set the angular velocity
 * `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
-* `GUI.showImage()` - to show an opencv image in the web template.
+* `GUI.showImage()` - to show an opencv image in the web template
 
 ## Laser attributes
 `HAL.getLaserData()` returns an instance of a Class with the following attributes:
@@ -103,7 +107,7 @@ The robot that we will use is a Turtlebot2 (a circular mobile robot) implemented
 * `values` - A list of 180 measurements [m] (Note: values < minRange or > maxRange should be discarded)
 
 ### Bounding Box attributes
-`HAL.getBoundingBoxes()` returns an instance of a list of Bounding Box Classes with the following attributes:
+`HAL.getBoundingBoxes()` returns an instance a list of Bounding Box Classes with the following attributes:
 * `id` - identifier of the type of object (1, 2, 3)
 * `class-id` - name of the object (1->person, 2->bicycle, 3->car, ...). It uses a coco_names.py file which you can see in this link: (TODO)
 * `xmin` - x value of the top left point of the bounding box
@@ -136,31 +140,31 @@ while True:
 When we are designing a robotic application that knows how to follow a person, the most important mission is knowing how to detect it and not lose it.
 
 
-First step is the detection of people; we perform this first task by using a *Region-based Convolutional Neural Network (R-CNN)*. *CNN* are a type of networks where the first neurons capture groups of pixels and these neurons form new groups for next layers doing convolutions with *Kernel* filters. The neurons of the output layer return the percentage probability of an image to belong to a given class (*classification*). For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/). With a *R-CNN* we use a CNN on many regions of the image and we select the regions with more probability of success. There are many types of architectures based on R-CNN such as Yolo or SSD. In this exercise you will use a SSD trained model. If you want to know how SSD works you can access this [link](https://developers.arcgis.com/python/guide/how-ssd-works/)
+The first step is the detection of people; we perform this first task using a *Region-based Convolutional Neural Network (R-CNN)*. *CNNs* are a type of network where the first neurons capture groups of pixels and these neurons form new groups for next layers by doing convolutions with *Kernel* filters. The neurons of the output layer return the percentage probability of an image that belong to a given class (*classification*). For more information, see this [link](https://www.analyticsvidhya.com/blog/2021/05/convolutional-neural-networks-cnn/). With an *R-CNN* we use a CNN on many regions of the image and we select those regions with a higher probability of success. There are many types of architectures based on R-CNN such as Yolo or SSD. In this exercise you will use an SSD trained model. If you want to know how SSD works, you can access this [link](https://developers.arcgis.com/python/guide/how-ssd-works/).
 
 {% include gallery id="r-cnn" caption="Region-based Convolutional Neural Network (R-CNN)" %}
 
-Once we have detected all the people in the image, we can establish several *criteria* to decide which person we are going to follow
+Once we have detected all the people in the image, we can establish several *criteria* to decide which person are we going to follow.
 
 
-In order to not lose our target we can use *tracking* algorithms. A homemade method that usually works well consists in locating the Centroid of every Bounding Box in each iteration and comparing it with the chosen Centroid of the previous frame. We will stick to the bounding box that has the closest centroid and most similar area to the bounding chosen on the previous frame.
+In order not to lose our target, we can use *tracking* algorithms. A homemade method that usually works well, consists on locating the centroid of every bounding box in each iteration and comparing it with the chosen Centroid of the previous frame. We will stay with that bounding box that have the closest centroid and the most similar area to the chosen bounding box of the previous frame.
 
-The second step is to use the kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the *location* of the centroid of the candidate bounding box. Depending on the position we will establish a certain angular speed.
+The second step is to use the Kobuki base actuators to move and get closer to the person. To achieve this goal, we look at the *location* of the centroid of the candidate bounding box. Depending on the position, we will establish a certain angular speed.
 
-An easy method to implement this is *discretized case-based behavior*. We take the width of an image and divide it into X number of columns. We assign a certain angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity.
+An easy method to implement this is by *discretized case-based behavior*. We take the width of an image and divide it into X number of columns. We assign an specific angular velocity to each range, and, depending on where the centroid is, we will apply the corresponding velocity.
 
 {% include gallery id="how_to_follow_person" caption="How to follow a person" %}
 
-Another method, a bit more complicated but more efficient, is to implement a PID controller for the angular velocity. With a good design of a [**PID controller**](#pid-controller) we will obtain a more precise and less oscillatory turning response.
+Another method, a bit more complicated but more efficient, is to implement a [**PID controller**](#pid-controller) for the angular velocity. With a good design, we will obtain a more precise and less oscillatory turning response.
 
-However, the robot moves through an environment where there may be obstacles. There is an algorithm called [**VFF (Virtual Force Field)**](#virtual-force-field) that allows us to avoid crashes while following a target. It is the sum of attraction and repulsion vectors that causes a different sense of direction.
+However, the robot moves through an environment where there may be obstacles. There is an algorithm called [**VFF (Virtual Force Field)**](#virtual-force-field) that allows us to avoid collisions while following a target. It is based on the sum of attraction and repulsion vectors that determine the direction of movement.
 
 ## Virtual Force Field
-The Virtual Force Field Algorithm works this way:
+The Virtual Force Field Algorithm works as follows:
 
-* The robot assigns an *Attraction Vector* to the objective (the person). With an image, you will have to use the *Field of View* of the camera (60 degrees) to know the angle of each pixel with the center of the image. You can set a fixed module vector with a 2D camera.
-* The robot assigns a *Repulsion Vector* to the obstacle according to its sensor readings that points away from the waypoint. This is done by adding all the vectors that are translated from the sensor readings.
-* The robot follows the *Final Vector* obtained by adding the target and obstacle vector.
+* The robot assigns an *Attraction Vector* to the objective (person). With an image, you will have to use the *Field of View* of the camera (60 degrees) to know the angle of each pixel with the center of the image. You can set a fixed module vector with a 2D camera.
+* The robot assigns a *Repulsion Vector* to the obstacle, according to its sensor readings that points away from the waypoint. This is done by adding all the vectors that are translated from the sensor readings.
+* The robot follows the *Final Vector* obtained by adding the attraction and repulsion vector.
 
 {% include gallery id="vff" caption="Virtual Force Field" %}
 
@@ -169,36 +173,31 @@ To understand PID Control, let us first understand what is Control in general.
 
 ### Control System
 
-A system of devices or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforeseen errors or complications.
+A system or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot to execute a set of commands precisely, in the presence of unforeseen errors.
 
 ### Types of Control System
 #### Open Loop Control System
 A control system in which the control action is completely independent of the output of the system. A manual control system is on Open Loop System.
 
 #### Closed Loop Control System
-A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
+A control system in which the output has an effect on the input quantity, in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
 
 ### PID Control
-A control loop mechanism using feedback. A PID Controller continuously calculates an error value as the difference between the desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
+A control loop mechanism employing feedback. A PID Controller continuously calculates an error value as the difference between desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
 
 - **Proportional**
 
-A Proportional Controller uses an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, is 0 if the error is 0.
+Proportional Controller gives an output which is proportional to the current error. The error is multiplied with a proportionality constant to get the output. And hence, 0 if the error is 0.
 
 - **Integral**
 
-An Integral Controller provides a necessary action to eliminate the offset error which is accumulated by the P Controller. It integrates the error over a period of time until the error value reaches zero.
+Integral Controller provides a necessary action to eliminate the offset error which is accumulated by the P Controller. It integrates the error over a period of time until its value reaches zero.
 
 - **Derivative**
 
-A Derivative Controller gives an output depending on the rate of change or error regarding time. It gives the kick start for the output thereby increasing system response.
+Derivative Controller gives an output depending on the rate of change or error with regard to time. It gives the kick start for the output, thereby increasing system response.
 
 {% include gallery id="pid" caption="Control Systems and PID" %}
-
-## Person model teleoperator
-The web-template has a teleoperator that allows you to move the person inside the hospital. To Control the person click the button and then you will be able to use AWSD keys to move the model. And clicking the button again will return it back to autonomous mode.
-
-{% include gallery id="joystick" %}
 
 
 ## Videos
@@ -210,10 +209,6 @@ The web-template has a teleoperator that allows you to move the person inside th
 {% include youtubePlayer.html id=page.youtubeId2 %}
 
 *Reference solution of Simulated Follow Person*
-
-{% include youtubePlayer.html id=page.youtubeId3 %}
-
-*Another, more recent, demostrative solution*
 
 <br/>
 
