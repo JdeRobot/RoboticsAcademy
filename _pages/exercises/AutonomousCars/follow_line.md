@@ -70,12 +70,33 @@ The students will program a Formula1 car in a race circuit to follow the red lin
 
 ## Robot API
 
+This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image (BGR8).
 * `HAL.setV(velocity)` - to set the linear speed.
 * `HAL.setW(velocity)` - to set the angular velocity.
 * `GUI.showImage(image)` - allows you to view a debug image or with relevant information.
+
+### ROS 2-native Implementation
+#### ROS 2 Topics
+Use standard ROS 2 topics for direct communication with the simulation.
+* `/cam_f1_left/image_raw ` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
+* `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+
+#### Frequency Control
+Use standard ROS 2 mechanisms to manage loop timing:
+* `rclpy.spin()` - Event-driven execution using callbacks.
+* `rclpy.spin_once()` - Single-step processing, often with custom timers.
+* `rclpy.Rate()` - Loop-based frequency control.
+
+#### Image Debugging
+* Publish processed images to the topic: `/webgui_image`
+Used for sending debug or processed visuals to the frontend.
+* The GUI automatically subscribes to `/webgui_image`
+Images published to this topic are displayed in the GUI interface.
 
 ## Theory
 
@@ -129,6 +150,13 @@ Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Thos
 ## Hints
 Simple hints provided to help you solve the follow_line exercise.
 
+### References to ROS 2 Concepts
+
+Understanding these ROS 2 concepts will help you implement the exercise natively. Refer to these links for more details:
+1. ROS 2 Publisher & Subscriber – [https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html](https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html)
+2. ROS 2 Spin & Spin Once – [https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
+<!-- 3. ROS 2 Rate - add content for rate -->
+
 ### Detecting the Line to Follow
 The first task of the assignment is to detect the line to be followed. This can be achieved easily by **filtering the color of the line** from the image and applying basic image processing to find the point or line to follow, or in Control terms our *Set Point*. Refer to these links for more information:
 
@@ -165,7 +193,7 @@ This is the completely implemented controller. Now, to add the I Controller we n
 
 ## Contributors
 
-- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh).
+- Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh), [Ashish Ramesh](https://github.com/AshishRamesh).
 - Maintained by [Pankhuri Vanjani](https://github.com/pankhurivanjani) and [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
 
 ## References
