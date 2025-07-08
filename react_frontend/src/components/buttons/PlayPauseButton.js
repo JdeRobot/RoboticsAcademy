@@ -104,6 +104,7 @@ const PlayPause = (props) => {
         try {
           await window.RoboticsExerciseComponents.commsManager.run({
             entrypoint: "/workspace/code/academy.py",
+            linter: ["academy.py"],
             code: base64data,
           });
         } catch (error) {
