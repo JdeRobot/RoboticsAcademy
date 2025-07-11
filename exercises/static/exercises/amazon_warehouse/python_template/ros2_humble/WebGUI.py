@@ -1,16 +1,15 @@
+import base64
+import re
 import json
 import cv2
-import base64
-import numpy as np
 import threading
-from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
-from console_interfaces.general.console import start_console
 from map import Map
-from HAL import getPose3d
-
-# Graphical User Interface Class
+from HAL import getPose3d, getLiftState
+from console_interfaces.general.console import start_console
 
 # Matrix colors
 red = [0, 0, 255]
@@ -21,17 +20,20 @@ blue = [255, 0, 0]
 indigo = [130, 0, 75]
 violet = [211, 0, 148]
 
-class GUI(MeasuringThreadingGUI):
+class WebGUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
+
+        self.array_lock = threading.Lock()
+        self.array = None
 
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
         # Payload vars
-        self.payload = {'map': '', 'user': ''}
+        self.payload = {'map': '', 'array': '', 'liftState': ''}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
         self.map = Map(getPose3d)
@@ -40,10 +42,11 @@ class GUI(MeasuringThreadingGUI):
 
     # Prepares and sends a map to the websocket server
     def update_gui(self):
+        self.payload["array"] = self.array
+        self.payload["liftState"] = getLiftState()
 
+        # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
-        if (pos_message == self.init_coords):
-            pos_message = self.start_coords
         ang_message = self.map.getRobotAngle()
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
@@ -53,6 +56,8 @@ class GUI(MeasuringThreadingGUI):
 
         message = json.dumps(self.payload)
         self.send_to_client(message)
+
+        # Process the array(ideal path) to be sent to websocket
 
     # Function to prepare image payload
     # Encodes the image as a JSON string and sends through the WS
@@ -78,7 +83,7 @@ class GUI(MeasuringThreadingGUI):
             self.image_to_be_shown_updated = False
 
         return payload
-
+    
     def process_colors(self, image):
         colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
 
@@ -109,19 +114,32 @@ class GUI(MeasuringThreadingGUI):
             self.image_to_be_shown = self.process_colors(image)
             self.image_to_be_shown_updated = True
 
-    def getMap(self, url):
-        try:
-        # Open with PIL
-            with Image.open(url) as img:
-                img = img.convert("RGB")
-                img_array = np.array(img)
-            return img_array
-        except Exception as e:
-            print(f"Error reading image from {url}: {e}")
-            return None
+    def showPath(self, array):
+        array_scaled = []
+        for wp in array:
+            array_scaled.append([wp[0] * 0.72, wp[1] * 0.545])
 
-    def reset_gui(self):
-        self.map.reset()
+        print("Path array: " + str(array_scaled))
+        self.array_lock.acquire()
+
+        strArray = ''.join(str(e) for e in array_scaled)
+        print("strArray: " + str(strArray))
+
+        # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
+        strArray = re.sub(r"\[[ ]+", "[", strArray)
+        strArray = re.sub(r"[ ]+", ", ", strArray)
+        strArray = re.sub(r",[ ]+]", "]", strArray)
+        strArray = re.sub(r",,", ",", strArray)
+        strArray = re.sub(r"]\[", "],[", strArray)
+        strArray = "[" + strArray + "]"
+        print("strArray2: " + str(strArray))
+
+        self.array = strArray
+        self.array_lock.release()
+    
+    def getMap(self, url):
+        return plt.imread(url)
+
 
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)
@@ -129,9 +147,11 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
-# Expose to the user
+def showPath(array):
+    return gui.showPath(array)
+
 def showNumpy(image):
     gui.showNumpy(image)
 
-def getMap(url):        
+def getMap(url):
     return gui.getMap(url)

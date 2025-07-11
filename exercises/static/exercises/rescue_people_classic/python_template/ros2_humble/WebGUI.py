@@ -1,32 +1,56 @@
 import json
 import cv2
 import base64
-import numpy as np
 import threading
+import time
+import numpy as np
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
-from HAL import getPose3d
 
-# Graphical User Interface Class
+class WebGUI(MeasuringThreadingGUI):
 
-class GUI(MeasuringThreadingGUI):
+    def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
-    def __init__(self, host="ws://127.0.0.1:2303"):
-        super().__init__(host)
+        # Execution control vars
+        self.out_period = 1.0 / freq
+        self.right_image = None
+        self.left_image = None
+        self.image_lock = threading.Lock()
+        self.ack = True
+        self.ack_frontend = True
+        self.ack_lock = threading.Lock()
+        self.running = True
 
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        self.host = host
+        self.msg = {"image_right": "", "image_left": ""}
 
-        # Payload vars
-        self.payload = {'map': '', 'user': ''}
-        self.init_coords = (171, 63)
-        self.start_coords = (201, 85.5)
+        self.ideal_cycle = 80
+        self.real_time_factor = 0
+        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.iteration_counter = 0
 
         self.start()
 
-    # Prepares and sends a map to the websocket server
+    # Process outcoming messages from the GUI
+    def gui_out_thread(self):
+        while self.running:
+            start_time = time.time()
+
+            # Check if a new image should be sent
+            with self.ack_lock:
+                with self.image_lock:
+                    if self.ack:
+                        if np.any(self.left_image) or np.any(self.right_image):
+                            self.update_gui()
+                            self.ack = False
+
+            # Maintain desired frequency
+            elapsed = time.time() - start_time
+            sleep_time = max(0, self.out_period - elapsed)
+            time.sleep(sleep_time)
+
+    # Prepares and send image to the websocket server
     def update_gui(self):
 
         if np.any(self.left_image):
@@ -66,6 +90,7 @@ class GUI(MeasuringThreadingGUI):
     def setRightImage(self, image):
         with self.image_lock:
             self.right_image = image
+
 
 host = "ws://127.0.0.1:2303"
 gui = GUI(host)

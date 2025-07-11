@@ -3,32 +3,35 @@ import json
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from map import Map
-from HAL import getFrontLaserData, getRightLaserData, getBackLaserData
+from HAL import getPose3d
 
-# Graphical User Interface Class
-
-class GUI(MeasuringThreadingGUI):
+class WebGUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
         # Payload vars
         self.payload = {'map': ''}
-        self.map = Map(getFrontLaserData, getRightLaserData, getBackLaserData)
+        self.init_coords = (171, 63)
+        self.start_coords = (201, 85.5)
+        self.map = Map(getPose3d)
 
         self.start()
 
     # Prepares and sends a map to the websocket server
     def update_gui(self):
 
-        map_message = self.map.get_json_data()
-        self.payload["map"] = map_message
+        pos_message = self.map.getRobotCoordinates()
+        if (pos_message == self.init_coords):
+            pos_message = self.start_coords
+        ang_message = self.map.getRobotAngle()
+        pos_message = str(pos_message + ang_message)
+        self.payload["map"] = pos_message
+
         message = json.dumps(self.payload)
         self.send_to_client(message)
 
-
     def reset_gui(self):
-        """Resets the GUI to its initial state."""
         self.map.reset()
 
 host = "ws://127.0.0.1:2303"

@@ -8,7 +8,7 @@ import numpy as np
 from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
-class GUI(MeasuringThreadingGUI):
+class WebGUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
@@ -21,7 +21,7 @@ class GUI(MeasuringThreadingGUI):
         self.ack_frontend = True
         self.ack_lock = threading.Lock()
         self.running = True
-
+        
         self.world_name = "empty"
 
         self.host = host
