@@ -17,6 +17,7 @@
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.17.10",
     "autoprefixer": "^10.4.20",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
@@ -63,6 +64,7 @@
     "react-vnc": "^0.5.1",
     "styled-components": "^5.3.6",
     "three": "^0.144.0",
+    "typescript": "^5.7.2",
     "uuid": "^9.0.0"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
