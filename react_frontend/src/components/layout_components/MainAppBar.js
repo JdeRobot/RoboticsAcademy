@@ -43,7 +43,10 @@ function MainAppBar(props) {
           .launchWorld({ world: config[0].world, robot: config[0].robot })
           .then(() => {
             window.RoboticsExerciseComponents.commsManager
-              .prepareVisualization({type: config[0].visualization, file: config[0].visualization_config_path})
+              .prepareVisualization({
+                type: config[0].visualization,
+                file: config[0].visualization_config_path,
+              })
               .then(() => {
                 RoboticsReactComponents.MessageSystem.Loading.hideLoading();
                 RoboticsReactComponents.MessageSystem.Alert.showAlert(

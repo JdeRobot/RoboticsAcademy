@@ -6,13 +6,14 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from tf.transformations import quaternion_from_euler
 import yaml
 
+
 class Movebase_Client:
     def __init__(self):
         # rospy.init_node('movebase_client')
-        self.client = actionlib.SimpleActionClient('move_base',MoveBaseAction)
+        self.client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
 
         self.target_pose = {}
-        filename = ('./navigation.yaml')
+        filename = "./navigation.yaml"
         with open(filename) as file:
             navigation_params = yaml.load(file)
             stop_pose = navigation_params["stop_pose"]
@@ -32,7 +33,7 @@ class Movebase_Client:
         goal.target_pose.header.stamp = rospy.Time.now()
         goal.target_pose.pose.position.x = pose[0]
         goal.target_pose.pose.position.y = pose[1]
-        quat = quaternion_from_euler(0,0,pose[2])
+        quat = quaternion_from_euler(0, 0, pose[2])
         goal.target_pose.pose.orientation.x = quat[0]
         goal.target_pose.pose.orientation.y = quat[1]
         goal.target_pose.pose.orientation.z = quat[2]
@@ -48,9 +49,10 @@ class Movebase_Client:
         #     rospy.signal_shutdown("Action server not available!")
         # else:
         #     print("self.client.get_result()",self.client.get_result())
-        #     return self.client.get_result()   
+        #     return self.client.get_result()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # try:
     #    # Initializes a rospy node to let the SimpleActionClient publish and subscribe
     #     result = movebase_client()
@@ -60,4 +62,4 @@ if __name__ == '__main__':
     #     rospy.loginfo("Navigation test finished.")
 
     test = Movebase_Client()
-    test.sendGoalToClient(4,0,0)
+    test.sendGoalToClient(4, 0, 0)

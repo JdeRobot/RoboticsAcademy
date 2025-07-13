@@ -35,7 +35,7 @@ if __name__ == "__main__":
     motors = PublisherMotors("/F1ROS/cmd_vel", 4, 0.3)
     pose3d = ListenerPose3d("/F1ROS/odom")
     pose3dphantom = ListenerPose3d("/F1ROS_phantom/odom")
-    algorithm=MyAlgorithm(camera, motors, pose3d)
+    algorithm = MyAlgorithm(camera, motors, pose3d)
 
     app = QApplication(sys.argv)
     myGUI = MainWindow()
@@ -45,10 +45,8 @@ if __name__ == "__main__":
     myGUI.setAlgorithm(algorithm)
     myGUI.show()
 
-
     t2 = ThreadGUI(myGUI)
-    t2.daemon=True
+    t2.daemon = True
     t2.start()
-
 
     sys.exit(app.exec_())

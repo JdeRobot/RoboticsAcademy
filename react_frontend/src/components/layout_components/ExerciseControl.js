@@ -10,6 +10,7 @@ import Frequencies from "Components/visualizers/Frequencies";
 import PlayPauseButton from "Components/buttons/PlayPauseButton";
 import "../../styles/layout_components/ExerciseControl.css";
 import monitor from "../../images/monitoring2.png";
+import DLModelUploadButton from "../buttons/DLModelUploadButton";
 
 function ExerciseControl(props) {
   const [editorRendered, setEditorRendered] = React.useState(false);
@@ -45,6 +46,7 @@ function ExerciseControl(props) {
             m: 1,
           }}
         >
+          <DLModelUploadButton />
           <PlayPauseButton></PlayPauseButton>
           <ResetButton></ResetButton>
           <Frequencies style={showFrequencies ? "visible" : "hidden"} />

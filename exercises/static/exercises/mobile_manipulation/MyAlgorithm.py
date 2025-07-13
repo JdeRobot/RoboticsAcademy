@@ -14,9 +14,15 @@ class Algorithm:
         self.stopevent = threading.Event()
         self.pauseevent = threading.Event()
 
-        self.startalgorithm_sub = rospy.Subscriber("/start_algorithm", Bool, self.start_callback)
-        self.stopalgorithm_sub = rospy.Subscriber("/stop_algorithm", Bool, self.stop_callback)
-        self.pausealgorithm_sub = rospy.Subscriber("/pause_algorithm", Bool, self.pause_callback)
+        self.startalgorithm_sub = rospy.Subscriber(
+            "/start_algorithm", Bool, self.start_callback
+        )
+        self.stopalgorithm_sub = rospy.Subscriber(
+            "/stop_algorithm", Bool, self.stop_callback
+        )
+        self.pausealgorithm_sub = rospy.Subscriber(
+            "/pause_algorithm", Bool, self.pause_callback
+        )
         self.stopalgorithm_pub = rospy.Publisher("/stop_algorithm", Bool, queue_size=0)
 
     def start_callback(self, msg):
@@ -50,15 +56,15 @@ class Algorithm:
 
     def move_to(self, target_name):
         ############## Insert your code here ###############
-        self.pick_place.send_message("move to "+target_name)
+        self.pick_place.send_message("move to " + target_name)
         ####################################################
 
     def myalgorithm(self):
         ############## Insert your code here ###############
         # Move the robot arm back to home as a start
         self.pick_place.back_to_home()
-        
-        # insert following two lines where you want to pause or stop the algorithm 
+
+        # insert following two lines where you want to pause or stop the algorithm
         # with the stop button in GUI
         while (not self.pauseevent.isSet()) or (not self.stopevent.isSet()):
             if not self.stopevent.isSet():
@@ -75,11 +81,11 @@ class Algorithm:
         self.move_to("conveyor2")
 
         ## Place green cylinder
-        
+
         ####################################################
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     rospy.init_node("pick_place")
 
     algo = Algorithm()

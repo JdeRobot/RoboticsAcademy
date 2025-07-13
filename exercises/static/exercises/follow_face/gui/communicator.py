@@ -20,5 +20,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore
+
+
 class Communicator(QtCore.QObject):
     updateBW = QtCore.pyqtSignal()

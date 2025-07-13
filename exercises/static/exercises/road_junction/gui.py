@@ -18,7 +18,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'imageL': '', 'imageC': '','imageR': '', 'v': '', 'w': ''}
+        self.payload = {"imageL": "", "imageC": "", "imageR": "", "v": "", "w": ""}
         self.server = None
         self.client = None
 
@@ -55,38 +55,42 @@ class GUI:
         self.image_show_lock.release()
 
         imageL = imageL_to_be_shown
-        payloadL = {'img': ''}
+        payloadL = {"img": ""}
         imageC = imageC_to_be_shown
-        payloadC = {'img': ''}
+        payloadC = {"img": ""}
         imageR = imageR_to_be_shown
-        payloadR = {'img': ''}
+        payloadR = {"img": ""}
 
-        if(image_to_be_shown_updated == False):
+        if image_to_be_shown_updated == False:
             return payloadL, payloadC, payloadR
 
         imageL = cv2.resize(imageL, (0, 0), fx=0.50, fy=0.50)
-        frameL = cv2.imencode('.JPEG', imageL)[1]
+        frameL = cv2.imencode(".JPEG", imageL)[1]
         encoded_imageL = base64.b64encode(frameL)
-        payloadL['img'] = encoded_imageL.decode('utf-8')
+        payloadL["img"] = encoded_imageL.decode("utf-8")
 
         imageC = cv2.resize(imageC, (0, 0), fx=0.50, fy=0.50)
-        frameC = cv2.imencode('.JPEG', imageC)[1]
+        frameC = cv2.imencode(".JPEG", imageC)[1]
         encoded_imageC = base64.b64encode(frameC)
-        payloadC['img'] = encoded_imageC.decode('utf-8')
+        payloadC["img"] = encoded_imageC.decode("utf-8")
 
         imageR = cv2.resize(imageR, (0, 0), fx=0.50, fy=0.50)
-        frameR = cv2.imencode('.JPEG', imageR)[1]
+        frameR = cv2.imencode(".JPEG", imageR)[1]
         encoded_imageR = base64.b64encode(frameR)
-        payloadR['img'] = encoded_imageR.decode('utf-8')
+        payloadR["img"] = encoded_imageR.decode("utf-8")
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
         self.image_show_lock.release()
         return payloadL, payloadC, payloadR
 
-   # Function for student to call
+    # Function for student to call
     def showImages(self, imageL, imageC, imageR):
-        if (np.all(self.imageL_to_be_shown == imageL) == False or np.all(self.imageC_to_be_shown == imageC) == False or np.all(self.imageR_to_be_shown == imageR) == False):
+        if (
+            np.all(self.imageL_to_be_shown == imageL) == False
+            or np.all(self.imageC_to_be_shown == imageC) == False
+            or np.all(self.imageR_to_be_shown == imageR) == False
+        ):
             self.image_show_lock.acquire()
             self.imageL_to_be_shown = imageL
             self.imageC_to_be_shown = imageC
@@ -131,7 +135,7 @@ class GUI:
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if (message[:4] == "#ack"):
+        if message[:4] == "#ack":
             self.set_acknowledge(True)
 
     # Activate the server
@@ -155,6 +159,7 @@ class GUI:
     def reset_gui(self):
         # Reset Gui
         print("reset")
+
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -180,11 +185,11 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while (self.gui.client == None):
+        while self.gui.client == None:
             pass
 
         previous_time = datetime.now()
-        while (True):
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -205,15 +210,15 @@ class ThreadGUI:
             self.iteration_counter = 0
 
     def run(self):
-        while (self.gui.client == None):
+        while self.gui.client == None:
             pass
 
-        while (True):
+        while True:
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
-            while (acknowledge_message == False):
+            while acknowledge_message == False:
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
@@ -223,5 +228,5 @@ class ThreadGUI:
 
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if (ms < self.ideal_cycle):
+            if ms < self.ideal_cycle:
                 time.sleep((self.ideal_cycle - ms) / 1000.0)

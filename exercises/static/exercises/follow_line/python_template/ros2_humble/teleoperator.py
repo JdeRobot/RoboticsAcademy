@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import time
 
+
 class TeleopThread(threading.Thread):
     def __init__(self, q, exit_signal, hal):
         super(TeleopThread, self).__init__()
@@ -17,17 +18,18 @@ class TeleopThread(threading.Thread):
         # Init hal
         self.hal = hal
 
-
     def run(self):
-        while(True):
+        while True:
             if not self.exit_signal.is_set():
                 try:
                     # Get params from the queue
                     params = self.q.get(timeout=0)
 
                     # Check if parameters change
-                    if (self.v != params["v"]) : self.v = params["v"]
-                    if (self.w != params["w"]) : self.w = params["w"]
+                    if self.v != params["v"]:
+                        self.v = params["v"]
+                    if self.w != params["w"]:
+                        self.w = params["w"]
                 except queue.Empty:
                     pass
 

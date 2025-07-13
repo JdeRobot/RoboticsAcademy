@@ -10,10 +10,10 @@ from Beacon import Beacon
 class HAL:
     IMG_WIDTH = 320
     IMG_HEIGHT = 240
-    
+
     def __init__(self):
         rospy.init_node("HAL")
-    
+
         self.image = None
         self.drone = DroneWrapper(name="rqt")
 
@@ -23,7 +23,7 @@ class HAL:
     def initRobot(cls):
         new_instance = cls()
         return new_instance
-    
+
     # Get Image from ROS Driver Camera
     def get_frontal_image(self):
         image = self.drone.get_frontal_image()
@@ -84,13 +84,13 @@ class HAL:
 
     def init_beacons(self):
         self.beacons = []
-        self.beacons.append(Beacon('beacon1', np.array([0, 5, 0]), False, False))
-        self.beacons.append(Beacon('beacon2', np.array([5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon3', np.array([0, -5, 0]), False, False))
-        self.beacons.append(Beacon('beacon4', np.array([-5, 0, 0]), False, False))
-        self.beacons.append(Beacon('beacon5', np.array([10, 0, 0]), False, False))
-        self.beacons.append(Beacon('initial', np.array([0, 0, 0]), False, False))
-    
+        self.beacons.append(Beacon("beacon1", np.array([0, 5, 0]), False, False))
+        self.beacons.append(Beacon("beacon2", np.array([5, 0, 0]), False, False))
+        self.beacons.append(Beacon("beacon3", np.array([0, -5, 0]), False, False))
+        self.beacons.append(Beacon("beacon4", np.array([-5, 0, 0]), False, False))
+        self.beacons.append(Beacon("beacon5", np.array([10, 0, 0]), False, False))
+        self.beacons.append(Beacon("initial", np.array([0, 0, 0]), False, False))
+
     def get_next_beacon(self):
         for beacon in self.beacons:
             if beacon.is_reached() == False:

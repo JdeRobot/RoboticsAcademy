@@ -32,13 +32,15 @@ class Template:
         self.ideal_cycle = 80
         self.measured_cycle = 80
         self.iteration_counter = 0
-        self.frequency_message = {'brain': '', 'gui': ''}
+        self.frequency_message = {"brain": "", "gui": ""}
 
         self.server = None
         self.client = None
         self.host = sys.argv[1]
 
-        self.aux_model_fname = "dummy.onxx"  # internal name for temporary model uploaded by user
+        self.aux_model_fname = (
+            "dummy.onxx"  # internal name for temporary model uploaded by user
+        )
 
         # Initialize the GUI, WEBRTC and Console behind the scenes
         self.hal = HAL()
@@ -57,7 +59,7 @@ class Template:
 
         # Receive model
         raw_dl_model = raw_dl_model.split(",")[-1]
-        raw_dl_model_bytes = raw_dl_model.encode('ascii')
+        raw_dl_model_bytes = raw_dl_model.encode("ascii")
         raw_dl_model_bytes = base64.b64decode(raw_dl_model_bytes)
 
         # Load ONNX model
@@ -87,25 +89,37 @@ class Template:
                 # Get original image and ROI dimensions
                 h_in, w_in = input_image.shape[:2]
                 min_dim_in = min(h_in, w_in)
-                h_roi, w_roi = (int(min_dim_in * roi_scale), int(min_dim_in * roi_scale))
-                h_border, w_border = (int((h_in - h_roi) / 2.), int((w_in - w_roi) / 2.))
+                h_roi, w_roi = (
+                    int(min_dim_in * roi_scale),
+                    int(min_dim_in * roi_scale),
+                )
+                h_border, w_border = (
+                    int((h_in - h_roi) / 2.0),
+                    int((w_in - w_roi) / 2.0),
+                )
 
                 # Extract ROI and convert to tensor format required by the model
-                roi = input_image_gray[h_border:h_border + h_roi, w_border:w_border + w_roi]
+                roi = input_image_gray[
+                    h_border : h_border + h_roi, w_border : w_border + w_roi
+                ]
                 roi_norm = (roi - np.mean(roi)) / np.std(roi)
                 roi_resized = cv2.resize(roi_norm, input_size)
-                input_tensor = roi_resized.reshape((1, 1, input_size[0], input_size[1])).astype(np.float32)
+                input_tensor = roi_resized.reshape(
+                    (1, 1, input_size[0], input_size[1])
+                ).astype(np.float32)
 
                 # Inference
                 ort_inputs = {ort_session.get_inputs()[0].name: input_tensor}
                 output = ort_session.run(None, ort_inputs)[0]
-                pred = int(np.argmax(output, axis=1))  # get the index of the max log-probability
+                pred = int(
+                    np.argmax(output, axis=1)
+                )  # get the index of the max log-probability
 
                 end = time.time()
-                frame_time = round(end-start, 3)
-                fps = 1.0/frame_time
+                frame_time = round(end - start, 3)
+                fps = 1.0 / frame_time
                 # number of consecutive frames that must be reached to consider a validprediction
-                n_consecutive_frames = int(fps/2)
+                n_consecutive_frames = int(fps / 2)
 
                 # For stability, only show digit if detected in more than n consecutive frames
                 if pred != previous_established_pred:
@@ -122,9 +136,23 @@ class Template:
                     previous_pred = pred
 
                 # Show region used as ROI
-                cv2.rectangle(input_image,pt2=(w_border, h_border),pt1=(w_border + w_roi, h_border + h_roi),color=(255, 0, 0),thickness=3)
+                cv2.rectangle(
+                    input_image,
+                    pt2=(w_border, h_border),
+                    pt1=(w_border + w_roi, h_border + h_roi),
+                    color=(255, 0, 0),
+                    thickness=3,
+                )
                 # Show FPS count
-                cv2.putText(input_image, "FPS: {}".format(int(fps)), (7,25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1)
+                cv2.putText(
+                    input_image,
+                    "FPS: {}".format(int(fps)),
+                    (7, 25),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.5,
+                    (255, 255, 255),
+                    1,
+                )
 
                 # Send result
                 self.gui.showResult(input_image, str(previous_established_pred))
@@ -132,13 +160,15 @@ class Template:
                 # Template specifics to run!
                 finish_time = datetime.now()
                 dt = finish_time - start_time
-                ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
+                ms = (
+                    dt.days * 24 * 60 * 60 + dt.seconds
+                ) * 1000 + dt.microseconds / 1000.0
 
                 self.iteration_counter += 1
 
                 # The code should be run for atleast the target time step
                 # If it's less put to sleep
-                if (ms < self.ideal_cycle):
+                if ms < self.ideal_cycle:
                     time.sleep((self.ideal_cycle - ms) / 1000.0)
 
             close_console()
@@ -205,7 +235,7 @@ class Template:
     def execute_thread(self, dl_model_raw):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if (self.thread != None):
+        if self.thread != None:
             while self.thread.is_alive() or self.measure_thread.is_alive():
                 pass
 
@@ -213,7 +243,9 @@ class Template:
         self.reload = False
         # New thread execution
         self.measure_thread = threading.Thread(target=self.measure_frequency)
-        self.thread = threading.Thread(target=self.process_dl_model, args=[dl_model_raw])
+        self.thread = threading.Thread(
+            target=self.process_dl_model, args=[dl_model_raw]
+        )
         self.thread.start()
         self.measure_thread.start()
         self.send_code_message()
@@ -236,13 +268,13 @@ class Template:
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if (message[:5] == "#freq"):
+        if message[:5] == "#freq":
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             self.send_frequency_message()
             return
 
-        elif(message[:5] == "#ping"):
+        elif message[:5] == "#ping":
             time.sleep(1)
             self.send_ping_message()
             return
@@ -266,13 +298,13 @@ class Template:
         # Initialize the ping message
         self.send_frequency_message()
 
-        print(client, 'connected')
+        print(client, "connected")
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
         if os.path.isfile(self.aux_model_fname):
             os.remove(self.aux_model_fname)  # remove temporary model file when closing
-        print(client, 'closed')
+        print(client, "closed")
 
     def run_server(self):
         self.server = WebsocketServer(port=1905, host=self.host)

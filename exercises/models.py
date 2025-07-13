@@ -147,7 +147,7 @@ class Exercise(models.Model):
                         "launch_file_path": universe.robot.launch_file_path,
                         "ros_version": universe.world.ros_version,
                         "world": universe.world.world,
-                        "start_pose": universe.world.start_pose
+                        "start_pose": universe.world.start_pose,
                     }
                 else:
                     robot_config = {

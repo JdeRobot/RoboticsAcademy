@@ -56,7 +56,7 @@ class Map:
         offset_y = -31.95
         y = scale_y * (offset_y - y)
 
-        scale_x =  -23.58
+        scale_x = -23.58
         offset_x = -20.36
         x = scale_x * (offset_x - x)
 
@@ -71,7 +71,7 @@ class Map:
         offset_y = -31.95
         y = scale_y * (offset_y - y)
 
-        scale_x =  -23.58
+        scale_x = -23.58
         offset_x = -20.36
         x = scale_x * (offset_x - x)
 

@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -62,7 +63,9 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.stopButton.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(
+            QtGui.QPixmap(":/images/stop.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off
+        )
         self.stopButton.setIcon(icon)
         self.stopButton.setObjectName("stopButton")
         self.verticalLayout_2.addWidget(self.stopButton)

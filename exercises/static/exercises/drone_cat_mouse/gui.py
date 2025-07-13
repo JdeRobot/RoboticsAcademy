@@ -9,19 +9,20 @@ import logging
 import numpy as np
 from hal import HAL
 
+
 # Graphical User Interface Class
 class GUI:
     # Initialization function
     # The actual initialization
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
-        
-        self.payload = {'image': ''}
-        self.left_payload = {'image': ''}
-        self.dist = {'dist': '', 'ready': ''}
+
+        self.payload = {"image": ""}
+        self.left_payload = {"image": ""}
+        self.dist = {"dist": "", "ready": ""}
         self.server = None
         self.client = None
-        
+
         self.host = host
 
         # Image variables
@@ -32,10 +33,10 @@ class GUI:
         self.left_image_to_be_shown = None
         self.left_image_to_be_shown_updated = False
         self.left_image_show_lock = threading.Lock()
-        
+
         self.acknowledge = False
         self.acknowledge_lock = threading.Lock()
-        
+
         # Take the console object to set the same websocket and client
         self.hal = hal
         t.start()
@@ -57,17 +58,17 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
@@ -84,17 +85,17 @@ class GUI:
         self.left_image_show_lock.release()
 
         image = left_image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not left_image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         self.left_image_show_lock.acquire()
         self.left_image_to_be_shown_updated = False
@@ -120,21 +121,21 @@ class GUI:
     # Called when a new client is received
     def get_client(self, client, server):
         self.client = client
-        
+
     # Function to get value of Acknowledge
     def get_acknowledge(self):
         self.acknowledge_lock.acquire()
         acknowledge = self.acknowledge
         self.acknowledge_lock.release()
-        
+
         return acknowledge
-        
+
     # Function to get value of Acknowledge
     def set_acknowledge(self, value):
         self.acknowledge_lock.acquire()
         self.acknowledge = value
         self.acknowledge_lock.release()
-        
+
     # Update the gui
     def update_gui(self):
         # Payload Image Message
@@ -143,7 +144,7 @@ class GUI:
         # Add position to payload
         cat_x, cat_y, cat_z = self.hal.get_position()
         self.payload["pos"] = [cat_x, cat_y, cat_z]
-        
+
         message = "#gui" + json.dumps(self.payload)
         self.server.send_message(self.client, message)
 
@@ -153,20 +154,24 @@ class GUI:
 
         message = "#gul" + json.dumps(self.left_payload)
         self.server.send_message(self.client, message)
-            
+
     # Update distance between cat and mouse drones
     def update_dist(self):
         cat_x, cat_y, cat_z = self.hal.get_position()
         mouse_x, mouse_y, mouse_z = self.mouse.get_position()
 
-        if mouse_z > 0.1: self.dist["ready"] = "true"
-        else: self.dist["ready"] = "false"
+        if mouse_z > 0.1:
+            self.dist["ready"] = "true"
+        else:
+            self.dist["ready"] = "false"
 
-        dist = np.sqrt((mouse_x+2-cat_x)**2 + (mouse_y-cat_y)**2 + (mouse_z-cat_z)**2)
-        dist = int(dist*100)/100
+        dist = np.sqrt(
+            (mouse_x + 2 - cat_x) ** 2 + (mouse_y - cat_y) ** 2 + (mouse_z - cat_z) ** 2
+        )
+        dist = int(dist * 100) / 100
         self.dist["dist"] = dist
 
-        message = '#dst' + json.dumps(self.dist)
+        message = "#dst" + json.dumps(self.dist)
         self.server.send_message(self.client, message)
 
     # Function to read the message from websocket
@@ -203,7 +208,7 @@ class GUI:
     # Function to reset
     def reset_gui(self):
         pass
-        
+
 
 # This class decouples the user thread
 # and the GUI update thread
@@ -256,22 +261,22 @@ class ThreadGUI:
     def run(self):
         while self.gui.client is None:
             pass
-    
+
         while True:
             start_time = datetime.now()
             self.gui.update_gui()
-            #self.gui.update_dist()
+            # self.gui.update_dist()
             acknowledge_message = self.gui.get_acknowledge()
-            
+
             while not acknowledge_message:
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
-            
+
             finish_time = datetime.now()
             self.iteration_counter = self.iteration_counter + 1
-            
+
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             if ms < self.ideal_cycle:
-                time.sleep((self.ideal_cycle-ms) / 1000.0)
+                time.sleep((self.ideal_cycle - ms) / 1000.0)

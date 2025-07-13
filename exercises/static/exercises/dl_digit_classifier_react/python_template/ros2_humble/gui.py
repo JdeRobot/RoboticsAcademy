@@ -14,7 +14,7 @@ class GUI:
     def __init__(self, host, hal):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image': '', 'shape': []}
+        self.payload = {"image": "", "shape": []}
         self.server = None
         self.client = None
 
@@ -51,18 +51,18 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': '', 'digit': ''}
+        payload = {"image": "", "shape": "", "digit": ""}
 
-        if (image_to_be_shown_updated == False):
+        if image_to_be_shown_updated == False:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
-        payload['digit'] = digit_to_be_shown
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
+        payload["digit"] = digit_to_be_shown
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
@@ -110,7 +110,7 @@ class GUI:
     # Gets called when there is an incoming message from the client
     def get_message(self, client, server, message):
         # Acknowledge Message for GUI Thread
-        if (message[:4] == "#ack"):
+        if message[:4] == "#ack":
             self.set_acknowledge(True)
 
     # Activate the server
@@ -154,11 +154,11 @@ class ThreadGUI(threading.Thread):
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while (self.gui.client == None):
+        while self.gui.client == None:
             pass
 
         previous_time = datetime.now()
-        while (True):
+        while True:
             # Sleep for 2 seconds
             time.sleep(2)
 
@@ -179,15 +179,15 @@ class ThreadGUI(threading.Thread):
             self.iteration_counter = 0
 
     def run(self):
-        while (self.gui.client == None):
+        while self.gui.client == None:
             pass
 
-        while (True):
+        while True:
             start_time = datetime.now()
             self.gui.update_gui()
             acknowledge_message = self.gui.get_acknowledge()
 
-            while (acknowledge_message == False):
+            while acknowledge_message == False:
                 acknowledge_message = self.gui.get_acknowledge()
 
             self.gui.set_acknowledge(False)
@@ -197,5 +197,5 @@ class ThreadGUI(threading.Thread):
 
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
-            if (ms < self.ideal_cycle):
+            if ms < self.ideal_cycle:
                 time.sleep((self.ideal_cycle - ms) / 1000.0)

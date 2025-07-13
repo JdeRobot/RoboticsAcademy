@@ -6,19 +6,20 @@ from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from interfaces.threadStoppable import StoppableThread
 
-class Car():
+
+class Car:
     def __init__(self):
-        self.set_state = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+        self.set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
         self.play_event = Event()
-        self.curr_posx = 5.0 #initial position
+        self.curr_posx = 5.0  # initial position
         self.base_speed = 0.0001
         self.level0 = self.base_speed * 1
         self.level1 = self.base_speed * 10
         self.level2 = self.base_speed * 20
         self.level3 = self.base_speed * 30
 
-    #Explicit initialization functions
-    #Class method, so user can call it without instantiation
+    # Explicit initialization functions
+    # Class method, so user can call it without instantiation
     @classmethod
     def initRobot(cls):
         new_instance = cls()
@@ -46,11 +47,16 @@ class Car():
                 self.set_pos_car(self.curr_posx)
                 self.curr_posx = self.curr_posx + self.level3
         else:
-            sys.exit() #exit thread
+            sys.exit()  # exit thread
 
     def start_car(self, path_level):
         self.play_event.set()
-        self.thread = StoppableThread(target=self.__start__, args=[path_level,])
+        self.thread = StoppableThread(
+            target=self.__start__,
+            args=[
+                path_level,
+            ],
+        )
         self.thread.start()
 
     def stop_car(self):
@@ -69,4 +75,4 @@ class Car():
         except:
             pass
         self.curr_posx = 5.0
-        self.set_pos_car(self.curr_posx) #set initial position
+        self.set_pos_car(self.curr_posx)  # set initial position

@@ -15,8 +15,8 @@ class GUI:
     def __init__(self, host, car):
         t = threading.Thread(target=self.run_server)
 
-        self.payload = {'image': ''}
-        self.left_payload = {'image_left': ''}
+        self.payload = {"image": ""}
+        self.left_payload = {"image_left": ""}
         self.server = None
         self.client = None
 
@@ -55,17 +55,17 @@ class GUI:
         self.image_show_lock.release()
 
         image = image_to_be_shown
-        payload = {'image': '', 'shape': ''}
+        payload = {"image": "", "shape": ""}
 
         if not image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         self.image_show_lock.acquire()
         self.image_to_be_shown_updated = False
@@ -82,17 +82,17 @@ class GUI:
         self.left_image_show_lock.release()
 
         image = left_image_to_be_shown
-        payload = {'image_left': '', 'shape': ''}
+        payload = {"image_left": "", "shape": ""}
 
         if not left_image_to_be_shown_updated:
             return payload
 
         shape = image.shape
-        frame = cv2.imencode('.JPEG', image)[1]
+        frame = cv2.imencode(".JPEG", image)[1]
         encoded_image = base64.b64encode(frame)
 
-        payload['image_left'] = encoded_image.decode('utf-8')
-        payload['shape'] = shape
+        payload["image_left"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
 
         self.left_image_show_lock.acquire()
         self.left_image_to_be_shown_updated = False
@@ -161,13 +161,14 @@ class GUI:
             self.car.stop_car()
         elif message[:4] == "#rst":
             self.car.reset_car()
+
     # Activate the server
     def run_server(self):
         self.server = WebsocketServer(port=2303, host=self.host)
         self.server.set_fn_new_client(self.get_client)
         self.server.set_fn_message_received(self.get_message)
 
-        home_dir = os.path.expanduser('~')
+        home_dir = os.path.expanduser("~")
 
         logged = False
         while not logged:
@@ -254,4 +255,4 @@ class ThreadGUI:
             dt = finish_time - start_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             if ms < self.ideal_cycle:
-                time.sleep((self.ideal_cycle-ms) / 1000.0)
+                time.sleep((self.ideal_cycle - ms) / 1000.0)

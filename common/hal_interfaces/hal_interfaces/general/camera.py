@@ -12,7 +12,6 @@ MINRANGE = 0
 
 
 class Image:
-
     def __init__(self):
 
         self.height = 480  # Image height [pixels]
@@ -60,7 +59,6 @@ def imageMsg2Image(img, bridge):
 
 ### HAL INTERFACE ###
 class CameraNode(Node):
-
     def __init__(self, topic):
         super().__init__("camera_node")
         self.sub = self.create_subscription(

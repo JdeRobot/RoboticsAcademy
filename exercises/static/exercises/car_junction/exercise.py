@@ -34,7 +34,7 @@ class Template:
         self.measured_cycle = 80
         self.iteration_counter = 0
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {"brain": "", "gui": "", "rtf": ""}
 
         self.server = None
         self.client = None
@@ -46,12 +46,12 @@ class Template:
 
     # Function for saving
     def save_code(self, source_code):
-        with open('code/academy.py', 'w') as code_file:
+        with open("code/academy.py", "w") as code_file:
             code_file.write(source_code)
 
     # Function for loading
     def load_code(self):
-        with open('code/academy.py', 'r') as code_file:
+        with open("code/academy.py", "r") as code_file:
             source_code = code_file.read()
 
         return source_code
@@ -62,13 +62,13 @@ class Template:
     # 2. Only a single infinite loop
     def parse_code(self, source_code):
         # Check for save/load
-        if (source_code[:5] == "#save"):
+        if source_code[:5] == "#save":
             source_code = source_code[5:]
             self.save_code(source_code)
 
             return "", "", 1
 
-        elif (source_code[:5] == "#load"):
+        elif source_code[:5] == "#load":
             source_code = source_code + self.load_code()
             self.server.send_message(self.client, source_code)
 
@@ -82,9 +82,9 @@ class Template:
 
     # Function to parse code according to the debugging level
     def debug_parse(self, source_code, debug_level):
-        if (debug_level == 1):
+        if debug_level == 1:
             # If debug level is 0, then all the GUI operations should not be called
-            source_code = re.sub(r'GUI\..*', '', source_code)
+            source_code = re.sub(r"GUI\..*", "", source_code)
 
         return source_code
 
@@ -94,7 +94,10 @@ class Template:
             return "", ""
 
         # Search for an instance of while True
-        infinite_loop = re.search(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', source_code)
+        infinite_loop = re.search(
+            r"[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:",
+            source_code,
+        )
 
         # Seperate the content inside while True and the other
         # (Seperating the sequential and iterative part!)
@@ -105,13 +108,17 @@ class Template:
 
             # Remove while True: syntax from the code
             # And remove the the 4 spaces indentation before each command
-            iterative_code = re.sub(r'[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:', '', iterative_code)
+            iterative_code = re.sub(
+                r"[^ ]while\s*\(\s*True\s*\)\s*:|[^ ]while\s*True\s*:|[^ ]while\s*1\s*:|[^ ]while\s*\(\s*1\s*\)\s*:",
+                "",
+                iterative_code,
+            )
             # Add newlines to match line on bug report
-            extra_lines = sequential_code.count('\n')
-            while (extra_lines >= 0):
-                iterative_code = '\n' + iterative_code
+            extra_lines = sequential_code.count("\n")
+            while extra_lines >= 0:
+                iterative_code = "\n" + iterative_code
                 extra_lines -= 1
-            iterative_code = re.sub(r'^[ ]{4}', '', iterative_code, flags=re.M)
+            iterative_code = re.sub(r"^[ ]{4}", "", iterative_code, flags=re.M)
 
         except:
             sequential_code = source_code
@@ -151,8 +158,8 @@ time = rospy.get_time()
         # Run the iterative part inside template
         # and keep the check for flag
         while self.reload == False:
-            while (self.stop_brain == True):
-                if (self.reload == True):
+            while self.stop_brain == True:
+                if self.reload == True:
                     break
                 time.sleep(0.1)
 
@@ -176,14 +183,14 @@ hal.move_dummy(2, time_elapsed)
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
 
             # Keep updating the iteration counter
-            if (iterative_code == ""):
+            if iterative_code == "":
                 self.iteration_counter = 0
             else:
                 self.iteration_counter = self.iteration_counter + 1
 
             # The code should be run for atleast the target time step
             # If it's less put to sleep
-            if (ms < self.ideal_cycle):
+            if ms < self.ideal_cycle:
                 time.sleep((self.ideal_cycle - ms) / 1000.0)
 
         close_console()
@@ -192,8 +199,12 @@ hal.move_dummy(2, time_elapsed)
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
-        hal_module.HAL = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("HAL", None))
+        hal_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None)
+        )
+        hal_module.HAL = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("HAL", None)
+        )
 
         # Add HAL functions
         hal_module.HAL.getImage = self.hal.getImage
@@ -207,8 +218,12 @@ hal.move_dummy(2, time_elapsed)
         hal_module.HAL.getYaw = self.hal.getYaw
 
         # Define GUI module
-        gui_module = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
-        gui_module.GUI = importlib.util.module_from_spec(importlib.machinery.ModuleSpec("GUI", None))
+        gui_module = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None)
+        )
+        gui_module.GUI = importlib.util.module_from_spec(
+            importlib.machinery.ModuleSpec("GUI", None)
+        )
 
         # Add GUI functions
         gui_module.GUI.showImages = self.gui.showImages
@@ -288,15 +303,15 @@ hal.move_dummy(2, time_elapsed)
         # bufsize=1 enables line-bufferred mode (the input buffer is flushed
         # automatically on newlines if you would write to process.stdin )
         with stats_process.stdout:
-            for line in iter(stats_process.stdout.readline, b''):
-                stats_list = [x.strip() for x in line.split(b',')]
+            for line in iter(stats_process.stdout.readline, b""):
+                stats_list = [x.strip() for x in line.split(b",")]
                 self.real_time_factor = stats_list[0].decode("utf-8")
 
     # Function to maintain thread execution
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if (self.thread != None):
+        if self.thread != None:
             while self.thread.is_alive():
                 time.sleep(0.2)
 
@@ -325,18 +340,18 @@ hal.move_dummy(2, time_elapsed)
     # The websocket function
     # Gets called when there is an incoming message from the client
     def handle(self, client, server, message):
-        if (message[:5] == "#freq"):
+        if message[:5] == "#freq":
             frequency_message = message[5:]
             self.read_frequency_message(frequency_message)
             time.sleep(1)
             return
 
-        elif(message[:5] == "#ping"):
+        elif message[:5] == "#ping":
             time.sleep(1)
             self.send_ping_message()
             return
 
-        elif (message[:5] == "#code"):
+        elif message[:5] == "#code":
             try:
                 # Once received turn the reload flag up and send it to execute_thread function
                 self.user_code = message[6:]
@@ -346,7 +361,7 @@ hal.move_dummy(2, time_elapsed)
             except:
                 pass
 
-        elif (message[:5] == "#rest"):
+        elif message[:5] == "#rest":
             try:
                 self.reload = True
                 self.stop_brain = True
@@ -354,10 +369,10 @@ hal.move_dummy(2, time_elapsed)
             except:
                 pass
 
-        elif (message[:5] == "#stop"):
+        elif message[:5] == "#stop":
             self.stop_brain = True
 
-        elif (message[:5] == "#play"):
+        elif message[:5] == "#play":
             self.stop_brain = False
 
     # Function that gets called when the server is connected
@@ -375,11 +390,11 @@ hal.move_dummy(2, time_elapsed)
         self.measure_thread = threading.Thread(target=self.measure_frequency)
         self.measure_thread.start()
 
-        print(client, 'connected')
+        print(client, "connected")
 
     # Function that gets called when the connected closes
     def handle_close(self, client, server):
-        print(client, 'closed')
+        print(client, "closed")
 
     def run_server(self):
         self.server = WebsocketServer(port=1905, host=self.host)

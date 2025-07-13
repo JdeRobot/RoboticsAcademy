@@ -35,18 +35,18 @@ import signal
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 
     cfg = config.load(sys.argv[1])
 
-    #starting comm
-    jdrc= comm.init(cfg, 'Follow_face')
+    # starting comm
+    jdrc = comm.init(cfg, "Follow_face")
 
     cameraCli = jdrc.getCameraClient("Follow_face.Camera")
     camera = CameraSegment(cameraCli)
     motors = jdrc.getPTMotorsClient("Follow_face.PTMotors")
 
-    algorithm=MyAlgorithm(camera, motors)
+    algorithm = MyAlgorithm(camera, motors)
 
     app = QApplication(sys.argv)
     frame = MainWindow()
