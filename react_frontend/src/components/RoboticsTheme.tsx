@@ -1,6 +1,5 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import PropTypes from "prop-types";
 
 const theme = createTheme({
   palette: {
@@ -29,12 +28,12 @@ const theme = createTheme({
   },
 });
 
-function RoboticsTheme(props) {
-  return <ThemeProvider theme={theme}>{props.children}</ThemeProvider>;
+interface RoboticsThemeProps {
+  children: ReactNode;
 }
 
-RoboticsTheme.propTypes = {
-  children: PropTypes.node,
-};
+function RoboticsTheme({ children }: RoboticsThemeProps) {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+}
 
 export default RoboticsTheme;
