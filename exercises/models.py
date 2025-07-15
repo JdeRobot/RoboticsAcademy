@@ -13,26 +13,29 @@ StatusChoice = (
     ("PROTOTYPE", "PROTOTYPE"),
 )
 
-VisualizationType = (
-    ("none", "None"),
-    ("console", "Console"),
-    ("gazebo_gra", "Gazebo GRA"),
-    ("gazebo_rae", "Gazebo RAE"),
-    ("gzsim_gra", "Gz Sim GRA"),
-    ("gzsim_rae", "Gz Sim RAE"),
-    ("physic_gra", "Physic GRA"),
-    ("physic_rae", "Physic RAE"),
-)
-
 UniverseType = (
     ("none", "None"),
     ("gazebo", "Gazebo"),
-    ("drones", "Gazebo Drones"),
-    ("gzsimdrones", "Gz Sim Drones"),
+    ("gz", "Gazebo Harmonic"),
     ("physical", "Physical"),
 )
 
 RosVersion = (("ROS", "ROS"), ("ROS2", "ROS2"))
+
+
+class Tool(models.Model):
+    """
+    Modelo Tool para Robotics Academy
+    """
+
+    name = models.CharField(max_length=50, blank=False, unique=True, primary_key=True)
+    base_config = models.CharField(max_length=200, blank=False)
+
+    def __str__(self):
+        return str(self.name)
+
+    class Meta:
+        db_table = '"tools"'
 
 
 class Robot(models.Model):
@@ -57,12 +60,9 @@ class World(models.Model):
 
     name = models.CharField(max_length=100, blank=False, unique=True)
     launch_file_path = models.CharField(max_length=200, blank=False)
-    visualization_config_path = models.CharField(max_length=200, blank=False)
+    tools_config = models.CharField(max_length=200, blank=False)
     ros_version = models.CharField(max_length=4, choices=RosVersion, default="none")
-    visualization = models.CharField(
-        max_length=50, choices=VisualizationType, default="none", blank=False
-    )
-    world = models.CharField(
+    type = models.CharField(
         max_length=50, choices=UniverseType, default="none", blank=False
     )
 
@@ -117,6 +117,7 @@ class Exercise(models.Model):
     universes = models.ManyToManyField(
         Universe, default=None, db_table='"exercises_universes"'
     )
+    tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
     template = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
@@ -136,6 +137,13 @@ class Exercise(models.Model):
         else:
             ros_version = "ROS"
 
+        tools = []
+        tools_config = {}
+        for tool in self.tools.all():
+            tools.append(tool.name)
+            if tool.base_config != "None":
+                tools_config.update({tool.name: tool.base_config})
+
         for universe in self.universes.all():
             if (
                 universe.world.ros_version == ros_version
@@ -146,7 +154,7 @@ class Exercise(models.Model):
                         "name": universe.robot.name,
                         "launch_file_path": universe.robot.launch_file_path,
                         "ros_version": universe.world.ros_version,
-                        "world": universe.world.world,
+                        "type": universe.world.type,
                         "start_pose": universe.world.start_pose,
                     }
                 else:
@@ -154,9 +162,13 @@ class Exercise(models.Model):
                         "name": None,
                         "launch_file_path": None,
                         "ros_version": None,
-                        "world": None,
+                        "type": None,
                         "start_pose": None,
                     }
+
+                tools_configuration = None
+                if universe.world.tools_config != "None":
+                    tools_configuration = json.loads(universe.world.tools_config)
 
                 config = {
                     "name": universe.name,
@@ -164,10 +176,11 @@ class Exercise(models.Model):
                         "name": universe.world.name,
                         "launch_file_path": universe.world.launch_file_path,
                         "ros_version": universe.world.ros_version,
-                        "world": universe.world.world,
+                        "type": universe.world.type,
+                        "tools_config": tools_configuration,
                     },
-                    "visualization": universe.world.visualization,
-                    "visualization_config_path": universe.world.visualization_config_path,
+                    "tools": tools,
+                    "tools_config": tools_config,
                     "robot": robot_config,
                     "template": self.template,
                     "exercise_id": self.exercise_id,
@@ -183,17 +196,18 @@ class Exercise(models.Model):
                     "name": None,
                     "launch_file_path": None,
                     "ros_version": None,
-                    "world": None,
+                    "type": None,
+                    "tools_config": None,
                 },
                 "robot": {
                     "name": None,
                     "launch_file_path": None,
                     "ros_version": None,
-                    "world": None,
+                    "type": None,
                     "start_pose": None,
                 },
-                "visualization": "console",
-                "visualization_config_path": None,
+                "tools": tools,
+                "tools_config": tools_config,
                 "template": self.template,
                 "exercise_id": self.exercise_id,
             }

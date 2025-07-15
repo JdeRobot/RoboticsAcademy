@@ -2,6 +2,10 @@ import numpy as np
 from rclpy.node import Node
 from math import asin, atan2, pi
 import nav_msgs.msg
+import rclpy
+
+if not rclpy.ok():
+    rclpy.init()
 
 
 ### AUXILIARY FUNCTIONS ###
