@@ -2,10 +2,12 @@ export const resizeList = ["min", "max"];
 export const monacoEditorThemeList = ["vs-dark"];
 export const defaultEditorSourceCode = `import WebGUI
 import HAL
+import Frequency
 # Enter sequential code!
 
 while True:
     # Enter iterative code!
+    Frequency.tick()
 
 `;
 

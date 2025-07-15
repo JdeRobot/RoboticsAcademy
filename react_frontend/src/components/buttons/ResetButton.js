@@ -8,6 +8,7 @@ const ResetButton = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const callback = (message) => {
+      console.log(message)
       if (
         (message.data.state === "application_running") |
         (message.data.state === "paused")
@@ -39,6 +40,7 @@ const ResetButton = () => {
         window.RoboticsExerciseComponents.commsManager
           .terminate_application()
           .then(() => {
+            console.log("Reseted")
             setLoading(false);
           })
           .catch((response) => console.log(response));

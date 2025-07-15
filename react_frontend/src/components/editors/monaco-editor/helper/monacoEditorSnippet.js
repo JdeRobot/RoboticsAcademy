@@ -1,4 +1,4 @@
-import { basic_snippets, guiAndHalAutoCompleteObj } from "./../index";
+import { basic_snippets, guiAndHalAutoCompleteObj, frequencyAutoCompleteObj } from "./../index";
 
 // Main Editor Snippets
 export const monacoEditorSnippet = ({ monaco }) => {
@@ -36,7 +36,7 @@ export const monacoEditorSnippet = ({ monaco }) => {
       }
 
       // Snippets for HAL and GUI
-      if (prevWord.word === "WebGUI" || prevWord.word === "HAL") {
+      if (prevWord.word === "WebGUI" || prevWord.word === "HAL" || prevWord.word === "Frequency") {
         const suggestions = snippetsBuilderV2(
           "hal_gui",
           monaco,
@@ -146,6 +146,8 @@ export const getHalGuiMethods = (importName) => {
     return guiAndHalAutoCompleteObj[exerciseName].webgui;
   } else if (importName === "HAL") {
     return guiAndHalAutoCompleteObj[exerciseName].hal;
+  } else if (importName === "Frequency") {
+    return frequencyAutoCompleteObj;
   }
 
   return [];
