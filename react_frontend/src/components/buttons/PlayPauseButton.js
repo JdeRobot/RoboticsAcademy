@@ -71,7 +71,7 @@ const PlayPause = (props) => {
 
     var zip = new JSZip();
     const commonsZip = await zip.loadAsync(commons);
-    console.log(commonsZip)
+    console.log(commonsZip);
 
     try {
       const response = await fetch(requestUrl, {
@@ -94,6 +94,19 @@ const PlayPause = (props) => {
       });
 
       commonsZip.file("academy.py", code);
+
+      // add onnx file to the zip if it exists
+      if (window.RoboticsReactComponents.DeepLearningModel) {
+        const modelBuffer =
+          RoboticsReactComponents.DeepLearningModel.getModelBuffer();
+        if (modelBuffer) {
+          commonsZip.file("model.onnx", modelBuffer);
+        } else {
+          console.warn("No ONNX model buffer found.");
+        }
+      } else {
+        console.warn("DeepLearningModel component not found.");
+      }
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();

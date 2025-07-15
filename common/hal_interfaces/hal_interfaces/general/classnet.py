@@ -216,7 +216,6 @@ class BoundingBox:
 
 
 class NeuralNetwork:
-
     def __init__(self):
         self.net = cv2.dnn.readNetFromTensorflow(FROZEN_GRAPH, PB_TXT)
 

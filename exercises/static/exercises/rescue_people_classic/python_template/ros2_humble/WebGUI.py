@@ -9,7 +9,6 @@ from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
 class WebGUI(MeasuringThreadingGUI):
-
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
         # Execution control vars
@@ -27,7 +26,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {"brain": "", "gui": "", "rtf": ""}
         self.iteration_counter = 0
 
         self.start()
@@ -98,9 +97,11 @@ gui = GUI(host)
 # Redirect the console
 start_console()
 
+
 # Expose the user functions
 def showImage(image):
     gui.setRightImage(image)
+
 
 def showLeftImage(image):
     gui.setLeftImage(image)

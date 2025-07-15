@@ -10,7 +10,8 @@ from hal_interfaces.general.camera import CameraNode
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
 
-freq = 90.0 # Less than this wont work
+freq = 90.0  # Less than this wont work
+
 
 # Mutes exceptions
 def custom_thread_excepthook(args):
@@ -18,7 +19,9 @@ def custom_thread_excepthook(args):
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
 
+
 threading.excepthook = custom_thread_excepthook
+
 
 def __auto_spin() -> None:
     while rclpy.ok():
@@ -27,7 +30,8 @@ def __auto_spin() -> None:
         except Exception:
             pass
         time.sleep(1 / freq)
-        
+
+
 # ROS2 init
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
@@ -42,6 +46,7 @@ executor.add_node(camera_node)
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
+
 # Get Image from ROS Driver Camera
 def getImage():
     image = camera_node.getImage()
@@ -49,9 +54,11 @@ def getImage():
         image = camera_node.getImage()
     return image.data
 
+
 # Set the velocity
 def setV(velocity):
     motor_node.sendV(float(velocity))
+
 
 # Set the angular velocity
 def setW(velocity):

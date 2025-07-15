@@ -11,7 +11,6 @@ from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
 class WebGUI(MeasuringThreadingGUI):
-
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
         # ROS 2 init
@@ -47,7 +46,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': ''}
+        self.frequency_message = {"brain": "", "gui": "", "rtf": ""}
         self.iteration_counter = 0
         self.fps = -1
         self.lat = -1
@@ -72,27 +71,46 @@ class WebGUI(MeasuringThreadingGUI):
 
             # Define movement and rotation parameters
             mov_dist = 0.1  # meters (default for forward movement)
-            rot_angle = 0.17 # radians (default for left rotation)
+            rot_angle = 0.17  # radians (default for left rotation)
 
-            # Check for movement direction 
-            if  "key_s" in message:     
-                mov_dist *= -1          # reverse for backward movement
-            if "key_d" in message:      
-                rot_angle *= -1         # reverse for right rotation
+            # Check for movement direction
+            if "key_s" in message:
+                mov_dist *= -1  # reverse for backward movement
+            if "key_d" in message:
+                rot_angle *= -1  # reverse for right rotation
 
             # Update accordingly
-            if "key_w" in message or "key_s" in message:   # forward or backward movement
-                siny_cosp = 2 * (pose.orientation.w * pose.orientation.z - pose.orientation.x * pose.orientation.y)
-                cosy_cosp = 1 - 2 * (pose.orientation.y * pose.orientation.y + pose.orientation.z * pose.orientation.z)
+            if "key_w" in message or "key_s" in message:  # forward or backward movement
+                siny_cosp = 2 * (
+                    pose.orientation.w * pose.orientation.z
+                    - pose.orientation.x * pose.orientation.y
+                )
+                cosy_cosp = 1 - 2 * (
+                    pose.orientation.y * pose.orientation.y
+                    + pose.orientation.z * pose.orientation.z
+                )
                 yaw = atan2(siny_cosp, cosy_cosp)
                 pose.position.x += mov_dist * sin(yaw)
                 pose.position.y += -mov_dist * cos(yaw)
             elif "key_a" in message or "key_d" in message:  # turning movement
-                w = pose.orientation.w * cos(rot_angle / 2) - pose.orientation.z * sin(rot_angle / 2)
-                x = pose.orientation.x * cos(rot_angle / 2) + pose.orientation.y * sin(rot_angle / 2)
-                y = pose.orientation.y * cos(rot_angle / 2) - pose.orientation.x * sin(rot_angle / 2)
-                z = pose.orientation.w * sin(rot_angle / 2) + pose.orientation.z * cos(rot_angle / 2)
-                pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z = w, x, y, z
+                w = pose.orientation.w * cos(rot_angle / 2) - pose.orientation.z * sin(
+                    rot_angle / 2
+                )
+                x = pose.orientation.x * cos(rot_angle / 2) + pose.orientation.y * sin(
+                    rot_angle / 2
+                )
+                y = pose.orientation.y * cos(rot_angle / 2) - pose.orientation.x * sin(
+                    rot_angle / 2
+                )
+                z = pose.orientation.w * sin(rot_angle / 2) + pose.orientation.z * cos(
+                    rot_angle / 2
+                )
+                (
+                    pose.orientation.w,
+                    pose.orientation.x,
+                    pose.orientation.y,
+                    pose.orientation.z,
+                ) = (w, x, y, z)
 
             # Send the new pose
             self.set_request.state.name = "PersonToControl"
@@ -120,7 +138,7 @@ class WebGUI(MeasuringThreadingGUI):
 
     # Prepares and send image to the websocket server
     def update_gui(self):
-        
+
         _, encoded_image = cv2.imencode(".JPEG", self.image)
         payload = {
             "image": base64.b64encode(encoded_image).decode("utf-8"),
@@ -141,6 +159,7 @@ gui = GUI(host)
 
 # Redirect the console
 start_console()
+
 
 # Expose the gui setImage function
 def showImage(img):

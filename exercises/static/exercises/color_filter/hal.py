@@ -2,7 +2,6 @@ import cv2
 
 
 class HAL:
-
     def __init__(self):
         self.cameraCapture = cv2.VideoCapture(0)
         if self.cameraCapture.isOpened():

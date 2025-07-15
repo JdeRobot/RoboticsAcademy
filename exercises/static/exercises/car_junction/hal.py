@@ -30,59 +30,69 @@ class HAL:
 
         if os.getcwd() == "/":
             f = open(
-                "/RoboticsAcademy/exercises/static/exercises/car_junction/stop_conf.yml", "r")
+                "/RoboticsAcademy/exercises/static/exercises/car_junction/stop_conf.yml",
+                "r",
+            )
         else:
             f = open("stop_conf.yml", "r")
 
         cfg = yaml.safe_load(f)
 
-        ymlNode = cfg['Stop']
-        #node = rospy.init_node(ymlNode["NodeName"], anonymous=True)
+        ymlNode = cfg["Stop"]
+        # node = rospy.init_node(ymlNode["NodeName"], anonymous=True)
 
         # ------------ M O T O R S ----------------------------------
         # print("Publishing " + "Stop.Motors" + " with ROS messages")
-        topicM = cfg['Stop']["Motors"]["Topic"]
-        maxW = cfg['Stop']["Motors"]["maxW"]
+        topicM = cfg["Stop"]["Motors"]["Topic"]
+        maxW = cfg["Stop"]["Motors"]["maxW"]
         if not maxW:
             maxW = 0.5
             print(
-                "Stop.Motors"+".maxW not provided, the default value is used: " + repr(maxW))
+                "Stop.Motors"
+                + ".maxW not provided, the default value is used: "
+                + repr(maxW)
+            )
 
-        maxV = cfg['Stop']["Motors"]["maxV"]
+        maxV = cfg["Stop"]["Motors"]["maxV"]
         if not maxV:
             maxV = 5
             print(
-                "Stop.Motors"+".maxV not provided, the default value is used: " + repr(maxV))
+                "Stop.Motors"
+                + ".maxV not provided, the default value is used: "
+                + repr(maxV)
+            )
 
         self.motors = PublisherMotors(topicM, maxV, maxW)
 
         # ----------------- P O S E     3 D -------------------------------------
         # print("Receiving " + "Stop.Pose3D" + " from ROS messages")
-        topicP = cfg['Stop']["Pose3D"]["Topic"]
+        topicP = cfg["Stop"]["Pose3D"]["Topic"]
         self.pose3d = ListenerPose3d(topicP)
 
         # -------- C A M E R A C E N T R A L --------------------------------------
         # print("Receiving " + "Stop.CameraC" + "  CameraData from ROS messages")
-        topicCameraC = cfg['Stop']["CameraC"]["Topic"]
+        topicCameraC = cfg["Stop"]["CameraC"]["Topic"]
         self.cameraC = ListenerCamera(topicCameraC)
 
         # -------- C A M E R A L E F T --------------------------------------------
         # print("Receiving " + "Stop.CameraL" + "  CameraData from ROS messages")
-        topicCameraL = cfg['Stop']["CameraL"]["Topic"]
+        topicCameraL = cfg["Stop"]["CameraL"]["Topic"]
         self.cameraL = ListenerCamera(topicCameraL)
 
         # -------- C A M E R A R I G H T ------------------------------------------
         # print("Receiving " + "Stop.CameraR" + "  CameraData from ROS messages")
-        topicCameraR = cfg['Stop']["CameraR"]["Topic"]
+        topicCameraR = cfg["Stop"]["CameraR"]["Topic"]
         self.cameraR = ListenerCamera(topicCameraR)
 
         self.template = cv2.imread(
-            '/RoboticsAcademy/exercises/static/exercises/car_junction/assets/img/template.png', 0)
+            "/RoboticsAcademy/exercises/static/exercises/car_junction/assets/img/template.png",
+            0,
+        )
 
         # Dummy Cars Controller
         self.dummy_speed_1 = -2
         self.state_msg_1 = ModelState()
-        self.state_msg_1.model_name = 'car1'
+        self.state_msg_1.model_name = "car1"
         self.state_msg_1.pose.position.x = 30
         self.state_msg_1.pose.position.y = 1.5
         self.state_msg_1.pose.position.z = 0.1
@@ -92,7 +102,7 @@ class HAL:
         self.state_msg_1.pose.orientation.w = 0.7
         self.dummy_speed_2 = 3.5
         self.state_msg_2 = ModelState()
-        self.state_msg_2.model_name = 'car2'
+        self.state_msg_2.model_name = "car2"
         self.state_msg_2.pose.position.x = -30
         self.state_msg_2.pose.position.y = -1.5
         self.state_msg_2.pose.position.z = 0.1
@@ -103,11 +113,11 @@ class HAL:
 
     # Get Image from ROS Driver Camera
     def getImage(self, lr):
-        if (lr == 'left'):
+        if lr == "left":
             image = self.cameraL.getImage().data
-        elif (lr == 'right'):
+        elif lr == "right":
             image = self.cameraR.getImage().data
-        elif (lr == 'center'):
+        elif lr == "center":
             image = self.cameraC.getImage().data
         else:
             print("Invalid camera")
@@ -139,7 +149,7 @@ class HAL:
 
     def setPose3D(self, pose3d):
         newPose = ModelState()
-        newPose.model_name = 'opel'
+        newPose.model_name = "opel"
         newPose.pose.position.x = pose3d.x
         newPose.pose.position.y = pose3d.y
         newPose.pose.position.z = pose3d.z
@@ -147,10 +157,9 @@ class HAL:
         newPose.pose.orientation.y = pose3d.q[0]
         newPose.pose.orientation.z = pose3d.q[3]
         newPose.pose.orientation.w = pose3d.q[2]
-        rospy.wait_for_service('/gazebo/set_model_state')
+        rospy.wait_for_service("/gazebo/set_model_state")
         try:
-            set_state = rospy.ServiceProxy(
-                '/gazebo/set_model_state', SetModelState)
+            set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
             resp = set_state(newPose)
         except rospy.ServiceException:
             print("Service call failed")
@@ -168,22 +177,22 @@ class HAL:
         if self.state_msg_2.pose.position.x > 70:
             self.reset_dummies()
         if car == 1:
-            self.state_msg_1.pose.position.x = self.state_msg_1.pose.position.x + \
-                time * self.dummy_speed_1
-            rospy.wait_for_service('/gazebo/set_model_state')
+            self.state_msg_1.pose.position.x = (
+                self.state_msg_1.pose.position.x + time * self.dummy_speed_1
+            )
+            rospy.wait_for_service("/gazebo/set_model_state")
             try:
-                set_state = rospy.ServiceProxy(
-                    '/gazebo/set_model_state', SetModelState)
+                set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
                 resp = set_state(self.state_msg_1)
             except rospy.ServiceException:
                 print("Service call failed")
         if car == 2:
-            self.state_msg_2.pose.position.x = self.state_msg_2.pose.position.x + \
-                time * self.dummy_speed_2
-            rospy.wait_for_service('/gazebo/set_model_state')
+            self.state_msg_2.pose.position.x = (
+                self.state_msg_2.pose.position.x + time * self.dummy_speed_2
+            )
+            rospy.wait_for_service("/gazebo/set_model_state")
             try:
-                set_state = rospy.ServiceProxy(
-                    '/gazebo/set_model_state', SetModelState)
+                set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
                 resp = set_state(self.state_msg_2)
             except rospy.ServiceException:
                 print("Service call failed")
@@ -191,25 +200,23 @@ class HAL:
     def reset_dummies(self):
         self.reset_poses()
 
-        rospy.wait_for_service('/gazebo/set_model_state')
+        rospy.wait_for_service("/gazebo/set_model_state")
         try:
-            set_state = rospy.ServiceProxy(
-                '/gazebo/set_model_state', SetModelState)
+            set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
             resp = set_state(self.state_msg_1)
         except rospy.ServiceException:
             print("Service call failed")
 
-        rospy.wait_for_service('/gazebo/set_model_state')
+        rospy.wait_for_service("/gazebo/set_model_state")
         try:
-            set_state = rospy.ServiceProxy(
-                '/gazebo/set_model_state', SetModelState)
+            set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
             resp = set_state(self.state_msg_2)
         except rospy.ServiceException:
             print("Service call failed")
 
     def reset_poses(self):
         self.state_msg_1 = ModelState()
-        self.state_msg_1.model_name = 'car1'
+        self.state_msg_1.model_name = "car1"
         self.state_msg_1.pose.position.x = 30
         self.state_msg_1.pose.position.y = 1.5
         self.state_msg_1.pose.position.z = 0.1
@@ -218,7 +225,7 @@ class HAL:
         self.state_msg_1.pose.orientation.z = -0.7
         self.state_msg_1.pose.orientation.w = 0.7
         self.state_msg_2 = ModelState()
-        self.state_msg_2.model_name = 'car2'
+        self.state_msg_2.model_name = "car2"
         self.state_msg_2.pose.position.x = -30
         self.state_msg_2.pose.position.y = -1.5
         self.state_msg_2.pose.position.z = 0.1

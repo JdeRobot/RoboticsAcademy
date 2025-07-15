@@ -19,7 +19,6 @@ from copy import deepcopy
 
 
 class PublisherMotors:
- 
     def __init__(self, topic, maxV, maxW):
         self.maxW = maxW
         self.maxV = maxV
@@ -32,18 +31,18 @@ class PublisherMotors:
         self.thread = ThreadPublisher(self, self.kill_event)
         self.thread.daemon = True
         self.start()
- 
-    def publish (self):
+
+    def publish(self):
         self.lock.acquire()
         tw = deepcopy(self.tw)
         self.lock.release()
         self.pub.publish(tw)
-        
+
     def stop(self):
         self.kill_event.set()
         self.pub.unregister()
 
-    def start (self):
+    def start(self):
         self.kill_event.clear()
         self.thread.start()
 
@@ -81,4 +80,3 @@ class PublisherMotors:
         self.lock.acquire()
         self.tw.angular.z = az
         self.lock.release()
-

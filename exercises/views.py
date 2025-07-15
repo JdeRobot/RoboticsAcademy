@@ -1,11 +1,4 @@
-import json
-import mimetypes
 import os
-import shutil
-import tempfile
-import subprocess
-import zipfile
-import pylint as lint
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
@@ -22,17 +15,23 @@ def index(request):
     # exercises = Exercise.objects.all()
     exercises = Exercise.objects.all()
     context = {"exercises": exercises}
-    return render(request, 'exercises/RoboticsAcademy.html', context)
+    return render(request, "exercises/RoboticsAcademy.html", context)
 
 
 def load_exercise(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
-    return render(request, 'exercises/' + exercise_id + '/exercise.html', exercise.context)
+    return render(
+        request, "exercises/" + exercise_id + "/exercise.html", exercise.context
+    )
+
 
 @csrf_exempt
 @api_view(["POST"])
 def user_code_zip(request, exercise_id):
-    exercise_path = os.path.join(settings.BASE_DIR, f"exercises/static/exercises/{exercise_id}/python_template/ros2_humble")
+    exercise_path = os.path.join(
+        settings.BASE_DIR,
+        f"exercises/static/exercises/{exercise_id}/python_template/ros2_humble",
+    )
     files = []
 
     try:
@@ -43,16 +42,6 @@ def user_code_zip(request, exercise_id):
         return JsonResponse({"success": True, "files": files})
 
     except Exception as e:
-        return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    
-@csrf_exempt
-@api_view(["POST"])
-def get_exercise_config(request, exercise_id):
-    config_path = os.path.join(settings.BASE_DIR, f"exercises/static/exercises/{exercise_id}/config.json")
-
-    try:
-        with open(config_path) as f:
-            return JsonResponse({"success": True, "config": json.load(f)})
-
-    except Exception as e:
-        return Response({"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST
+        )

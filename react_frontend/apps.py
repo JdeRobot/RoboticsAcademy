@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ReactFrontendConfig(AppConfig):
-    name = 'react_frontend'
+    name = "react_frontend"

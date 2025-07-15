@@ -68,4 +68,3 @@ class BoundingBoxes:
             else:  # if detection
                 image = add_bb_into_image(image, bb, color=(255, 0, 0))  # red
         return image
-

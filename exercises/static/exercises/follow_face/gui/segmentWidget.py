@@ -18,60 +18,72 @@
 #  Authors :
 #       Alberto Martin Florido <almartinflorido@gmail.com>
 #       Carlos Awadallah Estévez<carlosawadallah@gmail.com>
-#       
+#
 
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtGui import QImage, QPixmap
 
+
 class SegmentWidget(QWidget):
-    
-    IMAGE_COLS_MAX=640
-    IMAGE_ROWS_MAX=360
-    
-    imageUpdate=pyqtSignal()
-    
-    def __init__(self,winParent):
+
+    IMAGE_COLS_MAX = 640
+    IMAGE_ROWS_MAX = 360
+
+    imageUpdate = pyqtSignal()
+
+    def __init__(self, winParent):
         super(SegmentWidget, self).__init__()
-        self.winParent=winParent
+        self.winParent = winParent
         self.imageUpdate.connect(self.updateImage)
         self.initUI()
 
     def initUI(self):
-        
+
         self.setWindowTitle("Image Segmenter")
 
-        self.setMinimumSize(1340,400)
-        self.setMaximumSize(1340,400)
-        
+        self.setMinimumSize(1340, 400)
+        self.setMaximumSize(1340, 400)
+
         self.imgLabelColor = QLabel(self)
-        self.imgLabelColor.resize(self.IMAGE_COLS_MAX,self.IMAGE_ROWS_MAX)
-        self.imgLabelColor.move(20,20)
+        self.imgLabelColor.resize(self.IMAGE_COLS_MAX, self.IMAGE_ROWS_MAX)
+        self.imgLabelColor.move(20, 20)
         self.imgLabelColor.show()
 
-        self.imgLabelSegmented=QLabel(self)
-        self.imgLabelSegmented.resize(self.IMAGE_COLS_MAX,self.IMAGE_ROWS_MAX)
-        self.imgLabelSegmented.move(40 + self.IMAGE_COLS_MAX,20)
+        self.imgLabelSegmented = QLabel(self)
+        self.imgLabelSegmented.resize(self.IMAGE_COLS_MAX, self.IMAGE_ROWS_MAX)
+        self.imgLabelSegmented.move(40 + self.IMAGE_COLS_MAX, 20)
         self.imgLabelSegmented.show()
 
     def setColorImage(self):
-        img = self.winParent.getCamera().getColorImage()#.data
+        img = self.winParent.getCamera().getColorImage()  # .data
 
         if img is not None:
-            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
+            image = QImage(
+                img.data,
+                img.shape[1],
+                img.shape[0],
+                img.shape[1] * img.shape[2],
+                QImage.Format_RGB888,
+            )
             self.imgLabelColor.setPixmap(QPixmap.fromImage(image))
 
     def setThresholdImage(self):
         img = self.winParent.getCamera().getThresholdImage()
 
         if img is not None:
-            image = QImage(img.data, img.shape[1], img.shape[0], img.shape[1] * img.shape[2], QImage.Format_RGB888)
+            image = QImage(
+                img.data,
+                img.shape[1],
+                img.shape[0],
+                img.shape[1] * img.shape[2],
+                QImage.Format_RGB888,
+            )
             self.imgLabelSegmented.setPixmap(QPixmap.fromImage(image))
-        
+
     def updateImage(self):
         self.setColorImage()
         self.setThresholdImage()
-        
+
     def closeEvent(self, event):
         self.winParent.closeSegmentWidget()
-

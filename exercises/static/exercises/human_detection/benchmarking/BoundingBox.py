@@ -2,26 +2,30 @@ from utils import *
 
 
 class BoundingBox:
-    def __init__(self,
-                 imageName,
-                 classId,
-                 x,
-                 y,
-                 w,
-                 h,
-                 typeCoordinates=CoordinatesType.Absolute,
-                 imgSize=None,
-                 bbType=BBType.GroundTruth,
-                 classConfidence=None,
-                 format=BBFormat.XYWH):
+    def __init__(
+        self,
+        imageName,
+        classId,
+        x,
+        y,
+        w,
+        h,
+        typeCoordinates=CoordinatesType.Absolute,
+        imgSize=None,
+        bbType=BBType.GroundTruth,
+        classConfidence=None,
+        format=BBFormat.XYWH,
+    ):
         self._imageName = imageName
         self._typeCoordinates = typeCoordinates
         if typeCoordinates == CoordinatesType.Relative and imgSize is None:
             raise IOError(
-                'Parameter \'imgSize\' is required. It is necessary to inform the image size.')
+                "Parameter 'imgSize' is required. It is necessary to inform the image size."
+            )
         if bbType == BBType.Detected and classConfidence is None:
             raise IOError(
-                'For bbType=\'Detection\', it is necessary to inform the classConfidence value.')
+                "For bbType='Detection', it is necessary to inform the classConfidence value."
+            )
 
         self._classConfidence = classConfidence
         self._bbType = bbType
@@ -30,8 +34,10 @@ class BoundingBox:
 
         # If relative coordinates, convert to absolute values
         # For relative coords: (x,y,w,h)=(X_center/img_width , Y_center/img_height)
-        if (typeCoordinates == CoordinatesType.Relative):
-            (self._x, self._y, self._w, self._h) = convertToAbsoluteValues(imgSize, (x, y, w, h))
+        if typeCoordinates == CoordinatesType.Relative:
+            (self._x, self._y, self._w, self._h) = convertToAbsoluteValues(
+                imgSize, (x, y, w, h)
+            )
             self._width_img = imgSize[0]
             self._height_img = imgSize[1]
             if format == BBFormat.XYWH:
@@ -41,7 +47,8 @@ class BoundingBox:
                 self._h = self._y2 - self._y
             else:
                 raise IOError(
-                    'For relative coordinates, the format must be XYWH (x,y,width,height)')
+                    "For relative coordinates, the format must be XYWH (x,y,width,height)"
+                )
         # For absolute coords: (x,y,w,h)=real bb coords
         else:
             self._x = x
@@ -72,13 +79,17 @@ class BoundingBox:
     def getRelativeBoundingBox(self, imgSize=None):
         if imgSize is None and self._width_img is None and self._height_img is None:
             raise IOError(
-                'Parameter \'imgSize\' is required. It is necessary to inform the image size.')
+                "Parameter 'imgSize' is required. It is necessary to inform the image size."
+            )
         if imgSize is not None:
-            return convertToRelativeValues((imgSize[0], imgSize[1]),
-                                           (self._x, self._x2, self._y, self._y2))
+            return convertToRelativeValues(
+                (imgSize[0], imgSize[1]), (self._x, self._x2, self._y, self._y2)
+            )
         else:
-            return convertToRelativeValues((self._width_img, self._height_img),
-                                           (self._x, self._x2, self._y, self._y2))
+            return convertToRelativeValues(
+                (self._width_img, self._height_img),
+                (self._x, self._x2, self._y, self._y2),
+            )
 
     def getImageName(self):
         return self._imageName
@@ -108,14 +119,16 @@ class BoundingBox:
         det2BB = det2.getAbsoluteBoundingBox()
         det2ImgSize = det2.getImageSize()
 
-        if det1.getClassId() == det2.getClassId() and \
-           det1.classConfidence == det2.classConfidenc() and \
-           det1BB[0] == det2BB[0] and \
-           det1BB[1] == det2BB[1] and \
-           det1BB[2] == det2BB[2] and \
-           det1BB[3] == det2BB[3] and \
-           det1ImgSize[0] == det1ImgSize[0] and \
-           det2ImgSize[1] == det2ImgSize[1]:
+        if (
+            det1.getClassId() == det2.getClassId()
+            and det1.classConfidence == det2.classConfidenc()
+            and det1BB[0] == det2BB[0]
+            and det1BB[1] == det2BB[1]
+            and det1BB[2] == det2BB[2]
+            and det1BB[3] == det2BB[3]
+            and det1ImgSize[0] == det1ImgSize[0]
+            and det2ImgSize[1] == det2ImgSize[1]
+        ):
             return True
         return False
 
@@ -134,5 +147,6 @@ class BoundingBox:
             imgSize=boundingBox.getImageSize(),
             bbType=boundingBox.getBBType(),
             classConfidence=boundingBox.getConfidence(),
-            format=BBFormat.XYWH)
+            format=BBFormat.XYWH,
+        )
         return newBoundingBox

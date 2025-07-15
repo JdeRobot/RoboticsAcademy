@@ -15,11 +15,13 @@ IMG_HEIGHT = 240
 
 freq = 30.0
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
 
 threading.excepthook = custom_thread_excepthook
 
@@ -51,12 +53,15 @@ def __auto_spin() -> None:
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
+
 # Pose
 def getPose3d():
     return odometry_node.getPose3d()
 
+
 def getOdom():
     return noisy_odometry_node.getPose3d()
+
 
 # Image
 def getImage():
@@ -65,15 +70,18 @@ def getImage():
         image = camera_node.getImage()
     return image.data
 
+
 def getLaserData():
     laser_data = laser_node.getLaserData()
     while len(laser_data.values) == 0:
         laser_data = laser_node.getLaserData()
     return laser_data
 
+
 # Linear speed
 def setV(v):
     motor_node.sendV(float(v))
+
 
 # Angular speed
 def setW(w):

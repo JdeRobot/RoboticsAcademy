@@ -9,7 +9,6 @@ if not rclpy.ok():
 
 ### AUXILIARY FUNCTIONS ###
 class Pose3d:
-
     def __init__(self):
 
         self.x = 0  # X coord [meters]
@@ -124,7 +123,6 @@ def odometry2Pose3D(odom):
 
 ### HAL INTERFACE ###
 class OdometryNode(Node):
-
     def __init__(self, topic):
         super().__init__("odometry_node")
         self.sub = self.create_subscription(

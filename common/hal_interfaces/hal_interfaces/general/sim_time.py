@@ -7,9 +7,9 @@ if not rclpy.ok():
     rclpy.init()
 
 
+
 ### AUXILIARY FUNCTIONS
 class SimTimeData:
-
     def __init__(self):
 
         self.seconds = 0
@@ -40,7 +40,6 @@ def simTime2SimTimeData(clock):
 
 ### HAL INTERFACE ###
 class SimTimeNode(Node):
-
     def __init__(self):
         super().__init__("simulation_time_node")
         qos_policy = QoSProfile(

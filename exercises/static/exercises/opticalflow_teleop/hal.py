@@ -5,7 +5,6 @@ from interfaces.motors import PublisherMotors
 
 # Hardware Abstraction Layer
 class HAL:
-
     def __init__(self):
         rospy.init_node("HAL")
 
@@ -20,7 +19,7 @@ class HAL:
 
     def setV(self, velocity):
         self.motors.sendV(velocity)
-    
+
     def setW(self, velocity):
         self.motors.sendW(velocity)
 

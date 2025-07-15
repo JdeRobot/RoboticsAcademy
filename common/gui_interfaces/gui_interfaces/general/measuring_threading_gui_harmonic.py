@@ -11,16 +11,16 @@ import re
 
 import sys
 
-sys.path.insert(0, '/RoboticsApplicationManager')
+sys.path.insert(0, "/RoboticsApplicationManager")
 
 from manager.ram_logging.log_manager import LogManager
 
 
 class MeasuringThreadingGUI:
-    """ GUI interface using threading and measuring RTF data:
-        
-        self.start() needs to be called at the end of the init method\n
-        The update_gui(self) method needs to be implemented
+    """GUI interface using threading and measuring RTF data:
+
+    self.start() needs to be called at the end of the init method\n
+    The update_gui(self) method needs to be implemented
     """
 
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0, world_name="default"):
@@ -34,7 +34,13 @@ class MeasuringThreadingGUI:
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
-        self.frequency_message = {'brain': '', 'gui': '', 'rtf': '', 'fps':'', 'lat':''}
+        self.frequency_message = {
+            "brain": "",
+            "gui": "",
+            "rtf": "",
+            "fps": "",
+            "lat": "",
+        }
         self.iteration_counter = 0
         self.fps = -1
         self.lat = -1
@@ -44,16 +50,18 @@ class MeasuringThreadingGUI:
         self.host = host
 
         self.world_name = world_name
-    
+
     def start(self):
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()
-        
+
         # Initialize and start the RTF thread
         self.rtf_thread = threading.Thread(target=self.get_real_time_factor).start()
 
         # Initialize and start the Frequency thread
-        self.frequency_thread = threading.Thread(target=self.measure_and_send_frequency).start()
+        self.frequency_thread = threading.Thread(
+            target=self.measure_and_send_frequency
+        ).start()
 
         # Initialize and start the image sending thread (GUI out thread)
         threading.Thread(
@@ -63,35 +71,40 @@ class MeasuringThreadingGUI:
     # Init websocket client
     def run_websocket(self):
         while self.running:
-            self.client = websocket.WebSocketApp(self.host, on_message=self.gui_in_thread)
+            self.client = websocket.WebSocketApp(
+                self.host, on_message=self.gui_in_thread
+            )
             self.client.run_forever(ping_timeout=None, ping_interval=0)
 
     def get_real_time_factor(self):
         """Continuously calculates the real-time factor."""
         while self.running:
             time.sleep(2)
-        
+
             args = ["gz", "topic", "-e", "-t", f"/world/{self.world_name}/stats"]
             real_time_factor = None
 
             try:
-                harmonic_process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+                harmonic_process = subprocess.Popen(
+                    args, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+                )
 
                 # timer
                 timeout_seconds = 1
                 timer = Timer(timeout_seconds, harmonic_process.kill)
                 timer.start()
-                
-                for line in iter(harmonic_process.stdout.readline, b''):
+
+                for line in iter(harmonic_process.stdout.readline, b""):
                     line_decoded = line.decode("utf-8")
                     if "real_time_factor" in line_decoded:
-                        match = re.search(r"real_time_factor:\s*([\d\.]+)", line_decoded)
+                        match = re.search(
+                            r"real_time_factor:\s*([\d\.]+)", line_decoded
+                        )
                         if match:
                             real_time_factor = float(match.group(1))
                             break
 
                 timer.cancel()
-
 
             except Exception as e:
                 print(f"Error: {e}")
@@ -111,11 +124,21 @@ class MeasuringThreadingGUI:
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
-            measured_cycle = ms / self.iteration_counter if self.iteration_counter > 0 else 0
+            measured_cycle = (
+                ms / self.iteration_counter if self.iteration_counter > 0 else 0
+            )
             self.iteration_counter = 0
-            brain_frequency = round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
+            brain_frequency = (
+                round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
+            )
             gui_frequency = round(1000 / self.ideal_cycle, 1)
-            self.frequency_message = {'brain': brain_frequency, 'gui': gui_frequency, 'rtf':self.real_time_factor, 'fps': self.fps, 'lat': self.lat}
+            self.frequency_message = {
+                "brain": brain_frequency,
+                "gui": gui_frequency,
+                "rtf": self.real_time_factor,
+                "fps": self.fps,
+                "lat": self.lat,
+            }
             message = json.dumps(self.frequency_message)
 
             self.send_to_client(message)
@@ -130,10 +153,10 @@ class MeasuringThreadingGUI:
                 self.ack_frontend = True
         else:
             LogManager.logger.error("Unsupported msg")
-    
+
     def update_gui(self):
         """Prepares the data and calls the following method at the end to send it:\n
-            · send_to_client(data)
+        · send_to_client(data)
         """
         pass
 
@@ -147,7 +170,7 @@ class MeasuringThreadingGUI:
             with self.ack_lock:
                 if self.ack:
                     self.update_gui()
-                    if self.ack_frontend: 
+                    if self.ack_frontend:
                         self.ack = False
 
             # Maintain desired frequency

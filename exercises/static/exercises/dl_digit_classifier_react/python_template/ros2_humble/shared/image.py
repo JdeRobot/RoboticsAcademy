@@ -2,7 +2,14 @@ import traceback
 
 import numpy as np
 import mmap
-from posix_ipc import Semaphore, O_CREX, ExistentialError, O_CREAT, SharedMemory, unlink_shared_memory
+from posix_ipc import (
+    Semaphore,
+    O_CREX,
+    ExistentialError,
+    O_CREAT,
+    SharedMemory,
+    unlink_shared_memory,
+)
 from ctypes import sizeof, memmove, addressof, create_string_buffer
 from shared.structure_img import MD
 
@@ -10,14 +17,18 @@ from shared.structure_img import MD
 # Therefore, a global variable for utility
 md_buf = create_string_buffer(sizeof(MD))
 
+
 class SharedImage:
     def __init__(self, name):
         # Initialize variables for memory regions and buffers and Semaphore
-        self.shm_buf = None; self.shm_region = None
-        self.md_buf = None; self.md_region = None
+        self.shm_buf = None
+        self.shm_region = None
+        self.md_buf = None
+        self.md_region = None
         self.image_lock = None
 
-        self.shm_name = name; self.md_name = name + "-meta"
+        self.shm_name = name
+        self.md_name = name + "-meta"
         self.image_lock_name = name
 
         # Initialize or retreive metadata memory region
@@ -64,12 +75,15 @@ class SharedImage:
             self.shm_region.close_fd()
 
             self.image_lock.acquire()
-            image = np.ndarray(shape=(metadata.shape_0, metadata.shape_1, metadata.shape_2),
-                               dtype='uint8', buffer=self.shm_buf)
+            image = np.ndarray(
+                shape=(metadata.shape_0, metadata.shape_1, metadata.shape_2),
+                dtype="uint8",
+                buffer=self.shm_buf,
+            )
             self.image_lock.release()
 
             # Check for a None image
-            if(image.size == 0):
+            if image.size == 0:
                 image = np.zeros((3, 3, 3), np.uint8)
         except ExistentialError:
             image = np.zeros((3, 3, 3), np.uint8)

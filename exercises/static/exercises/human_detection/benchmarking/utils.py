@@ -8,6 +8,7 @@ class MethodAveragePrecision(Enum):
     Class representing if the coordinates are relative to the
     image size or are absolute values.
     """
+
     EveryPointInterpolation = 1
     ElevenPointInterpolation = 2
 
@@ -17,6 +18,7 @@ class CoordinatesType(Enum):
     Class representing if the coordinates are relative to the
     image size or are absolute values.
     """
+
     Relative = 1
     Absolute = 2
 
@@ -25,6 +27,7 @@ class BBType(Enum):
     """
     Class representing if the bounding box is groundtruth or not.
     """
+
     GroundTruth = 1
     Detected = 2
 
@@ -35,13 +38,14 @@ class BBFormat(Enum):
     It can be (X,Y,width,height) => XYWH
     or (X1,Y1,X2,Y2) => XYX2Y2
     """
+
     XYWH = 1
     XYX2Y2 = 2
 
 
 def convertToRelativeValues(size, box):
-    dw = 1. / (size[0])
-    dh = 1. / (size[1])
+    dw = 1.0 / (size[0])
+    dh = 1.0 / (size[1])
     cx = (box[1] + box[0]) / 2.0
     cy = (box[3] + box[2]) / 2.0
     w = box[1] - box[0]
@@ -96,9 +100,21 @@ def add_bb_into_image(image, bb, color=(255, 0, 0), thickness=2, label=None):
         r_Xin = x1 - int(thickness / 2)
         r_Yin = y1 - th - int(thickness / 2)
         # Draw filled rectangle to put the text in it
-        cv2.rectangle(image, (r_Xin, r_Yin - thickness),
-                      (r_Xin + tw + thickness * 3, r_Yin + th + int(12.5 * fontScale)), (b, g, r),
-                      -1)
-        cv2.putText(image, label, (xin_bb, yin_bb), font, fontScale, (0, 0, 0), fontThickness,
-                    cv2.LINE_AA)
+        cv2.rectangle(
+            image,
+            (r_Xin, r_Yin - thickness),
+            (r_Xin + tw + thickness * 3, r_Yin + th + int(12.5 * fontScale)),
+            (b, g, r),
+            -1,
+        )
+        cv2.putText(
+            image,
+            label,
+            (xin_bb, yin_bb),
+            font,
+            fontScale,
+            (0, 0, 0),
+            fontThickness,
+            cv2.LINE_AA,
+        )
     return image

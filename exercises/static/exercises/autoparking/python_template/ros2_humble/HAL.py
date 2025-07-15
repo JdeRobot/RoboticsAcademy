@@ -12,11 +12,13 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
 
 threading.excepthook = custom_thread_excepthook
 # ROS2 init
@@ -53,6 +55,7 @@ executor_thread.start()
 def getPose3d():
     return odometry_node.getPose3d()
 
+
 def getFrontLaserData():
     laser = laser_front_node.getLaserData()
     timestamp = laser.timeStamp
@@ -60,6 +63,7 @@ def getFrontLaserData():
         laser = laser_front_node.getLaserData()
         timestamp = laser.timeStamp
     return laser
+
 
 def getRightLaserData():
     laser = laser_right_node.getLaserData()
@@ -69,6 +73,7 @@ def getRightLaserData():
         timestamp = laser.timeStamp
     return laser
 
+
 def getBackLaserData():
     laser = laser_back_node.getLaserData()
     timestamp = laser.timeStamp
@@ -77,8 +82,10 @@ def getBackLaserData():
         timestamp = laser.timeStamp
     return laser
 
+
 def setV(velocity):
     motor_node.sendV(float(velocity))
+
 
 def setW(velocity):
     motor_node.sendW(float(velocity))

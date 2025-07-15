@@ -7,7 +7,10 @@ from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.sim_time import SimTimeNode
-from hal_interfaces.specific.amazon_warehouse.platform_controller import PlatformCommandNode, PublisherPlatformNode
+from hal_interfaces.specific.amazon_warehouse.platform_controller import (
+    PlatformCommandNode,
+    PublisherPlatformNode,
+)
 
 # Hardware Abstraction Layer
 freq = 30.0
@@ -15,11 +18,13 @@ freq = 30.0
 # Lift State
 liftState = False
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
 
 threading.excepthook = custom_thread_excepthook
 
@@ -52,11 +57,14 @@ def __auto_spin() -> None:
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
+
 def getPose3d():
     return odometry_node.getPose3d()
 
+
 def getSimTime():
     return sim_time_node.getSimTime()
+
 
 def getLaserData():
     laser_data = laser_node.getLaserData()
@@ -64,21 +72,26 @@ def getLaserData():
         laser_data = laser_node.getLaserData()
     return laser_data
 
+
 def setV(velocity):
     motor_node.sendV(float(velocity))
 
+
 def setW(velocity):
     motor_node.sendW(float(velocity))
+
 
 def lift():
     global liftState
     liftState = True
     platform_pub.load()
 
+
 def putdown():
     global liftState
     liftState = False
     platform_pub.unload()
+
 
 def getLiftState():
     global liftState

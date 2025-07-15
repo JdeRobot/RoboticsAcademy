@@ -126,6 +126,8 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, templat
 15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/basic_computer_vision/python_template/
 16	follow_road	Follow Road	Follow Road exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/follow_road/python_template/
 17	pick_place	Pick and Place	Pick and Place exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/pick_place/python_template/
+18	digit_classification	Digit Classification	Deep learning-based Digit Classification.	{"tags": ["Computer Vision","Deep Learning","Classification"]}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/digit_classification/python_template/
+19	human_detection	Human Detection	Deep learning-based human detection.	{"tags": ["Computer Vision","Deep Learning"]}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/human_detection/python_template/
 \.
 -- 16	rescue_people_classic	Rescue People Old	Rescue People exercise With Gazebo Classic	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people_classic/python_template/
 

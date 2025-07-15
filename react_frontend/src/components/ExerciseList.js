@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState, useContext } from "react";
 import "../styles/ExerciseList.css";
 import { ExerciseCard } from "./ExerciseCard";
@@ -5,7 +6,7 @@ import HomepageContext from "../contexts/HomepageContext";
 
 const serverBase = `${document.location.protocol}//${document.location.hostname}:7164`;
 
-let ros_version;
+// let ros_version
 
 const ExerciseList = () => {
   const { getSearchBarText, getFilterItemsList } = useContext(HomepageContext);

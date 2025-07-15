@@ -8,7 +8,6 @@ if not rclpy.ok():
 
 ### HAL INTERFACE ###
 class MotorsNode(Node):
-
     def __init__(self, topic, maxV, maxW):
 
         super().__init__("motors_node")

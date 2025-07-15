@@ -8,9 +8,9 @@ if not rclpy.ok():
     rclpy.init()
 
 
+
 ### AUXILIARY FUNCTIONS ###
 class Pose3d:
-
     def __init__(self):
 
         self.x = 0  # X coord [meters]
@@ -202,7 +202,6 @@ def add_noise(last_pose, new_pose, base_odom, noise_level):
 
 ### HAL INTERFACE ###
 class NoisyOdometryNode(Node):
-
     def __init__(self, topic):
         super().__init__("noisy_odometry_node")
         self.sub = self.create_subscription(
