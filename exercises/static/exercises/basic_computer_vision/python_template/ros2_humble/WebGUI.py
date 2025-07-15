@@ -7,7 +7,6 @@ from gui_interfaces.general.measuring_threading_gui_no_sim import MeasuringThrea
 from console_interfaces.general.console import start_console
 import numpy as np
 
-
 # Graphical User Interface Class
 
 
