@@ -36,7 +36,7 @@ export const monacoEditorSnippet = ({ monaco }) => {
       }
 
       // Snippets for HAL and GUI
-      if (prevWord.word === "GUI" || prevWord.word === "HAL") {
+      if (prevWord.word === "WebGUI" || prevWord.word === "HAL") {
         const suggestions = snippetsBuilderV2(
           "hal_gui",
           monaco,
@@ -142,8 +142,8 @@ export const getHalGuiMethods = (importName) => {
     return [];
   }
 
-  if (importName === "GUI") {
-    return guiAndHalAutoCompleteObj[exerciseName].gui;
+  if (importName === "WebGUI") {
+    return guiAndHalAutoCompleteObj[exerciseName].webgui;
   } else if (importName === "HAL") {
     return guiAndHalAutoCompleteObj[exerciseName].hal;
   }

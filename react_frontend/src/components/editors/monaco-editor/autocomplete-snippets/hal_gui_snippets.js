@@ -21,7 +21,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(image)",
@@ -67,7 +67,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity",
       },
     ],
-    gui: [],
+    webgui: [],
   },
   _autoparking: {
     hal: [
@@ -130,7 +130,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity.",
       },
     ],
-    gui: [],
+    webgui: [],
   },
   _follow_person: {
     hal: [
@@ -186,7 +186,7 @@ export const guiAndHalAutoCompleteObj = {
           "This method calls a detect() neural network's method to obtain a list of detected objects from an image passed as argument.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage()",
@@ -249,7 +249,7 @@ export const guiAndHalAutoCompleteObj = {
           "It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showNumpy(mat)",
@@ -287,7 +287,7 @@ export const guiAndHalAutoCompleteObj = {
           "Returns x,y and theta components of the robot in world coordinates.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showNumpy(numpy)",
@@ -428,7 +428,7 @@ export const guiAndHalAutoCompleteObj = {
           "Returns the latest image from the ventral camera as a OpenCV cv2_image.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(cv2_image)",
@@ -484,7 +484,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "getNextTarget()",
@@ -572,7 +572,7 @@ export const guiAndHalAutoCompleteObj = {
           "Transform 3D Point Space after triangulation to the 3D Point Viewer.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "ShowNewPoints(points)",
@@ -646,7 +646,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Put down the platform.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showPath(array)",
@@ -724,7 +724,7 @@ export const guiAndHalAutoCompleteObj = {
           "If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showPosition(x, y, angle)",
@@ -800,7 +800,7 @@ export const guiAndHalAutoCompleteObj = {
           "Get the orientation of the robot with regarding the map.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showPosition(x, y, angle)",
@@ -886,7 +886,7 @@ export const guiAndHalAutoCompleteObj = {
           "Get the orientation of the robot with regarding the map.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showEstimatedPose((x, y, angle))",
@@ -957,7 +957,7 @@ export const guiAndHalAutoCompleteObj = {
           "Obtain the position of the robot with a lot of noise.",
       }
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "setUserMap(image)",
@@ -1076,7 +1076,7 @@ export const guiAndHalAutoCompleteObj = {
           "Returns the latest image from the ventral camera as a OpenCV cv2_image.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(cv2_image)",
@@ -1093,7 +1093,7 @@ export const guiAndHalAutoCompleteObj = {
   },
   _basic_computer_vision: {
     hal: [],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(image)",
