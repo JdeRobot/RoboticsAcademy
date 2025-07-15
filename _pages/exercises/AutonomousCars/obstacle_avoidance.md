@@ -74,7 +74,7 @@ The solution can integrate one or more of the following difficulty increasing go
 ## Frequency API
 
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 20 Hz.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
