@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import configuration from "../config.json";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
@@ -7,16 +7,27 @@ import Typography from "@mui/material/Typography";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
 import FALLBACK_IMAGE from "../images/default_card.svg";
 
-const ExerciseCard = ({ id, name, description, tags, status }) => {
-  const exerciseURL = `${configuration.academy.exercises.exercise_url}`;
-  const teaser = configuration.academy.exercises.teaser;
-  const onMediaFallback = (event) => (event.target.src = FALLBACK_IMAGE);
+interface ExerciseCardProps {
+  id: string;
+  name: string;
+  description: string;
+  tags: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'OTHER';
+}
 
-  const navigateToExercise = () => {
-    window.location.href = exerciseURL.interpolate({ exerciseid: id });
+const ExerciseCard: FC<ExerciseCardProps> = ({ id, name, description, tags, status }) => {
+  const exerciseURL: string = `${configuration.academy.exercises.exercise_url}`;
+  const teaser = configuration.academy.exercises.teaser;
+  
+  const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
   };
 
-  const tagsList = JSON.parse(tags).tags;
+  const navigateToExercise = (): void => {
+    window.location.href = exerciseURL.replace("{exerciseid}", id);
+  };
+
+  const tagsList: string[] = JSON.parse(tags).tags;
 
   return (
     <div
@@ -43,7 +54,7 @@ const ExerciseCard = ({ id, name, description, tags, status }) => {
           component="img"
           height="auto"
           style={{ flexGrow: 1 }}
-          image={teaser.url.interpolate({ exerciseid: id })}
+          image={teaser.url.replace("{exerciseid}", id)}
           onError={onMediaFallback}
         />
         <div className="exercise-info-container">
@@ -51,7 +62,7 @@ const ExerciseCard = ({ id, name, description, tags, status }) => {
             gutterBottom
             variant="h6"
             component="div"
-            color={"white"}
+            color="white"
             sx={{ wordBreak: "break-word" }}
             style={{ alignSelf: "center", pointerEvents: "none" }}
           >
@@ -60,9 +71,9 @@ const ExerciseCard = ({ id, name, description, tags, status }) => {
           <Typography
             id="exercise-info"
             gutterBottom
-            variant="h7"
+            variant="subtitle1"
             component="div"
-            color={"white"}
+            color="white"
             style={{ pointerEvents: "none" }}
           >
             {description}
@@ -74,11 +85,17 @@ const ExerciseCard = ({ id, name, description, tags, status }) => {
   );
 };
 
-const ChipsArray = ({ tagList }) => {
+interface ChipsArrayProps {
+  tagList: Array<string>;
+}
+
+const ChipsArray: React.FC<ChipsArrayProps> = ({ tagList }) => {
   let chipData = tagList;
+  
   if (!Array.isArray(chipData)) {
     chipData = chipData.split(",");
   }
+  
   const chipsList = chipData.map((data) => (
     // eslint-disable-next-line react/jsx-key
     <Chip
