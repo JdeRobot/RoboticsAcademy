@@ -207,7 +207,7 @@ class Exercise(models.Model):
                     "type": None,
                     "start_pose": None,
                 },
-                "tools": ["console"],
+                "tools": tools,
                 "tools_config": tools_config,
                 "template": self.template,
                 "exercise_id": self.exercise_id,
