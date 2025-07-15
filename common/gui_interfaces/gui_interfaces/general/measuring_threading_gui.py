@@ -45,7 +45,7 @@ class MeasuringThreadingGUI:
         self.running = True
 
         self.host = host
-    
+
     def start(self):
         # Initialize and start the WebSocket client thread
         threading.Thread(target=self.run_websocket, daemon=True).start()

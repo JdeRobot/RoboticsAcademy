@@ -21,6 +21,7 @@ blue = [255, 0, 0]
 indigo = [130, 0, 75]
 violet = [211, 0, 148]
 
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)

@@ -7,7 +7,6 @@ if not rclpy.ok():
     rclpy.init()
 
 
-
 ### AUXILIARY FUNCTIONS
 class SimTimeData:
     def __init__(self):

@@ -8,7 +8,6 @@ if not rclpy.ok():
     rclpy.init()
 
 
-
 ### AUXILIARY FUNCTIONS ###
 class Pose3d:
     def __init__(self):

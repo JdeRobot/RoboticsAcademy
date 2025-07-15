@@ -3,6 +3,7 @@ from datetime import datetime
 
 start_time_internal_freq_control = None
 
+
 def tick(ideal_cycle: int = 20):
     global start_time_internal_freq_control
     finish_time = datetime.now()
@@ -16,5 +17,5 @@ def tick(ideal_cycle: int = 20):
 
     if ms < ideal_cycle:
         time.sleep((ideal_cycle - ms) / 1000.0)
-    
+
     start_time_internal_freq_control = finish_time

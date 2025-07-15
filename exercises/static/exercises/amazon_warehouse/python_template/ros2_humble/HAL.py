@@ -46,6 +46,8 @@ executor.add_node(odometry_node)
 executor.add_node(laser_node)
 executor.add_node(sim_time_node)
 executor.add_node(platform_listener)
+
+
 def __auto_spin() -> None:
     while rclpy.ok():
         try:
@@ -53,6 +55,7 @@ def __auto_spin() -> None:
         except Exception:
             pass
         time.sleep(1 / freq)
+
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()

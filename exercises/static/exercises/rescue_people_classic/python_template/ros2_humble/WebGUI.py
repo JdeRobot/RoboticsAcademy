@@ -8,6 +8,7 @@ import numpy as np
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 

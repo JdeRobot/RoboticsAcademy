@@ -81,11 +81,6 @@ class PlatformController(Node):
         # print("self.future: ",self.future.result().success, self.future.result().status_message)
         self.future_lock.release()
 
-<<<<<<< HEAD
-
-class PlatformCommandNode(Node):
-=======
->>>>>>> humble-devel
 
 class PlatformCommandNode(Node):
     def __init__(self, topic):

@@ -22,6 +22,7 @@ UniverseType = (
 
 RosVersion = (("ROS", "ROS"), ("ROS2", "ROS2"))
 
+
 class Tool(models.Model):
     """
     Modelo Tool para Robotics Academy
@@ -116,9 +117,7 @@ class Exercise(models.Model):
     universes = models.ManyToManyField(
         Universe, default=None, db_table='"exercises_universes"'
     )
-    tools = models.ManyToManyField(
-        Tool, default=None, db_table='"exercises_tools"'
-    )
+    tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
     template = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):

@@ -39,6 +39,8 @@ ventral_camera_node = CameraNode(CAM_VENTRAL_TOPIC)
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(frontal_camera_node)
 executor.add_node(ventral_camera_node)
+
+
 def __auto_spin() -> None:
     while rclpy.ok():
         try:
@@ -46,7 +48,8 @@ def __auto_spin() -> None:
         except Exception:
             pass
         time.sleep(1 / freq)
-        
+
+
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 

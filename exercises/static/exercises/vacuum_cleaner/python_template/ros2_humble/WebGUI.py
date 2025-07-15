@@ -5,6 +5,7 @@ from console_interfaces.general.console import start_console
 from map import Map
 from HAL import getPose3d
 
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)

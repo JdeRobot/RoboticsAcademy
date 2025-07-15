@@ -8,6 +8,7 @@ from HAL import getLaserData, getPose3d
 
 # Graphical User Interface Class
 
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
