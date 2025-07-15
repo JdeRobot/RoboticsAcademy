@@ -83,10 +83,15 @@ The web template includes a teleoperation mode that allows you to control a pers
 
 If it doesn't react, click on the area where the image is shown and try again.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 20 Hz.
+
 ## Robot API
 
 * `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to obtain the current frame of the camera robot.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
@@ -96,7 +101,7 @@ If it doesn't react, click on the area where the image is shown and try again.
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
 * `HAL.getBoundingBoxes()` - this method calls a detect() neural network's method to obtain a list of detected objets from an image passed as argument.
-* `GUI.showImage()` - to show an opencv image in the web template
+* `WebGUI.showImage()` - to show an opencv image in the web template
 
 ## Laser attributes
 `HAL.getLaserData()` returns an instance of a Class with the following attributes:
@@ -133,7 +138,7 @@ while True:
     # -- Send commands to actuators.
 
     # -- Show some results
-    GUI.showImage(img)
+    WebGUI.showImage(img)
 ```
 
 ## Theory

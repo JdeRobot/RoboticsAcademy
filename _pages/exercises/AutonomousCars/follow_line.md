@@ -68,14 +68,19 @@ The students will program a Formula1 car in a race circuit to follow the red lin
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 20 Hz.
+
 ## Robot API
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image (BGR8).
 * `HAL.setV(velocity)` - to set the linear speed.
 * `HAL.setW(velocity)` - to set the angular velocity.
-* `GUI.showImage(image)` - allows you to view a debug image or with relevant information.
+* `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
 ## Theory
 
