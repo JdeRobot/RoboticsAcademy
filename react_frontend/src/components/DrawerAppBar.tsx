@@ -16,14 +16,18 @@ import SearchBar from "./SearchBar";
 
 const drawerWidth = 240;
 
-export default function DrawerAppBar(props) {
-  const { window_ } = props;
+// Tipado de props
+interface DrawerAppBarProps {
+  window_?: () => Window;
+}
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+export default function DrawerAppBar({ window_ }: DrawerAppBarProps) {
+  const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
   const goToForum = () => {
     const url = "https://forum.unibotics.org/";
     window.open(url, "_blank");
@@ -45,7 +49,7 @@ export default function DrawerAppBar(props) {
   );
 
   const container =
-    window_ !== undefined ? () => window().document.body : undefined;
+    typeof window_ !== "undefined" ? window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }} mb={10}>
@@ -61,7 +65,10 @@ export default function DrawerAppBar(props) {
             <MenuIcon />
           </IconButton>
           <a href="https://jderobot.github.io/">
-            <img src="/static/exercises/assets/img/logo.gif" width={50} alt="" />
+            <img
+              src="/static/exercises/assets/img/logo.gif"
+              width={50}
+            />
           </a>
           <Typography
             variant="h6"
