@@ -1,16 +1,21 @@
-import { keyframes } from "@mui/system";
 import React from "react";
-import PropTypes from "prop-types";
 import { Box, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { styled, keyframes } from "@mui/material/styles";
+
+// Define los posibles valores del estado como un tipo TypeScript
+type StatusType = "ACTIVE" | "INACTIVE" | "PROTOTYPE";
+
+interface StatusProps {
+  status: StatusType;
+}
 
 const blink = keyframes`
   from { opacity: 0; }
   to { opacity: 1; }
 `;
 
-// eslint-disable-next-line no-unused-vars
-const BlinkingIndicator = styled("div")(({ status }) => ({
+// Estilo para indicador con animación
+const BlinkingIndicator = styled("div")<StatusProps>(({ status }) => ({
   backgroundColor:
     status === "ACTIVE" ? "green" : status === "INACTIVE" ? "red" : "orange",
   width: 10,
@@ -20,17 +25,17 @@ const BlinkingIndicator = styled("div")(({ status }) => ({
   animation: `${blink} 3s linear infinite`,
 }));
 
-const Indicator = styled("div")(({ status }) => ({
+// Estilo para indicador sin animación
+const Indicator = styled("div")<StatusProps>(({ status }) => ({
   backgroundColor:
     status === "ACTIVE" ? "green" : status === "INACTIVE" ? "red" : "orange",
   width: 10,
   height: 10,
   borderRadius: "50%",
   borderColor: "black",
-  // animation: `${blink} 3s linear infinite`,
 }));
 
-const ExerciseStatusIndicator = (props) => {
+const ExerciseStatusIndicator: React.FC<StatusProps> = ({ status }) => {
   return (
     <Box
       sx={{
@@ -47,20 +52,16 @@ const ExerciseStatusIndicator = (props) => {
       }}
     >
       <Typography
-        color={"white"}
-        variant="h8"
+        color="white"
+        variant="subtitle2"
         component="div"
         sx={{ marginRight: 2 }}
       >
         Status
       </Typography>
-      <Indicator status={props.status} />
+      <Indicator status={status} />
     </Box>
   );
-};
-
-ExerciseStatusIndicator.propTypes = {
-  status: PropTypes.string,
 };
 
 export default ExerciseStatusIndicator;
