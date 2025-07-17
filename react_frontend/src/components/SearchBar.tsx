@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import HomepageContext from "../contexts/HomepageContext";
 
+// Estilos
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -42,7 +43,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     width: "100%",
@@ -52,17 +52,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const FilterMenu = () => {
+// Componente FilterMenu
+const FilterMenu: React.FC = () => {
   const { appendFilterItem } = React.useContext(HomepageContext);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleFilterList = (e) => {
+
+  const handleFilterList = (e: React.ChangeEvent<HTMLInputElement>) => {
     const item = e.target.name;
     appendFilterItem(item);
   };
@@ -85,36 +89,39 @@ const FilterMenu = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleFilterList}>
-          <Checkbox defaultChecked disabled size="small" name={"name"} /> Name
+          <Checkbox defaultChecked disabled size="small" name="name" /> Name
         </MenuItem>
         <MenuItem>
           <Checkbox
             defaultChecked
             size="small"
             onClick={handleFilterList}
-            name={"tags"}
+            name="tags"
           />
-          tags
+          Tags
         </MenuItem>
         <MenuItem>
           <Checkbox
             size="small"
             onClick={handleFilterList}
-            name={"description"}
-          />{" "}
-          description
+            name="description"
+          />
+          Description
         </MenuItem>
         <MenuItem>
-          <Checkbox size="small" onClick={handleFilterList} name={"status"} />{" "}
+          <Checkbox size="small" onClick={handleFilterList} name="status" />
           Status
         </MenuItem>
       </Menu>
     </>
   );
 };
-const SearchBar = () => {
+
+// Componente principal SearchBar
+const SearchBar: React.FC = () => {
   const { setSearchBarText } = React.useContext(HomepageContext);
-  let inputHandler = (e) => {
+
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lowerCase = e.target.value.toLowerCase();
     setSearchBarText(lowerCase);
   };
