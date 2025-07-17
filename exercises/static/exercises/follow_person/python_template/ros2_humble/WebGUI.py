@@ -11,7 +11,7 @@ from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
 
-class GUI(MeasuringThreadingGUI):
+class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
         # ROS 2 init
@@ -156,7 +156,7 @@ class GUI(MeasuringThreadingGUI):
 
 
 host = "ws://127.0.0.1:2303"
-gui = GUI(host)
+gui = WebGUI(host)
 
 # Redirect the console
 start_console()

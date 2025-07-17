@@ -143,7 +143,7 @@ function SpecificAmazonWarehouse(props) {
   React.useEffect(() => {
     const callback = (message) => {
       console.log(message);
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         let world = context.mapSelected;
         
         if (world.includes("2")) {

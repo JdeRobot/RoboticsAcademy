@@ -7,9 +7,10 @@ from gui_interfaces.general.measuring_threading_gui_no_sim import MeasuringThrea
 from console_interfaces.general.console import start_console
 import numpy as np
 
-
 # Graphical User Interface Class
-class GUI(MeasuringThreadingGUI):
+
+
+class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
@@ -114,7 +115,7 @@ class GUI(MeasuringThreadingGUI):
 
 
 host = "ws://127.0.0.1:2303"
-gui = GUI(host)
+gui = WebGUI(host)
 
 # Redirect the console
 start_console()

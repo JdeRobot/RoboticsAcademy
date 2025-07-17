@@ -21,7 +21,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(image)",
@@ -67,7 +67,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity",
       },
     ],
-    gui: [],
+    webgui: [],
   },
   _autoparking: {
     hal: [
@@ -130,7 +130,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity.",
       },
     ],
-    gui: [],
+    webgui: [],
   },
   _follow_person: {
     hal: [
@@ -186,7 +186,7 @@ export const guiAndHalAutoCompleteObj = {
           "This method calls a detect() neural network's method to obtain a list of detected objects from an image passed as argument.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage()",
@@ -249,7 +249,7 @@ export const guiAndHalAutoCompleteObj = {
           "It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showNumpy(mat)",
@@ -287,7 +287,7 @@ export const guiAndHalAutoCompleteObj = {
           "Returns x,y and theta components of the robot in world coordinates.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showNumpy(numpy)",
@@ -428,7 +428,7 @@ export const guiAndHalAutoCompleteObj = {
           "Returns the latest image from the ventral camera as a OpenCV cv2_image.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(cv2_image)",
@@ -484,7 +484,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Set the angular velocity.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "getNextTarget()",
@@ -572,7 +572,7 @@ export const guiAndHalAutoCompleteObj = {
           "Transform 3D Point Space after triangulation to the 3D Point Viewer.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "ShowNewPoints(points)",
@@ -646,7 +646,7 @@ export const guiAndHalAutoCompleteObj = {
         descriptions: "Put down the platform.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showPath(array)",
@@ -724,7 +724,7 @@ export const guiAndHalAutoCompleteObj = {
           "If the robot has crashed, it turns to 1 when the crash occurs at the center of the robot, 0 when it occurs at its right and 2 if the collision is at its left.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showPosition(x, y, angle)",
@@ -742,15 +742,13 @@ export const guiAndHalAutoCompleteObj = {
         type: "method",
         label: "poseToMap(x_prime, y_prime, yaw_prime)",
         code: "poseToMap(x_prime, y_prime, yaw_prime)",
-        descriptions:
-          "Returns the map coordinates of the given pose.",
+        descriptions: "Returns the map coordinates of the given pose.",
       },
       {
         type: "method",
         label: "mapToPose(x, y, yaw)",
         code: "mapToPose(x, y, yaw)",
-        descriptions:
-          "Returns the pose of the given map coordinates.",
+        descriptions: "Returns the pose of the given map coordinates.",
       },
       {
         type: "method",
@@ -800,7 +798,7 @@ export const guiAndHalAutoCompleteObj = {
           "Get the orientation of the robot with regarding the map.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showPosition(x, y, angle)",
@@ -830,13 +828,15 @@ export const guiAndHalAutoCompleteObj = {
         type: "method",
         label: "poseToMap(x_prime, y_prime, yaw_prime)",
         code: "poseToMap(x_prime, y_prime, yaw_prime)",
-        descriptions: "Converts the robot position to 2D coordinates in the map.",
+        descriptions:
+          "Converts the robot position to 2D coordinates in the map.",
       },
       {
         type: "method",
         label: "mapToPose(x, y, yaw)",
         code: "mapToPose(x, y, yaw)",
-        descriptions: "Converts the robot 2D coordinates in the map to the real 3D position.",
+        descriptions:
+          "Converts the robot 2D coordinates in the map to the real 3D position.",
       },
       {
         type: "method",
@@ -886,7 +886,7 @@ export const guiAndHalAutoCompleteObj = {
           "Get the orientation of the robot with regarding the map.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showEstimatedPose((x, y, angle))",
@@ -899,7 +899,7 @@ export const guiAndHalAutoCompleteObj = {
         code: "showImage()",
         descriptions:
           "Allows you to view a debug image or with relevant information.",
-      }
+      },
     ],
   },
   _laser_mapping: {
@@ -939,30 +939,28 @@ export const guiAndHalAutoCompleteObj = {
         type: "method",
         label: "getOdom()",
         code: "getOdom()",
-        descriptions:
-          "Obtain the position of the robot with a little noise.",
+        descriptions: "Obtain the position of the robot with a little noise.",
       },
       {
         type: "method",
         label: "getOdom2()",
         code: "getOdom2()",
-        descriptions:
-          "Obtain the position of the robot with noise.",
+        descriptions: "Obtain the position of the robot with noise.",
       },
       {
         type: "method",
         label: "getOdom3()",
         code: "getOdom3()",
-        descriptions:
-          "Obtain the position of the robot with a lot of noise.",
-      }
+        descriptions: "Obtain the position of the robot with a lot of noise.",
+      },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "setUserMap(image)",
         code: "setUserMap(image)",
-        descriptions: "Allows you to view a debug image or with relevant information.",
+        descriptions:
+          "Allows you to view a debug image or with relevant information.",
       },
       {
         type: "method",
@@ -970,7 +968,7 @@ export const guiAndHalAutoCompleteObj = {
         code: "poseToMap(x, y, yaw)",
         descriptions:
           "Converts the robot position to 2D coordinates in the map.",
-      }
+      },
     ],
   },
   _follow_road: {
@@ -1076,7 +1074,7 @@ export const guiAndHalAutoCompleteObj = {
           "Returns the latest image from the ventral camera as a OpenCV cv2_image.",
       },
     ],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(cv2_image)",
@@ -1093,20 +1091,29 @@ export const guiAndHalAutoCompleteObj = {
   },
   _basic_computer_vision: {
     hal: [],
-    gui: [
+    webgui: [
       {
         type: "method",
         label: "showImage(image)",
         code: "showImage(image)",
-        descriptions: "Allows you to view a debug image or with relevant information.",
+        descriptions:
+          "Allows you to view a debug image or with relevant information.",
       },
       {
         type: "method",
         label: "getImage()",
         code: "getImage()",
-        descriptions:
-          "Returns the image from the camera. Can be None.",
-      }
+        descriptions: "Returns the image from the camera. Can be None.",
+      },
     ],
-  }
+  },
 };
+
+export const frequencyAutoCompleteObj = [
+  {
+    type: "method",
+    label: "tick()",
+    code: "tick(20)",
+    descriptions: "Regulate the execution rate. Defaults to 20 Hz.",
+  },
+];

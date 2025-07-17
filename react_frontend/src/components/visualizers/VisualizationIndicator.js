@@ -7,7 +7,7 @@ export default function VisualizationIndicator(props) {
 
   useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         setVisualizationReady(true);
       }
     };
