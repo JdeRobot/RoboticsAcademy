@@ -154,6 +154,9 @@ RUN python3.10 -m pip install \
 # monaco editor
 RUN python3.10 -m pip install black==24.10.0
 
+# Install PyTorch (CUDA 12.1, Python 3.10, Ubuntu 22.04)
+RUN python3.10 -m pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --extra-index-url https://download.pytorch.org/whl/cu121
+
 # websocket server dependency
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
     django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
