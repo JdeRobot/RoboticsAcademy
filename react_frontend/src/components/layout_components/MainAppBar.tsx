@@ -1,17 +1,20 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Image from "mui-image";
 import { Box } from "@mui/material";
-import RoboticsTheme from "Components/RoboticsTheme.js";
-import PropTypes from "prop-types";
+import RoboticsTheme from "Components/RoboticsTheme";
 import { useUnload } from "Hooks/useUnload";
 import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
 import AppIndicator from "../visualizers/AppIndicator";
 import ConnectionIndicator from "../visualizers/ConnectionIndicator";
 import VisualizationIndicator from "../visualizers/VisualizationIndicator";
 
-function MainAppBar(props) {
+interface MainAppBarProps {
+  exerciseName: string;
+  url: string;
+  children?: React.ReactNode;
+}
+
+const MainAppBar: React.FC<MainAppBarProps> = ({ exerciseName, url, children }) => {
   const maxConnectionAttempts = 3;
   let connectionAttempts = 0;
 
@@ -37,7 +40,7 @@ function MainAppBar(props) {
       .connect()
       .then(() => {
         const config = JSON.parse(
-          document.getElementById("exercise-config").textContent
+          document.getElementById("exercise-config")?.textContent || "{}"
         );
         window.RoboticsExerciseComponents.commsManager
           .launchWorld({ world: config[0].world, robot: config[0].robot })
@@ -55,15 +58,14 @@ function MainAppBar(props) {
                 );
               });
           })
-          .catch((e) => {
+          .catch((e: any) => {
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
               e.data.message,
               "error"
             );
           });
       })
-      .catch((e) => {
-        // Connection failed, try again after a delay
+      .catch((e: any) => {
         connectionAttempts++;
         setTimeout(connectWithRetry, 2000);
       });
@@ -103,8 +105,9 @@ function MainAppBar(props) {
             <a href="http://127.0.0.1:7164/exercises/">
               <img
                 src="/static/exercises/assets/img/logo.gif"
-                fit={"cover"}
+                style={{ objectFit: "cover" }}
                 width={50}
+                alt="Robotics Academy Logo"
               />
             </a>
           </Box>
@@ -117,25 +120,18 @@ function MainAppBar(props) {
               justifyContent: "center",
             }}
           >
-            <ConnectionIndicator></ConnectionIndicator>
-            {props.children}
-            <VisualizationIndicator></VisualizationIndicator>
-            <AppIndicator name={props.exerciseName}></AppIndicator>
+            <ConnectionIndicator />
+            {children}
+            <VisualizationIndicator />
+            <AppIndicator name={exerciseName} />
           </Box>
-
           <Box>
-            <ExerciseTheoryForumButton
-              url={props.url}
-            ></ExerciseTheoryForumButton>
+            <ExerciseTheoryForumButton url={url} />
           </Box>
         </Toolbar>
       </AppBar>
     </RoboticsTheme>
   );
-}
-
-MainAppBar.propTypes = {
-  exerciseName: PropTypes.string,
 };
 
 export default MainAppBar;
