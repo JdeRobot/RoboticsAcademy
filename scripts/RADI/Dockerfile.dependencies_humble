@@ -43,6 +43,23 @@ RUN apt-get update && apt-get install -y \
   pciutils \
   && rm -rf /var/lib/apt/lists/*
 
+
+# Install CUDA toolkit dependencies manually for cuDNN (matches CUDA 12.x)
+RUN wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb \
+    sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb \
+    sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-*-keyring.gpg /usr/share/keyrings/ \
+    sudo apt-get update \
+    sudo apt-get -y install cudnn \
+  && rm -rf /var/lib/apt/lists/*
+
+# Export cuDNN library paths (adjust as needed)
+ENV PATH=/usr/local/cuda/bin:$PATH
+# ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+
+
+
 # Install ROS2 and ROS packages
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
@@ -134,20 +151,6 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
-
-
-# Install CUDA toolkit dependencies manually for cuDNN (matches CUDA 12.x)
-RUN wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb \
-    sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb \
-    sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-*-keyring.gpg /usr/share/keyrings/ \
-    sudo apt-get update \
-    sudo apt-get -y install cudnn \
-  && rm -rf /var/lib/apt/lists/*
-
-# Export cuDNN library paths (adjust as needed)
-ENV PATH=/usr/local/cuda/bin:$PATH
-# ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 
 
