@@ -45,12 +45,14 @@ RUN apt-get update && apt-get install -y \
 
 
 # Install CUDA toolkit dependencies manually for cuDNN (matches CUDA 12.x)
-RUN wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb \
-    dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb \
-    cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-*-keyring.gpg /usr/share/keyrings/ \
-    apt-get update \
-    apt-get -y install cudnn \
-  && rm -rf /var/lib/apt/lists/*
+# Install cuDNN 9.11.0
+RUN wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb && \
+    dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb && \
+    cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-*-keyring.gpg /usr/share/keyrings/ && \
+    apt-get update && \
+    apt-get install -y cudnn && \
+    rm -f cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb && \
+    rm -rf /var/lib/apt/lists/*
 
 # Export cuDNN library paths (adjust as needed)
 ENV PATH=/usr/local/cuda/bin:$PATH
