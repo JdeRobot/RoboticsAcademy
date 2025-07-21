@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./../../styles/buttons/DLModelUploadButton.css";
 import "./../../styles/tailwind.css";
 
@@ -6,32 +6,38 @@ import "./../../styles/tailwind.css";
 const white_list_exercises = ["digit_classification", "human_detection"];
 const MB = 1024 * 1024;
 
+declare global {
+  interface Window {
+    RoboticsReactComponents: any;
+  }
+}
+
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 
 window.RoboticsReactComponents.DeepLearningModel = (function () {
-  let model_buffer = null;
+  let model_buffer: ArrayBuffer | null = null;
 
-  const setModelBuffer = (modelBuffer) => {
+  const setModelBuffer = (modelBuffer: ArrayBuffer) => {
     model_buffer = modelBuffer;
   };
 
-  const getModelBuffer = () => model_buffer;
+  const getModelBuffer = (): ArrayBuffer | null => model_buffer;
 
   return {
-    setModelBuffer: setModelBuffer,
-    getModelBuffer: getModelBuffer,
+    setModelBuffer,
+    getModelBuffer,
   };
 })();
 
 // Deep Learning Model Upload Button Component
-const DLModelUploadButton = () => {
-  const [exerciseName, setExerciseName] = React.useState("");
-  const [fileName, setFileName] = React.useState("");
-  const [fileSize, setFileSize] = React.useState(0);
-  const fileRef = React.useRef(null);
+const DLModelUploadButton: React.FC = () => {
+  const [exerciseName, setExerciseName] = useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
+  const [fileSize, setFileSize] = useState<number>(0);
+  const fileRef = useRef<HTMLInputElement | null>(null);
 
   // Effect to set the exercise name based on the current URL
-  React.useEffect(() => {
+  useEffect(() => {
     const currentPath = window.location.pathname;
     const split = currentPath.split("/").filter(Boolean); // Get the last part of the URL
     const exercise = split[split.length - 1]; // Assuming the last part is the exercise name
@@ -44,8 +50,8 @@ const DLModelUploadButton = () => {
   }, []);
 
   // Handle file upload
-  const handleUpload = async (event) => {
-    const file = event.target.files[0];
+ const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file || !file.name.endsWith(".onnx")) {
       alert("Please upload a valid .onnx file");
       return;
@@ -135,8 +141,13 @@ const styles = {
     borderRadius: "6px",
   },
 };
+
+interface UploadIconProps {
+  cssClass?: string;
+  fillColor?: string;
+}
 // digit_classification;
-const UploadIcon = ({ cssClass, fillColor }) => (
+const UploadIcon: React.FC<UploadIconProps> = ({ cssClass, fillColor = "currentColor", }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 -960 960 960"
