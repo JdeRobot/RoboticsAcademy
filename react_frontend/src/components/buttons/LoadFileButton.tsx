@@ -3,14 +3,24 @@ import { Button } from "@mui/material";
 import * as React from "react";
 import PropTypes from "prop-types";
 
-const LoadFileButton = (props) => {
-  const loadFile = (event) => {
+declare global {
+  interface Window {
+    RoboticsReactComponents: any;
+  }
+}
+
+interface LoadFileButtonProps {
+  context?: any;
+}
+
+const LoadFileButton: React.FC<LoadFileButtonProps> = () => {
+  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     var fr = new FileReader();
     fr.onload = () => {
       RoboticsReactComponents.CodeEditor.setCode(fr.result);
     };
-    fr.readAsText(event.target.files[0]);
+    fr.readAsText(event.target.files?.[0]);
   };
   return (
     <Button
