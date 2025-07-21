@@ -8,11 +8,15 @@ import RoboticsTheme from "Components/RoboticsTheme";
 
 import "../../styles/buttons/ExerciseTheoryForumButton.css";
 
-const ExerciseTheoryForumButton = (props) => {
+interface ExerciseTheoryForumButtonProps {
+  url: string;
+}
+
+const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ url }) => {
   return (
     <RoboticsTheme>
       <ButtonGroup color={"loading"} variant={"contained"}>
-        <IconButton href={props.url} target="_blank" color="secondary">
+        <IconButton href={url} target="_blank" color="secondary">
           <SchoolOutlinedIcon />
         </IconButton>
         <IconButton
