@@ -5,20 +5,30 @@ import PauseIcon from "@mui/icons-material/Pause";
 import commons from "../../common.zip";
 import JSZip from "jszip";
 
-const PlayPause = (props) => {
+declare global {
+  interface Window {
+    RoboticsExerciseComponents: any;
+    RoboticsReactComponents: any;
+  }
+}
+
+interface PlayPauseProps {}
+
+const PlayPause: React.FC<PlayPauseProps> = () => {
   const [loading, setLoading] = useState(false);
   const [applicationRunning, setApplicationRunning] = useState(true);
   const [applicationPaused, setApplicationPaused] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [editorChanged, setEditorChanged] = useState(false);
 
+  
   const commsManager = window.RoboticsExerciseComponents.commsManager;
   const config = JSON.parse(
-    document.getElementById("exercise-config").textContent
+    document.getElementById("exercise-config").textContent || "[]"
   );
 
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: any) => {
       const state = message.data.state;
       setApplicationPaused(state === "paused");
       setApplicationRunning(state === "application_running");
@@ -38,8 +48,8 @@ const PlayPause = (props) => {
     };
   }, []);
 
-  React.useEffect(() => {
-    RoboticsReactComponents.CodeEditor.OnEditorCodeChanged(() => {
+  useEffect(() => {
+    window.RoboticsReactComponents.CodeEditor.OnEditorCodeChanged(() => {
       setEditorChanged(true);
     });
   }, []);
@@ -47,7 +57,7 @@ const PlayPause = (props) => {
   const play = async () => {
     setLoading(true);
     let editorCode = "";
-    editorCode = RoboticsReactComponents.CodeEditor.getCode();
+    editorCode = window.RoboticsReactComponents.CodeEditor.getCode();
 
     if (applicationPaused) {
       if (editorChanged) {
@@ -61,7 +71,7 @@ const PlayPause = (props) => {
     setEditorChanged(false);
   };
 
-  const runCode = async (code) => {
+  const runCode = async (code: string) => {
     setLoading(true);
     const errorMessage =
       "Syntax or dependency error, check details on the console.\n";
@@ -87,7 +97,7 @@ const PlayPause = (props) => {
       }
 
       const responseJSON = await response.json();
-      const extraFiles = responseJSON.files;
+      const extraFiles: { name: string; content: string }[] = responseJSON.files;
 
       extraFiles.forEach((file) => {
         commonsZip.file(file.name, file.content);
@@ -98,7 +108,7 @@ const PlayPause = (props) => {
       // add onnx file to the zip if it exists
       if (window.RoboticsReactComponents.DeepLearningModel) {
         const modelBuffer =
-          RoboticsReactComponents.DeepLearningModel.getModelBuffer();
+          window.RoboticsReactComponents.DeepLearningModel.getModelBuffer();
         if (modelBuffer) {
           commonsZip.file("model.onnx", modelBuffer);
         } else {
@@ -114,7 +124,7 @@ const PlayPause = (props) => {
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         try {
-          await window.RoboticsExerciseComponents.commsManager.run({
+          await commsManager.run({
             type: "robotics-academy",
             code: base64data,
           });
@@ -137,7 +147,7 @@ const PlayPause = (props) => {
 
   const pause = () => {
     setLoading(true);
-    window.RoboticsExerciseComponents.commsManager
+    commsManager
       .pause()
       .then(() => {})
       .catch((response) => console.log(response))
