@@ -1,6 +1,17 @@
+import * as monaco from "monaco-editor";
+
+// Types
+type Range = monaco.IRange;
+
+type CompletionItem = monaco.languages.CompletionItem;
+
 // Extract Variables
-export const getEditorVariables = ({ lines, monaco, range }) => {
-  const variablesSet = new Set();
+export const getEditorVariables = ({ lines, monaco, range }: {
+  lines: string[];
+  monaco: typeof import("monaco-editor");
+  range: Range;
+}): CompletionItem[] => {
+  const variablesSet = new Set<string>();
 
   lines.forEach((line) => {
     const matches = line.match(/(\w+)\s*=/);
@@ -18,8 +29,12 @@ export const getEditorVariables = ({ lines, monaco, range }) => {
 };
 
 // Extract functions
-export const getEditorFunctions = ({ lines, monaco, range }) => {
-  const functionsSet = new Set();
+export const getEditorFunctions = ({ lines, monaco, range }: {
+  lines: string[];
+  monaco: typeof import("monaco-editor");
+  range: Range;
+}): CompletionItem[] => {
+  const functionsSet = new Set<string>();
   lines.forEach((line) => {
     const matches = line.match(/def\s+(\w+)\s*\(/);
     if (matches) {
@@ -35,14 +50,22 @@ export const getEditorFunctions = ({ lines, monaco, range }) => {
   }));
 };
 
+export type ClassStructure = {
+  [className: string]: {
+    attributes: string[];
+    methods: string[];
+    spaceSize: number;
+  };
+};
+
 // Class Object
-export const extractClassesAndMembers = (code) => {
+export const extractClassesAndMembers = (code: string): ClassStructure => {
   const classPattern = /class (\w+)\s*:/g;
   const methodPattern = /def (\w+)\(/g;
   const attributePattern = /(\w+)\s*=/;
 
-  const classes = {};
-  let currentClass = null;
+  const classes: ClassStructure = {};
+  let currentClass: string | null = null;
 
   const lines = code.split("\n");
 
@@ -98,20 +121,27 @@ export const extractClassesAndMembers = (code) => {
   });
   return classes;
 };
-export const findClassNameByInstance = (code, instanceName) => {
+export const findClassNameByInstance = (
+  code: string,
+  instanceName: string
+): string | null => {
   const instancePattern = new RegExp(`${instanceName}\\s*=\\s*(\\w+)\\(`);
   const match = instancePattern.exec(code);
   return match ? match[1] : null;
 };
 
 // import data extractor
+export type PythonImport = {
+  importName: string;
+  alias: string;
+};
 
-export const extractPythonImports = (code) => {
+export const extractPythonImports = (code: string): PythonImport[] => {
   const importRegex =
     /\bimport\s+([a-zA-Z_][\w]*)(?:\s+as\s+([a-zA-Z_][\w]*))?/g;
 
-  let imports = [];
-  let match;
+  const imports: PythonImport[] = [];
+  let match: RegExpExecArray | null;
 
   while ((match = importRegex.exec(code)) !== null) {
     const importName = match[1];
