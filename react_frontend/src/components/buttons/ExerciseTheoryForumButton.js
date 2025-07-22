@@ -12,9 +12,11 @@ const ExerciseTheoryForumButton = (props) => {
   return (
     <RoboticsTheme>
       <ButtonGroup color={"loading"} variant={"contained"}>
-        <IconButton href={props.url} target="_blank" color="secondary">
-          <SchoolOutlinedIcon />
-        </IconButton>
+        {props.url && (
+          <IconButton href={props.url} target="_blank" color="secondary">
+            <SchoolOutlinedIcon />
+          </IconButton>
+        )}
         <IconButton
           href="https://forum.unibotics.org/"
           target="_blank"
