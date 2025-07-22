@@ -1,4 +1,10 @@
-export const ZoomOutIcon = ({ cssClass }) => (
+import React from "react";
+
+type IconProps = {
+  cssClass?: string;
+};
+
+export const ZoomOutIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
@@ -9,7 +15,7 @@ export const ZoomOutIcon = ({ cssClass }) => (
     <path d="M268.02-444q-15.02 0-25.52-10.29t-10.5-25.5q0-15.21 10.35-25.71T268-516h423.98q15.02 0 25.52 10.29t10.5 25.5q0 15.21-10.35 25.71T692-444H268.02Z" />
   </svg>
 );
-export const ZoomInIcon = ({ cssClass }) => (
+export const ZoomInIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
@@ -20,7 +26,7 @@ export const ZoomInIcon = ({ cssClass }) => (
     <path d="M444-444H240v-72h204v-204h72v204h204v72H516v204h-72v-204Z" />
   </svg>
 );
-export const AlignIcon = ({ cssClass }) => (
+export const AlignIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
@@ -32,7 +38,7 @@ export const AlignIcon = ({ cssClass }) => (
   </svg>
 );
 
-export const InfoIcon = ({ cssClass }) => (
+export const InfoIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
@@ -44,7 +50,7 @@ export const InfoIcon = ({ cssClass }) => (
   </svg>
 );
 
-export const CloseIcon = ({ cssClass }) => (
+export const CloseIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
@@ -56,7 +62,7 @@ export const CloseIcon = ({ cssClass }) => (
   </svg>
 );
 
-export const KeyboardIcon = ({ cssClass }) => (
+export const KeyboardIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
@@ -68,7 +74,7 @@ export const KeyboardIcon = ({ cssClass }) => (
   </svg>
 );
 
-export const WidgetsIcon = ({ cssClass }) => (
+export const WidgetsIcon: React.FC<IconProps> = ({ cssClass }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
