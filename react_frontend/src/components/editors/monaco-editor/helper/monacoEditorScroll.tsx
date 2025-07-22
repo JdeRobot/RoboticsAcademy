@@ -1,9 +1,15 @@
-export const monacoEditorScroll = ({ editor }) => {
+import * as monaco from "monaco-editor";
+
+type Props = {
+  editor: monaco.editor.IStandaloneCodeEditor;
+};
+
+export const monacoEditorScroll = ({ editor }: Props): void => {
   const domNode = editor.getDomNode();
-  domNode.addEventListener("wheel", (event) => {
+  domNode.addEventListener("wheel", (event: WheelEvent) => {
     const currentFontSize = editor.getOption(
       monaco.editor.EditorOption.fontSize
-    );
+    ) as number;
 
     // font size between 10 and 100
     if (event.ctrlKey) {
