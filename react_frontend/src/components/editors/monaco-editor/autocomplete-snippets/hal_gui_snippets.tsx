@@ -1,5 +1,21 @@
+export interface SnippetItem {
+  type: string;
+  label: string;
+  code: string;
+  descriptions: string;
+}
+
+export interface SnippetGroup {
+  hal: SnippetItem[];
+  gui: SnippetItem[];
+}
+
+export interface SnippetCollection {
+  [key: string]: SnippetGroup;
+}
+
 // HAL & GUI Auto Complete Objects
-export const guiAndHalAutoCompleteObj = {
+export const guiAndHalAutoCompleteObj: SnippetCollection = {
   _follow_line: {
     hal: [
       {
