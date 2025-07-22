@@ -1,7 +1,23 @@
 import React from "react";
 import { AlignIcon, InfoIcon, ZoomInIcon, ZoomOutIcon } from "../icons";
 
-const MonacoEditorInfoButtons = ({
+type EditorSettings = {
+  isModalOpen: boolean;
+  isCodeFormatEnable: boolean;
+  isZoomingEnable: boolean;
+};
+
+type Props = {
+  editorSettings: EditorSettings;
+  dispatch: React.Dispatch<{
+    type: string;
+    payload: Partial<EditorSettings>;
+  }>;
+  handleFontZoom: (direction: "up" | "down") => void;
+  handleFormatCode: () => void;
+};
+
+const MonacoEditorInfoButtons: React.FC<Props> = ({
   editorSettings,
   dispatch,
   handleFontZoom,
