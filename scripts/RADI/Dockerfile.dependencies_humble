@@ -1,6 +1,6 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
 
-# Make all NVIDIA GPUs visible
+# Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=all
 ENV VIRTUALGL_VERSION=3.0.2
@@ -19,31 +19,10 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-# Install CUDA Toolkit 12.2
-RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb \
-    && dpkg -i cuda-keyring_1.0-1_all.deb \
-    && rm cuda-keyring_1.0-1_all.deb \
-    && apt-get update \
-    && apt-get install -y cuda-toolkit-12-2 \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy and install cuDNN
-# Note: Ensure cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz is in the same directory as the Dockerfile
-COPY cudnn-linux-x86_64-8.9.7.29_cuda12-archive.tar.xz /tmp/cudnn.tar.xz
-RUN tar -xvf /tmp/cudnn.tar.xz -C /tmp \
-    && cp -r /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive/include/* /usr/local/cuda/include/ \
-    && cp -r /tmp/cudnn-linux-x86_64-8.9.7.29_cuda12-archive/lib/* /usr/local/cuda/lib64/ \
-    && rm -rf /tmp/cudnn*
-
-# Set CUDA environment variables
-ENV PATH=/usr/local/cuda/bin:$PATH
-
-# ROS and other environment variables
 ENV ROS_DISTRO=humble
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
 ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
-# Modified LD_LIBRARY_PATH to include CUDA libraries
-ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:/usr/share/gazebo/../../lib/x86_64-linux-gnu/gazebo-11/plugins
+ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:/usr/share/gazebo/../../lib/x86_64-linux-gnu/gazebo-11/plugins:
 ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
 ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
 ENV ROS_PYTHON_VERSION=3
@@ -51,32 +30,32 @@ ENV ROS_VERSION=2
 
 # Install common tools
 RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    bash-completion \
-    apt-utils \
-    build-essential \
-    git curl wget cmake \
-    nano vim \
-    gnupg \
-    lsb-release \
-    sudo \
-    net-tools \
-    pciutils \
-    && rm -rf /var/lib/apt/lists/*
+  software-properties-common \
+  bash-completion \
+  apt-utils \
+  build-essential \
+  git curl wget cmake \
+  nano vim \
+  gnupg \
+  lsb-release \
+  sudo \
+  net-tools \
+  pciutils \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
-    && apt-get update && apt-get install -y \
-        ros-${ROS_DISTRO}-ros-base \
-        ros-${ROS_DISTRO}-xacro \
-        ros-${ROS_DISTRO}-joint-state-publisher \
-        ros-${ROS_DISTRO}-rviz2 \
-        python3-colcon-common-extensions \
-        python3-pip python3-rosdep python3-vcstool \
-        python3-argcomplete \
-    && rosdep init \
-    && rm -rf /var/lib/apt/lists/*
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+  && apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-ros-base \
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-joint-state-publisher \
+    ros-${ROS_DISTRO}-rviz2 \
+    python3-colcon-common-extensions \
+    python3-pip python3-rosdep python3-vcstool \
+    python3-argcomplete \
+  && rosdep init \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install Gazebo 11
 RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
@@ -96,15 +75,15 @@ RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
 # Install Gazebo Harmonic
 RUN apt-get update \
-    && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-    && apt-get update && apt-get install -y -q \
-        gz-harmonic \
-    && rm -rf /var/lib/apt/lists/*
+  && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
+  && apt-get update && apt-get install -y -q \
+      gz-harmonic \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
-        ros-humble-ros-gzharmonic \
-    && rm -rf /var/lib/apt/lists/*
+      ros-humble-ros-gzharmonic \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -116,12 +95,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xterm \
     xserver-xorg-video-dummy \
     x11-apps \
-    && apt-get -y autoremove \
-    && apt-get clean autoclean \
-    && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
+	&& apt-get -y autoremove \
+	&& apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN wget https://xpra.org/xorg.conf \
-    && rm -rf /tmp/*
+  && rm -rf /tmp/*
 
 # Install noVNC and websockify
 RUN git clone -b v1.4.0 https://github.com/novnc/noVNC.git
@@ -138,42 +117,55 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     libegl1-mesa:amd64
 
 RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
-    && rm /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
-    && chmod u+s /usr/lib/libvglfaker.so \
-    && chmod u+s /usr/lib/libdlfaker.so \
-    && chmod u+s /usr/lib32/libvglfaker.so \
-    && chmod u+s /usr/lib32/libdlfaker.so \
-    && chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so \
-    && chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so \
-    && apt-get update && apt-get install -y --no-install-recommends \
-        /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
-    && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
-    && rm -rf /var/lib/apt/lists/*
+  && rm /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
+  && chmod u+s /usr/lib/libvglfaker.so \
+  && chmod u+s /usr/lib/libdlfaker.so \
+  && chmod u+s /usr/lib32/libvglfaker.so \
+  && chmod u+s /usr/lib32/libdlfaker.so \
+  && chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so \
+  && chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so \
+  && apt-get update && apt-get install -y --no-install-recommends \
+    /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
+  && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && \
-    apt-get install -y lxde-common && \
-    rm -rf /var/lib/apt/lists/*
+  apt-get install -y lxde-common && \
+  rm -rf /var/lib/apt/lists/*
 
 ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g yarn
+  && apt-get install -y nodejs \
+  && npm install -g yarn
 
 # Install Python 3 pip build dependencies first
 RUN python3.10 -m pip install --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69.0.2 selenium
 
 # pip install dependencies
 RUN python3.10 -m pip install \
-    pylint==3.3.1 transitions==0.9.0 pydantic==2. Alytic 4.2 websocket-client==1.5.2 \
+    pylint==3.3.1 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
     argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
     matplotlib==3.0.* numpy==1.24.3 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
     pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
-    onnxruntime==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 netron seaborn==0.11.2 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
+    onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 netron seaborn==0.11.2 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
 
 # monaco editor
 RUN python3.10 -m pip install black==24.10.0
+
+# Install PyTorch (CUDA 12.1, Python 3.10, Ubuntu 22.04)
+# RUN python3.10 -m pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --extra-index-url https://download.pytorch.org/whl/cu121
+# Install PyTorch (CUDA 12.1, Python 3.10, Ubuntu 22.04)
+RUN python3.10 -m pip install --upgrade pip
+RUN python3.10 -m pip install --ignore-installed sympy==1.13.3
+RUN python3.10 -m pip install torch==2.5.1  --extra-index-url https://download.pytorch.org/whl/cu121
+# torchvision==0.20.1 torchaudio==2.5.1
+RUN python3.10 -m pip install onnx2pytorch onnx
+
+# WebSocket server dependency (add your dependencies here)
+
+
 
 # websocket server dependency
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
@@ -182,10 +174,10 @@ RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4
 # BT STUDIO hotfix
 RUN python3.10 -m pip install py-trees autopep8
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
-    && apt-get update && apt-get install -y \
-        ros-humble-py-trees \
-        ros-humble-py-trees-ros
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+  && apt-get update && apt-get install -y \
+    ros-humble-py-trees \
+    ros-humble-py-trees-ros
 
 ## Aerostack2
 WORKDIR /root/
@@ -203,7 +195,7 @@ RUN apt-get update && \
         python-is-python3 \
         ros-dev-tools \
         python3-flake8 \
-        python3-flake8-builtins \
+        python3-flake8-builtins  \
         python3-flake8-comprehensions \
         python3-flake8-docstrings \
         python3-flake8-import-order \
@@ -301,7 +293,7 @@ RUN apt-get update && \
         ros-humble-ur \
         ros-humble-ros-testing \
         libpoco-dev \
-    && rm -rf /var/lib/apt/lists/*
+      && rm -rf /var/lib/apt/lists/*
 
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release

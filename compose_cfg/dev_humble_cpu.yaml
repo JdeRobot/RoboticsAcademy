@@ -20,7 +20,7 @@ services:
       retries: 20
 
   robotics-academy:
-    image: jderobot/robotics-academy:onnxruntime-gpu
+    image: jderobot/robotics-academy:latest
     container_name: developer-container
     command:  "-s"
     ports:
