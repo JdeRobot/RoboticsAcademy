@@ -9,25 +9,37 @@ import { MonacoEditor, defaultEditorSourceCode } from "./monaco-editor";
 import { useEditorReudcer } from "../../hooks/useEditorReudcer";
 // monaco editor import end
 
+declare global {
+  interface Window {
+    RoboticsReactComponents: {
+      CodeEditor: {
+        setCode: (code: string) => void;
+        getCode: () => string;
+        OnEditorCodeChanged: (handler: (code: string) => void) => void;
+      };
+    };
+  }
+}
+
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 
-window.RoboticsReactComponents.CodeEditor = (function () {
+window.RoboticsReactComponents.CodeEditor = window.RoboticsReactComponents.CodeEditor || (function () {
   let editorCode = "";
-  const editorCodeChangeSuscribers = [];
+  const editorCodeChangeSubscribers: ((code: string) => void)[] = [];
 
-  const setCode = (code) => {
+  const setCode = (code: string) => {
     editorCode = code;
     for (
-      let i = 0, length = editorCodeChangeSuscribers.length;
+      let i = 0, length = editorCodeChangeSubscribers.length;
       i < length;
       ++i
     ) {
-      editorCodeChangeSuscribers[i](code);
+      editorCodeChangeSubscribers[i](code);
     }
   };
 
-  const OnEditorCodeChanged = (handler) => {
-    editorCodeChangeSuscribers.push(handler);
+  const OnEditorCodeChanged = (handler: (code: string) => void) => {
+    editorCodeChangeSubscribers.push(handler);
   };
 
   const getCode = () => editorCode;
@@ -39,13 +51,18 @@ window.RoboticsReactComponents.CodeEditor = (function () {
   };
 })();
 
-const config = JSON.parse(
-  document.getElementById("exercise-config").textContent
-);
-const exerciseId = config[0].exercise_id;
+const configText = document.getElementById("exercise-config")?.textContent || "[]";
+const config = JSON.parse(configText);
+const exerciseId = config?.[0]?.exercise_id ?? "";
 
-export default function EditorRobot(props) {
-  const [monacoEditorSourceCode, setMonacoEditorSourceCode] = React.useState(
+interface EditorRobotProps {
+  props?: {
+    unibotics?: boolean;
+  };
+}
+
+export default function EditorRobot({props}: EditorRobotProps) {
+  const [monacoEditorSourceCode, setMonacoEditorSourceCode] = React.useState<string>(
     defaultEditorSourceCode
   );
 
@@ -57,7 +74,7 @@ export default function EditorRobot(props) {
 
     let unibotics = undefined;
     try {
-      unibotics = props.props.unibotics;
+      unibotics = Boolean(props?.unibotics);
     } catch {}
 
     if (unibotics) {
@@ -96,19 +113,21 @@ export default function EditorRobot(props) {
       RoboticsReactComponents.CodeEditor.setCode(monacoEditorSourceCode);
     }
 
-    const codeLoadedEvent = new CustomEvent("codeLoaded", {
-      detail: { isLoading: false },
-    });
-    window.dispatchEvent(codeLoadedEvent);
+     window.dispatchEvent(
+      new CustomEvent("codeLoaded", {
+        detail: { isLoading: false },
+      })
+    );
   }, []);
 
   //! Monaco Code Editor
   const [state, dispatch] = useEditorReudcer();
 
   // monaco editor code change
-  const handleMonacoEditorCodeChange = (code) => {
-    setMonacoEditorSourceCode(code);
-    RoboticsReactComponents.CodeEditor.setCode(code);
+  const handleMonacoEditorCodeChange = (code: string | undefined) => {
+    const newCode = code || "";
+    setMonacoEditorSourceCode(newCode);
+    RoboticsReactComponents.CodeEditor.setCode(newCode);
   };
 
   return (
