@@ -38,9 +38,6 @@ export default function WorldSelector(props) {
   const handleUniverse = async (config) => {
     context.mapSelected = config.name;
     setSelectedUniverse(config);
-    console.log(config);
-    var tools = config.tools;
-    tools.push("web_gui");
 
     await window.RoboticsExerciseComponents.commsManager.terminate_application();
     await window.RoboticsExerciseComponents.commsManager.terminate_tools();
@@ -48,7 +45,7 @@ export default function WorldSelector(props) {
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Launching Universe"
     );
-    //TODO: add here correct
+
     var tools_config_base = config.tools_config
     var tools_config_world = config.world.tools_config
     const tools_config = merge(tools_config_base, tools_config_world)
