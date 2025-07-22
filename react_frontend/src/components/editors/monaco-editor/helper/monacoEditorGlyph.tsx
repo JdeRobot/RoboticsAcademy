@@ -1,4 +1,13 @@
-export const monacoEditorGlyph = ({ monaco, editor, setLineNumber }) => {
+import * as monaco from "monaco-editor";
+
+// Adds click listener to editor for custom glyph interaction
+type GlyphProps = {
+  monaco: typeof import("monaco-editor");
+  editor: monaco.editor.IStandaloneCodeEditor;
+  setLineNumber: (lineNumber: number) => void;
+};
+
+export const monacoEditorGlyph = ({ monaco, editor, setLineNumber }: GlyphProps) => {
   editor.onMouseDown((event) => {
     const target = event.target;
 
@@ -15,14 +24,13 @@ export const monacoEditorGlyph = ({ monaco, editor, setLineNumber }) => {
 };
 
 export const renderGlyphs = (
-  lineNumberDecorationRef,
-  allLineNumberDecorations
+  lineNumberDecorationRef: React.MutableRefObject<monaco.editor.IEditorDecorationsCollection | null>,
+  allLineNumberDecorations: number[]
 ) => {
-  const allGlyphs = [];
-  if (!allLineNumberDecorations) return;
-
-  allLineNumberDecorations.forEach((line, i) => {
-    const newDecoration = {
+  if (!lineNumberDecorationRef.current || !allLineNumberDecorations) return;
+  
+  const allGlyphs: monaco.editor.IModelDeltaDecoration[] = allLineNumberDecorations.map(
+    (line) => ({
       range: new monaco.Range(line, 1, line, 1),
       options: {
         glyphMarginClassName: "glyph-indicator",
@@ -30,12 +38,16 @@ export const renderGlyphs = (
           value: ``,
         },
       },
-    };
-    allGlyphs.push(newDecoration);
-  });
+    })
+  );
 
-  // Add the new decoration to the decorations collection
   lineNumberDecorationRef.current.set(allGlyphs);
+};
+
+type FilterProps = {
+  lineNumberDecorations: number[];
+  lineNumber: number;
+  maxEditorRows: number;
 };
 
 // filter line number
@@ -43,11 +55,8 @@ export const filterLineNumber = ({
   lineNumberDecorations,
   lineNumber,
   maxEditorRows,
-}) => {
-  let allLineNumberDecorations;
-
-  // Filter all no existing rows
-  allLineNumberDecorations = lineNumberDecorations.filter(
+}: FilterProps) => {
+  let allLineNumberDecorations = lineNumberDecorations.filter(
     (line) => line <= maxEditorRows
   );
 
