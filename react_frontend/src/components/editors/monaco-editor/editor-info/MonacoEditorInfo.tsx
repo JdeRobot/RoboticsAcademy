@@ -1,10 +1,38 @@
 import React from "react";
 
+import * as monaco from "monaco-editor";
 import MonacoEditorInfoButtons from "./MonacoEditorInfoButtons";
 import MonacoEditorInfoSidebar from "./MonacoEditorInfoSidebar";
 import MonacoEditorInfoDetails from "./MonacoEditorInfoDetails";
 
-const MonacoEditorInfo = ({ editorSettings, dispatch, editorRef }) => {
+export type ModalScreenState = "shortcuts" | "widgets";
+
+export type EditorSettings = {
+  isModalOpen: boolean;
+  modalScreenState: ModalScreenState;
+  isCodeFormatEnable: boolean;
+  isZoomingEnable: boolean;
+};
+
+export type EditorAction =
+  | {
+      type: "changeSettingsModalState";
+      payload: Partial<EditorSettings>;
+    }
+  | {
+      type: "changeModalScreenState";
+      payload: { screen: ModalScreenState };
+    }
+  | { type: "isCodeFormatEnable" }
+  | { type: "isZoomingEnable" };
+
+type Props = {
+  editorSettings: EditorSettings;
+  dispatch: React.Dispatch<EditorAction>;
+  editorRef: React.RefObject<monaco.editor.IStandaloneCodeEditor>;
+};
+
+const MonacoEditorInfo: React.FC<Props> = ({ editorSettings, dispatch, editorRef }) => {
   const { isModalOpen, isCodeFormatEnable, isZoomingEnable, modalScreenState } =
     editorSettings;
 
@@ -15,13 +43,13 @@ const MonacoEditorInfo = ({ editorSettings, dispatch, editorRef }) => {
   });
 
   const handleFormatCode = () => {
-    editorRef.current.getDomNode().dispatchEvent(ctrlSEvent);
+    editorRef.current?.getDomNode()?.dispatchEvent(ctrlSEvent);
   };
 
-  const handleFontZoom = (zoom) => {
+  const handleFontZoom = (zoom: "up" | "down") => {
     const currentFontSize = editorRef.current.getOption(
       monaco.editor.EditorOption.fontSize
-    );
+    ) as number;
 
     // font size between 10 and 100
     if (zoom === "up") {
