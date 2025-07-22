@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ReplayIcon from "@mui/icons-material/Replay";
 
-const ResetButton = () => {
+declare global {
+  interface Window {
+    RoboticsExerciseComponents: any;
+  }
+}
+
+const ResetButton: React.FC = () => {
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: { data: { state: string } }) => {
       if (
-        (message.data.state === "application_running") |
+        (message.data.state === "application_running") ||
         (message.data.state === "paused")
       ) {
         setDisabled(false);
@@ -34,14 +40,16 @@ const ResetButton = () => {
       id={"play"}
       loading={loading}
       color={"secondary"}
-      onClick={() => {
+      onClick={async () => {
         setLoading(true);
-        window.RoboticsExerciseComponents.commsManager
-          .terminate_application()
-          .then(() => {
-            setLoading(false);
-          })
-          .catch((response) => console.log(response));
+        try{
+        await window.RoboticsExerciseComponents.commsManager
+          .terminate_application();
+        }catch(error){
+        console.log(error);
+        }finally{
+        setLoading(false);
+        }
       }}
       sx={{ m: 0.5 }}
       variant={"outlined"}
@@ -50,8 +58,6 @@ const ResetButton = () => {
     </LoadingButton>
   );
 };
-ResetButton.propTypes = {
-  context: PropTypes.any,
-};
+
 
 export default ResetButton;
