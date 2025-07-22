@@ -1,6 +1,26 @@
 import React from "react";
 import { CloseIcon } from "../icons";
 
+type EditorSettings = {
+  isModalOpen: boolean;
+  modalScreenState: "shortcuts" | "widgets";
+  isCodeFormatEnable: boolean;
+  isZoomingEnable: boolean;
+};
+
+type EditorAction =
+  | {
+      type: "changeSettingsModalState";
+      payload: Partial<EditorSettings>;
+    }
+  | { type: "isCodeFormatEnable" }
+  | { type: "isZoomingEnable" };
+
+type Props = {
+  editorSettings: EditorSettings;
+  dispatch: React.Dispatch<EditorAction>;
+};
+
 const shortcutsDetails = [
   { title: "Code Format", keys: ["ctrl", "s"] },
   { title: "Font Size", keys: ["ctrl", "wheel"] },
@@ -11,14 +31,15 @@ const widgetsDetails = [
   { title: "Code Format", id: "isCodeFormatEnable" },
 ];
 
-const MonacoEditorInfoDetails = ({ editorSettings, dispatch }) => {
+const MonacoEditorInfoDetails: React.FC<Props> = ({ editorSettings, dispatch }) => {
   const { isModalOpen, modalScreenState, isCodeFormatEnable, isZoomingEnable } =
     editorSettings;
 
-  const hangleChangeWidgets = (e) => {
-    const value = e.target.value;
+  const hangleChangeWidgets = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value as "isCodeFormatEnable" | "isZoomingEnable";
     dispatch({ type: value });
   };
+  
   return (
     <div className="flex  flex-col w-[calc(400px-120px)] h-full select-none">
       {/* close button */}
@@ -81,7 +102,7 @@ const MonacoEditorInfoDetails = ({ editorSettings, dispatch }) => {
                         ? isCodeFormatEnable
                         : isZoomingEnable
                     }
-                    onChange={(e) => hangleChangeWidgets(e)}
+                    onChange={(e) => handleChangeWidgets(e)}
                   />
                   <div className="relative w-9 h-5 bg-[#383838] rounded-full peer peer-focus:ring-1 peer-focus:ring-[#636363] peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[#FFA726]"></div>
                 </label>
