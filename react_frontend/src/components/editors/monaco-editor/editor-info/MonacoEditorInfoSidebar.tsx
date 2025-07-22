@@ -1,7 +1,23 @@
 import React from "react";
 import { KeyboardIcon, WidgetsIcon } from "../icons";
 
-const MonacoEditorInfoSidebar = ({ editorSettings, dispatch }) => {
+type ModalScreenState = "shortcuts" | "widgets";
+
+type EditorSettings = {
+  modalScreenState: ModalScreenState;
+};
+
+type EditorAction = {
+  type: "changeModalScreenState";
+  payload: { screen: ModalScreenState };
+};
+
+type Props = {
+  editorSettings: EditorSettings;
+  dispatch: React.Dispatch<EditorAction>;
+};
+
+const MonacoEditorInfoSidebar: React.FC<Props> = ({ editorSettings, dispatch }) => {
   const { modalScreenState } = editorSettings;
   return (
     <div className="flex flex-col items-center justify-start pt-10 gap-2 w-[120px] h-full bg-[#383838] rounded-xl  select-none">
