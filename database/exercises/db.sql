@@ -128,6 +128,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, templat
 17	pick_place	Pick and Place	Pick and Place exercise	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/pick_place/python_template/
 18	digit_classification	Digit Classification	Deep learning-based Digit Classification.	{"tags": ["Computer Vision","Deep Learning","Classification"]}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/digit_classification/python_template/
 19	human_detection	Human Detection	Deep learning-based human detection.	{"tags": ["Computer Vision","Deep Learning"]}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/human_detection/python_template/
+20	machine_vision	Machine Vision	Machine Vision exercise	{"tags": "ROS2"}	PROTOTYPE	RoboticsAcademy/exercises/static/exercises/machine_vision/python_template/
 \.
 -- 16	rescue_people_classic	Rescue People Old	Rescue People exercise With Gazebo Classic	{"tags": "ROS2"}	ACTIVE	RoboticsAcademy/exercises/static/exercises/rescue_people_classic/python_template/
 
@@ -169,6 +170,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 30	16	32
 31	14	33
 32	17	34
+33	20	34
 \.
 -- 30  16  3
 
@@ -231,6 +233,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 52	18	web_gui
 53	19	console
 54	19	web_gui
+55	20	console
+56	20	simulator
+57	20	web_gui
 \.
 
 --
