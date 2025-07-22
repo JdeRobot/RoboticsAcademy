@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Editor, { loader } from "@monaco-editor/react";
+import Editor, { loader, OnMount } from "@monaco-editor/react";
 import PropTypes from "prop-types";
 import {
   MonacoEditorLoader,
@@ -18,7 +18,28 @@ import {
 import "./../../../styles/editors/MonacoEditor.css";
 import MonacoEditorInfo from "./editor-info/MonacoEditorInfo";
 
-const MonacoEditor = ({
+interface EditorSettings {
+  isCodeFormatEnable: boolean;
+  isZoomingEnable: boolean;
+  // agrega más propiedades si tienes
+}
+
+interface State {
+  isLoading: boolean;
+  monacoEditorTheme: string;
+  editorOptions: object;
+  editorSettings: EditorSettings;
+}
+
+interface MonacoEditorProps {
+  state: State;
+  dispatch: React.Dispatch<any>; // idealmente tipa el dispatch con tus acciones
+  monacoEditorSourceCode: string;
+  setMonacoEditorSourceCode: React.Dispatch<React.SetStateAction<string>>;
+  handleMonacoEditorCodeChange: (code: string | undefined) => void;
+}
+
+const MonacoEditor: React.FC<MonacoEditorProps> = ({
   state,
   dispatch,
   monacoEditorSourceCode,
@@ -26,9 +47,9 @@ const MonacoEditor = ({
   handleMonacoEditorCodeChange,
 }) => {
   // USE Ref
-  const monacoRef = useRef(null);
-  const editorRef = useRef(null);
-  const lineNumberDecorationRef = useRef(null);
+  const monacoRef = useRef<any>(null);
+  const editorRef = useRef<any>(null);
+  const lineNumberDecorationRef = useRef<any>(null);
   // Rducer state
   const {
     isLoading,
@@ -37,10 +58,10 @@ const MonacoEditor = ({
     editorSettings,
   } = state;
   // USE STATE
-  const [lineNumber, setLineNumber] = useState(-1);
-  const [lineNumberDecorations, setLineNumberDecorations] = useState([]);
-  const [updateGlyphs, setUpdateGlyphs] = useState(false);
-  const [maxEditorRows, setMaxEditorRows] = useState(-1);
+  const [lineNumber, setLineNumber] = useState<number>(-1);
+  const [lineNumberDecorations, setLineNumberDecorations] = useState<any[]>([]);
+  const [updateGlyphs, setUpdateGlyphs] = useState<boolean>(false);
+  const [maxEditorRows, setMaxEditorRows] = useState<number>(-1);
 
   // USE Effects
   //localstorage
@@ -62,6 +83,8 @@ const MonacoEditor = ({
       });
     }
   }, []);
+
+  
   // called when widgets changed
   useEffect(() => {
     setEditorSettingsWidgetsData({
@@ -103,10 +126,10 @@ const MonacoEditor = ({
   });
 
   // Editor funcs
-  const handleEditorWillMount = (editor, monaco) => {};
+  const handleEditorWillMount = (editor: any, monaco: any) => {};
 
   // Trigger formatting on document load
-  const handleEditorDidMount = async (editor, monaco) => {
+  const handleEditorDidMount: OnMount = async (editor, monaco) => {
     // store `useRef`
     monacoRef.current = monaco;
     editorRef.current = editor;
@@ -158,11 +181,3 @@ const MonacoEditor = ({
 };
 
 export default MonacoEditor;
-
-MonacoEditor.prototype = {
-  state: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  monacoEditorSourceCode: PropTypes.string.isRequired,
-  setMonacoEditorSourceCode: PropTypes.func.isRequired,
-  handleMonacoEditorCodeChange: PropTypes.func.isRequired,
-};
