@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 
 // monaco editor loader
 export const theme_colors = {
@@ -18,6 +17,12 @@ export const theme_colors = {
     text: "#fff",
     line: "#1E1E1E",
   },
+};
+
+type ThemeKey = keyof typeof theme_colors;
+
+type MonacoEditorLoaderProps = {
+  theme: string;
 };
 
 const lineTheme = [
@@ -99,12 +104,13 @@ const lineTheme = [
   },
 ];
 
-const MonacoEditorLoader = ({ theme }) => {
-  const [background, setBackground] = useState(null);
-  const [lineBackground, setLineBackground] = useState(null);
+const MonacoEditorLoader: React.FC<MonacoEditorLoaderProps> = ({ theme }) => {
+  const [background, setBackground] = useState<string>("#fff");
+  const [lineBackground, setLineBackground] = useState<string>("#ccc");
 
   useEffect(() => {
-    const t = theme_colors[theme.split("-").join("_")];
+    const themeKey = theme_colors[theme.split("-").join("_")] as ThemeKey;
+    const t = theme_colors[themeKey] || theme_colors["vs"];
     setBackground(`${t.bg}`);
     setLineBackground(`${t.line}`);
   }, [theme]);
@@ -114,7 +120,7 @@ const MonacoEditorLoader = ({ theme }) => {
       style={{ backgroundColor: `${background}` }}
     >
       <div
-        className={`flex flex-col items-start xp-4 animate-pulse w-full h-full `}
+        className={`flex flex-col items-start px-4 animate-pulse w-full h-full `}
       >
         {lineTheme.map((line, i) => (
           <div
@@ -145,7 +151,3 @@ const MonacoEditorLoader = ({ theme }) => {
 };
 
 export default MonacoEditorLoader;
-
-MonacoEditorLoader.prototype = {
-  theme: PropTypes.string.isRequired,
-};
