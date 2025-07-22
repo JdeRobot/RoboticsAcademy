@@ -1,4 +1,12 @@
-export const basic_snippets = [
+export type Snippet = {
+  type: "snippet";
+  label: string;
+  code: string;
+  descriptions: string;
+  detail?: string; 
+};
+
+export const basic_snippets: Snippet[] = [
   {
     type: "snippet",
     label: "import numpy as np",
