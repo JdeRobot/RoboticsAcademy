@@ -105,7 +105,6 @@ gui = WebGUI(host)
 # Redirect the console
 start_console()
 
-
 # Expose the user functions
 def showImage(image):
     gui.setRightImage(image)
