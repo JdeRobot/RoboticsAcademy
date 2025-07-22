@@ -1,10 +1,43 @@
+import * as monaco from "monaco-editor";
 import { basic_snippets, guiAndHalAutoCompleteObj } from "./../index";
+import { EventEmitter } from "events";
+
+type SnippetType =
+  | "variable"
+  | "class"
+  | "param"
+  | "path"
+  | "property"
+  | "statement"
+  | "instance"
+  | "module"
+  | "method"
+  | "snippet"
+  | "keyword"
+  | "function";
+
+type Snippet = {
+  label: string;
+  code: string;
+  detail?: string;
+  type: SnippetType;
+  docstring?: string;
+};
+
+type Range = monaco.IRange;
+
+type SnippetKindProps = {
+  kind: SnippetType;
+  monaco: typeof import("monaco-editor");
+};
+
+type MonacoEditorSnippetProps = {
+  monaco: typeof import("monaco-editor");
+};
 
 // Main Editor Snippets
-export const monacoEditorSnippet = ({ monaco }) => {
+export const monacoEditorSnippet = ({ monaco }:MonacoEditorSnippetProps): void => {
   monaco.languages.register({ id: "python" });
-
-  const EventEmitter = require("events");
 
   const bus = new EventEmitter();
   let lock = true;
@@ -21,7 +54,7 @@ export const monacoEditorSnippet = ({ monaco }) => {
         column: position.column - 1,
       });
 
-      var range = {
+      var range: Range = {
         startLineNumber: position.lineNumber,
         endLineNumber: position.lineNumber,
         startColumn: word.startColumn,
@@ -29,10 +62,15 @@ export const monacoEditorSnippet = ({ monaco }) => {
       };
 
       // Add basic snippets only if not prevWord
+      let snippets: monaco.languages.CompletionItem[] = [];
+
       if (prevWord.word === "") {
-        var snippets = snippetsBuilderV2("basic_snippets", monaco, range, "");
-      } else {
-        var snippets = [];
+        snippets = snippetsBuilderV2("basic_snippets", monaco, range, "");
+      }
+
+      if (prevWord.word === "GUI" || prevWord.word === "HAL") {
+        const suggestions = snippetsBuilderV2("hal_gui", monaco, range, prevWord.word);
+        return { suggestions };
       }
 
       // Snippets for HAL and GUI
@@ -56,15 +94,15 @@ export const monacoEditorSnippet = ({ monaco }) => {
           col: word.endColumn - 1,
         });
       } catch (error) {
-        return snippets;
+        return { suggestions: snippets };
       }
 
-      const callback = (message) => {
+      const callback = (message: any) => {
         const data = message.data;
 
         if (!data) return;
 
-        const new_completions = data.completions;
+        const new_completions: Snippet[] = data.completions;
 
         new_completions.forEach((snippet) => {
           snippets.push({
@@ -99,7 +137,7 @@ export const monacoEditorSnippet = ({ monaco }) => {
 };
 
 // Snippets Builder
-export const snippetKind = ({ kind, monaco }) => {
+export const snippetKind = ({ kind, monaco }: SnippetKindProps): monaco.languages.CompletionItemKind => {
   switch (kind) {
     case "variable":
       return monaco.languages.CompletionItemKind.Variable;
@@ -131,7 +169,7 @@ export const snippetKind = ({ kind, monaco }) => {
 };
 
 // hal & gui auto complete
-export const getHalGuiMethods = (importName) => {
+export const getHalGuiMethods = (importName: "GUI" | "HAL"): Snippet[] => {
   const pathName = window.location.pathname;
   let exerciseName = pathName.split("/").filter(Boolean);
   exerciseName = exerciseName[exerciseName.length - 1];
@@ -151,9 +189,14 @@ export const getHalGuiMethods = (importName) => {
   return [];
 };
 
-export const snippetsBuilderV2 = (snippetName, monaco, range, importName) => {
-  const snippets = [];
-  let importSnippets;
+export const snippetsBuilderV2 = (
+  snippetName: "basic_snippets" | "hal_gui",
+  monaco: typeof import("monaco-editor"),
+  range: Range,
+  importName: string
+): monaco.languages.CompletionItem[] => {
+  //const snippets = [];
+  let importSnippets: Snippet[] = [];
 
   // basic_snippets
   if (snippetName === "basic_snippets") {
@@ -165,19 +208,16 @@ export const snippetsBuilderV2 = (snippetName, monaco, range, importName) => {
 
   if (!importSnippets || !importSnippets.length) return [];
 
-  importSnippets.forEach((snippet) => {
-    if (snippet.label && snippet.code) {
-      snippets.push({
-        label: snippet.label,
-        kind: snippetKind({ kind: snippet.type, monaco }),
-        detail: snippet.detail,
-        insertText: snippet.code,
-        insertTextRules:
-          monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-        range: range,
-      });
-    }
-  });
+  const snippets: monaco.languages.CompletionItem[] = importSnippets
+    .filter((snippet) => snippet.label && snippet.code)
+    .map((snippet) => ({
+      label: snippet.label,
+      kind: snippetKind({ kind: snippet.type, monaco }),
+      detail: snippet.detail,
+      insertText: snippet.code,
+      insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+      range,
+    }));
 
   return snippets;
 };
