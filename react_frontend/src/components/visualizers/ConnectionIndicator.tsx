@@ -3,12 +3,12 @@ import { Box, Typography, Tooltip } from "@mui/material";
 import "../../styles/Indicator.css";
 import PropTypes from "prop-types";
 
-function ConnectionIndicator() {
-  const [radiVersion, setRadiVersion] = useState("");
-  const [connected, setConnected] = useState(false);
+const ConnectionIndicator: React.FC = () => {
+  const [radiVersion, setRadiVersion] = useState<string>("");
+  const [connected, setConnected] = useState<boolean>(false);
 
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       if (message.data.state === "connected") {
         setConnected(true);
       }
@@ -27,7 +27,7 @@ function ConnectionIndicator() {
   }, []);
 
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       setRadiVersion(message.data.robotics_backend_version);
     };
     window.RoboticsExerciseComponents.commsManager.suscribreOnce(
@@ -48,8 +48,6 @@ function ConnectionIndicator() {
   );
 }
 
-ConnectionIndicator.propTypes = {
-  exerciseName: PropTypes.string,
-};
+
 
 export default ConnectionIndicator;
