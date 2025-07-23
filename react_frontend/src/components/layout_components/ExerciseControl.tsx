@@ -13,7 +13,7 @@ import monitor from "../../images/monitoring2.png";
 import DLModelUploadButton from "../buttons/DLModelUploadButton";
 
 interface ExerciseControlProps {
-  specificConfiguration?: unknown;
+  specificConfiguration?: any;
 }
 
 const ExerciseControl: React.FC<ExerciseControlProps> = ({ specificConfiguration }) => {
