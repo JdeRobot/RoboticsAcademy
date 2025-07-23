@@ -1,8 +1,12 @@
 import * as React from "react";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 
-const TheoryView = (props) => {
-  const theoryRef = React.useRef(null);
+interface TheoryViewProps {
+  url: string;
+}
+
+const TheoryView: React.FC<TheoryViewProps> = ({ url }) => {
+  const theoryRef = React.useRef<HTMLIFrameElement>(null);
   const [iFrameHeight, setIframeHeight] = React.useState("1000px");
   const loadIframeHeight = () => {
     setIframeHeight(
@@ -11,7 +15,7 @@ const TheoryView = (props) => {
   };
   return (
     <iframe
-      src={props.url}
+      src={url}
       id="theory-view"
       width={"100%"}
       ref={theoryRef}
@@ -23,9 +27,6 @@ const TheoryView = (props) => {
       }}
     />
   );
-};
-TheoryView.propTypes = {
-  url: PropTypes.string,
 };
 
 export default TheoryView;
