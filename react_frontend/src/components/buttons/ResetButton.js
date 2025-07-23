@@ -16,6 +16,7 @@ const ResetButton = () => {
         setDisabled(false);
       } else {
         setDisabled(true);
+        setLoading(false);
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
