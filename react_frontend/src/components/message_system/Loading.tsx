@@ -11,20 +11,37 @@ import {
 
 import "../../styles/message_system/Loading.css";
 
+declare global {
+  interface Window {
+    RoboticsReactComponents: {
+      MessageSystem: {
+        Loading: {
+          showLoading: (message: string, show?: boolean) => void;
+          hideLoading: () => void;
+          showFailLoading: (message: string, action: (() => void) | null, show?: boolean) => void;
+          hideFailLoading: () => void;
+          subscribeHandler: (handlerFunc: (message: string, show: boolean) => void) => void;
+          subscribeFailHandler: (failHandlerFunc: (message: string, action: (() => void) | null, show: boolean) => void) => void;
+        };
+      };
+    };
+  }
+}
+
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 window.RoboticsReactComponents.MessageSystem =
   window.RoboticsReactComponents.MessageSystem || {};
 window.RoboticsReactComponents.MessageSystem.Loading = (function () {
-  let handler = null;
-  let failHandler = null;
+  let handler: ((message: string, show: boolean) => void) | null = null;
+  let failHandler: ((message: string, action: (() => void) | null, show: boolean) => void) | null = null;
 
-  const showLoading = (message, show = true) => {
+  const showLoading = (message: string, show = true) => {
     if (handler) {
       handler(message, show);
     }
   };
 
-  const showFailLoading = (message, action, show = true) => {
+  const showFailLoading = (message: string, action: (() => void) | null, show = true) => {
     if (failHandler) {
       failHandler(message, action, show);
     }
@@ -38,11 +55,11 @@ window.RoboticsReactComponents.MessageSystem.Loading = (function () {
     showFailLoading("", null, false);
   };
 
-  const subscribeHandler = (handlerFunc) => {
+  const subscribeHandler = (handlerFunc: (message: string, show: boolean) => void) => {
     handler = handlerFunc;
   };
 
-  const subscribeFailHandler = (failHandlerFunc) => {
+  const subscribeFailHandler = (failHandlerFunc: (message: string, action: (() => void) | null, show: boolean) => void) => {
     failHandler = failHandlerFunc;
   };
 
@@ -56,10 +73,10 @@ window.RoboticsReactComponents.MessageSystem.Loading = (function () {
   };
 })();
 
-const Loading = () => {
+const Loading: React.FC = () => {
   const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState("");
-  const [closeData, setCloseData] = React.useState(null);
+  const [message, setMessage] = React.useState<string>("");
+  const [closeData, setCloseData] = React.useState<(() => void) | null>(null);
 
   React.useEffect(() => {
     RoboticsReactComponents.MessageSystem.Loading.subscribeHandler(
@@ -94,7 +111,7 @@ const Loading = () => {
     setOpen(false);
     setCloseData(null);
   };
-
+  
   const handleOpen = () => {
     setOpen(true);
   };
