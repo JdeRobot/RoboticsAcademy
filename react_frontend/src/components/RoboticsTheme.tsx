@@ -1,9 +1,22 @@
 import React, { ReactNode } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+declare module "@mui/material/styles" {
+  interface Palette {
+    notConnected: Palette["primary"];
+    loading: Palette["primary"];
+    selector: Palette["primary"];
+  }
+  interface PaletteOptions {
+    notConnected?: PaletteOptions["primary"];
+    loading?: PaletteOptions["primary"];
+    selector?: PaletteOptions["primary"];
+  }
+}
+
 const theme = createTheme({
   palette: {
-    type: "light",
+    mode: "light",
     primary: {
       main: "#ffa726",
     },
