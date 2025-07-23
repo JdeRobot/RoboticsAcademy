@@ -1,12 +1,11 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import { Box } from "@mui/system";
 import { CircularProgress, Typography } from "@mui/material";
 
-function VncConsoleViewer() {
-  const [active, setActive] = React.useState(false);
+const VncConsoleViewer: React.FC = () => {
+  const [active, setActive] = React.useState<boolean>(false);
   React.useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       if (message.data.state === "visualization_ready") {
         setActive(true);
       }
@@ -57,8 +56,5 @@ function VncConsoleViewer() {
     </>
   );
 }
-VncConsoleViewer.propTypes = {
-  context: PropTypes.any,
-};
 
 export default VncConsoleViewer;
