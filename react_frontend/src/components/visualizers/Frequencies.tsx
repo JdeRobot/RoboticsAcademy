@@ -2,18 +2,30 @@ import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import "../../styles/visualizers/Frequencies.css";
 
-export const Frequencies = (props) => {
-  const [frequencies, setFrequencies] = useState({
+type FrequenciesProps = {
+  style?: string;
+};
+
+type FrequenciesData = {
+  brain: number;
+  gui: number;
+  rtf: number;
+  fps: number;
+  lat: number;
+};
+
+const Frequencies: React.FC<FrequenciesProps> = ({ style }) => {
+  const [frequencies, setFrequencies] = useState<FrequenciesData>({
     brain: 0,
     gui: 0,
     rtf: -1,
     fps: -1,
     lat: -1,
   });
-  const [rosVersion, setRosVersion] = useState(null);
-  const [gpuVendor, setgpuVendor] = useState(false);
+  const [rosVersion, setRosVersion] = useState<[string, string] | null>(null);
+  const [gpuVendor, setgpuVendor] = useState<boolean>(false);
   React.useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       const update = message.data.update;
       if (update.brain) {
         setFrequencies(update);
@@ -34,7 +46,7 @@ export const Frequencies = (props) => {
   }, []);
 
   React.useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       let version = message.data.ros_version.trim();
       if (version) {
         setRosVersion([
@@ -52,7 +64,7 @@ export const Frequencies = (props) => {
   }, []);
 
   return (
-    <div className={props.style}>
+    <div className={style}>
       <Typography>AF:</Typography>
       <Typography title="AF">{frequencies.brain.toFixed(0)}</Typography>
       <Typography>Hz</Typography>
