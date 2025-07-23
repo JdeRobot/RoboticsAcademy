@@ -1,12 +1,31 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import styles from "./../../styles/camera_driver/camera_driver.module.css";
 import {
   CameraNotFoundIcon,
 } from "../../styles/camera_driver/CameraDriverIcons";
 import { Box } from "@mui/system";
 
+type CameraState = {
+  isCameraReady: boolean;
+  isCameraPause: boolean;
+  isVisualReady: boolean;
+  showCameraStatics: boolean;
+  countFrames: number;
+  startTime: number;
+  msg: string;
+};
+
+type CameraAction =
+  | { type: "cameraReady"; payload: boolean }
+  | { type: "cameraPause"; payload: boolean }
+  | { type: "visiualReady"; payload: boolean }
+  | { type: "showCameraStatics"; payload: boolean }
+  | { type: "updateCountFrames"; payload: { countFrames: number } }
+  | { type: "udpateStartTime"; payload: { startTime: number } }
+  | { type: "udpateMsg"; payload: { msg: string } };
+
 // webRTC error message
-const cameraErrorMessages = {
+const cameraErrorMessages: Record<string, string> = {
   NotAllowedError: "Camera access denied by the user.",
   OverconstrainedError:
     "The camera is already being used by another application or tab",
@@ -15,7 +34,7 @@ const cameraErrorMessages = {
 };
 
 // reducer initial state
-const initialState = {
+const initialState: CameraState = {
   isCameraReady: false,
   isCameraPause: false,
   isVisualReady: false,
@@ -27,7 +46,7 @@ const initialState = {
   msg: "Connecting to media device.",
 };
 // reducer func
-const reducer = (state, action) => {
+const reducer = (state: CameraState, action: CameraAction): CameraState => {
   switch (action.type) {
     case "cameraReady":
       return { ...state, isCameraReady: action.payload };
@@ -53,11 +72,11 @@ const reducer = (state, action) => {
 const timeFrameSize = 20;
 
 // camera
-const Camera = () => {
+const Camera: React.FC = () => {
   const commsManager = window.RoboticsExerciseComponents.commsManager;
-  const videoRef = useRef(null);
-  const streamRef = useRef(null); // Usamos useRef para manejar el stream
-  const [imageData, setImageData] = React.useState("");
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const [imageData, setImageData] = useState<string>("");
 
   // reducer
   const [
@@ -157,7 +176,7 @@ const Camera = () => {
 
   // handle and udpate camera state, depending on RAM state
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       if (message.data.state === "visualization_ready") {
         dispatch({ type: "visiualReady", payload: true });
       }
@@ -192,7 +211,7 @@ const Camera = () => {
   useEffect(() => {
     if (!isVisualReady || !isCameraReady) return;
 
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       // receive ack from gui.py
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         // call next frame
