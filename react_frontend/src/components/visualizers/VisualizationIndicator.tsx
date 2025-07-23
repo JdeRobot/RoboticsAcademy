@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Tooltip } from "@mui/material";
 import "../../styles/Indicator.css";
 
-export default function VisualizationIndicator(props) {
-  const [visualizationReady, setVisualizationReady] = useState(false);
+interface VisualizationIndicatorProps {}
+
+const VisualizationIndicator: React.FC<VisualizationIndicatorProps> = () => {
+  const [visualizationReady, setVisualizationReady] = useState<boolean>(false);
 
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       if (message.data.state === "visualization_ready") {
         setVisualizationReady(true);
       }
