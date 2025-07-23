@@ -1,7 +1,7 @@
 import * as React from "react";
 
 function ForumView() {
-  const forumRef = React.useRef(null);
+  const forumRef = React.useRef<HTMLIFrameElement>(null);
   const [iFrameHeight, setIframeHeight] = React.useState("1000px");
   const loadIframeHeight = () => {
     setIframeHeight(
