@@ -6,14 +6,42 @@ import Fade from "@mui/material/Fade";
 
 import "../../styles/message_system/Alert.css";
 
+declare global {
+  interface Window {
+    RoboticsReactComponents: {
+      MessageSystem: {
+        Alert: {
+          showAlert: (
+            message: string | string[],
+            messageType?: string,
+            closeAction?: () => void,
+            closeText?: string
+          ) => void;
+          setAlertHandler: (
+            callback: (
+              message: string | string[],
+              messageType?: string,
+              closeAction?: () => void,
+              closeText?: string
+            ) => void
+          ) => void;
+        };
+      };
+    };
+  }
+}
+
 window.RoboticsReactComponents = window.RoboticsReactComponents || {};
 window.RoboticsReactComponents.MessageSystem =
     window.RoboticsReactComponents.MessageSystem || {};
-window.RoboticsReactComponents.MessageSystem.Alert = (function () {
-    let alert_handler = null;
 
-    const setAlertHandler = (callback) => {
-        alert_handler = callback;
+
+window.RoboticsReactComponents.MessageSystem.Alert =
+  window.RoboticsReactComponents.MessageSystem.Alert || (function () {
+    let alert_handler: ((...args: any[]) => void) | null = null;
+
+    const setAlertHandler = (callback: (...args: any[]) => void) => {
+      alert_handler = callback;
     };
 
     /**
@@ -23,10 +51,15 @@ window.RoboticsReactComponents.MessageSystem.Alert = (function () {
      * @param closeAction closeAction
      * @param closeText closeText
      */
-    const showAlert = (message, messageType, closeAction, closeText) => {
-        if (alert_handler) {
-            alert_handler(message, messageType, closeAction, closeText);
-        }
+    const showAlert = (
+      message: string | string[],
+      messageType: string = "error",
+      closeAction?: () => void,
+      closeText?: string
+    ) => {
+      if (alert_handler) {
+        alert_handler(message, messageType, closeAction, closeText);
+      }
     };
 
     return {
@@ -35,19 +68,28 @@ window.RoboticsReactComponents.MessageSystem.Alert = (function () {
     };
 })();
 
-const Alert = () => {
-    const [message, setMessage] = React.useState("");
-    const [messageType, setMessageType] = React.useState("error");
-    const [closeData, setCloseData] = React.useState(null);
-    const [show, setShow] = React.useState(true);
-    const [alertVisibility, setAlertVisibility] = React.useState(true);
+const Alert: React.FC = () => {
+    const [message, setMessage] = React.useState<React.ReactNode>(null);
+    const [messageType, setMessageType] = React.useState<string>("error");
+    const [closeData, setCloseData] = React.useState<{
+    text: string;
+    action: () => void;
+    } | null>(null);
+    const [show, setShow] = React.useState<boolean>(true);
+    const [alertVisibility, setAlertVisibility] = React.useState<boolean>(false);
+    
     const timer = 5000;
     const enterSpeed = 1000;
     const exitSpeed = 1000;
 
     React.useEffect(() => {
         RoboticsReactComponents.MessageSystem.Alert.setAlertHandler(
-            (message, messageType, closeAction, closeText) => {
+            (
+            message: string | string[],
+            type: string = "error",
+            closeAction?: () => void,
+            closeText?: string
+            ) => {
                 setAlertVisibility(true)
                 if (Array.isArray(message)) {
                     message = message.map((msg, i) => <p key={i}>{msg}</p>);
@@ -59,7 +101,7 @@ const Alert = () => {
                 }
 
                 setMessage(message || "No message set");
-                setMessageType(messageType || "error");
+                setMessageType(type || "error");
 
                 if (closeAction && closeText) {
                     setCloseData({
