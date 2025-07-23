@@ -2,18 +2,37 @@ import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl, InputLabel, Select, Box } from "@mui/material";
 
-export default function WorldSelector(props) {
-  const exerciseConfig = JSON.parse(
-    document.getElementById("exercise-config").textContent
-  );
+interface UniverseConfig {
+  name: string;
+  world: string;
+  robot: string;
+  visualization: string;
+  visualization_config_path: string;
+}
+
+declare global {
+  interface Window {
+    RoboticsExerciseComponents: any;
+    RoboticsReactComponents: any;
+    context: any;
+  }
+}
+
+const exerciseConfig: UniverseConfig[] = JSON.parse(
+  document.getElementById("exercise-config")?.textContent || "[]"
+);
+
+export default function WorldSelector() {
   const [disabled, setDisabled] = useState(true);
-  const [selectedUniverse, setSelectedUniverse] = useState(exerciseConfig[0]);
-  const [configurations, setConfigurations] = useState(exerciseConfig);
+  const [selectedUniverse, setSelectedUniverse] = useState<UniverseConfig | null>(
+    exerciseConfig.length > 0 ? exerciseConfig[0] : null
+  );
+  const [configurations, setConfigurations] = useState<UniverseConfig[]>(exerciseConfig);
 
   useEffect(() => {
-    context.mapSelected = exerciseConfig[0].name;
+    window.context.mapSelected = selectedUniverse.name;
 
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       if (message.data.state !== "connected") {
         setDisabled(false);
       } else {
@@ -34,7 +53,7 @@ export default function WorldSelector(props) {
     };
   }, []);
 
-  const handleUniverse = async (config) => {
+  const handleUniverse = async (config: UniverseConfig) => {
     context.mapSelected = config.name;
     setSelectedUniverse(config);
     console.log(config);
@@ -74,16 +93,19 @@ export default function WorldSelector(props) {
         <InputLabel id={"universe-selector-label"}>Universe</InputLabel>
         <Select
           disabled={disabled}
-          value={selectedUniverse}
+          value={selectedUniverse.name || ""}
           labelId="universe-selector-label"
           id={"universe-selector"}
           label={"Universe"}
           onChange={(e) => {
-            handleUniverse(e.target.value);
-          }}
-        >
+              const selected = configurations.find((c) => c.name === e.target.value);
+              if (selected) {
+                handleUniverse(selected);
+              }
+            }}
+          >
           {configurations.map((option) => (
-            <MenuItem key={option.name} value={option}>
+            <MenuItem key={option.name} value={option.name}>
               {option.name}
             </MenuItem>
           ))}
