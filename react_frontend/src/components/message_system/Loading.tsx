@@ -74,7 +74,7 @@ window.RoboticsReactComponents.MessageSystem.Loading = (function () {
 })();
 
 const Loading: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>("");
   const [closeData, setCloseData] = React.useState<(() => void) | null>(null);
 
