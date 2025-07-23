@@ -2,7 +2,7 @@ import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import { Box } from "@mui/material";
 import RoboticsTheme from "Components/RoboticsTheme";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 import SaveButton from "Components/buttons/SaveButton";
 import LoadFileButton from "Components/buttons/LoadFileButton";
 import ResetButton from "Components/buttons/ResetButton";
@@ -12,16 +12,21 @@ import "../../styles/layout_components/ExerciseControl.css";
 import monitor from "../../images/monitoring2.png";
 import DLModelUploadButton from "../buttons/DLModelUploadButton";
 
-function ExerciseControl(props) {
-  const [editorRendered, setEditorRendered] = React.useState(false);
-  const [showFrequencies, setShowFrequencies] = React.useState(false);
-  const [buttonActive, setButtonActive] = React.useState(false);
+interface ExerciseControlProps {
+  specificConfiguration?: unknown;
+}
+
+const ExerciseControl: React.FC<ExerciseControlProps> = ({ specificConfiguration }) => {
+  const [editorRendered, setEditorRendered] = React.useState<boolean>(false);
+  const [showFrequencies, setShowFrequencies] = React.useState<boolean>(false);
+  const [buttonActive, setButtonActive] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (document.getElementById("code-container")) {
       setEditorRendered(true);
     }
-  });
+  }, []);
+  
   const handleToggleFrequencies = () => {
     setButtonActive(!buttonActive);
     setShowFrequencies(!showFrequencies);
@@ -62,9 +67,5 @@ function ExerciseControl(props) {
     </RoboticsTheme>
   );
 }
-
-ExerciseControl.propTypes = {
-  specificConfiguration: PropTypes.any,
-};
 
 export default ExerciseControl;
