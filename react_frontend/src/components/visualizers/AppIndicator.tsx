@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Tooltip } from "@mui/material";
 import "../../styles/Indicator.css";
 
-function AppIndicator(props) {
+interface AppIndicatorProps {
+  name: string;
+}
+
+const AppIndicator: React.FC<AppIndicatorProps> = ({ name }) => {
   const [running, setRunning] = useState(false);
 
   useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent) => {
       if (message.data.state === "application_running") {
         setRunning(true);
       } else {
@@ -30,7 +34,7 @@ function AppIndicator(props) {
       <Box className={running ? "ready" : "waiting"}>
         <p className="title">Application</p>
         <Typography sx={{ fontSize: "0.8rem" }} className="word">
-          {props.name}
+          {name}
         </Typography>
       </Box>
     </Tooltip>
