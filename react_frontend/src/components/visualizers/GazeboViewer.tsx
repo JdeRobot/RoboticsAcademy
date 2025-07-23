@@ -1,12 +1,15 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import { Box } from "@mui/system";
 import { CircularProgress, Typography } from "@mui/material";
 
-function GazeboViewer(props) {
-  const [enableGazebo, handleEnableGazebo] = React.useState(false);
+type GazeboViewerProps = {
+  context?: any;
+};
+
+const GazeboViewer: React.FC<GazeboViewerProps> = ({ context }) => {
+  const [enableGazebo, handleEnableGazebo] = React.useState<boolean>(false);
   React.useEffect(() => {
-    const callback = (message) => {
+    const callback = (message: MessageEvent<any>) => {
       if (message.data.state === "visualization_ready") {
         handleEnableGazebo(true);
       }
@@ -68,8 +71,5 @@ function GazeboViewer(props) {
     </>
   );
 }
-GazeboViewer.propTypes = {
-  context: PropTypes.any,
-};
 
 export default GazeboViewer;
