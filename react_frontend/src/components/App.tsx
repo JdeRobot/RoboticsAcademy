@@ -1,6 +1,6 @@
 import "../styles/App.css";
-import ExerciseList from "./ExerciseList";
-import DrawerAppBar from "./DrawerAppBar";
+import ExerciseList from "./ExerciseList.tsx";
+import DrawerAppBar from "./DrawerAppBar.tsx";
 import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { HomepageProvider } from "../contexts/HomepageContext";
