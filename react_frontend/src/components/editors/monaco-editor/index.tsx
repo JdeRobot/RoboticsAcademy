@@ -1,16 +1,16 @@
 // Monaco Editor
-export { default as MonacoEditor } from "./MonacoEditor";
+export { default as MonacoEditor } from "./MonacoEditor.tsx";
 // Monaco Editor Loader
-export { default as MonacoEditorLoader } from "./MonacoEditorLoader";
+export { default as MonacoEditorLoader } from "./MonacoEditorLoader.tsx";
 
 // Monaco Editor Info
-export { default as MonacoEditorInfoButtons } from "./editor-info/MonacoEditorInfoButtons";
-export { default as MonacoEditorInfoSidebar } from "./editor-info/MonacoEditorInfoSidebar";
-export { default as MonacoEditorInfoDetails } from "./editor-info/MonacoEditorInfoDetails";
+export { default as MonacoEditorInfoButtons } from "./editor-info/MonacoEditorInfoButtons.tsx";
+export { default as MonacoEditorInfoSidebar } from "./editor-info/MonacoEditorInfoSidebar.tsx";
+export { default as MonacoEditorInfoDetails } from "./editor-info/MonacoEditorInfoDetails.tsx";
 
 // helper
-export { monacoEditorSnippet } from "./helper/monacoEditorSnippet";
-export { monacoEditorScroll } from "./helper/monacoEditorScroll";
+export { monacoEditorSnippet } from "./helper/monacoEditorSnippet.tsx";
+export { monacoEditorScroll } from "./helper/monacoEditorScroll.tsx";
 export {
   monacoEditorGlyph,
   filterLineNumber,
@@ -22,13 +22,13 @@ export {
 } from "./helper/helpers";
 
 // autocomplete-snippets
-export { basic_snippets } from "./autocomplete-snippets/basic_snippets";
-export { guiAndHalAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets";
+export { basic_snippets } from "./autocomplete-snippets/basic_snippets.tsx";
+export { guiAndHalAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets.tsx";
 
 // helper
 export {
   getMarkerSeverity,
-} from "./helper/helpers";
+} from "./helper/helpers.tsx";
 
 // text extractor helper
 export {
@@ -37,7 +37,7 @@ export {
   extractClassesAndMembers,
   findClassNameByInstance,
   extractPythonImports,
-} from "./helper/text_extractor_helper";
+} from "./helper/text_extractor_helper.tsx";
 // constants
 export {
   resizeList,
@@ -48,4 +48,4 @@ export {
   pylint_convention,
   pylint_refactor,
   pylint_fatal,
-} from "./constants";
+} from "./constants.tsx";
