@@ -12,7 +12,7 @@ interface ExerciseCardProps {
   name: string;
   description: string;
   tags: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'OTHER';
+  status: 'ACTIVE' | 'INACTIVE' | 'PROTOTYPE';
 }
 
 const ExerciseCard: FC<ExerciseCardProps> = ({ id, name, description, tags, status }) => {
