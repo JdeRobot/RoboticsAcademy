@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ForumIcon from "@mui/icons-material/Forum";
 import { useState } from "react";
-import SearchBar from "./SearchBar";
+import SearchBar from "./SearchBar.tsx";
 
 const drawerWidth = 240;
 
