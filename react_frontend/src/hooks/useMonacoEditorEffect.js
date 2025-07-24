@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import {
   filterLineNumber,
-  getMarkerSeverity,
   renderGlyphs,
 } from "../components/editors/monaco-editor/helper/monacoEditorGlyph.tsx";
+
+import { getMarkerSeverity } from "../components/editors/monaco-editor/helper/helpers.tsx";
 
 import {
   pylint_error,
