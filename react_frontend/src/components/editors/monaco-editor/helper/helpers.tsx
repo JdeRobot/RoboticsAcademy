@@ -6,12 +6,18 @@ import {
   pylint_fatal,
 } from "../constants";
 
+interface FetchFormatCodeParams {
+  baseUrl: string;
+  monacoEditorSourceCode: string;
+  setMonacoEditorSourceCode: (code: string) => void;
+}
+
 // post and response code format
 export const fetchFormatCode = async ({
   baseUrl,
   monacoEditorSourceCode,
   setMonacoEditorSourceCode,
-}) => {
+}: FetchFormatCodeParams): Promise<void> => {
   try {
     const response = await fetch(`${baseUrl}/api/v1/format/`, {
       method: "POST",
@@ -36,7 +42,12 @@ export const fetchFormatCode = async ({
   }
 };
 
-export const getMarkerSeverity = ({ type, monaco }) => {
+interface GetMarkerSeverityParams {
+  type: string;
+  monaco: typeof import("monaco-editor");
+}
+
+export const getMarkerSeverity = ({ type, monaco }: GetMarkerSeverityParams): number => {
   switch (type) {
     case "refactor":
     case "convention":
@@ -52,12 +63,12 @@ export const getMarkerSeverity = ({ type, monaco }) => {
 };
 
 // local storage data
-export const setEditorSettingsWidgetsData = (data) => {
+export const setEditorSettingsWidgetsData = (data: unknown): void => {
   const data_string = JSON.stringify(data);
   localStorage.setItem("editorSettingsWidgets", data_string);
 };
 
-export const getEditorSettingsWidgetsData = () => {
+export const getEditorSettingsWidgetsData = (): unknown | null => {
   const data = localStorage.getItem("editorSettingsWidgets");
 
   if (data) return JSON.parse(data);
