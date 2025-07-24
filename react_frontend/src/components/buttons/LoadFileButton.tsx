@@ -1,7 +1,7 @@
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { Button } from "@mui/material";
 import * as React from "react";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 
 declare global {
   interface Window {
