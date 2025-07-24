@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import { Box, Button, TextField } from "@mui/material";
 import { saveCode } from "../../helpers/utils";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 
 declare global {
   interface Window {
