@@ -1,9 +1,9 @@
-import * as monaco from "monaco-editor";
+//import * as monaco from "monaco-editor";
 
 // Adds click listener to editor for custom glyph interaction
 type GlyphProps = {
   monaco: typeof import("monaco-editor");
-  editor: monaco.editor.IStandaloneCodeEditor;
+  editor: any;
   setLineNumber: (lineNumber: number) => void;
 };
 
