@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Editor, { loader, OnMount } from "@monaco-editor/react";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 import {
   MonacoEditorLoader,
   monacoEditorSnippet,
