@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import {
   monacoEditorThemeList,
   resizeList,
-} from "../components/editors/monaco-editor";
+} from "../components/editors/monaco-editor/constants.tsx";
 
 const editorInitialState = {
   isLoading: true,
