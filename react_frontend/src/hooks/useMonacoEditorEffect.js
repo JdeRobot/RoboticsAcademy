@@ -3,7 +3,7 @@ import {
   filterLineNumber,
   getMarkerSeverity,
   renderGlyphs,
-} from "../components/editors/monaco-editor";
+} from "../components/editors/monaco-editor/constants.tsx";
 
 import {
   pylint_error,
@@ -11,7 +11,7 @@ import {
   pylint_convention,
   pylint_refactor,
   pylint_fatal,
-} from "../components/editors/monaco-editor/constants";
+} from "../components/editors/monaco-editor/constants.tsx";
 
 export const useMonacoEditorLoaderEffect = ({
   loader,
