@@ -1,16 +1,16 @@
 import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import { Box } from "@mui/material";
-import RoboticsTheme from "Components/RoboticsTheme";
+import RoboticsTheme from "Components/RoboticsTheme.tsx";
 //import PropTypes from "prop-types";
-import SaveButton from "Components/buttons/SaveButton";
-import LoadFileButton from "Components/buttons/LoadFileButton";
-import ResetButton from "Components/buttons/ResetButton";
-import Frequencies from "Components/visualizers/Frequencies";
-import PlayPauseButton from "Components/buttons/PlayPauseButton";
+import SaveButton from "Components/buttons/SaveButton.tsx";
+import LoadFileButton from "Components/buttons/LoadFileButton.tsx";
+import ResetButton from "Components/buttons/ResetButton.tsx";
+import Frequencies from "Components/visualizers/Frequencies.tsx";
+import PlayPauseButton from "Components/buttons/PlayPauseButton.tsx";
 import "../../styles/layout_components/ExerciseControl.css";
 import monitor from "../../images/monitoring2.png";
-import DLModelUploadButton from "../buttons/DLModelUploadButton";
+import DLModelUploadButton from "../buttons/DLModelUploadButton.tsx";
 
 interface ExerciseControlProps {
   specificConfiguration?: any;
