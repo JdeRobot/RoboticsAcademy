@@ -3,7 +3,7 @@ import {
   filterLineNumber,
   getMarkerSeverity,
   renderGlyphs,
-} from "../components/editors/monaco-editor/constants.tsx";
+} from "../components/editors/monaco-editor/helper/monacoEditorGlyph.tsx";
 
 import {
   pylint_error,
