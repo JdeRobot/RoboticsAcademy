@@ -1,12 +1,12 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Box } from "@mui/material";
-import RoboticsTheme from "Components/RoboticsTheme";
+import RoboticsTheme from "Components/RoboticsTheme.tsx";
 import { useUnload } from "Hooks/useUnload";
-import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
-import AppIndicator from "../visualizers/AppIndicator";
-import ConnectionIndicator from "../visualizers/ConnectionIndicator";
-import VisualizationIndicator from "../visualizers/VisualizationIndicator";
+import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton.tsx";
+import AppIndicator from "../visualizers/AppIndicator.tsx";
+import ConnectionIndicator from "../visualizers/ConnectionIndicator.tsx";
+import VisualizationIndicator from "../visualizers/VisualizationIndicator.tsx";
 
 interface MainAppBarProps {
   exerciseName: string;
