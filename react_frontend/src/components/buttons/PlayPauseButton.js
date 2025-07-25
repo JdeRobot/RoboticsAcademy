@@ -29,6 +29,7 @@ const PlayPause = (props) => {
           state === "paused"
         )
       );
+      setLoading(false);
     };
 
     commsManager.subscribe([commsManager.events.STATE_CHANGED], callback);
@@ -57,7 +58,6 @@ const PlayPause = (props) => {
     } else {
       await runCode(editorCode);
     }
-    setLoading(false);
     setEditorChanged(false);
   };
 
@@ -143,7 +143,6 @@ const PlayPause = (props) => {
       .pause()
       .then(() => {})
       .catch((response) => console.log(response))
-      .finally(() => setLoading(false));
   };
 
   return (
