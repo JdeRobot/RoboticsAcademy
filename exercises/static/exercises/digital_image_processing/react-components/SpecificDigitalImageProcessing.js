@@ -3,7 +3,7 @@ import noImage from "../../assets/img/noImage.png";
 
 import "./css/GUICanvas.css"
 
-function SpecificBasicComputerVision(props) {
+function SpecificDigitalImageProcessing(props) {
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
@@ -53,4 +53,4 @@ function SpecificBasicComputerVision(props) {
   );
 }
 
-export default SpecificBasicComputerVision;
+export default SpecificDigitalImageProcessing;

@@ -1,9 +1,9 @@
 import * as React from "react";
 import {Fragment} from "react";
 
-import "./css/BasicComputerVisionRR.css";
+import "./css/DigitalImageProcessingRR.css";
 
-const BasicComputerVisionRR = (props) => {
+const DigitalImageProcessingRR = (props) => {
   return (
     <Fragment>
     {props.children}
@@ -11,4 +11,4 @@ const BasicComputerVisionRR = (props) => {
   );
 };
 
-export default BasicComputerVisionRR;
+export default DigitalImageProcessingRR;
