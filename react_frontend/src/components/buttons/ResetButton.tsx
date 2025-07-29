@@ -48,6 +48,7 @@ const ResetButton: React.FC = () => {
         }catch(error){
         console.log(error);
         }finally{
+        console.log("Reseted")
         setLoading(false);
         }
       }}
