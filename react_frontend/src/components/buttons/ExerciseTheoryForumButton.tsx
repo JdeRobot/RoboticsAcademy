@@ -15,10 +15,12 @@ interface ExerciseTheoryForumButtonProps {
 const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ url }) => {
   return (
     <RoboticsTheme>
-      <ButtonGroup color={"loading"} variant={"contained"}>
-        <IconButton href={url} target="_blank" color="secondary">
-          <SchoolOutlinedIcon />
-        </IconButton>
+      <Box display="flex" gap={1}>
+        {url && (
+          <IconButton href={url} target="_blank" color="secondary">
+            <SchoolOutlinedIcon />
+          </IconButton>
+        )}
         <IconButton
           href="https://forum.unibotics.org/"
           target="_blank"
@@ -26,7 +28,7 @@ const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ u
         >
           <CommentOutlinedIcon />
         </IconButton>
-      </ButtonGroup>
+      </Box>
     </RoboticsTheme>
   );
 };
