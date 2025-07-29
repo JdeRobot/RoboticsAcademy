@@ -49,50 +49,65 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 
 {% include gallery caption="Gallery." %}
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## HAL API
-### Direct Kinematics
-* `HAL.MoveAbsJ(absolute_joints, rel_speed, wait_time)` 
-  - Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
-* `HAL.MoveSingleJ("jointX", value_in_deg, rel_speed, wait_time)` 
-  - Moves the joint X [0 to 6] of the robot to the given angle value (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
 
-### Inverse Kinematics 
+### Direct Kinematics
+
+* `HAL.MoveAbsJ(absolute_joints, rel_speed, wait_time)`
+  * Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
+* `HAL.MoveSingleJ("jointX", value_in_deg, rel_speed, wait_time)`
+  * Moves the joint X [0 to 6] of the robot to the given angle value (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
+
+### Inverse Kinematics
+
 #### Using absolute poses
-* `HAL.MoveJoint(absolute_XYZ, absolute_YPR, rel_speed, wait_time)` 
-  - Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll), at a given relative speed in the range [0-1], adding a final delay in seconds. The robot will move at constant rotational speeds in each joint, resulting in a non-linear trajectory
-* `HAL.MoveLinear (absolute_XYZ, absolute_YPR, rel_speed, wait_time)` 
-  - Moves the robot TCP to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll) in a linear trajectory, at a given relative speed in the range [0-1], adding a final delay in seconds. 
+
+* `HAL.MoveJoint(absolute_XYZ, absolute_YPR, rel_speed, wait_time)`
+  * Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll), at a given relative speed in the range [0-1], adding a final delay in seconds. The robot will move at constant rotational speeds in each joint, resulting in a non-linear trajectory
+* `HAL.MoveLinear (absolute_XYZ, absolute_YPR, rel_speed, wait_time)`
+  * Moves the robot TCP to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll) in a linear trajectory, at a given relative speed in the range [0-1], adding a final delay in seconds.
 
 #### Using relative XYZ or YPR increments
-* `HAL.MoveRelLinear(increment_XYZ, rel_speed, wait_time)` 
-  - Moves the robot TCP pose in a linear trajectory by the distances given in increment_XYZ argument, at a given relative speed in the range [0-1], adding a final delay in seconds. The tool orientation is not changed.
-* `HAL.MoveRelReor (increment_YPR, rel_speed, wait_time)` 
-  - Reorients the robot TCP by the angular increments given in increment_YPR argument (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds. The TCP (x,y,z) stay fixed. 
+
+* `HAL.MoveRelLinear(increment_XYZ, rel_speed, wait_time)`
+  * Moves the robot TCP pose in a linear trajectory by the distances given in increment_XYZ argument, at a given relative speed in the range [0-1], adding a final delay in seconds. The tool orientation is not changed.
+* `HAL.MoveRelReor (increment_YPR, rel_speed, wait_time)`
+  * Reorients the robot TCP by the angular increments given in increment_YPR argument (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds. The TCP (x,y,z) stay fixed.
 
 ### Gripper usage
-* `HAL.GripperSet(percentage_closure, wait_time)` 
-  - Closes the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds. A percentage_closure of 100 means full closed, 0 means full opened. 
-* `HAL.attach (object_name)` 
-  - Attaches the given object_name to the gripper, instantly. Precise object names are given below
-* `HAL.dettach ()` 
-  - Dettaches the attached objects to the gripper, instantly. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.  
+
+* `HAL.GripperSet(percentage_closure, wait_time)`
+  * Closes the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds. A percentage_closure of 100 means full closed, 0 means full opened.
+* `HAL.attach (object_name)`
+  * Attaches the given object_name to the gripper, instantly. Precise object names are given below
+* `HAL.dettach ()`
+  * Dettaches the attached objects to the gripper, instantly. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.  
 
 ### Argument examples
+
 #### Example of data targets for MoveAbsJ (angular position for each joint, in deg)
+
 absj_10 = [0, -90, 45, -135, -90, 0]
 absj_20 = [-45, -90, 90, -90, -90, 90]
 absj_30 = [20, -90, 45, -45, -90, 0]
 
 #### Examples of absolute XYZ poses for MoveJoint and MoveLinear (in meters, from the world frame)
+
 pose_10 = [0.5, 0, 1.3]
 pose_20 = [0, 0.5, 1.3]
 
 #### Examples of absolute YPR angular poses or MoveJoint and MoveLinear (in degrees)
+
 YPR_10 = [0, 90, 90]
 YPR_20 = [0, 90, 0]
 
 #### Examples of Cartesian increments for relative MoveRelLinear, [Ax,Ay,Az] in meters)
+
 increment_10 = [0.3, 0.1, -0.2]
 increment_20 = [-0.4, -0.1, 0.4]
 
@@ -107,50 +122,54 @@ from HAL import HAL
 while True:
     # Enter iterative code here!
 ```
+
 ### Why does the robot sometimes cannot move to some desired pose?
+
 The most possible reason is that your specified pose is unreachable for the robot arm, so MoveIt cannot plan a trajectory from current pose to desired pose in limited time. You will see such a warning when this problem happened:
+
 ```bash
 Fail: ABORTED: No motion plan found. No execution attempted.
 ```
 
-## Object and Target lists, dimensions and poses:
+## Object and Target lists, dimensions and poses
+
 **Object list.** The four objects are located on a conveyor that is 1 m tall.
-- **yellow_box** 
-  - Size (l,w,h) = (7,5,10) cm
-  - Pose (x,y) = (0.6,0.45) m
-- **red_box**
-  - Size (l,w,h) = (5,10,8) cm
-  - Pose (x,y) = (0.6,-0.3) m
-- **blue_ball**
-  - Size (r) = (4) cm
-  - Pose (x,y) = (0.7,0.1) m
-- **green_cylinder**
-  - Size (r,h) = (4,15) cm
-  - Pose (x,y) = (0.5,0.1) m
+* **yellow_box**
+  * Size (l,w,h) = (7,5,10) cm
+  * Pose (x,y) = (0.6,0.45) m
+* **red_box**
+  * Size (l,w,h) = (5,10,8) cm
+  * Pose (x,y) = (0.6,-0.3) m
+* **blue_ball**
+  * Size (r) = (4) cm
+  * Pose (x,y) = (0.7,0.1) m
+* **green_cylinder**
+  * Size (r,h) = (4,15) cm
+  * Pose (x,y) = (0.5,0.1) m
 
 **Target list.** The four targets are located on a table that is 0.8 m tall.
-- **red_target**
-  - Size (l,w,h) = (36,30,12) cm
-  - Pose (x,y) = (0.6,0.15) m
-- **green_target**
-  - Size (l,w,h) = (36,30,12) cm
-  - Pose (x,y) = (-0.6,-0.15) m
-- **blue_target**
-  - Size (l,w,h) = (36,30,12) cm
-  - Pose (x,y) = (-0.6,0.45) m
-- **yellow_target**
-  - Size (l,w,h) = (36,30,12) cm
-  - Pose (x,y) = (-0.6,-0.45) m
-
+* **red_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (0.6,0.15) m
+* **green_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,-0.15) m
+* **blue_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,0.45) m
+* **yellow_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,-0.45) m
 
 ## Hints
 
 ### Relationship among ROS2, MoveIt2, Gazebo, JdeRobot provided API
+
 - [ROS](https://www.ros.org/)(Robot Operating System) is a robotics middleware which contains a set of open source libraries for developing robot applications.
-- [MoveIt](https://moveit.ros.org/) is an open source Motion Planning framework for industrial robot which integrates motion planning, collision checking, manipulation, 3D perception capabilities.
-- [Rviz](http://wiki.ros.org/rviz) is a 3D visualization tool for ROS. Many ROS topics can be visualized in Rviz, including the planning scene of MoveIt move group, but it does not contain any physics simulation capability.
-- [Gazebo](http://gazebosim.org/) is a physics simulator mainly use for robot simulation. 
-- The HAL API provided by JdeRobot Robotics Academy is based on the above tools and the IFRA Cranfield repositories (see Acknowledgements), so the user don't need to learn all of them to start simulation of industrial robot manipulation.
+* [MoveIt](https://moveit.ros.org/) is an open source Motion Planning framework for industrial robot which integrates motion planning, collision checking, manipulation, 3D perception capabilities.
+* [Rviz](http://wiki.ros.org/rviz) is a 3D visualization tool for ROS. Many ROS topics can be visualized in Rviz, including the planning scene of MoveIt move group, but it does not contain any physics simulation capability.
+* [Gazebo](http://gazebosim.org/) is a physics simulator mainly use for robot simulation.
+* The HAL API provided by JdeRobot Robotics Academy is based on the above tools and the IFRA Cranfield repositories (see Acknowledgements), so the user don't need to learn all of them to start simulation of industrial robot manipulation.
 
 ## Videos
 
@@ -161,5 +180,4 @@ Fail: ABORTED: No motion plan found. No execution attempted.
 ## Acknowledgements
 
 This exercise uses the excellent work of the IFRA Cranfield Group. Check out their repos at:
-IFRA-Cranfield (2023) ROS 2 Sim-to-Real Robot Control. URL: https://github.com/IFRA-Cranfield/ros2_SimRealRobotControl.
-
+IFRA-Cranfield (2023) ROS 2 Sim-to-Real Robot Control. URL: <https://github.com/IFRA-Cranfield/ros2_SimRealRobotControl>.

@@ -47,10 +47,15 @@ The objective of this exercise is to implement the logic of a navigation algorit
 
 {% include gallery caption="Gallery" %}
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d()` - to get all the position information.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
 * `HAL.getPose3d().y` - to get the position of the robot (y coordinate).
