@@ -1,12 +1,16 @@
+import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import Image from "mui-image";
 import { Box } from "@mui/material";
-import RoboticsTheme from "Components/RoboticsTheme.tsx";
+import RoboticsTheme from "Components/RoboticsTheme.js";
+import PropTypes from "prop-types";
 import { useUnload } from "Hooks/useUnload";
-import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton.tsx";
-import AppIndicator from "../visualizers/AppIndicator.tsx";
-import ConnectionIndicator from "../visualizers/ConnectionIndicator.tsx";
-import VisualizationIndicator from "../visualizers/VisualizationIndicator.tsx";
+import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
+import AppIndicator from "../visualizers/AppIndicator";
+import ConnectionIndicator from "../visualizers/ConnectionIndicator";
+import VisualizationIndicator from "../visualizers/VisualizationIndicator";
+import {merge} from "lodash";
 
 interface MainAppBarProps {
   exerciseName: string;
@@ -18,7 +22,7 @@ const MainAppBar: React.FC<MainAppBarProps> = ({ exerciseName, url, children }) 
   const maxConnectionAttempts = 3;
   let connectionAttempts = 0;
 
-  const connectWithRetry = () => {
+  const connectWithRetry = (): void => {
     if (connectionAttempts >= maxConnectionAttempts) {
       RoboticsReactComponents.MessageSystem.Alert.showAlert(
         "Error connecting, try reloading the page.",
@@ -39,17 +43,17 @@ const MainAppBar: React.FC<MainAppBarProps> = ({ exerciseName, url, children }) 
     window.RoboticsExerciseComponents.commsManager
       .connect()
       .then(() => {
-        const config = JSON.parse(
-          document.getElementById("exercise-config")?.textContent || "{}"
-        );
+        const configText = document.getElementById("exercise-config")?.textContent;
+        const config = JSON.parse(configText);
+        const tools_config_base = config[0].tools_config;
+        const tools_config_world = config[0].world.tools_config;
+        const tools_config = merge(tools_config_base, tools_config_world);
+
         window.RoboticsExerciseComponents.commsManager
           .launchWorld({ world: config[0].world, robot: config[0].robot })
           .then(() => {
             window.RoboticsExerciseComponents.commsManager
-              .prepareVisualization({
-                type: config[0].visualization,
-                file: config[0].visualization_config_path,
-              })
+              .prepareTools({ tools: config[0].tools, config: tools_config })
               .then(() => {
                 RoboticsReactComponents.MessageSystem.Loading.hideLoading();
                 RoboticsReactComponents.MessageSystem.Alert.showAlert(
@@ -60,18 +64,18 @@ const MainAppBar: React.FC<MainAppBarProps> = ({ exerciseName, url, children }) 
           })
           .catch((e: any) => {
             RoboticsReactComponents.MessageSystem.Alert.showAlert(
-              e.data.message,
+              e?.data?.message ?? "Failed to launch world",
               "error"
             );
           });
       })
-      .catch((e: any) => {
+      .catch(() => {
         connectionAttempts++;
         setTimeout(connectWithRetry, 2000);
       });
   };
 
-  const disconnect = () => {
+  const disconnect = (): void => {
     window.RoboticsExerciseComponents.commsManager.disconnect();
   };
 
