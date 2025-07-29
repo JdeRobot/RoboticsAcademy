@@ -141,8 +141,8 @@ export const getHalGuiMethods = (importName: string): SnippetItem[] => {
     return [];
   }
 
-  if (importName === "GUI") {
-    return guiAndHalAutoCompleteObj[exerciseName].gui;
+  if (importName === "WebGUI") {
+    return guiAndHalAutoCompleteObj[exerciseName].webgui;
   } else if (importName === "HAL") {
     return guiAndHalAutoCompleteObj[exerciseName].hal;
   }
