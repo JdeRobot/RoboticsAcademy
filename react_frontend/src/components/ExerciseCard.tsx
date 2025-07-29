@@ -24,10 +24,12 @@ const ExerciseCard: FC<ExerciseCardProps> = ({ id, name, description, tags, stat
   };
 
   const navigateToExercise = (): void => {
-    window.location.href = exerciseURL.replace("{exerciseid}", id);
+    window.location.href = exerciseURL.replace("${exerciseid}", id);
   };
 
   const tagsList: string[] = JSON.parse(tags).tags;
+
+  console.log(teaser)
 
   return (
     <div
@@ -54,7 +56,7 @@ const ExerciseCard: FC<ExerciseCardProps> = ({ id, name, description, tags, stat
           component="img"
           height="auto"
           style={{ flexGrow: 1 }}
-          image={teaser.url.replace("{exerciseid}", id)}
+          image={teaser.url.replace("${exerciseid}", id)}
           onError={onMediaFallback}
         />
         <div className="exercise-info-container">
