@@ -4,7 +4,7 @@ export type ResizeOption = typeof resizeList[number];
 export const monacoEditorThemeList = ["vs-dark"] as const;
 export type MonacoEditorTheme = typeof monacoEditorThemeList[number];
 
-export const defaultEditorSourceCode = `import GUI
+export const defaultEditorSourceCode = `import WebGUI
 import HAL
 import Frequency
 # Enter sequential code!
