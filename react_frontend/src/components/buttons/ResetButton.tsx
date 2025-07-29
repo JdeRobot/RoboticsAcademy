@@ -14,6 +14,7 @@ const ResetButton: React.FC = () => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const callback = (message: { data: { state: string } }) => {
+      console.log(message)
       if (
         (message.data.state === "application_running") ||
         (message.data.state === "paused")
@@ -21,6 +22,7 @@ const ResetButton: React.FC = () => {
         setDisabled(false);
       } else {
         setDisabled(true);
+        setLoading(true);
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
