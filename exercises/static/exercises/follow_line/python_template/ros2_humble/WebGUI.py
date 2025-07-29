@@ -104,6 +104,11 @@ class WebGUI(MeasuringThreadingGUI):
             self.image_to_be_shown_updated = True
 
 
+    # Prepares and sends a map to the websocket server
+    def stop_exercise(self):
+        self.send_to_client(json.dumps({"action": "stop"}))
+
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
@@ -114,3 +119,7 @@ start_console()
 # Expose to the user
 def showImage(image):
     gui.showImage(image)
+
+# Expose to the user
+def stop():
+    gui.stop_exercise()
