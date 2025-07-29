@@ -1,38 +1,41 @@
 import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl, InputLabel, Select, Box } from "@mui/material";
+import {merge} from "lodash";
 
-interface UniverseConfig {
+interface World {
+  tools_config: Record<string, any>;
+  [key: string]: any;
+}
+
+interface Config {
   name: string;
-  world: string;
-  robot: string;
-  visualization: string;
-  visualization_config_path: string;
+  tools_config: Record<string, any>;
+  world: World;
+  robot: any;
+  tools: any[];
 }
 
-declare global {
-  interface Window {
-    RoboticsExerciseComponents: any;
-    RoboticsReactComponents: any;
-    context: any;
-  }
+declare const context: {
+  mapSelected: string;
+};
+
+interface WorldSelectorProps {
+
 }
 
-const exerciseConfig: UniverseConfig[] = JSON.parse(
-  document.getElementById("exercise-config")?.textContent || "[]"
-);
-
-export default function WorldSelector() {
-  const [disabled, setDisabled] = useState(true);
-  const [selectedUniverse, setSelectedUniverse] = useState<UniverseConfig | null>(
-    exerciseConfig.length > 0 ? exerciseConfig[0] : null
+const WorldSelector: React.FC<WorldSelectorProps> = () => {
+  const exerciseConfig: Config[] = JSON.parse(
+    document.getElementById("exercise-config")?.textContent ?? "[]"
   );
-  const [configurations, setConfigurations] = useState<UniverseConfig[]>(exerciseConfig);
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [selectedUniverse, setSelectedUniverse] = useState<Config>(exerciseConfig[0]);
+  const [configurations, setConfigurations] = useState<Config[]>(exerciseConfig);
 
   useEffect(() => {
-    window.context.mapSelected = selectedUniverse.name;
+    context.mapSelected = exerciseConfig[0]?.name ?? "";
 
-    const callback = (message: MessageEvent<any>) => {
+    const callback = (message: { data: { state: string } }) => {
       if (message.data.state !== "connected") {
         setDisabled(false);
       } else {
@@ -53,10 +56,9 @@ export default function WorldSelector() {
     };
   }, []);
 
-  const handleUniverse = async (config: UniverseConfig) => {
+  const handleUniverse = async (config: Config) => {
     context.mapSelected = config.name;
     setSelectedUniverse(config);
-    console.log(config);
 
     await window.RoboticsExerciseComponents.commsManager.terminate_application();
     await window.RoboticsExerciseComponents.commsManager.terminate_visualization();
@@ -64,13 +66,17 @@ export default function WorldSelector() {
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Launching Universe"
     );
+    
+    const tools_config = merge(config.tools_config, config.world.tools_config);
+
     await window.RoboticsExerciseComponents.commsManager.launchWorld({
       world: config.world,
       robot: config.robot,
     });
-    await window.RoboticsExerciseComponents.commsManager.prepareVisualization(
-      {type: config.visualization, file: config.visualization_config_path}
-    );
+    await window.RoboticsExerciseComponents.commsManager.prepareTools({
+      tools: config.tools,
+      config: tools_config,
+    });
     RoboticsReactComponents.MessageSystem.Loading.hideLoading();
     RoboticsReactComponents.MessageSystem.Alert.showAlert(
       "Exercise loaded successfully.",
@@ -93,17 +99,16 @@ export default function WorldSelector() {
         <InputLabel id={"universe-selector-label"}>Universe</InputLabel>
         <Select
           disabled={disabled}
-          value={selectedUniverse.name || ""}
+          value={selectedUniverse}
           labelId="universe-selector-label"
           id={"universe-selector"}
           label={"Universe"}
-          onChange={(e) => {
-              const selected = configurations.find((c) => c.name === e.target.value);
-              if (selected) {
-                handleUniverse(selected);
-              }
-            }}
-          >
+          onChange={(e: SelectChangeEvent<unknown>) => {
+            const selectedConfig = e.target.value as Config;
+            handleUniverse(selectedConfig);
+          }}
+          renderValue={(selected) => (selected as Config).name}
+        >
           {configurations.map((option) => (
             <MenuItem key={option.name} value={option.name}>
               {option.name}
