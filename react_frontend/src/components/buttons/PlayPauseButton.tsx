@@ -39,6 +39,7 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
           state === "paused"
         )
       );
+      setLoading(false)
     };
 
     commsManager.subscribe([commsManager.events.STATE_CHANGED], callback);
@@ -67,7 +68,6 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
     } else {
       await runCode(editorCode);
     }
-    setLoading(false);
     setEditorChanged(false);
   };
 
@@ -124,8 +124,9 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         try {
-          await commsManager.run({
-            type: "robotics-academy",
+          await window.RoboticsExerciseComponents.commsManager.run({
+            entrypoint: "/workspace/code/academy.py",
+            linter: ["academy.py"],
             code: base64data,
           });
         } catch (error) {
@@ -151,7 +152,6 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
       .pause()
       .then(() => {})
       .catch((response) => console.log(response))
-      .finally(() => setLoading(false));
   };
 
   return (
