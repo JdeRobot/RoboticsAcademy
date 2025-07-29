@@ -34,9 +34,9 @@ export const basic_snippets: Snippet[] = [
   {
     type: "snippet",
     label: "RA: Template-01",
-    code: "import GUI\nimport HAL\n# Enter sequential code!\n\nwhile True:\n    # Enter iterative code!",
+    code: code: "import WebGUI\nimport HAL\nimport Frecuencies\n# Enter sequential code!\n\nwhile True:\n    # Enter iterative code!\n    Frecuencies.tick(),
     descriptions:
-      "import GUI\nimport HAL\n# Enter sequential code!\n\nwhile True:\n    # Enter iterative code!",
+      "import WebGUI\nimport HAL\nimport Frecuencies\n# Enter sequential code!\n\nwhile True:\n    # Enter iterative code!\n    Frecuencies.tick()",
   },
   {
     type: "snippet",
