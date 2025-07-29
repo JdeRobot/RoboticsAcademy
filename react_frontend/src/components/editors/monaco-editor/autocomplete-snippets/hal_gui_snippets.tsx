@@ -915,7 +915,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         code: "showImage()",
         descriptions:
           "Allows you to view a debug image or with relevant information.",
-      }
+      },
     ],
   },
   _laser_mapping: {
@@ -986,7 +986,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         code: "poseToMap(x, y, yaw)",
         descriptions:
           "Converts the robot position to 2D coordinates in the map.",
-      }
+      },
     ],
   },
   _follow_road: {
@@ -1122,7 +1122,16 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         code: "getImage()",
         descriptions:
           "Returns the image from the camera. Can be None.",
-      }
+      },
     ],
-  }
+  },
 };
+
+export const frequencyAutoCompleteObj: SnippetItem[] = [
+  {
+    type: "method",
+    label: "tick()",
+    code: "tick(20)",
+    descriptions: "Regulate the execution rate. Defaults to 20 Hz.",
+  },
+];
