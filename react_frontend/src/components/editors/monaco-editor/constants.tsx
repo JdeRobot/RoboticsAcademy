@@ -6,11 +6,12 @@ export type MonacoEditorTheme = typeof monacoEditorThemeList[number];
 
 export const defaultEditorSourceCode = `import GUI
 import HAL
+import Frequency
 # Enter sequential code!
 
 while True:
     # Enter iterative code!
-
+    Frequency.tick()
 ` as const;
 
 // Know about pylint Errors with type
