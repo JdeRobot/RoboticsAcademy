@@ -177,7 +177,7 @@ const Camera: React.FC = () => {
   // handle and udpate camera state, depending on RAM state
   useEffect(() => {
     const callback = (message: MessageEvent<any>) => {
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         dispatch({ type: "visiualReady", payload: true });
       }
       if (message.data.state === "application_running") {

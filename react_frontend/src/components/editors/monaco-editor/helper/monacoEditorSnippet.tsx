@@ -145,6 +145,8 @@ export const getHalGuiMethods = (importName: string): SnippetItem[] => {
     return guiAndHalAutoCompleteObj[exerciseName].webgui;
   } else if (importName === "HAL") {
     return guiAndHalAutoCompleteObj[exerciseName].hal;
+  } else if (importName === "Frequency") {
+    return frequencyAutoCompleteObj;
   }
 
   return [];

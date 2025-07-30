@@ -758,15 +758,13 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "poseToMap(x_prime, y_prime, yaw_prime)",
         code: "poseToMap(x_prime, y_prime, yaw_prime)",
-        descriptions:
-          "Returns the map coordinates of the given pose.",
+        descriptions: "Returns the map coordinates of the given pose.",
       },
       {
         type: "method",
         label: "mapToPose(x, y, yaw)",
         code: "mapToPose(x, y, yaw)",
-        descriptions:
-          "Returns the pose of the given map coordinates.",
+        descriptions: "Returns the pose of the given map coordinates.",
       },
       {
         type: "method",
@@ -846,13 +844,15 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "poseToMap(x_prime, y_prime, yaw_prime)",
         code: "poseToMap(x_prime, y_prime, yaw_prime)",
-        descriptions: "Converts the robot position to 2D coordinates in the map.",
+        descriptions:
+          "Converts the robot position to 2D coordinates in the map.",
       },
       {
         type: "method",
         label: "mapToPose(x, y, yaw)",
         code: "mapToPose(x, y, yaw)",
-        descriptions: "Converts the robot 2D coordinates in the map to the real 3D position.",
+        descriptions:
+          "Converts the robot 2D coordinates in the map to the real 3D position.",
       },
       {
         type: "method",
@@ -955,30 +955,28 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getOdom()",
         code: "getOdom()",
-        descriptions:
-          "Obtain the position of the robot with a little noise.",
+        descriptions: "Obtain the position of the robot with a little noise.",
       },
       {
         type: "method",
         label: "getOdom2()",
         code: "getOdom2()",
-        descriptions:
-          "Obtain the position of the robot with noise.",
+        descriptions: "Obtain the position of the robot with noise.",
       },
       {
         type: "method",
         label: "getOdom3()",
         code: "getOdom3()",
-        descriptions:
-          "Obtain the position of the robot with a lot of noise.",
-      }
+        descriptions: "Obtain the position of the robot with a lot of noise.",
+      },
     ],
     webgui: [
       {
         type: "method",
         label: "setUserMap(image)",
         code: "setUserMap(image)",
-        descriptions: "Allows you to view a debug image or with relevant information.",
+        descriptions:
+          "Allows you to view a debug image or with relevant information.",
       },
       {
         type: "method",
@@ -1114,7 +1112,8 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "showImage(image)",
         code: "showImage(image)",
-        descriptions: "Allows you to view a debug image or with relevant information.",
+        descriptions:
+          "Allows you to view a debug image or with relevant information.",
       },
       {
         type: "method",

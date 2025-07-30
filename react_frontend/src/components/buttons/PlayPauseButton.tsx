@@ -34,12 +34,12 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
       setApplicationRunning(state === "application_running");
       setDisabled(
         !(
-          state === "visualization_ready" ||
+          state === "tools_ready" ||
           state === "application_running" ||
           state === "paused"
         )
       );
-      setLoading(false)
+      setLoading(false);
     };
 
     commsManager.subscribe([commsManager.events.STATE_CHANGED], callback);
@@ -123,6 +123,7 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
       reader.onloadend = async () => {
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
+        // TODO: temporal until config file
         try {
           await window.RoboticsExerciseComponents.commsManager.run({
             entrypoint: "/workspace/code/academy.py",

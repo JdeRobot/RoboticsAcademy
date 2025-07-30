@@ -15,7 +15,7 @@ interface ExerciseTheoryForumButtonProps {
 const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ url }) => {
   return (
     <RoboticsTheme>
-      <Box display="flex" gap={1}>
+      <ButtonGroup color={"loading"} variant={"contained"}>
         {url && (
           <IconButton href={url} target="_blank" color="secondary">
             <SchoolOutlinedIcon />
@@ -28,7 +28,7 @@ const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ u
         >
           <CommentOutlinedIcon />
         </IconButton>
-      </Box>
+      </ButtonGroup>
     </RoboticsTheme>
   );
 };

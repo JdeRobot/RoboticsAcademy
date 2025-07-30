@@ -55,6 +55,7 @@
     "glob": "^8.0.3",
     "js-yaml": "^4.1.0",
     "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
     "mui-image": "^1.0.5",
     "prop-types": "^15.8.1",

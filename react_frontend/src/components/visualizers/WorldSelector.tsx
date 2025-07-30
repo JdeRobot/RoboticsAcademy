@@ -61,7 +61,7 @@ const WorldSelector: React.FC<WorldSelectorProps> = () => {
     setSelectedUniverse(config);
 
     await window.RoboticsExerciseComponents.commsManager.terminate_application();
-    await window.RoboticsExerciseComponents.commsManager.terminate_visualization();
+    await window.RoboticsExerciseComponents.commsManager.terminate_tools();
     await window.RoboticsExerciseComponents.commsManager.terminate_universe();
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Launching Universe"

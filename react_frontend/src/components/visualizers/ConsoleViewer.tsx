@@ -6,7 +6,7 @@ const VncConsoleViewer: React.FC = () => {
   const [active, setActive] = React.useState<boolean>(false);
   React.useEffect(() => {
     const callback = (message: MessageEvent<any>) => {
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         setActive(true);
       }
     };

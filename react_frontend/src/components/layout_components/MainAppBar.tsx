@@ -43,11 +43,12 @@ const MainAppBar: React.FC<MainAppBarProps> = ({ exerciseName, url, children }) 
     window.RoboticsExerciseComponents.commsManager
       .connect()
       .then(() => {
-        const configText = document.getElementById("exercise-config")?.textContent;
-        const config = JSON.parse(configText);
-        const tools_config_base = config[0].tools_config;
-        const tools_config_world = config[0].world.tools_config;
-        const tools_config = merge(tools_config_base, tools_config_world);
+        const config = JSON.parse(
+          document.getElementById("exercise-config").textContent
+        );
+        var tools_config_base = config[0].tools_config
+        var tools_config_world = config[0].world.tools_config
+        const tools_config = merge(tools_config_base, tools_config_world)
 
         window.RoboticsExerciseComponents.commsManager
           .launchWorld({ world: config[0].world, robot: config[0].robot })

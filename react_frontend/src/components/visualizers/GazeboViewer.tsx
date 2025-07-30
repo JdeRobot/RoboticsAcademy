@@ -10,7 +10,7 @@ const GazeboViewer: React.FC<GazeboViewerProps> = ({ context }) => {
   const [enableGazebo, handleEnableGazebo] = React.useState<boolean>(false);
   React.useEffect(() => {
     const callback = (message: MessageEvent<any>) => {
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         handleEnableGazebo(true);
       }
     };

@@ -22,7 +22,7 @@ indigo = [130, 0, 75]
 violet = [211, 0, 148]
 
 
-class GUI(MeasuringThreadingGUI):
+class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
@@ -125,7 +125,7 @@ class GUI(MeasuringThreadingGUI):
 
 
 host = "ws://127.0.0.1:2303"
-gui = GUI(host)
+gui = WebGUI(host)
 
 # Redirect the console
 start_console()

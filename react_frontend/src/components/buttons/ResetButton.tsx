@@ -22,7 +22,7 @@ const ResetButton: React.FC = () => {
         setDisabled(false);
       } else {
         setDisabled(true);
-        setLoading(true);
+        setLoading(false);
       }
     };
     window.RoboticsExerciseComponents.commsManager.subscribe(
