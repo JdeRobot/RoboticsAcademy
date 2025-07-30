@@ -57,6 +57,7 @@
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "loglevel": "^1.8.0",
+    "monaco-editor": "0.52.2",
     "mui-image": "^1.0.5",
     "prop-types": "^15.8.1",
     "react-brace": "^3.6.6",

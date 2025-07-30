@@ -1,4 +1,4 @@
-import { basic_snippets, guiAndHalAutoCompleteObj, frequencyAutoCompleteObj } from "./../index";
+import { basic_snippets, guiAndHalAutoCompleteObj, frequencyAutoCompleteObj } from "./../index.tsx";
 import { editor, languages } from "monaco-editor";
 import EventEmitter from "events";
 

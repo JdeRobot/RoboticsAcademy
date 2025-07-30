@@ -1,5 +1,5 @@
 import React from "react";
-import { AlignIcon, InfoIcon, ZoomInIcon, ZoomOutIcon } from "../icons";
+import { AlignIcon, InfoIcon, ZoomInIcon, ZoomOutIcon } from "../icons.tsx";
 
 type EditorSettings = {
   isModalOpen: boolean;

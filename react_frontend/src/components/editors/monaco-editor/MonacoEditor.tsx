@@ -8,7 +8,7 @@ import {
   monacoEditorScroll,
   setEditorSettingsWidgetsData,
   getEditorSettingsWidgetsData,
-} from "./index";
+} from "./index.tsx";
 import {
   useMonacoEditorLoaderEffect,
   useMonacoEditorCodeAnalysisEffect,
@@ -16,7 +16,7 @@ import {
   useMonacoEditorLineNumberDecorationsEffect,
 } from "../../../hooks/useMonacoEditorEffect";
 import "./../../../styles/editors/MonacoEditor.css";
-import MonacoEditorInfo from "./editor-info/MonacoEditorInfo";
+import MonacoEditorInfo from "./editor-info/MonacoEditorInfo.tsx";
 
 interface EditorSettings {
   isCodeFormatEnable: boolean;

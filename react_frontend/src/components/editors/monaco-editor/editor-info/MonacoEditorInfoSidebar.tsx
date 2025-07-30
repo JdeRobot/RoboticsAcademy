@@ -1,5 +1,5 @@
 import React from "react";
-import { KeyboardIcon, WidgetsIcon } from "../icons";
+import { KeyboardIcon, WidgetsIcon } from "../icons.tsx";
 
 type ModalScreenState = "shortcuts" | "widgets";
 

@@ -1,9 +1,9 @@
 import React from "react";
 
 import * as monaco from "monaco-editor";
-import MonacoEditorInfoButtons from "./MonacoEditorInfoButtons";
-import MonacoEditorInfoSidebar from "./MonacoEditorInfoSidebar";
-import MonacoEditorInfoDetails from "./MonacoEditorInfoDetails";
+import MonacoEditorInfoButtons from "./MonacoEditorInfoButtons.tsx";
+import MonacoEditorInfoSidebar from "./MonacoEditorInfoSidebar.tsx";
+import MonacoEditorInfoDetails from "./MonacoEditorInfoDetails.tsx";
 
 export type ModalScreenState = "shortcuts" | "widgets";
 

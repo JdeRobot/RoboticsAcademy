@@ -78,7 +78,7 @@ window.RoboticsExerciseComponents = (function () {
         }
       );
     } else {
-      rendered_component = await import(`/${component}.js`).then(
+      rendered_component = await import(`/${component}.tsx`).then(
         (component) => {
           return renderComponentNew(
             component.default,

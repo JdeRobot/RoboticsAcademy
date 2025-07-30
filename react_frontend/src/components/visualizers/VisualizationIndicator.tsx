@@ -4,7 +4,7 @@ import "../../styles/Indicator.css";
 
 interface VisualizationIndicatorProps {}
 
-const VisualizationIndicator: React.FC<VisualizationIndicatorProps> = () => {
+export const VisualizationIndicator: React.FC<VisualizationIndicatorProps> = () => {
   const [visualizationReady, setVisualizationReady] = useState<boolean>(false);
 
   useEffect(() => {

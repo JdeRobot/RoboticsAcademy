@@ -4,7 +4,7 @@ import {
   pylint_convention,
   pylint_refactor,
   pylint_fatal,
-} from "../constants";
+} from "../constants.tsx";
 
 interface FetchFormatCodeParams {
   baseUrl: string;

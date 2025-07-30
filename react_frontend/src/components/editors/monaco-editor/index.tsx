@@ -15,18 +15,16 @@ export {
   monacoEditorGlyph,
   filterLineNumber,
   renderGlyphs,
-} from "./helper/monacoEditorGlyph";
-export {
-  getEditorSettingsWidgetsData,
-  setEditorSettingsWidgetsData,
-} from "./helper/helpers";
+} from "./helper/monacoEditorGlyph.tsx";
 
 // autocomplete-snippets
-export { basic_snippets } from "./autocomplete-snippets/basic_snippets";
-export { guiAndHalAutoCompleteObj, frequencyAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets";
+export { basic_snippets } from "./autocomplete-snippets/basic_snippets.tsx";
+export { guiAndHalAutoCompleteObj, frequencyAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets.tsx";
 
 // helper
 export {
+  getEditorSettingsWidgetsData,
+  setEditorSettingsWidgetsData,
   getMarkerSeverity,
 } from "./helper/helpers.tsx";
 

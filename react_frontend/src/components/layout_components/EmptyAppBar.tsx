@@ -2,8 +2,8 @@ import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Box } from "@mui/material";
-import RoboticsTheme from "Components/RoboticsTheme";
-import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
+import RoboticsTheme from "Components/RoboticsTheme.tsx";
+import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton.tsx";
 
 interface MainAppBarProps {
   url?: string;

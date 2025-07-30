@@ -1,5 +1,5 @@
 import React from "react";
-import { CloseIcon } from "../icons";
+import { CloseIcon } from "../icons.tsx";
 
 type EditorSettings = {
   isModalOpen: boolean;
