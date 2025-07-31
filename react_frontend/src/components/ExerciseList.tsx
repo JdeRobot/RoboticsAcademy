@@ -60,7 +60,6 @@ const ExerciseList: React.FC = () => {
     <div className={"exercise-list"}>
       {filteredData.map((exercise) => (
         <ExerciseCard
-          key={exercise.exercise_id}
           id={exercise.exercise_id}
           name={exercise.name}
           description={exercise.description}
