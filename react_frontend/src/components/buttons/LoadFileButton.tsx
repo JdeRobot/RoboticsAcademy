@@ -16,9 +16,9 @@ interface LoadFileButtonProps {
 const LoadFileButton: React.FC<LoadFileButtonProps> = () => {
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    var fr = new FileReader();
+    const fr = new FileReader();
     fr.onload = () => {
-      RoboticsReactComponents.CodeEditor.setCode(fr.result);
+      window.RoboticsReactComponents.CodeEditor.setCode(fr.result);
     };
     fr.readAsText(event.target.files?.[0]);
   };
@@ -34,10 +34,6 @@ const LoadFileButton: React.FC<LoadFileButtonProps> = () => {
       <input hidden accept=".py" type="file" onChange={loadFile} />
     </Button>
   );
-};
-
-LoadFileButton.propTypes = {
-  context: PropTypes.any,
 };
 
 export default LoadFileButton;
