@@ -108,10 +108,9 @@ Use standard ROS 2 topics for direct communication with the simulation.
 * `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 * `/odom` - Subscribe to this topic to get the robot's position and orientation. Message type: `nav_msgs/msg/Odometry`
 * `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
-* `/roombaROS/events/center_bumper`
-* `/roombaROS/events/left_bumper`
-* `/roombaROS/events/right_bumper`
-
+* `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+* `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+* `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 #### Frequency Control
 Use standard ROS 2 mechanisms to manage loop timing:
 * `rclpy.spin()` - Event-driven execution using callbacks.
@@ -236,8 +235,15 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ## Contributors
 
-- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh).
+- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh), [Ashish Ramesh](https://github.com/AshishRamesh).
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
+
+## References
+
+1. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)  
+2. [https://docs.ros2.org/humble/api/sensor_msgs/msg/LaserScan.html](https://docs.ros2.org/foxy/api/sensor_msgs/msg/LaserScan.html)
+3. [https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html](https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html)  
+4. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)
 
 <!--
 Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.
