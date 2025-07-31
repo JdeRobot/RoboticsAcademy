@@ -12,9 +12,8 @@ declare global {
   }
 }
 
-interface PlayPauseProps {}
 
-const PlayPause: React.FC<PlayPauseProps> = () => {
+const PlayPauseButton: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [applicationRunning, setApplicationRunning] = useState(true);
   const [applicationPaused, setApplicationPaused] = useState(false);
@@ -170,4 +169,4 @@ const PlayPause: React.FC<PlayPauseProps> = () => {
   );
 };
 
-export default PlayPause;
+export default PlayPauseButton;
