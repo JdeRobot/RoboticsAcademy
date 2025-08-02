@@ -6,7 +6,7 @@
 
 {% block react-content %}
     {% if deployment %}
-        {% react_component exercise/digital_image_processing/DigitalImageProcessingRR %}
+        {% react_component exercise/basic_computer_vision/BasicComputerVisionRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
             {% react_component components/common/MainAppBar exerciseName="Digital Image Processing" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing"%} 
             {% end_react_component %}
@@ -19,7 +19,7 @@
                         {% react_component components/visualizers/VncConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/containers/FlexContainer%} 
-                            {% react_component exercise/digital_image_processing/SpecificDigitalImageProcessing %} {% end_react_component %}
+                            {% react_component exercise/basic_computer_vision/SpecificBasicComputerVision %} {% end_react_component %}
                             {% react_component components/visualizers/Camera%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
@@ -30,7 +30,7 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-    {% react_component exercise/digital_image_processing/DigitalImageProcessingRR %}
+    {% react_component exercise/basic_computer_vision/BasicComputerVisionRR %}
         {% react_component components/wrappers/MaterialBox id="exercise-container" %}
             {% react_component components/layout_components/MainAppBar exerciseName="Digital Image Processing" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing"%} 
             {% end_react_component %}  
@@ -43,7 +43,7 @@
                         {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
                         {% end_react_component%}
                         {% react_component components/wrappers/FlexContainer%} 
-                        {% react_component exercise/digital_image_processing/SpecificDigitalImageProcessing %}{% end_react_component %}
+                        {% react_component exercise/basic_computer_vision/SpecificBasicComputerVision %}{% end_react_component %}
                             {% react_component components/visualizers/Camera%}{% end_react_component %}
                         {% end_react_component %}
                 {% end_react_component %}
