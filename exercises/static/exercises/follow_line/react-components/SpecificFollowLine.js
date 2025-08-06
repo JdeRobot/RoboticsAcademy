@@ -70,7 +70,7 @@ const SpecificFollowLine = (props) => {
         window.RoboticsExerciseComponents.commsManager.send("gui", "start");
       } else if (message.data.state === "paused") {
         window.RoboticsExerciseComponents.commsManager.send("gui", "pause");
-      } else if (message.data.state === "visualization_ready") {
+      } else if (message.data.state === "tools_ready") {
         setCarPose(null)
         setLapTime(null)
         switch (context.mapSelected) {

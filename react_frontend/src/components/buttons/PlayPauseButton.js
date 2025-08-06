@@ -24,11 +24,12 @@ const PlayPause = (props) => {
       setApplicationRunning(state === "application_running");
       setDisabled(
         !(
-          state === "visualization_ready" ||
+          state === "tools_ready" ||
           state === "application_running" ||
           state === "paused"
         )
       );
+      setLoading(false);
     };
 
     commsManager.subscribe([commsManager.events.STATE_CHANGED], callback);
@@ -57,7 +58,6 @@ const PlayPause = (props) => {
     } else {
       await runCode(editorCode);
     }
-    setLoading(false);
     setEditorChanged(false);
   };
 
@@ -113,9 +113,11 @@ const PlayPause = (props) => {
       reader.onloadend = async () => {
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
+        // TODO: temporal until config file
         try {
           await window.RoboticsExerciseComponents.commsManager.run({
-            type: "robotics-academy",
+            entrypoint: "/workspace/code/academy.py",
+            linter: ["academy.py"],
             code: base64data,
           });
         } catch (error) {
@@ -141,7 +143,6 @@ const PlayPause = (props) => {
       .pause()
       .then(() => {})
       .catch((response) => console.log(response))
-      .finally(() => setLoading(false));
   };
 
   return (

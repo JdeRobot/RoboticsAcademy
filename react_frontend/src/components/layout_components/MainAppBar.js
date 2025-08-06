@@ -10,6 +10,7 @@ import ExerciseTheoryForumButton from "../buttons/ExerciseTheoryForumButton";
 import AppIndicator from "../visualizers/AppIndicator";
 import ConnectionIndicator from "../visualizers/ConnectionIndicator";
 import VisualizationIndicator from "../visualizers/VisualizationIndicator";
+import {merge} from "lodash";
 
 function MainAppBar(props) {
   const maxConnectionAttempts = 3;
@@ -39,14 +40,15 @@ function MainAppBar(props) {
         const config = JSON.parse(
           document.getElementById("exercise-config").textContent
         );
+        var tools_config_base = config[0].tools_config
+        var tools_config_world = config[0].world.tools_config
+        const tools_config = merge(tools_config_base, tools_config_world)
+
         window.RoboticsExerciseComponents.commsManager
           .launchWorld({ world: config[0].world, robot: config[0].robot })
           .then(() => {
             window.RoboticsExerciseComponents.commsManager
-              .prepareVisualization({
-                type: config[0].visualization,
-                file: config[0].visualization_config_path,
-              })
+              .prepareTools({ tools: config[0].tools, config: tools_config})
               .then(() => {
                 RoboticsReactComponents.MessageSystem.Loading.hideLoading();
                 RoboticsReactComponents.MessageSystem.Alert.showAlert(

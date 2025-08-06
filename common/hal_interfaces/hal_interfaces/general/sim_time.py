@@ -1,6 +1,10 @@
 from rclpy.node import Node
 from rclpy.qos import ReliabilityPolicy, QoSProfile, HistoryPolicy
 import rosgraph_msgs.msg
+import rclpy
+
+if not rclpy.ok():
+    rclpy.init()
 
 
 ### AUXILIARY FUNCTIONS

@@ -100,7 +100,7 @@ function SpecificMontecarloVisualLoc(props) {
 
   React.useEffect(() => {
     const callback = (message) => {
-      if (message.data.state === "visualization_ready") {
+      if (message.data.state === "tools_ready") {
         setVacuumPose(null)
         setUserPose(null)
         setParticles([])

@@ -51,9 +51,11 @@ class ROS2Node(Node):
             return Pose3D(self.pose.position.x, self.pose.position.y, yaw)
 
 
-class GUI(MeasuringThreadingGUI):
-    def __init__(self):
-        super().__init__("ws://127.0.0.1:2303")
+class WebGUI(MeasuringThreadingGUI):
+    def __init__(self, host="ws://127.0.0.1:2303"):
+        super().__init__(host)
+
+        # Payload vars
         self.payload = {"map": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
@@ -139,5 +141,5 @@ class GUI(MeasuringThreadingGUI):
 
 
 # Create GUI instance
-gui = GUI()
+gui = WebGUI()
 start_console()
