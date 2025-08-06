@@ -3,8 +3,12 @@ from rclpy import spin_until_future_complete
 import threading
 from gazebo_msgs.srv import ApplyJointEffort
 from std_msgs.msg import String
+import rclpy
 
 DEFAULT = 2
+
+if not rclpy.ok():
+    rclpy.init()
 
 
 def cmdLift2String(cmdLift):

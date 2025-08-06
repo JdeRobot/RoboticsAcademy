@@ -23,7 +23,7 @@ export {
 
 // autocomplete-snippets
 export { basic_snippets } from "./autocomplete-snippets/basic_snippets";
-export { guiAndHalAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets";
+export { guiAndHalAutoCompleteObj, frequencyAutoCompleteObj } from "./autocomplete-snippets/hal_gui_snippets";
 
 // helper
 export {

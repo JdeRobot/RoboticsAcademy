@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import { FormControl, InputLabel, Select, Box } from "@mui/material";
+import {merge} from "lodash";
 
 export default function WorldSelector(props) {
   const exerciseConfig = JSON.parse(
@@ -37,21 +38,26 @@ export default function WorldSelector(props) {
   const handleUniverse = async (config) => {
     context.mapSelected = config.name;
     setSelectedUniverse(config);
-    console.log(config);
 
     await window.RoboticsExerciseComponents.commsManager.terminate_application();
-    await window.RoboticsExerciseComponents.commsManager.terminate_visualization();
+    await window.RoboticsExerciseComponents.commsManager.terminate_tools();
     await window.RoboticsExerciseComponents.commsManager.terminate_universe();
     window.RoboticsReactComponents.MessageSystem.Loading.showLoading(
       "Launching Universe"
     );
+
+    var tools_config_base = config.tools_config
+    var tools_config_world = config.world.tools_config
+    const tools_config = merge(tools_config_base, tools_config_world)
+
     await window.RoboticsExerciseComponents.commsManager.launchWorld({
       world: config.world,
       robot: config.robot,
     });
-    await window.RoboticsExerciseComponents.commsManager.prepareVisualization(
-      {type: config.visualization, file: config.visualization_config_path}
-    );
+    await window.RoboticsExerciseComponents.commsManager.prepareTools({
+      tools: config.tools,
+      config: tools_config,
+    });
     RoboticsReactComponents.MessageSystem.Loading.hideLoading();
     RoboticsReactComponents.MessageSystem.Alert.showAlert(
       "Exercise loaded successfully.",

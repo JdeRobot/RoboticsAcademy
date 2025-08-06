@@ -25,8 +25,7 @@ class WebGUIImagePublisher(Node):
         super().__init__('webgui_image_publisher_internal')
         self.publisher = self.create_publisher(Image, '/webgui_image', 10)
 
-class GUI(MeasuringThreadingGUI):
-
+class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
@@ -161,7 +160,7 @@ def get_gui():
     with _gui_lock:
         if _gui is None:
             host = "ws://127.0.0.1:2303"
-            _gui = GUI(host)
+            _gui = WebGUI(host)
             start_console()
     return _gui
 
