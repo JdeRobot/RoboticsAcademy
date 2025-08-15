@@ -4,7 +4,7 @@ import "./../../styles/tailwind.css";
 
 // Constants
 const white_list_exercises = [
-  "follow_line",
+  "end_to_end_visual_control",
   "digit_classification",
   "human_detection",
 ];
