@@ -158,29 +158,28 @@ class WebGUI(MeasuringThreadingGUI):
         }
 
 
-_gui = None
-_gui_lock = threading.Lock()
-
-
-def get_gui():
-    global _gui
-    with _gui_lock:
-        if _gui is None:
-            host = "ws://127.0.0.1:2303"
-            _gui = WebGUI(host)
-            start_console()
-    return _gui
+# Create GUI instance directly
+host = "ws://127.0.0.1:2303"
+webgui = WebGUI(host)
+start_console()
 
 
 def showImage(image):
     """Display an image in the GUI"""
-    gui = get_gui()
     if gui is not None:
         gui.showImage(image)
 
 
 def get_image_mode():
-    gui = get_gui()
     if gui is not None:
         return gui.get_image_mode()
     return {"auto_mode": False, "topic_subscribed": None, "manual_mode_available": True}
+
+
+_gui = gui
+_gui_lock = threading.Lock()
+
+
+def get_gui():
+    """Backward compatibility function"""
+    return gui
