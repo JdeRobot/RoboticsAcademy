@@ -141,5 +141,5 @@ class WebGUI(MeasuringThreadingGUI):
 
 
 # Create GUI instance
-webgui = WebGUI()
+gui = WebGUI()
 start_console()

@@ -160,7 +160,7 @@ class WebGUI(MeasuringThreadingGUI):
 
 # Create GUI instance directly
 host = "ws://127.0.0.1:2303"
-webgui = WebGUI(host)
+gui = WebGUI(host)
 start_console()
 
 
