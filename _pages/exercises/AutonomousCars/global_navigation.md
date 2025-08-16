@@ -127,21 +127,26 @@ The solution can integrate one or more of the following difficulty increasing go
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.setV()` - to set the linear speed.
 * `HAL.setW()` - to set the angular velocity.
 * `HAL.getPose3d()` - returns x,y and theta components of the robot in world coordinates.
-* `GUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400.
-* `GUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path.
-* `GUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image.
-* `GUI.getMap(url)` - - Returns a numpy array with the image data in grayscale as a 2 dimensional array. The URL of the Global Navigation map is '/resources/exercises/global_navigation/images/cityLargenBin.png', so the instruction to get the map is
+* `WebGUI.showNumpy(numpy)` - shows Gradient Path Planning field on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). In order to have a grid with the same resolution as the map, the array should be 400x400.
+* `WebGUI.showPath(array)` - shows a path on the map. The parameter should be a 2D array containing each of the points of the path.
+* `WebGUI.getTargetPose()` - returns x,y coordinates of chosen destionation in the world. Destination is set by clicking on the map image.
+* `WebGUI.getMap(url)` - - Returns a numpy array with the image data in grayscale as a 2 dimensional array. The URL of the Global Navigation map is '/resources/exercises/global_navigation/images/cityLargenBin.png', so the instruction to get the map is
 ```
-array = GUI.getMap('/resources/exercises/global_navigation/images/cityLargenBin.png')
+array = WebGUI.getMap('/resources/exercises/global_navigation/images/cityLargenBin.png')
 ```
-* `GUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter.
+* `WebGUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter.
     
 The map image has a resolution of 400x400 pixels and indicates whether there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
 
@@ -218,7 +223,7 @@ Assignment of weights to the cells is arbitrary. Generally, diagonally neighbori
 
 **Important Points to Remember**
 
-- You may use `GUI.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
+- You may use `WebGUI.getMap()` to know whether an obstacle is present at (i, j) coordinate of the map. Also, in order to work with this grid, we have to invert our usage of coordinates. Implying, (i, j) can be accessed using (j, i).
 
 - In order to assign those extra weights, we may take the obstacle points we saved earlier, and add extra values to the neighbors of the obstacle cell afterwards.
 
