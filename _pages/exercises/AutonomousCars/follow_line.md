@@ -81,6 +81,11 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 * `GUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
 ### ROS 2-native Implementation
+
+`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
 #### ROS 2 Topics
 Use standard ROS 2 topics for direct communication with the simulation.
 * `/cam_f1_left/image_raw ` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`

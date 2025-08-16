@@ -103,6 +103,11 @@ if len(laser_data.values) > 0:
 ```
 
 ### ROS 2-native Implementation
+
+`from WebGUI import gui` - to enable the Web GUI for visualizing realtime map data.
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
 #### ROS 2 Topics
 Use standard ROS 2 topics for direct communication with the simulation.
 * `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
