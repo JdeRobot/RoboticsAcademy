@@ -46,10 +46,15 @@ The goal of this exercise is to implement the logic that allows a quadrotor to f
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
 ### Sensors and drone state
 
@@ -80,7 +85,7 @@ The three following drone control functions are *non-blocking*, i.e. each time y
 
 ### Drone takeoff and land
 
-Besides through the buttons in the drone teleoperator GUI, take off and landing can also be controlled from the following commands in your code:
+Besides through the buttons in the drone teleoperator WebGUI, take off and landing can also be controlled from the following commands in your code:
 
 * `HAL.takeoff(height)` - Takeoff at the current location, to the given height (in m).
 * `HAL.land()` - Land at the current location. 
@@ -90,10 +95,10 @@ Besides through the buttons in the drone teleoperator GUI, take off and landing 
 * `HAL.get_frontal_image()` - Returns the latest image from the frontal camera as a OpenCV cv2_image.
 * `HAL.get_ventral_image()` - Returns the latest image from the ventral camera as a OpenCV cv2_image.
 
-### GUI
+### WebGUI
 
-* `GUI.showImage(cv2_image)` - Shows a image of the camera  in the GUI.
-* `GUI.showLeftImage(cv2_image)` - Shows another image of the camera in the GUI.
+* `WebGUI.showImage(cv2_image)` - Shows a image of the camera in the WebGUI.
+* `WebGUI.showLeftImage(cv2_image)` - Shows another image of the camera in the WebGUI.
 
 
 ## Theory

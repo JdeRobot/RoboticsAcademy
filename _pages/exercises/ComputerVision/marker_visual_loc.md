@@ -47,13 +47,18 @@ The red robot represents the user estimated position.
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receive information from the webcam.
-* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image.
-* `GUI.showImage()` - allows you to view an image with relevant information that can be used for debugging.
-* `GUI.showEstimatedPose((x, y, yaw))` - allows you to view your estimated position in the map.
+* `WebGUI.showImage()` - allows you to view an image with relevant information that can be used for debugging.
+* `WebGUI.showEstimatedPose((x, y, yaw))` - allows you to view your estimated position in the map.
 * `HAL.setV()` - to set the linear speed.
 * `HAL.setW()` - to set the angular velocity.
 * `HAL.getOdom().x` - to get the approximated X coordinate of the robot (with noise).
@@ -93,7 +98,7 @@ AprilTags are fiducial markers similar to QR codes but designed for robust detec
 Example code for apriltags detection:
 
 ```python
-import GUI
+import WebGUI
 import HAL
 import pyapriltags
 import cv2
@@ -138,7 +143,7 @@ while True:
             2,
         )
         print("[INFO] tag family: {}".format(tagFamily))
-    GUI.showImage(image)
+    WebGUI.showImage(image)
 
 ```
 
