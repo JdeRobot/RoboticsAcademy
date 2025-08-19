@@ -20,4 +20,3 @@ def tick(ideal_cycle: int = 50):
         time.sleep((ideal_ms - ms) / 1000.0)
 
     start_time_internal_freq_control = finish_time
-    

@@ -7,6 +7,7 @@ from sensor_msgs_py import point_cloud2
 from threading import Lock
 from builtin_interfaces.msg import Time
 
+
 class LidarData:
     def __init__(self):
         self.points = []
@@ -14,7 +15,7 @@ class LidarData:
         self.timeStamp = 0.0
         self.min_range = 0.1
         self.max_range = 15.0
-        self.field_of_view = (2*PI/3, PI/18)  
+        self.field_of_view = (2 * PI / 3, PI / 18)
         self.is_dense = True
 
     def __str__(self):
@@ -27,15 +28,16 @@ class LidarData:
             f"  is_dense: {self.is_dense}"
         )
 
+
 def pointCloud2LidarData(cloud):
     lidar = LidarData()
     if not cloud or cloud.width * cloud.height == 0:
         return lidar
 
     # Read XYZ points
-    lidar.points = list(point_cloud2.read_points(
-        cloud, field_names=("x", "y", "z"), skip_nans=False
-    ))
+    lidar.points = list(
+        point_cloud2.read_points(cloud, field_names=("x", "y", "z"), skip_nans=False)
+    )
 
     # Read intensities if available
     if "intensity" in [f.name for f in cloud.fields]:
@@ -45,18 +47,18 @@ def pointCloud2LidarData(cloud):
         lidar.intensities = [i[0] for i in intensities]
 
     # Timestamp (ROS 2 Time -> seconds)
-    lidar.timeStamp = Time(
-        sec=cloud.header.stamp.sec,
-        nanosec=cloud.header.stamp.nanosec
-    ).nanoseconds / 1e9
+    lidar.timeStamp = (
+        Time(sec=cloud.header.stamp.sec, nanosec=cloud.header.stamp.nanosec).nanoseconds
+        / 1e9
+    )
 
     # Validate point cloud
     lidar.is_dense = all(
-        all(np.isfinite(coord) for coord in point)
-        for point in lidar.points
+        all(np.isfinite(coord) for coord in point) for point in lidar.points
     )
 
     return lidar
+
 
 class LidarNode(Node):
     def __init__(self, topic):
@@ -64,10 +66,7 @@ class LidarNode(Node):
         self._lock = Lock()
         self.last_cloud_ = None
         self.sub = self.create_subscription(
-            sensor_msgs.msg.PointCloud2,
-            topic,
-            self.pointcloud_callback,
-            10
+            sensor_msgs.msg.PointCloud2, topic, self.pointcloud_callback, 10
         )
 
     def pointcloud_callback(self, cloud):

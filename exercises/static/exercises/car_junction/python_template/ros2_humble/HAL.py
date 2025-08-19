@@ -13,6 +13,7 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
@@ -41,6 +42,7 @@ executor.add_node(motor_node)
 executor.add_node(camera_front_node)
 executor.add_node(lidar_node)
 
+
 def __auto_spin() -> None:
     while rclpy.ok():
         try:
@@ -64,6 +66,7 @@ def getFrontCameraData():
         image = camera_front_node.getImage()
     return image.data
 
+
 def getLidarData():
     lidar = lidar_node.getLidarData()
     timestamp = lidar.timeStamp
@@ -72,6 +75,6 @@ def getLidarData():
         timestamp = lidar.timeStamp
     return lidar
 
+
 def setV(velocity):
     motor_node.sendV(float(velocity))
-    
