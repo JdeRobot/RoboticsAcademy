@@ -74,3 +74,4 @@ def getLidarData():
 
 def setV(velocity):
     motor_node.sendV(float(velocity))
+    

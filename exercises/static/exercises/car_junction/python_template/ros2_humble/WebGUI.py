@@ -4,7 +4,9 @@ import base64
 import threading
 import rclpy
 import numpy as np
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from HAL import getFrontCameraData, getPose3d
 
@@ -12,27 +14,29 @@ from HAL import getFrontCameraData, getPose3d
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
-    
+
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
         self.payload = {"image": "", "map": ""}
-       
-        self.camera_thread = threading.Thread(target=self._camera_update_loop, daemon=True)
+
+        self.camera_thread = threading.Thread(
+            target=self._camera_update_loop, daemon=True
+        )
         self.camera_thread.start()
 
     def _camera_update_loop(self):
         while True:
-            image_raw=getFrontCameraData()
+            image_raw = getFrontCameraData()
             try:
-                if image_raw and hasattr(image_raw, 'data'): 
-                    image_data = image_raw.data 
+                if image_raw and hasattr(image_raw, "data"):
+                    image_data = image_raw.data
                 if image_data is not None:
-                    self.showImage(image_data) 
+                    self.showImage(image_data)
                 threading.Event().wait(0.033)  # ~30 FPS
             except Exception:
                 threading.Event().wait(1.0)
- 
+
     def update_gui(self):
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
@@ -43,6 +47,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         message = json.dumps(self.payload)
         self.send_to_client(message)
+
     def payloadImage(self):
         with self.image_show_lock:
             image_to_be_shown_updated = self.image_to_be_shown_updated
@@ -77,14 +82,17 @@ class WebGUI(MeasuringThreadingGUI):
             self.current_frame = None
         self.payload = {"image": "", "map": ""}
 
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 start_console()
+
 
 def showImage(image):
     """Display an image in the GUI"""
     if gui is not None:
         gui.showImage(image)
+
 
 def get_gui():
     """Backward compatibility function"""
