@@ -35,6 +35,9 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 ## Robot API
 
+This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed.
@@ -103,6 +106,27 @@ laser_data = HAL.getLaserData()
 if len(laser_data.values) > 0:
     laser_polar, laser_xy = parse_laser_data(laser_data)
 ```
+
+### ROS 2-native Implementation
+
+`from WebGUI import gui` - to enable the Web GUI for visualizing realtime map data.
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+#### ROS 2 Topics
+Use standard ROS 2 topics for direct communication with the simulation.
+* `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+* `/odom` - Subscribe to this topic to get the robot's position and orientation. Message type: `nav_msgs/msg/Odometry`
+* `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
+* `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+* `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+* `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+#### Frequency Control
+Use standard ROS 2 mechanisms to manage loop timing:
+* `rclpy.spin()` - Event-driven execution using callbacks.
+* `rclpy.spin_once()` - Single-step processing, often with custom timers.
+* `rclpy.Rate()` - Loop-based frequency control.
+
 
 ## Theory
 
@@ -221,8 +245,15 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ## Contributors
 
-- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh).
+- Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh), [Ashish Ramesh](https://github.com/AshishRamesh).
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
+
+## References
+
+1. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)  
+2. [https://docs.ros2.org/humble/api/sensor_msgs/msg/LaserScan.html](https://docs.ros2.org/foxy/api/sensor_msgs/msg/LaserScan.html)
+3. [https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html](https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html)  
+4. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)
 
 <!--
 Another possible solution is to implement the logic of a navigation algorithm for an autonomous vacuum with autolocation.
