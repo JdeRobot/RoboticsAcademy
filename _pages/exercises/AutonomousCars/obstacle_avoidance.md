@@ -71,10 +71,15 @@ The solution can integrate one or more of the following difficulty increasing go
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
 * `HAL.getPose3d().yaw` - to get the orientation of the robot with
@@ -83,12 +88,12 @@ The solution can integrate one or more of the following difficulty increasing go
   It is composed of 180 pairs of values: (0-180º distance in meters)
 * `HAL.setV()` - to set the linear speed
 * `HAL.setW()` - to set the angular velocity
-* `GUI.getNextTarget()` - to obtain the next target object on the scenario.
-* `GUI.setTargetx` - sets the x coordinate of the target on the GUI.
-* `GUI.setTargety` - sets the y coordinate of the target on the GUI.
-* `GUI.showForces` - shows the forces being appliend on the car in real time.
+* `WebGUI.getNextTarget()` - to obtain the next target object on the scenario.
+* `WebGUI.setTargetx` - sets the x coordinate of the target on the WebGUI.
+* `WebGUI.setTargety` - sets the y coordinate of the target on the WebGUI.
+* `WebGUI.showForces` - shows the forces being appliend on the car in real time.
 
-To access the target 'x' and 'y' coordinates use (target is the object obtained from GUI.getNextTarget):
+To access the target 'x' and 'y' coordinates use (target is the object obtained from WebGUI.getNextTarget):
 * `target.getPose().x` - to obtain the x position of the target
 * `target.getPose().y` - to obtain the y position of the target
 
@@ -98,14 +103,14 @@ To simplify the exercise, the implementation of control points is offered.
 To use it, only two actions must be carried out:
 1. Obtain the following point:
 
-   `currentTarget = GUI.getNextTarget()`
+   `currentTarget = WebGUI.getNextTarget()`
 2. Mark it as visited when necessary:
 
    `currentTarget.setReached(True)`
    
 **Debugging**
 
-The graphical interface (GUI) allows the visualization of each of the vectors of calculated forces. There is a function for this purpose:
+The graphical interface (WebGUI) allows the visualization of each of the vectors of calculated forces. There is a function for this purpose:
 ```python
 # Car direction  (green line in the image below)
 carForce = [2.0, 0.0]
@@ -114,13 +119,13 @@ obsForce = [0.0, 2.0]
 # Average direction (black line in the image below)
 avgForce = [-2.0, 0.0]
 
-GUI.showForces(carForce, obsForce, avgForce)
+WebGUI.showForces(carForce, obsForce, avgForce)
 ```
 As well as the destination that we have assigned:
 ```python
 # Current target
 target = [1.0, 1.0]
-GUI.showLocalTarget(target)
+WebGUI.showLocalTarget(target)
 
 ```
 
@@ -130,20 +135,20 @@ GUI.showLocalTarget(target)
 Alternatively, the following variables can be set with the same results:
 ```python
 # Car direction
-GUI.map.carx = 0.0
-GUI.map.cary = 0.0
+WebGUI.map.carx = 0.0
+WebGUI.map.cary = 0.0
 
 # Obstacles direction
-GUI.map.obsx = 0.0
-GUI.map.obsy = 0.0
+WebGUI.map.obsx = 0.0
+WebGUI.map.obsy = 0.0
 
 # Average direction
-GUI.map.avgx = 0.0
-GUI.map.avgy = 0.0
+WebGUI.map.avgx = 0.0
+WebGUI.map.avgy = 0.0
 
 # Current target
-GUI.map.targetx = 0.0
-GUI.map.targety = 0.0
+WebGUI.map.targetx = 0.0
+WebGUI.map.targety = 0.0
 ```
 <!---
 **API**
@@ -244,7 +249,7 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
 
 
 <!---### Debugging
-The graphical interface (GUI) allows to visualize each of the vectors of
+The graphical interface (WebGUI) allows to visualize each of the vectors of
 calculated forces. For this purpose, the following variables should be given 
 value:
 ```python
@@ -336,7 +341,7 @@ First of all, we need to generate the 3 required vectors, that are the **Target 
 ### Target Vector
 The target vector can be easily obtained by subtracting the position of the car from the position of the next waypoint.
 
-In order to implement this on the GUI interface of the exercise, in addition to the vector obtained by subtracting, we need to apply a rotation to the vector as well. The purpose of rotation is to keep the target vector always in the direction of the waypoint and not in front of the car. You may try seeing this in your own implementation, or refer to the [illustrations](#Illustrations) 
+In order to implement this on the WebGUI interface of the exercise, in addition to the vector obtained by subtracting, we need to apply a rotation to the vector as well. The purpose of rotation is to keep the target vector always in the direction of the waypoint and not in front of the car. You may try seeing this in your own implementation, or refer to the [illustrations](#Illustrations) 
 
 Refer to this [webpage](https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions) to know about the exact mathematical details of the implementation.
 

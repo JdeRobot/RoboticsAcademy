@@ -165,7 +165,7 @@ docker rm CONTAINER_ID
 
     5. **Code editor**: Here you can write your code to solve the exercise. When you're done, it's sent to the container with the `start` button.
 
-    6. **VNC displays**: These VNC displays gives you info about the simulation. The one at the top usually has GUI info for the exercise. Below that is the Gazebo universe display and on the left you have a console where you can print info about the exercise.
+    6. **VNC displays**: These VNC displays gives you info about the simulation. The one at the top usually has WebGUI info for the exercise. Below that is the Gazebo universe display and on the left you have a console where you can print info about the exercise.
 
 5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 

@@ -245,16 +245,16 @@ feature_row:
   - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
     alt: "Human Detection"
     title: "Human Detection"
-    excerpt: "Develop a DL human detection model to perform inference and benchmarking in real time."
+    excerpt: "Deep learning-based Human Detection Exercise."
     url: "/exercises/ComputerVision/human_detection"
     status: "prototype"
     order: 2;
     
-  - image_path: /assets/images/exercises/dl_digit_classifier/dl_digit_classifier.png
+  - image_path: /assets/images/exercises/digit_classification/digit_classification.png
     alt: "Digit Classifier"
     title: "Digit Classifier"
     excerpt: "Classify digits in real time using your own deep learning model."
-    url: "/exercises/ComputerVision/dl_digit_classifier"
+    url: "/exercises/ComputerVision/digit_classification"
     status: "prototype"
     order: 2;
 
@@ -321,7 +321,6 @@ feature_row:
     url: "/exercises/ComputerVision/basic_computer_vision"
     status: "running"
     order: 0;
-
 ---
 
 
