@@ -38,36 +38,47 @@ instruction:
 
 
 
-youtubeId1: 80K0Fd9GFkU
+youtubeId1: aOd6c-ue1xU
 
 ---
 
 # Deep learning-based Digit Classification Exercise
+
 {% include gallery id="digitclassification" caption="Digit Classification Exercise" %}
 
 <p style="text-align:justify;">The goal of this exercise is to create a deep learning model capable of classifying digital and handwritten digits from 0 to 9. You will train this model using a machine learning library or framework of your choice and then export it to the <a href="https://onnx.ai/" target="_blank"><strong>ONNX (Open Neural Network Exchange)</strong></a> format. You can upload your own ONNX model and use the editor to write Python code that processes input from a live video feed, which is captured using your browser's webcam. This allows you to classify both digital and handwritten digits in real time.</p>
 
-
 <!-- instruction -->
 {% include gallery id="instruction" caption="Digit Classification Exercise" %}
-
 
 <!-- Note Guide -->
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Exercise API
-- `GUI.getImage()` - to get the image. It can be None.
-```python 
+
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+
+* `WebGUI.getImage()` - to get the image. It can be None.
+
+```python
 while True:
-    image = GUI.getImage()
+    image = WebGUI.getImage()
     if image is not None:
       # rest of the code.
 ```
-- `GUI.showImage(image)` - allows you to view a debug image or one with relevant information.
+
+* `WebGUI.showImage(image)` - allows you to view a debug image or one with relevant information.
 
 <!-- Model Path -->
 ## File Path for Uploaded Model
+
 The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model.
+
 ```python
 from model import model_path
 ```
@@ -75,6 +86,7 @@ from model import model_path
 ## Example Code
 <!-- Load ONNX session -->
 Recommended to load the ONNX model session
+
 ```python
 # Import the required package
 from model import model_path
@@ -92,12 +104,15 @@ except Exception as e:
 
 <!-- Exercise Instructions -->
 ## Exercise Instructions
-- The uploaded model should adhere to the following input/output specifications, please keep that in mind while building your model.
-  - The model must accept as input grayscale images with size 28x28 pixels. Input shape: 
+
+* The uploaded model should adhere to the following input/output specifications, please keep that in mind while building your model.
+  * The model must accept as input grayscale images with size 28x28 pixels. Input shape:
     ``[batch_size, num_channels, height, width] = [1, 1, 28, 28]``
-  - The output must be size 10 array with the probabilities for each class. Output shape: 
+  * The output must be size 10 array with the probabilities for each class. Output shape:
     ``[batch_size, num_classes] = [1, 10]``
-- The user can train their model in any framework of their choice and export it to the ONNX format [[1]](https://onnx.ai/). Refer to this [**article**](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html) to know more about how to export your model. For instance, if you are working with PyTorch [[2]](https://pytorch.org/):
+
+* The user can train their model in any framework of their choice and export it to the ONNX format [[1]](https://onnx.ai/). Refer to this [**article**](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html) to know more about how to export your model. For instance, if you are working with PyTorch [[2]](https://pytorch.org/):
+
 ```python
 import torch
 model = ...
@@ -108,6 +123,7 @@ torch.onnx.export(
 ```
 
 ## Theory
+
 Digit classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits [[3]](http://yann.lecun.com/exdb/mnist/) is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.
 
 {% include gallery id="mnist" caption="Samples from the MNIST database" %}
@@ -120,11 +136,14 @@ For solving the particular task of digit classification, we don't need complex a
 
 <!-- videso -->
 ## Tutorial Video
+
 {% include youtubePlayer.html id=page.youtubeId1 %}
 
 ## Contributors
-- Contributors: [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro) ,[Shashwat Dalakoti](https://github.com/shashwat623)
-- Maintained by [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro)
+
+* Contributors: [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro) ,[Shashwat Dalakoti](https://github.com/shashwat623)
+
+* Maintained by [David Pascual](https://github.com/dpascualhe), [Md. Shariar Kabir](https://github.com/codezerro)
 
 ## References
 

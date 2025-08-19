@@ -33,10 +33,15 @@ The goal of this exercise is to develop a navigation algorithm that allows a rob
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
+## Frequency API
+
+* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
 * `import HAL` - to import the HAL library class. This class contains the functions that receive information from the sensors or work with the actuators.
-* `import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d().x` - to get position x of the robot.
 * `HAL.getPose3d().y` - to get position y of the robot.
 * `HAL.getPose3d().yaw` - to get the orientation of the robot.
@@ -52,8 +57,8 @@ The goal of this exercise is to develop a navigation algorithm that allows a rob
 * `HAL.setW()` - to set the angular velocity.
 * `HAL.setV()` - to set the linear velocity.
 * `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
-* `GUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
-* `GUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
+* `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
+* `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
 ## Theory
 Implementation of laser mapping for a vacuum is the basic requirement for this exercise. First, let's see how mapping with known possitions works.
