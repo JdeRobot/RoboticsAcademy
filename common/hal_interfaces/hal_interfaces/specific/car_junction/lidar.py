@@ -3,86 +3,81 @@ import sensor_msgs.msg
 from math import pi as PI
 import rclpy
 import numpy as np
-from sensor_msgs_py import point_cloud2  
+from sensor_msgs_py import point_cloud2
+from threading import Lock
+from builtin_interfaces.msg import Time
 
-if not rclpy.ok():
-    rclpy.init()
-
-### AUXILIARY FUNCTIONS
 class LidarData:
     def __init__(self):
-        self.points = []  # List of (x,y,z) coordinates in meters
-        self.intensities = []  # List of intensity values
-        self.timestamps = []  # Individual timestamps if available
-        self.timeStamp = 0  # Main timestamp (seconds)
-        self.min_range = 0  # Minimum valid range (meters)
-        self.max_range = 0  # Maximum valid range (meters)
-        self.field_of_view = (0, 0)  # (horizontal_fov, vertical_fov) in radians
-        self.is_dense = True  # Whether the cloud contains NaN/Inf points
+        self.points = []
+        self.intensities = []
+        self.timeStamp = 0.0
+        self.min_range = 0.1
+        self.max_range = 15.0
+        self.field_of_view = (2*PI/3, PI/18)  
+        self.is_dense = True
 
     def __str__(self):
-        s = "LiDARData: {\n"
-        s += f"   timeStamp: {self.timeStamp}\n"
-        s += f"   min_range: {self.min_range}\n"
-        s += f"   max_range: {self.max_range}\n"
-        s += f"   field_of_view: {self.field_of_view}\n"
-        s += f"   num_points: {len(self.points)}\n"
-        s += f"   is_dense: {self.is_dense}\n"
-        s += "}"
-        return s
+        return (
+            f"LiDARData:\n"
+            f"  timestamp: {self.timeStamp}\n"
+            f"  points: {len(self.points)}\n"
+            f"  range: [{self.min_range}, {self.max_range}]\n"
+            f"  FOV: {self.field_of_view}\n"
+            f"  is_dense: {self.is_dense}"
+        )
 
 def pointCloud2LidarData(cloud):
-    
     lidar = LidarData()
-    
-    # Read all points from the cloud
-    lidar.points = list(point_cloud2.read_points(
-        cloud, 
-        field_names=("x", "y", "z"), 
-        skip_nans=False
-    ))
-    try:
-        lidar.intensities = list(point_cloud2.read_points(
-            cloud, 
-            field_names=("intensity",), 
-            skip_nans=False
-        ))
-    except:
-        pass
-    
-    lidar.timeStamp = cloud.header.stamp.sec + (cloud.header.stamp.nanosec * 1e-9)
-    
-    lidar.field_of_view = (2*PI/3, PI/18)  
+    if not cloud or cloud.width * cloud.height == 0:
+        return lidar
 
-    lidar.min_range = 0.1  # minimum range
-    lidar.max_range = 15.0  # maximum range
-    
-    lidar.is_dense = not any(
-        any(not np.isfinite(coord) for coord in point)
+    # Read XYZ points
+    lidar.points = list(point_cloud2.read_points(
+        cloud, field_names=("x", "y", "z"), skip_nans=False
+    ))
+
+    # Read intensities if available
+    if "intensity" in [f.name for f in cloud.fields]:
+        intensities = point_cloud2.read_points(
+            cloud, field_names=("intensity",), skip_nans=False
+        )
+        lidar.intensities = [i[0] for i in intensities]
+
+    # Timestamp (ROS 2 Time -> seconds)
+    lidar.timeStamp = Time(
+        sec=cloud.header.stamp.sec,
+        nanosec=cloud.header.stamp.nanosec
+    ).nanoseconds / 1e9
+
+    # Validate point cloud
+    lidar.is_dense = all(
+        all(np.isfinite(coord) for coord in point)
         for point in lidar.points
     )
-    
+
     return lidar
 
-### LiDAR INTERFACE ###
 class LidarNode(Node):
     def __init__(self, topic):
         super().__init__("lidar_node")
+        self._lock = Lock()
+        self.last_cloud_ = None
         self.sub = self.create_subscription(
-            sensor_msgs.msg.PointCloud2, 
-            topic, 
-            self.pointcloud_callback, 
+            sensor_msgs.msg.PointCloud2,
+            topic,
+            self.pointcloud_callback,
             10
         )
-        self.last_cloud_ = None
 
     def pointcloud_callback(self, cloud):
-        self.last_cloud_ = cloud
+        with self._lock:
+            self.last_cloud_ = cloud
 
     def getLidarData(self):
-        if self.last_cloud_ is None:
-            return LidarData()
-        return pointCloud2LidarData(self.last_cloud_)
+        with self._lock:
+            return pointCloud2LidarData(self.last_cloud_)
 
     def get_point_cloud(self):
-        return self.last_cloud_
+        with self._lock:
+            return self.last_cloud_
