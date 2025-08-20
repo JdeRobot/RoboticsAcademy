@@ -241,14 +241,6 @@ feature_row:
     url: "/exercises/IndustrialRobots/mobile_manipulation"
     status: "prototype"
     order: 2;
-
-  - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
-    alt: "Human Detection"
-    title: "Human Detection"
-    excerpt: "Deep learning-based Human Detection Exercise."
-    url: "/exercises/ComputerVision/human_detection"
-    status: "prototype"
-    order: 2;
     
   - image_path: /assets/images/exercises/digit_classification/digit_classification.png
     alt: "Digit Classifier"
@@ -319,6 +311,14 @@ feature_row:
     title: "Basic Computer Vision"
     excerpt: "Develop some basic exercises about computer vision"
     url: "/exercises/ComputerVision/basic_computer_vision"
+    status: "running"
+    order: 0;
+
+  - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
+    alt: "Human Detection"
+    title: "Human Detection"
+    excerpt: "Deep learning-based Human Detection Exercise."
+    url: "/exercises/ComputerVision/human_detection"
     status: "running"
     order: 0;
 ---
