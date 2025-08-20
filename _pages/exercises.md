@@ -241,15 +241,7 @@ feature_row:
     url: "/exercises/IndustrialRobots/mobile_manipulation"
     status: "prototype"
     order: 2;
-
-  - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
-    alt: "Human Detection"
-    title: "Human Detection"
-    excerpt: "Deep learning-based Human Detection Exercise."
-    url: "/exercises/ComputerVision/human_detection"
-    status: "prototype"
-    order: 2;
-  
+    
   - image_path: /assets/images/exercises/qualifying_formula/chrono_teaser.png
     alt: "Qualifying Formula1"
     title: "Qualifying Formula1"
@@ -322,6 +314,13 @@ feature_row:
     status: "running"
     order: 0;
 
+  - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
+    alt: "Human Detection"
+    title: "Human Detection"
+    excerpt: "Deep learning-based Human Detection Exercise."
+    url: "/exercises/ComputerVision/human_detection"
+    status: "running"
+    order: 0;
 ---
 
 
