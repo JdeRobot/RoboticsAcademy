@@ -32,16 +32,38 @@ cleanup() {
   exit 0
 }
 
-while getopts ":r:b:i:g:n:t:h" opt; do
-  case $opt in
-    r) ram_version="$OPTARG" ;;
-    b) branch="$OPTARG" ;;
-    i) radi_version="$OPTARG" ;; 
-    g) gpu_mode="true" ;; 
-    n) nvidia="true" ;;
-    h) show_help; exit 0 ;;  # Display help message and exit
-    \?) echo "Invalid option: -$OPTARG" >&2 ;;   # If an invalid option is provided, print an error message
-  esac
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -r) 
+            ram_version="$2"
+            shift 2
+            ;;
+        -b)
+            branch="$2"
+            shift 2
+            ;;
+        -i)
+            radi_version="$2"
+            shift 2
+            ;;
+        -g)
+            gpu_mode="true"
+            shift 1
+            ;;
+        -n)
+            nvidia="true"
+            shift 1
+            ;;
+        -h | --help) # display Help
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Invalid Option: $1"
+            Help
+            exit 1
+            ;;
+   esac
 done
 
 # Set up trap to catch interrupt signal (Ctrl+C) and execute cleanup function
