@@ -120,15 +120,19 @@ Use standard ROS 2 mechanisms to manage loop timing:
 
 ### Dataset overview
 
-For students who want to develop deep learning models for the End-to-End Visual Control exercise, we provide two datasets:
+For students who want to develop deep learning models for the End-to-End Visual Control exercise, we provide **two datasets**:
 
 #### 1. Simple Circuit Dataset
 
-This dataset is specifically designed for training and testing models on a single, **simple circuit**. It is ideal for beginners or for initial experiments to understand how the model reacts to basic driving scenarios. The simple circuit is easier to complete, allowing users to quickly train and evaluate their models without facing complex turns or intersections.
+<p style="text-align:justify"> 
+This dataset is specifically designed for training and testing models on a single, <strong>simple circuit</strong>. It is ideal for beginners or for initial experiments to understand how the model reacts to basic driving scenarios. The simple circuit is easier to complete, allowing users to quickly train and evaluate their models without facing complex turns or intersections.
+</p>
 
 #### 2. Combine Circuit Dataset
 
-This dataset includes data from all **four circuits** available in the exercise. It is intended for advanced model development, enabling students to train models that generalize across all four circuits and handle various driving conditions, including `sharp left` and `right turns`. The combined dataset captures a wide range of driving scenarios, including sharp turns, straight paths, and varying circuit complexities. We provide an **adjustment dataset** designed to support users in managing diverse driving scenarios, facilitating more experimentation.
+<p style="text-align:justify">
+This dataset includes data from all <strong>four circuits</strong> available in the exercise. It is intended for advanced model development, enabling students to train models that generalize across all four circuits and handle various driving conditions, including <code class="language-plaintext highlighter-rouge">sharp left and right turns</code>. The combined dataset captures a wide range of driving scenarios, including sharp turns, straight paths, and varying circuit complexities. We provide an <strong>adjustment dataset</strong> designed to support users in managing diverse driving scenarios, facilitating more experimentation.
+</p>
 
 ## Theory
 
