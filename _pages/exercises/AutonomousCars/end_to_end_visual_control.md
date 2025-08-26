@@ -118,21 +118,46 @@ Use standard ROS 2 mechanisms to manage loop timing:
 
 ## Develop a Deep Learning Model
 
-### Dataset overview
+### 1. Dataset overview
 
 For students who want to develop deep learning models for the End-to-End Visual Control exercise, we provide **two datasets**:
 
-#### 1. Simple Circuit Dataset
+#### i) Simple Circuit Dataset
 
 <p style="text-align:justify"> 
 This dataset is specifically designed for training and testing models on a single, <strong>simple circuit</strong>. It is ideal for beginners or for initial experiments to understand how the model reacts to basic driving scenarios. The simple circuit is easier to complete, allowing users to quickly train and evaluate their models without facing complex turns or intersections.
 </p>
 
-#### 2. Combine Circuit Dataset
+#### ii) Combine Circuit Dataset
 
 <p style="text-align:justify">
 This dataset includes data from all <strong>four circuits</strong> available in the exercise. It is intended for advanced model development, enabling students to train models that generalize across all four circuits and handle various driving conditions, including <code class="language-plaintext highlighter-rouge">sharp left and right turns</code>. The combined dataset captures a wide range of driving scenarios, including sharp turns, straight paths, and varying circuit complexities. We provide an <strong>adjustment dataset</strong> designed to support users in managing diverse driving scenarios, facilitating more experimentation.
 </p>
+
+### 2. Datasets Downloads
+
+<p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Hugging Face under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
+
+-   Simple Circuit Dataset: [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
+-   Combined Circuit Dataset: [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
+
+#### Method 01: Use the git lfs command [Recommended: Low]
+
+Visit the [git-lfs](https://git-lfs.com/) website and install `git-lfs` on your local machine.
+
+##### Simple Circuit Dataset
+
+```bash
+git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset
+```
+
+##### Combine Circuit Dataset
+
+```bash
+git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
+```
+
+#### Method 02: Use the git lfs command [Recommended: High]
 
 ## Theory
 
@@ -147,27 +172,6 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 1. ROS 2 Publisher & Subscriber – [https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
 2. ROS 2 Spin & Spin Once – [https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html](https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html)
  <!-- 3. ROS 2 Rate - add content for rate -->
-
-### Detecting the Line to Follow
-
-The first task of the assignment is to detect the line to be followed. This can be achieved easily by **filtering the color of the line** from the image and applying basic image processing to find the point or line to follow, or in Control terms our _Set Point_. Refer to these links for more information:
-
-1. [https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/](https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/)
-2. [https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image](https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image)
-3. [https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv](https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv)
-
-### Coding the Controller
-
-The Controller can be designed with various configurations. 3 configurations have been described in detail below:
-
--   **P Controller**
-    The simplest way to do the assignment is using the P Controller. Just find the error which is the difference between our _Set Point_ (The point where our car should be heading) and the _Current Output_ (Where the car is actually heading). Keep adjusting the value of the constant, until we get a value where there occurs no [**unstable oscillations**](#Illustrations) and no [**slow response**](#Illustrations).
-
--   **PD Controller**
-    This is an interesting way to see the effect of the derivative on the Control. For this, we need to calculate the derivative of the output we are receiving. Since, we are dealing with _discrete outputs in our case, we simply calculate the difference between our previous error and the present error_, then adjust the proportional constant. Adjust this value along with the P gain to get a good result.
-
--   **PID Controller**
-    This is the completely implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, into the present output. While dealing with discrete outputs, we can achieve this using _accumulated error_. Then, comes the task of adjustment of gain constants until we get our desired result.
 
 ### Illustrations
 
@@ -185,9 +189,17 @@ _This solution is an illustration for the Web Templates_
 
 ## Contributors
 
--   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza)
--   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza).
+<!-- TODO: -->
+
+-   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe)
+-   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe).
 
 ## References
 
-1. [https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)
+1. [https://huggingface.co/JdeRobot](https://huggingface.co/JdeRobot)
+2. [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
+3. [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
+
+```
+
+```
