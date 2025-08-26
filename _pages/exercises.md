@@ -321,6 +321,14 @@ feature_row:
     url: "/exercises/ComputerVision/human_detection"
     status: "running"
     order: 0;
+
+  - image_path: /assets/images/exercises/end_to_end_visual_control/end_to_end_visual_control_teaser.png
+    alt: "End to End Visual Control"
+    title: "End to End Visual Control"
+    excerpt: "End to end visual control using deep learning."
+    url: "/exercises/AutonomousCars/end_to_end_visual_control/"
+    status: "prototype"
+    order: 0;
 ---
 
 
