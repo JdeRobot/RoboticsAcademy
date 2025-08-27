@@ -138,8 +138,8 @@ This dataset includes data from all <strong>four circuits</strong> available in 
 
 <p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Hugging Face under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
 
--   Simple Circuit Dataset: [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
--   Combined Circuit Dataset: [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
+-   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
+-   [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
 
 #### Method 01: Use the git lfs command [Recommended: Low]
 
@@ -157,7 +157,39 @@ git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Da
 git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
 ```
 
-#### Method 02: Use the git lfs command [Recommended: High]
+#### Method 02: Hugging Face Hub API [Recommended: High]
+
+<p style="text-align:justify">
+The Hugging <strong>Face huggingface_hub</strong> library provides a <strong>Python API for</strong> interacting with the Hugging Face Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Hugging Face servers.</p>
+
+<p style="text-align:justify">
+First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python environment</a> on your local machine and install the Hugging Face Hub pip package. Next, obtain a Hugging Face <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Hugging Face
+ and use it to download the datasets with code like:
+</p>
+
+##### Hugging Face Hub Package
+
+```bash
+pip install huggingface_hub
+```
+
+##### Datasets Downloads code
+
+```python
+from huggingface_hub import snapshot_download
+
+# Download Simple Circuit Dataset to local folder
+snapshot_download(repo_id="JdeRobot/Follow-Line-Simple-Circuit-Dataset",
+    repo_type="dataset",resume_download=True,max_workers=16,
+    token="HF_ACCESS_TOKEN",local_dir=output_dir
+)
+
+# Download Combine Dataset to local folder
+snapshot_download(repo_id="JdeRobot/Follow-Line-Combine-Dataset",
+    repo_type="dataset",resume_download=True,max_workers=16,
+    token="HF_ACCESS_TOKEN",local_dir=output_dir
+)
+```
 
 ## Theory
 
