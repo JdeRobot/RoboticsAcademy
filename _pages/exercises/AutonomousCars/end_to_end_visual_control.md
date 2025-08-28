@@ -191,6 +191,20 @@ snapshot_download(repo_id="JdeRobot/Follow-Line-Combine-Dataset",
 )
 ```
 
+### 3. 📂 Datasets Folder Structure
+
+#### Simple Circuit Dataset
+
+<p style="text-align:justify">
+The dataset is divided into <strong>training</strong> and <strong>testing</strong> parts. The training images are split into seven folders named <code class="language-plaintext highlighter-rouge">train_images_part_01</code> to <code class="language-plaintext highlighter-rouge">train_images_part_07</code>, and their corresponding labels are provided in the <strong>train.csv</strong> file. For evaluation, the dataset includes a <code class="language-plaintext highlighter-rouge">test_images</code> folder that contains all the test images, with their labels stored separately in the <strong>test.csv</strong> file. The training data is used to build and optimize the model, while the testing data is used to evaluate its performance on unseen examples.
+</p>
+
+#### Combine Circuit Dataset
+
+<p style="text-align:justify">
+The dataset is organized into several folders and CSV files. The main training images are divided into six parts, stored in the folders <code class="language-plaintext highlighter-rouge">images_part_01</code> to <code class="language-plaintext highlighter-rouge">images_part_06</code>. Each of these images is linked to labels provided in the <strong>train.csv</strong> file, which contains the vehicle commands. In addition to the main dataset, there is an <code class="language-plaintext highlighter-rouge">adjustment_images</code> folder that includes extra images intended for adjusting the sharp corner. The labels for these images are stored separately in the <strong>adjustment_data.csv</strong> file.
+</p>
+
 ## Theory
 
 ## Hints
