@@ -60,7 +60,9 @@ youtubeId3: XzgfaQ20atY
 
 ## Goal
 
-The goal of this exercise is to implement a PID reactive control capable of following the line painted on the racing circuit.
+<p style="text-align:justify">
+The end-to-end visual control exercise demonstrates end-to-end visual control of an autonomous vehicle using deep learning. The exercise provides datasets for students to develop and train their own deep learning models. The deep learning model takes raw images from the vehicle camera as input and predicts vehicle commands, including linear speed (v) and angular velocity (w), to navigate the autonomous vehicle through different circuits. Using the web interface, users can upload their models, test them in real-time inference, and observe how vision-based AI enables autonomous vehicle navigation within simulated environments created in Gazebo.
+</p>
 
 {% include gallery caption="Gallery" %}
 
