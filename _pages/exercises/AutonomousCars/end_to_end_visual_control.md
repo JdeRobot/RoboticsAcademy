@@ -14,42 +14,38 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 gallery:
-    - url: /assets/images/exercises/follow_line/formula1_circuit.png
-      image_path: /assets/images/exercises/follow_line/formula1_circuit.png
-      alt: "Racing circuit."
-      title: "Racing circuit."
-    - url: /assets/images/exercises/follow_line/formula1.png
-      image_path: /assets/images/exercises/follow_line/formula1.png
+    - url: /assets/images/exercises/end_to_end_visual_control/formula1.png
+      image_path: /assets/images/exercises/end_to_end_visual_control/formula1.png
       alt: "First Person."
       title: "First Person."
-    - url: /assets/images/exercises/follow_line/formula1_2.png
-      image_path: /assets/images/exercises/follow_line/formula1_2.png
+    - url: /assets/images/exercises/end_to_end_visual_control/formula1_3.png
+      image_path: /assets/images/exercises/end_to_end_visual_control/formula1_3.png
       alt: "Model."
       title: "Model."
 
 gifs:
-    - url: /assets/images/exercises/follow_line/oscillations.gif
-      image_path: /assets/images/exercises/follow_line/oscillations.gif
+    - url: /assets/images/exercises/end_to_end_visual_control/oscillations.gif
+      image_path: /assets/images/exercises/end_to_end_visual_control/oscillations.gif
       alt: "examples"
       title: "examples"
-    - url: /assets/images/exercises/follow_line/slowresponse.gif
-      image_path: /assets/images/exercises/follow_line/slowresponse.gif
+    - url: /assets/images/exercises/end_to_end_visual_control/slowresponse.gif
+      image_path: /assets/images/exercises/end_to_end_visual_control/slowresponse.gif
       alt: "examples"
       title: "examples"
 
 pid:
-    - url: /assets/images/exercises/follow_line/ControlSystems.jpg
-      image_path: assets/images/exercises/follow_line/ControlSystems.jpg
+    - url: /assets/images/exercises/end_to_end_visual_control/ControlSystems.jpg
+      image_path: assets/images/exercises/end_to_end_visual_control/ControlSystems.jpg
       alt: "Control Systems"
       title: "Control Systems"
 
-    - url: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
-      image_path: /assets/images/exercises/follow_line/TypesofControlSystems.jpg
+    - url: /assets/images/exercises/end_to_end_visual_control/TypesofControlSystems.jpg
+      image_path: /assets/images/exercises/end_to_end_visual_control/TypesofControlSystems.jpg
       alt: "Types of Control Systems"
       title: "Types of Control Systems"
 
-    - url: /assets/images/exercises/follow_line/PID.png
-      image_path: /assets/images/exercises/follow_line/PID.png
+    - url: /assets/images/exercises/end_to_end_visual_control/PID.png
+      image_path: /assets/images/exercises/end_to_end_visual_control/PID.png
       alt: "PID"
       title: "PID"
 
@@ -138,7 +134,7 @@ This dataset includes data from all <strong>four circuits</strong> available in 
 
 ### 2. Datasets Downloads
 
-<p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Hugging Face under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
+<p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Huggingface under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
 
 -   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
 -   [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
@@ -147,29 +143,25 @@ This dataset includes data from all <strong>four circuits</strong> available in 
 
 Visit the [git-lfs](https://git-lfs.com/) website and install `git-lfs` on your local machine.
 
-##### Simple Circuit Dataset
-
 ```bash
+# Simple Circuit Dataset
 git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset
-```
 
-##### Combine Circuit Dataset
-
-```bash
+# Combine Circuit Dataset
 git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
 ```
 
-#### Method 02: Hugging Face Hub API [Recommended: High]
+#### Method 02: Huggingface Hub API [Recommended: High]
 
 <p style="text-align:justify">
-The Hugging <strong>Face huggingface_hub</strong> library provides a <strong>Python API for</strong> interacting with the Hugging Face Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Hugging Face servers.</p>
+The Huggingface <code class="language-plaintext highlighter-rouge">huggingface_hub</code> library provides a <strong>Python API for</strong> interacting with the Huggingface Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Huggingface.</p>
 
 <p style="text-align:justify">
-First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python environment</a> on your local machine and install the Hugging Face Hub pip package. Next, obtain a Hugging Face <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Hugging Face
+First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python environment</a> on your local machine and install the Huggingface Hub pip package. Next, obtain a Huggingface <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Huggingface
  and use it to download the datasets with code like:
 </p>
 
-##### Hugging Face Hub Package
+##### Huggingface Hub Package
 
 ```bash
 pip install huggingface_hub
