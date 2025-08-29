@@ -286,8 +286,8 @@ _This solution is an illustration for the Web Templates_
 
 <!-- TODO: -->
 
--   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe)
--   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe).
+-   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe), [L. Roberto Morales](linkedin.com/in/lrobertomorales)
+-   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe),[L. Roberto Morales](linkedin.com/in/lrobertomorales).
 
 ## References
 
