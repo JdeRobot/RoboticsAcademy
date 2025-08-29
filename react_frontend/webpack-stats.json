@@ -1,0 +1,1511 @@
+{
+  "status": "done",
+  "assets": {
+    "07a88875353ecc692463.svg": {
+      "name": "07a88875353ecc692463.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/07a88875353ecc692463.svg"
+    },
+    "0bc351912833f3417a22.png": {
+      "name": "0bc351912833f3417a22.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/0bc351912833f3417a22.png"
+    },
+    "103b475b789b8718d2b0.png": {
+      "name": "103b475b789b8718d2b0.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/103b475b789b8718d2b0.png"
+    },
+    "1dcd3b9fbf544c35da90.png": {
+      "name": "1dcd3b9fbf544c35da90.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/1dcd3b9fbf544c35da90.png"
+    },
+    "3eeb5833a38a58e883f3.png": {
+      "name": "3eeb5833a38a58e883f3.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/3eeb5833a38a58e883f3.png"
+    },
+    "47349ce9cf823aa676a1.png": {
+      "name": "47349ce9cf823aa676a1.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/47349ce9cf823aa676a1.png"
+    },
+    "4bda41d8cb629c0f2675.png": {
+      "name": "4bda41d8cb629c0f2675.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/4bda41d8cb629c0f2675.png"
+    },
+    "4c3c9ff3e5e41de1a959.svg": {
+      "name": "4c3c9ff3e5e41de1a959.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/4c3c9ff3e5e41de1a959.svg"
+    },
+    "4d659b97d7e33af80d11.png": {
+      "name": "4d659b97d7e33af80d11.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/4d659b97d7e33af80d11.png"
+    },
+    "593a5090ab1a572e0c2f.png": {
+      "name": "593a5090ab1a572e0c2f.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/593a5090ab1a572e0c2f.png"
+    },
+    "6307e69c307fde0efc6a.png": {
+      "name": "6307e69c307fde0efc6a.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/6307e69c307fde0efc6a.png"
+    },
+    "716ddc926982c9ed9955.svg": {
+      "name": "716ddc926982c9ed9955.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/716ddc926982c9ed9955.svg"
+    },
+    "730897011f0108f00b00.png": {
+      "name": "730897011f0108f00b00.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/730897011f0108f00b00.png"
+    },
+    "90999a7c98c1d14e2348.png": {
+      "name": "90999a7c98c1d14e2348.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/90999a7c98c1d14e2348.png"
+    },
+    "a3dd51f21f0fe7b075fb.png": {
+      "name": "a3dd51f21f0fe7b075fb.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/a3dd51f21f0fe7b075fb.png"
+    },
+    "b5c6f9dd7b4e71f2532b.svg": {
+      "name": "b5c6f9dd7b4e71f2532b.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/b5c6f9dd7b4e71f2532b.svg"
+    },
+    "b978997e7f65a543a8bd.svg": {
+      "name": "b978997e7f65a543a8bd.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/b978997e7f65a543a8bd.svg"
+    },
+    "bc1a91558ccad4d10db3.png": {
+      "name": "bc1a91558ccad4d10db3.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/bc1a91558ccad4d10db3.png"
+    },
+    "c0453f604892db7d1b12.svg": {
+      "name": "c0453f604892db7d1b12.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/c0453f604892db7d1b12.svg"
+    },
+    "c40fbd6953e072ad5339.svg": {
+      "name": "c40fbd6953e072ad5339.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/c40fbd6953e072ad5339.svg"
+    },
+    "ced0b01fc91e7c893441.svg": {
+      "name": "ced0b01fc91e7c893441.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/ced0b01fc91e7c893441.svg"
+    },
+    "css/1159.css": {
+      "name": "css/1159.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1159.css"
+    },
+    "css/1172.css": {
+      "name": "css/1172.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1172.css"
+    },
+    "css/1195.css": {
+      "name": "css/1195.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1195.css"
+    },
+    "css/1289.css": {
+      "name": "css/1289.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1289.css"
+    },
+    "css/1475.css": {
+      "name": "css/1475.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1475.css"
+    },
+    "css/1497.css": {
+      "name": "css/1497.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1497.css"
+    },
+    "css/1530.css": {
+      "name": "css/1530.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1530.css"
+    },
+    "css/1629.css": {
+      "name": "css/1629.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1629.css"
+    },
+    "css/1750.css": {
+      "name": "css/1750.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1750.css"
+    },
+    "css/1792.css": {
+      "name": "css/1792.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1792.css"
+    },
+    "css/180.css": {
+      "name": "css/180.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/180.css"
+    },
+    "css/1837.css": {
+      "name": "css/1837.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1837.css"
+    },
+    "css/1838.css": {
+      "name": "css/1838.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1838.css"
+    },
+    "css/1938.css": {
+      "name": "css/1938.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/1938.css"
+    },
+    "css/2018.css": {
+      "name": "css/2018.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2018.css"
+    },
+    "css/2038.css": {
+      "name": "css/2038.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2038.css"
+    },
+    "css/2040.css": {
+      "name": "css/2040.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2040.css"
+    },
+    "css/225.css": {
+      "name": "css/225.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/225.css"
+    },
+    "css/2287.css": {
+      "name": "css/2287.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2287.css"
+    },
+    "css/233.css": {
+      "name": "css/233.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/233.css"
+    },
+    "css/2394.css": {
+      "name": "css/2394.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2394.css"
+    },
+    "css/2493.css": {
+      "name": "css/2493.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2493.css"
+    },
+    "css/2973.css": {
+      "name": "css/2973.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/2973.css"
+    },
+    "css/3093.css": {
+      "name": "css/3093.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/3093.css"
+    },
+    "css/3152.css": {
+      "name": "css/3152.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/3152.css"
+    },
+    "css/3238.css": {
+      "name": "css/3238.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/3238.css"
+    },
+    "css/349.css": {
+      "name": "css/349.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/349.css"
+    },
+    "css/3576.css": {
+      "name": "css/3576.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/3576.css"
+    },
+    "css/3898.css": {
+      "name": "css/3898.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/3898.css"
+    },
+    "css/392.css": {
+      "name": "css/392.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/392.css"
+    },
+    "css/4035.css": {
+      "name": "css/4035.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4035.css"
+    },
+    "css/4078.css": {
+      "name": "css/4078.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4078.css"
+    },
+    "css/4088.css": {
+      "name": "css/4088.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4088.css"
+    },
+    "css/4104.css": {
+      "name": "css/4104.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4104.css"
+    },
+    "css/4147.css": {
+      "name": "css/4147.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4147.css"
+    },
+    "css/4241.css": {
+      "name": "css/4241.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4241.css"
+    },
+    "css/4313.css": {
+      "name": "css/4313.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4313.css"
+    },
+    "css/4399.css": {
+      "name": "css/4399.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4399.css"
+    },
+    "css/4411.css": {
+      "name": "css/4411.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4411.css"
+    },
+    "css/4566.css": {
+      "name": "css/4566.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4566.css"
+    },
+    "css/4582.css": {
+      "name": "css/4582.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4582.css"
+    },
+    "css/4707.css": {
+      "name": "css/4707.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4707.css"
+    },
+    "css/4800.css": {
+      "name": "css/4800.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/4800.css"
+    },
+    "css/5008.css": {
+      "name": "css/5008.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5008.css"
+    },
+    "css/5009.css": {
+      "name": "css/5009.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5009.css"
+    },
+    "css/5451.css": {
+      "name": "css/5451.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5451.css"
+    },
+    "css/5452.css": {
+      "name": "css/5452.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5452.css"
+    },
+    "css/5530.css": {
+      "name": "css/5530.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5530.css"
+    },
+    "css/5665.css": {
+      "name": "css/5665.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5665.css"
+    },
+    "css/5781.css": {
+      "name": "css/5781.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5781.css"
+    },
+    "css/5801.css": {
+      "name": "css/5801.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5801.css"
+    },
+    "css/581.css": {
+      "name": "css/581.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/581.css"
+    },
+    "css/5860.css": {
+      "name": "css/5860.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/5860.css"
+    },
+    "css/6049.css": {
+      "name": "css/6049.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6049.css"
+    },
+    "css/6160.css": {
+      "name": "css/6160.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6160.css"
+    },
+    "css/6377.css": {
+      "name": "css/6377.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6377.css"
+    },
+    "css/6762.css": {
+      "name": "css/6762.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6762.css"
+    },
+    "css/6780.css": {
+      "name": "css/6780.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6780.css"
+    },
+    "css/6824.css": {
+      "name": "css/6824.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6824.css"
+    },
+    "css/6925.css": {
+      "name": "css/6925.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6925.css"
+    },
+    "css/6962.css": {
+      "name": "css/6962.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/6962.css"
+    },
+    "css/732.css": {
+      "name": "css/732.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/732.css"
+    },
+    "css/7480.css": {
+      "name": "css/7480.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7480.css"
+    },
+    "css/7596.css": {
+      "name": "css/7596.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7596.css"
+    },
+    "css/7658.css": {
+      "name": "css/7658.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7658.css"
+    },
+    "css/7820.css": {
+      "name": "css/7820.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7820.css"
+    },
+    "css/7826.css": {
+      "name": "css/7826.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7826.css"
+    },
+    "css/7841.css": {
+      "name": "css/7841.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7841.css"
+    },
+    "css/7903.css": {
+      "name": "css/7903.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/7903.css"
+    },
+    "css/8038.css": {
+      "name": "css/8038.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8038.css"
+    },
+    "css/8160.css": {
+      "name": "css/8160.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8160.css"
+    },
+    "css/8198.css": {
+      "name": "css/8198.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8198.css"
+    },
+    "css/8201.css": {
+      "name": "css/8201.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8201.css"
+    },
+    "css/8256.css": {
+      "name": "css/8256.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8256.css"
+    },
+    "css/8496.css": {
+      "name": "css/8496.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8496.css"
+    },
+    "css/8590.css": {
+      "name": "css/8590.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8590.css"
+    },
+    "css/8724.css": {
+      "name": "css/8724.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8724.css"
+    },
+    "css/8725.css": {
+      "name": "css/8725.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8725.css"
+    },
+    "css/8732.css": {
+      "name": "css/8732.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/8732.css"
+    },
+    "css/879.css": {
+      "name": "css/879.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/879.css"
+    },
+    "css/9294.css": {
+      "name": "css/9294.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9294.css"
+    },
+    "css/9359.css": {
+      "name": "css/9359.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9359.css"
+    },
+    "css/9390.css": {
+      "name": "css/9390.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9390.css"
+    },
+    "css/945.css": {
+      "name": "css/945.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/945.css"
+    },
+    "css/9516.css": {
+      "name": "css/9516.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9516.css"
+    },
+    "css/9612.css": {
+      "name": "css/9612.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9612.css"
+    },
+    "css/9617.css": {
+      "name": "css/9617.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9617.css"
+    },
+    "css/9848.css": {
+      "name": "css/9848.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/9848.css"
+    },
+    "css/exercise.css": {
+      "name": "css/exercise.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/exercise.css"
+    },
+    "css/index.css": {
+      "name": "css/index.css",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/css/index.css"
+    },
+    "d11c46b809e74e2f83fe.png": {
+      "name": "d11c46b809e74e2f83fe.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/d11c46b809e74e2f83fe.png"
+    },
+    "d4f97e68c0637ce53256.png": {
+      "name": "d4f97e68c0637ce53256.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/d4f97e68c0637ce53256.png"
+    },
+    "df2d975eff24335477f0.svg": {
+      "name": "df2d975eff24335477f0.svg",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/df2d975eff24335477f0.svg"
+    },
+    "e0742232b0207d6b3b58.png": {
+      "name": "e0742232b0207d6b3b58.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/e0742232b0207d6b3b58.png"
+    },
+    "f1161e013312668b9ed4.png": {
+      "name": "f1161e013312668b9ed4.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/f1161e013312668b9ed4.png"
+    },
+    "fbd2a40c78e5112b66a9.png": {
+      "name": "fbd2a40c78e5112b66a9.png",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/fbd2a40c78e5112b66a9.png"
+    },
+    "js/1052.33ba00a0.js": {
+      "name": "js/1052.33ba00a0.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1052.33ba00a0.js"
+    },
+    "js/1159.bfcc3761.js": {
+      "name": "js/1159.bfcc3761.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1159.bfcc3761.js"
+    },
+    "js/1166.89a454fc.js": {
+      "name": "js/1166.89a454fc.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1166.89a454fc.js"
+    },
+    "js/1167.1062705c.js": {
+      "name": "js/1167.1062705c.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1167.1062705c.js"
+    },
+    "js/1167.1062705c.js.LICENSE.txt": {
+      "name": "js/1167.1062705c.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1167.1062705c.js.LICENSE.txt"
+    },
+    "js/1172.178b359c.js": {
+      "name": "js/1172.178b359c.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1172.178b359c.js"
+    },
+    "js/1195.4089d01b.js": {
+      "name": "js/1195.4089d01b.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1195.4089d01b.js"
+    },
+    "js/1195.4089d01b.js.LICENSE.txt": {
+      "name": "js/1195.4089d01b.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1195.4089d01b.js.LICENSE.txt"
+    },
+    "js/1259.1625d44a.js": {
+      "name": "js/1259.1625d44a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1259.1625d44a.js"
+    },
+    "js/1261.01296c0f.js": {
+      "name": "js/1261.01296c0f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1261.01296c0f.js"
+    },
+    "js/1261.01296c0f.js.LICENSE.txt": {
+      "name": "js/1261.01296c0f.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1261.01296c0f.js.LICENSE.txt"
+    },
+    "js/1279.dcda7626.js": {
+      "name": "js/1279.dcda7626.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1279.dcda7626.js"
+    },
+    "js/1279.dcda7626.js.LICENSE.txt": {
+      "name": "js/1279.dcda7626.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1279.dcda7626.js.LICENSE.txt"
+    },
+    "js/1289.5e2d750d.js": {
+      "name": "js/1289.5e2d750d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1289.5e2d750d.js"
+    },
+    "js/1289.5e2d750d.js.LICENSE.txt": {
+      "name": "js/1289.5e2d750d.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1289.5e2d750d.js.LICENSE.txt"
+    },
+    "js/1381.1e5ca14d.js": {
+      "name": "js/1381.1e5ca14d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1381.1e5ca14d.js"
+    },
+    "js/1475.e9dfcf38.js": {
+      "name": "js/1475.e9dfcf38.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1475.e9dfcf38.js"
+    },
+    "js/1497.9cc132bc.js": {
+      "name": "js/1497.9cc132bc.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1497.9cc132bc.js"
+    },
+    "js/1512.c7915f21.js": {
+      "name": "js/1512.c7915f21.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1512.c7915f21.js"
+    },
+    "js/1512.c7915f21.js.LICENSE.txt": {
+      "name": "js/1512.c7915f21.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1512.c7915f21.js.LICENSE.txt"
+    },
+    "js/1530.963cc910.js": {
+      "name": "js/1530.963cc910.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1530.963cc910.js"
+    },
+    "js/1629.97ea6021.js": {
+      "name": "js/1629.97ea6021.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1629.97ea6021.js"
+    },
+    "js/1629.97ea6021.js.LICENSE.txt": {
+      "name": "js/1629.97ea6021.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1629.97ea6021.js.LICENSE.txt"
+    },
+    "js/1644.a52b5796.js": {
+      "name": "js/1644.a52b5796.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1644.a52b5796.js"
+    },
+    "js/1653.6a994e92.js": {
+      "name": "js/1653.6a994e92.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1653.6a994e92.js"
+    },
+    "js/1696.83822dbb.js": {
+      "name": "js/1696.83822dbb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1696.83822dbb.js"
+    },
+    "js/1696.83822dbb.js.LICENSE.txt": {
+      "name": "js/1696.83822dbb.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1696.83822dbb.js.LICENSE.txt"
+    },
+    "js/1750.7b6aec76.js": {
+      "name": "js/1750.7b6aec76.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1750.7b6aec76.js"
+    },
+    "js/1750.7b6aec76.js.LICENSE.txt": {
+      "name": "js/1750.7b6aec76.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1750.7b6aec76.js.LICENSE.txt"
+    },
+    "js/1792.7cf38f76.js": {
+      "name": "js/1792.7cf38f76.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1792.7cf38f76.js"
+    },
+    "js/1792.7cf38f76.js.LICENSE.txt": {
+      "name": "js/1792.7cf38f76.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1792.7cf38f76.js.LICENSE.txt"
+    },
+    "js/180.8e129a9c.js": {
+      "name": "js/180.8e129a9c.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/180.8e129a9c.js"
+    },
+    "js/180.8e129a9c.js.LICENSE.txt": {
+      "name": "js/180.8e129a9c.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/180.8e129a9c.js.LICENSE.txt"
+    },
+    "js/1837.9bf454e2.js": {
+      "name": "js/1837.9bf454e2.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1837.9bf454e2.js"
+    },
+    "js/1837.9bf454e2.js.LICENSE.txt": {
+      "name": "js/1837.9bf454e2.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1837.9bf454e2.js.LICENSE.txt"
+    },
+    "js/1838.f2f98d55.js": {
+      "name": "js/1838.f2f98d55.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1838.f2f98d55.js"
+    },
+    "js/1938.609d7715.js": {
+      "name": "js/1938.609d7715.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1938.609d7715.js"
+    },
+    "js/1941.df2dd1d9.js": {
+      "name": "js/1941.df2dd1d9.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/1941.df2dd1d9.js"
+    },
+    "js/2018.aa8145d8.js": {
+      "name": "js/2018.aa8145d8.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2018.aa8145d8.js"
+    },
+    "js/2018.aa8145d8.js.LICENSE.txt": {
+      "name": "js/2018.aa8145d8.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2018.aa8145d8.js.LICENSE.txt"
+    },
+    "js/2022.dd01bfaa.js": {
+      "name": "js/2022.dd01bfaa.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2022.dd01bfaa.js"
+    },
+    "js/2038.fe0e81f1.js": {
+      "name": "js/2038.fe0e81f1.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2038.fe0e81f1.js"
+    },
+    "js/2038.fe0e81f1.js.LICENSE.txt": {
+      "name": "js/2038.fe0e81f1.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2038.fe0e81f1.js.LICENSE.txt"
+    },
+    "js/2040.8dbf4362.js": {
+      "name": "js/2040.8dbf4362.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2040.8dbf4362.js"
+    },
+    "js/2040.8dbf4362.js.LICENSE.txt": {
+      "name": "js/2040.8dbf4362.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2040.8dbf4362.js.LICENSE.txt"
+    },
+    "js/2078.f0720009.js": {
+      "name": "js/2078.f0720009.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2078.f0720009.js"
+    },
+    "js/2078.f0720009.js.LICENSE.txt": {
+      "name": "js/2078.f0720009.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2078.f0720009.js.LICENSE.txt"
+    },
+    "js/2230.e2f1289e.js": {
+      "name": "js/2230.e2f1289e.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2230.e2f1289e.js"
+    },
+    "js/225.4ac3eafe.js": {
+      "name": "js/225.4ac3eafe.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/225.4ac3eafe.js"
+    },
+    "js/225.4ac3eafe.js.LICENSE.txt": {
+      "name": "js/225.4ac3eafe.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/225.4ac3eafe.js.LICENSE.txt"
+    },
+    "js/2287.cd34a443.js": {
+      "name": "js/2287.cd34a443.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2287.cd34a443.js"
+    },
+    "js/233.f454c433.js": {
+      "name": "js/233.f454c433.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/233.f454c433.js"
+    },
+    "js/233.f454c433.js.LICENSE.txt": {
+      "name": "js/233.f454c433.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/233.f454c433.js.LICENSE.txt"
+    },
+    "js/2341.b6a761a2.js": {
+      "name": "js/2341.b6a761a2.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2341.b6a761a2.js"
+    },
+    "js/2341.b6a761a2.js.LICENSE.txt": {
+      "name": "js/2341.b6a761a2.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2341.b6a761a2.js.LICENSE.txt"
+    },
+    "js/2342.7859f7fb.js": {
+      "name": "js/2342.7859f7fb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2342.7859f7fb.js"
+    },
+    "js/2394.545b018d.js": {
+      "name": "js/2394.545b018d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2394.545b018d.js"
+    },
+    "js/2425.cd2eccbc.js": {
+      "name": "js/2425.cd2eccbc.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2425.cd2eccbc.js"
+    },
+    "js/2425.cd2eccbc.js.LICENSE.txt": {
+      "name": "js/2425.cd2eccbc.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2425.cd2eccbc.js.LICENSE.txt"
+    },
+    "js/2493.bb1f90d1.js": {
+      "name": "js/2493.bb1f90d1.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2493.bb1f90d1.js"
+    },
+    "js/2493.bb1f90d1.js.LICENSE.txt": {
+      "name": "js/2493.bb1f90d1.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2493.bb1f90d1.js.LICENSE.txt"
+    },
+    "js/2543.8e5565ae.js": {
+      "name": "js/2543.8e5565ae.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2543.8e5565ae.js"
+    },
+    "js/2543.8e5565ae.js.LICENSE.txt": {
+      "name": "js/2543.8e5565ae.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2543.8e5565ae.js.LICENSE.txt"
+    },
+    "js/2578.f529be22.js": {
+      "name": "js/2578.f529be22.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2578.f529be22.js"
+    },
+    "js/2578.f529be22.js.LICENSE.txt": {
+      "name": "js/2578.f529be22.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2578.f529be22.js.LICENSE.txt"
+    },
+    "js/2718.72e8f286.js": {
+      "name": "js/2718.72e8f286.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2718.72e8f286.js"
+    },
+    "js/2725.65d4176a.js": {
+      "name": "js/2725.65d4176a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2725.65d4176a.js"
+    },
+    "js/2745.33d54ad3.js": {
+      "name": "js/2745.33d54ad3.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2745.33d54ad3.js"
+    },
+    "js/2745.33d54ad3.js.LICENSE.txt": {
+      "name": "js/2745.33d54ad3.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2745.33d54ad3.js.LICENSE.txt"
+    },
+    "js/2973.c84ba46a.js": {
+      "name": "js/2973.c84ba46a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/2973.c84ba46a.js"
+    },
+    "js/302.612c9575.js": {
+      "name": "js/302.612c9575.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/302.612c9575.js"
+    },
+    "js/302.612c9575.js.LICENSE.txt": {
+      "name": "js/302.612c9575.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/302.612c9575.js.LICENSE.txt"
+    },
+    "js/3093.f3c3e376.js": {
+      "name": "js/3093.f3c3e376.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3093.f3c3e376.js"
+    },
+    "js/3147.06fb6a5f.js": {
+      "name": "js/3147.06fb6a5f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3147.06fb6a5f.js"
+    },
+    "js/3147.06fb6a5f.js.LICENSE.txt": {
+      "name": "js/3147.06fb6a5f.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3147.06fb6a5f.js.LICENSE.txt"
+    },
+    "js/3152.ddefd0ee.js": {
+      "name": "js/3152.ddefd0ee.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3152.ddefd0ee.js"
+    },
+    "js/3152.ddefd0ee.js.LICENSE.txt": {
+      "name": "js/3152.ddefd0ee.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3152.ddefd0ee.js.LICENSE.txt"
+    },
+    "js/3169.5cab53af.js": {
+      "name": "js/3169.5cab53af.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3169.5cab53af.js"
+    },
+    "js/3238.8714d27c.js": {
+      "name": "js/3238.8714d27c.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3238.8714d27c.js"
+    },
+    "js/3322.2eb10ef8.js": {
+      "name": "js/3322.2eb10ef8.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3322.2eb10ef8.js"
+    },
+    "js/3344.f9c384fc.js": {
+      "name": "js/3344.f9c384fc.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3344.f9c384fc.js"
+    },
+    "js/349.fb67d334.js": {
+      "name": "js/349.fb67d334.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/349.fb67d334.js"
+    },
+    "js/349.fb67d334.js.LICENSE.txt": {
+      "name": "js/349.fb67d334.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/349.fb67d334.js.LICENSE.txt"
+    },
+    "js/3576.23b22782.js": {
+      "name": "js/3576.23b22782.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3576.23b22782.js"
+    },
+    "js/3576.23b22782.js.LICENSE.txt": {
+      "name": "js/3576.23b22782.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3576.23b22782.js.LICENSE.txt"
+    },
+    "js/3721.49623697.js": {
+      "name": "js/3721.49623697.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3721.49623697.js"
+    },
+    "js/3721.49623697.js.LICENSE.txt": {
+      "name": "js/3721.49623697.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3721.49623697.js.LICENSE.txt"
+    },
+    "js/3774.66290313.js": {
+      "name": "js/3774.66290313.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3774.66290313.js"
+    },
+    "js/3798.51632ace.js": {
+      "name": "js/3798.51632ace.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3798.51632ace.js"
+    },
+    "js/3898.b7d238e3.js": {
+      "name": "js/3898.b7d238e3.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3898.b7d238e3.js"
+    },
+    "js/3915.018529c2.js": {
+      "name": "js/3915.018529c2.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3915.018529c2.js"
+    },
+    "js/392.32fe2203.js": {
+      "name": "js/392.32fe2203.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/392.32fe2203.js"
+    },
+    "js/392.32fe2203.js.LICENSE.txt": {
+      "name": "js/392.32fe2203.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/392.32fe2203.js.LICENSE.txt"
+    },
+    "js/3985.8fdaeb6d.js": {
+      "name": "js/3985.8fdaeb6d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3985.8fdaeb6d.js"
+    },
+    "js/3985.8fdaeb6d.js.LICENSE.txt": {
+      "name": "js/3985.8fdaeb6d.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/3985.8fdaeb6d.js.LICENSE.txt"
+    },
+    "js/4035.2de1261e.js": {
+      "name": "js/4035.2de1261e.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4035.2de1261e.js"
+    },
+    "js/4055.b48c7765.js": {
+      "name": "js/4055.b48c7765.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4055.b48c7765.js"
+    },
+    "js/4075.9c40cac3.js": {
+      "name": "js/4075.9c40cac3.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4075.9c40cac3.js"
+    },
+    "js/4075.9c40cac3.js.LICENSE.txt": {
+      "name": "js/4075.9c40cac3.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4075.9c40cac3.js.LICENSE.txt"
+    },
+    "js/4078.620631cc.js": {
+      "name": "js/4078.620631cc.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4078.620631cc.js"
+    },
+    "js/4078.620631cc.js.LICENSE.txt": {
+      "name": "js/4078.620631cc.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4078.620631cc.js.LICENSE.txt"
+    },
+    "js/4088.a4f56783.js": {
+      "name": "js/4088.a4f56783.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4088.a4f56783.js"
+    },
+    "js/4088.a4f56783.js.LICENSE.txt": {
+      "name": "js/4088.a4f56783.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4088.a4f56783.js.LICENSE.txt"
+    },
+    "js/4104.03a2f66a.js": {
+      "name": "js/4104.03a2f66a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4104.03a2f66a.js"
+    },
+    "js/4147.ac682216.js": {
+      "name": "js/4147.ac682216.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4147.ac682216.js"
+    },
+    "js/4147.ac682216.js.LICENSE.txt": {
+      "name": "js/4147.ac682216.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4147.ac682216.js.LICENSE.txt"
+    },
+    "js/4222.0f349960.js": {
+      "name": "js/4222.0f349960.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4222.0f349960.js"
+    },
+    "js/4241.1932f39d.js": {
+      "name": "js/4241.1932f39d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4241.1932f39d.js"
+    },
+    "js/4300.763d0006.js": {
+      "name": "js/4300.763d0006.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4300.763d0006.js"
+    },
+    "js/4300.763d0006.js.LICENSE.txt": {
+      "name": "js/4300.763d0006.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4300.763d0006.js.LICENSE.txt"
+    },
+    "js/4313.ba7a0c5a.js": {
+      "name": "js/4313.ba7a0c5a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4313.ba7a0c5a.js"
+    },
+    "js/4313.ba7a0c5a.js.LICENSE.txt": {
+      "name": "js/4313.ba7a0c5a.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4313.ba7a0c5a.js.LICENSE.txt"
+    },
+    "js/4345.75f74348.js": {
+      "name": "js/4345.75f74348.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4345.75f74348.js"
+    },
+    "js/4363.53fc5a8b.js": {
+      "name": "js/4363.53fc5a8b.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4363.53fc5a8b.js"
+    },
+    "js/4399.11b72ac2.js": {
+      "name": "js/4399.11b72ac2.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4399.11b72ac2.js"
+    },
+    "js/4404.8a39fd42.js": {
+      "name": "js/4404.8a39fd42.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4404.8a39fd42.js"
+    },
+    "js/4411.38c0bb0b.js": {
+      "name": "js/4411.38c0bb0b.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4411.38c0bb0b.js"
+    },
+    "js/4471.2cc9991d.js": {
+      "name": "js/4471.2cc9991d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4471.2cc9991d.js"
+    },
+    "js/4481.c24392f1.js": {
+      "name": "js/4481.c24392f1.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4481.c24392f1.js"
+    },
+    "js/4481.c24392f1.js.LICENSE.txt": {
+      "name": "js/4481.c24392f1.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4481.c24392f1.js.LICENSE.txt"
+    },
+    "js/4517.d8886e91.js": {
+      "name": "js/4517.d8886e91.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4517.d8886e91.js"
+    },
+    "js/4566.bf37125f.js": {
+      "name": "js/4566.bf37125f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4566.bf37125f.js"
+    },
+    "js/4566.bf37125f.js.LICENSE.txt": {
+      "name": "js/4566.bf37125f.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4566.bf37125f.js.LICENSE.txt"
+    },
+    "js/4582.e9e4b09b.js": {
+      "name": "js/4582.e9e4b09b.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4582.e9e4b09b.js"
+    },
+    "js/4582.e9e4b09b.js.LICENSE.txt": {
+      "name": "js/4582.e9e4b09b.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4582.e9e4b09b.js.LICENSE.txt"
+    },
+    "js/4668.1221dcf8.js": {
+      "name": "js/4668.1221dcf8.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4668.1221dcf8.js"
+    },
+    "js/4669.2e8a05f6.js": {
+      "name": "js/4669.2e8a05f6.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4669.2e8a05f6.js"
+    },
+    "js/4707.c0883594.js": {
+      "name": "js/4707.c0883594.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4707.c0883594.js"
+    },
+    "js/4800.c605bd0d.js": {
+      "name": "js/4800.c605bd0d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4800.c605bd0d.js"
+    },
+    "js/4800.c605bd0d.js.LICENSE.txt": {
+      "name": "js/4800.c605bd0d.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4800.c605bd0d.js.LICENSE.txt"
+    },
+    "js/4996.a7388d59.js": {
+      "name": "js/4996.a7388d59.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4996.a7388d59.js"
+    },
+    "js/4996.a7388d59.js.LICENSE.txt": {
+      "name": "js/4996.a7388d59.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/4996.a7388d59.js.LICENSE.txt"
+    },
+    "js/5008.47835eed.js": {
+      "name": "js/5008.47835eed.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5008.47835eed.js"
+    },
+    "js/5008.47835eed.js.LICENSE.txt": {
+      "name": "js/5008.47835eed.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5008.47835eed.js.LICENSE.txt"
+    },
+    "js/5009.d97ecfc0.js": {
+      "name": "js/5009.d97ecfc0.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5009.d97ecfc0.js"
+    },
+    "js/5285.dd6ee246.js": {
+      "name": "js/5285.dd6ee246.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5285.dd6ee246.js"
+    },
+    "js/5342.dce1814e.js": {
+      "name": "js/5342.dce1814e.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5342.dce1814e.js"
+    },
+    "js/5342.dce1814e.js.LICENSE.txt": {
+      "name": "js/5342.dce1814e.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5342.dce1814e.js.LICENSE.txt"
+    },
+    "js/5418.63ba6f04.js": {
+      "name": "js/5418.63ba6f04.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5418.63ba6f04.js"
+    },
+    "js/5451.360eff43.js": {
+      "name": "js/5451.360eff43.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5451.360eff43.js"
+    },
+    "js/5451.360eff43.js.LICENSE.txt": {
+      "name": "js/5451.360eff43.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5451.360eff43.js.LICENSE.txt"
+    },
+    "js/5452.451dffff.js": {
+      "name": "js/5452.451dffff.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5452.451dffff.js"
+    },
+    "js/5452.451dffff.js.LICENSE.txt": {
+      "name": "js/5452.451dffff.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5452.451dffff.js.LICENSE.txt"
+    },
+    "js/5530.bc3a6f36.js": {
+      "name": "js/5530.bc3a6f36.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5530.bc3a6f36.js"
+    },
+    "js/5582.be2135f5.js": {
+      "name": "js/5582.be2135f5.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5582.be2135f5.js"
+    },
+    "js/5582.be2135f5.js.LICENSE.txt": {
+      "name": "js/5582.be2135f5.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5582.be2135f5.js.LICENSE.txt"
+    },
+    "js/5627.e0ae30ef.js": {
+      "name": "js/5627.e0ae30ef.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5627.e0ae30ef.js"
+    },
+    "js/5627.e0ae30ef.js.LICENSE.txt": {
+      "name": "js/5627.e0ae30ef.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5627.e0ae30ef.js.LICENSE.txt"
+    },
+    "js/5665.d3dbd657.js": {
+      "name": "js/5665.d3dbd657.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5665.d3dbd657.js"
+    },
+    "js/5688.5e92c592.js": {
+      "name": "js/5688.5e92c592.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5688.5e92c592.js"
+    },
+    "js/5781.dc82f179.js": {
+      "name": "js/5781.dc82f179.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5781.dc82f179.js"
+    },
+    "js/5801.e8465e70.js": {
+      "name": "js/5801.e8465e70.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5801.e8465e70.js"
+    },
+    "js/581.de1f5559.js": {
+      "name": "js/581.de1f5559.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/581.de1f5559.js"
+    },
+    "js/581.de1f5559.js.LICENSE.txt": {
+      "name": "js/581.de1f5559.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/581.de1f5559.js.LICENSE.txt"
+    },
+    "js/5860.a6bde3f1.js": {
+      "name": "js/5860.a6bde3f1.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5860.a6bde3f1.js"
+    },
+    "js/5860.a6bde3f1.js.LICENSE.txt": {
+      "name": "js/5860.a6bde3f1.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5860.a6bde3f1.js.LICENSE.txt"
+    },
+    "js/5923.036ae385.js": {
+      "name": "js/5923.036ae385.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/5923.036ae385.js"
+    },
+    "js/6049.62ab636c.js": {
+      "name": "js/6049.62ab636c.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6049.62ab636c.js"
+    },
+    "js/6049.62ab636c.js.LICENSE.txt": {
+      "name": "js/6049.62ab636c.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6049.62ab636c.js.LICENSE.txt"
+    },
+    "js/6160.59062f08.js": {
+      "name": "js/6160.59062f08.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6160.59062f08.js"
+    },
+    "js/6162.e507dc26.js": {
+      "name": "js/6162.e507dc26.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6162.e507dc26.js"
+    },
+    "js/6354.7c788f98.js": {
+      "name": "js/6354.7c788f98.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6354.7c788f98.js"
+    },
+    "js/6354.7c788f98.js.LICENSE.txt": {
+      "name": "js/6354.7c788f98.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6354.7c788f98.js.LICENSE.txt"
+    },
+    "js/6357.b5a601fb.js": {
+      "name": "js/6357.b5a601fb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6357.b5a601fb.js"
+    },
+    "js/6440.e840f4fe.js": {
+      "name": "js/6440.e840f4fe.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6440.e840f4fe.js"
+    },
+    "js/6440.e840f4fe.js.LICENSE.txt": {
+      "name": "js/6440.e840f4fe.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6440.e840f4fe.js.LICENSE.txt"
+    },
+    "js/6762.0e67b0aa.js": {
+      "name": "js/6762.0e67b0aa.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6762.0e67b0aa.js"
+    },
+    "js/6762.0e67b0aa.js.LICENSE.txt": {
+      "name": "js/6762.0e67b0aa.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6762.0e67b0aa.js.LICENSE.txt"
+    },
+    "js/6780.355a652d.js": {
+      "name": "js/6780.355a652d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6780.355a652d.js"
+    },
+    "js/6780.355a652d.js.LICENSE.txt": {
+      "name": "js/6780.355a652d.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6780.355a652d.js.LICENSE.txt"
+    },
+    "js/6802.a47c0c25.js": {
+      "name": "js/6802.a47c0c25.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6802.a47c0c25.js"
+    },
+    "js/6802.a47c0c25.js.LICENSE.txt": {
+      "name": "js/6802.a47c0c25.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6802.a47c0c25.js.LICENSE.txt"
+    },
+    "js/6824.cb5bffe4.js": {
+      "name": "js/6824.cb5bffe4.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6824.cb5bffe4.js"
+    },
+    "js/6824.cb5bffe4.js.LICENSE.txt": {
+      "name": "js/6824.cb5bffe4.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6824.cb5bffe4.js.LICENSE.txt"
+    },
+    "js/6885.ca00900b.js": {
+      "name": "js/6885.ca00900b.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6885.ca00900b.js"
+    },
+    "js/6925.bfa19e5a.js": {
+      "name": "js/6925.bfa19e5a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6925.bfa19e5a.js"
+    },
+    "js/6925.bfa19e5a.js.LICENSE.txt": {
+      "name": "js/6925.bfa19e5a.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6925.bfa19e5a.js.LICENSE.txt"
+    },
+    "js/6962.c7e27a0a.js": {
+      "name": "js/6962.c7e27a0a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/6962.c7e27a0a.js"
+    },
+    "js/7113.bf301aeb.js": {
+      "name": "js/7113.bf301aeb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7113.bf301aeb.js"
+    },
+    "js/7115.e34bdb96.js": {
+      "name": "js/7115.e34bdb96.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7115.e34bdb96.js"
+    },
+    "js/7144.8a23c76e.js": {
+      "name": "js/7144.8a23c76e.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7144.8a23c76e.js"
+    },
+    "js/718.0bc4fcbb.js": {
+      "name": "js/718.0bc4fcbb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/718.0bc4fcbb.js"
+    },
+    "js/7222.b6759e0a.js": {
+      "name": "js/7222.b6759e0a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7222.b6759e0a.js"
+    },
+    "js/7222.b6759e0a.js.LICENSE.txt": {
+      "name": "js/7222.b6759e0a.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7222.b6759e0a.js.LICENSE.txt"
+    },
+    "js/7234.d1fa472a.js": {
+      "name": "js/7234.d1fa472a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7234.d1fa472a.js"
+    },
+    "js/732.e0fd0af8.js": {
+      "name": "js/732.e0fd0af8.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/732.e0fd0af8.js"
+    },
+    "js/732.e0fd0af8.js.LICENSE.txt": {
+      "name": "js/732.e0fd0af8.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/732.e0fd0af8.js.LICENSE.txt"
+    },
+    "js/7336.122ec891.js": {
+      "name": "js/7336.122ec891.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7336.122ec891.js"
+    },
+    "js/7336.122ec891.js.LICENSE.txt": {
+      "name": "js/7336.122ec891.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7336.122ec891.js.LICENSE.txt"
+    },
+    "js/7385.39f52dcd.js": {
+      "name": "js/7385.39f52dcd.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7385.39f52dcd.js"
+    },
+    "js/7398.b01ad35c.js": {
+      "name": "js/7398.b01ad35c.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7398.b01ad35c.js"
+    },
+    "js/7480.5d49a080.js": {
+      "name": "js/7480.5d49a080.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7480.5d49a080.js"
+    },
+    "js/7480.5d49a080.js.LICENSE.txt": {
+      "name": "js/7480.5d49a080.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7480.5d49a080.js.LICENSE.txt"
+    },
+    "js/7551.85496cda.js": {
+      "name": "js/7551.85496cda.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7551.85496cda.js"
+    },
+    "js/7596.c395ef9a.js": {
+      "name": "js/7596.c395ef9a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7596.c395ef9a.js"
+    },
+    "js/7658.8bd9ca04.js": {
+      "name": "js/7658.8bd9ca04.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7658.8bd9ca04.js"
+    },
+    "js/7664.ebb488dc.js": {
+      "name": "js/7664.ebb488dc.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7664.ebb488dc.js"
+    },
+    "js/7748.8add31d8.js": {
+      "name": "js/7748.8add31d8.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7748.8add31d8.js"
+    },
+    "js/7786.1bdfce60.js": {
+      "name": "js/7786.1bdfce60.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7786.1bdfce60.js"
+    },
+    "js/7820.5d3bd8cb.js": {
+      "name": "js/7820.5d3bd8cb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7820.5d3bd8cb.js"
+    },
+    "js/7823.99385b7d.js": {
+      "name": "js/7823.99385b7d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7823.99385b7d.js"
+    },
+    "js/7826.84dc4072.js": {
+      "name": "js/7826.84dc4072.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7826.84dc4072.js"
+    },
+    "js/7826.84dc4072.js.LICENSE.txt": {
+      "name": "js/7826.84dc4072.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7826.84dc4072.js.LICENSE.txt"
+    },
+    "js/7839.1c037679.js": {
+      "name": "js/7839.1c037679.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7839.1c037679.js"
+    },
+    "js/7841.1ad28ecf.js": {
+      "name": "js/7841.1ad28ecf.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7841.1ad28ecf.js"
+    },
+    "js/7841.1ad28ecf.js.LICENSE.txt": {
+      "name": "js/7841.1ad28ecf.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7841.1ad28ecf.js.LICENSE.txt"
+    },
+    "js/7903.fc3fb7a9.js": {
+      "name": "js/7903.fc3fb7a9.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7903.fc3fb7a9.js"
+    },
+    "js/7903.fc3fb7a9.js.LICENSE.txt": {
+      "name": "js/7903.fc3fb7a9.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/7903.fc3fb7a9.js.LICENSE.txt"
+    },
+    "js/8038.e967ed72.js": {
+      "name": "js/8038.e967ed72.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8038.e967ed72.js"
+    },
+    "js/8038.e967ed72.js.LICENSE.txt": {
+      "name": "js/8038.e967ed72.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8038.e967ed72.js.LICENSE.txt"
+    },
+    "js/8160.f121db9a.js": {
+      "name": "js/8160.f121db9a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8160.f121db9a.js"
+    },
+    "js/8198.52b16bf6.js": {
+      "name": "js/8198.52b16bf6.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8198.52b16bf6.js"
+    },
+    "js/8201.3c0ded6a.js": {
+      "name": "js/8201.3c0ded6a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8201.3c0ded6a.js"
+    },
+    "js/8256.cc033cf0.js": {
+      "name": "js/8256.cc033cf0.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8256.cc033cf0.js"
+    },
+    "js/8256.cc033cf0.js.LICENSE.txt": {
+      "name": "js/8256.cc033cf0.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8256.cc033cf0.js.LICENSE.txt"
+    },
+    "js/8359.bd3f54be.js": {
+      "name": "js/8359.bd3f54be.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8359.bd3f54be.js"
+    },
+    "js/8359.bd3f54be.js.LICENSE.txt": {
+      "name": "js/8359.bd3f54be.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8359.bd3f54be.js.LICENSE.txt"
+    },
+    "js/8496.0d006ad5.js": {
+      "name": "js/8496.0d006ad5.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8496.0d006ad5.js"
+    },
+    "js/8496.0d006ad5.js.LICENSE.txt": {
+      "name": "js/8496.0d006ad5.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8496.0d006ad5.js.LICENSE.txt"
+    },
+    "js/855.5dd0595f.js": {
+      "name": "js/855.5dd0595f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/855.5dd0595f.js"
+    },
+    "js/8573.db2d6479.js": {
+      "name": "js/8573.db2d6479.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8573.db2d6479.js"
+    },
+    "js/8590.f8ab7c05.js": {
+      "name": "js/8590.f8ab7c05.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8590.f8ab7c05.js"
+    },
+    "js/8590.f8ab7c05.js.LICENSE.txt": {
+      "name": "js/8590.f8ab7c05.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8590.f8ab7c05.js.LICENSE.txt"
+    },
+    "js/8591.7a0cb90e.js": {
+      "name": "js/8591.7a0cb90e.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8591.7a0cb90e.js"
+    },
+    "js/8724.d9519918.js": {
+      "name": "js/8724.d9519918.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8724.d9519918.js"
+    },
+    "js/8725.585c887e.js": {
+      "name": "js/8725.585c887e.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8725.585c887e.js"
+    },
+    "js/8725.585c887e.js.LICENSE.txt": {
+      "name": "js/8725.585c887e.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8725.585c887e.js.LICENSE.txt"
+    },
+    "js/8732.22af5ac7.js": {
+      "name": "js/8732.22af5ac7.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8732.22af5ac7.js"
+    },
+    "js/879.3e9e021f.js": {
+      "name": "js/879.3e9e021f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/879.3e9e021f.js"
+    },
+    "js/879.3e9e021f.js.LICENSE.txt": {
+      "name": "js/879.3e9e021f.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/879.3e9e021f.js.LICENSE.txt"
+    },
+    "js/8793.dd5e3f75.js": {
+      "name": "js/8793.dd5e3f75.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8793.dd5e3f75.js"
+    },
+    "js/8793.dd5e3f75.js.LICENSE.txt": {
+      "name": "js/8793.dd5e3f75.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8793.dd5e3f75.js.LICENSE.txt"
+    },
+    "js/8832.bbf99698.js": {
+      "name": "js/8832.bbf99698.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/8832.bbf99698.js"
+    },
+    "js/9011.768beba0.js": {
+      "name": "js/9011.768beba0.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9011.768beba0.js"
+    },
+    "js/917.89d51636.js": {
+      "name": "js/917.89d51636.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/917.89d51636.js"
+    },
+    "js/9294.a25ad635.js": {
+      "name": "js/9294.a25ad635.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9294.a25ad635.js"
+    },
+    "js/9359.cd3b2c55.js": {
+      "name": "js/9359.cd3b2c55.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9359.cd3b2c55.js"
+    },
+    "js/9359.cd3b2c55.js.LICENSE.txt": {
+      "name": "js/9359.cd3b2c55.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9359.cd3b2c55.js.LICENSE.txt"
+    },
+    "js/9390.22d1890d.js": {
+      "name": "js/9390.22d1890d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9390.22d1890d.js"
+    },
+    "js/945.b4c3c33f.js": {
+      "name": "js/945.b4c3c33f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/945.b4c3c33f.js"
+    },
+    "js/945.b4c3c33f.js.LICENSE.txt": {
+      "name": "js/945.b4c3c33f.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/945.b4c3c33f.js.LICENSE.txt"
+    },
+    "js/9516.386bb506.js": {
+      "name": "js/9516.386bb506.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9516.386bb506.js"
+    },
+    "js/9536.1daf38e9.js": {
+      "name": "js/9536.1daf38e9.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9536.1daf38e9.js"
+    },
+    "js/958.d9fd8a9f.js": {
+      "name": "js/958.d9fd8a9f.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/958.d9fd8a9f.js"
+    },
+    "js/958.d9fd8a9f.js.LICENSE.txt": {
+      "name": "js/958.d9fd8a9f.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/958.d9fd8a9f.js.LICENSE.txt"
+    },
+    "js/9612.5d4557c4.js": {
+      "name": "js/9612.5d4557c4.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9612.5d4557c4.js"
+    },
+    "js/9612.5d4557c4.js.LICENSE.txt": {
+      "name": "js/9612.5d4557c4.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9612.5d4557c4.js.LICENSE.txt"
+    },
+    "js/9617.bb943284.js": {
+      "name": "js/9617.bb943284.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9617.bb943284.js"
+    },
+    "js/978.1cbb7f53.js": {
+      "name": "js/978.1cbb7f53.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/978.1cbb7f53.js"
+    },
+    "js/978.1cbb7f53.js.LICENSE.txt": {
+      "name": "js/978.1cbb7f53.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/978.1cbb7f53.js.LICENSE.txt"
+    },
+    "js/9820.e55ef154.js": {
+      "name": "js/9820.e55ef154.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9820.e55ef154.js"
+    },
+    "js/9848.0be66c9a.js": {
+      "name": "js/9848.0be66c9a.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9848.0be66c9a.js"
+    },
+    "js/9981.6c108cef.js": {
+      "name": "js/9981.6c108cef.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/9981.6c108cef.js"
+    },
+    "js/exercise.12d27afb.js": {
+      "name": "js/exercise.12d27afb.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/exercise.12d27afb.js"
+    },
+    "js/exercise.12d27afb.js.LICENSE.txt": {
+      "name": "js/exercise.12d27afb.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/exercise.12d27afb.js.LICENSE.txt"
+    },
+    "js/index.323abd0d.js": {
+      "name": "js/index.323abd0d.js",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/index.323abd0d.js"
+    },
+    "js/index.323abd0d.js.LICENSE.txt": {
+      "name": "js/index.323abd0d.js.LICENSE.txt",
+      "path": "/mnt/c/Users/Amir/Desktop/GSoC/RoboticsAcademy/react_frontend/static/react_frontend/js/index.323abd0d.js.LICENSE.txt"
+    }
+  },
+  "chunks": {
+    "exercise": [
+      "css/exercise.css",
+      "js/exercise.12d27afb.js"
+    ],
+    "index": [
+      "css/index.css",
+      "js/index.323abd0d.js"
+    ]
+  }
+}
