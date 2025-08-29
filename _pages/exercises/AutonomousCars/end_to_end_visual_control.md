@@ -260,6 +260,18 @@ After training your deep learning model, you must export it to the <a href="http
 </p>
 <code class="language-plaintext highlighter-rouge" style="color:#FF0000;background:#ccc">NB: RoboticsAcademy currently supports only the ONNX (Open Neural Network Exchange) format.</code>
 
+<span>Example:</span>
+
+```python
+from sklearn.model_selection import train_test_split
+
+# Combine training and adjustment data
+all_data = train_data + adjustment_data
+
+# Split into 80% train, 20% validation
+train_set, val_set = train_test_split(all_data, test_size=0.2, random_state=42)
+```
+
 #### vi) Testing Criteria
 
 <!-- ## Theory -->
@@ -278,17 +290,17 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 
 ### Illustrations
 
-{% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %}
+<!-- {% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %} -->
 
 ## Videos
 
-{% include youtubePlayer.html id=page.youtubeId2 %}
+<!-- {% include youtubePlayer.html id=page.youtubeId2 %} -->
 
-_This solution is an illustration for the Web Templates_
+<!-- _This solution is an illustration for the Web Templates_ -->
 
 ### Demonstrative video of the solution
 
-{% include youtubePlayer.html id=page.youtubeId3 %}
+<!-- {% include youtubePlayer.html id=page.youtubeId3 %} -->
 
 ## Contributors
 
