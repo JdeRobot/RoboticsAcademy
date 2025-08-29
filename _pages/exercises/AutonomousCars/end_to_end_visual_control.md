@@ -129,12 +129,12 @@ This dataset is specifically designed for training and testing models on a singl
 #### ii) Combine Circuit Dataset
 
 <p style="text-align:justify">
-This dataset includes data from all <strong>four circuits</strong> available in the exercise. It is intended for advanced model development, enabling students to train models that generalize across all four circuits and handle various driving conditions, including <code class="language-plaintext highlighter-rouge">sharp left and right turns</code>. The combined dataset captures a wide range of driving scenarios, including sharp turns, straight paths, and varying circuit complexities. We provide an <strong>adjustment dataset</strong> designed to support users in managing diverse driving scenarios, facilitating more experimentation.
+This dataset includes data from all <strong>four circuits</strong> available in the exercise. It is intended for advanced model development, enabling students to train models that generalize across all four circuits and handle various driving conditions, including <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">sharp left and right turns</code>. The combined dataset captures a wide range of driving scenarios, including sharp turns, straight paths, and varying circuit complexities. We provide an <strong>adjustment dataset</strong> designed to support users in managing diverse driving scenarios, facilitating more experimentation.
 </p>
 
 ### 2. ☁️ Datasets Downloads
 
-<p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Huggingface under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
+<p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Huggingface under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
 
 -   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
 -   [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
@@ -154,7 +154,7 @@ git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
 #### Method 02: Huggingface Hub API [Recommended: High]
 
 <p style="text-align:justify">
-The Huggingface <code class="language-plaintext highlighter-rouge">huggingface_hub</code> library provides a <strong>Python API for</strong> interacting with the Huggingface Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Huggingface.</p>
+The Huggingface <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">huggingface_hub</code> library provides a <strong>Python API for</strong> interacting with the Huggingface Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Huggingface.</p>
 
 <p style="text-align:justify">
 First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python environment</a> on your local machine and install the Huggingface Hub pip package. Next, obtain a Huggingface <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Huggingface
@@ -190,28 +190,58 @@ snapshot_download(repo_id="JdeRobot/Follow-Line-Combine-Dataset",
 #### Simple Circuit Dataset
 
 <p style="text-align:justify">
-The dataset is divided into <strong>training</strong> and <strong>testing</strong> parts. The training images are split into seven folders named <code class="language-plaintext highlighter-rouge">train_images_part_01</code> to <code class="language-plaintext highlighter-rouge">train_images_part_07</code>, and their corresponding labels are provided in the <strong>train.csv</strong> file. For evaluation, the dataset includes a <code class="language-plaintext highlighter-rouge">test_images</code> folder that contains all the test images, with their labels stored separately in the <strong>test.csv</strong> file. 
+The dataset is divided into <strong>training</strong> and <strong>testing</strong> parts. The training images are split into seven folders named <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">train_images_part_01</code> to <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">train_images_part_07</code>, and their corresponding labels are provided in the <strong>train.csv</strong> file. For evaluation, the dataset includes a <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">test_images</code> folder that contains all the test images, with their labels stored separately in the <strong>test.csv</strong> file. 
 </p>
 
 #### Combine Circuit Dataset
 
 <p style="text-align:justify">
-The dataset is organized into several folders and CSV files. The main training images are divided into six parts, stored in the folders <code class="language-plaintext highlighter-rouge">images_part_01</code> to <code class="language-plaintext highlighter-rouge">images_part_06</code>. Each of these images is linked to labels provided in the <strong>train.csv</strong> file, which contains the vehicle commands. In addition to the main dataset, there is an <code class="language-plaintext highlighter-rouge">adjustment_images</code> folder that includes extra images intended for adjusting the sharp corner. The labels for these images are stored separately in the <strong>adjustment_data.csv</strong> file.
+The dataset is organized into several folders and CSV files. The main training images are divided into six parts, stored in the folders <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">images_part_01</code> to <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">images_part_06</code>. Each of these images is linked to labels provided in the <strong>train.csv</strong> file, which contains the vehicle commands. In addition to the main dataset, there is an <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">adjustment_images</code> folder that includes extra images intended for adjusting the sharp corner. The labels for these images are stored separately in the <strong>adjustment_data.csv</strong> file.
 </p>
 
 ### 4. Model Training and Evaluation Pipeline
 
-#### Data Preprocessing
+#### i) Data Preprocessing
 
-#### Dataset Splitting
+<p style="text-align:justify">
+Data preprocessing ensures that all inputs to the model are in a clean, consistent, and usable format. 
+The <strong>Combine Circuit Dataset</strong> is already balanced.
+</p>
 
-#### Model Architecture
+<p style="text-align:justify">
+However, the <strong>Simple Circuit Dataset</strong> is <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">imbalanced</code>. Training on such <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">imbalanced</code> data can cause the model to favor majority classes and perform poorly.
+To address this, you should first <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">categorize</code> the samples into their respective classes and then apply data balancing techniques, such as:
 
-#### Training
+  <ul>
+    <li><strong>Undersampling:</strong> Reducing the number of majority-class samples.</li>
+    <li><strong>Oversampling:</strong> Increasing the number of minority-class samples, sometimes by duplicating or augmenting them.</li>
+  </ul>
+</p>
 
-#### Validation and Evaluation
+<p style="text-align:justify">
+In the preprocessing stage, images are first loaded from the dataset folders and paired with their corresponding labels from <strong>CSV files</strong> that contain control values such as <strong>linear</strong> and <strong>angular velocity</strong>. To ensure consistency, all images are <strong>resized</strong> to a fixed dimension and <strong>normalized</strong> by scaling pixel values to a 
+standard range, which improves training stability. The <strong>labels</strong> are extracted directly from the CSV files and linked to the appropriate images. To enhance <strong>robustness</strong> and <strong>generalization</strong>, <strong>data augmentation techniques</strong> 
+such as <strong>flipping</strong>, <strong>rotation</strong>, and <strong>brightness adjustment</strong> are applied, 
+creating diverse variations of the training data.
+</p>
 
-#### Testing Criteria
+#### ii) Dataset Splitting
+
+<p style="text-align:justify">
+The <strong>Simple Circuit dataset</strong> is divided into three sets: <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">training</code> and <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">testing</code>. The training set contains the majority of the data and is used to teach the model to recognize patterns and learn the task. The testing set is the data used during training to fine-tune hyper-parameters, prevent over-fitting, and monitor the model’s performance on unseen data.
+</p>
+
+<p style="text-align:justify">
+The <strong>Combine Circuit Dataset</strong> consists of <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">training</code> data and <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">adjustment data</code> (used for sharp turns). If needed, these can be combined to create a larger dataset. You can then split the combined dataset into <strong>training</strong> and <strong>testing</strong> sets using an <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">80%-20% ratio</code> with the <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">train_test_split</code> function <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">(from sklearn.model_selection)</code>. 
+</p>
+
+#### iii) Model Architecture
+
+#### iv) Training
+
+#### v) Validation and Evaluation
+
+#### vi) Testing Criteria
 
 ## Theory
 
