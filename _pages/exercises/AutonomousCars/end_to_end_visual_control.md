@@ -252,9 +252,17 @@ While training, testing dataset is used to monitor the model’s performance on 
 <p style="text-align:justify">
 Once training is complete, the model is evaluated on a <strong>testing dataset</strong>. To judge performance, different metrics could be used, such as <strong>Mean Squared Error (MSE)</strong>, <strong>Mean Absolute Error (MAE)</strong>, and the <strong>R-squared</strong> score for regression accuracy for classification tasks.
 </p>
-#### v) Testing Criteria
 
-## Theory
+#### v) Export the Model
+
+<p style="text-align:justify">
+After training your deep learning model, you must export it to the <a href="https://onnx.ai/" target="_blank" rel="noopener noreferrer">ONNX (Open Neural Network Exchange)</a> format. This is the only model format currently supported by the <strong>RoboticsAcademy</strong> web interface. ONNX is an open standard that facilitates interoperability among various deep learning frameworks, including <strong>PyTorch</strong> and <strong>TensorFlow</strong>.
+</p>
+<code class="language-plaintext highlighter-rouge" style="color:#FF0000;background:#ccc">NB: RoboticsAcademy currently supports only the ONNX (Open Neural Network Exchange) format.</code>
+
+#### vi) Testing Criteria
+
+<!-- ## Theory -->
 
 ## Hints
 
@@ -294,6 +302,7 @@ _This solution is an illustration for the Web Templates_
 1. [https://huggingface.co/JdeRobot](https://huggingface.co/JdeRobot)
 2. [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
 3. [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
+4. [ONNX (Open Neural Network Exchange)](https://onnx.ai/)
 
 ```
 
