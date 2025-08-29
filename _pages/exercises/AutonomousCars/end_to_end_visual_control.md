@@ -235,13 +235,24 @@ The <strong>Simple Circuit dataset</strong> is divided into three sets: <code cl
 The <strong>Combine Circuit Dataset</strong> consists of <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">training</code> data and <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">adjustment data</code> (used for sharp turns). If needed, these can be combined to create a larger dataset. You can then split the combined dataset into <strong>training</strong> and <strong>testing</strong> sets using an <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">80%-20% ratio</code> with the <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">train_test_split</code> function <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">(from sklearn.model_selection)</code>. 
 </p>
 
-#### iii) Model Architecture
+#### iii) Model Architecture and Training:
 
-#### iv) Training
+<p style="text-align:justify">
+For this exercise, a deep learning model, such as a Convolutional Neural Network (CNN) like <strong>PilotNet</strong> or <strong>ResNet</strong>, is chosen to perform End-to-End Visual Control. The model consists of multiple convolutional layers that automatically extract meaningful features from raw camera images, followed by fully connected layers that map these features to the predicted outputs, such as linear and angular velocities for the autonomous vehicle.
+</p>
+<p style="text-align:justify">
+During training, the model learns by comparing its predictions with the correct outputs (ground truth) from the dataset and trying to reduce the difference. This process uses <strong>backpropagation</strong>, which calculates how the model’s internal parameters (weights) should be adjusted to improve accuracy. <strong>Optimization</strong> algorithms like <strong>Adam</strong> are then applied to update these weights step by step. To make the model more reliable and avoid <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">overfitting, techniques such as normalization, dropout, and adjusting</code> the learning rate may also be used.
+</p>
 
-#### v) Validation and Evaluation
+#### iv) Validation, Testing, and Evaluation:
 
-#### vi) Testing Criteria
+<p style="text-align:justify">
+While training, testing dataset is used to monitor the model’s performance on unseen data with the help of the <strong>Loss Validation</strong> graph. This helps ensure that the model is not just memorizing the training data (overfitting). Techniques such as <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">early stopping</code> (ending training when validation performance stops improving) or <code class="language-plaintext highlighter-rouge" style="color:white;background:#979797">learning rate</code> scheduling (gradually reducing the learning rate) may be applied to improve results.
+</p>
+<p style="text-align:justify">
+Once training is complete, the model is evaluated on a <strong>testing dataset</strong>. To judge performance, different metrics could be used, such as <strong>Mean Squared Error (MSE)</strong>, <strong>Mean Absolute Error (MAE)</strong>, and the <strong>R-squared</strong> score for regression accuracy for classification tasks.
+</p>
+#### v) Testing Criteria
 
 ## Theory
 
