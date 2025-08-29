@@ -274,6 +274,15 @@ train_set, val_set = train_test_split(all_data, test_size=0.2, random_state=42)
 
 #### vi) Testing Criteria
 
+<p style="text-align:justify">
+While monitoring <strong>validation loss</strong> and checking <strong>evaluation metrics</strong> helps understand how well your model has learned, these measures do not guarantee that the autonomous vehicle can successfully complete a full circuit. To ensure real-world performance, you must also run the model in real-time inference within the <strong>End-to-End Visual Control</strong> exercise in the <strong>RoboticsAcademy</strong> environment and observe how it behaves while driving through the circuit.
+</p>
+
+| Dataset Name    | Test Circuit         | Evaluation                                         |
+| --------------- | -------------------- | -------------------------------------------------- |
+| Simple Circuit  | Circuit Circuit only | A full lap must be completed on the Simple Circuit |
+| Combine Circuit | All Four Circuits    | A full lap must be completed within four circuits. |
+
 <!-- ## Theory -->
 
 ## Hints
