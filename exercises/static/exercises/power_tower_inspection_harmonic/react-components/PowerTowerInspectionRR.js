@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Fragment} from "react";
 
-import "./css/PowertowerInspectionRR.css";
+import "./css/PowerTowerInspectionRR.css";
 
 const PowerTowerInspectionRR = (props) => {
   return (
