@@ -151,7 +151,7 @@ RUN python3.10 -m pip install \
     pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
     onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 netron seaborn==0.11.2 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
 
-# install pytorch with CUDA 12.2 support 
+# install pytorch with CUDA 12.8 support 
 RUN python3.10 -m pip install --upgrade pip 
 RUN python3.10 -m pip install --ignore-installed sympy==1.13.3 
 RUN python3.10 -m pip install torch --extra-index-url https://download.pytorch.org/whl/cu128
