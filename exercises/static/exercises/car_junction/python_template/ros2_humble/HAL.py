@@ -23,12 +23,11 @@ def custom_thread_excepthook(args):
 
 threading.excepthook = custom_thread_excepthook
 
-# ROS2 init
+
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
-### HAL INIT ###
 motor_node = MotorsNode("/cmd_vel", 40, 0)
 odometry_node = OdometryNode("/odom")
 camera_front_node = CameraNode("/waymo/camera_front")
