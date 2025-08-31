@@ -3,7 +3,7 @@ import {Fragment} from "react";
 
 import "./css/CarJunctionRR.css";
 
-const AutoparkingRR = (props) => {
+const CarJunctionRR = (props) => {
   return (
     <Fragment>
     {props.children}
@@ -11,4 +11,4 @@ const AutoparkingRR = (props) => {
   );
 };
 
-export default AutoparkingRR;
+export default CarJunctionRR;
