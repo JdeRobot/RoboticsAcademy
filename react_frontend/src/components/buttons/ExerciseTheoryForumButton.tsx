@@ -5,6 +5,8 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import RoboticsTheme from "Components/RoboticsTheme.tsx";
+import Box from "@mui/material";
+
 
 import "../../styles/buttons/ExerciseTheoryForumButton.css";
 
