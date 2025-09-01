@@ -5,19 +5,18 @@ import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import RoboticsTheme from "Components/RoboticsTheme.tsx";
-import Box from "@mui/material";
 
 
 import "../../styles/buttons/ExerciseTheoryForumButton.css";
 
 interface ExerciseTheoryForumButtonProps {
-  url: string;
+  url?: string;
 }
 
 const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ url }) => {
   return (
     <RoboticsTheme>
-      <Box display="flex" gap={1}>
+      <ButtonGroup color={"inherit"} variant={"contained"}>
         {url && (
           <IconButton href={url} target="_blank" color="secondary">
             <SchoolOutlinedIcon />
@@ -30,7 +29,7 @@ const ExerciseTheoryForumButton: React.FC<ExerciseTheoryForumButtonProps> = ({ u
         >
           <CommentOutlinedIcon />
         </IconButton>
-      </Box>
+      </ButtonGroup>
     </RoboticsTheme>
   );
 };
