@@ -370,8 +370,8 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 
 <!-- TODO: -->
 
--   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe), [L. Roberto Morales](https://linkedin.com/in/lrobertomorales)
--   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe),[L. Roberto Morales](https://linkedin.com/in/lrobertomorales).
+-   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe), [L. Roberto Morales](https://github.com/lr-morales)
+-   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe),[L. Roberto Morales](https://github.com/lr-morales).
 
 ## References
 
