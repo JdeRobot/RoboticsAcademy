@@ -379,11 +379,3 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 2. [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
 3. [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
 4. [ONNX (Open Neural Network Exchange)](https://onnx.ai/)
-
-```
-
-```
-
-```
-
-```
