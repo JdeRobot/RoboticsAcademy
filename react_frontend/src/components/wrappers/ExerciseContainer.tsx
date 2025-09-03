@@ -17,6 +17,7 @@ import HeaderMenu from "Components/HeaderMenu";
 import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
 import { SimulatorIcon, TerminalIcon } from "Icons/index";
 import Frequencies from "Components/statusBar/Frequencies";
+import { publish } from "Components/HeaderMenu/HeaderMenu";
 
 const defaultCode = `import WebGUI
 import HAL
@@ -58,7 +59,6 @@ const ExerciseContainer = ({
   );
 
   const [code, _setCode] = useState<string>(defaultCode);
-
   const codeRef = useRef<string>(defaultCode);
 
   const setCode = (data: string) => {
@@ -72,7 +72,7 @@ const ExerciseContainer = ({
   };
 
   const uploadCode = async (code: string) => {
-    setCode(code);
+    publish("uploadOnlyCode", { code: code })
   };
 
   // RB manager setup
@@ -233,7 +233,7 @@ const ExerciseContainer = ({
               project={project}
               api={editorApi}
               viewers={[treeMonitor, gazeboViewer, terminalViewer]}
-              options={[]}
+              options={{ editor: { onlyOneFile: true } }}
               layout={layout}
               statusBarComponents={statusBar}
               explorers={[]}

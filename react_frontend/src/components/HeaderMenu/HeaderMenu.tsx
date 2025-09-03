@@ -233,20 +233,12 @@ const HeaderMenu = ({
     setAppRunning(false);
   };
 
-  const openInNewTab = (url: URL) => {
-    const newWindow = window.open(url, "_blank");
-    if (newWindow) {
-      newWindow.focus();
-    } else {
-      console.error("Failed to open new tab/window.");
-    }
-  };
-
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const fr = new FileReader();
     fr.onload = () => {
       if (fr.result) {
+        // TODO: this does not work
         uploadCode(fr.result as string);
       }
     };
