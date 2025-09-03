@@ -55,10 +55,10 @@ export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
   padding: 0 0 0 0;
   align-content: center;
   flex-wrap: wrap;
+  border-radius: ${(p) => p.roundness ?? 1}px;
 
   &:hover {
     background-color: ${(p) => p.hoverColor ?? primaryColor};
-    border-radius: ${(p) => p.roundness ?? 1}px;
   }
 
   &:focus {

@@ -40,10 +40,12 @@ const base_file = {
 const ExerciseContainer = ({
   project,
   url,
+  hasDLModel,
   children,
 }: {
   project: string;
   url?: string;
+  hasDLModel: boolean;
   children: Component;
 }) => {
   const [manager, setManager] = useState<CommsManager | null>(null);
@@ -223,6 +225,7 @@ const ExerciseContainer = ({
               url={url}
               uploadCode={uploadCode}
               setLayout={setLayout}
+              hasDLModel={hasDLModel}
             />
             <IdeInterface
               commsManager={manager}

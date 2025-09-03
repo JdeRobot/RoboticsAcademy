@@ -1,22 +1,44 @@
 import { StyledHeaderButton } from "Components/HeaderMenu/HeaderMenu.styles";
 import { useTheme } from "jderobot-ide-interface";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 
 const DeepLearningButton = ({
-  loadFile,
+  setModel,
 }: {
-  loadFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setModel: Function;
 }) => {
   const theme = useTheme();
   const inputRef = useRef(null);
 
-  //TODO: add functionality
+  const [fileName, setFileName] = useState<string|undefined>(undefined);
+
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file || !file.name.endsWith(".onnx")) {
+        alert("Please upload a valid .onnx file");
+        return;
+      }
+
+      const buffer = await file.arrayBuffer(); // Binary buffer
+
+      console.log("====================================");
+      console.log("File uploaded:", file.name);
+      console.log("File size:", (file.size / (1024 * 1024)).toFixed(2), "MB");
+      console.log("File type:", file.type);
+      console.log("====================================");
+
+      // Set the model in the DeepLearningModel component
+      setModel(buffer);
+      // Update the state with file details
+      setFileName(file.name);
+    };
+
 
   return (
     <StyledHeaderButton
-      bgColor={theme.palette.primary}
-      hoverColor={theme.palette.secondary}
+      bgColor={fileName ? theme.palette.button.success : theme.palette.button.error}
+      hoverColor={fileName ? theme.palette.button.hoverSuccess : theme.palette.button.hoverError}
       roundness={theme.roundness}
       onClick={() => {
         (inputRef.current as any).click();
@@ -30,7 +52,7 @@ const DeepLearningButton = ({
         hidden
         accept=".onnx"
         type="file"
-        onChange={loadFile}
+        onChange={handleUpload}
       />
     </StyledHeaderButton>
   );

@@ -23,7 +23,14 @@ import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 
-import { HomeButton, UploadButton, DownloadButton, ForumButton, TheoryButton } from "Components/buttons";
+import {
+  HomeButton,
+  UploadButton,
+  DownloadButton,
+  ForumButton,
+  TheoryButton,
+  DeepLearningButton,
+} from "Components/buttons";
 
 export function subscribe(eventName: string, listener: (e: any) => void) {
   document.addEventListener(eventName, listener);
@@ -44,18 +51,21 @@ const HeaderMenu = ({
   manager,
   uploadCode,
   setLayout,
+  hasDLModel,
 }: {
   project: string;
   url?: string;
   manager: CommsManager | null;
   uploadCode: Function;
   setLayout: Function;
+  hasDLModel: boolean;
 }) => {
   const { warning, error } = useError();
   const exerciseContext = useExercise();
   const theme = useTheme();
   const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
   const [appRunning, setAppRunning] = useState(false);
+  const [dlModel, setDLModel] = useState<string>("");
   const codeRef = useRef("");
 
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
@@ -146,6 +156,15 @@ const HeaderMenu = ({
         });
 
         commonsZip.file("academy.py", codeRef.current);
+
+        // add onnx file to the zip if it exists
+        if (hasDLModel) {
+          if (dlModel) {
+            commonsZip.file("model.onnx", dlModel);
+          } else {
+            throw new Error("No ONNX model found.");
+          }
+        }
 
         // Convert the blob to base64 using FileReader
         const reader = new FileReader();
@@ -262,9 +281,10 @@ const HeaderMenu = ({
           <div>{project}</div>
         </StyledProject>
         <StyledHeaderButtonContainer>
-          <HomeButton/>
-          <UploadButton loadFile={loadFile}/>
-          <DownloadButton saveFile={saveFile}/>
+          <HomeButton />
+          {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
+          <UploadButton loadFile={loadFile} />
+          <DownloadButton saveFile={saveFile} />
           <Dropdown
             id="open-settings-manager"
             title="Layout"
@@ -298,8 +318,8 @@ const HeaderMenu = ({
           >
             <ReplayRoundedIcon htmlColor={theme.palette.text} />
           </StyledHeaderButton>
-          <TheoryButton url={url}/>
-          <ForumButton/>
+          <TheoryButton url={url} />
+          <ForumButton />
         </StyledHeaderButtonContainer>
       </Toolbar>
     </AppBar>
