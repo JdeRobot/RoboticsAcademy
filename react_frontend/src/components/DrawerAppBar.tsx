@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ForumIcon from "@mui/icons-material/Forum";
 import { useState } from "react";
-import SearchBar from "./SearchBar.tsx";
+import SearchBar from "./SearchBar";
 
 const drawerWidth = 240;
 
@@ -49,7 +49,7 @@ export default function DrawerAppBar({ window_ }: DrawerAppBarProps) {
   );
 
   const container =
-    typeof window_ !== "undefined" ? window().document.body : undefined;
+    typeof window_ !== "undefined" ? window.document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }} mb={10}>

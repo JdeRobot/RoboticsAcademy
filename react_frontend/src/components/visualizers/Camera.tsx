@@ -1,8 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import styles from "./../../styles/camera_driver/camera_driver.module.css";
-import {
-  CameraNotFoundIcon,
-} from "../../styles/camera_driver/CameraDriverIcons";
+import "Styles/camera_driver/camera_driver.module.css";
+import { CameraNotFoundIcon } from "../../styles/camera_driver/CameraDriverIcons";
 import { Box } from "@mui/system";
 
 type CameraState = {
@@ -14,6 +12,9 @@ type CameraState = {
   startTime: number;
   msg: string;
 };
+
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 
 type CameraAction =
   | { type: "cameraReady"; payload: boolean }
@@ -73,7 +74,9 @@ const timeFrameSize = 20;
 
 // camera
 const Camera: React.FC = () => {
-  const commsManager = window.RoboticsExerciseComponents.commsManager;
+  const exerciseContext = useExercise();
+  const commsManager = exerciseContext.manager;
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const [imageData, setImageData] = useState<string>("");
@@ -85,8 +88,6 @@ const Camera: React.FC = () => {
       isCameraPause,
       isVisualReady,
       showCameraStatics,
-      latency,
-      fps,
       countFrames,
       startTime,
       msg,
@@ -118,10 +119,9 @@ const Camera: React.FC = () => {
         .padStart(timeFrameSize, "0");
       // Codificamos en base64
       // Enviar la matriz por WebSocket
-      window.RoboticsExerciseComponents.commsManager.send(
-        "gui",
-        `pick${imageDataURL}${time}`
-      );
+      if (commsManager !== null) {
+        commsManager.send("gui", `pick${imageDataURL}${time}`);
+      }
     }
   };
 
@@ -168,14 +168,18 @@ const Camera: React.FC = () => {
     startCamera();
     // Limpiar el stream cuando el componente se desmonte
     return () => {
-      if ((streamRef, current)) {
-        streamRef.getTracks().forEach((track) => track.stop());
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
     };
   }, [isVisualReady]);
 
   // handle and udpate camera state, depending on RAM state
   useEffect(() => {
+    if (commsManager === null) {
+      return;
+    }
+
     const callback = (message: MessageEvent<any>) => {
       if (message.data.state === "tools_ready") {
         dispatch({ type: "visiualReady", payload: true });
@@ -189,10 +193,7 @@ const Camera: React.FC = () => {
       } else if (message.data.state === "paused") {
         dispatch({ type: "cameraPause", payload: true });
 
-        window.RoboticsExerciseComponents.commsManager.send(
-          "gui",
-          `introspection:${0}/${0}`
-        );
+        commsManager.send("gui", `introspection:${0}/${0}`);
 
         dispatch({
           type: "updateCountFrames",
@@ -200,15 +201,19 @@ const Camera: React.FC = () => {
         });
       }
     };
-    commsManager.subscribe([commsManager.events.STATE_CHANGED], callback);
+    commsManager.subscribe([events.STATE_CHANGED], callback);
 
     return () => {
-      commsManager.unsubscribe([commsManager.events.STATE_CHANGED], callback);
+      commsManager.unsubscribe([events.STATE_CHANGED], callback);
     };
   }, []);
 
   // ack (you can get response from update_gui() in GUI.py)
   useEffect(() => {
+    if (commsManager === null) {
+      return;
+    }
+
     if (!isVisualReady || !isCameraReady) return;
 
     const callback = (message: MessageEvent<any>) => {
@@ -233,7 +238,7 @@ const Camera: React.FC = () => {
           const fps = Math.ceil(countFrames / (elapsedTime / 1000)).toFixed(0);
 
           // udpate fps
-          window.RoboticsExerciseComponents.commsManager.send(
+          commsManager.send(
             "gui",
             `introspection:${fps}/${latency.toFixed(0)}`
           );
@@ -252,17 +257,11 @@ const Camera: React.FC = () => {
         }
       }
     };
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    commsManager.subscribe([events.UPDATE], callback);
 
     return () => {
       // console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      commsManager.unsubscribe([events.UPDATE], callback);
     };
   }, [
     isCameraPause,
@@ -286,12 +285,12 @@ const Camera: React.FC = () => {
       }}
     >
       {!isCameraReady && (
-        <div className={styles.camera_error}>
-          <CameraNotFoundIcon />
-          {msg.length > 0 && <h3 className={styles.camera_error_msg}>{msg}</h3>}
+        <div className="camera_error">
+          <CameraNotFoundIcon cssClass={undefined} />
+          {msg.length > 0 && <h3 className="camera_error_msg">{msg}</h3>}
         </div>
       )}
-      <video ref={videoRef} autoPlay className={styles.camera_video} />
+      <video ref={videoRef} autoPlay className="camera_video" />
     </Box>
   );
 };

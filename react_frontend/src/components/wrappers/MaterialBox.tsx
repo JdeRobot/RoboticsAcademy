@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import RoboticsTheme from "Components/RoboticsTheme.tsx";
+import RoboticsTheme from "Components/RoboticsTheme";
 import React, { ReactNode } from "react";
 
 interface MaterialBoxProps {

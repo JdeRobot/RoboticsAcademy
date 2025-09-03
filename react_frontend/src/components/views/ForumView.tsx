@@ -5,7 +5,7 @@ const ForumView: React.FC = () => {
   const [iFrameHeight, setIframeHeight] = React.useState("1000px");
   const loadIframeHeight = () => {
     setIframeHeight(
-      forumRef.current.contentWindow.document.body.scrollHeight + "px"
+      forumRef.current!.contentWindow!.document.body.scrollHeight + "px"
     );
   };
   return (

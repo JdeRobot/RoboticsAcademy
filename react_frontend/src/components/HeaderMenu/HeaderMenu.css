@@ -1,0 +1,109 @@
+.bt-Header-text {
+  font-family: "Spline Sans Mono", sans-serif;
+  color: var(--text);
+}
+
+.bt-jde-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+}
+
+.bt-project-name-box {
+  display: flex;
+  flex-direction: column;
+  background-color: none;
+  /* Transparent background */
+  color: var(--text);
+  padding: 10px;
+  justify-content: center;
+  /* Other styling as needed */
+  margin-left: auto;
+}
+
+.bt-project-name {
+  font-weight: bold;
+}
+
+.bt-small-text {
+  font-size: 0.7rem;
+  /* Adjust the size as needed */
+}
+
+.bt-header-button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: auto;
+}
+
+.bt-header-button {
+  display: flex;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--header);
+  border: 0;
+  margin-left: 6px;
+  margin-right: 6px;
+  padding: 0 0 0 0;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.bt-header-button:hover {
+  background-color: var(--buttons-hover);
+  border-radius: 50%;
+  /* Circular highlight */
+}
+
+.bt-show {
+  transform: translateY(0rem);
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Header bar */
+.bt-css-hip9hq-MuiPaper-root-MuiAppBar-root {
+  background-color: var(--header) !important;
+  box-shadow: none !important;
+}
+
+.bt-dropdown-list {
+  background-color: initial;
+  border-radius: 5px;
+  display: flex;
+  position: absolute;
+  z-index: 3;
+  flex-direction: column;
+  background-color: var(--header) !important;
+  border: 1px black solid;
+  margin-top: 10px;
+
+  & button {
+    border-radius: 0 !important;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    margin-bottom: 0 !important;
+    opacity: 1 !important;
+    background-color: var(--header);
+    color: var(--text);
+    border: 0;
+    padding: 5px 5px 5px 5px;
+    font-size: 16px;
+
+    &:first-of-type {
+      border-top-left-radius: 5px !important;
+      border-top-right-radius: 5px !important;
+    }
+
+    &:last-of-type {
+      border-bottom-left-radius: 5px !important;
+      border-bottom-right-radius: 5px !important;
+    }
+
+    &:hover {
+      background-color: var(--buttons-hover);
+    }
+  }
+}

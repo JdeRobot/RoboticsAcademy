@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import "../../styles/visualizers/Frequencies.css";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 
 type FrequenciesProps = {
   style?: string;
@@ -15,6 +17,7 @@ type FrequenciesData = {
 };
 
 const Frequencies: React.FC<FrequenciesProps> = ({ style }) => {
+  const exerciseContext = useExercise();
   const [frequencies, setFrequencies] = useState<FrequenciesData>({
     brain: 0,
     gui: 0,
@@ -25,6 +28,10 @@ const Frequencies: React.FC<FrequenciesProps> = ({ style }) => {
   const [rosVersion, setRosVersion] = useState<[string, string] | null>(null);
   const [gpuVendor, setgpuVendor] = useState<boolean>(false);
   React.useEffect(() => {
+    if (exerciseContext.manager === null) {
+      return;
+    }
+
     const callback = (message: MessageEvent<any>) => {
       const update = message.data.update;
       if (update.brain) {
@@ -32,20 +39,20 @@ const Frequencies: React.FC<FrequenciesProps> = ({ style }) => {
       }
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    exerciseContext.manager.subscribe([events.UPDATE], callback);
 
     return () => {
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      if (exerciseContext.manager === null) {
+        return;
+      }
+      exerciseContext.manager.unsubscribe([events.UPDATE], callback);
     };
   }, []);
 
   React.useEffect(() => {
+    if (exerciseContext.manager === null) {
+      return;
+    }
     const callback = (message: MessageEvent<any>) => {
       let version = message.data.ros_version.trim();
       if (version) {
@@ -57,10 +64,7 @@ const Frequencies: React.FC<FrequenciesProps> = ({ style }) => {
       console.log(message.data.gpu_avaliable);
       setgpuVendor(message.data.gpu_avaliable);
     };
-    window.RoboticsExerciseComponents.commsManager.suscribreOnce(
-      [window.RoboticsExerciseComponents.commsManager.events.INTROSPECTION],
-      callback
-    );
+    exerciseContext.manager.subscribeOnce([events.INTROSPECTION], callback);
   }, []);
 
   return (

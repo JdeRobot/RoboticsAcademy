@@ -10,7 +10,7 @@ const TheoryView: React.FC<TheoryViewProps> = ({ url }) => {
   const [iFrameHeight, setIframeHeight] = React.useState("1000px");
   const loadIframeHeight = () => {
     setIframeHeight(
-      theoryRef.current.contentWindow.document.body.scrollHeight + "px"
+      theoryRef.current!.contentWindow!.document.body.scrollHeight + "px"
     );
   };
   return (

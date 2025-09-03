@@ -95,7 +95,7 @@ const ChipsArray: React.FC<ChipsArrayProps> = ({ tagList }) => {
   let chipData = tagList;
   
   if (!Array.isArray(chipData)) {
-    chipData = chipData.split(",");
+    chipData = (chipData as string).split(",");
   }
   
   const chipsList = chipData.map((data) => (

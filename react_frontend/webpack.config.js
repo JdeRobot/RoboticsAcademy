@@ -14,6 +14,8 @@ const aliases = () => {
     Components: path.resolve(__dirname, "src/components"),
     Helpers: path.resolve(__dirname, "src/helpers"),
     Hooks: path.resolve(__dirname, "src/hooks"),
+    Icons: path.resolve(__dirname, "src/icons"),
+    Styles: path.resolve(__dirname, "src/styles"),
     Common: path.resolve(__dirname, "../static/common"),
     exercises: [],
   };
@@ -40,6 +42,7 @@ module.exports = {
   },
   resolve: {
     alias: aliases(),
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
     modules: ["node_modules", path.resolve(__dirname, "node_modules")],
   },
   module: {
@@ -77,8 +80,22 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(png|jpg|gif)$/,
         type: "asset/resource",
+      },
+      {
+        test: /\.svg$/i,
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              svgoConfig: {
+                plugins: [{ name: "preset-default", removeViewBox: false }],
+              },
+            },
+          },
+          "file-loader",
+        ],
       },
       {
         test: /\.(zip)$/,

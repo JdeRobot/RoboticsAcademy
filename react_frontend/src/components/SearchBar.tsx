@@ -66,7 +66,7 @@ const FilterMenu: React.FC = () => {
     setAnchorEl(null);
   };
 
-  const handleFilterList = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFilterList = (e: any) => {
     const item = e.target.name;
     appendFilterItem(item);
   };

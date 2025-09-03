@@ -1,0 +1,16 @@
+.monaco-editor .scrollbar {
+  padding: 0 !important;
+}
+
+.glyph-indicator {
+  background: rgba(255, 0, 0, 1);
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 20px !important;
+  padding-left: 8px !important;
+}
+
+.overlayWidgets .editor-widget {
+  display: flex !important;
+  flex-direction: column !important;
+}

@@ -46,7 +46,7 @@ const FlexContainer: React.FC<FlexContainerProps> = (props) => {
   
   const onMouseDown = (e: MouseEvent) => {
     if (e.which === 1) {
-      containerRef.current.addEventListener("mousemove", onMouseMove);
+      containerRef.current!.addEventListener("mousemove", onMouseMove);
       window.addEventListener("mouseup", onMouseUp, true);
       if (iframeCoverRef.current) {
         iframeCoverRef.current.style.display = "block";
@@ -56,7 +56,7 @@ const FlexContainer: React.FC<FlexContainerProps> = (props) => {
 
   const onMouseUp = (e: MouseEvent) => {
     if (e.which === 1) {
-      containerRef.current.removeEventListener("mousemove", onMouseMove);
+      containerRef.current!.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp, true);
       if (iframeCoverRef.current) {
         iframeCoverRef.current.style.display = "none";
@@ -67,7 +67,7 @@ const FlexContainer: React.FC<FlexContainerProps> = (props) => {
 
   const onMouseMove = (e: MouseEvent) => {
     if (e.currentTarget !== containerRef.current) return;
-    const bounds = e.currentTarget.getBoundingClientRect();
+    const bounds = (e as any).currentTarget!.getBoundingClientRect();
     const x = e.clientX - bounds.left;
     const y = e.clientY - bounds.top;
     console.log(

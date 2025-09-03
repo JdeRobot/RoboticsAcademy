@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/Exercise.css";
-import RoboticsTheme from "./RoboticsTheme.tsx";
+import RoboticsTheme from "./RoboticsTheme";
 
 const Exercise: React.FC = () => {
   return (

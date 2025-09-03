@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../styles/ExerciseList.css";
-import { ExerciseCard } from "./ExerciseCard.tsx";
+import { ExerciseCard } from "./ExerciseCard";
 import HomepageContext from "../contexts/HomepageContext";
 
 const serverBase: string = `${document.location.protocol}//${document.location.hostname}:7164`;
@@ -40,14 +40,14 @@ const ExerciseList: React.FC = () => {
     return <div className="loading-list-message">Loading exercises</div>;
   }
 
-  const filteredData: Exercise[] = exerciseList?.filter((el) => {
+  const filteredData: Exercise[] = exerciseList?.filter((el: any ) => {
     if (filterText === "") {
       return el;
     } else {
       const filterItemsList: string[] = getFilterItemsList();
       for (let i in filterItemsList) {
         const filterItem: string = filterItemsList[i];
-        const value = el[filterItem];
+        const value= el[filterItem];
         if (typeof value === "string" && value.toLowerCase().includes(filterText.toLowerCase())) {
             return true;
         }

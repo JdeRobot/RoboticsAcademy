@@ -2,6 +2,22 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "types": [
+      "./svg.d.ts",
+      "./zip.d.ts"
+    ],
+    "paths": {
+      "Assets/*": [ "src/assets/*"],
+      "Components/*": [ "src/components/*"],
+      "Utils/*": [ "src/utils/*"],
+      "Contexts/*": [ "src/contexts/*"],
+      "Helpers/*": [ "src/helpers/*"],
+      "Icons/*": [ "src/icons/*"],
+      "Styles/*": [ "src/styles/*"],
+    },
+    "baseUrl": "./",
+    "rootDir": "./src",
+    "declaration": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -17,5 +33,9 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src/**/*",]
+  "include": [
+    "src",
+    "svg.d.ts",
+    "zip.d.ts",
+  ]
 }
