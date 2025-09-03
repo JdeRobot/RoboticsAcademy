@@ -71,10 +71,6 @@ const ExerciseContainer = ({
     setUniverses(list);
   };
 
-  const uploadCode = async (code: string) => {
-    publish("uploadOnlyCode", { code: code })
-  };
-
   // RB manager setup
   const connected = useRef<boolean>(false);
 
@@ -223,7 +219,6 @@ const ExerciseContainer = ({
               project={project}
               manager={manager}
               url={url}
-              uploadCode={uploadCode}
               setLayout={setLayout}
               hasDLModel={hasDLModel}
             />

@@ -49,14 +49,12 @@ const HeaderMenu = ({
   project,
   url,
   manager,
-  uploadCode,
   setLayout,
   hasDLModel,
 }: {
   project: string;
   url?: string;
   manager: CommsManager | null;
-  uploadCode: Function;
   setLayout: Function;
   hasDLModel: boolean;
 }) => {
@@ -238,14 +236,23 @@ const HeaderMenu = ({
     const fr = new FileReader();
     fr.onload = () => {
       if (fr.result) {
-        // TODO: this does not work
-        uploadCode(fr.result as string);
+        publish("uploadOnlyCode", { code: (fr.result as string)});
       }
     };
     fr.readAsText(event.target.files?.[0]!);
   };
 
-  const saveFile = (): void => {
+  const saveFile = (save?: boolean) => {
+    if (save === undefined) {
+      publish("autoSave");
+      updateCode(false);
+    }
+
+    if (!isCodeUpdatedRef.current) {
+      console.log("Try autosave", isCodeUpdated);
+      return setTimeout(saveFile, 100, true);
+    }
+
     saveCode("academy", codeRef.current);
   };
 
@@ -276,7 +283,7 @@ const HeaderMenu = ({
           <HomeButton />
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton loadFile={loadFile} />
-          <DownloadButton saveFile={saveFile} />
+          <DownloadButton saveFile={() => saveFile(undefined)} />
           <Dropdown
             id="open-settings-manager"
             title="Layout"
