@@ -1,21 +1,35 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import JSZip from "jszip";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { CommsManager, states } from "jderobot-commsmanager";
 import commons from "../../common.zip";
 import "./HeaderMenu.css";
-import {
-  LayoutIcon,
-  LogoIcon,
-  RunIcon,
-  StopIcon,
-  ResetIcon,
-} from "Icons/index";
+import { LogoIcon } from "Icons/index";
 import { useError, useTheme } from "jderobot-ide-interface";
 import { getProjectExtraFiles } from "../../helpers/api";
 import { useExercise } from "Contexts/ExerciseContext";
-import { StyledHeaderText, StyledProject } from "./HeaderMenu.styles";
+import {
+  StyledDropdown,
+  StyledHeaderButton,
+  StyledHeaderButtonContainer,
+  StyledHeaderText,
+  StyledProject,
+} from "./HeaderMenu.styles";
+
+import { saveCode } from "Helpers/utils";
+
+import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
+import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
+import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
+import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+
 
 export function subscribe(eventName: string, listener: (e: any) => void) {
   document.addEventListener(eventName, listener);
@@ -34,19 +48,22 @@ const HeaderMenu = ({
   project,
   url,
   manager,
+  uploadCode,
   setLayout,
 }: {
   project: string;
   url?: string;
   manager: CommsManager | null;
+  uploadCode: Function;
   setLayout: Function;
 }) => {
   const { warning, error } = useError();
   const exerciseContext = useExercise();
+  const theme = useTheme();
   const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
   const [appRunning, setAppRunning] = useState(false);
   const codeRef = useRef("");
-  const theme = useTheme();
+  const inputRef = useRef(null);
 
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
 
@@ -72,7 +89,6 @@ const HeaderMenu = ({
   }, []);
 
   useEffect(() => {
-    console.log("Update2222222222222", exerciseContext);
     codeRef.current = exerciseContext.code;
   }, [exerciseContext]);
 
@@ -214,7 +230,20 @@ const HeaderMenu = ({
     }
   };
 
-  // Modal handling
+  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const fr = new FileReader();
+    fr.onload = () => {
+      if (fr.result) {
+        uploadCode(fr.result as string)
+      }
+    };
+    fr.readAsText(event.target.files?.[0]!);
+  };
+
+  const saveFile = (): void => {
+    saveCode("academy", codeRef.current);
+  };
 
   return (
     <AppBar position="static">
@@ -235,67 +264,107 @@ const HeaderMenu = ({
         <StyledProject color={theme.palette.text}>
           <div>{project}</div>
         </StyledProject>
-        <div className="bt-header-button-container">
-          {/* <Dropdown
-            className="bt-header-button"
+        <StyledHeaderButtonContainer>
+          <StyledHeaderButton
+            bgColor={theme.palette.primary}
+            hoverColor={theme.palette.secondary}
+            roundness={theme.roundness}
+            id="return-academy"
+            title="Return to Academy"
+          >
+            <a href="http://127.0.0.1:7164/exercises/">
+              <HomeRoundedIcon htmlColor={theme.palette.text} />
+            </a>
+          </StyledHeaderButton>
+          <StyledHeaderButton
+            bgColor={theme.palette.primary}
+            hoverColor={theme.palette.secondary}
+            roundness={theme.roundness}
+            onClick={() => {
+              (inputRef.current as any).click();
+            }}
+            id="upload-code"
+            title="Upload code"
+          >
+            <FileUploadRoundedIcon htmlColor={theme.palette.text} />
+            <input
+              ref={inputRef}
+              hidden
+              accept=".py"
+              type="file"
+              onChange={loadFile}
+            />
+          </StyledHeaderButton>
+          <StyledHeaderButton
+            bgColor={theme.palette.primary}
+            hoverColor={theme.palette.secondary}
+            roundness={theme.roundness}
+            id="download-code"
+            onClick={saveFile}
+            title="Download code"
+          >
+            <FileDownloadRoundedIcon htmlColor={theme.palette.text} />
+          </StyledHeaderButton>
+          <Dropdown
             id="open-settings-manager"
             title="Layout"
             width={120}
-            down
             setter={setLayout}
             possibleValues={["only-editor", "only-viewers", "both"]}
           >
-            <LayoutIcon
-              className="bt-header-icon"
-              stroke={theme.palette.text}
-            />
-          </Dropdown> */}
-          <button
-            className="bt-header-button"
+            <SpaceDashboardRoundedIcon htmlColor={theme.palette.text} />
+          </Dropdown>
+          <StyledHeaderButton
+            bgColor={theme.palette.primary}
+            hoverColor={theme.palette.secondary}
+            roundness={theme.roundness}
             id="run-app"
             onClick={() => onAppStateChange(undefined)}
             title="Run app"
           >
             {appRunning ? (
-              <StopIcon className="bt-header-icon" fill={theme.palette.text} />
+              <PauseRoundedIcon htmlColor={theme.palette.text} />
             ) : (
-              <RunIcon className="bt-header-icon" fill={theme.palette.text} />
+              <PlayArrowRoundedIcon htmlColor={theme.palette.text} />
             )}
-          </button>
-          <button
-            className="bt-header-button"
+          </StyledHeaderButton>
+          <StyledHeaderButton
+            bgColor={theme.palette.primary}
+            hoverColor={theme.palette.secondary}
+            roundness={theme.roundness}
             id="reset-app"
             onClick={onResetApp}
             title="Reset app"
           >
-            <ResetIcon className="bt-header-icon" stroke={theme.palette.text} />
-          </button>
+            <ReplayRoundedIcon htmlColor={theme.palette.text} />
+          </StyledHeaderButton>
           {url && (
-            <button
-              className="bt-header-button"
+            <StyledHeaderButton
+              bgColor={theme.palette.primary}
+              hoverColor={theme.palette.secondary}
+              roundness={theme.roundness}
               id="reset-app"
               onClick={() => {
                 openInNewTab(new URL(url));
               }}
               title="Go to exercise page"
             >
-              <ResetIcon
-                className="bt-header-icon"
-                stroke={theme.palette.text}
-              />
-            </button>
+              <SchoolRoundedIcon htmlColor={theme.palette.text} />
+            </StyledHeaderButton>
           )}
-          <button
-            className="bt-header-button"
+          <StyledHeaderButton
+            bgColor={theme.palette.primary}
+            hoverColor={theme.palette.secondary}
+            roundness={theme.roundness}
             id="reset-app"
             onClick={() => {
               openInNewTab(new URL("https://forum.unibotics.org/"));
             }}
             title="Go to forum"
           >
-            <ResetIcon className="bt-header-icon" stroke={theme.palette.text} />
-          </button>
-        </div>
+            <ForumRoundedIcon htmlColor={theme.palette.text} />
+          </StyledHeaderButton>
+        </StyledHeaderButtonContainer>
       </Toolbar>
     </AppBar>
   );
@@ -304,26 +373,23 @@ const HeaderMenu = ({
 export default HeaderMenu;
 
 const Dropdown = ({
-  className,
   id,
   title,
   width,
-  down,
   setter,
   possibleValues,
   children,
 }: {
-  className: string;
   id: string;
   title: string;
   width: number;
-  down: boolean;
   setter: Function;
   possibleValues: any[];
   children: any;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [right, setRight] = useState<any>(width / 2 + 13);
+  const theme = useTheme();
   const dropdown = useRef<HTMLDivElement>(null);
 
   const changeValue = (e: any, value: any) => {
@@ -355,8 +421,10 @@ const Dropdown = ({
 
   return (
     <div ref={dropdown}>
-      <button
-        className={className}
+      <StyledHeaderButton
+        bgColor={theme.palette.primary}
+        hoverColor={theme.palette.secondary}
+        roundness={theme.roundness}
         id={id}
         title={title}
         onClick={(e) => {
@@ -366,16 +434,19 @@ const Dropdown = ({
         }}
       >
         {children}
-      </button>
+      </StyledHeaderButton>
       {open && (
-        <div
-          className="bt-dropdown-list"
+        <StyledDropdown
+          color={theme.palette.text}
+          bgColor={theme.palette.primary}
+          hoverColor={theme.palette.secondary}
+          roundness={theme.roundness}
           style={{ width: `${width}px`, left: `${right}px` }}
         >
           {possibleValues.map((name, index) => (
             <button onClick={(e: any) => changeValue(e, name)}>{name}</button>
           ))}
-        </div>
+        </StyledDropdown>
       )}
     </div>
   );

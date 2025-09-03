@@ -35,6 +35,15 @@ while True:
     Frequency.tick()
 `;
 
+const base_file = {
+  name: "academy.py",
+  is_dir: false,
+  path: "academy.py",
+  group: "code",
+  access: true,
+  files: [],
+};
+
 const ExerciseContainer = ({
   project,
   url,
@@ -61,12 +70,16 @@ const ExerciseContainer = ({
     codeRef.current = data;
     _setCode(data);
   };
-  // 1. Get tools from the database
-  // 2. Open the base exercise in the editor
+
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project)
     setUniverses(list);
   };
+
+  const uploadCode = async (code: string) => {
+    setCode(code);
+  };
+
 
   // RB manager setup
   const connected = useRef<boolean>(false);
@@ -142,7 +155,12 @@ const ExerciseContainer = ({
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
-        return getFile(project, file.path);
+        const func = async () => {
+          console.log(codeRef.current)
+          return codeRef.current;
+        };
+
+        return func();
       },
       save: (project: string, file: Entry, content: string) => {
         console.log("saveFile", content)
@@ -202,15 +220,6 @@ const ExerciseContainer = ({
     monacoTheme: "dark",
   };
 
-  const base_file = {
-    name: "academy.py",
-    is_dir: false,
-    path: "academy.py",
-    group: "code",
-    access: true,
-    files: [],
-  };
-
   return (
     <ErrorProvider>
       <ThemeProvider theme={darkTheme}>
@@ -223,6 +232,7 @@ const ExerciseContainer = ({
               project={project}
               manager={manager}
               url={url}
+              uploadCode={uploadCode}
               setLayout={setLayout}
             />
             <IdeInterface
@@ -247,14 +257,6 @@ const ExerciseContainer = ({
 };
 
 export default ExerciseContainer;
-
-function getFile(project: string, path: any): Promise<string> {
-  const func = async () => {
-    return defaultCode;
-  };
-
-  return func();
-}
 
 function saveFile(project: string, path: any, content: string): Promise<void> {
   const func = async () => {
