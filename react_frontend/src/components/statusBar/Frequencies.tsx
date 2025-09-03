@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "../../styles/visualizers/Frequencies.css";
 import { CommsManager, events } from "jderobot-commsmanager";
 import { StyledStatusBarEntry, useTheme } from "jderobot-ide-interface";
 

@@ -18,16 +18,12 @@ import {
 
 import { saveCode } from "Helpers/utils";
 
-import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
-import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
-import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
-import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
-import PsychologyRoundedIcon from "@mui/icons-material/PsychologyRounded";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+
+import { HomeButton, UploadButton, DownloadButton, ForumButton, TheoryButton } from "Components/buttons";
 
 export function subscribe(eventName: string, listener: (e: any) => void) {
   document.addEventListener(eventName, listener);
@@ -61,7 +57,6 @@ const HeaderMenu = ({
   const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
   const [appRunning, setAppRunning] = useState(false);
   const codeRef = useRef("");
-  const inputRef = useRef(null);
 
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
 
@@ -243,6 +238,8 @@ const HeaderMenu = ({
     saveCode("academy", codeRef.current);
   };
 
+  // TODO: project -> center in the middle
+
   return (
     <AppBar position="static">
       <Toolbar
@@ -265,46 +262,9 @@ const HeaderMenu = ({
           <div>{project}</div>
         </StyledProject>
         <StyledHeaderButtonContainer>
-          <StyledHeaderButton
-            bgColor={theme.palette.primary}
-            hoverColor={theme.palette.secondary}
-            roundness={theme.roundness}
-            id="return-academy"
-            title="Return to Academy"
-          >
-            <a href="http://127.0.0.1:7164/exercises/">
-              <HomeRoundedIcon htmlColor={theme.palette.text} />
-            </a>
-          </StyledHeaderButton>
-          <StyledHeaderButton
-            bgColor={theme.palette.primary}
-            hoverColor={theme.palette.secondary}
-            roundness={theme.roundness}
-            onClick={() => {
-              (inputRef.current as any).click();
-            }}
-            id="upload-code"
-            title="Upload code"
-          >
-            <FileUploadRoundedIcon htmlColor={theme.palette.text} />
-            <input
-              ref={inputRef}
-              hidden
-              accept=".py"
-              type="file"
-              onChange={loadFile}
-            />
-          </StyledHeaderButton>
-          <StyledHeaderButton
-            bgColor={theme.palette.primary}
-            hoverColor={theme.palette.secondary}
-            roundness={theme.roundness}
-            id="download-code"
-            onClick={saveFile}
-            title="Download code"
-          >
-            <FileDownloadRoundedIcon htmlColor={theme.palette.text} />
-          </StyledHeaderButton>
+          <HomeButton/>
+          <UploadButton loadFile={loadFile}/>
+          <DownloadButton saveFile={saveFile}/>
           <Dropdown
             id="open-settings-manager"
             title="Layout"
@@ -338,32 +298,8 @@ const HeaderMenu = ({
           >
             <ReplayRoundedIcon htmlColor={theme.palette.text} />
           </StyledHeaderButton>
-          {url && (
-            <StyledHeaderButton
-              bgColor={theme.palette.primary}
-              hoverColor={theme.palette.secondary}
-              roundness={theme.roundness}
-              id="reset-app"
-              onClick={() => {
-                openInNewTab(new URL(url));
-              }}
-              title="Go to exercise page"
-            >
-              <SchoolRoundedIcon htmlColor={theme.palette.text} />
-            </StyledHeaderButton>
-          )}
-          <StyledHeaderButton
-            bgColor={theme.palette.primary}
-            hoverColor={theme.palette.secondary}
-            roundness={theme.roundness}
-            id="reset-app"
-            onClick={() => {
-              openInNewTab(new URL("https://forum.unibotics.org/"));
-            }}
-            title="Go to forum"
-          >
-            <ForumRoundedIcon htmlColor={theme.palette.text} />
-          </StyledHeaderButton>
+          <TheoryButton url={url}/>
+          <ForumButton/>
         </StyledHeaderButtonContainer>
       </Toolbar>
     </AppBar>

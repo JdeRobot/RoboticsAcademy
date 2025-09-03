@@ -1,13 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  Component,
-} from "react";
-import axios, { AxiosResponse } from "axios";
+import { useState, useEffect, useRef, Component } from "react";
 import { useUnload } from "./../../hooks/useUnload";
-// import HeaderMenu from "./components/HeaderMenu";
-// import { SimulatorIcon, TerminalIcon } from "./components/icons";
 import { CommsManager } from "jderobot-commsmanager";
 import "../../styles/wrappers/ExerciseContainer.css";
 
@@ -73,14 +65,13 @@ const ExerciseContainer = ({
   };
 
   const getUniverseList = async (project: string) => {
-    const list = await listUniverses(project)
+    const list = await listUniverses(project);
     setUniverses(list);
   };
 
   const uploadCode = async (code: string) => {
     setCode(code);
   };
-
 
   // RB manager setup
   const connected = useRef<boolean>(false);
@@ -157,15 +148,15 @@ const ExerciseContainer = ({
     file: {
       get: (project: string, file: Entry) => {
         const func = async () => {
-          console.log(codeRef.current)
+          console.log(codeRef.current);
           return codeRef.current;
         };
 
         return func();
       },
       save: (project: string, file: Entry, content: string) => {
-        console.log("saveFile", content)
-        setCode(content)
+        console.log("saveFile", content);
+        setCode(content);
         return saveFile(project, file.path, content);
       },
     },
@@ -180,7 +171,7 @@ const ExerciseContainer = ({
   };
 
   const statusBar: StatusBarComponents = {
-    extras: [<Frequencies manager={manager}/>],
+    extras: [<Frequencies manager={manager} />],
   };
 
   const darkTheme: Theme = {
@@ -225,10 +216,7 @@ const ExerciseContainer = ({
     <ErrorProvider>
       <ThemeProvider theme={darkTheme}>
         <div className="exercise-container" style={{ display: "flex" }}>
-          <ExerciseProvider
-            manager={manager}
-            code={codeRef.current}
-          >
+          <ExerciseProvider manager={manager} code={codeRef.current}>
             <HeaderMenu
               project={project}
               manager={manager}
@@ -263,6 +251,6 @@ function saveFile(project: string, path: any, content: string): Promise<void> {
   const func = async () => {
     return;
   };
-  
+
   return func();
 }
