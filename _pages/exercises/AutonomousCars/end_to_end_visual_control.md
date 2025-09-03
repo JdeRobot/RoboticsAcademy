@@ -23,6 +23,12 @@ gallery:
       alt: "Model."
       title: "Model."
 
+gpu_verify:
+    - url: /assets/images/exercises/end_to_end_visual_control/nvidia-smi-output.png
+      image_path: /assets/images/exercises/end_to_end_visual_control/nvidia-smi-output.png
+      alt: "nvidia-smi output"
+      title: "nvidia-smi output"
+
 gifs:
     - url: /assets/images/exercises/end_to_end_visual_control/oscillations.gif
       image_path: /assets/images/exercises/end_to_end_visual_control/oscillations.gif
@@ -111,7 +117,7 @@ git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
 The Huggingface <code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">huggingface_hub</code> library provides a <strong>Python API for</strong> interacting with the Huggingface Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Huggingface.</p>
 
 <p style="text-align:justify">
-First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python environment</a> on your local machine and install the Huggingface Hub pip package. Next, obtain a Huggingface <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Huggingface
+First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python Environment</a> on your local machine and install the Huggingface Hub pip package. Next, obtain a Huggingface <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Huggingface
  and use it to download the datasets with code like:
 </p>
 
@@ -289,11 +295,33 @@ Use standard ROS 2 mechanisms to manage loop timing:
 
 <!-- TODO: USER CODE -->
 
-## Exercise API
+## Run the Exercise
 
--   `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+### Enable GPU Acceleration
 
--   `WebGUI.getImage()` - to get the image. It can be None.
+<p style="text-align:justify">
+Deep learning models perform much faster when executed on a <strong>GPU</strong> compared to a <strong>CPU</strong>. To take advantage of GPU acceleration in this exercise, you need to ensure that your system has a compatible NVIDIA GPU and the required drivers installed.
+</p>
+
+<p style="text-align:justify">
+RoboticsAcademy currently supports GPU acceleration on <strong>NVIDIA GPUs</strong> only. To take advantage of GPU support when running the <strong>RoboticsAcademy Docker image (RADI)</strong>, you must use the provided <a href="https://jderobot.github.io/RoboticsAcademy/user_guide/#2-how-to-launch-a-robotics-academy-container" style="text-decoration: none;" target="_blank" rel="noopener noreferrer"><code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">execution script </code><strong>⤴️</strong></a>.
+</p>
+
+#### Verify GPU Availability
+
+<p style="text-align:justify; margin-bottom:6px; font-size:14px" >
+Run the following command to check if your GPU is accessible.
+</p>
+
+```bash
+nvidia-smi
+```
+
+{% include gallery id="gpu_verify" caption="The output should look like this" %}
+
+<p style="text-align:center; margin-bottom:6px; font-size:16px;" >
+
+</p>
 
 ```python
 while True:
@@ -306,7 +334,7 @@ while True:
 
 <!-- Model Path -->
 
-## File Path for Uploaded Model
+### File Path for Uploaded Model
 
 The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model.
 
@@ -368,12 +396,12 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 
 ## Contributors
 
-<!-- TODO: -->
-
 -   Contributors: [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe), [L. Roberto Morales](https://github.com/lr-morales)
 -   Maintained by [Md. Shariar Kabir](https://github.com/codezerro),[Jose María Cañas](https://github.com/jmplaza),[David Pascual](https://github.com/dpascualhe),[L. Roberto Morales](https://github.com/lr-morales).
 
 ## References
+
+<!-- TODO: -->
 
 1. [https://huggingface.co/JdeRobot](https://huggingface.co/JdeRobot)
 2. [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
