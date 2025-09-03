@@ -61,6 +61,10 @@ export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
     border-radius: ${(p) => p.roundness ?? 1}px;
   }
 
+  &:focus {
+    outline: none;
+  }
+
   & svg {
     width: 24px;
     height: 24px;
@@ -108,6 +112,10 @@ export const StyledDropdown = styled.div<StyledDropdownProps>`
 
     &:hover {
       background-color: ${(p) => p.hoverColor ?? primaryColor};
+    }
+
+    &:focus {
+      outline: none;
     }
   }
 `;

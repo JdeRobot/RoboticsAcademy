@@ -4,7 +4,6 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { CommsManager, states } from "jderobot-commsmanager";
 import commons from "../../common.zip";
-import "./HeaderMenu.css";
 import { LogoIcon } from "Icons/index";
 import { useError, useTheme } from "jderobot-ide-interface";
 import { getProjectExtraFiles } from "../../helpers/api";
@@ -27,9 +26,8 @@ import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
-import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-
+import PsychologyRoundedIcon from "@mui/icons-material/PsychologyRounded";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
 export function subscribe(eventName: string, listener: (e: any) => void) {
   document.addEventListener(eventName, listener);
@@ -235,7 +233,7 @@ const HeaderMenu = ({
     const fr = new FileReader();
     fr.onload = () => {
       if (fr.result) {
-        uploadCode(fr.result as string)
+        uploadCode(fr.result as string);
       }
     };
     fr.readAsText(event.target.files?.[0]!);
@@ -255,7 +253,9 @@ const HeaderMenu = ({
         }}
       >
         <a href="http://127.0.0.1:7164/exercises/">
-          <LogoIcon className="bt-jde-icon" />
+          <LogoIcon
+            style={{ width: "32px", height: "32px", marginRight: "10px" }}
+          />
         </a>
         <StyledHeaderText color={theme.palette.text}>
           Robotics Academy by JdeRobot

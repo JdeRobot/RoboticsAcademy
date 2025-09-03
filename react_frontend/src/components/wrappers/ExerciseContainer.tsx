@@ -24,6 +24,7 @@ import { ExerciseProvider } from "Contexts/ExerciseContext";
 import HeaderMenu from "Components/HeaderMenu";
 import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
 import { SimulatorIcon, TerminalIcon } from "Icons/index";
+import Frequencies from "Components/statusBar/Frequencies";
 
 const defaultCode = `import WebGUI
 import HAL
@@ -179,7 +180,7 @@ const ExerciseContainer = ({
   };
 
   const statusBar: StatusBarComponents = {
-    extras: [],
+    extras: [<Frequencies manager={manager}/>],
   };
 
   const darkTheme: Theme = {
