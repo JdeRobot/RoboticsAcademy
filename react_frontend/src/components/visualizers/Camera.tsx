@@ -1,29 +1,26 @@
 import React, { useEffect, useReducer, useRef, useState } from "react";
-import "Styles/camera_driver/camera_driver.module.css";
-import { CameraNotFoundIcon } from "../../styles/camera_driver/CameraDriverIcons";
 import { Box } from "@mui/system";
 
 type CameraState = {
   isCameraReady: boolean;
   isCameraPause: boolean;
   isVisualReady: boolean;
-  showCameraStatics: boolean;
   countFrames: number;
   startTime: number;
-  msg: string;
 };
 
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
+import { StyledCameraError, StyledWebCamVideo } from "Styles/camera_driver/Camera.styles";
+import { useTheme } from "jderobot-ide-interface";
+import VideocamOffOutlinedIcon from '@mui/icons-material/VideocamOffOutlined';
 
 type CameraAction =
   | { type: "cameraReady"; payload: boolean }
   | { type: "cameraPause"; payload: boolean }
   | { type: "visiualReady"; payload: boolean }
-  | { type: "showCameraStatics"; payload: boolean }
   | { type: "updateCountFrames"; payload: { countFrames: number } }
-  | { type: "udpateStartTime"; payload: { startTime: number } }
-  | { type: "udpateMsg"; payload: { msg: string } };
+  | { type: "udpateStartTime"; payload: { startTime: number } };
 
 // webRTC error message
 const cameraErrorMessages: Record<string, string> = {
@@ -39,12 +36,8 @@ const initialState: CameraState = {
   isCameraReady: false,
   isCameraPause: false,
   isVisualReady: false,
-  showCameraStatics: false,
-
   countFrames: 0,
   startTime: 0,
-
-  msg: "Connecting to media device.",
 };
 // reducer func
 const reducer = (state: CameraState, action: CameraAction): CameraState => {
@@ -55,14 +48,10 @@ const reducer = (state: CameraState, action: CameraAction): CameraState => {
       return { ...state, isCameraPause: action.payload };
     case "visiualReady":
       return { ...state, isVisualReady: action.payload };
-    case "showCameraStatics":
-      return { ...state, showCameraStatics: action.payload };
     case "updateCountFrames":
       return { ...state, countFrames: action.payload.countFrames };
     case "udpateStartTime":
       return { ...state, startTime: action.payload.startTime };
-    case "udpateMsg":
-      return { ...state, msg: action.payload.msg };
 
     default:
       return state;
@@ -73,27 +62,59 @@ const reducer = (state: CameraState, action: CameraAction): CameraState => {
 const timeFrameSize = 20;
 
 // camera
-const Camera: React.FC = () => {
-  const exerciseContext = useExercise();
-  const commsManager = exerciseContext.manager;
-
+const Camera = () => {
+  const exerciseContext = useExercise();  
+  const theme = useTheme();
+  const [manager, setManager] = useState(exerciseContext.manager);
+  const [state, setState] = useState<string>("Connecting to media device.");
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const [imageData, setImageData] = useState<string>("");
-
-  // reducer
   const [
-    {
-      isCameraReady,
-      isCameraPause,
-      isVisualReady,
-      showCameraStatics,
-      countFrames,
-      startTime,
-      msg,
-    },
+    { isCameraReady, isCameraPause, isVisualReady, countFrames, startTime },
     dispatch,
   ] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (isVisualReady) {
+      startWebcam();
+    }
+    return () => {
+      if (isVisualReady) {
+        stopWebcam();
+      }
+    };
+  }, [isVisualReady]);
+
+  const startWebcam = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: "user", // Request the front camera (selfie camera)
+        },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+      setMediaStream(stream);
+    } catch (error: any) {
+      const errorMessage = cameraErrorMessages[error.name];
+      setState(errorMessage ? errorMessage : `Something went wrong!`);
+      console.error("Error accessing webcam", error);
+    }
+  };
+
+  const stopWebcam = () => {
+    if (mediaStream) {
+      mediaStream.getTracks().forEach((track) => {
+        track.stop();
+      });
+      setMediaStream(null);
+    }
+  };
 
   // Función para capturar un fotograma del video y convertirlo en una matriz CV_8UC4
   const captureFrame = () => {
@@ -119,68 +140,20 @@ const Camera: React.FC = () => {
         .padStart(timeFrameSize, "0");
       // Codificamos en base64
       // Enviar la matriz por WebSocket
-      if (commsManager !== null) {
-        commsManager.send("gui", `pick${imageDataURL}${time}`);
+      if (manager !== null) {
+        manager.send("gui", `pick${imageDataURL}${time}`);
       }
     }
   };
 
-  // Obtener el stream de la cámara
-  useEffect(() => {
-    if (!isVisualReady) return;
-
-    const startCamera = () => {
-      console.log("Start camera");
-      // configure media parameters
-      const constraints = {
-        video: true,
-        audio: false,
-      };
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices
-          .getUserMedia(constraints)
-          .then((stream) => {
-            dispatch({ type: "cameraReady", payload: true });
-            dispatch({ type: "udpateMsg", payload: { msg: "" } });
-            // Establecer el stream y asignarlo al video
-
-            if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-              streamRef.current = stream; // Guardamos el stream en la referencia
-            }
-          })
-          .catch((err) => {
-            dispatch({ type: "cameraReady", payload: false });
-
-            const errorMessage = cameraErrorMessages[err.name];
-            dispatch({
-              type: "udpateMsg",
-              payload: {
-                msg: errorMessage ? errorMessage : `Something went wrong!`,
-              },
-            });
-
-            console.log(err);
-          });
-      }
-    };
-
-    startCamera();
-    // Limpiar el stream cuando el componente se desmonte
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, [isVisualReady]);
-
   // handle and udpate camera state, depending on RAM state
   useEffect(() => {
-    if (commsManager === null) {
+    if (manager === null) {
       return;
     }
 
-    const callback = (message: MessageEvent<any>) => {
+    const stateCallback = (message: MessageEvent<any>) => {
+      console.log(message);
       if (message.data.state === "tools_ready") {
         dispatch({ type: "visiualReady", payload: true });
       }
@@ -193,7 +166,7 @@ const Camera: React.FC = () => {
       } else if (message.data.state === "paused") {
         dispatch({ type: "cameraPause", payload: true });
 
-        commsManager.send("gui", `introspection:${0}/${0}`);
+        manager.send("gui", `introspection:${0}/${0}`);
 
         dispatch({
           type: "updateCountFrames",
@@ -201,26 +174,10 @@ const Camera: React.FC = () => {
         });
       }
     };
-    commsManager.subscribe([events.STATE_CHANGED], callback);
 
-    return () => {
-      commsManager.unsubscribe([events.STATE_CHANGED], callback);
-    };
-  }, []);
-
-  // ack (you can get response from update_gui() in GUI.py)
-  useEffect(() => {
-    if (commsManager === null) {
-      return;
-    }
-
-    if (!isVisualReady || !isCameraReady) return;
-
-    const callback = (message: MessageEvent<any>) => {
-      // receive ack from gui.py
+    const updateCallback = (message: MessageEvent<any>) => {
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
-        // call next frame
-        captureFrame();
+        captureFrame(); // call next frame
 
         const prevTime = Number(message.data.update.time);
         const currTime = performance.now();
@@ -238,10 +195,7 @@ const Camera: React.FC = () => {
           const fps = Math.ceil(countFrames / (elapsedTime / 1000)).toFixed(0);
 
           // udpate fps
-          commsManager.send(
-            "gui",
-            `introspection:${fps}/${latency.toFixed(0)}`
-          );
+          manager.send("gui", `introspection:${fps}/${latency.toFixed(0)}`);
 
           // reset count frames
           dispatch({
@@ -257,17 +211,25 @@ const Camera: React.FC = () => {
         }
       }
     };
-    commsManager.subscribe([events.UPDATE], callback);
+
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
+
+    if (isVisualReady && isCameraReady) {
+      manager.subscribe(events.UPDATE, updateCallback);
+    }
 
     return () => {
-      // console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      commsManager.unsubscribe([events.UPDATE], callback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
+
+      if (isVisualReady && isCameraReady) {
+        manager.unsubscribe(events.UPDATE, updateCallback);
+      }
     };
   }, [
+    manager,
     isCameraPause,
     isVisualReady,
     isCameraReady,
-    //
     startTime,
     countFrames,
   ]);
@@ -284,13 +246,17 @@ const Camera: React.FC = () => {
         textAlign: "center",
       }}
     >
-      {!isCameraReady && (
-        <div className="camera_error">
-          <CameraNotFoundIcon cssClass={undefined} />
-          {msg.length > 0 && <h3 className="camera_error_msg">{msg}</h3>}
-        </div>
+      {mediaStream === null && (
+        <StyledCameraError color={theme.palette.error}>
+          <VideocamOffOutlinedIcon htmlColor={theme.palette.darkText} />
+          {state.length > 0 && <h3>{state}</h3>}
+        </StyledCameraError>
       )}
-      <video ref={videoRef} autoPlay className="camera_video" />
+      <StyledWebCamVideo
+        ref={videoRef}
+        autoPlay
+        visible={mediaStream !== null}
+      />
     </Box>
   );
 };

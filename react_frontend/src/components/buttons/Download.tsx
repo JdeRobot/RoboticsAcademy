@@ -1,4 +1,4 @@
-import { StyledHeaderButton } from "Components/HeaderMenu/HeaderMenu.styles";
+import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
 import { useTheme } from "jderobot-ide-interface";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 

@@ -16,7 +16,7 @@ import {
   StyledProject,
 } from "./HeaderMenu.styles";
 
-import { saveCode } from "Helpers/utils";
+import { publish, saveCode, subscribe, unsubscribe } from "Helpers/utils";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
@@ -32,20 +32,9 @@ import {
   DeepLearningButton,
 } from "Components/buttons";
 
-export function subscribe(eventName: string, listener: (e: any) => void) {
-  document.addEventListener(eventName, listener);
-}
 
-export function unsubscribe(eventName: string, listener: () => void) {
-  document.removeEventListener(eventName, listener);
-}
 
-export function publish(eventName: string, extra: any = undefined) {
-  const event = new CustomEvent(eventName, { detail: extra });
-  document.dispatchEvent(event);
-}
-
-const HeaderMenu = ({
+const ExerciseHeader = ({
   project,
   url,
   manager,
@@ -325,7 +314,7 @@ const HeaderMenu = ({
   );
 };
 
-export default HeaderMenu;
+export default ExerciseHeader;
 
 const Dropdown = ({
   id,

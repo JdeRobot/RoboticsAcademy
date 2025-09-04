@@ -65,6 +65,17 @@ def get_universes_list(request):
 
     return Response({"universes_list": universes_list})
 
+@error_wrapper("GET", ["project"])
+def get_tools_list(request):
+    project_name = request.GET.get("project")
+
+    project = Exercise.objects.get(name=project_name)
+    tools_list = []
+
+    for tool in project.tools.all():
+        tools_list.append(tool.name)
+
+    return Response({"tools_list": tools_list})
 
 @error_wrapper("GET", ["project", "universe"])
 def get_docker_universe_data(request):

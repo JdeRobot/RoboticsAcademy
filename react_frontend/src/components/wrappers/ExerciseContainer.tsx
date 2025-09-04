@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Component } from "react";
+import { useState, useEffect, useRef} from "react";
 import { useUnload } from "./../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
 import "../../styles/wrappers/ExerciseContainer.css";
@@ -10,14 +10,22 @@ import IdeInterface, {
   StatusBarComponents,
   Theme,
   ThemeProvider,
+  ViewersEntry,
   VncViewer,
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
-import HeaderMenu from "Components/HeaderMenu";
-import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
-import { SimulatorIcon, TerminalIcon } from "Icons/index";
+import { ExerciseHeader } from "Components/headers";
+import {
+  getRoboticsBackendUniverse,
+  listTools,
+  listUniverses,
+} from "Helpers/api";
 import Frequencies from "Components/statusBar/Frequencies";
-import { publish } from "Components/HeaderMenu/HeaderMenu";
+import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+import Camera from "Components/visualizers/Camera";
+import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
+import ImportantDevicesRoundedIcon from '@mui/icons-material/ImportantDevicesRounded';
+import VideoCameraBackRoundedIcon from '@mui/icons-material/VideoCameraBackRounded';
 
 const defaultCode = `import WebGUI
 import HAL
@@ -47,12 +55,14 @@ const ExerciseContainer = ({
   project: string;
   url?: string;
   hasDLModel: boolean;
-  children: Component;
+  children: JSX.Element;
 }) => {
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
+  const [viewers, setViewers] = useState<ViewersEntry[]>([]);
   const [showSim, setSimVisible] = useState<boolean>(true);
   const [showMonitor, setMonitorVisible] = useState<boolean>(true);
+  const [showCamera, setCameraVisible] = useState<boolean>(true);
   const [showTerminal, setTerminalVisible] = useState<boolean>(true);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both"
@@ -71,6 +81,53 @@ const ExerciseContainer = ({
     setUniverses(list);
   };
 
+  const getToolsList = async (project: string) => {
+    const tools = await listTools(project);
+    var toolsList = [];
+
+    if (tools.includes("web_gui")) {
+      toolsList.push({
+        component: children,
+        icon: <ImportantDevicesRoundedIcon />,
+        name: "Web Gui",
+        active: showMonitor,
+        activate: setMonitorVisible,
+      });
+    }
+
+    if (tools.includes("webcam")) {
+      toolsList.push({
+        component: <Camera/>,
+        icon: <CameraAltRoundedIcon />,
+        name: "WebCam",
+        active: showCamera,
+        activate: setCameraVisible,
+      });
+    }
+
+    if (tools.includes("simulator")) {
+      toolsList.push({
+        component: <VncViewer commsManager={manager} port={6080} />,
+        icon: <VideoCameraBackRoundedIcon />,
+        name: "Gazebo",
+        active: showSim,
+        activate: setSimVisible,
+      });
+    }
+
+    if (tools.includes("console")) {
+      toolsList.push({
+        component: <VncViewer commsManager={manager} port={1108} />,
+        icon: <TerminalRoundedIcon />,
+        name: "Terminal",
+        active: showTerminal,
+        activate: setTerminalVisible,
+      });
+    }
+
+    setViewers(toolsList);
+  };
+
   // RB manager setup
   const connected = useRef<boolean>(false);
 
@@ -78,6 +135,7 @@ const ExerciseContainer = ({
     setManager(manager);
     try {
       getUniverseList(project);
+      getToolsList(project);
     } catch (error) {
       setUniverses(undefined);
     }
@@ -117,31 +175,6 @@ const ExerciseContainer = ({
     }
   });
 
-  // Get available tools from the db
-  const treeMonitor = {
-    component: children,
-    icon: <SimulatorIcon />,
-    name: "Web Gui",
-    active: showMonitor,
-    activate: setMonitorVisible,
-  };
-
-  const gazeboViewer = {
-    component: <VncViewer commsManager={manager} port={6080} />,
-    icon: <SimulatorIcon />,
-    name: "Gazebo",
-    active: showSim,
-    activate: setSimVisible,
-  };
-
-  const terminalViewer = {
-    component: <VncViewer commsManager={manager} port={1108} />,
-    icon: <TerminalIcon />,
-    name: "Terminal",
-    active: showTerminal,
-    activate: setTerminalVisible,
-  };
-
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
@@ -175,7 +208,7 @@ const ExerciseContainer = ({
   const darkTheme: Theme = {
     palette: {
       darkText: "#ededf2",
-      text: "#000000",
+      text: "#000000ff",
       placeholderText: "#a6a6bf",
       success: "#29ac29",
       warning: "#af5500ff",
@@ -214,29 +247,31 @@ const ExerciseContainer = ({
     <ErrorProvider>
       <ThemeProvider theme={darkTheme}>
         <div className="exercise-container" style={{ display: "flex" }}>
-          <ExerciseProvider manager={manager} code={codeRef.current}>
-            <HeaderMenu
-              project={project}
-              manager={manager}
-              url={url}
-              setLayout={setLayout}
-              hasDLModel={hasDLModel}
-            />
-            <IdeInterface
-              commsManager={manager}
-              resetManager={resetManager}
-              project={project}
-              api={editorApi}
-              viewers={[treeMonitor, gazeboViewer, terminalViewer]}
-              options={{ editor: { onlyOneFile: true } }}
-              layout={layout}
-              statusBarComponents={statusBar}
-              explorers={[]}
-              extraEditors={[]}
-              baseFile={base_file}
-              baseUniverse={universes ? universes[0] : undefined}
-            />
-          </ExerciseProvider>
+          {viewers.length > 0 && (
+            <ExerciseProvider manager={manager} code={codeRef.current}>
+              <ExerciseHeader
+                project={project}
+                manager={manager}
+                url={url}
+                setLayout={setLayout}
+                hasDLModel={hasDLModel}
+              />
+              <IdeInterface
+                commsManager={manager}
+                resetManager={resetManager}
+                project={project}
+                api={editorApi}
+                viewers={viewers}
+                options={{ editor: { onlyOneFile: true } }}
+                layout={layout}
+                statusBarComponents={statusBar}
+                explorers={[]}
+                extraEditors={[]}
+                baseFile={base_file}
+                baseUniverse={universes ? universes[0] : undefined}
+              />
+            </ExerciseProvider>
+          )}
         </div>
       </ThemeProvider>
     </ErrorProvider>

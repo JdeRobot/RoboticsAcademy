@@ -55,10 +55,30 @@ const listUniverses = async (project: string) => {
 
     // Handle unsuccessful response status (e.g., non-2xx status)
     if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to get subtree."); // Response error
+      throw new Error(response.data.message || "Failed to get universes.");
     }
 
     return response.data.universes_list;
+  } catch (error: unknown) {
+    throw error; // Rethrow
+  }
+};
+
+const listTools = async (project: string) => {
+  if (!project) throw new Error("Current Project name is not set");
+
+  const apiUrl = `/exercises/get_tools_list?project=${encodeURIComponent(
+    project
+  )}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+
+    if (!isSuccessful(response)) {
+      throw new Error(response.data.message || "Failed to get tools.");
+    }
+
+    return response.data.tools_list;
   } catch (error: unknown) {
     throw error; // Rethrow
   }
@@ -96,4 +116,9 @@ const getRoboticsBackendUniverse = async (
   }
 };
 
-export { getProjectExtraFiles, listUniverses, getRoboticsBackendUniverse };
+export {
+  getProjectExtraFiles,
+  listUniverses,
+  getRoboticsBackendUniverse,
+  listTools,
+};
