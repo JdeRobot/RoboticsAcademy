@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef} from "react";
-import { useUnload } from "./../../hooks/useUnload";
+import { useUnload } from "../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
 import "../../styles/wrappers/ExerciseContainer.css";
 
@@ -268,7 +268,7 @@ const ExerciseContainer = ({
                 explorers={[]}
                 extraEditors={[]}
                 baseFile={base_file}
-                baseUniverse={universes ? universes[0] : undefined}
+                baseUniverse={undefined}
               />
             </ExerciseProvider>
           )}

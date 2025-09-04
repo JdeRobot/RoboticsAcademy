@@ -258,7 +258,7 @@ const ExerciseHeader = ({
       >
         <a href="http://127.0.0.1:7164/exercises/">
           <LogoIcon
-            style={{ width: "32px", height: "32px", marginRight: "10px" }}
+            style={{ width: "40px", height: "40px", marginRight: "10px" }}
           />
         </a>
         <StyledHeaderText color={theme.palette.text}>
