@@ -5,6 +5,8 @@
 # Instructions for developers
 - [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4) 
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
+    - [Developer environment set up via script _(recommended set up)_](#automatic-script)
+    - [Developer environment set up via docker-compose _(recommended set up for __Windows Users__)_](#docker-compose)
 - [How to use nvidia](#How-to-use-nvidia)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
@@ -16,6 +18,7 @@
 
 Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are three different ways of developing in RA: 
 
+<a name="automatic-script"></a>
 ### Using automatic script (recommended)
 
 We provide an sh script that configures and runs automatically a developing environment:
@@ -140,6 +143,7 @@ docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link a
 
 [how to generate a RADI]: ./generate_a_radi.md
 
+<a name="docker-compose"></a>
 ### Using Docker compose (Recommended for Windows users)
 
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RoboticsBackend container, where all the dependencies are installed. 
