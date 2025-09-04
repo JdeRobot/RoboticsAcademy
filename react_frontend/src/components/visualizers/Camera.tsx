@@ -2,7 +2,6 @@ import React, { useEffect, useReducer, useRef, useState } from "react";
 import { Box } from "@mui/system";
 
 type CameraState = {
-  isCameraReady: boolean;
   isCameraPause: boolean;
   isVisualReady: boolean;
   countFrames: number;
@@ -16,7 +15,6 @@ import { useTheme } from "jderobot-ide-interface";
 import VideocamOffOutlinedIcon from '@mui/icons-material/VideocamOffOutlined';
 
 type CameraAction =
-  | { type: "cameraReady"; payload: boolean }
   | { type: "cameraPause"; payload: boolean }
   | { type: "visiualReady"; payload: boolean }
   | { type: "updateCountFrames"; payload: { countFrames: number } }
@@ -33,7 +31,6 @@ const cameraErrorMessages: Record<string, string> = {
 
 // reducer initial state
 const initialState: CameraState = {
-  isCameraReady: false,
   isCameraPause: false,
   isVisualReady: false,
   countFrames: 0,
@@ -42,8 +39,6 @@ const initialState: CameraState = {
 // reducer func
 const reducer = (state: CameraState, action: CameraAction): CameraState => {
   switch (action.type) {
-    case "cameraReady":
-      return { ...state, isCameraReady: action.payload };
     case "cameraPause":
       return { ...state, isCameraPause: action.payload };
     case "visiualReady":
@@ -70,7 +65,7 @@ const Camera = () => {
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [
-    { isCameraReady, isCameraPause, isVisualReady, countFrames, startTime },
+    { isCameraPause, isVisualReady, countFrames, startTime },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -176,6 +171,7 @@ const Camera = () => {
     };
 
     const updateCallback = (message: MessageEvent<any>) => {
+      console.log("CallBack", message)
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         captureFrame(); // call next frame
 
@@ -214,14 +210,14 @@ const Camera = () => {
 
     manager.subscribe(events.STATE_CHANGED, stateCallback);
 
-    if (isVisualReady && isCameraReady) {
+    if (isVisualReady && mediaStream !== null) {
       manager.subscribe(events.UPDATE, updateCallback);
     }
 
     return () => {
       manager.unsubscribe(events.STATE_CHANGED, stateCallback);
 
-      if (isVisualReady && isCameraReady) {
+      if (isVisualReady && mediaStream !== null) {
         manager.unsubscribe(events.UPDATE, updateCallback);
       }
     };
@@ -229,7 +225,7 @@ const Camera = () => {
     manager,
     isCameraPause,
     isVisualReady,
-    isCameraReady,
+    mediaStream,
     startTime,
     countFrames,
   ]);

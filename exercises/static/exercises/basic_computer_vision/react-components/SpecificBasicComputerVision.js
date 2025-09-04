@@ -1,19 +1,30 @@
-import * as React from "react";
+import { useState, useEffect } from "react";
 import noImage from "../../assets/img/noImage.png";
+import { useExercise } from "Contexts/ExerciseContext";
+import { events } from "jderobot-commsmanager";
 
-import "./css/GUICanvas.css"
+import "./css/GUICanvas.css";
 
-function SpecificBasicComputerVision(props) {
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+function SpecificBasicComputerVision() {
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
     const callback = (message) => {
-
       if (message.data.update.image) {
         var canvas = document.getElementById("gui_canvas");
 
         // Request Animation Frame to remove the flickers
         function decode_utf8(s) {
-            return decodeURIComponent(escape(s))
+          return decodeURIComponent(escape(s));
         }
 
         // Parse the Image Data
@@ -29,26 +40,27 @@ function SpecificBasicComputerVision(props) {
       }
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    manager.subscribe([events.UPDATE], callback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      manager.unsubscribe([events.UPDATE], callback);
     };
-  }, []);
+  }, [manager]);
 
   return (
-    <div style={{display: "flex", width: "100%", height: "100%", position:"relative", justifyContent: "center"}}>
-      <img className="image" id="gui_canvas" src={noImage}/>
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        justifyContent: "center",
+      }}
+    >
+      <img className="image" id="gui_canvas" src={noImage} />
     </div>
   );
 }

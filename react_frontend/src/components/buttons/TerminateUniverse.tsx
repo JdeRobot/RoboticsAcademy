@@ -22,6 +22,10 @@ const TerminateUniverseButton = ({
       return;
     }
 
+    if (manager.getUniverse() === "") {
+      return;
+    }
+
     const state = manager.getState();
 
     if (state === states.IDLE || state === states.CONNECTED) {
