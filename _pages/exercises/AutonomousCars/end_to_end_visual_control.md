@@ -117,7 +117,7 @@ git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
 The Huggingface <code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">huggingface_hub</code> library provides a <strong>Python API for</strong> interacting with the Huggingface Hub. The primary client class for this is HfApi, which lets you programmatically manage repositories, upload and download files, and access model metadata. The Hub also offers a free Inference API for running models directly on Huggingface.</p>
 
 <p style="text-align:justify">
-First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" target="_blank" rel="noopener noreferrer">Python Environment</a> on your local machine and install the Huggingface Hub pip package. Next, obtain a Huggingface <a href="https://huggingface.co/settings/tokens" target="_blank" rel="noopener noreferrer">ACCESS TOKEN</a>  from Huggingface
+First, create and activate a <a href="https://docs.python.org/3/tutorial/venv.html" style="text-decoration:underline;text-underline-offset:4px;text-decoration-style:dotted;"  target="_blank" rel="noopener noreferrer">Python Environment<strong>⤴️</strong></a> on your local machine and install the Huggingface Hub pip package. Next, obtain a Huggingface <a href="https://huggingface.co/settings/tokens" style="text-decoration:underline;text-underline-offset:4px;text-decoration-style:dotted;"  target="_blank" rel="noopener noreferrer">ACCESS TOKEN<strong>⤴️</strong></a>  from Huggingface
  and use it to download the datasets with code like:
 </p>
 
@@ -228,7 +228,7 @@ Once training is complete, the model is evaluated on a <strong>testing dataset</
 #### v) Export the Model
 
 <p style="text-align:justify">
-After training your deep learning model, you must export it to the <a href="https://onnx.ai/" target="_blank" rel="noopener noreferrer"><strong>ONNX (Open Neural Network Exchange)</strong></a> format. This is the only model format currently supported by the <strong>RoboticsAcademy</strong> web interface. ONNX is an open standard that facilitates interoperability among various deep learning frameworks, including <strong>PyTorch</strong> and <strong>TensorFlow</strong>.
+After training your deep learning model, you must export it to the <a href="https://onnx.ai/" style="text-decoration:underline;text-underline-offset:4px;text-decoration-style:dotted;" target="_blank" rel="noopener noreferrer"><strong>ONNX (Open Neural Network Exchange)</strong><strong>⤴️</strong></a> format. This is the only model format currently supported by the <strong>RoboticsAcademy</strong> web interface. ONNX is an open standard that facilitates interoperability among various deep learning frameworks, including <strong>PyTorch</strong> and <strong>TensorFlow</strong>.
 <br>
 <code class="language-plaintext highlighter-rouge" style="color:#FF0000;background:#ccc; font-size:14px">NB: RoboticsAcademy currently supports only the ONNX (Open Neural Network Exchange) format.</code>
 
@@ -300,7 +300,7 @@ Use standard ROS 2 mechanisms to manage loop timing:
 ### Enable GPU Acceleration
 
 <p style="text-align:justify">
-Deep learning models perform much faster when executed on a <strong>GPU</strong> compared to a <strong>CPU</strong>. To take advantage of GPU acceleration in this exercise, you need to ensure that your system has a compatible NVIDIA GPU and the required drivers installed.
+Deep learning models perform much faster when executed on a <strong>GPU</strong> compared to a <strong>CPU</strong>. To take advantage of GPU acceleration in this exercise, you need to ensure that your system has a compatible <a href="https://www.nvidia.com/en-us/drivers/" style="text-decoration:underline;text-underline-offset:4px;text-decoration-style:dotted;" target="_blank" rel="noopener noreferrer">NVIDIA GPU and the required drivers installed<strong>⤴️</strong></a>.
 </p>
 
 <p style="text-align:justify">
@@ -319,22 +319,17 @@ nvidia-smi
 
 {% include gallery id="gpu_verify" caption="The output should look like this" %}
 
+#### Import GPU Configuration
+
+#### Debug
+
 <p style="text-align:center; margin-bottom:6px; font-size:16px;" >
 
 </p>
 
-```python
-while True:
-    image = WebGUI.getImage()
-    if image is not None:
-      # rest of the code.
-```
-
--   `WebGUI.showImage(image)` - allows you to view a debug image or one with relevant information.
-
 <!-- Model Path -->
 
-### File Path for Uploaded Model
+#### File Path for Uploaded Model
 
 The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model.
 
@@ -407,3 +402,4 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 2. [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
 3. [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
 4. [ONNX (Open Neural Network Exchange)](https://onnx.ai/)
+5. [Nvidia GPU Drivers](https://www.nvidia.com/en-us/drivers/)
