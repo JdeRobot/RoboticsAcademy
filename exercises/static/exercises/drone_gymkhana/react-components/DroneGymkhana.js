@@ -1,11 +1,11 @@
 import { useState, useEffect} from "react";
-import { drawImage, drawLeftImage } from "./helpers/showImagesRescue";
+import { drawImage, drawLeftImage } from "./helpers/showImagesDroneGymkhana";
 import noImage from "../../assets/img/noImage.png";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
-function RescuePeople() {
+function DroneGymkhana() {
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -63,4 +63,4 @@ function RescuePeople() {
   );
 }
 
-export default RescuePeople;
+export default DroneGymkhana;
