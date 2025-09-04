@@ -6,13 +6,15 @@
     {% render_bundle 'exercise' 'css' %}
     {% block exercise_header %}
     {% endblock %}
+    <style>
+        body {background-color: #16161d;}
+    </style>
 {%  endblock %}
 
 {% block content %}
     {% block react-content %}
     {% endblock %}
 {% endblock %}
-
 
 {% block before_end_body %}
     {% render_bundle 'exercise' 'js' %}

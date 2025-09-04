@@ -1,13 +1,17 @@
-import React, { lazy } from "react";
+import React, { lazy, ReactNode } from "react";
 import "./exercise-index.css";
 import { createRoot } from "react-dom/client";
 import "./libs/tools.js";
 import { flushSync } from "react-dom";
-import CommsManager from "./libs/comms_manager";
-
 import "./styles/tailwindcss_base.css";
 
-window.RoboticsExerciseComponents = (function () {
+declare global {
+  interface Window {
+    ExerciseRenderer: Function;
+  }
+}
+
+window.ExerciseRenderer = function (rootRenderer: Object) {
   let components = [];
 
   /**
@@ -15,11 +19,11 @@ window.RoboticsExerciseComponents = (function () {
    * @param element
    * @returns {*}
    */
-  const createElement = function (element) {
-    const children = Array.from(element.childNodes).map((child) =>
-      createElement(child)
+  const createElement = function (element: any): ReactNode {
+    const children: ReactNode = Array.from(element.childNodes).map(
+      (child: any) => createElement(child)
     );
-    return createElement(element, {}, children);
+    return React.createElement(element, {}, children);
   };
 
   /**
@@ -31,10 +35,10 @@ window.RoboticsExerciseComponents = (function () {
    * @returns {React.DetailedReactHTMLElement<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>}
    */
   const renderComponentNew = function (
-    component,
-    container_id,
-    properties,
-    children_elements
+    component: any,
+    container_id: any,
+    properties: any,
+    children_elements: any
   ) {
     const container = document.getElementById(container_id);
     properties["key"] = container_id;
@@ -48,20 +52,23 @@ window.RoboticsExerciseComponents = (function () {
    * @param element Element description object
    * @returns {Promise<{}>}
    */
-  const renderImportNew = async function (element, parent_is_root) {
+  const renderImportNew = async function (
+    element: any,
+    parent_is_root: boolean
+  ): Promise<ReactNode> {
     const { component, dom_id, properties, children } = element;
 
     const is_root = component === "root";
 
     // Process children first
     const child_elements = await Promise.all(
-      children.map(async (child) => {
+      children.map(async (child: any) => {
         return await renderImportNew(child, is_root);
       })
     );
 
     const path = component.split("/");
-    let rendered_component = {};
+    let rendered_component: ReactNode;
 
     if (is_root) return rendered_component;
 
@@ -78,20 +85,19 @@ window.RoboticsExerciseComponents = (function () {
         }
       );
     } else {
-      rendered_component = await import(`/${component}`).then(
-        (component) => {
-          return renderComponentNew(
-            component.default,
-            dom_id,
-            properties,
-            child_elements
-          );
-        }
-      );
+      rendered_component = await import(`/${component}`).then((component) => {
+        return renderComponentNew(
+          component.default,
+          dom_id,
+          properties,
+          child_elements
+        );
+      });
     }
 
     if (parent_is_root) {
-      const root = createRoot(document.getElementById(dom_id));
+      const element = document.getElementById(dom_id);
+      const root = createRoot(element!);
       flushSync(() => {
         root.render(rendered_component);
       });
@@ -100,24 +106,9 @@ window.RoboticsExerciseComponents = (function () {
     return rendered_component;
   };
 
-  const render = async function (rootRenderer) {
+  const render = async function (rootRenderer: Object) {
     await renderImportNew(rootRenderer, false);
-
-    for (var i = 0, length = onLoadSuscribers.length; i < length; i++) {
-      onLoadSuscribers[i]();
-    }
   };
-
-  const onLoadSuscribers = [];
-
-  const ramHost = window.location.hostname;
-  const ramPort = 7163;
-  const ramManager = CommsManager(`ws://${ramHost}:${ramPort}`);
-
-  return {
-    components: components,
-    render: render,
-    commsManager: ramManager,
-    suscribeOnLoad: (callback) => onLoadSuscribers.push(callback),
-  };
-})();
+  console.log("STart",new Date().getMilliseconds())
+  render(rootRenderer);
+};

@@ -1,15 +1,23 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect, useRef } from "react";
 import { drawImage, drawLeftImage } from "./helpers/showImagesRescue";
 import noImage from "../../assets/img/noImage.png";
+import { events } from "jderobot-commsmanager";
 
-import "./css/GUICanvas.css"
-function SpecificRescuePeople(props) {
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+import "./css/GUICanvas.css";
+function SpecificRescuePeople() {
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
     const callback = (message) => {
-      console.log(message);
-
       if (message.data.update.image_right) {
         console.log("image_right");
         drawImage(message.data.update);
@@ -19,34 +27,39 @@ function SpecificRescuePeople(props) {
         drawLeftImage(message.data.update);
       }
 
-      // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    manager.subscribe(events.UPDATE, callback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, callback);
     };
-  }, []);
+  }, [manager]);
 
   return (
-    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img className="image" id="gui_canvas_left" style={{left: "0"}} src={noImage}/>
-      <img className="image" id="gui_canvas_right" style={{left: "50%"}} src={noImage}/>
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        position: "relative",
+      }}
+    >
+      <img
+        className="image"
+        id="gui_canvas_left"
+        style={{ left: "0" }}
+        src={noImage}
+      />
+      <img
+        className="image"
+        id="gui_canvas_right"
+        style={{ left: "50%" }}
+        src={noImage}
+      />
     </div>
   );
 }
-
-SpecificRescuePeople.propTypes = {
-  circuit: PropTypes.string,
-};
 
 export default SpecificRescuePeople;

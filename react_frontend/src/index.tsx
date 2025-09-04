@@ -5,7 +5,7 @@ import {createRoot} from "react-dom/client";
 import './libs/tools.js';
 
 const container = document.getElementById('app');
-const root = createRoot(container);
+const root = createRoot(container!);
 root.render(
   <React.StrictMode>
     <App />

@@ -121,6 +121,23 @@ def get_docker_universe_data(request):
         if universe.world.tools_config != "None":
             tools_configuration = json.loads(universe.world.tools_config)
 
+        if universe.robot.name != "None":
+            robot_config = {
+                "name": universe.robot.name,
+                "launch_file_path": universe.robot.launch_file_path,
+                "ros_version": universe.world.ros_version,
+                "type": universe.world.type,
+                "start_pose": universe.world.start_pose,
+            }
+        else:
+            robot_config = {
+                "name": None,
+                "launch_file_path": None,
+                "ros_version": None,
+                "type": None,
+                "start_pose": None,
+            }
+
         config = {
             "name": universe.name,
             "world": {
@@ -130,13 +147,7 @@ def get_docker_universe_data(request):
                 "type": universe.world.type,
                 "tools_config": tools_configuration,
             },
-            "robot": {
-                "name": universe.robot.name,
-                "launch_file_path": universe.robot.launch_file_path,
-                "ros_version": universe.world.ros_version,
-                "type": universe.world.type,
-                "start_pose": universe.world.start_pose,
-            },
+            "robot": robot_config,
             "tools": tools,
             "tools_config": tools_config,
         }

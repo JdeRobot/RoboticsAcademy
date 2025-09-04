@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef} from "react";
 import { useUnload } from "../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
 import "../../styles/wrappers/ExerciseContainer.css";
@@ -81,7 +81,7 @@ const ExerciseContainer = ({
     if (list.length === 0) {
       list.push("");
     }
-    
+
     setUniverses(list);
   };
 
@@ -173,7 +173,7 @@ const ExerciseContainer = ({
     }
   }, [manager]);
 
-  useUnload((event: any) => {
+  useUnload(() => {
     if (manager) {
       manager.disconnect();
       connected.current = false;
@@ -247,6 +247,8 @@ const ExerciseContainer = ({
     roundness: 5,
     monacoTheme: "dark",
   };
+
+  console.log(new Date().getMilliseconds())
 
   return (
     <ErrorProvider>

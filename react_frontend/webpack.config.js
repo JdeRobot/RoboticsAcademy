@@ -33,8 +33,8 @@ const aliases = () => {
 
 module.exports = {
   entry: {
-    index: "./src/index.js",
-    exercise: "./src/exercise-index.js",
+    index: "./src/index.tsx",
+    exercise: "./src/exercise-index.ts",
   },
   output: {
     filename: "js/[name].[contenthash:8].js",

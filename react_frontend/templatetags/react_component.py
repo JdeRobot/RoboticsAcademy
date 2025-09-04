@@ -89,6 +89,6 @@ class ReactComponentsRenderer(template.Node):
         components = json.dumps(root_component)
         return f"""
 <script>
-    RoboticsExerciseComponents.render({components});
+    ExerciseRenderer({components});
 </script>            
 """
