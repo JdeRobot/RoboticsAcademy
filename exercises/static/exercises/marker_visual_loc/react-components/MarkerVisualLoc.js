@@ -1,5 +1,6 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 import { drawImage, updatePath, addToPath } from "./helpers/showImageVisual";
 import RobotRed from "../resources/images/robot_red.svg";
 import RobotGreen from "../resources/images/robot_green.svg";
@@ -9,14 +10,21 @@ import noImage from "../../assets/img/noImage.png";
 import house from "../resources/images/map.png";
 
 import "./css/GUICanvas.css";
-function SpecificVisualLoc(props) {
-  const [realPose, setRealPose] = React.useState(null)
-  const [noisyPose, setNoisyPose] = React.useState(null)
-  const [userPose, setUserPose] = React.useState(null)
-  const [realPath, setRealPath] = React.useState("")
-  const [noisyPath, setNoisyPath] = React.useState("")
-  const [userPath, setUserPath] = React.useState("")
-  const [resizedBeacons, setResizedBeacons] = React.useState({})
+function MarkerVisualLoc(props) {
+  const [realPose, setRealPose] = useState(null)
+  const [noisyPose, setNoisyPose] = useState(null)
+  const [userPose, setUserPose] = useState(null)
+  const [realPath, setRealPath] = useState("")
+  const [noisyPath, setNoisyPath] = useState("")
+  const [userPath, setUserPath] = useState("")
+  const [resizedBeacons, setResizedBeacons] = useState({})
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
   var realTrail = [];
   var noisyTrail = [];
   var userTrail = [];
@@ -70,9 +78,12 @@ function SpecificVisualLoc(props) {
     valuesUntilValid = 0;
   });
 
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
-    const callback = (message) => {
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
+    const updateCallback = (message) => {
       const updateData = message.data.update;
 
       var img = document.getElementById('gui-canvas'); 
@@ -123,27 +134,10 @@ function SpecificVisualLoc(props) {
       }
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
-
-    resizeObserver.observe(document.getElementById('exercise-img'));
-
-    return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
-    };
-  }, []);
-
-  React.useEffect(() => {
-    const callback = (message) => {
+    const stateCallback = (message) => {
       if (message.data.state === "tools_ready") {
         try {
           setRealPose(null)
@@ -171,19 +165,17 @@ function SpecificVisualLoc(props) {
       }
       valuesUntilValid = 0;
     }
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
-      callback
-    );
+
+    resizeObserver.observe(document.getElementById("exercise-img"));
+
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
-  }, [])
+  }, [manager]);
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
@@ -248,4 +240,4 @@ function SpecificVisualLoc(props) {
   );
 }
 
-export default SpecificVisualLoc;
+export default MarkerVisualLoc;

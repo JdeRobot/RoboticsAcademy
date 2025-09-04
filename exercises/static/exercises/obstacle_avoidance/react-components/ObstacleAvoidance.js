@@ -1,11 +1,12 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 
 import F1Car from "../resources/images/f1-car.svg";
 import Arrow from "../resources/images/arrow.svg";
 import "./css/GUICanvas.css";
 
-function SpecificObstacleAvoidance(props) {
+function ObstacleAvoidance() {
   const meter = 73; // 1m = 73px
 
   const [laser, setLaser] = React.useState([])
@@ -14,9 +15,17 @@ function SpecificObstacleAvoidance(props) {
   const [avgForce, setAvgForce] = React.useState([2 * meter, 0])
   const [obsForce, setObsForce] = React.useState([2 * meter, -Math.PI / 2])
   const [targetPose, setTargetPose] = React.useState(null)
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
 
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
 
     const callback = (message) => {
       const data = message.data.update;
@@ -37,7 +46,7 @@ function SpecificObstacleAvoidance(props) {
       }
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
     const getDist = (x,y) => {
@@ -52,19 +61,12 @@ function SpecificObstacleAvoidance(props) {
       return ang;
     }
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    manager.subscribe(events.UPDATE, callback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, callback);
     };
-  }, []);
+  }, [manager]);
 
   return (
     <div style={{display: "flex",   width: "100%",
@@ -89,8 +91,4 @@ function SpecificObstacleAvoidance(props) {
   );
 }
 
-SpecificObstacleAvoidance.propTypes = {
-  circuit: PropTypes.string,
-};
-
-export default SpecificObstacleAvoidance
+export default ObstacleAvoidance

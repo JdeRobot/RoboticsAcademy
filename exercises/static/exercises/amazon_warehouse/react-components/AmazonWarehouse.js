@@ -1,5 +1,6 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 import {updatePath, addToTrail, updateTrail} from "./helpers/AmazonWarehouseHelper";
 
 import Map1 from "../resources/images/map.png"
@@ -7,25 +8,33 @@ import Map2 from "../resources/images/map_2.png"
 
 import "./css/GUICanvas.css";
 
-function SpecificAmazonWarehouse(props) {
+function AmazonWarehouse() {
   const Map1Size = {width: 415, height: 279}
   const Map2Size = {width: 1075, height: 699}
 
-  const [map, setMap] = React.useState(Map1)
-  const [mapSize, setMapSize] = React.useState(Map1Size)
-  const [vehicleType, setVehicleType] = React.useState(0) // 0=normal 1=ackermann
-  const [vehiclePose, setVehiclePose] = React.useState(null)
-  const [targetPose, setTargetPose] = React.useState(null)
-  const [trail, setTrail] = React.useState("")
-  const [path, setPath] = React.useState("")
-  const [liftState, setLiftState] = React.useState(false)
+  const [map, setMap] = useState(Map1)
+  const [mapSize, setMapSize] = useState(Map1Size)
+  const [vehicleType, setVehicleType] = useState(0) // 0=normal 1=ackermann
+  const [vehiclePose, setVehiclePose] = useState(null)
+  const [targetPose, setTargetPose] = useState(null)
+  const [trail, setTrail] = useState("")
+  const [path, setPath] = useState("")
+  const [liftState, setLiftState] = useState(false)
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
 
   var base_path = [];
   var base_trail = [];
   var lastPose = undefined;
 
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
 
     const resizeObserver = new ResizeObserver((entries) => {
       var img = entries[0].target; 
@@ -114,35 +123,17 @@ function SpecificAmazonWarehouse(props) {
       }
     };
 
-    const callback = (message) => {
+    const updateCallback = (message) => {
       const data = message.data.update;
       displayRobot(data)
       displayPath(data)
       displayLiftSquare(data)
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
-
-    resizeObserver.observe(document.getElementById('exercise-img'));
-
-    return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
-    };
-  }, []);
-
-  React.useEffect(() => {
-    const callback = (message) => {
-      console.log(message);
+    const stateCallback = (message) => {
       if (message.data.state === "tools_ready") {
         let world = context.mapSelected;
         
@@ -171,19 +162,17 @@ function SpecificAmazonWarehouse(props) {
         }
       }
     }
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
-      callback
-    );
+
+    resizeObserver.observe(document.getElementById("exercise-img"));
+
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
-  }, [])
+  }, [manager]);
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
@@ -224,8 +213,4 @@ function SpecificAmazonWarehouse(props) {
   );
 }
 
-SpecificAmazonWarehouse.propTypes = {
-  circuit: PropTypes.string,
-};
-
-export default SpecificAmazonWarehouse
+export default AmazonWarehouse

@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 import noImage from "../../assets/img/noImage.png";
 import "./css/GUICanvas.css";
-import PropTypes from "prop-types";
 
-function SpecificFollowPerson(props) {
-  const [image, setImage] = React.useState(
+function FollowPerson() {
+  const [image, setImage] = useState(
     noImage
   );
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
 
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
 
     const callback = (message) => {
       const update = message.data.update;
@@ -19,29 +28,17 @@ function SpecificFollowPerson(props) {
         setImage(`data:image/png;base64,${image.image}`);
 
         // Send the ACK of the img
-        window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+        manager.send("gui", "ack");
       }
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    listen_key();
+    manager.subscribe(events.UPDATE, callback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, callback);
     };
-  }, []);
-
-  
-
-  useEffect(() => {
-    listen_key();
-  }, []);
+  }, [manager]);
 
   function listen_key() {
     window.addEventListener("keypress", function (event) {
@@ -67,7 +64,4 @@ function SpecificFollowPerson(props) {
 
 }
 
-SpecificFollowPerson.propTypes = {
-  context: PropTypes.any,
-};
-export default SpecificFollowPerson;
+export default FollowPerson;

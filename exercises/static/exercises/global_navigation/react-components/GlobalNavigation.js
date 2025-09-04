@@ -1,5 +1,6 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 import {updatePath} from "./helpers/GlobalNavigationHelper";
 import Car from "../resources/images/car-top-view.svg";
 import CityMap from "../resources/images/cityLargenBin.png";
@@ -8,18 +9,26 @@ import "./css/GUICanvas.css";
 
 var coords = undefined;
 
-function SpecificGlobalNavigation(props) {
-  const [showImage, setShowImage] = React.useState(false);
-  const [carPose, setCarPose] = React.useState(null)
-  const [destination, setDestination] = React.useState(null)
-  const [path, setPath] = React.useState("")
+function GlobalNavigation(props) {
+  const [showImage, setShowImage] = useState(false);
+  const [carPose, setCarPose] = useState(null)
+  const [destination, setDestination] = useState(null)
+  const [path, setPath] = useState("")
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
   
   var trail = [];
   var lastPose = undefined;
   let showMap = false;
 
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
 
     const resizeObserver = new ResizeObserver((entries) => {
       var img = entries[0].target; 
@@ -82,7 +91,7 @@ function SpecificGlobalNavigation(props) {
       }
     }
 
-    const callback = (message) => {
+    const updateCallback = (message) => {
       const data = message.data.update;
       console.log(data)
       getMapDataAndDraw(data)
@@ -90,27 +99,10 @@ function SpecificGlobalNavigation(props) {
       getPathAndDisplay(data)
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
-
-    resizeObserver.observe(document.getElementById('exercise-img'));
-
-    return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
-    };
-  }, []);
-
-  React.useEffect(() => {
-    const callback = (message) => {
+    const stateCallback = (message) => {
       console.log(message.data.state)
       if (message.data.state === "tools_ready") {
         showMap = false
@@ -130,17 +122,17 @@ function SpecificGlobalNavigation(props) {
         }
       }
     };
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
-      callback
-    );
+
+    resizeObserver.observe(document.getElementById("exercise-img"));
+
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
+
     return () => {
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.STATE_CHANGED],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
-  }, []);
+  }, [manager]);
 
   function destinationPicker(event) {
     var img = document.getElementById('exercise-img'); 
@@ -207,8 +199,4 @@ function SpecificGlobalNavigation(props) {
   );
 }
 
-SpecificGlobalNavigation.propTypes = {
-  circuit: PropTypes.string,
-};
-
-export default SpecificGlobalNavigation
+export default GlobalNavigation

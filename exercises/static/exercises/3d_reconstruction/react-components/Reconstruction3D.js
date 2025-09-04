@@ -3,7 +3,7 @@ import * as React from "react";
 import "./css/Reconstruction3DRR.css";
 import { draw, reset_all } from "./helpers/helperRecontruction";
 
-const SpecificRecontruction3D = (props) => {
+const Reconstruction3D = (props) => {
     React.useEffect(() => {
         console.log("TestShowScreen subscribing to ['update'] events");
         const callback = (message) => {
@@ -60,4 +60,4 @@ const SpecificRecontruction3D = (props) => {
   );
 };
 
-export default SpecificRecontruction3D;
+export default Reconstruction3D;

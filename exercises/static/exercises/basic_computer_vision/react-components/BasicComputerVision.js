@@ -5,7 +5,7 @@ import { events } from "jderobot-commsmanager";
 
 import "./css/GUICanvas.css";
 
-function SpecificBasicComputerVision() {
+function BasicComputerVision() {
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -65,4 +65,4 @@ function SpecificBasicComputerVision() {
   );
 }
 
-export default SpecificBasicComputerVision;
+export default BasicComputerVision;

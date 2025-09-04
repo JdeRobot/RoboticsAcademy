@@ -1,12 +1,23 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 import { drawImage, drawLeftImage } from "./helpers/showImagesFollowRoad";
 import noImage from "../../assets/img/noImage.png";
 
 import "./css/GUICanvas.css"
-function SpecificFollowRoad(props) {
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+function FollowRoad() {
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
     const callback = (message) => {
       console.log(message);
 
@@ -20,22 +31,15 @@ function SpecificFollowRoad(props) {
       }
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    manager.subscribe(events.UPDATE, callback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, callback);
     };
-  }, []);
+  }, [manager]);
 
   return (
     <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
@@ -47,8 +51,4 @@ function SpecificFollowRoad(props) {
   );
 }
 
-SpecificFollowRoad.propTypes = {
-  circuit: PropTypes.string,
-};
-
-export default SpecificFollowRoad;
+export default FollowRoad;

@@ -92,10 +92,10 @@ import "./css/GUICanvas.css";
     resizeObserver.observe(document.getElementById("exercise-img"));
 
     manager.subscribe(events.UPDATE, updateCallback);
-    manager.subscribe(events.STATE_CHANGED, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      manager.unsubscribe(events.UPDATE, stateCallback);
+      manager.unsubscribe(events.UPDATE, updateCallback);
       manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
   }, [manager]);
