@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUnload } from "../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
 import "../../styles/wrappers/ExerciseContainer.css";
@@ -21,11 +21,11 @@ import {
   listUniverses,
 } from "Helpers/api";
 import Frequencies from "Components/statusBar/Frequencies";
-import CameraAltRoundedIcon from '@mui/icons-material/CameraAltRounded';
+import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
-import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
-import ImportantDevicesRoundedIcon from '@mui/icons-material/ImportantDevicesRounded';
-import VideoCameraBackRoundedIcon from '@mui/icons-material/VideoCameraBackRounded';
+import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
+import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
+import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 
 const defaultCode = `import WebGUI
 import HAL
@@ -78,6 +78,10 @@ const ExerciseContainer = ({
 
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project);
+    if (list.length === 0) {
+      list.push("");
+    }
+    
     setUniverses(list);
   };
 
@@ -97,7 +101,7 @@ const ExerciseContainer = ({
 
     if (tools.includes("webcam")) {
       toolsList.push({
-        component: <Camera/>,
+        component: <Camera />,
         icon: <CameraAltRoundedIcon />,
         name: "WebCam",
         active: showCamera,
@@ -135,7 +139,6 @@ const ExerciseContainer = ({
     const manager = CommsManager.getInstance();
     setManager(manager);
     try {
-      getUniverseList(project);
       getToolsList(project);
     } catch (error) {
       setUniverses(undefined);
@@ -154,6 +157,7 @@ const ExerciseContainer = ({
     }
     try {
       await manager.connect();
+      getUniverseList(project);
       console.log("Connected!", manager.getState());
       connected.current = true;
     } catch (error) {
@@ -269,7 +273,7 @@ const ExerciseContainer = ({
                 explorers={[]}
                 extraEditors={[]}
                 baseFile={base_file}
-                baseUniverse={undefined}
+                baseUniverse={universes ? universes[0] :undefined}
               />
             </ExerciseProvider>
           )}

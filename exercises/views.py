@@ -27,6 +27,7 @@ def load_exercise(request, exercise_id):
         request, "exercises/" + exercise_id + "/exercise.html", exercise.context
     )
 
+
 @error_wrapper("POST", ["project"])
 def user_code_zip(request):
     project_name = request.data.get("project")
@@ -65,6 +66,7 @@ def get_universes_list(request):
 
     return Response({"universes_list": universes_list})
 
+
 @error_wrapper("GET", ["project"])
 def get_tools_list(request):
     project_name = request.GET.get("project")
@@ -77,7 +79,8 @@ def get_tools_list(request):
 
     return Response({"tools_list": tools_list})
 
-@error_wrapper("GET", ["project", "universe"])
+
+@error_wrapper("GET", ["project"])
 def get_docker_universe_data(request):
     name = request.GET.get("universe")
     project_name = request.GET.get("project")
@@ -91,32 +94,52 @@ def get_docker_universe_data(request):
         if tool.base_config != "None":
             tools_config.update({tool.name: tool.base_config})
 
-    # TODO: this can also be none or undefined
-    universe = Universe.objects.get(name=name)
+    if len(project.universes.all()) == 0:
+        config = {
+            "name": None,
+            "world": {
+                "name": None,
+                "launch_file_path": None,
+                "ros_version": None,
+                "type": None,
+                "tools_config": None,
+            },
+            "robot": {
+                "name": None,
+                "launch_file_path": None,
+                "ros_version": None,
+                "type": None,
+                "start_pose": None,
+            },
+            "tools": tools,
+            "tools_config": tools_config,
+        }
+    else:
+        universe = Universe.objects.get(name=name)
 
-    tools_configuration = None
-    if universe.world.tools_config != "None":
-        tools_configuration = json.loads(universe.world.tools_config)
+        tools_configuration = None
+        if universe.world.tools_config != "None":
+            tools_configuration = json.loads(universe.world.tools_config)
 
-    config = {
-        "name": universe.name,
-        "world": {
-            "name": universe.world.name,
-            "launch_file_path": universe.world.launch_file_path,
-            "ros_version": universe.world.ros_version,
-            "type": universe.world.type,
-            "tools_config": tools_configuration,
-        },
-        "robot": {
-            "name": universe.robot.name,
-            "launch_file_path": universe.robot.launch_file_path,
-            "ros_version": universe.world.ros_version,
-            "type": universe.world.type,
-            "start_pose": universe.world.start_pose,
-        },
-        "tools": tools,
-        "tools_config": tools_config,
-    }
+        config = {
+            "name": universe.name,
+            "world": {
+                "name": universe.world.name,
+                "launch_file_path": universe.world.launch_file_path,
+                "ros_version": universe.world.ros_version,
+                "type": universe.world.type,
+                "tools_config": tools_configuration,
+            },
+            "robot": {
+                "name": universe.robot.name,
+                "launch_file_path": universe.robot.launch_file_path,
+                "ros_version": universe.world.ros_version,
+                "type": universe.world.type,
+                "start_pose": universe.world.start_pose,
+            },
+            "tools": tools,
+            "tools_config": tools_config,
+        }
 
     # Return the list of projects
     return Response(

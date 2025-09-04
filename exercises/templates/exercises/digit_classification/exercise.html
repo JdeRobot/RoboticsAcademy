@@ -30,28 +30,8 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-    {% react_component exercise/digit_classification/BasicComputerVisionRR %}
-        {% react_component components/wrappers/MaterialBox id="exercise-container" %}
-            {% react_component components/layout_components/MainAppBar exerciseName="Deep learning-based Digit Classification" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/dl_digit_classifier"%} 
-            {% end_react_component %}  
-            {% react_component components/wrappers/MaterialBox id="content" %}
-                {% react_component components/wrappers/MaterialBox id="content-exercise" %}
-                    {% react_component components/layout_components/ExerciseControl %}{% end_react_component %}
-                    {% react_component components/wrappers/FlexContainer row %}
-                    {% react_component components/wrappers/FlexContainer console %} 
-                        {% react_component components/editors/EditorRobot %}{% end_react_component %}
-                        {% react_component components/visualizers/ConsoleViewer%}{% end_react_component %}
-                        {% end_react_component%}
-                        {% react_component components/wrappers/FlexContainer%} 
-                        {% react_component exercise/digit_classification/SpecificBasicComputerVision %}{% end_react_component %}
-                            {% react_component components/visualizers/Camera%}{% end_react_component %}
-                        {% end_react_component %}
-                {% end_react_component %}
-            {% end_react_component %}
-        {% react_component components/message_system/Loading %}{% end_react_component %}
-        {% react_component components/message_system/Alert %}{% end_react_component %}
-{% end_react_component %}
-{% end_react_component %}
-    {% end_react_component %}
+        {% react_component components/layouts/ExerciseContainer project="Digit Classification" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/dl_digit_classifier/" hasDLModel%} 
+            {% react_component exercise/digit_classification/SpecificBasicComputerVision %}{% end_react_component %}
+        {% end_react_component %}
     {% endif %}
 {% endblock %}

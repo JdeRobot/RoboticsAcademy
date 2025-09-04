@@ -89,7 +89,6 @@ const getRoboticsBackendUniverse = async (
   universe: string
 ) => {
   if (!project) throw new Error("Current Project name is not set");
-  if (!universe) throw new Error("Universe name is not set");
 
   const apiUrl = `/exercises/get_docker_universe_data?universe=${encodeURIComponent(
     universe
