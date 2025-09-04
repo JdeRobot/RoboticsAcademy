@@ -248,8 +248,6 @@ const ExerciseContainer = ({
     monacoTheme: "dark",
   };
 
-  console.log(new Date().getMilliseconds())
-
   return (
     <ErrorProvider>
       <ThemeProvider theme={darkTheme}>

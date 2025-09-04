@@ -4694,10 +4694,10 @@ jderobot-commsmanager@^1.0.3:
   dependencies:
     uuid "^11.1.0"
 
-jderobot-ide-interface@0.1.86:
-  version "0.1.86"
-  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.1.86.tgz#c311dcd4c2d4eecc3c3c28a25348fff6c42edb61"
-  integrity sha512-eF2xTEbMqfcNYMFnqvh2X+JxIvXqTW/HH8Rc5aqQikG7vBzOOrIJ/XWp5eFI6OAFhhFTAT8z/+/I7sHoJW2/nw==
+jderobot-ide-interface@0.1.87:
+  version "0.1.87"
+  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.1.87.tgz#db76906b758ed9412f19b2ea1fc1fb22fa0a0054"
+  integrity sha512-Zmd6COjc2e11T5t36BZUQhN+OJ4D270Of1WgrTqySWSI/sQQImEU1tVdQBSUSHNZIM/hE+Im/vEu8kjPFf38zA==
   dependencies:
     "@monaco-editor/react" "^4.7.0"
     jderobot-commsmanager "^1.0.3"

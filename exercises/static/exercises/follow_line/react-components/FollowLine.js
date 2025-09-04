@@ -12,7 +12,7 @@ import montmeloCircuit from "../resources/images/montmelo_circuit.png";
 import montrealCircuit from "../resources/images/montreal_circuit.png";
 import ngbCircuit from "../resources/images/ngb_circuit.png";
 
-const SpecificFollowLine = () => {
+const FollowLine = () => {
   const exerciseContext = useExercise();
   const [lapTime, setLapTime] = useState(null);
   const [carPose, setCarPose] = useState(null);
@@ -160,4 +160,4 @@ const SpecificFollowLine = () => {
   );
 };
 
-export default SpecificFollowLine;
+export default FollowLine;

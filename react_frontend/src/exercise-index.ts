@@ -73,7 +73,8 @@ window.ExerciseRenderer = function (rootRenderer: Object) {
     if (is_root) return rendered_component;
 
     if (path[0] === "exercise") {
-      const component_path = `${path.slice(2).join("/")}.js`;
+      const component_path = `${path.slice(1).join("/")}.js`;
+      console.log(component_path)
       rendered_component = await import(`exercises/${component_path}`).then(
         (component) => {
           return renderComponentNew(
@@ -109,6 +110,6 @@ window.ExerciseRenderer = function (rootRenderer: Object) {
   const render = async function (rootRenderer: Object) {
     await renderImportNew(rootRenderer, false);
   };
-  console.log("STart",new Date().getMilliseconds())
+
   render(rootRenderer);
 };
