@@ -74,7 +74,6 @@ window.ExerciseRenderer = function (rootRenderer: Object) {
 
     if (path[0] === "exercise") {
       const component_path = `${path.slice(1).join("/")}.js`;
-      console.log(component_path)
       rendered_component = await import(`exercises/${component_path}`).then(
         (component) => {
           return renderComponentNew(

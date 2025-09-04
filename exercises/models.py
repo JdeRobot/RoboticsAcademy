@@ -213,10 +213,13 @@ class Exercise(models.Model):
             }
             configurations.append(config)
 
+        # Accesible from the exercise using document.getElementById("exercise-data")
         context = {
-            "exercise_base": "exercise_base_2_RA.html",
-            "exercise_id": self.exercise_id,
-            "exercise_config": configurations,
+            "exercise_data": {
+                "universes": configurations,
+                "tools": tools,
+                "name": self.name,
+            },
         }
         return context
 

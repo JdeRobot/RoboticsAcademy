@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUnload } from "../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
 import "../../styles/wrappers/ExerciseContainer.css";
@@ -46,20 +46,23 @@ const base_file = {
   files: [],
 };
 
+interface ExerciseData {
+  name: string;
+  tools: string[];
+  universes: Object[];
+}
+
 const ExerciseContainer = ({
-  project,
   url,
   hasDLModel,
   children,
 }: {
-  project: string;
   url?: string;
   hasDLModel: boolean;
   children: JSX.Element;
 }) => {
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
-  const [viewers, setViewers] = useState<ViewersEntry[]>([]);
   const [showSim, setSimVisible] = useState<boolean>(true);
   const [showMonitor, setMonitorVisible] = useState<boolean>(true);
   const [showCamera, setCameraVisible] = useState<boolean>(true);
@@ -76,6 +79,18 @@ const ExerciseContainer = ({
     _setCode(data);
   };
 
+  const exerciseData = document.getElementById("exercise-data");
+
+  let config: ExerciseData;
+  if (exerciseData !== null) {
+    config = JSON.parse(exerciseData.textContent);
+  } else {
+    return <></>;
+  }
+
+  const project = config.name;
+  const tools = config.tools;
+
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project);
     if (list.length === 0) {
@@ -85,52 +100,47 @@ const ExerciseContainer = ({
     setUniverses(list);
   };
 
-  const getToolsList = async (project: string) => {
-    const tools = await listTools(project);
-    var toolsList = [];
+  var toolsList: ViewersEntry[] = [];
 
-    if (tools.includes("web_gui")) {
-      toolsList.push({
-        component: children,
-        icon: <ImportantDevicesRoundedIcon />,
-        name: "Web Gui",
-        active: showMonitor,
-        activate: setMonitorVisible,
-      });
-    }
+  if (tools.includes("web_gui")) {
+    toolsList.push({
+      component: children,
+      icon: <ImportantDevicesRoundedIcon />,
+      name: "Web Gui",
+      active: showMonitor,
+      activate: setMonitorVisible,
+    });
+  }
 
-    if (tools.includes("webcam")) {
-      toolsList.push({
-        component: <Camera />,
-        icon: <CameraAltRoundedIcon />,
-        name: "WebCam",
-        active: showCamera,
-        activate: setCameraVisible,
-      });
-    }
+  if (tools.includes("webcam")) {
+    toolsList.push({
+      component: <Camera />,
+      icon: <CameraAltRoundedIcon />,
+      name: "WebCam",
+      active: showCamera,
+      activate: setCameraVisible,
+    });
+  }
 
-    if (tools.includes("simulator")) {
-      toolsList.push({
-        component: <VncViewer commsManager={manager} port={6080} />,
-        icon: <VideoCameraBackRoundedIcon />,
-        name: "Gazebo",
-        active: showSim,
-        activate: setSimVisible,
-      });
-    }
+  if (tools.includes("simulator")) {
+    toolsList.push({
+      component: <VncViewer commsManager={manager} port={6080} />,
+      icon: <VideoCameraBackRoundedIcon />,
+      name: "Gazebo",
+      active: showSim,
+      activate: setSimVisible,
+    });
+  }
 
-    if (tools.includes("console")) {
-      toolsList.push({
-        component: <VncViewer commsManager={manager} port={1108} />,
-        icon: <TerminalRoundedIcon />,
-        name: "Terminal",
-        active: showTerminal,
-        activate: setTerminalVisible,
-      });
-    }
-
-    setViewers(toolsList);
-  };
+  if (tools.includes("console")) {
+    toolsList.push({
+      component: <VncViewer commsManager={manager} port={1108} />,
+      icon: <TerminalRoundedIcon />,
+      name: "Terminal",
+      active: showTerminal,
+      activate: setTerminalVisible,
+    });
+  }
 
   // RB manager setup
   const connected = useRef<boolean>(false);
@@ -138,11 +148,6 @@ const ExerciseContainer = ({
   useEffect(() => {
     const manager = CommsManager.getInstance();
     setManager(manager);
-    try {
-      getToolsList(project);
-    } catch (error) {
-      setUniverses(undefined);
-    }
   }, []);
 
   const resetManager = () => {
@@ -252,31 +257,29 @@ const ExerciseContainer = ({
     <ErrorProvider>
       <ThemeProvider theme={darkTheme}>
         <div className="exercise-container" style={{ display: "flex" }}>
-          {viewers.length > 0 && (
-            <ExerciseProvider manager={manager} code={codeRef.current}>
-              <ExerciseHeader
-                project={project}
-                manager={manager}
-                url={url}
-                setLayout={setLayout}
-                hasDLModel={hasDLModel}
-              />
-              <IdeInterface
-                commsManager={manager}
-                resetManager={resetManager}
-                project={project}
-                api={editorApi}
-                viewers={viewers}
-                options={{ editor: { onlyOneFile: true } }}
-                layout={layout}
-                statusBarComponents={statusBar}
-                explorers={[]}
-                extraEditors={[]}
-                baseFile={base_file}
-                baseUniverse={universes ? universes[0] :undefined}
-              />
-            </ExerciseProvider>
-          )}
+          <ExerciseProvider manager={manager} code={codeRef.current}>
+            <ExerciseHeader
+              project={project}
+              manager={manager}
+              url={url}
+              setLayout={setLayout}
+              hasDLModel={hasDLModel}
+            />
+            <IdeInterface
+              commsManager={manager}
+              resetManager={resetManager}
+              project={project}
+              api={editorApi}
+              viewers={toolsList}
+              options={{ editor: { onlyOneFile: true } }}
+              layout={layout}
+              statusBarComponents={statusBar}
+              explorers={[]}
+              extraEditors={[]}
+              baseFile={base_file}
+              baseUniverse={universes ? universes[0] : undefined}
+            />
+          </ExerciseProvider>
         </div>
       </ThemeProvider>
     </ErrorProvider>

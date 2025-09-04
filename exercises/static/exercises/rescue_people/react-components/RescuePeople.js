@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import { drawImage, drawLeftImage } from "./helpers/showImagesRescue";
 import noImage from "../../assets/img/noImage.png";
 import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 function SpecificRescuePeople() {

@@ -14,12 +14,15 @@ import ngbCircuit from "../resources/images/ngb_circuit.png";
 
 const FollowLine = () => {
   const exerciseContext = useExercise();
+  const canvasRef = useRef(null);
   const [lapTime, setLapTime] = useState(null);
   const [carPose, setCarPose] = useState(null);
   const [circuitImg, setCircuitImg] = useState(defaultCircuit);
-
   const [manager, setManager] = useState(exerciseContext.manager);
-  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
 
   var circuitName = "simple";
 
@@ -66,18 +69,12 @@ const FollowLine = () => {
     }
   };
 
-  React.useEffect(() => {
-    console.log("Update", exerciseContext);
-    setManager(exerciseContext.manager);
-  }, [exerciseContext]);
-
-  React.useEffect(() => {
+  useEffect(() => {
     if (manager === null) {
       return;
     }
 
-    console.log("TestShowScreen subscribing to ['update'] events");
-    const callback = (message) => {
+    const updateCallback = (message) => {
       if (message.data.update.image) {
         const image = JSON.parse(message.data.update.image);
         if (image.image) {
@@ -106,20 +103,7 @@ const FollowLine = () => {
       manager.send("gui", "ack");
     };
 
-    manager.subscribe(events.UPDATE, callback);
-
-    return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      manager.unsubscribe(events.UPDATE, callback);
-    };
-  }, [manager]);
-
-  React.useEffect(() => {
-    if (manager === null) {
-      return;
-    }
-
-    const callback = (message) => {
+    const stateCallback = (message) => {
       if (message.data.state === states.RUNNING) {
         manager.send("gui", "start");
       } else if (message.data.state === states.PAUSED) {
@@ -131,11 +115,12 @@ const FollowLine = () => {
       }
     };
 
-    manager.subscribe(events.STATE_CHANGED, callback);
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      manager.unsubscribe(events.STATE_CHANGED, callback);
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
   }, [manager]);
 

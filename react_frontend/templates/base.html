@@ -59,7 +59,7 @@
     {% endblock %}
   </head>
   <body>
-    {{ exercise_config|json_script:"exercise-config" }} {% block content %}
+    {{ exercise_data|json_script:"exercise-data" }} {% block content %}
     <!-- Here comes the main content of child pages -->
     {% endblock %} {% block before_end_body %}
     <!-- Here comes whatever needs to be loaded before ending the body section -->

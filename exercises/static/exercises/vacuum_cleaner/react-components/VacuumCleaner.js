@@ -9,7 +9,7 @@ import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 
- const LocVacuumCleaner = () => {
+const VacuumCleaner = () => {
   const exerciseContext = useExercise();
   const [vacuumPose, setVacuumPose] = useState(null);
   const [path, setPath] = useState("");
@@ -24,11 +24,10 @@ import "./css/GUICanvas.css";
   const resizeObserver = new ResizeObserver((entries) => {
     var img = entries[0].target;
     //or however you get a handle to the IMG
-    var width = 1012 / 300 / (1012 / img.clientWidth);
+    var width = 1013 / 300 / (1013 / img.clientWidth);
     var height = 1012 / 150 / (1012 / img.clientHeight);
 
     updatePath(trail, setPath, height, width);
-
     if (lastPose) {
       setVacuumPose([lastPose[1] * height, lastPose[0] * width, -lastPose[2]]);
     }
@@ -49,7 +48,7 @@ import "./css/GUICanvas.css";
 
         var img = document.getElementById("exercise-img");
         //or however you get a handle to the IMG
-        var width = 1013 / 300 / (1013 / img.clientWidth);
+        var width = 1012 / 300 / (1012 / img.clientWidth);
         var height = 1012 / 150 / (1012 / img.clientHeight);
 
         updatePath(trail, setPath, height, width);
@@ -58,29 +57,11 @@ import "./css/GUICanvas.css";
         addToPath(content[1], content[0], trail);
       }
 
-      if (updateData.image) {
-        let canvas = document.getElementById("gui-canvas-numpy");
-        //Parse encoded image data and decode it
-        function decode_utf8(s) {
-          return decodeURIComponent(escape(s));
-        }
-        var image_data = JSON.parse(updateData.image),
-          source = decode_utf8(image_data.image),
-          shape = image_data.shape;
-
-        if (source !== "") {
-          canvas.src = "data:image/png;base64," + source;
-          canvas.width = shape[1];
-          canvas.height = shape[0];
-        }
-      }
-
       // Send the ACK of the msg
-      manager.send("gui", "ack");
+      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
     };
 
     const stateCallback = (message) => {
-      console.log(message);
       if (message.data.state === "tools_ready") {
         try {
           setPath("");
@@ -121,8 +102,8 @@ import "./css/GUICanvas.css";
             id="vacuum-pos"
             style={{
               rotate: "z " + vacuumPose[2] + "rad",
-              top: vacuumPose[0] - 10,
-              left: vacuumPose[1] - 10,
+              top: vacuumPose[0] - 15,
+              left: vacuumPose[1] - 15,
             }}
           >
             <img src={Vacuum} id="vacuum-pos" />
@@ -132,7 +113,7 @@ import "./css/GUICanvas.css";
         {/* <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
           <mask id="svg-draw" xmlns="http://www.w3.org/2000/svg">
             {path ? (
-              <path xmlns="http://www.w3.org/2000/svg" d={path} style={{strokeWidth: "20px", strokeLinejoin:"round", stroke: "white", fill: "none"}}/>
+              <path xmlns="http://www.w3.org/2000/svg" d={path} style={{strokeWidth: "30px", strokeLinejoin:"round", stroke: "white", fill: "none"}}/>
             ) : (
               <path xmlns="http://www.w3.org/2000/svg"></path>
             )}
@@ -150,7 +131,7 @@ import "./css/GUICanvas.css";
               xmlns="http://www.w3.org/2000/svg"
               d={path}
               style={{
-                strokeWidth: "20px",
+                strokeWidth: "30px",
                 strokeLinejoin: "round",
                 stroke: "white",
                 fill: "none",
@@ -159,19 +140,8 @@ import "./css/GUICanvas.css";
           </svg>
         )}
       </div>
-      <img
-        id="gui-canvas-numpy"
-        width="400"
-        height="400"
-        style={{
-          position: "absolute",
-          left: "50%",
-          width: "50%",
-          height: "100%",
-        }}
-      ></img>
     </div>
   );
-}
+};
 
-export default LocVacuumCleaner
+export default VacuumCleaner;
