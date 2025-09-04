@@ -82,7 +82,7 @@ export const StyledDropdown = styled.div<StyledDropdownProps>`
   border-radius: ${(p) => p.roundness ?? 1}px;
   display: flex;
   position: absolute;
-  z-index: 3;
+  z-index: 10000;
   flex-direction: column;
   background-color: ${(p) => p.bgColor ?? primaryColor};
   border: 1px black solid;

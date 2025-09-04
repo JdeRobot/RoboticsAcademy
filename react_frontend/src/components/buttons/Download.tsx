@@ -1,9 +1,50 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
 import { useTheme } from "jderobot-ide-interface";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+import { publish, saveCode, subscribe, unsubscribe } from "Helpers/utils";
+import { useEffect, useRef, useState } from "react";
+import { useExercise } from "Contexts/ExerciseContext";
 
-const DownloadButton = ({ saveFile }: { saveFile: () => void }) => {
-  const theme = useTheme();
+const DownloadButton = () => {
+  const theme = useTheme();  
+  const exerciseContext = useExercise();
+  const codeRef = useRef("");
+  const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
+  const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
+
+  const updateCode = (data?: boolean) => {
+    isCodeUpdatedRef.current = data;
+    _updateCode(data);
+  };
+
+  useEffect(() => {
+    subscribe("autoSaveCompleted", () => {
+      updateCode(true);
+    });
+
+    return () => {
+      unsubscribe("autoSaveCompleted", () => {});
+    };
+  }, []);
+
+
+  useEffect(() => {
+    codeRef.current = exerciseContext.code;
+  }, [exerciseContext]);
+
+  const saveFile = (save?: boolean) => {
+    if (save === undefined) {
+      publish("autoSave");
+      updateCode(false);
+    }
+
+    if (!isCodeUpdatedRef.current) {
+      console.log("Try autosave", isCodeUpdated);
+      return setTimeout(saveFile, 100, true);
+    }
+
+    saveCode("academy", codeRef.current);
+  };
 
   return (
     <StyledHeaderButton
@@ -11,7 +52,7 @@ const DownloadButton = ({ saveFile }: { saveFile: () => void }) => {
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
       id="download-code"
-      onClick={saveFile}
+      onClick={() => saveFile(undefined)}
       title="Download code"
     >
       <FileDownloadRoundedIcon htmlColor={theme.palette.text} />

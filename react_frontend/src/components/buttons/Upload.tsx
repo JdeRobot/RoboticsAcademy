@@ -2,14 +2,22 @@ import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
 import { useTheme } from "jderobot-ide-interface";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { useRef } from "react";
+import { publish } from "Helpers/utils";
 
-const UploadButton = ({
-  loadFile,
-}: {
-  loadFile: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
+const UploadButton = () => {
   const theme = useTheme();
   const inputRef = useRef(null);
+
+  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const fr = new FileReader();
+    fr.onload = () => {
+      if (fr.result) {
+        publish("uploadOnlyCode", { code: fr.result as string });
+      }
+    };
+    fr.readAsText(event.target.files?.[0]!);
+  };
 
   return (
     <StyledHeaderButton

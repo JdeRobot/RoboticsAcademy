@@ -132,6 +132,7 @@ const ExerciseContainer = ({
   const connected = useRef<boolean>(false);
 
   useEffect(() => {
+    const manager = CommsManager.getInstance();
     setManager(manager);
     try {
       getUniverseList(project);
