@@ -220,7 +220,7 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 41	14	simulator
 42	14	web_gui
 43	15	console
-44	15	simulator
+44	15	webcam
 45	15	web_gui
 46	16	console
 47	16	simulator
@@ -231,7 +231,8 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 52	18	webcam
 53	18	web_gui
 54	19	console
-55	19	web_gui
+55	19	webcam
+56	19	web_gui
 \.
 
 --

@@ -9,12 +9,12 @@ import "./css/GUICanvas.css";
 function ObstacleAvoidance() {
   const meter = 73; // 1m = 73px
 
-  const [laser, setLaser] = React.useState([])
-  const [maxRange, setMaxRange] = React.useState([])
-  const [carForce, setCarForce] = React.useState([2 * meter, 0])
-  const [avgForce, setAvgForce] = React.useState([2 * meter, 0])
-  const [obsForce, setObsForce] = React.useState([2 * meter, -Math.PI / 2])
-  const [targetPose, setTargetPose] = React.useState(null)
+  const [laser, setLaser] = useState([])
+  const [maxRange, setMaxRange] = useState([])
+  const [carForce, setCarForce] = useState([2 * meter, 0])
+  const [avgForce, setAvgForce] = useState([2 * meter, 0])
+  const [obsForce, setObsForce] = useState([2 * meter, -Math.PI / 2])
+  const [targetPose, setTargetPose] = useState(null)
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
