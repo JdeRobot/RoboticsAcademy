@@ -14,7 +14,7 @@
 <a name="How-to-setup-the-developer-environment"></a>
 ## How to setup the developer environment 
 
-Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are two different ways of developing in RA: 
+Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are three different ways of developing in RA: 
 
 ### Using automatic script (recommended)
 
@@ -140,7 +140,7 @@ docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link a
 
 [how to generate a RADI]: ./generate_a_radi.md
 
-### Using Docker compose
+### Using Docker compose (Recommended for Windows users)
 
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RoboticsBackend container, where all the dependencies are installed. 
 
@@ -164,7 +164,26 @@ git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b <src-bra
 
 For the moment, the RAM folder MUST be called src, and the previous command takes care of that. You can create branches and commits from that folder without any issues. 
 
-4) Build the REACT frontend
+4) Creation _commons.zip_
+
+In order for the front-end to build, you need to manually create the commons zip, that will be used to pass those files to the Robotics Backend.
+
+```
+# Prepare the commons zip file
+cd common
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+```
+
+5) Build the REACT frontend
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -176,14 +195,14 @@ cd react_frontend/ && yarn install && yarn run dev
 
 Please take into consideration that the `yarn run dev` script will continously watch for changes in the frontend, so you should execute this commands in a separate terminal. 
 
-5) Copy the desired compose config into the main RA folder
+6) Copy the desired compose config into the main RA folder
 ```
 cp compose_cfg/<your desired compose cfg> docker-compose.yaml
 ```
 
 Feel free to study the configs, and adapt/create new ones suitable for your needs
 
-6) Start Docker Compose
+7) Start Docker Compose
 ```
 docker-compose up
 ```
