@@ -1,4 +1,4 @@
-import { StyledDropdown, StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
+import { StyledDropdown, StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import { useRef, useState } from "react";

@@ -1,4 +1,4 @@
-import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
+import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useRef, useState } from "react";
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";

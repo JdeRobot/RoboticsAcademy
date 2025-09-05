@@ -5,7 +5,7 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
   StyledHeaderButtonContainer,
   StyledHeaderText,
-} from "./HeaderMenu.styles";
+} from "../../styles/headers/HeaderMenu.styles";
 
 import { ForumButton, SearchButton } from "Components/buttons";
 

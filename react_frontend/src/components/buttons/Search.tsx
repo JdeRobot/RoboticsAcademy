@@ -15,20 +15,16 @@ import { useState } from "react";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 // Estilos
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("div")(({ roundness }: { roundness: number }) => ({
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: roundness + "px",
+  backgroundColor: alpha("#fff", 0.15),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: alpha("#fff", 0.25),
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
+  marginRight: 16 + "px",
+  marginLeft: "24px",
+  width: "auto",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -41,17 +37,17 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
   justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
+const StyledInputBase = styled(InputBase)(
+  ({ textColor }: { textColor: string }) => ({
+    "& .MuiInputBase-input": {
+      padding: "8px 8px 8px 0",
+      paddingLeft: `calc(1em + 32px)`,
+      transition: "width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
       width: "20ch",
+      color: textColor,
     },
-  },
-}));
+  })
+);
 
 const StyledMenu = styled(Menu)(
   ({
@@ -125,11 +121,11 @@ const FilterMenu = () => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        bgColor={theme.palette.primary}
-        hoverColor={theme.palette.secondary}
-        textColor={theme.palette.text}
-        checkboxColor={theme.palette.text}
-        roundness={theme.roundness}
+        bgColor={theme.palette.primary!}
+        hoverColor={theme.palette.secondary!}
+        textColor={theme.palette.text!}
+        checkboxColor={theme.palette.text!}
+        roundness={theme.roundness!}
       >
         <MenuItem onClick={handleFilterList}>
           <Checkbox defaultChecked disabled size="small" name="name" />
@@ -179,14 +175,14 @@ const SearchBar = () => {
         maxHeight: 40,
       }}
     >
-      <Search>
+      <Search roundness={theme.roundness!}>
         <SearchIconWrapper>
           <SearchIcon htmlColor={theme.palette.text} />
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search…"
           onChange={inputHandler}
-          color={theme.palette.text}
+          textColor={theme.palette.text!}
           inputProps={{ "aria-label": "search" }}
         />
         <FilterMenu />

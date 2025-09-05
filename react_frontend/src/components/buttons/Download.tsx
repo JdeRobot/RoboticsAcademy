@@ -1,4 +1,4 @@
-import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
+import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import { publish, saveCode, subscribe, unsubscribe } from "Helpers/utils";

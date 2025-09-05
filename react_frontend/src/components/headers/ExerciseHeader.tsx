@@ -8,7 +8,7 @@ import {
   StyledHeaderButtonContainer,
   StyledHeaderText,
   StyledProject,
-} from "./HeaderMenu.styles";
+} from "../../styles/headers/HeaderMenu.styles";
 
 import { subscribe, unsubscribe } from "Helpers/utils";
 

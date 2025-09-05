@@ -1,4 +1,3 @@
-import "../styles/App.css";
 import { HomepageProvider } from "../contexts/HomepageContext";
 import { AcademyHeader } from "./headers";
 import { ErrorProvider } from "jderobot-ide-interface";

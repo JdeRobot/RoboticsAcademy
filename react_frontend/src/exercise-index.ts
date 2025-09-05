@@ -1,7 +1,6 @@
 import React, { lazy, ReactNode } from "react";
 import "./exercise-index.css";
 import { createRoot } from "react-dom/client";
-import "./libs/tools.js";
 import { flushSync } from "react-dom";
 import "./styles/tailwindcss_base.css";
 

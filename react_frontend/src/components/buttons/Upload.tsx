@@ -1,4 +1,4 @@
-import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
+import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { useRef } from "react";
