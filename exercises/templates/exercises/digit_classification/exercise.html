@@ -8,7 +8,7 @@
     {% if deployment %}
         {% react_component exercise/digit_classification/BasicComputerVisionRR %}
             {% react_component components/containers/MaterialBox id="exercise-container" %}
-            {% react_component components/common/MainAppBar exerciseName="Deep learning-based Digit Classification" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/dl_digit_classifier"%} 
+            {% react_component components/common/MainAppBar exerciseName="Deep learning-based Digit Classification" url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digit_classification"%} 
             {% end_react_component %}
             {% react_component components/containers/MaterialBox id="content" %}
                 {% react_component components/containers/MaterialBox id="content-exercise" %}
@@ -30,7 +30,7 @@
 {% end_react_component %}
     {% end_react_component %}
     {% else %}
-        {% react_component components/layouts/ExerciseContainer url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/dl_digit_classifier/" hasDLModel%} 
+        {% react_component components/layouts/ExerciseContainer url="https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digit_classification" hasDLModel%} 
             {% react_component exercise/DigitClassification %}{% end_react_component %}
         {% end_react_component %}
     {% endif %}
