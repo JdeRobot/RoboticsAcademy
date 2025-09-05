@@ -48,7 +48,8 @@
     "@types/styled-components": "^5.1.34",
     "axios": "^1.11.0",
     "glob": "^8.0.3",
-    "jderobot-ide-interface": "0.1.88",
+    "jderobot-commsmanager": "1.0.3",
+    "jderobot-ide-interface": "0.1.91",
     "jszip": "^3.10.1",
     "styled-components": "^5.3.6"
   },

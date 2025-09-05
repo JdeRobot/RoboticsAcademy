@@ -100,7 +100,10 @@ const PlayPauseButton = ({
       return setTimeout(onAppStateChange, 100, true);
     }
 
-    if (runningCodeRef.current === codeRef.current) {
+    if (
+      manager.getState() === "paused" &&
+      runningCodeRef.current === codeRef.current
+    ) {
       await manager.resume();
       setAppRunning(true);
       console.log("App resumed correctly!");
