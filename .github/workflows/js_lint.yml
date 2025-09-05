@@ -31,6 +31,6 @@ jobs:
               run: yarn install --frozen-lockfile
 
             # 5) (Optional) Run your dev server
-            - name: Run ESLint
+            - name: Prettify code
               working-directory: react_frontend
-              run: npm run lint
+              run: prettier --check "src/**/*.{js,jsx,css,tsx,html}"
