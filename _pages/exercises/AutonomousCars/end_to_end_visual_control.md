@@ -303,7 +303,7 @@ Use standard ROS 2 mechanisms to manage loop timing:
 Deep learning models perform much faster when executed on a <strong>GPU</strong> compared to a <strong>CPU</strong>. To take advantage of GPU acceleration in this exercise, you need to ensure that your system has a compatible <a href="https://www.nvidia.com/en-us/drivers/" style="text-decoration:underline;text-underline-offset:4px;text-decoration-style:dotted;" target="_blank" rel="noopener noreferrer">NVIDIA GPU and the required drivers installed<strong>⤴️</strong></a>.
 </p>
 
-<p style="text-align:justify">
+<p style="text-align:justify;font-size:16px">
 RoboticsAcademy currently supports GPU acceleration on <strong>NVIDIA GPUs</strong> only. To take advantage of GPU support when running the <strong>RoboticsAcademy Docker image (RADI)</strong>, you must use the provided <a href="https://jderobot.github.io/RoboticsAcademy/user_guide/#2-how-to-launch-a-robotics-academy-container" style="text-decoration: none;" target="_blank" rel="noopener noreferrer"><code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">execution script </code><strong>⤴️</strong></a>.
 </p>
 
@@ -319,14 +319,6 @@ nvidia-smi
 
 {% include gallery id="gpu_verify" caption="The output should look like this" %}
 
-#### Import GPU Configuration
-
-#### Debug
-
-<p style="text-align:center; margin-bottom:6px; font-size:16px;" >
-
-</p>
-
 <!-- Model Path -->
 
 #### File Path for Uploaded Model
@@ -335,6 +327,37 @@ The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model
 
 ```python
 from model import model_path
+```
+
+#### Import GPU Configuration
+
+<p style="text-align:justify">
+<a href="https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html" target="_blank" rel="noopener noreferrer">ONNX Runtime supports running models on NVIDIA GPUs</a> through the <strong>CUDA Execution Provider</strong>. This allows you to significantly speed up inference compared to CPU-only execution. import ONNX Runtime and preload the necessary CUDA/cuDNN libraries before creating a session:
+
+</p>
+
+```python
+import onnxruntime
+from model import model_path
+
+# Preload CUDA/cuDNN DLLs
+onnxruntime.preload_dlls()
+
+# Create an inference session that uses the GPU
+session = onnxruntime.InferenceSession(
+    model_path,
+    providers=["CUDAExecutionProvider"] # CUDA as Execution provider
+)
+```
+
+#### Debug
+
+```python
+# To confirm that ONNX Runtime is using the GPU:
+print("Execution Provider:", session.get_providers())
+
+# Expected output should include:
+['CUDAExecutionProvider', 'CPUExecutionProvider', ...]
 ```
 
 ## Example Code
@@ -349,9 +372,12 @@ from model import model_path
 import onnxruntime
 import sys
 
+# preload dlls
+onnxruntime.preload_dlls()
+
 # Load ONNX model
 try:
-    ort_session = onnxruntime.InferenceSession(model_path)
+    ort_session = onnxruntime.InferenceSession(model_path,providers=["CUDAExecutionProvider"])
 except Exception as e:
     print("ERROR: Model couldn't be loaded")
     print(str(e))
@@ -363,9 +389,9 @@ except Exception as e:
 -   The uploaded ONNX format model should adhere to the input/output specifications, please keep that in mind while building your model.
 -   The user can train their model in any framework of their choice and export it to the ONNX format. Refer to this [**article**](https://docs.unity3d.com/Packages/com.unity.barracuda@1.0/manual/Exporting.html) to know more about exporting your model to the ONNX format.
 
-## Hints
+<!-- ## Hints
 
-Simple hints provided to help you solve the follow_line exercise.
+Simple hints provided to help you solve the follow_line exercise. -->
 
 ### References to ROS 2 Concepts
 
@@ -403,3 +429,4 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 3. [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
 4. [ONNX (Open Neural Network Exchange)](https://onnx.ai/)
 5. [Nvidia GPU Drivers](https://www.nvidia.com/en-us/drivers/)
+6. [CUDA Execution Provider](https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html)
