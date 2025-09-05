@@ -136,7 +136,7 @@ def get_docker_universe_data(request):
             },
             "robot": robot_config,
             "tools": tools,
-            "tools_config": tools_config,
+            "tools_config": tools_configuration,
         }
 
     # Return the list of projects

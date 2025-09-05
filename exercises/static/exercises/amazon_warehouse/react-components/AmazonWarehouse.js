@@ -135,7 +135,7 @@ function AmazonWarehouse() {
 
     const stateCallback = (message) => {
       if (message.data.state === "tools_ready") {
-        let world = context.mapSelected;
+        let world = manager.getUniverse();
         
         if (world.includes("2")) {
           setMap(Map2)
