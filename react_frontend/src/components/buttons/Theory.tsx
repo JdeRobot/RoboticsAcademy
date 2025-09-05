@@ -1,9 +1,9 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 
 const TheoryButton = ({ url }: { url?: string }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
 
   const openInNewTab = (url: URL) => {
     const newWindow = window.open(url, "_blank");

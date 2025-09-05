@@ -1,10 +1,10 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
 
 const HomeButton = () => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
 
   return (
     <StyledHeaderButton

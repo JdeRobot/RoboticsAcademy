@@ -1,12 +1,12 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import { publish, saveCode, subscribe, unsubscribe } from "Helpers/utils";
 import { useEffect, useRef, useState } from "react";
 import { useExercise } from "Contexts/ExerciseContext";
 
 const DownloadButton = () => {
-  const theme = useTheme();  
+  const theme = useAcademyTheme();  
   const exerciseContext = useExercise();
   const codeRef = useRef("");
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);

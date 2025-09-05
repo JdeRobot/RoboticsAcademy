@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { CommsManager, states } from "jderobot-commsmanager";
 import { LogoIcon } from "Icons/index";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
   StyledHeaderButtonContainer,
   StyledHeaderText,
@@ -38,7 +38,7 @@ const ExerciseHeader = ({
   setLayout: Function;
   hasDLModel: boolean;
 }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const [appRunning, setAppRunning] = useState(false);
   const [dlModel, setDLModel] = useState<string>("");
 

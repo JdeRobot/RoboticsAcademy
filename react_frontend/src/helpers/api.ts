@@ -82,26 +82,6 @@ const listExercises = async (): Promise<Exercise[]> => {
   }
 };
 
-const listTools = async (project: string) => {
-  if (!project) throw new Error("Current Project name is not set");
-
-  const apiUrl = `/exercises/get_tools_list?project=${encodeURIComponent(
-    project
-  )}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to get tools.");
-    }
-
-    return response.data.tools_list;
-  } catch (error: unknown) {
-    throw error; // Rethrow
-  }
-};
-
 const getRoboticsBackendUniverse = async (
   project: string,
   universe: string
@@ -137,6 +117,5 @@ export {
   getProjectExtraFiles,
   listUniverses,
   getRoboticsBackendUniverse,
-  listTools,
   listExercises
 };

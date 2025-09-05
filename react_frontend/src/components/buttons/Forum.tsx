@@ -1,9 +1,9 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
 
 const ForumButton = () => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
 
   const openInNewTab = (url: URL) => {
     const newWindow = window.open(url, "_blank");

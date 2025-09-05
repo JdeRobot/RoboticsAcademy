@@ -24,10 +24,5 @@ urlpatterns = [
         "get_docker_universe_data/",
         views.get_docker_universe_data,
         name="get_docker_universe_data",
-    ),
-    path(
-        "get_tools_list/",
-        views.get_tools_list,
-        name="get_tools_list",
-    ),
+    )
 ]

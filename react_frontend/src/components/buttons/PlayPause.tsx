@@ -1,5 +1,5 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useError, useTheme } from "jderobot-ide-interface";
+import { useError} from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
 import { CommsManager } from "jderobot-commsmanager";
 import { getProjectExtraFiles } from "Helpers/api";
@@ -7,6 +7,7 @@ import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
 import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
@@ -26,7 +27,7 @@ const PlayPauseButton = ({
   dlModel: string;
   hasDLModel: boolean;
 }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const exerciseContext = useExercise();
   const { warning, error } = useError();
   const codeRef = useRef("");

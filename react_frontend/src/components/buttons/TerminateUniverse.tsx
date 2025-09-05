@@ -1,7 +1,8 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useError, useTheme } from "jderobot-ide-interface";
+import { useError} from "jderobot-ide-interface";
 import { CommsManager, states } from "jderobot-commsmanager";
 import StopCircleRoundedIcon from "@mui/icons-material/StopCircleRounded";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 const TerminateUniverseButton = ({
   manager,
@@ -10,7 +11,7 @@ const TerminateUniverseButton = ({
   manager: CommsManager | null;
   setAppRunning: Function;
 }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const { warning } = useError();
 
   const terminateUniverse = async () => {

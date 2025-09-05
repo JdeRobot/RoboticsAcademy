@@ -8,11 +8,11 @@ import {
   StyledAcademyLoadingMsg,
   StyledExerciseList,
 } from "Styles/layouts/AcademyContainer.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 const AcademyContainer = () => {
   const { getSearchBarText, getFilterItemsList } = useHomepage();
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const [loading, setLoading] = useState<boolean>(true);
   const [exerciseList, setExerciseList] = useState<Exercise[] | undefined>(
     undefined

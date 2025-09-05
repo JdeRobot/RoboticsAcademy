@@ -1,10 +1,10 @@
 import { StyledDropdown, StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import { useRef, useState } from "react";
 
 const LayoutButton = ({setLayout}:{setLayout: Function}) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
 
   return (
     <Dropdown
@@ -38,7 +38,7 @@ const Dropdown = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [right, setRight] = useState<any>(width / 2 + 13);
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const dropdown = useRef<HTMLDivElement>(null);
 
   const changeValue = (e: any, value: any) => {

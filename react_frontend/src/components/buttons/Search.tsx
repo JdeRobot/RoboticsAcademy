@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useHomepage } from "Contexts/HomepageContext";
 import { useState } from "react";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 // Estilos
 const Search = styled("div")(({ theme }) => ({
@@ -92,7 +92,7 @@ const StyledMenu = styled(Menu)(
 // Componente FilterMenu
 const FilterMenu = () => {
   const { appendFilterItem } = useHomepage();
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open: boolean = Boolean(anchorEl);
 
@@ -164,7 +164,7 @@ const FilterMenu = () => {
 // Componente principal SearchBar
 const SearchBar = () => {
   const { setSearchBarText } = useHomepage();
-  const theme = useTheme();
+  const theme = useAcademyTheme();
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lowerCase = e.target.value.toLowerCase();

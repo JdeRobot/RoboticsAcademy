@@ -1,7 +1,8 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useError, useTheme } from "jderobot-ide-interface";
+import { useError } from "jderobot-ide-interface";
 import { CommsManager } from "jderobot-commsmanager";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 const ResetButton = ({
   manager,
@@ -10,7 +11,7 @@ const ResetButton = ({
   manager: CommsManager | null;
   setAppRunning: Function;
 }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const { warning } = useError();
 
   const onResetApp = async () => {

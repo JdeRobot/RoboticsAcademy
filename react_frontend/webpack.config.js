@@ -16,6 +16,7 @@ const aliases = () => {
     Hooks: path.resolve(__dirname, "src/hooks"),
     Icons: path.resolve(__dirname, "src/icons"),
     Styles: path.resolve(__dirname, "src/styles"),
+    Types: path.resolve(__dirname, "src/types"),
     Common: path.resolve(__dirname, "../static/common"),
     exercises: [],
   };

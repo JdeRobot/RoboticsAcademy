@@ -1,14 +1,14 @@
 import { StyledHeaderButton } from "Components/headers/HeaderMenu.styles";
-import { useTheme } from "jderobot-ide-interface";
 import { useRef, useState } from "react";
 import PsychologyRoundedIcon from '@mui/icons-material/PsychologyRounded';
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 const DeepLearningButton = ({
   setModel,
 }: {
   setModel: Function;
 }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const inputRef = useRef(null);
 
   const [fileName, setFileName] = useState<string|undefined>(undefined);

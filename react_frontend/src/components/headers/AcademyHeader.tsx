@@ -1,7 +1,7 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { LogoIcon } from "Icons/index";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
   StyledHeaderButtonContainer,
   StyledHeaderText,
@@ -10,7 +10,7 @@ import {
 import { ForumButton, SearchButton } from "Components/buttons";
 
 const AcademyHeader = () => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
 
   return (
     <AppBar position="static">

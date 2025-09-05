@@ -1,31 +1,26 @@
 import { useState, useEffect, useRef } from "react";
 import { useUnload } from "../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
-import "../../styles/wrappers/ExerciseContainer.css";
 
 import IdeInterface, {
   Entry,
   ErrorProvider,
   ExtraApi,
   StatusBarComponents,
-  Theme,
-  ThemeProvider,
   ViewersEntry,
   VncViewer,
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
-import {
-  getRoboticsBackendUniverse,
-  listTools,
-  listUniverses,
-} from "Helpers/api";
+import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
 import Frequencies from "Components/statusBar/Frequencies";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
 import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
+import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
+import { AcademyThemeProvider } from "Contexts/AcademyThemeContext";
 
 const defaultCode = `import WebGUI
 import HAL
@@ -215,48 +210,10 @@ const ExerciseContainer = ({
     extras: [<Frequencies manager={manager} />],
   };
 
-  const darkTheme: Theme = {
-    palette: {
-      darkText: "#ededf2",
-      text: "#000000ff",
-      placeholderText: "#a6a6bf",
-      success: "#29ac29",
-      warning: "#af5500ff",
-      error: "#802626",
-      background: "#16161d",
-      primary: "#ffa726",
-      secondary: "#ff8800",
-      scrollbar: "#6f6f90",
-      border: {
-        warning: "#af5500ff",
-        error: "#772222",
-        info: "#134f53",
-      },
-      progressBar: {
-        background: "#134f53",
-        color: "#1d777c",
-      },
-      button: {
-        error: "#9e2e2e",
-        success: "#29ac29",
-        warning: "#af5500ff",
-        info: "#134f53",
-        hoverError: "#c63939",
-        hoverSuccess: "#29ac29",
-        hoverWarning: "#e05a00ffff",
-        hoverInfo: "#1d777c",
-      },
-      selectedGradient:
-        "linear-gradient( -45deg, #12494c 0%, #584f42 50%, #909c7b 100%)",
-    },
-    roundness: 5,
-    monacoTheme: "dark",
-  };
-
   return (
     <ErrorProvider>
-      <ThemeProvider theme={darkTheme}>
-        <div className="exercise-container" style={{ display: "flex" }}>
+      <AcademyThemeProvider>
+        <StyledExerciseContainer>
           <ExerciseProvider manager={manager} code={codeRef.current}>
             <ExerciseHeader
               project={project}
@@ -280,8 +237,8 @@ const ExerciseContainer = ({
               baseUniverse={universes ? universes[0] : undefined}
             />
           </ExerciseProvider>
-        </div>
-      </ThemeProvider>
+        </StyledExerciseContainer>
+      </AcademyThemeProvider>
     </ErrorProvider>
   );
 };

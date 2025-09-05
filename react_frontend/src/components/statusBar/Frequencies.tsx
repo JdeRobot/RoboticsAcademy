@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { CommsManager, events } from "jderobot-commsmanager";
-import { StyledStatusBarEntry, useTheme } from "jderobot-ide-interface";
+import { StyledStatusBarEntry } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 
 type FrequenciesData = {
   brain: number;
@@ -11,7 +12,7 @@ type FrequenciesData = {
 };
 
 const Frequencies = ({ manager }: { manager: CommsManager | null }) => {
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const [frequencies, setFrequencies] = useState<FrequenciesData>({
     brain: 0,
     gui: 0,

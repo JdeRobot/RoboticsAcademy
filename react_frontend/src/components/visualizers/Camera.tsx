@@ -11,7 +11,7 @@ type CameraState = {
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import { StyledCameraError, StyledWebCamVideo } from "Styles/camera_driver/Camera.styles";
-import { useTheme } from "jderobot-ide-interface";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import VideocamOffOutlinedIcon from '@mui/icons-material/VideocamOffOutlined';
 
 type CameraAction =
@@ -59,7 +59,7 @@ const timeFrameSize = 20;
 // camera
 const Camera = () => {
   const exerciseContext = useExercise();  
-  const theme = useTheme();
+  const theme = useAcademyTheme();
   const [manager, setManager] = useState(exerciseContext.manager);
   const [state, setState] = useState<string>("Connecting to media device.");
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
