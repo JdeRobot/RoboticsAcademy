@@ -3,13 +3,16 @@ import { ExerciseCard } from "./../ExerciseCard";
 import { useHomepage } from "Contexts/HomepageContext";
 import { Exercise, Filters } from "src/types/exercises";
 import { listExercises } from "Helpers/api";
-import { StyledAcademyContainer, StyledExerciseList } from "Styles/layouts/AcademyContainer.styles";
+import {
+  StyledAcademyContainer,
+  StyledExerciseList,
+} from "Styles/layouts/AcademyContainer.styles";
 import { useTheme } from "jderobot-ide-interface";
 
 const AcademyContainer = () => {
   const { getSearchBarText, getFilterItemsList } = useHomepage();
   const theme = useTheme();
-  const [loading, setLoading] = useState<boolean>(true);  
+  const [loading, setLoading] = useState<boolean>(true);
   const [exerciseList, setExerciseList] = useState<Exercise[] | undefined>(
     undefined
   );
@@ -47,17 +50,17 @@ const AcademyContainer = () => {
 
   return (
     <StyledAcademyContainer bgColor={theme.palette.background}>
-    <StyledExerciseList>
-      {filteredData.map((exercise) => (
-        <ExerciseCard
-          id={exercise.exercise_id}
-          name={exercise.name}
-          description={exercise.description}
-          tags={exercise.tags}
-          status={exercise.status}
-        />
-      ))}
-    </StyledExerciseList>
+      <StyledExerciseList>
+        {filteredData.map((exercise) => (
+          <ExerciseCard
+            id={exercise.exercise_id}
+            name={exercise.name}
+            description={exercise.description}
+            tags={exercise.tags}
+            status={exercise.status}
+          />
+        ))}
+      </StyledExerciseList>
     </StyledAcademyContainer>
   );
 };
