@@ -2,48 +2,64 @@ import React, { FC } from "react";
 import configuration from "../config.json";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
+import "../styles/ExerciseList.css";
 import Typography from "@mui/material/Typography";
 import StyleTwoToneIcon from "@mui/icons-material/StyleTwoTone";
 import FALLBACK_IMAGE from "../images/default_card.svg";
-import { Exercise } from "src/types/exercises";
-import {
-  StyledExerciseCardArea,
-  StyledExerciseCardContainer,
-  StyledExerciseCardInfoContainer,
-  StyledExerciseCardTagList,
-} from "Styles/ExerciseCard.styles";
 
-const ExerciseCard = ({
-  exercise_id,
-  name,
-  description,
-  tags,
-  status,
-}: Exercise) => {
+interface ExerciseCardProps {
+  id: string;
+  name: string;
+  description: string;
+  tags: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'PROTOTYPE';
+}
+
+const ExerciseCard: FC<ExerciseCardProps> = ({ id, name, description, tags, status }) => {
   const exerciseURL: string = `${configuration.academy.exercises.exercise_url}`;
   const teaser = configuration.academy.exercises.teaser;
-
+  
   const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
     (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
   };
 
   const navigateToExercise = (): void => {
-    window.location.href = exerciseURL.replace("${exerciseid}", exercise_id);
+    window.location.href = exerciseURL.replace("${exerciseid}", id);
   };
 
   const tagsList: string[] = JSON.parse(tags).tags;
 
+  console.log(teaser)
+
   return (
-    <StyledExerciseCardContainer state={status}>
-      <StyledExerciseCardArea onClick={() => navigateToExercise()}>
+    <div
+      className="exercise-card"
+      style={{
+        borderColor:
+          status === "ACTIVE"
+            ? "green"
+            : status === "INACTIVE"
+            ? "red"
+            : "orange",
+      }}
+    >
+      <div
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+        onClick={() => navigateToExercise()}
+      >
         <CardMedia
           component="img"
           height="auto"
           style={{ flexGrow: 1 }}
-          image={teaser.url.replace("${exerciseid}", exercise_id)}
+          image={teaser.url.replace("${exerciseid}", id)}
           onError={onMediaFallback}
         />
-        <StyledExerciseCardInfoContainer>
+        <div className="exercise-info-container">
           <Typography
             gutterBottom
             variant="h6"
@@ -65,9 +81,9 @@ const ExerciseCard = ({
             {description}
           </Typography>
           <ChipsArray tagList={tagsList} />
-        </StyledExerciseCardInfoContainer>
-      </StyledExerciseCardArea>
-    </StyledExerciseCardContainer>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -77,11 +93,11 @@ interface ChipsArrayProps {
 
 const ChipsArray: React.FC<ChipsArrayProps> = ({ tagList }) => {
   let chipData = tagList;
-
+  
   if (!Array.isArray(chipData)) {
     chipData = (chipData as string).split(",");
   }
-
+  
   const chipsList = chipData.map((data) => (
     // eslint-disable-next-line react/jsx-key
     <Chip
@@ -93,7 +109,7 @@ const ChipsArray: React.FC<ChipsArrayProps> = ({ tagList }) => {
     />
   ));
 
-  return <StyledExerciseCardTagList>{chipsList}</StyledExerciseCardTagList>;
+  return <div className="exercise-tag-list">{chipsList}</div>;
 };
 
 export { ExerciseCard };

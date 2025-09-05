@@ -5,6 +5,7 @@ import { Exercise, Filters } from "src/types/exercises";
 import { listExercises } from "Helpers/api";
 import {
   StyledAcademyContainer,
+  StyledAcademyLoadingMsg,
   StyledExerciseList,
 } from "Styles/layouts/AcademyContainer.styles";
 import { useTheme } from "jderobot-ide-interface";
@@ -29,7 +30,11 @@ const AcademyContainer = () => {
   }, []);
 
   if (loading) {
-    return <div className="loading-list-message">Loading exercises</div>;
+    return (
+      <StyledAcademyContainer bgColor={theme.palette.background}>
+        <StyledAcademyLoadingMsg>Loading exercises</StyledAcademyLoadingMsg>
+      </StyledAcademyContainer>
+    );
   }
 
   const filteredData: Exercise[] =
@@ -53,7 +58,7 @@ const AcademyContainer = () => {
       <StyledExerciseList>
         {filteredData.map((exercise) => (
           <ExerciseCard
-            id={exercise.exercise_id}
+            exercise_id={exercise.exercise_id}
             name={exercise.name}
             description={exercise.description}
             tags={exercise.tags}

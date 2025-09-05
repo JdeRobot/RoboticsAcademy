@@ -3,7 +3,8 @@ export interface Exercise {
   name: string;
   description: string;
   tags: string;
-  status: "ACTIVE" | "INACTIVE" | "PROTOTYPE";
+  status: ExerciseStatus;
 }
 
-export type Filters = "name" | "tags" | "description" | "status"
+export type ExerciseStatus = "ACTIVE" | "INACTIVE" | "PROTOTYPE";
+export type Filters = "name" | "tags" | "description" | "status";
