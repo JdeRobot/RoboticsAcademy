@@ -61,8 +61,8 @@ const ExerciseHeader = ({
       <Toolbar
         style={{
           backgroundColor: theme.palette.primary,
-          height: "40px",
-          minHeight: "40px",
+          height: "50px",
+          minHeight: "50px",
         }}
       >
         <a href="http://127.0.0.1:7164/exercises/">

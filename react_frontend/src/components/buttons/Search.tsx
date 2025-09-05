@@ -10,7 +10,9 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import HomepageContext from "../contexts/HomepageContext";
+import { useHomepage } from "Contexts/HomepageContext";
+import { useState } from "react";
+import { useTheme } from "jderobot-ide-interface";
 
 // Estilos
 const Search = styled("div")(({ theme }) => ({
@@ -40,7 +42,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
@@ -52,11 +53,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const StyledMenu = styled(Menu)(
+  ({
+    bgColor,
+    textColor,
+    checkboxColor,
+    hoverColor,
+    roundness,
+  }: {
+    bgColor: string;
+    textColor: string;
+    checkboxColor: string;
+    hoverColor: string;
+    roundness: number;
+  }) => ({
+    "& .MuiPaper-root": {
+      border: "1px solid black",
+      borderRadius: roundness + "px",
+      backgroundColor: bgColor,
+      "& .MuiMenuItem-root": {
+        color: textColor,
+        "&:hover": {
+          backgroundColor: hoverColor,
+        },
+        "& .MuiSvgIcon-root": {
+          color: checkboxColor,
+        },
+        "& .Mui-disabled": {
+          "& .MuiSvgIcon-root": {
+            opacity: "30%",
+          },
+        },
+      },
+    },
+  })
+);
+
 // Componente FilterMenu
-const FilterMenu: React.FC = () => {
-  const { appendFilterItem } = React.useContext(HomepageContext);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+const FilterMenu = () => {
+  const { appendFilterItem } = useHomepage();
+  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open: boolean = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -80,16 +118,22 @@ const FilterMenu: React.FC = () => {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <FilterListIcon />
+        <FilterListIcon htmlColor={theme.palette.text} />
       </IconButton>
-      <Menu
+      <StyledMenu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        bgColor={theme.palette.primary}
+        hoverColor={theme.palette.secondary}
+        textColor={theme.palette.text}
+        checkboxColor={theme.palette.text}
+        roundness={theme.roundness}
       >
         <MenuItem onClick={handleFilterList}>
-          <Checkbox defaultChecked disabled size="small" name="name" /> Name
+          <Checkbox defaultChecked disabled size="small" name="name" />
+          Name
         </MenuItem>
         <MenuItem>
           <Checkbox
@@ -112,14 +156,15 @@ const FilterMenu: React.FC = () => {
           <Checkbox size="small" onClick={handleFilterList} name="status" />
           Status
         </MenuItem>
-      </Menu>
+      </StyledMenu>
     </>
   );
 };
 
 // Componente principal SearchBar
-const SearchBar: React.FC = () => {
-  const { setSearchBarText } = React.useContext(HomepageContext);
+const SearchBar = () => {
+  const { setSearchBarText } = useHomepage();
+  const theme = useTheme();
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const lowerCase = e.target.value.toLowerCase();
@@ -136,11 +181,12 @@ const SearchBar: React.FC = () => {
     >
       <Search>
         <SearchIconWrapper>
-          <SearchIcon />
+          <SearchIcon htmlColor={theme.palette.text} />
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search…"
           onChange={inputHandler}
+          color={theme.palette.text}
           inputProps={{ "aria-label": "search" }}
         />
         <FilterMenu />

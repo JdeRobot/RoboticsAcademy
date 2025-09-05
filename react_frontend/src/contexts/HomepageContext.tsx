@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 
 const HomepageContext = createContext({
@@ -7,6 +7,8 @@ const HomepageContext = createContext({
   getFilterItemsList: () => {},
   appendFilterItem: (item: string) => {},
 });
+
+export const useHomepage = () => useContext(HomepageContext);
 
 export function HomepageProvider({ children }: {children?: ReactNode;}) {
   const [inputText, setInputText] = useState("");
