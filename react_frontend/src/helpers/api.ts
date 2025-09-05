@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { Exercise } from "src/types/exercises";
 
 const isSuccessful = (response: AxiosResponse) => {
   return response.status >= 200 && response.status < 300;
@@ -64,6 +65,23 @@ const listUniverses = async (project: string) => {
   }
 };
 
+const listExercises = async (): Promise<Exercise[]> => {
+
+  const apiUrl = `/api/v1/exercises/`;
+
+  try {
+    const response = await axios.get(apiUrl);
+
+    if (!isSuccessful(response)) {
+      throw new Error(response.data.message || "Failed to get tools.");
+    }
+
+    return response.data;
+  } catch (error: unknown) {
+    throw error; // Rethrow
+  }
+};
+
 const listTools = async (project: string) => {
   if (!project) throw new Error("Current Project name is not set");
 
@@ -120,4 +138,5 @@ export {
   listUniverses,
   getRoboticsBackendUniverse,
   listTools,
+  listExercises
 };

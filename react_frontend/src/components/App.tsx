@@ -3,6 +3,7 @@ import ExerciseList from "./ExerciseList";
 import { HomepageProvider } from "../contexts/HomepageContext";
 import { AcademyHeader } from "./headers";
 import { ErrorProvider, Theme, ThemeProvider } from "jderobot-ide-interface";
+import AcademyContainer from "./layouts/AcademyContainer";
 
 const darkTheme: Theme = {
   palette: {
@@ -48,7 +49,7 @@ const App = () => {
       <ErrorProvider>
         <ThemeProvider theme={darkTheme}>
           <AcademyHeader />
-          <ExerciseList />
+          <AcademyContainer />
         </ThemeProvider>
       </ErrorProvider>
     </HomepageProvider>

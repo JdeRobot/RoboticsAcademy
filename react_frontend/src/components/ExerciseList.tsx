@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../styles/ExerciseList.css";
 import { ExerciseCard } from "./ExerciseCard";
-import HomepageContext from "../contexts/HomepageContext";
+import { useHomepage } from "../contexts/HomepageContext";
 
 const serverBase: string = `${document.location.protocol}//${document.location.hostname}:7164`;
 
@@ -13,15 +13,8 @@ interface Exercise {
   status: "ACTIVE" | "INACTIVE" | "PROTOTYPE";
 }
 
-interface HomepageContextType {
-  getSearchBarText: () => string;
-  setSearchBarText: (text: string) => void;
-  appendFilterItem: (item: string) => void;
-  getFilterItemsList: () => string[];
-}
-
 const ExerciseList: React.FC = () => {
-  const { getSearchBarText, getFilterItemsList } = useContext(HomepageContext) as HomepageContextType;
+  const { getSearchBarText, getFilterItemsList } = useHomepage();
   const [loading, setLoading] = useState<boolean>(true);
   const [exerciseList, setExerciseList] = useState<Exercise[] | undefined>(undefined);
   const filterText: string = getSearchBarText();
