@@ -1,5 +1,4 @@
 import "../styles/App.css";
-import ExerciseList from "./ExerciseList";
 import { HomepageProvider } from "../contexts/HomepageContext";
 import { AcademyHeader } from "./headers";
 import { ErrorProvider, Theme, ThemeProvider } from "jderobot-ide-interface";
