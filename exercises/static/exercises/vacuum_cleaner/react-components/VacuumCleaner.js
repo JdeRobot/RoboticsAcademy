@@ -58,7 +58,7 @@ const VacuumCleaner = () => {
       }
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
     const stateCallback = (message) => {

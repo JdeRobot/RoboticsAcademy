@@ -43,15 +43,15 @@ function FollowPerson() {
   function listen_key() {
     window.addEventListener("keypress", function (event) {
       if (event.code === "KeyS") {
-        window.RoboticsExerciseComponents.commsManager.send("gui", "key_s");
+        manager.send("gui", "key_s");
       } else if (event.code === "KeyW") {
-        window.RoboticsExerciseComponents.commsManager.send("gui", "key_w");
+        manager.send("gui", "key_w");
       } else if (event.code === "KeyA") {
-        window.RoboticsExerciseComponents.commsManager.send("gui", "key_a");
+        manager.send("gui", "key_a");
       } else if (event.code === "KeyD") {
-        window.RoboticsExerciseComponents.commsManager.send("gui", "key_d");
+        manager.send("gui", "key_d");
       } else if (event.code === "KeyX") {
-        window.RoboticsExerciseComponents.commsManager.send("gui", "key_x");
+        manager.send("gui", "key_x");
       }
     });
   }

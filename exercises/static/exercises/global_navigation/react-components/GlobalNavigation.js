@@ -116,7 +116,7 @@ function GlobalNavigation(props) {
         console.log("Resend target:", coords)
         if (coords) {
           try {
-            window.RoboticsExerciseComponents.commsManager.send("gui", `pick${coords}`)
+            manager.send("gui", `pick${coords}`)
           } catch (error) {
           }  
         }
