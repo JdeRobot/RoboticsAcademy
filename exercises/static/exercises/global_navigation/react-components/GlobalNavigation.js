@@ -159,7 +159,7 @@ function GlobalNavigation(props) {
           var data = destinationPicker(event)
           coords = data
           try {
-            window.RoboticsExerciseComponents.commsManager.send("gui", `pick${data}`)
+            manager.send("gui", `pick${data}`)
           } catch (error) {
           }  
         }}
