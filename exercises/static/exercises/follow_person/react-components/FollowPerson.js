@@ -1,13 +1,11 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import noImage from "../../assets/img/noImage.png";
 import "./css/GUICanvas.css";
 
 function FollowPerson() {
-  const [image, setImage] = useState(
-    noImage
-  );
+  const [image, setImage] = useState(noImage);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -57,11 +55,18 @@ function FollowPerson() {
   }
 
   return (
-    <div style={{display: "flex", width: "100%", height: "100%", position:"relative", justifyContent: "center"}}>
-      <img className="image" id="gui_canvas" src={image}/>
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        justifyContent: "center",
+      }}
+    >
+      <img className="image" id="gui_canvas" src={image} />
     </div>
   );
-
 }
 
 export default FollowPerson;
