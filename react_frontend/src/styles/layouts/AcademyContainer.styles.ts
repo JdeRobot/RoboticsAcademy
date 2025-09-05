@@ -14,6 +14,7 @@ export const StyledAcademyContainer = styled.div<StyledAcademyContainerProps>`
 
 export const StyledExerciseList = styled.div`
   max-width: 1200px;
+  min-height: calc(100vh - 106px);
   margin: 0 auto;
   display: grid;
   grid-gap: 1rem;
