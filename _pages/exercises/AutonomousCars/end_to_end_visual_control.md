@@ -39,25 +39,7 @@ gifs:
       alt: "examples"
       title: "examples"
 
-pid:
-    - url: /assets/images/exercises/end_to_end_visual_control/ControlSystems.jpg
-      image_path: assets/images/exercises/end_to_end_visual_control/ControlSystems.jpg
-      alt: "Control Systems"
-      title: "Control Systems"
-
-    - url: /assets/images/exercises/end_to_end_visual_control/TypesofControlSystems.jpg
-      image_path: /assets/images/exercises/end_to_end_visual_control/TypesofControlSystems.jpg
-      alt: "Types of Control Systems"
-      title: "Types of Control Systems"
-
-    - url: /assets/images/exercises/end_to_end_visual_control/PID.png
-      image_path: /assets/images/exercises/end_to_end_visual_control/PID.png
-      alt: "PID"
-      title: "PID"
-
-youtubeId1: eNuSQN9egpA
-youtubeId2: gHZVESBcgKE
-youtubeId3: XzgfaQ20atY
+youtubeId1: 5HaMNChV6vI
 ---
 
 ## Goal
@@ -401,17 +383,17 @@ Understanding these ROS 2 concepts will help you implement the exercise natively
 2. ROS 2 Spin & Spin Once – [https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html](https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html)
  <!-- 3. ROS 2 Rate - add content for rate -->
 
-### Illustrations
+<!-- ### Illustrations -->
 
 <!-- {% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %} -->
 
 ## Videos
 
-<!-- {% include youtubePlayer.html id=page.youtubeId2 %} -->
-
 <!-- _This solution is an illustration for the Web Templates_ -->
 
 ### Demonstrative video of the solution
+
+{% include youtubePlayer.html id=page.youtubeId1 %}
 
 <!-- {% include youtubePlayer.html id=page.youtubeId3 %} -->
 
