@@ -29,7 +29,6 @@ const Frequencies = ({ manager }: { manager: CommsManager | null }) => {
     const updateCallback = (message: MessageEvent<any>) => {
       const update = message.data.update;
       if (update.brain) {
-
         setFrequencies(update);
       }
     };
@@ -43,7 +42,10 @@ const Frequencies = ({ manager }: { manager: CommsManager | null }) => {
 
   return (
     <>
-      <StyledStatusBarEntry text={theme.palette.text} title="Application Frequency">
+      <StyledStatusBarEntry
+        text={theme.palette.text}
+        title="Application Frequency"
+      >
         <label>{`App: ${frequencies.brain.toFixed(0)} Hz`}</label>
       </StyledStatusBarEntry>
       {/* <StyledStatusBarEntry text={theme.palette.text} title="WebGUI Frequency">

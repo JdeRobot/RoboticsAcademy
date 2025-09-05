@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useExercise } from "Contexts/ExerciseContext";
 
 const DownloadButton = () => {
-  const theme = useAcademyTheme();  
+  const theme = useAcademyTheme();
   const exerciseContext = useExercise();
   const codeRef = useRef("");
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
@@ -26,7 +26,6 @@ const DownloadButton = () => {
       unsubscribe("autoSaveCompleted", () => {});
     };
   }, []);
-
 
   useEffect(() => {
     codeRef.current = exerciseContext.code;

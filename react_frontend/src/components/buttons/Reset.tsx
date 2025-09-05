@@ -40,7 +40,6 @@ const ResetButton = ({
     setAppRunning(false);
   };
 
-
   return (
     <StyledHeaderButton
       bgColor={theme.palette.primary}

@@ -10,9 +10,12 @@ type CameraState = {
 
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import { StyledCameraError, StyledWebCamVideo } from "Styles/camera_driver/Camera.styles";
+import {
+  StyledCameraError,
+  StyledWebCamVideo,
+} from "Styles/camera_driver/Camera.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import VideocamOffOutlinedIcon from '@mui/icons-material/VideocamOffOutlined';
+import VideocamOffOutlinedIcon from "@mui/icons-material/VideocamOffOutlined";
 
 type CameraAction =
   | { type: "cameraPause"; payload: boolean }
@@ -58,16 +61,14 @@ const timeFrameSize = 20;
 
 // camera
 const Camera = () => {
-  const exerciseContext = useExercise();  
+  const exerciseContext = useExercise();
   const theme = useAcademyTheme();
   const [manager, setManager] = useState(exerciseContext.manager);
   const [state, setState] = useState<string>("Connecting to media device.");
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [
-    { isCameraPause, isVisualReady, countFrames, startTime },
-    dispatch,
-  ] = useReducer(reducer, initialState);
+  const [{ isCameraPause, isVisualReady, countFrames, startTime }, dispatch] =
+    useReducer(reducer, initialState);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -171,7 +172,7 @@ const Camera = () => {
     };
 
     const updateCallback = (message: MessageEvent<any>) => {
-      console.log("CallBack", message)
+      console.log("CallBack", message);
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         captureFrame(); // call next frame
 

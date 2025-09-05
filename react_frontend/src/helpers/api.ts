@@ -66,7 +66,6 @@ const listUniverses = async (project: string) => {
 };
 
 const listExercises = async (): Promise<Exercise[]> => {
-
   const apiUrl = `/api/v1/exercises/`;
 
   try {
@@ -117,5 +116,5 @@ export {
   getProjectExtraFiles,
   listUniverses,
   getRoboticsBackendUniverse,
-  listExercises
+  listExercises,
 };

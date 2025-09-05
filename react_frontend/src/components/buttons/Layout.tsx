@@ -1,9 +1,12 @@
-import { StyledDropdown, StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
+import {
+  StyledDropdown,
+  StyledHeaderButton,
+} from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import { useRef, useState } from "react";
 
-const LayoutButton = ({setLayout}:{setLayout: Function}) => {
+const LayoutButton = ({ setLayout }: { setLayout: Function }) => {
   const theme = useAcademyTheme();
 
   return (
@@ -100,4 +103,3 @@ const Dropdown = ({
     </div>
   );
 };
-

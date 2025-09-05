@@ -2,7 +2,6 @@ import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 
-
 const HomeButton = () => {
   const theme = useAcademyTheme();
 

@@ -10,11 +10,11 @@ interface StyledExerciseCardContainerProps {
 const handleStatus = (p: StyledExerciseCardContainerProps) => {
   switch (p.state) {
     case "ACTIVE":
-      return `border-color: green;`
+      return `border-color: green;`;
     case "PROTOTYPE":
-      return `border-color: orange;`
+      return `border-color: orange;`;
     default:
-      return `border-color: red;`
+      return `border-color: red;`;
   }
 };
 
@@ -40,34 +40,34 @@ export const StyledExerciseCardArea = styled.div`
 `;
 
 export const StyledExerciseCardInfoContainer = styled.div`
-    width: 100%;
-    height: 15%;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.68);
-    animation: position;
-    transition: height 0.8s ease;
-    bottom: 0;
-    padding: 8px;
-    display: inline-flex;
-    flex-direction: column;
-    flex-grow: 1;
+  width: 100%;
+  height: 15%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.68);
+  animation: position;
+  transition: height 0.8s ease;
+  bottom: 0;
+  padding: 8px;
+  display: inline-flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  & #exercise-info,
+  .exercise-tag-list {
+    opacity: 0%;
+    transition: opacity 1s ease;
+  }
+
+  &:hover {
+    height: 100%;
 
     & #exercise-info,
     .exercise-tag-list {
-        opacity: 0%;
-        transition: opacity 1s ease;
+      opacity: 100%;
     }
-
-    &:hover {
-        height: 100%;
-
-        & #exercise-info,
-        .exercise-tag-list {
-            opacity: 100%;
-        }
-    }
+  }
 `;
 
 export const StyledExerciseCardTagList = styled.div`
-    padding: 4px;
+  padding: 4px;
 `;

@@ -9,7 +9,7 @@ interface StyledAcademyContainerProps {
 export const StyledAcademyContainer = styled.div<StyledAcademyContainerProps>`
   padding-top: 28px;
   padding-bottom: 28px;
-  background-color:${(p) => p.bgColor ?? primaryColor};
+  background-color: ${(p) => p.bgColor ?? primaryColor};
 `;
 
 export const StyledExerciseList = styled.div`
@@ -38,10 +38,16 @@ export const StyledAcademyLoadingMsg = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 5rem;
   font-weight: 800;
-  background-image: linear-gradient(-225deg, #231557 0%, #44107a 29%, #ff1361 67%, #fff800 100%);
+  background-image: linear-gradient(
+    -225deg,
+    #231557 0%,
+    #44107a 29%,
+    #ff1361 67%,
+    #fff800 100%
+  );
   background-size: auto auto;
   background-clip: border-box;
   background-size: 200% auto;

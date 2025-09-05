@@ -9,17 +9,24 @@ export interface HomepageContextType {
 }
 
 const HomepageContext = createContext<HomepageContextType>({
-  getSearchBarText: () => {return ""},
+  getSearchBarText: () => {
+    return "";
+  },
   setSearchBarText: (text: string) => {},
   appendFilterItem: (item: Filters) => {},
-  getFilterItemsList: () => {return []},
+  getFilterItemsList: () => {
+    return [];
+  },
 });
 
 export const useHomepage = () => useContext(HomepageContext);
 
-export function HomepageProvider({ children }: {children?: ReactNode;}) {
+export function HomepageProvider({ children }: { children?: ReactNode }) {
   const [inputText, setInputText] = useState("");
-  const [filterItemsList, setFilterItemsList] = useState<Filters[]>(["name", "tags"]);
+  const [filterItemsList, setFilterItemsList] = useState<Filters[]>([
+    "name",
+    "tags",
+  ]);
 
   const getSearchBarText = () => inputText;
 

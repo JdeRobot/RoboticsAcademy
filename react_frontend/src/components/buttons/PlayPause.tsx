@@ -1,5 +1,5 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
-import { useError} from "jderobot-ide-interface";
+import { useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
 import { CommsManager } from "jderobot-commsmanager";
 import { getProjectExtraFiles } from "Helpers/api";
