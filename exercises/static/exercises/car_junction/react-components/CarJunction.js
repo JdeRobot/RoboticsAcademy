@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { drawImage } from "./helpers/showImagesFollowRoad";
+import { drawImage } from "./helpers/showImagesCarJunction";
 import noImage from "../../assets/img/noImage.png";
 
 import "./css/GUICanvas.css"
