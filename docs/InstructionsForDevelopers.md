@@ -146,6 +146,8 @@ docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link a
 <a name="docker-compose"></a>
 ### Using Docker compose (Recommended for Windows users)
 
+__*NOTE*__: If you are following this tutorial as a Windows users, please follow all these steps but using WSL (Linux kernel for Windows). Please visit the next [link](https://learn.microsoft.com/en-us/windows/wsl/install) in case you don't have WSL installed.
+
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RoboticsBackend container, where all the dependencies are installed. 
 
 The steps for setting up a development environment using Docker Compose are:
@@ -204,7 +206,9 @@ Please take into consideration that the `yarn run dev` script will continously w
 cp compose_cfg/<your desired compose cfg> docker-compose.yaml
 ```
 
-Feel free to study the configs, and adapt/create new ones suitable for your needs
+Feel free to study the configs, and adapt/create new ones suitable for your needs.
+
+__*NOTE*__: As a Windows user, if you are willing to use GPU acceleration, there is a docker-compose file prepared for that BUT ONLY AVAILABLE with Nvidia GPUs (and WSL). Visit the following links [WSL + CUDA](https://learn.microsoft.com/en-us/windows/ai/directml/gpu-cuda-in-wsl), [WSL + Docker Desktop](https://docs.docker.com/desktop/features/wsl) to set-up Nvidia CUDA on WSL.
 
 7) Start Docker Compose
 ```
