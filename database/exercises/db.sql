@@ -135,6 +135,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
+24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 \.
 
 --
@@ -181,6 +182,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 36	22	21
 37	20	36
 38	21	37
+39	24	35
 \.
 -- 30  16  3
 
@@ -256,6 +258,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 65	22	web_gui
 66	23	console
 67	23	web_gui
+68	24	web_gui
+69	24	console
+70	24	simulator
 \.
 
 --
