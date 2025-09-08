@@ -134,6 +134,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 19	human_detection	Human Detection	Deep learning-based human detection.	["Computer Vision","Deep Learning"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection
 20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
+22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
 \.
 
 --
@@ -174,8 +175,12 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 30	16	32
 31	14	33
 32	17	34
-33	20	36
-34	21	37
+33	22 	5
+34	22	6
+35	22	20
+36	22	21
+37	20	36
+38	21	37
 \.
 -- 30  16  3
 
@@ -246,6 +251,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 60	21	web_gui
 61	21	console
 62	21	simulator
+63	22	console
+64	22	simulator
+65	22	web_gui
 \.
 
 --
