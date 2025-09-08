@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Initialize variables with default values
 ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
 branch="humble-devel"
