@@ -103,6 +103,7 @@ class Universe(models.Model):
 
 # Create your models here.
 
+
 class Exercise(models.Model):
     """
     Robotics Academy Exercise model

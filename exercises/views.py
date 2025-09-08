@@ -15,11 +15,10 @@ from rest_framework import status
 
 # TODO: Too many hardcoded strings, review
 
+
 def load_exercise(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
-    return render(
-        request, "react_frontend/exercise.html", exercise.context
-    )
+    return render(request, "react_frontend/exercise.html", exercise.context)
 
 
 @error_wrapper("POST", ["project"])
