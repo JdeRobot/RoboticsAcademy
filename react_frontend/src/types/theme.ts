@@ -1,5 +1,9 @@
 import { Theme } from "jderobot-ide-interface";
 
 export interface AcademyTheme extends Theme {
-  a: {};
+  switch: (themeType: string) => void;
+  viewer3d: {
+    grid: string;
+    background: string;
+  };
 }

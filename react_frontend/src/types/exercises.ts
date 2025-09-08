@@ -6,5 +6,14 @@ export interface Exercise {
   status: ExerciseStatus;
 }
 
+export interface ExerciseData {
+  name: string;
+  exercise_id: string;
+  url: string;
+  tools: string[];
+  tags: string[];
+  universes: Object[];
+}
+
 export type ExerciseStatus = "ACTIVE" | "INACTIVE" | "PROTOTYPE";
 export type Filters = "name" | "tags" | "description" | "status";

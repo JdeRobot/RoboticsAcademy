@@ -278,7 +278,7 @@ sudo systemctl restart docker
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
 
-To create a new exercise you must complete this 3 sections:
+To create a new exercise you must complete this 2 sections:
 
 ### Create the Exercise Folder with the source code and frontend
 
@@ -311,7 +311,9 @@ For knowing how to use each package, please follow the links in the list above.
 
 #### Frontend: inside `react-components`
 
-An exercise must contain at least one file that must have a unique name. Because of the naming restrictions it is best to name it using the same name as the exercise, but in camelcase and with the first letter being capital. For example for the Follow Line exercise a vlid name will be `FollowLine.js` and its content could be:
+An exercise must contain this file:
+
+- **WebGUI.js**: used for the exercise frontend.
 
 ```javascript
 import { useState, useEffect } from "react";
@@ -319,7 +321,7 @@ import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import noImage from "../../assets/img/noImage.png";
 
-const FollowLine = () => {
+const WebGUI = () => {
   const [image, setImage] = useState(noImage);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
@@ -368,40 +370,12 @@ const FollowLine = () => {
   );
 };
 
-export default FollowLine;
+export default WebGUI;
 ```
 
 You may add as many JavaScript helper files needed inside a helper directory, and as many CSS files inside a css folder.
 
 If there is need for additional resources such as images, you may add them inside a resources folder.
-
-### Create the exercise template
-
-Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/templates/exercises"
-
-This folder contains exercise.html which serves React from Django server with the help of tag "react_component".
-
-An example for the Follow Line exercise using the frontend created above would be:
-
-```angular2html
-{% extends "react_frontend/exercise_base.html" %}
-{% load react_component %}
-
-{% block exercise_header %}
-{% endblock %}
-
-{% block react-content %}
-    {% if deployment %}
-        {% react_component components/layouts/ExerciseContainer url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line"%} 
-            {% react_component exercise/FollowLine %}{% end_react_component %}
-        {% end_react_component %}
-    {% else %}
-        {% react_component components/layouts/ExerciseContainer url="https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/follow_line"%} 
-            {% react_component exercise/FollowLine %}{% end_react_component %}
-        {% end_react_component %}
-    {% endif %}
-{% endblock %}
-```
 
 ### Add the exercise to the database
 
@@ -420,7 +394,7 @@ An exercise entry in the database must include the following data:
 - ```description```: description to display on the exercise list
 - ```tags```: an exercise must include at least one ROS tag ("ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
 - ```status```: changes the state indicator (ACTIVE = green; PROTOTYPE = yellow; INACTIVE = red)
-- ```language```: programming language used
+- ```url```: url of the exercise documentation
 
 <a name="Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises"></a>
 ## Steps to change models from CustomRobots in RoboticsAcademy exercises.

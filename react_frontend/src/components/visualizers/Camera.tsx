@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react";
-import { Box } from "@mui/system";
+import { useEffect, useReducer, useRef, useState } from "react";
 
 type CameraState = {
   isCameraPause: boolean;
@@ -13,9 +12,10 @@ import { useExercise } from "Contexts/ExerciseContext";
 import {
   StyledCameraError,
   StyledWebCamVideo,
-} from "Styles/camera_driver/Camera.styles";
+} from "Styles/visualizers/Camera.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import VideocamOffOutlinedIcon from "@mui/icons-material/VideocamOffOutlined";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 
 type CameraAction =
   | { type: "cameraPause"; payload: boolean }
@@ -232,20 +232,10 @@ const Camera = () => {
   ]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        maxHeight: "100%",
-        width: "100%",
-        height: "100%",
-        textAlign: "center",
-      }}
-    >
+    <WebGUIContainer>
       {mediaStream === null && (
         <StyledCameraError color={theme.palette.error}>
-          <VideocamOffOutlinedIcon htmlColor={theme.palette.darkText} />
+          <VideocamOffOutlinedIcon htmlColor={theme.palette.error} />
           {state.length > 0 && <h3>{state}</h3>}
         </StyledCameraError>
       )}
@@ -254,7 +244,7 @@ const Camera = () => {
         autoPlay
         visible={mediaStream !== null}
       />
-    </Box>
+    </WebGUIContainer>
   );
 };
 

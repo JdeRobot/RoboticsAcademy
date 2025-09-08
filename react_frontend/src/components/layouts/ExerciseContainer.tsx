@@ -41,17 +41,15 @@ const base_file = {
   files: [],
 };
 
-interface ExerciseData {
-  name: string;
-  tools: string[];
-  universes: Object[];
-}
-
 const ExerciseContainer = ({
+  project,
+  tools,
   url,
   hasDLModel,
   children,
 }: {
+  project: string;
+  tools: string[];
   url?: string;
   hasDLModel: boolean;
   children: JSX.Element;
@@ -59,7 +57,7 @@ const ExerciseContainer = ({
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
   const [showSim, setSimVisible] = useState<boolean>(true);
-  const [showMonitor, setMonitorVisible] = useState<boolean>(true);
+  const [showWebGUI, setWebGUIVisible] = useState<boolean>(true);
   const [showCamera, setCameraVisible] = useState<boolean>(true);
   const [showTerminal, setTerminalVisible] = useState<boolean>(true);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
@@ -73,18 +71,6 @@ const ExerciseContainer = ({
     codeRef.current = data;
     _setCode(data);
   };
-
-  const exerciseData = document.getElementById("exercise-data");
-
-  let config: ExerciseData;
-  if (exerciseData !== null) {
-    config = JSON.parse(exerciseData.textContent);
-  } else {
-    return <></>;
-  }
-
-  const project = config.name;
-  const tools = config.tools;
 
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project);
@@ -102,8 +88,8 @@ const ExerciseContainer = ({
       component: children,
       icon: <ImportantDevicesRoundedIcon />,
       name: "Web Gui",
-      active: showMonitor,
-      activate: setMonitorVisible,
+      active: showWebGUI,
+      activate: setWebGUIVisible,
     });
   }
 
@@ -211,35 +197,31 @@ const ExerciseContainer = ({
   };
 
   return (
-    <ErrorProvider>
-      <AcademyThemeProvider>
-        <StyledExerciseContainer>
-          <ExerciseProvider manager={manager} code={codeRef.current}>
-            <ExerciseHeader
-              project={project}
-              manager={manager}
-              url={url}
-              setLayout={setLayout}
-              hasDLModel={hasDLModel}
-            />
-            <IdeInterface
-              commsManager={manager}
-              resetManager={resetManager}
-              project={project}
-              api={editorApi}
-              viewers={toolsList}
-              options={{ editor: { onlyOneFile: true, notShowSave: true } }}
-              layout={layout}
-              statusBarComponents={statusBar}
-              explorers={[]}
-              extraEditors={[]}
-              baseFile={base_file}
-              baseUniverse={universes ? universes[0] : undefined}
-            />
-          </ExerciseProvider>
-        </StyledExerciseContainer>
-      </AcademyThemeProvider>
-    </ErrorProvider>
+    <StyledExerciseContainer>
+      <ExerciseProvider manager={manager} code={codeRef.current}>
+        <ExerciseHeader
+          project={project}
+          manager={manager}
+          url={url}
+          setLayout={setLayout}
+          hasDLModel={hasDLModel}
+        />
+        <IdeInterface
+          commsManager={manager}
+          resetManager={resetManager}
+          project={project}
+          api={editorApi}
+          viewers={toolsList}
+          options={{ editor: { onlyOneFile: true, notShowSave: true } }}
+          layout={layout}
+          statusBarComponents={statusBar}
+          explorers={[]}
+          extraEditors={[]}
+          baseFile={base_file}
+          baseUniverse={universes ? universes[0] : undefined}
+        />
+      </ExerciseProvider>
+    </StyledExerciseContainer>
   );
 };
 

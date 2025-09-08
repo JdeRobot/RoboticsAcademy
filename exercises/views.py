@@ -14,17 +14,11 @@ from rest_framework import status
 
 
 # TODO: Too many hardcoded strings, review
-def index(request):
-    # exercises = Exercise.objects.all()
-    exercises = Exercise.objects.all()
-    context = {"exercises": exercises}
-    return render(request, "exercises/RoboticsAcademy.html", context)
-
 
 def load_exercise(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
     return render(
-        request, "exercises/" + exercise_id + "/exercise.html", exercise.context
+        request, "react_frontend/exercise.html", exercise.context
     )
 
 

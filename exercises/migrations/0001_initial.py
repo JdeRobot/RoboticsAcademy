@@ -150,7 +150,7 @@ class Migration(migrations.Migration):
                 ("exercise_id", models.CharField(max_length=40, unique=True)),
                 ("name", models.CharField(max_length=40, unique=True)),
                 ("description", models.CharField(max_length=400)),
-                ("tags", models.CharField(default='{"tags": ""}', max_length=2000)),
+                ("tags", models.CharField(default=[], max_length=2000)),
                 (
                     "status",
                     models.CharField(
@@ -163,7 +163,7 @@ class Migration(migrations.Migration):
                         max_length=20,
                     ),
                 ),
-                ("template", models.CharField(blank=True, default="", max_length=200)),
+                ("url", models.CharField(blank=True, default="", max_length=200)),
                 (
                     "tools",
                     models.ManyToManyField(

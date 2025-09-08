@@ -7,10 +7,12 @@ import {
   StyledHeaderText,
 } from "../../styles/headers/HeaderMenu.styles";
 
-import { ForumButton, SearchButton } from "Components/buttons";
+import { ForumButton, SearchButton, ThemeButton } from "Components/buttons";
 
 const AcademyHeader = () => {
   const theme = useAcademyTheme();
+
+  console.log(theme)
 
   return (
     <AppBar position="static">
@@ -32,6 +34,7 @@ const AcademyHeader = () => {
 
         <StyledHeaderButtonContainer>
           <SearchButton />
+          <ThemeButton />
           <ForumButton />
         </StyledHeaderButtonContainer>
       </Toolbar>

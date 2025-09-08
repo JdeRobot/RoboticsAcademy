@@ -31,7 +31,7 @@ const ExerciseCard = ({
     window.location.href = exerciseURL.replace("${exerciseid}", exercise_id);
   };
 
-  const tagsList: string[] = JSON.parse(tags).tags;
+  const tagsList: string[] = JSON.parse(tags);
 
   return (
     <StyledExerciseCardContainer state={status}>

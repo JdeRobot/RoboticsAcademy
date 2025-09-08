@@ -23,6 +23,7 @@ import {
   ResetButton,
   LayoutButton,
   TerminateUniverseButton,
+  ThemeButton,
 } from "Components/buttons";
 
 const ExerciseHeader = ({
@@ -79,6 +80,7 @@ const ExerciseHeader = ({
         </StyledProject>
         <StyledHeaderButtonContainer>
           <HomeButton />
+          {/* BUG: does not change the editor color <ThemeButton /> */}
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton />
           <DownloadButton />

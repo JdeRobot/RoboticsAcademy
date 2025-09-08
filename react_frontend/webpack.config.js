@@ -18,16 +18,8 @@ const aliases = () => {
     Styles: path.resolve(__dirname, "src/styles"),
     Types: path.resolve(__dirname, "src/types"),
     Common: path.resolve(__dirname, "../static/common"),
-    exercises: [],
+    exercises: path.resolve(__dirname, "../exercises/static/exercises"),
   };
-
-  const exercises_folder = "../exercises/static/exercises/**/react-components/";
-  const exercises = glob.sync(path.resolve(__dirname, exercises_folder));
-  exercises.map((exercise) => {
-    const exercisePath = exercise.split(path.sep);
-    const exerciseName = exercisePath[exercisePath.length - 3];
-    aliasConfig[`exercises`].push(exercise);
-  });
 
   return aliasConfig;
 };
@@ -35,7 +27,7 @@ const aliases = () => {
 module.exports = {
   entry: {
     index: "./src/index.tsx",
-    exercise: "./src/exercise-index.ts",
+    exercise: "./src/exercise-index.tsx",
   },
   output: {
     filename: "js/[name].[contenthash:8].js",
