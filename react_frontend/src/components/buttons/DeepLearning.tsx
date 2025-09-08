@@ -2,10 +2,15 @@ import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useRef, useState } from "react";
 import PsychologyRoundedIcon from "@mui/icons-material/PsychologyRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import React from "react";
 
-const DeepLearningButton = ({ setModel }: { setModel: Function }) => {
+const DeepLearningButton = ({
+  setModel,
+}: {
+  setModel: (model: string) => void;
+}) => {
   const theme = useAcademyTheme();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [fileName, setFileName] = useState<string | undefined>(undefined);
 
@@ -25,7 +30,8 @@ const DeepLearningButton = ({ setModel }: { setModel: Function }) => {
     console.log("====================================");
 
     // Set the model in the DeepLearningModel component
-    setModel(buffer);
+    const enc = new TextDecoder("utf-8");
+    setModel(enc.decode(buffer));
     // Update the state with file details
     setFileName(file.name);
   };
@@ -42,7 +48,9 @@ const DeepLearningButton = ({ setModel }: { setModel: Function }) => {
       }
       roundness={theme.roundness}
       onClick={() => {
-        (inputRef.current as any).click();
+        if (inputRef.current) {
+          inputRef.current.click();
+        }
       }}
       id="upload-dl-model"
       title="Upload Deep Learning Model"

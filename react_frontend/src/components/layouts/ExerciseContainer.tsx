@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useUnload } from "../../hooks/useUnload";
 import { CommsManager } from "jderobot-commsmanager";
+import React from "react";
 
 import IdeInterface, {
   Entry,
-  ErrorProvider,
   ExtraApi,
   StatusBarComponents,
   ViewersEntry,
@@ -20,7 +20,6 @@ import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
-import { AcademyThemeProvider } from "Contexts/AcademyThemeContext";
 
 const defaultCode = `import WebGUI
 import HAL
@@ -81,7 +80,7 @@ const ExerciseContainer = ({
     setUniverses(list);
   };
 
-  var toolsList: ViewersEntry[] = [];
+  const toolsList: ViewersEntry[] = [];
 
   if (tools.includes("web_gui")) {
     toolsList.push({
@@ -146,7 +145,7 @@ const ExerciseContainer = ({
       getUniverseList(project);
       console.log("Connected!", manager.getState());
       connected.current = true;
-    } catch (error) {
+    } catch {
       console.log("Connection failed, trying again!");
       setTimeout(connectWithRetry, 1000);
     }
@@ -227,7 +226,7 @@ const ExerciseContainer = ({
 
 export default ExerciseContainer;
 
-function saveFile(project: string, path: any, content: string): Promise<void> {
+function saveFile(project: string, path: string, content: string): Promise<void> {
   const func = async () => {
     return;
   };

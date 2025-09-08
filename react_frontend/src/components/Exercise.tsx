@@ -4,6 +4,7 @@ import ExerciseContainer from "./layouts/ExerciseContainer";
 import { ExerciseData } from "Types/exercises";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "./visualizers/WebGUIPreview";
+import React from "react";
 
 const Exercise = () => {
   const exerciseData = document.getElementById("exercise-data");
@@ -18,7 +19,7 @@ const Exercise = () => {
   const exercise_id = config?.exercise_id || "";
   const tools = config?.tools || [];
   const tags = config?.tags || [];
-  var urlRaw = config?.url || "";
+  const urlRaw = config?.url || "";
   const url = urlRaw !== "" ? urlRaw : undefined;
 
   const WebGui = lazy(() =>

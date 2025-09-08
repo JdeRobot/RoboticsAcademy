@@ -127,7 +127,7 @@ const FilterMenu = () => {
         checkboxColor={theme.palette.text!}
         roundness={theme.roundness!}
       >
-        <MenuItem onClick={handleFilterList}>
+        <MenuItem>
           <Checkbox defaultChecked disabled size="small" name="name" />
           Name
         </MenuItem>

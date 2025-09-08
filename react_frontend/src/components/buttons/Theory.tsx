@@ -1,6 +1,7 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import React from "react";
 
 const TheoryButton = ({ url }: { url?: string }) => {
   const theme = useAcademyTheme();

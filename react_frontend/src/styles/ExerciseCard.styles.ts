@@ -1,8 +1,6 @@
 import { ExerciseStatus } from "src/types/exercises";
 import styled from "styled-components";
 
-const primaryColor = "#666";
-
 interface StyledExerciseCardContainerProps {
   state: ExerciseStatus;
 }

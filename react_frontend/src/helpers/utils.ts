@@ -43,11 +43,7 @@ export const saveCode = (fileName: string, python_code: string) => {
   }, 0);
 };
 
-export const decode_utf8 = (s: any) => {
-  return decodeURIComponent(escape(s));
-};
-
-export function subscribe(eventName: string, listener: (e: any) => void) {
+export function subscribe(eventName: string, listener: (e: unknown) => void) {
   document.addEventListener(eventName, listener);
 }
 
@@ -55,7 +51,7 @@ export function unsubscribe(eventName: string, listener: () => void) {
   document.removeEventListener(eventName, listener);
 }
 
-export function publish(eventName: string, extra: any = undefined) {
+export function publish(eventName: string, extra?: unknown) {
   const event = new CustomEvent(eventName, { detail: extra });
   document.dispatchEvent(event);
 }

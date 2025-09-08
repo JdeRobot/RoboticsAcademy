@@ -4,9 +4,15 @@ import {
 } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
-import { useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
+import React from "react";
+import { Layout } from "jderobot-ide-interface";
 
-const LayoutButton = ({ setLayout }: { setLayout: Function }) => {
+const LayoutButton = ({
+  setLayout,
+}: {
+  setLayout: (layout: Layout) => void;
+}) => {
   const theme = useAcademyTheme();
 
   return (
@@ -35,23 +41,23 @@ const Dropdown = ({
   id: string;
   title: string;
   width: number;
-  setter: Function;
-  possibleValues: any[];
-  children: any;
+  setter: (layout: Layout) => void;
+  possibleValues: Layout[];
+  children: ReactNode;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [right, setRight] = useState<any>(width / 2 + 13);
+  const [right, setRight] = useState<number>(width / 2 + 13);
   const theme = useAcademyTheme();
   const dropdown = useRef<HTMLDivElement>(null);
 
-  const changeValue = (e: any, value: any) => {
+  const changeValue = (e: React.MouseEvent<HTMLElement>, value: Layout) => {
     e.preventDefault();
     setter(value);
     setOpen(false);
   };
 
-  const closeOpenMenus = (e: any) => {
-    if (open && !dropdown.current?.contains(e.target)) {
+  const closeOpenMenus = (e: MouseEvent) => {
+    if (open && !dropdown.current?.contains(e.target as Node)) {
       setOpen(false);
     }
   };
@@ -95,8 +101,13 @@ const Dropdown = ({
           roundness={theme.roundness}
           style={{ width: `${width}px`, left: `${right}px` }}
         >
-          {possibleValues.map((name, index) => (
-            <button onClick={(e: any) => changeValue(e, name)}>{name}</button>
+          {possibleValues.map((name) => (
+            <button
+              key={`layout-${name}`}
+              onClick={(e: React.MouseEvent<HTMLElement>) => changeValue(e, name)}
+            >
+              {name}
+            </button>
           ))}
         </StyledDropdown>
       )}

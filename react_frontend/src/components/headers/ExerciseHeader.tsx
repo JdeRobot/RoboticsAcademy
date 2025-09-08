@@ -11,6 +11,7 @@ import {
 } from "../../styles/headers/HeaderMenu.styles";
 
 import { subscribe, unsubscribe } from "Helpers/utils";
+import React from "react";
 
 import {
   HomeButton,
@@ -25,6 +26,7 @@ import {
   TerminateUniverseButton,
   ThemeButton,
 } from "Components/buttons";
+import { Layout } from "jderobot-ide-interface";
 
 const ExerciseHeader = ({
   project,
@@ -36,7 +38,7 @@ const ExerciseHeader = ({
   project: string;
   url?: string;
   manager: CommsManager | null;
-  setLayout: Function;
+  setLayout: (layout: Layout) => void;
   hasDLModel: boolean;
 }) => {
   const theme = useAcademyTheme();

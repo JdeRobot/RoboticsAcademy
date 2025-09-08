@@ -1,13 +1,14 @@
 import { ThemeProvider } from "jderobot-ide-interface";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { AcademyTheme } from "Types/index";
+import React from "react";
 
 interface AcademyThemeProviderProps {
   children?: ReactNode;
 }
 
 const darkTheme: AcademyTheme = {
-  switch: (themeType: string) => {},
+  switch: () => {},
   viewer3d: {
     grid: "#ededf2",
     background: "#16161d",
@@ -50,7 +51,7 @@ const darkTheme: AcademyTheme = {
 };
 
 const lightTheme: AcademyTheme = {
-  switch: (themeType: string) => {},
+  switch: () => {},
   viewer3d: {
     grid: "#000000",
     background: "#ffffff",

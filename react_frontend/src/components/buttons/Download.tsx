@@ -4,6 +4,7 @@ import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import { publish, saveCode, subscribe, unsubscribe } from "Helpers/utils";
 import { useEffect, useRef, useState } from "react";
 import { useExercise } from "Contexts/ExerciseContext";
+import React from "react";
 
 const DownloadButton = () => {
   const theme = useAcademyTheme();

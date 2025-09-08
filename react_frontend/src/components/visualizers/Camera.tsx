@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "react";
+import React from "react";
 
 type CameraState = {
   isCameraPause: boolean;
@@ -7,7 +8,7 @@ type CameraState = {
   startTime: number;
 };
 
-import { events } from "jderobot-commsmanager";
+import { events, ManagerMsg } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import {
   StyledCameraError,
@@ -148,8 +149,7 @@ const Camera = () => {
       return;
     }
 
-    const stateCallback = (message: MessageEvent<any>) => {
-      console.log(message);
+    const stateCallback = (message: ManagerMsg) => {
       if (message.data.state === "tools_ready") {
         dispatch({ type: "visiualReady", payload: true });
       }
@@ -171,7 +171,7 @@ const Camera = () => {
       }
     };
 
-    const updateCallback = (message: MessageEvent<any>) => {
+    const updateCallback = (message: ManagerMsg) => {
       console.log("CallBack", message);
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         captureFrame(); // call next frame

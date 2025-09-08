@@ -8,6 +8,7 @@ import { useExercise } from "Contexts/ExerciseContext";
 import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import React from "react";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
@@ -23,7 +24,7 @@ const PlayPauseButton = ({
   project: string;
   manager: CommsManager | null;
   appRunning: boolean;
-  setAppRunning: Function;
+  setAppRunning: (running: boolean) => void;
   dlModel: string;
   hasDLModel: boolean;
 }) => {

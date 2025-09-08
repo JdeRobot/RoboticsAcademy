@@ -3,10 +3,11 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import { useRef } from "react";
 import { publish } from "Helpers/utils";
+import React from "react";
 
 const UploadButton = () => {
   const theme = useAcademyTheme();
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -16,7 +17,11 @@ const UploadButton = () => {
         publish("uploadOnlyCode", { code: fr.result as string });
       }
     };
-    fr.readAsText(event.target.files?.[0]!);
+    const files = event.target.files;
+
+    if (files && files.length > 0) {
+      fr.readAsText(files[0]);
+    }
   };
 
   return (
@@ -25,7 +30,9 @@ const UploadButton = () => {
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
       onClick={() => {
-        (inputRef.current as any).click();
+        if (inputRef.current) {
+          inputRef.current.click();
+        }
       }}
       id="upload-code"
       title="Upload code"

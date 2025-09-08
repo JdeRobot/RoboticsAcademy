@@ -3,6 +3,7 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import { useState } from "react";
+import React from "react";
 
 const ThemeButton = () => {
   const theme = useAcademyTheme();

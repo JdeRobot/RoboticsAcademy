@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { CommsManager, events } from "jderobot-commsmanager";
+import { CommsManager, events, ManagerMsg } from "jderobot-commsmanager";
 import { StyledStatusBarEntry } from "jderobot-ide-interface";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import React from "react";
 
 type FrequenciesData = {
   brain: number;
@@ -26,17 +27,17 @@ const Frequencies = ({ manager }: { manager: CommsManager | null }) => {
       return;
     }
 
-    const updateCallback = (message: MessageEvent<any>) => {
+    const updateCallback = (message: ManagerMsg) => {
       const update = message.data.update;
       if (update.brain) {
         setFrequencies(update);
       }
     };
 
-    manager.subscribe([events.UPDATE], updateCallback);
+    manager.subscribe(events.UPDATE, updateCallback);
 
     return () => {
-      manager.unsubscribe([events.UPDATE], updateCallback);
+      manager.unsubscribe(events.UPDATE, updateCallback);
     };
   }, [manager]);
 

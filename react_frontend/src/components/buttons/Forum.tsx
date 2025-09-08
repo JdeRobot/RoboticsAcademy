@@ -1,6 +1,7 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import ForumRoundedIcon from "@mui/icons-material/ForumRounded";
+import React from "react";
 
 const ForumButton = () => {
   const theme = useAcademyTheme();

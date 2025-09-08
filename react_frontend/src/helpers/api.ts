@@ -15,7 +15,6 @@ const getCookie = (name: string) => {
 const csrfToken = getCookie("csrftoken");
 const axiosExtra = {
   headers: {
-    //@ts-ignore Needed for compatibility with Unibotics
     "X-CSRFToken": csrfToken,
   },
 };
@@ -24,24 +23,20 @@ const getProjectExtraFiles = async (project: string) => {
   if (!project) throw new Error("Current Project name is not set");
 
   const apiUrl = "/exercises/user_code_zip/";
-  try {
-    const response = await axios.post(
-      apiUrl,
-      {
-        project: project,
-      },
-      axiosExtra
-    );
+  const response = await axios.post(
+    apiUrl,
+    {
+      project: project,
+    },
+    axiosExtra
+  );
 
-    // Handle unsuccessful response status (e.g., non-2xx status)
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to create app."); // Response error
-    }
-
-    return response.data.files;
-  } catch (error: unknown) {
-    throw error; // Rethrow
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to create app."); // Response error
   }
+
+  return response.data.files;
 };
 
 const listUniverses = async (project: string) => {
@@ -51,34 +46,26 @@ const listUniverses = async (project: string) => {
     project
   )}`;
 
-  try {
-    const response = await axios.get(apiUrl);
+  const response = await axios.get(apiUrl);
 
-    // Handle unsuccessful response status (e.g., non-2xx status)
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to get universes.");
-    }
-
-    return response.data.universes_list;
-  } catch (error: unknown) {
-    throw error; // Rethrow
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get universes.");
   }
+
+  return response.data.universes_list;
 };
 
 const listExercises = async (): Promise<Exercise[]> => {
   const apiUrl = `/api/v1/exercises/`;
 
-  try {
-    const response = await axios.get(apiUrl);
+  const response = await axios.get(apiUrl);
 
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to get tools.");
-    }
-
-    return response.data;
-  } catch (error: unknown) {
-    throw error; // Rethrow
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get tools.");
   }
+
+  return response.data;
 };
 
 const getRoboticsBackendUniverse = async (
@@ -91,25 +78,21 @@ const getRoboticsBackendUniverse = async (
     universe
   )}&project=${encodeURIComponent(project)}`;
 
-  try {
-    const response = await axios.get(apiUrl);
+  const response = await axios.get(apiUrl);
 
-    // Handle unsuccessful response status (e.g., non-2xx status)
-    if (!isSuccessful(response)) {
-      throw new Error(
-        response.data.message || "Failed to retrieve universe config"
-      ); // Response error
-    }
-
-    return {
-      world: response.data.universe.world,
-      robot: response.data.universe.robot,
-      tools: response.data.universe.tools,
-      tools_config: response.data.universe.tools_config,
-    };
-  } catch (error: unknown) {
-    throw error; // Rethrow
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(
+      response.data.message || "Failed to retrieve universe config"
+    ); // Response error
   }
+
+  return {
+    world: response.data.universe.world,
+    robot: response.data.universe.robot,
+    tools: response.data.universe.tools,
+    tools_config: response.data.universe.tools_config,
+  };
 };
 
 export {

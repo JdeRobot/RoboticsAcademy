@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import configuration from "../config.json";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
@@ -83,7 +83,7 @@ const ChipsArray: React.FC<ChipsArrayProps> = ({ tagList }) => {
   }
 
   const chipsList = chipData.map((data) => (
-    // eslint-disable-next-line react/jsx-key
+     
     <Chip
       key={data}
       sx={{ m: 0.5 }}

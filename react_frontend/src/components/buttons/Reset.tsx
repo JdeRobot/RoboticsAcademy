@@ -3,13 +3,14 @@ import { useError } from "jderobot-ide-interface";
 import { CommsManager } from "jderobot-commsmanager";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import React from "react";
 
 const ResetButton = ({
   manager,
   setAppRunning,
 }: {
   manager: CommsManager | null;
-  setAppRunning: Function;
+  setAppRunning: (running: boolean) => void;
 }) => {
   const theme = useAcademyTheme();
   const { warning } = useError();

@@ -2,6 +2,7 @@ import { Points, OrbitControls, Grid, Point } from "@react-three/drei";
 import { Canvas, Color, useFrame, useThree, Vector3 } from "@react-three/fiber";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import { useEffect, useState } from "react";
+import React from "react";
 
 interface WebGUIPoint {
   pose: Vector3;
@@ -16,9 +17,9 @@ const WebGUI3D = ({
   setReset,
 }: {
   id?: string;
-  style?: Object;
+  style?: object;
   reset: boolean;
-  setReset: Function;
+  setReset: (reset: boolean) => void;
   toPaint?: number[][];
 }) => {
   const [points, addPoints] = useState<WebGUIPoint[]>([]);
@@ -36,9 +37,9 @@ const WebGUI3D = ({
       return;
     }
 
-    for (var i = 0; i < toPaint.length; i++) {
-      let pose: Vector3 = [toPaint[i][0], toPaint[i][1], toPaint[i][2]];
-      let color: Color = [
+    for (let i = 0; i < toPaint.length; i++) {
+      const pose: Vector3 = [toPaint[i][0], toPaint[i][1], toPaint[i][2]];
+      const color: Color = [
         toPaint[i][3] / 255,
         toPaint[i][4] / 255,
         toPaint[i][5] / 255,
@@ -80,8 +81,8 @@ const WebGUI3D = ({
         />
         <Grid infiniteGrid sectionColor={theme.viewer3d?.grid} />
 
-        {points.map((point: WebGUIPoint) => (
-          <Points>
+        {points.map((point: WebGUIPoint, index) => (
+          <Points key={`3d-point-${index}`}>
             <Point position={point.pose} color={point.color} size={1.5} />
             <pointsMaterial vertexColors />
           </Points>

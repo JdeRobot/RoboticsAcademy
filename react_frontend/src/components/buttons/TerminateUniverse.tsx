@@ -3,13 +3,14 @@ import { useError } from "jderobot-ide-interface";
 import { CommsManager, states } from "jderobot-commsmanager";
 import StopCircleRoundedIcon from "@mui/icons-material/StopCircleRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import React from "react";
 
 const TerminateUniverseButton = ({
   manager,
   setAppRunning,
 }: {
   manager: CommsManager | null;
-  setAppRunning: Function;
+  setAppRunning: (running: boolean) => void;
 }) => {
   const theme = useAcademyTheme();
   const { warning } = useError();

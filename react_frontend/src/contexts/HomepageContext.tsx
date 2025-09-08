@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { Filters } from "src/types/exercises";
+import React from "react";
 
 export interface HomepageContextType {
   getSearchBarText: () => string;
@@ -12,8 +13,8 @@ const HomepageContext = createContext<HomepageContextType>({
   getSearchBarText: () => {
     return "";
   },
-  setSearchBarText: (text: string) => {},
-  appendFilterItem: (item: Filters) => {},
+  setSearchBarText: () => {},
+  appendFilterItem: () => {},
   getFilterItemsList: () => {
     return [];
   },
