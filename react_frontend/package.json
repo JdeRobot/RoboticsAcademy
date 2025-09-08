@@ -9,7 +9,7 @@
     "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
     "build": "webpack --mode production --output-path ./static/react_frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint src",
     "tailwindcss": "NODE_ENV=production tailwindcss -o src/styles/tailwind.css -m",
     "format": "prettier --write src/**/*.{tsx,ts,html,css}"
   },
