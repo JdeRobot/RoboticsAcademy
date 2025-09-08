@@ -112,13 +112,13 @@ class Exercise(models.Model):
     exercise_id = models.CharField(max_length=40, blank=False, unique=True)
     name = models.CharField(max_length=40, blank=False, unique=True)
     description = models.CharField(max_length=400, blank=False)
-    tags = models.CharField(max_length=2000, default=json.dumps({"tags": ""}))
+    tags = models.CharField(max_length=2000, default=[])
     status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
     universes = models.ManyToManyField(
         Universe, default=None, db_table='"exercises_universes"'
     )
     tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
-    template = models.CharField(max_length=200, blank=True, default="")
+    url = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
         return str(self.name)
@@ -182,7 +182,6 @@ class Exercise(models.Model):
                     "tools": tools,
                     "tools_config": tools_config,
                     "robot": robot_config,
-                    "template": self.template,
                     "exercise_id": self.exercise_id,
                 }
 
@@ -208,15 +207,20 @@ class Exercise(models.Model):
                 },
                 "tools": tools,
                 "tools_config": tools_config,
-                "template": self.template,
                 "exercise_id": self.exercise_id,
             }
             configurations.append(config)
 
+        # Accesible from the exercise using document.getElementById("exercise-data")
         context = {
-            "exercise_base": "exercise_base_2_RA.html",
-            "exercise_id": self.exercise_id,
-            "exercise_config": configurations,
+            "exercise_data": {
+                "universes": configurations,
+                "tools": tools,
+                "name": self.name,
+                "exercise_id": self.exercise_id,
+                "url": self.url,
+                "tags": eval(self.tags),
+            },
         }
         return context
 

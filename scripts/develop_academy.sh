@@ -112,8 +112,8 @@ cd ../..
 mv common/common.zip react_frontend/src/common.zip
 
 # Prepare the frontend
-nvm install 17
-nvm use 17
+nvm install 20
+nvm use 20
 
 # Checking if the frontend needs compilation
 cd react_frontend/
