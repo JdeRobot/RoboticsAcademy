@@ -134,7 +134,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
-23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	{"tags": "ROS2"}	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
+23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
 \.
 
 --
