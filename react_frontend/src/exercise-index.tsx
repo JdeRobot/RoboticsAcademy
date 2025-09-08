@@ -9,8 +9,6 @@ const root = createRoot(container!);
 
 root.render(
   <React.StrictMode>
-    <Exercise/>
+    <Exercise />
   </React.StrictMode>
 );
-
-

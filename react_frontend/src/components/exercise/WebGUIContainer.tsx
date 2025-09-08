@@ -1,13 +1,6 @@
 import { Box } from "@mui/system";
 
-const WebGUIContainer = ({
-  id,
-  children,
-}: {
-  id?: string;
-  children?: any;
-}) => {
-
+const WebGUIContainer = ({ id, children }: { id?: string; children?: any }) => {
   return (
     <Box
       id={id}

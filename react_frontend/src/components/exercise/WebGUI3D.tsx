@@ -78,10 +78,7 @@ const WebGUI3D = ({
           distance={100}
           position={[40, 40, 40]}
         />
-        <Grid
-          infiniteGrid
-          sectionColor={theme.viewer3d?.grid}
-        />
+        <Grid infiniteGrid sectionColor={theme.viewer3d?.grid} />
 
         {points.map((point: WebGUIPoint) => (
           <Points>

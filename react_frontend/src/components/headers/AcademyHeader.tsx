@@ -12,7 +12,7 @@ import { ForumButton, SearchButton, ThemeButton } from "Components/buttons";
 const AcademyHeader = () => {
   const theme = useAcademyTheme();
 
-  console.log(theme)
+  console.log(theme);
 
   return (
     <AppBar position="static">

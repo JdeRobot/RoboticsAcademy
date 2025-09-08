@@ -10,7 +10,7 @@ const darkTheme: AcademyTheme = {
   switch: (themeType: string) => {},
   viewer3d: {
     grid: "#ededf2",
-    background: "#16161d"
+    background: "#16161d",
   },
   palette: {
     darkText: "#ededf2",
@@ -53,7 +53,7 @@ const lightTheme: AcademyTheme = {
   switch: (themeType: string) => {},
   viewer3d: {
     grid: "#000000",
-    background: "#ffffff"
+    background: "#ffffff",
   },
   palette: {
     darkText: "#ededf2",
