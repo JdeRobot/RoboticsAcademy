@@ -4,6 +4,9 @@
   <head>
     <meta http-equiv="Content-type" content="text/html" charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
     <link
       rel="icon"
       href="{% static 'exercises/assets/img/logo.ico' %}"
@@ -46,20 +49,16 @@
       rel="stylesheet"
     />
     <!--CSS Main -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'exercises/assets/css/main.css' %}"
-    />
     <script>
       var context = {};
     </script>
+
     {% block header %}
     <!-- Here comes additions to header section -->
     {% endblock %}
   </head>
   <body>
-    {{ exercise_config|json_script:"exercise-config" }} {% block content %}
+    {{ exercise_data|json_script:"exercise-data" }} {% block content %}
     <!-- Here comes the main content of child pages -->
     {% endblock %} {% block before_end_body %}
     <!-- Here comes whatever needs to be loaded before ending the body section -->

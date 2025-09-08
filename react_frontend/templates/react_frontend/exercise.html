@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block header %}
+    {% render_bundle 'exercise' 'css' %}
+    {% block exercise_header %}
+    {% endblock %}
+{%  endblock %}
+
+{% block content %}
+    <div id="app" class="app">
+        <!-- React will load here -->
+    </div>
+{% endblock %}
+
+{% block before_end_body %}
+    {% render_bundle 'exercise' 'js' %}
+{% endblock %}

@@ -1,0 +1,12 @@
+export { default as HomeButton } from "./Home";
+export { default as DownloadButton } from "./Download";
+export { default as UploadButton } from "./Upload";
+export { default as TheoryButton } from "./Theory";
+export { default as ForumButton } from "./Forum";
+export { default as DeepLearningButton } from "./DeepLearning";
+export { default as PlayPauseButton } from "./PlayPause";
+export { default as ResetButton } from "./Reset";
+export { default as LayoutButton } from "./Layout";
+export { default as TerminateUniverseButton } from "./TerminateUniverse";
+export { default as SearchButton } from "./Search";
+export { default as ThemeButton } from "./Theme";

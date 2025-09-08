@@ -1,3 +1,4 @@
+import json
 import os
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -5,33 +6,32 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from .models import Exercise
+
+from .error_handler import error_wrapper
+from .models import Exercise, Universe
 from rest_framework.response import Response
 from rest_framework import status
 
 
 # TODO: Too many hardcoded strings, review
-def index(request):
-    # exercises = Exercise.objects.all()
-    exercises = Exercise.objects.all()
-    context = {"exercises": exercises}
-    return render(request, "exercises/RoboticsAcademy.html", context)
 
 
 def load_exercise(request, exercise_id):
     exercise = Exercise.objects.get(exercise_id=exercise_id)
-    return render(
-        request, "exercises/" + exercise_id + "/exercise.html", exercise.context
-    )
+    return render(request, "react_frontend/exercise.html", exercise.context)
 
 
-@csrf_exempt
-@api_view(["POST"])
-def user_code_zip(request, exercise_id):
+@error_wrapper("POST", ["project"])
+def user_code_zip(request):
+    project_name = request.data.get("project")
+    project = Exercise.objects.get(name=project_name)
+
     exercise_path = os.path.join(
         settings.BASE_DIR,
-        f"exercises/static/exercises/{exercise_id}/python_template/ros2_humble",
+        f"exercises/static/exercises/{project.exercise_id}/python_template/ros2_humble",
     )
+
+    print(exercise_path)
     files = []
 
     try:
@@ -45,3 +45,97 @@ def user_code_zip(request, exercise_id):
         return Response(
             {"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST
         )
+
+
+@error_wrapper("GET", ["project"])
+def get_universes_list(request):
+    project_name = request.GET.get("project")
+
+    project = Exercise.objects.get(name=project_name)
+    universes_list = []
+
+    for universe in project.universes.all():
+        universes_list.append(universe.name)
+
+    return Response({"universes_list": universes_list})
+
+
+@error_wrapper("GET", ["project"])
+def get_docker_universe_data(request):
+    name = request.GET.get("universe")
+    project_name = request.GET.get("project")
+
+    project = Exercise.objects.get(name=project_name)
+
+    tools = []
+    tools_config = {}
+    for tool in project.tools.all():
+        tools.append(tool.name)
+        if tool.base_config != "None":
+            tools_config.update({tool.name: tool.base_config})
+
+    if len(project.universes.all()) == 0:
+        config = {
+            "name": None,
+            "world": {
+                "name": None,
+                "launch_file_path": None,
+                "ros_version": None,
+                "type": None,
+                "tools_config": None,
+            },
+            "robot": {
+                "name": None,
+                "launch_file_path": None,
+                "ros_version": None,
+                "type": None,
+                "start_pose": None,
+            },
+            "tools": tools,
+            "tools_config": tools_config,
+        }
+    else:
+        universe = Universe.objects.get(name=name)
+
+        tools_configuration = None
+        if universe.world.tools_config != "None":
+            tools_configuration = json.loads(universe.world.tools_config)
+
+        if universe.robot.name != "None":
+            robot_config = {
+                "name": universe.robot.name,
+                "launch_file_path": universe.robot.launch_file_path,
+                "ros_version": universe.world.ros_version,
+                "type": universe.world.type,
+                "start_pose": universe.world.start_pose,
+            }
+        else:
+            robot_config = {
+                "name": None,
+                "launch_file_path": None,
+                "ros_version": None,
+                "type": None,
+                "start_pose": None,
+            }
+
+        config = {
+            "name": universe.name,
+            "world": {
+                "name": universe.world.name,
+                "launch_file_path": universe.world.launch_file_path,
+                "ros_version": universe.world.ros_version,
+                "type": universe.world.type,
+                "tools_config": tools_configuration,
+            },
+            "robot": robot_config,
+            "tools": tools,
+            "tools_config": tools_configuration,
+        }
+
+    # Return the list of projects
+    return Response(
+        {
+            "success": True,
+            "universe": config,
+        }
+    )
