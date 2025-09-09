@@ -58,6 +58,9 @@ EXPOSE 1108
 # noVNC Gazebo
 EXPOSE 6080
 
+# noVNC Rviz
+EXPOSE 6081
+
 #PostgreSQL Database
 EXPOSE 5432
 
