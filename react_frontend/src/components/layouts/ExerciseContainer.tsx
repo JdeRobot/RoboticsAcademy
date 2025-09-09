@@ -20,6 +20,7 @@ import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
+import PrecisionManufacturingRoundedIcon from '@mui/icons-material/PrecisionManufacturingRounded';
 
 const defaultCode = `import WebGUI
 import HAL
@@ -58,6 +59,7 @@ const ExerciseContainer = ({
   const [showSim, setSimVisible] = useState<boolean>(true);
   const [showWebGUI, setWebGUIVisible] = useState<boolean>(true);
   const [showCamera, setCameraVisible] = useState<boolean>(true);
+  const [showRviz, setRvizVisible] = useState<boolean>(true);
   const [showTerminal, setTerminalVisible] = useState<boolean>(true);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both"
@@ -109,6 +111,16 @@ const ExerciseContainer = ({
       name: "Gazebo",
       active: showSim,
       activate: setSimVisible,
+    });
+  }
+
+  if (tools.includes("rviz")) {
+    toolsList.push({
+      component: <VncViewer commsManager={manager} port={6081} />,
+      icon: <PrecisionManufacturingRoundedIcon />,
+      name: "Rviz",
+      active: showRviz,
+      activate: setRvizVisible,
     });
   }
 
