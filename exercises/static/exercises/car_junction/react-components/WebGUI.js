@@ -1,11 +1,11 @@
 import { useState, useEffect} from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import { drawImage } from "./helpers/showImagesCarJunction";
-import noImage from "../../assets/img/noImage.png";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIImage from "Components/exercise/WebGUIImage";
 
-import "./css/GUICanvas.css"
 function WebGUI() {
+  const [frontImage, setFrontImage] = useState(undefined);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -19,11 +19,11 @@ function WebGUI() {
     }
 
     const callback = (message) => {
-      console.log(message);
-
-      if (message.data.update.image_front) {
-        console.log("image_front");
-        drawImage(message.data.update);
+      const update = message.data.update;
+      let image;
+      if (update.image_front) {
+        image = JSON.parse(update.image_front);
+        setFrontImage(`data:image/png;base64,${image.image_front}`);
       }
       // Send the ACK of the msg
       manager.send("gui", "ack");
@@ -36,11 +36,10 @@ function WebGUI() {
     };
   }, [manager]);
 
-  return (
-    <div style={{display: "flex", width: "100%", height: "100%",justifyContent: "center", alignItems: "center"}}>
-      <img className="image" id="gui_canvas_front" style={{ maxWidth: "100%", maxHeight: "100%" }}
-        src={noImage}/>
-    </div>
+   return (
+    <WebGUIContainer>
+      <WebGUIImage id="front_img" style={{ left: "25%" }} src={frontImage} />
+    </WebGUIContainer>
   );
 }
 
