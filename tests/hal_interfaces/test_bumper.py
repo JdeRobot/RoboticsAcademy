@@ -1,12 +1,17 @@
 import unittest
 from hal_interfaces.general.bumper import (
-    BumperData, contactsToBumperData, RIGHT_BUMPER, CENTER_BUMPER, LEFT_BUMPER
+    BumperData,
+    contactsToBumperData,
+    RIGHT_BUMPER,
+    CENTER_BUMPER,
+    LEFT_BUMPER,
 )
 
 # Simulate the structure of gazebo_msgs.msg.ContactsState
 class ContactsState:
     def __init__(self, states=None):
         self.states = states if states is not None else []
+
 
 class TestBumperLogic(unittest.TestCase):
     def test_bumperdata_str(self):
@@ -47,10 +52,15 @@ class TestBumperLogic(unittest.TestCase):
 
     def test_contacts_to_bumperdata_multiple(self):
         # Contacts on multiple bumpers, should pick the first (right)
-        contacts = [ContactsState([object()]), ContactsState([object()]), ContactsState([object()])]
+        contacts = [
+            ContactsState([object()]),
+            ContactsState([object()]),
+            ContactsState([object()]),
+        ]
         bd = contactsToBumperData(contacts)
         self.assertEqual(bd.state, 1)
         self.assertEqual(bd.bumper, RIGHT_BUMPER)
+
 
 if __name__ == "__main__":
     unittest.main()
