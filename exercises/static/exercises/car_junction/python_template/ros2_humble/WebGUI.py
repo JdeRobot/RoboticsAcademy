@@ -21,11 +21,11 @@ class WebGUI(MeasuringThreadingGUI):
         self.ack_frontend = True
         self.ack_lock = threading.Lock()
         self.running = True
-        
+
         self.world_name = "empty"
 
         self.host = host
-        self.msg = {"image_front":""}
+        self.msg = {"image_front": ""}
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
@@ -63,7 +63,7 @@ class WebGUI(MeasuringThreadingGUI):
         else:
             b64_front = None
             shape_front = 0
-            
+
         payload_front = {
             "image_front": b64_front,
             "shape_front": shape_front,
@@ -75,6 +75,7 @@ class WebGUI(MeasuringThreadingGUI):
     def setFrontImage(self, image):
         with self.image_lock:
             self.left_image = image
+
 
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
