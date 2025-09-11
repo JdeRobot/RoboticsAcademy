@@ -41,11 +41,11 @@ export function draw (data){
                 }
             }
 
-            var point = JSON.parse(data.pts);
-            if(point != "")
-            {
-                paintPoints(point);  //TODO: DO NOT TOUCH
-            }
+            // var point = JSON.parse(data.pts);
+            // if(point != "")
+            // {
+            //     paintPoints(point);  //TODO: DO NOT TOUCH
+            // }
             var matching = JSON.parse(data.match);
 
             if(matching != "")

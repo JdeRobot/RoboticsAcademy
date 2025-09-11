@@ -14,25 +14,20 @@ const aliases = () => {
     Components: path.resolve(__dirname, "src/components"),
     Helpers: path.resolve(__dirname, "src/helpers"),
     Hooks: path.resolve(__dirname, "src/hooks"),
+    Icons: path.resolve(__dirname, "src/icons"),
+    Styles: path.resolve(__dirname, "src/styles"),
+    Types: path.resolve(__dirname, "src/types"),
     Common: path.resolve(__dirname, "../static/common"),
-    exercises: [],
+    exercises: path.resolve(__dirname, "../exercises/static/exercises"),
   };
-
-  const exercises_folder = "../exercises/static/exercises/**/react-components/";
-  const exercises = glob.sync(path.resolve(__dirname, exercises_folder));
-  exercises.map((exercise) => {
-    const exercisePath = exercise.split(path.sep);
-    const exerciseName = exercisePath[exercisePath.length - 3];
-    aliasConfig[`exercises`].push(exercise);
-  });
 
   return aliasConfig;
 };
 
 module.exports = {
   entry: {
-    index: "./src/index.js",
-    exercise: "./src/exercise-index.js",
+    index: "./src/index.tsx",
+    exercise: "./src/exercise-index.tsx",
   },
   output: {
     filename: "js/[name].[contenthash:8].js",
@@ -40,6 +35,7 @@ module.exports = {
   },
   resolve: {
     alias: aliases(),
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
     modules: ["node_modules", path.resolve(__dirname, "node_modules")],
   },
   module: {
@@ -61,7 +57,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: [
           {
@@ -70,14 +66,29 @@ module.exports = {
               presets: [
                 "@babel/preset-env",
                 ["@babel/preset-react", { runtime: "automatic" }],
+                "@babel/preset-typescript",
               ],
             },
           },
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif)$/,
+        test: /\.(png|jpg|gif)$/,
         type: "asset/resource",
+      },
+      {
+        test: /\.svg$/i,
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              svgoConfig: {
+                plugins: [{ name: "preset-default", removeViewBox: false }],
+              },
+            },
+          },
+          "file-loader",
+        ],
       },
       {
         test: /\.(zip)$/,

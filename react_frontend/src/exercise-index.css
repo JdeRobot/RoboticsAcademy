@@ -13,6 +13,8 @@ code {
     monospace;
 }
 
-.exercise {
-  margin-bottom: 28px;
+body,
+html {
+  width: 100%;
+  height: 100%;
 }
