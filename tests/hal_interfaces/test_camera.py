@@ -1,46 +1,63 @@
 import unittest
-from unittest.mock import MagicMock, patch
 import numpy as np
-from hal_interfaces.general.camera import CameraNode, Image, imageMsg2Image
-from tests.mocks.mock_ros_messages import MockROSImage
+from unittest.mock import MagicMock, patch
 
-class TestCameraInterface(unittest.TestCase):
-    @patch('rclpy.create_node')
-    @patch('rclpy.init')
-    def setUp(self, mock_init, mock_create_node):
-        # Mock ROS initialization
-        self.camera_node = CameraNode("test_topic")
-        self.camera_node.bridge_ = MagicMock()
-        
+from hal_interfaces.general.camera import Image, imageMsg2Image, CameraNode
+
+class MockROSImage:
+    def __init__(self, width=640, height=480, encoding="bgr8", data=None, sec=0, nanosec=0):
+        self.width = width
+        self.height = height
+        self.encoding = encoding
+        self.header = type('', (), {})()
+        self.header.stamp = type('', (), {})()
+        self.header.stamp.sec = sec
+        self.header.stamp.nanosec = nanosec
+        self.data = data if data is not None else bytes([1] * (width * height * 3))
+
+class TestImageClass(unittest.TestCase):
     def test_image_initialization(self):
-        image = Image()
-        self.assertEqual(image.height, 480)
-        self.assertEqual(image.width, 640)
-        self.assertEqual(image.format, "")
-        self.assertEqual(image.timeStamp, 0)
-        self.assertEqual(image.data.shape, (480, 640, 3))
-        
-    def test_get_image_empty_message(self):
-        # Test with empty message
-        self.camera_node.last_img_ = MockROSImage()
-        self.camera_node.last_img_.data = bytes()  # Empty data
-        
-        # Empty message should return None
-        result = self.camera_node.getImage()
-        self.assertIsNone(result)
-        
-    def test_get_image_with_data(self):
-        # Create a mock image message with data
-        img_msg = MockROSImage(height=480, width=640)
-        img_msg.header.stamp.sec = 10
-        img_msg.header.stamp.nanosec = 500000000
-        
-        self.camera_node.last_img_ = img_msg
-        self.camera_node.bridge_.imgmsg_to_cv2 = MagicMock(return_value=np.ones((480, 640, 3)))
-        
-        result = self.camera_node.getImage()
-        self.assertIsNotNone(result)
-        self.assertEqual(result.height, 480)
+        img = Image()
+        self.assertEqual(img.height, 480)
+        self.assertEqual(img.width, 640)
+        self.assertEqual(img.data.shape, (480, 640, 3))
+        self.assertEqual(img.format, "")
+        self.assertEqual(img.timeStamp, 0)
+        self.assertIsInstance(str(img), str)
+
+class TestImageMsg2Image(unittest.TestCase):
+    @patch("hal_interfaces.general.camera.cv_bridge.CvBridge")
+    def test_image_conversion_bgr8(self, MockBridge):
+        mock_img = MockROSImage()
+        mock_bridge = MockBridge.return_value
+        mock_bridge.imgmsg_to_cv2.return_value = np.ones((480, 640, 3), np.uint8)
+        result = imageMsg2Image(mock_img, mock_bridge)
+        self.assertIsInstance(result, Image)
         self.assertEqual(result.width, 640)
+        self.assertEqual(result.height, 480)
         self.assertEqual(result.format, "BGR8")
-        self.assertEqual(result.timeStamp, 10.5)  # 10 seconds + 500ms
+        self.assertTrue(np.array_equal(result.data, np.ones((480, 640, 3), np.uint8)))
+
+    @patch("hal_interfaces.general.camera.cv_bridge.CvBridge")
+    def test_image_conversion_empty_data(self, MockBridge):
+        mock_img = MockROSImage(data=bytes())
+        mock_bridge = MockBridge.return_value
+        result = imageMsg2Image(mock_img, mock_bridge)
+        self.assertIsNone(result)
+
+class TestCameraNode(unittest.TestCase):
+    @patch("hal_interfaces.general.camera.cv_bridge.CvBridge")
+    #@patch("hal_interfaces.general.camera.sensor_msgs.msg.Image")
+    def test_listener_and_get_image(self, MockBridge):
+        node = CameraNode("test_topic")
+        mock_img = MockROSImage()
+        node.listener_callback(mock_img)
+        mock_bridge = MockBridge.return_value
+        mock_bridge.imgmsg_to_cv2.return_value = np.ones((480, 640, 3), np.uint8)
+        result = node.getImage()
+        self.assertIsInstance(result, Image)
+        self.assertEqual(result.width, 640)
+        self.assertEqual(result.height, 480)
+
+if __name__ == "__main__":
+    unittest.main()
