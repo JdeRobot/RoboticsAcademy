@@ -24,11 +24,15 @@ function WebGUI() {
       let image;
       if (update.image_right) {
         image = JSON.parse(update.image_right);
-        setLeftImage(`data:image/png;base64,${image.image_right}`);
+        if (image.image_right != "" && image.shape_right instanceof Array) {
+          setRightImage(`data:image/png;base64,${image.image_right}`);
+        }
       }
       if (update.image_left) {
         image = JSON.parse(update.image_left);
-        setRightImage(`data:image/png;base64,${image.image_left}`);
+        if (image.image_left != "" && image.shape_left instanceof Array) {
+          setLeftImage(`data:image/png;base64,${image.image_left}`);
+        }
       }
 
       manager.send("gui", "ack");
