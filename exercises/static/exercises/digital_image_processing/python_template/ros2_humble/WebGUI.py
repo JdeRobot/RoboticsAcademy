@@ -45,7 +45,7 @@ class WebGUI(MeasuringThreadingGUI):
             time = message[-time_frame_size:]
 
             if base64_buffer.startswith("data:image/jpeg;base64,"):
-                base64_buffer = base64_buffer[len("data:image/jpeg;base64,"):]
+                base64_buffer = base64_buffer[len("data:image/jpeg;base64,") :]
 
             # Decodificar la cadena base64 a bytes
             image_data = base64.b64decode(base64_buffer)
@@ -112,7 +112,7 @@ class WebGUI(MeasuringThreadingGUI):
     def getImage(self):
         with self.frame_rgb_lock:
             return self.frame_rgb
-        
+
     def getSpecificImage(self, url):
 
         try:
@@ -124,7 +124,9 @@ class WebGUI(MeasuringThreadingGUI):
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
             if img is None:
-                print(f"Warning: Could not decode image from {url}. It might not be a valid image format.")
+                print(
+                    f"Warning: Could not decode image from {url}. It might not be a valid image format."
+                )
             return img
 
         except requests.exceptions.RequestException as e:
@@ -133,7 +135,7 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
             return None
-    
+
     def showTwoImages(self, image1, image2, border_width=5, border_color=(0, 0, 0)):
         if image1 is None or image2 is None:
             print("Error: Both images must be valid OpenCV images to combine.")
@@ -143,15 +145,25 @@ class WebGUI(MeasuringThreadingGUI):
         h2, w2, _ = image2.shape
 
         if h1 != h2:
-            print(f"Warning: Images have different heights ({h1} vs {h2}). Resizing to match taller image.")
+            print(
+                f"Warning: Images have different heights ({h1} vs {h2}). Resizing to match taller image."
+            )
             max_height = max(h1, h2)
             if h1 < max_height:
-                image1 = cv2.resize(image1, (int(w1 * (max_height / h1)), max_height), interpolation=cv2.INTER_AREA)
+                image1 = cv2.resize(
+                    image1,
+                    (int(w1 * (max_height / h1)), max_height),
+                    interpolation=cv2.INTER_AREA,
+                )
             if h2 < max_height:
-                image2 = cv2.resize(image2, (int(w2 * (max_height / h2)), max_height), interpolation=cv2.INTER_AREA)
+                image2 = cv2.resize(
+                    image2,
+                    (int(w2 * (max_height / h2)), max_height),
+                    interpolation=cv2.INTER_AREA,
+                )
         else:
             max_height = h1
-            
+
         border = np.full((max_height, border_width, 3), border_color, dtype=np.uint8)
 
         combined_image = np.hstack((image1, border, image2))
