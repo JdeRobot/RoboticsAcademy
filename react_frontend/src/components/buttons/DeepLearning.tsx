@@ -7,7 +7,7 @@ import React from "react";
 const DeepLearningButton = ({
   setModel,
 }: {
-  setModel: (model: string) => void;
+  setModel: (model: ArrayBuffer) => void;
 }) => {
   const theme = useAcademyTheme();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,8 +30,7 @@ const DeepLearningButton = ({
     console.log("====================================");
 
     // Set the model in the DeepLearningModel component
-    const enc = new TextDecoder("utf-8");
-    setModel(enc.decode(buffer));
+    setModel(buffer);
     // Update the state with file details
     setFileName(file.name);
   };

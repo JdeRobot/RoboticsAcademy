@@ -25,7 +25,7 @@ const PlayPauseButton = ({
   manager: CommsManager | null;
   appRunning: boolean;
   setAppRunning: (running: boolean) => void;
-  dlModel: string;
+  dlModel: ArrayBuffer | undefined;
   hasDLModel: boolean;
 }) => {
   const theme = useAcademyTheme();
@@ -126,7 +126,7 @@ const PlayPauseButton = ({
 
       // add onnx file to the zip if it exists
       if (hasDLModel) {
-        if (dlModel) {
+        if (dlModel !== undefined) {
           commonsZip.file("model.onnx", dlModel);
         } else {
           throw new Error("No ONNX model found.");
