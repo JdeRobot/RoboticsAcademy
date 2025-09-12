@@ -43,7 +43,7 @@ const ExerciseHeader = ({
 }) => {
   const theme = useAcademyTheme();
   const [appRunning, setAppRunning] = useState(false);
-  const [dlModel, setDLModel] = useState<string>("");
+  const [dlModel, setDLModel] = useState<ArrayBuffer | undefined>();
 
   const updateState = (e: any) => {
     setAppRunning(e.detail.state === states.RUNNING);
