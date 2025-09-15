@@ -5,17 +5,18 @@
 # Instructions for developers
 - [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4) 
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
+    - [Developer environment set up via script _(recommended set up)_](#automatic-script)
+    - [Developer environment set up via docker-compose _(recommended set up for __Windows Users__)_](#docker-compose)
 - [How to use nvidia](#How-to-use-nvidia)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
-- [How to create a React based exercise](#How-to-create-a-React-based-exercise)
-- [Guidelines to render a React based exercise](#Guidelines-to-render-a-React-based-exercise)
 
 <a name="How-to-setup-the-developer-environment"></a>
 ## How to setup the developer environment 
 
-Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are two different ways of developing in RA: 
+Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are three different ways of developing in RA: 
 
+<a name="automatic-script"></a>
 ### Using automatic script (recommended)
 
 We provide an sh script that configures and runs automatically a developing environment:
@@ -72,8 +73,8 @@ cd /RoboticsAcademy
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 17
-nvm use 17
+nvm install 20
+nvm use 20
 npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
@@ -123,24 +124,27 @@ Now you can launch Robotics Academy using the followings commands:
 * Automatic GPU selection
 
 ```bash
-docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 * Automatic GPU selection (Without Nvidia)
 
 ```bash
-docker run --rm -it --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it --device /dev/dri -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 * Only CPU
 
 ```bash
-docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 [how to generate a RADI]: ./generate_a_radi.md
 
-### Using Docker compose
+<a name="docker-compose"></a>
+### Using Docker compose (Recommended for Windows users)
+
+__*NOTE*__: If you are following this tutorial as a Windows users, please follow all these steps but using WSL (Linux kernel for Windows). Please visit the next [link](https://learn.microsoft.com/en-us/windows/wsl/install) in case you don't have WSL installed.
 
 Docker Compose is a tool for defining and running multi-container applications. It is the key to unlocking a streamlined and efficient development and deployment experience. Compose makes easy to manage services, networks, and volumes in a single, comprehensible YAML configuration file. Then, with a single command, you create and start all the services from your configuration file. In this YAML file we provide all the configurations needed for a smooth development experience, mainly ports and volumes. This method works by binding your local folder to the appropiate place inside a RoboticsBackend container, where all the dependencies are installed. 
 
@@ -164,26 +168,47 @@ git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b <src-bra
 
 For the moment, the RAM folder MUST be called src, and the previous command takes care of that. You can create branches and commits from that folder without any issues. 
 
-4) Build the REACT frontend
+4) Creation _commons.zip_
+
+In order for the front-end to build, you need to manually create the commons zip, that will be used to pass those files to the Robotics Backend.
+
+```
+# Prepare the commons zip file
+cd common
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+```
+
+5) Build the REACT frontend
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-nvm install 17
-nvm use 17
+nvm install 20
+nvm use 20
 npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
 Please take into consideration that the `yarn run dev` script will continously watch for changes in the frontend, so you should execute this commands in a separate terminal. 
 
-5) Copy the desired compose config into the main RA folder
+6) Copy the desired compose config into the main RA folder
 ```
 cp compose_cfg/<your desired compose cfg> docker-compose.yaml
 ```
 
-Feel free to study the configs, and adapt/create new ones suitable for your needs
+Feel free to study the configs, and adapt/create new ones suitable for your needs.
 
-6) Start Docker Compose
+__*NOTE*__: As a Windows user, if you are willing to use GPU acceleration, there is a docker-compose file prepared for that BUT ONLY AVAILABLE with Nvidia GPUs (and WSL). Visit the following links [WSL + CUDA](https://learn.microsoft.com/en-us/windows/ai/directml/gpu-cuda-in-wsl), [WSL + Docker Desktop](https://docs.docker.com/desktop/features/wsl) to set-up Nvidia CUDA on WSL.
+
+7) Start Docker Compose
 ```
 docker-compose up
 ```
@@ -198,19 +223,19 @@ docker-compose down
 ```
 When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution. 
 
-**Note: How to update Robotics Academy local deployment with Node 17 and sass** 
+**Note: How to update Robotics Academy local deployment with Node 20 and sass** 
 
-Robotics Academy has been updated to use Node 17 and sass. If you have a Robotics Academy local deployment and you don't want to make a new one, you can follow the next instructions to update your local deployment in order to use both dependencies: 
+Robotics Academy has been updated to use Node 20 and sass. If you have a Robotics Academy local deployment and you don't want to make a new one, you can follow the next instructions to update your local deployment in order to use both dependencies: 
 
 1) Go into RoboticsAcademy folder
 ```
 cd RoboticsAcademy/ 
  ```
 2) Pull the new changes from Robotics Academy humble-devel branch into your local branch
-3) Install and use Node 17
+3) Install and use Node 20
  ```
-nvm install 17
-nvm use 17
+nvm install 20
+nvm use 20
  ```
 4) Reinstall yarn and rebuild the REACT frontend
  ```
@@ -218,9 +243,9 @@ cd react_frontend/
 yarn install
 yarn run dev
  ```
-Now, you can continue using your local deployment with Node 17 and sass. 
+Now, you can continue using your local deployment with Node 20 and sass. 
 
-**Note:** If you have problems during this process, use the following command before installing Node 17: 
+**Note:** If you have problems during this process, use the following command before installing Node 20: 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash 
  ```
@@ -279,11 +304,28 @@ sudo systemctl restart docker
 
 <a name="How-to-add-a-new-exercise"></a>
 ## How to add a new exercise
-To include a new exercise, add the folder with the exercise contents in exercises/static/exercises following the file name conventions:
-- ```python_template/ros_version```: used for the python templates needed to compose the user code
-- ```react-components```: exercise specific react components
+
+To create a new exercise you must complete this 2 sections:
+
+### Create the Exercise Folder with the source code and frontend
+
+Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/static/exercises".
+
+Inside that folder create 2 new ones with the following names:
+
+- ```python_template/<ros_version>```: for example for ROS2 Humble replace `<ros_version>` with `ros2_humble`.
+- ```react-components```
+
+#### Source code: inside `python_template/<ros_version>`
+
+An exercise must contain this 3 files:
+
+- **WebGUI.py**: used for the interactions between exercise and frontend.
+- **HAL.py**: Hardware Abstraction Layer for accesing the robot data.
+- **Frequency.py**: needed for frequency control of iterative code.
 
 There are a three python packages to help the development of a new exercise:
+
 - [Hal Interfaces][]: provides the hardware abstraction layer for various components
 - [Gui Interfaces][]: provides with various base GUI's for easy development
 - [Console Interfaces][]: provides control of the console
@@ -293,6 +335,76 @@ There are a three python packages to help the development of a new exercise:
 [Console Interfaces]: ../common/console_interfaces/README.md
 
 For knowing how to use each package, please follow the links in the list above.
+
+#### Frontend: inside `react-components`
+
+An exercise must contain this file:
+
+- **WebGUI.js**: used for the exercise frontend.
+
+```javascript
+import { useState, useEffect } from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
+import noImage from "../../assets/img/noImage.png";
+
+const WebGUI = () => {
+  const [image, setImage] = useState(noImage);
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
+    const callback = (message) => {
+      const update = message.data.update;
+      if (update.image) {
+        const image = JSON.parse(update.image);
+        setImage(`data:image/png;base64,${image.image}`);
+
+        // Send the ACK of the img
+        manager.send("gui", "ack");
+      }
+    };
+
+    listen_key();
+    manager.subscribe(events.UPDATE, callback);
+
+    return () => {
+      manager.unsubscribe(events.UPDATE, callback);
+    };
+  }, [manager]);
+
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        justifyContent: "center",
+      }}
+    >
+      <img className="image" id="gui_canvas" src={image} />
+    </div>
+  );
+};
+
+export default WebGUI;
+```
+
+You may add as many JavaScript helper files needed inside a helper directory, and as many CSS files inside a css folder.
+
+If there is need for additional resources such as images, you may add them inside a resources folder.
+
+### Add the exercise to the database
 
 It is also necessary to add the template for the frontend in the folder exercises/templates/exercises.
 
@@ -309,7 +421,7 @@ An exercise entry in the database must include the following data:
 - ```description```: description to display on the exercise list
 - ```tags```: an exercise must include at least one ROS tag ("ROS2"). The exercise will only be shown on the exercise list when the RoboticsBackend ROS version installed is listed in the tags. Tags are also used by the search bar.
 - ```status```: changes the state indicator (ACTIVE = green; PROTOTYPE = yellow; INACTIVE = red)
-- ```language```: programming language used
+- ```url```: url of the exercise documentation
 
 <a name="Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises"></a>
 ## Steps to change models from CustomRobots in RoboticsAcademy exercises.
@@ -334,63 +446,10 @@ An exercise entry in the database must include the following data:
 
 2. On Terminal open the directory where your project or code is located at (Example:- ```cd ~/my_project```)
 
-3. Append ```-v $(pwd):/location_in_radi``` to your ```docker run``` cli command used to run your container. (Example:- ```docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 7164:7164 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend -v $(pwd):/home jderobot/robotics-academy```)
+3. Append ```-v $(pwd):/location_in_radi``` to your ```docker run``` cli command used to run your container. (Example:- ```docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 7164:7164 -p 6080:6080 -p 6081:6081 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend -v $(pwd):/home jderobot/robotics-academy```)
 
 4. This will import your local directory inside the docker container, if you have used the example command like above where the location the command is being run is mounted to the home folder inside the docker container you will simply be able to see all the local mounted directories inside the /home of the RoboticsBackend.
 
 5. To make sure that your local directory has been mounted correctly to the correct location inside RoboticsBackend, navigate to http://localhost:1108/vnc.html after launching an exercise(This involves clicking on the launch button of any exercise of your choice) and this will open an vnc console Instance where you may verify the integrity of the mount.
 
    ![Screenshot from 2022-08-22 01-31-16](https://user-images.githubusercontent.com/58532023/185808802-3a207cb5-b2df-466f-a7f1-70864ff34206.png)
-
-<a name="How-to-create-a-React-based-exercise"></a>
-## How to create a React based exercise
-
-All the components build in React are present inside the "react_frontend/src/components".
-1. Create the Main Exercise Component follow as -
-
-Add Exercise theory url inside the "react_frontend/src/helpers/TheoryUrlGetter.js"
-```angular2html
-<Box>
-      <ViewProvider>
-        <ExerciseProvider>
-          <MainAppBar />
-          <View url={THEORY_URL."exercise_id"} exercise="{<ExerciseIdView />}" />
-        </ExerciseProvider>
-      </ViewProvider>
-</Box>
-```
-
-The **View Component**  handles the different views - theory, exercise and code view.
-2. Create an Exercise View Component which contains all the components required in an exercise.
-
-<a name="Guidelines-to-render-a-React-based-exercise"></a>
-## Guidelines to render a React based exercise 
-
-1. Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/static/exercises"
-     
-This folder contains the static files related to the exercise, it consists of python scripts handling the GUI, Brain and exercise.
-2. Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/templates/exercises"
-
-This folder contains exercise.html which serves React from Django server with the help of tag "react_component". For example -
-```angular2html
-    {% react_component components/exercises/"exercise_id" %} 
-     // Here you can add Child Components [ React Component or HTML ]
-    {% end_react_component %}
-```
-```bash
-├── react_frontend
-│   ├── src
-│       ├── components
-│           ├── exercises 
-├── exercises
-│   ├── static
-│   ├── templates  
-└── 
-```
-| Relative path | Absolute path |
-| ------------- | ------------- |
-| components/exercises/3DReconstructionReact | react_frontend/src/components/exercises/3DReconstructionReact |
-
-Make sure to use the relative path while rendering the component
-3. Follow the steps to [add a new exercise in Django ](#How-to-add-a-new-exercise)
-

@@ -1,0 +1,47 @@
+services:
+  my-postgres:
+    image: jderobot/robotics-database:latest
+    container_name: universe_db
+    environment:
+      POSTGRES_DB: academy_db 
+      POSTGRES_USER: user-dev 
+      POSTGRES_PASSWORD: robotics-academy-dev
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: pg_isready -U user-dev -d academy_db
+      interval: 3s
+      timeout: 1s
+      retries: 20
+
+  robotics-academy:
+    image: jderobot/robotics-academy:latest
+    container_name: developer-container
+    command:  "-s"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+    runtime: nvidia
+    devices:
+      - /dev/dri
+    environment:
+      - LD_LIBRARY_PATH=/usr/lib/wsl/lib
+    ports:
+      - "7164:7164"
+      - "7163:7163"
+      - "6080:6080"
+      - "6081:6081"
+      - "1108:1108"
+    volumes:
+      - /usr/lib/wsl:/usr/lib/wsl
+    tty: true
+    stdin_open: true
+    depends_on: 
+      my-postgres:
+        condition: service_healthy
