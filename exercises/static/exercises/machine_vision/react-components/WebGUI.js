@@ -1,14 +1,24 @@
-import * as React from "react";
-import noImage from "../../assets/img/noImage.png";
-
 import "./css/GUICanvas.css";
+import noImage from "../../assets/img/noImage.png";
+import { useState, useEffect} from "react";
+import { events } from "jderobot-commsmanager";
+import { useExercise } from "Contexts/ExerciseContext";
 
-function SpecificMachineVision() {
-  React.useEffect(() => {
-    console.log("TestShowScreen subscribing to ['update'] events");
+
+const WebGUI = () => {
+  const exerciseContext = useExercise();
+  const [manager, setManager] = useState(exerciseContext.manager);
+
+  useEffect(() => {
+    setManager(exerciseContext.manager);
+  }, [exerciseContext]);
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
     const callback = (message) => {
-      console.log(message);
-
       if (message.data.update.image_right) {
         console.log("image_right");
         drawImage(message.data.update);
@@ -19,22 +29,15 @@ function SpecificMachineVision() {
       }
 
       // Send the ACK of the msg
-      window.RoboticsExerciseComponents.commsManager.send("gui", "ack");
+      manager.send("gui", "ack");
     };
 
-    window.RoboticsExerciseComponents.commsManager.subscribe(
-      [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-      callback
-    );
+    manager.subscribe(events.UPDATE, callback);
 
     return () => {
-      console.log("TestShowScreen unsubscribing from ['state-changed'] events");
-      window.RoboticsExerciseComponents.commsManager.unsubscribe(
-        [window.RoboticsExerciseComponents.commsManager.events.UPDATE],
-        callback
-      );
+      manager.unsubscribe(events.UPDATE, callback);
     };
-  }, []);
+  }, [manager]);
 
   return (
     <div
@@ -61,4 +64,4 @@ function SpecificMachineVision() {
   );
 }
 
-export default SpecificMachineVision;
+export default WebGUI;
