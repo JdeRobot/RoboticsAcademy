@@ -56,7 +56,7 @@
     "@react-three/fiber": "8.15.12",
     "@types/react-dom": "^18.2.0",
     "@types/styled-components": "^5.1.34",
-    "axios": "^1.11.0",
+    "axios": "^1.12.0",
     "glob": "^8.0.3",
     "jderobot-commsmanager": "1.0.3",
     "jderobot-ide-interface": "^0.2.2",
