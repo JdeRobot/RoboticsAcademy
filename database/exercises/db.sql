@@ -184,7 +184,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 37	20	36
 38	21	37
 39	24	35
-40	25	34
+40	25	38
 \.
 -- 30  16  3
 
