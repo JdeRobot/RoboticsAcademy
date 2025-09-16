@@ -4,6 +4,7 @@ import { AcademyTheme } from "Types/index";
 import React from "react";
 
 interface AcademyThemeProviderProps {
+  theme?: any;
   children?: ReactNode;
 }
 
@@ -97,6 +98,7 @@ const AcademyThemeContext = createContext(darkTheme);
 export const useAcademyTheme = () => useContext(AcademyThemeContext);
 
 export const AcademyThemeProvider = ({
+  theme,
   children,
 }: AcademyThemeProviderProps) => {
   const [currentTheme, setCurrentTheme] = useState<AcademyTheme>(
@@ -121,6 +123,14 @@ export const AcademyThemeProvider = ({
     }
   };
 
+  if (theme) {
+    return (
+      <AcademyThemeContext.Provider value={theme}>
+        <ThemeProvider theme={currentTheme}>{children}</ThemeProvider>
+      </AcademyThemeContext.Provider>
+    );
+  }
+
   return (
     <AcademyThemeContext.Provider
       value={{ ...currentTheme, switch: themeSwitchHandler }}
@@ -129,43 +139,3 @@ export const AcademyThemeProvider = ({
     </AcademyThemeContext.Provider>
   );
 };
-
-// declare module "@mui/material/styles" {
-//   interface Palette {
-//     notConnected: Palette["primary"];
-//     loading: Palette["primary"];
-//     selector: Palette["primary"];
-//   }
-//   interface PaletteOptions {
-//     notConnected?: PaletteOptions["primary"];
-//     loading?: PaletteOptions["primary"];
-//     selector?: PaletteOptions["primary"];
-//   }
-// }
-
-// const theme = createTheme({
-//   palette: {
-//     mode: "light",
-//     primary: {
-//       main: "#ffa726",
-//     },
-//     secondary: {
-//       main: "#147aff",
-//     },
-//     success: {
-//       main: "#4CAF50",
-//     },
-//     notConnected: {
-//       main: "#757575",
-//     },
-//     loading: {
-//       main: "#E64A19",
-//     },
-//     selector: {
-//       main: "#329D9C",
-//     },
-//   },
-//   typography: {
-//     fontFamily: "Roboto",
-//   },
-// });
