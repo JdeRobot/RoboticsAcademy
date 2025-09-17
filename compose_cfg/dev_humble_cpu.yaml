@@ -1,6 +1,6 @@
 services:
   my-postgres:
-    image: jderobot/robotics-database:latest
+    image: jderobot/robotics-database:test
     container_name: universe_db
     environment:
       POSTGRES_DB: academy_db 
@@ -20,7 +20,7 @@ services:
       retries: 20
 
   robotics-academy:
-    image: jderobot/robotics-academy:latest
+    image: jderobot/robotics-academy:test
     container_name: developer-container
     command:  "-s"
     ports:
