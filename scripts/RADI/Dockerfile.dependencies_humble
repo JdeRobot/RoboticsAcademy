@@ -455,21 +455,24 @@ RUN . /opt/ros/humble/setup.sh \
   ############################################################### \
   && $O3DE_ROOT/python/get_python.sh \
   && $O3DE_ROOT/scripts/o3de.sh register -ep $O3DE_ROOT \
-  && $O3DE_ROOT/scripts/o3de.sh register -agp $O3DE_EXTRAS_ROOT/Gems/
+  && $O3DE_ROOT/scripts/o3de.sh register --all-gems-path $O3DE_EXTRAS_ROOT/Gems/ \
+  && $O3DE_ROOT/scripts/o3de.sh register --all-templates-path $O3DE_EXTRAS_ROOT/Templates/
 
 WORKDIR /data/workspace
 
 # create in project from template in o3de-extras
 RUN ./o3de/scripts/o3de.sh create-project \
     --project-path ${PROJECT_DEMO_ROOT} \
-    --template-path ./o3de-extras/Templates/Ros2ProjectTemplate/
+    --template-path ./o3de-extras/Templates/Ros2ProjectTemplate
 
 WORKDIR ${PROJECT_DEMO_ROOT}
 
 RUN . /opt/ros/humble/setup.sh \
-    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DLY_STRIP_DEBUG_MODULES=ON
+    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_MODULES=ON
 
 WORKDIR ${PROJECT_DEMO_ROOT}
 
 RUN . /opt/ros/humble/setup.sh \
-    && cmake --build build/linux --target Editor ${PROJECT_NAME}.GameLauncher --config profile 
+    && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets ${PROJECT_NAME}.GameLauncher  
+    
+WORKDIR /
