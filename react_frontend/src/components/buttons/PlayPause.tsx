@@ -122,7 +122,7 @@ const PlayPauseButton = ({
         commonsZip.file(file.name, file.content);
       });
 
-      commonsZip.file("academy.py", codeRef.current);
+      // commonsZip.file("academy.py", codeRef.current);
 
       // add onnx file to the zip if it exists
       if (hasDLModel) {
@@ -142,8 +142,8 @@ const PlayPauseButton = ({
         // Send the base64 encoded blob
         if (base64data) {
           await manager.run(
-            "/workspace/code/academy.py",
-            ["academy.py"],
+            "/workspace/code/academy.cpp",
+            [""],
             base64data as string
           );
           console.log("Dockerized app started successfully");

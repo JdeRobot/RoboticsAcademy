@@ -28,7 +28,7 @@ def user_code_zip(request):
 
     exercise_path = os.path.join(
         settings.BASE_DIR,
-        f"exercises/static/exercises/{project.exercise_id}/python_template/ros2_humble",
+        f"exercises/static/exercises/{project.exercise_id}/cpp_template/ros2_humble",
     )
 
     print(exercise_path)
@@ -36,8 +36,14 @@ def user_code_zip(request):
 
     try:
         for x in os.listdir(exercise_path):
-            with open(os.path.join(exercise_path, x)) as f:
-                files.append({"name": x, "content": f.read()})
+            new_path = os.path.join(exercise_path, x)
+            if os.path.isdir(new_path):
+                for y in os.listdir(new_path):
+                    with open(os.path.join(new_path, y)) as f:
+                        files.append({"name": y, "content": f.read()})
+            else:
+                with open(new_path) as f:
+                    files.append({"name": x, "content": f.read()})
 
         return JsonResponse({"success": True, "files": files})
 
