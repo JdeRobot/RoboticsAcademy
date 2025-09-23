@@ -1,18 +1,21 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef } from "react";
 import { updatePath, addToPath } from "./helpers/VacuumCleanerHelper";
 import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
 import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
 import Vacuum from "../resources/images/vacuum.svg";
-
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 
- const WebGUI = () => {
+const WebGUI = () => {
   const exerciseContext = useExercise();
   const [vacuumPose, setVacuumPose] = useState(null);
   const [path, setPath] = useState("");
+  const [userImage, setUserImage] = useState(undefined);
+  const canvasRef = useRef(null);
   const [manager, setManager] = useState(exerciseContext.manager);
   var trail = [];
   var lastPose = undefined;
@@ -47,7 +50,7 @@ import "./css/GUICanvas.css";
         const content = pose.split(",").map((item) => parseFloat(item));
         lastPose = content;
 
-        var img = document.getElementById("exercise-img");
+        var img = canvasRef.current
         //or however you get a handle to the IMG
         var width = 1013 / 300 / (1013 / img.clientWidth);
         var height = 1012 / 150 / (1012 / img.clientHeight);
@@ -59,19 +62,9 @@ import "./css/GUICanvas.css";
       }
 
       if (updateData.image) {
-        let canvas = document.getElementById("gui-canvas-numpy");
-        //Parse encoded image data and decode it
-        function decode_utf8(s) {
-          return decodeURIComponent(escape(s));
-        }
-        var image_data = JSON.parse(updateData.image),
-          source = decode_utf8(image_data.image),
-          shape = image_data.shape;
-
-        if (source !== "") {
-          canvas.src = "data:image/png;base64," + source;
-          canvas.width = shape[1];
-          canvas.height = shape[0];
+        let image = JSON.parse(updateData.image);
+        if (image.shape instanceof Array) {
+          setUserImage(`data:image/png;base64,${image.image}`);
         }
       }
 
@@ -80,16 +73,17 @@ import "./css/GUICanvas.css";
     };
 
     const stateCallback = (message) => {
-      console.log(message);
       if (message.data.state === "tools_ready") {
-        try {
-          setPath("");
-          trail = [];
-        } catch (error) {}
+        setPath("");
+        setUserImage(undefined);
+        trail = [];
       }
     };
 
-    resizeObserver.observe(document.getElementById("exercise-img"));
+    var img = canvasRef.current
+    if (img) {
+      resizeObserver.observe(img);
+    }
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
@@ -101,20 +95,8 @@ import "./css/GUICanvas.css";
   }, [manager]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-      }}
-    >
-      <img
-        src={houseMapDirty}
-        alt=""
-        className="exercise-canvas"
-        id="exercise-img"
-      />
+    <WebGUIContainer>
+      <WebGUIImage reference={canvasRef} id="map-img" src={houseMapDirty} style={{ left: "0" }} />
       <div className="overlay" id="map-container">
         {vacuumPose && (
           <div
@@ -144,7 +126,7 @@ import "./css/GUICanvas.css";
             height="100%"
             width="100%"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ zIndex: 2, position: "absolute" }}
+            style={{ zIndex: 2, position: "absolute", left: 0 }}
           >
             <path
               xmlns="http://www.w3.org/2000/svg"
@@ -159,19 +141,9 @@ import "./css/GUICanvas.css";
           </svg>
         )}
       </div>
-      <img
-        id="gui-canvas-numpy"
-        width="400"
-        height="400"
-        style={{
-          position: "absolute",
-          left: "50%",
-          width: "50%",
-          height: "100%",
-        }}
-      ></img>
-    </div>
+      <WebGUIImage src={userImage} id="map-img" style={{ left: "50%" }} />
+    </WebGUIContainer>
   );
-}
+};
 
-export default WebGUI
+export default WebGUI;
