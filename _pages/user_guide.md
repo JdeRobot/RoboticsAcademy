@@ -66,9 +66,21 @@ docker pull jderobot/robotics-academy:latest
 
 * It is recommended to use the latest image. However, older distributions of Robotics Academy can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
 
-### MacOs (PLACEHOLDER!)
+### MacOs Users
 
-* Remember to add minium docker version to run a Robotics Academy.
+1. Download [Docker](https://docs.docker.com/desktop/setup/install/mac-install/) **(download latest version)**
+
+2. Pull the current distribution of Robotics Academy and of Robotics Academy Database **(currently version 5.6.2)**:
+
+```bash
+docker pull jderobot/robotics-database:latest
+docker pull jderobot/robotics-academy:latest
+```
+
+* In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+* It is recommended to use the latest image. However, older distributions of Robotics Academy can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+
 
 <a name="launch"></a>
 
@@ -119,6 +131,14 @@ Once these requirements are ready, you should be able to run Robotics Academy wi
 
 ```bash
 docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+```
+
+### MacOs Users
+
+* Run **Only CPU**
+
+```bash
+docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 ### Tips for Docker
@@ -213,9 +233,19 @@ docker pull jderobot/robotics-backend:latest
 
 * It is recommended to use the latest image. However, older distributions of Robotics Backend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
 
-### MacOs (PLACEHOLDER!)
+### MacOs Users
 
-* Remember to add minium docker version to run a Robotics Academy.
+1. Download [Docker](https://docs.docker.com/desktop/setup/install/mac-install/) **(download latest version)**
+
+2. Pull the current distribution of Robotics Backend **(currently version 4.8.0)**:
+
+```bash
+docker pull jderobot/robotics-backend:latest
+```
+
+* In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
+
+* It is recommended to use the latest image. However, older distributions of Robotics Backend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
 
 ## 5. How to launch the Robotics Backend
 
@@ -252,6 +282,14 @@ Once these requirements are ready, you should be able to run RoboticsBackend wit
 
 ```bash
 docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
+```
+
+### MacOs Users
+
+* Run **Only CPU**
+
+```bash
+docker run --rm -it --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
 ```
 
 ### Tips for Docker
