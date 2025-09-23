@@ -5,8 +5,8 @@ ram_version="https://github.com/JdeRobot/RoboticsApplicationManager.git"
 branch="humble-devel"
 radi_version="humble"
 gpu_mode="false"
-nvidia="false"
-compose_file="dev_humble_cpu"
+nvidia="true"
+compose_file="dev_humble_nvidia"
 
 # Function to display help message
 show_help() {

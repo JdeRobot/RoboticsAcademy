@@ -121,7 +121,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	&& apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
-RUN wget https://xpra.org/xorg.conf \
+RUN curl -L -o xorg.conf https://xpra.org/xorg.conf || echo "Download failed" \
   && rm -rf /tmp/*
 
 # Install noVNC and websockify
@@ -226,6 +226,7 @@ RUN pip3 install \
         pycodestyle==2.8 \
         cmakelint \
         cpplint \
+        transforms3d \
         colcon-lcov-result \
         PySimpleGUI-4-foss
 
