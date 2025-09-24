@@ -82,7 +82,7 @@ const ExerciseHeader = ({
         </StyledProject>
         <StyledHeaderButtonContainer>
           <HomeButton />
-          {/* BUG: does not change the editor color <ThemeButton /> */}
+          <ThemeButton />
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton />
           <DownloadButton />
