@@ -25,20 +25,25 @@ import {
   LayoutButton,
   TerminateUniverseButton,
   ThemeButton,
+  LanguageButton,
 } from "Components/buttons";
 import { Layout } from "jderobot-ide-interface";
 
 const ExerciseHeader = ({
   project,
+  language,
   url,
   manager,
   setLayout,
+  setLanguage,
   hasDLModel,
 }: {
   project: string;
+  language: string;
   url?: string;
   manager: CommsManager | null;
   setLayout: (layout: Layout) => void;
+  setLanguage: (language: string) => void;
   hasDLModel: boolean;
 }) => {
   const theme = useAcademyTheme();
@@ -82,7 +87,8 @@ const ExerciseHeader = ({
         </StyledProject>
         <StyledHeaderButtonContainer>
           <HomeButton />
-          {/* BUG: does not change the editor color <ThemeButton /> */}
+          <ThemeButton />
+          <LanguageButton language={language} setter={setLanguage}/>
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton />
           <DownloadButton />

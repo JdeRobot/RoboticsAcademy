@@ -32,10 +32,19 @@ while True:
     Frequency.tick()
 `;
 
-const base_file = {
+const base_file_python = {
   name: "academy.py",
   is_dir: false,
   path: "academy.py",
+  group: "code",
+  access: true,
+  files: [],
+};
+
+const base_file_cpp = {
+  name: "academy.cpp",
+  is_dir: false,
+  path: "academy.cpp",
   group: "code",
   access: true,
   files: [],
@@ -65,6 +74,8 @@ const ExerciseContainer = ({
     "both"
   );
 
+  const [language, setLanguage] = useState<string>("python");
+  const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
   const [code, _setCode] = useState<string>(defaultCode);
   const codeRef = useRef<string>(defaultCode);
 
@@ -177,15 +188,28 @@ const ExerciseContainer = ({
     }
   });
 
+  useEffect(() => {
+    if (language === "cpp") {
+      setBaseFile(base_file_cpp)
+    } else {
+      setBaseFile(base_file_python)
+    }
+  }, [language]);
+
+  useEffect(() => {
+    console.log(baseFile)
+  }, [baseFile]);
+
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
-        const func = async () => {
+        const func = async (file: Entry) => {
+          console.log(file)
           console.log(codeRef.current);
           return codeRef.current;
         };
 
-        return func();
+        return func(file);
       },
       save: (project: string, file: Entry, content: string) => {
         console.log("saveFile", content);
@@ -212,6 +236,8 @@ const ExerciseContainer = ({
       <ExerciseProvider manager={manager} code={codeRef.current}>
         <ExerciseHeader
           project={project}
+          language={language}
+          setLanguage={setLanguage}
           manager={manager}
           url={url}
           setLayout={setLayout}
@@ -228,7 +254,7 @@ const ExerciseContainer = ({
           statusBarComponents={statusBar}
           explorers={[]}
           extraEditors={[]}
-          baseFile={base_file}
+          baseFile={baseFile}
           baseUniverse={universes ? universes[0] : undefined}
         />
       </ExerciseProvider>
