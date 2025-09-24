@@ -1,12 +1,12 @@
 import * as React from "react";
-import { useState, useEffect, useRef } from "react";
-import { Box } from "@mui/material";
+import { useState, useEffect, } from "react";
 import "./css/GUICanvas.css";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
 import { displayLapTime } from "./helpers/showLapTimeFollowLine";
 import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIImage from "Components/exercise/WebGUIImage";
 
 import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
@@ -15,7 +15,7 @@ import ngbCircuit from "../resources/images/ngb_circuit.png";
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
-  const canvasRef = useRef(null);
+  const [image, setImage] = useState();
   const [lapTime, setLapTime] = useState(null);
   const [carPose, setCarPose] = useState(null);
   const [circuitImg, setCircuitImg] = useState(defaultCircuit);
@@ -78,20 +78,8 @@ const WebGUI = () => {
     const updateCallback = (message) => {
       if (message.data.update.image) {
         const image = JSON.parse(message.data.update.image);
-        if (image.image) {
-          let canvas = document.getElementById("canvas");
-          //Parse encoded image data and decode it
-          function decode_utf8(s) {
-            return decodeURIComponent(escape(s));
-          }
-          var source = decode_utf8(image.image),
-            shape = image.shape;
-
-          if (source !== "") {
-            canvas.src = "data:image/png;base64," + source;
-            canvas.width = shape[1];
-            canvas.height = shape[0];
-          }
+        if (image.image != "" && image.shape instanceof Array) {
+          setImage(`data:image/png;base64,${image.image}`);
         }
         try {
           const pose = getCarPose(circuitName, message.data.update.map);
@@ -112,6 +100,7 @@ const WebGUI = () => {
       } else if (message.data.state === states.TOOLS_READY) {
         setCarPose(null);
         setLapTime(null);
+        setImage();
         updateCircuit(manager.getUniverse());
       }
     };
@@ -127,7 +116,7 @@ const WebGUI = () => {
 
   return (
     <WebGUIContainer>
-      <img ref={canvasRef} className={"exercise-canvas"} id="canvas"></img>
+      <WebGUIImage style={{width: "100%"}} src={image} />
       {lapTime && (
         <label className="overlay" id="lap-time">
           {lapTime} s
