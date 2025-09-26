@@ -21,16 +21,7 @@ import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRou
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import PrecisionManufacturingRoundedIcon from '@mui/icons-material/PrecisionManufacturingRounded';
-
-const defaultCode = `import WebGUI
-import HAL
-import Frequency
-# Enter sequential code!
-
-while True:
-    # Enter iterative code!
-    Frequency.tick()
-`;
+import { defaultCppCode, defaultPythonCode } from "Components/../constants/code";
 
 const base_file_python = {
   name: "academy.py",
@@ -76,8 +67,8 @@ const ExerciseContainer = ({
 
   const [language, setLanguage] = useState<string>("python");
   const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
-  const [code, _setCode] = useState<string>(defaultCode);
-  const codeRef = useRef<string>(defaultCode);
+  const [code, _setCode] = useState<string>(defaultPythonCode);
+  const codeRef = useRef<string>(defaultPythonCode);
 
   const setCode = (data: string) => {
     codeRef.current = data;
@@ -164,13 +155,15 @@ const ExerciseContainer = ({
       return;
     }
     try {
-      await manager.connect();
+      const currManager = CommsManager.getInstance();
+      await currManager.connect();
       getUniverseList(project);
-      console.log("Connected!", manager.getState());
+      console.log("Connected!", currManager.getState());
       connected.current = true;
-    } catch {
+      setManager(currManager);
+    } catch (e: unknown) {
       console.log("Connection failed, trying again!");
-      setTimeout(connectWithRetry, 1000);
+      setTimeout(connectWithRetry, 2000);
     }
   };
 
@@ -196,17 +189,15 @@ const ExerciseContainer = ({
     }
   }, [language]);
 
-  useEffect(() => {
-    console.log(baseFile)
-  }, [baseFile]);
-
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
         const func = async (file: Entry) => {
-          console.log(file)
-          console.log(codeRef.current);
-          return codeRef.current;
+          if (file.name === "academy.cpp") {
+            return defaultCppCode;
+          } else {
+            return defaultPythonCode;
+          }
         };
 
         return func(file);

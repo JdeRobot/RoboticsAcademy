@@ -95,6 +95,7 @@ const ExerciseHeader = ({
           <LayoutButton setLayout={setLayout} />
           <PlayPauseButton
             project={project}
+            language={language}
             manager={manager}
             appRunning={appRunning}
             setAppRunning={setAppRunning}

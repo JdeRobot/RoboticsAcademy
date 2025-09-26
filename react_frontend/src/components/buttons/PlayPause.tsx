@@ -15,6 +15,7 @@ import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 
 const PlayPauseButton = ({
   project,
+  language,
   manager,
   appRunning,
   setAppRunning,
@@ -22,6 +23,7 @@ const PlayPauseButton = ({
   hasDLModel,
 }: {
   project: string;
+  language: string;
   manager: CommsManager | null;
   appRunning: boolean;
   setAppRunning: (running: boolean) => void;
@@ -113,16 +115,29 @@ const PlayPauseButton = ({
 
     try {
       const zip = new JSZip();
-      const commonsZip = await zip.loadAsync(commons);
+      let commonsZip;
+      if (language === "python") {
+        commonsZip = await zip.loadAsync(commons);
+      } else {
+        commonsZip = zip
+      }
+      const extension = language === "cpp" ? "cpp" : "py";
+      var toLint = [""];
 
       const extraFiles: { name: string; content: string }[] =
-        await getProjectExtraFiles(project);
+        await getProjectExtraFiles(project, language);
 
       extraFiles.forEach((file) => {
         commonsZip.file(file.name, file.content);
       });
+      toLint = ["academy.py"];
 
-      // commonsZip.file("academy.py", codeRef.current);
+      // Fix: developer-container  |   File "/workspace/code/academy.cpp", line 34
+      // developer-container  |     100ms, std::bind(&FollowLineNode::control_cycle, this));
+      // developer-container  |       ^
+      // developer-container  | SyntaxError: invalid decimal literal 
+
+      commonsZip.file(`academy.${extension}`, codeRef.current);
 
       // add onnx file to the zip if it exists
       if (hasDLModel) {
@@ -142,8 +157,8 @@ const PlayPauseButton = ({
         // Send the base64 encoded blob
         if (base64data) {
           await manager.run(
-            "/workspace/code/academy.cpp",
-            [""],
+            `/workspace/code/academy.${extension}`,
+            toLint,
             base64data as string
           );
           console.log("Dockerized app started successfully");
