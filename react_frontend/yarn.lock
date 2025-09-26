@@ -5231,27 +5231,27 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jderobot-commsmanager@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.3.tgz#b39f6e4128b2f32ce0fd7ffe74f49e9f8db512e3"
-  integrity sha512-PA14QX3jXvAQKHC96vz3zYer+ILiOUL7g3PbqAAs7WFZMdTSjv243E63N33P/GeYHs8Ivd2R8m4KBaqrNeoHVw==
+jderobot-commsmanager@1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.11.tgz#c244f69e3c40da6920ff7525f274e72f493131c0"
+  integrity sha512-710/R15tezzSXBrGeKkHwYdL6SjfnGrba0U2eopHnPNWCvpLgSp02mplGrI+A2X8s0t5eX7CWmwOiwRg2BSnqA==
   dependencies:
     uuid "^11.1.0"
 
-jderobot-commsmanager@1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.4.tgz#c736e6019baac60cabf05964d330624c422e6dac"
-  integrity sha512-lAmq10+oE1zPP39mQ1xi6LZgSFyAiAEyBLhpq4qUcJL5fGE1rp9nUWNvSarf3UHj0XTw/WQ3ldSBuGrQEOV25A==
+jderobot-commsmanager@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.10.tgz#28d22f6b4f87ff9717f3a59e8a5f57c41f8cd0bf"
+  integrity sha512-iESO4+cVePmu3Q9alG3feasKV6P+I7eIhlLrF7+OEBLVMVlsjPyLEjEMod6bsDh1c7+/Suyl0aZWfnKF/nhHWg==
   dependencies:
     uuid "^11.1.0"
 
-jderobot-ide-interface@^0.2.7:
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.7.tgz#1895b88b3447b6ec472797fce1ecf4107a477d59"
-  integrity sha512-NZi1kvQu27PJekQ6ZHAOrGfW0tDTgUpxGcv7BtAthYPYU9iS5kLjY0/2/zfUE+DrfcmyF/OG5V0nCsPxrADNyg==
+jderobot-ide-interface@0.2.18:
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.18.tgz#7d57e4653e4efa81c4794205944ac405b4b1a9a8"
+  integrity sha512-2Yeo6BwdR/Zz0M2MREtj7pNkK72iJBJnMTVFjEiPY/+cQf+R1Kyd3aoNbAxy6i6I328OIdkVf/rFqUf0YyAltg==
   dependencies:
     "@monaco-editor/react" "^4.7.0"
-    jderobot-commsmanager "1.0.4"
+    jderobot-commsmanager "^1.0.10"
     jszip "^3.10.1"
     lodash "^4.17.21"
     monaco-editor "^0.52.2"
