@@ -28,6 +28,7 @@ cleanup() {
     docker compose down
   fi
   rm docker-compose.yaml
+  rm react_frontend/checksum.txt
   
   exit 0
 }
