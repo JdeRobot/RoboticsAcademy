@@ -63,10 +63,12 @@ WebGUI::WebGUI(string host = "2303")
 {
     net::io_context ioc;
     tcp::resolver resolver{ioc};
+    websocket::stream<tcp::socket> websocket{ioc};
 
     auto const results = resolver.resolve("ws://127.0.0.1", host);
-    auto ep = net::connect(WebGUI::ws.next_layer(), results);
-    WebGUI::ws.handshake(ep.address().to_string() + ":" + host, "/");
+    auto ep = net::connect(websocket.next_layer(), results);
+    websocket.handshake(ep.address().to_string() + ":" + host, "/");
+    WebGUI::ws = websocket;
     
     thread t1(WebGUI::on_message);
 }
@@ -92,7 +94,6 @@ void WebGUI::show_image(string image)
 }
 
 net::io_context ioc;
-tcp::resolver resolver{ioc};
 websocket::stream<tcp::socket> WebGUI::ws{ioc};
 
 #endif
