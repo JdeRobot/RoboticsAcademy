@@ -10,6 +10,8 @@ while True:
 
 export const defaultCppCode = `#include "geometry_msgs/msg/twist.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "HAL.hpp"
+#include "opencv2/opencv.hpp"
 
 using namespace std::chrono_literals; // NOLINT
 using std::placeholders::_1;
@@ -23,12 +25,6 @@ private:
   // Control cycle
   void control_cycle();
 
-  // Publisher
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr vel_pub_;
-
-  // Message
-  geometry_msgs::msg::Twist out_vel_;
-
   // Timer
   rclcpp::TimerBase::SharedPtr timer_;
 
@@ -38,7 +34,6 @@ private:
 FollowLineNode::FollowLineNode()
     : Node("follow_line_node")
 {
-  vel_pub_ = create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
 
   timer_ = create_wall_timer(
       100ms, std::bind(&FollowLineNode::control_cycle, this));
@@ -46,11 +41,10 @@ FollowLineNode::FollowLineNode()
 
 void FollowLineNode::control_cycle()
 {
-
-  out_vel_.linear.x = 1.0f;
-  out_vel_.angular.z = 1.0f;
-
-  // Publish data
-  vel_pub_->publish(out_vel_);
+  cv::Mat img = HAL::get_image();
+  HAL::set_v(1.0f);
+  HAL::set_w(1.0f);
 }
+
+
 `;
