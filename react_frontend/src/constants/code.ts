@@ -8,43 +8,18 @@ while True:
     Frequency.tick()
 `;
 
-export const defaultCppCode = `#include "geometry_msgs/msg/twist.hpp"
-#include "rclcpp/rclcpp.hpp"
-#include "HAL.hpp"
+export const defaultCppCode = `#include "HAL.hpp"
+#include "WebGUI.hpp"
 #include "opencv2/opencv.hpp"
 
-using namespace std::chrono_literals; // NOLINT
-using std::placeholders::_1;
-
-class FollowLineNode : public rclcpp::Node
-{
-public:
-  FollowLineNode();
-
-private:
-  // Control cycle
-  void control_cycle();
-
-  // Timer
-  rclcpp::TimerBase::SharedPtr timer_;
-
-  rclcpp::Time state_timestamp_;
-};
-
-FollowLineNode::FollowLineNode()
-    : Node("follow_line_node")
-{
-
-  timer_ = create_wall_timer(
-      100ms, std::bind(&FollowLineNode::control_cycle, this));
+void exercise() {
+    while (true)
+    {
+        cv::Mat img = HAL::get_image();
+        WebGUI::show_image("Hola");
+        HAL::set_v(1.0f);
+        HAL::set_w(1.0f);
+    }
 }
-
-void FollowLineNode::control_cycle()
-{
-  cv::Mat img = HAL::get_image();
-  HAL::set_v(1.0f);
-  HAL::set_w(1.0f);
-}
-
 
 `;
