@@ -33,18 +33,21 @@ const ExerciseHeader = ({
   project,
   language,
   url,
-  manager,
   setLayout,
   setLanguage,
   hasDLModel,
+  connectManager,
 }: {
   project: string;
   language: string;
   url?: string;
-  manager: CommsManager | null;
   setLayout: (layout: Layout) => void;
   setLanguage: (language: string) => void;
   hasDLModel: boolean;
+  connectManager: (
+    desiredState?: string,
+    callback?: () => void
+  ) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
   const [appRunning, setAppRunning] = useState(false);
@@ -88,7 +91,7 @@ const ExerciseHeader = ({
         <StyledHeaderButtonContainer>
           <HomeButton />
           <ThemeButton />
-          <LanguageButton language={language} setter={setLanguage}/>
+          <LanguageButton language={language} setter={setLanguage} />
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton />
           <DownloadButton />
@@ -96,17 +99,14 @@ const ExerciseHeader = ({
           <PlayPauseButton
             project={project}
             language={language}
-            manager={manager}
             appRunning={appRunning}
             setAppRunning={setAppRunning}
             dlModel={dlModel}
             hasDLModel={hasDLModel}
+            connectManager={connectManager}
           />
-          <ResetButton manager={manager} setAppRunning={setAppRunning} />
-          <TerminateUniverseButton
-            manager={manager}
-            setAppRunning={setAppRunning}
-          />
+          <ResetButton setAppRunning={setAppRunning} />
+          <TerminateUniverseButton setAppRunning={setAppRunning} />
           <TheoryButton url={url} />
           <ForumButton />
         </StyledHeaderButtonContainer>

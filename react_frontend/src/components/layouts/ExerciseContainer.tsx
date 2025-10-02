@@ -20,8 +20,11 @@ import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
-import PrecisionManufacturingRoundedIcon from '@mui/icons-material/PrecisionManufacturingRounded';
-import { defaultCppCode, defaultPythonCode } from "Components/../constants/code";
+import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
+import {
+  defaultCppCode,
+  defaultPythonCode,
+} from "Components/../constants/code";
 
 const base_file_python = {
   name: "academy.py",
@@ -144,13 +147,10 @@ const ExerciseContainer = ({
     setManager(manager);
   }, []);
 
-  const resetManager = () => {
-    CommsManager.deleteInstance();
-    const manager = CommsManager.getInstance();
-    setManager(manager);
-  };
-
-  const connectWithRetry = async () => {
+  const connectWithRetry = async (
+    desiredState?: string,
+    callback?: () => void
+  ) => {
     if (!manager || connected.current) {
       return;
     }
@@ -161,18 +161,22 @@ const ExerciseContainer = ({
       console.log("Connected!", currManager.getState());
       connected.current = true;
       setManager(currManager);
+      if (callback) {
+        waitManagerState(desiredState ? desiredState : "connected", callback);
+      }
     } catch (e: unknown) {
       console.log("Connection failed, trying again!");
       setTimeout(connectWithRetry, 2000);
     }
   };
 
-  useEffect(() => {
-    if (manager) {
-      console.log("The manager is up!");
-      connectWithRetry();
+  const waitManagerState = async (state: string, callback: any) => {
+    if (manager?.getState() === state) {
+      callback();
+    } else {
+      return setTimeout(waitManagerState, 100, state, callback);
     }
-  }, [manager]);
+  };
 
   useUnload(() => {
     if (manager) {
@@ -183,9 +187,9 @@ const ExerciseContainer = ({
 
   useEffect(() => {
     if (language === "cpp") {
-      setBaseFile(base_file_cpp)
+      setBaseFile(base_file_cpp);
     } else {
-      setBaseFile(base_file_python)
+      setBaseFile(base_file_python);
     }
   }, [language]);
 
@@ -229,14 +233,14 @@ const ExerciseContainer = ({
           project={project}
           language={language}
           setLanguage={setLanguage}
-          manager={manager}
           url={url}
           setLayout={setLayout}
           hasDLModel={hasDLModel}
+          connectManager={connectWithRetry}
         />
         <IdeInterface
           commsManager={manager}
-          resetManager={resetManager}
+          resetManager={connectWithRetry}
           project={project}
           api={editorApi}
           viewers={toolsList}
@@ -255,7 +259,11 @@ const ExerciseContainer = ({
 
 export default ExerciseContainer;
 
-function saveFile(project: string, path: string, content: string): Promise<void> {
+function saveFile(
+  project: string,
+  path: string,
+  content: string
+): Promise<void> {
   const func = async () => {
     return;
   };

@@ -1,7 +1,7 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
-import { CommsManager } from "jderobot-commsmanager";
+import { CommsManager, events, states } from "jderobot-commsmanager";
 import { getProjectExtraFiles } from "Helpers/api";
 import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
@@ -16,23 +16,23 @@ import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 const PlayPauseButton = ({
   project,
   language,
-  manager,
   appRunning,
   setAppRunning,
   dlModel,
   hasDLModel,
+  connectManager,
 }: {
   project: string;
   language: string;
-  manager: CommsManager | null;
   appRunning: boolean;
   setAppRunning: (running: boolean) => void;
   dlModel: ArrayBuffer | undefined;
   hasDLModel: boolean;
+  connectManager: (desiredState?: string, callback?: () => void) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
   const exerciseContext = useExercise();
-  const { warning, error } = useError();
+  const { warning, error, info, close } = useError();
   const codeRef = useRef("");
   const runningCodeRef = useRef("");
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
@@ -60,11 +60,11 @@ const PlayPauseButton = ({
   // App handling
 
   const onAppStateChange = async (save?: boolean) => {
-    if (!manager) {
-      console.error("Manager is not running");
-      warning(
-        "Failed to connect with the Robotics Backend docker. Please make sure it is connected."
-      );
+    const manager = CommsManager.getInstance();
+
+    if (manager.getState() === states.IDLE) {
+      info("Connecting with the Robotics Backend ...")
+      connectManager(states.TOOLS_READY, () => {onAppStateChange(); close()});
       return;
     }
 
@@ -115,14 +115,17 @@ const PlayPauseButton = ({
 
     try {
       const zip = new JSZip();
+      const extension = language === "cpp" ? "cpp" : "py";
       let commonsZip;
+      var toLint = [""];
+
       if (language === "python") {
         commonsZip = await zip.loadAsync(commons);
+        toLint = ["academy.py"];
       } else {
-        commonsZip = zip
+        commonsZip = zip;
       }
-      const extension = language === "cpp" ? "cpp" : "py";
-      var toLint = [""];
+      
 
       const extraFiles: { name: string; content: string }[] =
         await getProjectExtraFiles(project, language);
@@ -130,12 +133,6 @@ const PlayPauseButton = ({
       extraFiles.forEach((file) => {
         commonsZip.file(file.name, file.content);
       });
-      toLint = ["academy.py"];
-
-      // Fix: developer-container  |   File "/workspace/code/academy.cpp", line 34
-      // developer-container  |     100ms, std::bind(&FollowLineNode::control_cycle, this));
-      // developer-container  |       ^
-      // developer-container  | SyntaxError: invalid decimal literal 
 
       commonsZip.file(`academy.${extension}`, codeRef.current);
 

@@ -6,23 +6,15 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import React from "react";
 
 const ResetButton = ({
-  manager,
   setAppRunning,
 }: {
-  manager: CommsManager | null;
   setAppRunning: (running: boolean) => void;
 }) => {
   const theme = useAcademyTheme();
   const { warning } = useError();
 
   const onResetApp = async () => {
-    if (!manager) {
-      console.error("Manager is not running");
-      warning(
-        "Failed to connect with the Robotics Backend docker. Please make sure it is connected."
-      );
-      return;
-    }
+    const manager = CommsManager.getInstance();
 
     if (
       manager.getState() !== "tools_ready" &&

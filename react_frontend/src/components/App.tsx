@@ -7,14 +7,14 @@ import React from "react";
 
 const App = () => {
   return (
-    <HomepageProvider>
-      <ErrorProvider>
-        <AcademyThemeProvider>
+    <AcademyThemeProvider>
+      <HomepageProvider>
+        <ErrorProvider>
           <AcademyHeader />
           <AcademyContainer />
-        </AcademyThemeProvider>
-      </ErrorProvider>
-    </HomepageProvider>
+        </ErrorProvider>
+      </HomepageProvider>
+    </AcademyThemeProvider>
   );
 };
 
