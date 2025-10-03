@@ -103,6 +103,8 @@ Simple hints provided to help you solve the rescue_people exercise. Please note 
 
 You can use the Face Detection using Haar Cascades from opencv [[1]](https://docs.opencv.org/4.5.0/db/d28/tutorial_cascade_classifier.html).
 
+It can be found in this location: `/resources/exercises/rescue_people/haarcascade_frontalface_default.xml`.
+
 ### Does the drone API understand GPS Locations?
 
 No, it doesn't. But don't worry, you can easily convert them to UTM locations which are in meters. There are several open converters that can make the job for you [[2]](http://rcn.montana.edu/Resources/Converter.aspx).
