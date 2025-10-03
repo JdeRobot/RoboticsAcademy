@@ -14,7 +14,7 @@ export const defaultCppCode = `#include "HAL.hpp"
 #include "opencv2/opencv.hpp"
 
 void exercise() {
-    const Frequency freq = Frequency();
+    Frequency freq = Frequency();
 
     while (true)
     {
