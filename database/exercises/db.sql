@@ -136,7 +136,9 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
-25	o3de_warehouse	O3DE Warehouse	Control an O3DE robot to organize a warehouse	{"tags": "ROS2"}	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
+25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
+26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
+27	o3de_warehouse	O3DE Warehouse	Control an O3DE robot to organize a warehouse	{"tags": "ROS2"}	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
 \.
 
 --
@@ -184,7 +186,9 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 37	20	36
 38	21	37
 39	24	35
-40	25	39
+40	25	38
+41	26	39
+42  27  40
 \.
 -- 30  16  3
 
@@ -266,7 +270,13 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 71	17	rviz
 72	25	console
 73	25	simulator
-74	25	web_gui
+74	25	rviz
+75	26	console
+76	26	simulator
+77	26	web_gui
+78	27	console
+79	27	simulator
+80	27	web_gui
 \.
 
 --
