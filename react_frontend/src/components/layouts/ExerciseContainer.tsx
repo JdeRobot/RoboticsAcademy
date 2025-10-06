@@ -46,6 +46,7 @@ const base_file_cpp = {
 
 const ExerciseContainer = ({
   project,
+  multiLanguage,
   tools,
   url,
   hasDLModel,
@@ -55,6 +56,7 @@ const ExerciseContainer = ({
   tools: string[];
   url?: string;
   hasDLModel: boolean;
+  multiLanguage: boolean;
   children: JSX.Element;
 }) => {
   const [manager, setManager] = useState<CommsManager | null>(null);
@@ -231,7 +233,7 @@ const ExerciseContainer = ({
       <ExerciseProvider manager={manager} code={codeRef.current}>
         <ExerciseHeader
           project={project}
-          language={language}
+          language={multiLanguage ? language : undefined}
           setLanguage={setLanguage}
           url={url}
           setLayout={setLayout}

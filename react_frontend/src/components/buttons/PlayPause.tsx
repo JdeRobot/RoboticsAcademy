@@ -23,7 +23,7 @@ const PlayPauseButton = ({
   connectManager,
 }: {
   project: string;
-  language: string;
+  language?: string;
   appRunning: boolean;
   setAppRunning: (running: boolean) => void;
   dlModel: ArrayBuffer | undefined;
@@ -119,7 +119,7 @@ const PlayPauseButton = ({
       let commonsZip;
       var toLint = [""];
 
-      if (language === "python") {
+      if (extension === "py") {
         commonsZip = await zip.loadAsync(commons);
         toLint = ["academy.py"];
       } else {
@@ -128,7 +128,7 @@ const PlayPauseButton = ({
       
 
       const extraFiles: { name: string; content: string }[] =
-        await getProjectExtraFiles(project, language);
+        await getProjectExtraFiles(project, language ? language : "python");
 
       extraFiles.forEach((file) => {
         commonsZip.file(file.name, file.content);
