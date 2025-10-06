@@ -19,14 +19,16 @@ const axiosExtra = {
   },
 };
 
-const getProjectExtraFiles = async (project: string) => {
+const getProjectExtraFiles = async (project: string, language: string) => {
   if (!project) throw new Error("Current Project name is not set");
+  if (!language) throw new Error("Current Language is not set");
 
   const apiUrl = "/exercises/user_code_zip/";
   const response = await axios.post(
     apiUrl,
     {
       project: project,
+      language: language,
     },
     axiosExtra
   );

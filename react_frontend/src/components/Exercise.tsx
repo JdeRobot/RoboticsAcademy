@@ -32,10 +32,11 @@ const Exercise = () => {
   );
 
   return (
-    <ErrorProvider>
-      <AcademyThemeProvider>
+    <AcademyThemeProvider>
+      <ErrorProvider>
         <ExerciseContainer
           hasDLModel={tags.includes("Deep Learning")}
+          multiLanguage={tags.includes("MULTILANGUAGE")}
           project={project}
           tools={tools}
           url={url}
@@ -44,8 +45,8 @@ const Exercise = () => {
             <WebGui />
           </Suspense>
         </ExerciseContainer>
-      </AcademyThemeProvider>
-    </ErrorProvider>
+      </ErrorProvider>
+    </AcademyThemeProvider>
   );
 };
 

@@ -20,19 +20,13 @@ import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
-import PrecisionManufacturingRoundedIcon from '@mui/icons-material/PrecisionManufacturingRounded';
+import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
+import {
+  defaultCppCode,
+  defaultPythonCode,
+} from "Components/../constants/code";
 
-const defaultCode = `import WebGUI
-import HAL
-import Frequency
-# Enter sequential code!
-
-while True:
-    # Enter iterative code!
-    Frequency.tick()
-`;
-
-const base_file = {
+const base_file_python = {
   name: "academy.py",
   is_dir: false,
   path: "academy.py",
@@ -41,8 +35,18 @@ const base_file = {
   files: [],
 };
 
+const base_file_cpp = {
+  name: "academy.cpp",
+  is_dir: false,
+  path: "academy.cpp",
+  group: "code",
+  access: true,
+  files: [],
+};
+
 const ExerciseContainer = ({
   project,
+  multiLanguage,
   tools,
   url,
   hasDLModel,
@@ -52,6 +56,7 @@ const ExerciseContainer = ({
   tools: string[];
   url?: string;
   hasDLModel: boolean;
+  multiLanguage: boolean;
   children: JSX.Element;
 }) => {
   const [manager, setManager] = useState<CommsManager | null>(null);
@@ -65,8 +70,10 @@ const ExerciseContainer = ({
     "both"
   );
 
-  const [code, _setCode] = useState<string>(defaultCode);
-  const codeRef = useRef<string>(defaultCode);
+  const [language, setLanguage] = useState<string>("python");
+  const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
+  const [code, _setCode] = useState<string>(defaultPythonCode);
+  const codeRef = useRef<string>(defaultPythonCode);
 
   const setCode = (data: string) => {
     codeRef.current = data;
@@ -142,33 +149,36 @@ const ExerciseContainer = ({
     setManager(manager);
   }, []);
 
-  const resetManager = () => {
-    CommsManager.deleteInstance();
-    const manager = CommsManager.getInstance();
-    setManager(manager);
-  };
-
-  const connectWithRetry = async () => {
+  const connectWithRetry = async (
+    desiredState?: string,
+    callback?: () => void
+  ) => {
     if (!manager || connected.current) {
       return;
     }
     try {
-      await manager.connect();
+      const currManager = CommsManager.getInstance();
+      await currManager.connect();
       getUniverseList(project);
-      console.log("Connected!", manager.getState());
+      console.log("Connected!", currManager.getState());
       connected.current = true;
-    } catch {
+      setManager(currManager);
+      if (callback) {
+        waitManagerState(desiredState ? desiredState : "connected", callback);
+      }
+    } catch (e: unknown) {
       console.log("Connection failed, trying again!");
-      setTimeout(connectWithRetry, 1000);
+      setTimeout(connectWithRetry, 2000);
     }
   };
 
-  useEffect(() => {
-    if (manager) {
-      console.log("The manager is up!");
-      connectWithRetry();
+  const waitManagerState = async (state: string, callback: any) => {
+    if (manager?.getState() === state) {
+      callback();
+    } else {
+      return setTimeout(waitManagerState, 100, state, callback);
     }
-  }, [manager]);
+  };
 
   useUnload(() => {
     if (manager) {
@@ -177,15 +187,26 @@ const ExerciseContainer = ({
     }
   });
 
+  useEffect(() => {
+    if (language === "cpp") {
+      setBaseFile(base_file_cpp);
+    } else {
+      setBaseFile(base_file_python);
+    }
+  }, [language]);
+
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
-        const func = async () => {
-          console.log(codeRef.current);
-          return codeRef.current;
+        const func = async (file: Entry) => {
+          if (file.name === "academy.cpp") {
+            return defaultCppCode;
+          } else {
+            return defaultPythonCode;
+          }
         };
 
-        return func();
+        return func(file);
       },
       save: (project: string, file: Entry, content: string) => {
         console.log("saveFile", content);
@@ -212,14 +233,16 @@ const ExerciseContainer = ({
       <ExerciseProvider manager={manager} code={codeRef.current}>
         <ExerciseHeader
           project={project}
-          manager={manager}
+          language={multiLanguage ? language : undefined}
+          setLanguage={setLanguage}
           url={url}
           setLayout={setLayout}
           hasDLModel={hasDLModel}
+          connectManager={connectWithRetry}
         />
         <IdeInterface
           commsManager={manager}
-          resetManager={resetManager}
+          resetManager={connectWithRetry}
           project={project}
           api={editorApi}
           viewers={toolsList}
@@ -228,7 +251,7 @@ const ExerciseContainer = ({
           statusBarComponents={statusBar}
           explorers={[]}
           extraEditors={[]}
-          baseFile={base_file}
+          baseFile={baseFile}
           baseUniverse={universes ? universes[0] : undefined}
         />
       </ExerciseProvider>
@@ -238,7 +261,11 @@ const ExerciseContainer = ({
 
 export default ExerciseContainer;
 
-function saveFile(project: string, path: string, content: string): Promise<void> {
+function saveFile(
+  project: string,
+  path: string,
+  content: string
+): Promise<void> {
   const func = async () => {
     return;
   };

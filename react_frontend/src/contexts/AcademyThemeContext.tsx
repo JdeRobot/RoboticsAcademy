@@ -19,7 +19,7 @@ const darkTheme: AcademyTheme = {
     text: "#000000ff",
     placeholderText: "#a6a6bf",
     success: "#29ac29",
-    warning: "#af5500ff",
+    warning: "#b87a09",
     error: "#802626",
     background: "#16161d",
     primary: "#ffa726",

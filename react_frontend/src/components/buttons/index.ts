@@ -10,3 +10,4 @@ export { default as LayoutButton } from "./Layout";
 export { default as TerminateUniverseButton } from "./TerminateUniverse";
 export { default as SearchButton } from "./Search";
 export { default as ThemeButton } from "./Theme";
+export { default as LanguageButton } from "./Language";

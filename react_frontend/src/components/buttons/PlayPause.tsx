@@ -1,7 +1,7 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
-import { CommsManager } from "jderobot-commsmanager";
+import { CommsManager, events, states } from "jderobot-commsmanager";
 import { getProjectExtraFiles } from "Helpers/api";
 import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
@@ -15,22 +15,24 @@ import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 
 const PlayPauseButton = ({
   project,
-  manager,
+  language,
   appRunning,
   setAppRunning,
   dlModel,
   hasDLModel,
+  connectManager,
 }: {
   project: string;
-  manager: CommsManager | null;
+  language?: string;
   appRunning: boolean;
   setAppRunning: (running: boolean) => void;
   dlModel: ArrayBuffer | undefined;
   hasDLModel: boolean;
+  connectManager: (desiredState?: string, callback?: () => void) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
   const exerciseContext = useExercise();
-  const { warning, error } = useError();
+  const { warning, error, info, close } = useError();
   const codeRef = useRef("");
   const runningCodeRef = useRef("");
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
@@ -58,11 +60,11 @@ const PlayPauseButton = ({
   // App handling
 
   const onAppStateChange = async (save?: boolean) => {
-    if (!manager) {
-      console.error("Manager is not running");
-      warning(
-        "Failed to connect with the Robotics Backend docker. Please make sure it is connected."
-      );
+    const manager = CommsManager.getInstance();
+
+    if (manager.getState() === states.IDLE) {
+      info("Connecting with the Robotics Backend ...")
+      connectManager(states.TOOLS_READY, () => {onAppStateChange(); close()});
       return;
     }
 
@@ -113,16 +115,26 @@ const PlayPauseButton = ({
 
     try {
       const zip = new JSZip();
-      const commonsZip = await zip.loadAsync(commons);
+      const extension = language === "cpp" ? "cpp" : "py";
+      let commonsZip;
+      var toLint = [""];
+
+      if (extension === "py") {
+        commonsZip = await zip.loadAsync(commons);
+        toLint = ["academy.py"];
+      } else {
+        commonsZip = zip;
+      }
+      
 
       const extraFiles: { name: string; content: string }[] =
-        await getProjectExtraFiles(project);
+        await getProjectExtraFiles(project, language ? language : "python");
 
       extraFiles.forEach((file) => {
         commonsZip.file(file.name, file.content);
       });
 
-      commonsZip.file("academy.py", codeRef.current);
+      commonsZip.file(`academy.${extension}`, codeRef.current);
 
       // add onnx file to the zip if it exists
       if (hasDLModel) {
@@ -142,8 +154,8 @@ const PlayPauseButton = ({
         // Send the base64 encoded blob
         if (base64data) {
           await manager.run(
-            "/workspace/code/academy.py",
-            ["academy.py"],
+            `/workspace/code/academy.${extension}`,
+            toLint,
             base64data as string
           );
           console.log("Dockerized app started successfully");
