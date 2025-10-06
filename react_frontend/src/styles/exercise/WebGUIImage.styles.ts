@@ -16,6 +16,11 @@ export const StyledImageContainer = styled.div<StyledImageContainerProps>`
   width: 50%;
   height: 100%;
 
+  & img {
+    width: 100%;
+    height: 100%;
+  }
+
   & svg {
     height: 120px;
     width: 120px;

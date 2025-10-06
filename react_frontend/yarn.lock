@@ -5238,13 +5238,6 @@ jderobot-commsmanager@1.0.11:
   dependencies:
     uuid "^11.1.0"
 
-jderobot-commsmanager@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.10.tgz#28d22f6b4f87ff9717f3a59e8a5f57c41f8cd0bf"
-  integrity sha512-iESO4+cVePmu3Q9alG3feasKV6P+I7eIhlLrF7+OEBLVMVlsjPyLEjEMod6bsDh1c7+/Suyl0aZWfnKF/nhHWg==
-  dependencies:
-    uuid "^11.1.0"
-
 jderobot-ide-interface@0.2.21:
   version "0.2.21"
   resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.21.tgz#e8f203c6ffc4280605b6b2e9b664773b857b42c8"

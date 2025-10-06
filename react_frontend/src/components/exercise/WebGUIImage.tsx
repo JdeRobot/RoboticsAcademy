@@ -1,17 +1,19 @@
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import VideocamOffOutlinedIcon from "@mui/icons-material/VideocamOffOutlined";
 import { StyledImageContainer } from "Styles/exercise/WebGUIImage.styles";
-import React from "react";
+import React, { RefObject } from "react";
 
 // camera
 const WebGUIImage = ({
   style,
   id,
+  reference,
   src,
   errorMsg,
 }: {
   style?: object;
   id?: string;
+  reference?: RefObject<HTMLImageElement>;
   src?: string;
   errorMsg?: string;
 }) => {
@@ -21,7 +23,7 @@ const WebGUIImage = ({
     <>
       <StyledImageContainer style={style} color={theme.palette.error}>
         {src ? (
-          <img id={id} src={src} />
+          <img ref={reference} id={id} src={src} />
         ) : (
           <>
             <VideocamOffOutlinedIcon htmlColor={theme.palette.error} />
