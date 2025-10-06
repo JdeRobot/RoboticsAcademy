@@ -36,6 +36,7 @@ const Exercise = () => {
       <ErrorProvider>
         <ExerciseContainer
           hasDLModel={tags.includes("Deep Learning")}
+          multiLanguage={tags.includes("MULTILANGUAGE")}
           project={project}
           tools={tools}
           url={url}

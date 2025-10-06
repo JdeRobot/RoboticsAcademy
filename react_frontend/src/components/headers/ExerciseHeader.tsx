@@ -39,7 +39,7 @@ const ExerciseHeader = ({
   connectManager,
 }: {
   project: string;
-  language: string;
+  language?: string;
   url?: string;
   setLayout: (layout: Layout) => void;
   setLanguage: (language: string) => void;
@@ -91,7 +91,9 @@ const ExerciseHeader = ({
         <StyledHeaderButtonContainer>
           <HomeButton />
           <ThemeButton />
-          <LanguageButton language={language} setter={setLanguage} />
+          {language &&
+            <LanguageButton language={language} setter={setLanguage} />
+          }
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton />
           <DownloadButton />
