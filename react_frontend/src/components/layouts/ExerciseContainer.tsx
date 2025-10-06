@@ -113,7 +113,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("simulator")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={6080} />,
+      component: <VncViewer commsManager={manager} port={6080} message={"Click Play to connect to the Robotics Backend"} />,
       icon: <VideoCameraBackRoundedIcon />,
       name: "Gazebo",
       active: showSim,
@@ -123,7 +123,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("rviz")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={6081} />,
+      component: <VncViewer commsManager={manager} port={6081} message={"Click Play to connect to the Robotics Backend"}/>,
       icon: <PrecisionManufacturingRoundedIcon />,
       name: "Rviz",
       active: showRviz,
@@ -133,7 +133,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("console")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={1108} />,
+      component: <VncViewer commsManager={manager} port={1108} message={"Click Play to connect to the Robotics Backend"}/>,
       icon: <TerminalRoundedIcon />,
       name: "Terminal",
       active: showTerminal,
@@ -242,7 +242,7 @@ const ExerciseContainer = ({
         />
         <IdeInterface
           commsManager={manager}
-          resetManager={connectWithRetry}
+          connectManager={connectWithRetry}
           project={project}
           api={editorApi}
           viewers={toolsList}
