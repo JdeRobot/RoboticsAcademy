@@ -42,6 +42,7 @@ public:
 private:
   void topic_callback_info(sensor_msgs::msg::Image::UniquePtr msg)
   {
+    cout << "Image received" << endl;
     // Convert ROS Image to OpenCV Image | sensor_msgs::msg::Image -> cv::Mat
     cv_bridge::CvImagePtr image_rgb_ptr;
     try
