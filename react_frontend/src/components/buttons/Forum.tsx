@@ -20,7 +20,7 @@ const ForumButton = () => {
       bgColor={theme.palette.primary}
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
-      id="reset-app"
+      id="forum-button"
       onClick={() => {
         openInNewTab(new URL("https://forum.unibotics.org/"));
       }}
