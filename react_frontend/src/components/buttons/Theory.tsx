@@ -24,7 +24,7 @@ const TheoryButton = ({ url }: { url?: string }) => {
       bgColor={theme.palette.primary}
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
-      id="reset-app"
+      id="theory-button"
       onClick={() => {
         openInNewTab(new URL(url));
       }}
