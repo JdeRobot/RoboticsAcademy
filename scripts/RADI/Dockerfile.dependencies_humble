@@ -326,8 +326,6 @@ RUN ./install-ompl-ubuntu.sh --github --python
 
 
 
-FROM ros:humble-ros-core-jammy
-
 ENV O3DE_HASH=5b344a0be6
 ENV O3DE_EXTRAS_HASH=ros2_project_template
 ENV PROJECT_NAME=WarehouseTest
