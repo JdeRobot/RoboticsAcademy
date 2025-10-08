@@ -83,8 +83,8 @@ const WebGUI = () => {
         }
         try {
           const pose = getCarPose(circuitName, message.data.update.map);
-          setLapTime(displayLapTime(message.data.update.lap));
           setCarPose(pose);
+          setLapTime(displayLapTime(message.data.update.lap));
         } catch (error) {}
       }
 

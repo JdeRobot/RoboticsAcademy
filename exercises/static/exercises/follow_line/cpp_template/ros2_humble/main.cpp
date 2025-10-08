@@ -5,6 +5,7 @@
 #include <bits/stdc++.h>
 #include <filesystem>
 #include <string>
+#include <thread>
 
 void start_console()
 {
@@ -43,23 +44,22 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
   start_console();
 
-  rclcpp::executors::SingleThreadedExecutor executor;
-  // rclcpp::executors::MultiThreadedExecutor executor(
-  //     rclcpp::executor::ExecutorArgs(), 2);
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
 
   auto HAL_node = std::make_shared<HAL>();
   executor.add_node(HAL_node);
-
-  auto webGUI = WebGUI();
 
 #ifdef FollowLineNode
   auto user_node = std::make_shared<FollowLineNode>();
   executor.add_node(user_node);
 #else
-  exercise();
+  thread user(exercise);
 #endif
+  thread ros([&executor]{executor.spin();});
+  WebGUI();
 
-  executor.spin();
+  user.join();
+  ros.join();
 
   rclcpp::shutdown();
   return 0;
