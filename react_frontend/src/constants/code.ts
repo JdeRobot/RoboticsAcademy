@@ -20,7 +20,7 @@ void exercise() {
     {
         freq.tick();
         cv::Mat img = HAL::get_image();
-        WebGUI::show_image("Hola");
+        WebGUI::show_image(img);
         HAL::set_v(1.0f);
         HAL::set_w(1.0f);
     }
