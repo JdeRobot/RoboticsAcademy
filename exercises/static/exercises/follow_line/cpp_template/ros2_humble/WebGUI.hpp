@@ -66,7 +66,7 @@ public:
         // Save these for later
         host_ = host;
         text_ = text;
-        buffer_.max_size(1024*1024);
+        buffer_.max_size(1024 * 1024);
 
         // Look up the domain name
         resolver_.async_resolve(
@@ -112,7 +112,7 @@ public:
                 beast::role_type::client));
 
         // Set a decorator to change the User-Agent of the handshake
-        ws_.read_message_max(1024*1024);
+        ws_.read_message_max(1024 * 1024);
         ws_.auto_fragment(false);
         ws_.set_option(websocket::stream_base::decorator(
             [](websocket::request_type &req)
@@ -176,6 +176,21 @@ public:
         if (ec)
             return fail(ec, "read");
 
+        ws_.text(ws_.got_text());
+        unsigned char *cp = (unsigned char *)buffer_.data().data();
+        string msg(reinterpret_cast<char const *>(cp));
+
+        if (msg == "pause")
+        {
+            cout << msg << endl;
+        }
+        else if (msg == "start")
+        {
+            cout << msg << endl;
+        }
+
+        buffer_.consume(buffer_.size());
+
         auto pose = HAL::get_pose();
         const json map = json{pose.at(0), pose.at(1)};
         const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}};
@@ -213,44 +228,50 @@ static const char *base64_chars[2] = {
     "0123456789"
     "-_"};
 
-string base64_encode(unsigned char const* bytes_to_encode, size_t in_len, bool url) {
+string base64_encode(unsigned char const *bytes_to_encode, size_t in_len, bool url)
+{
 
-    size_t len_encoded = (in_len +2) / 3 * 4;
+    size_t len_encoded = (in_len + 2) / 3 * 4;
 
     unsigned char trailing_char = url ? '.' : '=';
 
- //
- // Choose set of base64 characters. They differ
- // for the last two positions, depending on the url
- // parameter.
- // A bool (as is the parameter url) is guaranteed
- // to evaluate to either 0 or 1 in C++ therefore,
- // the correct character set is chosen by subscripting
- // base64_chars with url.
- //
-    const char* base64_chars_ = base64_chars[url];
+    //
+    // Choose set of base64 characters. They differ
+    // for the last two positions, depending on the url
+    // parameter.
+    // A bool (as is the parameter url) is guaranteed
+    // to evaluate to either 0 or 1 in C++ therefore,
+    // the correct character set is chosen by subscripting
+    // base64_chars with url.
+    //
+    const char *base64_chars_ = base64_chars[url];
 
     std::string ret;
     ret.reserve(len_encoded);
 
     unsigned int pos = 0;
 
-    while (pos < in_len) {
+    while (pos < in_len)
+    {
         ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0xfc) >> 2]);
 
-        if (pos+1 < in_len) {
-           ret.push_back(base64_chars_[((bytes_to_encode[pos + 0] & 0x03) << 4) + ((bytes_to_encode[pos + 1] & 0xf0) >> 4)]);
+        if (pos + 1 < in_len)
+        {
+            ret.push_back(base64_chars_[((bytes_to_encode[pos + 0] & 0x03) << 4) + ((bytes_to_encode[pos + 1] & 0xf0) >> 4)]);
 
-           if (pos+2 < in_len) {
-              ret.push_back(base64_chars_[((bytes_to_encode[pos + 1] & 0x0f) << 2) + ((bytes_to_encode[pos + 2] & 0xc0) >> 6)]);
-              ret.push_back(base64_chars_[  bytes_to_encode[pos + 2] & 0x3f]);
-           }
-           else {
-              ret.push_back(base64_chars_[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
-              ret.push_back(trailing_char);
-           }
+            if (pos + 2 < in_len)
+            {
+                ret.push_back(base64_chars_[((bytes_to_encode[pos + 1] & 0x0f) << 2) + ((bytes_to_encode[pos + 2] & 0xc0) >> 6)]);
+                ret.push_back(base64_chars_[bytes_to_encode[pos + 2] & 0x3f]);
+            }
+            else
+            {
+                ret.push_back(base64_chars_[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
+                ret.push_back(trailing_char);
+            }
         }
-        else {
+        else
+        {
 
             ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0x03) << 4]);
             ret.push_back(trailing_char);
@@ -260,10 +281,8 @@ string base64_encode(unsigned char const* bytes_to_encode, size_t in_len, bool u
         pos += 3;
     }
 
-
     return ret;
 }
-
 
 WebGUI::WebGUI()
 {
