@@ -14,6 +14,7 @@
 #include "opencv2/opencv.hpp"
 #include "json.hpp"
 #include "HAL.hpp"
+#include "Lap.hpp"
 #include <utility>
 
 namespace beast = boost::beast;
@@ -48,6 +49,7 @@ class session : public std::enable_shared_from_this<session>
     beast::flat_buffer buffer_;
     std::string host_;
     std::string text_;
+    Lap * lap_;
 
 public:
     // Resolver and socket require an io_context
@@ -61,11 +63,13 @@ public:
     run(
         char const *host,
         char const *port,
-        char const *text)
+        char const *text,
+        Lap * lap)
     {
         // Save these for later
         host_ = host;
         text_ = text;
+        lap_ = lap;
         buffer_.max_size(1024 * 1024);
 
         // Look up the domain name
@@ -182,18 +186,18 @@ public:
 
         if (msg == "pause")
         {
-            cout << msg << endl;
+            lap_->pause();
         }
         else if (msg == "start")
         {
-            cout << msg << endl;
+            lap_->start();
         }
 
         buffer_.consume(buffer_.size());
 
         auto pose = HAL::get_pose();
         const json map = json{pose.at(0), pose.at(1)};
-        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}};
+        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}};
         auto const text = j.dump();
 
         // Close the WebSocket connection
@@ -289,13 +293,14 @@ WebGUI::WebGUI()
     auto const host = "127.0.0.1";
     auto const port = "2303";
     const json image = json{{"image", ""}, {"shape", {100, 100}}};
-    const json j = json{{"map", "(54,-12)"}, {"image", image.dump()}};
+    const json j = json{{"map", "(54,-12)"}, {"image", image.dump()}, {"lap", "0:0:0.0"}};
     auto const text = j.dump();
+    Lap *lap = new Lap();
 
     net::io_context ioc;
 
     // Launch the asynchronous operation
-    std::make_shared<session>(ioc)->run(host, port, text.c_str());
+    std::make_shared<session>(ioc)->run(host, port, text.c_str(), lap);
 
     ioc.run();
 }
