@@ -69,6 +69,20 @@ export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
     width: 24px;
     height: 24px;
   }
+
+  @keyframes spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  #loading-spin {
+    animation: spin 2s linear infinite;
+    opacity: 50%;
+  }
 `;
 
 interface StyledDropdownProps {
