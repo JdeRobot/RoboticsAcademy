@@ -16,6 +16,8 @@
 #include "HAL.hpp"
 #include "Lap.hpp"
 #include <utility>
+#include <iomanip>
+#include <sstream>
 
 namespace beast = boost::beast;
 namespace http = beast::http;
@@ -197,7 +199,11 @@ public:
 
         auto pose = HAL::get_pose();
         const json map = json{pose.at(0), pose.at(1)};
-        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", 20}, {"gui", 20}, {"rtf", (float) HAL::get_performance()}, {"fps", -1}, {"lat", -1}};
+        double rtf = HAL::get_performance();
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(2) << rtf;
+        std::string rtf_str = stream.str();
+        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", 20}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
         auto const text = j.dump();
 
         // Close the WebSocket connection
