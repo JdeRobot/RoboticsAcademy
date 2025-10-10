@@ -49,7 +49,7 @@ class session : public std::enable_shared_from_this<session>
     beast::flat_buffer buffer_;
     std::string host_;
     std::string text_;
-    Lap * lap_;
+    Lap *lap_;
 
 public:
     // Resolver and socket require an io_context
@@ -64,7 +64,7 @@ public:
         char const *host,
         char const *port,
         char const *text,
-        Lap * lap)
+        Lap *lap)
     {
         // Save these for later
         host_ = host;
@@ -197,7 +197,7 @@ public:
 
         auto pose = HAL::get_pose();
         const json map = json{pose.at(0), pose.at(1)};
-        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}};
+        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", 20}, {"gui", 20}, {"rtf", (float) HAL::get_performance()}, {"fps", -1}, {"lat", -1}};
         auto const text = j.dump();
 
         // Close the WebSocket connection
