@@ -14,6 +14,7 @@
 #include "opencv2/opencv.hpp"
 #include "json.hpp"
 #include "HAL.hpp"
+#include "Frequency.hpp"
 #include "Lap.hpp"
 #include <utility>
 #include <iomanip>
@@ -203,7 +204,7 @@ public:
         std::stringstream stream;
         stream << std::fixed << std::setprecision(2) << rtf;
         std::string rtf_str = stream.str();
-        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", 20}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
+        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", Frequency::rate}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
         auto const text = j.dump();
 
         // Close the WebSocket connection
