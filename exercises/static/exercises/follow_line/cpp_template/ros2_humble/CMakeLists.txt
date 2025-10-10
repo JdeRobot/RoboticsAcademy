@@ -15,6 +15,7 @@ find_package(OpenCV REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(gazebo_msgs REQUIRED)
 
 set(dependencies
   rclcpp
@@ -24,6 +25,7 @@ set(dependencies
   OpenCV
   geometry_msgs
   std_msgs
+  gazebo_msgs
   image_transport
   message_filters
 )
