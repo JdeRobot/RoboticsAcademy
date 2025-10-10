@@ -106,6 +106,7 @@ const PlayPauseButton = ({
         console.log("App paused correctly!");
         return;
       } catch (e: unknown) {
+        setLoading(false);
         if (e instanceof Error) {
           console.error("Error pausing app: " + e.message);
           error("Error pausing app: " + e.message);
