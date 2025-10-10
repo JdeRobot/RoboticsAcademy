@@ -1,25 +1,46 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
-import { CommsManager } from "jderobot-commsmanager";
+import { CommsManager, events, states } from "jderobot-commsmanager";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { subscribe, unsubscribe } from "Helpers/utils";
+import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
-const ResetButton = ({
-  setAppRunning,
-}: {
-  setAppRunning: (running: boolean) => void;
-}) => {
+const ResetButton = ({}: {}) => {
   const theme = useAcademyTheme();
   const { warning } = useError();
+
+  const [state, setState] = useState<string>(
+    CommsManager.getInstance().getState()
+  );
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const updateState = (e: any) => {
+    setState(e.detail.state);
+  };
+
+  useEffect(() => {
+    subscribe("CommsManagerStateChange", updateState);
+
+    return () => {
+      unsubscribe("CommsManagerStateChange", () => {});
+    };
+  }, []);
+
+  useEffect(() => {
+    if (state === states.TOOLS_READY) {
+      setLoading(false);
+    }
+  }, [state]);
 
   const onResetApp = async () => {
     const manager = CommsManager.getInstance();
 
     if (
-      manager.getState() !== "tools_ready" &&
-      manager.getState() !== "application_running" &&
-      manager.getState() !== "paused"
+      state === states.CONNECTED ||
+      state === states.IDLE ||
+      state === states.WORLD_READY
     ) {
       console.error("Simulation is not ready!");
       warning(
@@ -28,9 +49,10 @@ const ResetButton = ({
       return;
     }
 
+    setLoading(true);
+
     await manager.terminateApplication();
     console.log("App reseted!");
-    setAppRunning(false);
   };
 
   return (
@@ -42,7 +64,11 @@ const ResetButton = ({
       onClick={onResetApp}
       title="Reset app"
     >
-      <ReplayRoundedIcon htmlColor={theme.palette.text} />
+      {loading ? (
+        <SyncRoundedIcon htmlColor={theme.palette.text} id="loading-spin" />
+      ) : (
+        <ReplayRoundedIcon htmlColor={theme.palette.text} />
+      )}
     </StyledHeaderButton>
   );
 };
