@@ -1,0 +1,6 @@
+pytest
+pytest-django
+pytest-cov
+-e common/console_interfaces/
+-e common/gui_interfaces/
+-e common/hal_interfaces/
