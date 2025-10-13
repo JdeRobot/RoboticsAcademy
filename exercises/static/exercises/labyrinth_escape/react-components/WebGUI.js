@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { events } from "jderobot-commsmanager";
+import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer from "Components/exercise/WebGUIContainer";
@@ -19,7 +19,7 @@ function WebGUI() {
       return;
     }
 
-    const callback = (message) => {
+    const updateCallback = (message) => {
       const update = message.data.update;
       let image;
       if (update.image_right) {
@@ -38,10 +38,20 @@ function WebGUI() {
       manager.send("gui", "ack");
     };
 
-    manager.subscribe(events.UPDATE, callback);
+    const stateCallback = (message) => {
+      if (message.data.state === states.TOOLS_READY) {
+        setLeftImage();
+        setRightImage();
+      }
+    };
+
+
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      manager.unsubscribe(events.UPDATE, callback);
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
   }, [manager]);
 
