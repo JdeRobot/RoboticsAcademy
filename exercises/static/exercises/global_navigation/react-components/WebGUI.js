@@ -144,7 +144,6 @@ function WebGUI(props) {
 
   return (
     <WebGUIContainer>
-      {/* <WebGUIImage id="left_img" style={{ left: "0" }} src={CityMap} /> */}
       <img src={CityMap} alt="" className="exercise-canvas" id="exercise-img"
         onClick={ function pickLoc(event){
           var data = destinationPicker(event)
