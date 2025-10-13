@@ -12,29 +12,31 @@ import React from "react";
 
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
 const PlayPauseButton = ({
   project,
   language,
-  appRunning,
-  setAppRunning,
   dlModel,
   hasDLModel,
   connectManager,
 }: {
   project: string;
   language?: string;
-  appRunning: boolean;
-  setAppRunning: (running: boolean) => void;
   dlModel: ArrayBuffer | undefined;
   hasDLModel: boolean;
-  connectManager: (desiredState?: string, callback?: () => void) => Promise<void>;
+  connectManager: (
+    desiredState?: string,
+    callback?: () => void
+  ) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
   const exerciseContext = useExercise();
   const { warning, error, info, close } = useError();
   const codeRef = useRef("");
   const runningCodeRef = useRef("");
+  const [state, setState] = useState<string>(CommsManager.getInstance().getState());
+  const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
   const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
 
@@ -43,13 +45,19 @@ const PlayPauseButton = ({
     _updateCode(data);
   };
 
+  const updateState = (e: any) => {
+    setState(e.detail.state);
+  };
+
   useEffect(() => {
     subscribe("autoSaveCompleted", () => {
       updateCode(true);
     });
+    subscribe("CommsManagerStateChange", updateState);
 
     return () => {
       unsubscribe("autoSaveCompleted", () => {});
+      unsubscribe("CommsManagerStateChange", () => {});
     };
   }, []);
 
@@ -57,14 +65,25 @@ const PlayPauseButton = ({
     codeRef.current = exerciseContext.code;
   }, [exerciseContext]);
 
+  useEffect(() => {
+    if (state === states.RUNNING || state === states.PAUSED) {
+      setLoading(false);
+    }
+  }, [state]);
+
   // App handling
 
   const onAppStateChange = async (save?: boolean) => {
+
     const manager = CommsManager.getInstance();
+    setLoading(true);
 
     if (manager.getState() === states.IDLE) {
-      info("Connecting with the Robotics Backend ...")
-      connectManager(states.TOOLS_READY, () => {onAppStateChange(); close()});
+      info("Connecting with the Robotics Backend ...");
+      connectManager(states.TOOLS_READY, () => {
+        onAppStateChange();
+        close();
+      });
       return;
     }
 
@@ -77,16 +96,17 @@ const PlayPauseButton = ({
       warning(
         "Failed to found a running simulation. Please make sure an universe is selected."
       );
+      setLoading(false);
       return;
     }
 
-    if (appRunning) {
+    if (state === states.RUNNING) {
       try {
         await manager.pause();
-        setAppRunning(false);
         console.log("App paused correctly!");
         return;
       } catch (e: unknown) {
+        setLoading(false);
         if (e instanceof Error) {
           console.error("Error pausing app: " + e.message);
           error("Error pausing app: " + e.message);
@@ -108,7 +128,6 @@ const PlayPauseButton = ({
       runningCodeRef.current === codeRef.current
     ) {
       await manager.resume();
-      setAppRunning(true);
       console.log("App resumed correctly!");
       return;
     }
@@ -125,7 +144,6 @@ const PlayPauseButton = ({
       } else {
         commonsZip = zip;
       }
-      
 
       const extraFiles: { name: string; content: string }[] =
         await getProjectExtraFiles(project, language ? language : "python");
@@ -166,9 +184,9 @@ const PlayPauseButton = ({
         reader.readAsDataURL(content);
       });
 
-      setAppRunning(true);
       console.log("App started successfully");
     } catch (e: unknown) {
+      setLoading(false);
       if (e instanceof Error) {
         console.error("Error running app: " + e.message);
         error("Error running app: " + e.message);
@@ -177,20 +195,29 @@ const PlayPauseButton = ({
   };
 
   return (
-    <StyledHeaderButton
-      bgColor={theme.palette.primary}
-      hoverColor={theme.palette.secondary}
-      roundness={theme.roundness}
-      id="run-app"
-      onClick={() => onAppStateChange(undefined)}
-      title="Run app"
-    >
-      {appRunning ? (
-        <PauseRoundedIcon htmlColor={theme.palette.text} />
-      ) : (
-        <PlayArrowRoundedIcon htmlColor={theme.palette.text} />
-      )}
-    </StyledHeaderButton>
+    <>
+      <StyledHeaderButton
+        bgColor={theme.palette.primary}
+        hoverColor={theme.palette.secondary}
+        roundness={theme.roundness}
+        id="run-app"
+        onClick={() => onAppStateChange(undefined)}
+        title="Run app"
+        disabled={loading}
+      >
+        {loading ? (
+          <SyncRoundedIcon htmlColor={theme.palette.text} id="loading-spin" />
+        ) : (
+          <>
+            {state === states.RUNNING ? (
+              <PauseRoundedIcon htmlColor={theme.palette.text} />
+            ) : (
+              <PlayArrowRoundedIcon htmlColor={theme.palette.text} />
+            )}
+          </>
+        )}
+      </StyledHeaderButton>
+    </>
   );
 };
 

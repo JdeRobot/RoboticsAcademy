@@ -9,19 +9,23 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(gazebo_msgs REQUIRED)
 
 set(dependencies
   rclcpp
   cv_bridge
   sensor_msgs
+  nav_msgs
   OpenCV
   geometry_msgs
   std_msgs
+  gazebo_msgs
   image_transport
   message_filters
 )

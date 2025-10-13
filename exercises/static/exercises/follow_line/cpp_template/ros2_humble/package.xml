@@ -15,9 +15,11 @@
   <depend>libopencv-dev</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>nav_msgs</depend>
   <depend>message_filters</depend>
   <depend>image_transport</depend>
-
+  <depend>gazebo_msgs</depend>
+  
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

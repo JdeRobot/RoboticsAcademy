@@ -11,19 +11,17 @@ while True:
 export const defaultCppCode = `#include "HAL.hpp"
 #include "WebGUI.hpp"
 #include "Frequency.hpp"
-#include "opencv2/opencv.hpp"
 
 void exercise() {
     Frequency freq = Frequency();
+    // Enter sequential code!
 
     while (true)
     {
+        // Enter iterative code!
         freq.tick();
-        cv::Mat img = HAL::get_image();
-        WebGUI::show_image("Hola");
-        HAL::set_v(1.0f);
-        HAL::set_w(1.0f);
+
+
     }
 }
-
 `;

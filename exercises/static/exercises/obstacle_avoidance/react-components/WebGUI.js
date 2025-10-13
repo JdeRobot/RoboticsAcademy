@@ -54,10 +54,7 @@ function WebGUI() {
     }
 
     const getAng = (x,y) => {
-      var ang = Math.PI / 2;
-    	if(x != 0){
-        ang = Math.atan2(y, x);
-      }
+      var ang = Math.atan2(y, x);
       return ang;
     }
 

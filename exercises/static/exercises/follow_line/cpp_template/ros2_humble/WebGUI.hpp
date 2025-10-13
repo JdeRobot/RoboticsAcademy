@@ -12,6 +12,13 @@
 #include <mutex>
 #include <boost/asio/strand.hpp>
 #include "opencv2/opencv.hpp"
+#include "json.hpp"
+#include "HAL.hpp"
+#include "Frequency.hpp"
+#include "Lap.hpp"
+#include <utility>
+#include <iomanip>
+#include <sstream>
 
 namespace beast = boost::beast;
 namespace http = beast::http;
@@ -19,6 +26,17 @@ namespace websocket = beast::websocket;
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
 using namespace std;
+using json = nlohmann::json;
+
+class WebGUI
+{
+private:
+public:
+    WebGUI();
+
+    static string img_payload;
+    static void show_image(cv::Mat image);
+};
 
 // Report a failure
 void fail(beast::error_code ec, char const *what)
@@ -34,6 +52,7 @@ class session : public std::enable_shared_from_this<session>
     beast::flat_buffer buffer_;
     std::string host_;
     std::string text_;
+    Lap *lap_;
 
 public:
     // Resolver and socket require an io_context
@@ -47,11 +66,14 @@ public:
     run(
         char const *host,
         char const *port,
-        char const *text)
+        char const *text,
+        Lap *lap)
     {
         // Save these for later
         host_ = host;
         text_ = text;
+        lap_ = lap;
+        buffer_.max_size(1024 * 1024);
 
         // Look up the domain name
         resolver_.async_resolve(
@@ -97,6 +119,8 @@ public:
                 beast::role_type::client));
 
         // Set a decorator to change the User-Agent of the handshake
+        ws_.read_message_max(1024 * 1024);
+        ws_.auto_fragment(false);
         ws_.set_option(websocket::stream_base::decorator(
             [](websocket::request_type &req)
             {
@@ -159,9 +183,33 @@ public:
         if (ec)
             return fail(ec, "read");
 
+        ws_.text(ws_.got_text());
+        unsigned char *cp = (unsigned char *)buffer_.data().data();
+        string msg(reinterpret_cast<char const *>(cp));
+
+        if (msg == "pause")
+        {
+            lap_->pause();
+        }
+        else if (msg == "start")
+        {
+            lap_->start();
+        }
+
+        buffer_.consume(buffer_.size());
+
+        auto pose = HAL::get_pose();
+        const json map = json{pose.at(0), pose.at(1)};
+        double rtf = HAL::get_performance();
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(2) << rtf;
+        std::string rtf_str = stream.str();
+        const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", Frequency::rate}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
+        auto const text = j.dump();
+
         // Close the WebSocket connection
         ws_.async_write(
-            net::buffer(text_),
+            net::buffer(text.c_str(), strlen(text.c_str())),
             beast::bind_front_handler(
                 &session::on_write,
                 shared_from_this()));
@@ -180,285 +228,94 @@ public:
     }
 };
 
+static const char *base64_chars[2] = {
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789"
+    "+/",
 
-const char kBase64Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-"abcdefghijklmnopqrstuvwxyz"
-"0123456789+/";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789"
+    "-_"};
 
-class Base64 {
-public:
-    static bool Encode(const std::string &in, std::string *out) {
-        int i = 0, j = 0;
-        size_t enc_len = 0;
-        unsigned char a3[3];
-        unsigned char a4[4];
-
-        out->resize(EncodedLength(in));
-
-        int input_len = in.size();
-        std::string::const_iterator input = in.begin();
-
-        while (input_len--) {
-            a3[i++] = *(input++);
-            if (i == 3) {
-                a3_to_a4(a4, a3);
-
-                for (i = 0; i < 4; i++) {
-                    (*out)[enc_len++] = kBase64Alphabet[a4[i]];
-                }
-
-                i = 0;
-            }
-        }
-
-        if (i) {
-            for (j = i; j < 3; j++) {
-                a3[j] = '\0';
-            }
-
-            a3_to_a4(a4, a3);
-
-            for (j = 0; j < i + 1; j++) {
-                (*out)[enc_len++] = kBase64Alphabet[a4[j]];
-            }
-
-            while ((i++ < 3)) {
-                (*out)[enc_len++] = '=';
-            }
-        }
-
-        return (enc_len == out->size());
-    }
-
-    static bool Encode(const char *input, size_t input_length, char *out, size_t out_length) {
-        int i = 0, j = 0;
-        char *out_begin = out;
-        unsigned char a3[3];
-        unsigned char a4[4];
-
-        size_t encoded_length = EncodedLength(input_length);
-
-        if (out_length < encoded_length) return false;
-
-        while (input_length--) {
-            a3[i++] = *input++;
-            if (i == 3) {
-                a3_to_a4(a4, a3);
-
-                for (i = 0; i < 4; i++) {
-                    *out++ = kBase64Alphabet[a4[i]];
-                }
-
-                i = 0;
-            }
-        }
-
-        if (i) {
-            for (j = i; j < 3; j++) {
-                a3[j] = '\0';
-            }
-
-            a3_to_a4(a4, a3);
-
-            for (j = 0; j < i + 1; j++) {
-                *out++ = kBase64Alphabet[a4[j]];
-            }
-
-            while ((i++ < 3)) {
-                *out++ = '=';
-            }
-        }
-
-        return (out == (out_begin + encoded_length));
-    }
-
-    static bool Decode(const std::string &in, std::string *out) {
-        int i = 0, j = 0;
-        size_t dec_len = 0;
-        unsigned char a3[3];
-        unsigned char a4[4];
-
-        int input_len = in.size();
-        std::string::const_iterator input = in.begin();
-
-        out->resize(DecodedLength(in));
-
-        while (input_len--) {
-            if (*input == '=') {
-                break;
-            }
-
-            a4[i++] = *(input++);
-            if (i == 4) {
-                for (i = 0; i < 4; i++) {
-                    a4[i] = b64_lookup(a4[i]);
-                }
-
-                a4_to_a3(a3, a4);
-
-                for (i = 0; i < 3; i++) {
-                    (*out)[dec_len++] = a3[i];
-                }
-
-                i = 0;
-            }
-        }
-
-        if (i) {
-            for (j = i; j < 4; j++) {
-                a4[j] = '\0';
-            }
-
-            for (j = 0; j < 4; j++) {
-                a4[j] = b64_lookup(a4[j]);
-            }
-
-            a4_to_a3(a3, a4);
-
-            for (j = 0; j < i - 1; j++) {
-                (*out)[dec_len++] = a3[j];
-            }
-        }
-
-        return (dec_len == out->size());
-    }
-
-    static bool Decode(const char *input, size_t input_length, char *out, size_t out_length) {
-        int i = 0, j = 0;
-        char *out_begin = out;
-        unsigned char a3[3];
-        unsigned char a4[4];
-
-        size_t decoded_length = DecodedLength(input, input_length);
-
-        if (out_length < decoded_length) return false;
-
-        while (input_length--) {
-            if (*input == '=') {
-                break;
-            }
-
-            a4[i++] = *(input++);
-            if (i == 4) {
-                for (i = 0; i < 4; i++) {
-                    a4[i] = b64_lookup(a4[i]);
-                }
-
-                a4_to_a3(a3, a4);
-
-                for (i = 0; i < 3; i++) {
-                    *out++ = a3[i];
-                }
-
-                i = 0;
-            }
-        }
-
-        if (i) {
-            for (j = i; j < 4; j++) {
-                a4[j] = '\0';
-            }
-
-            for (j = 0; j < 4; j++) {
-                a4[j] = b64_lookup(a4[j]);
-            }
-
-            a4_to_a3(a3, a4);
-
-            for (j = 0; j < i - 1; j++) {
-                *out++ = a3[j];
-            }
-        }
-
-        return (out == (out_begin + decoded_length));
-    }
-
-    static int DecodedLength(const char *in, size_t in_length) {
-        int numEq = 0;
-
-        const char *in_end = in + in_length;
-        while (*--in_end == '=') ++numEq;
-
-        return ((6 * in_length) / 8) - numEq;
-    }
-
-    static int DecodedLength(const std::string &in) {
-        int numEq = 0;
-        int n = in.size();
-
-        for (std::string::const_reverse_iterator it = in.rbegin(); *it == '='; ++it) {
-            ++numEq;
-        }
-
-        return ((6 * n) / 8) - numEq;
-    }
-
-    inline static int EncodedLength(size_t length) {
-        return (length + 2 - ((length + 2) % 3)) / 3 * 4;
-    }
-
-    inline static int EncodedLength(const std::string &in) {
-        return EncodedLength(in.length());
-    }
-
-    inline static void StripPadding(std::string *in) {
-        while (!in->empty() && *(in->rbegin()) == '=') in->resize(in->size() - 1);
-    }
-
-private:
-    static inline void a3_to_a4(unsigned char * a4, unsigned char * a3) {
-        a4[0] = (a3[0] & 0xfc) >> 2;
-        a4[1] = ((a3[0] & 0x03) << 4) + ((a3[1] & 0xf0) >> 4);
-        a4[2] = ((a3[1] & 0x0f) << 2) + ((a3[2] & 0xc0) >> 6);
-        a4[3] = (a3[2] & 0x3f);
-    }
-
-    static inline void a4_to_a3(unsigned char * a3, unsigned char * a4) {
-        a3[0] = (a4[0] << 2) + ((a4[1] & 0x30) >> 4);
-        a3[1] = ((a4[1] & 0xf) << 4) + ((a4[2] & 0x3c) >> 2);
-        a3[2] = ((a4[2] & 0x3) << 6) + a4[3];
-    }
-
-    static inline unsigned char b64_lookup(unsigned char c) {
-        if (c >= 'A' && c <= 'Z') return c - 'A';
-        if (c >= 'a' && c <= 'z') return c - 71;
-        if (c >= '0' && c <= '9') return c + 4;
-        if (c == '+') return 62;
-        if (c == '/') return 63;
-        return 255;
-    }
-};
-
-class WebGUI
+string base64_encode(unsigned char const *bytes_to_encode, size_t in_len, bool url)
 {
-private:
 
-public:
-    WebGUI();
+    size_t len_encoded = (in_len + 2) / 3 * 4;
 
-    static char * img_payload;
-    static void show_image(cv::Mat image);
-};
+    unsigned char trailing_char = url ? '.' : '=';
+
+    //
+    // Choose set of base64 characters. They differ
+    // for the last two positions, depending on the url
+    // parameter.
+    // A bool (as is the parameter url) is guaranteed
+    // to evaluate to either 0 or 1 in C++ therefore,
+    // the correct character set is chosen by subscripting
+    // base64_chars with url.
+    //
+    const char *base64_chars_ = base64_chars[url];
+
+    std::string ret;
+    ret.reserve(len_encoded);
+
+    unsigned int pos = 0;
+
+    while (pos < in_len)
+    {
+        ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0xfc) >> 2]);
+
+        if (pos + 1 < in_len)
+        {
+            ret.push_back(base64_chars_[((bytes_to_encode[pos + 0] & 0x03) << 4) + ((bytes_to_encode[pos + 1] & 0xf0) >> 4)]);
+
+            if (pos + 2 < in_len)
+            {
+                ret.push_back(base64_chars_[((bytes_to_encode[pos + 1] & 0x0f) << 2) + ((bytes_to_encode[pos + 2] & 0xc0) >> 6)]);
+                ret.push_back(base64_chars_[bytes_to_encode[pos + 2] & 0x3f]);
+            }
+            else
+            {
+                ret.push_back(base64_chars_[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
+                ret.push_back(trailing_char);
+            }
+        }
+        else
+        {
+
+            ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0x03) << 4]);
+            ret.push_back(trailing_char);
+            ret.push_back(trailing_char);
+        }
+
+        pos += 3;
+    }
+
+    return ret;
+}
 
 WebGUI::WebGUI()
 {
     auto const host = "127.0.0.1";
     auto const port = "2303";
-    auto const text = "{\"gui\":{\"map\":\"(3,3)\", \"img\":}}";
+    const json image = json{{"image", ""}, {"shape", {100, 100}}};
+    const json j = json{{"map", "(54,-12)"}, {"image", image.dump()}, {"lap", "0:0:0.0"}};
+    auto const text = j.dump();
+    Lap *lap = new Lap();
 
     net::io_context ioc;
 
     // Launch the asynchronous operation
-    std::make_shared<session>(ioc)->run(host, port, text);
+    std::make_shared<session>(ioc)->run(host, port, text.c_str(), lap);
 
-    // Run the I/O service. The call will return when
-    // the get operation is complete.
     ioc.run();
 }
 
 void WebGUI::show_image(cv::Mat image)
 {
-    if (image.empty()) {
+    if (image.empty())
+    {
         return;
     }
 
@@ -466,15 +323,11 @@ void WebGUI::show_image(cv::Mat image)
     cv::imencode(".png", image, buf);
     int width = image.cols;
     int height = image.rows;
-    auto base64_png = reinterpret_cast<const char *>(buf.data());
-    string raw_img = base64_png;
-    string encoded_png;
-    Base64::Encode(raw_img, &encoded_png);
-    string payload = "\"img\":{\"image\": \"" + encoded_png + "\", \"shape\": [" + to_string(width) + ", " + to_string(height) + "]}";
-    img_payload = const_cast<char*>(payload.c_str());
-    cout << img_payload << endl;
+    unsigned char const *enc_msg = reinterpret_cast<unsigned char *>(buf.data());
+    string encoded = base64_encode(enc_msg, buf.size(), false);
+    img_payload = json{{"image", encoded}, {"shape", {width, height}}}.dump();
 }
 
-char * WebGUI::img_payload = "\"img\":{\"image\": \"\", \"shape\": \"\"}";
+string WebGUI::img_payload = json{{"image", ""}, {"shape", {0, 0}}}.dump();
 
 #endif

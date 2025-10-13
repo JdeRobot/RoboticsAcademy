@@ -4,6 +4,7 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ public:
   Frequency(/* args */);
   ~Frequency();
 
+  static int rate;
   void tick(int ideal_cycle);
 };
 
@@ -45,11 +47,18 @@ void Frequency::tick(int ideal_cycle = 50)
 
   if (iter_ms < ideal_ms)
   {
+    rate = round(1000 / ideal_ms.count());
     this_thread::sleep_for(chrono::milliseconds(ideal_ms - iter_ms));
+  }
+  else
+  {
+    rate = round(1000 / iter_ms.count());
   }
 
   last_time = now;
   return;
 }
+
+int Frequency::rate = 0;
 
 #endif
