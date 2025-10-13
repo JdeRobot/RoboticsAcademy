@@ -1,11 +1,12 @@
-import { useState, useEffect} from "react";
-import { drawImage, drawLeftImage } from "./helpers/showImagesDroneGymkhana";
-import noImage from "../../assets/img/noImage.png";
-import { events } from "jderobot-commsmanager";
+import { useState, useEffect } from "react";
+import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 
-import "./css/GUICanvas.css";
 function WebGUI() {
+  const [rightImage, setRightImage] = useState(undefined);
+  const [leftImage, setLeftImage] = useState(undefined);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -18,48 +19,47 @@ function WebGUI() {
       return;
     }
 
-    const callback = (message) => {
-      if (message.data.update.image_right) {
-        console.log("image_right");
-        drawImage(message.data.update);
+    const updateCallback = (message) => {
+      const update = message.data.update;
+      let image;
+      if (update.image_right) {
+        image = JSON.parse(update.image_right);
+        if (image.image_right != "" && image.shape_right instanceof Array) {
+          setRightImage(`data:image/png;base64,${image.image_right}`);
+        }
       }
-      if (message.data.update.image_left) {
-        console.log("image_left");
-        drawLeftImage(message.data.update);
+      if (update.image_left) {
+        image = JSON.parse(update.image_left);
+        if (image.image_left != "" && image.shape_left instanceof Array) {
+          setLeftImage(`data:image/png;base64,${image.image_left}`);
+        }
       }
 
       manager.send("gui", "ack");
     };
 
-    manager.subscribe(events.UPDATE, callback);
+    const stateCallback = (message) => {
+      if (message.data.state === states.TOOLS_READY) {
+        setLeftImage();
+        setRightImage();
+      }
+    };
+
+
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      manager.unsubscribe(events.UPDATE, callback);
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
   }, [manager]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-      }}
-    >
-      <img
-        className="image"
-        id="gui_canvas_left"
-        style={{ left: "0" }}
-        src={noImage}
-      />
-      <img
-        className="image"
-        id="gui_canvas_right"
-        style={{ left: "50%" }}
-        src={noImage}
-      />
-    </div>
+    <WebGUIContainer>
+      <WebGUIImage id="left_img" style={{ left: "0" }} src={leftImage} />
+      <WebGUIImage id="right_img" style={{ left: "50%" }} src={rightImage} />
+    </WebGUIContainer>
   );
 }
 
