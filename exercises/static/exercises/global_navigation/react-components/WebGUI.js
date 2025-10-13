@@ -4,16 +4,17 @@ import { useExercise } from "Contexts/ExerciseContext";
 import {updatePath} from "./helpers/GlobalNavigationHelper";
 import Car from "../resources/images/car-top-view.svg";
 import CityMap from "../resources/images/cityLargenBin.png";
-
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import "./css/GUICanvas.css";
 
 var coords = undefined;
 
 function WebGUI(props) {
-  const [showImage, setShowImage] = useState(false);
   const [carPose, setCarPose] = useState(null)
   const [destination, setDestination] = useState(null)
   const [path, setPath] = useState("")
+  const [userImage, setUserImage] = useState(undefined);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -61,20 +62,10 @@ function WebGUI(props) {
     }
 
     const getImageAndDisplay = (data) => {
-      if(data.image) {
-        let canvas = document.getElementById("gui-canvas-numpy");
-          //Parse encoded image data and decode it
-        function decode_utf8(s) {
-            return decodeURIComponent(escape(s))
-        }
-        var image_data = JSON.parse(data.image),
-        source = decode_utf8(image_data.image),
-        shape = image_data.shape;
-
-        if(source !== ""){
-          canvas.src = "data:image/png;base64," + source;
-          canvas.width = shape[1];
-          canvas.height = shape[0];
+      if (data.image) {
+        let image = JSON.parse(data.image);
+        if (image.image != "" && image.shape instanceof Array) {
+          setUserImage(`data:image/png;base64,${image.image}`);
         }
       }
     }
@@ -106,12 +97,11 @@ function WebGUI(props) {
       console.log(message.data.state)
       if (message.data.state === "tools_ready") {
         showMap = false
-        setShowImage(false)
         trail = []
         setPath("")
+        setUserImage()
       } else {
         showMap = true
-        setShowImage(true)
         // Resend Target
         console.log("Resend target:", coords)
         if (coords) {
@@ -153,7 +143,8 @@ function WebGUI(props) {
   }
 
   return (
-    <div style={{display: "flex",   width: "100%", height: "100%", position:"relative"}}>
+    <WebGUIContainer>
+      {/* <WebGUIImage id="left_img" style={{ left: "0" }} src={CityMap} /> */}
       <img src={CityMap} alt="" className="exercise-canvas" id="exercise-img"
         onClick={ function pickLoc(event){
           var data = destinationPicker(event)
@@ -177,25 +168,8 @@ function WebGUI(props) {
           />
         </svg>
       }
-      { showImage ? 
-        (
-        <img id="gui-canvas-numpy" width="400" height="400" style={{
-            position: "absolute",
-            left: "50%",
-            width: "50%",
-            height: "100%",
-        }}></img>
-        ) : (
-        <div id="gui-canvas-numpy-empty" width="400" height="400" style={{
-            position: "absolute",
-            left: "50%",
-            width: "50%",
-            height: "100%",
-            backgroundColor: "#000000"
-        }}></div>
-        )
-      }
-    </div>
+      <WebGUIImage id="user-img" style={{ left: "50%" }} src={userImage} />
+    </WebGUIContainer>
   );
 }
 
