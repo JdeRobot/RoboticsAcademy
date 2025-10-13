@@ -434,13 +434,13 @@ WORKDIR /data/workspace
 ENV WORKDIR=/data/workspace
 # O3DE Variables
 ARG O3DE_REPO=https://github.com/o3de/o3de.git
-ARG O3DE_BRANCH=main
+ARG O3DE_BRANCH=2310.3
 ARG O3DE_COMMIT=HEAD
 ENV O3DE_ROOT=$WORKDIR/o3de
 
 # O3DE Extras Variables
 ARG O3DE_EXTRAS_REPO=https://github.com/o3de/o3de-extras.git
-ARG O3DE_EXTRAS_BRANCH=main
+ARG O3DE_EXTRAS_BRANCH=2310.3
 ARG O3DE_EXTRAS_COMMIT=HEAD
 ENV O3DE_EXTRAS_ROOT=$WORKDIR/o3de-extras
 
@@ -456,7 +456,6 @@ RUN . /opt/ros/humble/setup.sh \
   && git clone --single-branch -b $O3DE_BRANCH $O3DE_REPO $O3DE_ROOT \
   && git -C $O3DE_ROOT lfs install \
   && git -C $O3DE_ROOT lfs pull \
-  && git -C $O3DE_ROOT reset --hard $O3DE_COMMIT \
   \
   ############################################################### \
   # Clone o3de-extras   \
@@ -464,7 +463,6 @@ RUN . /opt/ros/humble/setup.sh \
   && git clone --single-branch -b $O3DE_EXTRAS_BRANCH $O3DE_EXTRAS_REPO $O3DE_EXTRAS_ROOT \
   && git -C $O3DE_EXTRAS_ROOT lfs install \
   && git -C $O3DE_EXTRAS_ROOT lfs pull \
-  && git -C $O3DE_EXTRAS_ROOT reset --hard $O3DE_EXTRAS_COMMIT \
   \
   ############################################################### \
   # Get the O3DE python and register the gem paths and projects \
