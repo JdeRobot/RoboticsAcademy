@@ -82,8 +82,9 @@ const PlayPauseButton = ({
     if (manager.getState() === states.IDLE) {
       info("Connecting with the Robotics Backend ...");
       connectManager(states.TOOLS_READY, () => {
-        onAppStateChange();
+        setLoading(false);
         close();
+        onAppStateChange();
       });
       return;
     }
