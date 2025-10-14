@@ -35,7 +35,9 @@ const PlayPauseButton = ({
   const { warning, error, info, close } = useError();
   const codeRef = useRef("");
   const runningCodeRef = useRef("");
-  const [state, setState] = useState<string>(CommsManager.getInstance().getState());
+  const [state, setState] = useState<string>(
+    CommsManager.getInstance().getState()
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
   const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
@@ -74,7 +76,6 @@ const PlayPauseButton = ({
   // App handling
 
   const onAppStateChange = async (save?: boolean) => {
-
     const manager = CommsManager.getInstance();
     setLoading(true);
 
@@ -171,11 +172,15 @@ const PlayPauseButton = ({
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
         if (base64data) {
-          await manager.run(
-            `/workspace/code/academy.${extension}`,
-            toLint,
-            base64data as string
-          );
+          try {
+            await manager.run(
+              `/workspace/code/academy.${extension}`,
+              toLint,
+              base64data as string
+            );
+          } catch (error) {
+            setLoading(false);
+          }
           console.log("Dockerized app started successfully");
         }
       };
