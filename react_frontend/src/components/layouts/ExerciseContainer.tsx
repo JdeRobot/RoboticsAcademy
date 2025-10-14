@@ -168,7 +168,7 @@ const ExerciseContainer = ({
       }
     } catch (e: unknown) {
       console.log("Connection failed, trying again!");
-      setTimeout(connectWithRetry, 2000);
+      setTimeout(connectWithRetry, 2000, desiredState, callback);
     }
   };
 
