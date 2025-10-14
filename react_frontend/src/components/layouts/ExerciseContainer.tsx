@@ -133,7 +133,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("console")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={1108} message={"Click Play to connect to the Robotics Backend"}/>,
+      component: <VncViewer commsManager={manager} port={6082} message={"Click Play to connect to the Robotics Backend"}/>,
       icon: <TerminalRoundedIcon />,
       name: "Terminal",
       active: showTerminal,
