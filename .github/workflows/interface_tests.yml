@@ -1,0 +1,26 @@
+name: Interfaces Tests
+
+on:
+    pull_request:
+        branches: [humble-devel, backend_testing]
+
+jobs:
+    interfaces-tests:
+        name: Run Interfaces Tests in RADI Container
+        runs-on: ubuntu-latest
+        container:
+            image: jderobot/robotics-academy:latest
+
+        steps:
+            - name: Checkout code into /RoboticsAcademy
+              uses: actions/checkout@v4
+              with:
+                  path: /RoboticsAcademy
+
+            - name: Install Python dependencies
+              run: pip install -r tests/requirements.txt
+              working-directory: /RoboticsAcademy
+
+            - name: Run pytest with coverage
+              run: pytest --cov
+              working-directory: /RoboticsAcademy
