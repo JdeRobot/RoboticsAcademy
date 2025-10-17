@@ -3,7 +3,8 @@ import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import houseMap from "../resources/images/mapgrannyannie.png";
 import Vacuum from "../resources/images/vacuum.svg";
-
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import "./css/GUICanvas.css";
 
 function WebGUI() {
@@ -103,8 +104,8 @@ function WebGUI() {
   }, [manager]);
 
   return (
-    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img src={houseMap} alt="" className="exercise-canvas" id="exercise-img"/>
+    <WebGUIContainer>
+      <WebGUIImage id="map-img" src={houseMapDirty} style={{ left: "0", width: "100%" }} />
       <div className="overlay" id="map-container">
         {vacuumPose &&
           <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -15 , left: vacuumPose[1] -15}}>
@@ -126,7 +127,7 @@ function WebGUI() {
           )})
         }
       </div>
-    </div>
+    </WebGUIContainer>
   );
 }
 

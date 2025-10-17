@@ -1,11 +1,12 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef} from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import { drawImage, updatePath, addToPath } from "./helpers/showImageVisual";
+import { updatePath, addToPath } from "./helpers/showImageVisual";
 import RobotRed from "../resources/images/robot_red.svg";
 import RobotGreen from "../resources/images/robot_green.svg";
 import RobotBlue from "../resources/images/robot_blue.svg";
-import noImage from "../../assets/img/noImage.png";
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 
 import warehouse from "../resources/images/map.png";
 import smallWarehouse from "../resources/images/small_map.png";
@@ -17,6 +18,8 @@ function WebGUI(props) {
   const [realPath, setRealPath] = useState("")
   const [noisyPath, setNoisyPath] = useState("")
   const [mapImg, setMapImg] = useState(smallWarehouse);
+  const [userImage, setUserImage] = useState(undefined);
+  const canvasRef = useRef(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -60,7 +63,7 @@ function WebGUI(props) {
     const updateCallback = (message) => {
       const updateData = message.data.update;
 
-      var img = document.getElementById('gui-canvas'); 
+      var img = canvasRef.current
       //or however you get a handle to the IMG
       var width = (img.clientWidth / 1500);
       var height = (img.clientHeight / 970);
@@ -92,7 +95,10 @@ function WebGUI(props) {
       }
 
       if (updateData.user_map) {
-        drawImage(updateData);
+        let image = JSON.parse(updateData.user_map);
+        if (image.shape instanceof Array) {
+          setUserImage(`data:image/png;base64,${image.user_map}`);
+        }
       }
 
       // Send the ACK of the msg
@@ -101,18 +107,15 @@ function WebGUI(props) {
 
     const stateCallback = (message) => {
       if (message.data.state === "tools_ready") {
-        try {
-          setRealPose(null)
-          setNoisyPose(null)
-          setRealPath("")
-          setNoisyPath("")
-          realTrail=[]
-          noisyTrail=[]
-          var canvas = document.getElementById("gui-canvas");
-          canvas.src = noImage;
-        } catch (error) {
-        }
-        switch (context.mapSelected) {
+        setRealPose(null)
+        setNoisyPose(null)
+        setRealPath("")
+        setNoisyPath("")
+        realTrail=[]
+        noisyTrail=[]
+        setUserImage()
+
+        switch (manager.getUniverse()) {
           case "Laser Mapping Warehouse":
             setMapImg(warehouse);
             break;
@@ -124,7 +127,10 @@ function WebGUI(props) {
       valuesUntilValid = 0;
     }
 
-    resizeObserver.observe(document.getElementById("exercise-img"));
+    var img = canvasRef.current
+    if (img) {
+      resizeObserver.observe(img);
+    }
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
@@ -136,10 +142,9 @@ function WebGUI(props) {
   }, [manager]);
 
   return (
-    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img src={mapImg} alt="" className="exercise-canvas" id="exercise-img"/>
-      <img className="image" id="gui-canvas" style={{left: "50%"}}
-        src={noImage}/>
+    <WebGUIContainer>
+      <WebGUIImage reference={canvasRef} id="map-img" src={mapImg} style={{ left: "0" }} />
+      <WebGUIImage src={userImage} style={{ left: "50%" }} />
       {realPose &&
         <div id="real-pos" style={{rotate: "z "+ realPose[2]+"rad", top: realPose[0] -10 , left: realPose[1] -10}}>
           <img src={RobotGreen} id="real-pos"/>
@@ -164,7 +169,7 @@ function WebGUI(props) {
           />
         </svg>
       }
-    </div>
+    </WebGUIContainer>
   );
 }
 

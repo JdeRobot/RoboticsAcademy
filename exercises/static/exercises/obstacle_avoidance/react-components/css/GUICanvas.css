@@ -7,6 +7,10 @@
   z-index: 4;
 }
 
+#f1-road {
+  background-color: #363233;
+}
+
 .laser-beam {
   position: absolute;
   background: repeating-linear-gradient(
