@@ -1,16 +1,18 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef} from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import houseMap from "../resources/images/GUI_mapgrannyannie.png";
 import Vacuum from "../resources/images/vacuum.svg";
-import { drawImage } from "./helpers/showImageMontecarlo"
-
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import "./css/GUICanvas.css";
 
 function WebGUI(props) {
   const [vacuumPose, setVacuumPose] = useState(null)
   const [userPose, setUserPose] = useState(null)
   const [userParticles, setParticles] = useState([])
+  const canvasRef = useRef(null);
+  const [userImage, setUserImage] = useState(undefined);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -48,14 +50,14 @@ function WebGUI(props) {
       
       // Lógica para manejar la imágen
       if (updateData.image) {
-        const image = JSON.parse(updateData.image)
-        if (image.image) {
-            drawImage(updateData);
+        let image = JSON.parse(updateData.image);
+        if (image.shape instanceof Array) {
+          setUserImage(`data:image/png;base64,${image.image}`);
         }
       }
       
       // Lógica para manejar el mapa
-      var img = document.getElementById('exercise-img'); 
+      var img = canvasRef.current 
       var width = (1012 / 300) / (1012 /img.clientWidth);
       var height = (1012 / 150) / (1012 /img.clientHeight);
 
@@ -68,7 +70,6 @@ function WebGUI(props) {
         lastRealPose = content;
 
         setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
-        console.log(userContent)
 
         if (!(userContent[0] === 0 && userContent[1] === 0 && userContent[2] === 0)) {
           lastUserPose = userContent;
@@ -98,10 +99,14 @@ function WebGUI(props) {
         setParticles([])
         lastRealPose = undefined;
         lastUserPose = undefined;
+        setUserImage()
       }
     }
 
-    resizeObserver.observe(document.getElementById("exercise-img"));
+    var img = canvasRef.current
+    if (img) {
+      resizeObserver.observe(img);
+    }
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
@@ -113,17 +118,17 @@ function WebGUI(props) {
   }, [manager]);
 
   return (
-    <div style={{display: "flex", width: "100%", height: "100%", position:"relative"}}>
-      <img src={houseMap} alt="" className="exercise-canvas" id="exercise-img"/>
+  <WebGUIContainer>
+    <WebGUIImage reference={canvasRef} id="map-img" src={houseMap} style={{ left: "0" }} />
       <div className="overlay" id="map-container">
         {vacuumPose &&
-          <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -15 , left: vacuumPose[1] -15}}>
+          <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -10 , left: vacuumPose[1] -1}}>
             <img src={Vacuum} id="vacuum-pos"/>
             <div className="arrow arrow-real"/>
           </div>
         }
         {userPose &&
-          <div id="user-pos" style={{rotate: "z "+ userPose[2]+"rad", top: userPose[0] -15 , left: userPose[1] -15}}>
+          <div id="user-pos" style={{rotate: "z "+ userPose[2]+"rad", top: userPose[0] -10 , left: userPose[1] -10}}>
             <img src={Vacuum} id="user-pos"/>
             <div className="arrow arrow-user"/>
           </div>
@@ -136,8 +141,8 @@ function WebGUI(props) {
           )})
         }
       </div>
-      <canvas className="image" id="gui_canvas_right" style={{left: "50%"}}/>
-    </div>
+      <WebGUIImage src={userImage} id="map-img" style={{ left: "50%" }} />
+    </WebGUIContainer>
   );
 }
 

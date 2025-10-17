@@ -3,7 +3,8 @@ import { updatePath, addToPath } from "./helpers/VacuumCleanerHelper";
 import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
 import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
 import Vacuum from "../resources/images/vacuum.svg";
-
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 
@@ -46,7 +47,7 @@ const WebGUI = () => {
         const content = pose.split(",").map((item) => parseFloat(item));
         lastPose = content;
 
-        var img = document.getElementById("exercise-img");
+        var img = document.getElementById("map-img");
         //or however you get a handle to the IMG
         var width = 1012 / 300 / (1012 / img.clientWidth);
         var height = 1012 / 150 / (1012 / img.clientHeight);
@@ -70,7 +71,7 @@ const WebGUI = () => {
       }
     };
 
-    resizeObserver.observe(document.getElementById("exercise-img"));
+    resizeObserver.observe(document.getElementById("map-img"));
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
@@ -82,20 +83,8 @@ const WebGUI = () => {
   }, [manager]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-      }}
-    >
-      <img
-        src={houseMapDirty}
-        alt=""
-        className="exercise-canvas"
-        id="exercise-img"
-      />
+    <WebGUIContainer>
+      <WebGUIImage id="map-img" src={houseMapDirty} style={{ left: "0", width: "100%" }} />
       <div className="overlay" id="map-container">
         {vacuumPose && (
           <div
@@ -140,7 +129,7 @@ const WebGUI = () => {
           </svg>
         )}
       </div>
-    </div>
+    </WebGUIContainer>
   );
 };
 

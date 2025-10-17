@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUI3D from "Components/exercise/WebGUI3D";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import "./css/Reconstruction3DRR.css";
 import { draw, reset_all } from "./helpers/helperRecontruction";
 
@@ -53,14 +54,7 @@ const WebGUI = () => {
   }, [manager]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100%",
-        width: "100%",
-        position: "relative",
-      }}
-    >
+    <WebGUIContainer>
       <WebGUI3D
         toPaint={pointsToPaint}
         reset={reset}
@@ -69,7 +63,7 @@ const WebGUI = () => {
         style={{ height: "100%", width: "33%" }}
       />
       <canvas id="gui_canvas" style={{ width: "67%" }}></canvas>
-    </div>
+    </WebGUIContainer>
   );
 };
 
