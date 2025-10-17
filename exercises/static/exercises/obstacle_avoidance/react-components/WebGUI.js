@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 
 import F1Car from "../resources/images/f1-car.svg";
 import Arrow from "../resources/images/arrow.svg";
@@ -66,8 +67,7 @@ function WebGUI() {
   }, [manager]);
 
   return (
-    <div style={{display: "flex",   width: "100%",
-    height: "100%", backgroundColor: "#363233", position:"relative", overflow:"hidden"}}>
+    <WebGUIContainer id="f1-road">
       <img src={F1Car} id="f1-car"/>
       {laser.map(element => {
         var ang = -element[1]
@@ -84,7 +84,7 @@ function WebGUI() {
           <div id="target"/>
         </div>
       }
-    </div>
+    </WebGUIContainer>
   );
 }
 

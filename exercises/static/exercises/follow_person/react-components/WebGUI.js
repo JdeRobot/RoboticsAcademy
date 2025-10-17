@@ -3,7 +3,6 @@ import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer from "Components/exercise/WebGUIContainer";
-import "./css/GUICanvas.css";
 
 function WebGUI() {
   const [image, setImage] = useState(undefined);
