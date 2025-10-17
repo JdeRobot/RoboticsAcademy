@@ -20,6 +20,7 @@ function WebGUI() {
 
     const callback = (message) => {
       const update = message.data.update;
+      console.log(update)
       if (update.image) {
         const image = JSON.parse(update.image);
         setImage(`data:image/png;base64,${image.image}`);
@@ -38,7 +39,7 @@ function WebGUI() {
 
   return (
     <WebGUIContainer>
-      <WebGUIImage id="gui_canvas" src={image} />
+      <WebGUIImage id="gui_canvas" src={image} style={{width: "100%"}}/>
     </WebGUIContainer>
   );
 }
