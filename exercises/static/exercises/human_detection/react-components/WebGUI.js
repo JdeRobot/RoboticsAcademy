@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import noImage from "../../assets/img/noImage.png";
+import WebGUIImage from "Components/exercise/WebGUIImage";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import { useExercise } from "Contexts/ExerciseContext";
 import { events } from "jderobot-commsmanager";
 
-import "./css/GUICanvas.css";
-
 function WebGUI() {
+  const [image, setImage] = useState(undefined);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -19,24 +19,10 @@ function WebGUI() {
     }
 
     const callback = (message) => {
-      if (message.data.update.image) {
-        var canvas = document.getElementById("gui_canvas");
-
-        // Request Animation Frame to remove the flickers
-        function decode_utf8(s) {
-          return decodeURIComponent(escape(s));
-        }
-
-        // Parse the Image Data
-        var image_data = JSON.parse(message.data.update.image),
-          source = decode_utf8(image_data.image),
-          shape = image_data.shape;
-
-        if (source != "" && shape instanceof Array) {
-          canvas.src = "data:image/jpeg;base64," + source;
-          canvas.width = shape[1];
-          canvas.height = shape[0];
-        }
+      const update = message.data.update;
+      if (update.image) {
+        const image = JSON.parse(update.image);
+        setImage(`data:image/png;base64,${image.image}`);
       }
 
       // Send the ACK of the msg
@@ -51,17 +37,9 @@ function WebGUI() {
   }, [manager]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        justifyContent: "center",
-      }}
-    >
-      <img className="image" id="gui_canvas" src={noImage} />
-    </div>
+    <WebGUIContainer>
+      <WebGUIImage id="gui_canvas" src={image} style={{width: "100%"}}/>
+    </WebGUIContainer>
   );
 }
 
