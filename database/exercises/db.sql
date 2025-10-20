@@ -189,7 +189,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 -- 30  16  3
 
 --
--- Data for Name: exercises_tools; Type: TABLE DATA; Schema: public; Owner: user-dev
+-- Data for Name: exercises_tools; Type: TABLE DATA; Schema: public; Owner: user-devs
 --
 
 COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
