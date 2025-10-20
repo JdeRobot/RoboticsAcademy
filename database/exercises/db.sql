@@ -146,54 +146,45 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 
 
 COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
-1	2	1           -- Exercise: vacuum_cleaner ; Universe: Vacuums House
-2	5	1           -- Exercise: vacuum_cleaner_loc ; Universe: Vacuums House
-3	6	2           -- Exercise: global_navigation ; Universe: City Large
-4	7	31          -- Exercise: rescue_people ; Universe: Rescue People Harmonic
-5	10	4           -- Exercise: amazon_warehouse ; Universe: Warehouse 1
-6	1	5           -- Exercise: follow_line ; Universe: Simple Circuit
-7	1	6           -- Exercise: follow_line ; Universe: Montreal Circuit
-8	4	7           -- Exercise: follow_person ; Universe: Follow Person
-9	4	8           -- Exercise: follow_person ; Universe: Follow Person Teleop
--- 10	3	9       -- Exercise: autoparking ; Universe: Autoparking Simple: In line
-11	11	1           -- Exercise: montecarlo_laser_loc ; Universe: Vacuums House
-12	8	10          -- Exercise: obstacle_avoidance ; Universe: Obstacle Avoidance Default
-13	9	12          -- Exercise: 3d_reconstruction ; Universe: 3d Reconstruction
--- 14	3	13      -- Exercise: autoparking ; Universe: Autoparking Simple: In battery
--- 15	3	14      -- Exercise: autoparking ; Universe: Autoparking Gas Station: In line
--- 16	3	15      -- Exercise: autoparking ; Universe: Autoparking Gas Station: In battery
--- 17	3	16      -- Exercise: autoparking ; Universe: Autoparking Gas Station: Parking lot
-18	10	17          -- Exercise: amazon_warehouse ; Universe: Warehouse 1 Ackermann
-19	10	18          -- Exercise: amazon_warehouse ; Universe: Warehouse 2 Ackermann
-20	10	19          -- Exercise: amazon_warehouse ; Universe: Warehouse 2
-21	1	20          -- Exercise: follow_line ; Universe: Montmelo Circuit
-22	1	21          -- Exercise: follow_line ; Universe: Nurburgring Circuit
-23	1	22          -- Exercise: follow_line ; Universe: Nurburgring Ackermann Circuit
-24	1	23          -- Exercise: follow_line ; Universe: Montmelo Ackermann Circuit
-25	1	24          -- Exercise: follow_line ; Universe: Montreal Ackermann Circuit
-26	1	25          -- Exercise: follow_line ; Universe: Simple Ackermann Circuit
-27	12	27          -- Exercise: montecarlo_visual_loc ; Universe: Vacuums House Roof
-28	13	29          -- Exercise: marker_visual_loc ; Universe: Vacuums House Markers
-29	14	30          -- Exercise: laser_mapping ; Universe: Small Laser Mapping Warehouse
-30	16	32          -- Exercise: follow_road ; Universe: Follow Road Harmonic
-31	14	33          -- Exercise: laser_mapping ; Universe: Laser Mapping Warehouse
-32	17	34          -- Exercise: pick_place ; Universe: Pick And Place World
-33	22 	5           -- Exercise: end_to_end_visual_control ; Universe: Simple Circuit
-34	22	6           -- Exercise: end_to_end_visual_control ; Universe: Montreal Circuit
-35	22	20          -- Exercise: end_to_end_visual_control ; Universe: Montmelo Circuit
-36	22	21          -- Exercise: end_to_end_visual_control ; Universe: Nurburgring Circuit
-37	20	36          -- Exercise: drone_gymkhana ; Universe: Drone Gymkhana World
-38	21	37          -- Exercise: power_tower_inspection ; Universe: Tower Inspection World
-39	24	35          -- Exercise: car_junction ; Universe: Car Junction World
-40	25	38          -- Exercise: machine_vision ; Universe: Industrial Machine Vision World
-41	26	39          -- Exercise: labyrinth_escape ; Universe: Labyrinth Escape World
-
--- NEW AUTOPARKING UNIVERSES
-42  3   39          -- Exercise: autoparking ; Universe: Autopark_line
-43  3   40          -- Exercise: autoparking ; Universe: Autopark_battery
-44  3   41          -- Exercise: autoparking ; Universe: Autopark_sideways
---
-
+1	2	1
+2	5	1
+3	6	2
+4	7	31
+5	10	4
+6	1	5
+7	1	6
+8	4	7
+9	4	8
+11	11	1
+12	8	10
+13	9	12
+18	10	17
+19	10	18
+20	10	19
+21	1	20
+22	1	21
+23	1	22
+24	1	23
+25	1	24
+26	1	25
+27	12	27
+28	13	29
+29	14	30
+30	16	32
+31	14	33
+32	17	34
+33	22 	5
+34	22	6
+35	22	20
+36	22	21
+37	20	36
+38	21	37
+39	24	35
+40	25	38
+41	26	39
+42  3   39
+43  3   40
+44  3   41
 \.
 -- 30  16  3
 
