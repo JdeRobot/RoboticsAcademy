@@ -6,6 +6,7 @@ import React from "react";
 import IdeInterface, {
   Entry,
   ExtraApi,
+  ExtraSnippets,
   StatusBarComponents,
   ViewersEntry,
   VncViewer,
@@ -24,7 +25,8 @@ import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManu
 import {
   defaultCppCode,
   defaultPythonCode,
-} from "Components/../constants/code";
+} from "Constants/code";
+import { getHalGuiMethods } from "Helpers/editor";
 
 const base_file_python = {
   name: "academy.py",
@@ -113,7 +115,13 @@ const ExerciseContainer = ({
 
   if (tools.includes("simulator")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={6080} message={"Click Play to connect to the Robotics Backend"} />,
+      component: (
+        <VncViewer
+          commsManager={manager}
+          port={6080}
+          message={"Click Play to connect to the Robotics Backend"}
+        />
+      ),
       icon: <VideoCameraBackRoundedIcon />,
       name: "Gazebo",
       active: showSim,
@@ -123,7 +131,13 @@ const ExerciseContainer = ({
 
   if (tools.includes("rviz")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={6081} message={"Click Play to connect to the Robotics Backend"}/>,
+      component: (
+        <VncViewer
+          commsManager={manager}
+          port={6081}
+          message={"Click Play to connect to the Robotics Backend"}
+        />
+      ),
       icon: <PrecisionManufacturingRoundedIcon />,
       name: "Rviz",
       active: showRviz,
@@ -133,7 +147,13 @@ const ExerciseContainer = ({
 
   if (tools.includes("console")) {
     toolsList.push({
-      component: <VncViewer commsManager={manager} port={6082} message={"Click Play to connect to the Robotics Backend"}/>,
+      component: (
+        <VncViewer
+          commsManager={manager}
+          port={6082}
+          message={"Click Play to connect to the Robotics Backend"}
+        />
+      ),
       icon: <TerminalRoundedIcon />,
       name: "Terminal",
       active: showTerminal,
@@ -225,7 +245,14 @@ const ExerciseContainer = ({
   };
 
   const statusBar: StatusBarComponents = {
-    extras: [<Frequencies manager={manager} />],
+    extras: [<Frequencies key="freq-statusBar" manager={manager} />],
+  };
+
+  const extraSnippets: ExtraSnippets = {
+    triggers: ["WebGUI", "HAL", "Frequencies"],
+    loader: (prevWord: string) => {
+      return getHalGuiMethods(prevWord);
+    },
   };
 
   return (
@@ -253,6 +280,7 @@ const ExerciseContainer = ({
           extraEditors={[]}
           baseFile={baseFile}
           baseUniverse={universes ? universes[0] : undefined}
+          extraSnippets={extraSnippets}
         />
       </ExerciseProvider>
     </StyledExerciseContainer>
