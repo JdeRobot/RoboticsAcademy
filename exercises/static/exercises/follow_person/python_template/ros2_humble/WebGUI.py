@@ -72,8 +72,8 @@ class WebGUI(MeasuringThreadingGUI):
             pose = get_future.result().state.pose
 
             # Define movement and rotation parameters
-            mov_dist = 0.1  # meters (default for forward movement)
-            rot_angle = 0.17  # radians (default for left rotation)
+            mov_dist = 0.01  # meters (default for forward movement)
+            rot_angle = 0.017  # radians (default for left rotation)
 
             # Check for movement direction
             if "key_s" in message:
