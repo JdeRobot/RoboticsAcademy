@@ -15,6 +15,7 @@
       "Icons/*": [ "src/icons/*"],
       "Styles/*": [ "src/styles/*"],
       "Types/*": [ "src/types/*"],
+      "Constants/*": [ "src/constants/*"],
     },
     "baseUrl": "./",
     "rootDir": "./src",
