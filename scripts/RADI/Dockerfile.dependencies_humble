@@ -19,6 +19,11 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
+
+ENV O3DE_HASH=5b344a0be6
+ENV O3DE_EXTRAS_HASH=ros2_project_template
+ENV PROJECT_NAME=WarehouseTest
+
 ENV ROS_DISTRO=humble
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
 ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
@@ -30,17 +35,34 @@ ENV ROS_VERSION=2
 
 # Install common tools
 RUN apt-get update && apt-get install -y \
-  software-properties-common \
-  bash-completion \
+  software-properties-common bc bind9-utils \
+  bash-completion ca-certificates clang file firewalld \
   apt-utils \
   build-essential \
-  git curl wget cmake \
-  nano vim \
+  git git-lfs curl wget cmake ninja-build \
+  nano vim jq \
   gnupg \
   lsb-release \
   sudo \
   net-tools \
   pciutils \
+  kbd \
+  kmod \
+  lsb-release \
+  libglu1-mesa-dev \
+  libxcb-xinerama0 \
+  libfontconfig1-dev \
+  libcurl4-openssl-dev \
+  libnvidia-gl-470 \
+  libssl-dev \
+  libxcb-xkb-dev \
+  libxkbcommon-x11-dev \
+  libxkbcommon-dev \
+  libxcb-xfixes0-dev \
+  libxcb-xinput-dev \
+  libxcb-xinput0 \
+  libpcre2-16-0 \
+  lsof tar unzip xz-utils \
   && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
@@ -340,90 +362,6 @@ RUN ./install-ompl-ubuntu.sh --github --python
 
 
 
-
-
-
-
-ENV O3DE_HASH=5b344a0be6
-ENV O3DE_EXTRAS_HASH=ros2_project_template
-ENV PROJECT_NAME=WarehouseTest
-
-ENV WORKDIR=/data/workspace
-WORKDIR $WORKDIR
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-# Setup time zone and locale data (necessary for SSL and HTTPS packages)
-RUN apt-get update && DEBIAN_FRONTEND="noninteractive" apt-get -y \
-    install \
-    tzdata \
-    locales \
-    keyboard-configuration \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
-    && dpkg-reconfigure --frontend=noninteractive locales \
-    && update-locale LANG=en_US.UTF-8
-
-ENV LANG=en_US.UTF-8
-
-# Install common tools
-# deps in https://github.com/o3de/o3de/blob/development/scripts/build/build_node/Platform/Linux/package-list.ubuntu-jammy.txt
-RUN apt-get update && apt-get install -y \
-    bc \
-    bind9-utils \
-    binutils \
-    ca-certificates \
-    clang \
-    cmake \
-    file \
-    firewalld \
-    git \
-    git-lfs \
-    jq \
-    kbd \
-    kmod \
-    less \
-    lsb-release \
-    libglu1-mesa-dev \
-    libxcb-xinerama0 \
-    libfontconfig1-dev \
-    libcurl4-openssl-dev \
-    libnvidia-gl-470 \
-    libssl-dev \
-    libxcb-xkb-dev \
-    libxkbcommon-x11-dev \
-    libxkbcommon-dev \
-    libxcb-xfixes0-dev \
-    libxcb-xinput-dev \
-    libxcb-xinput0 \
-    libpcre2-16-0 \
-    lsof \
-    net-tools \
-    ninja-build \
-    pciutils \
-    python3-pip \
-    software-properties-common \
-    sudo \
-    tar \
-    unzip \
-    vim \
-    wget \
-    xz-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-# Gem + ROS pacakges
-RUN apt-get update && apt-get install -y \
-    ros-humble-ackermann-msgs \
-    ros-humble-control-toolbox \
-    ros-humble-gazebo-msgs \
-    ros-humble-joy \
-    ros-humble-navigation2 \
-    ros-humble-rviz2 \
-    ros-humble-tf2-ros \
-    ros-humble-urdfdom \
-    ros-humble-vision-msgs \
-    && rm -rf /var/lib/apt/lists/*
 
 ## Symlink clang version to non-versioned clang and set cc to clang
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
