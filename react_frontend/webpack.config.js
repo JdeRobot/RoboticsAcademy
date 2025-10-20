@@ -1,7 +1,8 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BundleTrackerPlugin = require("webpack-bundle-tracker");
 const path = require("path");
-const glob = require("glob");
 
 const aliases = () => {
   const aliasConfig = {
@@ -17,6 +18,7 @@ const aliases = () => {
     Icons: path.resolve(__dirname, "src/icons"),
     Styles: path.resolve(__dirname, "src/styles"),
     Types: path.resolve(__dirname, "src/types"),
+    Constants: path.resolve(__dirname, "src/constants"),
     Common: path.resolve(__dirname, "../static/common"),
     exercises: path.resolve(__dirname, "../exercises/static/exercises"),
   };
