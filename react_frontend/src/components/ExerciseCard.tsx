@@ -32,6 +32,7 @@ const ExerciseCard = ({
   };
 
   const tagsList: string[] = JSON.parse(tags);
+  console.log(tagsList)
 
   return (
     <StyledExerciseCardContainer state={status}>

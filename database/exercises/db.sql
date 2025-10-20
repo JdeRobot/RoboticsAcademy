@@ -138,7 +138,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
-27	o3de_warehouse	O3DE Warehouse	Control an O3DE robot to organize a warehouse	{"tags": "ROS2"}	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
+27	o3de_warehouse	O3DE Warehouse	Control an O3DE robot to organize a warehouse	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
 \.
 
 --

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { subscribe, unsubscribe } from "Helpers/utils";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
-const ResetButton = ({}: {}) => {
+const ResetButton = () => {
   const theme = useAcademyTheme();
   const { warning } = useError();
 

@@ -101,13 +101,11 @@ const ExerciseHeader = ({
           <PlayPauseButton
             project={project}
             language={language}
-            appRunning={appRunning}
-            setAppRunning={setAppRunning}
             dlModel={dlModel}
             hasDLModel={hasDLModel}
             connectManager={connectManager}
           />
-          <ResetButton setAppRunning={setAppRunning} />
+          <ResetButton />
           <TerminateUniverseButton setAppRunning={setAppRunning} />
           <TheoryButton url={url} />
           <ForumButton />
