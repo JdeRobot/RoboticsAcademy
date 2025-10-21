@@ -111,7 +111,9 @@ const PlayPauseButton = ({
         setLoading(false);
         if (e instanceof Error) {
           console.error("Error pausing app: " + e.message);
-          error("Error pausing app: " + e.message);
+          error(
+            "Failed to stop the application. See the traces in the terminal."
+          );
         }
       }
     }
@@ -129,7 +131,13 @@ const PlayPauseButton = ({
       manager.getState() === "paused" &&
       runningCodeRef.current === codeRef.current
     ) {
-      await manager.resume();
+      try {
+        await manager.resume();
+      } catch (e) {
+        error(
+          "Failed to resume the application. See the traces in the terminal."
+        );
+      }
       console.log("App resumed correctly!");
       return;
     }
@@ -138,7 +146,7 @@ const PlayPauseButton = ({
       const zip = new JSZip();
       const extension = language === "cpp" ? "cpp" : "py";
       let commonsZip;
-      var toLint = [""];
+      let toLint = [""];
 
       if (extension === "py") {
         commonsZip = await zip.loadAsync(commons);
@@ -179,7 +187,10 @@ const PlayPauseButton = ({
               toLint,
               base64data as string
             );
-          } catch (error) {
+          } catch (e: unknown) {
+            error(
+              "Failed to run the application. See the traces in the terminal."
+            );
             setLoading(false);
           }
           console.log("Dockerized app started successfully");

@@ -1,15 +1,15 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
-import { CommsManager, events, states } from "jderobot-commsmanager";
+import { CommsManager, states } from "jderobot-commsmanager";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import React, { useEffect, useState } from "react";
 import { subscribe, unsubscribe } from "Helpers/utils";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
-const ResetButton = ({}: {}) => {
+const ResetButton = () => {
   const theme = useAcademyTheme();
-  const { warning } = useError();
+  const { warning, error } = useError();
 
   const [state, setState] = useState<string>(
     CommsManager.getInstance().getState()
@@ -49,9 +49,16 @@ const ResetButton = ({}: {}) => {
       return;
     }
 
-    setLoading(true);
+    if (state === states.TOOLS_READY) {
+      return;
+    }
 
-    await manager.terminateApplication();
+    setLoading(true);
+    try {
+      await manager.terminateApplication();
+    } catch (e) {
+      error("Failed to reset the application. See the traces in the terminal.");
+    }
     console.log("App reseted!");
   };
 
@@ -63,6 +70,7 @@ const ResetButton = ({}: {}) => {
       id="reset-app"
       onClick={onResetApp}
       title="Reset app"
+      disabled={loading}
     >
       {loading ? (
         <SyncRoundedIcon htmlColor={theme.palette.text} id="loading-spin" />
