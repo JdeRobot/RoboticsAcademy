@@ -2,6 +2,8 @@ services:
     my-postgres:
         image: jderobot/robotics-database:latest
         container_name: universe_db
+        networks:
+            - db_network
         environment:
             POSTGRES_DB: academy_db
             POSTGRES_USER: user-dev
@@ -22,6 +24,8 @@ services:
     robotics-academy:
         image: jderobot/robotics-academy:latest
         container_name: developer-container
+        networks:
+            - db_network
         command: "-s"
         deploy:
             resources:
@@ -46,6 +50,7 @@ services:
             - type: bind
               source: ./src
               target: /RoboticsApplicationManager
+            - ./RoboticsInfrastructure/database/universes.sql:/universes.sql
         tty: true
         stdin_open: true
         depends_on:
@@ -53,3 +58,6 @@ services:
                 condition: service_healthy
         links:
             - my-postgres
+
+networks:
+  db_network:
