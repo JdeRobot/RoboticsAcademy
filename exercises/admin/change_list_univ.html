@@ -1,0 +1,9 @@
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block object-tools-items %}
+{{ block.super }}
+<li>
+    <a id="save-db-button" onclick="fetch('/exercises/save_universe_db')" >Local Save</a>
+</li>
+{% endblock %}
