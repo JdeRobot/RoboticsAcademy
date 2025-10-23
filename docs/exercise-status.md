@@ -1,72 +1,39 @@
-# Info for developers: exercise status about the ROS2 and new RAM + (super)thin templates
-
-ROS1 Noetic + fat templates = RADI 3.4.X
-
-ROS2 Humble + fat templates = RADI 4.4.X
-
-ROS1 Noetic + new RAM + (super)thin templates = RADI 3.5.X
-
-ROS2 Humble + new RAM + (super)thin templates = RADI 4.5.X
+# Info for developers: exercise status about direct ROS2 support, C++ support and which simulator it is based on
 
 <br/>
-## Mobile Robotics collection
 
-| Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
-| :--- | :---: | :---: | :---: | :---: |
-| (Basic) Vacuum Cleaner | OK | OK | OK | | 
-| Follow Line | OK | ? | OK | **OK** | 
-| Obstacle Avoidance | OK | | OK | | 
-| Global navigation | OK| | OK | | 
-| MonteCarlo Laser Loc | | incomplete | | | 
-
-Upcoming: Laser mapping, MonteCarlo Visual Loc
-
-<br/>
-## Service Robotics collection
-
-| Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
-| :--- | :---: | :---: | :---: | :---: |
-| Localized Vacuum Cleaner |OK| ? | OK | | 
-| Rescue people | OK| OK | | **OK** | 
-| Auto parking | OK | OK | OK | | 
-| Amazon Warehouse | | OK | | | 
-| Follow Person | | OK | | | 
-
-<br/>
-## Drones collection
-
-| Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
-| :--- | :---: | :---: | :---: | :---: |
-| Drone Cat and Mouse | bugs | | | | 
-| Follow Road | OK | | | | 
-| Labyrinth escape | OK | | | | 
-| Position control | OK | | | | 
-| Follow TurtleBot | ? | | | | 
-| Rescue people | OK | OK | | **OK** | 
-| Drone hangar | OK | | | | 
-| Drone Gymkhana | OK | | | | 
-| Visual Lander | bugs | | | | 
-| Power tower Inspection | bugs | | | | 
-| Package delivery | ? | | | | 
-
-<br/>
-## Vision based robotics collection
-
-| Exercise ID    | ROS1 fat templates | ROS2 fat templates | ROS1 (super)thin templates | ROS2 (super)thin templates |
-| :--- | :---: | :---: | :---: | :---: |
-| Follow Line | OK | ? | OK | OK | 
-| 3D reconstruction | OK | | OK | | 
-
-<br/><br/><br/><br/>
-## Autonomous Driving collection (to be organized)
-Car junction, Auto Parking, Global Navigation, Obstacle Avoidance
-
-## Industrial Robotics collection (to be organized)
-Pick and Place
-
-## DeepLearning collection (to be organized)
-Digit classifier, DL Human detection
-
-## Computer Vision collection (to be organized)
-Color Filter, Optical Flow teleop
-
+| Exercise ID | Python simpleAPI | Python ROS2 | C++ simple API | C++ ROS2 | Simulator | Notes |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| Basic Vacuum Cleaner | ok | ok | | | Gazebo11 | FSM | 
+| Follow Line | ok | ok | ok | | Gazebo11 | PID control |
+| Obstacle Avoidance | ok | | | | Gazebo 11 | VFF |
+| Global navigation | ok | | | | Gazebo 11 | GPP |
+| Laser Gridmap mapping | | | | | Gazebo Harmonic | |
+| MonteCarlo Laser Loc | ok | | | | Gazebo 11 | AMCL |
+| MonteCarlo Visual Loc | ok | | | | Gazebo 11 | AMCL |
+| Marker-based visual Loc | ok | | | | Gazebo Harmonic | PnP | 
+| Localized Vacuum Cleaner | ok | | | | Gazebo 11 | BSA | 
+| Autoparking | ok | | | | Gazebo 11 | | 
+| Amazon Warehouse | ok | | | | Gazebo 11 | | 
+| Follow Person | ok | | | | Gazebo 11 | | 
+| Drone Follow Road | ok | | | | Gazebo Harmonic | |
+| Drone Rescue people | ok | | | | Gazebo Harmonic | |
+| Drone Gymkhana | ok | | | | Gazebo Harmonic | |
+| Drone Power tower Inspection | ok | | | | Gazebo Harmonic | |
+| Visual 3D reconstruction | ok | | | | Gazebo 11 | |
+| DL e2e Visual control | ok | | | | Gazebo 11 | | 
+| DL digit classification | ok | | | | none | |
+| DL human detection | ok | | | | none | |
+| Basic Computer Vision | ok | | | | none | | 
+| Digital Image Processing | ok | | | | none | | 
+| Pick and Place | ok | | | | Gazebo 11 | |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| Machine Vision with industrial robot | ok | | | | Gazebo 11 | |
+| Road junction | ok | | | | Gazebo Harmonic | broken |
+| Drone Labyrinth escape |  | | | | | |  
+| Drone Position control |  | | | | | | 
+| Drone Follow TurtleBot |  | | | | | |
+| Drone Package delivery | | | | | | broken |
+| Drone hangar | | | | | | |
+| Drone Visual Lander | | | | | | broken |
+| Drone Cat and Mouse | | | | | | broken | 
