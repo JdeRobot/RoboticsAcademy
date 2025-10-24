@@ -1,22 +1,20 @@
+import React, { useState } from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
 import { CommsManager, states } from "jderobot-commsmanager";
 import StopCircleRoundedIcon from "@mui/icons-material/StopCircleRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React from "react";
+import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
-const TerminateUniverseButton = ({
-  setAppRunning,
-}: {
-  setAppRunning: (running: boolean) => void;
-}) => {
+const TerminateUniverseButton = () => {
   const theme = useAcademyTheme();
   const { warning } = useError();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const terminateUniverse = async () => {
     const manager = CommsManager.getInstance();
 
-    if (manager.getUniverse() === "") {
+    if (manager.getUniverse() === undefined || manager.getUniverse() === "") {
       return;
     }
 
@@ -30,18 +28,20 @@ const TerminateUniverseButton = ({
       return;
     }
 
+    setLoading(true);
+
     if (state === states.RUNNING || state === states.PAUSED) {
       await manager.terminateApplication();
-      setAppRunning(false);
-    }
-
-    if (manager.getState() === states.TOOLS_READY) {
       await manager.terminateTools();
-    }
-
-    if (manager.getState() === states.WORLD_READY) {
+      await manager.terminateUniverse();
+    } else if (state === states.TOOLS_READY) {
+      await manager.terminateTools();
+      await manager.terminateUniverse();
+    } else {
       await manager.terminateUniverse();
     }
+
+    setLoading(false);
   };
 
   return (
@@ -52,8 +52,13 @@ const TerminateUniverseButton = ({
       id="stop-universe"
       onClick={terminateUniverse}
       title="Stop Universe"
+      disabled={loading}
     >
-      <StopCircleRoundedIcon htmlColor={theme.palette.text} />
+      {loading ? (
+        <SyncRoundedIcon htmlColor={theme.palette.text} id="loading-spin" />
+      ) : (
+        <StopCircleRoundedIcon htmlColor={theme.palette.text} />
+      )}
     </StyledHeaderButton>
   );
 };

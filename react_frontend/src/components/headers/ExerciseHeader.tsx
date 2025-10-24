@@ -50,20 +50,7 @@ const ExerciseHeader = ({
   ) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
-  const [appRunning, setAppRunning] = useState(false);
   const [dlModel, setDLModel] = useState<ArrayBuffer | undefined>();
-
-  const updateState = (e: any) => {
-    setAppRunning(e.detail.state === states.RUNNING);
-  };
-
-  useEffect(() => {
-    subscribe("CommsManagerStateChange", updateState);
-
-    return () => {
-      unsubscribe("CommsManagerStateChange", () => {});
-    };
-  }, []);
 
   // TODO: project -> center in the middle
 
@@ -91,24 +78,22 @@ const ExerciseHeader = ({
         <StyledHeaderButtonContainer>
           <HomeButton />
           <ThemeButton />
-          {language &&
+          {language && (
             <LanguageButton language={language} setter={setLanguage} />
-          }
+          )}
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
-          <UploadButton />
-          <DownloadButton />
+          <UploadButton language={language} />
+          <DownloadButton language={language} />
           <LayoutButton setLayout={setLayout} />
           <PlayPauseButton
             project={project}
             language={language}
-            appRunning={appRunning}
-            setAppRunning={setAppRunning}
             dlModel={dlModel}
             hasDLModel={hasDLModel}
             connectManager={connectManager}
           />
-          <ResetButton setAppRunning={setAppRunning} />
-          <TerminateUniverseButton setAppRunning={setAppRunning} />
+          <ResetButton />
+          <TerminateUniverseButton />
           <TheoryButton url={url} />
           <ForumButton />
         </StyledHeaderButtonContainer>

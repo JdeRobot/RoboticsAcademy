@@ -1,4 +1,7 @@
-import { frequencyAutoCompleteObj, guiAndHalAutoCompleteObj } from "Constants/hal_gui_snippets";
+import {
+  frequencyAutoCompleteObj,
+  guiAndHalAutoCompleteObj,
+} from "Constants/hal_gui_snippets";
 import { Snippet } from "jderobot-ide-interface";
 
 export const getHalGuiMethods = (prevWord: string): Snippet[] => {

@@ -22,10 +22,7 @@ import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRou
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
-import {
-  defaultCppCode,
-  defaultPythonCode,
-} from "Constants/code";
+import { defaultCppCode, defaultPythonCode } from "Constants/code";
 import { getHalGuiMethods } from "Helpers/editor";
 import { subscribe, unsubscribe } from "Helpers/utils";
 
@@ -188,13 +185,13 @@ const ExerciseContainer = ({
     desiredState?: string,
     callback?: () => void
   ) => {
-    console.log(manager?.getState(), CommsManager.getInstance().getState())
+    console.log(manager?.getState(), CommsManager.getInstance().getState());
     if (!manager || manager?.getState() != "idle") {
       return;
     }
     try {
       const currManager = CommsManager.getInstance();
-      console.log(currManager)
+      console.log(currManager);
       await currManager.connect();
       getUniverseList(project);
       console.log("Connected!", currManager.getState());

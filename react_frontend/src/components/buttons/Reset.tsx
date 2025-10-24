@@ -3,39 +3,17 @@ import { useError } from "jderobot-ide-interface";
 import { CommsManager, states } from "jderobot-commsmanager";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React, { useEffect, useState } from "react";
-import { subscribe, unsubscribe } from "Helpers/utils";
+import React, { useState } from "react";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
 const ResetButton = () => {
   const theme = useAcademyTheme();
   const { warning, error } = useError();
-
-  const [state, setState] = useState<string>(
-    CommsManager.getInstance().getState()
-  );
   const [loading, setLoading] = useState<boolean>(false);
-
-  const updateState = (e: any) => {
-    setState(e.detail.state);
-  };
-
-  useEffect(() => {
-    subscribe("CommsManagerStateChange", updateState);
-
-    return () => {
-      unsubscribe("CommsManagerStateChange", () => {});
-    };
-  }, []);
-
-  useEffect(() => {
-    if (state === states.TOOLS_READY) {
-      setLoading(false);
-    }
-  }, [state]);
 
   const onResetApp = async () => {
     const manager = CommsManager.getInstance();
+    const state = manager.getState();
 
     if (
       state === states.CONNECTED ||
@@ -59,6 +37,7 @@ const ResetButton = () => {
     } catch (e) {
       error("Failed to reset the application. See the traces in the terminal.");
     }
+    setLoading(false);
     console.log("App reseted!");
   };
 

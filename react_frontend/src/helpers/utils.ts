@@ -29,12 +29,20 @@
 //   return { width: width, height: height };
 // };
 
-export const saveCode = (fileName: string, python_code: string) => {
+export const saveCode = (
+  fileName: string,
+  python_code: string,
+  language?: string
+) => {
+  let extension = ".py";
+  if (language === "cpp") {
+    extension = ".cpp";
+  }
   const blob = new Blob([python_code], { type: "text/plain; charset=utf-8" });
   const a = document.createElement("a"),
     url = URL.createObjectURL(blob);
   a.href = url;
-  a.download = fileName + ".py";
+  a.download = fileName + extension;
   document.body.appendChild(a);
   a.click();
   setTimeout(function () {

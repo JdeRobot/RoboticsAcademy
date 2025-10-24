@@ -1,7 +1,7 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
-import { CommsManager, events, states } from "jderobot-commsmanager";
+import { CommsManager, states } from "jderobot-commsmanager";
 import { getProjectExtraFiles } from "Helpers/api";
 import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
@@ -35,6 +35,7 @@ const PlayPauseButton = ({
   const { warning, error, info, close } = useError();
   const codeRef = useRef("");
   const runningCodeRef = useRef("");
+  const runningDLModel = useRef<ArrayBuffer | undefined>(undefined);
   const [state, setState] = useState<string>(
     CommsManager.getInstance().getState()
   );
@@ -77,9 +78,11 @@ const PlayPauseButton = ({
 
   const onAppStateChange = async (save?: boolean) => {
     const manager = CommsManager.getInstance();
+    const state = manager.getState();
+
     setLoading(true);
 
-    if (manager.getState() === states.IDLE) {
+    if (state === states.IDLE) {
       info("Connecting with the Robotics Backend ...");
       connectManager(states.TOOLS_READY, () => {
         setLoading(false);
@@ -89,11 +92,7 @@ const PlayPauseButton = ({
       return;
     }
 
-    if (
-      manager.getState() !== "tools_ready" &&
-      manager.getState() !== "application_running" &&
-      manager.getState() !== "paused"
-    ) {
+    if (state === states.WORLD_READY || state === states.CONNECTED) {
       console.error("Simulation is not ready!");
       warning(
         "Failed to found a running simulation. Please make sure an universe is selected."
@@ -106,16 +105,14 @@ const PlayPauseButton = ({
       try {
         await manager.pause();
         console.log("App paused correctly!");
-        return;
       } catch (e: unknown) {
-        setLoading(false);
-        if (e instanceof Error) {
-          console.error("Error pausing app: " + e.message);
-          error(
-            "Failed to stop the application. See the traces in the terminal."
-          );
-        }
+        console.error("Error pausing app: " + (e as Error).message);
+        error(
+          "Failed to stop the application. See the traces in the terminal."
+        );
       }
+      setLoading(false);
+      return;
     }
 
     if (save === undefined) {
@@ -127,19 +124,23 @@ const PlayPauseButton = ({
       return setTimeout(onAppStateChange, 100, true);
     }
 
-    if (
-      manager.getState() === "paused" &&
-      runningCodeRef.current === codeRef.current
-    ) {
-      try {
-        await manager.resume();
-      } catch (e) {
-        error(
-          "Failed to resume the application. See the traces in the terminal."
-        );
+    if (state === states.PAUSED) {
+      if (
+        runningCodeRef.current === codeRef.current &&
+        runningDLModel.current === dlModel
+      ) {
+        try {
+          await manager.resume();
+          console.log("App resumed correctly!");
+        } catch (e: unknown) {
+          console.error("Error resuming app: " + (e as Error).message);
+          error(
+            "Failed to resume the application. See the traces in the terminal."
+          );
+        }
+        setLoading(false);
+        return;
       }
-      console.log("App resumed correctly!");
-      return;
     }
 
     try {

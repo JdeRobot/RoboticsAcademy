@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useExercise } from "Contexts/ExerciseContext";
 import React from "react";
 
-const DownloadButton = () => {
+const DownloadButton = ({ language }: { language?: string }) => {
   const theme = useAcademyTheme();
   const exerciseContext = useExercise();
   const codeRef = useRef("");
@@ -43,7 +43,7 @@ const DownloadButton = () => {
       return setTimeout(saveFile, 100, true);
     }
 
-    saveCode("academy", codeRef.current);
+    saveCode("academy", codeRef.current, language);
   };
 
   return (
