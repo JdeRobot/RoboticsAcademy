@@ -28,6 +28,7 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 -   [Develop using volume binding.][]
 -   [ROS2 and superthin templates migration.][]
 -   [Troubleshooting Robotics Academy][]
+-   [Exercises Status][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
 [Coding Style Guide]: ./docs/coding_style_guide.md
@@ -39,3 +40,4 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 [Develop using volume binding.]: ./docs/develop_binding_volumes.md
 [ROS2 and superthin templates migration.]: ./docs/exercise-status.md
 [Troubleshooting Robotics Academy]: ./docs/troubleshooting.md
+[Exercises Status]: ./docs/exercise-status.md
