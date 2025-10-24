@@ -83,7 +83,6 @@ const ChipsArray: React.FC<ChipsArrayProps> = ({ tagList }) => {
   }
 
   const chipsList = chipData.map((data) => (
-     
     <Chip
       key={data}
       sx={{ m: 0.5 }}

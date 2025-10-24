@@ -35,7 +35,7 @@ const PlayPauseButton = ({
   const { warning, error, info, close } = useError();
   const codeRef = useRef("");
   const runningCodeRef = useRef("");
-  const runningDLModel = useRef<ArrayBuffer|undefined>(undefined);
+  const runningDLModel = useRef<ArrayBuffer | undefined>(undefined);
   const [state, setState] = useState<string>(
     CommsManager.getInstance().getState()
   );
@@ -125,7 +125,10 @@ const PlayPauseButton = ({
     }
 
     if (state === states.PAUSED) {
-      if (runningCodeRef.current === codeRef.current && runningDLModel.current === dlModel) {
+      if (
+        runningCodeRef.current === codeRef.current &&
+        runningDLModel.current === dlModel
+      ) {
         try {
           await manager.resume();
           console.log("App resumed correctly!");

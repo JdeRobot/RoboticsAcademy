@@ -78,12 +78,12 @@ const ExerciseHeader = ({
         <StyledHeaderButtonContainer>
           <HomeButton />
           <ThemeButton />
-          {language &&
+          {language && (
             <LanguageButton language={language} setter={setLanguage} />
-          }
+          )}
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
-          <UploadButton language={language}/>
-          <DownloadButton language={language}/>
+          <UploadButton language={language} />
+          <DownloadButton language={language} />
           <LayoutButton setLayout={setLayout} />
           <PlayPauseButton
             project={project}

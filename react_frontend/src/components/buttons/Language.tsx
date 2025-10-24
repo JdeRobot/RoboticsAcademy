@@ -26,9 +26,9 @@ const LanguageButton = ({
       title="Switch Language"
     >
       {language === "cpp" ? (
-        <CppIcon fill={theme.palette.text}/>
+        <CppIcon fill={theme.palette.text} />
       ) : (
-        <PythonIcon fill={theme.palette.text}/>
+        <PythonIcon fill={theme.palette.text} />
       )}
     </StyledHeaderButton>
   );

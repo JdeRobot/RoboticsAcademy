@@ -41,7 +41,7 @@ const UploadButton = ({ language }: { language?: string }) => {
       <input
         ref={inputRef}
         hidden
-        accept={language === "cpp" ? ".cpp" :".py"}
+        accept={language === "cpp" ? ".cpp" : ".py"}
         type="file"
         onChange={loadFile}
       />

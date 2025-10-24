@@ -29,10 +29,14 @@
 //   return { width: width, height: height };
 // };
 
-export const saveCode = (fileName: string, python_code: string, language?: string) => {
-  let extension = ".py"
+export const saveCode = (
+  fileName: string,
+  python_code: string,
+  language?: string
+) => {
+  let extension = ".py";
   if (language === "cpp") {
-    extension = ".cpp"
+    extension = ".cpp";
   }
   const blob = new Blob([python_code], { type: "text/plain; charset=utf-8" });
   const a = document.createElement("a"),

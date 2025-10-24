@@ -1,7 +1,13 @@
 import { Box } from "@mui/system";
 import React, { ReactNode } from "react";
 
-const WebGUIContainer = ({ id, children }: { id?: string; children?: ReactNode }) => {
+const WebGUIContainer = ({
+  id,
+  children,
+}: {
+  id?: string;
+  children?: ReactNode;
+}) => {
   return (
     <Box
       id={id}

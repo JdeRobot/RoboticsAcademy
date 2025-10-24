@@ -104,8 +104,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with regarding the map.",
+        docstring: "Get the orientation of the robot with regarding the map.",
       },
       {
         type: "method",
@@ -167,8 +166,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with respect to the map.",
+        docstring: "Get the orientation of the robot with respect to the map.",
       },
       {
         type: "method",
@@ -472,8 +470,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with regarding the map.",
+        docstring: "Get the orientation of the robot with regarding the map.",
       },
       {
         type: "method",
@@ -518,8 +515,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "showForces",
         code: "showForces",
-        docstring:
-          "Shows the forces being appliend on the car in real time.",
+        docstring: "Shows the forces being appliend on the car in real time.",
       },
     ],
   },
@@ -710,8 +706,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with regarding the map.",
+        docstring: "Get the orientation of the robot with regarding the map.",
       },
       {
         type: "method",
@@ -805,8 +800,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with regarding the map.",
+        docstring: "Get the orientation of the robot with regarding the map.",
       },
     ],
     webgui: [
@@ -839,8 +833,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "poseToMap(x_prime, y_prime, yaw_prime)",
         code: "poseToMap(x_prime, y_prime, yaw_prime)",
-        docstring:
-          "Converts the robot position to 2D coordinates in the map.",
+        docstring: "Converts the robot position to 2D coordinates in the map.",
       },
       {
         type: "method",
@@ -893,8 +886,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with regarding the map.",
+        docstring: "Get the orientation of the robot with regarding the map.",
       },
     ],
     webgui: [
@@ -943,8 +935,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getPose3d().yaw",
         code: "getPose3d().yaw",
-        docstring:
-          "Get the orientation of the robot with regarding the map.",
+        docstring: "Get the orientation of the robot with regarding the map.",
       },
       {
         type: "method",
@@ -977,8 +968,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "poseToMap(x, y, yaw)",
         code: "poseToMap(x, y, yaw)",
-        docstring:
-          "Converts the robot position to 2D coordinates in the map.",
+        docstring: "Converts the robot position to 2D coordinates in the map.",
       },
     ],
   },
@@ -1114,8 +1104,7 @@ export const guiAndHalAutoCompleteObj: SnippetCollection = {
         type: "method",
         label: "getImage()",
         code: "getImage()",
-        docstring:
-          "Returns the image from the camera. Can be None.",
+        docstring: "Returns the image from the camera. Can be None.",
       },
     ],
   },

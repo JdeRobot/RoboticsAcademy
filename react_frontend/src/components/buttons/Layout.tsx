@@ -104,7 +104,9 @@ const Dropdown = ({
           {possibleValues.map((name) => (
             <button
               key={`layout-${name}`}
-              onClick={(e: React.MouseEvent<HTMLElement>) => changeValue(e, name)}
+              onClick={(e: React.MouseEvent<HTMLElement>) =>
+                changeValue(e, name)
+              }
             >
               {name}
             </button>

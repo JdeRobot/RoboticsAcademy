@@ -34,7 +34,7 @@ const TerminateUniverseButton = () => {
       await manager.terminateApplication();
       await manager.terminateTools();
       await manager.terminateUniverse();
-    } else if (state === states.TOOLS_READY){
+    } else if (state === states.TOOLS_READY) {
       await manager.terminateTools();
       await manager.terminateUniverse();
     } else {
