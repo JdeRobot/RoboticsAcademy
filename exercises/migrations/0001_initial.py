@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                             ("none", "None"),
                             ("gazebo", "Gazebo"),
                             ("gz", "Gazebo Harmonic"),
-                            ("physical", "Physical"),
+                            ("o3de", "O3de"),
                         ],
                         default="none",
                         max_length=50,

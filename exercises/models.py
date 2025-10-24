@@ -17,7 +17,7 @@ UniverseType = (
     ("none", "None"),
     ("gazebo", "Gazebo"),
     ("gz", "Gazebo Harmonic"),
-    ("physical", "Physical"),
+    ("o3de", "O3de"),
 )
 
 RosVersion = (("ROS", "ROS"), ("ROS2", "ROS2"))
