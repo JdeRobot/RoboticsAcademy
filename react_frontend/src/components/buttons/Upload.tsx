@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { publish } from "Helpers/utils";
 import React from "react";
 
-const UploadButton = () => {
+const UploadButton = ({ language }: { language?: string }) => {
   const theme = useAcademyTheme();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +41,7 @@ const UploadButton = () => {
       <input
         ref={inputRef}
         hidden
-        accept=".py"
+        accept={language === "cpp" ? ".cpp" :".py"}
         type="file"
         onChange={loadFile}
       />

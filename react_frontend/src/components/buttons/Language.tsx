@@ -1,8 +1,6 @@
+import React from "react";
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
-import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
-import React from "react";
 import { CppIcon, PythonIcon } from "Icons/index";
 
 const LanguageButton = ({
