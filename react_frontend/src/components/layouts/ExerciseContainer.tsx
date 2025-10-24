@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useUnload } from "../../hooks/useUnload";
-import { CommsManager } from "jderobot-commsmanager";
+import { CommsManager, states } from "jderobot-commsmanager";
 import React from "react";
 
 import IdeInterface, {
@@ -27,6 +27,7 @@ import {
   defaultPythonCode,
 } from "Constants/code";
 import { getHalGuiMethods } from "Helpers/editor";
+import { subscribe, unsubscribe } from "Helpers/utils";
 
 const base_file_python = {
   name: "academy.py",
@@ -164,6 +165,20 @@ const ExerciseContainer = ({
   // RB manager setup
   const connected = useRef<boolean>(false);
 
+  const resetUniverse = (e: any) => {
+    if (e.detail.state == states.IDLE) {
+      setUniverses(undefined);
+    }
+  };
+
+  useEffect(() => {
+    subscribe("CommsManagerStateChange", resetUniverse);
+
+    return () => {
+      unsubscribe("CommsManagerStateChange", () => {});
+    };
+  }, []);
+
   useEffect(() => {
     const manager = CommsManager.getInstance();
     setManager(manager);
@@ -173,11 +188,13 @@ const ExerciseContainer = ({
     desiredState?: string,
     callback?: () => void
   ) => {
-    if (!manager || connected.current) {
+    console.log(manager?.getState(), CommsManager.getInstance().getState())
+    if (!manager || manager?.getState() != "idle") {
       return;
     }
     try {
       const currManager = CommsManager.getInstance();
+      console.log(currManager)
       await currManager.connect();
       getUniverseList(project);
       console.log("Connected!", currManager.getState());
