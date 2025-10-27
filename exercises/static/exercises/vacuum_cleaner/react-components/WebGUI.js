@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef } from "react";
 import { updatePath, addToPath } from "./helpers/VacuumCleanerHelper";
 import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
 import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
@@ -17,12 +17,15 @@ const WebGUI = () => {
   const [manager, setManager] = useState(exerciseContext.manager);
   var trail = [];
   var lastPose = undefined;
+  const canvasRef = useRef(null);
+  const vacuumSize = 40;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
   const resizeObserver = new ResizeObserver((entries) => {
+    // TODO: vacuum size = 30x30 en 750x750
     var img = entries[0].target;
     //or however you get a handle to the IMG
     var width = 1013 / 300 / (1013 / img.clientWidth);
@@ -47,14 +50,24 @@ const WebGUI = () => {
         const content = pose.split(",").map((item) => parseFloat(item));
         lastPose = content;
 
-        var img = document.getElementById("map-img");
-        //or however you get a handle to the IMG
-        var width = 1012 / 300 / (1012 / img.clientWidth);
-        var height = 1012 / 150 / (1012 / img.clientHeight);
+        var img = canvasRef.current;
+        var width = img.clientWidth / 300;
+        var height = img.clientHeight / 150;
 
-        updatePath(trail, setPath, height, width);
+        updatePath(
+          trail,
+          setPath,
+          height,
+          (vacuumSize * img.clientHeight) / 1012,
+          width,
+          (vacuumSize * img.clientWidth) / 1012
+        );
 
-        setVacuumPose([content[1] * height, content[0] * width, -content[2]]);
+        setVacuumPose([
+          content[1] * height - (vacuumSize * img.clientHeight) / 1012,
+          content[0] * width - (vacuumSize * img.clientWidth) / 1012,
+          -content[2],
+        ]);
         addToPath(content[1], content[0], trail);
       }
 
@@ -71,7 +84,10 @@ const WebGUI = () => {
       }
     };
 
-    resizeObserver.observe(document.getElementById("map-img"));
+    var img = canvasRef.current;
+    if (img) {
+      resizeObserver.observe(img);
+    }
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
@@ -84,19 +100,33 @@ const WebGUI = () => {
 
   return (
     <WebGUIContainer>
-      <WebGUIImage id="map-img" src={houseMapDirty} style={{ left: "0", width: "100%" }} />
+      <WebGUIImage
+        reference={canvasRef}
+        id="map-img"
+        src={houseMapDirty}
+        style={{ left: "0", width: "100%" }}
+      />
       <div className="overlay" id="map-container">
         {vacuumPose && (
           <div
             id="vacuum-pos"
             style={{
               rotate: "z " + vacuumPose[2] + "rad",
-              top: vacuumPose[0] - 15,
-              left: vacuumPose[1] - 15,
+              top: vacuumPose[0],
+              height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+              left: vacuumPose[1],
+              width: (vacuumSize * canvasRef.current.clientWidth) / 1012,
             }}
           >
-            <img src={Vacuum} id="vacuum-pos" />
-            <div className="arrow" />
+            <img src={Vacuum} />
+            <div
+              className="arrow"
+              style={{
+                height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+                marginLeft:
+                  -((vacuumSize * canvasRef.current.clientWidth) / 1012) / 2,
+              }}
+            />
           </div>
         )}
         {/* <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
@@ -114,13 +144,14 @@ const WebGUI = () => {
             height="100%"
             width="100%"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ zIndex: 2, position: "absolute" }}
+            style={{ zIndex: 2, position: "absolute", left: 0 }}
           >
             <path
               xmlns="http://www.w3.org/2000/svg"
               d={path}
               style={{
-                strokeWidth: "30px",
+                strokeWidth:
+                  (vacuumSize * canvasRef.current.clientHeight) / 1012,
                 strokeLinejoin: "round",
                 stroke: "white",
                 fill: "none",
