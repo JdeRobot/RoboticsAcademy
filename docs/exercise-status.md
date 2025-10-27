@@ -4,7 +4,7 @@
 
 | Exercise ID | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Simulator | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| Basic Vacuum Cleaner | ok | ok | | | Gazebo11 | FSM | 
+| Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo11 | FSM | 
 | Follow Line | ok | ok | ok | ok | Gazebo11 | PID control |
 | Obstacle Avoidance | ok | | | | Gazebo 11 | VFF |
 | Global navigation | ok | | | | Gazebo 11 | GPP |

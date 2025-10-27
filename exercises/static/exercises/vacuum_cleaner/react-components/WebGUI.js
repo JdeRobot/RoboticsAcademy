@@ -80,6 +80,7 @@ const WebGUI = () => {
         try {
           setPath("");
           trail = [];
+          setVacuumPose(null);
         } catch (error) {}
       }
     };
