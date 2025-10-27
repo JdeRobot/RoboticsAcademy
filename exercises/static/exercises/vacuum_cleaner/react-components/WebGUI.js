@@ -27,13 +27,24 @@ const WebGUI = () => {
   const resizeObserver = new ResizeObserver((entries) => {
     // TODO: vacuum size = 30x30 en 750x750
     var img = entries[0].target;
-    //or however you get a handle to the IMG
-    var width = 1013 / 300 / (1013 / img.clientWidth);
-    var height = 1012 / 150 / (1012 / img.clientHeight);
+    var width = img.clientWidth / 300;
+    var height = img.clientHeight / 150;
 
-    updatePath(trail, setPath, height, width);
+    updatePath(
+      trail,
+      setPath,
+      height,
+      (vacuumSize * img.clientHeight) / 1012,
+      width,
+      (vacuumSize * img.clientWidth) / 1012
+    );
+
     if (lastPose) {
-      setVacuumPose([lastPose[1] * height, lastPose[0] * width, -lastPose[2]]);
+      setVacuumPose([
+        lastPose[1] * height - (vacuumSize * img.clientHeight) / 1012,
+        lastPose[0] * width - (vacuumSize * img.clientWidth) / 1012,
+        -lastPose[2],
+      ]);
     }
   });
 
