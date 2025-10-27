@@ -41,9 +41,13 @@ std::string Lap::getLapTime()
 {
   if (!paused)
   {
-    lap_time += chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start_time);
-    start_time = chrono::high_resolution_clock::now();
+    const auto lapsed_time = chrono::duration_cast<chrono::milliseconds>(chrono::high_resolution_clock::now() - start_time);
+    if (lapsed_time < 1000ms) {
+      lap_time += lapsed_time;
+    }
   }
+
+  start_time = chrono::high_resolution_clock::now();
 
   char buff[70];
   const int sec = lap_time.count() / 1000;

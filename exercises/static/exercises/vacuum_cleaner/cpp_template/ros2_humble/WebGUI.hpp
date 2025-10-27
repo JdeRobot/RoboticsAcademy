@@ -11,13 +11,13 @@
 #include <thread>
 #include <mutex>
 #include <boost/asio/strand.hpp>
-#include "opencv2/opencv.hpp"
 #include "json.hpp"
 #include "Frequency.hpp"
-#include "Lap.hpp"
 #include <utility>
 #include <iomanip>
 #include <sstream>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 #include "gazebo_msgs/msg/performance_metrics.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 
@@ -36,76 +36,7 @@ public:
     WebGUI();
 
     static string img_payload;
-    static void show_image(cv::Mat image);
 };
-
-static const char *base64_chars[2] = {
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "abcdefghijklmnopqrstuvwxyz"
-    "0123456789"
-    "+/",
-
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "abcdefghijklmnopqrstuvwxyz"
-    "0123456789"
-    "-_"};
-
-string base64_encode(unsigned char const *bytes_to_encode, size_t in_len, bool url)
-{
-
-    size_t len_encoded = (in_len + 2) / 3 * 4;
-
-    unsigned char trailing_char = url ? '.' : '=';
-
-    //
-    // Choose set of base64 characters. They differ
-    // for the last two positions, depending on the url
-    // parameter.
-    // A bool (as is the parameter url) is guaranteed
-    // to evaluate to either 0 or 1 in C++ therefore,
-    // the correct character set is chosen by subscripting
-    // base64_chars with url.
-    //
-    const char *base64_chars_ = base64_chars[url];
-
-    std::string ret;
-    ret.reserve(len_encoded);
-
-    unsigned int pos = 0;
-
-    while (pos < in_len)
-    {
-        ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0xfc) >> 2]);
-
-        if (pos + 1 < in_len)
-        {
-            ret.push_back(base64_chars_[((bytes_to_encode[pos + 0] & 0x03) << 4) + ((bytes_to_encode[pos + 1] & 0xf0) >> 4)]);
-
-            if (pos + 2 < in_len)
-            {
-                ret.push_back(base64_chars_[((bytes_to_encode[pos + 1] & 0x0f) << 2) + ((bytes_to_encode[pos + 2] & 0xc0) >> 6)]);
-                ret.push_back(base64_chars_[bytes_to_encode[pos + 2] & 0x3f]);
-            }
-            else
-            {
-                ret.push_back(base64_chars_[(bytes_to_encode[pos + 1] & 0x0f) << 2]);
-                ret.push_back(trailing_char);
-            }
-        }
-        else
-        {
-
-            ret.push_back(base64_chars_[(bytes_to_encode[pos + 0] & 0x03) << 4]);
-            ret.push_back(trailing_char);
-            ret.push_back(trailing_char);
-        }
-
-        pos += 3;
-    }
-
-    return ret;
-}
-
 
 using namespace std::chrono_literals; // NOLINT
 using namespace std;                  // NOLINT
@@ -114,83 +45,64 @@ using std::placeholders::_1;
 class WebGUINode : public rclcpp::Node
 {
 public:
-  WebGUINode() : Node("webgui_node")
-  {
-    cam_sub_ = create_subscription<sensor_msgs::msg::Image>(
-        "/webgui_image", 10,
-        std::bind(&WebGUINode::topic_callback_info, this, _1));
-    odom_sub_ = create_subscription<nav_msgs::msg::Odometry>(
-        "/odom", 10,
-        std::bind(&WebGUINode::pose_callback, this, _1));
-    perf_sub_ = create_subscription<gazebo_msgs::msg::PerformanceMetrics>(
-        "/performance_metrics", 10,
-        std::bind(&WebGUINode::performance_callback, this, _1));
-  };
+    WebGUINode() : Node("webgui_node")
+    {
+        odom_sub_ = create_subscription<nav_msgs::msg::Odometry>(
+            "/odom", 10,
+            std::bind(&WebGUINode::pose_callback, this, _1));
+        perf_sub_ = create_subscription<gazebo_msgs::msg::PerformanceMetrics>(
+            "/performance_metrics", 10,
+            std::bind(&WebGUINode::performance_callback, this, _1));
+    };
 
-  static string get_image()
-  {
-    vector<uchar> buf;
-    cv::imencode(".png", image_rgb, buf);
-    int width = image_rgb.cols;
-    int height = image_rgb.rows;
-    unsigned char const *enc_msg = reinterpret_cast<unsigned char *>(buf.data());
-    string encoded = base64_encode(enc_msg, buf.size(), false);
-    return json{{"image", encoded}, {"shape", {width, height}}}.dump();
-  };
+    static vector<double> get_pose()
+    {
+        tf2::Quaternion tf_quat;
+        tf2::fromMsg(last_odom.pose.pose.orientation, tf_quat); //Assume quat_msg is a quaternion ros msg
 
-  static vector<double> get_pose()
-  {
-    vector<double> v = {last_odom.pose.pose.position.x, last_odom.pose.pose.position.y, last_odom.pose.pose.position.z};
-    return v;
-  };
+        tf2::Matrix3x3 m(tf_quat);
+        double roll, pitch, yaw;
+        m.getRPY(roll, pitch, yaw);
 
-  static double get_performance()
-  {
-    return last_perf.real_time_factor;
-  };
+        const int scale_x = -30;
+        const int offset_x = 171;
+        const double x = scale_x * last_odom.pose.pose.position.x + offset_x;
+
+        const int scale_y = 15;
+        const int offset_y = 63;
+        const double y = scale_y * last_odom.pose.pose.position.y + offset_y;
+
+        vector<double> v = {x, y, yaw};
+        return v;
+    };
+
+    static double get_performance()
+    {
+        return last_perf.real_time_factor;
+    };
 
 private:
-  void topic_callback_info(sensor_msgs::msg::Image::UniquePtr msg)
-  {
-    // Convert ROS Image to OpenCV Image | sensor_msgs::msg::Image -> cv::Mat
-    cv_bridge::CvImagePtr image_rgb_ptr;
-    try
+    void pose_callback(nav_msgs::msg::Odometry::UniquePtr msg)
     {
-      image_rgb_ptr = cv_bridge::toCvCopy(*msg, sensor_msgs::image_encodings::BGR8);
-    }
-    catch (cv_bridge::Exception &e)
+        last_odom = *msg;
+    };
+
+    void performance_callback(gazebo_msgs::msg::PerformanceMetrics::UniquePtr msg)
     {
-      RCLCPP_ERROR(get_logger(), "cv_bridge exception: %s", e.what());
-      return;
-    }
-    cv::Mat image_rgb_raw = image_rgb_ptr->image;
-    image_rgb = image_rgb_raw;
-  };
+        last_perf = *msg;
+    };
 
-  void pose_callback(nav_msgs::msg::Odometry::UniquePtr msg)
-  {
-    last_odom = *msg;
-  };
+    // Publisher
+    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+    rclcpp::Subscription<gazebo_msgs::msg::PerformanceMetrics>::SharedPtr perf_sub_;
 
-  void performance_callback(gazebo_msgs::msg::PerformanceMetrics::UniquePtr msg)
-  {
-    last_perf = *msg;
-  };
-
-  // Publisher
-  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr cam_sub_;
-  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
-  rclcpp::Subscription<gazebo_msgs::msg::PerformanceMetrics>::SharedPtr perf_sub_;
-
-  // Message
-  static cv::Mat image_rgb;
-  static nav_msgs::msg::Odometry last_odom;
-  static gazebo_msgs::msg::PerformanceMetrics last_perf;
+    // Message
+    static nav_msgs::msg::Odometry last_odom;
+    static gazebo_msgs::msg::PerformanceMetrics last_perf;
 };
 
 nav_msgs::msg::Odometry WebGUINode::last_odom = nav_msgs::msg::Odometry();
 gazebo_msgs::msg::PerformanceMetrics WebGUINode::last_perf = gazebo_msgs::msg::PerformanceMetrics();
-cv::Mat WebGUINode::image_rgb = cv::Mat();
 
 // Report a failure
 void fail(beast::error_code ec, char const *what)
@@ -206,7 +118,6 @@ class session : public std::enable_shared_from_this<session>
     beast::flat_buffer buffer_;
     std::string host_;
     std::string text_;
-    Lap *lap_;
 
 public:
     // Resolver and socket require an io_context
@@ -220,13 +131,11 @@ public:
     run(
         char const *host,
         char const *port,
-        char const *text,
-        Lap *lap)
+        char const *text)
     {
         // Save these for later
         host_ = host;
         text_ = text;
-        lap_ = lap;
         buffer_.max_size(1024 * 1024);
 
         // Look up the domain name
@@ -341,29 +250,19 @@ public:
         unsigned char *cp = (unsigned char *)buffer_.data().data();
         string msg(reinterpret_cast<char const *>(cp));
 
-        if (msg == "pause")
-        {
-            // TODO: does not stop
-            lap_->pause();
-        }
-        else if (msg == "start")
-        {
-            lap_->start();
-        }
-
         buffer_.consume(buffer_.size());
 
         auto pose = WebGUINode::get_pose();
-        const json map = json{pose.at(0), pose.at(1)};
+        const json map = json{pose.at(0), pose.at(1), pose.at(2)};
         double rtf = WebGUINode::get_performance();
         std::stringstream stream;
         stream << std::fixed << std::setprecision(2) << rtf;
         std::string rtf_str = stream.str();
-        #ifdef USER_NODE
-            const json j = json{{"map", map.dump()}, {"image", WebGUINode::get_image()}, {"lap", lap_->getLapTime()}, {"brain", Frequency::rate}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
-        #else
-            const json j = json{{"map", map.dump()}, {"image", WebGUI::img_payload}, {"lap", lap_->getLapTime()}, {"brain", Frequency::rate}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
-        #endif
+#ifdef USER_NODE
+        const json j = json{{"map", map.dump()}, {"brain", Frequency::rate}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
+#else
+        const json j = json{{"map", map.dump()}, {"brain", Frequency::rate}, {"gui", 20}, {"rtf", rtf_str}, {"fps", -1}, {"lat", -1}};
+#endif
         auto const text = j.dump();
 
         // Close the WebSocket connection
@@ -391,35 +290,15 @@ WebGUI::WebGUI()
 {
     auto const host = "127.0.0.1";
     auto const port = "2303";
-    const json image = json{{"image", ""}, {"shape", {100, 100}}};
-    const json j = json{{"map", "(54,-12)"}, {"image", image.dump()}, {"lap", "0:0:0.0"}};
+    const json j = json{{"map", "(201,85.5,0)"}};
     auto const text = j.dump();
-    Lap *lap = new Lap();
 
     net::io_context ioc;
 
     // Launch the asynchronous operation
-    std::make_shared<session>(ioc)->run(host, port, text.c_str(), lap);
+    std::make_shared<session>(ioc)->run(host, port, text.c_str());
 
     ioc.run();
 }
-
-void WebGUI::show_image(cv::Mat image)
-{
-    if (image.empty())
-    {
-        return;
-    }
-
-    vector<uchar> buf;
-    cv::imencode(".png", image, buf);
-    int width = image.cols;
-    int height = image.rows;
-    unsigned char const *enc_msg = reinterpret_cast<unsigned char *>(buf.data());
-    string encoded = base64_encode(enc_msg, buf.size(), false);
-    img_payload = json{{"image", encoded}, {"shape", {width, height}}}.dump();
-}
-
-string WebGUI::img_payload = json{{"image", ""}, {"shape", {0, 0}}}.dump();
 
 #endif

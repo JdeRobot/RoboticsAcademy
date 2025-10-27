@@ -1,10 +1,10 @@
-export const updatePath = (trail, setPathCallback, height, width) => {
+export const updatePath = (trail, setPathCallback, height, red_height, width, red_width) => {
   var newPath = "M ";
 
   for (let index = 0; index < trail.length; index++) {
     const element = trail[index];
-    var top  = element[0] * height;
-    var left = element[1] * width;
+    var top  = element[0] * height - red_height / 2;
+    var left = element[1] * width - red_width / 2;
     if (index === 0) {
       newPath += left.toString()+ "," + top.toString();
     }
