@@ -10,6 +10,9 @@ import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 
+// Define multirun variables here so it does not rerender
+var trail = [];
+
 const WebGUI = () => {
   const exerciseContext = useExercise();
   const [vacuumPose, setVacuumPose] = useState(null);
@@ -17,8 +20,8 @@ const WebGUI = () => {
   const [userImage, setUserImage] = useState(undefined);
   const canvasRef = useRef(null);
   const [manager, setManager] = useState(exerciseContext.manager);
-  var trail = [];
   var lastPose = undefined;
+  const vacuumSize = 40;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -26,14 +29,24 @@ const WebGUI = () => {
 
   const resizeObserver = new ResizeObserver((entries) => {
     var img = entries[0].target;
-    //or however you get a handle to the IMG
-    var width = 1012 / 300 / (1012 / img.clientWidth);
-    var height = 1012 / 150 / (1012 / img.clientHeight);
+    var width = img.clientWidth / 300;
+    var height = img.clientHeight / 150;
 
-    updatePath(trail, setPath, height, width);
+    updatePath(
+      trail,
+      setPath,
+      height,
+      (vacuumSize * img.clientHeight) / 1012,
+      width,
+      (vacuumSize * img.clientWidth) / 1012
+    );
 
     if (lastPose) {
-      setVacuumPose([lastPose[1] * height, lastPose[0] * width, -lastPose[2]]);
+      setVacuumPose([
+        lastPose[1] * height - (vacuumSize * img.clientHeight) / 1012,
+        lastPose[0] * width - (vacuumSize * img.clientWidth) / 1012,
+        -lastPose[2],
+      ]);
     }
   });
 
@@ -50,14 +63,24 @@ const WebGUI = () => {
         const content = pose.split(",").map((item) => parseFloat(item));
         lastPose = content;
 
-        var img = canvasRef.current
-        //or however you get a handle to the IMG
-        var width = 1013 / 300 / (1013 / img.clientWidth);
-        var height = 1012 / 150 / (1012 / img.clientHeight);
+        var img = canvasRef.current;
+        var width = img.clientWidth / 300;
+        var height = img.clientHeight / 150;
 
-        updatePath(trail, setPath, height, width);
+        updatePath(
+          trail,
+          setPath,
+          height,
+          (vacuumSize * img.clientHeight) / 1012,
+          width,
+          (vacuumSize * img.clientWidth) / 1012
+        );
 
-        setVacuumPose([content[1] * height, content[0] * width, -content[2]]);
+        setVacuumPose([
+          content[1] * height - (vacuumSize * img.clientHeight) / 1012,
+          content[0] * width - (vacuumSize * img.clientWidth) / 1012,
+          -content[2],
+        ]);
         addToPath(content[1], content[0], trail);
       }
 
@@ -77,6 +100,7 @@ const WebGUI = () => {
         setPath("");
         setUserImage(undefined);
         trail = [];
+        setVacuumPose(null);
       }
     };
 
@@ -103,12 +127,21 @@ const WebGUI = () => {
             id="vacuum-pos"
             style={{
               rotate: "z " + vacuumPose[2] + "rad",
-              top: vacuumPose[0] - 10,
-              left: vacuumPose[1] - 10,
+              top: vacuumPose[0],
+              height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+              left: vacuumPose[1],
+              width: (vacuumSize * canvasRef.current.clientWidth) / 1012,
             }}
           >
-            <img src={Vacuum} id="vacuum-pos" />
-            <div className="arrow" />
+            <img src={Vacuum} />
+            <div
+              className="arrow"
+              style={{
+                height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+                marginLeft:
+                  -((vacuumSize * canvasRef.current.clientWidth) / 1012) / 2,
+              }}
+            />
           </div>
         )}
         {/* <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
@@ -132,7 +165,8 @@ const WebGUI = () => {
               xmlns="http://www.w3.org/2000/svg"
               d={path}
               style={{
-                strokeWidth: "20px",
+                strokeWidth:
+                  (vacuumSize * canvasRef.current.clientHeight) / 1012,
                 strokeLinejoin: "round",
                 stroke: "white",
                 fill: "none",
