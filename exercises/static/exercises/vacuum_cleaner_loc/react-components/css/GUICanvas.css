@@ -12,12 +12,19 @@
 #vacuum-pos {
   position: absolute;
   z-index: 3;
-  width: 20px;
-  height: 20px;
-  border-radius: 20px;
+  /* width: 30px;
+  height: 30px; */
+  border-radius: 100%;
   background-color: rgb(53, 53, 53);
   transition: left 0.1s ease-out, top 0.1s ease-out;
   left: 0;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
 }
 
 #map-img {
@@ -32,27 +39,14 @@
 
 .arrow {
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   /*   border:solid 1px white; */
   transition: left 0.1s ease-out, top 0.1s ease-out;
   overflow: hidden;
   z-index: 4;
-  margin-left: -10px;
-}
-
-.arrow:after {
-  position: absolute;
-  display: block;
-  content: "";
-  color: rgb(255, 0, 0);
-  width: 20px;
-  height: 15px;
-  /*   border:solid 1px;  */
-  top: -4px;
-  border-bottom: solid 2px;
-  transform: translatex(4px);
+  margin-left: -15px;
 }
 
 .arrow:before {
@@ -66,7 +60,6 @@
   border-top: solid 2px;
   border-left: solid 2px;
   top: 50%;
-  left: 2px;
   transform-origin: 0% 0%;
   transform: rotatez(-45deg);
 

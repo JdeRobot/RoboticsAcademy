@@ -10,12 +10,14 @@ import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 
+// Define multirun variables here so it does not rerender
+var trail = [];
+
 const WebGUI = () => {
   const exerciseContext = useExercise();
   const [vacuumPose, setVacuumPose] = useState(null);
   const [path, setPath] = useState("");
   const [manager, setManager] = useState(exerciseContext.manager);
-  var trail = [];
   var lastPose = undefined;
   const canvasRef = useRef(null);
   const vacuumSize = 40;
@@ -25,7 +27,6 @@ const WebGUI = () => {
   }, [exerciseContext]);
 
   const resizeObserver = new ResizeObserver((entries) => {
-    // TODO: vacuum size = 30x30 en 750x750
     var img = entries[0].target;
     var width = img.clientWidth / 300;
     var height = img.clientHeight / 150;
