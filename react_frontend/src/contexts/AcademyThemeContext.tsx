@@ -26,7 +26,7 @@ const darkTheme: AcademyTheme = {
     secondary: "#ff8800",
     scrollbar: "#6f6f90",
     border: {
-      warning: "#af5500ff",
+      warning: "#af5500",
       error: "#772222",
       info: "#134f53",
     },
@@ -37,11 +37,11 @@ const darkTheme: AcademyTheme = {
     button: {
       error: "#9e2e2e",
       success: "#29ac29",
-      warning: "#af5500ff",
+      warning: "#af5500",
       info: "#134f53",
       hoverError: "#c63939",
       hoverSuccess: "#29ac29",
-      hoverWarning: "#e05a00ffff",
+      hoverWarning: "#e05a00",
       hoverInfo: "#1d777c",
     },
     selectedGradient:
@@ -69,7 +69,7 @@ const lightTheme: AcademyTheme = {
     secondary: "#ff8800",
     scrollbar: "#6f6f90",
     border: {
-      warning: "#af5500ff",
+      warning: "#af5500",
       error: "#772222",
       info: "#134f53",
     },
@@ -80,11 +80,11 @@ const lightTheme: AcademyTheme = {
     button: {
       error: "#9e2e2e",
       success: "#29ac29",
-      warning: "#af5500ff",
+      warning: "#af5500",
       info: "#134f53",
       hoverError: "#c63939",
       hoverSuccess: "#29ac29",
-      hoverWarning: "#e05a00ffff",
+      hoverWarning: "#e05a00",
       hoverInfo: "#1d777c",
     },
     selectedGradient:
