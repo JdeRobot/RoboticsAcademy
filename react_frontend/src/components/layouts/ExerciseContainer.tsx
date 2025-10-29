@@ -71,6 +71,7 @@ const ExerciseContainer = ({
   );
 
   const [language, setLanguage] = useState<string>("python");
+  const [fileSaved, saveFile] = useState<boolean>(false);
   const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
   const [code, _setCode] = useState<string>(defaultPythonCode);
   const codeRef = useRef<string>(defaultPythonCode);
@@ -222,6 +223,7 @@ const ExerciseContainer = ({
   });
 
   useEffect(() => {
+    saveFile(true)
     if (language === "cpp") {
       setBaseFile(base_file_cpp);
     } else {
@@ -233,6 +235,7 @@ const ExerciseContainer = ({
     file: {
       get: (project: string, file: Entry) => {
         const func = async (file: Entry) => {
+          saveFile(false)
           if (file.name === "academy.cpp") {
             return defaultCppCode;
           } else {
@@ -245,7 +248,7 @@ const ExerciseContainer = ({
       save: (project: string, file: Entry, content: string) => {
         console.log("saveFile", content);
         setCode(content);
-        return saveFile(project, file.path, content);
+        return saveFile2(project, file.path, content);
       },
     },
     universes: {
@@ -280,6 +283,7 @@ const ExerciseContainer = ({
           setLayout={setLayout}
           hasDLModel={hasDLModel}
           connectManager={connectWithRetry}
+          saving={fileSaved}
         />
         <IdeInterface
           commsManager={manager}
@@ -303,7 +307,7 @@ const ExerciseContainer = ({
 
 export default ExerciseContainer;
 
-function saveFile(
+function saveFile2(
   project: string,
   path: string,
   content: string
