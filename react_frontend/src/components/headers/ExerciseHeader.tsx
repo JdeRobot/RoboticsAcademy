@@ -37,6 +37,7 @@ const ExerciseHeader = ({
   setLanguage,
   hasDLModel,
   connectManager,
+  saving,
 }: {
   project: string;
   language?: string;
@@ -48,6 +49,7 @@ const ExerciseHeader = ({
     desiredState?: string,
     callback?: () => void
   ) => Promise<void>;
+  saving?: boolean;
 }) => {
   const theme = useAcademyTheme();
   const [dlModel, setDLModel] = useState<ArrayBuffer | undefined>();
@@ -79,7 +81,11 @@ const ExerciseHeader = ({
           <HomeButton />
           <ThemeButton />
           {language && (
-            <LanguageButton language={language} setter={setLanguage} />
+            <LanguageButton
+              language={language}
+              setter={setLanguage}
+              loading={saving}
+            />
           )}
           {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
           <UploadButton language={language} />
