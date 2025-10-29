@@ -161,7 +161,7 @@ function WebGUI(props) {
         <div className="target" style={{top: `${destination[0]}%`, left: `calc(${destination[1]}% - ${10}px)`}}/>
       }
       {path &&
-        <svg height="100%" width="50%" xmlns="http://www.w3.org/2000/svg" style={{zIndex:2}}>
+        <svg height="100%" width="50%" xmlns="http://www.w3.org/2000/svg" style={{zIndex:2, left: "50%", position:"absolute"}}>
           <path xmlns="http://www.w3.org/2000/svg" d={path} 
             style={{strokeWidth: "2px", strokeLinejoin:"round", stroke: "green", fill: "none"}}
           />
