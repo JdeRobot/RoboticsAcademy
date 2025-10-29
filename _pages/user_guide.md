@@ -8,11 +8,17 @@ sidebar:
 toc: true
 toc_label: "TOC installation"
 toc_icon: "cog"
+
+youtubeId1: bh5oPH5DpVs
+youtubeId2: bh5oPH5DpVs
+
 ---
 
 For RoboticsAcademy users go to the Robotics Academy [section](#1-installation-of-robotics-academy).
 
 For Unibotics users go to the Unibotics [section](#4-installation-of-robotics-backend).
+
+For more guides and troubleshooting go to the Guides [section](#4-installation-of-robotics-backend).
 
 <a name="installation"></a>
 
@@ -308,7 +314,22 @@ docker ps -a
 docker rm CONTAINER_ID
 ```
 
-## 6. Reference execution performance data
+## 6. Other Guides
+
+### Editor Controls
+
+{% include youtubePlayer.html id=page.youtubeId1 %}
+
+### How to fix VNC not loading
+
+If your VNC viewer shows an error similar to this when connecting to a remote Robotics Backend (farm) in Unibotics, you have to follow the next steps to fix it:
+
+1. Close the VNC viewer using the buttons at the top
+2. Open the VNC viewer using the buttons at the top
+
+TODO: add video
+
+## 7. Reference execution performance data
 
 In this section, various data tables will be provided showing the performance cost of each RoboticsBackend exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
 
