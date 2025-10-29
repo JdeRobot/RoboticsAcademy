@@ -6,7 +6,7 @@
   "author": "David María Arribas <dmariaa70@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack --mode production --output-path ./static/react_frontend --watch",
+    "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
     "build": "webpack --mode production --output-path ./static/react_frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
