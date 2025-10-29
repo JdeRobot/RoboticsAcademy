@@ -406,14 +406,11 @@ If there is need for additional resources such as images, you may add them insid
 
 ### Add the exercise to the database
 
-It is also necessary to add the template for the frontend in the folder exercises/templates/exercises.
-
-Then, create the entry in database/exercise/db.sql. This can be achieved in 2 ways, changing it directly on the database or using Django Web Admin:
+To add a exercise to the database you must use Django Web Admin:
 1)  Launch the docker as normal.
 2)  Access http://127.0.0.1:7164/admin/ on a browser and log in with "user" and "pass".
 3)  Click on "add exercise" and fill the required fields specified below.
-4)  Open a shell in the universe_db docker: ```docker exec -it universe_db bash```
-4)  Dump the changes using ```./scripts/saveDb.sh```
+4)  Save the exercise clicking on the "Local Save" button.
 
 An exercise entry in the database must include the following data:
 - ```exercise id```: unique exercise identifier, must match the folder name

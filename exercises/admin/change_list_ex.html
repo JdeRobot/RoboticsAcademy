@@ -1,0 +1,24 @@
+{% extends "admin/change_list.html" %}
+{% load i18n static %}
+
+{% block object-tools-items %}
+{{ block.super }}
+<li>
+    <style>#save-db-button{
+    display: block;
+    float: left;
+  padding: 3px 12px;
+    padding-right: 12px;
+  background: var(--object-tools-bg);
+  color: var(--object-tools-fg);
+  font-weight: 400;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  user-select: none;
+  &:hover {
+  background-color: var(--object-tools-hover-bg);
+}}</style>
+    <a id="save-db-button" onclick="fetch('/exercises/save_exercise_db')" >Local Save</a>
+</li>
+{% endblock %}
