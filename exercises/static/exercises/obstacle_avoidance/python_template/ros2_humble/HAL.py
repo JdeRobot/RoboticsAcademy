@@ -9,6 +9,7 @@ from hal_interfaces.general.laser import LaserNode
 # Hardware Abstraction Layer
 IMG_WIDTH = 320
 IMG_HEIGHT = 240
+# {"name": "target10", "x": -47, "y": 45},
 
 
 # Mutes exceptions
