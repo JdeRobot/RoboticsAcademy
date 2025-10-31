@@ -78,6 +78,7 @@ def save_exercise_db(request):
 
     return Response({"success": True})
 
+
 @csrf_exempt
 @api_view(["GET"])
 def save_universe_db(request):
@@ -94,6 +95,7 @@ def save_universe_db(request):
     )
 
     return Response({"success": True})
+
 
 @error_wrapper("GET", ["project"])
 def get_universes_list(request):
