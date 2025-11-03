@@ -11,7 +11,7 @@ toc_icon: "cog"
 
 
 gallery:
-    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
+    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
     alt: "Vacuum"
 
 youtubeId1: c90hmfkZRNY
@@ -23,48 +23,43 @@ youtubeId3: qwBQ1B-05xU
 
 The objective of this practice is to implement the logic of a navigation algorithm for an autonomous vacuum. The main objective will be to cover the largest area of ​​a house using the programmed algorithm.
 
-<img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
+For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (in Unibotics) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
+
+<img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+* `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency freq = Frequency();` - to instanciate the Frequency class.
+* `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed.
 * `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left.
-* `HAL.getPose3d().x` - to get the position of the robot (x coordinate).
-* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate).
-* `HAL.getPose3d().yaw` - to get the orientation of the robot regarding the map.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 * `HAL.setV()` - to set the linear speed.
 * `HAL.setW()` - to set the angular velocity.
+* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 
-```python
-print ('Execute')
-
-# TODO
-
-print(HAL.getPose3d().x)
-print(HAL.getPose3d().y)
-# Vacuum's yaw
-yaw = HAL.getPose3d().yaw
-```
-
-For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
-
-### Types conversion
-
-- **Laser**
+Here is an example of how to parse the laser data:
 
 ```python
 import math
@@ -107,26 +102,72 @@ if len(laser_data.values) > 0:
     laser_polar, laser_xy = parse_laser_data(laser_data)
 ```
 
+#### C++
+
+* `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL::get_laser_data();` - It allows to obtain the data of the laser sensor (LaserData), which consists of 180 pairs of values ​​(0-180º, distance in meters).
+* `HAL::set_v(velocity);` - to set the linear speed.
+* `HAL::set_w(velocity);` - to set the angular velocity.
+* `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left.
+
 ### ROS 2-native Implementation
-
-`from WebGUI import gui` - to enable the Web GUI for visualizing realtime map data.
-
-**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 #### ROS 2 Topics
 Use standard ROS 2 topics for direct communication with the simulation.
+
 * `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
-* `/odom` - Subscribe to this topic to get the robot's position and orientation. Message type: `nav_msgs/msg/Odometry`
 * `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
 * `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 * `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 * `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-#### Frequency Control
-Use standard ROS 2 mechanisms to manage loop timing:
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
 * `rclpy.spin()` - Event-driven execution using callbacks.
 * `rclpy.spin_once()` - Single-step processing, often with custom timers.
 * `rclpy.Rate()` - Loop-based frequency control.
 
+#### C++
+
+In order to use native ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Theory
 
@@ -235,18 +276,10 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
  
 {% include youtubePlayer.html id=page.youtubeId3 %}
 
-## Videos
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
-*This solution is an illustration for the Web Templates*
-
-<br/>
-
 ## Contributors
 
 - Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh), [Ashish Ramesh](https://github.com/AshishRamesh).
-- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
+- Maintained by [Javier Izquierdo](https://github.com/javizqh).
 
 ## References
 
