@@ -12,6 +12,8 @@ RUN mkdir -p /home/ws/src
 RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
 RUN mv /opt/jderobot/resources /resources
 
+RUN mv -f /opt/jderobot/Levels /data/workspace/ROS2Demo/Levels
+
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
 
