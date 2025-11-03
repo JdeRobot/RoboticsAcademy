@@ -121,6 +121,7 @@ For image debugging:
 #### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
 `from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
@@ -260,7 +261,7 @@ This is the completely implemented controller. Now, to add the I Controller we n
 ## Contributors
 
 - Contributors: [Alberto Martín](https://github.com/almartinflorido), [Francisco Rivas](https://github.com/chanfr), [Francisco Pérez](https://github.com/fqez), [Jose María Cañas](https://github.com/jmplaza), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh), [Ashish Ramesh](https://github.com/AshishRamesh).
-- Maintained by [Pankhuri Vanjani](https://github.com/pankhurivanjani) and [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
+- Maintained by [Javier Izquierdo](https://github.com/javizqh).
 
 ## References
 

@@ -11,7 +11,7 @@ toc_icon: "cog"
 
 
 gallery:
-    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png
+    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
     alt: "Vacuum"
 
 youtubeId1: c90hmfkZRNY
@@ -25,7 +25,7 @@ The objective of this practice is to implement the logic of a navigation algorit
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (in Unibotics) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
-<img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner.png" width="100%" height="60%">
+<img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
 **Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
@@ -125,6 +125,7 @@ Use standard ROS 2 topics for direct communication with the simulation.
 #### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
 `from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
@@ -275,18 +276,10 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
  
 {% include youtubePlayer.html id=page.youtubeId3 %}
 
-## Videos
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
-*This solution is an illustration for the Web Templates*
-
-<br/>
-
 ## Contributors
 
 - Contributors: [Vanessa Fernandez](https://github.com/vmartinezf), [Jose María Cañas](https://github.com/jmplaza), [Carlos Awadallah](https://github.com/cawadall), [Nacho Arranz](https://github.com/igarag), [Javier Izquierdo](https://github.com/javizqh), [Ashish Ramesh](https://github.com/AshishRamesh).
-- Maintained by [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
+- Maintained by [Javier Izquierdo](https://github.com/javizqh).
 
 ## References
 
