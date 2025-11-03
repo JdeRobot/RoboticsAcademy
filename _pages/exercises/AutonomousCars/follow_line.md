@@ -70,13 +70,24 @@ The students will program a Formula1 car in a race circuit to follow the red lin
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+* `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency freq = Frequency();` - to instanciate the Frequency class.
+* `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -85,28 +96,73 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 * `HAL.setW(velocity)` - to set the angular velocity.
 * `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
+#### C++
+
+* `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `HAL::get_image();` - to get the image (cv::Mat).
+* `HAL::set_v(velocity);` - to set the linear speed.
+* `HAL::set_w(velocity);` - to set the angular velocity.
+* `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
+
 ### ROS 2-native Implementation
 
-`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
-
-**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
-
 #### ROS 2 Topics
+
 Use standard ROS 2 topics for direct communication with the simulation.
-* `/cam_f1_left/image_raw ` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
+
+* `/cam_f1_left/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
 * `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-#### Frequency Control
-Use standard ROS 2 mechanisms to manage loop timing:
+For image debugging:
+
+* `/webgui_image`  - Publish to this topic to set the debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
 * `rclpy.spin()` - Event-driven execution using callbacks.
 * `rclpy.spin_once()` - Single-step processing, often with custom timers.
 * `rclpy.Rate()` - Loop-based frequency control.
 
-#### Image Debugging
-* Publish processed images to the topic: `/webgui_image`
-Used for sending debug or processed visuals to the frontend.
-* The GUI automatically subscribes to `/webgui_image`
-Images published to this topic are displayed in the GUI interface.
+#### C++
+
+In order to use native ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Theory
 
