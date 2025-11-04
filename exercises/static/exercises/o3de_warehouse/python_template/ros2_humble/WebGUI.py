@@ -1,160 +1,64 @@
-import base64
-import re
 import json
 import cv2
+import base64
 import threading
+import time
 import numpy as np
-import matplotlib.pyplot as plt
-
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+import math
 from map import Map
-from HAL import getPose3d, getLiftState
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
-
-# Matrix colors
-red = [0, 0, 255]
-orange = [0, 165, 255]
-yellow = [0, 255, 255]
-green = [0, 255, 0]
-blue = [255, 0, 0]
-indigo = [130, 0, 75]
-violet = [211, 0, 148]
-
-
+from HAL import getPose3d, getOdom
 class WebGUI(MeasuringThreadingGUI):
-    def __init__(self, host="ws://127.0.0.1:2303"):
+    def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
         super().__init__(host)
-
-        self.array_lock = threading.Lock()
-        self.array = None
-
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
-
+        self.user_map = None
+        self.image_lock = threading.Lock()
+        self.map = Map(getPose3d, getOdom)
         # Payload vars
-        self.payload = {"map": "", "array": "", "liftState": ""}
-        self.init_coords = (171, 63)
-        self.start_coords = (201, 85.5)
-        self.map = Map(getPose3d)
-
+        self.payload = {"user_map": "", "real_pose": ""}
         self.start()
-
-    # Prepares and sends a map to the websocket server
+    # Prepares and send image to the websocket server
     def update_gui(self):
-        self.payload["array"] = self.array
-        self.payload["liftState"] = getLiftState()
-
-        # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
-        ang_message = self.map.getRobotAngle()
-        pos_message = str(pos_message + ang_message)
-        self.payload["map"] = pos_message
-
-        payload = self.payloadImage()
-        self.payload["image"] = json.dumps(payload)
-
+        pos_message = str(pos_message)
+        self.payload["real_pose"] = pos_message
+        if np.any(self.user_map):
+            _, encoded_image = cv2.imencode(".JPEG", self.user_map)
+            b64 = base64.b64encode(encoded_image).decode("utf-8")
+            shape = self.user_map.shape
+        else:
+            b64 = None
+            shape = 0
+        payload_img = {
+            "user_map": b64,
+            "shape": shape,
+        }
+        self.payload["user_map"] = json.dumps(payload_img)
         message = json.dumps(self.payload)
         self.send_to_client(message)
-
-        # Process the array(ideal path) to be sent to websocket
-
-    # Function to prepare image payload
-    # Encodes the image as a JSON string and sends through the WS
-    def payloadImage(self):
-        with self.image_show_lock:
-            image_to_be_shown_updated = self.image_to_be_shown_updated
-            image_to_be_shown = self.image_to_be_shown
-
-        image = image_to_be_shown
-        payload = {"image": "", "shape": ""}
-
-        if not image_to_be_shown_updated:
-            return payload
-
-        shape = image.shape
-        frame = cv2.imencode(".JPEG", image)[1]
-        encoded_image = base64.b64encode(frame)
-
-        payload["image"] = encoded_image.decode("utf-8")
-        payload["shape"] = shape
-
-        with self.image_show_lock:
-            self.image_to_be_shown_updated = False
-
-        return payload
-
-    def process_colors(self, image):
-        colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
-
-        # Grayscale for values < 128
-        mask = image < 128
-        colored_image[mask] = image[mask][:, None] * 2
-
-        # Color lookup table
-        color_table = {
-            128: red,
-            129: orange,
-            130: yellow,
-            131: green,
-            132: blue,
-            133: indigo,
-            134: violet,
-        }
-
-        for value, color in color_table.items():
-            mask = image == value
-            colored_image[mask] = color
-
-        return colored_image
-
-    # load the image data
-    def showNumpy(self, image):
-        with self.image_show_lock:
-            self.image_to_be_shown = self.process_colors(image)
-            self.image_to_be_shown_updated = True
-
-    def showPath(self, array):
-        array_scaled = []
-        for wp in array:
-            array_scaled.append([wp[0] * 0.72, wp[1] * 0.545])
-
-        print("Path array: " + str(array_scaled))
-        self.array_lock.acquire()
-
-        strArray = "".join(str(e) for e in array_scaled)
-        print("strArray: " + str(strArray))
-
-        # Remove unnecesary spaces in the array to avoid JSON syntax error in javascript
-        strArray = re.sub(r"\[[ ]+", "[", strArray)
-        strArray = re.sub(r"[ ]+", ", ", strArray)
-        strArray = re.sub(r",[ ]+]", "]", strArray)
-        strArray = re.sub(r",,", ",", strArray)
-        strArray = re.sub(r"]\[", "],[", strArray)
-        strArray = "[" + strArray + "]"
-        print("strArray2: " + str(strArray))
-
-        self.array = strArray
-        self.array_lock.release()
-
-    def getMap(self, url):
-        return plt.imread(url)
-
-
+    # Function to set the next image to be sent
+    def setUserMap(self, image):
+        if image.shape[0] != 970 or image.shape[1] != 1500:
+            raise ValueError(
+                "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
+            )
+        processed_image = np.stack((image,) * 3, axis=-1)
+        with self.image_lock:
+            self.user_map = processed_image
+    def poseToMap(self, x_prime, y_prime, yaw_prime):
+        y = -23.58 * (-20.36 - x_prime)
+        x = -23.53 * (-31.95 - y_prime)
+        yaw = yaw_prime - math.pi / 2
+        return [round(x), round(y), yaw]
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
-
 # Redirect the console
 start_console()
-
-
-def showPath(array):
-    return gui.showPath(array)
-
-
-def showNumpy(image):
-    gui.showNumpy(image)
-
-
-def getMap(url):
-    return gui.getMap(url)
+# Expose the user functions
+def setUserMap(image):
+    gui.setUserMap(image)
+def poseToMap(x_prime, y_prime, yaw_prime):
+    return gui.poseToMap(x_prime, y_prime, yaw_prime)
