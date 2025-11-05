@@ -435,7 +435,7 @@ RUN ./o3de/scripts/o3de.sh create-project \
 WORKDIR ${PROJECT_DEMO_ROOT}
 
 RUN . /opt/ros/humble/setup.sh \
-    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_MODULES=ON
+    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_MODULES=ON -DAZ_USE_PHYSX5:BOOL=ON
 
 WORKDIR ${PROJECT_DEMO_ROOT}
 
