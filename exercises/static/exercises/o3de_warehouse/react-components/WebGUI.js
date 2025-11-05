@@ -9,7 +9,6 @@ import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer from "Components/exercise/WebGUIContainer";
 
 import warehouse from "../resources/images/map.png";
-import smallWarehouse from "../resources/images/small_map.png";
 
 import "./css/GUICanvas.css"
 function WebGUI(props) {
@@ -17,7 +16,7 @@ function WebGUI(props) {
   const [noisyPose, setNoisyPose] = useState(null)
   const [realPath, setRealPath] = useState("")
   const [noisyPath, setNoisyPath] = useState("")
-  const [mapImg, setMapImg] = useState(smallWarehouse);
+  const [mapImg, setMapImg] = useState(warehouse);
   const [userImage, setUserImage] = useState(undefined);
   const canvasRef = useRef(null);
   const exerciseContext = useExercise();
@@ -115,14 +114,14 @@ function WebGUI(props) {
         noisyTrail=[]
         setUserImage()
 
-        switch (manager.getUniverse()) {
+        /*switch (manager.getUniverse()) {
           case "Laser Mapping Warehouse":
             setMapImg(warehouse);
             break;
           case "Small Laser Mapping Warehouse":
             setMapImg(smallWarehouse);
             break;
-        }
+        }*/
       }
       valuesUntilValid = 0;
     }
