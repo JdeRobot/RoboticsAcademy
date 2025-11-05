@@ -113,8 +113,8 @@ function WebGUI(props) {
         realTrail=[]
         noisyTrail=[]
         setUserImage()
-
-        /*switch (manager.getUniverse()) {
+	      /*
+        switch (manager.getUniverse()) {
           case "Laser Mapping Warehouse":
             setMapImg(warehouse);
             break;
@@ -122,6 +122,7 @@ function WebGUI(props) {
             setMapImg(smallWarehouse);
             break;
         }*/
+	      setMapImg(warehouse);
       }
       valuesUntilValid = 0;
     }

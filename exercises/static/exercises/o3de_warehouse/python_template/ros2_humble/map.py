@@ -1,12 +1,14 @@
 import numpy as np
 import math
+import random
 from math import pi as pi
 import cv2
 
 
 class Map:
-    def __init__(self, pose3d):
-        self.pose3d = pose3d
+    def __init__(self, pose_getter, noisy_pose_getter):
+        self.pose_getter = pose_getter
+        self.noisy_pose_getter = noisy_pose_getter
 
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix(
@@ -46,28 +48,34 @@ class Map:
         return RTz
 
     def getRobotCoordinates(self):
-        pose = self.pose3d()
-
+        pose = self.pose_getter()
         x = pose.x
         y = pose.y
 
-        x = (6.8 - x) * 20.22 * 0.545
-        y = (10.31 - y) * 20.17 * 0.72
-        # print(" - Coordinate: " + str(x) + ", " + str(y))
+        scale_y = -23.53
+        offset_y = -31.95
+        y = scale_y * (offset_y - y)
 
-        return y, x
+        scale_x = -23.58
+        offset_x = -20.36
+        x = scale_x * (offset_x - x)
 
-    def getRobotAngle(self):
-        pose = self.pose3d()
-        rt = pose.yaw - 1.24
+        return x, y, pose.yaw
 
-        ty = math.cos(-rt) - math.sin(-rt)
-        tx = math.sin(-rt) + math.cos(-rt)
+    def getRobotCoordinatesWithNoise(self):
+        pose = self.noisy_pose_getter()
+        x = pose.x
+        y = pose.y
 
-        # print(" - Angle: " + str(tx) + ", " + str(ty))
-        # print(" -> rt: " + str(rt))
+        scale_y = -23.53
+        offset_y = -31.95
+        y = scale_y * (offset_y - y)
 
-        return (rt,)
+        scale_x = -23.58
+        offset_x = -20.36
+        x = scale_x * (offset_x - x)
+
+        return x, y, pose.yaw
 
     # Function to reset
     def reset(self):

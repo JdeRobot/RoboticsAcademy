@@ -1,31 +1,25 @@
 import rclpy
+import sys
 import threading
 import time
-import sys
-from geometry_msgs.msg import Twist
+import numpy as np
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
+from real_noise_odometry import NoisyOdometryNode
 from hal_interfaces.general.laser import LaserNode
-from hal_interfaces.general.sim_time import SimTimeNode
 
-# Hardware Abstraction Layer
-freq = 30.0  # 30 Hz loop frequency
+freq = 90.0
 
-print("HAL initializing", flush=True)
-if not rclpy.ok():
-    rclpy.init(args=None)
 
-### HAL INIT ###
-motor_node = MotorsNode("/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("/odom")
-laser_node = LaserNode("/scan")
-sim_time_node = SimTimeNode()
+# Mutes exceptions
+def custom_thread_excepthook(args):
+    if "spin" in args.thread.name:
+        return
+    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
 
-executor = rclpy.executors.MultiThreadedExecutor()
-executor.add_node(odometry_node)
-executor.add_node(laser_node)
-executor.add_node(sim_time_node)
+
+threading.excepthook = custom_thread_excepthook
 
 
 def __auto_spin() -> None:
@@ -37,37 +31,64 @@ def __auto_spin() -> None:
         time.sleep(1 / freq)
 
 
+if not rclpy.ok():
+    rclpy.init(args=sys.argv)
+
+### HAL INIT ###
+motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/odom")
+noisy_odometry_node = NoisyOdometryNode("/odom")
+noisy_odometry_node.noise_level = 0.001
+noisy_odometry_node_2 = NoisyOdometryNode("/odom")
+noisy_odometry_node_2.noise_level = 0.03
+noisy_odometry_node_3 = NoisyOdometryNode("/odom")
+noisy_odometry_node_3.noise_level = 0.06
+laser_node = LaserNode("/scan")
+
+# Spin nodes so that subscription callbacks load topic data
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(odometry_node)
+executor.add_node(noisy_odometry_node)
+executor.add_node(noisy_odometry_node_2)
+executor.add_node(noisy_odometry_node_3)
+executor.add_node(laser_node)
+
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
-# ===========================
-# CMD_VEL continuous publisher
-# ===========================
-cmd_vel_node = rclpy.create_node("hal_cmdvel_publisher")
-cmd_vel_pub = cmd_vel_node.create_publisher(Twist, "/cmd_vel", 4)
 
-linear_vel = 0.0
-angular_vel = 0.0
-publish_rate = 100.0  # Hz
+### GETTERS ###
 
-def __publish_cmdvel():
-    global linear_vel, angular_vel
-    rate = 1.0 / publish_rate
-    twist = Twist()
-    while rclpy.ok():
-        twist.linear.x = linear_vel
-        twist.angular.z = angular_vel
-        cmd_vel_pub.publish(twist)
-        time.sleep(rate)
 
-cmdvel_thread = threading.Thread(target=__publish_cmdvel, daemon=True)
-cmdvel_thread.start()
-
+# Pose
 def getPose3d():
-    return odometry_node.getPose3d()
+    try:
+        return odometry_node.getPose3d()
+    except Exception as e:
+        print(f"Exception in hal getPose3d {repr(e)}")
 
-def getSimTime():
-    return sim_time_node.getSimTime()
+
+# Pose
+def getOdom():
+    try:
+        return noisy_odometry_node.getPose3d()
+    except Exception as e:
+        print(f"Exception in hal getPose3d {repr(e)}")
+
+
+def getOdom2():
+    try:
+        return noisy_odometry_node_2.getPose3d()
+    except Exception as e:
+        print(f"Exception in hal getPose3d {repr(e)}")
+
+
+def getOdom3():
+    try:
+        return noisy_odometry_node_3.getPose3d()
+    except Exception as e:
+        print(f"Exception in hal getPose3d {repr(e)}")
+
 
 def getLaserData():
     laser_data = laser_node.getLaserData()
@@ -75,35 +96,15 @@ def getLaserData():
         laser_data = laser_node.getLaserData()
     return laser_data
 
-def setV(velocity):
-    """Update target linear velocity (m/s)."""
-    global linear_vel
-    linear_vel = float(velocity)
 
-def setW(angular_velocity):
-    """Update target angular velocity (rad/s)."""
-    global angular_vel
-    angular_vel = float(angular_velocity)
-
-def stop():
-    global linear_vel, angular_vel
-    linear_vel = 0.0
-    angular_vel = 0.0
-
-print("HAL ready — publishing /cmd_vel continuously", flush=True)
-
-def lift():
-    global liftState
-    liftState = True
-    platform_pub.load()
+### SETTERS ###
 
 
-def putdown():
-    global liftState
-    liftState = False
-    platform_pub.unload()
+# Linear speed
+def setV(v):
+    motor_node.sendV(float(v))
 
 
-def getLiftState():
-    global liftState
-    return liftState
+# Angular speed
+def setW(w):
+    motor_node.sendW(float(w))
