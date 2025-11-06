@@ -95,8 +95,36 @@ if ! command -v nvm &> /dev/null; then
 fi
 
 # Prepare yarn 
-if ! command -v yarn --version &> /dev/null; then
-  npm install --global yarn
+if ! command -v yarn &> /dev/null; then
+  echo "Yarn is not installed. Installing Yarn..."
+  
+  # Check if npm exists or not
+  if command -v npm &> /dev/null; then
+    npm install --global yarn
+  else
+    echo "npm is not installed. Installing Node.js and npm first..."
+    
+    # Detect OS and install npm and node.js accordingly
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+      curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+      sudo apt-get install -y nodejs
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+      if command -v brew &> /dev/null; then
+        brew install node
+      else
+        echo "Homebrew not found. Please install Yarn manually: https://yarnpkg.com/getting-started/install"
+        exit 1
+      fi
+    else
+      echo "Unsupported OS. Please install Yarn manually: https://yarnpkg.com/getting-started/install"
+      exit 1
+    fi
+    
+    npm install --global yarn
+  fi
+  echo "Yarn installed successfully."
+else
+  echo "Yarn is already installed."
 fi
 
 # Prepare the commons zip file
