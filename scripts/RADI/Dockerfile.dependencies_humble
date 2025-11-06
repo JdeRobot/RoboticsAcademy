@@ -462,6 +462,6 @@ RUN rm -rf ~/.o3de/3rdParty/ \
   && rm -rf $PROJECT_DEMO_ROOT/build/linux/bin/Release \
   && rm -rf $PROJECT_DEMO_ROOT/Examples \
   && rm -rf $O3DE_EXTRAS_ROOT/Templates \
-  && rm -rf $O3DE_EXTRAS_ROOT/Projects /
+  && rm -rf $O3DE_EXTRAS_ROOT/Projects
     
 WORKDIR /
