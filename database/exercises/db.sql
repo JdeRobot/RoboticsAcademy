@@ -138,6 +138,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
+27	autoparking_lidar	Lidar Autoparking	Autoparking exercise with Lidar	["AUTONOMOUS DRIVING","SERVICE ROBOTS","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/autoparking
 \.
 
 --
@@ -188,6 +189,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 40	25	38
 41	26	39
 42	8	40
+43	27	9
 \.
 -- 30  16  3
 
@@ -273,6 +275,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 75	26	console
 76	26	simulator
 77	26	web_gui
+78	27	console
+79	27	simulator
+80	27	web_gui
 \.
 
 --
