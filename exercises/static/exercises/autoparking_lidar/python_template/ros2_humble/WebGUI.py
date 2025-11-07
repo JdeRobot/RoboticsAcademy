@@ -2,7 +2,6 @@ import json
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
-from map import Map
 from HAL import getLidarData
 
 # Graphical User Interface Class

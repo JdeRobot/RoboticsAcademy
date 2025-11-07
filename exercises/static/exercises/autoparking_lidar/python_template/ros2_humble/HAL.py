@@ -58,7 +58,7 @@ def getPose3d():
 def getLidarData():
     lidar = lidar_node.getLidarData()
     while lidar.timeStamp == 0.0:
-        lidar = lidar_node.getLaserData()
+        lidar = lidar_node.getLidarData()
     return lidar
 
 

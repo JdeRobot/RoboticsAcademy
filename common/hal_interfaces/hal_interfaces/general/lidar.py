@@ -53,7 +53,7 @@ def lidarScan2LidarData(scan):
     @return a LidarData translated from scan
     """
     laser = LidarData()
-    print(len(scan.ranges))
+    print(scan,len(scan.ranges))
     laser.values = scan.ranges
     """ 
           ROS Angle Map      JdeRobot Angle Map
@@ -66,8 +66,8 @@ def lidarScan2LidarData(scan):
     """
     laser.minAngle = scan.angle_min + PI / 2
     laser.maxAngle = scan.angle_max + PI / 2
-    laser.minVAngle = scan.vertical_angle_min
-    laser.maxVAngle = scan.vertical_angle_max
+    # laser.minVAngle = scan.vertical_angle_min
+    # laser.maxVAngle = scan.vertical_angle_max
     laser.maxRange = scan.range_max
     laser.minRange = scan.range_min
     laser.timeStamp = scan.header.stamp.sec + (scan.header.stamp.nanosec * 1e-9)
@@ -86,5 +86,5 @@ class LidarNode(Node):
     def listener_callback(self, scan):
         self.last_scan_ = scan
 
-    def getLaserData(self):
+    def getLidarData(self):
         return lidarScan2LidarData(self.last_scan_)
