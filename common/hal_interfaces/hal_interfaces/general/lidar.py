@@ -2,89 +2,79 @@ from rclpy.node import Node
 import sensor_msgs.msg
 from math import pi as PI
 import rclpy
+import numpy as np
+from sensor_msgs_py import point_cloud2
+from threading import Lock
 
-if not rclpy.ok():
-    rclpy.init()
 
-
-### AUXILIARY FUNCTIONS
 class LidarData:
     def __init__(self):
-
-        self.values = []  # meters
-        self.minAngle = 0  # Angle of first value (rads)
-        self.maxAngle = 0  # Angle of last value (rads)
-        self.minVAngle = 0  # Angle of first vertical value (rads)
-        self.maxVAngle = 0  # Angle of last vertical value (rads)
-        self.minRange = 0  # Max Range posible (meters)
-        self.maxRange = 0  # Min Range posible (meters)
-        self.timeStamp = 0  # seconds
+        self.points = []
+        self.intensities = []
+        self.timeStamp = 0.0
+        self.min_range = 0.1
+        self.max_range = 15.0
+        self.field_of_view = (2 * PI / 3, PI / 18)
+        self.is_dense = True
 
     def __str__(self):
-        s = (
-            "LidarData: {\n   minAngle: "
-            + str(self.minAngle)
-            + "\n   maxAngle: "
-            + str(self.maxAngle)
+        return (
+            f"LiDARData:\n"
+            f"  timestamp: {self.timeStamp}\n"
+            f"  points: {len(self.points)}\n"
+            f"  range: [{self.min_range}, {self.max_range}]\n"
+            f"  FOV: {self.field_of_view}\n"
+            f"  is_dense: {self.is_dense}"
         )
-        s = (
-            s
-            + "\n   minRange: "
-            + str(self.minRange)
-            + "\n   maxRange: "
-            + str(self.maxRange)
+
+
+def pointCloud2LidarData(cloud):
+    lidar = LidarData()
+    if not cloud or cloud.width * cloud.height == 0:
+        return lidar
+
+    # Read XYZ points
+    lidar.points = list(
+        point_cloud2.read_points(cloud, field_names=("x", "y", "z"), skip_nans=False)
+    )
+
+    # Read intensities if available
+    if "intensity" in [f.name for f in cloud.fields]:
+        intensities = point_cloud2.read_points(
+            cloud, field_names=("intensity",), skip_nans=False
         )
-        s = (
-            s
-            + "\n   timeStamp: "
-            + str(self.timeStamp)
-            + "\n   values: "
-            + str(self.values)
-            + "\n}"
-        )
-        return s
+        lidar.intensities = [i[0] for i in intensities]
+
+    # Timestamp (ROS 2 Time -> seconds)
+    lidar.timeStamp = (
+        cloud.header.stamp.sec + (cloud.header.stamp.nanosec * 1e-9)
+    )
+
+    # Validate point cloud
+    lidar.is_dense = all(
+        all(np.isfinite(coord) for coord in point) for point in lidar.points
+    )
+
+    return lidar
 
 
-def lidarScan2LidarData(scan):
-    """
-    Translates from ROS LaserScan to JderobotTypes LidarData.
-    @param scan: ROS LaserScan to translate
-    @type scan: LaserScan
-    @return a LidarData translated from scan
-    """
-    laser = LidarData()
-    print(scan,len(scan.ranges))
-    laser.values = scan.ranges
-    """ 
-          ROS Angle Map      JdeRobot Angle Map
-                0                  PI/2
-                |                   |
-                |                   |
-       PI/2 --------- -PI/2  PI --------- 0
-                |                   |
-                |                   |
-    """
-    laser.minAngle = scan.angle_min + PI / 2
-    laser.maxAngle = scan.angle_max + PI / 2
-    # laser.minVAngle = scan.vertical_angle_min
-    # laser.maxVAngle = scan.vertical_angle_max
-    laser.maxRange = scan.range_max
-    laser.minRange = scan.range_min
-    laser.timeStamp = scan.header.stamp.sec + (scan.header.stamp.nanosec * 1e-9)
-    return laser
-
-
-### HAL INTERFACE ###
 class LidarNode(Node):
     def __init__(self, topic):
-        super().__init__("laser_node")
+        super().__init__("lidar_node")
+        self._lock = Lock()
+        self.last_cloud_ = None
         self.sub = self.create_subscription(
-            sensor_msgs.msg.LaserScan, topic, self.listener_callback, 10
+            sensor_msgs.msg.PointCloud2, topic, self.pointcloud_callback, 10
         )
-        self.last_scan_ = sensor_msgs.msg.LaserScan()
 
-    def listener_callback(self, scan):
-        self.last_scan_ = scan
+    def pointcloud_callback(self, cloud):
+        with self._lock:
+            self.last_cloud_ = cloud
 
     def getLidarData(self):
-        return lidarScan2LidarData(self.last_scan_)
+        with self._lock:
+            return pointCloud2LidarData(self.last_cloud_)
+
+    def get_point_cloud(self):
+        with self._lock:
+            return self.last_cloud_

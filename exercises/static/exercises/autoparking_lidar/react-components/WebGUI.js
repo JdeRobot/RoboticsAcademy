@@ -22,11 +22,13 @@ const WebGUI = () => {
     const updateCallback = (message) => {
       if (message.data.update) {
         const data = message.data.update;
-        var point = JSON.parse(data.lidar);
-        if(point != "")
-        {
-            setPointsToPaint(point);
-        }
+        console.log(data)
+        // var point = JSON.parse(data.lidar);
+        // console.log(point)
+        // if(point != "")
+        // {
+        //     setPointsToPaint(point);
+        // }
       }
       // Send the ACK of the msg
       manager.send("gui", "ack");

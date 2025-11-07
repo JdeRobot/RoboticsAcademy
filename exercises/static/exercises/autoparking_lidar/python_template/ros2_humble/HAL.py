@@ -30,7 +30,7 @@ if not rclpy.ok():
 ### HAL INIT ###
 motor_node = MotorsNode("/prius_autoparking/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/prius_autoparking/odom")
-lidar_node = LidarNode("/prius_autoparking/scan")
+lidar_node = LidarNode("/prius_autoparking/pc2")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
@@ -57,8 +57,10 @@ def getPose3d():
 
 def getLidarData():
     lidar = lidar_node.getLidarData()
-    while lidar.timeStamp == 0.0:
+    timestamp = lidar.timeStamp
+    while timestamp == 0.0:
         lidar = lidar_node.getLidarData()
+        timestamp = lidar.timeStamp
     return lidar
 
 

@@ -1,6 +1,7 @@
 import json
+import math
 
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from HAL import getLidarData
 
@@ -19,9 +20,21 @@ class WebGUI(MeasuringThreadingGUI):
 
     # Prepares and sends a map to the websocket server
     def update_gui(self):
+        pass
 
         # map_message = self.map.get_json_data()
-        self.payload["lidar"] = json.dumps(getLidarData().values)
+        lidar = getLidarData()
+        points = []
+        if lidar:
+            for i in range(len(lidar.points)):
+                is_valid = True
+                for j in range(3):
+                    dist = lidar.points[i][j]
+                    if dist == float("inf") or dist == float("-inf"):
+                        is_valid = False
+                if is_valid:
+                    points.append(lidar.points[i])
+        self.payload["lidar"] = json.dumps(points)
         message = json.dumps(self.payload)
         self.send_to_client(message)
 

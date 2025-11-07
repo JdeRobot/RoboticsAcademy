@@ -278,6 +278,7 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 78	27	console
 79	27	simulator
 80	27	web_gui
+81	27	rviz
 \.
 
 --
