@@ -145,7 +145,12 @@ class Exercise(models.Model):
                 tools_config.update({tool.name: tool.base_config})
 
         proj_univs = self.universes.all()
-        proj_univs = sorted(proj_univs, key=lambda univ: not ExerciseUniverses.objects.get(exercise=self, universe=univ).is_default)
+        proj_univs = sorted(
+            proj_univs,
+            key=lambda univ: not ExerciseUniverses.objects.get(
+                exercise=self, universe=univ
+            ).is_default,
+        )
 
         for universe in proj_univs:
             if (

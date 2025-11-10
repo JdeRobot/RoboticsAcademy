@@ -105,7 +105,12 @@ def get_universes_list(request):
     universes_list = []
 
     proj_univs = project.universes.all()
-    proj_univs = sorted(proj_univs, key=lambda univ: not ExerciseUniverses.objects.get(exercise=project, universe=univ).is_default)
+    proj_univs = sorted(
+        proj_univs,
+        key=lambda univ: not ExerciseUniverses.objects.get(
+            exercise=project, universe=univ
+        ).is_default,
+    )
 
     for universe in proj_univs:
         universes_list.append(universe.name)
