@@ -15,12 +15,14 @@ const WebGUI3D = ({
   toPaint,
   reset,
   setReset,
+  refreshPoints,
 }: {
   id?: string;
   style?: object;
   reset: boolean;
   setReset: (reset: boolean) => void;
   toPaint?: number[][];
+  refreshPoints?: boolean;
 }) => {
   const [points, addPoints] = useState<WebGUIPoint[]>([]);
   const theme = useAcademyTheme();
@@ -37,6 +39,8 @@ const WebGUI3D = ({
       return;
     }
 
+    let new_points = [];
+
     for (let i = 0; i < toPaint.length; i++) {
       const pose: Vector3 = [toPaint[i][0], toPaint[i][1], toPaint[i][2]];
       const color: Color = [
@@ -44,8 +48,13 @@ const WebGUI3D = ({
         toPaint[i][4] / 255,
         toPaint[i][5] / 255,
       ];
-
-      addPoints(points.concat({ pose, color }));
+      new_points.push({ pose, color });
+    }
+    
+    if (refreshPoints) {
+      addPoints(new_points);
+    } else {
+      addPoints(points.concat(new_points));
     }
   }, [toPaint]);
 

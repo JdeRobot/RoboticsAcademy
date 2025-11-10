@@ -22,13 +22,14 @@ const WebGUI = () => {
     const updateCallback = (message) => {
       if (message.data.update) {
         const data = message.data.update;
-        console.log(data)
-        // var point = JSON.parse(data.lidar);
-        // console.log(point)
-        // if(point != "")
-        // {
-        //     setPointsToPaint(point);
-        // }
+        var point = JSON.parse(data.lidar);
+        var pdata = [];
+        if (point != "") {
+          for (let index = 0; index < point.length; index += Math.round(point.length/2000)) {
+            pdata.push(point[index]);
+          }
+          setPointsToPaint(pdata);
+        }
       }
       // Send the ACK of the msg
       manager.send("gui", "ack");
@@ -37,7 +38,7 @@ const WebGUI = () => {
     const stateCallback = (message) => {
       if (message.data.state === states.TOOLS_READY) {
         try {
-          setReset(true)
+          setReset(true);
         } catch (error) {}
       }
     };
@@ -57,6 +58,7 @@ const WebGUI = () => {
         toPaint={pointsToPaint}
         reset={reset}
         setReset={setReset}
+        refreshPoints
         id="canvas"
         style={{ height: "100%", width: "100%" }}
       />

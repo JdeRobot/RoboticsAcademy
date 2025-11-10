@@ -25,6 +25,7 @@ class WebGUI(MeasuringThreadingGUI):
         # map_message = self.map.get_json_data()
         lidar = getLidarData()
         points = []
+        color = (20, 20, 255)
         if lidar:
             for i in range(len(lidar.points)):
                 is_valid = True
@@ -33,7 +34,8 @@ class WebGUI(MeasuringThreadingGUI):
                     if dist == float("inf") or dist == float("-inf"):
                         is_valid = False
                 if is_valid:
-                    points.append(lidar.points[i])
+                    x, y, z = lidar.points[i]
+                    points.append((float(x*10), float((z  + 1.75)*10), float(-y*10)) + color)
         self.payload["lidar"] = json.dumps(points)
         message = json.dumps(self.payload)
         self.send_to_client(message)

@@ -92,7 +92,7 @@ function WebGUI() {
       }
     }
 
-    resizeObserver.observe(document.getElementById("exercise-img"));
+    resizeObserver.observe(document.getElementById("map-img"));
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
