@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
 from .error_handler import error_wrapper
-from .models import Exercise, Universe
+from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -104,7 +104,15 @@ def get_universes_list(request):
     project = Exercise.objects.get(name=project_name)
     universes_list = []
 
-    for universe in project.universes.all():
+    proj_univs = project.universes.all()
+    proj_univs = sorted(
+        proj_univs,
+        key=lambda univ: not ExerciseUniverses.objects.get(
+            exercise=project, universe=univ
+        ).is_default,
+    )
+
+    for universe in proj_univs:
         universes_list.append(universe.name)
 
     return Response({"universes_list": universes_list})

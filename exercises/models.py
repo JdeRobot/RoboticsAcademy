@@ -115,7 +115,7 @@ class Exercise(models.Model):
     tags = models.CharField(max_length=2000, default=[])
     status = models.CharField(max_length=20, choices=StatusChoice, default="ACTIVE")
     universes = models.ManyToManyField(
-        Universe, default=None, db_table='"exercises_universes"'
+        Universe, default=None, through="ExerciseUniverses"
     )
     tools = models.ManyToManyField(Tool, default=None, db_table='"exercises_tools"')
     url = models.CharField(max_length=200, blank=True, default="")
@@ -144,7 +144,15 @@ class Exercise(models.Model):
             if tool.base_config != "None":
                 tools_config.update({tool.name: tool.base_config})
 
-        for universe in self.universes.all():
+        proj_univs = self.universes.all()
+        proj_univs = sorted(
+            proj_univs,
+            key=lambda univ: not ExerciseUniverses.objects.get(
+                exercise=self, universe=univ
+            ).is_default,
+        )
+
+        for universe in proj_univs:
             if (
                 universe.world.ros_version == ros_version
                 and universe.world.name != "None"
@@ -226,3 +234,12 @@ class Exercise(models.Model):
 
     class Meta:
         db_table = '"exercises"'
+
+
+class ExerciseUniverses(models.Model):
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
+    is_default = models.BooleanField()
+
+    class Meta:
+        db_table = '"exercises_universes"'
