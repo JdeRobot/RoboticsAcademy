@@ -26,8 +26,8 @@ function WebGUI(props) {
   const resizeObserver = new ResizeObserver((entries) => {
     var img = entries[0].target; 
     //or however you get a handle to the IMG
-    var width = (1013 / 300) / (1013 /img.clientWidth);
-    var height = (1012 / 150) / (1012 /img.clientHeight);
+    var width = img.clientWidth / 300;
+    var height = img.clientHeight / 150;
 
     if (lastRealPose) {
       setVacuumPose([lastRealPose[1]*height,lastRealPose[0]*width, -lastRealPose[2]]);
@@ -58,8 +58,8 @@ function WebGUI(props) {
       
       // Lógica para manejar el mapa
       var img = canvasRef.current 
-      var width = (1012 / 300) / (1012 /img.clientWidth);
-      var height = (1012 / 150) / (1012 /img.clientHeight);
+      var width = img.clientWidth / 300;
+      var height = img.clientHeight / 150;
 
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
