@@ -193,7 +193,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 43	3	41	True
 44	3	42	True
 45	3	43	True
-46	27	42	True
+46	27	44	True
 \.
 -- 30  16  3
 
