@@ -20,7 +20,7 @@ const WebGUI = () => {
     }
 
     const updateCallback = (message) => {
-      if (message.data.update) {
+      if (message.data.update.lidar) {
         const data = message.data.update;
         var point = JSON.parse(data.lidar);
         var pdata = [];
