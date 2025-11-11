@@ -150,7 +150,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM stdin;
 1	2	1	False
 2	5	1	False
-3	6	2	False
+3	6	2	True
 4	7	31	False
 5	10	4	False
 6	1	5	False
@@ -194,6 +194,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 44	3	42	True
 45	3	43	True
 46	27	44	True
+47	6	11	False
 \.
 -- 30  16  3
 
