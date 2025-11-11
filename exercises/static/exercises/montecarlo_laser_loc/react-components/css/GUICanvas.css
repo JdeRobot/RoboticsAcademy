@@ -11,13 +11,21 @@
 
 #vacuum-pos {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 30px;
+  z-index: 3;
+  /* width: 30px;
+  height: 30px; */
+  border-radius: 100%;
   background-color: rgb(53, 53, 53);
   transition: left 0.1s ease-out, top 0.1s ease-out;
-  opacity: 50%;
   left: 0;
+  opacity: 50%;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
 }
 
 .particle {
@@ -71,11 +79,20 @@
 
 #user-pos {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 30px;
+  z-index: 3;
+  /* width: 30px;
+  height: 30px; */
+  border-radius: 100%;
   background-color: rgb(53, 53, 53);
-  transition: left 0.1s ease-out, top 0.1s ease-out
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+  left: 0;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+  }
 }
 
 #map-img {
@@ -83,57 +100,32 @@
   height: 100%;
 }
 
-.arrow{
-  position:relative;
-  width:30px;
+.arrow {
+  position: relative;
+  width: 30px;
   height: 30px;
-  cursor:pointer;
-/*   border:solid 1px white; */
+  cursor: pointer;
+  /*   border:solid 1px white; */
   transition: left 0.1s ease-out, top 0.1s ease-out;
-  overflow:hidden;
-  z-index: 2;
+  overflow: hidden;
+  z-index: 4;
   margin-left: -15px;
 }
 
-.arrow:after{
-  position:absolute;
-  display:block;
-  content:"";
-  width: 30px;
-  height: 20px;
-/*   border:solid 1px;  */
-  top:-4px;
-  border-bottom:solid 2px;
-  transform:translatex(4px);
-}
-
-.arrow:before{
-  position:absolute;
-  display:block;
-  content:"";
+.arrow:before {
+  position: absolute;
+  display: block;
+  content: "";
+  color: rgb(255, 0, 0);
   width: 8px;
   height: 8px;
-/*   border:solid 1px;  */
-  border-top:solid 2px;
-  border-left:solid 2px;
-  top:50%;
-  left:2px;
-  transform-origin:0% 0%;
-  transform:rotatez(-45deg);
-}
+  /*   border:solid 1px;  */
+  border-top: solid 2px;
+  border-left: solid 2px;
+  top: 50%;
+  transform-origin: 0% 0%;
+  transform: rotatez(-45deg);
 
-.arrow-real:after {
-  color:rgb(255, 0, 0);
-  opacity: 50%;
-}
-
-.arrow-real:before {
-  color:rgb(255, 0, 0);
-  opacity: 50%;
-}
-
-.arrow-user:after {
-  color:rgb(0, 255, 0);
 }
 
 .arrow-user:before {

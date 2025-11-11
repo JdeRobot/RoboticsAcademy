@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef } from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import houseMap from "../resources/images/mapgrannyannie.png";
@@ -8,11 +8,13 @@ import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import "./css/GUICanvas.css";
 
 function WebGUI() {
-  const [vacuumPose, setVacuumPose] = useState(null)
-  const [userPose, setUserPose] = useState(null)
-  const [userParticles, setParticles] = useState([])
+  const [vacuumPose, setVacuumPose] = useState(null);
+  const [userPose, setUserPose] = useState(null);
+  const [userParticles, setParticles] = useState([]);
+  const canvasRef = useRef(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
+  const vacuumSize = 40;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -22,20 +24,28 @@ function WebGUI() {
   var lastUserPose = undefined;
 
   const resizeObserver = new ResizeObserver((entries) => {
-    var img = entries[0].target; 
+    var img = entries[0].target;
     //or however you get a handle to the IMG
-    var width = (1013 / 300) / (1013 /img.clientWidth);
-    var height = (1012 / 150) / (1012 /img.clientHeight);
+    var width = img.clientWidth / 300;
+    var height = img.clientHeight / 150;
 
     if (lastRealPose) {
-      setVacuumPose([lastRealPose[1]*height,lastRealPose[0]*width, -lastRealPose[2]]);
+      setVacuumPose([
+        lastRealPose[1] * height - (vacuumSize * img.clientHeight) / 1012,
+        lastRealPose[0] * width - (vacuumSize * img.clientWidth) / 1012,
+        -lastRealPose[2],
+      ]);
     }
 
     if (lastUserPose) {
-      setUserPose([lastUserPose[1]*height,lastUserPose[0]*width, -lastUserPose[2]]);
+      setUserPose([
+        lastUserPose[1] * height - (vacuumSize * img.clientHeight) / 1012,
+        lastUserPose[0] * width - (vacuumSize * img.clientWidth) / 1012,
+        -lastUserPose[2],
+      ]);
     }
 
-    setParticles([])
+    setParticles([]);
   });
 
   useEffect(() => {
@@ -46,35 +56,56 @@ function WebGUI() {
     const updateCallback = (message) => {
       const updateData = message.data.update;
       // Lógica para manejar el mapa
-      var img = document.getElementById('exercise-img'); 
-      var width = (1012 / 300) / (1012 /img.clientWidth);
-      var height = (1012 / 150) / (1012 /img.clientHeight);
+      var img = canvasRef.current;
+      var width = img.clientWidth / 300;
+      var height = img.clientHeight / 150;
 
       if (updateData.map) {
         const pose = updateData.map.substring(1, updateData.map.length - 1);
-        const content = pose.split(",").map(item => parseFloat(item));
-        const poseUser = updateData.user.substring(1, updateData.user.length - 1);
-        const userContent = poseUser.split(",").map(item => parseFloat(item));
+        const content = pose.split(",").map((item) => parseFloat(item));
+        const poseUser = updateData.user.substring(
+          1,
+          updateData.user.length - 1
+        );
+        const userContent = poseUser.split(",").map((item) => parseFloat(item));
 
         lastRealPose = content;
 
-        setVacuumPose([content[1]*height,content[0]*width, -content[2]]);
-        console.log(userContent)
+        setVacuumPose([
+          content[1] * height - (vacuumSize * img.clientHeight) / 1012,
+          content[0] * width - (vacuumSize * img.clientWidth) / 1012,
+          -content[2],
+        ]);
 
-        if (!(userContent[0] === 0 && userContent[1] === 0 && userContent[2] === 0)) {
+        if (
+          !(
+            userContent[0] === 0 &&
+            userContent[1] === 0 &&
+            userContent[2] === 0
+          )
+        ) {
           lastUserPose = userContent;
-          setUserPose([userContent[1]*height,userContent[0]*width, -userContent[2]]);
+          setUserPose([
+            userContent[1] * height - (vacuumSize * img.clientHeight) / 1012,
+            userContent[0] * width - (vacuumSize * img.clientWidth) / 1012,
+            -userContent[2],
+          ]);
         }
       }
 
-      if (updateData.particles){
+      if (updateData.particles) {
         const particles = JSON.parse(updateData.particles);
-        if(particles != "") {
+        if (particles != "") {
           var new_particles = [];
-          particles.forEach(element => {
-            new_particles.push([element[1]*height, element[0]*width, -element[2], element[3]])
+          particles.forEach((element) => {
+            new_particles.push([
+              element[1] * height,
+              element[0] * width,
+              -element[2],
+              element[3],
+            ]);
           });
-          setParticles(new_particles)
+          setParticles(new_particles);
         }
       }
 
@@ -84,15 +115,18 @@ function WebGUI() {
 
     const stateCallback = (message) => {
       if (message.data.state === "tools_ready") {
-        setVacuumPose(null)
-        setUserPose(null)
-        setParticles([])
+        setVacuumPose(null);
+        setUserPose(null);
+        setParticles([]);
         lastRealPose = undefined;
         lastUserPose = undefined;
       }
-    }
+    };
 
-    resizeObserver.observe(document.getElementById("map-img"));
+    var img = canvasRef.current;
+    if (img) {
+      resizeObserver.observe(img);
+    }
 
     manager.subscribe(events.UPDATE, updateCallback);
     manager.subscribe(events.STATE_CHANGED, stateCallback);
@@ -105,30 +139,75 @@ function WebGUI() {
 
   return (
     <WebGUIContainer>
-      <WebGUIImage id="map-img" src={houseMap} style={{ left: "0", width: "100%" }} />
+      <WebGUIImage
+        reference={canvasRef}
+        id="map-img"
+        src={houseMap}
+        style={{ left: "0", width: "100%" }}
+      />
       <div className="overlay" id="map-container">
-        {vacuumPose &&
-          <div id="vacuum-pos" style={{rotate: "z "+ vacuumPose[2]+"rad", top: vacuumPose[0] -15 , left: vacuumPose[1] -15}}>
-            <img src={Vacuum} id="vacuum-pos"/>
-            <div className="arrow arrow-real"/>
+        {vacuumPose && (
+          <div
+            id="vacuum-pos"
+            style={{
+              rotate: "z " + vacuumPose[2] + "rad",
+              top: vacuumPose[0],
+              height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+              left: vacuumPose[1],
+              width: (vacuumSize * canvasRef.current.clientWidth) / 1012,
+            }}
+          >
+            <img src={Vacuum} />
+            <div
+              className="arrow"
+              style={{
+                height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+                marginLeft:
+                  -((vacuumSize * canvasRef.current.clientWidth) / 1012) / 2,
+              }}
+            />
           </div>
-        }
-        {userPose &&
-          <div id="user-pos" style={{rotate: "z "+ userPose[2]+"rad", top: userPose[0] -15 , left: userPose[1] -15}}>
-            <img src={Vacuum} id="user-pos"/>
-            <div className="arrow arrow-user"/>
+        )}
+        {userPose && (
+          <div
+            id="user-pos"
+            style={{
+              rotate: "z " + vacuumPose[2] + "rad",
+              top: vacuumPose[0],
+              height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+              left: vacuumPose[1],
+              width: (vacuumSize * canvasRef.current.clientWidth) / 1012,
+            }}
+          >
+            <img src={Vacuum} />
+            <div
+              className="arrow arrow-user"
+              style={{
+                height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
+                marginLeft:
+                  -((vacuumSize * canvasRef.current.clientWidth) / 1012) / 2,
+              }}
+            />
           </div>
-        }
-        {userParticles.map(element => {
-            return (
-              <div className="particle" style={{rotate: "z "+ element[2]+"rad", top: element[0] -5, left: element[1] -5, opacity: element[3]}}>
-                <div className="particle-arrow"/>
-              </div>
-          )})
-        }
+        )}
+        {userParticles.map((element) => {
+          return (
+            <div
+              className="particle"
+              style={{
+                rotate: "z " + element[2] + "rad",
+                top: element[0] - 5,
+                left: element[1] - 5,
+                opacity: element[3],
+              }}
+            >
+              <div className="particle-arrow" />
+            </div>
+          );
+        })}
       </div>
     </WebGUIContainer>
   );
 }
 
-export default WebGUI
+export default WebGUI;
