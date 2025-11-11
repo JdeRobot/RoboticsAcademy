@@ -364,11 +364,6 @@ RUN ./install-ompl-ubuntu.sh --github --python
 
 
 
-
-
-
-
-
 ## Symlink clang version to non-versioned clang and set cc to clang
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
@@ -406,20 +401,11 @@ RUN . /opt/ros/humble/setup.sh \
   ############################################################### \
   && git clone --single-branch -b $O3DE_EXTRAS_BRANCH $O3DE_EXTRAS_REPO $O3DE_EXTRAS_ROOT \
   && git -C $O3DE_EXTRAS_ROOT lfs install \
-  && git -C $O3DE_EXTRAS_ROOT lfs pull
-  
-  ############################################################### \
-  # Remove Unnecesary Files \
-  ############################################################### \
-RUN rm -rf $O3DE_EXTRAS_ROOT/Templates/Multiplayer \
-  && rm -rf $O3DE_EXTRAS_ROOT/Projects/OpenXRTest \
-  && rm -rf $O3DE_EXTRAS_ROOT/.github \
-  && rm -rf $O3DE_ROOT/.github 
-  
+  && git -C $O3DE_EXTRAS_ROOT lfs pull \
+  \
   ############################################################### \
   # Get the O3DE python and register the gem paths and projects \
   ############################################################### \
-RUN . /opt/ros/humble/setup.sh \
   && $O3DE_ROOT/python/get_python.sh \
   && $O3DE_ROOT/scripts/o3de.sh register -ep $O3DE_ROOT \
   && $O3DE_ROOT/scripts/o3de.sh register --all-gems-path $O3DE_EXTRAS_ROOT/Gems/ \
@@ -435,33 +421,11 @@ RUN ./o3de/scripts/o3de.sh create-project \
 WORKDIR ${PROJECT_DEMO_ROOT}
 
 RUN . /opt/ros/humble/setup.sh \
-    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_MODULES=ON -DAZ_USE_PHYSX5:BOOL=ON
+    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_MODULES=ON
 
 WORKDIR ${PROJECT_DEMO_ROOT}
 
 RUN . /opt/ros/humble/setup.sh \
-    && cmake --build build/linux --config profile --target ${PROJECT_NAME}.Assets ${PROJECT_NAME}.GameLauncher  
-    
-    
-RUN rm -rf ~/.o3de/3rdParty/ \
-  && rm -rf $O3DE_ROOT/.git \
-  && rm -rf $O3DE_ROOT/AutomatedTesting \
-  && rm -rf $O3DE_ROOT/Editor \
-  && rm -rf $O3DE_ROOT/python/downloaded_packages \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/Azcg/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/CMake \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/CMakeFiles/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/External/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/Testing/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/_deps/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/cmake \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/lib/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/o3de/ \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/packages \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/bin/Debug \
-  && rm -rf $PROJECT_DEMO_ROOT/build/linux/bin/Release \
-  && rm -rf $PROJECT_DEMO_ROOT/Examples \
-  && rm -rf $O3DE_EXTRAS_ROOT/Templates \
-  && rm -rf $O3DE_EXTRAS_ROOT/Projects
+    && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets ${PROJECT_NAME}.GameLauncher  
     
 WORKDIR /
