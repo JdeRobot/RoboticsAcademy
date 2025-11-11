@@ -6,14 +6,15 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo11 | FSM | 
 | Follow Line | ok | ok | ok | ok | Gazebo11 | PID control |
-| Obstacle Avoidance | ok | | | | Gazebo 11 | VFF |
+| Obstacle Avoidance | ok | | | | Gazebo Harmonic | VFF |
 | Global navigation | ok | | | | Gazebo 11 | GPP |
 | Laser Gridmap mapping | ok | | | | Gazebo Harmonic | |
 | MonteCarlo Laser Loc | ok | | | | Gazebo 11 | AMCL |
 | MonteCarlo Visual Loc | ok | | | | Gazebo 11 | AMCL |
 | Marker-based visual Loc | ok | | | | Gazebo Harmonic | PnP | 
 | Localized Vacuum Cleaner | ok | | | | Gazebo 11 | BSA | 
-| Autoparking | ok | | | | Gazebo 11 | | 
+| Autoparking | ok | | | | Gazebo Harmonic | | 
+| Autoparking Lidar | ok | | | | Gazebo Harmonic | | 
 | Amazon Warehouse | ok | | | | Gazebo 11 | | 
 | Follow Person | ok | | | | Gazebo 11 | | 
 | Drone Follow Road | ok | | | | Gazebo Harmonic | |
