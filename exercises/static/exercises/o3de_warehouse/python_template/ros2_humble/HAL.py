@@ -105,7 +105,7 @@ def extract_float(field, output):
     return float(match.group(1)) if match else None
 
 def getLaserData():
-    cmd = ["ros2", "topic", "echo", "/scan", "--once"]
+    cmd = ["ros2", "topic", "echo", "/scan", "--once", "--full-length"]
     output = subprocess.check_output(cmd, text=True)
 
     angle_min = extract_float("angle_min", output)
