@@ -35,6 +35,15 @@ executor.add_node(noisy_odometry_node)
 executor.add_node(laser_node)
 executor.add_node(sim_time_node)
 
+class LaserData:
+    def __init__(self, angle_min, angle_max, angle_increment, ranges, angles):
+        self.angle_min = angle_min
+        self.angle_max = angle_max
+        self.angle_increment = angle_increment
+        self.angles = angles
+        self.values = ranges
+        self.maxRange = max(ranges) if len(ranges) > 0 else 0
+
 def getPose3d():
     """Lee la posición actual del robot usando ros2 topic echo."""
     try:
@@ -129,15 +138,6 @@ def getLaserData():
         angles = [angle_min + i * angle_increment for i in range(len(ranges))]
     else:
         angles = list(range(len(ranges)))
-    
-    class LaserData:
-    def __init__(self, angle_min, angle_max, angle_increment, ranges, angles):
-        self.angle_min = angle_min
-        self.angle_max = angle_max
-        self.angle_increment = angle_increment
-        self.angles = angles
-        self.values = ranges
-        self.maxRange = max(ranges) if len(ranges) > 0 else 0
     
     laser = LaserData(angle_min, angle_max, angle_increment, ranges, angles)
 
