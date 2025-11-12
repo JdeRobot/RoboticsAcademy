@@ -129,17 +129,19 @@ def getLaserData():
         angles = [angle_min + i * angle_increment for i in range(len(ranges))]
     else:
         angles = list(range(len(ranges)))
+    
+    class LaserData:
+    def __init__(self, angle_min, angle_max, angle_increment, ranges, angles):
+        self.angle_min = angle_min
+        self.angle_max = angle_max
+        self.angle_increment = angle_increment
+        self.angles = angles
+        self.values = ranges
+        self.maxRange = max(ranges) if len(ranges) > 0 else 0
+    
+    laser = LaserData(angle_min, angle_max, angle_increment, ranges, angles)
 
-    # Devolver como diccionario limpio
-    scan_data = {
-        "angle_min": angle_min,
-        "angle_max": angle_max,
-        "angle_increment": angle_increment,
-        "ranges": ranges,
-        "angles": angles,
-    }
-
-    return scan_data
+    return laser
     
 def getSimTime():
     return sim_time_node.getSimTime()
@@ -247,4 +249,3 @@ def getLiftState():
     return liftState
     
     
-
