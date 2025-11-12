@@ -210,7 +210,7 @@ class NoisyOdometryNode(Node):
         self.noisy_pose = nav_msgs.msg.Odometry()
 
         ### Control the amount of noise ###
-        self.noise_level = 0.01  # 0.1 = a lot
+        self.noise_level = 0.0001  # 0.1 = a lot
 
     def listener_callback(self, msg):
         # First odom is real

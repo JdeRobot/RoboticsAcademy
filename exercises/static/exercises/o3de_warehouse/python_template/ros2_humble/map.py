@@ -49,30 +49,31 @@ class Map:
 
     def getRobotCoordinates(self):
         pose = self.pose_getter()
-        x = pose.x
-        y = pose.y
+        x = -pose.y
+        y = pose.x
 
-        scale_y = -23.53
-        offset_y = -31.95
+        scale_y = 90
+        offset_y = 10.3
         y = scale_y * (offset_y - y)
 
-        scale_x = -23.58
-        offset_x = -20.36
+        scale_x = 85
+        offset_x = 6.5
         x = scale_x * (offset_x - x)
 
         return x, y, pose.yaw
 
+
     def getRobotCoordinatesWithNoise(self):
         pose = self.noisy_pose_getter()
-        x = pose.x
-        y = pose.y
+        x = -pose.y
+        y = pose.x
 
-        scale_y = -23.53
-        offset_y = -31.95
+        scale_y = 90
+        offset_y = 10.3
         y = scale_y * (offset_y - y)
 
-        scale_x = -23.58
-        offset_x = -20.36
+        scale_x = 85
+        offset_x = 6.5
         x = scale_x * (offset_x - x)
 
         return x, y, pose.yaw

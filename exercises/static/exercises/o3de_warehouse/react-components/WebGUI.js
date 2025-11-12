@@ -122,7 +122,7 @@ function WebGUI(props) {
             setMapImg(smallWarehouse);
             break;
         }*/
-		setMapImg(warehouse);
+	    setMapImg(warehouse);
       }
       valuesUntilValid = 0;
     }

@@ -56,18 +56,29 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["user_map"] = json.dumps(payload_img)
         message = json.dumps(self.payload)
         self.send_to_client(message)
-
-    # Function to set the next image to be sent
+    
+    # Función para actualizar el mapa del usuario
     def setUserMap(self, image):
+        """
+        Convierte la imagen a RGB y la guarda en self.user_map
+        """
         if image.shape[0] != 970 or image.shape[1] != 1500:
             raise ValueError(
-                "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
+                "El mapa debe ser 970x1500 píxeles"
             )
-        processed_image = np.stack((image,) * 3, axis=-1)
+        # Convertir a 3 canales si no tiene
+        if len(image.shape) == 2:
+            processed_image = np.stack((image,) * 3, axis=-1)
+        else:
+            processed_image = image
         with self.image_lock:
             self.user_map = processed_image
 
+    # Convierte coordenadas del robot a coordenadas de mapa
     def poseToMap(self, x_prime, y_prime, yaw_prime):
+        """
+        Convierte coordenadas del robot a coordenadas de la imagen del mapa
+        """
         y = -23.58 * (-20.36 - x_prime)
         x = -23.53 * (-31.95 - y_prime)
         yaw = yaw_prime - math.pi / 2
