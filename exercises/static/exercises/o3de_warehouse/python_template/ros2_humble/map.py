@@ -53,7 +53,7 @@ class Map:
         y = pose.x
 
         scale_y = 90
-        offset_y = 10.3
+        offset_y = 7.5
         y = scale_y * (offset_y - y)
 
         scale_x = 85
