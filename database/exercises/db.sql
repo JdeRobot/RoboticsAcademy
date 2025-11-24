@@ -139,6 +139,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 27	o3de_warehouse	O3DE Warehouse	Control an O3DE robot to organize a warehouse	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
+28	o3de_follow_line	O3DE FollowLine	Control an O3DE robot to follow a line	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises
 \.
 
 --
@@ -189,6 +190,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id) FROM stdin;
 40	25	38
 41	26	39
 42	27	40
+43	28	41
 \.
 -- 30  16  3
 
@@ -277,6 +279,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 78	27	console
 79	27	simulator
 80	27	web_gui
+81	28	console
+82	28	simulator
+83	28	web_gui
 \.
 
 --
