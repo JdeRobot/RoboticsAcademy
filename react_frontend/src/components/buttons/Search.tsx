@@ -11,8 +11,12 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useHomepage } from "Contexts/HomepageContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+
+// SessionStorage keys
+const FILTER_STORAGE_KEY = "ra_home_filters_v1";
+const SEARCH_STORAGE_KEY = "ra_home_search_v1";
 
 // Estilos
 const Search = styled("div")(({ roundness }: { roundness: number }) => ({
@@ -85,12 +89,66 @@ const StyledMenu = styled(Menu)(
   })
 );
 
+// Filter persistance structure
+type FilterState = {
+  tags: boolean;
+  description: boolean;
+  status: boolean;
+};
+
+const DEFAULT_FILTER_STATE: FilterState = {
+  tags: true,
+  description: false,
+  status: false,
+};
+
 // Componente FilterMenu
 const FilterMenu = () => {
   const { appendFilterItem } = useHomepage();
   const theme = useAcademyTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open: boolean = Boolean(anchorEl);
+
+  const [filterState, setFilterState] = useState<FilterState>(
+    DEFAULT_FILTER_STATE
+  );
+
+  // Restore session filter state
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const raw = window.sessionStorage.getItem(FILTER_STORAGE_KEY);
+      if (!raw) return; 
+
+      const parsed = JSON.parse(raw) as Partial<FilterState>;
+      const persisted: FilterState = {
+        tags:
+          typeof parsed.tags === "boolean"
+            ? parsed.tags
+            : DEFAULT_FILTER_STATE.tags,
+        description:
+          typeof parsed.description === "boolean"
+            ? parsed.description
+            : DEFAULT_FILTER_STATE.description,
+        status:
+          typeof parsed.status === "boolean"
+            ? parsed.status
+            : DEFAULT_FILTER_STATE.status,
+      };
+
+      setFilterState(persisted);
+
+      // Sync context with persisted values
+      (["tags", "description", "status"] as const).forEach((key) => {
+        if (persisted[key] !== DEFAULT_FILTER_STATE[key]) {
+          appendFilterItem(key);
+        }
+      });
+    } catch (err) {
+      console.error("Failed to restore filter state", err);
+    }
+  }, [appendFilterItem]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -100,9 +158,33 @@ const FilterMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleFilterList = (e: any) => {
-    const item = e.target.name;
-    appendFilterItem(item);
+  // Toggle and persist filter values
+  const handleFilterCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const name = e.target.name as keyof FilterState;
+
+    setFilterState((prev) => {
+      const updated: FilterState = {
+        ...prev,
+        [name]: !prev[name],
+      };
+
+      if (typeof window !== "undefined") {
+        try {
+          window.sessionStorage.setItem(
+            FILTER_STORAGE_KEY,
+            JSON.stringify(updated)
+          );
+        } catch (err) {
+          console.error("Failed to save filter state", err);
+        }
+      }
+
+      return updated;
+    });
+
+    appendFilterItem(name);
   };
 
   return (
@@ -127,29 +209,36 @@ const FilterMenu = () => {
         checkboxColor={theme.palette.text!}
         roundness={theme.roundness!}
       >
+        {/* Name always active and not persisted */}
         <MenuItem>
           <Checkbox defaultChecked disabled size="small" name="name" />
           Name
         </MenuItem>
         <MenuItem>
           <Checkbox
-            defaultChecked
             size="small"
-            onClick={handleFilterList}
             name="tags"
+            checked={filterState.tags}
+            onChange={handleFilterCheckboxChange}
           />
           Tags
         </MenuItem>
         <MenuItem>
           <Checkbox
             size="small"
-            onClick={handleFilterList}
             name="description"
+            checked={filterState.description}
+            onChange={handleFilterCheckboxChange}
           />
           Description
         </MenuItem>
         <MenuItem>
-          <Checkbox size="small" onClick={handleFilterList} name="status" />
+          <Checkbox
+            size="small"
+            name="status"
+            checked={filterState.status}
+            onChange={handleFilterCheckboxChange}
+          />
           Status
         </MenuItem>
       </StyledMenu>
@@ -162,9 +251,39 @@ const SearchBar = () => {
   const { setSearchBarText } = useHomepage();
   const theme = useAcademyTheme();
 
+  const [searchValue, setSearchValue] = useState<string>("");
+  
+  // Restore session filter state
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    try {
+      const saved = window.sessionStorage.getItem(SEARCH_STORAGE_KEY);
+      if (saved) {
+        setSearchValue(saved);
+
+        setSearchBarText(saved.toLowerCase());
+      }
+    } catch (err) {
+      console.error("Failed to restore search text", err);
+    }
+  }, [setSearchBarText]);
+
+  // Update sessionStorage + context
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const lowerCase = e.target.value.toLowerCase();
+    const value = e.target.value;
+    setSearchValue(value);
+
+    const lowerCase = value.toLowerCase();
     setSearchBarText(lowerCase);
+
+    if (typeof window !== "undefined") {
+      try {
+        window.sessionStorage.setItem(SEARCH_STORAGE_KEY, value);
+      } catch (err) {
+        console.error("Failed to save search text", err);
+      }
+    }
   };
 
   return (
@@ -181,6 +300,7 @@ const SearchBar = () => {
         </SearchIconWrapper>
         <StyledInputBase
           placeholder="Search…"
+          value={searchValue}
           onChange={inputHandler}
           textColor={theme.palette.text!}
           inputProps={{ "aria-label": "search" }}
@@ -192,3 +312,4 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
+
