@@ -39,7 +39,7 @@ if not rclpy.ok():
 
 # ROS2 Topics
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
-odometry_node = OdometryNode("F1ROS/odom")
+odometry_node = OdometryNode("/odom")
 camera_node = CameraNode("/cam_f1_left/image_raw")
 
 # Spin nodes so that subscription callbacks load topic data
