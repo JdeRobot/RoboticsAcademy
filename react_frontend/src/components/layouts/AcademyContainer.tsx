@@ -31,7 +31,7 @@ const AcademyContainer = () => {
 
   if (loading) {
     return (
-      <StyledAcademyContainer bgColor={theme.palette.background}>
+      <StyledAcademyContainer bgColor={theme.palette.bg}>
         <StyledAcademyLoadingMsg>Loading exercises</StyledAcademyLoadingMsg>
       </StyledAcademyContainer>
     );
@@ -54,7 +54,7 @@ const AcademyContainer = () => {
     }) || [];
 
   return (
-    <StyledAcademyContainer bgColor={theme.palette.background}>
+    <StyledAcademyContainer bgColor={theme.palette.bg}>
       <StyledExerciseList>
         {filteredData.map((exercise) => (
           <ExerciseCard

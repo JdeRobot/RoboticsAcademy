@@ -1,7 +1,9 @@
 import json
 import math
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from HAL import getLidarData
 
@@ -35,7 +37,9 @@ class WebGUI(MeasuringThreadingGUI):
                         is_valid = False
                 if is_valid:
                     x, y, z = lidar.points[i]
-                    points.append((float(x*10), float((z  + 1.75)*10), float(-y*10)) + color)
+                    points.append(
+                        (float(x * 10), float((z + 1.75) * 10), float(-y * 10)) + color
+                    )
         self.payload["lidar"] = json.dumps(points)
         message = json.dumps(self.payload)
         self.send_to_client(message)

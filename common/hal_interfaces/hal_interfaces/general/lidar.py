@@ -46,9 +46,7 @@ def pointCloud2LidarData(cloud):
         lidar.intensities = [i[0] for i in intensities]
 
     # Timestamp (ROS 2 Time -> seconds)
-    lidar.timeStamp = (
-        cloud.header.stamp.sec + (cloud.header.stamp.nanosec * 1e-9)
-    )
+    lidar.timeStamp = cloud.header.stamp.sec + (cloud.header.stamp.nanosec * 1e-9)
 
     # Validate point cloud
     lidar.is_dense = all(
