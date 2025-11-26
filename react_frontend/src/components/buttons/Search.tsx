@@ -13,6 +13,7 @@ import {
 import { useHomepage } from "Contexts/HomepageContext";
 import { useState, useEffect } from "react";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { Filters } from "src/types/exercises";
 
 // SessionStorage keys
 const FILTER_STORAGE_KEY = "ra_home_filters_v1";
@@ -89,7 +90,7 @@ const StyledMenu = styled(Menu)(
   })
 );
 
-// Filter persistance structure
+// Filter persistence structure
 type FilterState = {
   tags: boolean;
   description: boolean;
@@ -102,16 +103,22 @@ const DEFAULT_FILTER_STATE: FilterState = {
   status: false,
 };
 
-// Componente FilterMenu
+const filtersFromState = (state: FilterState): Filters[] => {
+  const list: Filters[] = ["name"]; // name is always active
+  if (state.tags) list.push("tags");
+  if (state.description) list.push("description");
+  if (state.status) list.push("status");
+  return list;
+};
+
 const FilterMenu = () => {
-  const { appendFilterItem } = useHomepage();
+  const { appendFilterItem, setFilterItemsList } = useHomepage();
   const theme = useAcademyTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open: boolean = Boolean(anchorEl);
 
-  const [filterState, setFilterState] = useState<FilterState>(
-    DEFAULT_FILTER_STATE
-  );
+  const [filterState, setFilterState] =
+    useState<FilterState>(DEFAULT_FILTER_STATE);
 
   // Restore session filter state
   useEffect(() => {
@@ -119,7 +126,7 @@ const FilterMenu = () => {
 
     try {
       const raw = window.sessionStorage.getItem(FILTER_STORAGE_KEY);
-      if (!raw) return; 
+      if (!raw) return;
 
       const parsed = JSON.parse(raw) as Partial<FilterState>;
       const persisted: FilterState = {
@@ -138,17 +145,11 @@ const FilterMenu = () => {
       };
 
       setFilterState(persisted);
-
-      // Sync context with persisted values
-      (["tags", "description", "status"] as const).forEach((key) => {
-        if (persisted[key] !== DEFAULT_FILTER_STATE[key]) {
-          appendFilterItem(key);
-        }
-      });
+      setFilterItemsList(filtersFromState(persisted));
     } catch (err) {
       console.error("Failed to restore filter state", err);
     }
-  }, [appendFilterItem]);
+  }, [setFilterItemsList]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -170,21 +171,19 @@ const FilterMenu = () => {
         [name]: !prev[name],
       };
 
-      if (typeof window !== "undefined") {
-        try {
-          window.sessionStorage.setItem(
-            FILTER_STORAGE_KEY,
-            JSON.stringify(updated)
-          );
-        } catch (err) {
-          console.error("Failed to save filter state", err);
-        }
+      try {
+        window.sessionStorage.setItem(
+          FILTER_STORAGE_KEY,
+          JSON.stringify(updated)
+        );
+      } catch (err) {
+        console.error("Failed to save filter state", err);
       }
 
       return updated;
     });
 
-    appendFilterItem(name);
+    appendFilterItem(name as Filters);
   };
 
   return (
@@ -246,14 +245,13 @@ const FilterMenu = () => {
   );
 };
 
-// Componente principal SearchBar
 const SearchBar = () => {
   const { setSearchBarText } = useHomepage();
   const theme = useAcademyTheme();
 
   const [searchValue, setSearchValue] = useState<string>("");
-  
-  // Restore session filter state
+
+  // Restore session search text
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -261,7 +259,6 @@ const SearchBar = () => {
       const saved = window.sessionStorage.getItem(SEARCH_STORAGE_KEY);
       if (saved) {
         setSearchValue(saved);
-
         setSearchBarText(saved.toLowerCase());
       }
     } catch (err) {
@@ -277,12 +274,10 @@ const SearchBar = () => {
     const lowerCase = value.toLowerCase();
     setSearchBarText(lowerCase);
 
-    if (typeof window !== "undefined") {
-      try {
-        window.sessionStorage.setItem(SEARCH_STORAGE_KEY, value);
-      } catch (err) {
-        console.error("Failed to save search text", err);
-      }
+    try {
+      window.sessionStorage.setItem(SEARCH_STORAGE_KEY, value);
+    } catch (err) {
+      console.error("Failed to save search text", err);
     }
   };
 
