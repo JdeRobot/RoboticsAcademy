@@ -50,7 +50,7 @@ const WebGUI3D = ({
       ];
       new_points.push({ pose, color });
     }
-    
+
     if (refreshPoints) {
       addPoints(new_points);
     } else {

@@ -15,7 +15,7 @@ const LanguageButton = ({
 }) => {
   const theme = useAcademyTheme();
 
-  console.log(loading)
+  console.log(loading);
 
   const switchLanguage = () => {
     setter(language === "python" ? "cpp" : "python");
