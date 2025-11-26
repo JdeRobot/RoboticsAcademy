@@ -7,17 +7,15 @@ export interface HomepageContextType {
   setSearchBarText: (text: string) => void;
   appendFilterItem: (item: Filters) => void;
   getFilterItemsList: () => Filters[];
+  setFilterItemsList: (items: Filters[]) => void;
 }
 
 const HomepageContext = createContext<HomepageContextType>({
-  getSearchBarText: () => {
-    return "";
-  },
+  getSearchBarText: () => "",
   setSearchBarText: () => {},
   appendFilterItem: () => {},
-  getFilterItemsList: () => {
-    return [];
-  },
+  getFilterItemsList: () => [],
+  setFilterItemsList: () => {},
 });
 
 export const useHomepage = () => useContext(HomepageContext);
@@ -34,12 +32,12 @@ export function HomepageProvider({ children }: { children?: ReactNode }) {
   const setSearchBarText = (text: string) => {
     setInputText(text);
   };
+
   const getFilterItemsList = () => filterItemsList;
+
   const appendFilterItem = (item: Filters) => {
-    setFilterItemsList(
-      filterItemsList.includes(item)
-        ? filterItemsList.filter((i) => i !== item)
-        : [...filterItemsList, item]
+    setFilterItemsList((prev) =>
+      prev.includes(item) ? prev.filter((i) => i !== item) : [...prev, item]
     );
   };
 
@@ -50,6 +48,7 @@ export function HomepageProvider({ children }: { children?: ReactNode }) {
         setSearchBarText,
         appendFilterItem,
         getFilterItemsList,
+        setFilterItemsList,
       }}
     >
       {children}
@@ -58,3 +57,4 @@ export function HomepageProvider({ children }: { children?: ReactNode }) {
 }
 
 export default HomepageContext;
+
