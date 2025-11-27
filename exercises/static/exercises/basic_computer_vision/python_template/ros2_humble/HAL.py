@@ -24,14 +24,14 @@ class WebcamPublisher(Node):
     def publish_image(self, cv_image):
         """
         Publish a CV image to the ROS2 topic
-        
+
         Args:
             cv_image: OpenCV image (numpy array) in BGR format
         """
         if cv_image is None:
             self.get_logger().warn("Attempted to publish None image, skipping")
             return
-        
+
         try:
             # Validate image has correct shape
             if len(cv_image.shape) != 3 or cv_image.shape[2] != 3:
@@ -39,11 +39,11 @@ class WebcamPublisher(Node):
                     f"Invalid image shape: {cv_image.shape}. Expected (H, W, 3)"
                 )
                 return
-            
+
             # Convert OpenCV image to ROS2 Image message
             ros_image = self.bridge.cv2_to_imgmsg(cv_image, encoding="bgr8")
             self.publisher.publish(ros_image)
-            
+
         except CvBridgeError as e:
             self.get_logger().error(f"CvBridge conversion error: {e}")
         except Exception as e:
@@ -85,17 +85,19 @@ webcam_publisher = WebcamPublisher()
 # Setup executor and start background spin thread
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(webcam_publisher)
-executor_thread = threading.Thread(target=__auto_spin, daemon=True, name="hal_spin_thread")
+executor_thread = threading.Thread(
+    target=__auto_spin, daemon=True, name="hal_spin_thread"
+)
 executor_thread.start()
 
 
 def publish_webcam_image(cv_image):
     """
     Publish webcam image to ROS2 topic
-    
+
     This function is called by WebGUI when receiving webcam frames from the browser.
     The image is published to /webcam/image_raw for ROS2 users to subscribe to.
-    
+
     Args:
         cv_image: OpenCV image (numpy array) in BGR format
     """

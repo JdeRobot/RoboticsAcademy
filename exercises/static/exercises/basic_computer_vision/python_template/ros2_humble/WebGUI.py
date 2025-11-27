@@ -22,12 +22,12 @@ import HAL
 class WebGUI(MeasuringThreadingGUI):
     """
     WebGUI class that bridges browser frontend with Python/ROS2 backends
-    
+
     Supports two modes:
     1. Python mode: getImage() and showImage() functions
     2. ROS2 mode: /webcam/image_raw (input) and /webgui_image (output) topics
     """
-    
+
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
@@ -54,7 +54,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.executor = None
         self.executor_thread = None
         self.auto_image_thread = None
-        
+
         self._setup_auto_mode()
 
         # Start ROS2 executor and image display thread if subscriber created
@@ -71,7 +71,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.camera_node = CameraNode("/webgui_image")
             self.auto_image_mode = True
             print("ROS2 mode enabled: Subscribed to /webgui_image")
-            
+
         except Exception as e:
             # If subscription fails, fall back to manual mode
             print(f"ROS2 mode disabled: Could not subscribe to /webgui_image: {e}")
@@ -85,9 +85,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.executor = rclpy.executors.MultiThreadedExecutor()
             self.executor.add_node(self.camera_node)
             self.executor_thread = threading.Thread(
-                target=self.executor.spin,
-                daemon=True,
-                name="webgui_ros2_executor"
+                target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
             )
             self.executor_thread.start()
 
@@ -95,10 +93,10 @@ class WebGUI(MeasuringThreadingGUI):
             self.auto_image_thread = threading.Thread(
                 target=self._unified_image_loop,
                 daemon=True,
-                name="webgui_image_display"
+                name="webgui_image_display",
             )
             self.auto_image_thread.start()
-            
+
         except Exception as e:
             print(f"Error starting ROS2 threads: {e}", file=sys.stderr)
 
@@ -112,7 +110,7 @@ class WebGUI(MeasuringThreadingGUI):
                         self.showImage(image.data)
 
                 threading.Event().wait(0.033)  # ~30 FPS
-                
+
             except Exception as e:
                 print(f"Error in image display loop: {e}", file=sys.stderr)
                 threading.Event().wait(1.0)
@@ -120,7 +118,7 @@ class WebGUI(MeasuringThreadingGUI):
     def gui_in_thread(self, ws, message):
         """
         Process incoming messages from the GUI frontend
-        
+
         Handles:
         - 'ack': Acknowledgment messages
         - 'pick': Webcam image frames from browser
@@ -137,7 +135,7 @@ class WebGUI(MeasuringThreadingGUI):
             self._handle_webcam_frame(message, TIME_FRAME_SIZE)
 
         if "introspection" in message:
-            info = message[len("introspection:"):]
+            info = message[len("introspection:") :]
             try:
                 self.fps, self.lat = info.split("/")
             except ValueError:
@@ -146,7 +144,7 @@ class WebGUI(MeasuringThreadingGUI):
     def _handle_webcam_frame(self, message, time_frame_size):
         """
         Handle incoming webcam frame from browser
-        
+
         Args:
             message: WebSocket message containing base64-encoded image
             time_frame_size: Size of timestamp suffix
@@ -160,7 +158,7 @@ class WebGUI(MeasuringThreadingGUI):
 
             # Remove data URL prefix if present
             if base64_buffer.startswith("data:image/jpeg;base64,"):
-                base64_buffer = base64_buffer[len("data:image/jpeg;base64,"):]
+                base64_buffer = base64_buffer[len("data:image/jpeg;base64,") :]
 
             # Decode base64 to bytes
             image_data = base64.b64decode(base64_buffer)
@@ -178,14 +176,14 @@ class WebGUI(MeasuringThreadingGUI):
             # Store for Python getImage() and publish to ROS2
             with self.frame_rgb_lock:
                 self.frame_rgb = img
-                
+
             # Publish to ROS2 topic for ROS2 users
             HAL.publish_webcam_image(img)
-            
+
             # Send acknowledgment
             ack_message = {"ack_img": "ack", "time": timestamp}
             self.send_to_client(json.dumps(ack_message))
-            
+
         except Exception as e:
             print(f"Error handling webcam frame: {e}", file=sys.stderr)
 
@@ -205,7 +203,7 @@ class WebGUI(MeasuringThreadingGUI):
     def payloadImage(self):
         """
         Prepare image payload for transmission to browser
-        
+
         Returns:
             dict: Payload containing base64-encoded image and shape
         """
@@ -224,11 +222,11 @@ class WebGUI(MeasuringThreadingGUI):
             # Always encode and send the current image (prevents flickering)
             shape = image_to_be_shown.shape
             success, frame = cv2.imencode(".JPEG", image_to_be_shown)
-            
+
             if not success:
                 print("Warning: Failed to encode image as JPEG", file=sys.stderr)
                 return payload
-            
+
             encoded_image = base64.b64encode(frame)
             payload["image"] = encoded_image.decode("utf-8")
             payload["shape"] = shape
@@ -237,7 +235,7 @@ class WebGUI(MeasuringThreadingGUI):
             if image_to_be_shown_updated:
                 with self.image_show_lock:
                     self.image_to_be_shown_updated = False
-                    
+
         except Exception as e:
             print(f"Error encoding image payload: {e}", file=sys.stderr)
 
@@ -246,14 +244,14 @@ class WebGUI(MeasuringThreadingGUI):
     def showImage(self, image):
         """
         Display an image in the GUI (Python mode)
-        
+
         Args:
             image: OpenCV image (numpy array) to display
         """
         if image is None:
             print("Warning: Attempted to show None image", file=sys.stderr)
             return
-            
+
         with self.image_show_lock:
             self.image_to_be_shown = image
             self.image_to_be_shown_updated = True
@@ -261,7 +259,7 @@ class WebGUI(MeasuringThreadingGUI):
     def getImage(self):
         """
         Get the latest webcam image (Python mode)
-        
+
         Returns:
             OpenCV image (numpy array) or None if no image available
         """
@@ -281,7 +279,7 @@ start_console()
 def showImage(image):
     """
     Display an image in the GUI
-    
+
     Args:
         image: OpenCV image (numpy array) to display
     """
@@ -294,7 +292,7 @@ def showImage(image):
 def getImage():
     """
     Get the latest webcam image
-    
+
     Returns:
         OpenCV image (numpy array) or None if no image available
     """
