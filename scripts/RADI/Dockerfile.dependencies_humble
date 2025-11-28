@@ -107,7 +107,7 @@ RUN git clone -b v1.4.0 https://github.com/novnc/noVNC.git
 RUN cd /noVNC/utils && git clone -b v0.11.0 https://github.com/novnc/websockify.git
 
 # VirtualGL and TurboVNC
-COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
+COPY ./scripts/RADI/gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./scripts/RADI/gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./scripts/RADI/gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
     libxtst6:i386 \
@@ -136,9 +136,12 @@ RUN apt-get update && \
 ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Install postgreSQL-18
-#RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
-#  && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null \
-#  && apt update -y && apt install postgresql-18 -y
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      wget gnupg lsb-release ca-certificates \
+  && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update && apt-get install -y --no-install-recommends postgresql-18 \
+  && rm -rf /var/lib/apt/lists/*
 
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
@@ -177,7 +180,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 
 ## Aerostack2
 WORKDIR /root/
-
+# Optionally build Aerostack2 (disabled by default to keep dependency image small).
+ARG BUILD_AEROSTACK=false
+# Optionally run workspace builds (disabled by default to keep this image lightweight).
+ARG RUN_BUILD_WS=false
 RUN apt-get update && \
     apt-get install apt-utils -y \
         software-properties-common \
@@ -203,97 +209,46 @@ RUN apt-get update && \
         gnupg \
     && rm -rf /var/lib/apt/lists/* 
 
-RUN pip3 install \
-        pylint \
-        flake8==4.0.1 \
-        pycodestyle==2.8 \
-        cmakelint \
-        cpplint \
-        transforms3d \
-        colcon-lcov-result \
-        PySimpleGUI-4-foss
+RUN set -eux; \
+    PACKAGES="pylint flake8==4.0.1 pycodestyle==2.8 cmakelint cpplint transforms3d colcon-lcov-result PySimpleGUI-4-foss"; \
+    for i in 1 2 3 4 5; do \
+      pip3 install --no-cache-dir $PACKAGES && break || { echo "pip install failed, retrying ($i/5)"; sleep $((i*5)); }; \
+    done
 
 RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
 RUN colcon mixin update default
 RUN rm -rf log 
 # remove log folder
-RUN mkdir -p /home/drones_ws/src/
-WORKDIR /home/drones_ws/src/
-RUN git clone https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
-RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
-RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
-RUN touch aerostack2/as2_map_server/COLCON_IGNORE
-RUN touch aerostack2/as2_behaviors/as2_behaviors_path_planning/COLCON_IGNORE
-RUN touch aerostack2/as2_utilities/as2_geozones/COLCON_IGNORE
-RUN touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLCON_IGNORE
-
-WORKDIR /home/drones_ws/
-
-RUN apt-get update && \
-    apt-get install -y \
-        libbenchmark-dev \
-        libeigen3-dev \
-        libgeographic-dev \
-        libncurses-dev \
-        libyaml-cpp-dev \
-        pybind11-dev \
-        python3-jinja2 \
-        python3-pydantic \
-        python3-pymap3d \
-        python3-pytest \
-        ros-humble-action-msgs \
-        ros-humble-ament-cmake \
-        ros-humble-ament-cmake-gtest \
-        ros-humble-ament-cmake-lint-cmake \
-        ros-humble-ament-cmake-pytest \
-        ros-humble-ament-cmake-python \
-        ros-humble-ament-cmake-xmllint \
-        ros-humble-ament-copyright \
-        ros-humble-ament-flake8 \
-        ros-humble-ament-index-cpp \
-        ros-humble-ament-lint-auto \
-        ros-humble-ament-lint-common \
-        ros-humble-ament-pep257 \
-        ros-humble-backward-ros \
-        ros-humble-builtin-interfaces \
-        ros-humble-cv-bridge \
-        ros-humble-geographic-msgs \
-        ros-humble-geometry-msgs \
-        ros-humble-image-transport \
-        ros-humble-mocap4r2-msgs \
-        ros-humble-nav-msgs \
-        ros-humble-pluginlib \
-        ros-humble-rclcpp \
-        ros-humble-rclcpp-action \
-        ros-humble-rclcpp-components \
-        ros-humble-rclcpp-lifecycle \
-        ros-humble-rclpy \
-        ros-humble-robot-state-publisher \
-        ros-humble-rosidl-default-generators \
-        ros-humble-rosidl-default-runtime \
-        ros-humble-rviz2 \
-        ros-humble-sdformat-urdf \
-        ros-humble-sensor-msgs \
-        ros-humble-std-msgs \
-        ros-humble-std-srvs \
-        ros-humble-tf2 \
-        ros-humble-tf2-geometry-msgs \
-        ros-humble-tf2-msgs \
-        ros-humble-tf2-ros \
-        ros-humble-trajectory-msgs \
-        ros-humble-visualization-msgs \
-        ros-humble-moveit \
-        ros-humble-ros2-control \
-        ros-humble-ros2-controllers \
-        ros-humble-gripper-controllers \
-        ros-humble-rmw-cyclonedds-cpp \
-        ros-humble-ur \
-        ros-humble-ros-testing \
-        libpoco-dev \
-      && rm -rf /var/lib/apt/lists/*
-
-RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+RUN if [ "${BUILD_AEROSTACK}" = "true" ]; then \
+      mkdir -p /home/drones_ws/src/ && \
+      WORKDIR_SAVE=$(pwd) && cd /home/drones_ws/src/ && \
+      git clone https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix && \
+      touch aerostack2/as2_hardware_drivers/COLCON_IGNORE && \
+      touch aerostack2/as2_behavior_tree/COLCON_IGNORE && \
+      touch aerostack2/as2_map_server/COLCON_IGNORE && \
+      touch aerostack2/as2_behaviors/as2_behaviors_path_planning/COLCON_IGNORE && \
+      touch aerostack2/as2_utilities/as2_geozones/COLCON_IGNORE && \
+      touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLCON_IGNORE && \
+      cd /home/drones_ws/ && \
+      apt-get update && apt-get install -y \
+        libbenchmark-dev libeigen3-dev libgeographic-dev libncurses-dev libyaml-cpp-dev pybind11-dev \
+        python3-jinja2 python3-pydantic python3-pymap3d python3-pytest ros-humble-action-msgs ros-humble-ament-cmake \
+        ros-humble-ament-cmake-gtest ros-humble-ament-cmake-lint-cmake ros-humble-ament-cmake-pytest ros-humble-ament-cmake-python \
+        ros-humble-ament-cmake-xmllint ros-humble-ament-copyright ros-humble-ament-flake8 ros-humble-ament-index-cpp \
+        ros-humble-ament-lint-auto ros-humble-ament-lint-common ros-humble-ament-pep257 ros-humble-backward-ros \
+        ros-humble-builtin-interfaces ros-humble-cv-bridge ros-humble-geographic-msgs ros-humble-geometry-msgs \
+        ros-humble-image-transport ros-humble-mocap4r2-msgs ros-humble-nav-msgs ros-humble-pluginlib ros-humble-rclcpp \
+        ros-humble-rclcpp-action ros-humble-rclcpp-components ros-humble-rclcpp-lifecycle ros-humble-rclpy \
+        ros-humble-robot-state-publisher ros-humble-rosidl-default-generators ros-humble-rosidl-default-runtime \
+        ros-humble-rviz2 ros-humble-sdformat-urdf ros-humble-sensor-msgs ros-humble-std-msgs ros-humble-std-srvs \
+        ros-humble-tf2 ros-humble-tf2-geometry-msgs ros-humble-tf2-msgs ros-humble-tf2-ros ros-humble-trajectory-msgs \
+        ros-humble-visualization-msgs ros-humble-moveit ros-humble-ros2-control ros-humble-ros2-controllers \
+        ros-humble-gripper-controllers ros-humble-rmw-cyclonedds-cpp ros-humble-ur ros-humble-ros-testing libpoco-dev && \
+      rm -rf /var/lib/apt/lists/* && \
+      . /opt/ros/$ROS_DISTRO/setup.sh && colcon build --parallel-workers 1 --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release; \
+    else \
+      echo "Skipping Aerostack2 clone/build (BUILD_AEROSTACK not true)"; \
+    fi
 
 # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
@@ -302,7 +257,11 @@ RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
 RUN mkdir -p /home/dev_ws/src/
 WORKDIR /home/dev_ws/src/
 RUN git clone https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
-RUN sudo cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h
+RUN if [ -f /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h ] && [ -d /opt/ros/humble/include/moveit/move_group_interface ]; then \
+      cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h; \
+    else \
+      echo "Skipping move_group_interface_improved.h copy: source or destination missing"; \
+    fi
 WORKDIR /home/dev_ws
 
 # --- PCL & ROS PCL deps (before colcon) ---
@@ -316,13 +275,22 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 # (Optional but recommended) install missing deps via rosdep
-RUN . /opt/ros/humble/setup.sh && \
-    rosdep update && \
-    rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
+ARG RUN_ROSDEPS=false
+RUN if [ "${RUN_ROSDEPS}" = "true" ]; then \
+      . /opt/ros/humble/setup.sh && \
+      rosdep update && \
+      rosdep install --from-paths src --ignore-src -r -y --rosdistro humble; \
+    else \
+      echo "Skipping rosdep install (RUN_ROSDEPS not true)"; \
+    fi
 
 # Build (drop the duplicate)
 WORKDIR /home/dev_ws
-RUN . /opt/ros/humble/setup.sh && colcon build && colcon build
+RUN if [ "${RUN_BUILD_WS}" = "true" ]; then \
+      . /opt/ros/humble/setup.sh && colcon build --parallel-workers 1 && colcon build --parallel-workers 1; \
+    else \
+      echo "Skipping dev_ws colcon builds (RUN_BUILD_WS not true)"; \
+    fi
 RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
@@ -333,7 +301,7 @@ RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> ~/.bashrc
 RUN echo "source /home/drones_ws/install/setup.bash" >> ~/.bashrc
 
 # Download and install OMPL library
-COPY install-ompl-ubuntu.sh /
+COPY ./scripts/RADI/install-ompl-ubuntu.sh /
 WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
