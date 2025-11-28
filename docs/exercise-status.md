@@ -4,15 +4,15 @@
 
 | Exercise ID | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Simulator | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo11 | FSM | 
+| Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo Harmonic | FSM | 
 | Follow Line | ok | ok | ok | ok | Gazebo11 | PID control |
 | Obstacle Avoidance | ok | | | | Gazebo Harmonic | VFF |
 | Global navigation | ok | | | | Gazebo 11 | GPP |
 | Laser Gridmap mapping | ok | | | | Gazebo Harmonic | |
-| MonteCarlo Laser Loc | ok | | | | Gazebo 11 | AMCL |
+| MonteCarlo Laser Loc | ok | | | | Gazebo Harmonic | AMCL |
 | MonteCarlo Visual Loc | ok | | | | Gazebo 11 | AMCL |
 | Marker-based visual Loc | ok | | | | Gazebo Harmonic | PnP | 
-| Localized Vacuum Cleaner | ok | | | | Gazebo 11 | BSA | 
+| Localized Vacuum Cleaner | ok | | | | Gazebo Harmonic | BSA | 
 | Autoparking | ok | | | | Gazebo Harmonic | | 
 | Autoparking Lidar | ok | | | | Gazebo Harmonic | | 
 | Amazon Warehouse | ok | | | | Gazebo 11 | | 
