@@ -48,7 +48,7 @@ feature_row:
     alt: "Digit Classifier"
     title: "Digit Classifier"
     excerpt: "Classify digits in real time using your own deep learning model."
-    url: "/exercises/ComputerVision/dl_digit_classifier"
+    url: "/exercises/ComputerVision/digit_classification"
     status: "prototype"
     order: 0;
     version: "v3.2"
