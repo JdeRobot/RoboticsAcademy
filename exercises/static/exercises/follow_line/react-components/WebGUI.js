@@ -12,6 +12,7 @@ import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
 import montrealCircuit from "../resources/images/montreal_circuit.png";
 import ngbCircuit from "../resources/images/ngb_circuit.png";
+import monacoCircuit from "../resources/images/monaco_circuit.png"
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
@@ -51,6 +52,10 @@ const WebGUI = () => {
         circuitName = "ngb";
         setCircuitImg(ngbCircuit);
         break;
+      case "Monaco Circuit":
+        circuitName = "monaco";
+        setCircuitImg(monacoCircuit);
+        break;
       case "Simple Ackermann Circuit":
         circuitName = "default ack";
         setCircuitImg(defaultCircuit);
@@ -66,6 +71,10 @@ const WebGUI = () => {
       case "Nurburgring Ackermann Circuit":
         circuitName = "ngb ack";
         setCircuitImg(ngbCircuit);
+        break;
+      case "Monaco Ackermann Circuit":
+        circuitName = "monaco ack";
+        setCircuitImg(monacoCircuit);
         break;
     }
   };
