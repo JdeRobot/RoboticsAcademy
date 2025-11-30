@@ -9,7 +9,7 @@ export const getCarPose = (circuit, position) => {
   
   if (ackUniverse) {
     circuit = circuit.replace(" ack","")
-    ackMultiplier = 5
+    ackMultiplier = 1
   }
 
   switch (circuit) {
@@ -17,12 +17,23 @@ export const getCarPose = (circuit, position) => {
       scaleY = 1.25; offsetY = 77
 			scaleX = -2.6; offsetX = 151
       break;
+    case "default ack":
+      scaleY = 1.25; offsetY = 77
+			scaleX = -2.6; offsetX = 151
+      break;
     case "montmelo":
       scaleY = 2.1; offsetY = 77
 			scaleX = -1.3; offsetX = 151
       break;
+    case "montmelo ack":
+      scaleY = 2.1; offsetY = 77
+			scaleX = -1.3; offsetX = 151
+      break;
     case "montreal":
-			// scaleY = 0.6; offsetY = 76
+      scaleY = 0.685; offsetY = 77
+			scaleX = -0.48; offsetX = 151
+      break;
+    case "montreal ack":
       scaleY = 0.685; offsetY = 77
 			scaleX = -0.48; offsetX = 151
       break;
@@ -30,7 +41,15 @@ export const getCarPose = (circuit, position) => {
       scaleY = 1.5; offsetY = 77
 			scaleX = -1.495; offsetX = 151
       break;
+    case "ngb ack":
+      scaleY = 1.5; offsetY = 77
+			scaleX = -1.495; offsetX = 151
+      break;
     case "monaco":
+      scaleY = 1.25; offsetY = 77
+			scaleX = -2.6; offsetX = 151
+      break;
+    case "monaco ack":
       scaleY = 1.25; offsetY = 77
 			scaleX = -2.6; offsetX = 151
       break;
