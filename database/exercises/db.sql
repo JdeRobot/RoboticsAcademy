@@ -160,7 +160,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 10	3	9	False
 11	11	1	True
 12	8	10	False
-13	9	12	False
+13	9	12	True
 14	3	13	False
 15	3	14	False
 16	3	15	False
@@ -198,6 +198,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 48	2	45	False
 49	5	45	False
 50	11	45	False
+51	9	46	False
 \.
 -- 30  16  3
 
