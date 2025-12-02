@@ -136,9 +136,12 @@ RUN apt-get update && \
 ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Install postgreSQL-18
-#RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
-#  && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/pgdg.asc &>/dev/null \
-#  && apt update -y && apt install postgresql-18 -y
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      wget gnupg lsb-release ca-certificates \
+  && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update && apt-get install -y --no-install-recommends postgresql-18 \
+  && rm -rf /var/lib/apt/lists/*
 
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
