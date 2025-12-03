@@ -69,7 +69,11 @@ const PlayPauseButton = ({
   }, [exerciseContext]);
 
   useEffect(() => {
-    if (state === states.RUNNING || state === states.PAUSED || state === states.TOOLS_READY) {
+    if (
+      state === states.RUNNING ||
+      state === states.PAUSED ||
+      state === states.TOOLS_READY
+    ) {
       setLoading(false);
     }
   }, [state]);

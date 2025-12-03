@@ -4,23 +4,24 @@
 
 | Exercise ID | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Simulator | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo11 | FSM | 
+| Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo Harmonic + Classic | FSM | 
 | Follow Line | ok | ok | ok | ok | Gazebo11 | PID control |
-| Obstacle Avoidance | ok | | | | Gazebo 11 | VFF |
-| Global navigation | ok | | | | Gazebo 11 | GPP |
+| Obstacle Avoidance | ok | | | | Gazebo Harmonic + Classic  | VFF |
+| Global navigation | ok | | | | Gazebo Harmonic + Classic | GPP |
 | Laser Gridmap mapping | ok | | | | Gazebo Harmonic | |
-| MonteCarlo Laser Loc | ok | | | | Gazebo 11 | AMCL |
+| MonteCarlo Laser Loc | ok | | | | Gazebo Harmonic + Classic  | AMCL |
 | MonteCarlo Visual Loc | ok | | | | Gazebo 11 | AMCL |
 | Marker-based visual Loc | ok | | | | Gazebo Harmonic | PnP | 
-| Localized Vacuum Cleaner | ok | | | | Gazebo 11 | BSA | 
-| Autoparking | ok | | | | Gazebo 11 | | 
+| Localized Vacuum Cleaner | ok | | | | Gazebo Harmonic + Classic  | BSA | 
+| Autoparking | ok | | | | Gazebo Harmonic + Classic  | | 
+| Autoparking Lidar | ok | | | | Gazebo Harmonic + Classic  | | 
 | Amazon Warehouse | ok | | | | Gazebo 11 | | 
 | Follow Person | ok | | | | Gazebo 11 | | 
 | Drone Follow Road | ok | | | | Gazebo Harmonic | |
 | Drone Rescue people | ok | | | | Gazebo Harmonic | |
 | Drone Gymkhana | ok | | | | Gazebo Harmonic | |
 | Drone Power tower Inspection | ok | | | | Gazebo Harmonic | |
-| Visual 3D reconstruction | ok | | | | Gazebo 11 | |
+| Visual 3D reconstruction | ok | | | | Gazebo Harmonic + Classic | |
 | DL e2e Visual control | ok | | | | Gazebo 11 | | 
 | DL digit classification | ok | | | | none | |
 | DL human detection | ok | | | | none | |

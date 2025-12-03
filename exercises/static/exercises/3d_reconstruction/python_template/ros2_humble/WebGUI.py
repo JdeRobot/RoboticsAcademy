@@ -4,7 +4,7 @@ import base64
 import threading
 import numpy as np
 
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
 

@@ -148,9 +148,9 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 
 
 COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM stdin;
-1	2	1	False
-2	5	1	False
-3	6	2	False
+1	2	1	True
+2	5	1	True
+3	6	2	True
 4	7	31	False
 5	10	4	False
 6	1	5	False
@@ -158,9 +158,9 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 8	4	7	False
 9	4	8	False
 10	3	9	False
-11	11	1	False
+11	11	1	True
 12	8	10	False
-13	9	12	False
+13	9	12	True
 14	3	13	False
 15	3	14	False
 16	3	15	False
@@ -194,12 +194,17 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 44	3	42	True
 45	3	43	True
 46	27	44	True
-47	1	41	False
-48	1	42	False
-49	1	50	False
-50	1	51	False
-51	1	52	False
-52	1	53	False
+47	6	11	False
+48	2	45	False
+49	5	45	False
+50	11	45	False
+51	9	46	False
+52	1	41	False
+53	1	42	False
+54	1	50	False
+55	1	51	False
+56	1	52	False
+57	1	53	False
 \.
 -- 30  16  3
 

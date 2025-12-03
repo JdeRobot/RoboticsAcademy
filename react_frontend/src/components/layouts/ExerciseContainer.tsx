@@ -223,7 +223,7 @@ const ExerciseContainer = ({
   });
 
   useEffect(() => {
-    saveFile(true)
+    saveFile(true);
     if (language === "cpp") {
       setBaseFile(base_file_cpp);
     } else {
@@ -235,7 +235,7 @@ const ExerciseContainer = ({
     file: {
       get: (project: string, file: Entry) => {
         const func = async (file: Entry) => {
-          saveFile(false)
+          saveFile(false);
           if (file.name === "academy.cpp") {
             return defaultCppCode;
           } else {
