@@ -35,47 +35,25 @@ const WebGUI = () => {
   }, []);
 
   const updateCircuit = (universe) => {
-    switch (universe) {
-      case "Simple Circuit":
+    if (universe === undefined) {
+      return
+    }
+
+    if (universe.includes("Simple")) {
         circuitName = "default";
         setCircuitImg(defaultCircuit);
-        break;
-      case "Montmelo Circuit":
+    } else if (universe.includes("Montmelo")) {
         circuitName = "montmelo";
         setCircuitImg(montmeloCircuit);
-        break;
-      case "Montreal Circuit":
+    } else if (universe.includes("Montreal")) {
         circuitName = "montreal";
         setCircuitImg(montrealCircuit);
-        break;
-      case "Nurburgring Circuit":
+    } else if (universe.includes("Nurburgring")) {
         circuitName = "ngb";
         setCircuitImg(ngbCircuit);
-        break;
-      case "Monaco Circuit":
+    } else if (universe.includes("Monaco")) {
         circuitName = "monaco";
         setCircuitImg(monacoCircuit);
-        break;
-      case "Simple Ackermann Circuit":
-        circuitName = "default ack";
-        setCircuitImg(defaultCircuit);
-        break;
-      case "Montmelo Ackermann Circuit":
-        circuitName = "montmelo ack";
-        setCircuitImg(montmeloCircuit);
-        break;
-      case "Montreal Ackermann Circuit":
-        circuitName = "montreal ack";
-        setCircuitImg(montrealCircuit);
-        break;
-      case "Nurburgring Ackermann Circuit":
-        circuitName = "ngb ack";
-        setCircuitImg(ngbCircuit);
-        break;
-      case "Monaco Ackermann Circuit":
-        circuitName = "monaco ack";
-        setCircuitImg(monacoCircuit);
-        break;
     }
   };
 
