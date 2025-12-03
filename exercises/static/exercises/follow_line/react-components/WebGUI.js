@@ -12,6 +12,7 @@ import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
 import montrealCircuit from "../resources/images/montreal_circuit.png";
 import ngbCircuit from "../resources/images/ngb_circuit.png";
+import monacoCircuit from "../resources/images/monaco_circuit.png"
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
@@ -34,39 +35,25 @@ const WebGUI = () => {
   }, []);
 
   const updateCircuit = (universe) => {
-    switch (universe) {
-      case "Simple Circuit":
+    if (universe === undefined) {
+      return
+    }
+
+    if (universe.includes("Simple")) {
         circuitName = "default";
         setCircuitImg(defaultCircuit);
-        break;
-      case "Montmelo Circuit":
+    } else if (universe.includes("Montmelo")) {
         circuitName = "montmelo";
         setCircuitImg(montmeloCircuit);
-        break;
-      case "Montreal Circuit":
+    } else if (universe.includes("Montreal")) {
         circuitName = "montreal";
         setCircuitImg(montrealCircuit);
-        break;
-      case "Nurburgring Circuit":
+    } else if (universe.includes("Nurburgring")) {
         circuitName = "ngb";
         setCircuitImg(ngbCircuit);
-        break;
-      case "Simple Ackermann Circuit":
-        circuitName = "default ack";
-        setCircuitImg(defaultCircuit);
-        break;
-      case "Montmelo Ackermann Circuit":
-        circuitName = "montmelo ack";
-        setCircuitImg(montmeloCircuit);
-        break;
-      case "Montreal Ackermann Circuit":
-        circuitName = "montreal ack";
-        setCircuitImg(montrealCircuit);
-        break;
-      case "Nurburgring Ackermann Circuit":
-        circuitName = "ngb ack";
-        setCircuitImg(ngbCircuit);
-        break;
+    } else if (universe.includes("Monaco")) {
+        circuitName = "monaco";
+        setCircuitImg(monacoCircuit);
     }
   };
 
