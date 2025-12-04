@@ -4,6 +4,7 @@ import threading
 import time
 
 from hal_interfaces.general.motors import MotorsNode
+from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.camera import CameraNode
 
 
@@ -38,14 +39,18 @@ if not rclpy.ok():
 
 # ROS2 Topics
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+odometry_node = OdometryNode("/odom")
 camera_node = CameraNode("/cam_f1_left/image_raw")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(odometry_node)
 executor.add_node(camera_node)
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
+def getPose3d():
+    return odometry_node.getPose3d()
 
 # Get Image from ROS Driver Camera
 def getImage():
