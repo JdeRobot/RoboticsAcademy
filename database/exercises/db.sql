@@ -140,7 +140,9 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 27	autoparking_lidar	Lidar Autoparking	Autoparking exercise with Lidar	["AUTONOMOUS DRIVING","SERVICE ROBOTS","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/autoparking
+28	basic_computer_vision_video	Basic Computer Vision Video 	Basic Computer Vision Video exercise using React and RAM	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision
 \.
+
 
 --
 -- Data for Name: exercises_universes; Type: TABLE DATA; Schema: public; Owner: user-dev
@@ -283,6 +285,9 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 78	27	console
 79	27	simulator
 80	27	web_gui
+81	28	console
+82	28	webcam
+83	28	web_gui
 \.
 
 --
