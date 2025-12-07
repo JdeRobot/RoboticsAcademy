@@ -2,6 +2,7 @@ import React from "react";
 import "./exercise-index.css";
 import { createRoot } from "react-dom/client";
 import "./styles/tailwindcss_base.css";
+import "./styles/tailwind.css";
 import Exercise from "Components/Exercise";
 
 const container = document.getElementById("app");

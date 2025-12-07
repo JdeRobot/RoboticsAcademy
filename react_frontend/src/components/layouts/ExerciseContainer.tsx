@@ -17,6 +17,8 @@ import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
 import Frequencies from "Components/statusBar/Frequencies";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
+import MovieRoundedIcon from "@mui/icons-material/MovieRounded";
+import Video from "Components/visualizers/Video";
 import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
@@ -64,6 +66,7 @@ const ExerciseContainer = ({
   const [showSim, setSimVisible] = useState<boolean>(true);
   const [showWebGUI, setWebGUIVisible] = useState<boolean>(true);
   const [showCamera, setCameraVisible] = useState<boolean>(true);
+  const [showVideo, setVideoVisible] = useState<boolean>(true);
   const [showRviz, setRvizVisible] = useState<boolean>(true);
   const [showTerminal, setTerminalVisible] = useState<boolean>(true);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
@@ -104,11 +107,21 @@ const ExerciseContainer = ({
 
   if (tools.includes("webcam")) {
     toolsList.push({
-      component: <Camera />,
+      component: <Video />,
       icon: <CameraAltRoundedIcon />,
       name: "WebCam",
       active: showCamera,
       activate: setCameraVisible,
+    });
+  }
+
+  if (tools.includes("video")) {
+    toolsList.push({
+      component: <Video />,
+      icon: <MovieRoundedIcon />,
+      name: "video",
+      active: showVideo,
+      activate: setVideoVisible,
     });
   }
 
