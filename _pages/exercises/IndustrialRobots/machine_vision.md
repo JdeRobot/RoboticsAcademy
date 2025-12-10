@@ -19,27 +19,6 @@ gallery:
     alt: "Machine Vision"
     title: "Rviz"
 
-green_cylinder_filter:
-  - url: /assets/images/exercises/machine_vision/green_filter_image.png
-    image_path: /assets/images/exercises/machine_vision/green_filter_image.png
-    alt: "green_filter_image"
-    title: "green_filter_image"
-  - url: /assets/images/exercises/machine_vision/green_cylinder_image.png
-    image_path: /assets/images/exercises/machine_vision/green_cylinder_image.png
-    alt: "green_cylinder_image"
-    title: "green_cylinder_image"
-
-
-blue_cylinder_filter:
-  - url: /assets/images/exercises/machine_vision/blue_filter.png
-    image_path: /assets/images/exercises/machine_vision/blue_filter.png
-    alt: "blue_filter"
-    title: "blue_filter"
-  - url: /assets/images/exercises/machine_vision/blue_cylinder_filter.png
-    image_path: /assets/images/exercises/machine_vision/blue_cylinder_filter.png
-    alt: "blue_cylinder_filter"
-    title: "blue_cylinder_filter"
-
 youtubeId: 719pIDC94RU
 ---
 
@@ -134,12 +113,10 @@ while True:
 ### Vision & Environment
 * `HAL.start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin)` — start color filter for `{"red","green","blue","purple"}` with RGB ranges `[0..255]`. Publishes `$(color)_filter` and `$(color)_filtered_image` topics.
 
-{% include green_cylinder_filter caption="green_filter_image." %}
 
 * `HAL.stop_color_filter(color)` — stop that filter.
 * `HAL.start_shape_filter(color, shape, radius)` — on the color‑filtered cloud, detect `shape ∈ {"sphere","cylinder"}` of approx. `radius` (m). Publishes `$(color)_$(shape)` point cloud, `$(color)_$(shape)_image` depth image, and adds a TF frame `$(color)_$(shape)`.
 
-{% include green_cylinder_filter caption="green_cylinder_image." %}
 
 * `HAL.stop_shape_filter(color, shape)` — stop shape filter.
 * `HAL.get_object_position(object_name)` → `[x,y,z]` or `None` — returns the world position of a known object frame (e.g., `"green_cylinder"`). A  3 cm Z offset is applied for grasp clearance.
