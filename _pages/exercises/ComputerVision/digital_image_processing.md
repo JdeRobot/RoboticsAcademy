@@ -31,7 +31,6 @@ This series of exercises introduces Digital Image Processing concepts through in
 
 {% include gallery caption="Image Operations Example" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Exercise API
 

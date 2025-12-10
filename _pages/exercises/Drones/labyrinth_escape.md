@@ -23,7 +23,7 @@ The goal of this exercise is to implement the logic that allows a quadrotor to e
 
 {% include gallery caption="Gallery." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+
 
 ## Robot API
 

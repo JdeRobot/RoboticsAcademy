@@ -25,48 +25,6 @@ The goal of this exercise is to implement the logic that allows a quadrotor to p
 
 {% include gallery caption="Gallery." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
-This is the preferred way for running the exercise.
-
-### Installing and Launching
-1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
-
-2. Pull the current distribution of RoboticsBackend:
-
-	```bash
-  docker pull jderobot/robotics-backend:latest
-  ```
-
-- In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
-
-- It is recommended to use the latest image. However, older distributions of RoboticsBackend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
-
-### How to perform the exercises?
-- Start a new docker container of the image and keep it running in the background:
-
-	```bash
-  docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend
-  ```
-
-- On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
-
-- Wait for the Connect button to turn green and display "Connected". Click on the "Launch" button and wait for some time until an alert appears with the message `Connection Established` and button displays "Ready". 
-
-- The exercise can be used after the alert.
-
-### Enable GPU Acceleration
-- Follow the advanced launching instructions from [here](https://jderobot.github.io/RoboticsAcademy/user_guide/#enable-gpu-acceleration).
-
-### Optional: Store terminal output
-- To store the terminal output of manager.py and launch.py to a file execute the following docker run command and keep it running in the background:
-```bash
-docker run -it --rm -v $HOME/.roboticsacademy/log/:/root/.roboticsacademy/log/ --device /dev/dri -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:6080 -p 1108:1108 -p 2304:2304 -p 1904:1904 jderobot/robotics-backend --logs
-```
-
-- The log files will be stored inside `$HOME/.roboticsacademy/{year-month-date-hours-mins}/`. After the session, use `more` to view the logs, for example:
-```bash
-more $HOME/.roboticsacademy/log/2021-11-06-14-45/manager.log
-```
 
 ### Where to insert the code?
 

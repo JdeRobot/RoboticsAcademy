@@ -43,7 +43,6 @@ youtubeId2: EWTR9Y1QyBk
 
 The objective of this exercise is to implement the logic of a navigation algorithm for an automated vehicle. The vehicle must find a parking space and park properly.
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 {% include gallery caption="Gallery" %}
 

@@ -52,8 +52,6 @@ The end-to-end visual control exercise demonstrates end-to-end visual control of
 
 The students will develop a deep learning model that helps the autonomous vehicle complete the circuits.
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
-
 <!-- TODO: DEVELOP DEEP LEARNING MODEL -->
 
 ## 🤖 Develop a Deep Learning Model

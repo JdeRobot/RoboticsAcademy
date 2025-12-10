@@ -69,7 +69,6 @@ The solution can integrate one or more of the following difficulty increasing go
 
 * Robustness in situations of indecision (zero vector sum).
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
 
 ## Frequency API
 

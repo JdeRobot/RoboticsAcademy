@@ -34,9 +34,6 @@ The goal of this exercise is to learn how to control a drone to complete a gymkh
 
 {% include gallery caption="Gymkhana course. 3DR Iris drone it its launch pad" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
-
-You will have contact with the drone infrastructure in our Robotics Academy for the first time, learning how to access the drone sensors, actuators and cameras via an *Application Programing Interface* (API), which is a key point to master the rest of the proposed exercises.
 
 ## Robot API
 

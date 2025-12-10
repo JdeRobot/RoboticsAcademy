@@ -43,8 +43,6 @@ For this exercise, a world has been designed in gazebo that contains the Iris qu
 
 {% include gallery caption="Gallery." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
-This is the preferred way for running the exercise.
 
 ### Installing and Launching
 1. Download [Docker](https://docs.docker.com/get-docker/). Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.

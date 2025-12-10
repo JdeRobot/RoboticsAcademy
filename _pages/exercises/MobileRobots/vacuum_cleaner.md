@@ -28,8 +28,6 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
-
 ## Frequency API
 
 ### Python

@@ -46,8 +46,6 @@ The aim of this practical is to develop a localisation algorithm based on the pa
 
 {% include gallery caption="MonteCarlo Laser Location." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
-This is the preferred way for running the exercise.
 
 ### Installation 
 - Clone the Robotics Academy repository on your local machine

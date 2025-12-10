@@ -49,8 +49,6 @@ youtubeId1: I0GhS3ePMHM
 <!-- Note Guide -->
 <!-- <br/> -->
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
-
 ## Frequency API
 
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
