@@ -52,7 +52,7 @@ youtubeId1: aOd6c-ue1xU
 {% include gallery id="instruction" caption="Digit Classification Exercise" %}
 
 <!-- Note Guide -->
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+
 
 ## Frequency API
 

@@ -58,9 +58,6 @@ The goal of this exercise is to learn how to **use vision to assist an industria
 
 {% include gallery caption="Gallery." %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
-
-This is the preferred way for running the exercise once it is finished.
 
 ### Installation (Web Templates)
 

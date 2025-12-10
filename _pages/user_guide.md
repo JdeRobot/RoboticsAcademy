@@ -14,12 +14,6 @@ youtubeId2: bh5oPH5DpVs
 
 ---
 
-For RoboticsAcademy users go to the Robotics Academy [section](#1-installation-of-robotics-academy).
-
-For Unibotics users go to the Unibotics [section](#4-installation-of-robotics-backend).
-
-For more guides and troubleshooting go to the Guides [section](#4-installation-of-robotics-backend).
-
 <a name="installation"></a>
 
 ## 1. Installation of Robotics Academy
@@ -195,126 +189,7 @@ docker rm CONTAINER_ID
 
 5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 
-## 4. Installation of Robotics Backend
-
-### Minimum System Requirements
-
-* **CPU**: A 4-cored processor.
-* **RAM**: 2 gb RAM.
-* **Memory**: 20 gb of disk space.
-
-### Linux Users
-
-1. Download [Docker](https://docs.docker.com/get-docker/) **(minimum version of docker-py: 5.0.3)**.
-
-2. Pull the current distribution of Robotics Backend **(currently version 4.8.0)**:
-
-```bash
-docker pull jderobot/robotics-backend:latest
-```
-
-* In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
-
-* It is recommended to use the latest image. However, older distributions of Robotics Backend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
-
-### Windows Users
-
-Windows users should choose WSL 2 backend Docker installation if possible, as it has better performance than Hyper-V.
-
-1. Install WSL2. Here's a link to the [tutorial](https://learn.microsoft.com/en-us/windows/wsl/install) **(minimum version of docker hub: 4.30.0)**.
-
-2. Install Docker Desktop. Docker made an app for Windows users to adapt the user experience. You can download it from this [link](https://www.docker.com/products/docker-desktop/).
-
-3. Enable Docker Desktop WSL integration: In order to wsl2 to recognise Docker, you need to enable it. For that, go to Docker Desktop -> Settings -> Resources -> WSL integration. Click on the check box and the slider.
-
-    ![WSL integration](/RoboticsAcademy/assets/images/user_guide/wsl-integration-docker.png)
-
-4. Pull the current distribution of Robotics Backend **(currently version 4.8.0)**:
-
-```bash
-docker pull jderobot/robotics-backend:latest
-```
-
-* In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
-
-* It is recommended to use the latest image. However, older distributions of Robotics Backend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
-
-### MacOs Users
-
-1. Download [Docker](https://docs.docker.com/desktop/setup/install/mac-install/) **(download latest version)**
-
-2. Pull the current distribution of Robotics Backend **(currently version 4.8.0)**:
-
-```bash
-docker pull jderobot/robotics-backend:latest
-```
-
-* In order to obtain optimal performance, Docker should be using multiple CPU cores. In case of Docker for Mac or Docker for Windows, the VM should be assigned a greater number of cores.
-
-* It is recommended to use the latest image. However, older distributions of Robotics Backend can be found [here](https://hub.docker.com/r/jderobot/robotics-backend/tags).
-
-## 5. How to launch the Robotics Backend
-
-* Start a new docker container of the image and keep it running in the background:
-* The priority order is: NVIDIA -> Intel or AMD -> Only CPU
-
-```bash
-docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
-```
-
-### Advanced Instructions on Linux
-
-* **NVIDIA:** For NVIDIA GPUs, acceleration can be achieved by [installing the nvidia-container-runtime package](https://docs.docker.com/config/containers/resource_constraints/#gpu), and then running the **auto** command above.
-
-* **Integrated GPU**
-
-```bash
-docker run --rm -it --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
-```
-
-* **Only CPU:**
-
-```bash
-docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
-```
-
-### Windows
-
-For Windows machines, acceleration can be achieved for NVIDIA GPUs if a valid CUDA installation is available. Useful docs for proper installation of WSL2 + CUDA + Docker Desktop:
-* [WSL2 + CUDA](https://learn.microsoft.com/en-us/windows/ai/directml/gpu-cuda-in-wsl)
-* [WSL2 + Docker Desktop](https://docs.docker.com/desktop/features/wsl/)
-
-Once these requirements are ready, you should be able to run RoboticsBackend with GPU acceleration as follows:
-
-```bash
-docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
-```
-
-### MacOs Users
-
-* Run **Only CPU**
-
-```bash
-docker run --rm -it --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 jderobot/robotics-backend:latest
-```
-
-### Tips for Docker
-
-Make sure to remove the container if you have problems with the exercise not loading with the following commands.
-
-1. Locate the docker container used for RoboticsBackend using
-
-```bash
-docker ps -a
-```
-
-2. Remove that container using
-
-```bash
-docker rm CONTAINER_ID
-```
-
-## 6. Other Guides
+## 4. Other Guides
 
 ### Editor Controls
 
@@ -329,7 +204,7 @@ If your VNC viewer shows an error similar to this when connecting to a remote Ro
 
 TODO: add video
 
-## 7. Reference execution performance data
+## 5. Reference execution performance data
 
 In this section, various data tables will be provided showing the performance cost of each RoboticsBackend exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
 
@@ -495,4 +370,4 @@ SO: Windows 11, RAM: 16 GB, CPU: Intel Core i5-13600KF (14 cores), GPU: NVIDIA G
 
 No data yet.
 
-## 7. Troubleshooting
+## 6. Troubleshooting

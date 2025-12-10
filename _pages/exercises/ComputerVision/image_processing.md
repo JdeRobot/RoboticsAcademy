@@ -26,7 +26,7 @@ This exercise is an introduction to the image processing world. In this practice
 
 {% include gallery caption="Tracking example" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+
 
 ## Robot API
 

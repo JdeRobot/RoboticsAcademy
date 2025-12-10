@@ -45,8 +45,6 @@ The red robot represents the user estimated position.
 
 {% include gallery caption="Gallery" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
-
 ## Frequency API
 
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.

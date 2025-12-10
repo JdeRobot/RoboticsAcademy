@@ -29,8 +29,6 @@ The objective of this exercise is to implement the logic of a navigation algorit
 <img src="/RoboticsAcademy/assets/images/exercises/vacuum_cleaner_loc/vacuum_cleaner.png" width="100%" height="60%">
 {% include gallery caption="Vacuum cleaner" %}
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is done, how to launch a RoboticsBackend and how to access the exercises.
-
 ## Frequency API
 
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
