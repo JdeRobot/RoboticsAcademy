@@ -28,8 +28,8 @@ export const getCarPose = (circuit, position) => {
 			scaleX = -2.6; offsetX = 151
       break;
     default:
-      scaleY = 1.25; offsetY = 77
-			scaleX = -2.6; offsetX = 151
+      scaleY = -0.02191; offsetY = 87.35
+			scaleX = 1.20368; offsetX = 195.88157
       break;
   }
 
