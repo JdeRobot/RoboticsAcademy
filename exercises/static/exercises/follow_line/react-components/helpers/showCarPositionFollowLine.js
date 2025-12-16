@@ -24,12 +24,12 @@ export const getCarPose = (circuit, position) => {
 			scaleX = -1.495; offsetX = 151
       break;
     case "monaco":
-      scaleY = 1.25; offsetY = 77
-			scaleX = -2.6; offsetX = 151
-      break;
-    default:
       scaleY = 0.303; offsetY = 158.1
 			scaleX = 1.2827; offsetX = 139.1368
+      break;
+    default:
+      scaleY = 1.25; offsetY = 77
+			scaleX = -2.6; offsetX = 151
       break;
   }
 
