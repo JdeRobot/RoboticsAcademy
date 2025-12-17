@@ -7,7 +7,7 @@ import {
   StyledHeaderText,
 } from "../../styles/headers/HeaderMenu.styles";
 
-import { ForumButton, SearchButton, ThemeButton } from "Components/buttons";
+import { ForumButton, SearchButton, ThemeButton, InfoButton } from "Components/buttons";
 import React from "react";
 
 const AcademyHeader = () => {
@@ -35,6 +35,7 @@ const AcademyHeader = () => {
 
         <StyledHeaderButtonContainer>
           <SearchButton />
+          <InfoButton />
           <ThemeButton />
           <ForumButton />
         </StyledHeaderButtonContainer>
