@@ -15,9 +15,7 @@
 
 - **docs** folder holds all documentation about the repository and its architecture.
 - **exercises** folder contains all the codes related to the exercises launch process and visualization. In it you can find:
-	1. HTML codes of every exercise (exercise.html) --> (/exercises/templates/exercises).
-	2. Base HTML file (exercise_base.html) with the exercise view navbars and buttons, and modal files with the pop-up messages --> (/exercises/templates).
-	3. Python and User Interface (UI) codes used in the exercises (/exercises/static).
+	1. Python and User Interface (UI) codes used in the exercises (/exercises/static).
 - **static** folder has all resources used by the codes in the exercises folder such as images and javascript and css files called by HTML codes. This folder is divided in:
 	1. Common folder, that holds all shared resources between the different exercises (common images, javascript, css...) --> (/static/common).
 	2. Exercise folder, that holds all specific resources that only a single exercise use that file. It's divided in folders with the exercise name --> (/static/exercises).

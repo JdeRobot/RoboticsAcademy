@@ -45,7 +45,7 @@ This is the coding style guide for languages used in the JdeRobot repositories.
 
 -   Enforce using `ament_lint_cmake`
 
-### Javascript
+### Javascript/Typescript
 
 -   Use the recommended [ESLint](https://eslint.org/docs/latest/use/configure/configuration-files#using-predefined-configurations) configuration as base, with extra plugins for specific frameworks or tools
     -   Example extensions:

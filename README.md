@@ -25,8 +25,6 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 -   [Generate a RADI.][]
 -   [Publishing a RADI.][]
 -   [Humble RADI structure.][]
--   [Develop using volume binding.][]
--   [ROS2 and superthin templates migration.][]
 -   [Troubleshooting Robotics Academy][]
 -   [Exercises Status][]
 
@@ -37,7 +35,5 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 [Generate a RADI.]: ./docs/generate_a_radi.md
 [Publishing a RADI.]: ./.github/workflows/README.md
 [Humble RADI structure.]: ./scripts/RADI/README.md
-[Develop using volume binding.]: ./docs/develop_binding_volumes.md
-[ROS2 and superthin templates migration.]: ./docs/exercise-status.md
 [Troubleshooting Robotics Academy]: ./docs/troubleshooting.md
 [Exercises Status]: ./docs/exercise-status.md

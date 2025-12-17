@@ -28,7 +28,6 @@
 | Basic Computer Vision | ok | | | | none | | 
 | Digital Image Processing | ok | | | | none | | 
 | Pick and Place | ok | | | | Gazebo 11 | |
-| |
 | Machine Vision with industrial robot | ok | | | | Gazebo 11 | |
 | Road junction | ok | | | | Gazebo Harmonic | broken |
 | Drone Labyrinth escape |  | | | | | |  
