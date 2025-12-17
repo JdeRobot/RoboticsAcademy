@@ -18,6 +18,7 @@ import {
   UploadButton,
   DownloadButton,
   ForumButton,
+  InfoButton,
   TheoryButton,
   DeepLearningButton,
   PlayPauseButton,
@@ -101,6 +102,7 @@ const ExerciseHeader = ({
           <ResetButton />
           <TerminateUniverseButton />
           <TheoryButton url={url} />
+          <InfoButton />
           <ForumButton />
         </StyledHeaderButtonContainer>
       </Toolbar>
