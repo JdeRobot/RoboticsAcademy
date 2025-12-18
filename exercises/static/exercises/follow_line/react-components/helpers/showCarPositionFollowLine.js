@@ -1,40 +1,63 @@
 export const getCarPose = (circuit, position) => {
-  var scaleX, scaleY, offsetX, offsetY;
-  let ackMultiplier = 1;
-  let pose = position.substring( 1, position.length - 1);
-  let pos = pose.split(",").map(function (item) {
-    return parseFloat(item);
-  });
+
+  let pose = position.substring(1, position.length - 1);
+  let pos = pose.split(",").map(item => parseFloat(item));
+  let x, y;
 
   switch (circuit) {
-    case "default":
-      scaleY = 1.25; offsetY = 77
-			scaleX = -2.6; offsetX = 151
+
+    case "default": {
+      const scaleY = 1.25, offsetY = 77;
+      const scaleX = -2.6, offsetX = 151;
+      x = pos[0] * scaleX + offsetX;
+      y = pos[1] * scaleY + offsetY;
       break;
-    case "montmelo":
-      scaleY = 2.1; offsetY = 77
-			scaleX = -1.3; offsetX = 151
+    }
+
+    case "montmelo": {
+      const scaleY = 2.1, offsetY = 77;
+      const scaleX = -1.3, offsetX = 151;
+      x = pos[0] * scaleX + offsetX;
+      y = pos[1] * scaleY + offsetY;
       break;
-    case "montreal":
-      scaleY = 0.685; offsetY = 77
-			scaleX = -0.48; offsetX = 151
+    }
+
+    case "montreal": {
+      const scaleY = 0.685, offsetY = 77;
+      const scaleX = -0.48, offsetX = 151;
+      x = pos[0] * scaleX + offsetX;
+      y = pos[1] * scaleY + offsetY;
       break;
-    case "ngb":
-      scaleY = 1.5; offsetY = 77
-			scaleX = -1.495; offsetX = 151
+    }
+
+    case "ngb": {
+      const scaleY = 1.5, offsetY = 77;
+      const scaleX = -1.495, offsetX = 151;
+      x = pos[0] * scaleX + offsetX;
+      y = pos[1] * scaleY + offsetY;
       break;
-    case "monaco":
-      scaleY = 0.303; offsetY = 158.1
-			scaleX = 1.2827; offsetX = 139.1368
+    }
+
+    case "monaco": {
+      const a  =  0.70789644;
+      const b  =  0.64807931;
+      const c  =  1.31606339;
+      const d  = -1.22986948;
+      const tx = 166.68737022;
+      const ty = 198.51318472;
+      x = a * pos[0] + b * pos[1] + tx;
+      y = c * pos[0] + d * pos[1] + ty;
       break;
-    default:
-      scaleY = 1.25; offsetY = 77
-			scaleX = -2.6; offsetX = 151
+    }
+
+    default: {
+      const scaleY = 1.25, offsetY = 77;
+      const scaleX = -2.6, offsetX = 151;
+      x = pos[0] * scaleX + offsetX;
+      y = pos[1] * scaleY + offsetY;
       break;
+    }
+
   }
-
-  var x = Math.round(pos[0]) * scaleX / ackMultiplier + offsetX;
-  var y = Math.round(pos[1]) * scaleY / ackMultiplier + offsetY;
-
-  return [x,y];
+  return [Math.round(x), Math.round(y)];
 };
