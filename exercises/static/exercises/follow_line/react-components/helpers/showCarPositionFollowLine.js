@@ -44,7 +44,7 @@ export const getCarPose = (circuit, position) => {
       const c  =  1.31606339;
       const d  = -1.22986948;
       const tx = 166.68737022;
-      const ty = 198.51318472;
+      const ty = 103.51318472;
       x = a * pos[0] + b * pos[1] + tx;
       y = c * pos[0] + d * pos[1] + ty;
       break;
