@@ -1,14 +1,14 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import InfoIcon from "@mui/icons-material/InfoRounded";
 import React from "react";
 
-const USER_GUIDE_URL = "https://jderobot.github.io/RoboticsAcademy/user_guide/";
 
 const InfoButton = () => {
   const theme = useAcademyTheme();
+  const url = "https://jderobot.github.io/RoboticsAcademy/user_guide/"
 
-  const openInNewTab = (url: string) => {
+  const openInNewTab = (url: URL) => {
     const newWindow = window.open(url, "_blank");
     if (newWindow) {
       newWindow.focus();
@@ -23,10 +23,10 @@ const InfoButton = () => {
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
       id="info-button"
-      onClick={() => openInNewTab(USER_GUIDE_URL)}
+      onClick={() => openInNewTab(new URL(url))}
       title="Open User Guide"
     >
-      <InfoOutlinedIcon htmlColor={theme.palette.text} />
+      <InfoIcon htmlColor={theme.palette.text} />
     </StyledHeaderButton>
   );
 };

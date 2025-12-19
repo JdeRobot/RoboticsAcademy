@@ -35,8 +35,8 @@ const AcademyHeader = () => {
 
         <StyledHeaderButtonContainer>
           <SearchButton />
-          <InfoButton />
           <ThemeButton />
+          <InfoButton />
           <ForumButton />
         </StyledHeaderButtonContainer>
       </Toolbar>
