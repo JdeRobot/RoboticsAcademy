@@ -3,22 +3,20 @@
 [Back to main README.]: ../README.md
 
 # Developers info about repository architecture
-- [master branch](#master-branch)
+- [humble-devel branch](#humble-devel-branch)
 - [gh-pages branch](#gh-pages-branch)
 - [issues branches](#issues-branches)
 - [Other repositories](#Other-repositories)
 
-<a name="master-branch"></a>
-## master branch
+<a name="humble-devel-branch"></a>
+## Humble-devel branch
 
-[Master branch](https://github.com/JdeRobot/RoboticsAcademy/tree/master) of the RoboticsAcademy repository is divided in some folders that contains different types of codes. There are 4 main folders: docs, exercises, static and scripts.
+[Humble-devel branch](https://github.com/JdeRobot/RoboticsAcademy/tree/humble-devel) of the RoboticsAcademy repository is divided in some folders that contains different types of codes. There are 4 main folders: docs, exercises, static and scripts.
 
 - **docs** folder holds all documentation about the repository and its architecture.
+- **react_frontend** folder contains all of the frontend code.
 - **exercises** folder contains all the codes related to the exercises launch process and visualization. In it you can find:
 	1. Python and User Interface (UI) codes used in the exercises (/exercises/static).
-- **static** folder has all resources used by the codes in the exercises folder such as images and javascript and css files called by HTML codes. This folder is divided in:
-	1. Common folder, that holds all shared resources between the different exercises (common images, javascript, css...) --> (/static/common).
-	2. Exercise folder, that holds all specific resources that only a single exercise use that file. It's divided in folders with the exercise name --> (/static/exercises).
 - **scripts** folder, that hosts the dockerfile (file with the Docker commands to create a RoboticsBackend), shell files, manager.py (file used to manage the exercises processes) and pyint_checker.py (file used to check if the code has been written properly).
 
 <a name="gh-pages-branch"></a>
@@ -45,5 +43,5 @@ The rest of the branches will have the designation 'issue-xxxx', being xxxx the 
 <a name="Other-repositories"></a>
 ## Other repositories
 Robotics Academy includes two JdeRobot repositories as dependencies.
-- [CustomRobots](https://github.com/JdeRobot/CustomRobots) contains different types of robots (vehicles, service robots...) and world files for Gazebo.
-- [drones](https://github.com/JdeRobot/drones) contains different types of drones and world files for Gazebo.
+- [RoboticsInfrastructure](https://github.com/JdeRobot/RoboticsInfrastructure) contains different types of robots (vehicles, service robots...) and world files for Gazebo.
+- [RoboticsApplicationManager](https://github.com/JdeRobot/RoboticsApplicationManager) contains the RADI manager.
