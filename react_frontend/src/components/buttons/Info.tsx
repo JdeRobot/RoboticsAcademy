@@ -3,10 +3,9 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import InfoIcon from "@mui/icons-material/InfoRounded";
 import React from "react";
 
-
 const InfoButton = () => {
   const theme = useAcademyTheme();
-  const url = "https://jderobot.github.io/RoboticsAcademy/user_guide/"
+  const url = "https://jderobot.github.io/RoboticsAcademy/user_guide/";
 
   const openInNewTab = (url: URL) => {
     const newWindow = window.open(url, "_blank");
