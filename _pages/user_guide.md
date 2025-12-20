@@ -102,7 +102,7 @@ docker run --hostname my-postgres --name academy_db -d\
 * The priority order is: NVIDIA -> Intel or AMD -> Only CPU
 
 ```bash
-docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 ### Advanced Instructions on Linux
@@ -112,13 +112,13 @@ docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo ""
 * **Integrated GPU**
 
 ```bash
-docker run --rm -it --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 * **Only CPU:**
 
 ```bash
-docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 ### Windows
@@ -130,7 +130,7 @@ For Windows machines, acceleration can be achieved for NVIDIA GPUs if a valid CU
 Once these requirements are ready, you should be able to run Robotics Academy with GPU acceleration as follows:
 
 ```bash
-docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib --device /dev/dri -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 ### MacOs Users
@@ -138,7 +138,7 @@ docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/
 * Run **Only CPU**
 
 ```bash
-docker run --rm -it -p 6080:6080 -p 1108:1108 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
 
 ### Tips for Docker
