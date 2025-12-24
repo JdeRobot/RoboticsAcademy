@@ -28,7 +28,7 @@ const WebGUI = () => {
           for (
             let index = 0;
             index < point.length;
-            index += Math.round(point.length / 2000)
+            index += Math.round(point.length / 2500)
           ) {
             pdata.push(point[index]);
           }
