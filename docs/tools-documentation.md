@@ -4,6 +4,7 @@ For tools that need additional components
 
 ## Camera
 This component is used to display the camera feed inside the WebGUI.
+
 Contains the web cam functionality for the camera tool.
 
 Can be found in react_frontend/src/components/visualizers/Camera.tsx
