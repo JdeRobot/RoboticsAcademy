@@ -1,9 +1,9 @@
 # React Tools Documentation
 
-For tools that need aditional components
+For tools that need additional components
 
 ## Camera
-
+This component is used to display the camera feed inside the WebGUI.
 Contains the web cam functionality for the camera tool.
 
 Can be found in react_frontend/src/components/visualizers/Camera.tsx
@@ -18,7 +18,7 @@ Contains the preview component for the WebGUI while it loads. Can be found in re
 
 ### Exercise WebGUI components
 
-Contains coponents to be used inside each exercise WebGUI:
+Contains components to be used inside each exercise WebGUI:
 
 - WebGUI3D: 3D viewer -> react_frontend/src/components/exercise/WebGUI3D.tsx
 - WebGUIContainer: Container for the WebGUI -> react_frontend/src/components/exercise/WebGUIContainer.tsx
