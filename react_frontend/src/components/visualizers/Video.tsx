@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Box,
   Paper,
@@ -19,9 +19,13 @@ import {
   VolumeDown,
   Fullscreen,
   UploadFile,
-  CloudUpload,
 } from "@mui/icons-material";
+import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
 import { useExercise } from "Contexts/ExerciseContext";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { contrastSelector } from "jderobot-ide-interface";
+import { StyledVideo, StyledVideoContainer, StyledVideoInputContainer } from "Styles/visualizers/LocalVideo.styles";
 
 // constants
 const CANVAS_WIDTH = 320;
@@ -29,7 +33,9 @@ const CANVAS_HEIGHT = 240;
 const CAPTURE_FPS = 20; // Capture at 20 frames per second
 const CAPTURE_INTERVAL_MS = 1000 / CAPTURE_FPS; // 10ms
 
-const Video: React.FC = () => {
+const Video = () => {
+  const theme = useAcademyTheme();
+
   const [videoFile, setVideoFile] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
@@ -46,6 +52,12 @@ const Video: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [capturedFrame, setCapturedFrame] = useState<string | null>(null);
   const captureIntervalRef = useRef<number | null>(null);
+
+  const textColor = contrastSelector(
+    theme.palette.text,
+    theme.palette.darkText,
+    theme.palette.bgLight
+  );
 
   // Handle file upload
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,45 +239,19 @@ const Video: React.FC = () => {
   }, [isPlaying, videoFile]);
 
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
+    <WebGUIContainer>
       {!videoFile ? (
-        <Paper
-          elevation={0}
+        <StyledVideoInputContainer
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={() => fileInputRef.current?.click()}
-          sx={{
-            p: 8,
-            width: "100%",
-            height: "100%",
-            textAlign: "center",
-            cursor: "pointer",
-            bgcolor: "background.paper",
-            border: "2px dashed",
-            borderColor: "rgba(255, 255, 255, 0.1)",
-            transition: "all 0.3s ease",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "relative",
-            overflow: "hidden",
-            "&:hover": {
-              borderColor: "primary.main",
-              transform: "translateY(-2px)",
-              boxShadow: "0 0 20px rgba(102, 126, 234, 0.3)",
-              "& .upload-bg": {
-                opacity: 0.05,
-              },
-            },
-          }}
+          color={theme.palette.primary}
         >
           <Box
             className="upload-bg"
             sx={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
               opacity: 0,
               transition: "opacity 0.3s ease",
               width: "100%",
@@ -274,10 +260,10 @@ const Video: React.FC = () => {
           />
 
           <Box sx={{ position: "relative", zIndex: 1 }}>
-            <CloudUpload
+            <CloudUploadRoundedIcon
+              htmlColor={theme.palette.primary}
               sx={{
                 fontSize: 80,
-                color: "primary.main",
                 mb: 3,
                 animation: "float 3s ease-in-out infinite",
                 "@keyframes float": {
@@ -292,7 +278,7 @@ const Video: React.FC = () => {
               sx={{
                 fontWeight: "bold",
                 mb: 2,
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                background: theme.palette.primary,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
@@ -301,14 +287,14 @@ const Video: React.FC = () => {
             </Typography>
             <Typography
               variant="h6"
-              color="text.secondary"
+              color={textColor}
               sx={{ mb: 1, fontWeight: "normal" }}
             >
               Drag and drop a video file here, or click to browse
             </Typography>
             <Typography
               variant="body2"
-              color="text.secondary"
+              color={textColor}
               sx={{ opacity: 0.7 }}
             >
               Supports MP4, WebM, OGG
@@ -321,40 +307,21 @@ const Video: React.FC = () => {
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
-        </Paper>
+        </StyledVideoInputContainer>
       ) : (
-        <Paper
-          elevation={10}
-          sx={{
-            position: "relative",
-            borderRadius: 4,
-            overflow: "scroll",
-            bgcolor: "#000",
-            "&:hover .controls": {
-              opacity: 1,
-            },
-            width: "100%",
-            height: "100%",
-          }}
+        <StyledVideoContainer
           onMouseEnter={() => setShowControls(true)}
           onMouseLeave={() => setShowControls(false)}
         >
           {/* Hidden canvas for frame capture */}
           <canvas ref={canvasRef} style={{ display: "none" }} />
           {/* Original video */}
-          <video
+          <StyledVideo
             ref={videoRef}
             src={videoFile}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
             onEnded={() => setIsPlaying(false)}
-            style={{
-              width: "100%",
-              height: "100%", // ← NEW: Fill container height
-              objectFit: "contain", // ← NEW: Maintain aspect ratio
-              display: "block",
-              backgroundColor: "#000",
-            }}
           />
 
           <Box
@@ -380,7 +347,7 @@ const Video: React.FC = () => {
               onMouseDown={() => setIsDragging(true)}
               onChangeCommitted={() => setIsDragging(false)}
               sx={{
-                color: "primary.main",
+                color: theme.palette.primary,
                 height: 6,
                 mb: 1,
                 "& .MuiSlider-thumb": {
@@ -418,7 +385,7 @@ const Video: React.FC = () => {
                   sx={{
                     color: "#fff",
                     "&:hover": {
-                      color: "primary.main",
+                      color: theme.palette.primary,
                       bgcolor: "rgba(255,255,255,0.1)",
                     },
                   }}
@@ -436,7 +403,7 @@ const Video: React.FC = () => {
                   <IconButton
                     onClick={toggleMute}
                     size="small"
-                    sx={{ color: "#fff", "&:hover": { color: "primary.main" } }}
+                    sx={{ color: "#fff", "&:hover": { color: theme.palette.primary } }}
                   >
                     {isMuted || volume === 0 ? (
                       <VolumeOff />
@@ -453,7 +420,7 @@ const Video: React.FC = () => {
                     step={0.01}
                     onChange={handleVolumeChange}
                     sx={{
-                      color: "primary.main",
+                      color: theme.palette.primary,
                       height: 4,
                       "& .MuiSlider-thumb": {
                         width: 12,
@@ -467,7 +434,7 @@ const Video: React.FC = () => {
                 <Typography
                   variant="body2"
                   sx={{
-                    color: "text.secondary",
+                    color: "#fff",
                     minWidth: 100,
                     fontVariantNumeric: "tabular-nums",
                   }}
@@ -487,7 +454,7 @@ const Video: React.FC = () => {
                     color: "#fff",
                     fontSize: "0.875rem",
                     "& .MuiSelect-icon": { color: "#fff" },
-                    "&:hover": { color: "primary.main" },
+                    "&:hover": { color: theme.palette.primary },
                   }}
                 >
                   <MenuItem value={0.5}>0.5x</MenuItem>
@@ -504,7 +471,7 @@ const Video: React.FC = () => {
                   sx={{
                     color: "#fff",
                     "&:hover": {
-                      color: "primary.main",
+                      color: theme.palette.primary,
                       bgcolor: "rgba(255,255,255,0.1)",
                     },
                   }}
@@ -533,7 +500,7 @@ const Video: React.FC = () => {
               opacity: showControls || !isPlaying ? 1 : 0,
               transition: "all 0.3s ease",
               "&:hover": {
-                bgcolor: "primary.main",
+                bgcolor: theme.palette.primary,
                 transform: "translateY(-2px)",
                 boxShadow: "0 0 20px rgba(102, 126, 234, 0.3)",
               },
@@ -541,9 +508,9 @@ const Video: React.FC = () => {
           >
             Change Video
           </Button>
-        </Paper>
+        </StyledVideoContainer>
       )}
-    </Box>
+    </WebGUIContainer>
   );
 };
 
