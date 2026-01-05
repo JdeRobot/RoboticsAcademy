@@ -13,93 +13,237 @@ gallery:
   - url: /assets/images/exercises/drone_tello/drone_tello1.png
     image_path: /assets/images/exercises/drone_tello/drone_tello1.png
     alt: "Drone Tello."
-    title: "Drone Tello."
+    title: "DJI Tello Drone"
 
 ---
 ## Goal
 
-The goal of this exercise is to implement the logic to make the tello drone be able to take off, draw a square with its flight and land back in the same place from which it took off.
+The goal of this exercise is to implement the logic to make the Tello drone take off, draw a square with its flight, and land back in the same place from which it took off.
 
-<!-- <img src="/RoboticsAcademy/assets/images/exercises/drone_tello/drone_tello1.png" width="100%" height="60%"> -->
+{% include gallery caption="DJI Tello Drone" %}
 
-{% include gallery caption="Gallery." %}
+## Instructions
 
-**Note**: If you haven't, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made, how to launch a RoboticsBackend and how to perform the exercises.
+This is a **real robot exercise**, which means you will be programming an actual DJI Tello drone instead of a simulation. Please ensure you have the physical drone available before attempting this exercise.
+
+### Requirements
+
+- DJI Tello drone (fully charged)
+- Computer with WiFi capability
+- Python 3.x installed
+- Open space for safe drone flight (minimum 3m x 3m area)
+
+### Connecting to the Tello Drone
+
+1. **Power on the Tello drone** by pressing the power button on the side.
+2. **Wait for the LED** to blink yellow, indicating the drone is ready to connect.
+3. **Connect your computer to the Tello's WiFi network** (named "TELLO-XXXXXX").
+4. Once connected, the LED will turn solid green.
+
+### Installing Dependencies
+
+Install the required Python packages:
+
+```bash
+pip install djitellopy opencv-python
+```
+
+### Where to Insert the Code?
+
+Create a Python file and use the following template:
+
+```python
+from HAL import HAL
+from GUI import GUI
+import time
+
+# Take off first
+HAL.takeoff()
+time.sleep(2)  # Wait for stable hover
+
+# Enter your square flight logic here
+# Example: Move forward, turn, repeat 4 times
+
+# Land when done
+HAL.land()
+```
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+### Importing the Libraries
+
+* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Tello drone.
 * `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-### Sensors and drone state
 
-* `HAL.getImage()` - The user receives the last image perceived by the Tello drone's built-in camera.
-* `HAL.takeoff()` - Causes the Tello to take off at a predetermined height of one meter.
-* `HAL.land()` - Causes the Tello to land from the place where it is.
-* `HAL.pause()` - Causes the Tello to stop at the place where it receives the call, restarting speeds it had previously commanded.
-* `HAL.turn_left(degrees)` - Tello will turn __degrees__ counterclockwise.
-* `HAL.turn_right(degrees)` - Tello will turn __degrees__ clockwise.
-* `HAL.forward(distance)` - Tello will move __distance__ (measured in cm) forward
-* `HAL.up(distance)` - Tello will move __distance__ (measured in cm) upward
-* `HAL.left(distance)` - Tello will move __distance__ (measured in cm) to the left
-* `HAL.right(distance)` - Tello will move __distance__ (measured in cm) to the right
-* `HAL.back(distance)` - Tello will move __distance__ (measured in cm) backward
-* `HAL.setVX` - Tello will move __velocity__ (measured in cm/s) in X
-* `HAL.setVY` - Tello will move __velocity__ (measured in cm/s) in Y
-* `HAL.setVZ` - Tello will move __velocity__ (measured in cm/s) in Z
-* `HAL.setW` - Tello will turn __wvelocity__ (measured in cm/s) clockwise
+### Sensors and Drone State
 
-### Actuators and drone control
+* `HAL.getImage()` - Returns the last image captured by the Tello drone's built-in camera as a cv2 image.
+* `HAL.takeoff()` - Commands the Tello to take off to a predetermined height of approximately one meter.
+* `HAL.land()` - Commands the Tello to land at its current position.
+* `HAL.pause()` - Stops the Tello at its current position, resetting any previously commanded velocities.
 
-The three following drone control functions are *non-blocking*, i.e. each time you send a new command to the aircraft it immediately discards the previous control command. 
+### Movement Commands (Distance-based)
 
-### Theory 
+* `HAL.forward(distance)` - Moves the Tello forward by the specified distance (in cm).
+* `HAL.back(distance)` - Moves the Tello backward by the specified distance (in cm).
+* `HAL.left(distance)` - Moves the Tello left by the specified distance (in cm).
+* `HAL.right(distance)` - Moves the Tello right by the specified distance (in cm).
+* `HAL.up(distance)` - Moves the Tello upward by the specified distance (in cm).
+* `HAL.down(distance)` - Moves the Tello downward by the specified distance (in cm).
 
-The main principle that allows a drone to fly is related to aerodynamics, specifically, a principle known as Bernoulli's Principle.
+### Rotation Commands
 
-Bernoulli's Principle explains how the movement of air over a surface can generate lift. This principle is essential for understanding how drones, airplanes, and other types of aircraft can fly.
+* `HAL.turn_left(degrees)` - Rotates the Tello counterclockwise by the specified degrees.
+* `HAL.turn_right(degrees)` - Rotates the Tello clockwise by the specified degrees.
 
-In a drone, the rotors or propellers play a crucial role in generating lift. When the drone's motors spin the rotors, this causes air to be pushed downwards, creating an upward force known as lift. This lift needs to be greater than the drone's weight for it to ascend.
+### Velocity Commands
 
-There are also four primary forces acting on a drone: lift, weight (or gravity), thrust, and drag.
+* `HAL.setVX(velocity)` - Sets the velocity in the X direction (forward/backward) in cm/s.
+* `HAL.setVY(velocity)` - Sets the velocity in the Y direction (left/right) in cm/s.
+* `HAL.setVZ(velocity)` - Sets the velocity in the Z direction (up/down) in cm/s.
+* `HAL.setW(velocity)` - Sets the angular velocity (yaw rate) in degrees/s.
 
-    Lift is the upward force generated by the drone's propellers.
-    Weight, or gravity, is the downward force pulling the drone towards the ground.
-    Thrust is the force that propels the drone forward.
-    Drag is the resistance encountered by the drone as it moves through the air.
+### Emergency
 
-By managing these four forces, a drone can lift off, hover, and move in any direction. The drone's on-board computer systems and sensors help to balance these forces and control the drone's flight.
+* `HAL.emergency()` - **IMPORTANT**: Immediately stops all motors. Use this in case of emergency to prevent crashes.
 
-Additionally, drones utilize a method known as differential thrust for maneuvering and stability. This involves varying the speed of each rotor to make the drone pitch (tilt forward and backward), roll (tilt side to side), or yaw (rotate around a vertical axis).
+### GUI Functions
 
-### Drone cameras
+* `GUI.showImage(image)` - Displays the camera image in the GUI.
 
-* You will be able to see the drone's front camera at all times while it operates.
+## Theory
+
+### How Drones Fly
+
+The main principle that allows a drone to fly is related to aerodynamics, specifically Bernoulli's Principle, which explains how the movement of air over a surface can generate lift.
+
+In a drone, the rotors or propellers play a crucial role in generating lift. When the drone's motors spin the rotors, air is pushed downwards, creating an upward force known as lift. This lift needs to be greater than the drone's weight for it to ascend.
+
+### Four Primary Forces
+
+There are four primary forces acting on a drone:
+
+1. **Lift** - The upward force generated by the drone's propellers
+2. **Weight (Gravity)** - The downward force pulling the drone towards the ground
+3. **Thrust** - The force that propels the drone in a direction
+4. **Drag** - The air resistance encountered as the drone moves
+
+### Differential Thrust
+
+Drones utilize differential thrust for maneuvering and stability. This involves varying the speed of each rotor to make the drone:
+- **Pitch** - Tilt forward and backward
+- **Roll** - Tilt side to side
+- **Yaw** - Rotate around a vertical axis
+
+### Drawing a Square
+
+To draw a square with the drone, you need to:
+1. Move forward a fixed distance
+2. Turn 90 degrees
+3. Repeat steps 1-2 four times
+4. Return to the starting position
 
 ## Hints
 
 Simple hints provided to help you solve the drone_tello exercise. Please note that the **full solution has not been provided.**
 
-### Take off before performing any action
-The drone will not perform any action provided to it if it has not taken off before, please note that the take-off takes a couple of seconds before it is fully completed.
+### Take Off Before Any Action
 
-### Warnings
+The drone will not perform any movement commands if it has not taken off first. Note that the take-off process takes a couple of seconds to complete fully. Always add a delay after takeoff:
 
-### Drone inaccuracy
+```python
+HAL.takeoff()
+time.sleep(2)  # Wait for stable hover
+```
 
-Keep in mind that the drone stays in a still place thanks to the sensor underneath it. It uses an infrared sensor, where depending on the ground it bounces on it can get noise. It can also happen that the 90 degrees that it rotates are not exactly 90 degrees due to the motors, propellers or battery of the drone.
+### Use Time Delays Between Commands
 
-### Drone connection
+The Tello drone needs time to complete each movement. Add appropriate delays between commands:
 
-The connection with the Tello works because it creates a wifi network to which the user connects from his machine. This connection can be unstable due to external factors.
-Make sure you are connected to the Tello network before running the exercise.
+```python
+HAL.forward(100)  # Move forward 100cm
+time.sleep(2)     # Wait for movement to complete
+HAL.turn_right(90)  # Turn 90 degrees
+time.sleep(1)     # Wait for turn to complete
+```
 
-### Drone emergency
+### Square Flight Example Structure
 
-In case you notice that the behavior of the drone you have programmed may lead to a crash, remember that you have the HAL.emergency() function that stops the drone motors immediately. Keep this function in mind to avoid possible accidents with the drone.
+```python
+from HAL import HAL
+import time
+
+# Take off
+HAL.takeoff()
+time.sleep(2)
+
+# Draw square (4 sides)
+for i in range(4):
+    HAL.forward(100)  # Move forward 100cm (1 meter)
+    time.sleep(2)
+    HAL.turn_right(90)  # Turn 90 degrees clockwise
+    time.sleep(1)
+
+# Land
+HAL.land()
+```
+
+## Troubleshooting
+
+### Drone Inaccuracy
+
+Keep in mind that the drone maintains its position using an infrared sensor underneath it. Depending on the ground surface, the sensor may receive noise. The 90-degree turns may not be exactly 90 degrees due to variations in motors, propellers, or battery level.
+
+**Tips for better accuracy:**
+- Fly over a flat, non-reflective surface
+- Ensure the battery is fully charged
+- Calibrate the drone before flight if possible
+
+### WiFi Connection Issues
+
+The Tello creates a WiFi network for communication. This connection can be unstable due to:
+- Distance from the drone
+- WiFi interference from other devices
+- Physical obstacles
+
+**Before running the exercise:**
+1. Ensure you are connected to the Tello WiFi network
+2. Stay within 10 meters of the drone
+3. Minimize interference from other WiFi networks
+
+### Emergency Procedures
+
+In case the drone behaves unexpectedly or is about to crash:
+
+1. **Use the emergency stop**: Call `HAL.emergency()` in your code
+2. **Physical intervention**: Carefully grab the drone from below (avoid the propellers)
+3. **Power off**: Press and hold the power button
+
+**Always have the emergency function ready:**
+
+```python
+try:
+    # Your flight code here
+    HAL.takeoff()
+    # ... movements ...
+    HAL.land()
+except Exception as e:
+    print(f"Error: {e}")
+    HAL.emergency()  # Emergency stop
+```
+
+## Safety Guidelines
+
+1. **Clear the area** - Ensure no people or obstacles are within the flight zone
+2. **Indoor flight** - Fly indoors or in calm weather conditions
+3. **Battery check** - Ensure battery is above 20% before starting
+4. **Propeller inspection** - Check propellers for damage before each flight
+5. **Keep line of sight** - Always maintain visual contact with the drone
 
 ---------
 
 ## Contributors
 
 - Contributors: [Guillermo Bernal](https://github.com/gbernalr).
+- Maintained by [JdeRobot](https://github.com/JdeRobot).
