@@ -14,6 +14,10 @@ gallery:
   - url: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     image_path: /assets/images/exercises/laser_mapping/laser_mapping_teaser.png
     alt: "Vacuum"
+  - url: /assets/images/exercises/laser_mapping/warehouse_birdseye.png
+    image_path: /assets/images/exercises/laser_mapping/warehouse_birdseye.png
+    alt: "Warehouse Bird's Eye View"
+    title: "Warehouse Environment"
 
 Occupancy_grid:
   - url: /assets/images/exercises/laser_mapping/occupancy_grid.png
