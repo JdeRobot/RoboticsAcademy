@@ -110,9 +110,9 @@ feature_row:
   - image_path: /assets/images/exercises/drone_tello/drone_tello1.png
     alt: "Real Drone Tello Square"
     title: "Real Drone Tello Square"
-    excerpt: "Draw a square with its flight and land back in the same place."
+    excerpt: "Program a real DJI Tello drone to take off, draw a square pattern, and land back at the starting position."
     url: "/exercises/Drones/drone_tello"
-    status: "prototype"
+    status: "running"
     order: 0;
     version: "v3.2"
 ---

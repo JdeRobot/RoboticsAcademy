@@ -22,6 +22,8 @@ The goal of this exercise is to implement the logic to make the Tello drone take
 
 {% include gallery caption="DJI Tello Drone" %}
 
+**Note**: If you haven't already, take a look at the [user guide](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to understand how the installation is made and how to perform the exercises.
+
 ## Instructions
 
 This is a **real robot exercise**, which means you will be programming an actual DJI Tello drone instead of a simulation. Please ensure you have the physical drone available before attempting this exercise.
@@ -240,6 +242,16 @@ except Exception as e:
 3. **Battery check** - Ensure battery is above 20% before starting
 4. **Propeller inspection** - Check propellers for damage before each flight
 5. **Keep line of sight** - Always maintain visual contact with the drone
+
+## Videos
+
+*Demonstration video coming soon*
+
+## References
+
+- [DJI Tello Official Page](https://www.ryzerobotics.com/tello)
+- [DJITelloPy Library](https://github.com/damiafuentes/DJITelloPy)
+- [Tello SDK 2.0 User Guide](https://dl-cdn.ryzerobotics.com/downloads/Tello/Tello%20SDK%202.0%20User%20Guide.pdf)
 
 ---------
 
