@@ -51,10 +51,36 @@ Here the intention is to develop some basic exercises about computer vision. You
 
 ## Exercise API
 
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
-* `WebGUI.getImage()` - to get the image. It can be None.
-* `WebGUI.showImage()` - allows you to view a debug image or one with relevant information.
+### HAL-based Implementation
+
+#### Python
+
+* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `WebGUI.getImage()` - to get the image (numpy array). It can be None.
+* `WebGUI.showImage(image)` - allows you to view a debug image or one with relevant information.
+
+### ROS 2-native Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication.
+
+* `/webcam/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
+* `/webgui_image` - Publish to this topic to send the processed image to the GUI. Message type: `sensor_msgs/msg/Image`
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+* `rclpy.spin()` - Event-driven execution using callbacks.
+* `rclpy.spin_once()` - Single-step processing, often with custom timers.
+* `rclpy.Rate()` - Loop-based frequency control.
 
 ## Theory
 In this exercise different computer vision functionalities are proposed for their implementation:
@@ -141,7 +167,7 @@ The Hough transform must be applied to the image. The Hough Transform is a techn
 
 ## Contributors
 
-- Contributors: [Jose María Cañas](https://github.com/jmplaza), [Vanessa Fernández](https://github.com/vmartinezf), [Jessica Fernández](https://github.com/jessiffmm), [Lucía Lishan Chen Huang](https://github.com/lu164)
+- Contributors: [Jose María Cañas](https://github.com/jmplaza), [Vanessa Fernández](https://github.com/vmartinezf), [Jessica Fernández](https://github.com/jessiffmm), [Lucía Lishan Chen Huang](https://github.com/lu164), [Ashish Ramesh](https://github.com/AshishRamesh).
 - Maintained by [Pankhuri Vanjani](https://github.com/pankhurivanjani) and [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
 
 
