@@ -299,7 +299,7 @@ const Video = () => {
               Click to browse a video file
             </Typography>
             <Typography variant="body2" color={textColor} sx={{ opacity: 0.7 }}>
-              Supports MP4, WebM, OGG
+              Supports MP4, MKV
             </Typography>
           </Box>
           <input
