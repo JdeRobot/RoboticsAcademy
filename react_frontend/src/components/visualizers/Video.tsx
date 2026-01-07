@@ -157,17 +157,6 @@ const Video = () => {
     }
   };
 
-  // Fullscreen
-  const toggleFullscreen = () => {
-    if (videoRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        videoRef.current.requestFullscreen();
-      }
-    }
-  };
-
   // Format time
   const formatTime = (time: number): string => {
     if (isNaN(time)) return "0:00";
@@ -299,13 +288,13 @@ const Video = () => {
               Click to browse a video file
             </Typography>
             <Typography variant="body2" color={textColor} sx={{ opacity: 0.7 }}>
-              Supports MP4, MKV
+              Supports MP4 Only
             </Typography>
           </Box>
           <input
             ref={fileInputRef}
             type="file"
-            accept=".mp4,.mkv,video/mp4,video/x-matroska"
+            accept="video/mp4"
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
@@ -469,20 +458,6 @@ const Video = () => {
                   <MenuItem value={1.5}>1.5x</MenuItem>
                   <MenuItem value={2}>2x</MenuItem>
                 </Select>
-
-                {/* Fullscreen */}
-                <IconButton
-                  onClick={toggleFullscreen}
-                  sx={{
-                    color: "#fff",
-                    "&:hover": {
-                      color: theme.palette.primary,
-                      bgcolor: "rgba(255,255,255,0.1)",
-                    },
-                  }}
-                >
-                  <Fullscreen />
-                </IconButton>
               </Stack>
             </Stack>
           </Box>
