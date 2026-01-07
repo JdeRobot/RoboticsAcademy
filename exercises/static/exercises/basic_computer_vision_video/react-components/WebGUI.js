@@ -39,7 +39,7 @@ function WebGUI() {
 
   return (
     <WebGUIContainer>
-      <WebGUIImage id="gui_canvas" src={image} style={{width: "100%"}}/>
+      <WebGUIImage id="gui_canvas" src={image} style={{height: "100%"}}/>
     </WebGUIContainer>
   );
 }

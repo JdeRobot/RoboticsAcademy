@@ -20,12 +20,16 @@ import {
   Fullscreen,
   UploadFile,
 } from "@mui/icons-material";
-import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
+import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIContainer from "Components/exercise/WebGUIContainer";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import { contrastSelector } from "jderobot-ide-interface";
-import { StyledVideo, StyledVideoContainer, StyledVideoInputContainer } from "Styles/visualizers/LocalVideo.styles";
+import {
+  StyledVideo,
+  StyledVideoContainer,
+  StyledVideoInputContainer,
+} from "Styles/visualizers/LocalVideo.styles";
 
 // constants
 const CANVAS_WIDTH = 320;
@@ -41,7 +45,7 @@ const Video = () => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [volume, setVolume] = useState<number>(1);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showControls, setShowControls] = useState<boolean>(false);
@@ -76,6 +80,7 @@ const Video = () => {
     e.stopPropagation();
 
     const file = e.dataTransfer.files[0];
+    console.log(file);
     if (file && file.type.startsWith("video/")) {
       const url = URL.createObjectURL(file);
       setVideoFile(url);
@@ -112,6 +117,7 @@ const Video = () => {
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration);
+      videoRef.current.muted = true; // Mute by default
     }
   };
 
@@ -148,17 +154,6 @@ const Video = () => {
     setPlaybackSpeed(speed);
     if (videoRef.current) {
       videoRef.current.playbackRate = speed;
-    }
-  };
-
-  // Fullscreen
-  const toggleFullscreen = () => {
-    if (videoRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        videoRef.current.requestFullscreen();
-      }
     }
   };
 
@@ -215,7 +210,7 @@ const Video = () => {
     }
   };
 
-  // Frame capture interval - 100 FPS when playing
+  // Frame capture interval - 20 FPS when playing
   useEffect(() => {
     if (isPlaying && videoFile) {
       // Start capturing frames
@@ -290,20 +285,16 @@ const Video = () => {
               color={textColor}
               sx={{ mb: 1, fontWeight: "normal" }}
             >
-              Drag and drop a video file here, or click to browse
+              Click to browse a video file
             </Typography>
-            <Typography
-              variant="body2"
-              color={textColor}
-              sx={{ opacity: 0.7 }}
-            >
-              Supports MP4, WebM, OGG
+            <Typography variant="body2" color={textColor} sx={{ opacity: 0.7 }}>
+              Supports MP4 Only
             </Typography>
           </Box>
           <input
             ref={fileInputRef}
             type="file"
-            accept="video/*"
+            accept="video/mp4"
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
@@ -403,7 +394,10 @@ const Video = () => {
                   <IconButton
                     onClick={toggleMute}
                     size="small"
-                    sx={{ color: "#fff", "&:hover": { color: theme.palette.primary } }}
+                    sx={{
+                      color: "#fff",
+                      "&:hover": { color: theme.palette.primary },
+                    }}
                   >
                     {isMuted || volume === 0 ? (
                       <VolumeOff />
@@ -464,20 +458,6 @@ const Video = () => {
                   <MenuItem value={1.5}>1.5x</MenuItem>
                   <MenuItem value={2}>2x</MenuItem>
                 </Select>
-
-                {/* Fullscreen */}
-                <IconButton
-                  onClick={toggleFullscreen}
-                  sx={{
-                    color: "#fff",
-                    "&:hover": {
-                      color: theme.palette.primary,
-                      bgcolor: "rgba(255,255,255,0.1)",
-                    },
-                  }}
-                >
-                  <Fullscreen />
-                </IconButton>
               </Stack>
             </Stack>
           </Box>
