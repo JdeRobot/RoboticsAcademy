@@ -77,3 +77,15 @@ def getLidarData():
 
 def setV(velocity):
     motor_node.sendV(float(velocity))
+
+
+def setW(angular):
+    motor_node.sendW(float(angular))
+
+
+def getV():
+    return motor_node.getV()
+
+
+def getW():
+    return motor_node.getW()

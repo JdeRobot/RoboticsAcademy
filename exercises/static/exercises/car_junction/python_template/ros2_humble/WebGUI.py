@@ -58,7 +58,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         if np.any(self.front_image):
             _, encoded_front_image = cv2.imencode(".JPEG", self.front_image)
-            b64_left = base64.b64encode(encoded_front_image).decode("utf-8")
+            b64_front = base64.b64encode(encoded_front_image).decode("utf-8")
             shape_front = self.front_image.shape
         else:
             b64_front = None
@@ -74,7 +74,7 @@ class WebGUI(MeasuringThreadingGUI):
 
     def setFrontImage(self, image):
         with self.image_lock:
-            self.left_image = image
+            self.front_image = image
 
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
