@@ -20,7 +20,7 @@ const WebGUI = () => {
   const [manager, setManager] = useState(exerciseContext.manager);
   var lastPose = undefined;
   const canvasRef = useRef(null);
-  const vacuumSize = 40;
+  const vacuumSize = 25;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -137,7 +137,7 @@ const WebGUI = () => {
               style={{
                 height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
                 marginLeft:
-                  -((vacuumSize * canvasRef.current.clientWidth) / 1012) / 2,
+                  -((vacuumSize * canvasRef.current.clientWidth) / 1012) / 4,
               }}
             />
           </div>
