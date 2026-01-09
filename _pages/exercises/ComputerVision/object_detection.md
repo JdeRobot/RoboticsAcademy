@@ -1,12 +1,12 @@
 ---
-permalink: /exercises/ComputerVision/human_detection
+permalink: /exercises/ComputerVision/object_detection
 title: ""
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Human Detection"
+toc_label: "TOC Visual Object Detection"
 toc_icon: "cog"
 
 <!--- layout: archive --->
@@ -14,14 +14,14 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 teaser:
-  - url: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
-    image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
-    alt: "Human Detection"
-    title: "Human Detection"
+  - url: /assets/images/exercises/object_detection/object_detection_teaser.jpeg
+    image_path: /assets/images/exercises/object_detection/object_detection_teaser.jpeg
+    alt: "Visual Object Detection"
+    title: "Visual Object Detection"
 
 instruction:
-  - url: /assets/images/exercises/human_detection/human-detection-exercise-instruction-img-1.png
-    image_path: /assets/images/exercises/human_detection/human-detection-exercise-instruction-img-1.png
+  - url: /assets/images/exercises/object_detection/object-detection-exercise-instruction-img-1.png
+    image_path: /assets/images/exercises/object_detection/object-detection-exercise-instruction-img-1.png
     alt: "Exercise instruction"
     title: "Exercise instruction"
 
@@ -30,15 +30,15 @@ youtubeId1: I0GhS3ePMHM
 
 <!-- title -->
 
-# Deep learning-based Human Detection Exercise
+# Deep learning-based Visual Object Detection Exercise
 
 <!-- cover photo -->
 
 {% include gallery id="teaser" caption="" %}
 
 <!-- descriptions -->
-<p style="text-align:justify;">The primary goal of the human detection exercise is to identify individuals in the video feed from a webcam and to draw a rectangular boundary around each person. This exercise supports live webcam video stream inference, allowing users to observe real-time human detection performance using their own trained models.</p>
-<p style="text-align:justify;">Users are expected to upload a deep learning-based object detection model in the <a href="https://onnx.ai/" target="_blank" ><strong>ONNX (Open Neural Network Exchange)</strong></a>  format. Users are encouraged to build and train their own human detection models using libraries such as <a href="https://pytorch.org/" target="_blank" ><strong>PyTorch</strong></a>  or <a href="https://www.tensorflow.org/" target="_blank" ><strong>TensorFlow</strong></a>. After training, the model must be exported to the ONNX format to ensure compatibility with the exercise environment.</p>
+<p style="text-align:justify;">The primary goal of the object detection exercise is to identify individuals in the video feed from a webcam and to draw a rectangular boundary around each person. This exercise supports live webcam video stream inference, allowing users to observe real-time object detection performance using their own trained models.</p>
+<p style="text-align:justify;">Users are expected to upload a deep learning-based object detection model in the <a href="https://onnx.ai/" target="_blank" ><strong>ONNX (Open Neural Network Exchange)</strong></a>  format. Users are encouraged to build and train their own object detection models using libraries such as <a href="https://pytorch.org/" target="_blank" ><strong>PyTorch</strong></a>  or <a href="https://www.tensorflow.org/" target="_blank" ><strong>TensorFlow</strong></a>. After training, the model must be exported to the ONNX format to ensure compatibility with the exercise environment.</p>
 
 <p style="text-align:justify;">After training, the model must be exported to the ONNX format to ensure compatibility with the exercise environment, and you must use the editor to write Python code that processes input from a live video feed, which is captured using your browser's webcam.</p>
 
@@ -146,7 +146,7 @@ This guide walks you through using the TensorFlow object detection API to train 
 ## Exercise Features
 
 - **Live Inference** - Perform live inference on the input feed from the web-cam.
-- **Upload own model** - You can upload your own human detection model.
+- **Upload own model** - You can upload your own object detection model.
   <!-- * **Video Inference** - Perform inference on an uploaded video. -->
   <!-- * **Model Benchmarking** - Evaluate the uploaded model by benchmarking against a ground truth dataset(Oxford Town Centre dataset).  -->
   <!-- * **Model Visualization** - Visualize and analyse the uploaded model to get a visual summary of the model, which will make it easier to identify trends and patterns, understand connections, and interact with your data. -->
