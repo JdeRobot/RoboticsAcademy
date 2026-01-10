@@ -30,7 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+# Application version string exposed to templates
 VERSION = "13082021"
+
 
 
 # Application definition
@@ -42,16 +44,25 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # Local applications
     "exercises",
-    "webpack_loader",  # Integrate React webpack bundles with Django
-    "rest_framework",  # Django Rest Framework
-    "academy.academy_rest_api.apps.AcademyRestApiConfig",  # Academy rest api application
-    "react_frontend.apps.ReactFrontendConfig",  # React frontend application
+
+    # Third-party applications
+    "webpack_loader",  # Integrates React webpack bundles with Django
+    "rest_framework",  # Django REST Framework
+
+    # Project-specific applications
+    "academy.academy_rest_api.apps.AcademyRestApiConfig",
+    "react_frontend.apps.ReactFrontendConfig",
+
+    # CORS handling
     "corsheaders",
 ]
 
+
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # Enable CORS headers
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -59,8 +70,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
+
 
 ROOT_URLCONF = "academy.urls"
 
@@ -93,7 +104,7 @@ WSGI_APPLICATION = "academy.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql",  # PostgreSQL database backend
         "NAME": "academy_db",
         "USER": "user-dev",
         "PASSWORD": "robotics-academy-dev",
@@ -151,7 +162,7 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Settings for django webpack loader
+# Configuration for django-webpack-loader to integrate React bundles
 WEBPACK_LOADER = {
     "DEFAULT": {
         "BUNDLE_DIR_NAME": "react_frontend/",
