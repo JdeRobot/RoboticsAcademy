@@ -89,7 +89,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getImage()` - to get the image (BGR8).
+* `HAL.getImage()` - to get the image (BGR8). *Note: This returns a standard OpenCV-compatible image array.*
 * `HAL.setV(velocity)` - to set the linear speed.
 * `HAL.setW(velocity)` - to set the angular velocity.
 * `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
@@ -98,7 +98,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 * `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL::get_image();` - to get the image (cv::Mat).
+* `HAL::get_image();` - to get the image (cv::Mat). *Note: Returns an OpenCV BGR image.*
 * `HAL::set_v(velocity);` - to set the linear speed.
 * `HAL::set_w(velocity);` - to set the angular velocity.
 * `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
