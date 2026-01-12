@@ -108,7 +108,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("webcam")) {
     toolsList.push({
-      component: <Camera />,
+      component: <Camera visible={showCamera}/>,
       icon: <CameraAltRoundedIcon />,
       name: "WebCam",
       group: "video-input",
@@ -119,7 +119,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("video")) {
     toolsList.push({
-      component: <Video />,
+      component: <Video visible={showVideo}/>,
       icon: <MovieRoundedIcon />,
       name: "Local video",
       group: "video-input",

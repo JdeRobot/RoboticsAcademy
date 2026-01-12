@@ -37,7 +37,7 @@ const CANVAS_HEIGHT = 240;
 const CAPTURE_FPS = 20; // Capture at 20 frames per second
 const CAPTURE_INTERVAL_MS = 1000 / CAPTURE_FPS; // 10ms
 
-const Video = () => {
+const Video = ({visible}:{visible:boolean}) => {
   const theme = useAcademyTheme();
 
   const [videoFile, setVideoFile] = useState<string | null>(null);
@@ -232,6 +232,17 @@ const Video = () => {
       }
     };
   }, [isPlaying, videoFile]);
+
+  useEffect(() => {
+    if (!visible) {
+      if (videoRef.current) {
+        if (isPlaying) {
+          videoRef.current.pause();
+          setIsPlaying(false);
+        }
+      }
+    }
+  }, [visible]);
 
   return (
     <WebGUIContainer>
