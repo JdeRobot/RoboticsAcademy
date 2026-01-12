@@ -1,4 +1,5 @@
 import { Box } from "@mui/system";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import React, { ReactNode } from "react";
 
 const WebGUIContainer = ({
@@ -8,6 +9,8 @@ const WebGUIContainer = ({
   id?: string;
   children?: ReactNode;
 }) => {
+  const theme = useAcademyTheme();
+
   return (
     <Box
       id={id}
@@ -19,6 +22,7 @@ const WebGUIContainer = ({
         width: "100%",
         height: "100%",
         textAlign: "center",
+        backgroundColor: theme.palette.bg
       }}
     >
       {children}

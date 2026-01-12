@@ -59,7 +59,7 @@
     "axios": "^1.12.0",
     "glob": "^8.0.3",
     "jderobot-commsmanager": "1.0.16",
-    "jderobot-ide-interface": "0.2.68",
+    "jderobot-ide-interface": "0.2.96",
     "jszip": "^3.10.1",
     "styled-components": "^5.3.6"
   },

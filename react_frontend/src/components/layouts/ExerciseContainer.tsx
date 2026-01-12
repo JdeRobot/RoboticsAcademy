@@ -100,6 +100,7 @@ const ExerciseContainer = ({
       component: children,
       icon: <ImportantDevicesRoundedIcon />,
       name: "Web Gui",
+      group: "debug-interface",
       active: showWebGUI,
       activate: setWebGUIVisible,
     });
@@ -107,9 +108,10 @@ const ExerciseContainer = ({
 
   if (tools.includes("webcam")) {
     toolsList.push({
-      component: <Video />,
+      component: <Camera />,
       icon: <CameraAltRoundedIcon />,
       name: "WebCam",
+      group: "video-input",
       active: showCamera,
       activate: setCameraVisible,
     });
@@ -119,7 +121,8 @@ const ExerciseContainer = ({
     toolsList.push({
       component: <Video />,
       icon: <MovieRoundedIcon />,
-      name: "video",
+      name: "Local video",
+      group: "video-input",
       active: showVideo,
       activate: setVideoVisible,
     });
