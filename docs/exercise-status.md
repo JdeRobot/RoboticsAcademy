@@ -5,12 +5,12 @@
 | Exercise ID | Python simpleAPI | Python ROS2 | C++ simpleAPI | C++ ROS2 | Simulator | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | Basic Vacuum Cleaner | ok | ok | ok | ok | Gazebo Harmonic + Classic | FSM | 
-| Follow Line | ok | ok | ok | ok | Gazebo11 | PID control |
+| Follow Line | ok | ok | ok | ok | Gazebo Harmonic + Classic | PID control |
 | Obstacle Avoidance | ok | | | | Gazebo Harmonic + Classic  | VFF |
 | Global navigation | ok | | | | Gazebo Harmonic + Classic | GPP |
 | Laser Gridmap mapping | ok | | | | Gazebo Harmonic | |
 | MonteCarlo Laser Loc | ok | | | | Gazebo Harmonic + Classic  | AMCL |
-| MonteCarlo Visual Loc | ok | | | | Gazebo 11 | AMCL |
+| MonteCarlo Visual Loc | ok | | | | Gazebo Harmonic + Classic | AMCL |
 | Marker-based visual Loc | ok | | | | Gazebo Harmonic | PnP | 
 | Localized Vacuum Cleaner | ok | | | | Gazebo Harmonic + Classic  | BSA | 
 | Autoparking | ok | | | | Gazebo Harmonic + Classic  | | 
@@ -28,7 +28,6 @@
 | Basic Computer Vision | ok | | | | none | | 
 | Digital Image Processing | ok | | | | none | | 
 | Pick and Place | ok | | | | Gazebo 11 | |
-| |
 | Machine Vision with industrial robot | ok | | | | Gazebo 11 | |
 | Road junction | ok | | | | Gazebo Harmonic | broken |
 | Drone Labyrinth escape |  | | | | | |  

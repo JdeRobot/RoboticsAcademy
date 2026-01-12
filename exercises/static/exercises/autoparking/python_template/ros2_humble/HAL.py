@@ -6,6 +6,7 @@ import sys
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
+from hal_interfaces.general.lidar import LidarNode
 
 # Hardware Abstraction Layer
 IMG_WIDTH = 320
@@ -33,6 +34,7 @@ odometry_node = OdometryNode("/prius_autoparking/odom")
 laser_front_node = LaserNode("/prius_autoparking/scan_front")
 laser_right_node = LaserNode("/prius_autoparking/scan_side")
 laser_back_node = LaserNode("/prius_autoparking/scan_back")
+lidar_node = LidarNode("/prius_autoparking/pc2")
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
@@ -40,6 +42,7 @@ executor.add_node(odometry_node)
 executor.add_node(laser_front_node)
 executor.add_node(laser_right_node)
 executor.add_node(laser_back_node)
+executor.add_node(lidar_node)
 
 
 def __auto_spin() -> None:
@@ -84,6 +87,15 @@ def getBackLaserData():
         laser = laser_back_node.getLaserData()
         timestamp = laser.timeStamp
     return laser
+
+
+def getLidarData():
+    lidar = lidar_node.getLidarData()
+    timestamp = lidar.timeStamp
+    while timestamp == 0.0:
+        lidar = lidar_node.getLidarData()
+        timestamp = lidar.timeStamp
+    return lidar
 
 
 def setV(velocity):

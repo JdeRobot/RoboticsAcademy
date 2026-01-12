@@ -1,20 +1,14 @@
 import { useState, useEffect } from "react";
-import { events } from "jderobot-commsmanager";
+import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import "./css/GUICanvas.css";
-import Car from "../resources/images/car-top-view.svg";
+import WebGUI3D from "Components/exercise/WebGUI3D";
+import WebGUIContainer from "Components/exercise/WebGUIContainer";
 
 const WebGUI = () => {
-  const meter = 73; // 1m = 73px
-
-  const [laser, setLaser] = useState([]);
-  const [maxRange, setMaxRange] = useState([]);
-  const [laser1, setLaser1] = useState([]);
-  const [maxRange1, setMaxRange1] = useState([]);
-  const [laser2, setLaser2] = useState([]);
-  const [maxRange2, setMaxRange2] = useState([]);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
+  const [reset, setReset] = useState(false);
+  const [pointsToPaint, setPointsToPaint] = useState(undefined);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -24,105 +18,87 @@ const WebGUI = () => {
     if (manager === null) {
       return;
     }
-    const callback = (message) => {
+
+    const updateCallback = (message) => {
+      if (message.data.update.lidar) {
+        const data = message.data.update;
+        var point = JSON.parse(data.lidar);
+        var pdata = [];
+        if (point != "") {
+          for (
+            let index = 0;
+            index < point.length;
+            index += Math.round(point.length / 2500)
+          ) {
+            pdata.push(point[index]);
+          }
+          setPointsToPaint(pdata);
+        }
+      }
       if (message.data.update.map) {
         const map_data = JSON.parse(message.data.update.map);
-        console.log(map_data);
-        setLaser(map_data.lasers[0]);
-        setLaser1(map_data.lasers[1]);
-        setLaser2(map_data.lasers[2]);
-        setMaxRange(map_data.ranges[0]);
-        setMaxRange1(map_data.ranges[1]);
-        setMaxRange2(map_data.ranges[2]);
-        console.log(map_data.ranges);
+        var pdata = [];
+        // Pose: 1.000000 -2.60000 0.500000
+        map_data.lasers[0].forEach((element) => {
+          if (element[0] < 600) {
+            const x = Math.cos(element[1]) * (element[0] / 2.5);
+            const y = Math.sin(element[1]) * (element[0] / 2.5);
+
+            pdata.push([x, 0.5, -y - 20, 255, 0, 0]);
+          }
+        });
+        // Pose: -1.100000 0.000000 0.500000
+        map_data.lasers[1].forEach((element) => {
+          if (element[0] < 600) {
+            const x = Math.cos(element[1]) * (element[0] / 2.5);
+            const y = Math.sin(element[1]) * (element[0] / 2.5);
+
+            pdata.push([y + 9, 0.5, x, 0, 255, 0]);
+          }
+        });
+        // Pose: 1.000000 2.60000 0.500000
+        map_data.lasers[2].forEach((element) => {
+          if (element[0] < 600) {
+            const x = Math.cos(element[1]) * (element[0] / 2.5);
+            const y = Math.sin(element[1]) * (element[0] / 2.5);
+
+            pdata.push([-x, 0.5, y + 20, 0, 0, 255]);
+          }
+        });
+        setPointsToPaint(pdata);
       }
       // Send the ACK of the msg
       manager.send("gui", "ack");
     };
 
-    manager.subscribe(events.UPDATE, callback);
+    const stateCallback = (message) => {
+      if (message.data.state === states.TOOLS_READY) {
+        try {
+          setReset(true);
+        } catch (error) {}
+      }
+    };
+
+    manager.subscribe(events.UPDATE, updateCallback);
+    manager.subscribe(events.STATE_CHANGED, stateCallback);
 
     return () => {
-      manager.unsubscribe(events.UPDATE, callback);
+      manager.unsubscribe(events.UPDATE, updateCallback);
+      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
     };
   }, [manager]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#363233",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <img src={Car} id="car" />
-      {laser.map((element) => {
-        var ang = -element[1];
-        var length = (element[0] / 75) * meter;
-        return (
-          <hr
-            className="laser-beam"
-            style={{
-              rotate: "z " + ang + "rad",
-              width: length + "px",
-              position: "absolute",
-              background:
-                "repeating-linear-gradient(to right,rgb(255, 112, 112),rgb(255, 112, 112) 73px,rgb(175, 29, 29)  73px,rgb(175, 29, 29) 146px)",
-              backgroundSize: "100% 1px",
-              bottom: "59%",
-              left: "50%",
-              transformOrigin: "0% 0%",
-              zIndex: "3",
-            }}
-          />
-        );
-      })}
-      {laser1.map((element) => {
-        var ang = -element[1] + Math.PI / 2;
-        var length = (element[0] / 75) * meter;
-        return (
-          <hr
-            className="laser-beam"
-            style={{
-              rotate: "z " + ang + "rad",
-              width: length + "px",
-              position: "absolute",
-              background:
-                "repeating-linear-gradient(to right,rgb(112, 138, 255),rgb(112, 138, 255) 73px,rgb(100, 198, 255) 73px,rgb(100, 198, 255) 146px)",
-              backgroundSize: "100% 1px",
-              bottom: "50%",
-              left: "52%",
-              transformOrigin: "0% 0%",
-              zIndex: "4",
-            }}
-          />
-        );
-      })}
-      {laser2.map((element) => {
-        var ang = -element[1] + Math.PI;
-        var length = (element[0] / 75) * meter;
-        return (
-          <hr
-            className="laser-beam"
-            style={{
-              rotate: "z " + ang + "rad",
-              width: length + "px",
-              position: "absolute",
-              background:
-                "repeating-linear-gradient(to right,rgb(112, 255, 119),rgb(112, 255, 119) 73px,rgb(18, 138, 14) 73px,rgb(18, 138, 14) 146px)",
-              backgroundSize: "100% 1px",
-              bottom: "41%",
-              left: "50%",
-              transformOrigin: "0% 0%",
-              zIndex: "3",
-            }}
-          />
-        );
-      })}
-    </div>
+    <WebGUIContainer>
+      <WebGUI3D
+        toPaint={pointsToPaint}
+        reset={reset}
+        setReset={setReset}
+        refreshPoints
+        id="canvas"
+        style={{ height: "100%", width: "100%" }}
+      />
+    </WebGUIContainer>
   );
 };
 

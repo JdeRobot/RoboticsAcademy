@@ -12,6 +12,16 @@ To find issues you can help with, go though the list of [good first issues](http
 
 Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
+## Opening a Pull Request
+
+If you have fixed an issue and want to share your fix create a pull request. If your pull request does not follow the next points it will not be accepted:
+
+* Fixes the issue related to the pull request
+* Does not contain any additional code than the one related to the fix
+* Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+
+If it breaks one of the points above you will be requested to change it and if you do not it will be closed.
+
 ## Questions, suggestions or new ideas
 
 Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant to it. New ideas and enhacements are also welcome as discussion posts.

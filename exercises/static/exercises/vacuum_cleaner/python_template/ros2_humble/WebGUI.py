@@ -4,7 +4,9 @@ import rclpy
 from rclpy.node import Node
 from rclpy.executors import SingleThreadedExecutor
 from nav_msgs.msg import Odometry
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from map import Map
 

@@ -57,4 +57,3 @@ export function HomepageProvider({ children }: { children?: ReactNode }) {
 }
 
 export default HomepageContext;
-

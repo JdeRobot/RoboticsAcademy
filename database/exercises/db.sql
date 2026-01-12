@@ -130,8 +130,8 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision
 16	follow_road	Drone Follow Road	Drone Follow Road exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_road
 17	pick_place	Pick and Place	Pick and Place exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place
-18	digit_classification	Digit Classification	Deep learning-based Digit Classification.	["Computer Vision","Deep Learning","Classification"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digit_classification
-19	human_detection	Human Detection	Deep learning-based human detection.	["Computer Vision","Deep Learning"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/human_detection
+18	image_classification	Image Classification	Deep learning-based Image Classification.	["Computer Vision","Deep Learning","Classification"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/image_classification
+19	object_detection	Visual Object Detection	Deep learning-based object detection.	["Computer Vision","Deep Learning"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/object_detection
 20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
@@ -139,7 +139,6 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
 25	machine_vision	Machine Vision	Machine Vision exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/machine_vision
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
-27	autoparking_lidar	Lidar Autoparking	Autoparking exercise with Lidar	["AUTONOMOUS DRIVING","SERVICE ROBOTS","ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/autoparking
 \.
 
 
@@ -194,7 +193,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 43	3	41	True
 44	3	42	True
 45	3	43	True
-46	27	44	True
+46	3	44	True
 47	6	11	False
 48	2	45	False
 49	5	45	False
@@ -206,6 +205,7 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 55	1	51	False
 56	1	52	False
 57	1	53	False
+58	12	54	False
 \.
 -- 30  16  3
 
@@ -291,10 +291,7 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 75	26	console
 76	26	simulator
 77	26	web_gui
-78	27	console
-79	27	simulator
-80	27	web_gui
-81	15	video
+78	15	video
 \.
 
 --
