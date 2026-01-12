@@ -149,6 +149,10 @@ const Camera = () => {
       return;
     }
 
+    if (manager.getState() === "tools_ready") {
+      dispatch({ type: "visiualReady", payload: true });
+    }
+
     const stateCallback = (message: ManagerMsg) => {
       if (message.data.state === "tools_ready") {
         dispatch({ type: "visiualReady", payload: true });
