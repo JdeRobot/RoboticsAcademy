@@ -67,7 +67,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 Use standard ROS 2 topics for direct communication.
 
-* `/webcam/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
+* `/input/image_raw` - Subscribe to this topic to receive input images (BGR8). Message type: `sensor_msgs/msg/Image`
 * `/webgui_image` - Publish to this topic to send the processed image to the GUI. Message type: `sensor_msgs/msg/Image`
 
 #### Python
@@ -180,4 +180,3 @@ The Hough transform must be applied to the image. The Hough Transform is a techn
 4. [https://opencv-python-tutroals.readthedocs.io/en/latest/index.html](https://opencv-python-tutroals.readthedocs.io/en/latest/index.html)
 5. [https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp](https://www.geeksforgeeks.org/python-visualizing-image-in-different-color-spaces/?ref=rp)
 6. [https://realpython.com/python-opencv-color-spaces/](https://realpython.com/python-opencv-color-spaces/)
-7. [https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468](https://medium.com/@jijupax/connect-the-webcam-to-docker-on-mac-or-windows-51d894c44468)
