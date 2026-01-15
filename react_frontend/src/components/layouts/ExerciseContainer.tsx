@@ -17,11 +17,11 @@ import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
 import Frequencies from "Components/statusBar/Frequencies";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
-import MovieRoundedIcon from "@mui/icons-material/MovieRounded";
 import Video from "Components/visualizers/Video";
 import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
+import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
 import { defaultCppCode, defaultPythonCode } from "Constants/code";
@@ -120,7 +120,7 @@ const ExerciseContainer = ({
   if (tools.includes("video")) {
     toolsList.push({
       component: <Video visible={showVideo}/>,
-      icon: <MovieRoundedIcon />,
+      icon: <OndemandVideoRoundedIcon />,
       name: "Local video",
       group: "video-input",
       active: showVideo,
