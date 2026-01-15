@@ -48,6 +48,7 @@ const base_file_cpp = {
 
 const ExerciseContainer = ({
   project,
+  name,
   multiLanguage,
   tools,
   url,
@@ -55,6 +56,7 @@ const ExerciseContainer = ({
   children,
 }: {
   project: string;
+  name: string;
   tools: string[];
   url?: string;
   hasDLModel: boolean;
@@ -210,7 +212,7 @@ const ExerciseContainer = ({
       const currManager = CommsManager.getInstance();
       console.log(currManager);
       await currManager.connect();
-      getUniverseList(project);
+      getUniverseList(name);
       console.log("Connected!", currManager.getState());
       connected.current = true;
       setManager(currManager);
@@ -292,7 +294,7 @@ const ExerciseContainer = ({
     <StyledExerciseContainer>
       <ExerciseProvider manager={manager} code={codeRef.current}>
         <ExerciseHeader
-          project={project}
+          project={name}
           language={multiLanguage ? language : undefined}
           setLanguage={setLanguage}
           url={url}
@@ -304,7 +306,7 @@ const ExerciseContainer = ({
         <IdeInterface
           commsManager={manager}
           connectManager={connectWithRetry}
-          project={project}
+          project={name}
           api={editorApi}
           viewers={toolsList}
           options={{ editor: { onlyOneFile: true, notShowSave: true } }}

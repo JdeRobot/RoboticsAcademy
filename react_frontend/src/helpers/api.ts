@@ -23,7 +23,7 @@ const getProjectExtraFiles = async (project: string, language: string) => {
   if (!project) throw new Error("Current Project name is not set");
   if (!language) throw new Error("Current Language is not set");
 
-  const apiUrl = "/exercises/user_code_zip/";
+  const apiUrl = "/academy/user_code_zip/";
   const response = await axios.post(
     apiUrl,
     {
@@ -44,7 +44,7 @@ const getProjectExtraFiles = async (project: string, language: string) => {
 const listUniverses = async (project: string) => {
   if (!project) throw new Error("Current Project name is not set");
 
-  const apiUrl = `/exercises/get_universes_list?project=${encodeURIComponent(
+  const apiUrl = `/academy/get_universes_list?project=${encodeURIComponent(
     project
   )}`;
 
@@ -58,25 +58,13 @@ const listUniverses = async (project: string) => {
   return response.data.universes_list;
 };
 
-const listExercises = async (): Promise<Exercise[]> => {
-  const apiUrl = `/api/v1/exercises/`;
-
-  const response = await axios.get(apiUrl);
-
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get tools.");
-  }
-
-  return response.data;
-};
-
 const getRoboticsBackendUniverse = async (
   project: string,
   universe: string
 ) => {
   if (!project) throw new Error("Current Project name is not set");
 
-  const apiUrl = `/exercises/get_docker_universe_data?universe=${encodeURIComponent(
+  const apiUrl = `/academy/get_docker_universe_data?universe=${encodeURIComponent(
     universe
   )}&project=${encodeURIComponent(project)}`;
 
@@ -101,5 +89,4 @@ export {
   getProjectExtraFiles,
   listUniverses,
   getRoboticsBackendUniverse,
-  listExercises,
 };

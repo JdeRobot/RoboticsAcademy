@@ -19,6 +19,8 @@ const aliases = () => {
     Styles: path.resolve(__dirname, "src/styles"),
     Types: path.resolve(__dirname, "src/types"),
     Constants: path.resolve(__dirname, "src/constants"),
+    Routes: path.resolve(__dirname, "src/routes"),
+    Api: path.resolve(__dirname, "src/api"),
     Common: path.resolve(__dirname, "../static/common"),
     exercises: path.resolve(__dirname, "../exercises/static/exercises"),
   };
@@ -28,8 +30,7 @@ const aliases = () => {
 
 module.exports = {
   entry: {
-    index: "./src/index.tsx",
-    exercise: "./src/exercise-index.tsx",
+    main: "./src/index.tsx",
   },
   output: {
     filename: "js/[name].[contenthash:8].js",

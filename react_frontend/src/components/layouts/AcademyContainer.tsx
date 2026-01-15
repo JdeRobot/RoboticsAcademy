@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { ExerciseCard } from "./../ExerciseCard";
 import { useHomepage } from "Contexts/HomepageContext";
 import { Exercise, Filters } from "src/types/exercises";
-import { listExercises } from "Helpers/api";
 import {
   StyledAcademyContainer,
   StyledAcademyLoadingMsg,
   StyledExerciseList,
 } from "Styles/layouts/AcademyContainer.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { getExerciseList } from "Api";
 
 const AcademyContainer = () => {
   const { getSearchBarText, getFilterItemsList } = useHomepage();
@@ -20,7 +20,7 @@ const AcademyContainer = () => {
   const filterText: string = getSearchBarText();
 
   const getExercises = async () => {
-    const exercises = await listExercises();
+    const exercises = await getExerciseList();
     setExerciseList(exercises);
     setLoading(false);
   };
