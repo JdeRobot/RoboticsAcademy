@@ -1,6 +1,6 @@
 """
 HAL (Hardware Abstraction Layer) for Basic Computer Vision Exercise
-Bridges frontend webcam images to ROS2 /webcam/image_raw topic
+Bridges frontend input images to ROS2 /input/image_raw topic
 """
 
 import rclpy
@@ -12,14 +12,14 @@ from cv_bridge import CvBridge, CvBridgeError
 from rclpy.node import Node
 
 
-class WebcamPublisher(Node):
-    """Publishes webcam images received from frontend to ROS2 topic"""
+class InputPublisher(Node):
+    """Publishes input images received from frontend to ROS2 topic"""
 
     def __init__(self):
-        super().__init__("webcam_publisher")
-        self.publisher = self.create_publisher(Image, "/webcam/image_raw", 10)
+        super().__init__("input_publisher")
+        self.publisher = self.create_publisher(Image, "/input/image_raw", 10)
         self.bridge = CvBridge()
-        self.get_logger().info("Webcam publisher initialized on /webcam/image_raw")
+        self.get_logger().info("Input publisher initialized on /input/image_raw")
 
     def publish_image(self, cv_image):
         """
@@ -79,29 +79,29 @@ def __auto_spin() -> None:
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
-# Create webcam publisher node
-webcam_publisher = WebcamPublisher()
+# Create input publisher node
+input_publisher = InputPublisher()
 
 # Setup executor and start background spin thread
 executor = rclpy.executors.MultiThreadedExecutor()
-executor.add_node(webcam_publisher)
+executor.add_node(input_publisher)
 executor_thread = threading.Thread(
     target=__auto_spin, daemon=True, name="hal_spin_thread"
 )
 executor_thread.start()
 
 
-def publish_webcam_image(cv_image):
+def publish_input_image(cv_image):
     """
-    Publish webcam image to ROS2 topic
+    Publish input image to ROS2 topic
 
-    This function is called by WebGUI when receiving webcam frames from the browser.
-    The image is published to /webcam/image_raw for ROS2 users to subscribe to.
+    This function is called by WebGUI when receiving input frames from the browser.
+    The image is published to /input/image_raw for ROS2 users to subscribe to.
 
     Args:
         cv_image: OpenCV image (numpy array) in BGR format
     """
-    if webcam_publisher is not None:
-        webcam_publisher.publish_image(cv_image)
+    if input_publisher is not None:
+        input_publisher.publish_image(cv_image)
     else:
-        print("Warning: webcam_publisher not initialized", file=sys.stderr)
+        print("Warning: input_publisher not initialized", file=sys.stderr)

@@ -25,7 +25,7 @@ class WebGUI(MeasuringThreadingGUI):
 
     Supports two modes:
     1. Python mode: getImage() and showImage() functions
-    2. ROS2 mode: /webcam/image_raw (input) and /webgui_image (output) topics
+    2. ROS2 mode: /input/image_raw (input) and /webgui_image (output) topics
     """
 
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -36,7 +36,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
-        # Webcam storage for Python mode
+        # Input storage for Python mode
         self.frame_rgb = None
         self.frame_rgb_lock = threading.Lock()
 
@@ -121,7 +121,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         Handles:
         - 'ack': Acknowledgment messages
-        - 'pick': Webcam image frames from browser
+        - 'pick': Input image frames from browser
         - 'introspection': Performance metrics
         """
         TIME_FRAME_SIZE = 20
@@ -132,7 +132,7 @@ class WebGUI(MeasuringThreadingGUI):
                 self.ack_frontend = True
 
         if "pick" in message:
-            self._handle_webcam_frame(message, TIME_FRAME_SIZE)
+            self._handle_input_frame(message, TIME_FRAME_SIZE)
 
         if "introspection" in message:
             info = message[len("introspection:") :]
@@ -141,9 +141,9 @@ class WebGUI(MeasuringThreadingGUI):
             except ValueError:
                 print(f"Invalid introspection format: {info}", file=sys.stderr)
 
-    def _handle_webcam_frame(self, message, time_frame_size):
+    def _handle_input_frame(self, message, time_frame_size):
         """
-        Handle incoming webcam frame from browser
+        Handle incoming input frame from browser
 
         Args:
             message: WebSocket message containing base64-encoded image
@@ -170,7 +170,7 @@ class WebGUI(MeasuringThreadingGUI):
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
             if img is None:
-                print("Warning: Failed to decode webcam image", file=sys.stderr)
+                print("Warning: Failed to decode input image", file=sys.stderr)
                 return
 
             # Store for Python getImage() and publish to ROS2
@@ -178,14 +178,14 @@ class WebGUI(MeasuringThreadingGUI):
                 self.frame_rgb = img
 
             # Publish to ROS2 topic for ROS2 users
-            HAL.publish_webcam_image(img)
+            HAL.publish_input_image(img)
 
             # Send acknowledgment
             ack_message = {"ack_img": "ack", "time": timestamp}
             self.send_to_client(json.dumps(ack_message))
 
         except Exception as e:
-            print(f"Error handling webcam frame: {e}", file=sys.stderr)
+            print(f"Error handling input frame: {e}", file=sys.stderr)
 
     def update_gui(self):
         """Prepares and sends image payload to the websocket server"""
@@ -258,7 +258,7 @@ class WebGUI(MeasuringThreadingGUI):
 
     def getImage(self):
         """
-        Get the latest webcam image (Python mode)
+        Get the latest input image (Python mode)
 
         Returns:
             OpenCV image (numpy array) or None if no image available
@@ -291,7 +291,7 @@ def showImage(image):
 
 def getImage():
     """
-    Get the latest webcam image
+    Get the latest input image
 
     Returns:
         OpenCV image (numpy array) or None if no image available
