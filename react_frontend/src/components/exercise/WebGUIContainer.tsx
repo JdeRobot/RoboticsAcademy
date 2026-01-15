@@ -23,6 +23,7 @@ const WebGUIContainer = ({
         height: "100%",
         textAlign: "center",
         backgroundColor: theme.palette.bg,
+        position: "relative"
       }}
     >
       {children}

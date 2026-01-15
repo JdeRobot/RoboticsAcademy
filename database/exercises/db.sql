@@ -141,6 +141,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 26	labyrinth_escape	Labyrinth Escape	Labyrinth Escape exercise	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/labyrinth_escape
 \.
 
+
 --
 -- Data for Name: exercises_universes; Type: TABLE DATA; Schema: public; Owner: user-dev
 --
@@ -290,6 +291,7 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 75	26	console
 76	26	simulator
 77	26	web_gui
+78	15	video
 \.
 
 --

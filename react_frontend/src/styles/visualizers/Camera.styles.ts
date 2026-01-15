@@ -45,7 +45,12 @@ const handleVisibility = (p: StyledWebCamVideoProps) => {
 };
 
 export const StyledWebCamVideo = styled.video<StyledWebCamVideoProps>`
-  width: 480px;
-  height: 360px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  objectFit: contain;
+  display: block;
   ${handleVisibility}
 `;

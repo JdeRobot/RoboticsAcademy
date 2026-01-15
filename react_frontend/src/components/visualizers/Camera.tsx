@@ -8,7 +8,7 @@ type CameraState = {
   startTime: number;
 };
 
-import { events, ManagerMsg } from "jderobot-commsmanager";
+import { events, ManagerMsg, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import {
   StyledCameraError,
@@ -61,7 +61,7 @@ const reducer = (state: CameraState, action: CameraAction): CameraState => {
 const timeFrameSize = 20;
 
 // camera
-const Camera = () => {
+const Camera = ({ visible }: { visible: boolean }) => {
   const exerciseContext = useExercise();
   const theme = useAcademyTheme();
   const [manager, setManager] = useState(exerciseContext.manager);
@@ -150,18 +150,19 @@ const Camera = () => {
     }
 
     const stateCallback = (message: ManagerMsg) => {
-      if (message.data.state === "tools_ready") {
+      const state = message.data.state;
+
+      if (state === states.TOOLS_READY) {
         dispatch({ type: "visiualReady", payload: true });
       }
-      if (message.data.state === "application_running") {
+      if (state === states.RUNNING) {
         dispatch({ type: "cameraPause", payload: false });
         dispatch({
           type: "udpateStartTime",
           payload: { startTime: performance.now() },
         });
-      } else if (message.data.state === "paused") {
+      } else if (state === states.PAUSED) {
         dispatch({ type: "cameraPause", payload: true });
-
         manager.send("gui", `introspection:${0}/${0}`);
 
         dispatch({
@@ -173,6 +174,7 @@ const Camera = () => {
 
     const updateCallback = (message: ManagerMsg) => {
       console.log("CallBack", message);
+      console.log("Inside");
       if (message.data.update.ack_img === "ack" && !isCameraPause) {
         captureFrame(); // call next frame
 
@@ -230,6 +232,41 @@ const Camera = () => {
     startTime,
     countFrames,
   ]);
+
+  useEffect(() => {
+    if (manager === null || !visible) {
+      dispatch({ type: "visiualReady", payload: false });
+      return;
+    }
+
+    const state = manager.getState();
+
+    if (state === states.TOOLS_READY) {
+      dispatch({ type: "visiualReady", payload: true });
+    }
+
+    if (state === states.RUNNING) {
+      dispatch({ type: "visiualReady", payload: true });
+      dispatch({ type: "cameraPause", payload: false });
+      dispatch({
+        type: "udpateStartTime",
+        payload: { startTime: performance.now() },
+      });
+    }
+
+    if (state === states.PAUSED) {
+      dispatch({ type: "visiualReady", payload: true });
+      dispatch({ type: "cameraPause", payload: true });
+      manager.send("gui", `introspection:${0}/${0}`);
+
+      dispatch({
+        type: "updateCountFrames",
+        payload: { countFrames: 0 },
+      });
+    }
+
+    captureFrame()
+  }, [visible]);
 
   return (
     <WebGUIContainer>
