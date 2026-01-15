@@ -34,7 +34,6 @@ const getProjectData = async (projectId?: string): Promise<any> => {
 };
 
 const getExerciseList = async (): Promise<Exercise[]> => {
-
   const apiUrl = `/academy/get_exercise_list/`;
   const response = await axios.get(apiUrl);
 
@@ -46,4 +45,76 @@ const getExerciseList = async (): Promise<Exercise[]> => {
   return response.data.exercises;
 };
 
-export {getProjectData, getExerciseList};
+const getProjectExtraFiles = async (project: string, language: string) => {
+  if (!project) throw new Error("Current Project name is not set");
+  if (!language) throw new Error("Current Language is not set");
+
+  const apiUrl = "/academy/user_code_zip/";
+  const response = await axios.post(
+    apiUrl,
+    {
+      project: project,
+      language: language,
+    },
+    axiosExtra
+  );
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to create app."); // Response error
+  }
+
+  return response.data.files;
+};
+
+const listUniverses = async (project: string) => {
+  if (!project) throw new Error("Current Project name is not set");
+
+  const apiUrl = `/academy/get_universes_list?project=${encodeURIComponent(
+    project
+  )}`;
+
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get universes.");
+  }
+
+  return response.data.universes_list;
+};
+
+const getRoboticsBackendUniverse = async (
+  project: string,
+  universe: string
+) => {
+  if (!project) throw new Error("Current Project name is not set");
+
+  const apiUrl = `/academy/get_docker_universe_data?universe=${encodeURIComponent(
+    universe
+  )}&project=${encodeURIComponent(project)}`;
+
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(
+      response.data.message || "Failed to retrieve universe config"
+    ); // Response error
+  }
+
+  return {
+    world: response.data.universe.world,
+    robot: response.data.universe.robot,
+    tools: response.data.universe.tools,
+    tools_config: response.data.universe.tools_config,
+  };
+};
+
+export {
+  getProjectData,
+  getExerciseList,
+  getRoboticsBackendUniverse,
+  listUniverses,
+  getProjectExtraFiles,
+};

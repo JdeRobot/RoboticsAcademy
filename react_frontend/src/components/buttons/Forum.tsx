@@ -22,7 +22,9 @@ const ForumButton = () => {
       roundness={theme.roundness}
       id="forum-button"
       onClick={() => {
-        openInNewTab(new URL("https://github.com/JdeRobot/RoboticsAcademy/discussions"));
+        openInNewTab(
+          new URL("https://github.com/JdeRobot/RoboticsAcademy/discussions")
+        );
       }}
       title="Go to forum"
     >

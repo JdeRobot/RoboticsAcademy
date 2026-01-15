@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { useUnload } from "../../hooks/useUnload";
-import { CommsManager, states } from "jderobot-commsmanager";
 import React from "react";
+import { useState, useEffect, useRef } from "react";
+import { CommsManager, states } from "jderobot-commsmanager";
 
 import IdeInterface, {
   Entry,
@@ -13,7 +12,7 @@ import IdeInterface, {
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
-import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
+import { getRoboticsBackendUniverse, listUniverses } from "Api";
 import Frequencies from "Components/statusBar/Frequencies";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
@@ -21,7 +20,7 @@ import Video from "Components/visualizers/Video";
 import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
-import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
+import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
 import { defaultCppCode, defaultPythonCode } from "Constants/code";
@@ -110,7 +109,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("webcam")) {
     toolsList.push({
-      component: <Camera visible={showCamera}/>,
+      component: <Camera visible={showCamera} />,
       icon: <CameraAltRoundedIcon />,
       name: "WebCam",
       group: "video-input",
@@ -121,7 +120,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("video")) {
     toolsList.push({
-      component: <Video visible={showVideo}/>,
+      component: <Video visible={showVideo} />,
       icon: <OndemandVideoRoundedIcon />,
       name: "Local video",
       group: "video-input",

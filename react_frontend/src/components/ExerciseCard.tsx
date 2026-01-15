@@ -29,7 +29,7 @@ const ExerciseCard = ({
   };
 
   const navigateToExercise = (): void => {
-    navigate(`/academy/studio/${exercise_id}`, { viewTransition: true })
+    navigate(`/academy/studio/${exercise_id}`, { viewTransition: true });
   };
 
   const tagsList: string[] = JSON.parse(tags);

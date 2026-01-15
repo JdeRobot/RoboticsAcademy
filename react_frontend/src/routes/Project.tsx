@@ -36,7 +36,7 @@ const Exercise = () => {
     return (
       <HomepageProvider>
         <AcademyHeader />
-        <StyledStubBackground bgColor={theme.palette.bg}/>
+        <StyledStubBackground bgColor={theme.palette.bg} />
       </HomepageProvider>
     );
   }

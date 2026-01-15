@@ -14,7 +14,6 @@ const aliases = () => {
     Contexts: path.resolve(__dirname, "src/contexts"),
     Components: path.resolve(__dirname, "src/components"),
     Helpers: path.resolve(__dirname, "src/helpers"),
-    Hooks: path.resolve(__dirname, "src/hooks"),
     Icons: path.resolve(__dirname, "src/icons"),
     Styles: path.resolve(__dirname, "src/styles"),
     Types: path.resolve(__dirname, "src/types"),

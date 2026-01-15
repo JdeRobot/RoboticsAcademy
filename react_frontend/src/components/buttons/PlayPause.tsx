@@ -2,7 +2,6 @@ import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
-import { getProjectExtraFiles } from "Helpers/api";
 import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +12,7 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
+import { getProjectExtraFiles } from "Api";
 
 const PlayPauseButton = ({
   project,

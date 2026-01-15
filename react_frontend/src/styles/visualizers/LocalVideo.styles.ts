@@ -20,12 +20,11 @@ export const StyledVideoInputContainer = styled.div<StyledVideoInputContainerPro
   justify-content: center;
   position: relative;
   overflow: hidden;
-  z-index:0;
+  z-index: 0;
 
   &:hover {
-    box-shadow: inset 20px 0 40px ${(p) =>
-      p.color ?? primaryColor}, inset -20px 0 40px ${(p) =>
-    p.color ?? primaryColor};
+    box-shadow: inset 20px 0 40px ${(p) => p.color ?? primaryColor},
+      inset -20px 0 40px ${(p) => p.color ?? primaryColor};
     & .upload-bg: {
       opacity: 5%;
     }
@@ -51,7 +50,6 @@ export const StyledVideo = styled.video`
   top: 0;
   width: 100%;
   height: 100%;
-  objectFit: contain;
+  objectfit: contain;
   display: block;
 `;
-

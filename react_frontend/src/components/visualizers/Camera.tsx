@@ -265,7 +265,7 @@ const Camera = ({ visible }: { visible: boolean }) => {
       });
     }
 
-    captureFrame()
+    captureFrame();
   }, [visible]);
 
   return (
