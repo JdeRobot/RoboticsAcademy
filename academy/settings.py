@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "rest_framework",  # Django REST Framework
 
     # Project-specific applications
-    "academy.academy_rest_api.apps.AcademyRestApiConfig",
     "react_frontend.apps.ReactFrontendConfig",
 
     # CORS handling

@@ -19,11 +19,9 @@ from django.shortcuts import redirect
 from django.urls import include, path
 
 urlpatterns = [
-    path("exercises/", include("react_frontend.urls")),
+    path("academy/", include("react_frontend.urls")),
     path("admin/", admin.site.urls),
-    path("exercises/", include("exercises.urls")),
+    path("academy/", include("exercises.urls")),
     # path('', include('exercises.urls')),
-    path("", lambda request: redirect("exercises/", permanent=False)),
-    # rest api url
-    path("api/v1/", include("academy.academy_rest_api.urls")),
+    path("", lambda request: redirect("academy/", permanent=False)),
 ]
