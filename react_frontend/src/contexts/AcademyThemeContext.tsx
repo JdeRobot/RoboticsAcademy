@@ -50,7 +50,7 @@ const darkTheme: AcademyTheme = {
       "linear-gradient( -45deg, #12494c 0%, #584f42 50%, #909c7b 100%)",
   },
   roundness: 5,
-  viewRoundness: 0,
+  viewRoundness: 20,
   monacoTheme: "dark",
 };
 
@@ -96,7 +96,7 @@ const lightTheme: AcademyTheme = {
       "linear-gradient( -45deg, #12494c 0%, #584f42 50%, #909c7b 100%)",
   },
   roundness: 5,
-  viewRoundness: 0,
+  viewRoundness: 20,
   monacoTheme: "light",
 };
 

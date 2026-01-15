@@ -7,27 +7,20 @@ interface StyledAcademyContainerProps {
 }
 
 export const StyledAcademyContainer = styled.div<StyledAcademyContainerProps>`
-  padding-top: 28px;
-  padding-bottom: 28px;
+  padding: 28px;
   background-color: ${(p) => p.bgColor ?? primaryColor};
+  overflow: auto;
+  height: calc(100vh - 50px);
 `;
 
 export const StyledExerciseList = styled.div`
-  max-width: 1200px;
-  min-height: calc(100vh - 106px);
-  margin: 0 auto;
-  display: grid;
-  grid-gap: 1rem;
+  margin: 0px auto;
   padding: 8px;
-  grid-auto-rows: 1fr;
-
-  @media (min-width: 600px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (min-width: 900px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  display: flex;
+  flex-flow: wrap;
+  place-content: center;
+  align-items: center;
+  gap: 2rem;
 `;
 
 export const StyledAcademyLoadingMsg = styled.div`

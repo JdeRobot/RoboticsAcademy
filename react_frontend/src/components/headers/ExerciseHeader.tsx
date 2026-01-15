@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import { CommsManager, states } from "jderobot-commsmanager";
+import { Link } from "react-router-dom";
 import { LogoIcon } from "Icons/index";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
@@ -9,8 +9,6 @@ import {
   StyledHeaderText,
   StyledProject,
 } from "../../styles/headers/HeaderMenu.styles";
-
-
 
 import {
   HomeButton,
@@ -65,11 +63,11 @@ const ExerciseHeader = ({
           minHeight: "50px",
         }}
       >
-        <a href="http://127.0.0.1:7164/exercises/">
+        <Link to=".." viewTransition>
           <LogoIcon
             style={{ width: "40px", height: "40px", marginRight: "10px" }}
           />
-        </a>
+        </Link>
         <StyledHeaderText color={theme.palette.text}>
           Robotics Academy by JdeRobot
         </StyledHeaderText>

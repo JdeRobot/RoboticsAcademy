@@ -188,16 +188,17 @@ const ExerciseContainer = ({
   };
 
   useEffect(() => {
+    const manager = CommsManager.getInstance();
+    setManager(manager);
     subscribe("CommsManagerStateChange", resetUniverse);
 
     return () => {
       unsubscribe("CommsManagerStateChange", () => {});
+      const currManager = CommsManager.getInstance();
+      if (currManager) {
+        currManager.disconnect();
+      }
     };
-  }, []);
-
-  useEffect(() => {
-    const manager = CommsManager.getInstance();
-    setManager(manager);
   }, []);
 
   const connectWithRetry = async (
@@ -232,13 +233,6 @@ const ExerciseContainer = ({
       return setTimeout(waitManagerState, 100, state, callback);
     }
   };
-
-  useUnload(() => {
-    if (manager) {
-      manager.disconnect();
-      connected.current = false;
-    }
-  });
 
   useEffect(() => {
     saveFile(true);
