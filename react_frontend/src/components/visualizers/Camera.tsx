@@ -145,7 +145,7 @@ const Camera = ({ visible }: { visible: boolean }) => {
 
   // handle and udpate camera state, depending on RAM state
   useEffect(() => {
-    if (manager === null) {
+    if (manager === null || !visible) {
       return;
     }
 
