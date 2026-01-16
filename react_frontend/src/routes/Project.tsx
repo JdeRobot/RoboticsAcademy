@@ -1,70 +1,48 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
+import { Params, useLoaderData } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
 import { getProjectData } from "Api";
-import { HomepageProvider } from "Contexts/HomepageContext";
-import { AcademyHeader } from "Components/headers";
-import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import { StyledStubBackground } from "Styles/pages/Project.styles";
+import WebGUILoading from "Components/visualizers/WebGUILoading";
+import { ExerciseData } from "Types/exercises";
+
+export const loader = async ({
+  params,
+}: {
+  params: Params<string>;
+}): Promise<Omit<ExerciseData, "universes">> => {
+  return await getProjectData(params.proj_id);
+};
 
 const Exercise = () => {
-  const { proj_id } = useParams();
-  const theme = useAcademyTheme();
-  const infoRef = useRef<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const data = useLoaderData<Omit<ExerciseData, "universes">>();
 
-  const getInfo = async () => {
-    const newInfo = await getProjectData(proj_id);
-    infoRef.current = newInfo;
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getInfo();
-  }, []);
-
-  const WebGui = lazy(() =>
-    import(`exercises/${proj_id}/react-components/WebGUI.js`).catch((error) => {
+  const WebGui = lazy(async () => {
+    return import(
+      `exercises/${data.exercise_id}/react-components/WebGUI.js`
+    ).catch((error) => {
       console.error("Component Failed Loading:", error);
       return { default: WebGUIPreview };
-    })
-  );
-
-  if (infoRef.current === null || proj_id === undefined || loading) {
-    return (
-      <HomepageProvider>
-        <AcademyHeader />
-        <StyledStubBackground bgColor={theme.palette.bg} />
-      </HomepageProvider>
-    );
-  }
+    });
+  });
 
   return (
     <>
       <ExerciseContainer
-        hasDLModel={infoRef.current.tags.includes("Deep Learning")}
-        multiLanguage={infoRef.current.tags.includes("MULTILANGUAGE")}
-        project={proj_id}
-        name={infoRef.current.name}
-        tools={infoRef.current.tools}
-        url={infoRef.current.url !== "" ? infoRef.current.url : undefined}
+        hasDLModel={data.tags.includes("Deep Learning")}
+        multiLanguage={data.tags.includes("MULTILANGUAGE")}
+        project={data.exercise_id}
+        name={data.name}
+        tools={data.tools}
+        url={data.url !== "" ? data.url : undefined}
       >
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<WebGUILoading />}>
           <WebGui />
         </Suspense>
       </ExerciseContainer>
     </>
   );
 };
-
-function Loading() {
-  return (
-    <p>
-      <i>Loading...</i>
-    </p>
-  );
-}
 
 export default Exercise;

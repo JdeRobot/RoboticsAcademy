@@ -52,7 +52,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
     "@mui/system": "^5.10.9",
-    "@react-three/drei": "9.92.0",
+    "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "8.15.12",
     "@types/react-dom": "^18.2.0",
     "@types/styled-components": "^5.1.34",

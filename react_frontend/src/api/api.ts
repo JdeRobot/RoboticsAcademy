@@ -19,7 +19,9 @@ const axiosExtra = {
   },
 };
 
-const getProjectData = async (projectId?: string): Promise<any> => {
+const getProjectData = async (
+  projectId?: string
+): Promise<Omit<ExerciseData, "universes">> => {
   if (!projectId) throw new Error("Current Project ID is not set");
 
   const apiUrl = `/academy/get_info/?project_id=${projectId}`;
@@ -30,7 +32,10 @@ const getProjectData = async (projectId?: string): Promise<any> => {
     throw new Error(response.data.message || "Failed to create app."); // Response error
   }
 
-  return response.data.info;
+  const data = response.data.info;
+  data["exercise_id"] = projectId;
+
+  return data;
 };
 
 const getExerciseList = async (): Promise<Exercise[]> => {

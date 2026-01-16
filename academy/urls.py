@@ -22,6 +22,5 @@ urlpatterns = [
     path("academy/", include("react_frontend.urls")),
     path("admin/", admin.site.urls),
     path("academy/", include("exercises.urls")),
-    # path('', include('exercises.urls')),
     path("", lambda request: redirect("academy/", permanent=False)),
 ]
