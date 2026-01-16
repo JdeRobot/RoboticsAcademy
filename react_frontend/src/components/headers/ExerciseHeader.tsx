@@ -29,6 +29,7 @@ import { Layout } from "jderobot-ide-interface";
 
 const ExerciseHeader = ({
   project,
+  name,
   language,
   url,
   setLayout,
@@ -38,6 +39,7 @@ const ExerciseHeader = ({
   saving,
 }: {
   project: string;
+  name: string;
   language?: string;
   url?: string;
   setLayout: (layout: Layout) => void;
@@ -73,7 +75,7 @@ const ExerciseHeader = ({
         </StyledHeaderText>
 
         <StyledProject color={theme.palette.text}>
-          <div>{project}</div>
+          <div>{name}</div>
         </StyledProject>
         <StyledHeaderButtonContainer>
           <HomeButton />

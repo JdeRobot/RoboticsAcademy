@@ -48,8 +48,11 @@ const PlayPauseButton = ({
     _updateCode(data);
   };
 
-  const updateState = (e: any) => {
-    setState(e.detail.state);
+  const updateState = (e: unknown) => {
+    const T = CustomEvent<{ detail: unknown }>;
+    if (e instanceof T) {
+      setState(e.detail.state);
+    }
   };
 
   useEffect(() => {

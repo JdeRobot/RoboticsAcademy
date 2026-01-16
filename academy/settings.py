@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ["*"]
 VERSION = "13082021"
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,17 +43,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Local applications
     "exercises",
-
     # Third-party applications
     "webpack_loader",  # Integrates React webpack bundles with Django
     "rest_framework",  # Django REST Framework
-
     # Project-specific applications
     "react_frontend.apps.ReactFrontendConfig",
-
     # CORS handling
     "corsheaders",
 ]

@@ -1,11 +1,7 @@
 import json
 import os
-import subprocess
-import sys
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
 
 from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
@@ -54,9 +50,9 @@ def get_exercise_list(request):
 
 @error_wrapper("POST", ["project", "language"])
 def user_code_zip(request):
-    project_name = request.data.get("project")
+    project_id = request.data.get("project")
     language = request.data.get("language")
-    project = Exercise.objects.get(name=project_name)
+    project = Exercise.objects.get(exercise_id=project_id)
 
     template = "python_template"
 
@@ -92,9 +88,9 @@ def user_code_zip(request):
 
 @error_wrapper("GET", ["project"])
 def get_universes_list(request):
-    project_name = request.GET.get("project")
+    project_id = request.GET.get("project")
+    project = Exercise.objects.get(exercise_id=project_id)
 
-    project = Exercise.objects.get(name=project_name)
     universes_list = []
 
     proj_univs = project.universes.all()
@@ -114,9 +110,8 @@ def get_universes_list(request):
 @error_wrapper("GET", ["project"])
 def get_docker_universe_data(request):
     name = request.GET.get("universe")
-    project_name = request.GET.get("project")
-
-    project = Exercise.objects.get(name=project_name)
+    project_id = request.GET.get("project")
+    project = Exercise.objects.get(exercise_id=project_id)
 
     tools = []
     tools_config = {}

@@ -51,7 +51,7 @@ const getExerciseList = async (): Promise<Exercise[]> => {
 };
 
 const getProjectExtraFiles = async (project: string, language: string) => {
-  if (!project) throw new Error("Current Project name is not set");
+  if (!project) throw new Error("Current Project id is not set");
   if (!language) throw new Error("Current Language is not set");
 
   const apiUrl = "/academy/user_code_zip/";
@@ -73,7 +73,7 @@ const getProjectExtraFiles = async (project: string, language: string) => {
 };
 
 const listUniverses = async (project: string) => {
-  if (!project) throw new Error("Current Project name is not set");
+  if (!project) throw new Error("Current Project id is not set");
 
   const apiUrl = `/academy/get_universes_list?project=${encodeURIComponent(
     project
@@ -93,7 +93,7 @@ const getRoboticsBackendUniverse = async (
   project: string,
   universe: string
 ) => {
-  if (!project) throw new Error("Current Project name is not set");
+  if (!project) throw new Error("Current Project id is not set");
 
   const apiUrl = `/academy/get_docker_universe_data?universe=${encodeURIComponent(
     universe

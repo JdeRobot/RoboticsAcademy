@@ -180,9 +180,12 @@ const ExerciseContainer = ({
   // RB manager setup
   const connected = useRef<boolean>(false);
 
-  const resetUniverse = (e: any) => {
-    if (e.detail.state == states.IDLE) {
-      setUniverses(undefined);
+  const resetUniverse = (e: unknown) => {
+    const T = CustomEvent<{ detail: unknown }>;
+    if (e instanceof T) {
+      if (e.detail.state == states.IDLE) {
+        setUniverses(undefined);
+      }
     }
   };
 
@@ -212,7 +215,7 @@ const ExerciseContainer = ({
       const currManager = CommsManager.getInstance();
       console.log(currManager);
       await currManager.connect();
-      getUniverseList(name);
+      getUniverseList(project);
       console.log("Connected!", currManager.getState());
       connected.current = true;
       setManager(currManager);
@@ -291,7 +294,8 @@ const ExerciseContainer = ({
     <StyledExerciseContainer>
       <ExerciseProvider manager={manager} code={codeRef.current}>
         <ExerciseHeader
-          project={name}
+          project={project}
+          name={name}
           language={multiLanguage ? language : undefined}
           setLanguage={setLanguage}
           url={url}
@@ -303,7 +307,7 @@ const ExerciseContainer = ({
         <IdeInterface
           commsManager={manager}
           connectManager={connectWithRetry}
-          project={name}
+          project={project}
           api={editorApi}
           viewers={toolsList}
           options={{ editor: { onlyOneFile: true, notShowSave: true } }}
