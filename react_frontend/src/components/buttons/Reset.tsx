@@ -34,7 +34,7 @@ const ResetButton = () => {
     setLoading(true);
     try {
       await manager.terminateApplication();
-    } catch (e) {
+    } catch {
       error("Failed to reset the application. See the traces in the terminal.");
     }
     setLoading(false);

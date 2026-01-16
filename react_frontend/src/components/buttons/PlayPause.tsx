@@ -192,7 +192,7 @@ const PlayPauseButton = ({
               toLint,
               base64data as string
             );
-          } catch (e: unknown) {
+          } catch {
             error(
               "Failed to run the application. See the traces in the terminal."
             );
