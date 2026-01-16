@@ -7,7 +7,6 @@ const App = () => {
   return (
     <AcademyThemeProvider>
       <ErrorProvider>
-        
         <Outlet />
       </ErrorProvider>
     </AcademyThemeProvider>
