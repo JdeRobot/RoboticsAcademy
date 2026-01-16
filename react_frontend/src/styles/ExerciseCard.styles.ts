@@ -25,7 +25,7 @@ export const StyledExerciseCardContainer = styled.div<StyledExerciseCardContaine
   border: 5px solid;
   position: relative;
   overflow: hidden;
-  width: 100%;
+  width: 20rem;
   aspect-ratio: 9/10;
   ${handleStatus}
 `;

@@ -12,6 +12,7 @@ import {
   StyledExerciseCardInfoContainer,
   StyledExerciseCardTagList,
 } from "Styles/ExerciseCard.styles";
+import { useNavigate } from "react-router-dom";
 
 const ExerciseCard = ({
   exercise_id,
@@ -20,15 +21,15 @@ const ExerciseCard = ({
   tags,
   status,
 }: Exercise) => {
-  const exerciseURL: string = `${configuration.academy.exercises.exercise_url}`;
   const teaser = configuration.academy.exercises.teaser;
+  const navigate = useNavigate();
 
   const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
     (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
   };
 
   const navigateToExercise = (): void => {
-    window.location.href = exerciseURL.replace("${exerciseid}", exercise_id);
+    navigate(`/academy/studio/${exercise_id}`, { viewTransition: true });
   };
 
   const tagsList: string[] = JSON.parse(tags);

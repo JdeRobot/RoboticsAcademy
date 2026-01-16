@@ -17,13 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import include, path
+from . import views
 
 urlpatterns = [
-    path("exercises/", include("react_frontend.urls")),
     path("admin/", admin.site.urls),
-    path("exercises/", include("exercises.urls")),
-    # path('', include('exercises.urls')),
-    path("", lambda request: redirect("exercises/", permanent=False)),
-    # rest api url
-    path("api/v1/", include("academy.academy_rest_api.urls")),
+    path("academy/", include("react_frontend.urls")),
+    path("academy/", include("exercises.urls")),
+    path("", lambda request: redirect("academy/", permanent=False)),
+    path("save_exercise_db/", views.save_exercise_db, name="save_exercise_db"),
+    path("save_universe_db/", views.save_universe_db, name="save_universe_db"),
 ]

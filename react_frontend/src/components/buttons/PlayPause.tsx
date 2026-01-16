@@ -2,7 +2,6 @@ import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
-import { getProjectExtraFiles } from "Helpers/api";
 import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +12,7 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
+import { getProjectExtraFiles } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -41,15 +41,18 @@ const PlayPauseButton = ({
   );
   const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
-  const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
+  const [, _updateCode] = useState<boolean | undefined>(false);
 
   const updateCode = (data?: boolean) => {
     isCodeUpdatedRef.current = data;
     _updateCode(data);
   };
 
-  const updateState = (e: any) => {
-    setState(e.detail.state);
+  const updateState = (e: unknown) => {
+    const T = CustomEvent<{ detail: unknown }>;
+    if (e instanceof T) {
+      setState(e.detail.state);
+    }
   };
 
   useEffect(() => {
@@ -192,7 +195,7 @@ const PlayPauseButton = ({
               toLint,
               base64data as string
             );
-          } catch (e: unknown) {
+          } catch {
             error(
               "Failed to run the application. See the traces in the terminal."
             );

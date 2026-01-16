@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 import { Points, OrbitControls, Grid, Point } from "@react-three/drei";
 import { Canvas, Color, useFrame, useThree, Vector3 } from "@react-three/fiber";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -39,7 +40,7 @@ const WebGUI3D = ({
       return;
     }
 
-    let new_points = [];
+    const new_points = [];
 
     for (let i = 0; i < toPaint.length; i++) {
       const pose: Vector3 = [toPaint[i][0], toPaint[i][1], toPaint[i][2]];

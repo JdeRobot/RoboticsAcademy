@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { useUnload } from "../../hooks/useUnload";
-import { CommsManager, states } from "jderobot-commsmanager";
 import React from "react";
+import { useState, useEffect, useRef } from "react";
+import { CommsManager, states } from "jderobot-commsmanager";
 
 import IdeInterface, {
   Entry,
@@ -13,7 +12,7 @@ import IdeInterface, {
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
-import { getRoboticsBackendUniverse, listUniverses } from "Helpers/api";
+import { getRoboticsBackendUniverse, listUniverses } from "Api";
 import Frequencies from "Components/statusBar/Frequencies";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
@@ -21,7 +20,7 @@ import Video from "Components/visualizers/Video";
 import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
 import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
 import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
-import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
+import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
 import { defaultCppCode, defaultPythonCode } from "Constants/code";
@@ -48,6 +47,7 @@ const base_file_cpp = {
 
 const ExerciseContainer = ({
   project,
+  name,
   multiLanguage,
   tools,
   url,
@@ -55,6 +55,7 @@ const ExerciseContainer = ({
   children,
 }: {
   project: string;
+  name: string;
   tools: string[];
   url?: string;
   hasDLModel: boolean;
@@ -76,7 +77,7 @@ const ExerciseContainer = ({
   const [language, setLanguage] = useState<string>("python");
   const [fileSaved, saveFile] = useState<boolean>(false);
   const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
-  const [code, _setCode] = useState<string>(defaultPythonCode);
+  const [, _setCode] = useState<string>(defaultPythonCode);
   const codeRef = useRef<string>(defaultPythonCode);
 
   const setCode = (data: string) => {
@@ -108,7 +109,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("webcam")) {
     toolsList.push({
-      component: <Camera visible={showCamera}/>,
+      component: <Camera visible={showCamera} />,
       icon: <CameraAltRoundedIcon />,
       name: "WebCam",
       group: "video-input",
@@ -119,7 +120,7 @@ const ExerciseContainer = ({
 
   if (tools.includes("video")) {
     toolsList.push({
-      component: <Video visible={showVideo}/>,
+      component: <Video visible={showVideo} />,
       icon: <OndemandVideoRoundedIcon />,
       name: "Local video",
       group: "video-input",
@@ -179,23 +180,27 @@ const ExerciseContainer = ({
   // RB manager setup
   const connected = useRef<boolean>(false);
 
-  const resetUniverse = (e: any) => {
-    if (e.detail.state == states.IDLE) {
-      setUniverses(undefined);
+  const resetUniverse = (e: unknown) => {
+    const T = CustomEvent<{ detail: unknown }>;
+    if (e instanceof T) {
+      if (e.detail.state == states.IDLE) {
+        setUniverses(undefined);
+      }
     }
   };
 
   useEffect(() => {
+    const manager = CommsManager.getInstance();
+    setManager(manager);
     subscribe("CommsManagerStateChange", resetUniverse);
 
     return () => {
       unsubscribe("CommsManagerStateChange", () => {});
+      const currManager = CommsManager.getInstance();
+      if (currManager) {
+        currManager.disconnect();
+      }
     };
-  }, []);
-
-  useEffect(() => {
-    const manager = CommsManager.getInstance();
-    setManager(manager);
   }, []);
 
   const connectWithRetry = async (
@@ -217,26 +222,19 @@ const ExerciseContainer = ({
       if (callback) {
         waitManagerState(desiredState ? desiredState : "connected", callback);
       }
-    } catch (e: unknown) {
+    } catch {
       console.log("Connection failed, trying again!");
       setTimeout(connectWithRetry, 2000, desiredState, callback);
     }
   };
 
-  const waitManagerState = async (state: string, callback: any) => {
+  const waitManagerState = async (state: string, callback: () => void) => {
     if (manager?.getState() === state) {
       callback();
     } else {
       return setTimeout(waitManagerState, 100, state, callback);
     }
   };
-
-  useUnload(() => {
-    if (manager) {
-      manager.disconnect();
-      connected.current = false;
-    }
-  });
 
   useEffect(() => {
     saveFile(true);
@@ -262,9 +260,13 @@ const ExerciseContainer = ({
         return func(file);
       },
       save: (project: string, file: Entry, content: string) => {
-        console.log("saveFile", content);
+        const func = async () => {
+          return;
+        };
+        console.log("File saved");
+
         setCode(content);
-        return saveFile2(project, file.path, content);
+        return func();
       },
     },
     universes: {
@@ -293,6 +295,7 @@ const ExerciseContainer = ({
       <ExerciseProvider manager={manager} code={codeRef.current}>
         <ExerciseHeader
           project={project}
+          name={name}
           language={multiLanguage ? language : undefined}
           setLanguage={setLanguage}
           url={url}
@@ -322,15 +325,3 @@ const ExerciseContainer = ({
 };
 
 export default ExerciseContainer;
-
-function saveFile2(
-  project: string,
-  path: string,
-  content: string
-): Promise<void> {
-  const func = async () => {
-    return;
-  };
-
-  return func();
-}

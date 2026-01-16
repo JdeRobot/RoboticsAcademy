@@ -16,6 +16,8 @@
       "Styles/*": [ "src/styles/*"],
       "Types/*": [ "src/types/*"],
       "Constants/*": [ "src/constants/*"],
+      "Api": [ "src/api/index.ts"],
+      "Routes": [ "src/routes/index.ts"],
     },
     "baseUrl": "./",
     "rootDir": "./src",

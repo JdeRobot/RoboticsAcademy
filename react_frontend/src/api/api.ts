@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Exercise } from "src/types/exercises";
+import { Exercise, ExerciseData } from "Types/exercises";
 
 const isSuccessful = (response: AxiosResponse) => {
   return response.status >= 200 && response.status < 300;
@@ -19,11 +19,42 @@ const axiosExtra = {
   },
 };
 
+const getProjectData = async (
+  projectId?: string
+): Promise<Omit<ExerciseData, "universes">> => {
+  if (!projectId) throw new Error("Current Project ID is not set");
+
+  const apiUrl = `/academy/get_info/?project_id=${projectId}`;
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to create app."); // Response error
+  }
+
+  const data = response.data.info;
+  data["exercise_id"] = projectId;
+
+  return data;
+};
+
+const getExerciseList = async (): Promise<Exercise[]> => {
+  const apiUrl = `/academy/get_exercise_list/`;
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to create app."); // Response error
+  }
+
+  return response.data.exercises;
+};
+
 const getProjectExtraFiles = async (project: string, language: string) => {
-  if (!project) throw new Error("Current Project name is not set");
+  if (!project) throw new Error("Current Project id is not set");
   if (!language) throw new Error("Current Language is not set");
 
-  const apiUrl = "/exercises/user_code_zip/";
+  const apiUrl = "/academy/user_code_zip/";
   const response = await axios.post(
     apiUrl,
     {
@@ -42,9 +73,9 @@ const getProjectExtraFiles = async (project: string, language: string) => {
 };
 
 const listUniverses = async (project: string) => {
-  if (!project) throw new Error("Current Project name is not set");
+  if (!project) throw new Error("Current Project id is not set");
 
-  const apiUrl = `/exercises/get_universes_list?project=${encodeURIComponent(
+  const apiUrl = `/academy/get_universes_list?project=${encodeURIComponent(
     project
   )}`;
 
@@ -58,25 +89,13 @@ const listUniverses = async (project: string) => {
   return response.data.universes_list;
 };
 
-const listExercises = async (): Promise<Exercise[]> => {
-  const apiUrl = `/api/v1/exercises/`;
-
-  const response = await axios.get(apiUrl);
-
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get tools.");
-  }
-
-  return response.data;
-};
-
 const getRoboticsBackendUniverse = async (
   project: string,
   universe: string
 ) => {
-  if (!project) throw new Error("Current Project name is not set");
+  if (!project) throw new Error("Current Project id is not set");
 
-  const apiUrl = `/exercises/get_docker_universe_data?universe=${encodeURIComponent(
+  const apiUrl = `/academy/get_docker_universe_data?universe=${encodeURIComponent(
     universe
   )}&project=${encodeURIComponent(project)}`;
 
@@ -98,8 +117,9 @@ const getRoboticsBackendUniverse = async (
 };
 
 export {
-  getProjectExtraFiles,
-  listUniverses,
+  getProjectData,
+  getExerciseList,
   getRoboticsBackendUniverse,
-  listExercises,
+  listUniverses,
+  getProjectExtraFiles,
 };

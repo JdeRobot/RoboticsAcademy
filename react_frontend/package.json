@@ -52,7 +52,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.5",
     "@mui/system": "^5.10.9",
-    "@react-three/drei": "9.92.0",
+    "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "8.15.12",
     "@types/react-dom": "^18.2.0",
     "@types/styled-components": "^5.1.34",
@@ -61,6 +61,7 @@
     "jderobot-commsmanager": "1.0.16",
     "jderobot-ide-interface": "0.2.100",
     "jszip": "^3.10.1",
+    "react-router-dom": "^7.12.0",
     "styled-components": "^5.3.6"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"

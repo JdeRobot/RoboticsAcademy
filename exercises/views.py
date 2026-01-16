@@ -1,13 +1,7 @@
 import json
 import os
-import subprocess
-import sys
-from django.shortcuts import render
-from django.http import HttpResponse
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
 
 from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
@@ -15,19 +9,50 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-# TODO: Too many hardcoded strings, review
+@error_wrapper("GET", ["project_id"])
+def get_info(request):
+    project_id = request.GET.get("project_id")
+    project = Exercise.objects.get(exercise_id=project_id)
+
+    tools = []
+
+    for tool in project.tools.all():
+        tools.append(tool.name)
+
+    info = {
+        "name": project.name,
+        "tags": eval(project.tags),
+        "tools": tools,
+        "url": project.url,
+    }
+
+    return JsonResponse({"success": True, "info": info})
 
 
-def load_exercise(request, exercise_id):
-    exercise = Exercise.objects.get(exercise_id=exercise_id)
-    return render(request, "react_frontend/exercise.html", exercise.context)
+@error_wrapper("GET")
+def get_exercise_list(request):
+    project_list = []
+    projects = Exercise.objects.all()
+
+    for p in projects:
+        project_list.append(
+            {
+                "exercise_id": p.exercise_id,
+                "name": p.name,
+                "description": p.description,
+                "tags": p.tags,
+                "status": p.status,
+            }
+        )
+
+    return JsonResponse({"success": True, "exercises": project_list})
 
 
 @error_wrapper("POST", ["project", "language"])
 def user_code_zip(request):
-    project_name = request.data.get("project")
+    project_id = request.data.get("project")
     language = request.data.get("language")
-    project = Exercise.objects.get(name=project_name)
+    project = Exercise.objects.get(exercise_id=project_id)
 
     template = "python_template"
 
@@ -61,47 +86,11 @@ def user_code_zip(request):
         )
 
 
-@csrf_exempt
-@api_view(["GET"])
-def save_exercise_db(request):
-
-    subprocess.Popen(
-        [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.exercises --table public.exercises_universes --table public.exercises_tools > RoboticsAcademy/database/exercises/db.sql""",
-        ],
-        shell=True,
-        stdout=sys.stdout,
-        stderr=subprocess.STDOUT,
-        bufsize=1024,
-        universal_newlines=True,
-    )
-
-    return Response({"success": True})
-
-
-@csrf_exempt
-@api_view(["GET"])
-def save_universe_db(request):
-
-    subprocess.Popen(
-        [
-            """PGPASSWORD="robotics-academy-dev" pg_dump -U user-dev -d academy_db -h universe_db --table public.universes --table public.worlds --table public.robots --table public.tools > /universes.sql""",
-        ],
-        shell=True,
-        stdout=sys.stdout,
-        stderr=subprocess.STDOUT,
-        bufsize=1024,
-        universal_newlines=True,
-    )
-
-    return Response({"success": True})
-
-
 @error_wrapper("GET", ["project"])
 def get_universes_list(request):
-    project_name = request.GET.get("project")
+    project_id = request.GET.get("project")
+    project = Exercise.objects.get(exercise_id=project_id)
 
-    project = Exercise.objects.get(name=project_name)
     universes_list = []
 
     proj_univs = project.universes.all()
@@ -121,9 +110,8 @@ def get_universes_list(request):
 @error_wrapper("GET", ["project"])
 def get_docker_universe_data(request):
     name = request.GET.get("universe")
-    project_name = request.GET.get("project")
-
-    project = Exercise.objects.get(name=project_name)
+    project_id = request.GET.get("project")
+    project = Exercise.objects.get(exercise_id=project_id)
 
     tools = []
     tools_config = {}

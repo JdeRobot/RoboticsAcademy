@@ -97,10 +97,12 @@ const Camera = ({ visible }: { visible: boolean }) => {
         videoRef.current.srcObject = stream;
       }
       setMediaStream(stream);
-    } catch (error: any) {
-      const errorMessage = cameraErrorMessages[error.name];
-      setState(errorMessage ? errorMessage : `Something went wrong!`);
-      console.error("Error accessing webcam", error);
+    } catch (error: unknown) {
+      if (error instanceof DOMException || error instanceof TypeError) {
+        const errorMessage = cameraErrorMessages[error.name];
+        setState(errorMessage ? errorMessage : `Something went wrong!`);
+        console.error("Error accessing webcam", error);
+      }
     }
   };
 
@@ -265,7 +267,7 @@ const Camera = ({ visible }: { visible: boolean }) => {
       });
     }
 
-    captureFrame()
+    captureFrame();
   }, [visible]);
 
   return (
