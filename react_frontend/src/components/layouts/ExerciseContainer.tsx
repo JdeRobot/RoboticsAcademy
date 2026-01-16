@@ -77,7 +77,7 @@ const ExerciseContainer = ({
   const [language, setLanguage] = useState<string>("python");
   const [fileSaved, saveFile] = useState<boolean>(false);
   const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
-  const [code, _setCode] = useState<string>(defaultPythonCode);
+  const [, _setCode] = useState<string>(defaultPythonCode);
   const codeRef = useRef<string>(defaultPythonCode);
 
   const setCode = (data: string) => {
@@ -219,13 +219,13 @@ const ExerciseContainer = ({
       if (callback) {
         waitManagerState(desiredState ? desiredState : "connected", callback);
       }
-    } catch (e: unknown) {
+    } catch {
       console.log("Connection failed, trying again!");
       setTimeout(connectWithRetry, 2000, desiredState, callback);
     }
   };
 
-  const waitManagerState = async (state: string, callback: any) => {
+  const waitManagerState = async (state: string, callback: () => void) => {
     if (manager?.getState() === state) {
       callback();
     } else {
@@ -257,9 +257,13 @@ const ExerciseContainer = ({
         return func(file);
       },
       save: (project: string, file: Entry, content: string) => {
-        console.log("saveFile", content);
+        const func = async () => {
+          return;
+        };
+        console.log("File saved");
+
         setCode(content);
-        return saveFile2(project, file.path, content);
+        return func();
       },
     },
     universes: {
@@ -317,15 +321,3 @@ const ExerciseContainer = ({
 };
 
 export default ExerciseContainer;
-
-function saveFile2(
-  project: string,
-  path: string,
-  content: string
-): Promise<void> {
-  const func = async () => {
-    return;
-  };
-
-  return func();
-}

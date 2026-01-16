@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   Box,
-  Paper,
   Typography,
   IconButton,
   Slider,
@@ -17,7 +16,6 @@ import {
   VolumeUp,
   VolumeOff,
   VolumeDown,
-  Fullscreen,
   UploadFile,
 } from "@mui/icons-material";
 import CloudUploadRoundedIcon from "@mui/icons-material/CloudUploadRounded";
@@ -54,7 +52,7 @@ const Video = ({ visible }: { visible: boolean }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [capturedFrame, setCapturedFrame] = useState<string | null>(null);
+  // const [capturedFrame, setCapturedFrame] = useState<string | null>(null);
   const captureIntervalRef = useRef<number | null>(null);
 
   const textColor = contrastSelector(
@@ -193,7 +191,7 @@ const Video = ({ visible }: { visible: boolean }) => {
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imageDataUrl = canvas.toDataURL("image/jpeg");
-        setCapturedFrame(imageDataUrl);
+        // setCapturedFrame(imageDataUrl);
 
         // Here you can send the imageDataUrl via WebSocket or any other method
         const performance_t = performance.now();

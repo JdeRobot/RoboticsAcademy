@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import React from "react";
 
 interface AcademyThemeProviderProps {
-  theme?: any;
+  theme?: AcademyTheme;
   children?: ReactNode;
 }
 

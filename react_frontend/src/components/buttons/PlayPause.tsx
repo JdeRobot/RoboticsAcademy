@@ -41,7 +41,7 @@ const PlayPauseButton = ({
   );
   const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
-  const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
+  const [, _updateCode] = useState<boolean | undefined>(false);
 
   const updateCode = (data?: boolean) => {
     isCodeUpdatedRef.current = data;
