@@ -1,6 +1,7 @@
 import { ThemeProvider } from "jderobot-ide-interface";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { AcademyTheme } from "Types/index";
+import { flushSync } from 'react-dom';
 import React from "react";
 
 interface AcademyThemeProviderProps {
@@ -117,16 +118,20 @@ export const AcademyThemeProvider = ({
 
   const themeSwitchHandler = (themeType: string) => {
     window.localStorage.setItem("themeType", themeType);
-    switch (themeType) {
-      case "light":
-        setCurrentTheme(lightTheme);
-        break;
-      case "dark":
-        setCurrentTheme(darkTheme);
-        break;
-      default:
-        break;
-    }
+    document.startViewTransition(() => {
+      flushSync(() => {
+        switch (themeType) {
+          case "light":
+            setCurrentTheme(lightTheme);
+            break;
+          case "dark":
+            setCurrentTheme(darkTheme);
+            break;
+          default:
+            break;
+        }
+      });
+    });
   };
 
   if (theme) {
