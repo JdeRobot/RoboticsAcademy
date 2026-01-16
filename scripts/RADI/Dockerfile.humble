@@ -2,21 +2,27 @@ FROM jderobot/robotics-applications:dependencies-humble
 
 WORKDIR /
 
-# RoboticsInfrasctructure Repository
-ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
+# RoboticsInfrasctructure Repository (from anishk85 fork)
+ARG ROBOTICS_INFRASTRUCTURE=${ROBOTICS_INFRASTRUCTURE:-feature/pick-place-harmonic-launchers}
 RUN mkdir -p /opt/jderobot && \
-    git clone --depth 1 https://github.com/JdeRobot/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+    git clone --depth 1 https://github.com/anishk85/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+
+# IndustrialRobots Repository (from anishk85 fork)
+ARG INDUSTRIAL_ROBOTS=${INDUSTRIAL_ROBOTS:-feature/pick-place-harmonic-packages}
+RUN git clone --depth 1 https://github.com/anishk85/IndustrialRobots.git -b $INDUSTRIAL_ROBOTS /opt/jderobot/IndustrialRobots
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
 RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
+# Copy pick_place_harmonic_exercise packages to /home/ws/src for the exercise workspace
+RUN cp -r /opt/jderobot/IndustrialRobots/pick_place_harmonic_exercise/* /home/ws/src/
 RUN mv /opt/jderobot/resources /resources
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
-ARG RAM=$RAM
+ARG RAM=${RAM:-humble-devel}
 RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager
 
 # copy scripts
@@ -29,9 +35,9 @@ RUN mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml
 WORKDIR /
 RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dri_name.sh
 
-# RoboticsAcademy
-ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
-RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
+# RoboticsAcademy (from anishk85 fork)
+ARG ROBOTICS_ACADEMY=${ROBOTICS_ACADEMY:-feature/pick-place-harmonic}
+RUN git clone --depth 1 https://github.com/anishk85/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws

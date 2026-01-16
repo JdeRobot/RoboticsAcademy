@@ -83,6 +83,7 @@ RUN apt-get update \
 
 RUN apt-get update && apt-get install -y \
       ros-humble-ros-gzharmonic \
+      ros-humble-gz-ros2-control \
   && rm -rf /var/lib/apt/lists/*
 
 # Install VNC

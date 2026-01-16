@@ -1,0 +1,15 @@
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary files
+*.bak
+*.tmp
+*.swp
+*~
+
+# Test files (not for production)
+test_*.py
+exercise_test*.py
+debug_*.py
