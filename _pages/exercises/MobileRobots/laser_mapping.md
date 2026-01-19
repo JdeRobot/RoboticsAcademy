@@ -54,8 +54,8 @@ The goal of this exercise is to develop a navigation algorithm that allows a rob
 * `HAL.getOdom3().yaw` - to get the approximated orientation position of the robot (with even more noise than getOdom).
 * `HAL.setW()` - to set the angular velocity.
 * `HAL.setV()` - to set the linear velocity.
-* `HAL.getLaserData()` - to get the data of the LIDAR. Which consists of 360 values.
-* `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
+* `HAL.getLaserData().values` - to get the data of the LIDAR. Which consists of 360 values.
+* `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel adn returns the map coordinates relative to the world of the robot.
 * `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
 ## Theory
