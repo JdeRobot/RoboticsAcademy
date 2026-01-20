@@ -1,3 +1,10 @@
+"""
+API views for the exercises backend.
+
+Provides endpoints to retrieve exercise data, user templates,
+and universe configuration information.
+"""
+
 import json
 import os
 from django.conf import settings
@@ -11,11 +18,13 @@ from rest_framework import status
 
 @error_wrapper("GET", ["project_id"])
 def get_info(request):
+    """
+    Retrieve basic information about an exercise.
+    """
     project_id = request.GET.get("project_id")
     project = Exercise.objects.get(exercise_id=project_id)
 
     tools = []
-
     for tool in project.tools.all():
         tools.append(tool.name)
 
@@ -31,6 +40,9 @@ def get_info(request):
 
 @error_wrapper("GET")
 def get_exercise_list(request):
+    """
+    Return a list of all available exercises.
+    """
     project_list = []
     projects = Exercise.objects.all()
 
@@ -50,12 +62,14 @@ def get_exercise_list(request):
 
 @error_wrapper("POST", ["project", "language"])
 def user_code_zip(request):
+    """
+    Return template source files for a given exercise and language.
+    """
     project_id = request.data.get("project")
     language = request.data.get("language")
     project = Exercise.objects.get(exercise_id=project_id)
 
     template = "python_template"
-
     if language == "cpp":
         template = "cpp_template"
 
@@ -64,7 +78,6 @@ def user_code_zip(request):
         f"exercises/static/exercises/{project.exercise_id}/{template}/ros2_humble",
     )
 
-    print(exercise_path)
     files = []
 
     try:
@@ -82,12 +95,16 @@ def user_code_zip(request):
 
     except Exception as e:
         return Response(
-            {"success": False, "message": str(e)}, status=status.HTTP_400_BAD_REQUEST
+            {"success": False, "message": str(e)},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
 
 @error_wrapper("GET", ["project"])
 def get_universes_list(request):
+    """
+    Return the list of universes associated with an exercise.
+    """
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
 
@@ -109,6 +126,9 @@ def get_universes_list(request):
 
 @error_wrapper("GET", ["project"])
 def get_docker_universe_data(request):
+    """
+    Retrieve docker and universe configuration for an exercise.
+    """
     name = request.GET.get("universe")
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
@@ -178,10 +198,4 @@ def get_docker_universe_data(request):
             "tools_config": tools_configuration,
         }
 
-    # Return the list of projects
-    return Response(
-        {
-            "success": True,
-            "universe": config,
-        }
-    )
+    return Response({"success": True, "universe": config})
