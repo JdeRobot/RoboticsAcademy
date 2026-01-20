@@ -1,15 +1,16 @@
-from django.urls import path
+"""
+URL routing for the exercises backend.
 
+Defines API endpoints and maps them to their corresponding views.
+"""
+
+from django.urls import path
 from . import views
 
 urlpatterns = [
     path("get_info/", views.get_info, name="get_info"),
     path("get_exercise_list/", views.get_exercise_list, name="get_exercise_list"),
-    path(
-        "user_code_zip/",
-        views.user_code_zip,
-        name="user_code_zip",
-    ),
+    path("user_code_zip/", views.user_code_zip, name="user_code_zip"),
     path(
         "get_universes_list/",
         views.get_universes_list,
