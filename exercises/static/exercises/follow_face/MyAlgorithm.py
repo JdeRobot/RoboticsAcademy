@@ -61,6 +61,18 @@ class MyAlgorithm(threading.Thread):
         self.kill_event.set()
 
     def execute(self):
+        """
+        Main control loop hook where user vision/actuation logic should live.
+
+        The method grabs the latest frame from `self.camera` via `getImage()`,
+        mirrors it back to the GUI with `setColorImage()`, and is the right
+        place to add perception or motor commands (e.g., adjusting PT motors
+        through `self.motors`). If you want to visualize processed frames,
+        call `self.camera.setThresholdImage(processed_image)` inside this body.
+
+        Returns:
+            None: All side effects are performed through camera/motor objects.
+        """
         # Add your code here
         # Input image
         input_image = self.camera.getImage()

@@ -126,7 +126,18 @@ class Exercise(models.Model):
     @property
     def context(self):
         """
-        Build and return context
+        Build the context payload consumed by the frontend.
+
+        The method inspects the current ROS version via the `ROS_VERSION` env
+        variable, orders associated universes with the default first, and
+        assembles tool information and robot/world launch data.
+
+        Returns:
+            dict: A dictionary shaped as `{"exercise_data": {"universes": [...],
+                "tools": [str], "name": str, "exercise_id": str, "url": str,
+                "tags": list}}` where each universe entry contains world and
+                robot launch details plus tool configuration ready for template
+                rendering.
         """
         configurations = []
 

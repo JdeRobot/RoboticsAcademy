@@ -74,6 +74,19 @@ def convertToAbsoluteValues(size, box):
 
 
 def add_bb_into_image(image, bb, color=(255, 0, 0), thickness=2, label=None):
+    """
+    Draw a bounding box (and optional label) onto an image.
+
+    Args:
+        image: OpenCV image (NumPy array) to draw on. Modified in place.
+        bb: Bounding box object exposing `getAbsoluteBoundingBox(BBFormat.XYX2Y2)`.
+        color: Tuple of ints `(R, G, B)` for box/label color; defaults to red.
+        thickness: Line thickness in pixels for the rectangle border.
+        label: Optional string shown above/inside the box with a filled background.
+
+    Returns:
+        The same image array with the rectangle (and label if provided) rendered.
+    """
     r = int(color[0])
     g = int(color[1])
     b = int(color[2])
