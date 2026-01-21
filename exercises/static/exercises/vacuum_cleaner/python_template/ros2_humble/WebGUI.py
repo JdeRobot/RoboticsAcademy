@@ -123,7 +123,7 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception as e:
             print(f"GUI: ROS2 executor error: {e}")
 
-    # ✅ FIXED: GUI updates synchronized to /odom
+    #  FIXED: GUI updates synchronized to /odom
     def update_gui(self):
         # Only update GUI when a NEW odom message arrives
         if self.ros_node:
