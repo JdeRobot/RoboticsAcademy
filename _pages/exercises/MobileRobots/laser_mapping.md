@@ -27,7 +27,13 @@ youtubeId2: 8pDsqMVAsv0
 
 ## Goal
 
-The goal of this exercise is to develop a navigation algorithm that allows a robot to autonomously explore a warehouse environment while generating an accurate map of the area using LIDAR sensor data.
+The goal of this exercise is to develop a navigation algorithm that allows a robot to autonomously explore a warehouse environment while generating an accurate 2D map of the surroundings using LIDAR sensor data.
+
+The robot must be able to:
+* Perceive obstacles and free space using laser measurements
+* Build and update a map of the environment while moving
+* Navigate safely without prior knowledge of the environment
+* Continue exploration until the reachable area is sufficiently covered
 
 {% include gallery caption="Laser Mapping." %}
 
@@ -59,19 +65,34 @@ The goal of this exercise is to develop a navigation algorithm that allows a rob
 * `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
 ## Theory
-Implementation of laser mapping for a vacuum is the basic requirement for this exercise. First, let's see how mapping with known possitions works.
+Laser mapping is the process by which a robot builds a representation of an unknown environment using distance measurements obtained from a LIDAR sensor while moving through the space.
+The robot continuously senses its surroundings, updates the map, and decides where to move next in order to reduce unexplored areas.
 
 ### Mapping with known possitions
-Coverage Path Planning is an important area of research in Path Planning for robotics, which involves finding a path that passes through every reachable position in its environment. In this exercise, We are using a very basic coverage algorithm called Random Exploration.
+The robot uses its current position and orientation to correctly place sensor measurements into a global map. Each laser beam is described by a distance and an angle relative to the robot, which are converted into Cartesian coordinates. These points are then projected onto a grid map representing the environment. By repeating this process over time, the robot consistently marks free space and obstacles in the correct locations, gradually building an accurate map of its surroundings.
 
 ## Analyzing Coverage Algorithms
 Mapping with known positions assumes that the current position of the robot is known. This technique consists of converting the distance measurements of the different laser beams into Cartesian coordinates relative to the robot. The distance mesured by the beam can reflect the existence of an obstacle; therefore, these Cartesian coordinates are inserted reflecting obstacles in an occupation grid relative to the current position of the robot.
 This technique is not entirely real because in most cases, the position of the robot is unknown. Therefore, other techniques such as SLAM are used in real life.
 
 ### Occupancy grid
-An occupation grid is a discretization of the robot's environment in cells. This discretization will be given by the size of the world in which the robot is located. With an occupation grid, a matrix is handled whose cells will contain a probability value, which indicates the certainty that in that position there is an obstacle (1), there is free space (0), or it has not been explored for the moment (gray space).
-The occupation grids were initially proposed in 1985 by Moravec and Elfes. The biggest advantage of these types of maps is that they are easy to build and maintain, even in large environments. Also, it is easy for a robot to determine its position within the map just by knowing its position and orientation, since the geometry of the cells corresponds to the geometry of the terrain.
-On the other hand, the basic problem with this type of map is the large amount of memory required for storing the information.
+An occupation grid is a discretization of the robot's environment in cells. This discretization will be given by the size of the world in which the robot is located. Each cell can represent free space, an obstacle, or an unexplored area. Instead of using fixed binary values, the belief of a cell is updated probabilistically using laser sensor measurements. When a laser beam passes through a cell, the confidence that the cell is free increases. When a laser beam ends at a cell, the confidence that the cell is occupied increases.
+
+To combine observations over time in a stable way, the grid is updated using a log-odds representation. In this representation, probabilities are stored in a logarithmic form, allowing evidence from multiple measurements to be added incrementally. Positive log-odds values indicate a higher confidence of an obstacle, negative values indicate free space, and values close to zero correspond to unknown areas.
+
+### Laser Ray Interpretation and Measurement Independence
+A single laser measurement provides information about both free space and obstacles. The space between the robot and the detected point is considered free, while the point where the laser ends represents an obstacle. Only the region up to the detected obstacle is interpreted, so areas behind walls are not incorrectly marked.
+
+For probabilistic mapping to remain consistent, laser measurements should be treated as independent observations. Since repeated scans taken without sufficient movement are highly correlated, updates are considered meaningful only after the robot has moved or changed its orientation. This helps prevent overconfidence and improves the overall quality of the map.
+
+### Exploration and Coverage
+Exploration defines the path that the robot follows to observe and map unknown areas of the environment. Different exploration algorithms generate different robot paths.
+* Random Exploration-The robot moves along irregular paths, changing direction when obstacles are encountered.
+* Wall-Following Exploration-The robot follows paths that remain close to walls or obstacles, allowing it to trace boundaries and gradually reveal the structure of the environment.
+* Systematic Coverage (Lawn-Mower Motion)-The robot follows parallel back-and-forth paths that sweep the environment in an organized manner, ensuring uniform and predictable coverage.
+* Frontier-Based Exploration-The robot’s path is directed toward the boundary between explored and unexplored regions, causing the mapped area to expand outward until no unknown space remains.
+
+Any exploration algorithm that guides the robot safely through the environment and progressively reduces unknown areas is considered valid for this exercise.
 
 ### Illustrations
 
