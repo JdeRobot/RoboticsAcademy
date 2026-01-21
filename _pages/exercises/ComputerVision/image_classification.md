@@ -1,12 +1,12 @@
 ---
-permalink: /exercises/ComputerVision/digit_classification
+permalink: /exercises/ComputerVision/image_classification
 title: ""
 
 sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC Digit Classification"
+toc_label: "TOC Image Classification"
 toc_icon: "cog"
 
 <!--- layout: archive --->
@@ -14,10 +14,10 @@ toc_icon: "cog"
 <!--- classes: wide --->
 
 digitclassification:
-  - url: /assets/images/exercises/digit_classification/digit_classification.png
-    image_path: /assets/images/exercises/digit_classification/digit_classification.png
-    alt: "digit_classification_exercise"
-    title: "Digit Classification"
+  - url: /assets/images/exercises/image_classification/image_classification.png
+    image_path: /assets/images/exercises/image_classification/image_classification.png
+    alt: "image_classification_exercise"
+    title: "Image Classification"
 mnist:
   - url: /assets/images/exercises/digit_classification/mnist.png
     image_path: /assets/images/exercises/digit_classification/mnist.png
@@ -42,14 +42,14 @@ youtubeId1: aOd6c-ue1xU
 
 ---
 
-# Deep learning-based Digit Classification Exercise
+# Deep learning-based Image Classification Exercise
 
-{% include gallery id="digitclassification" caption="Digit Classification Exercise" %}
+{% include gallery id="digitclassification" caption="Image Classification Exercise" %}
 
 <p style="text-align:justify;">The goal of this exercise is to create a deep learning model capable of classifying digital and handwritten digits from 0 to 9. You will train this model using a machine learning library or framework of your choice and then export it to the <a href="https://onnx.ai/" target="_blank"><strong>ONNX (Open Neural Network Exchange)</strong></a> format. You can upload your own ONNX model and use the editor to write Python code that processes input from a live video feed, which is captured using your browser's webcam. This allows you to classify both digital and handwritten digits in real time.</p>
 
 <!-- instruction -->
-{% include gallery id="instruction" caption="Digit Classification Exercise" %}
+{% include gallery id="instruction" caption="Image Classification Exercise" %}
 
 <!-- Note Guide -->
 
@@ -124,7 +124,7 @@ torch.onnx.export(
 
 ## Theory
 
-Digit classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits [[3]](http://yann.lecun.com/exdb/mnist/) is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.
+Image classification is a classic toy example for validating machine and deep learning models. More specifically, the MNIST database of handwritten digits [[3]](http://yann.lecun.com/exdb/mnist/) is one of the most popular benchmarks in the literature and is widely used in tutorials as a starting point for machine learning practitioners. For solving this exercise, it is highly recommended training your model using this database.
 
 {% include gallery id="mnist" caption="Samples from the MNIST database" %}
 

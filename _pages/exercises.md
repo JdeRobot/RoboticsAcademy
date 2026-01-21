@@ -306,19 +306,19 @@ feature_row:
     status: "running"
     order: 0;
   
-  - image_path: /assets/images/exercises/digit_classification/digit_classification.png
-    alt: "Digit Classifier"
-    title: "Digit Classifier"
-    excerpt: "Classify digits in real time using your own deep learning model."
-    url: "/exercises/ComputerVision/digit_classification"
+  - image_path: /assets/images/exercises/image_classification/image_classification.png
+    alt: "Image Classifier"
+    title: "Image Classifier"
+    excerpt: "Classify images in real time using your own deep learning model."
+    url: "/exercises/ComputerVision/image_classification"
     status: "running"
     order: 0;
 
-  - image_path: /assets/images/exercises/human_detection/human_detection_teaser.jpeg
-    alt: "Human Detection"
-    title: "Human Detection"
-    excerpt: "Deep learning-based Human Detection Exercise."
-    url: "/exercises/ComputerVision/human_detection"
+  - image_path: /assets/images/exercises/object_detection/object_detection_teaser.jpeg
+    alt: "Visual Object Detection"
+    title: "Visual Object Detection"
+    excerpt: "Deep learning-based Visual Object Detection Exercise."
+    url: "/exercises/ComputerVision/object_detection"
     status: "running"
     order: 0;
 
