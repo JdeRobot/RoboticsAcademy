@@ -25,7 +25,7 @@ CUSTOM_EXCEPTIONS = (
 )
 
 
-def error_wrapper(type: str, param: list[str | tuple] = []):
+def error_wrapper(fal, type: str, param: list[str | tuple] = []):
     """
     Decorator for API views with parameter validation and error handling.
 
@@ -36,37 +36,26 @@ def error_wrapper(type: str, param: list[str | tuple] = []):
     Returns:
         function: Wrapped API view.
     """
+
     def decorated(func):
         @wraps(func)
         @api_view([type])
         def wrapper(request):
             try:
-                check_parameters(
-                    request.data if type == "POST" else request.GET,
-                    param
-                )
+                check_parameters(request.data if type == "POST" else request.GET, param)
                 return func(request)
             except CUSTOM_EXCEPTIONS as e:
                 print(str(e))
                 return Response({"error": str(e)}, status=e.error_code)
             except json.JSONDecodeError as e:
                 print(str(e))
-                return Response(
-                    {"error": f"Invalid JSON format: {str(e)}"},
-                    status=422
-                )
+                return Response({"error": f"Invalid JSON format: {str(e)}"}, status=422)
             except (binascii.Error, ValueError) as e:
                 print(str(e))
-                return Response(
-                    {"error": f"Invalid B64 format: {str(e)}"},
-                    status=422
-                )
+                return Response({"error": f"Invalid B64 format: {str(e)}"}, status=422)
             except Exception as e:
                 print(str(e))
-                return Response(
-                    {"error": f"An error occurred: {str(e)}"},
-                    status=500
-                )
+                return Response({"error": f"An error occurred: {str(e)}"}, status=500)
 
         return wrapper
 

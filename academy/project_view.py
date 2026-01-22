@@ -37,11 +37,6 @@ def list_dir(base_dir, directory, access_old=True, base_group=""):
         if os.path.isfile(entry_path):
             values.append(Entry(False, entry, rel_path, group, access))
         else:
-            if entry == "trees":
-                group = "Trees"
-                # access = False
-            elif entry == "Actions":
-                group = "Actions"
             values.append(
                 Entry(
                     True,

@@ -50,28 +50,6 @@ const getExerciseList = async (): Promise<Exercise[]> => {
   return response.data.exercises;
 };
 
-const getProjectExtraFiles = async (project: string, language: string) => {
-  if (!project) throw new Error("Current Project id is not set");
-  if (!language) throw new Error("Current Language is not set");
-
-  const apiUrl = "/academy/user_code_zip/";
-  const response = await axios.post(
-    apiUrl,
-    {
-      project: project,
-      language: language,
-    },
-    axiosExtra
-  );
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to create app."); // Response error
-  }
-
-  return response.data.files;
-};
-
 const listUniverses = async (project: string) => {
   if (!project) throw new Error("Current Project id is not set");
 
@@ -116,10 +94,54 @@ const getRoboticsBackendUniverse = async (
   };
 };
 
+const getHelperFile = async (
+  project: string,
+  language: string,
+  fileName: string
+) => {
+  if (!project) throw new Error("Current Project id is not set");
+  if (!language) throw new Error("Current Language is not set");
+  if (!fileName) throw new Error("File name is not set");
+
+  const apiUrl = `/academy/get_helper_file?project=${encodeURIComponent(
+    project
+  )}&language=${encodeURIComponent(language)}&filename=${encodeURIComponent(
+    fileName
+  )}`;
+
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  }
+
+  return response.data.content;
+};
+
+const getHelperFileList = async (project: string, language: string) => {
+  if (!project) throw new Error("Current Project id is not set");
+  if (!language) throw new Error("Current Language is not set");
+
+  const apiUrl = `/academy/get_helper_file_list?project=${encodeURIComponent(
+    project
+  )}&language=${encodeURIComponent(language)}`;
+
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  }
+
+  return response.data.file_list;
+};
+
 export {
   getProjectData,
+  getHelperFileList,
+  getHelperFile,
   getExerciseList,
   getRoboticsBackendUniverse,
   listUniverses,
-  getProjectExtraFiles,
 };

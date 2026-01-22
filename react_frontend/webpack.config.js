@@ -21,7 +21,7 @@ const aliases = () => {
     Routes: path.resolve(__dirname, "src/routes"),
     Api: path.resolve(__dirname, "src/api"),
     Common: path.resolve(__dirname, "../static/common"),
-    exercises: path.resolve(__dirname, "../exercises/static/exercises"),
+    exercises: path.resolve(__dirname, "../exercises/"),
   };
 
   return aliasConfig;
