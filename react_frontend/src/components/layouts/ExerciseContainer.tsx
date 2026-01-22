@@ -12,7 +12,7 @@ import IdeInterface, {
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
-import { getRoboticsBackendUniverse, listUniverses } from "Api";
+import { getFile, getRoboticsBackendUniverse, listUniverses, saveFile } from "Api";
 import Frequencies from "Components/statusBar/Frequencies";
 import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
 import Camera from "Components/visualizers/Camera";
@@ -75,8 +75,8 @@ const ExerciseContainer = ({
   );
 
   const [language, setLanguage] = useState<string>("python");
-  const [fileSaved, saveFile] = useState<boolean>(false);
-  const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
+  const [fileSaved, saveFileOld] = useState<boolean>(false);
+  const [baseFile, setBaseFile] = useState<Entry>(base_file_python);
   const [, _setCode] = useState<string>(defaultPythonCode);
   const codeRef = useRef<string>(defaultPythonCode);
 
@@ -237,7 +237,7 @@ const ExerciseContainer = ({
   };
 
   useEffect(() => {
-    saveFile(true);
+    saveFileOld(true);
     if (language === "cpp") {
       setBaseFile(base_file_cpp);
     } else {
@@ -245,11 +245,10 @@ const ExerciseContainer = ({
     }
   }, [language]);
 
-  const editorApi: ExtraApi = {
+  const editorApi2: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
         const func = async (file: Entry) => {
-          saveFile(false);
           if (file.name === "academy.cpp") {
             return defaultCppCode;
           } else {
@@ -267,6 +266,32 @@ const ExerciseContainer = ({
 
         setCode(content);
         return func();
+      },
+    },
+    universes: {
+      list: (project: string) => {
+        return listUniverses(project);
+      },
+      get_config: async (project: string, universe: string) => {
+        return getRoboticsBackendUniverse(project, universe);
+      },
+    },
+  };
+
+  const editorApi: ExtraApi = {
+    file: {
+      get: (project: string, file: Entry) => {
+        const func = async (project: string, file: Entry) => {
+          const content = await getFile(project, file.path);
+          saveFileOld(false);
+          return content
+        };
+
+        return func(project, file);
+      },
+      save: (project: string, file: Entry, content: string) => {
+        setCode(content); // TODO: temporary. Remove later
+        return saveFile(project, file.path, content);
       },
     },
     universes: {
@@ -310,7 +335,7 @@ const ExerciseContainer = ({
           project={project}
           api={editorApi}
           viewers={toolsList}
-          options={{ editor: { onlyOneFile: true, notShowSave: true } }}
+          options={{ editor: { onlyOneFile: true } }}
           layout={layout}
           statusBarComponents={statusBar}
           explorers={[]}

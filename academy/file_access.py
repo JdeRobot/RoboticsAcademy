@@ -201,7 +201,7 @@ class FAL_RA(FAL):
         FAL.__init__(self, base, helper)
 
     def academy_path(self) -> str:
-        return self.path_join(self.academy, "filesystem")
+        return self.path_join(self.academy, "academy/filesystem")
 
     def path_join(self, a: str, b: str) -> str:
         return os.path.join(a, b)
@@ -226,24 +226,28 @@ class FAL_RA(FAL):
 
         with open(path, "w") as f:
             f.write(content)
+        os.chmod(path, 0o777)
 
     def create_binary(self, path: str, content):
         super().create_binary(path, content)
 
         with open(path, "wb") as f:
             f.write(content)
+        os.chmod(path, 0o777)
 
     def write(self, path: str, content):
         super().write(path, content)
 
         with open(path, "w") as f:
             f.write(content)
+        os.chmod(path, 0o777)
 
     def write_binary(self, path: str, content):
         super().write_binary(path, content)
 
         with open(path, "wb") as f:
             f.write(content)
+        os.chmod(path, 0o777)
 
     def read(self, path: str) -> str:
         super().read(path)
@@ -275,7 +279,7 @@ class FAL_RA(FAL):
     def mkdir(self, path: str):
         super().mkdir(path)
 
-        os.makedirs(path)
+        os.makedirs(path, mode=0o777)
 
     def renamefile(self, old_path: str, new_path: str):
         super().renamefile(old_path.new_path)

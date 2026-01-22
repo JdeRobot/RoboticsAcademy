@@ -11,6 +11,7 @@ import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
+from academy.exceptions import ResourceNotExists
 from academy.project_view import EntryEncoder
 from academy.serializers import FileContentSerializer
 
@@ -19,8 +20,9 @@ from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 from rest_framework import status
+from .constants import base_py_code, base_cpp_code
 
-fal = FAL_RA(settings.BASE_DIR, os.path.join(settings.BASE_DIR, "exercises"))
+fal = FAL_RA("./", os.path.join(settings.BASE_DIR, "exercises"))
 
 
 @csrf_exempt
@@ -99,57 +101,6 @@ def get_exercise_list(request):
     return JsonResponse({"success": True, "exercises": project_list})
 
 
-@error_wrapper(fal, "POST", ["project", "language"])
-def user_code_zip(request):
-    """
-    Return template source files for a given exercise and language.
-    """
-    project_id = request.data.get("project")
-    language = request.data.get("language")
-    project = Exercise.objects.get(exercise_id=project_id)
-
-    path = fal.exercise_helper_path(project_id, language)
-    files = fal.list_formatted(path, path)
-
-    readFiles = []
-
-    for file in files:
-        if file.is_dir:
-            print(file)
-        else:
-            rel_path = fal.path_join(path, file.path)
-            readFiles.append({"name": file.name, "content": fal.read(rel_path)})
-    print(readFiles)
-
-    template = "python_template"
-    if language == "cpp":
-        template = "cpp_template"
-
-    exercise_path = os.path.join(
-        settings.BASE_DIR,
-        f"exercises/static/exercises/{project.exercise_id}/{template}/ros2_humble",
-    )
-
-    try:
-        for x in os.listdir(exercise_path):
-            new_path = os.path.join(exercise_path, x)
-            if os.path.isdir(new_path):
-                for y in os.listdir(new_path):
-                    with open(os.path.join(new_path, y)) as f:
-                        files.append({"name": y, "content": f.read()})
-            else:
-                with open(new_path) as f:
-                    files.append({"name": x, "content": f.read()})
-
-        return JsonResponse({"success": True, "files": files})
-
-    except Exception as e:
-        return Response(
-            {"success": False, "message": str(e)},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-
 @error_wrapper(fal, "GET", ["project", "language"])
 def get_helper_file_list(request):
     project = request.GET.get("project")
@@ -176,6 +127,65 @@ def get_helper_file(request):
     content = fal.read(fal.path_join(path, filename))
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)
+
+
+@error_wrapper(fal, "GET", ["project"])
+def get_file_list(request):
+    project = request.GET.get("project")
+
+    base_group = "Code"
+
+    path = fal.exercise_path(project)
+
+    file_list = fal.list_formatted(path, base_group)
+
+    # Return the list of files
+    return Response({"file_list": EntryEncoder().encode(file_list)})
+
+
+@error_wrapper(fal, "GET", ["project", "filename"])
+def get_file(request):
+    project_id = request.GET.get("project", None)
+    filename = request.GET.get("filename", None)
+
+    path = fal.exercise_path(project_id)
+
+    file_path = fal.path_join(path, filename)
+
+    try:
+        content = fal.read(file_path)
+    except ResourceNotExists:
+        ext = os.path.splitext(file_path)[1]
+
+        if ext == ".py":
+            content = base_py_code
+        elif ext == ".cpp":
+            content = base_cpp_code
+        else:
+            content = ""
+
+        if fal.exists(path) < 0:
+            fal.mkdir(path)
+        fal.create(file_path, content)
+
+    serializer = FileContentSerializer({"content": content})
+    return Response(serializer.data)
+
+
+@error_wrapper(fal, "POST", ["project", "filename", ("content", -1)])
+def save_file(request):
+    project_id = request.data.get("project")
+    filename = request.data.get("filename")
+    content = request.data.get("content")
+
+    path = fal.exercise_path(project_id)
+    if fal.exists(path) < 0:
+        fal.mkdir(path)
+
+    file_path = fal.path_join(path, filename)
+
+    fal.write(file_path, content)
+    return Response({"success": True})
 
 
 @error_wrapper(fal, "GET", ["project"])
