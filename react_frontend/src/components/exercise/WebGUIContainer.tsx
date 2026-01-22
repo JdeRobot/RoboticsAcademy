@@ -1,6 +1,7 @@
 import { Box } from "@mui/system";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React, { ReactNode } from "react";
+import { CommsManager } from "jderobot-commsmanager";
+import React, { ReactNode, useRef } from "react";
 
 const WebGUIContainer = ({
   id,
@@ -29,6 +30,24 @@ const WebGUIContainer = ({
       {children}
     </Box>
   );
+};
+
+export const connectApplication = () => {
+  const ref = useRef<NodeJS.Timer>();
+  const start = (manager: CommsManager) => {
+    if (ref.current === undefined && manager.ws.readyState === WebSocket.OPEN) {
+      ref.current = setInterval(() => {
+        manager.send("gui", "start");
+      }, 1000);
+    }
+  };
+  const end = () => {
+    if (ref.current === undefined) {
+      clearInterval(ref.current);
+      ref.current = undefined;
+    }
+  };
+  return {start:start, end:end};
 };
 
 export default WebGUIContainer;
