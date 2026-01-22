@@ -61,6 +61,8 @@ class ThreadingGUI:
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
+        elif "start" in message:
+            with self.ack_lock:
                 self.ack_frontend = True
         else:
             LogManager.logger.error("Unsupported msg")

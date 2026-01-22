@@ -35,6 +35,8 @@ class WebGUI(MeasuringThreadingGUI):
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
+        elif "start" in message:
+            with self.ack_lock:
                 self.ack_frontend = True
 
         if "pick" in message:

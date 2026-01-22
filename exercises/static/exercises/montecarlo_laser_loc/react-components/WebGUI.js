@@ -4,7 +4,9 @@ import { useExercise } from "Contexts/ExerciseContext";
 import houseMap from "../resources/images/mapgrannyannie.png";
 import Vacuum from "../resources/images/vacuum.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 import "./css/GUICanvas.css";
 
 function WebGUI() {
@@ -14,6 +16,7 @@ function WebGUI() {
   const canvasRef = useRef(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
   const vacuumSize = 40;
 
   useEffect(() => {
@@ -53,7 +56,10 @@ function WebGUI() {
       return;
     }
 
+    
+
     const updateCallback = (message) => {
+      connection.end();
       const updateData = message.data.update;
       // Lógica para manejar el mapa
       var img = canvasRef.current;
@@ -65,7 +71,7 @@ function WebGUI() {
         const content = pose.split(",").map((item) => parseFloat(item));
         const poseUser = updateData.user.substring(
           1,
-          updateData.user.length - 1
+          updateData.user.length - 1,
         );
         const userContent = poseUser.split(",").map((item) => parseFloat(item));
 

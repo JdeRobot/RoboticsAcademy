@@ -4,14 +4,13 @@ import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
 import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
 import Vacuum from "../resources/images/vacuum.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {connectApplication} from "Components/exercise/WebGUIContainer";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 
 // Define multirun variables here so it does not rerender
-var trail = [];
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
@@ -20,8 +19,10 @@ const WebGUI = () => {
   const [userImage, setUserImage] = useState(undefined);
   const canvasRef = useRef(null);
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
   var lastPose = undefined;
   const vacuumSize = 40;
+  var trail = [];
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -55,7 +56,11 @@ const WebGUI = () => {
       return;
     }
 
+    connection.start(manager)
+
     const updateCallback = (message) => {
+      connection.end()
+
       const updateData = message.data.update;
       // Lógica para manejar el mapa
       if (updateData.map) {

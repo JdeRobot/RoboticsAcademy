@@ -6,7 +6,9 @@ import { getCarPose } from "./helpers/showCarPositionFollowLine";
 import { displayLapTime } from "./helpers/showLapTimeFollowLine";
 import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 
 import defaultCircuit from "../resources/images/default_circuit.png";
 import montmeloCircuit from "../resources/images/montmelo_circuit.png";
@@ -20,6 +22,7 @@ const WebGUI = () => {
   const [carPose, setCarPose] = useState(null);
   const [circuitImg, setCircuitImg] = useState(defaultCircuit);
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -75,7 +78,10 @@ const WebGUI = () => {
       return;
     }
 
+    
+
     const updateCallback = (message) => {
+      connection.end();
       if (message.data.update.image) {
         const image = JSON.parse(message.data.update.image);
         if (image.image) {
@@ -106,7 +112,7 @@ const WebGUI = () => {
 
     const stateCallback = (message) => {
       if (message.data.state === states.RUNNING) {
-        manager.send("gui", "start");
+        manager.send("gui", "startLap");
       } else if (message.data.state === states.PAUSED) {
         manager.send("gui", "pause");
       } else if (message.data.state === states.TOOLS_READY) {

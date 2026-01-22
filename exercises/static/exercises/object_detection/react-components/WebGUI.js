@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 import { useExercise } from "Contexts/ExerciseContext";
 import { events } from "jderobot-commsmanager";
 
@@ -8,6 +10,7 @@ function WebGUI() {
   const [image, setImage] = useState(undefined);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -18,7 +21,10 @@ function WebGUI() {
       return;
     }
 
+    
+
     const callback = (message) => {
+      connection.end();
       const update = message.data.update;
       if (update.image) {
         const image = JSON.parse(update.image);
@@ -38,7 +44,7 @@ function WebGUI() {
 
   return (
     <WebGUIContainer>
-      <WebGUIImage id="gui_canvas" src={image} style={{width: "100%"}}/>
+      <WebGUIImage id="gui_canvas" src={image} style={{ width: "100%" }} />
     </WebGUIContainer>
   );
 }

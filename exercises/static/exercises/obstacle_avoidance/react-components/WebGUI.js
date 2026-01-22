@@ -1,7 +1,9 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 
 import F1Car from "../resources/images/f1-car.svg";
 import Arrow from "../resources/images/arrow.svg";
@@ -10,14 +12,15 @@ import "./css/GUICanvas.css";
 function WebGUI() {
   const meter = 73; // 1m = 73px
 
-  const [laser, setLaser] = useState([])
-  const [maxRange, setMaxRange] = useState([])
-  const [carForce, setCarForce] = useState([2 * meter, 0])
-  const [avgForce, setAvgForce] = useState([2 * meter, 0])
-  const [obsForce, setObsForce] = useState([2 * meter, -Math.PI / 2])
-  const [targetPose, setTargetPose] = useState(null)
+  const [laser, setLaser] = useState([]);
+  const [maxRange, setMaxRange] = useState([]);
+  const [carForce, setCarForce] = useState([2 * meter, 0]);
+  const [avgForce, setAvgForce] = useState([2 * meter, 0]);
+  const [obsForce, setObsForce] = useState([2 * meter, -Math.PI / 2]);
+  const [targetPose, setTargetPose] = useState(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -28,36 +31,63 @@ function WebGUI() {
       return;
     }
 
-    const callback = (message) => {
-      const data = message.data.update;
-      if(data.map){
-        const dataToDraw = JSON.parse(data.map)
+    
 
-        setLaser(dataToDraw.laser)
-        setMaxRange(dataToDraw.max_range)
-        var carForceDist = getDist(dataToDraw.car[0], dataToDraw.car[1])
-        setCarForce([carForceDist * meter, getAng(dataToDraw.car[0], dataToDraw.car[1])])
-        var avgForceDist = getDist(dataToDraw.average[0], dataToDraw.average[1])
-        setAvgForce([avgForceDist * meter, getAng(dataToDraw.average[0], dataToDraw.average[1])])
-        var obsForceDist = getDist(dataToDraw.obstacle[0], dataToDraw.obstacle[1])
-        setObsForce([obsForceDist * meter, getAng(dataToDraw.obstacle[0], dataToDraw.obstacle[1])])
-        var targetDist = getDist(dataToDraw.pose[0] - dataToDraw.target[0], dataToDraw.pose[1] - dataToDraw.target[1])
-        var targetAng = getAng(dataToDraw.pose[0] - dataToDraw.target[0], dataToDraw.pose[1] - dataToDraw.target[1])
-        setTargetPose([targetDist*meter, targetAng - dataToDraw.pose[2] - Math.PI])
+    const callback = (message) => {
+      connection.end();
+      const data = message.data.update;
+      if (data.map) {
+        const dataToDraw = JSON.parse(data.map);
+
+        setLaser(dataToDraw.laser);
+        setMaxRange(dataToDraw.max_range);
+        var carForceDist = getDist(dataToDraw.car[0], dataToDraw.car[1]);
+        setCarForce([
+          carForceDist * meter,
+          getAng(dataToDraw.car[0], dataToDraw.car[1]),
+        ]);
+        var avgForceDist = getDist(
+          dataToDraw.average[0],
+          dataToDraw.average[1],
+        );
+        setAvgForce([
+          avgForceDist * meter,
+          getAng(dataToDraw.average[0], dataToDraw.average[1]),
+        ]);
+        var obsForceDist = getDist(
+          dataToDraw.obstacle[0],
+          dataToDraw.obstacle[1],
+        );
+        setObsForce([
+          obsForceDist * meter,
+          getAng(dataToDraw.obstacle[0], dataToDraw.obstacle[1]),
+        ]);
+        var targetDist = getDist(
+          dataToDraw.pose[0] - dataToDraw.target[0],
+          dataToDraw.pose[1] - dataToDraw.target[1],
+        );
+        var targetAng = getAng(
+          dataToDraw.pose[0] - dataToDraw.target[0],
+          dataToDraw.pose[1] - dataToDraw.target[1],
+        );
+        setTargetPose([
+          targetDist * meter,
+          targetAng - dataToDraw.pose[2] - Math.PI,
+        ]);
       }
 
       // Send the ACK of the msg
       manager.send("gui", "ack");
     };
 
-    const getDist = (x,y) => {
-      return Math.sqrt(Math.pow(x,2) + Math.pow(y,2))
-    }
+    const getDist = (x, y) => {
+      return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    };
 
-    const getAng = (x,y) => {
+    const getAng = (x, y) => {
       var ang = Math.atan2(y, x);
       return ang;
-    }
+    };
 
     manager.subscribe(events.UPDATE, callback);
 
@@ -68,24 +98,52 @@ function WebGUI() {
 
   return (
     <WebGUIContainer id="f1-road">
-      <img src={F1Car} id="f1-car"/>
-      {laser.map(element => {
-        var ang = -element[1]
-        var length = (element[0] / maxRange)*100;
+      <img src={F1Car} id="f1-car" />
+      {laser.map((element) => {
+        var ang = -element[1];
+        var length = (element[0] / maxRange) * 100;
         return (
-          <hr className="laser-beam" style={{rotate: "z "+ ang +"rad", width: "calc("+length + "%)"}}/>
-        )})
-      }
-      <img className="arrow green" src={Arrow} style={{height: carForce[0], rotate: "z "+ -carForce[1] +"rad"}}/>
-      <img className="arrow red" src={Arrow} style={{height: obsForce[0], rotate: "z "+ -obsForce[1] +"rad"}}/>
-      <img className="arrow" src={Arrow} style={{height: avgForce[0], rotate: "z "+ -avgForce[1] +"rad", zIndex: "6"}}/>
-      {targetPose &&
-        <div className="target-container" style={{height: targetPose[0], rotate: "z "+ -targetPose[1] +"rad"}}>
-          <div id="target"/>
+          <hr
+            className="laser-beam"
+            style={{
+              rotate: "z " + ang + "rad",
+              width: "calc(" + length + "%)",
+            }}
+          />
+        );
+      })}
+      <img
+        className="arrow green"
+        src={Arrow}
+        style={{ height: carForce[0], rotate: "z " + -carForce[1] + "rad" }}
+      />
+      <img
+        className="arrow red"
+        src={Arrow}
+        style={{ height: obsForce[0], rotate: "z " + -obsForce[1] + "rad" }}
+      />
+      <img
+        className="arrow"
+        src={Arrow}
+        style={{
+          height: avgForce[0],
+          rotate: "z " + -avgForce[1] + "rad",
+          zIndex: "6",
+        }}
+      />
+      {targetPose && (
+        <div
+          className="target-container"
+          style={{
+            height: targetPose[0],
+            rotate: "z " + -targetPose[1] + "rad",
+          }}
+        >
+          <div id="target" />
         </div>
-      }
+      )}
     </WebGUIContainer>
   );
 }
 
-export default WebGUI
+export default WebGUI;
