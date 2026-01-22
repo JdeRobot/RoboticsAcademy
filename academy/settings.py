@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Local applications
-    "exercises",
+    "academy",
     # Third-party applications
     "webpack_loader",  # Integrates React webpack bundles with Django
     "rest_framework",  # Django REST Framework
@@ -74,7 +73,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "react_frontend"),
-            os.path.join(BASE_DIR, "exercises"),
+            os.path.join(BASE_DIR, "academy"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
