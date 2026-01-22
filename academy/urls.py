@@ -24,6 +24,9 @@ academy_urls = [
     path("get_exercise_list/", views.get_exercise_list, name="get_exercise_list"),
     path("get_helper_file_list/", views.get_helper_file_list, name="get_helper_file_list"),
     path("get_helper_file/", views.get_helper_file, name="get_helper_file"),
+    path("get_file_list/", views.get_file_list, name="get_file_list"),
+    path("save_file/", views.save_file, name="save_file"),
+    path("get_file/", views.get_file, name="get_file"),
     path(
         "get_universes_list/",
         views.get_universes_list,

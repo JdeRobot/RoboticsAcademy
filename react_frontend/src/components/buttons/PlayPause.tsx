@@ -1,6 +1,6 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
-import { publish, subscribe, unsubscribe } from "Helpers/utils";
+import { publish, subscribe, unsubscribe, zipCodeFiles, zipHelperFiles } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
 import JSZip from "jszip";
 import { useExercise } from "Contexts/ExerciseContext";
@@ -12,7 +12,7 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getHelperFile, getHelperFileList } from "Api";
+import { getFileList, getHelperFile, getHelperFileList } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -168,19 +168,29 @@ const PlayPauseButton = ({
         language ?? "python"
       );
       const helper_files: Entry[] = JSON.parse(helper_file_list);
-      await zipHelperFiles(commonsZip, helper_files);
+      await zipHelperFiles(commonsZip, helper_files, project, language ?? "python");
 
-      commonsZip.file(`academy.${extension}`, codeRef.current);
+      const file_list = await getFileList(project);
+      const files: Entry[] = JSON.parse(file_list);
+      await zipCodeFiles(commonsZip, files, project);
+
+      // commonsZip.file(`academy.${extension}`, codeRef.current);
 
       // add onnx file to the zip if it exists
       if (hasDLModel) {
-        if (dlModel !== undefined) {
-          commonsZip.file("model.onnx", dlModel);
-        } else {
+        if (commonsZip.file("model.onnx") === null) {
           throw new Error("No ONNX model found.");
-        }
+        } 
+
+        //TODO: rethink how to handle model files
+        // if (dlModel !== undefined) {
+        //   commonsZip.file("model.onnx", dlModel);
+        // } else {
+        //   throw new Error("No ONNX model found.");
+        // }
       }
 
+      // TODO: this will no longer work with multiple files
       runningCodeRef.current = codeRef.current;
 
       // Convert the blob to base64 using FileReader
@@ -215,42 +225,6 @@ const PlayPauseButton = ({
       if (e instanceof Error) {
         console.error("Error running app: " + e.message);
         error("Error running app: " + e.message);
-      }
-    }
-  };
-
-  const zipHelperFiles = async (zip: JSZip, files: Entry[]) => {
-    for (const file of files) {
-      if (file.is_dir) {
-        await zipCodeFolder(zip, file);
-      } else {
-        await zipCodeFile(zip, file.path, file.name);
-      }
-    }
-  };
-
-  const zipCodeFile = async (
-    zip: JSZip,
-    file_path: string,
-    file_name: string
-  ) => {
-    const content = await getHelperFile(project, language!, file_path);
-    zip.file(file_name, content);
-  };
-
-  const zipCodeFolder = async (zip: JSZip, file: Entry) => {
-    const folder = zip.folder(file.name);
-
-    if (folder === null) {
-      return;
-    }
-
-    for (let index = 0; index < file.files.length; index++) {
-      const element = file.files[index];
-      if (element.is_dir) {
-        await zipCodeFolder(folder, element);
-      } else {
-        await zipCodeFile(folder, element.path, element.name);
       }
     }
   };

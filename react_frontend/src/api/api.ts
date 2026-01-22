@@ -137,6 +137,74 @@ const getHelperFileList = async (project: string, language: string) => {
   return response.data.file_list;
 };
 
+const getFileList = async (project: string) => {
+  if (!project) throw new Error("Current Project id is not set");
+
+  // TODO:add whitelist parameter
+
+  const apiUrl = `/academy/get_file_list?project=${encodeURIComponent(
+    project
+  )}`;
+
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  }
+
+  return response.data.file_list;
+};
+
+const getFile = async (
+  project: string,
+  fileName: string,
+) => {
+  if (!project) throw new Error("Project name is not set");
+  if (!fileName) throw new Error("File name is not set");
+
+  const apiUrl = `/academy/get_file?project=${encodeURIComponent(project)}&filename=${encodeURIComponent(fileName)}`;
+
+  const response = await axios.get(apiUrl);
+
+  // Handle unsuccessful response status (e.g., non-2xx status)
+  if (!isSuccessful(response)) {
+    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  }
+
+  return response.data.content;
+};
+
+const saveFile = async (
+  project: string,
+  fileName: string,
+  content: string,
+) => {
+  if (!project) throw new Error("Current Project name is not set");
+  if (!fileName) throw new Error("Current File name is not set");
+
+  const apiUrl = "/academy/save_file/";
+
+  const params = {
+    project: project,
+    content: content,
+    filename: fileName,
+  };
+
+  try {
+    const response = await axios.post(apiUrl, params, axiosExtra);
+
+    // Handle unsuccessful response status (e.g., non-2xx status)
+    if (!isSuccessful(response)) {
+      throw new Error(response.data.message || "Failed to create project."); // Response error
+    }
+  } catch (error) {
+    console.log(error);
+    throw error; // Rethrow
+  }
+};
+
+
 export {
   getProjectData,
   getHelperFileList,
@@ -144,4 +212,7 @@ export {
   getExerciseList,
   getRoboticsBackendUniverse,
   listUniverses,
+  getFile,
+  saveFile,
+  getFileList
 };
