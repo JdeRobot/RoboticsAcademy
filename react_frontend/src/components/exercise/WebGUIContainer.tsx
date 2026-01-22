@@ -35,14 +35,24 @@ const WebGUIContainer = ({
 export const connectApplication = () => {
   const ref = useRef<NodeJS.Timer>();
   const start = (manager: CommsManager) => {
-    if (ref.current === undefined && manager.ws.readyState === WebSocket.OPEN) {
+    end()
+
+    if (manager.ws.readyState !== WebSocket.OPEN) {
+      return
+    }
+    
+    if (ref.current === undefined) {
       ref.current = setInterval(() => {
-        manager.send("gui", "start");
+        try {
+          manager.send("gui", "start");
+        } catch {
+          end()
+        }
       }, 1000);
     }
   };
   const end = () => {
-    if (ref.current === undefined) {
+    if (ref.current !== undefined) {
       clearInterval(ref.current);
       ref.current = undefined;
     }
