@@ -44,8 +44,10 @@ class WebGUI(MeasuringThreadingGUI):
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
-                self.ack_frontend = True
         elif "start" in message:
+            with self.ack_lock:
+                self.ack_frontend = True
+        elif "startLap" in message:
             self.lap.unpause()
         elif "pause" in message:
             self.lap.pause()

@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { events } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 
 function WebGUI() {
   const [image, setImage] = useState(undefined);
   const exerciseContext = useExercise();
+  let connection = connectApplication();
   const [manager, setManager] = useState(exerciseContext.manager);
 
   useEffect(() => {
@@ -18,7 +21,10 @@ function WebGUI() {
       return;
     }
 
+    connection.start(manager);
+
     const callback = (message) => {
+      connection.end();
       const update = message.data.update;
       if (update.image_front) {
         console.log("New img received");
