@@ -10,10 +10,18 @@ import subprocess
 import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+
+from academy.project_view import EntryEncoder
+from academy.serializers import FileContentSerializer
+
+from .file_access import FAL_RA
 from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 from rest_framework import status
+
+fal = FAL_RA(settings.BASE_DIR, os.path.join(settings.BASE_DIR, "exercises"))
+
 
 @csrf_exempt
 @api_view(["GET"])
@@ -30,6 +38,7 @@ def save_exercise_db(request):
         universal_newlines=True,
     )
 
+
 @csrf_exempt
 @api_view(["GET"])
 def save_universe_db(request):
@@ -45,7 +54,8 @@ def save_universe_db(request):
         universal_newlines=True,
     )
 
-@error_wrapper("GET", ["project_id"])
+
+@error_wrapper(fal, "GET", ["project_id"])
 def get_info(request):
     """
     Retrieve basic information about an exercise.
@@ -67,7 +77,7 @@ def get_info(request):
     return JsonResponse({"success": True, "info": info})
 
 
-@error_wrapper("GET")
+@error_wrapper(fal, "GET")
 def get_exercise_list(request):
     """
     Return a list of all available exercises.
@@ -89,7 +99,7 @@ def get_exercise_list(request):
     return JsonResponse({"success": True, "exercises": project_list})
 
 
-@error_wrapper("POST", ["project", "language"])
+@error_wrapper(fal, "POST", ["project", "language"])
 def user_code_zip(request):
     """
     Return template source files for a given exercise and language.
@@ -97,6 +107,19 @@ def user_code_zip(request):
     project_id = request.data.get("project")
     language = request.data.get("language")
     project = Exercise.objects.get(exercise_id=project_id)
+
+    path = fal.exercise_helper_path(project_id, language)
+    files = fal.list_formatted(path, path)
+
+    readFiles = []
+
+    for file in files:
+        if file.is_dir:
+            print(file)
+        else:
+            rel_path = fal.path_join(path, file.path)
+            readFiles.append({"name": file.name, "content": fal.read(rel_path)})
+    print(readFiles)
 
     template = "python_template"
     if language == "cpp":
@@ -106,8 +129,6 @@ def user_code_zip(request):
         settings.BASE_DIR,
         f"exercises/static/exercises/{project.exercise_id}/{template}/ros2_humble",
     )
-
-    files = []
 
     try:
         for x in os.listdir(exercise_path):
@@ -129,7 +150,35 @@ def user_code_zip(request):
         )
 
 
-@error_wrapper("GET", ["project"])
+@error_wrapper(fal, "GET", ["project", "language"])
+def get_helper_file_list(request):
+    project = request.GET.get("project")
+    language = request.GET.get("language")
+
+    base_group = "Code"
+
+    path = fal.exercise_helper_path(project, language)
+
+    file_list = fal.list_formatted(path, base_group)
+
+    # Return the list of files
+    return Response({"file_list": EntryEncoder().encode(file_list)})
+
+
+@error_wrapper(fal, "GET", ["project", "language", "filename"])
+def get_helper_file(request):
+    project = request.GET.get("project")
+    language = request.GET.get("language")
+    filename = request.GET.get("filename", None)
+
+    path = fal.exercise_helper_path(project, language)
+
+    content = fal.read(fal.path_join(path, filename))
+    serializer = FileContentSerializer({"content": content})
+    return Response(serializer.data)
+
+
+@error_wrapper(fal, "GET", ["project"])
 def get_universes_list(request):
     """
     Return the list of universes associated with an exercise.
@@ -153,7 +202,7 @@ def get_universes_list(request):
     return Response({"universes_list": universes_list})
 
 
-@error_wrapper("GET", ["project"])
+@error_wrapper(fal, "GET", ["project"])
 def get_docker_universe_data(request):
     """
     Retrieve docker and universe configuration for an exercise.

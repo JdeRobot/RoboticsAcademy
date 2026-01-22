@@ -1,5 +1,5 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
-import { useError } from "jderobot-ide-interface";
+import { Entry, useError } from "jderobot-ide-interface";
 import { publish, subscribe, unsubscribe } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
 import JSZip from "jszip";
@@ -12,7 +12,7 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getProjectExtraFiles } from "Api";
+import { getHelperFile, getHelperFileList } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -163,12 +163,12 @@ const PlayPauseButton = ({
         commonsZip = zip;
       }
 
-      const extraFiles: { name: string; content: string }[] =
-        await getProjectExtraFiles(project, language ? language : "python");
-
-      extraFiles.forEach((file) => {
-        commonsZip.file(file.name, file.content);
-      });
+      const helper_file_list = await getHelperFileList(
+        project,
+        language ?? "python"
+      );
+      const helper_files: Entry[] = JSON.parse(helper_file_list);
+      await zipHelperFiles(commonsZip, helper_files);
 
       commonsZip.file(`academy.${extension}`, codeRef.current);
 
@@ -205,7 +205,7 @@ const PlayPauseButton = ({
         }
       };
 
-      zip.generateAsync({ type: "blob" }).then(function (content: Blob) {
+      commonsZip.generateAsync({ type: "blob" }).then(function (content: Blob) {
         reader.readAsDataURL(content);
       });
 
@@ -215,6 +215,42 @@ const PlayPauseButton = ({
       if (e instanceof Error) {
         console.error("Error running app: " + e.message);
         error("Error running app: " + e.message);
+      }
+    }
+  };
+
+  const zipHelperFiles = async (zip: JSZip, files: Entry[]) => {
+    for (const file of files) {
+      if (file.is_dir) {
+        await zipCodeFolder(zip, file);
+      } else {
+        await zipCodeFile(zip, file.path, file.name);
+      }
+    }
+  };
+
+  const zipCodeFile = async (
+    zip: JSZip,
+    file_path: string,
+    file_name: string
+  ) => {
+    const content = await getHelperFile(project, language!, file_path);
+    zip.file(file_name, content);
+  };
+
+  const zipCodeFolder = async (zip: JSZip, file: Entry) => {
+    const folder = zip.folder(file.name);
+
+    if (folder === null) {
+      return;
+    }
+
+    for (let index = 0; index < file.files.length; index++) {
+      const element = file.files[index];
+      if (element.is_dir) {
+        await zipCodeFolder(folder, element);
+      } else {
+        await zipCodeFile(folder, element.path, element.name);
       }
     }
   };

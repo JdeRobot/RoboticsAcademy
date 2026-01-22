@@ -3,8 +3,6 @@
 from abc import ABC, abstractmethod
 import os
 import shutil
-
-from .models import Project, get_user_projects_size
 from .project_view import list_dir
 from .exceptions import InvalidPath, ResourceNotExists, ResourceAlreadyExists
 
@@ -12,53 +10,26 @@ from .exceptions import InvalidPath, ResourceNotExists, ResourceAlreadyExists
 class FAL(ABC):
     """File Abstraction Layer"""
 
-    def __init__(self, projects=""):
-        self.projects = projects
+    def __init__(self, academy="", helper=""):
+        self.academy = academy
+        self.helper = helper
         self.user = None
-        self.project = None
 
     def set_user(self, user):
         self.user = user
 
-    def set_project(self, project):
-        self.project = project
-
     @abstractmethod
-    def projects_path(self) -> str:
+    def academy_path(self) -> str:
         pass
 
-    def project_path(self, project_id, change_proj=True) -> str:
-        if change_proj:
-            self.set_project(Project.objects.get(id=project_id, creator=self.user))
-        return self.path_join(self.projects_path(), project_id + "/")
+    def exercise_path(self, exercise_id) -> str:
+        return self.path_join(self.academy_path(), exercise_id)
 
-    @abstractmethod
-    def library_path(self) -> str:
-        pass
+    def helpers_path(self, exercise_id) -> str:
+        return self.path_join(self.helper, exercise_id)
 
-    def library_entry_path(self, entry) -> str:
-        return self.path_join(self.library_path(), entry)
-
-    def library_actions_path(self, entry) -> str:
-        return self.path_join(self.library_entry_path(entry), "actions")
-
-    def library_subtrees_path(self, entry) -> str:
-        return self.path_join(self.library_entry_path(entry), "subtrees")
-
-    def universes_path(self, project_id) -> str:
-        return self.path_join(self.project_path(project_id), "universes/")
-
-    def code_path(self, project_id) -> str:
-        return self.path_join(self.project_path(project_id), "code/")
-
-    def actions_path(self, project_id) -> str:
-        return self.path_join(self.code_path(project_id), "actions/")
-
-    def trees_path(self, project_id) -> str:
-        return self.path_join(self.code_path(project_id), "trees/")
-
-    def subtrees_path(self, project_id) -> str:
-        return self.path_join(self.trees_path(project_id), "subtrees/")
+    def exercise_helper_path(self, project_id, language) -> str:
+        return self.path_join(self.helpers_path(project_id), f"{language}_template/")
 
     @abstractmethod
     def path_join(self, a: str, b: str) -> str:
@@ -84,12 +55,6 @@ class FAL(ABC):
         if self.exists(path) > 0:
             raise ResourceAlreadyExists(path)
 
-        size = len(content.encode("utf-8"))
-
-        if self.project is not None:
-            self.project.update_size(self, size)
-        self.user.update_size(self, size, project_callback=get_user_projects_size)
-
     @abstractmethod
     def create_binary(self, path: str, content):
         if ".." in path:
@@ -98,28 +63,11 @@ class FAL(ABC):
         if self.exists(path) > 0:
             raise ResourceAlreadyExists(path)
 
-        size = len(content)
-
-        if self.project is not None:
-            self.project.update_size(self, size)
-        self.user.update_size(self, size, project_callback=get_user_projects_size)
-
     @abstractmethod
     def write(self, path: str, content):
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
-
-        new_size = len(content.encode("utf-8"))
-
-        if self.project is not None:
-            self.project.update_size(self, new_size, size)
-        self.user.update_size(
-            self,
-            new_size,
-            size,
-            project_callback=get_user_projects_size,
-        )
 
     @abstractmethod
     def write_binary(self, path: str, content):
@@ -127,19 +75,8 @@ class FAL(ABC):
         if size < 0:
             raise ResourceNotExists(path)
 
-        new_size = len(content)
-
-        if self.project is not None:
-            self.project.update_size(self, new_size, size)
-        self.user.update_size(
-            self,
-            new_size,
-            size,
-            project_callback=get_user_projects_size,
-        )
-
     @abstractmethod
-    def read(self, path: str) -> str:
+    def read(self, path: str):
         if ".." in path:
             raise InvalidPath(path)
 
@@ -147,7 +84,7 @@ class FAL(ABC):
             raise ResourceNotExists(path)
 
     @abstractmethod
-    def read_binary(self, path: str) -> str:
+    def read_binary(self, path: str):
         if ".." in path:
             raise InvalidPath(path)
 
@@ -186,22 +123,6 @@ class FAL(ABC):
 
         if not self.isdir(path):
             raise ResourceNotExists(path)
-
-    @abstractmethod
-    def get_base_tree_template(self):
-        pass
-
-    @abstractmethod
-    def get_base_subtree_template(self):
-        pass
-
-    @abstractmethod
-    def get_action_template(self, filename, template):
-        pass
-
-    @abstractmethod
-    def get_universe_template(self, universe):
-        pass
 
     @abstractmethod
     def mkdir(self, path: str):
@@ -244,9 +165,6 @@ class FAL(ABC):
 
         if not self.isfile(path):
             raise ResourceNotExists(path)
-        if self.project is not None:
-            self.project.update_size(self, 0, size)
-        self.user.update_size(self, 0, size, project_callback=get_user_projects_size)
 
     @abstractmethod
     def removedir(self, path: str):
@@ -276,17 +194,14 @@ class FAL(ABC):
         return os.path.splitext(os.path.basename(path))[0]
 
 
-class FAL_BT(FAL):
+class FAL_RA(FAL):
     """File Abstraction Layer"""
 
-    def __init__(self, base):
-        FAL.__init__(self, base)
+    def __init__(self, base, helper):
+        FAL.__init__(self, base, helper)
 
-    def projects_path(self) -> str:
-        return self.path_join(self.projects, "filesystem")
-
-    def library_path(self) -> str:
-        return self.path_join(self.projects, "library")
+    def academy_path(self) -> str:
+        return self.path_join(self.academy, "filesystem")
 
     def path_join(self, a: str, b: str) -> str:
         return os.path.join(a, b)
@@ -356,49 +271,6 @@ class FAL_BT(FAL):
         super().list_formatted(path, base_group)
 
         return list_dir(path, path, base_group=base_group)
-
-    def get_base_tree_template(self):
-        init_graph_path = self.path_join(self.projects, "templates/graph.json")
-        return self.read(init_graph_path)
-
-    def get_base_subtree_template(self):
-        init_graph_path = self.path_join(self.projects, "templates/graph.json")
-        return self.read(init_graph_path)
-
-    def get_action_template(self, filename, template):
-        templates_folder_path = self.path_join(self.projects, "templates")
-        template_path = self.path_join(templates_folder_path, template)
-        file_data = self.read(template_path)
-        new_data = file_data.replace("ACTION", filename)
-        return new_data
-
-    def get_universe_template(self, universe):
-        contents = []
-        templates_folder_path = self.path_join(self.projects, "templates/universe")
-        launch_path = self.path_join(templates_folder_path, "launch/universe.launch.py")
-        world_path = self.path_join(templates_folder_path, "worlds/universe.world")
-        cmake_path = self.path_join(templates_folder_path, "CMakeLists.txt")
-        vis_config_path = self.path_join(templates_folder_path, "gz.config")
-        package_path = self.path_join(templates_folder_path, "package.xml")
-
-        file_data = self.read(launch_path)
-        new_data = file_data.replace("REPLACE", universe)
-        contents.append({"path": "launch/universe.launch.py", "content": new_data})
-
-        file_data = self.read(world_path)
-        contents.append({"path": "worlds/universe.world", "content": file_data})
-
-        file_data = self.read(vis_config_path)
-        contents.append({"path": "gz.config", "content": file_data})
-
-        file_data = self.read(cmake_path)
-        new_data = file_data.replace("REPLACE", universe)
-        contents.append({"path": "CMakeLists.txt", "content": new_data})
-
-        file_data = self.read(package_path)
-        new_data = file_data.replace("REPLACE", universe)
-        contents.append({"path": "package.xml", "content": new_data})
-        return contents
 
     def mkdir(self, path: str):
         super().mkdir(path)
