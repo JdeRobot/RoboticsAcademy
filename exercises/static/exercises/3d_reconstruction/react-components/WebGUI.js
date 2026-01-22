@@ -13,7 +13,7 @@ const WebGUI = () => {
   const [manager, setManager] = useState(exerciseContext.manager);
   const [reset, setReset] = useState(false);
   const [pointsToPaint, setPointsToPaint] = useState(undefined);
-  let connection = connectApplication();
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -24,7 +24,7 @@ const WebGUI = () => {
       return;
     }
 
-    connection.start(manager);
+    
 
     const updateCallback = (message) => {
       connection.end();

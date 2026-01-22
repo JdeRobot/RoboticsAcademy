@@ -10,8 +10,8 @@ function WebGUI() {
   const [rightImage, setRightImage] = useState(undefined);
   const [leftImage, setLeftImage] = useState(undefined);
   const exerciseContext = useExercise();
-  let connection = connectApplication();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -22,7 +22,7 @@ function WebGUI() {
       return;
     }
 
-    connection.start(manager);
+    
 
     const updateCallback = (message) => {
       connection.end();

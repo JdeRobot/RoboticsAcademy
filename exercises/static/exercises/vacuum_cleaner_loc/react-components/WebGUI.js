@@ -19,7 +19,7 @@ const WebGUI = () => {
   const [userImage, setUserImage] = useState(undefined);
   const canvasRef = useRef(null);
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication();
+  let connection = connectApplication(manager);
   var lastPose = undefined;
   const vacuumSize = 40;
   var trail = [];

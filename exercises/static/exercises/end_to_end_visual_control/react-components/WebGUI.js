@@ -21,8 +21,8 @@ const WebGUI = () => {
   const [lapTime, setLapTime] = useState(null);
   const [carPose, setCarPose] = useState(null);
   const [circuitImg, setCircuitImg] = useState(defaultCircuit);
-  let connection = connectApplication();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -78,7 +78,7 @@ const WebGUI = () => {
       return;
     }
 
-    connection.start(manager);
+    
 
     const updateCallback = (message) => {
       connection.end();

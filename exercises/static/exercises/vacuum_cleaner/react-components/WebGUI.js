@@ -15,7 +15,7 @@ const WebGUI = () => {
   const [vacuumPose, setVacuumPose] = useState(null);
   const [path, setPath] = useState("");
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication();
+  let connection = connectApplication(manager);
   var lastPose = undefined;
   const canvasRef = useRef(null);
   const vacuumSize = 40;
@@ -54,7 +54,6 @@ const WebGUI = () => {
       return;
     }
 
-    connection.start(manager)
 
     const updateCallback = (message) => {
       connection.end()
