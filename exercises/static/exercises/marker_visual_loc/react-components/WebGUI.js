@@ -6,7 +6,9 @@ import RobotRed from "../resources/images/robot_red.svg";
 import RobotGreen from "../resources/images/robot_green.svg";
 import RobotBlue from "../resources/images/robot_blue.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 
 import house from "../resources/images/map.png";
 
@@ -23,6 +25,7 @@ function WebGUI(props) {
   const canvasRef = useRef(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication();
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -61,7 +64,7 @@ function WebGUI(props) {
         x: beacon.x * width,
         y: beacon.y * height,
         type: beacon.type,
-      }))
+      })),
     );
 
     updatePath(realTrail, setRealPath, height, width);
@@ -100,7 +103,10 @@ function WebGUI(props) {
       return;
     }
 
+    connection.start(manager);
+
     const updateCallback = (message) => {
+      connection.end();
       const updateData = message.data.update;
 
       var img = canvasRef.current;
@@ -111,7 +117,7 @@ function WebGUI(props) {
       if (updateData.real_pose) {
         const pose = updateData.real_pose.substring(
           1,
-          updateData.real_pose.length - 1
+          updateData.real_pose.length - 1,
         );
         const content = pose.split(",").map((item) => parseFloat(item));
         realLastPose = content;
@@ -132,7 +138,7 @@ function WebGUI(props) {
       if (updateData.noisy_pose) {
         const pose = updateData.noisy_pose.substring(
           1,
-          updateData.noisy_pose.length - 1
+          updateData.noisy_pose.length - 1,
         );
         const content = pose.split(",").map((item) => parseFloat(item));
         noisyLastPose = content;
@@ -151,7 +157,7 @@ function WebGUI(props) {
       if (updateData.estimate_pose) {
         const pose = updateData.estimate_pose.substring(
           1,
-          updateData.estimate_pose.length - 1
+          updateData.estimate_pose.length - 1,
         );
         const content = pose.split(",").map((item) => parseFloat(item));
         userLastPose = content;
@@ -201,7 +207,7 @@ function WebGUI(props) {
             x: beacon.x * width,
             y: beacon.y * height,
             type: beacon.type,
-          }))
+          })),
         );
       }
       valuesUntilValid = 0;

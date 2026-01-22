@@ -2,13 +2,16 @@ import { useState, useEffect } from "react";
 import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUI3D from "Components/exercise/WebGUI3D";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
   const [reset, setReset] = useState(false);
   const [pointsToPaint, setPointsToPaint] = useState(undefined);
+  let connection = connectApplication();
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -19,7 +22,10 @@ const WebGUI = () => {
       return;
     }
 
+    connection.start(manager);
+
     const updateCallback = (message) => {
+      connection.end();
       if (message.data.update.lidar) {
         const data = message.data.update;
         var point = JSON.parse(data.lidar);

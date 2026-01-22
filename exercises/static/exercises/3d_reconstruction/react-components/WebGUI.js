@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUI3D from "Components/exercise/WebGUI3D";
-import WebGUIContainer from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
 import "./css/Reconstruction3DRR.css";
 import { draw, reset_all } from "./helpers/helperRecontruction";
 
@@ -11,6 +13,7 @@ const WebGUI = () => {
   const [manager, setManager] = useState(exerciseContext.manager);
   const [reset, setReset] = useState(false);
   const [pointsToPaint, setPointsToPaint] = useState(undefined);
+  let connection = connectApplication();
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -21,7 +24,10 @@ const WebGUI = () => {
       return;
     }
 
+    connection.start(manager);
+
     const updateCallback = (message) => {
+      connection.end();
       if (message.data.update.img1) {
         const data = message.data.update;
         draw(data);
