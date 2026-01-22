@@ -25,7 +25,7 @@ function WebGUI(props) {
   const canvasRef = useRef(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication();
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -103,7 +103,7 @@ function WebGUI(props) {
       return;
     }
 
-    connection.start(manager);
+    
 
     const updateCallback = (message) => {
       connection.end();

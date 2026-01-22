@@ -9,8 +9,8 @@ import WebGUIContainer, {
 function WebGUI() {
   const [image, setImage] = useState(undefined);
   const exerciseContext = useExercise();
-  let connection = connectApplication();
   const [manager, setManager] = useState(exerciseContext.manager);
+  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -21,7 +21,7 @@ function WebGUI() {
       return;
     }
 
-    connection.start(manager);
+    
 
     const callback = (message) => {
       connection.end();

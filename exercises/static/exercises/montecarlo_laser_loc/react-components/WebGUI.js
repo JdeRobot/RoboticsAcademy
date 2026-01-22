@@ -16,7 +16,7 @@ function WebGUI() {
   const canvasRef = useRef(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication();
+  let connection = connectApplication(manager);
   const vacuumSize = 40;
 
   useEffect(() => {
@@ -56,7 +56,7 @@ function WebGUI() {
       return;
     }
 
-    connection.start(manager);
+    
 
     const updateCallback = (message) => {
       connection.end();
