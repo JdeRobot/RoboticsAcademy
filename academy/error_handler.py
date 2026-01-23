@@ -11,6 +11,7 @@ import binascii
 from functools import wraps
 import json
 from .exceptions import (
+    BinaryNotSupported,
     ResourceNotExists,
     ResourceAlreadyExists,
     ParameterInvalid,
@@ -22,6 +23,7 @@ CUSTOM_EXCEPTIONS = (
     ResourceAlreadyExists,
     ParameterInvalid,
     InvalidPath,
+    BinaryNotSupported
 )
 
 
@@ -46,7 +48,7 @@ def error_wrapper(fal, type: str, param: list[str | tuple] = []):
                 return func(request)
             except CUSTOM_EXCEPTIONS as e:
                 print(str(e))
-                return Response({"error": str(e)}, status=e.error_code)
+                return Response({"message": str(e)}, status=e.error_code)
             except json.JSONDecodeError as e:
                 print(str(e))
                 return Response({"error": f"Invalid JSON format: {str(e)}"}, status=422)

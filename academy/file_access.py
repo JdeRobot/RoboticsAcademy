@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 import os
 import shutil
 from .project_view import list_dir
-from .exceptions import InvalidPath, ResourceNotExists, ResourceAlreadyExists
+from .exceptions import BinaryNotSupported, InvalidPath, ResourceNotExists, ResourceAlreadyExists
 
 
 class FAL(ABC):
@@ -201,7 +201,7 @@ class FAL_RA(FAL):
         FAL.__init__(self, base, helper)
 
     def academy_path(self) -> str:
-        return self.path_join(self.academy, "academy/filesystem")
+        return self.path_join(self.academy, "filesystem")
 
     def path_join(self, a: str, b: str) -> str:
         return os.path.join(a, b)
@@ -252,8 +252,11 @@ class FAL_RA(FAL):
     def read(self, path: str) -> str:
         super().read(path)
 
-        with open(path, "r") as f:
-            return f.read()
+        try:
+            with open(path, "r") as f:
+                return f.read()
+        except Exception:
+            raise BinaryNotSupported(path)
 
     def read_binary(self, path: str) -> str:
         super().read(path)
@@ -279,7 +282,8 @@ class FAL_RA(FAL):
     def mkdir(self, path: str):
         super().mkdir(path)
 
-        os.makedirs(path, mode=0o777)
+        os.makedirs(path)
+        os.chmod(path, mode=0o777)
 
     def renamefile(self, old_path: str, new_path: str):
         super().renamefile(old_path.new_path)

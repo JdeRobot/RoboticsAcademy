@@ -100,19 +100,18 @@ export const zipCodeFiles = async (
     if (file.is_dir) {
       await zipCodeFolder(zip, file, project);
     } else {
-      await zipCodeFile(zip, file.path, file.name, project);
+      await zipCodeFile(zip, file, project);
     }
   }
 };
 
 const zipCodeFile = async (
   zip: JSZip,
-  file_path: string,
-  file_name: string,
+  file: Entry,
   project: string
 ) => {
-  const content = await getFile(project, file_path);
-  zip.file(file_name, content);
+  const content = await getFile(project, file.path, file.binary);
+  zip.file(file.name, content, {binary: file.binary});
 };
 
 const zipCodeFolder = async (zip: JSZip, file: Entry, project: string) => {
@@ -127,7 +126,7 @@ const zipCodeFolder = async (zip: JSZip, file: Entry, project: string) => {
     if (element.is_dir) {
       await zipCodeFolder(folder, element, project);
     } else {
-      await zipCodeFile(folder, element.path, element.name, project);
+      await zipCodeFile(folder, element, project);
     }
   }
 };

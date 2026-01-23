@@ -2,16 +2,17 @@
 API views for Robotics Academy.
 """
 
+import base64
 import json
 import os
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 import subprocess
 import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
-from academy.exceptions import ResourceNotExists
+from academy.exceptions import BinaryNotSupported, ResourceNotExists
 from academy.project_view import EntryEncoder
 from academy.serializers import FileContentSerializer
 
@@ -22,7 +23,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .constants import base_py_code, base_cpp_code
 
-fal = FAL_RA("./", os.path.join(settings.BASE_DIR, "exercises"))
+fal = FAL_RA(
+    settings.BASE_DIR,
+    os.path.join(settings.BASE_DIR, "exercises"),
+)
 
 
 @csrf_exempt
@@ -76,6 +80,20 @@ def get_info(request):
         "url": project.url,
     }
 
+    # Create filesystem base
+    path = fal.exercise_path(project_id)
+    if fal.exists(path) < 0:
+        fal.mkdir(path)
+        # Create base files
+        content = base_py_code
+        file_path = fal.path_join(path, "academy.py")
+        fal.create(file_path, content)
+        for tag in eval(project.tags):
+            if tag == "MULTILANGUAGE":
+                content = base_cpp_code
+                file_path = fal.path_join(path, "academy.cpp")
+                fal.create(file_path, content)
+
     return JsonResponse({"success": True, "info": info})
 
 
@@ -101,6 +119,19 @@ def get_exercise_list(request):
     return JsonResponse({"success": True, "exercises": project_list})
 
 
+@error_wrapper(fal, "GET", ["project"])
+def get_exercise_teaser(request):
+    project = request.GET.get("project")
+
+    path = fal.helpers_path(project)
+    teaser_path = fal.path_join(path, "teaser.png")
+
+    content = fal.read_binary(teaser_path)
+
+    b64 = base64.b64encode(content)
+    return HttpResponse(b64.decode("utf-8"), content_type="image/png")
+
+
 @error_wrapper(fal, "GET", ["project", "language"])
 def get_helper_file_list(request):
     project = request.GET.get("project")
@@ -112,7 +143,6 @@ def get_helper_file_list(request):
 
     file_list = fal.list_formatted(path, base_group)
 
-    # Return the list of files
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
 
@@ -139,8 +169,92 @@ def get_file_list(request):
 
     file_list = fal.list_formatted(path, base_group)
 
-    # Return the list of files
     return Response({"file_list": EntryEncoder().encode(file_list)})
+
+
+@error_wrapper(fal, "POST", ["project_id", ("location", -1), "file_name"])
+def create_file(request):
+    project_id = request.data.get("project_id")
+    location = request.data.get("location")
+    filename = request.data.get("file_name")
+
+    path = fal.exercise_path(project_id)
+    create_path = fal.path_join(path, location)
+    file_path = fal.path_join(create_path, filename)
+
+    fal.create(file_path, "")
+    return Response({"success": True})
+
+
+@error_wrapper(fal, "POST", ["project_id", ("location", -1), "folder_name"])
+def create_folder(request):
+    project_id = request.data.get("project_id")
+    location = request.data.get("location")
+    folder_name = request.data.get("folder_name")
+
+    path = fal.exercise_path(project_id)
+
+    create_path = fal.path_join(path, location)
+    folder_path = fal.path_join(create_path, folder_name)
+
+    fal.mkdir(folder_path)
+    return Response({"success": True})
+
+
+@error_wrapper(fal, "POST", ["project_id", "path", "rename_to"])
+def rename_file(request):
+    project_id = request.data.get("project_id")
+    path = request.data.get("path")
+    rename_path = request.data.get("rename_to")
+
+    base_path = fal.exercise_path(project_id)
+
+    file_path = fal.path_join(base_path, path)
+    new_path = fal.path_join(base_path, rename_path)
+
+    fal.renamefile(file_path, new_path)
+    return JsonResponse({"success": True})
+
+
+@error_wrapper(fal, "POST", ["project_id", "path", "rename_to"])
+def rename_folder(request):
+    project_id = request.data.get("project_id")
+    path = request.data.get("path")
+    rename_path = request.data.get("rename_to")
+
+    base_path = fal.exercise_path(project_id)
+
+    file_path = fal.path_join(base_path, path)
+    new_path = fal.path_join(base_path, rename_path)
+
+    fal.renamedir(file_path, new_path)
+    return JsonResponse({"success": True})
+
+
+@error_wrapper(fal, "POST", ["project_id", "path"])
+def delete_file(request):
+    project_id = request.data.get("project_id")
+    path = request.data.get("path")
+
+    base_path = fal.exercise_path(project_id)
+
+    file_path = fal.path_join(base_path, path)
+
+    fal.removefile(file_path)
+    return JsonResponse({"success": True})
+
+
+@error_wrapper(fal, "POST", ["project_id", "path"])
+def delete_folder(request):
+    project_id = request.data.get("project_id")
+    path = request.data.get("path")
+
+    base_path = fal.exercise_path(project_id)
+
+    file_path = fal.path_join(base_path, path)
+
+    fal.removedir(file_path)
+    return JsonResponse({"success": True})
 
 
 @error_wrapper(fal, "GET", ["project", "filename"])
@@ -148,25 +262,18 @@ def get_file(request):
     project_id = request.GET.get("project", None)
     filename = request.GET.get("filename", None)
 
+    binary = request.GET.get("binary", None)
+
     path = fal.exercise_path(project_id)
 
     file_path = fal.path_join(path, filename)
 
-    try:
+    if binary is None or binary is False:
         content = fal.read(file_path)
-    except ResourceNotExists:
-        ext = os.path.splitext(file_path)[1]
-
-        if ext == ".py":
-            content = base_py_code
-        elif ext == ".cpp":
-            content = base_cpp_code
-        else:
-            content = ""
-
-        if fal.exists(path) < 0:
-            fal.mkdir(path)
-        fal.create(file_path, content)
+    else:
+        content = fal.read_binary(file_path)
+        b64 = base64.b64encode(content)
+        content = b64.decode('utf-8')
 
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)
@@ -179,8 +286,6 @@ def save_file(request):
     content = request.data.get("content")
 
     path = fal.exercise_path(project_id)
-    if fal.exists(path) < 0:
-        fal.mkdir(path)
 
     file_path = fal.path_join(path, filename)
 
@@ -287,3 +392,20 @@ def get_docker_universe_data(request):
         }
 
     return Response({"success": True, "universe": config})
+
+
+@error_wrapper(fal, "POST", ["project_id", "file_name", ("location", -1), "content"])
+def upload(request):
+    # Get the name and the zip file from the request
+    project_id = request.data.get("project_id")
+    file_name = request.data.get("file_name")
+    location = request.data.get("location")
+    content = request.data.get("content")
+
+    path = fal.exercise_path(project_id)
+
+    create_path = fal.path_join(path, location)
+    file_path = fal.path_join(create_path, file_name)
+
+    fal.create_binary(file_path, base64.b64decode(content))
+    return Response({"success": True})
