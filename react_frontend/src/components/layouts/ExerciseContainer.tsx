@@ -127,7 +127,7 @@ const ExerciseContainer = ({
     file: {
       get: (project: string, file: Entry) => {
         //TODO: allow binary support
-        console.log(file)
+        console.log(file);
         return getFile(project, file.path);
       },
       save: (project: string, file: Entry, content: string) => {

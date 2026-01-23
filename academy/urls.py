@@ -23,7 +23,9 @@ academy_urls = [
     path("get_info/", views.get_info, name="get_info"),
     path("get_exercise_list/", views.get_exercise_list, name="get_exercise_list"),
     path("get_exercise_teaser/", views.get_exercise_teaser, name="get_exercise_teaser"),
-    path("get_helper_file_list/", views.get_helper_file_list, name="get_helper_file_list"),
+    path(
+        "get_helper_file_list/", views.get_helper_file_list, name="get_helper_file_list"
+    ),
     path("get_helper_file/", views.get_helper_file, name="get_helper_file"),
     path(
         "get_universes_list/",
@@ -35,7 +37,6 @@ academy_urls = [
         views.get_docker_universe_data,
         name="get_docker_universe_data",
     ),
-
     # File Management
     path("create_file/", views.create_file, name="create_file"),
     path("delete_file/", views.delete_file, name="delete_file"),

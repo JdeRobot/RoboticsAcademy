@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { getTeaser } from "Api";
 
 // TODO: temporary
-const cache = []
+const cache = [];
 
 const ExerciseCard = ({
   exercise_id,
@@ -36,12 +36,12 @@ const ExerciseCard = ({
     let img = cache[id];
     if (img !== undefined) {
       setTeaser(img);
-      return
+      return;
     }
 
     try {
       img = await getTeaser(id);
-      cache[id] = img
+      cache[id] = img;
     } catch {
       img = FALLBACK_IMAGE;
     }

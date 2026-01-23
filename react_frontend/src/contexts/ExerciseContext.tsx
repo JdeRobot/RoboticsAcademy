@@ -22,9 +22,7 @@ export const ExerciseProvider = ({
   children,
 }: ExerciseProviderProps) => {
   return (
-    <ExerciseContext.Provider
-      value={{ manager: manager}}
-    >
+    <ExerciseContext.Provider value={{ manager: manager }}>
       {children}
     </ExerciseContext.Provider>
   );

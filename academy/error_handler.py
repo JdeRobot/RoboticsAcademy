@@ -23,7 +23,7 @@ CUSTOM_EXCEPTIONS = (
     ResourceAlreadyExists,
     ParameterInvalid,
     InvalidPath,
-    BinaryNotSupported
+    BinaryNotSupported,
 )
 
 
