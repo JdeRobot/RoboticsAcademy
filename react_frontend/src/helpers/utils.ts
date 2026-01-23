@@ -105,13 +105,9 @@ export const zipCodeFiles = async (
   }
 };
 
-const zipCodeFile = async (
-  zip: JSZip,
-  file: Entry,
-  project: string
-) => {
+const zipCodeFile = async (zip: JSZip, file: Entry, project: string) => {
   const content = await getFile(project, file.path, file.binary);
-  zip.file(file.name, content, {binary: file.binary});
+  zip.file(file.name, content, { binary: file.binary });
 };
 
 const zipCodeFolder = async (zip: JSZip, file: Entry, project: string) => {

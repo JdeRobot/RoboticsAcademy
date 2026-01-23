@@ -4,7 +4,12 @@ from abc import ABC, abstractmethod
 import os
 import shutil
 from .project_view import list_dir
-from .exceptions import BinaryNotSupported, InvalidPath, ResourceNotExists, ResourceAlreadyExists
+from .exceptions import (
+    BinaryNotSupported,
+    InvalidPath,
+    ResourceNotExists,
+    ResourceAlreadyExists,
+)
 
 
 class FAL(ABC):

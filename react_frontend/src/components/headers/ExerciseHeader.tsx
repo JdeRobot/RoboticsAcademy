@@ -72,10 +72,7 @@ const ExerciseHeader = ({
           <HomeButton />
           <ThemeButton />
           {language && (
-            <LanguageButton
-              language={language}
-              setter={setLanguage}
-            />
+            <LanguageButton language={language} setter={setLanguage} />
           )}
           <DownloadButton project={project} />
           <LayoutButton setLayout={setLayout} />

@@ -273,7 +273,7 @@ def get_file(request):
     else:
         content = fal.read_binary(file_path)
         b64 = base64.b64encode(content)
-        content = b64.decode('utf-8')
+        content = b64.decode("utf-8")
 
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)

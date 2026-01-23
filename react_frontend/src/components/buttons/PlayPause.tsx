@@ -128,7 +128,7 @@ const PlayPauseButton = ({
     }
 
     const files = await getFileList(project);
-    filesRef.current = JSON.parse(files)
+    filesRef.current = JSON.parse(files);
 
     if (state === states.PAUSED) {
       if (
