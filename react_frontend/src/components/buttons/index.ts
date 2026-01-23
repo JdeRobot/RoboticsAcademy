@@ -1,10 +1,8 @@
 export { default as HomeButton } from "./Home";
 export { default as DownloadButton } from "./Download";
-export { default as UploadButton } from "./Upload";
 export { default as TheoryButton } from "./Theory";
 export { default as ForumButton } from "./Forum";
 export { default as InfoButton } from "./Info";
-export { default as DeepLearningButton } from "./DeepLearning";
 export { default as PlayPauseButton } from "./PlayPause";
 export { default as ResetButton } from "./Reset";
 export { default as LayoutButton } from "./Layout";

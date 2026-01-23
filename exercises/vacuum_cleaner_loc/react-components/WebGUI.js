@@ -56,8 +56,6 @@ const WebGUI = () => {
       return;
     }
 
-    connection.start(manager)
-
     const updateCallback = (message) => {
       connection.end()
 

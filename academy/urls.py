@@ -22,11 +22,9 @@ from . import views
 academy_urls = [
     path("get_info/", views.get_info, name="get_info"),
     path("get_exercise_list/", views.get_exercise_list, name="get_exercise_list"),
+    path("get_exercise_teaser/", views.get_exercise_teaser, name="get_exercise_teaser"),
     path("get_helper_file_list/", views.get_helper_file_list, name="get_helper_file_list"),
     path("get_helper_file/", views.get_helper_file, name="get_helper_file"),
-    path("get_file_list/", views.get_file_list, name="get_file_list"),
-    path("save_file/", views.save_file, name="save_file"),
-    path("get_file/", views.get_file, name="get_file"),
     path(
         "get_universes_list/",
         views.get_universes_list,
@@ -37,6 +35,19 @@ academy_urls = [
         views.get_docker_universe_data,
         name="get_docker_universe_data",
     ),
+
+    # File Management
+    path("create_file/", views.create_file, name="create_file"),
+    path("delete_file/", views.delete_file, name="delete_file"),
+    path("rename_file/", views.rename_file, name="rename_file"),
+    path("save_file/", views.save_file, name="save_file"),
+    path("get_file/", views.get_file, name="get_file"),
+    path("get_file_list/", views.get_file_list, name="get_file_list"),
+    # Folder Management
+    path("create_folder/", views.create_folder, name="create_folder"),
+    path("delete_folder/", views.delete_folder, name="delete_folder"),
+    path("rename_folder/", views.rename_folder, name="rename_folder"),
+    path("upload/", views.upload, name="upload"),
 ]
 
 urlpatterns = [

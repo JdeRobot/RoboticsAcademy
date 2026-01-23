@@ -1,9 +1,14 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { Entry, useError } from "jderobot-ide-interface";
-import { publish, subscribe, unsubscribe, zipCodeFiles, zipHelperFiles } from "Helpers/utils";
+import {
+  publish,
+  subscribe,
+  unsubscribe,
+  zipCodeFiles,
+  zipHelperFiles,
+} from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
 import JSZip from "jszip";
-import { useExercise } from "Contexts/ExerciseContext";
 import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -12,30 +17,25 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getFileList, getHelperFile, getHelperFileList } from "Api";
+import { getFileList, getHelperFileList } from "Api";
 
 const PlayPauseButton = ({
   project,
   language,
-  dlModel,
-  hasDLModel,
   connectManager,
 }: {
   project: string;
   language?: string;
-  dlModel: ArrayBuffer | undefined;
-  hasDLModel: boolean;
   connectManager: (
     desiredState?: string,
     callback?: () => void
   ) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
-  const exerciseContext = useExercise();
   const { warning, error, info, close } = useError();
-  const codeRef = useRef("");
-  const runningCodeRef = useRef("");
-  const runningDLModel = useRef<ArrayBuffer | undefined>(undefined);
+  const filesRef = useRef<Entry[]>([]);
+  const runningFilesRef = useRef<Entry[]>([]);
+  const runningEntrypointRef = useRef<string | undefined>(undefined);
   const [state, setState] = useState<string>(
     CommsManager.getInstance().getState()
   );
@@ -66,10 +66,6 @@ const PlayPauseButton = ({
       unsubscribe("CommsManagerStateChange", () => {});
     };
   }, []);
-
-  useEffect(() => {
-    codeRef.current = exerciseContext.code;
-  }, [exerciseContext]);
 
   useEffect(() => {
     if (
@@ -131,10 +127,13 @@ const PlayPauseButton = ({
       return setTimeout(onAppStateChange, 100, true);
     }
 
+    const files = await getFileList(project);
+    filesRef.current = JSON.parse(files)
+
     if (state === states.PAUSED) {
       if (
-        runningCodeRef.current === codeRef.current &&
-        runningDLModel.current === dlModel
+        runningFilesRef.current === filesRef.current &&
+        runningEntrypointRef.current === language
       ) {
         try {
           await manager.resume();
@@ -163,35 +162,21 @@ const PlayPauseButton = ({
         commonsZip = zip;
       }
 
-      const helper_file_list = await getHelperFileList(
+      const helper_files = await getHelperFileList(
         project,
         language ?? "python"
       );
-      const helper_files: Entry[] = JSON.parse(helper_file_list);
-      await zipHelperFiles(commonsZip, helper_files, project, language ?? "python");
+      await zipHelperFiles(
+        commonsZip,
+        helper_files,
+        project,
+        language ?? "python"
+      );
 
-      const file_list = await getFileList(project);
-      const files: Entry[] = JSON.parse(file_list);
-      await zipCodeFiles(commonsZip, files, project);
+      await zipCodeFiles(commonsZip, filesRef.current, project);
 
-      // commonsZip.file(`academy.${extension}`, codeRef.current);
-
-      // add onnx file to the zip if it exists
-      if (hasDLModel) {
-        if (commonsZip.file("model.onnx") === null) {
-          throw new Error("No ONNX model found.");
-        } 
-
-        //TODO: rethink how to handle model files
-        // if (dlModel !== undefined) {
-        //   commonsZip.file("model.onnx", dlModel);
-        // } else {
-        //   throw new Error("No ONNX model found.");
-        // }
-      }
-
-      // TODO: this will no longer work with multiple files
-      runningCodeRef.current = codeRef.current;
+      runningFilesRef.current = filesRef.current;
+      runningEntrypointRef.current = language;
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();

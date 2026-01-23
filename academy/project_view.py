@@ -1,10 +1,18 @@
 from json import JSONEncoder
+import mimetypes
+import chardet
 import os
 
 
 class Entry:
     def __init__(
-        self, is_dir=False, name="", path="/", group="", access=True, files=[]
+        self,
+        is_dir=False,
+        name="",
+        path="/",
+        group="",
+        access=True,
+        files=[],
     ):
         self.is_dir = is_dir
         self.name = name
@@ -12,6 +20,7 @@ class Entry:
         self.group = group
         self.access = access
         self.files = files
+        self.binary = is_binary_mimetype(name)
 
     def __str__(self):
         if self.is_dir:
@@ -26,6 +35,13 @@ class EntryEncoder(JSONEncoder):
         return o.__dict__
 
 
+def is_binary_mimetype(file_path):
+    mime_type, _ = mimetypes.guess_type(file_path)
+    return mime_type is None or mime_type.startswith(
+        ("application/", "image/", "video/", "audio/")
+    )
+
+
 def list_dir(base_dir, directory, access_old=True, base_group=""):
     entries = os.listdir(directory)
     values = []
@@ -35,7 +51,15 @@ def list_dir(base_dir, directory, access_old=True, base_group=""):
         entry_path = os.path.join(directory, entry)
         rel_path = os.path.relpath(entry_path, base_dir)
         if os.path.isfile(entry_path):
-            values.append(Entry(False, entry, rel_path, group, access))
+            values.append(
+                Entry(
+                    False,
+                    entry,
+                    rel_path,
+                    group,
+                    access,
+                )
+            )
         else:
             values.append(
                 Entry(

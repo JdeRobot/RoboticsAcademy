@@ -44,3 +44,15 @@ class ResourceNotExists(Exception):
 
     def __str__(self):
         return f"{self.message}"
+
+
+class BinaryNotSupported(Exception):
+    """Exception raised for trying to read a binary file."""
+
+    def __init__(self, msg):
+        self.message = f"Reading {msg} is not supported"
+        super().__init__(self.message)
+        self.error_code = 415
+
+    def __str__(self):
+        return f"{self.message}"
