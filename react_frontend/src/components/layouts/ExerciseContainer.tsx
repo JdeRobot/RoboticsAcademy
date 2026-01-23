@@ -7,39 +7,26 @@ import IdeInterface, {
   ExtraApi,
   ExtraSnippets,
   StatusBarComponents,
-  ViewersEntry,
-  VncViewer,
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
-import { getRoboticsBackendUniverse, listUniverses } from "Api";
+import {
+  getFile,
+  getRoboticsBackendUniverse,
+  listUniverses,
+  saveFile,
+} from "Api";
 import Frequencies from "Components/statusBar/Frequencies";
-import CameraAltRoundedIcon from "@mui/icons-material/CameraAltRounded";
-import Camera from "Components/visualizers/Camera";
-import Video from "Components/visualizers/Video";
-import TerminalRoundedIcon from "@mui/icons-material/TerminalRounded";
-import ImportantDevicesRoundedIcon from "@mui/icons-material/ImportantDevicesRounded";
-import VideoCameraBackRoundedIcon from "@mui/icons-material/VideoCameraBackRounded";
-import OndemandVideoRoundedIcon from "@mui/icons-material/OndemandVideoRounded";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
-import PrecisionManufacturingRoundedIcon from "@mui/icons-material/PrecisionManufacturingRounded";
-import { defaultCppCode, defaultPythonCode } from "Constants/code";
 import { getHalGuiMethods } from "Helpers/editor";
 import { subscribe, unsubscribe } from "Helpers/utils";
+import { fileExplorer } from "Helpers/explorer";
+import getTools from "Helpers/tools";
 
-const base_file_python = {
-  name: "academy.py",
+const base_file = {
+  name: `academy.py`,
   is_dir: false,
-  path: "academy.py",
-  group: "code",
-  access: true,
-  files: [],
-};
-
-const base_file_cpp = {
-  name: "academy.cpp",
-  is_dir: false,
-  path: "academy.cpp",
+  path: `academy.py`,
   group: "code",
   access: true,
   files: [],
@@ -51,39 +38,22 @@ const ExerciseContainer = ({
   multiLanguage,
   tools,
   url,
-  hasDLModel,
   children,
 }: {
   project: string;
   name: string;
   tools: string[];
   url?: string;
-  hasDLModel: boolean;
   multiLanguage: boolean;
   children: JSX.Element;
 }) => {
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
-  const [showSim, setSimVisible] = useState<boolean>(true);
-  const [showWebGUI, setWebGUIVisible] = useState<boolean>(true);
-  const [showCamera, setCameraVisible] = useState<boolean>(true);
-  const [showVideo, setVideoVisible] = useState<boolean>(true);
-  const [showRviz, setRvizVisible] = useState<boolean>(true);
-  const [showTerminal, setTerminalVisible] = useState<boolean>(true);
+  const toolsList = getTools(manager, tools, children);
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both"
   );
-
   const [language, setLanguage] = useState<string>("python");
-  const [fileSaved, saveFile] = useState<boolean>(false);
-  const [baseFile, setBaseFile] = useState<Entry>(base_file_cpp);
-  const [, _setCode] = useState<string>(defaultPythonCode);
-  const codeRef = useRef<string>(defaultPythonCode);
-
-  const setCode = (data: string) => {
-    codeRef.current = data;
-    _setCode(data);
-  };
 
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project);
@@ -93,89 +63,6 @@ const ExerciseContainer = ({
 
     setUniverses(list);
   };
-
-  const toolsList: ViewersEntry[] = [];
-
-  if (tools.includes("web_gui")) {
-    toolsList.push({
-      component: children,
-      icon: <ImportantDevicesRoundedIcon />,
-      name: "Web Gui",
-      group: "debug-interface",
-      active: showWebGUI,
-      activate: setWebGUIVisible,
-    });
-  }
-
-  if (tools.includes("webcam")) {
-    toolsList.push({
-      component: <Camera visible={showCamera} />,
-      icon: <CameraAltRoundedIcon />,
-      name: "WebCam",
-      group: "video-input",
-      active: showCamera,
-      activate: setCameraVisible,
-    });
-  }
-
-  if (tools.includes("video")) {
-    toolsList.push({
-      component: <Video visible={showVideo} />,
-      icon: <OndemandVideoRoundedIcon />,
-      name: "Local video",
-      group: "video-input",
-      active: showVideo,
-      activate: setVideoVisible,
-    });
-  }
-
-  if (tools.includes("simulator")) {
-    toolsList.push({
-      component: (
-        <VncViewer
-          commsManager={manager}
-          port={6080}
-          message={"Click Play to connect to the Robotics Backend"}
-        />
-      ),
-      icon: <VideoCameraBackRoundedIcon />,
-      name: "Gazebo",
-      active: showSim,
-      activate: setSimVisible,
-    });
-  }
-
-  if (tools.includes("rviz")) {
-    toolsList.push({
-      component: (
-        <VncViewer
-          commsManager={manager}
-          port={6081}
-          message={"Click Play to connect to the Robotics Backend"}
-        />
-      ),
-      icon: <PrecisionManufacturingRoundedIcon />,
-      name: "Rviz",
-      active: showRviz,
-      activate: setRvizVisible,
-    });
-  }
-
-  if (tools.includes("console")) {
-    toolsList.push({
-      component: (
-        <VncViewer
-          commsManager={manager}
-          port={6082}
-          message={"Click Play to connect to the Robotics Backend"}
-        />
-      ),
-      icon: <TerminalRoundedIcon />,
-      name: "Terminal",
-      active: showTerminal,
-      activate: setTerminalVisible,
-    });
-  }
 
   // RB manager setup
   const connected = useRef<boolean>(false);
@@ -236,37 +123,15 @@ const ExerciseContainer = ({
     }
   };
 
-  useEffect(() => {
-    saveFile(true);
-    if (language === "cpp") {
-      setBaseFile(base_file_cpp);
-    } else {
-      setBaseFile(base_file_python);
-    }
-  }, [language]);
-
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
-        const func = async (file: Entry) => {
-          saveFile(false);
-          if (file.name === "academy.cpp") {
-            return defaultCppCode;
-          } else {
-            return defaultPythonCode;
-          }
-        };
-
-        return func(file);
+        //TODO: allow binary support
+        console.log(file);
+        return getFile(project, file.path);
       },
       save: (project: string, file: Entry, content: string) => {
-        const func = async () => {
-          return;
-        };
-        console.log("File saved");
-
-        setCode(content);
-        return func();
+        return saveFile(project, file.path, content);
       },
     },
     universes: {
@@ -292,7 +157,7 @@ const ExerciseContainer = ({
 
   return (
     <StyledExerciseContainer>
-      <ExerciseProvider manager={manager} code={codeRef.current}>
+      <ExerciseProvider manager={manager}>
         <ExerciseHeader
           project={project}
           name={name}
@@ -300,9 +165,7 @@ const ExerciseContainer = ({
           setLanguage={setLanguage}
           url={url}
           setLayout={setLayout}
-          hasDLModel={hasDLModel}
           connectManager={connectWithRetry}
-          saving={fileSaved}
         />
         <IdeInterface
           commsManager={manager}
@@ -310,12 +173,12 @@ const ExerciseContainer = ({
           project={project}
           api={editorApi}
           viewers={toolsList}
-          options={{ editor: { onlyOneFile: true, notShowSave: true } }}
+          options={[]}
           layout={layout}
           statusBarComponents={statusBar}
-          explorers={[]}
+          explorers={[fileExplorer]}
           extraEditors={[]}
-          baseFile={baseFile}
+          baseFile={base_file}
           baseUniverse={universes ? universes[0] : undefined}
           extraSnippets={extraSnippets}
         />

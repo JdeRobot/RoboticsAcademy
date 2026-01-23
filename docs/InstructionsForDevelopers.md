@@ -34,7 +34,7 @@ You can ignore the -b arg if you want to start working from the main branch.
 ./scripts/develop_academy.sh -r <link to the RAM repo/fork> -b <branch of the RAM repo> -i <humble>
 ```
 If you don't provide any arguments, it will prepare a humble environment with the current stable branch of RAM. You may start working from that and then create the branch you need. 
-You may access RA frontend at [http://127.0.0.1:7164/exercises/](http://127.0.0.1:7164/exercises/) 
+You may access RA frontend at [http://127.0.0.1:7164/academy/](http://127.0.0.1:7164/academy/) 
 
 
 \
@@ -313,10 +313,10 @@ Create a folder with the folder name as "exercise_id" at the location from repos
 
 Inside that folder create 2 new ones with the following names:
 
-- ```python_template/<ros_version>```: for example for ROS2 Humble replace `<ros_version>` with `ros2_humble`.
+- ```<language>_template```: the available languages are `python` and `cpp`.
 - ```react-components```
 
-#### Source code: inside `python_template/<ros_version>`
+#### Source code: inside `python_template`
 
 An exercise must contain this 3 files:
 
@@ -335,6 +335,10 @@ There are a three python packages to help the development of a new exercise:
 [Console Interfaces]: ../common/console_interfaces/README.md
 
 For knowing how to use each package, please follow the links in the list above.
+
+#### Source code: inside `cpp_template`
+
+**WORK IN PROGRESS**
 
 #### Frontend: inside `react-components`
 

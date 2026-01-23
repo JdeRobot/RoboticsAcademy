@@ -36,7 +36,7 @@ export const connectApplication = (manager: CommsManager) => {
   const ref = useRef<NodeJS.Timer>();
 
   const onStateChange = (message: any) => {
-    const state = message.data.state
+    const state = message.data.state;
     if (state === states.TOOLS_READY || state === states.RUNNING) {
       start();
     }
@@ -77,7 +77,7 @@ export const connectApplication = (manager: CommsManager) => {
     }
   };
 
-  return {end: end};
+  return { end: end };
 };
 
 export default WebGUIContainer;

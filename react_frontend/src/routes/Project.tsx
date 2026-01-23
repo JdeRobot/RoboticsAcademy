@@ -30,7 +30,6 @@ const Exercise = () => {
   return (
     <>
       <ExerciseContainer
-        hasDLModel={data.tags.includes("Deep Learning")}
         multiLanguage={data.tags.includes("MULTILANGUAGE")}
         project={data.exercise_id}
         name={data.name}

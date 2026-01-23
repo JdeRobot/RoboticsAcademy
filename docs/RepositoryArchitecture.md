@@ -16,7 +16,7 @@
 - **docs** folder holds all documentation about the repository and its architecture.
 - **react_frontend** folder contains all of the frontend code.
 - **exercises** folder contains all the codes related to the exercises launch process and visualization. In it you can find:
-	1. Python and User Interface (UI) codes used in the exercises (/exercises/static).
+	1. Python and User Interface (UI) codes used in the exercises.
 - **scripts** folder, that hosts the dockerfile (file with the Docker commands to create a RoboticsBackend), shell files, manager.py (file used to manage the exercises processes) and pyint_checker.py (file used to check if the code has been written properly).
 
 <a name="gh-pages-branch"></a>
