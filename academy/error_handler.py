@@ -25,13 +25,10 @@ CUSTOM_EXCEPTIONS = (
 )
 
 
-def error_wrapper(type: str, param: list):
-    """Decorator for API views that performs parameter checks and error handling.
+def error_wrapper(fal, type: str, param: list[str | tuple] = []):
+    """Decorator for API views with parameter validation and error handling."""
 
-    Args:
-        type: HTTP method name passed to ``@api_view``.
-        param: List of required parameters.
-    """
+
 
 
     def decorated(func):
@@ -60,11 +57,8 @@ def error_wrapper(type: str, param: list):
 
 
 def check_parameters(request, param: list):
-    """Validate required parameters in a request-like object.
+    """Validate required request parameters."""
 
-    Raises:
-        ParameterInvalid: If a required parameter is missing or invalid.
-    """
 
     for p in param:
         min_len = 0
