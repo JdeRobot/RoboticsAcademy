@@ -56,7 +56,7 @@ def error_wrapper(fal, type: str, param: list[str | tuple] = []):
     return decorated
 
 
-def check_parameters(request, param: list):
+def check_parameters(request, param: list[str | tuple]):
     """Validate required request parameters."""
 
 
