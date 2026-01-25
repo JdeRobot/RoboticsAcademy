@@ -65,24 +65,33 @@ install_app_dependencies()
 
 install_ompl()
 {
+    # Attempt to install via pip first (New in OMPL 1.7.0)
+    if [ ! -z $PYTHON ] && [ -z $APP ] && [ -z $GITHUB ]; then
+        if ${SUDO} pip${PYTHONV} install ompl==1.7.0; then
+            echo "OMPL 1.7.0 installed via pip."
+            return 0
+        fi
+        echo "Pip install failed, falling back to source..."
+    fi
+
     if [ -z $APP ]; then
         OMPL="ompl"
     else
         OMPL="omplapp"
     fi
     if [ -z $GITHUB ]; then
-        if [ -z $APP]; then
-            wget -O - https://github.com/ompl/${OMPL}/archive/1.6.0.tar.gz | tar zxf -
-            cd ${OMPL}-1.6.0
+        if [ -z $APP ]; then
+            wget -O - https://github.com/ompl/${OMPL}/archive/1.7.0.tar.gz | tar zxf -
+            cd ${OMPL}-1.7.0
         else
-            wget -O - https://github.com/ompl/${OMPL}/releases/download/1.6.0/${OMPL}-1.6.0-Source.tar.gz | tar zxf -
-            cd $OMPL-1.6.0-Source
+            wget -O - https://github.com/ompl/${OMPL}/releases/download/1.7.0/${OMPL}-1.7.0-Source.tar.gz | tar zxf -
+            cd $OMPL-1.7.0-Source
         fi
     else
         ${SUDO} apt-get -y install git
         git clone --recurse-submodules https://github.com/ompl/${OMPL}.git
         cd $OMPL
-        git checkout 0f990886e9e40014e32ddee177c8d798adbc8fb7 # Temporary: with this commit works
+        git checkout 1.7.0 # Updated to 1.7.0 tag
     fi
     mkdir -p build/Release
     cd build/Release
