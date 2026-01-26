@@ -12,6 +12,7 @@ from functools import wraps
 import json
 from .exceptions import (
     BinaryNotSupported,
+    ResourceAlreadyExistsHelpers,
     ResourceNotExists,
     ResourceAlreadyExists,
     ParameterInvalid,
@@ -24,6 +25,7 @@ CUSTOM_EXCEPTIONS = (
     ParameterInvalid,
     InvalidPath,
     BinaryNotSupported,
+    ResourceAlreadyExistsHelpers
 )
 
 
