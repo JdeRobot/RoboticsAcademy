@@ -12,8 +12,13 @@ import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
-from academy.exceptions import BinaryNotSupported, ResourceNotExists
-from academy.project_view import EntryEncoder
+from academy.exceptions import (
+    BinaryNotSupported,
+    ResourceAlreadyExists,
+    ResourceAlreadyExistsHelpers,
+    ResourceNotExists,
+)
+from academy.project_view import EntryEncoder, exists_in_helpers
 from academy.serializers import FileContentSerializer
 
 from .file_access import FAL_RA
@@ -137,11 +142,8 @@ def get_helper_file_list(request):
     project = request.GET.get("project")
     language = request.GET.get("language")
 
-    base_group = "Code"
-
     path = fal.exercise_helper_path(project, language)
-
-    file_list = fal.list_formatted(path, base_group)
+    file_list = fal.list_formatted(path, "Code")
 
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
@@ -179,8 +181,11 @@ def create_file(request):
     filename = request.data.get("file_name")
 
     path = fal.exercise_path(project_id)
-    create_path = fal.path_join(path, location)
-    file_path = fal.path_join(create_path, filename)
+    create_path = fal.path_join(location, filename)
+    file_path = fal.path_join(path, create_path)
+
+    if exists_in_helpers(fal, create_path, project_id):
+        raise ResourceAlreadyExistsHelpers(create_path)
 
     fal.create(file_path, "")
     return Response({"success": True})
@@ -193,9 +198,11 @@ def create_folder(request):
     folder_name = request.data.get("folder_name")
 
     path = fal.exercise_path(project_id)
+    create_path = fal.path_join(location, folder_name)
+    folder_path = fal.path_join(path, create_path)
 
-    create_path = fal.path_join(path, location)
-    folder_path = fal.path_join(create_path, folder_name)
+    if exists_in_helpers(fal, create_path, project_id, folder=True):
+        raise ResourceAlreadyExistsHelpers(create_path)
 
     fal.mkdir(folder_path)
     return Response({"success": True})
@@ -212,6 +219,9 @@ def rename_file(request):
     file_path = fal.path_join(base_path, path)
     new_path = fal.path_join(base_path, rename_path)
 
+    if exists_in_helpers(fal, rename_path, project_id):
+        raise ResourceAlreadyExistsHelpers(rename_path)
+
     fal.renamefile(file_path, new_path)
     return JsonResponse({"success": True})
 
@@ -226,6 +236,9 @@ def rename_folder(request):
 
     file_path = fal.path_join(base_path, path)
     new_path = fal.path_join(base_path, rename_path)
+
+    if exists_in_helpers(fal, rename_path, project_id, folder=True):
+        raise ResourceAlreadyExistsHelpers(rename_path)
 
     fal.renamedir(file_path, new_path)
     return JsonResponse({"success": True})
@@ -403,9 +416,11 @@ def upload(request):
     content = request.data.get("content")
 
     path = fal.exercise_path(project_id)
+    create_path = fal.path_join(location, file_name)
+    file_path = fal.path_join(path, create_path)
 
-    create_path = fal.path_join(path, location)
-    file_path = fal.path_join(create_path, file_name)
+    if exists_in_helpers(fal, create_path, project_id):
+        raise ResourceAlreadyExistsHelpers(create_path)
 
     fal.create_binary(file_path, base64.b64decode(content))
     return Response({"success": True})

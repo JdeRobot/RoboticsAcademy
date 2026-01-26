@@ -242,15 +242,11 @@ const createFile = async (
   };
 
   try {
-    const response = await axios.post(apiUrl, params, axiosExtra);
-
-    // Handle unsuccessful response status (e.g., non-2xx status)
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to create project."); // Response error
-    }
-  } catch (error: unknown) {
-    console.log(error);
-    throw error; // Rethrow
+    await axios.post(apiUrl, params, axiosExtra);
+    return;
+  } catch (e: unknown) {
+    const error = e as AxiosError<any, Record<string, unknown>>;
+    throw Error(error.response?.data.message);
   }
 };
 
@@ -271,11 +267,12 @@ const renameFile = async (
     rename_to: new_path,
   };
 
-  const response = await axios.post(apiUrl, params, axiosExtra);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to upload file."); // Response error
+  try {
+    await axios.post(apiUrl, params, axiosExtra);
+    return;
+  } catch (e: unknown) {
+    const error = e as AxiosError<any, Record<string, unknown>>;
+    throw Error(error.response?.data.message);
   }
 };
 
@@ -317,11 +314,12 @@ const uploadFile = async (
     content: content,
   };
 
-  const response = await axios.post(apiUrl, params, axiosExtra);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to upload file."); // Response error
+  try {
+    await axios.post(apiUrl, params, axiosExtra);
+    return;
+  } catch (e: unknown) {
+    const error = e as AxiosError<any, Record<string, unknown>>;
+    throw Error(error.response?.data.message);
   }
 };
 
@@ -343,15 +341,11 @@ const createFolder = async (
   };
 
   try {
-    const response = await axios.post(apiUrl, params, axiosExtra);
-
-    // Handle unsuccessful response status (e.g., non-2xx status)
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to create project."); // Response error
-    }
-  } catch (error: unknown) {
-    console.log(error);
-    throw error; // Rethrow
+    await axios.post(apiUrl, params, axiosExtra);
+    return;
+  } catch (e: unknown) {
+    const error = e as AxiosError<any, Record<string, unknown>>;
+    throw Error(error.response?.data.message);
   }
 };
 
@@ -372,11 +366,12 @@ const renameFolder = async (
     rename_to: new_path,
   };
 
-  const response = await axios.post(apiUrl, params, axiosExtra);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to upload file."); // Response error
+  try {
+    await axios.post(apiUrl, params, axiosExtra);
+    return;
+  } catch (e: unknown) {
+    const error = e as AxiosError<any, Record<string, unknown>>;
+    throw Error(error.response?.data.message);
   }
 };
 

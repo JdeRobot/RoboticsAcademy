@@ -73,3 +73,24 @@ def list_dir(base_dir, directory, access_old=True, base_group=""):
             )
     values.sort(key=lambda x: (not x.is_dir, x.name.lower()))
     return values
+
+
+def check_exist(fal, path, file_list, folder):
+    for file in file_list:
+        if file.is_dir:
+            if folder and path == file.path:
+                return True
+            check_exist(fal, path, file.files)
+        else:
+            if not folder and path == file.path:
+                return True
+
+
+def exists_in_helpers(fal, path, project, folder=False):
+    for lang in ["python", "cpp"]:
+        helper_path = fal.exercise_helper_path(project, lang)
+        file_list = fal.list_formatted(helper_path, "Code")
+        found = check_exist(fal, path, file_list, folder)
+        if found:
+            return True
+    return False
