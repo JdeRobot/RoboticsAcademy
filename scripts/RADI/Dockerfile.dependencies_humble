@@ -339,4 +339,4 @@ RUN echo "source /home/drones_ws/install/setup.bash" >> ~/.bashrc
 COPY install-ompl-ubuntu.sh /
 WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
-RUN ./install-ompl-ubuntu.sh --github --python
+RUN ./install-ompl-ubuntu.sh --python
