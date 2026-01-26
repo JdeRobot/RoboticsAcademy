@@ -416,9 +416,11 @@ def upload(request):
     content = request.data.get("content")
 
     path = fal.exercise_path(project_id)
+    create_path = fal.path_join(location, file_name)
+    file_path = fal.path_join(path, create_path)
 
-    create_path = fal.path_join(path, location)
-    file_path = fal.path_join(create_path, file_name)
+    if exists_in_helpers(fal, create_path, project_id):
+        raise ResourceAlreadyExistsHelpers(create_path)
 
     fal.create_binary(file_path, base64.b64decode(content))
     return Response({"success": True})
