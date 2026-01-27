@@ -83,7 +83,6 @@ RUN apt-get update \
 
 RUN apt-get update && apt-get install -y \
       ros-humble-ros-gzharmonic \
-      ros-humble-gz-ros2-control \
   && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
@@ -307,6 +306,8 @@ RUN mkdir -p /home/dev_ws/src/
 WORKDIR /home/dev_ws/src/
 RUN git clone https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
 RUN sudo cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h
+# Copy pick_place_harmonic_exercise packages into dev_ws workspace
+RUN cp -r /home/dev_ws/src/IndustrialRobots/pick_place_harmonic_exercise/* /home/dev_ws/src/
 WORKDIR /home/dev_ws
 
 # --- PCL & ROS PCL deps (before colcon) ---
