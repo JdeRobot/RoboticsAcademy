@@ -38,3 +38,23 @@ Take a look at our [documentation guide lines](https://jderobot.github.io/Roboti
 
 Thanks! :heart: :heart:
 RoboticsAcademy Team
+
+
+## Developer setup
+
+For contributors who want to run tests locally and develop the project, a small
+helper script is provided to create a Python virtual environment and install a
+minimal set of test/dev requirements.
+
+Usage:
+
+```bash
+chmod +x scripts/setup_dev.sh
+./scripts/setup_dev.sh
+source .venv/bin/activate
+pytest -q
+```
+
+The script is intentionally conservative: it installs only packages listed in
+`tests/requirements.txt`. For a full runtime install (may require system
+packages) see `docs/requirements.txt`.

@@ -4,8 +4,15 @@ models.py
 
 import json
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 import subprocess
+
+# Postgres-specific fields are optional for local development and test runs.
+# Fall back to a JSONField when `django.contrib.postgres.fields.ArrayField`
+# is not available so imports don't fail during test collection.
+try:
+    from django.contrib.postgres.fields import ArrayField
+except Exception:
+    ArrayField = models.JSONField
 
 StatusChoice = (
     ("ACTIVE", "ACTIVE"),
