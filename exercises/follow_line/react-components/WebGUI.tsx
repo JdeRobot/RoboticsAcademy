@@ -1,9 +1,8 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/GUICanvas.css";
 import { getCarPose } from "./helpers/showCarPositionFollowLine";
 import { displayLapTime } from "./helpers/showLapTimeFollowLine";
-import { events, states } from "jderobot-commsmanager";
+import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIContainer, {
   connectApplication,
@@ -18,12 +17,11 @@ import monacoCircuit from "../resources/images/monaco_circuit.png";
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
-  const [image, setImage] = useState();
-  const [lapTime, setLapTime] = useState(null);
-  const [carPose, setCarPose] = useState(null);
+  const [image, setImage] = useState<string | undefined>(undefined);
+  const [lapTime, setLapTime] = useState<string | undefined>(undefined);
+  const [carPose, setCarPose] = useState<number[] | undefined>(undefined);
   const [circuitImg, setCircuitImg] = useState(defaultCircuit);
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -37,7 +35,7 @@ const WebGUI = () => {
     }
   }, []);
 
-  const updateCircuit = (universe) => {
+  const updateCircuit = (universe: string) => {
     if (universe === undefined) {
       return;
     }
@@ -60,52 +58,39 @@ const WebGUI = () => {
     }
   };
 
-  useEffect(() => {
+  const updateCallback = (updateData: unknown) => {
+    let data = updateData as any;
+    if (data.update.image) {
+      const image = JSON.parse(data.update.image);
+      if (image.image != "" && image.shape instanceof Array) {
+        setImage(`data:image/png;base64,${image.image}`);
+      }
+      try {
+        const pose = getCarPose(circuitName, data.update.map);
+        setCarPose(pose);
+        setLapTime(displayLapTime(data.update.lap));
+      } catch (error) {}
+    }
+  };
+
+  const stateCallback = (state: string) => {
     if (manager === null) {
       return;
     }
 
-    
+    if (state === states.RUNNING) {
+      manager.send("gui", "startLap");
+    } else if (state === states.PAUSED) {
+      manager.send("gui", "pause");
+    } else if (state === states.TOOLS_READY) {
+      setCarPose(undefined);
+      setLapTime(undefined);
+      setImage(undefined);
+      updateCircuit(manager.getUniverse());
+    }
+  };
 
-    const updateCallback = (message) => {
-      connection.end();
-      if (message.data.update.image) {
-        const image = JSON.parse(message.data.update.image);
-        if (image.image != "" && image.shape instanceof Array) {
-          setImage(`data:image/png;base64,${image.image}`);
-        }
-        try {
-          const pose = getCarPose(circuitName, message.data.update.map);
-          setCarPose(pose);
-          setLapTime(displayLapTime(message.data.update.lap));
-        } catch (error) {}
-      }
-
-      // Send the ACK of the msg
-      manager.send("gui", "ack");
-    };
-
-    const stateCallback = (message) => {
-      if (message.data.state === states.RUNNING) {
-        manager.send("gui", "startLap");
-      } else if (message.data.state === states.PAUSED) {
-        manager.send("gui", "pause");
-      } else if (message.data.state === states.TOOLS_READY) {
-        setCarPose(null);
-        setLapTime(null);
-        setImage();
-        updateCircuit(manager.getUniverse());
-      }
-    };
-
-    manager.subscribe(events.UPDATE, updateCallback);
-    manager.subscribe(events.STATE_CHANGED, stateCallback);
-
-    return () => {
-      manager.unsubscribe(events.UPDATE, updateCallback);
-      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
-    };
-  }, [manager]);
+  connectApplication(manager, updateCallback, stateCallback);
 
   return (
     <WebGUIContainer>

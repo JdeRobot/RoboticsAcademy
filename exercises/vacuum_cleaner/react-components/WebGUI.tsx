@@ -4,23 +4,23 @@ import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
 import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
 import Vacuum from "../resources/images/vacuum.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer, {connectApplication} from "Components/exercise/WebGUIContainer";
-import { events } from "jderobot-commsmanager";
+import WebGUIContainer, {
+  connectApplication,
+} from "Components/exercise/WebGUIContainer";
+import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
 
 const WebGUI = () => {
   const exerciseContext = useExercise();
-  const [vacuumPose, setVacuumPose] = useState(null);
-  const [path, setPath] = useState("");
+  const [vacuumPose, setVacuumPose] = useState<number[] | undefined>(undefined);
+  const [path, setPath] = useState<string>("");
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication(manager);
-  var lastPose = undefined;
-  const canvasRef = useRef(null);
+  var lastPose: number[] | undefined = undefined;
+  const canvasRef = useRef<HTMLImageElement>(null);
   const vacuumSize = 40;
-  var trail = [];
-
+  var trail: number[][] = [];
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -49,70 +49,59 @@ const WebGUI = () => {
     }
   });
 
-  useEffect(() => {
+  const updateCallback = (updateData: unknown) => {
+    let data = updateData as any;
+    const update = data.update;
+
+    // Lógica para manejar el mapa
+    if (update.map) {
+      const pose = update.map.substring(1, update.map.length - 1);
+      const content = pose.split(",").map((item: string) => parseFloat(item));
+      lastPose = content;
+
+      var img = canvasRef.current;
+      if (img === null) {
+        return;
+      }
+      var width = img.clientWidth / 300;
+      var height = img.clientHeight / 150;
+
+      updatePath(
+        trail,
+        setPath,
+        height,
+        (vacuumSize * img.clientHeight) / 1012,
+        width,
+        (vacuumSize * img.clientWidth) / 1012,
+      );
+
+      setVacuumPose([
+        content[1] * height - (vacuumSize * img.clientHeight) / 1012,
+        content[0] * width - (vacuumSize * img.clientWidth) / 1012,
+        -content[2],
+      ]);
+      addToPath(content[1], content[0], trail);
+    }
+  };
+
+  const stateCallback = (state: string) => {
     if (manager === null) {
       return;
     }
-
-
-    const updateCallback = (message) => {
-      connection.end()
-
-      const updateData = message.data.update;
-      // Lógica para manejar el mapa
-      if (updateData.map) {
-        const pose = updateData.map.substring(1, updateData.map.length - 1);
-        const content = pose.split(",").map((item) => parseFloat(item));
-        lastPose = content;
-
-        var img = canvasRef.current;
-        var width = img.clientWidth / 300;
-        var height = img.clientHeight / 150;
-
-        updatePath(
-          trail,
-          setPath,
-          height,
-          (vacuumSize * img.clientHeight) / 1012,
-          width,
-          (vacuumSize * img.clientWidth) / 1012,
-        );
-
-        setVacuumPose([
-          content[1] * height - (vacuumSize * img.clientHeight) / 1012,
-          content[0] * width - (vacuumSize * img.clientWidth) / 1012,
-          -content[2],
-        ]);
-        addToPath(content[1], content[0], trail);
-      }
-
-      // Send the ACK of the msg
-      manager.send("gui", "ack");
-    };
-
-    const stateCallback = (message) => {
-      if (message.data.state === "tools_ready") {
-        try {
-          setPath("");
-          trail = [];
-          setVacuumPose(null);
-        } catch (error) {}
-      }
-    };
-
-    var img = canvasRef.current;
-    if (img) {
-      resizeObserver.observe(img);
+    if (state === states.TOOLS_READY) {
+      setPath("");
+      trail = [];
+      setVacuumPose(undefined);
     }
+  };
 
-    manager.subscribe(events.UPDATE, updateCallback);
-    manager.subscribe(events.STATE_CHANGED, stateCallback);
-
-    return () => {
-      manager.unsubscribe(events.UPDATE, updateCallback);
-      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
-    };
-  }, [manager]);
+  connectApplication(
+    manager,
+    updateCallback,
+    canvasRef,
+    resizeObserver,
+    stateCallback,
+  );
 
   return (
     <WebGUIContainer>
@@ -167,7 +156,7 @@ const WebGUI = () => {
               d={path}
               style={{
                 strokeWidth:
-                  (vacuumSize * canvasRef.current.clientHeight) / 1012,
+                  (vacuumSize * canvasRef.current!.clientHeight) / 1012,
                 strokeLinejoin: "round",
                 stroke: "white",
                 fill: "none",

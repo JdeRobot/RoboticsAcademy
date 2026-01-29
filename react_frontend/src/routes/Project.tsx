@@ -20,7 +20,7 @@ const Exercise = () => {
 
   const WebGui = lazy(async () => {
     return import(
-      `exercises/${data.exercise_id}/react-components/WebGUI.js`
+      `exercises/${data.exercise_id}/react-components/WebGUI.tsx`
     ).catch((error) => {
       console.error("Component Failed Loading:", error);
       return { default: WebGUIPreview };

@@ -1,7 +1,7 @@
+import React, { RefObject } from "react";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import VideocamOffOutlinedIcon from "@mui/icons-material/VideocamOffOutlined";
 import { StyledImageContainer } from "Styles/exercise/WebGUIImage.styles";
-import React, { RefObject } from "react";
 
 // camera
 const WebGUIImage = ({
