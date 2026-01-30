@@ -70,7 +70,7 @@ function WebGUI() {
         x: beacon.x * width,
         y: beacon.y * height,
         type: beacon.type,
-      })),
+      }))
     );
 
     updatePath(realTrail, setRealPath, height, width);
@@ -152,7 +152,7 @@ function WebGUI() {
     if (update.estimate_pose) {
       const pose = update.estimate_pose.substring(
         1,
-        update.estimate_pose.length - 1,
+        update.estimate_pose.length - 1
       );
       const content = pose.split(",").map((item: string) => parseFloat(item));
       userLastPose = content;
@@ -198,7 +198,7 @@ function WebGUI() {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver,
+    resizeObserver
   );
 
   return (

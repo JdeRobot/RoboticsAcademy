@@ -147,7 +147,7 @@ function WebGUI() {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver,
+    resizeObserver
   );
 
   return (

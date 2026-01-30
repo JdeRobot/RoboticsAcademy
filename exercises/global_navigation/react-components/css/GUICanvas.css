@@ -25,18 +25,18 @@
 
 .target::before,
 .target::after {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 2px; /* cross thickness */
-    border-radius: 6px;
-    background-color: blue;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 2px; /* cross thickness */
+  border-radius: 6px;
+  background-color: blue;
 }
 
 .target::before {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .target::after {
-    transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }

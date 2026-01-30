@@ -18,7 +18,7 @@ const WebGUI = () => {
 
   const updateCallback = (updateData: unknown) => {
     let data = updateData as any;
-    const update = data.update
+    const update = data.update;
     let image;
     if (update.image_right) {
       image = JSON.parse(update.image_right);

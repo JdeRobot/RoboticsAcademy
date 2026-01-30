@@ -37,11 +37,13 @@
 }
 
 .green {
-  filter: invert(82%) sepia(13%) saturate(6762%) hue-rotate(39deg) brightness(105%) contrast(107%);
+  filter: invert(82%) sepia(13%) saturate(6762%) hue-rotate(39deg)
+    brightness(105%) contrast(107%);
 }
 
 .red {
-  filter: invert(13%) sepia(87%) saturate(6390%) hue-rotate(343deg) brightness(91%) contrast(89%);
+  filter: invert(13%) sepia(87%) saturate(6390%) hue-rotate(343deg)
+    brightness(91%) contrast(89%);
 }
 
 .target-container {
@@ -64,18 +66,18 @@
 
 #target::before,
 #target::after {
-    position: absolute;
-    content: '';
-    width: 100%;
-    height: 6px; /* cross thickness */
-    border-radius: 6px;
-    background-color: yellow;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 6px; /* cross thickness */
+  border-radius: 6px;
+  background-color: yellow;
 }
 
 #target::before {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 #target::after {
-    transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }

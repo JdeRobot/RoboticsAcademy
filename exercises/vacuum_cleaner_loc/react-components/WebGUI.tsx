@@ -40,7 +40,7 @@ const WebGUI = () => {
       height,
       (vacuumSize * img.clientHeight) / 1012,
       width,
-      (vacuumSize * img.clientWidth) / 1012,
+      (vacuumSize * img.clientWidth) / 1012
     );
 
     if (lastPose) {
@@ -75,7 +75,7 @@ const WebGUI = () => {
         height,
         (vacuumSize * img.clientHeight) / 1012,
         width,
-        (vacuumSize * img.clientWidth) / 1012,
+        (vacuumSize * img.clientWidth) / 1012
       );
 
       setVacuumPose([
@@ -107,7 +107,7 @@ const WebGUI = () => {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver,
+    resizeObserver
   );
 
   return (
