@@ -1,50 +1,25 @@
 import { useState, useEffect } from "react";
-import { events } from "jderobot-commsmanager";
-import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
+import { useExercise } from "Contexts/ExerciseContext";
+import { states } from "jderobot-commsmanager";
 
 function WebGUI() {
-  const [image, setImage] = useState(undefined);
   const exerciseContext = useExercise();
+  const [image, setImage] = useState<string | undefined>(undefined);
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  useEffect(() => {
+  function listen_key() {
     if (manager === null) {
       return;
     }
 
-    
-
-    const callback = (message) => {
-      connection.end();
-      const update = message.data.update;
-      if (update.image) {
-        console.log("New img received");
-        const image = JSON.parse(update.image);
-        setImage(`data:image/png;base64,${image.image}`);
-
-        // Send the ACK of the img
-        manager.send("gui", "ack");
-      }
-    };
-
-    listen_key();
-    manager.subscribe(events.UPDATE, callback);
-
-    return () => {
-      manager.unsubscribe(events.UPDATE, callback);
-    };
-  }, [manager]);
-
-  function listen_key() {
     window.addEventListener("keypress", function (event) {
       if (event.code === "KeyS") {
         manager.send("gui", "key_s");
@@ -60,9 +35,28 @@ function WebGUI() {
     });
   }
 
+  const updateCallback = (updateData: unknown) => {
+    let data = updateData as any;
+    const update = data.update;
+
+    if (update.image) {
+      const image = JSON.parse(update.image);
+      setImage(`data:image/png;base64,${image.image}`);
+    }
+  };
+
+  const stateCallback = (state: string) => {
+    if (state === states.TOOLS_READY) {
+      setImage(undefined);
+    }
+  };
+
+  connectApplication(manager, updateCallback, stateCallback);
+  listen_key();
+
   return (
     <WebGUIContainer>
-      <WebGUIImage id="gui_canvas" src={image} />
+      <WebGUIImage id="gui_canvas" src={image} style={{ width: "100%" }} />
     </WebGUIContainer>
   );
 }
