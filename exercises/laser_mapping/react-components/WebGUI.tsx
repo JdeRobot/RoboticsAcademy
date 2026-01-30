@@ -30,19 +30,19 @@ function WebGUI() {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  var realTrail: number[][] = [];
-  var noisyTrail: number[][] = [];
-  var realLastPose: number[] | undefined = undefined;
-  var noisyLastPose: number[] | undefined = undefined;
-  var valuesUntilValid: number = 0;
+  let realTrail: number[][] = [];
+  let noisyTrail: number[][] = [];
+  let realLastPose: number[] | undefined = undefined;
+  let noisyLastPose: number[] | undefined = undefined;
+  let valuesUntilValid: number = 0;
 
   const timeout = 40;
 
   const resizeObserver = new ResizeObserver((entries) => {
-    var img = entries[0].target;
+    const img = entries[0].target;
     //or however you get a handle to the IMG
-    var width = img.clientWidth / 1500;
-    var height = img.clientHeight / 970;
+    const width = img.clientWidth / 1500;
+    const height = img.clientHeight / 970;
 
     updatePath(realTrail, setRealPath, height, width);
     updatePath(noisyTrail, setNoisyPath, height, width);
@@ -67,15 +67,15 @@ function WebGUI() {
   });
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
 
-    var img = canvasRef.current;
+    const img = canvasRef.current;
     if (img === null) {
       return;
     }
-    var width = img.clientWidth / 1500;
-    var height = img.clientHeight / 970;
+    const width = img.clientWidth / 1500;
+    const height = img.clientHeight / 970;
 
     if (update.real_pose) {
       const pose = update.real_pose.substring(1, update.real_pose.length - 1);
@@ -108,7 +108,7 @@ function WebGUI() {
     }
 
     if (update.user_map) {
-      let image = JSON.parse(update.user_map);
+      const image = JSON.parse(update.user_map);
       if (image.shape instanceof Array) {
         setUserImage(`data:image/png;base64,${image.user_map}`);
       }

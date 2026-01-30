@@ -35,24 +35,24 @@ function WebGUI() {
   const [manager, setManager] = useState(exerciseContext.manager);
   const canvasRef = useRef<HTMLImageElement>(null);
 
-  var base_path: number[][] = [];
-  var base_trail: number[][] = [];
-  var lastPose: number[] | undefined = undefined;
+  let base_path: number[][] = [];
+  let base_trail: number[][] = [];
+  let lastPose: number[] | undefined = undefined;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
   const resizeObserver = new ResizeObserver((entries) => {
-    var img = entries[0].target;
-    var width = (img.clientWidth / mapSize.width) * 1.38;
-    var height = (img.clientHeight / mapSize.height) * 1.9;
+    const img = entries[0].target;
+    const width = (img.clientWidth / mapSize.width) * 1.38;
+    const height = (img.clientHeight / mapSize.height) * 1.9;
 
     updatePath(base_path, setPath, height, width);
     updateTrail(base_trail, setTrail, height, width);
 
     if (lastPose) {
-      var ang = -lastPose[2] + Math.PI / 8;
+      const ang = -lastPose[2] + Math.PI / 8;
 
       setVehiclePose([lastPose[1] * height, lastPose[0] * width, ang]);
     }
@@ -72,24 +72,24 @@ function WebGUI() {
         offset_y = 36;
       }
 
-      let convPose = [
+      const convPose = [
         content[0] * resize_factor + offset_x,
         content[1] * resize_factor + offset_y,
       ];
 
       lastPose = convPose;
 
-      var img = canvasRef.current;
+      const img = canvasRef.current;
       if (img === null) {
         return;
       }
       //or however you get a handle to the IMG
-      var width = (img.clientWidth / mapSize.width) * 1.38;
-      var height = (img.clientHeight / mapSize.height) * 1.9;
+      const width = (img.clientWidth / mapSize.width) * 1.38;
+      const height = (img.clientHeight / mapSize.height) * 1.9;
 
       updateTrail(base_trail, setTrail, height, width);
 
-      var ang = -content[2] + Math.PI / 8;
+      const ang = -content[2] + Math.PI / 8;
 
       setVehiclePose([convPose[1] * height, convPose[0] * width, ang]);
       addToTrail(convPose[1], convPose[0], base_trail);
@@ -105,17 +105,17 @@ function WebGUI() {
 
   const displayPath = (data: any) => {
     if (data.array) {
-      var img = canvasRef.current;
+      const img = canvasRef.current;
       if (img === null) {
         return;
       }
-      var width = (img.clientWidth / mapSize.width) * 1.38;
-      var height = (img.clientHeight / mapSize.height) * 1.9;
+      const width = (img.clientWidth / mapSize.width) * 1.38;
+      const height = (img.clientHeight / mapSize.height) * 1.9;
 
       base_path = JSON.parse(data.array);
       updatePath(base_path, setPath, height, width);
 
-      let target = base_path.at(-1);
+      const target = base_path.at(-1);
       if (target) {
         setTargetPose([
           (target[1] * height * 100) / img.clientHeight,
@@ -133,7 +133,7 @@ function WebGUI() {
   };
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     displayRobot(data.update);
     displayPath(data.update);
     displayLiftSquare(data.update);
@@ -145,7 +145,7 @@ function WebGUI() {
     }
 
     if (state === states.TOOLS_READY) {
-      let world = manager.getUniverse();
+      const world = manager.getUniverse();
 
       if (world.includes("2")) {
         setMap(Map2);

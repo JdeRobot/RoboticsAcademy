@@ -18,18 +18,18 @@ const WebGUI = () => {
   const [userImage, setUserImage] = useState<string | undefined>(undefined);
   const [manager, setManager] = useState(exerciseContext.manager);
   const vacuumSize = 40;
-  var lastRealPose: number[] | undefined = undefined;
-  var lastUserPose: number[] | undefined = undefined;
+  let lastRealPose: number[] | undefined = undefined;
+  let lastUserPose: number[] | undefined = undefined;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
   const resizeObserver = new ResizeObserver((entries) => {
-    var img = entries[0].target;
+    const img = entries[0].target;
     //or however you get a handle to the IMG
-    var width = img.clientWidth / 300;
-    var height = img.clientHeight / 150;
+    const width = img.clientWidth / 300;
+    const height = img.clientHeight / 150;
 
     if (lastRealPose) {
       setVacuumPose([
@@ -51,24 +51,24 @@ const WebGUI = () => {
   });
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
 
     // Lógica para manejar la imágen
     if (update.image) {
-      let image = JSON.parse(update.image);
+      const image = JSON.parse(update.image);
       if (image.shape instanceof Array) {
         setUserImage(`data:image/png;base64,${image.image}`);
       }
     }
 
     // Lógica para manejar el mapa
-    var img = canvasRef.current;
+    const img = canvasRef.current;
     if (img === null) {
       return;
     }
-    var width = img.clientWidth / 300;
-    var height = img.clientHeight / 150;
+    const width = img.clientWidth / 300;
+    const height = img.clientHeight / 150;
 
     if (update.map) {
       const pose = update.map.substring(1, update.map.length - 1);
@@ -101,7 +101,7 @@ const WebGUI = () => {
     if (update.particles) {
       const particles = JSON.parse(update.particles);
       if (particles != "") {
-        var new_particles: number[][] = [];
+        const new_particles: number[][] = [];
         particles.forEach((element: number[]) => {
           new_particles.push([
             element[1] * height,

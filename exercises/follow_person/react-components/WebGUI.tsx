@@ -36,7 +36,7 @@ function WebGUI() {
   }
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
 
     if (update.image) {

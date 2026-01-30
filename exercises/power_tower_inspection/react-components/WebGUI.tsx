@@ -17,7 +17,7 @@ const WebGUI = () => {
   }, [exerciseContext]);
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
     let image;
     if (update.image_right) {

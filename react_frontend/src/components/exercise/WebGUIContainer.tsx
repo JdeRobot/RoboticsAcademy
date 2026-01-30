@@ -42,8 +42,7 @@ export const connectApplication = (
   updateCallback: (data: unknown) => void,
   stateCallback?: (state: string) => void,
   resizeRef?: MutableRefObject<HTMLImageElement | null>,
-  resizeObserver?: ResizeObserver,
-
+  resizeObserver?: ResizeObserver
 ) => {
   const ref = useRef<NodeJS.Timer>();
 
