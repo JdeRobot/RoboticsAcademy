@@ -131,7 +131,7 @@ const WebGUI = () => {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver,
+    resizeObserver
   );
 
   return (
@@ -176,7 +176,7 @@ const WebGUI = () => {
               width: (vacuumSize * canvasRef.current.clientWidth) / 1012,
             }}
           >
-            <img src={Vacuum} id="user-pos"/>
+            <img src={Vacuum} id="user-pos" />
             <div
               className="arrow arrow-user"
               style={{

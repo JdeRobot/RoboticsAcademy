@@ -57,7 +57,7 @@ const WebGUI = () => {
           pdata.push([y + 9, 0.5, x, 0, 255, 0]);
         }
       });
-      
+
       // Pose: 1.000000 2.60000 0.500000
       map_data.lasers[2].forEach((element: number[]) => {
         if (element[0] < 600) {

@@ -27,54 +27,53 @@
   }
 }
 
-
 .particle {
   position: absolute;
   width: 10px;
   height: 10px;
   border-radius: 10px;
   background-color: rgb(0, 0, 255);
-  transition: left 0.1s ease-out, top 0.1s ease-out
+  transition: left 0.1s ease-out, top 0.1s ease-out;
 }
 
 .particle-arrow {
-  position:relative;
-  width:  15px;
+  position: relative;
+  width: 15px;
   height: 10px;
   cursor: pointer;
   transition: left 0.1s ease-out, top 0.1s ease-out;
-  overflow:hidden;
+  overflow: hidden;
   z-index: 2;
   margin-left: -8px;
 }
 
-.particle-arrow:after{
-  position:absolute;
-  display:block;
-  content:"";
+.particle-arrow:after {
+  position: absolute;
+  display: block;
+  content: "";
   width: 10px;
   height: 6px;
   color: rgb(125, 125, 255);
-/*   border:solid 1px;  */
-  top:0px;
-  border-bottom:solid 2px;
-  transform:translatex(4px);
+  /*   border:solid 1px;  */
+  top: 0px;
+  border-bottom: solid 2px;
+  transform: translatex(4px);
 }
 
-.particle-arrow:before{
-  position:absolute;
-  display:block;
-  content:"";
+.particle-arrow:before {
+  position: absolute;
+  display: block;
+  content: "";
   width: 8px;
   height: 8px;
   color: rgb(125, 125, 255);
-/*   border:solid 1px;  */
-  border-top:solid 2px;
-  border-left:solid 2px;
-  top:50%;
-  left:2px;
-  transform-origin:0% 0%;
-  transform:rotatez(-45deg);
+  /*   border:solid 1px;  */
+  border-top: solid 2px;
+  border-left: solid 2px;
+  top: 50%;
+  left: 2px;
+  transform-origin: 0% 0%;
+  transform: rotatez(-45deg);
 }
 
 #map-img {
@@ -94,7 +93,6 @@
   margin-left: -15px;
 }
 
-
 .arrow:before {
   position: absolute;
   display: block;
@@ -108,9 +106,8 @@
   top: 50%;
   transform-origin: 0% 0%;
   transform: rotatez(-45deg);
-
 }
 
 .arrow-user:before {
-  color:rgb(0, 255, 0);
+  color: rgb(0, 255, 0);
 }

@@ -46,7 +46,7 @@ function WebGUI() {
       ]);
       var obsForceDist = getDist(
         dataToDraw.obstacle[0],
-        dataToDraw.obstacle[1],
+        dataToDraw.obstacle[1]
       );
       setObsForce([
         obsForceDist * meter,
@@ -54,11 +54,11 @@ function WebGUI() {
       ]);
       var targetDist = getDist(
         dataToDraw.pose[0] - dataToDraw.target[0],
-        dataToDraw.pose[1] - dataToDraw.target[1],
+        dataToDraw.pose[1] - dataToDraw.target[1]
       );
       var targetAng = getAng(
         dataToDraw.pose[0] - dataToDraw.target[0],
-        dataToDraw.pose[1] - dataToDraw.target[1],
+        dataToDraw.pose[1] - dataToDraw.target[1]
       );
       setTargetPose([
         targetDist * meter,

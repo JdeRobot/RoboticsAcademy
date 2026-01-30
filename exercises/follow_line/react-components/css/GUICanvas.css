@@ -1,5 +1,5 @@
 .overlay {
-  position: absolute;  
+  position: absolute;
   width: 100%;
   height: 100%;
   max-height: 100%;
@@ -33,5 +33,5 @@
   height: 5px;
   border-radius: 5px;
   background-color: red;
-  transition: all 0.1s ease-out
+  transition: all 0.1s ease-out;
 }

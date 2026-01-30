@@ -24,7 +24,7 @@ function WebGUI() {
   const [mapSize, setMapSize] = useState(Map1Size);
   const [vehicleType, setVehicleType] = useState(0); // 0=normal 1=ackermann
   const [vehiclePose, setVehiclePose] = useState<number[] | undefined>(
-    undefined,
+    undefined
   );
   const [targetPose, setTargetPose] = useState<number[] | undefined>(undefined);
   const [trail, setTrail] = useState<string>("");
@@ -175,7 +175,7 @@ function WebGUI() {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver,
+    resizeObserver
   );
 
   return (
