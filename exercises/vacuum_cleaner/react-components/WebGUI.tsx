@@ -85,9 +85,6 @@ const WebGUI = () => {
   };
 
   const stateCallback = (state: string) => {
-    if (manager === null) {
-      return;
-    }
     if (state === states.TOOLS_READY) {
       setPath("");
       trail = [];
