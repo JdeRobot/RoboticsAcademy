@@ -146,7 +146,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = "staticfiles"
 
 STATICFILES_DIRS = (
-    # os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "exercises"),
     os.path.join(BASE_DIR, "react_frontend/static"),  # React frontend statics
 )
 

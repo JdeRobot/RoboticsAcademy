@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import { updatePath } from "./helpers/GlobalNavigationHelper";
-import Car from "../resources/images/car-top-view.svg";
-import CityMap from "../resources/images/cityLargenBin.png";
+import Car from "./resources/car-top-view.svg";
+import CityMap from "./resources/cityLargenBin.png";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer, {
   connectApplication,

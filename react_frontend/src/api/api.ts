@@ -192,22 +192,6 @@ const saveFile = async (project: string, fileName: string, content: string) => {
   }
 };
 
-const getTeaser = async (project: string) => {
-  if (!project) throw new Error("Project name is not set");
-
-  const apiUrl = `/academy/get_exercise_teaser?project=${encodeURIComponent(
-    project
-  )}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-    return `data:image/png;base64,${response.data}`;
-  } catch (e: unknown) {
-    const error = e as ApiError;
-    throw Error(error.response?.data.message);
-  }
-};
-
 const createFile = async (
   projectId: string,
   fileName: string,
@@ -383,7 +367,6 @@ export {
   getFile,
   saveFile,
   getFileList,
-  getTeaser,
   createFile,
   renameFile,
   deleteFile,
