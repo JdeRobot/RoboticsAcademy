@@ -9,11 +9,11 @@ import WebGUIContainer, {
 } from "Components/exercise/WebGUIContainer";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 
-import defaultCircuit from "../resources/images/default_circuit.png";
-import montmeloCircuit from "../resources/images/montmelo_circuit.png";
-import montrealCircuit from "../resources/images/montreal_circuit.png";
-import ngbCircuit from "../resources/images/ngb_circuit.png";
-import monacoCircuit from "../resources/images/monaco_circuit.png";
+import defaultCircuit from "./resources/default_circuit.png";
+import montmeloCircuit from "./resources/montmelo_circuit.png";
+import montrealCircuit from "./resources/montreal_circuit.png";
+import ngbCircuit from "./resources/ngb_circuit.png";
+import monacoCircuit from "./resources/monaco_circuit.png";
 
 const WebGUI = () => {
   const exerciseContext = useExercise();

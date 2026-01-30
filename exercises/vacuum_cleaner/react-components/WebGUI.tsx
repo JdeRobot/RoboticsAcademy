@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { updatePath, addToPath } from "./helpers/VacuumCleanerHelper";
-import houseMapClean from "../resources/images/mapgrannyannie_clean.png";
-import houseMapDirty from "../resources/images/mapgrannyannie_dirty.png";
-import Vacuum from "../resources/images/vacuum.svg";
+import houseMapClean from "./resources/mapgrannyannie_clean.png";
+import houseMapDirty from "./resources/mapgrannyannie_dirty.png";
+import Vacuum from "./resources/vacuum.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer, {
   connectApplication,
