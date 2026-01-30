@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import { updatePath, addToPath } from "./helpers/showImageVisual";

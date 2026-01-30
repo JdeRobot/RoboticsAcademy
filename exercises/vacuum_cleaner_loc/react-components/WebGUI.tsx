@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { updatePath, addToPath } from "./helpers/VacuumCleanerHelper";
-import houseMapClean from "./resources/mapgrannyannie_clean.png";
 import houseMapDirty from "./resources/mapgrannyannie_dirty.png";
 import Vacuum from "./resources/vacuum.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";

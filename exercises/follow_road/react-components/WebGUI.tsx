@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUIImage from "Components/exercise/WebGUIImage";
