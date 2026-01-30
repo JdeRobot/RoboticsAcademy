@@ -108,9 +108,9 @@ const WebGUI = () => {
   connectApplication(
     manager,
     updateCallback,
+    stateCallback,
     canvasRef,
     resizeObserver,
-    stateCallback,
   );
 
   return (

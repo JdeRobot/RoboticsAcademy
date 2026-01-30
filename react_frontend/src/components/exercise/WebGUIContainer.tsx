@@ -40,9 +40,9 @@ const WebGUIContainer = ({
 export const connectApplication = (
   manager: CommsManager | null,
   updateCallback: (data: unknown) => void,
-  resizeRef: MutableRefObject<HTMLImageElement | null>,
-  resizeObserver?: ResizeObserver,
   stateCallback?: (state: string) => void,
+  resizeRef?: MutableRefObject<HTMLImageElement | null>,
+  resizeObserver?: ResizeObserver,
 
 ) => {
   const ref = useRef<NodeJS.Timer>();
