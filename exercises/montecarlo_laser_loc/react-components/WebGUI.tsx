@@ -1,30 +1,28 @@
 import { useState, useEffect, useRef } from "react";
-import { events } from "jderobot-commsmanager";
+import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
-import houseMap from "../resources/images/mapgrannyannie.png";
-import Vacuum from "../resources/images/vacuum.svg";
+import houseMap from "./resources/mapgrannyannie.png";
+import Vacuum from "./resources/vacuum.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
 import "./css/GUICanvas.css";
 
-function WebGUI() {
-  const [vacuumPose, setVacuumPose] = useState(null);
-  const [userPose, setUserPose] = useState(null);
-  const [userParticles, setParticles] = useState([]);
-  const canvasRef = useRef(null);
+const WebGUI = () => {
   const exerciseContext = useExercise();
+  const [vacuumPose, setVacuumPose] = useState<number[] | undefined>(undefined);
+  const [userPose, setUserPose] = useState<number[] | undefined>(undefined);
+  const [userParticles, setParticles] = useState<number[][]>([]);
+  const canvasRef = useRef<HTMLImageElement>(null);
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication(manager);
   const vacuumSize = 40;
+  var lastRealPose: number[] | undefined = undefined;
+  var lastUserPose: number[] | undefined = undefined;
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
-
-  var lastRealPose = undefined;
-  var lastUserPose = undefined;
 
   const resizeObserver = new ResizeObserver((entries) => {
     var img = entries[0].target;
@@ -51,97 +49,79 @@ function WebGUI() {
     setParticles([]);
   });
 
-  useEffect(() => {
-    if (manager === null) {
-      return;
-    }
-
-    
-
-    const updateCallback = (message) => {
-      connection.end();
-      const updateData = message.data.update;
-      // Lógica para manejar el mapa
-      var img = canvasRef.current;
-      var width = img.clientWidth / 300;
-      var height = img.clientHeight / 150;
-
-      if (updateData.map) {
-        const pose = updateData.map.substring(1, updateData.map.length - 1);
-        const content = pose.split(",").map((item) => parseFloat(item));
-        const poseUser = updateData.user.substring(
-          1,
-          updateData.user.length - 1,
-        );
-        const userContent = poseUser.split(",").map((item) => parseFloat(item));
-
-        lastRealPose = content;
-
-        setVacuumPose([
-          content[1] * height - (vacuumSize * img.clientHeight) / 1012,
-          content[0] * width - (vacuumSize * img.clientWidth) / 1012,
-          -content[2],
-        ]);
-
-        if (
-          !(
-            userContent[0] === 0 &&
-            userContent[1] === 0 &&
-            userContent[2] === 0
-          )
-        ) {
-          lastUserPose = userContent;
-          setUserPose([
-            userContent[1] * height - (vacuumSize * img.clientHeight) / 1012,
-            userContent[0] * width - (vacuumSize * img.clientWidth) / 1012,
-            -userContent[2],
-          ]);
-        }
-      }
-
-      if (updateData.particles) {
-        const particles = JSON.parse(updateData.particles);
-        if (particles != "") {
-          var new_particles = [];
-          particles.forEach((element) => {
-            new_particles.push([
-              element[1] * height,
-              element[0] * width,
-              -element[2],
-              element[3],
-            ]);
-          });
-          setParticles(new_particles);
-        }
-      }
-
-      // Send the ACK of the msg
-      manager.send("gui", "ack");
-    };
-
-    const stateCallback = (message) => {
-      if (message.data.state === "tools_ready") {
-        setVacuumPose(null);
-        setUserPose(null);
-        setParticles([]);
-        lastRealPose = undefined;
-        lastUserPose = undefined;
-      }
-    };
+  const updateCallback = (updateData: unknown) => {
+    let data = updateData as any;
+    const update = data.update;
 
     var img = canvasRef.current;
-    if (img) {
-      resizeObserver.observe(img);
+    if (img === null) {
+      return;
+    }
+    var width = img.clientWidth / 300;
+    var height = img.clientHeight / 150;
+
+    if (update.map) {
+      const pose = update.map.substring(1, update.map.length - 1);
+      const content = pose.split(",").map((item: string) => parseFloat(item));
+      const poseUser = update.user.substring(1, update.user.length - 1);
+      const userContent = poseUser
+        .split(",")
+        .map((item: string) => parseFloat(item));
+
+      lastRealPose = content;
+
+      setVacuumPose([
+        content[1] * height - (vacuumSize * img.clientHeight) / 1012,
+        content[0] * width - (vacuumSize * img.clientWidth) / 1012,
+        -content[2],
+      ]);
+
+      if (
+        !(userContent[0] === 0 && userContent[1] === 0 && userContent[2] === 0)
+      ) {
+        lastUserPose = userContent;
+        setUserPose([
+          userContent[1] * height - (vacuumSize * img.clientHeight) / 1012,
+          userContent[0] * width - (vacuumSize * img.clientWidth) / 1012,
+          -userContent[2],
+        ]);
+      }
     }
 
-    manager.subscribe(events.UPDATE, updateCallback);
-    manager.subscribe(events.STATE_CHANGED, stateCallback);
+    if (update.particles) {
+      const particles = JSON.parse(update.particles);
+      if (particles != "") {
+        var new_particles: number[][] = [];
+        particles.forEach((element: number[]) => {
+          new_particles.push([
+            element[1] * height,
+            element[0] * width,
+            -element[2],
+            element[3],
+          ]);
+        });
+        setParticles(new_particles);
+      }
+    }
+  };
 
-    return () => {
-      manager.unsubscribe(events.UPDATE, updateCallback);
-      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
-    };
-  }, [manager]);
+  const stateCallback = (state: string) => {
+    if (state === states.TOOLS_READY) {
+      setVacuumPose(undefined);
+      setUserPose(undefined);
+      setParticles([]);
+      lastRealPose = undefined;
+      lastUserPose = undefined;
+    }
+  };
+
+  connectApplication(
+    manager,
+    updateCallback,
+    stateCallback,
+    canvasRef,
+    resizeObserver,
+  );
 
   return (
     <WebGUIContainer>
@@ -154,7 +134,7 @@ function WebGUI() {
       <div className="overlay" id="map-container">
         {vacuumPose && (
           <div
-            id="vacuum-pos"
+            className="vacuum"
             style={{
               rotate: "z " + vacuumPose[2] + "rad",
               top: vacuumPose[0],
@@ -176,16 +156,16 @@ function WebGUI() {
         )}
         {userPose && (
           <div
-            id="user-pos"
+            className="vacuum"
             style={{
-              rotate: "z " + vacuumPose[2] + "rad",
-              top: vacuumPose[0],
+              rotate: "z " + userPose[2] + "rad",
+              top: userPose[0],
               height: (vacuumSize * canvasRef.current.clientHeight) / 1012,
-              left: vacuumPose[1],
+              left: userPose[1],
               width: (vacuumSize * canvasRef.current.clientWidth) / 1012,
             }}
           >
-            <img src={Vacuum} />
+            <img src={Vacuum} id="user-pos" />
             <div
               className="arrow arrow-user"
               style={{
@@ -214,6 +194,6 @@ function WebGUI() {
       </div>
     </WebGUIContainer>
   );
-}
+};
 
 export default WebGUI;
