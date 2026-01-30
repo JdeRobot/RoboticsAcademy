@@ -1,47 +1,53 @@
 import { useState, useEffect, useRef } from "react";
-import { events } from "jderobot-commsmanager";
+import { events, states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import { updatePath, addToPath } from "./helpers/showImageVisual";
-import RobotRed from "../resources/images/robot_red.svg";
-import RobotGreen from "../resources/images/robot_green.svg";
-import RobotBlue from "../resources/images/robot_blue.svg";
+import RobotRed from "./resources/robot_red.svg";
+import RobotGreen from "./resources/robot_green.svg";
+import RobotBlue from "./resources/robot_blue.svg";
 import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
 
-import house from "../resources/images/map.png";
-
+import house from "./resources/map.png";
 import "./css/GUICanvas.css";
-function WebGUI(props) {
-  const [realPose, setRealPose] = useState(null);
-  const [noisyPose, setNoisyPose] = useState(null);
-  const [userPose, setUserPose] = useState(null);
-  const [realPath, setRealPath] = useState("");
-  const [noisyPath, setNoisyPath] = useState("");
-  const [userPath, setUserPath] = useState("");
-  const [resizedBeacons, setResizedBeacons] = useState({});
-  const [userImage, setUserImage] = useState(undefined);
-  const canvasRef = useRef(null);
+
+interface Beacon {
+  id: string;
+  x: number;
+  y: number;
+  type: string;
+}
+
+function WebGUI() {
+  const [realPose, setRealPose] = useState<number[] | undefined>();
+  const [noisyPose, setNoisyPose] = useState<number[] | undefined>();
+  const [userPose, setUserPose] = useState<number[] | undefined>();
+  const [realPath, setRealPath] = useState<string>("");
+  const [noisyPath, setNoisyPath] = useState<string>("");
+  const [userPath, setUserPath] = useState<string>("");
+  const [resizedBeacons, setResizedBeacons] = useState<Beacon[]>([]);
+  const [userImage, setUserImage] = useState<string | undefined>(undefined);
+  const canvasRef = useRef<HTMLImageElement>(null);
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
-  let connection = connectApplication(manager);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  var realTrail = [];
-  var noisyTrail = [];
-  var userTrail = [];
-  var realLastPose = undefined;
-  var noisyLastPose = undefined;
-  var userLastPose = undefined;
+  var realTrail: number[][] = [];
+  var noisyTrail: number[][] = [];
+  var userTrail: number[][] = [];
+  var realLastPose: number[] | undefined = undefined;
+  var noisyLastPose: number[] | undefined = undefined;
+  var userLastPose: number[] | undefined = undefined;
   var valuesUntilValid = 0;
 
   const timeout = 0;
 
-  const beacons = [
+  const beacons: Beacon[] = [
     { id: "tag_0", x: 518.75, y: 270.325, type: "hor" },
     { id: "tag_1", x: 481.4, y: 810.775, type: "hor" },
     { id: "tag_2", x: 196.395, y: 339.15, type: "vert" },
@@ -98,134 +104,102 @@ function WebGUI(props) {
     valuesUntilValid = 0;
   });
 
-  useEffect(() => {
-    if (manager === null) {
-      return;
-    }
-
-    
-
-    const updateCallback = (message) => {
-      connection.end();
-      const updateData = message.data.update;
-
-      var img = canvasRef.current;
-      //or however you get a handle to the IMG
-      var width = img.clientWidth / 1012;
-      var height = img.clientHeight / 1012;
-
-      if (updateData.real_pose) {
-        const pose = updateData.real_pose.substring(
-          1,
-          updateData.real_pose.length - 1,
-        );
-        const content = pose.split(",").map((item) => parseFloat(item));
-        realLastPose = content;
-
-        setRealPose([
-          content[1] * height,
-          content[0] * width,
-          -1.57 - content[2],
-        ]);
-        if (valuesUntilValid > timeout) {
-          updatePath(realTrail, setRealPath, height, width);
-          addToPath(content[1], content[0], realTrail);
-        } else {
-          valuesUntilValid = valuesUntilValid + 1;
-        }
-      }
-
-      if (updateData.noisy_pose) {
-        const pose = updateData.noisy_pose.substring(
-          1,
-          updateData.noisy_pose.length - 1,
-        );
-        const content = pose.split(",").map((item) => parseFloat(item));
-        noisyLastPose = content;
-
-        setNoisyPose([
-          content[1] * height,
-          content[0] * width,
-          -1.57 - content[2],
-        ]);
-        if (valuesUntilValid > timeout) {
-          updatePath(noisyTrail, setNoisyPath, height, width);
-          addToPath(content[1], content[0], noisyTrail);
-        }
-      }
-
-      if (updateData.estimate_pose) {
-        const pose = updateData.estimate_pose.substring(
-          1,
-          updateData.estimate_pose.length - 1,
-        );
-        const content = pose.split(",").map((item) => parseFloat(item));
-        userLastPose = content;
-
-        setUserPose([
-          content[1] * height,
-          content[0] * width,
-          -1.57 - content[2],
-        ]);
-        if (valuesUntilValid > timeout) {
-          updatePath(userTrail, setUserPath, height, width);
-          addToPath(content[1], content[0], userTrail);
-        }
-      }
-
-      if (updateData.image) {
-        let image = JSON.parse(updateData.image);
-        if (image.shape instanceof Array) {
-          setUserImage(`data:image/png;base64,${image.image}`);
-        }
-      }
-
-      // Send the ACK of the msg
-      manager.send("gui", "ack");
-    };
-
-    const stateCallback = (message) => {
-      if (message.data.state === "tools_ready") {
-        setRealPose(null);
-        setNoisyPose(null);
-        setUserPose(null);
-        setRealPath("");
-        setNoisyPath("");
-        setUserPath("");
-        realTrail = [];
-        noisyTrail = [];
-        userTrail = [];
-        setUserImage();
-
-        var img = canvasRef.current;
-        //or however you get a handle to the IMG
-        var width = img.clientWidth / 1012;
-        var height = img.clientHeight / 1012;
-        setResizedBeacons(
-          beacons.map((beacon) => ({
-            id: beacon.id,
-            x: beacon.x * width,
-            y: beacon.y * height,
-            type: beacon.type,
-          })),
-        );
-      }
-      valuesUntilValid = 0;
-    };
+  const updateCallback = (updateData: unknown) => {
+    let data = updateData as any;
+    const update = data.update;
 
     var img = canvasRef.current;
-    if (img) {
-      resizeObserver.observe(img);
+    if (img === null) {
+      return;
+    }
+    var width = img.clientWidth / 1012;
+    var height = img.clientHeight / 1012;
+
+    if (update.real_pose) {
+      const pose = update.real_pose.substring(1, update.real_pose.length - 1);
+      const content = pose.split(",").map((item: string) => parseFloat(item));
+      realLastPose = content;
+
+      setRealPose([
+        content[1] * height,
+        content[0] * width,
+        -1.57 - content[2],
+      ]);
+      if (valuesUntilValid > timeout) {
+        updatePath(realTrail, setRealPath, height, width);
+        addToPath(content[1], content[0], realTrail);
+      } else {
+        valuesUntilValid = valuesUntilValid + 1;
+      }
     }
 
-    manager.subscribe(events.UPDATE, updateCallback);
-    manager.subscribe(events.STATE_CHANGED, stateCallback);
+    if (update.noisy_pose) {
+      const pose = update.noisy_pose.substring(1, update.noisy_pose.length - 1);
+      const content = pose.split(",").map((item: string) => parseFloat(item));
+      noisyLastPose = content;
 
-    return () => {
-      manager.unsubscribe(events.UPDATE, updateCallback);
-      manager.unsubscribe(events.STATE_CHANGED, stateCallback);
-    };
-  }, [manager]);
+      setNoisyPose([
+        content[1] * height,
+        content[0] * width,
+        -1.57 - content[2],
+      ]);
+      if (valuesUntilValid > timeout) {
+        updatePath(noisyTrail, setNoisyPath, height, width);
+        addToPath(content[1], content[0], noisyTrail);
+      }
+    }
+
+    if (update.estimate_pose) {
+      const pose = update.estimate_pose.substring(
+        1,
+        update.estimate_pose.length - 1,
+      );
+      const content = pose.split(",").map((item: string) => parseFloat(item));
+      userLastPose = content;
+
+      setUserPose([
+        content[1] * height,
+        content[0] * width,
+        -1.57 - content[2],
+      ]);
+      if (valuesUntilValid > timeout) {
+        updatePath(userTrail, setUserPath, height, width);
+        addToPath(content[1], content[0], userTrail);
+      }
+    }
+
+    if (update.image) {
+      let image = JSON.parse(update.image);
+      if (image.shape instanceof Array) {
+        setUserImage(`data:image/png;base64,${image.image}`);
+      }
+    }
+  };
+
+  const stateCallback = (state: string) => {
+    if (state === states.TOOLS_READY) {
+      setRealPose(undefined);
+      setNoisyPose(undefined);
+      setUserPose(undefined);
+      setUserImage(undefined);
+      setRealPath("");
+      setNoisyPath("");
+      setUserPath("");
+      realTrail = [];
+      noisyTrail = [];
+      userTrail = [];
+    }
+
+    valuesUntilValid = 0;
+  };
+
+  connectApplication(
+    manager,
+    updateCallback,
+    stateCallback,
+    canvasRef,
+    resizeObserver,
+  );
 
   return (
     <WebGUIContainer>
