@@ -7,7 +7,7 @@ import WebGUIImage from "Components/exercise/WebGUIImage";
 import WebGUIContainer, {
   connectApplication,
 } from "Components/exercise/WebGUIContainer";
-import { events, states } from "jderobot-commsmanager";
+import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 
 import "./css/GUICanvas.css";
@@ -95,9 +95,6 @@ const WebGUI = () => {
   };
 
   const stateCallback = (state: string) => {
-    if (manager === null) {
-      return;
-    }
     if (state === states.TOOLS_READY) {
       setPath("");
       trail = [];
