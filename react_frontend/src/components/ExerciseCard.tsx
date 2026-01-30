@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
@@ -12,10 +12,6 @@ import {
   StyledExerciseCardTagList,
 } from "Styles/ExerciseCard.styles";
 import { useNavigate } from "react-router-dom";
-import { getTeaser } from "Api";
-
-// TODO: temporary
-const cache = [];
 
 const ExerciseCard = ({
   exercise_id,
@@ -25,32 +21,14 @@ const ExerciseCard = ({
   status,
 }: Exercise) => {
   const navigate = useNavigate();
-  const [teaser, setTeaser] = useState<string | undefined>(undefined);
 
   const navigateToExercise = (): void => {
     navigate(`/academy/studio/${exercise_id}`, { viewTransition: true });
   };
 
-  const loadTeaser = async (id: string) => {
-    // TODO: temporary
-    let img = cache[id];
-    if (img !== undefined) {
-      setTeaser(img);
-      return;
-    }
-
-    try {
-      img = await getTeaser(id);
-      cache[id] = img;
-    } catch {
-      img = FALLBACK_IMAGE;
-    }
-    setTeaser(img);
+  const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
   };
-
-  useEffect(() => {
-    loadTeaser(exercise_id);
-  }, []);
 
   const tagsList: string[] = JSON.parse(tags);
 
@@ -60,7 +38,8 @@ const ExerciseCard = ({
         <CardMedia
           component="img"
           style={{ flexGrow: 1 }}
-          src={teaser ?? FALLBACK_IMAGE}
+          image={`/static/${exercise_id}/teaser.png`}
+          onError={onMediaFallback}
         />
         <StyledExerciseCardInfoContainer>
           <Typography
