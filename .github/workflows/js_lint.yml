@@ -33,4 +33,4 @@ jobs:
             # 5) (Optional) Run your dev server
             - name: Run ESLint
               working-directory: react_frontend
-              run: npm run lint
+              run: npm run lint-all

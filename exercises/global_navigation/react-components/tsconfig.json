@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "../../../react_frontend/svg.d.ts",
+      "../../../react_frontend/png.d.ts",
+      "../../../react_frontend/jpg.d.ts",
+      "../../../react_frontend/zip.d.ts"
+    ],
+    "paths": {
+      "Assets/*": [ "../../../react_frontend/src/assets/*"],
+      "Components/*": [ "../../../react_frontend/src/components/*"],
+      "Utils/*": [ "../../../react_frontend/src/utils/*"],
+      "Contexts/*": [ "../../../react_frontend/src/contexts/*"],
+      "Helpers/*": [ "../../../react_frontend/src/helpers/*"],
+      "Icons/*": [ "../../../react_frontend/src/icons/*"],
+      "Styles/*": [ "../../../react_frontend/src/styles/*"],
+      "Types/*": [ "../../../react_frontend/src/types/*"],
+      "Constants/*": [ "../../../react_frontend/src/constants/*"],
+      "Api": [ "../../../react_frontend/src/api/index.ts"],
+      "Routes": [ "../../../react_frontend/src/routes/index.ts"],
+    },
+    "baseUrl": "./",
+    "rootDirs": [
+      "./",
+      "../../../react_frontend/src"
+    ],
+    "declaration": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "./",
+    "../../../react_frontend/src",
+    "../../../react_frontend/png.d.ts",
+    "../../../react_frontend/jpg.d.ts",
+    "../../../react_frontend/svg.d.ts",
+    "../../../react_frontend/zip.d.ts"
+  ]
+}

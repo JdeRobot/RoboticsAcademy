@@ -37,13 +37,13 @@ function WebGUI() {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  var realTrail: number[][] = [];
-  var noisyTrail: number[][] = [];
-  var userTrail: number[][] = [];
-  var realLastPose: number[] | undefined = undefined;
-  var noisyLastPose: number[] | undefined = undefined;
-  var userLastPose: number[] | undefined = undefined;
-  var valuesUntilValid = 0;
+  let realTrail: number[][] = [];
+  let noisyTrail: number[][] = [];
+  let userTrail: number[][] = [];
+  let realLastPose: number[] | undefined = undefined;
+  let noisyLastPose: number[] | undefined = undefined;
+  let userLastPose: number[] | undefined = undefined;
+  let valuesUntilValid = 0;
 
   const timeout = 0;
 
@@ -59,10 +59,10 @@ function WebGUI() {
   ];
 
   const resizeObserver = new ResizeObserver((entries) => {
-    var img = entries[0].target;
+    const img = entries[0].target;
     //or however you get a handle to the IMG
-    var width = img.clientWidth / 1012;
-    var height = img.clientHeight / 1012;
+    const width = img.clientWidth / 1012;
+    const height = img.clientHeight / 1012;
 
     setResizedBeacons(
       beacons.map((beacon) => ({
@@ -105,15 +105,15 @@ function WebGUI() {
   });
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
 
-    var img = canvasRef.current;
+    const img = canvasRef.current;
     if (img === null) {
       return;
     }
-    var width = img.clientWidth / 1012;
-    var height = img.clientHeight / 1012;
+    const width = img.clientWidth / 1012;
+    const height = img.clientHeight / 1012;
 
     if (update.real_pose) {
       const pose = update.real_pose.substring(1, update.real_pose.length - 1);
@@ -169,7 +169,7 @@ function WebGUI() {
     }
 
     if (update.image) {
-      let image = JSON.parse(update.image);
+      const image = JSON.parse(update.image);
       if (image.shape instanceof Array) {
         setUserImage(`data:image/png;base64,${image.image}`);
       }

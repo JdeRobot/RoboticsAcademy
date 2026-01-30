@@ -10,8 +10,10 @@
     "build": "webpack --mode production --output-path ./static/react_frontend",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
+    "lint-exercises": "for ex in $(ls ../exercises); do bash -c \"cd ../exercises/$ex/react-components && eslint --fix\" 2>/dev/null ; done",
+    "lint-all": "npm run lint && npm run lint-exercises",
     "tailwindcss": "NODE_ENV=production tailwindcss -o src/styles/tailwind.css -m",
-    "format": "prettier --write src/**/*.{tsx,ts,html,css}"
+    "format": "prettier --write src/**/*.{tsx,ts,html,css} && prettier --write ../exercises/**/*.{tsx,ts,html,css}"
   },
   "keywords": [],
   "devDependencies": {
@@ -55,6 +57,7 @@
     "@mui/system": "^5.10.9",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "8.15.12",
+    "@types/node": "^25.1.0",
     "@types/react-dom": "^18.2.0",
     "@types/styled-components": "^5.1.34",
     "axios": "^1.12.0",

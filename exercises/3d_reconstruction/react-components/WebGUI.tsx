@@ -19,11 +19,11 @@ const WebGUI = () => {
   }, [exerciseContext]);
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
     if (update.img1) {
       draw(update);
-      var point = JSON.parse(update.pts);
+      const point = JSON.parse(update.pts);
       if (point != "") {
         setPointsToPaint(point);
       }

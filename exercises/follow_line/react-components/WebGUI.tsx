@@ -27,7 +27,7 @@ const WebGUI = () => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  var circuitName = "simple";
+  let circuitName = "simple";
 
   useEffect(() => {
     if (manager) {
@@ -59,7 +59,7 @@ const WebGUI = () => {
   };
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     if (data.update.image) {
       const image = JSON.parse(data.update.image);
       if (image.image != "" && image.shape instanceof Array) {

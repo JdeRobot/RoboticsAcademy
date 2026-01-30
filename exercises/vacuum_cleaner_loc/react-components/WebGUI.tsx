@@ -20,19 +20,19 @@ const WebGUI = () => {
   const [path, setPath] = useState<string>("");
   const [userImage, setUserImage] = useState<string | undefined>(undefined);
   const [manager, setManager] = useState(exerciseContext.manager);
-  var lastPose: number[] | undefined = undefined;
+  let lastPose: number[] | undefined = undefined;
   const canvasRef = useRef<HTMLImageElement>(null);
   const vacuumSize = 40;
-  var trail: number[][] = [];
+  let trail: number[][] = [];
 
   useEffect(() => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
   const resizeObserver = new ResizeObserver((entries) => {
-    var img = entries[0].target;
-    var width = img.clientWidth / 300;
-    var height = img.clientHeight / 150;
+    const img = entries[0].target;
+    const width = img.clientWidth / 300;
+    const height = img.clientHeight / 150;
 
     updatePath(
       trail,
@@ -53,7 +53,7 @@ const WebGUI = () => {
   });
 
   const updateCallback = (updateData: unknown) => {
-    let data = updateData as any;
+    const data = updateData as any;
     const update = data.update;
 
     // Lógica para manejar el mapa
@@ -62,12 +62,12 @@ const WebGUI = () => {
       const content = pose.split(",").map((item: string) => parseFloat(item));
       lastPose = content;
 
-      var img = canvasRef.current;
+      const img = canvasRef.current;
       if (img === null) {
         return;
       }
-      var width = img.clientWidth / 300;
-      var height = img.clientHeight / 150;
+      const width = img.clientWidth / 300;
+      const height = img.clientHeight / 150;
 
       updatePath(
         trail,
@@ -87,7 +87,7 @@ const WebGUI = () => {
     }
 
     if (update.image) {
-      let image = JSON.parse(update.image);
+      const image = JSON.parse(update.image);
       if (image.shape instanceof Array) {
         setUserImage(`data:image/png;base64,${image.image}`);
       }

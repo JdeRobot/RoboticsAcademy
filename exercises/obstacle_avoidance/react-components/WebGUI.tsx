@@ -34,17 +34,17 @@ function WebGUI() {
 
       setLaser(dataToDraw.laser);
       setMaxRange(dataToDraw.max_range);
-      var carForceDist = getDist(dataToDraw.car[0], dataToDraw.car[1]);
+      const carForceDist = getDist(dataToDraw.car[0], dataToDraw.car[1]);
       setCarForce([
         carForceDist * meter,
         getAng(dataToDraw.car[0], dataToDraw.car[1]),
       ]);
-      var avgForceDist = getDist(dataToDraw.average[0], dataToDraw.average[1]);
+      const avgForceDist = getDist(dataToDraw.average[0], dataToDraw.average[1]);
       setAvgForce([
         avgForceDist * meter,
         getAng(dataToDraw.average[0], dataToDraw.average[1]),
       ]);
-      var obsForceDist = getDist(
+      const obsForceDist = getDist(
         dataToDraw.obstacle[0],
         dataToDraw.obstacle[1]
       );
@@ -52,11 +52,11 @@ function WebGUI() {
         obsForceDist * meter,
         getAng(dataToDraw.obstacle[0], dataToDraw.obstacle[1]),
       ]);
-      var targetDist = getDist(
+      const targetDist = getDist(
         dataToDraw.pose[0] - dataToDraw.target[0],
         dataToDraw.pose[1] - dataToDraw.target[1]
       );
-      var targetAng = getAng(
+      const targetAng = getAng(
         dataToDraw.pose[0] - dataToDraw.target[0],
         dataToDraw.pose[1] - dataToDraw.target[1]
       );
@@ -72,7 +72,7 @@ function WebGUI() {
   };
 
   const getAng = (x: number, y: number) => {
-    var ang = Math.atan2(y, x);
+    const ang = Math.atan2(y, x);
     return ang;
   };
 
@@ -88,8 +88,8 @@ function WebGUI() {
     <WebGUIContainer id="f1-road">
       <img src={F1Car} id="f1-car" />
       {laser.map((element) => {
-        var ang = -element[1];
-        var length = (element[0] / maxRange) * 100;
+        const ang = -element[1];
+        const length = (element[0] / maxRange) * 100;
         return (
           <hr
             className="laser-beam"

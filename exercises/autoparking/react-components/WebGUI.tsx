@@ -21,7 +21,7 @@ const WebGUI = () => {
     data = data.update;
 
     if (data.lidar) {
-      var point = JSON.parse(data.lidar);
+      const point = JSON.parse(data.lidar);
       var pdata: number[][] = [];
       if (point != "") {
         for (
