@@ -3972,24 +3972,23 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jderobot-commsmanager@1.0.16, jderobot-commsmanager@^1.0.10:
+jderobot-commsmanager@1.0.16:
   version "1.0.16"
   resolved "https://registry.npmjs.org/jderobot-commsmanager/-/jderobot-commsmanager-1.0.16.tgz"
   integrity sha512-rEMr1DRqcexrtvyzNvLsWW4+DOVj+V8l4eI8HP7IAWc25NbK+OtexXJZ1Fk+v+WSdffE8n0J0k17rIryzFEm3w==
   dependencies:
     uuid "^11.1.0"
 
-jderobot-ide-interface@0.2.100:
-  version "0.2.100"
-  resolved "https://registry.npmjs.org/jderobot-ide-interface/-/jderobot-ide-interface-0.2.100.tgz"
-  integrity sha512-o2gMpOL/nQzZ1XhII+yYG5XEGgkQU6oTRb9pkIIoZStFIITFAgo9pk6A+vg/lZrHLd1cAvmBqMKBtn4YcPU6NQ==
+jderobot-ide-interface@0.2.118:
+  version "0.2.118"
+  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.118.tgz#207c3eadb4c874a9d77fe06b9455a64912f73596"
+  integrity sha512-RJALtXAu34EdANCfAZh7mf67/a8Pg5V+l2tlDTtTxhR0VUjJlBSXrzu1OqEGakkBtgNy01CSI/FcRFRIe+o/+Q==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
     "@monaco-editor/react" "^4.7.0"
     "@mui/icons-material" "^7.3.6"
     "@mui/material" "^7.3.6"
-    jderobot-commsmanager "^1.0.10"
     jszip "^3.10.1"
     lodash "^4.17.21"
     monaco-editor "^0.52.2"
