@@ -1,7 +1,7 @@
 {
   "name": "react_frontend",
   "version": "1.0.0",
-  "description": "React frontend for unibotics web server",
+  "description": "React frontend for Robotics Academy",
   "main": "index.js",
   "author": "Javier Izquierdo <javizqh@pm.me>",
   "license": "MIT",
