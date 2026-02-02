@@ -2,28 +2,33 @@
 
 The build.sh script is designed to build a Docker RADI image, from specific branches. It is customizable, allowing the user to choose the version of ROS (Robot Operating System) used, the branches of different repositories, and the tag of the Docker image. Below is a step-by-step guide on how to use the script.
 
+## Purpose
+
+The goal of creating a new non official RADI is to test new dockerfile dependencies or changes done to the robot or worlds models in Robotics Infrastructure.
+
 ## Prerequisites
+
 - Docker installed on your machine. You can download Docker from [here](https://www.docker.com/products/docker-desktop).
 - Git installed on your machine. You can download Git from [here](https://git-scm.com/downloads).
 
 ## Usage
 
 1. **Navigate to the scripts directory**
-    
-    ```bash
-    cd /scripts/RADI
-    ```
+
+   ```bash
+   cd /scripts/RADI
+   ```
 
 2. **Build the Docker image**
-    
-    Run the script using the following command:
-    
-    ```bash
-    ./build.sh -a [ROBOTICS_ACADEMY] -i [ROBOTICS_INFRASTRUCTURE] -m [RAM] -r [ROS_DISTRO] -t [IMAGE_TAG]
 
-    ```
+   Run the script using the following command:
 
-    Each of the parameters is explained below:
+   ```bash
+   ./build.sh -a [ROBOTICS_ACADEMY] -i [ROBOTICS_INFRASTRUCTURE] -m [RAM] -r [ROS_DISTRO] -t [IMAGE_TAG]
+
+   ```
+
+   Each of the parameters is explained below:
 
 `ROBOTICS_ACADEMY`: This is the branch name of the Robotics Academy repository to use. Default value is humble-devel.
 
@@ -34,6 +39,9 @@ The build.sh script is designed to build a Docker RADI image, from specific bran
 `ROS_DISTRO`: This is the ROS distribution to use. The script currently supports `humble`. Default value is humble.
 
 `IMAGE_TAG`: This is the tag of the Docker image that will be created. Default value is `test`.
+
+3. **Change the tag when launching RA**: launch the tag of the robotics-academy docker image to the one you have just created. If you are using either the developer script or docker compose remember to change the tag in the corresponding **compose*cfg/dev_humble*\*.yaml** file.
+
 ## Example
 
 For instance, to build a Docker image using the master branch of the Robotics Academy repository, the humble-devel branch of the Robotics Infrastructure repository, the humble-devel branch of the RAM repository, the humble ROS distribution, and tag the image as my_image, you would run:
@@ -41,7 +49,9 @@ For instance, to build a Docker image using the master branch of the Robotics Ac
 ```bash
 ./build.sh -f -a humble-devel -i humble-devel -m humble-devel -r humble -t my_image
 ```
+
 Use '-f' to force build the base image. If omitted, the base image is created only if it doesn't exist.
+
 ## Troubleshooting
 
 If an error occurs while running the script, ensure that:
@@ -53,6 +63,7 @@ If an error occurs while running the script, ensure that:
 ```bash
 chmod +x build.sh
 ```
+
 - For more information about the build script:
 
 ```bash
@@ -60,11 +71,13 @@ chmod +x build.sh
 ```
 
 ## Searching installed images
+
 If you want to see what images you have installed you can use the command:
 
 ```bash
 docker images
 ```
+
 You probably need root permissions to use any command with docker, run them with `sudo`.
 
 ## Deleting installed images

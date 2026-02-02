@@ -5,8 +5,8 @@ services:
     networks:
       - db_network
     environment:
-      POSTGRES_DB: academy_db 
-      POSTGRES_USER: user-dev 
+      POSTGRES_DB: academy_db
+      POSTGRES_USER: user-dev
       POSTGRES_PASSWORD: robotics-academy-dev
     ports:
       - "5432:5432"
@@ -14,7 +14,6 @@ services:
       - ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql
       - ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql
       - ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql
-      - ./scripts:/scripts
     healthcheck:
       test: pg_isready -U user-dev -d academy_db
       interval: 3s
@@ -26,7 +25,7 @@ services:
     container_name: developer-container
     networks:
       - db_network
-    command:  "-s"
+    command: "-s"
     deploy:
       resources:
         reservations:
@@ -54,7 +53,7 @@ services:
       - ./RoboticsInfrastructure/database/universes.sql:/universes.sql
     tty: true
     stdin_open: true
-    depends_on: 
+    depends_on:
       my-postgres:
         condition: service_healthy
 

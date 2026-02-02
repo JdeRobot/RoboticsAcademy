@@ -53,7 +53,7 @@ Which will display a help message.
 
 3. Developing procedure
 
-After running the script, the src folder will be created, which contains all the files of the RoboticsApplicationManager. You can create branches and commit normally to the RAM repo from inside that folder. For the rest of the changes, you can also work normally from the RoboticsAcademy folder, the contents of the src folder together with common boilerplate files are automatically ignored.
+After running the script, the src folder will be created, which contains all the files of the RoboticsApplicationManager. You can create branches and commit normally to the RAM repo from inside that folder. For the rest of the changes, you can also work normally from the RoboticsAcademy folder, the contents of the src folder are automatically ignored.
 
 Whenever you want to finish developing, you just can close the script with Crtl+C. It will take care of cleaning files so you can restart again without any additional config.
 
@@ -86,7 +86,7 @@ npm install --global yarn
 cd react_frontend/ && yarn install && yarn run dev
 ```
 
-Another way to solve it is to try to delete the generated image and do it again, you can follow the instructions in: [How to generate a radi](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/generate_a_radi.md).
+Another way to solve it is to try to delete the old RADI image and download it again.
 
 ### Using Docker run
 
@@ -107,12 +107,20 @@ cd ../..
 mv common/common.zip react_frontend/src/common.zip
 ```
 
+You also have to download the Robotics Applictaion Manager using:
+
+```
+git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b humble-devel src
+```
+
 You have 2 ways of launching Robotics Academy with docker run:
 
-- Creating a new RADI. To see how to do it read [how to generate a RADI][].
+- Creating a new RADI. To see how to do it and why to use it, read [how to generate a RADI][].
 - Using the docker image: `robotics-academy:latest`
 
 Then to launch Robotics Academy first you have to launch the database docker container. For example if you want to launch it from where you cloned Robotics Academy you can use the next command:
+
+**_NOTE_**: If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
 
 ```bash
 docker run --hostname my-postgres --name academy_db -d\
@@ -121,29 +129,32 @@ docker run --hostname my-postgres --name academy_db -d\
     -e POSTGRES_PASSWORD=robotics-academy-dev \
     -e POSTGRES_PORT=5432 \
     -d -p 5432:5432 \
+    -v ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql \
+    -v ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql \
+    -v ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql \
     jderobot/robotics-database:latest
 ```
 
-If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
-
 Now you can launch Robotics Academy using the followings commands:
+
+**_NOTE_**: If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
 
 - Automatic GPU selection
 
 ```bash
-docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
 ```
 
 - Automatic GPU selection (Without Nvidia)
 
 ```bash
-docker run --rm -it --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
 ```
 
 - Only CPU
 
 ```bash
-docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
 ```
 
 [how to generate a RADI]: ./generate_a_radi.md
@@ -238,7 +249,7 @@ docker-compose down
 
 When you finish developing, you can close the container with Ctrl+C, but after that, you must clean the environment executing the previous command, otherwise, some things may not work in the next execution.
 
-**Note: How to update Robotics Academy local deployment with Node 20 and sass**
+<!-- **Note: How to update Robotics Academy local deployment with Node 20 and sass**
 
 Robotics Academy has been updated to use Node 20 and sass. If you have a Robotics Academy local deployment and you don't want to make a new one, you can follow the next instructions to update your local deployment in order to use both dependencies:
 
@@ -272,7 +283,7 @@ Now, you can continue using your local deployment with Node 20 and sass.
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
-**Note:** This steps are not necessary if you deploy Robotics Academy in developer mode using an automatic script. When the script is executed, it internally runs the commands.
+**Note:** This steps are not necessary if you deploy Robotics Academy in developer mode using an automatic script. When the script is executed, it internally runs the commands. -->
 
 <a name="How-to-use-nvidia"></a>
 
@@ -333,12 +344,14 @@ To create a new exercise you must complete this 2 sections:
 
 ### Create the Exercise Folder with the source code and frontend
 
-Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises/static/exercises".
+Create a folder with the folder name as "exercise_id" at the location from repository root : "exercises".
 
-Inside that folder create 2 new ones with the following names:
+Inside that folder create 2 or more new ones with the following names:
 
-- `<language>_template`: the available languages are `python` and `cpp`.
+- `<language>_template`: the available languages are `python` and `cpp`. One for each supported language.
 - `frontend`
+
+You may add a teaser to the exercise by creating a file called `teaser.png` using a 9/10 aspect ratio.
 
 #### Source code: inside `python_template`
 
@@ -366,7 +379,99 @@ For knowing how to use each package, please follow the links in the list above.
 
 #### Frontend: inside `frontend`
 
-An exercise must contain this file:
+An exercise must contain the following filee:
+
+- **tsconfig.json**: used for the tsconfig. **Must** contain the next code:
+
+```json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": [
+      "../../../react_frontend/svg.d.ts",
+      "../../../react_frontend/png.d.ts",
+      "../../../react_frontend/jpg.d.ts",
+      "../../../react_frontend/zip.d.ts"
+    ],
+    "paths": {
+      "Assets/*": ["../../../react_frontend/src/assets/*"],
+      "Components/*": ["../../../react_frontend/src/components/*"],
+      "Utils/*": ["../../../react_frontend/src/utils/*"],
+      "Contexts/*": ["../../../react_frontend/src/contexts/*"],
+      "Helpers/*": ["../../../react_frontend/src/helpers/*"],
+      "Icons/*": ["../../../react_frontend/src/icons/*"],
+      "Styles/*": ["../../../react_frontend/src/styles/*"],
+      "Types/*": ["../../../react_frontend/src/types/*"],
+      "Constants/*": ["../../../react_frontend/src/constants/*"],
+      "Api": ["../../../react_frontend/src/api/index.ts"],
+      "Routes": ["../../../react_frontend/src/routes/index.ts"],
+      "*": ["../../../react_frontend/node_modules/*"]
+    },
+    "baseUrl": "./",
+    "rootDirs": ["./", "../../../react_frontend/src"],
+    "typeRoots": ["../../../react_frontend/node_modules/@types"],
+    "declaration": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "./",
+    "eslint.config.mts",
+    "../../../react_frontend/src",
+    "../../../react_frontend/png.d.ts",
+    "../../../react_frontend/jpg.d.ts",
+    "../../../react_frontend/svg.d.ts",
+    "../../../react_frontend/zip.d.ts"
+  ]
+}
+```
+
+- **eslint.config.mts**: used for the eslint (**Currently does not work**). **Must** contain the next code:
+
+```typescript
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import pluginReact from "eslint-plugin-react";
+import { defineConfig } from "eslint/config";
+
+export default defineConfig([
+  {
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    plugins: { js },
+    extends: ["js/recommended"],
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: {
+        project: "./tsconfig.json",
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  {
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+  },
+]);
+```
 
 - **WebGUI.tsx**: used for the exercise frontend.
 
@@ -428,7 +533,7 @@ If there is need for additional resources such as images, you may add them insid
 
 ### Add the exercise to the database
 
-To add a exercise to the database you must use Django Web Admin:
+To add a exercise to the database you **must** use Django Web Admin:
 
 1.  Launch the docker as normal.
 2.  Access http://127.0.0.1:7164/admin/ on a browser and log in with "user" and "pass".
@@ -450,7 +555,7 @@ An exercise entry in the database must include the following data:
 
 - Follow the guide in [Robotics Infrastructure](https://github.com/JdeRobot/RoboticsInfrastructure).
 
-<a name="edit-code-on-RoboticsBackend-on-the-go"></a>
+<!-- <a name="edit-code-on-RoboticsBackend-on-the-go"></a>
 
 ## Edit code on RoboticsBackend On The GO.
 
@@ -476,4 +581,4 @@ An exercise entry in the database must include the following data:
 
 5. To make sure that your local directory has been mounted correctly to the correct location inside RoboticsBackend, navigate to http://localhost:1108/vnc.html after launching an exercise(This involves clicking on the launch button of any exercise of your choice) and this will open an vnc console Instance where you may verify the integrity of the mount.
 
-   ![Screenshot from 2022-08-22 01-31-16](https://user-images.githubusercontent.com/58532023/185808802-3a207cb5-b2df-466f-a7f1-70864ff34206.png)
+   ![Screenshot from 2022-08-22 01-31-16](https://user-images.githubusercontent.com/58532023/185808802-3a207cb5-b2df-466f-a7f1-70864ff34206.png) -->

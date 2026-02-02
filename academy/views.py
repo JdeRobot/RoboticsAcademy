@@ -48,6 +48,7 @@ def save_exercise_db(request):
         bufsize=1024,
         universal_newlines=True,
     )
+    return Response({"success": True})
 
 
 @csrf_exempt
@@ -64,6 +65,7 @@ def save_universe_db(request):
         bufsize=1024,
         universal_newlines=True,
     )
+    return Response({"success": True})
 
 
 @error_wrapper(fal, "GET", ["project_id"])
