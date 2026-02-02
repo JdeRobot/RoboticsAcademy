@@ -41,13 +41,21 @@ export const zipHelperFiles = async (
   zip: JSZip,
   files: Entry[],
   project: string,
-  language: string
+  language: string,
+  entrypoint: Entry
 ) => {
   for (const file of files) {
     if (file.is_dir) {
-      await zipHelperFolder(zip, file, project, language);
+      await zipHelperFolder(zip, file, project, language, entrypoint);
     } else {
-      await zipHelperFile(zip, file.path, file.name, project, language);
+      await zipHelperFile(
+        zip,
+        file.path,
+        file.name,
+        project,
+        language,
+        entrypoint
+      );
     }
   }
 };
@@ -57,9 +65,15 @@ const zipHelperFile = async (
   file_path: string,
   file_name: string,
   project: string,
-  language: string
+  language: string,
+  entrypoint: Entry
 ) => {
-  const content = await getHelperFile(project, language, file_path);
+  let content = await getHelperFile(project, language, file_path);
+
+  if (language === "cpp") {
+    content = content.replace("academy.cpp", `${entrypoint.path}`);
+  }
+
   zip.file(file_name, content);
 };
 
@@ -67,7 +81,8 @@ const zipHelperFolder = async (
   zip: JSZip,
   file: Entry,
   project: string,
-  language: string
+  language: string,
+  entrypoint: Entry
 ) => {
   const folder = zip.folder(file.name);
 
@@ -78,14 +93,15 @@ const zipHelperFolder = async (
   for (let index = 0; index < file.files.length; index++) {
     const element = file.files[index];
     if (element.is_dir) {
-      await zipHelperFolder(folder, element, project, language);
+      await zipHelperFolder(folder, element, project, language, entrypoint);
     } else {
       await zipHelperFile(
         folder,
         element.path,
         element.name,
         project,
-        language
+        language,
+        entrypoint
       );
     }
   }

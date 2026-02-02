@@ -211,11 +211,13 @@ const PlayPauseButton = ({
         project,
         language ?? "python"
       );
+
       await zipHelperFiles(
         commonsZip,
         helper_files,
         project,
-        language ?? "python"
+        language ?? "python",
+        entrypointRef.current
       );
 
       await zipCodeFiles(commonsZip, filesRef.current, project);
