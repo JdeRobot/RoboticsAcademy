@@ -45,6 +45,7 @@
   },
   "include": [
     "src",
+    "eslint.config.mts",
     "../exercises/**/*",
     "svg.d.ts",
     "jpg.d.ts",

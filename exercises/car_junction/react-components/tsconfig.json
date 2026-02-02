@@ -24,12 +24,14 @@
       "Constants/*": [ "../../../react_frontend/src/constants/*"],
       "Api": [ "../../../react_frontend/src/api/index.ts"],
       "Routes": [ "../../../react_frontend/src/routes/index.ts"],
+      "*": [ "../../../react_frontend/node_modules/*"],
     },
     "baseUrl": "./",
     "rootDirs": [
       "./",
       "../../../react_frontend/src"
     ],
+    "typeRoots": ["../../../react_frontend/node_modules/@types"],
     "declaration": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -48,6 +50,7 @@
   },
   "include": [
     "./",
+    "eslint.config.mts",
     "../../../react_frontend/src",
     "../../../react_frontend/png.d.ts",
     "../../../react_frontend/jpg.d.ts",
