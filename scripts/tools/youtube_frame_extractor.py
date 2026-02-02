@@ -2,16 +2,22 @@
 """
 YouTube Frame Extractor Tool for RoboticsAcademy, Extracts frames from YouTube videos for Computer Vision exercises
 """
+
 import cv2
 import argparse
 import os
 import sys
+
 try:
     import yt_dlp
 except ImportError:
     print("ERROR: yt-dlp not installed. Install with: pip install yt-dlp")
     sys.exit(1)
-def extract_frames_from_youtube(url, output_folder="frames", frame_interval=30, max_frames=100):
+
+
+def extract_frames_from_youtube(
+    url, output_folder="frames", frame_interval=30, max_frames=100
+):
     """
     Extract frames from a YouTube video
     Args:
@@ -26,15 +32,12 @@ def extract_frames_from_youtube(url, output_folder="frames", frame_interval=30, 
     os.makedirs(output_folder, exist_ok=True)
     print(f"Fetching video from: {url}")
     # Get video stream URL using yt-dlp
-    ydl_opts = {
-        'format': 'best[ext=mp4]',
-        'quiet': True
-    }
+    ydl_opts = {"format": "best[ext=mp4]", "quiet": True}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            video_url = info['url']
-            video_title = info.get('title', 'video')
+            video_url = info["url"]
+            video_title = info.get("title", "video")
         print(f"Video: {video_title}")
         print(f"Extracting frames (every {frame_interval} frames)...")
         # Open video with OpenCV
@@ -50,7 +53,9 @@ def extract_frames_from_youtube(url, output_folder="frames", frame_interval=30, 
                 break
             # Save every Nth frame
             if frame_count % frame_interval == 0:
-                frame_filename = os.path.join(output_folder, f"frame_{saved_count:04d}.jpg")
+                frame_filename = os.path.join(
+                    output_folder, f"frame_{saved_count:04d}.jpg"
+                )
                 cv2.imwrite(frame_filename, frame)
                 saved_count += 1
                 if saved_count % 10 == 0:
@@ -62,28 +67,46 @@ def extract_frames_from_youtube(url, output_folder="frames", frame_interval=30, 
     except Exception as e:
         print(f"ERROR: {e}")
         return 0
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Extract frames from YouTube videos for Computer Vision exercises"
     )
-    parser.add_argument('url', help='YouTube video URL')
-    parser.add_argument('--output', '-o', default='frames', help='Output folder for frames (default: frames)')
-    parser.add_argument('--interval', '-i', type=int, default=30, help='Extract every Nth frame (default: 30)')
-    parser.add_argument('--max-frames', '-m', type=int, default=100, help='Maximum frames to extract (default: 100)')
+    parser.add_argument("url", help="YouTube video URL")
+    parser.add_argument(
+        "--output",
+        "-o",
+        default="frames",
+        help="Output folder for frames (default: frames)",
+    )
+    parser.add_argument(
+        "--interval",
+        "-i",
+        type=int,
+        default=30,
+        help="Extract every Nth frame (default: 30)",
+    )
+    parser.add_argument(
+        "--max-frames",
+        "-m",
+        type=int,
+        default=100,
+        help="Maximum frames to extract (default: 100)",
+    )
     args = parser.parse_args()
     print("=" * 60)
     print("RoboticsAcademy - YouTube Frame Extractor")
     print("=" * 60)
     frames_extracted = extract_frames_from_youtube(
-        args.url,
-        args.output,
-        args.interval,
-        args.max_frames
+        args.url, args.output, args.interval, args.max_frames
     )
     if frames_extracted > 0:
         print(f"\nFrames saved to: {os.path.abspath(args.output)}")
     else:
         print("\nFailed to extract frames")
         sys.exit(1)
+
+
 if __name__ == "__main__":
     main()
