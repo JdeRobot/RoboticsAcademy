@@ -1,15 +1,14 @@
-import Button from '@mui/material/Button';
-import { useEffect, useState } from 'react';
+import Button from "@mui/material/Button";
+import { useEffect, useState } from "react";
 
 export const PlayCar = () => {
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
   useEffect(() => {
     const callback = (message) => {
       const state = message.data.state;
-      if (state === "running" || state === "paused"){
-        setDisabled(false)
+      if (state === "running" || state === "paused") {
+        setDisabled(false);
       }
-
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -24,13 +23,19 @@ export const PlayCar = () => {
       );
     };
   }, []);
-    const handleClick = () => {
-        window.RoboticsExerciseComponents.commsManager
-          .send("#gui", {
-            msg: "#car3",
-          })
-    }
-    return (
-      <Button variant="outlined" onClick={handleClick} sx={{color: "blue", borderColor: "blue"}} disabled={disabled}>Play Car</Button>
-    )
-}
+  const handleClick = () => {
+    window.RoboticsExerciseComponents.commsManager.send("#gui", {
+      msg: "#car3",
+    });
+  };
+  return (
+    <Button
+      variant="outlined"
+      onClick={handleClick}
+      sx={{ color: "blue", borderColor: "blue" }}
+      disabled={disabled}
+    >
+      Play Car
+    </Button>
+  );
+};

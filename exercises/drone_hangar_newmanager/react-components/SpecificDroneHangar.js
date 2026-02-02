@@ -1,29 +1,26 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { drawImage, drawLeftImage} from "./helpers/showImagesDroneHangar";
-
+import { drawImage, drawLeftImage } from "./helpers/showImagesDroneHangar";
 
 function SpecificDroneHangar(props) {
-  const [image, setImage] = React.useState(null)
+  const [image, setImage] = React.useState(null);
   React.useEffect(() => {
     console.log("TestShowScreen subscribing to ['update'] events");
     const callback = (message) => {
-      if(message.data.update.image){
-        console.log('image')
-        const image = JSON.parse(message.data.update.image)
-        if(image.image){
-          drawImage(message.data.update)
-        } 
+      if (message.data.update.image) {
+        console.log("image");
+        const image = JSON.parse(message.data.update.image);
+        if (image.image) {
+          drawImage(message.data.update);
+        }
       }
-      if(message.data.update.image_left){
-        console.log('image_left')
-        const image = JSON.parse(message.data.update.image_left)
-        if(image.image_left){
-          drawLeftImage(message.data.update)
-        } 
+      if (message.data.update.image_left) {
+        console.log("image_left");
+        const image = JSON.parse(message.data.update.image_left);
+        if (image.image_left) {
+          drawLeftImage(message.data.update);
+        }
       }
-
-      
     };
 
     window.RoboticsExerciseComponents.commsManager.subscribe(
@@ -40,11 +37,8 @@ function SpecificDroneHangar(props) {
     };
   }, []);
 
-
-
   return (
-    <div style={{display: "flex",   width: "100%",
-    height: "100%"}}>
+    <div style={{ display: "flex", width: "100%", height: "100%" }}>
       <canvas id="gui_canvas_left"></canvas>
       <canvas id="gui_canvas_right"></canvas>
     </div>
@@ -55,4 +49,4 @@ SpecificDroneHangar.propTypes = {
   circuit: PropTypes.string,
 };
 
-export default SpecificDroneHangar
+export default SpecificDroneHangar;

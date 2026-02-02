@@ -10,7 +10,7 @@ const WebGUIImage = ({
   reference,
   src,
   errorMsg,
-  fit
+  fit,
 }: {
   style?: object;
   id?: string;
@@ -25,7 +25,12 @@ const WebGUIImage = ({
     <>
       <StyledImageContainer style={style} color={theme.palette.error}>
         {src ? (
-          <img ref={reference} id={id} src={src} style={fit ? {objectFit: "contain"} : {}} />
+          <img
+            ref={reference}
+            id={id}
+            src={src}
+            style={fit ? { objectFit: "contain" } : {}}
+          />
         ) : (
           <>
             <VideocamOffOutlinedIcon htmlColor={theme.palette.error} />
