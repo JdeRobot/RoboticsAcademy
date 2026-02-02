@@ -21,25 +21,22 @@ import {
   LayoutButton,
   TerminateUniverseButton,
   ThemeButton,
-  LanguageButton,
 } from "Components/buttons";
 import { Layout } from "jderobot-ide-interface";
 
 const ExerciseHeader = ({
   project,
   name,
-  language,
+  supportedLanguages,
   url,
   setLayout,
-  setLanguage,
   connectManager,
 }: {
   project: string;
   name: string;
-  language?: string;
+  supportedLanguages: string[];
   url?: string;
   setLayout: (layout: Layout) => void;
-  setLanguage: (language: string) => void;
   connectManager: (
     desiredState?: string,
     callback?: () => void
@@ -71,14 +68,11 @@ const ExerciseHeader = ({
         <StyledHeaderButtonContainer>
           <HomeButton />
           <ThemeButton />
-          {language && (
-            <LanguageButton language={language} setter={setLanguage} />
-          )}
           <DownloadButton project={project} />
           <LayoutButton setLayout={setLayout} />
           <PlayPauseButton
             project={project}
-            language={language}
+            supportedLanguages={supportedLanguages}
             connectManager={connectManager}
           />
           <ResetButton />

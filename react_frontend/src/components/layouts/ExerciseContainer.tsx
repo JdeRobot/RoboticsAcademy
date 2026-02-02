@@ -53,7 +53,6 @@ const ExerciseContainer = ({
   const [layout, setLayout] = useState<"only-editor" | "only-viewers" | "both">(
     "both"
   );
-  const [language, setLanguage] = useState<string>("python");
 
   const getUniverseList = async (project: string) => {
     const list = await listUniverses(project);
@@ -127,7 +126,6 @@ const ExerciseContainer = ({
     file: {
       get: (project: string, file: Entry) => {
         //TODO: allow binary support
-        console.log(file);
         return getFile(project, file.path);
       },
       save: (project: string, file: Entry, content: string) => {
@@ -161,8 +159,7 @@ const ExerciseContainer = ({
         <ExerciseHeader
           project={project}
           name={name}
-          language={multiLanguage ? language : undefined}
-          setLanguage={setLanguage}
+          supportedLanguages={multiLanguage ? ["python", "cpp"] : ["python"]}
           url={url}
           setLayout={setLayout}
           connectManager={connectWithRetry}
