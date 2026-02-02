@@ -18,15 +18,15 @@ Take a look at the [contributing](CONTRIBUTING.md) guide lines.
 
 ## Development resources
 
--   [Instructions for developers.][]
--   [Coding Style Guide][]
--   [Client side.][] (Robotics Academy architecture)
--   [Repository Architecture.][]
--   [Generate a RADI.][]
--   [Publishing a RADI.][]
--   [Humble RADI structure.][]
--   [Troubleshooting Robotics Academy][]
--   [Exercises Status][]
+- [Instructions for developers.][]
+- [Coding Style Guide][]
+- [Client side.][] (Robotics Academy architecture) **Obsolete**
+- [Repository Architecture.][]
+- [Generate a RADI.][]
+- [Publishing a RADI.][]
+- [Humble RADI structure.][]
+- [Troubleshooting Robotics Academy][]
+- [Exercises Status][]
 
 [Instructions for developers.]: ./docs/InstructionsForDevelopers.md
 [Coding Style Guide]: ./docs/coding_style_guide.md
