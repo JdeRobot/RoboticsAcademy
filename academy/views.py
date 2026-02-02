@@ -124,19 +124,6 @@ def get_exercise_list(request):
     return JsonResponse({"success": True, "exercises": project_list})
 
 
-@error_wrapper(fal, "GET", ["project"])
-def get_exercise_teaser(request):
-    project = request.GET.get("project")
-
-    path = fal.helpers_path(project)
-    teaser_path = fal.path_join(path, "teaser.png")
-
-    content = fal.read_binary(teaser_path)
-
-    b64 = base64.b64encode(content)
-    return HttpResponse(b64.decode("utf-8"), content_type="image/png")
-
-
 @error_wrapper(fal, "GET", ["project", "language"])
 def get_helper_file_list(request):
     project = request.GET.get("project")

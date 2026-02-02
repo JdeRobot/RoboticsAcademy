@@ -1,10 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError } from "axios";
 import { Entry } from "jderobot-ide-interface";
 import { Exercise, ExerciseData } from "Types/exercises";
-
-const isSuccessful = (response: AxiosResponse) => {
-  return response.status >= 200 && response.status < 300;
-};
 
 const getCookie = (name: string) => {
   const value = `; ${document.cookie}`;
@@ -13,12 +9,13 @@ const getCookie = (name: string) => {
   return undefined;
 };
 
-const csrfToken = getCookie("csrftoken");
-const axiosExtra = {
+const axiosExtra = () => ({
   headers: {
-    "X-CSRFToken": csrfToken,
+    "X-CSRFToken": getCookie("csrftoken"),
   },
-};
+});
+
+type ApiError = AxiosError<Record<string, string>, Record<string, unknown>>;
 
 const getProjectData = async (
   projectId?: string
@@ -26,29 +23,29 @@ const getProjectData = async (
   if (!projectId) throw new Error("Current Project ID is not set");
 
   const apiUrl = `/academy/get_info/?project_id=${projectId}`;
-  const response = await axios.get(apiUrl);
 
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to create app."); // Response error
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data.info;
+    data["exercise_id"] = projectId;
+
+    return data;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  const data = response.data.info;
-  data["exercise_id"] = projectId;
-
-  return data;
 };
 
 const getExerciseList = async (): Promise<Exercise[]> => {
   const apiUrl = `/academy/get_exercise_list/`;
-  const response = await axios.get(apiUrl);
 
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to create app."); // Response error
+  try {
+    const response = await axios.get(apiUrl);
+    return response.data.exercises;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  return response.data.exercises;
 };
 
 const listUniverses = async (project: string) => {
@@ -58,14 +55,13 @@ const listUniverses = async (project: string) => {
     project
   )}`;
 
-  const response = await axios.get(apiUrl);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get universes.");
+  try {
+    const response = await axios.get(apiUrl);
+    return response.data.universes_list;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  return response.data.universes_list;
 };
 
 const getRoboticsBackendUniverse = async (
@@ -78,21 +74,18 @@ const getRoboticsBackendUniverse = async (
     universe
   )}&project=${encodeURIComponent(project)}`;
 
-  const response = await axios.get(apiUrl);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(
-      response.data.message || "Failed to retrieve universe config"
-    ); // Response error
+  try {
+    const response = await axios.get(apiUrl);
+    return {
+      world: response.data.universe.world,
+      robot: response.data.universe.robot,
+      tools: response.data.universe.tools,
+      tools_config: response.data.universe.tools_config,
+    };
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  return {
-    world: response.data.universe.world,
-    robot: response.data.universe.robot,
-    tools: response.data.universe.tools,
-    tools_config: response.data.universe.tools_config,
-  };
 };
 
 const getHelperFile = async (
@@ -110,14 +103,13 @@ const getHelperFile = async (
     fileName
   )}`;
 
-  const response = await axios.get(apiUrl);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  try {
+    const response = await axios.get(apiUrl);
+    return response.data.content;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  return response.data.content;
 };
 
 const getHelperFileList = async (
@@ -131,14 +123,13 @@ const getHelperFileList = async (
     project
   )}&language=${encodeURIComponent(language)}`;
 
-  const response = await axios.get(apiUrl);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  try {
+    const response = await axios.get(apiUrl);
+    return JSON.parse(response.data.file_list);
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  return JSON.parse(response.data.file_list);
 };
 
 const getFileList = async (project: string) => {
@@ -150,14 +141,13 @@ const getFileList = async (project: string) => {
     project
   )}`;
 
-  const response = await axios.get(apiUrl);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get file list."); // Response error
+  try {
+    const response = await axios.get(apiUrl);
+    return response.data.file_list;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-
-  return response.data.file_list;
 };
 
 const getFile = async (project: string, fileName: string, binary?: boolean) => {
@@ -177,7 +167,7 @@ const getFile = async (project: string, fileName: string, binary?: boolean) => {
     }
     return response.data.content;
   } catch (e: unknown) {
-    const error = e as AxiosError<any, Record<string, unknown>>;
+    const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
@@ -195,33 +185,11 @@ const saveFile = async (project: string, fileName: string, content: string) => {
   };
 
   try {
-    const response = await axios.post(apiUrl, params, axiosExtra);
-
-    // Handle unsuccessful response status (e.g., non-2xx status)
-    if (!isSuccessful(response)) {
-      throw new Error(response.data.message || "Failed to create project."); // Response error
-    }
-  } catch (error) {
-    console.log(error);
-    throw error; // Rethrow
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
-};
-
-const getTeaser = async (project: string) => {
-  if (!project) throw new Error("Project name is not set");
-
-  const apiUrl = `/academy/get_exercise_teaser?project=${encodeURIComponent(
-    project
-  )}`;
-
-  const response = await axios.get(apiUrl);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to get file list."); // Response error
-  }
-
-  return `data:image/png;base64,${response.data}`;
 };
 
 const createFile = async (
@@ -242,10 +210,9 @@ const createFile = async (
   };
 
   try {
-    await axios.post(apiUrl, params, axiosExtra);
-    return;
+    await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
-    const error = e as AxiosError<any, Record<string, unknown>>;
+    const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
@@ -268,10 +235,9 @@ const renameFile = async (
   };
 
   try {
-    await axios.post(apiUrl, params, axiosExtra);
-    return;
+    await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
-    const error = e as AxiosError<any, Record<string, unknown>>;
+    const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
@@ -287,11 +253,11 @@ const deleteFile = async (projectId: string, path: string) => {
     path: path,
   };
 
-  const response = await axios.post(apiUrl, params, axiosExtra);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to upload file."); // Response error
+  try {
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
 };
 
@@ -315,10 +281,9 @@ const uploadFile = async (
   };
 
   try {
-    await axios.post(apiUrl, params, axiosExtra);
-    return;
+    await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
-    const error = e as AxiosError<any, Record<string, unknown>>;
+    const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
@@ -341,10 +306,9 @@ const createFolder = async (
   };
 
   try {
-    await axios.post(apiUrl, params, axiosExtra);
-    return;
+    await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
-    const error = e as AxiosError<any, Record<string, unknown>>;
+    const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
@@ -367,10 +331,9 @@ const renameFolder = async (
   };
 
   try {
-    await axios.post(apiUrl, params, axiosExtra);
-    return;
+    await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
-    const error = e as AxiosError<any, Record<string, unknown>>;
+    const error = e as ApiError;
     throw Error(error.response?.data.message);
   }
 };
@@ -386,11 +349,11 @@ const deleteFolder = async (projectId: string, path: string) => {
     path: path,
   };
 
-  const response = await axios.post(apiUrl, params, axiosExtra);
-
-  // Handle unsuccessful response status (e.g., non-2xx status)
-  if (!isSuccessful(response)) {
-    throw new Error(response.data.message || "Failed to upload file."); // Response error
+  try {
+    await axios.post(apiUrl, params, axiosExtra());
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
   }
 };
 
@@ -404,7 +367,6 @@ export {
   getFile,
   saveFile,
   getFileList,
-  getTeaser,
   createFile,
   renameFile,
   deleteFile,

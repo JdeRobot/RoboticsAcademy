@@ -1,7 +1,12 @@
 import { Box } from "@mui/system";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import { CommsManager, events, states } from "jderobot-commsmanager";
-import React, { ReactNode, useEffect, useRef } from "react";
+import {
+  CommsManager,
+  events,
+  ManagerMsg,
+  states,
+} from "jderobot-commsmanager";
+import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
   id,
@@ -32,14 +37,33 @@ const WebGUIContainer = ({
   );
 };
 
-export const connectApplication = (manager: CommsManager) => {
+export const connectApplication = (
+  manager: CommsManager | null,
+  updateCallback: (data: unknown) => void,
+  stateCallback?: (state: string) => void,
+  resizeRef?: MutableRefObject<HTMLImageElement | null>,
+  resizeObserver?: ResizeObserver
+) => {
   const ref = useRef<NodeJS.Timer>();
 
-  const onStateChange = (message: any) => {
-    const state = message.data.state;
+  const onStateChange = (message: ManagerMsg) => {
+    const state = message.data.state as string;
     if (state === states.TOOLS_READY || state === states.RUNNING) {
       start();
     }
+    if (stateCallback !== undefined) {
+      stateCallback(state);
+    }
+  };
+
+  const onUpdate = (message: ManagerMsg) => {
+    if (manager === null) {
+      return;
+    }
+
+    end();
+    updateCallback(message.data);
+    manager.send("gui", "ack"); // Send the ACK of the msg
   };
 
   useEffect(() => {
@@ -47,14 +71,24 @@ export const connectApplication = (manager: CommsManager) => {
       return;
     }
 
+    if (resizeRef && resizeRef.current && resizeObserver) {
+      resizeObserver.observe(resizeRef.current);
+    }
+
+    manager.subscribe(events.UPDATE, onUpdate);
     manager.subscribe(events.STATE_CHANGED, onStateChange);
 
     return () => {
+      manager.unsubscribe(events.UPDATE, onUpdate);
       manager.unsubscribe(events.STATE_CHANGED, onStateChange);
     };
   }, [manager]);
 
   const start = () => {
+    if (manager === null) {
+      return;
+    }
+
     end();
 
     if (manager.ws.readyState !== WebSocket.OPEN) {
@@ -76,8 +110,6 @@ export const connectApplication = (manager: CommsManager) => {
       ref.current = undefined;
     }
   };
-
-  return { end: end };
 };
 
 export default WebGUIContainer;
