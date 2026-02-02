@@ -39,7 +39,10 @@ function WebGUI() {
         carForceDist * meter,
         getAng(dataToDraw.car[0], dataToDraw.car[1]),
       ]);
-      const avgForceDist = getDist(dataToDraw.average[0], dataToDraw.average[1]);
+      const avgForceDist = getDist(
+        dataToDraw.average[0],
+        dataToDraw.average[1]
+      );
       setAvgForce([
         avgForceDist * meter,
         getAng(dataToDraw.average[0], dataToDraw.average[1]),

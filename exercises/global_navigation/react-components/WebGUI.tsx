@@ -16,7 +16,7 @@ function WebGUI() {
   const exerciseContext = useExercise();
   const [carPose, setCarPose] = useState<number[] | undefined>(undefined);
   const [destination, setDestination] = useState<number[] | undefined>(
-    undefined,
+    undefined
   );
   const [path, setPath] = useState<string>("");
   const [userImage, setUserImage] = useState<string | undefined>(undefined);
@@ -135,7 +135,9 @@ function WebGUI() {
       if (coords) {
         try {
           manager.send("gui", `pick${coords}`);
-        } catch { /* empty */ }
+        } catch {
+          /* empty */
+        }
       }
     }
   };
@@ -145,7 +147,7 @@ function WebGUI() {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver,
+    resizeObserver
   );
 
   return (
@@ -161,7 +163,9 @@ function WebGUI() {
           coords = data;
           try {
             manager.send("gui", `pick${data}`);
-          } catch { /* empty */ }
+          } catch {
+            /* empty */
+          }
         }}
       />
       {carPose && (

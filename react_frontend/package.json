@@ -13,7 +13,7 @@
     "lint-exercises": "for ex in $(ls ../exercises); do bash -c \"cd ../exercises/$ex/react-components && eslint --fix\" 2>/dev/null ; done",
     "lint-all": "npm run lint && npm run lint-exercises",
     "tailwindcss": "NODE_ENV=production tailwindcss -o src/styles/tailwind.css -m",
-    "format": "prettier --write src/**/*.{tsx,ts,html,css} && prettier --write ../exercises/**/*.{tsx,ts,html,css}"
+    "format": "prettier --write src/**/*.{tsx,ts,html,css} && prettier --write ../exercises/**/*.{tsx,ts,js,html,css}"
   },
   "keywords": [],
   "devDependencies": {

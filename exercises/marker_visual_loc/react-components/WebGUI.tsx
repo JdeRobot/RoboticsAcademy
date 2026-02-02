@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {  states } from "jderobot-commsmanager";
+import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import { updatePath, addToPath } from "./helpers/showImageVisual";
 import RobotRed from "./resources/robot_red.svg";
