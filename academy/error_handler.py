@@ -2,7 +2,6 @@
 Utilities for request validation and API error handling.
 """
 
-
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import binascii
@@ -23,15 +22,12 @@ CUSTOM_EXCEPTIONS = (
     ParameterInvalid,
     InvalidPath,
     BinaryNotSupported,
-    ResourceAlreadyExistsHelpers
+    ResourceAlreadyExistsHelpers,
 )
 
 
 def error_wrapper(fal, type: str, param: list[str | tuple] = []):
     """Decorator for API views with parameter validation and error handling."""
-
-
-
 
     def decorated(func):
         @wraps(func)
@@ -60,7 +56,6 @@ def error_wrapper(fal, type: str, param: list[str | tuple] = []):
 
 def check_parameters(request, param: list[str | tuple]):
     """Validate required request parameters."""
-
 
     for p in param:
         min_len = 0
