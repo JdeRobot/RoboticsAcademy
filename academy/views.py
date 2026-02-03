@@ -205,6 +205,9 @@ def rename_file(request):
 
     base_path = fal.exercise_path(project_id)
 
+    if rename_path.startswith("/"):
+        rename_path = rename_path[1:]
+
     file_path = fal.path_join(base_path, path)
     new_path = fal.path_join(base_path, rename_path)
 
@@ -220,6 +223,9 @@ def rename_folder(request):
     project_id = request.data.get("project_id")
     path = request.data.get("path")
     rename_path = request.data.get("rename_to")
+
+    if rename_path.startswith("/"):
+        rename_path = rename_path[1:]
 
     base_path = fal.exercise_path(project_id)
 

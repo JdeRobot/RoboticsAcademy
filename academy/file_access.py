@@ -291,12 +291,12 @@ class FAL_RA(FAL):
         os.chmod(path, mode=0o777)
 
     def renamefile(self, old_path: str, new_path: str):
-        super().renamefile(old_path.new_path)
+        super().renamefile(old_path, new_path)
 
         os.rename(old_path, new_path)
 
     def renamedir(self, old_path: str, new_path: str):
-        super().renamedir(old_path.new_path)
+        super().renamedir(old_path, new_path)
 
         os.rename(old_path, new_path)
 
