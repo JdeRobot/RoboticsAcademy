@@ -65,15 +65,6 @@ install_app_dependencies()
 
 install_ompl()
 {
-    # Attempt to install via pip first (New in OMPL 1.7.0)
-    if [ ! -z $PYTHON ] && [ -z $APP ] && [ -z $GITHUB ]; then
-        if ${SUDO} pip${PYTHONV} install ompl==1.7.0; then
-            echo "OMPL 1.7.0 installed via pip."
-            return 0
-        fi
-        echo "Pip install failed, falling back to source..."
-    fi
-
     if [ -z $APP ]; then
         OMPL="ompl"
     else
@@ -91,20 +82,16 @@ install_ompl()
         ${SUDO} apt-get -y install git
         git clone --recurse-submodules https://github.com/ompl/${OMPL}.git
         cd $OMPL
-        git checkout 1.7.0 # Updated to 1.7.0 tag
+        git checkout 0f990886e9e40014e32ddee177c8d798adbc8fb7 # Temporary: with this commit works
     fi
     mkdir -p build/Release
     cd build/Release
     cmake ../.. -DPYTHON_EXEC=/usr/bin/python${PYTHONV}
     if [ ! -z $PYTHON ]; then
-        # Check if the total memory is less than 6GB.
-        if [ `cat /proc/meminfo | head -1 | awk '{print $2}'` -lt 6291456 ]; then
-            echo "Python binding generation is very memory intensive. At least 6GB of RAM is recommended."
-            echo "Proceeding with binding generation using 1 core..."
-            make -j 1 update_bindings
-        else
-            make update_bindings
-        fi
+        # Python binding generation is very memory intensive. 
+        # Forcing 1 core to ensure it completes without running out of memory/hanging.
+        echo "Proceeding with binding generation using 1 core to prevent hanging..."
+        make -j 1 update_bindings
     fi
     make
     ${SUDO} make install
