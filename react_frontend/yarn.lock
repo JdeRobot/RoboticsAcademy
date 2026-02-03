@@ -3983,10 +3983,10 @@ jderobot-commsmanager@1.0.16:
   dependencies:
     uuid "^11.1.0"
 
-jderobot-ide-interface@0.2.122:
-  version "0.2.122"
-  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.122.tgz#e60fa974d14d0a50e36d45c693f30fc7a6425636"
-  integrity sha512-8nVMAeHn9iYflBnB7n9dUVj0hvme+hV+6xB5it3gfkxQtgi5iVL9LYdUFjs7ZRJ6W1oTtjIk32IcXiap5ZQPAg==
+jderobot-ide-interface@0.2.137:
+  version "0.2.137"
+  resolved "https://registry.yarnpkg.com/jderobot-ide-interface/-/jderobot-ide-interface-0.2.137.tgz#3f6455bbf1a96c6bbb5cf546f7fd6fd6cd2a7ad6"
+  integrity sha512-l+JVzbmjOfWz0hxI7EClZpPwh8R5ijC+FTXl7wydmJ3zV2yoKcezVRf0CO5WK84Wr2LjKoatnWFCbj0owuBjhw==
   dependencies:
     "@emotion/react" "^11.14.0"
     "@emotion/styled" "^11.14.1"
