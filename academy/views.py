@@ -87,7 +87,6 @@ def enter_exercise(fal, request):
         active_project = project_id
     else:
         raise Exception("Alredy open session")
-    print(project_id)
 
     # Create filesystem base
     path = fal.exercise_path(project_id)
@@ -114,8 +113,6 @@ def exit_exercise(fal, request):
 
     global active_project
     active_project = None
-
-    print(active_project)
 
     return JsonResponse({"success": True})
 
