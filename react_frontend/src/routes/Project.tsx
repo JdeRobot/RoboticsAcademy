@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Params, useLoaderData } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
@@ -22,6 +22,7 @@ export const loader = async ({
 };
 
 const Exercise = () => {
+  const hasRender = useRef(false);
   const data = useLoaderData<Omit<ExerciseData, "universes">>();
 
   const WebGui = lazy(async () => {
@@ -38,6 +39,11 @@ const Exercise = () => {
 
     return () => {
       window.removeEventListener("beforeunload", () => exitProject());
+      // This is to fix this: fires twice thanks to react Strict mode
+      if (hasRender.current || process.env.NODE_ENV !== "development") {
+        exitProject();
+      }
+      hasRender.current = true;
     };
   }, []);
 
