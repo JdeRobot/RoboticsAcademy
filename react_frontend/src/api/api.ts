@@ -22,7 +22,7 @@ const getProjectData = async (
 ): Promise<Omit<ExerciseData, "universes">> => {
   if (!projectId) throw new Error("Current Project ID is not set");
 
-  const apiUrl = `/academy/get_info/?project_id=${projectId}`;
+  const apiUrl = `/academy/enter_exercise/?project_id=${projectId}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -30,6 +30,17 @@ const getProjectData = async (
     data["exercise_id"] = projectId;
 
     return data;
+  } catch (e: unknown) {
+    const error = e as ApiError;
+    throw Error(error.response?.data.message);
+  }
+};
+
+const exitProject = async () => {
+  const apiUrl = `/academy/exit_exercise/`;
+
+  try {
+    await axios.put(apiUrl);
   } catch (e: unknown) {
     const error = e as ApiError;
     throw Error(error.response?.data.message);
@@ -374,4 +385,5 @@ export {
   createFolder,
   renameFolder,
   deleteFolder,
+  exitProject,
 };

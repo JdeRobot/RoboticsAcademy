@@ -4,8 +4,6 @@ API views for Robotics Academy.
 
 import base64
 import json
-import os
-from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 import subprocess
 import sys
@@ -21,17 +19,11 @@ from academy.exceptions import (
 from academy.project_view import EntryEncoder, exists_in_helpers
 from academy.serializers import FileContentSerializer
 
-from .file_access import FAL_RA
 from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 from rest_framework import status
 from .constants import base_py_code, base_cpp_code
-
-fal = FAL_RA(
-    settings.BASE_DIR,
-    os.path.join(settings.BASE_DIR, "exercises"),
-)
 
 
 @csrf_exempt
@@ -68,10 +60,13 @@ def save_universe_db(request):
     return Response({"success": True})
 
 
-@error_wrapper(fal, "GET", ["project_id"])
-def get_info(request):
+active_project = None
+
+
+@error_wrapper("GET", ["project_id"])
+def enter_exercise(fal, request):
     """
-    Retrieve basic information about an exercise.
+    Retrieve basic information about an exercise. Only called when entering.
     """
     project_id = request.GET.get("project_id")
     project = Exercise.objects.get(exercise_id=project_id)
@@ -86,6 +81,12 @@ def get_info(request):
         "tools": tools,
         "url": project.url,
     }
+
+    global active_project
+    if active_project is None:
+        active_project = project_id
+    else:
+        raise Exception("Alredy open session")
 
     # Create filesystem base
     path = fal.exercise_path(project_id)
@@ -104,8 +105,20 @@ def get_info(request):
     return JsonResponse({"success": True, "info": info})
 
 
-@error_wrapper(fal, "GET")
-def get_exercise_list(request):
+@error_wrapper("PUT")
+def exit_exercise(fal, request):
+    """
+    Exit exercise
+    """
+
+    global active_project
+    active_project = None
+
+    return JsonResponse({"success": True})
+
+
+@error_wrapper("GET")
+def get_exercise_list(fal, request):
     """
     Return a list of all available exercises.
     """
@@ -126,8 +139,8 @@ def get_exercise_list(request):
     return JsonResponse({"success": True, "exercises": project_list})
 
 
-@error_wrapper(fal, "GET", ["project", "language"])
-def get_helper_file_list(request):
+@error_wrapper("GET", ["project", "language"])
+def get_helper_file_list(fal, request):
     project = request.GET.get("project")
     language = request.GET.get("language")
 
@@ -137,8 +150,8 @@ def get_helper_file_list(request):
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
 
-@error_wrapper(fal, "GET", ["project", "language", "filename"])
-def get_helper_file(request):
+@error_wrapper("GET", ["project", "language", "filename"])
+def get_helper_file(fal, request):
     project = request.GET.get("project")
     language = request.GET.get("language")
     filename = request.GET.get("filename", None)
@@ -150,8 +163,8 @@ def get_helper_file(request):
     return Response(serializer.data)
 
 
-@error_wrapper(fal, "GET", ["project"])
-def get_file_list(request):
+@error_wrapper("GET", ["project"])
+def get_file_list(fal, request):
     project = request.GET.get("project")
 
     base_group = "Code"
@@ -163,8 +176,8 @@ def get_file_list(request):
     return Response({"file_list": EntryEncoder().encode(file_list)})
 
 
-@error_wrapper(fal, "POST", ["project_id", ("location", -1), "file_name"])
-def create_file(request):
+@error_wrapper("POST", ["project_id", ("location", -1), "file_name"])
+def create_file(fal, request):
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     filename = request.data.get("file_name")
@@ -180,8 +193,8 @@ def create_file(request):
     return Response({"success": True})
 
 
-@error_wrapper(fal, "POST", ["project_id", ("location", -1), "folder_name"])
-def create_folder(request):
+@error_wrapper("POST", ["project_id", ("location", -1), "folder_name"])
+def create_folder(fal, equest):
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     folder_name = request.data.get("folder_name")
@@ -197,8 +210,8 @@ def create_folder(request):
     return Response({"success": True})
 
 
-@error_wrapper(fal, "POST", ["project_id", "path", "rename_to"])
-def rename_file(request):
+@error_wrapper("POST", ["project_id", "path", "rename_to"])
+def rename_file(fal, request):
     project_id = request.data.get("project_id")
     path = request.data.get("path")
     rename_path = request.data.get("rename_to")
@@ -218,8 +231,8 @@ def rename_file(request):
     return JsonResponse({"success": True})
 
 
-@error_wrapper(fal, "POST", ["project_id", "path", "rename_to"])
-def rename_folder(request):
+@error_wrapper("POST", ["project_id", "path", "rename_to"])
+def rename_folder(fal, request):
     project_id = request.data.get("project_id")
     path = request.data.get("path")
     rename_path = request.data.get("rename_to")
@@ -239,8 +252,8 @@ def rename_folder(request):
     return JsonResponse({"success": True})
 
 
-@error_wrapper(fal, "POST", ["project_id", "path"])
-def delete_file(request):
+@error_wrapper("POST", ["project_id", "path"])
+def delete_file(fal, request):
     project_id = request.data.get("project_id")
     path = request.data.get("path")
 
@@ -252,8 +265,8 @@ def delete_file(request):
     return JsonResponse({"success": True})
 
 
-@error_wrapper(fal, "POST", ["project_id", "path"])
-def delete_folder(request):
+@error_wrapper("POST", ["project_id", "path"])
+def delete_folder(fal, request):
     project_id = request.data.get("project_id")
     path = request.data.get("path")
 
@@ -265,8 +278,8 @@ def delete_folder(request):
     return JsonResponse({"success": True})
 
 
-@error_wrapper(fal, "GET", ["project", "filename"])
-def get_file(request):
+@error_wrapper("GET", ["project", "filename"])
+def get_file(fal, request):
     project_id = request.GET.get("project", None)
     filename = request.GET.get("filename", None)
 
@@ -287,8 +300,8 @@ def get_file(request):
     return Response(serializer.data)
 
 
-@error_wrapper(fal, "POST", ["project", "filename", ("content", -1)])
-def save_file(request):
+@error_wrapper("POST", ["project", "filename", ("content", -1)])
+def save_file(fal, request):
     project_id = request.data.get("project")
     filename = request.data.get("filename")
     content = request.data.get("content")
@@ -301,8 +314,8 @@ def save_file(request):
     return Response({"success": True})
 
 
-@error_wrapper(fal, "GET", ["project"])
-def get_universes_list(request):
+@error_wrapper("GET", ["project"])
+def get_universes_list(fal, request):
     """
     Return the list of universes associated with an exercise.
     """
@@ -325,8 +338,8 @@ def get_universes_list(request):
     return Response({"universes_list": universes_list})
 
 
-@error_wrapper(fal, "GET", ["project"])
-def get_docker_universe_data(request):
+@error_wrapper("GET", ["project"])
+def get_docker_universe_data(fal, request):
     """
     Retrieve docker and universe configuration for an exercise.
     """
@@ -402,8 +415,8 @@ def get_docker_universe_data(request):
     return Response({"success": True, "universe": config})
 
 
-@error_wrapper(fal, "POST", ["project_id", "file_name", ("location", -1), "content"])
-def upload(request):
+@error_wrapper("POST", ["project_id", "file_name", ("location", -1), "content"])
+def upload(fal, request):
     # Get the name and the zip file from the request
     project_id = request.data.get("project_id")
     file_name = request.data.get("file_name")

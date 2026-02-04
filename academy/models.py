@@ -2,10 +2,8 @@
 models.py
 """
 
-import json
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-import subprocess
 
 StatusChoice = (
     ("ACTIVE", "ACTIVE"),
@@ -122,115 +120,6 @@ class Exercise(models.Model):
 
     def __str__(self):
         return str(self.name)
-
-    @property
-    def context(self):
-        """
-        Build and return context
-        """
-        configurations = []
-
-        output = subprocess.check_output(["bash", "-c", "echo $ROS_VERSION"])
-        output_str = output.decode("utf-8")
-        if output_str.strip() == "2":
-            ros_version = "ROS2"
-        else:
-            ros_version = "ROS"
-
-        tools = []
-        tools_config = {}
-        for tool in self.tools.all():
-            tools.append(tool.name)
-            if tool.base_config != "None":
-                tools_config.update({tool.name: tool.base_config})
-
-        proj_univs = self.universes.all()
-        proj_univs = sorted(
-            proj_univs,
-            key=lambda univ: not ExerciseUniverses.objects.get(
-                exercise=self, universe=univ
-            ).is_default,
-        )
-
-        for universe in proj_univs:
-            if (
-                universe.world.ros_version == ros_version
-                and universe.world.name != "None"
-            ):
-                if universe.robot.name != "None":
-                    robot_config = {
-                        "name": universe.robot.name,
-                        "launch_file_path": universe.robot.launch_file_path,
-                        "ros_version": universe.world.ros_version,
-                        "type": universe.world.type,
-                        "start_pose": universe.world.start_pose,
-                    }
-                else:
-                    robot_config = {
-                        "name": None,
-                        "launch_file_path": None,
-                        "ros_version": None,
-                        "type": None,
-                        "start_pose": None,
-                    }
-
-                tools_configuration = None
-                if universe.world.tools_config != "None":
-                    tools_configuration = json.loads(universe.world.tools_config)
-
-                config = {
-                    "name": universe.name,
-                    "world": {
-                        "name": universe.world.name,
-                        "launch_file_path": universe.world.launch_file_path,
-                        "ros_version": universe.world.ros_version,
-                        "type": universe.world.type,
-                        "tools_config": tools_configuration,
-                    },
-                    "tools": tools,
-                    "tools_config": tools_config,
-                    "robot": robot_config,
-                    "exercise_id": self.exercise_id,
-                }
-
-                configurations.append(config)
-
-        # If empty worlds add one by default
-        if len(configurations) == 0:
-            config = {
-                "name": None,
-                "world": {
-                    "name": None,
-                    "launch_file_path": None,
-                    "ros_version": None,
-                    "type": None,
-                    "tools_config": None,
-                },
-                "robot": {
-                    "name": None,
-                    "launch_file_path": None,
-                    "ros_version": None,
-                    "type": None,
-                    "start_pose": None,
-                },
-                "tools": tools,
-                "tools_config": tools_config,
-                "exercise_id": self.exercise_id,
-            }
-            configurations.append(config)
-
-        # Accesible from the exercise using document.getElementById("exercise-data")
-        context = {
-            "exercise_data": {
-                "universes": configurations,
-                "tools": tools,
-                "name": self.name,
-                "exercise_id": self.exercise_id,
-                "url": self.url,
-                "tags": eval(self.tags),
-            },
-        }
-        return context
 
     class Meta:
         db_table = '"exercises"'
