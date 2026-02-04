@@ -44,7 +44,7 @@ export const connectApplication = (
   resizeRef?: MutableRefObject<HTMLImageElement | null>,
   resizeObserver?: ResizeObserver
 ) => {
-  const ref = useRef<NodeJS.Timer>();
+  const intRef = useRef<number | null>(null);
 
   const onStateChange = (message: ManagerMsg) => {
     const state = message.data.state as string;
@@ -95,19 +95,20 @@ export const connectApplication = (
       return;
     }
 
-    ref.current = setInterval(() => {
+    const timer = window.setInterval(async () => {
       try {
-        manager.send("gui", "start");
+        await manager.send("gui", "start");
       } catch {
-        end();
+        window.clearInterval(timer);
       }
     }, 1000);
+    intRef.current = timer;
   };
 
   const end = () => {
-    if (ref.current !== undefined) {
-      clearInterval(ref.current);
-      ref.current = undefined;
+    if (intRef.current !== null) {
+      window.clearInterval(intRef.current);
+      intRef.current = null;
     }
   };
 };
