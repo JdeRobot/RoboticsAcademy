@@ -32,6 +32,69 @@ const base_file = {
   files: [],
 };
 
+const useTabLock = (project: string) => {
+  const [isLocked, setIsLocked] = useState(false);
+
+  useEffect(() => {
+    const channelName = `exercise_lock_${project}`;
+    const channel = new BroadcastChannel(channelName);
+    const myId =
+      Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+    let iAmLeader = false;
+    let amLocked = false;
+    let timeoutId: NodeJS.Timeout;
+
+    channel.onmessage = (event) => {
+      const { type, id } = event.data;
+
+      if (amLocked) return;
+
+      if (type === "QUERY") {
+        if (iAmLeader) {
+          channel.postMessage({ type: "RESPONSE", id: myId });
+        } else {
+          // Dispute resolution
+          if (id < myId) {
+            // He wins
+            amLocked = true;
+            setIsLocked(true);
+            clearTimeout(timeoutId);
+          } else {
+            // I win, announce to suppress him
+            channel.postMessage({ type: "ANNOUNCE", id: myId });
+          }
+        }
+      } else if (type === "RESPONSE") {
+        amLocked = true;
+        setIsLocked(true);
+        clearTimeout(timeoutId);
+      } else if (type === "ANNOUNCE") {
+        if (!iAmLeader && id < myId) {
+          amLocked = true;
+          setIsLocked(true);
+          clearTimeout(timeoutId);
+        }
+      }
+    };
+
+    channel.postMessage({ type: "QUERY", id: myId });
+
+    timeoutId = setTimeout(() => {
+      if (!amLocked) {
+        iAmLeader = true;
+      }
+    }, 300);
+
+    return () => {
+      channel.close();
+      clearTimeout(timeoutId);
+    };
+  }, [project]);
+
+  return isLocked;
+};
+
 const ExerciseContainer = ({
   project,
   name,
@@ -47,6 +110,7 @@ const ExerciseContainer = ({
   multiLanguage: boolean;
   children: JSX.Element;
 }) => {
+  const isTabLocked = useTabLock(project);
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
   const toolsList = getTools(manager, tools, children);
@@ -152,6 +216,37 @@ const ExerciseContainer = ({
       return getHalGuiMethods(prevWord);
     },
   };
+
+  if (isTabLocked) {
+    return (
+      <StyledExerciseContainer
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          backgroundColor: "#282c34",
+          color: "white",
+        }}
+      >
+        <h1>Exercise already open</h1>
+        <p>
+          This exercise is already open in another tab. Please use that one or
+          close it to continue.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          style={{
+            marginTop: "20px",
+            padding: "10px 20px",
+            fontSize: "16px",
+            cursor: "pointer",
+          }}
+        >
+          Retry
+        </button>
+      </StyledExerciseContainer>
+    );
+  }
 
   return (
     <StyledExerciseContainer>
