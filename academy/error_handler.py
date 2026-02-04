@@ -15,6 +15,10 @@ from .exceptions import (
     ParameterInvalid,
     InvalidPath,
 )
+from .file_access import FAL_RA
+import os
+from django.conf import settings
+from copy import copy
 
 CUSTOM_EXCEPTIONS = (
     ResourceNotExists,
@@ -25,8 +29,13 @@ CUSTOM_EXCEPTIONS = (
     ResourceAlreadyExistsHelpers,
 )
 
+local_fal = FAL_RA(
+    settings.BASE_DIR,
+    os.path.join(settings.BASE_DIR, "exercises"),
+)
 
-def error_wrapper(fal, type: str, param: list[str | tuple] = []):
+
+def error_wrapper(type: str, param: list[str | tuple] = []):
     """Decorator for API views with parameter validation and error handling."""
 
     def decorated(func):
@@ -34,8 +43,9 @@ def error_wrapper(fal, type: str, param: list[str | tuple] = []):
         @api_view([type])
         def wrapper(request):
             try:
+                fal = copy(local_fal)
                 check_parameters(request.data if type == "POST" else request.GET, param)
-                return func(request)
+                return func(fal, request)
             except CUSTOM_EXCEPTIONS as e:
                 print(str(e))
                 return Response({"message": str(e)}, status=e.error_code)
