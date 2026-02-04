@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Params, useLoaderData } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import WebGUIPreview from "Components/visualizers/WebGUIPreview";
 import ExerciseContainer from "Components/layouts/ExerciseContainer";
-import { getProjectData } from "Api";
+import { exitProject, getProjectData } from "Api";
 import WebGUILoading from "Components/visualizers/WebGUILoading";
 import { ExerciseData } from "Types/exercises";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import { BasicHeader } from "Components/headers";
+import {
+  StyledErrorContainer,
+  StyledErrorMessage,
+} from "Styles/pages/Project.styles";
 
 export const loader = async ({
   params,
@@ -17,6 +23,7 @@ export const loader = async ({
 
 const Exercise = () => {
   const data = useLoaderData<Omit<ExerciseData, "universes">>();
+  const hasRender = useRef(false);
 
   const WebGui = lazy(async () => {
     return import(`exercises/${data.exercise_id}/frontend/WebGUI.tsx`).catch(
@@ -26,6 +33,16 @@ const Exercise = () => {
       }
     );
   });
+
+  useEffect(() => {
+    return () => {
+      // This is to fix this: fires twice thanks to react Strict mode
+      if (hasRender.current || process.env.NODE_ENV !== "development") {
+        exitProject();
+      }
+      hasRender.current = true;
+    };
+  }, []);
 
   return (
     <>
@@ -40,6 +57,28 @@ const Exercise = () => {
           <WebGui />
         </Suspense>
       </ExerciseContainer>
+    </>
+  );
+};
+
+export const ErrorBoundary = () => {
+  const theme = useAcademyTheme();
+
+  return (
+    <>
+      <BasicHeader />
+      <StyledErrorContainer bgColor={theme.palette.bg}>
+        <StyledErrorMessage color={theme.palette.error}>
+          You have open a Robotics Academy exercise in another tab or window
+        </StyledErrorMessage>
+        <StyledErrorMessage color={theme.palette.error}>
+          You can only have one open at a time
+        </StyledErrorMessage>
+        <StyledErrorMessage color={theme.palette.error}>
+          Close the other instance or exit the exercise and refresh the page to
+          continue
+        </StyledErrorMessage>
+      </StyledErrorContainer>
     </>
   );
 };
