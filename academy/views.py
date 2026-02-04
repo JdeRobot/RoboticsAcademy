@@ -105,7 +105,7 @@ def enter_exercise(fal, request):
     return JsonResponse({"success": True, "info": info})
 
 
-@error_wrapper("PUT")
+@error_wrapper("POST")
 def exit_exercise(fal, request):
     """
     Exit exercise

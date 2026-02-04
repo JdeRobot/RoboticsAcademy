@@ -40,7 +40,7 @@ const exitProject = async () => {
   const apiUrl = `/academy/exit_exercise/`;
 
   try {
-    await axios.put(apiUrl);
+    navigator.sendBeacon(apiUrl);
   } catch (e: unknown) {
     const error = e as ApiError;
     throw Error(error.response?.data.message);
