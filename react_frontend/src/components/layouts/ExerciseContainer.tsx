@@ -47,6 +47,9 @@ const ExerciseContainer = ({
   multiLanguage: boolean;
   children: JSX.Element;
 }) => {
+  const hasTriedToConnect = useRef(false);
+  const timeoutRef = useRef<number | null>(null);
+  const connectTimeoutRef = useRef<number | null>(null);
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
   const toolsList = getTools(manager, tools, children);
@@ -76,15 +79,26 @@ const ExerciseContainer = ({
   };
 
   useEffect(() => {
-    const manager = CommsManager.getInstance();
-    setManager(manager);
     subscribe("CommsManagerStateChange", resetUniverse);
 
     return () => {
       unsubscribe("CommsManagerStateChange", () => {});
-      const currManager = CommsManager.getInstance();
-      if (currManager) {
-        currManager.disconnect();
+
+      if (hasTriedToConnect.current) {
+        const currManager = CommsManager.getInstance();
+        if (currManager) {
+          currManager.disconnect();
+          CommsManager.deleteInstance();
+          setManager(null);
+        }
+      }
+
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+
+      if (connectTimeoutRef.current) {
+        window.clearTimeout(connectTimeoutRef.current);
       }
     };
   }, []);
@@ -93,13 +107,9 @@ const ExerciseContainer = ({
     desiredState?: string,
     callback?: () => void
   ) => {
-    console.log(manager?.getState(), CommsManager.getInstance().getState());
-    if (!manager || manager?.getState() != "idle") {
-      return;
-    }
     try {
       const currManager = CommsManager.getInstance();
-      console.log(currManager);
+      hasTriedToConnect.current = true;
       await currManager.connect();
       getUniverseList(project);
       console.log("Connected!", currManager.getState());
@@ -110,15 +120,26 @@ const ExerciseContainer = ({
       }
     } catch {
       console.log("Connection failed, trying again!");
-      setTimeout(connectWithRetry, 2000, desiredState, callback);
+      timeoutRef.current = window.setTimeout(
+        connectWithRetry,
+        2000,
+        desiredState,
+        callback
+      );
     }
   };
 
   const waitManagerState = async (state: string, callback: () => void) => {
-    if (manager?.getState() === state) {
+    const currManager = CommsManager.getInstance();
+    if (currManager?.getState() === state) {
       callback();
     } else {
-      return setTimeout(waitManagerState, 100, state, callback);
+      connectTimeoutRef.current = window.setTimeout(
+        waitManagerState,
+        100,
+        state,
+        callback
+      );
     }
   };
 

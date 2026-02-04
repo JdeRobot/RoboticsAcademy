@@ -3976,10 +3976,10 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jderobot-commsmanager@1.0.16:
-  version "1.0.16"
-  resolved "https://registry.npmjs.org/jderobot-commsmanager/-/jderobot-commsmanager-1.0.16.tgz"
-  integrity sha512-rEMr1DRqcexrtvyzNvLsWW4+DOVj+V8l4eI8HP7IAWc25NbK+OtexXJZ1Fk+v+WSdffE8n0J0k17rIryzFEm3w==
+jderobot-commsmanager@1.0.24:
+  version "1.0.24"
+  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.24.tgz#b6e7a0ff0e886ee051c4693ccfd0de54b8eca72e"
+  integrity sha512-mbdgWG+O6cWPxQs16jdTbVjHQ65/lANJyVCEgzr1FZKi9bHPNrJFjGQW0qqVksIzuVwr4+zmg2PCFcTIAe2seQ==
   dependencies:
     uuid "^11.1.0"
 
