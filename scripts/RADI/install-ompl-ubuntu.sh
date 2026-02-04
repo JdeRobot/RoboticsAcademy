@@ -88,10 +88,14 @@ install_ompl()
     cd build/Release
     cmake ../.. -DPYTHON_EXEC=/usr/bin/python${PYTHONV}
     if [ ! -z $PYTHON ]; then
-        # Python binding generation is very memory intensive. 
-        # Forcing 1 core to ensure it completes without running out of memory/hanging.
-        echo "Proceeding with binding generation using 1 core to prevent hanging..."
-        make -j 1 update_bindings
+        # Check if the total memory is less than 6GB.
+        if [ `cat /proc/meminfo | head -1 | awk '{print $2}'` -lt 6291456 ]; then
+            echo "Python binding generation is very memory intensive. At least 6GB of RAM is recommended."
+            echo "Proceeding with binding generation using 1 core..."
+            make -j 1 update_bindings
+        else
+            make update_bindings
+        fi
     fi
     make
     ${SUDO} make install
