@@ -2,7 +2,6 @@
 permalink: /developer_guide
 title: "Contributor Guide"
 
-
 sidebar:
   nav: "docs"
 
@@ -11,144 +10,45 @@ toc_label: "TOC installation"
 toc_icon: "cog"
 ---
 
-This page contains information useful to understand how to contribute to Robotics Academy: creating a new exercise, improving the documentation, fixing bugs... Become a developer, not only a Robotics Academy user :-)
+First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
 
+# How to contribute?
 
-# Roadmap
+If you are new to GitHub, visit the [first-contributions instructions](https://github.com/firstcontributions/first-contributions/blob/master/README.md) to learn how to contribute on GitHub.
 
-1. Migrate all exercises to Robotics-Academy 4 release (ROS2 Foxy)
-2. Develop new exercises
-    + map building: occupancy grid
-    + localization algorithm with particle filter and laser sensor
-    + Computer Vision exercises
-4. Improve RoboticsBackend for ROS1-Noetic and ROS2-Foxy
+To find issues you can help with, go though the list of [good first issues](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 
+Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
-# Releases
-* 3.3
-    + Browser for edition and execution
-    + REACT based frontend
-    + Robotics Application Manager 
-    + based in ROS-Noetic and Gazebo11
-* 3.2
-    + Browser for edition and execution
-    + based in ROS-Noetic and Gazebo11
-* 2.3
-    + Web pages for exercise templates
-    + Browser for editing user code and execution monitoring
-    + Dependencies are pre-installed in [RoboticsBackend Docker Image](https://hub.docker.com/r/jderobot/robotics-backend/tags)
-    + based in ROS-Melodic and Gazebo9
-    + works on Linux, Windows and MacOS
-* 2.1
-    + ROS nodes for exercise templates
-    + File editing for user code
-    + Dependencies should be installed locally, debian and ROS packages
-    + based in ROS-Melodic and Gazebo9
-* 2.0
+**Important**: this is Robotics Academy and it works as Robotics Academy with its own structure and codebase. If you are not able comprehend it, this may not be a good project to contribute to. Submitting changes (Pull Request) or issues without that or without reading the documentation will be considered as **spam**. An example of bad submissions are: disabling the database, frontend and backend to "simplify development for low-risk developers" in [PR 3411](https://github.com/JdeRobot/RoboticsAcademy/pull/3411), or submitting a standalone python script that tries to fix an issue that is not there in [PR 3421](https://github.com/JdeRobot/RoboticsAcademy/pull/3421).
 
+# Opening a Pull Request
 
-# Developer documentation
+If you have fixed an issue and want to share your fix create a pull request. If your pull request does not follow the next points it will not be accepted:
 
-Check all the documents at the [docs directory at Robotics Academy repository](https://github.com/JdeRobot/RoboticsAcademy/tree/master/docs)
+- Fixes the issue related to the pull request
+- Does not contain any additional code than the one related to the fix
+- Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+- If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
+- The changes submited must be up to date with the latest version of the branch they are being submitted to
 
-# Creating a new exercise
+If it breaks one of the points above you will be requested to change it and if you do not it will be closed.
 
-Just use [Robotics Academy Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) to propose a new exercise to be included. Also contact us at *jderobot@gmail.com*
+# Questions, suggestions or new ideas
 
+Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhacements are also welcome as discussion posts.
 
+# Issue reporting
 
-# Adding or improving the user documentation for an exercise?
+Feel free to [create a new issue](https://github.com/sayanarijit/xplr/issues/new) if you have some issue to report. But first, make sure that the issue has not been reported yet.
 
-The user documentation for each exercise has to be in GitHub Pages [gh-pages branch at the RoboticsAcademy repository](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages), in markdown format. By default, the information added to the documentation is split in two:
+Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RoboticsBackend version and the exercise launched.
 
-- A `.md` file with the description of the exercise, steps for execution, comments, etc.
-- A folder with resources. Typically images and videos that are associated to the exercise.
+The responses to the issues **must** be related to the topic and they must not contain any solutions, for that use a Pull Request.
 
-The file with the information is placed in the path: `/_pages/exercises/<section>/<exercise_name>/files.md` with the name of the exercise and with Markdown extension (`.md`) inside a folder with the same name.
+# How to contribute in exercises documentation?
 
-The images associated to this file with the information are stored in the path: `/assets/images/exercises/<exercise_name>/`
+Take a look at our [documentation guide lines](https://jderobot.github.io/RoboticsAcademy/developer_guide) to contribute in github pages related issues.
 
-## Name policy
-
-The name policy is simple:
-
-All file names attached to the documentation will be **lowercase** and spaces will be replaced by **underscore** ("`_`") using ASCII characters.
-
-## Images policy
-
-In order to maintain coherence between all the exercises, it is necessary to distinguish between one image and the rest. This is the image shown in the set of exercises.
-
-The image name policy for teaser is `<exercise_name>_teaser`. (Note how it has to end in `_teaser`). For teaser images the required size has to be multiple $600x400$ px.
-
-The rest of the images have no name restriction. When in doubt, they are named as the exercise and with a number behind them.
-
-- For the images of the exercises or menus use the [name of the Minimal Mistakes gallery](https://mmistakes.github.io/minimal-mistakes/post%20formats/post-gallery/).
-
-
-## Exercise points
-
-All exercises will contain the following points:
-
-1. **Goal**: Brief description of the objective of the exercise
-2. **Installation**: If the exercise requires an additional installation, the additional commands are added in this section.
-3. **How to perform the exercise?**: The files to be modified to solve the exercise are defined as well as the functions available to obtain information from the sensors and send to the actuators.
-4. **How to run your solution?**: The commands and settings to be launched to test the developed code are specified
-5. **Theory**: The information about the exercise is described **in detail**. 
-6. **Hints**: Clues are given as to where the exercise can be tackled.
-7. **Demonstrate Video**:  Video with progress, clues and/or the result of the exercise
-8. **Contributors**: Two groups are described: contributors (all the original authors who developed the exercise code) and the maintainer (the person responsible for the exercise, updating it, correcting errors, resolving doubts, etc, is the contributor who knows the exercise best at present). 
-9. **References**: Information on the points described in the theory section, articles, websites with information, etc.
-
-*Note: If at any point in the exercise description it is required to add mathematical equations, these must be put into the equation format in LaTeX. You can use this [online equation generator](https://www.hostmath.com/) for ease of use. For more information about equations in LaTeX, check their [documentation](https://en.wikibooks.org/wiki/LaTeX/Mathematics). *
-
-
-
-## Jekyll Local Installation
-
-### Installing Ruby on Ubuntu
-
-First of all, we need to install all the dependencies typing:
-
-```bash
-sudo apt-get install ruby-full build-essential zlib1g-dev
-```
-
-After that, we need to set up a gem installation directory for your user account. The following commands will add environment variables to your `~/.bashrc` file to configure the gem installation path. Run them now:
-
-```bash
-echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc
-echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc
-echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-Finally, we install Jekyll:
-
-```bash
-gem install jekyll bundler
-```
-
-Notice that we don't use the `root` user :-)
-
-### Running Jekyll Serve
-
-By default, the Jekyll server is launched with the following command (which is the one indicated on your website).
-
-```bash
-bundle exec jekyll serve
-```
-
-If in the process of building the server there is a dependency problem, for example, there is a missing library to install, it is **necessary to delete** the `Gemfile.lock` file so that it is rebuilt with the installed dependency. This list of dependencies is found in the `Gemfile` file (in Python it would be equivalent to the `requirements.txt` file) and the version of each of the installed gems (packages) is specified. Having a list of dependencies is important for future updates as well as knowing the libraries needed to run the server. Once the `Gemfile.lock` file is deleted, the command shown above is launched again and the dependency errors should end.
-
-### Installing Ruby and Jekyll on MacOS
-
-Follow the Jekyll [page installation guide](https://jekyllrb.com/docs/installation/macos/).
-
-
-### FAQ
-
-- Error building Jekyll server: 
-
-```bash
-jekyll build --incremental --verbose
-```
+Thanks! :heart: :heart:
+RoboticsAcademy Team
