@@ -1,6 +1,7 @@
 import { getFile, getHelperFile } from "Api";
 import { Entry } from "jderobot-ide-interface";
 import JSZip from "jszip";
+import { MutableRefObject } from "react";
 
 export const saveCode = (
   fileName: string,
@@ -139,6 +140,16 @@ const zipCodeFolder = async (zip: JSZip, file: Entry, project: string) => {
       await zipCodeFolder(folder, element, project);
     } else {
       await zipCodeFile(folder, element, project);
+    }
+  }
+};
+
+export const clearTimeouts = (
+  timeoutsRef: MutableRefObject<number | null>[]
+) => {
+  for (const element of timeoutsRef) {
+    if (element.current) {
+      window.clearTimeout(element.current);
     }
   }
 };
