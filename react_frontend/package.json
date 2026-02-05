@@ -1,10 +1,10 @@
 {
   "name": "react_frontend",
-  "version": "1.0.0",
+  "version": "6.1.0",
   "description": "React frontend for Robotics Academy",
-  "main": "index.js",
+  "main": "src/index.tsx",
   "author": "Javier Izquierdo <javizqh@pm.me>",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "scripts": {
     "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
     "build": "webpack --mode production --output-path ./static/react_frontend",
