@@ -12,19 +12,23 @@ To find issues you can help with, go though the list of [good first issues](http
 
 Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
+**Important**: this is Robotics Academy and it works as Robotics Academy with its own structure and codebase. If you are not able comprehend it, this may not be a good project to contribute to. Submitting changes (Pull Request) or issues without that or without reading the documentation will be considered as **spam** and granted a **1 week ban** from this organization. An example of bad submissions are: disabling the database, frontend and backend to "simplify development for low-risk developers" in [PR 3411](https://github.com/JdeRobot/RoboticsAcademy/pull/3411), or submitting a standalone python script that tries to fix an issue that is not there in [PR 3421](https://github.com/JdeRobot/RoboticsAcademy/pull/3421).
+
 ## Opening a Pull Request
 
 If you have fixed an issue and want to share your fix create a pull request. If your pull request does not follow the next points it will not be accepted:
 
-* Fixes the issue related to the pull request
-* Does not contain any additional code than the one related to the fix
-* Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+- Fixes the issue related to the pull request
+- Does not contain any additional code than the one related to the fix
+- Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
+- If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
+- The changes submited must be up to date with the latest version of the branch they are being submitted to
 
 If it breaks one of the points above you will be requested to change it and if you do not it will be closed.
 
 ## Questions, suggestions or new ideas
 
-Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant to it. New ideas and enhacements are also welcome as discussion posts.
+Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhacements are also welcome as discussion posts.
 
 ## Issue reporting
 
@@ -32,9 +36,15 @@ Feel free to [create a new issue](https://github.com/sayanarijit/xplr/issues/new
 
 Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RoboticsBackend version and the exercise launched.
 
+The responses to the issues **must** be related to the topic and they must not contain any solutions, for that use a Pull Request.
+
 ## How to contribute in exercises documentation?
 
 Take a look at our [documentation guide lines](https://jderobot.github.io/RoboticsAcademy/developer_guide) to contribute in github pages related issues.
+
+## What happens if you do not follow this guidelines?
+
+If you do not follow the guidelines you will first get a 1 day ban from all JdeRobot repos. After that the next ban will be 1 week and then permanently.
 
 Thanks! :heart: :heart:
 RoboticsAcademy Team
