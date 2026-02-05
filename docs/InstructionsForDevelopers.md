@@ -88,77 +88,6 @@ cd react_frontend/ && yarn install && yarn run dev
 
 Another way to solve it is to try to delete the old RADI image and download it again.
 
-### Using Docker run
-
-If you are launching Robotics Academy this way you need to manually create the commons zip, that will be used to pass those files to the Robotics Backend.
-
-```
-# Prepare the commons zip file
-cd common
-cd console_interfaces
-zip -r ../common.zip console_interfaces/
-cd ..
-cd gui_interfaces
-zip -r -u ../common.zip gui_interfaces/
-cd ..
-cd hal_interfaces
-zip -r -u ../common.zip hal_interfaces/
-cd ../..
-mv common/common.zip react_frontend/src/common.zip
-```
-
-You also have to download the Robotics Applictaion Manager using:
-
-```
-git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b humble-devel src
-```
-
-You have 2 ways of launching Robotics Academy with docker run:
-
-- Creating a new RADI. To see how to do it and why to use it, read [how to generate a RADI][].
-- Using the docker image: `robotics-academy:latest`
-
-Then to launch Robotics Academy first you have to launch the database docker container. For example if you want to launch it from where you cloned Robotics Academy you can use the next command:
-
-**_NOTE_**: If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
-
-```bash
-docker run --hostname my-postgres --name academy_db -d\
-    -e POSTGRES_DB=academy_db \
-    -e POSTGRES_USER=user-dev \
-    -e POSTGRES_PASSWORD=robotics-academy-dev \
-    -e POSTGRES_PORT=5432 \
-    -d -p 5432:5432 \
-    -v ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql \
-    -v ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql \
-    -v ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql \
-    jderobot/robotics-database:latest
-```
-
-Now you can launch Robotics Academy using the followings commands:
-
-**_NOTE_**: If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
-
-- Automatic GPU selection
-
-```bash
-docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
-```
-
-- Automatic GPU selection (Without Nvidia)
-
-```bash
-docker run --rm -it --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
-```
-
-- Only CPU
-
-```bash
-docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
-```
-
-[how to generate a RADI]: ./generate_a_radi.md
-
 <a name="docker-compose"></a>
 
 ### Using Docker compose (Recommended for Windows users)
@@ -209,7 +138,7 @@ cd ../..
 mv common/common.zip react_frontend/src/common.zip
 ```
 
-5. Build the REACT frontend
+5. Build the REACT frontend. You **must** do this each time
 
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -284,6 +213,87 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 **Note:** This steps are not necessary if you deploy Robotics Academy in developer mode using an automatic script. When the script is executed, it internally runs the commands. -->
+
+### Using Docker run: **Only** use this method if the ones before have failed.
+
+If you are launching Robotics Academy this way you need to manually create the commons zip, that will be used to pass those files to the Robotics Backend.
+
+```
+# Prepare the commons zip file
+cd common
+cd console_interfaces
+zip -r ../common.zip console_interfaces/
+cd ..
+cd gui_interfaces
+zip -r -u ../common.zip gui_interfaces/
+cd ..
+cd hal_interfaces
+zip -r -u ../common.zip hal_interfaces/
+cd ../..
+mv common/common.zip react_frontend/src/common.zip
+```
+
+You **must** compile the frontend each time using:
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 20
+nvm use 20
+npm install --global yarn
+cd react_frontend/ && yarn install && yarn run dev
+```
+
+You also have to download the Robotics Applictaion Manager using:
+
+```
+git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b humble-devel src
+```
+
+You have 2 ways of launching Robotics Academy with docker run:
+
+- Creating a new RADI. To see how to do it and why to use it, read [how to generate a RADI][].
+- Using the docker image: `robotics-academy:latest`
+
+Then to launch Robotics Academy first you have to launch the database docker container. For example if you want to launch it from where you cloned Robotics Academy you can use the next command:
+
+**_NOTE_**: If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
+
+```bash
+docker run --hostname my-postgres --name academy_db -d\
+    -e POSTGRES_DB=academy_db \
+    -e POSTGRES_USER=user-dev \
+    -e POSTGRES_PASSWORD=robotics-academy-dev \
+    -e POSTGRES_PORT=5432 \
+    -d -p 5432:5432 \
+    -v ./RoboticsInfrastructure/database/universes.sql:/docker-entrypoint-initdb.d/1.sql \
+    -v ./database/exercises/db.sql:/docker-entrypoint-initdb.d/2.sql \
+    -v ./database/django_auth.sql:/docker-entrypoint-initdb.d/3.sql \
+    jderobot/robotics-database:latest
+```
+
+Now you can launch Robotics Academy using the followings commands:
+
+**_NOTE_**: If you are in another folder you may need to change the first part of the paths of the volume bindings (**-v**) to the correct path.
+
+- Automatic GPU selection
+
+```bash
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all" || echo "") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
+```
+
+- Automatic GPU selection (Without Nvidia)
+
+```bash
+docker run --rm -it --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
+```
+
+- Only CPU
+
+```bash
+docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db -v ./:/RoboticsAcademy -v ./src:/RoboticsApplicationManager jderobot/robotics-academy:latest
+```
+
+[how to generate a RADI]: ./generate_a_radi.md
 
 <a name="How-to-use-nvidia"></a>
 
