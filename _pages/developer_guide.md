@@ -10,7 +10,7 @@ toc_label: "TOC installation"
 toc_icon: "cog"
 ---
 
-First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests.
+First off, thanks for your interest in contributing to RoboticsAcademy! All contributors are welcome, from commenting issues to reviewing or sending Pull Requests. After reading this guide you may continue with the [Developer Instructions](https://github.com/JdeRobot/RoboticsAcademy/blob/humble-devel/docs/InstructionsForDevelopers.md).
 
 # How to contribute?
 
@@ -40,7 +40,7 @@ Please don't open an issue to ask a question or suggestion. Use the [GitHub Disc
 
 # Issue reporting
 
-Feel free to [create a new issue](https://github.com/sayanarijit/xplr/issues/new) if you have some issue to report. But first, make sure that the issue has not been reported yet.
+Feel free to [create a new issue](https://github.com/JdeRobot/RoboticsAcademy/issues/new) if you have some issue to report. But first, make sure that the issue has not been reported yet.
 
 Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RoboticsBackend version and the exercise launched.
 
@@ -48,7 +48,46 @@ The responses to the issues **must** be related to the topic and they must not c
 
 # How to contribute in exercises documentation?
 
-Take a look at our [documentation guide lines](https://jderobot.github.io/RoboticsAcademy/developer_guide) to contribute in github pages related issues.
+The user documentation for each exercise has to be in GitHub Pages [gh-pages branch at the RoboticsAcademy repository](https://github.com/JdeRobot/RoboticsAcademy/tree/gh-pages), in markdown format. By default, the information added to the documentation is split in two:
+
+- A `.md` file with the description of the exercise, steps for execution, comments, etc.
+- A folder with resources. Typically images and videos that are associated to the exercise.
+
+The file with the information is placed in the path: `/_pages/exercises/<section>/<exercise_name>.md` with the name of the exercise and with Markdown extension (`.md`).
+
+The images associated to this file with the information are stored in the path: `/assets/images/exercises/<exercise_name>/`
+
+## Name policy
+
+The name policy is simple:
+
+All file names attached to the documentation will be **lowercase** and spaces will be replaced by **underscore** ("`_`") using ASCII characters.
+
+## Images policy
+
+In order to maintain coherence between all the exercises, it is necessary to distinguish between one image and the rest. This is the image shown in the set of exercises.
+
+The image name policy for teaser is `<exercise_name>_teaser`. (Note how it has to end in `_teaser`). For teaser images the required aspect ratio has to be multiple 9/10.
+
+The rest of the images have no name restriction. When in doubt, they are named as the exercise and with a number behind them.
+
+- For the images of the exercises or menus use the [name of the Minimal Mistakes gallery](https://mmistakes.github.io/minimal-mistakes/post%20formats/post-gallery/).
+
+## Exercise points
+
+All exercises will contain the following points:
+
+1. **Goal**: Brief description of the objective of the exercise
+2. **Installation**: If the exercise requires an additional installation, the additional commands are added in this section.
+3. **How to perform the exercise?**: The files to be modified to solve the exercise are defined as well as the functions available to obtain information from the sensors and send to the actuators.
+4. **How to run your solution?**: The commands and settings to be launched to test the developed code are specified
+5. **Theory**: The information about the exercise is described **in detail**.
+6. **Hints**: Clues are given as to where the exercise can be tackled.
+7. **Demonstrate Video**: Video with progress, clues and/or the result of the exercise
+8. **Contributors**: Two groups are described: contributors (all the original authors who developed the exercise code) and the maintainer (the person responsible for the exercise, updating it, correcting errors, resolving doubts, etc, is the contributor who knows the exercise best at present).
+9. **References**: Information on the points described in the theory section, articles, websites with information, etc.
+
+_Note: If at any point in the exercise description it is required to add mathematical equations, these must be put into the equation format in LaTeX. You can use this [online equation generator](https://www.hostmath.com/) for ease of use. For more information about equations in LaTeX, check their [documentation](https://en.wikibooks.org/wiki/LaTeX/Mathematics). _
 
 Thanks! :heart: :heart:
 RoboticsAcademy Team
