@@ -26,6 +26,8 @@ If you have fixed an issue and want to share your fix create a pull request. If 
 
 If it breaks one of the points above you will be requested to change it and if you do not it will be closed.
 
+Also do **not** ping or request reviews from mantainers or members of JdeRobot. The corresponding mantainer will asign a proper reviewer and ping other members if needed.
+
 ## Questions, suggestions or new ideas
 
 Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhacements are also welcome as discussion posts.
