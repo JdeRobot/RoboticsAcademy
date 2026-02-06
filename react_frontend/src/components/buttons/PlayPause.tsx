@@ -37,9 +37,7 @@ const PlayPauseButton = ({
   const entrypointRef = useRef<Entry | undefined>(undefined);
   const runningFilesRef = useRef<Entry[]>([]);
   const runningEntrypointRef = useRef<Entry | undefined>(undefined);
-  const [state, setState] = useState<string>(
-    CommsManager.getInstance().getState()
-  );
+  const [state, setState] = useState<string>(states.IDLE);
   const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
   const [, _updateCode] = useState<boolean | undefined>(false);

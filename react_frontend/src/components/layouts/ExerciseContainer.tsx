@@ -19,7 +19,7 @@ import {
 import Frequencies from "Components/statusBar/Frequencies";
 import { StyledExerciseContainer } from "Styles/layouts/ExerciseContainer.styles";
 import { getHalGuiMethods } from "Helpers/editor";
-import { subscribe, unsubscribe } from "Helpers/utils";
+import { clearTimeouts, subscribe, unsubscribe } from "Helpers/utils";
 import { fileExplorer } from "Helpers/explorer";
 import getTools from "Helpers/tools";
 
@@ -47,6 +47,9 @@ const ExerciseContainer = ({
   multiLanguage: boolean;
   children: JSX.Element;
 }) => {
+  const hasTriedToConnect = useRef(false);
+  const timeoutRef = useRef<number | null>(null);
+  const connectTimeoutRef = useRef<number | null>(null);
   const [manager, setManager] = useState<CommsManager | null>(null);
   const [universes, setUniverses] = useState<string[] | undefined>(undefined);
   const toolsList = getTools(manager, tools, children);
@@ -63,9 +66,6 @@ const ExerciseContainer = ({
     setUniverses(list);
   };
 
-  // RB manager setup
-  const connected = useRef<boolean>(false);
-
   const resetUniverse = (e: unknown) => {
     const T = CustomEvent<{ detail: unknown }>;
     if (e instanceof T) {
@@ -76,16 +76,21 @@ const ExerciseContainer = ({
   };
 
   useEffect(() => {
-    const manager = CommsManager.getInstance();
-    setManager(manager);
     subscribe("CommsManagerStateChange", resetUniverse);
 
     return () => {
       unsubscribe("CommsManagerStateChange", () => {});
-      const currManager = CommsManager.getInstance();
-      if (currManager) {
-        currManager.disconnect();
+
+      if (hasTriedToConnect.current) {
+        const currManager = CommsManager.getInstance();
+        if (currManager) {
+          currManager.disconnect();
+          CommsManager.deleteInstance();
+          setManager(null);
+        }
       }
+
+      clearTimeouts([timeoutRef, connectTimeoutRef]);
     };
   }, []);
 
@@ -93,32 +98,38 @@ const ExerciseContainer = ({
     desiredState?: string,
     callback?: () => void
   ) => {
-    console.log(manager?.getState(), CommsManager.getInstance().getState());
-    if (!manager || manager?.getState() != "idle") {
-      return;
-    }
     try {
       const currManager = CommsManager.getInstance();
-      console.log(currManager);
+      hasTriedToConnect.current = true;
       await currManager.connect();
       getUniverseList(project);
       console.log("Connected!", currManager.getState());
-      connected.current = true;
       setManager(currManager);
       if (callback) {
         waitManagerState(desiredState ? desiredState : "connected", callback);
       }
     } catch {
       console.log("Connection failed, trying again!");
-      setTimeout(connectWithRetry, 2000, desiredState, callback);
+      timeoutRef.current = window.setTimeout(
+        connectWithRetry,
+        2000,
+        desiredState,
+        callback
+      );
     }
   };
 
   const waitManagerState = async (state: string, callback: () => void) => {
-    if (manager?.getState() === state) {
+    const currManager = CommsManager.getInstance();
+    if (currManager?.getState() === state) {
       callback();
     } else {
-      return setTimeout(waitManagerState, 100, state, callback);
+      connectTimeoutRef.current = window.setTimeout(
+        waitManagerState,
+        100,
+        state,
+        callback
+      );
     }
   };
 
