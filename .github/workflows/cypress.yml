@@ -20,7 +20,7 @@ jobs:
           working-directory: react_frontend
           # Starts web server for E2E tests - replace with your own server invocation
           # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
-          start: ../scripts/develop_academy.sh
+          start: /scripts/develop_academy.sh
           wait-on: "http://localhost:7164" # Waits for above
           # Records to Cypress Cloud
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
