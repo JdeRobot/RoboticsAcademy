@@ -19,7 +19,7 @@ const WebGUIContainer = ({
 
   return (
     <Box
-      id={id}
+      id="webgui-container"
       sx={{
         display: "flex",
         justifyContent: "center",

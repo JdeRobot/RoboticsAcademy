@@ -29,6 +29,7 @@
     "babel-loader": "^8.2.5",
     "binary-loader": "^0.0.1",
     "css-loader": "^6.7.1",
+    "cypress": "^15.10.0",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.37.5",
