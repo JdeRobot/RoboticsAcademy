@@ -14,7 +14,6 @@
 | Marker-based visual Loc | ok | | | | Gazebo Harmonic | PnP | 
 | Localized Vacuum Cleaner | ok | | | | Gazebo Harmonic + Classic  | BSA | 
 | Autoparking | ok | | | | Gazebo Harmonic + Classic  | | 
-| Autoparking Lidar | ok | | | | Gazebo Harmonic + Classic  | | 
 | Amazon Warehouse | ok | | | | Gazebo 11 | | 
 | Follow Person | ok | | | | Gazebo 11 | | 
 | Drone Follow Road | ok | | | | Gazebo Harmonic | |
@@ -22,14 +21,15 @@
 | Drone Gymkhana | ok | | | | Gazebo Harmonic | |
 | Drone Power tower Inspection | ok | | | | Gazebo Harmonic | |
 | Visual 3D reconstruction | ok | | | | Gazebo Harmonic + Classic | |
-| DL e2e Visual control | ok | | | | Gazebo 11 | | 
-| DL digit classification | ok | | | | none | |
-| DL human detection | ok | | | | none | |
-| Basic Computer Vision | ok | | | | none | | 
-| Digital Image Processing | ok | | | | none | | 
+| Basic Computer Vision | ok | | | | none | |
+| DL e2e Visual control | ok | | | | Gazebo Harmonic + Classic | | 
+| DL image classification | ok | | | | none | |
+| DL visual object detection | ok | | | | none | |
 | Pick and Place | ok | | | | Gazebo 11 | |
+| | | | | | | | 
 | Machine Vision with industrial robot | ok | | | | Gazebo 11 | |
 | Road junction | ok | | | | Gazebo Harmonic | broken |
+| Digital Image Processing | ok | | | | none | broken | 
 | Drone Labyrinth escape |  | | | | | |  
 | Drone Position control |  | | | | | | 
 | Drone Follow TurtleBot |  | | | | | |
