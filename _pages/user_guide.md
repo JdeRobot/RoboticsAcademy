@@ -185,48 +185,43 @@ docker rm CONTAINER_ID
 
 1. On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
-   ![Robotics Academy Main Page](/RoboticsAcademy/assets/images/user_guide/ra-main-page.png)
+   ![Robotics Academy Main Page](/RoboticsAcademy/assets/images/user_guide/main-page.png)
 
 2. Click on the exercise you want to work with.
 
-3. Wait until the exercise is fully loaded. You know it is fully loaded when the `Robotics Backend`, `World` and `Visualization state` boxes are green.
+   ![Exercise-page](/RoboticsAcademy/assets/images/user_guide/exercise-page.png)
 
-   ![Exercise-page](/RoboticsAcademy/assets/images/user_guide/exercise-page.jpeg)
+3. Let's take a look to the exercise page:
+   1. **Explorer**: File explorer for your project. Create, rename, delete and upload files and folders. Can be collapsed
+   2. **Editor**: Here you can write your code to solve the exercise. When you're done, it's sent to the container with the `start` button. The current file opened will be the entrypoint of your application.
 
-4. Let's take a look to the exercise page:
-   1. **World Button**: Some exercises have multiple universes to test your code. Clicking on this button, a list of the universes appears and you can choose whichever you want.
+   {% include youtubePlayer.html id=page.youtubeId1 %}
+   
+   3. **Tools or viewers**: There are 6 possible viewers (not all of them are available in each exercise) that can be collapsed and resized. If there are multiple conflicting ones you may select your prefered one at the tools menu in the status bar.
+   - **WebGUI**: displays information from the exercise and allows the user to show debug information from the application code
+   - **Webcam**: connects to the user webcam and send images to the application. Cannot be used as the same time as "Local video"
+   - **Local video**: allows the user to send frames from the video as images to the application. Cannot be used as the same time as "Webcam"
+   - **Simulator VNC**: VNC display showing the simulation
+   - **RVIZ VNC**: VNC display running the RVIZ application
+   - **Console VNC**: VNC display running a console connected to the application
+   4. **Status Bar**: Shows information related to the status of the conexion to the Robotics Backend (version, status, ros2 version, gpu) and execution (Real time factor or RTF, application frequency or App) . Also has the menus for tool and universe selection.
+   - **Universe Menu**: Some exercises have multiple universes to test your code. Clicking on this button, a list of the universes appears and you can choose whichever you want. Some exercises may not have any available
+   - **Tool Menu**: Some exercises have conflicting tools. Clicking on this button, a list of the tools appears and you can choose whichever you want
+   5. **Menu Controls**: Has controls related to the application execution and others for exiting or showing more information. From right to left they are:
+   - **Home**: returns to the main page
+   - **Theme**: changes the theme between dark and light
+   - **Download**: downloads all the user files in the exercise
+   - **Layout**: allows to toggle between 3 different layouts: only show editor, only show viewers and show both
+   - **Play / Pause**: To send your code into the docker container, you must use the start button. This will load you're entire code and execute it using the current open file as the entrypoint. If the simulation is running, it will be replaced with the `pause` button, which pauses the simulation
+   - **Restart**: stops the simulation and returns it to its initial state
+   - **Terminate Universe**: stops the simulation and closes the current universe
+   - **Documentation**: here you can find important info such as implemented methods, the objective of the exercise, etc...
+   - **Info**: it will open this user guide
+   - **Forum**: here is the best place to ask question about different subjects
 
-   2. **Documentation and Forum Button**: These buttons links you to the documentation of the exercise and the forum respectively. On the documentation, you can find important info such as implemented methods, the objective of the exercise, etc... the Forum lets you ask question about different subjects.
+4. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 
-   3. **Load and Save Buttons**: If you're in the middle of an exercise but don't have much time left, you can save the code in an external file on your computer and load it too.
-
-   4. **Start, Restart Buttons and RTF**:
-      1. Start button: To send your code into the docker container, you must use the start button. This will load you're entire code and execute it. If the simulation is running, it will be replaced with the `pause` button, which pauses the simulation.
-      2. Restart button: The restart button stops the simulation and returns it to its initial state.
-      3. RTF (Real Time Factor): These two numbers will let you know the fps of the simulation and the speed on which the exercise is being executed.
-
-   5. **Code editor**: Here you can write your code to solve the exercise. When you're done, it's sent to the container with the `start` button.
-
-   6. **VNC displays**: These VNC displays gives you info about the simulation. The one at the top usually has WebGUI info for the exercise. Below that is the Gazebo universe display and on the left you have a console where you can print info about the exercise.
-
-5. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
-
-## 4. Other Guides
-
-### Editor Controls
-
-{% include youtubePlayer.html id=page.youtubeId1 %}
-
-### How to fix VNC not loading
-
-If your VNC viewer shows an error similar to this when connecting to a remote Robotics Backend (farm) in Unibotics, you have to follow the next steps to fix it:
-
-1. Close the VNC viewer using the buttons at the top
-2. Open the VNC viewer using the buttons at the top
-
-TODO: add video
-
-## 5. Reference execution performance data
+## 4. Reference execution performance data: Outdated
 
 In this section, various data tables will be provided showing the performance cost of each RoboticsBackend exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
 
