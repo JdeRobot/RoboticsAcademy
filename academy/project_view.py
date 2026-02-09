@@ -127,7 +127,8 @@ def check_exist(fal, path, file_list, folder):
         if file.is_dir:
             if folder and path == file.path:
                 return True
-            check_exist(fal, path, file.files)
+            if check_exist(fal, path, file.files, folder):
+                return True
         else:
             if not folder and path == file.path:
                 return True
