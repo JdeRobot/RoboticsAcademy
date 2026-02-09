@@ -1,8 +1,6 @@
 /// <reference types="cypress" />
 
 // tools: ["WebGUI", "Simulator", "Console", "Webcam","Rviz","Video"]
-// const sizes = ["macbook-11", "macbook-13", "macbook-15", "macbook-16"];
-const sizes = ["macbook-16"];
 const exercises = [
   {
     id: "follow_line",
