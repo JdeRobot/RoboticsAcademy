@@ -4,11 +4,13 @@
 
 # Instructions for developers
 
-- [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4)
+<!-- - [Getting started with Robotics Academy for developers](https://youtu.be/3AM-ztcRsr4) -->
+
 - [How to setup the developer environment](#How-to-setup-the-developer-environment)
   - [Developer environment set up via script _(recommended set up)_](#automatic-script)
   - [Developer environment set up via docker-compose _(recommended set up for **Windows Users**)_](#docker-compose)
 - [How to use nvidia](#How-to-use-nvidia)
+- [How to execute the tests](#How-to-execute-the-tests)
 - [How to add a new exercise](#How-to-add-a-new-exercise)
 - [Steps to change models from CustomRobots in RoboticsAcademy exercises](#Steps-to-change-models-from-CustomRobots-in-RoboticsAcademy-exercises)
 
@@ -345,6 +347,20 @@ Now everything should be ready to start using nvidia with our dockers, restart t
 ```bash
 sudo systemctl restart docker
 ```
+
+<a name="How-to-execute-the-tests"></a>
+
+## How to execute the tests
+
+In order to execute the Robotics Academy test you must have launched RoboticsAcademy beforehand and then follow the next steps:
+
+1. In another terminal enter inside the **react_frontend** directory and execute `npm run test`.
+2. In the new open window select "E2E Testing".
+3. Select your prefered browser. RoboticsAcademy officially supports Chrome and Firefox.
+4. Click on the green button "Start E2E Testing in ...".
+5. It will open a new window in the selected browser. Now select one of the available test and let it execute.
+
+You **must** mantain the window were the tests are executing always visible, because some tests fail if it is not.
 
 <a name="How-to-add-a-new-exercise"></a>
 
