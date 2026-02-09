@@ -195,8 +195,11 @@ docker rm CONTAINER_ID
    1. **Explorer**: File explorer for your project. Create, rename, delete and upload files and folders. Can be collapsed
    2. **Editor**: Here you can write your code to solve the exercise. When you're done, it's sent to the container with the `start` button. The current file opened will be the entrypoint of your application.
 
-   {% include youtubePlayer.html id=page.youtubeId1 %}
-   
+      <div class="embed-container">
+         <iframe src="https://www.youtube.com/embed/bh5oPH5DpVs" width="700" height="480" frameborder="0" allowfullscreen="">
+         </iframe>
+      </div>
+
    3. **Tools or viewers**: There are 6 possible viewers (not all of them are available in each exercise) that can be collapsed and resized. If there are multiple conflicting ones you may select your prefered one at the tools menu in the status bar.
    - **WebGUI**: displays information from the exercise and allows the user to show debug information from the application code
    - **Webcam**: connects to the user webcam and send images to the application. Cannot be used as the same time as "Local video"
@@ -387,4 +390,4 @@ _(Average Percentages up to 100%)_
 
 No data yet.
 
-## 6. Troubleshooting
+## 5. Troubleshooting
