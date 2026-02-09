@@ -6,11 +6,8 @@ import sys
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.camera import CameraNode
-from hal_interfaces.specific.car_junction.lidar import LidarNode
 
 # Hardware Abstraction Layer
-IMG_WIDTH = 320
-IMG_HEIGHT = 240
 freq = 30.0
 
 
@@ -30,16 +27,14 @@ if not rclpy.ok():
 
 motor_node = MotorsNode("/cmd_vel", 40, 0)
 odometry_node = OdometryNode("/odom")
-camera_front_node = CameraNode("/waymo/camera_front")
-lidar_node = LidarNode("/waymo/lidar/points")
+camera_node = CameraNode("/prius_autoparking/image_raw")
 
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
 executor.add_node(motor_node)
-executor.add_node(camera_front_node)
-executor.add_node(lidar_node)
+executor.add_node(camera_node)
 
 
 def __auto_spin() -> None:
@@ -58,21 +53,11 @@ executor_thread.start()
 def getPose3d():
     return odometry_node.getPose3d()
 
-
-def getFrontCameraData():
-    image = camera_front_node.getImage()
+def getImage():
+    image = camera_node.getImage()
     while image == None:
-        image = camera_front_node.getImage()
+        image = camera_node.getImage()
     return image.data
-
-
-def getLidarData():
-    lidar = lidar_node.getLidarData()
-    timestamp = lidar.timeStamp
-    while timestamp == 0.0:
-        lidar = lidar_node.getLidarData()
-        timestamp = lidar.timeStamp
-    return lidar
 
 
 def setV(velocity):

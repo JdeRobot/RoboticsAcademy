@@ -8,14 +8,13 @@ from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
 )
 from console_interfaces.general.console import start_console
-from HAL import getFrontCameraData, getPose3d
 
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
 
         self.out_period = 1.0 / freq
-        self.front_image = None
+        self.image = None
         self.image_lock = threading.Lock()
         self.ack = True
         self.ack_frontend = True
@@ -25,7 +24,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.world_name = "empty"
 
         self.host = host
-        self.msg = {"image_front": ""}
+        self.msg = {"image": ""}
 
         self.ideal_cycle = 80
         self.real_time_factor = 0
@@ -45,7 +44,7 @@ class WebGUI(MeasuringThreadingGUI):
             with self.ack_lock:
                 with self.image_lock:
                     if self.ack:
-                        if np.any(self.front_image):
+                        if np.any(self.image):
                             self.update_gui()
                             self.ack = False
 
@@ -56,25 +55,22 @@ class WebGUI(MeasuringThreadingGUI):
 
     def update_gui(self):
 
-        if np.any(self.front_image):
-            _, encoded_front_image = cv2.imencode(".JPEG", self.front_image)
-            b64_left = base64.b64encode(encoded_front_image).decode("utf-8")
-            shape_front = self.front_image.shape
+        if np.any(self.image):
+            _, encoded_front_image = cv2.imencode(".JPEG", self.image)
+            b64_front = base64.b64encode(encoded_front_image).decode("utf-8")
         else:
             b64_front = None
-            shape_front = 0
 
         payload_front = {
-            "image_front": b64_front,
-            "shape_front": shape_front,
+            "image": b64_front,
         }
-        self.msg["image_front"] = json.dumps(payload_front)
+        self.msg["image"] = json.dumps(payload_front)
         message = json.dumps(self.msg)
         self.send_to_client(message)
 
-    def setFrontImage(self, image):
+    def setImage(self, image):
         with self.image_lock:
-            self.left_image = image
+            self.image = image
 
 
 host = "ws://127.0.0.1:2303"
@@ -83,4 +79,4 @@ start_console()
 
 
 def showImage(image):
-    gui.setFrontImage(image)
+    gui.setImage(image)
