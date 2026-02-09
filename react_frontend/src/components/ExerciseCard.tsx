@@ -33,7 +33,7 @@ const ExerciseCard = ({
   const tagsList: string[] = JSON.parse(tags);
 
   return (
-    <StyledExerciseCardContainer state={status}>
+    <StyledExerciseCardContainer state={status} id={exercise_id}>
       <StyledExerciseCardArea onClick={() => navigateToExercise()}>
         <CardMedia
           component="img"

@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "webpack --mode development --output-path ./static/react_frontend --watch",
     "build": "webpack --mode production --output-path ./static/react_frontend",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cypress open",
     "lint": "eslint src",
     "lint-exercises": "for ex in $(ls ../exercises); do bash -c \"cd ../exercises/$ex/react-components && eslint --fix\" 2>/dev/null ; done",
     "lint-all": "npm run lint && npm run lint-exercises",
@@ -29,6 +29,7 @@
     "babel-loader": "^8.2.5",
     "binary-loader": "^0.0.1",
     "css-loader": "^6.7.1",
+    "cypress": "^15.10.0",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.37.5",

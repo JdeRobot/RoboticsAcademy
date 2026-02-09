@@ -23,7 +23,6 @@ from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 from rest_framework import status
-from .constants import base_py_code, base_cpp_code
 
 
 @csrf_exempt
@@ -93,14 +92,12 @@ def enter_exercise(fal, request):
     if fal.exists(path) < 0:
         fal.mkdir(path)
         # Create base files
-        content = base_py_code
         file_path = fal.path_join(path, "academy.py")
-        fal.create(file_path, content)
+        fal.create(file_path, "")
         for tag in eval(project.tags):
             if tag == "MULTILANGUAGE":
-                content = base_cpp_code
                 file_path = fal.path_join(path, "academy.cpp")
-                fal.create(file_path, content)
+                fal.create(file_path, "")
 
     return JsonResponse({"success": True, "info": info})
 
