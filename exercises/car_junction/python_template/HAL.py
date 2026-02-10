@@ -53,6 +53,7 @@ executor_thread.start()
 def getPose3d():
     return odometry_node.getPose3d()
 
+
 def getImage():
     image = camera_node.getImage()
     while image == None:
