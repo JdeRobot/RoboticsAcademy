@@ -83,11 +83,8 @@ RUN apt-get update \
 
 RUN apt-get update && apt-get install -y \
   ros-humble-ros-gzharmonic \
-  <<<<<<< HEAD
-=======
-ros-humble-gz-ros2-control \
-  >>>>>>> e9b36290 (Add industrial to dockerfile)
-&& rm -rf /var/lib/apt/lists/*
+  ros-humble-gz-ros2-control \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -366,3 +363,13 @@ COPY install-ompl-ubuntu.sh /
 WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
+
+# Clone and build gz_ros2_control for Gazebo Harmonic (gz-sim8)
+# This is required for Pick Place Harmonic exercise controller loading
+WORKDIR /home/ws/src
+RUN git clone --depth 1 https://github.com/ros-controls/gz_ros2_control.git -b humble
+WORKDIR /home/ws
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
+  export GZ_VERSION=harmonic && \
+  colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
+WORKDIR /
