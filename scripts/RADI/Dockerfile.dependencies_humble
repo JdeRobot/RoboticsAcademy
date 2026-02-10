@@ -83,7 +83,11 @@ RUN apt-get update \
 
 RUN apt-get update && apt-get install -y \
   ros-humble-ros-gzharmonic \
-  && rm -rf /var/lib/apt/lists/*
+  <<<<<<< HEAD
+=======
+ros-humble-gz-ros2-control \
+  >>>>>>> e9b36290 (Add industrial to dockerfile)
+&& rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
