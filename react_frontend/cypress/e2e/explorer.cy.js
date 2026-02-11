@@ -51,7 +51,8 @@ context("Themes", () => {
     // cy.contains("root2", { timeout: 1000 }).click();
 
     cy.contains("root", { timeout: 1000 })
-      .get("#explorer-action-button", { force: true })
+      .parent({ force: true })
+      .find("button", { force: true })
       .click({ force: true });
 
     cy.contains("label", "Delete", { force: true })
@@ -91,7 +92,8 @@ context("Themes", () => {
     cy.wait(1000);
 
     cy.contains("root", { timeout: 1000 })
-      .get("#explorer-action-button", { force: true })
+      .parent({ force: true })
+      .find("button", { force: true })
       .click({ force: true });
 
     cy.contains("label", "Delete", { force: true })
@@ -123,7 +125,8 @@ context("Themes", () => {
     // cy.contains("inside2", { timeout: 1000 }).click();
 
     cy.contains("inside", { timeout: 1000 })
-      .get("#explorer-action-button", { force: true })
+      .parent({ force: true })
+      .find("button", { force: true })
       .click({ force: true });
 
     cy.contains("label", "Delete", { force: true })
@@ -134,7 +137,8 @@ context("Themes", () => {
     cy.wait(1000);
 
     cy.contains("root", { timeout: 1000 })
-      .get("#explorer-action-button", { force: true })
+      .parent({ force: true })
+      .find("button", { force: true })
       .click({ force: true });
 
     cy.contains("label", "Delete", { force: true })
