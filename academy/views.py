@@ -191,7 +191,7 @@ def create_file(fal, request):
 
 
 @error_wrapper("POST", ["project_id", ("location", -1), "folder_name"])
-def create_folder(fal, equest):
+def create_folder(fal, request):
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     folder_name = request.data.get("folder_name")
