@@ -21,19 +21,18 @@
 | Drone Gymkhana                       | ok               |             |               |          | Gazebo Harmonic           |             |
 | Drone Power tower Inspection         | ok               |             |               |          | Gazebo Harmonic           |             |
 | Visual 3D reconstruction             | ok               |             |               |          | Gazebo Harmonic + Classic |             |
-| Basic Computer Vision                | ok               |             |               |          | none                      |             |
 | DL e2e Visual control                | ok               |             |               |          | Gazebo Harmonic + Classic |             |
+| Basic Computer Vision                | ok               |             |               |          | none                      |             |
 | DL image classification              | ok               |             |               |          | none                      |             |
 | DL visual object detection           | ok               |             |               |          | none                      |             |
 | Pick and Place                       | ok               |             |               |          | Gazebo 11                 |             |
-|                                      |                  |             |               |          |                           |             |
 | Machine Vision with industrial robot | ok               |             |               |          | Gazebo 11                 |             |
-| Car junction                         | ok               | ok          |               |          | Gazebo Harmonic           |             |
+| Car junction                         | ok               |             |               |          | Gazebo Harmonic           |             |
 | Digital Image Processing             | ok               |             |               |          | none                      | broken      |
-| Drone Labyrinth escape               |                  |             |               |          |                           |             |
-| Drone Position control               |                  |             |               |          |                           |             |
-| Drone Follow TurtleBot               |                  |             |               |          |                           |             |
-| Drone Package delivery               |                  |             |               |          |                           | broken      |
-| Drone hangar                         |                  |             |               |          |                           |             |
+| Drone Labyrinth escape               | ok               |             |               |          | Gazebo Harmonic           |             |
+| Drone Position control               |                  |             |               |          |                           | WIP         |
+| Drone Follow TurtleBot               |                  |             |               |          |                           | broken      |
+| Drone Package delivery               |                  |             |               |          |                           | WIP         |
+| Drone hangar                         |                  |             |               |          |                           | broken      |
 | Drone Visual Lander                  |                  |             |               |          |                           | broken      |
 | Drone Cat and Mouse                  |                  |             |               |          |                           | broken      |
