@@ -31,20 +31,20 @@ class WebGUI(MeasuringThreadingGUI):
         self.node = rclpy.create_node("node")
 
         # Initialize the services
-        self.set_client = self.node.create_client(
-            SetEntityState, "/follow_person/set_entity_state"
-        )
-        while not self.set_client.wait_for_service(timeout_sec=1.0):
-            print("Service not available, waiting...")
-            self.node.get_logger().info("Service not available, waiting...")
-        self.set_request = SetEntityState.Request()
+        # self.set_client = self.node.create_client(
+        #     SetEntityState, "/follow_person/set_entity_state"
+        # )
+        # while not self.set_client.wait_for_service(timeout_sec=1.0):
+        #     print("Service not available, waiting...")
+        #     self.node.get_logger().info("Service not available, waiting...")
+        # self.set_request = SetEntityState.Request()
 
-        self.get_client = self.node.create_client(
-            GetEntityState, "/follow_person/get_entity_state"
-        )
-        while not self.get_client.wait_for_service(timeout_sec=1.0):
-            self.node.get_logger().info("Service not available, waiting...")
-        self.get_request = GetEntityState.Request()
+        # self.get_client = self.node.create_client(
+        #     GetEntityState, "/follow_person/get_entity_state"
+        # )
+        # while not self.get_client.wait_for_service(timeout_sec=1.0):
+        #     self.node.get_logger().info("Service not available, waiting...")
+        # self.get_request = GetEntityState.Request()
 
         self.ideal_cycle = 80
         self.real_time_factor = 0

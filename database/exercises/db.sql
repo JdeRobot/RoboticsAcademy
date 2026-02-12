@@ -206,8 +206,8 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 56	1	52	False
 57	1	53	False
 58	12	54	False
+59	4	55	False
 \.
--- 30  16  3
 
 --
 -- Data for Name: exercises_tools; Type: TABLE DATA; Schema: public; Owner: user-dev

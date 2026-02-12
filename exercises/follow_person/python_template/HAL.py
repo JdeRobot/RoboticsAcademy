@@ -27,7 +27,7 @@ print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
-motor_node = MotorsNode("/cmd_vel", 4, 0.3)
+motor_node = MotorsNode("/commands/velocity", 4, 0.3)
 odometry_node = OdometryNode("/odom")
 laser_node = LaserNode("/scan")
 camera_node = CameraNode("/depth_camera/image_raw")
