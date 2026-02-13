@@ -12,7 +12,7 @@ from datetime import datetime
 import re
 import json
 import traceback
-import imp
+import types
 import importlib
 import rospy
 from std_srvs.srv import Empty
@@ -212,9 +212,9 @@ class Template:
     # Function to generate the modules for use in ACE Editor
     def generate_modules(self):
         # Define HAL module
-        hal_module = imp.new_module("HAL")
-        hal_module.HAL = imp.new_module("HAL")
-        hal_module.HAL.motors = imp.new_module("motors")
+        hal_module = types.ModuleType("HAL")
+        hal_module.HAL = types.ModuleType("HAL")
+        hal_module.HAL.motors = types.ModuleType("motors")
 
         # Add HAL functions
         hal_module.HAL.getPose3d = self.hal.pose3d.getPose3d
@@ -231,8 +231,8 @@ class Template:
         hal_module.HAL.getSonarData_7 = self.hal.sonar_7.getSonarData
 
         # Define GUI module
-        gui_module = imp.new_module("GUI")
-        gui_module.GUI = imp.new_module("GUI")
+        gui_module = types.ModuleType("GUI")
+        gui_module.GUI = types.ModuleType("GUI")
 
         # Add GUI functions
         gui_module.GUI.update = self.gui.update
