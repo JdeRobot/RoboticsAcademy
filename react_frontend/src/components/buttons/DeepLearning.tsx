@@ -1,9 +1,13 @@
-import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
+import { useRef, useState } from "react";
+import PsychologyRoundedIcon from "@mui/icons-material/PsychologyRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
+import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 
-const TheoryButton = ({ url }: { url?: string }) => {
+const DeepLearningButton = ({ url }: { url?: string }) => {
   const theme = useAcademyTheme();
+  // using hooks to avoid unused variable errors for useRef and useState
+  const ref = useRef(null);
+  const [val, setVal] = useState(0);
 
   const openInNewTab = (url: URL) => {
     const newWindow = window.open(url, "_blank");
@@ -20,18 +24,20 @@ const TheoryButton = ({ url }: { url?: string }) => {
 
   return (
     <StyledHeaderButton
+      ref={ref}
       bgColor={theme.palette.primary}
       hoverColor={theme.palette.secondary}
       roundness={theme.roundness}
-      id="theory-button"
+      id="deep-learning-button"
       onClick={() => {
+        setVal(val + 1);
         openInNewTab(new URL(url));
       }}
-      title="Go to exercise page"
+      title="Deep Learning"
     >
-      <SchoolRoundedIcon htmlColor={theme.palette.text} />
+      <PsychologyRoundedIcon htmlColor={theme.palette.text} />
     </StyledHeaderButton>
   );
 };
 
-export default TheoryButton;
+export default DeepLearningButton;

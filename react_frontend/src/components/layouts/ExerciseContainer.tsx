@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { CommsManager, states } from "jderobot-commsmanager";
 

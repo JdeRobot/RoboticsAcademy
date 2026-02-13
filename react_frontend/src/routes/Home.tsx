@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import { AcademyHeader } from "Components/headers";
 import { StyledStubBackground } from "Styles/pages/Project.styles";

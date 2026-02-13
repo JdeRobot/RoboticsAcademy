@@ -2,7 +2,6 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import { StyledWebGUIError } from "Styles/visualizers/WebGUIPreview.styles";
 import WebGUIContainer from "Components/exercise/WebGUIContainer";
-import React from "react";
 
 // camera
 const WebGUIPreview = () => {

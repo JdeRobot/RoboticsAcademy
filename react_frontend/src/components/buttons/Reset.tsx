@@ -3,7 +3,7 @@ import { useError } from "jderobot-ide-interface";
 import { CommsManager, states } from "jderobot-commsmanager";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React, { useState } from "react";
+import { useState } from "react";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 
 const ResetButton = () => {

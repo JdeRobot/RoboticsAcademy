@@ -3,7 +3,6 @@ import { Points, OrbitControls, Grid, Point } from "@react-three/drei";
 import { Canvas, Color, useFrame, useThree, Vector3 } from "@react-three/fiber";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import { useEffect, useState } from "react";
-import React from "react";
 
 interface WebGUIPoint {
   pose: Vector3;

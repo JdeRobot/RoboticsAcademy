@@ -1,10 +1,10 @@
-import React from "react";
 import "./index.css";
 import App from "./App";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { ErrorStudio, Home, projectLoader, Studio } from "Routes";
+import { StrictMode } from "react";
 
 // Clear stored state on app startup to ensure fresh state on every launch
 // This removes theme preferences, search filters, and other cached UI state
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </StrictMode>
 );

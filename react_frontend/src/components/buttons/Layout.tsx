@@ -5,7 +5,6 @@ import {
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import SpaceDashboardRoundedIcon from "@mui/icons-material/SpaceDashboardRounded";
 import { ReactNode, useRef, useState } from "react";
-import React from "react";
 import { Layout } from "jderobot-ide-interface";
 
 const LayoutButton = ({

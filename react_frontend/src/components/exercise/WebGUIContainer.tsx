@@ -6,10 +6,9 @@ import {
   ManagerMsg,
   states,
 } from "jderobot-commsmanager";
-import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
+import { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
-  id,
   children,
 }: {
   id?: string;

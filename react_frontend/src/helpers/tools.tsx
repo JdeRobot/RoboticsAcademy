@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CommsManager } from "jderobot-commsmanager";
 import { ViewersEntry, VncViewer } from "jderobot-ide-interface";
 

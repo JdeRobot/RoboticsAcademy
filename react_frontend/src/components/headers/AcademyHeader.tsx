@@ -13,7 +13,6 @@ import {
   ThemeButton,
   InfoButton,
 } from "Components/buttons";
-import React from "react";
 
 const AcademyHeader = () => {
   const theme = useAcademyTheme();

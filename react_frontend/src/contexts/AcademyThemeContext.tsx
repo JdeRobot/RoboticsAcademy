@@ -2,7 +2,6 @@ import { ThemeProvider } from "jderobot-ide-interface";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { AcademyTheme } from "Types/index";
 import { flushSync } from "react-dom";
-import React from "react";
 
 interface AcademyThemeProviderProps {
   theme?: AcademyTheme;

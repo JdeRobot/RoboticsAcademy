@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { CommsManager, events, ManagerMsg } from "jderobot-commsmanager";
 import { StyledStatusBarEntry } from "jderobot-ide-interface";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React from "react";
 
 type FrequenciesData = {
   brain: number;

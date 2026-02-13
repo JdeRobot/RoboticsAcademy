@@ -3,7 +3,6 @@ import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
 import { publish, subscribe, unsubscribe, zipCodeFiles } from "Helpers/utils";
 import { useEffect, useRef, useState } from "react";
-import React from "react";
 import JSZip from "jszip";
 import { getFileList } from "Api";
 

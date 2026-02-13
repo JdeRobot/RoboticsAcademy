@@ -1,7 +1,6 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import InfoIcon from "@mui/icons-material/InfoRounded";
-import React from "react";
 
 const InfoButton = () => {
   const theme = useAcademyTheme();

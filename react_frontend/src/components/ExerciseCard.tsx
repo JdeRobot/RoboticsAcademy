@@ -1,4 +1,3 @@
-import React from "react";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";

@@ -1,5 +1,4 @@
 import { useEffect, useReducer, useRef, useState } from "react";
-import React from "react";
 
 type CameraState = {
   isCameraPause: boolean;

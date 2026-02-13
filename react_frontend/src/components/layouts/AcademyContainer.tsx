@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ExerciseCard } from "./../ExerciseCard";
 import { useHomepage } from "Contexts/HomepageContext";
 import { Exercise, Filters } from "src/types/exercises";
