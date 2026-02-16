@@ -39,13 +39,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Lowercase Repository Owner
+        run: echo "REPO_OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and Push Base Image (RADI Dependencies)
         uses: docker/build-push-action@v5
         with:
           context: ./scripts/RADI
           file: ./scripts/RADI/Dockerfile.dependencies_humble
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/robotics-applications:dependencies-humble
+          tags: ghcr.io/${{ env.REPO_OWNER_LC }}/robotics-applications:dependencies-humble
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -81,6 +84,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Lowercase Repository Owner
+        run: echo "REPO_OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build and Push Academy Image
         uses: docker/build-push-action@v5
         with:
@@ -93,6 +99,6 @@ jobs:
              RAM=humble-devel
              ROS_DISTRO=humble
              IMAGE_TAG=test
-          tags: ghcr.io/${{ github.repository_owner }}/robotics-academy:test
+          tags: ghcr.io/${{ env.REPO_OWNER_LC }}/robotics-academy:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
