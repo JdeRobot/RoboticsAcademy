@@ -23,7 +23,8 @@ install_common_dependencies()
     # if we would pass the flag `-stdlib=libstdc++` to `clang++`.
     ${SUDO} apt-get -y install g++ cmake pkg-config libboost-serialization-dev libboost-filesystem-dev libboost-system-dev libboost-program-options-dev libboost-test-dev libeigen3-dev libode-dev wget libyaml-cpp-dev
     export CXX=g++
-    export MAKEFLAGS="-j `nproc`"
+    # export MAKEFLAGS="-j 1"
+    export MAKEFLAGS="-j 1"
 }
 
 install_python_binding_dependencies()

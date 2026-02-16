@@ -37,7 +37,7 @@ RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBO
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
 RUN /bin/bash -c "source /home/dev_ws/install/local_setup.bash"
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; export MAKEFLAGS='-j 1'; colcon build --symlink-install --parallel-workers 1 --executor sequential --event-handlers console_direct+ --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_BUILD_PARALLEL_LEVEL=1"
 
 # Compress commons
 WORKDIR /RoboticsAcademy/
