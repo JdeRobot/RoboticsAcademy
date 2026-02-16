@@ -9,10 +9,8 @@ import {
 import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
-  id,
   children,
 }: {
-  id?: string;
   children?: ReactNode;
 }) => {
   const theme = useAcademyTheme();
