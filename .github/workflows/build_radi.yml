@@ -93,6 +93,7 @@ jobs:
              RAM=humble-devel
              ROS_DISTRO=humble
              IMAGE_TAG=test
+             BASE_IMAGE=ghcr.io/${{ env.REPO_OWNER_LC }}/robotics-applications:dependencies-humble
           tags: ghcr.io/${{ env.REPO_OWNER_LC }}/robotics-academy:test
           cache-from: type=gha
           cache-to: type=gha,mode=max

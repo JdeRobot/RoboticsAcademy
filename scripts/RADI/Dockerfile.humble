@@ -1,4 +1,5 @@
-FROM jderobot/robotics-applications:dependencies-humble
+ARG BASE_IMAGE=jderobot/robotics-applications:dependencies-humble
+FROM $BASE_IMAGE
 
 WORKDIR /
 
