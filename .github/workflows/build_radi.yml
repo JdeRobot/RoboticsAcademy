@@ -3,8 +3,6 @@ name: Build RADI Image (GSoC Contribution)
 on:
   push:
     branches: [ humble-devel ]
-    paths:
-      - 'scripts/RADI/**'
   workflow_dispatch:
 
 jobs:
