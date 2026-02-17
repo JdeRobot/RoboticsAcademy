@@ -148,6 +148,8 @@ def exists_in_helpers(fal, path, project, folder=False):
     """
     for lang in ["python", "cpp"]:
         helper_path = fal.exercise_helper_path(project, lang)
+        if not os.path.exists(helper_path):
+            continue
         file_list = fal.list_formatted(helper_path, "Code")
         found = check_exist(fal, path, file_list, folder)
         if found:
