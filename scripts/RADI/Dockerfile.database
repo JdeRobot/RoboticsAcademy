@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:15
 
 WORKDIR /
 
@@ -12,6 +12,9 @@ ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
 RUN curl -sL https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/${ROBOTICS_ACADEMY}/database/exercises/db.sql -o /docker-entrypoint-initdb.d/2.sql
 RUN curl -sL https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/${ROBOTICS_ACADEMY}/database/django_auth.sql -o /docker-entrypoint-initdb.d/3.sql
 RUN curl -sL https://raw.githubusercontent.com/JdeRobot/RoboticsInfrastructure/${ROBOTICS_INFRASTRUCTURE}/database/universes.sql -o /docker-entrypoint-initdb.d/1.sql
+
+# PATCH: Remove incompatible 'transaction_timeout' for Postgres 15 compatibility
+RUN sed -i '/transaction_timeout/d' /docker-entrypoint-initdb.d/*.sql
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
