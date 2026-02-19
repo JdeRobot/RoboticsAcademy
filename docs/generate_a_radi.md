@@ -40,7 +40,18 @@ The goal of creating a new non official RADI is to test new dockerfile dependenc
 
 `IMAGE_TAG`: This is the tag of the Docker image that will be created. Default value is `test`.
 
-3. **Change the tag when launching RA**: launch the tag of the robotics-academy docker image to the one you have just created. If you are using either the developer script or docker compose remember to change the tag in the corresponding **compose*cfg/dev_humble*\*.yaml** file.
+3. **Run the Docker image**
+
+   Navigate back to the root of the repository and run the startup script:
+
+   ```bash
+   cd ../..
+   ./scripts/run_academy.sh
+   ```
+
+   Access the interface at [http://0.0.0.0:7164/](http://0.0.0.0:7164/)
+
+4. **Change the tag when launching RA**: launch the tag of the robotics-academy docker image to the one you have just created. If you are using either the developer script or docker compose remember to change the tag in the corresponding **compose*cfg/dev_humble*\*.yaml** file.
 
 ## Example
 
