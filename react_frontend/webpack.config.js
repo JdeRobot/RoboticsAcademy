@@ -42,6 +42,14 @@ module.exports = {
   },
   module: {
     rules: [
+      // Exercise WebGUIs (and their helpers) live outside `react_frontend/` and are authored as ES Modules.
+      // Webpack may otherwise parse `.js` as scripts (CommonJS) which breaks on `import`/`export`.
+      {
+        test: /\.js$/,
+        include: path.resolve(__dirname, "../exercises"),
+        exclude: /node_modules/,
+        type: "javascript/esm",
+      },
       {
         test: /\.(s*)css$/,
         use: [
