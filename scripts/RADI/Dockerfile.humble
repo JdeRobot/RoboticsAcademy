@@ -12,7 +12,10 @@ RUN mkdir -p /home/ws/src
 RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
 RUN mv /opt/jderobot/resources /resources
 
-RUN mv -f /opt/jderobot/gme_o3de /data/workspace/gme_o3de
+# Add .paks of O3DE
+RUN mv -f /opt/jderobot/packages_O3DE/* /data/workspace/o3de/gme_o3de/bin/Linux/release/Monolithic/Cache/linux/
+WORKDIR /data/workspace/o3de/gme_o3de/bin/Linux/release/Monolithic
+RUN chmod +x ./* 
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
