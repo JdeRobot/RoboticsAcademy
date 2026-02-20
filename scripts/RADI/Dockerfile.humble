@@ -16,11 +16,10 @@ ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
-ARG RAM=$RAM
-RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager
+RUN python3 -m pip install robotics_application_manager
 
 # copy scripts
-RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh
+RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh
 
 # Move Window Manager config
 RUN mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml
