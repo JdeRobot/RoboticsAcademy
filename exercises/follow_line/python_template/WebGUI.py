@@ -13,12 +13,6 @@ from lap import Lap
 from sensor_msgs.msg import Image
 from rclpy.node import Node
 
-import sys
-
-sys.path.insert(0, "/RoboticsApplicationManager")
-
-from manager.ram_logging.log_manager import LogManager
-
 
 class WebGUIImagePublisher(Node):
     """Internal publisher to create /webgui_image topic"""
