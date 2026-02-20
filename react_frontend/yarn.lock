@@ -4466,10 +4466,10 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jderobot-commsmanager@1.0.24:
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.24.tgz#b6e7a0ff0e886ee051c4693ccfd0de54b8eca72e"
-  integrity sha512-mbdgWG+O6cWPxQs16jdTbVjHQ65/lANJyVCEgzr1FZKi9bHPNrJFjGQW0qqVksIzuVwr4+zmg2PCFcTIAe2seQ==
+jderobot-commsmanager@1.0.25:
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.25.tgz#d32ba22aea6e4eaa5005af11170551ae4b571a92"
+  integrity sha512-g6eQRNZdcNRa9c8Rxd9QbFKs0ZKgz9nAMCSVdXSzApQe4H8CIW45C0aqjKTzWcQwnoxe6vu7m63QQtKcnF9Zeg==
   dependencies:
     uuid "^11.1.0"
 

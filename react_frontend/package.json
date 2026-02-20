@@ -63,7 +63,7 @@
     "@types/styled-components": "^5.1.34",
     "axios": "^1.13.5",
     "glob": "^8.0.3",
-    "jderobot-commsmanager": "1.0.24",
+    "jderobot-commsmanager": "1.0.25",
     "jderobot-ide-interface": "0.2.137",
     "jszip": "^3.10.1",
     "react-router-dom": "^7.12.0",
