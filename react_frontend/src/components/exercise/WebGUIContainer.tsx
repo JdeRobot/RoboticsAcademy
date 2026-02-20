@@ -96,10 +96,19 @@ export const connectApplication = (
     }
 
     const timer = window.setInterval(async () => {
-      try {
-        await manager.send("gui", "start");
-      } catch {
+      const state = manager.getState();
+      if (
+        state === states.IDLE ||
+        state === states.CONNECTED ||
+        state === states.WORLD_READY
+      ) {
         window.clearInterval(timer);
+      } else {
+        try {
+          await manager.send("gui", "start");
+        } catch {
+          window.clearInterval(timer);
+        }
       }
     }, 1000);
     intRef.current = timer;
