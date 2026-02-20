@@ -19,10 +19,7 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-
-ENV O3DE_HASH=5b344a0be6
-ENV O3DE_EXTRAS_HASH=ros2_project_template
-ENV PROJECT_NAME=WarehouseTest
+ENV GENERIC_MINIMAL_EXECUTABLE_O3DE_HASH=5b344a0be6
 
 ENV ROS_DISTRO=humble
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
@@ -355,77 +352,10 @@ WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
 
-
-
-
-
-
-
-
-
-
 ## Symlink clang version to non-versioned clang and set cc to clang
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
-WORKDIR /data/workspace
-
-ENV WORKDIR=/data/workspace
-# O3DE Variables
-ARG O3DE_REPO=https://github.com/o3de/o3de.git
-ARG O3DE_BRANCH=2310.3
-ARG O3DE_COMMIT=HEAD
-ENV O3DE_ROOT=$WORKDIR/o3de
-
-# O3DE Extras Variables
-ARG O3DE_EXTRAS_REPO=https://github.com/o3de/o3de-extras.git
-ARG O3DE_EXTRAS_BRANCH=2310.3
-ARG O3DE_EXTRAS_COMMIT=HEAD
-ENV O3DE_EXTRAS_ROOT=$WORKDIR/o3de-extras
-
-ENV PROJECT_NAME=ROS2Demo
-ENV PROJECT_DEMO_ROOT=$WORKDIR/$PROJECT_NAME
-
-RUN . /opt/ros/humble/setup.sh \
-  \
-  ############################################################### \
-  # Clone o3de \
-  ############################################################### \
-  \
-  && git clone --single-branch -b $O3DE_BRANCH $O3DE_REPO $O3DE_ROOT \
-  && git -C $O3DE_ROOT lfs install \
-  && git -C $O3DE_ROOT lfs pull \
-  \
-  ############################################################### \
-  # Clone o3de-extras   \
-  ############################################################### \
-  && git clone --single-branch -b $O3DE_EXTRAS_BRANCH $O3DE_EXTRAS_REPO $O3DE_EXTRAS_ROOT \
-  && git -C $O3DE_EXTRAS_ROOT lfs install \
-  && git -C $O3DE_EXTRAS_ROOT lfs pull \
-  \
-  ############################################################### \
-  # Get the O3DE python and register the gem paths and projects \
-  ############################################################### \
-  && $O3DE_ROOT/python/get_python.sh \
-  && $O3DE_ROOT/scripts/o3de.sh register -ep $O3DE_ROOT \
-  && $O3DE_ROOT/scripts/o3de.sh register --all-gems-path $O3DE_EXTRAS_ROOT/Gems/ \
-  && $O3DE_ROOT/scripts/o3de.sh register --all-templates-path $O3DE_EXTRAS_ROOT/Templates/
-
-WORKDIR /data/workspace
-
-# create in project from template in o3de-extras
-RUN ./o3de/scripts/o3de.sh create-project \
-    --project-path ${PROJECT_DEMO_ROOT} \
-    --template-path ./o3de-extras/Templates/Ros2ProjectTemplate
-
-WORKDIR ${PROJECT_DEMO_ROOT}
-
-RUN . /opt/ros/humble/setup.sh \
-    && cmake -B build/linux -G "Ninja Multi-Config" -S . -DLY_DISABLE_TEST_MODULES=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLY_STRIP_DEBUG_MODULES=ON
-
-WORKDIR ${PROJECT_DEMO_ROOT}
-
-RUN . /opt/ros/humble/setup.sh \
-    && cmake --build build/linux --config profile --target ${PROJECT_NAME} Editor ${PROJECT_NAME}.Assets ${PROJECT_NAME}.GameLauncher  
+RUN mkdir -p /data/workspace    
     
 WORKDIR /
