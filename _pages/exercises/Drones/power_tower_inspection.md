@@ -31,8 +31,8 @@ The goal of this exercise is to implement the logic that allows a quadrotor to p
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import WebGUI
+import HAL
 # Enter sequential code!
 
 while True:
