@@ -18,6 +18,8 @@
 
 ## How to setup the developer environment
 
+**Important:** when a new version of Robotics Academy is released it also updates the official RADI. Make sure to upgrade it using the following command: `docker pull jderobot/robotics-academy:latest` and `docker pull jderobot/robotics-database:latest`.
+
 Before starting developing, please ensure that you have understood RoboticsAcademy architecture and where the different resources are placed. There are three different ways of developing in RA:
 
 <a name="automatic-script"></a>
