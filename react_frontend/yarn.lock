@@ -4466,10 +4466,10 @@ jackspeak@^3.1.2:
   optionalDependencies:
     "@pkgjs/parseargs" "^0.11.0"
 
-jderobot-commsmanager@1.0.24:
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.24.tgz#b6e7a0ff0e886ee051c4693ccfd0de54b8eca72e"
-  integrity sha512-mbdgWG+O6cWPxQs16jdTbVjHQ65/lANJyVCEgzr1FZKi9bHPNrJFjGQW0qqVksIzuVwr4+zmg2PCFcTIAe2seQ==
+jderobot-commsmanager@1.0.25:
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/jderobot-commsmanager/-/jderobot-commsmanager-1.0.25.tgz#d32ba22aea6e4eaa5005af11170551ae4b571a92"
+  integrity sha512-g6eQRNZdcNRa9c8Rxd9QbFKs0ZKgz9nAMCSVdXSzApQe4H8CIW45C0aqjKTzWcQwnoxe6vu7m63QQtKcnF9Zeg==
   dependencies:
     uuid "^11.1.0"
 
@@ -4754,12 +4754,7 @@ lodash.topairs@^4.3.0:
   resolved "https://registry.npmjs.org/lodash.topairs/-/lodash.topairs-4.3.0.tgz"
   integrity sha512-qrRMbykBSEGdOgQLJJqVSdPWMD7Q+GJJ5jMRfQYb+LTLsw3tYVIabnCzRqTJb2WTo17PG5gNzXuFaZgYH/9SAQ==
 
-lodash@^4.17.21:
-  version "4.17.21"
-  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
-  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
-
-lodash@^4.17.23:
+lodash@^4.17.21, lodash@^4.17.23:
   version "4.17.23"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.23.tgz#f113b0378386103be4f6893388c73d0bde7f2c5a"
   integrity sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==
