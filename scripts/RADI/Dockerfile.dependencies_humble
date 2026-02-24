@@ -341,7 +341,13 @@ RUN . /opt/ros/humble/setup.sh && \
 
 # Build (drop the duplicate)
 WORKDIR /home/dev_ws
-RUN . /opt/ros/humble/setup.sh && colcon build && colcon build
+ARG TARGETARCH
+RUN . /opt/ros/humble/setup.sh && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+      export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
+    else \
+      colcon build && colcon build; \
+    fi
 RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
