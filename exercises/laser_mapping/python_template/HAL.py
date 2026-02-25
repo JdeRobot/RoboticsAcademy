@@ -23,12 +23,10 @@ threading.excepthook = custom_thread_excepthook
 
 
 def __auto_spin() -> None:
-    while rclpy.ok():
-        try:
-            executor.spin_once(timeout_sec=0)
-        except Exception:
-            pass
-        time.sleep(1 / freq)
+    try:
+        executor.spin()
+    except Exception:
+        pass
 
 
 if not rclpy.ok():

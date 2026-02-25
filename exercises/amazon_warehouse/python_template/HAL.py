@@ -49,12 +49,10 @@ executor.add_node(platform_listener)
 
 
 def __auto_spin() -> None:
-    while rclpy.ok():
-        try:
-            executor.spin_once(timeout_sec=0)
-        except Exception:
-            pass
-        time.sleep(1 / freq)
+    try:
+        executor.spin()
+    except Exception:
+        pass
 
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
