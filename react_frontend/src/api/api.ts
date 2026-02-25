@@ -40,7 +40,12 @@ const exitProject = async () => {
   const apiUrl = `/academy/exit_exercise/`;
 
   try {
-    navigator.sendBeacon(apiUrl);
+    const data = new FormData();
+    const csfr = getCookie("csrftoken");
+    if (csfr !== undefined) {
+      data.append("csrfmiddlewaretoken", csfr);
+      navigator.sendBeacon(apiUrl, data);
+    }
   } catch (e: unknown) {
     const error = e as ApiError;
     throw Error(error.response?.data.message);

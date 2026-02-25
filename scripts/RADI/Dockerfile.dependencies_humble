@@ -295,8 +295,24 @@ RUN apt-get update && \
   libpoco-dev \
   && rm -rf /var/lib/apt/lists/*
 
+# On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
+# to avoid GNU make jobserver failures under amd64 emulation.
+
+ARG TARGETARCH
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-  colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+    if [ "$TARGETARCH" = "arm64" ]; then \
+        colcon build \
+          --symlink-install \
+          --executor sequential \
+          --cmake-args \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
+    else \
+        colcon build \
+          --symlink-install \
+          --cmake-args \
+            -DCMAKE_BUILD_TYPE=Release ; \
+    fi
 
 # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
@@ -325,7 +341,13 @@ RUN . /opt/ros/humble/setup.sh && \
 
 # Build (drop the duplicate)
 WORKDIR /home/dev_ws
-RUN . /opt/ros/humble/setup.sh && colcon build && colcon build
+ARG TARGETARCH
+RUN . /opt/ros/humble/setup.sh && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+      export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
+    else \
+      colcon build && colcon build; \
+    fi
 RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
