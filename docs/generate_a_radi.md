@@ -52,6 +52,20 @@ For instance, to build a Docker image using the master branch of the Robotics Ac
 
 Use '-f' to force build the base image. If omitted, the base image is created only if it doesn't exist.
 
+### ⚠️ Note for External Contributors (Working from a Fork)
+
+If you are developing from a personal fork of **RoboticsAcademy (RA)** or **RoboticsInfrastructure (RI)**, simply running the `build.sh` script with your branch names (e.g., `-a your-branch -i your-branch`) is **not enough** to apply your changes. 
+
+By default, the Dockerfiles are hardcoded to fetch files and clone repositories directly from the official `JdeRobot` GitHub organization. To build the RADI with your custom fork, you must manually point the Dockerfiles to your repository:
+
+1. Navigate to the `scripts/RADI/` directory and open the relevant Dockerfiles (e.g., `Dockerfile.humble`, `Dockerfile.database`).
+2. Search for the official JdeRobot URLs and replace `JdeRobot` with your GitHub username (or your fork's URL). You will typically need to modify:
+   * `git clone` commands (e.g., `https://github.com/JdeRobot/...`)
+   * `curl` commands fetching raw files (e.g., `https://raw.githubusercontent.com/JdeRobot/...`)
+3. Save the changes and run the `build.sh` script again.
+
+*Note: If you are an internal contributor with write access to the official JdeRobot repositories, it is highly recommended to work directly on branches within the official repos instead of forks. This avoids the need to manually modify the Dockerfile URLs.*
+
 ## Troubleshooting
 
 If an error occurs while running the script, ensure that:
