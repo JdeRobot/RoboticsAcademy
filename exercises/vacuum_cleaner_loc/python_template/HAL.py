@@ -8,7 +8,6 @@ from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.bumper import BumperNode
 
-
 freq = 30.0
 
 

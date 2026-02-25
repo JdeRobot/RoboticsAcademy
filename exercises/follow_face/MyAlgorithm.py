@@ -6,7 +6,6 @@ from datetime import datetime
 import cv2
 import numpy as np
 
-
 time_cycle = 80
 
 

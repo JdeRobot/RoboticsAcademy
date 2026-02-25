@@ -91,9 +91,9 @@ def add_bb_into_image(image, bb, color=(255, 0, 0), thickness=2, label=None):
     # Add label
     if label is not None:
         # Get size of the text box
-        (tw, th) = cv2.getTextSize(label, font, fontScale, fontThickness)[0]
+        tw, th = cv2.getTextSize(label, font, fontScale, fontThickness)[0]
         # Top-left coord of the textbox
-        (xin_bb, yin_bb) = (x1 + thickness, y1 - th + int(12.5 * fontScale))
+        xin_bb, yin_bb = (x1 + thickness, y1 - th + int(12.5 * fontScale))
         # Checking position of the text top-left (outside or inside the bb)
         if yin_bb - th <= 0:  # if outside the image
             yin_bb = y1 + th  # put it inside the bb
