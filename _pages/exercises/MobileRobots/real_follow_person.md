@@ -120,8 +120,8 @@ To use the real *TurtleBot2* we have to follow this steps:
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import WebGUI
+import HAL
 # Enter sequential code!
 
 
@@ -141,8 +141,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware.
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware.
+* `import WebGUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to obtain the current frame of the camera robot.
 * `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
 * `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)

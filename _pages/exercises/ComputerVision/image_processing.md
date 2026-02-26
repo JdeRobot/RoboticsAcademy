@@ -30,8 +30,8 @@ This exercise is an introduction to the image processing world. In this practice
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
-* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
+* `import WebGUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage(frame)` - to get the frame corresponding to the i position
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 
