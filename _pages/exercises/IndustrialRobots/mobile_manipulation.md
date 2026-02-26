@@ -91,8 +91,8 @@ The mobile manipulator is MMO-500 robot from [Neobotix](https://www.neobotix-rob
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import WebGUI
+import HAL
 # Enter sequential code!
 
 
@@ -112,8 +112,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
-* `from GUI import GUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
+* `import WebGUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.back_to_home()` - Command the robot arm and gripper to move back to the home pose.
 * `HAL.pickup()` - to set the linear speed
 * `HAL.place()` - to set the angular velocity

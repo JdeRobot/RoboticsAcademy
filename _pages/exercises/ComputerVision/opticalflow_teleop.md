@@ -45,8 +45,8 @@ In this practice the intention is to develop an optical flow algorithm to teleop
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
-* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
+* `import WebGUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image
 * `GUI.showImage()` - allows you to view a debug image or with relevant information
 * `HAL.motors.sendV()` - to set the linear speed

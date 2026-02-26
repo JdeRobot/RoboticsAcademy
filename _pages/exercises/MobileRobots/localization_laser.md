@@ -81,8 +81,8 @@ docker run --rm -it -p 7164:7164 -p 2303:2303 -p 1905:1905 -p 8765:8765 -p 6080:
 In the launched webpage, type your code in the text editor,
 
 ```python
-from GUI import GUI
-from HAL import HAL
+import WebGUI
+import HAL
 # Enter sequential code!
 
 
@@ -102,8 +102,8 @@ while True:
 
 ## Robot API
 
-* `from HAL import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
-* `from GUI import GUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+* `import HAL` - to import the HAL library class. This class contains the functions that receives information from the webcam.
+* `import WebGUI` - to import the GUI (Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getPose3d().x` - to get position x of the robot 
 * `HAL.getPose3d().y` - to get position y of the robot 
 * `HAL.getPose3d().yaw` - to get the orientation of the robot 

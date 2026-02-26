@@ -75,7 +75,7 @@ The goal of this exercise is to learn how to **use vision to assist an industria
 In the launched webpage, type your code in the text editor:
 
 ```python
-from HAL import HAL
+import HAL
 # Enter sequential code!
 
 while True:

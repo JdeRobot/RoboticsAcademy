@@ -116,7 +116,7 @@ increment_20 = [-0.4, -0.1, 0.4]
 In the launched webpage, type your code in the text editor and run it pressing the run button:
 
 ```python
-from HAL import HAL
+import HAL
 # Enter sequential code here!
 
 while True:
