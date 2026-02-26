@@ -75,14 +75,13 @@ const Camera = ({ visible }: { visible: boolean }) => {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  useEffect(() => {
+ useEffect(() => {
     if (isVisualReady) {
       startWebcam();
     }
+    // Cleanup function
     return () => {
-      if (isVisualReady) {
-        stopWebcam();
-      }
+      stopWebcam(); 
     };
   }, [isVisualReady]);
 
@@ -90,7 +89,7 @@ const Camera = ({ visible }: { visible: boolean }) => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: "user", // Request the front camera (selfie camera)
+          facingMode: "user", // Request the front cam                  era (selfie camera)
         },
       });
       if (videoRef.current) {
