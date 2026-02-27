@@ -34,4 +34,5 @@ interface StyledErrorMessageProps {
 
 export const StyledErrorMessage = styled.h1<StyledErrorMessageProps>`
   color: ${(p) => p.color ?? primaryColor};
+  text-align: center;
 `;
