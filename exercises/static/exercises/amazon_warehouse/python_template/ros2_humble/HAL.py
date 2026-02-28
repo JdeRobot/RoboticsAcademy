@@ -3,21 +3,18 @@ import threading
 import time
 import sys
 
+from std_msgs.msg import Float64
+
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.sim_time import SimTimeNode
-from hal_interfaces.specific.amazon_warehouse.platform_controller import (
-    PlatformCommandNode,
-    PublisherPlatformNode,
-)
 
 # Hardware Abstraction Layer
 freq = 30.0
 
 # Lift State
 liftState = False
-
 
 # Mutes exceptions
 def custom_thread_excepthook(args):
@@ -37,15 +34,17 @@ motor_node = MotorsNode("/amazon_robot/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/amazon_robot/odom")
 laser_node = LaserNode("/amazon_robot/scan")
 sim_time_node = SimTimeNode()
-platform_listener = PlatformCommandNode("/send_effort")
-platform_pub = PublisherPlatformNode("/send_effort")
+
+# Platform control (Harmonic direct topic)
+platform_node = rclpy.create_node("platform_cmd_node")
+platform_pub = platform_node.create_publisher(Float64, "/platform/cmd_vel", 10)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
 executor.add_node(laser_node)
 executor.add_node(sim_time_node)
-executor.add_node(platform_listener)
+executor.add_node(platform_node)
 
 
 def __auto_spin() -> None:
@@ -87,13 +86,17 @@ def setW(velocity):
 def lift():
     global liftState
     liftState = True
-    platform_pub.load()
+    msg = Float64()
+    msg.data = 5.0
+    platform_pub.publish(msg)
 
 
 def putdown():
     global liftState
     liftState = False
-    platform_pub.unload()
+    msg = Float64()
+    msg.data = -5.0
+    platform_pub.publish(msg)
 
 
 def getLiftState():
