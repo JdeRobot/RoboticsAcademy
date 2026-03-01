@@ -100,15 +100,17 @@ const WebGUI = () => {
           {lapTime} s
         </label>
       )}
-      <div className="overlay" id="circuit-aerial">
-        <img src={circuitImg} alt="" id="circuit-img" />
-        {carPose && (
-          <div
-            id="circuit-car-pos"
-            style={{ top: carPose[1], left: carPose[0] }}
-          />
-        )}
-      </div>
+      {image && (
+        <div className="overlay" id="circuit-aerial">
+          <img src={circuitImg} alt="" id="circuit-img" />
+          {carPose && (
+            <div
+              id="circuit-car-pos"
+              style={{ top: carPose[1], left: carPose[0] }}
+            />
+          )}
+        </div>
+      )}
     </WebGUIContainer>
   );
 };
