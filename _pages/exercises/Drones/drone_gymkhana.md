@@ -97,10 +97,10 @@ There are several ways of solving this exercise, that differ in the approach and
 
 To give you some initial references, each leg in the squared course is 16 m long, and the position of the numbered cubes at the corners are:
 
-1. **CUBE 1:** Located at (x, y) = (8, -8) m
-2. **CUBE 2:** Located at (x, y) = (-8, -8) m
-3. **CUBE 3:** Located at (x, y) = (-8, 8) m
-4. **CUBE 4:** Located at (x, y) = (8, 8) m
+1. **CUBE 1:** Located at (x, y) = (8, 8) m
+2. **CUBE 2:** Located at (x, y) = (8, -8) m
+3. **CUBE 3:** Located at (x, y) = (-8, -8) m
+4. **CUBE 4:** Located at (x, y) = (-8, 8) m
 
 The takeoff pad is located at (x, y) = (0, 0) m. The dimensions of all cubes are 1 x 1 x 1 m.
 
