@@ -78,13 +78,18 @@ const Camera = ({ visible }: { visible: boolean }) => {
   useEffect(() => {
     if (isVisualReady) {
       startWebcam();
+    } else {
+      stopWebcam();
     }
+  }, [isVisualReady]);
+
+  useEffect(() => {
     return () => {
       if (isVisualReady) {
         stopWebcam();
       }
     };
-  }, [isVisualReady]);
+  }, [mediaStream]);
 
   const startWebcam = async () => {
     try {
