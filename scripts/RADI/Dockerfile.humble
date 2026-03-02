@@ -4,8 +4,9 @@ WORKDIR /
 
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
+ARG INFRA_OWNER=JdeRobot
 RUN mkdir -p /opt/jderobot && \
-    git clone --depth 1 https://github.com/JdeRobot/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+    git clone --depth 1 https://github.com/${INFRA_OWNER}/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
@@ -30,7 +31,8 @@ RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dr
 
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
-RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
+ARG ACADEMY_OWNER=JdeRobot
+RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
