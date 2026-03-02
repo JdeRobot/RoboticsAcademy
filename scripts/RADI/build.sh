@@ -12,11 +12,9 @@ FORCE_BUILD_NO_CACHE=false
 # Default GitHub owners
 ACADEMY_OWNER="JdeRobot"
 INFRA_OWNER="JdeRobot"
-RAM_OWNER="JdeRobot"
 
 Help()
 {
-   # Display Help
    echo "Syntax: build.sh [options]"
    echo "Options:"
    echo "  -h                           Print this Help."
@@ -29,17 +27,16 @@ Help()
    echo "  -t, --tag           <value>  Tag name of the image.                   Default: test"
    echo "  --academy-owner     <value>  GitHub owner for RoboticsAcademy.        Default: JdeRobot"
    echo "  --infra-owner       <value>  GitHub owner for RoboticsInfrastructure. Default: JdeRobot"
-   echo "  --ram-owner         <value>  GitHub owner for RAM.                    Default: JdeRobot"
    echo
    echo "Example:"
    echo "   ./build.sh -t my_image"
-   echo "   ./build.sh --academy-owner aquintan4 -a issue-3476 -t my_image" 
+   echo "   ./build.sh --academy-owner aquintan4 -a issue-3476 -t my_image"
    echo
 }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -a | --academy) 
+        -a | --academy)
             ROBOTICS_ACADEMY="$2"
             shift 2
             ;;
@@ -67,10 +64,6 @@ while [[ $# -gt 0 ]]; do
             INFRA_OWNER="$2"
             shift 2
             ;;
-        --ram-owner)
-            RAM_OWNER="$2"
-            shift 2
-            ;;
         -f | --force)
             FORCE_BUILD=true
             shift
@@ -79,7 +72,7 @@ while [[ $# -gt 0 ]]; do
             FORCE_BUILD_NO_CACHE=true
             shift
             ;;
-        -h | --help) # display Help
+        -h | --help)
             echo "Generates RoboticsAcademy RoboticsBackend image"
             echo
             Help
@@ -95,12 +88,11 @@ done
 
 echo "ROBOTICS_ACADEMY:-------------:$ROBOTICS_ACADEMY (Owner: $ACADEMY_OWNER)"
 echo "ROBOTICS_INFRASTRUCTURE:------:$ROBOTICS_INFRASTRUCTURE (Owner: $INFRA_OWNER)"
-echo "RAM:--------------------------:$RAM (Owner: $RAM_OWNER)"
+echo "RAM:--------------------------:$RAM"
 echo "ROS_DISTRO:-------------------:$ROS_DISTRO"
 echo "IMAGE_TAG:--------------------:$IMAGE_TAG"
 echo
 
-# Determine Dockerfile based on ROS_DISTRO
 if [[ $ROS_DISTRO == "humble" ]]; then
     DOCKERFILE_BASE="Dockerfile.dependencies_humble"
     DOCKERFILE="Dockerfile.humble"
@@ -115,7 +107,6 @@ else
   NO_CACHE=""
 fi
 
-# Build the Docker Base image
 if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
@@ -129,7 +120,6 @@ else
     exit
 fi
 
-# Build the Docker image
 echo "===================== BUILDING $ROS_DISTRO RoboticsBackend ====================="
 echo "Building RoboticsBackend using $DOCKERFILE for ROS $ROS_DISTRO"
 
@@ -141,5 +131,4 @@ docker build --no-cache -f $DOCKERFILE \
   --build-arg IMAGE_TAG=$IMAGE_TAG \
   --build-arg ACADEMY_OWNER=$ACADEMY_OWNER \
   --build-arg INFRA_OWNER=$INFRA_OWNER \
-  --build-arg RAM_OWNER=$RAM_OWNER \
   -t jderobot/robotics-academy:$IMAGE_TAG .
