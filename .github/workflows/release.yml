@@ -48,13 +48,15 @@ jobs:
             --build-arg RAM=humble-devel \
             --build-arg ROS_DISTRO=humble \
             --build-arg IMAGE_TAG=${TAG} \
+            --build-arg ACADEMY_OWNER=JdeRobot \
+            --build-arg INFRA_OWNER=JdeRobot \
             -t jderobot/robotics-academy:${TAG} .
           docker push jderobot/robotics-academy:${TAG}
 
       - name: Upload as Latest
         run: |
-            docker image tag jderobot/robotics-academy:${TAG} jderobot/robotics-academy:latest
-            docker push jderobot/robotics-academy:latest
+          docker image tag jderobot/robotics-academy:${TAG} jderobot/robotics-academy:latest
+          docker push jderobot/robotics-academy:latest
 
   generate-RA-database-docker-image:
     name: Generate Robotics Academy Database Image
@@ -90,10 +92,12 @@ jobs:
             --build-arg IMAGE_TAG=${TAG}\
             --build-arg ROBOTICS_ACADEMY=humble-devel\
             --build-arg ROBOTICS_INFRASTRUCTURE=database \
+            --build-arg ACADEMY_OWNER=JdeRobot \
+            --build-arg INFRA_OWNER=JdeRobot \
             -t jderobot/robotics-database:${TAG} .
           docker push jderobot/robotics-database:${TAG}
 
       - name: Upload as Latest
         run: |
-            docker image tag jderobot/robotics-database:${TAG} jderobot/robotics-database:latest
-            docker push jderobot/robotics-database:latest
+          docker image tag jderobot/robotics-database:${TAG} jderobot/robotics-database:latest
+          docker push jderobot/robotics-database:latest
