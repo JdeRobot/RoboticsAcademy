@@ -24,6 +24,16 @@ on:
         required: true
         default: database
         type: string
+      academy_owner:
+        description: 'GitHub owner for RoboticsAcademy'
+        required: false
+        default: JdeRobot
+        type: string
+      infra_owner:
+        description: 'GitHub owner for RoboticsInfrastructure'
+        required: false
+        default: JdeRobot
+        type: string
   workflow_dispatch:
     inputs:
       tag:
@@ -43,6 +53,14 @@ on:
         description: 'Branch of Robotics Infrastructure for Universes Database'
         required: true
         default: database
+      academy_owner:
+        description: 'GitHub owner for RoboticsAcademy'
+        required: false
+        default: JdeRobot
+      infra_owner:
+        description: 'GitHub owner for RoboticsInfrastructure'
+        required: false
+        default: JdeRobot
 
 jobs:
   push_to_registry:
@@ -79,6 +97,8 @@ jobs:
             --build-arg IMAGE_TAG=${TAG}\
             --build-arg ROBOTICS_ACADEMY=${{ github.event.inputs.RA }}\
             --build-arg ROBOTICS_INFRASTRUCTURE=${{ github.event.inputs.RI }} \
+            --build-arg ACADEMY_OWNER=${{ github.event.inputs.academy_owner }} \
+            --build-arg INFRA_OWNER=${{ github.event.inputs.infra_owner }} \
             -t jderobot/robotics-database:${TAG} .
           docker push jderobot/robotics-database:${TAG}
       - name: Upload as Latest
