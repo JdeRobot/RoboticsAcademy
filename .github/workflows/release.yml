@@ -48,8 +48,6 @@ jobs:
             --build-arg RAM=humble-devel \
             --build-arg ROS_DISTRO=humble \
             --build-arg IMAGE_TAG=${TAG} \
-            --build-arg ACADEMY_OWNER=JdeRobot \
-            --build-arg INFRA_OWNER=JdeRobot \
             -t jderobot/robotics-academy:${TAG} .
           docker push jderobot/robotics-academy:${TAG}
 
@@ -92,8 +90,6 @@ jobs:
             --build-arg IMAGE_TAG=${TAG}\
             --build-arg ROBOTICS_ACADEMY=humble-devel\
             --build-arg ROBOTICS_INFRASTRUCTURE=database \
-            --build-arg ACADEMY_OWNER=JdeRobot \
-            --build-arg INFRA_OWNER=JdeRobot \
             -t jderobot/robotics-database:${TAG} .
           docker push jderobot/robotics-database:${TAG}
 

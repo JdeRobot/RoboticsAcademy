@@ -114,8 +114,6 @@ jobs:
               --build-arg RAM=${{ github.event.inputs.RAM }} \
               --build-arg ROS_DISTRO=${{ github.event.inputs.ROS }} \
               --build-arg IMAGE_TAG=${TAG} \
-              --build-arg ACADEMY_OWNER=${{ github.event.inputs.academy_owner }} \
-              --build-arg INFRA_OWNER=${{ github.event.inputs.infra_owner }} \
               -t jderobot/robotics-academy:${TAG} .
             docker push jderobot/robotics-academy:${TAG}
           else
