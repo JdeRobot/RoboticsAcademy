@@ -51,12 +51,14 @@ class MeasuringThreadingGUI:
         threading.Thread(target=self.run_websocket, daemon=True).start()
 
         # Initialize and start the RTF thread
-        self.rtf_thread = threading.Thread(target=self.get_real_time_factor).start()
+        self.rtf_thread = threading.Thread(target=self.get_real_time_factor, daemon=True)
+        self.rtf_thread.start()
 
         # Initialize and start the Frequency thread
         self.frequency_thread = threading.Thread(
-            target=self.measure_and_send_frequency
-        ).start()
+            target=self.measure_and_send_frequency, daemon=True
+        )
+        self.frequency_thread.start()
 
         # Initialize and start the image sending thread (GUI out thread)
         threading.Thread(
@@ -91,10 +93,13 @@ class MeasuringThreadingGUI:
             dt = current_time - previous_time
             ms = (dt.days * 24 * 60 * 60 + dt.seconds) * 1000 + dt.microseconds / 1000.0
             previous_time = current_time
+            with self.ack_lock:
+                iteration_count = self.iteration_counter
+                self.iteration_counter = 0
+
             measured_cycle = (
-                ms / self.iteration_counter if self.iteration_counter > 0 else 0
+                ms / iteration_count if iteration_count > 0 else 0
             )
-            self.iteration_counter = 0
             brain_frequency = (
                 round(1000 / measured_cycle, 1) if measured_cycle != 0 else 0
             )
@@ -133,7 +138,8 @@ class MeasuringThreadingGUI:
     def gui_out_thread(self):
         while self.running:
             start_time = time.time()
-            self.iteration_counter += 1
+            with self.ack_lock:
+                self.iteration_counter += 1
 
             # Check if a new map should be sent
             with self.ack_lock:
