@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { states } from "jderobot-commsmanager";
 import { useExercise } from "Contexts/ExerciseContext";
 import WebGUI3D from "Components/exercise/WebGUI3D";
@@ -11,6 +11,7 @@ const WebGUI = () => {
   const [manager, setManager] = useState(exerciseContext.manager);
   const [reset, setReset] = useState(false);
   const [pointsToPaint, setPointsToPaint] = useState<number[][] | undefined>();
+  const lidarFramesRef = useRef<number[][][]>([]);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -20,21 +21,30 @@ const WebGUI = () => {
     let data = updateData as any;
     data = data.update;
 
-    if (data.lidar) {
-      const point = JSON.parse(data.lidar);
-      var pdata: number[][] = [];
-      if (point != "") {
-        for (
-          let index = 0;
-          index < point.length;
-          index += Math.round(point.length / 2500)
-        ) {
-          pdata.push(point[index]);
+    if (typeof data.lidar === "string") {
+      try {
+        const points = JSON.parse(data.lidar) as number[][];
+        if (Array.isArray(points) && points.length > 0) {
+          lidarFramesRef.current.push(points);
+          if (lidarFramesRef.current.length > 3) {
+            lidarFramesRef.current.shift();
+          }
+          const mergedPoints = lidarFramesRef.current.reduce<number[][]>(
+            (acc, frame) => acc.concat(frame),
+            []
+          );
+          setPointsToPaint(mergedPoints);
+        } else {
+          // If LiDAR frame is empty, clear buffered frames to avoid stale ghosts.
+          lidarFramesRef.current = [];
+          setPointsToPaint([]);
         }
-        setPointsToPaint(pdata);
+      } catch {
+        // Ignore malformed websocket frames and keep last valid render.
       }
     }
     if (data.map) {
+      lidarFramesRef.current = [];
       const map_data = JSON.parse(data.map);
       var pdata: number[][] = [];
 

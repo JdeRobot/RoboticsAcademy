@@ -33,25 +33,23 @@ def pointCloud2LidarData(cloud):
     if not cloud or cloud.width * cloud.height == 0:
         return lidar
 
-    # Read XYZ points
+    # Read XYZ points - skip_nans=True is much faster as it filters in C++
     lidar.points = list(
-        point_cloud2.read_points(cloud, field_names=("x", "y", "z"), skip_nans=False)
+        point_cloud2.read_points(cloud, field_names=("x", "y", "z"), skip_nans=True)
     )
 
     # Read intensities if available
     if "intensity" in [f.name for f in cloud.fields]:
         intensities = point_cloud2.read_points(
-            cloud, field_names=("intensity",), skip_nans=False
+            cloud, field_names=("intensity",), skip_nans=True
         )
         lidar.intensities = [i[0] for i in intensities]
 
     # Timestamp (ROS 2 Time -> seconds)
     lidar.timeStamp = cloud.header.stamp.sec + (cloud.header.stamp.nanosec * 1e-9)
 
-    # Validate point cloud
-    lidar.is_dense = all(
-        all(np.isfinite(coord) for coord in point) for point in lidar.points
-    )
+    # dense means no NaNs/Infs. Since we skipped NaNs, it's dense.
+    lidar.is_dense = True
 
     return lidar
 
@@ -61,6 +59,8 @@ class LidarNode(Node):
         super().__init__("lidar_node")
         self._lock = Lock()
         self.last_cloud_ = None
+        self._cached_lidar = None
+        self._cached_stamp = None
         self.sub = self.create_subscription(
             sensor_msgs.msg.PointCloud2, topic, self.pointcloud_callback, 10
         )
@@ -71,7 +71,21 @@ class LidarNode(Node):
 
     def getLidarData(self):
         with self._lock:
-            return pointCloud2LidarData(self.last_cloud_)
+            cloud = self.last_cloud_
+            if cloud is None:
+                return LidarData()
+
+            stamp = (cloud.header.stamp.sec, cloud.header.stamp.nanosec)
+            if self._cached_lidar is not None and self._cached_stamp == stamp:
+                return self._cached_lidar
+
+        lidar_data = pointCloud2LidarData(cloud)
+
+        with self._lock:
+            self._cached_stamp = stamp
+            self._cached_lidar = lidar_data
+
+        return lidar_data
 
     def get_point_cloud(self):
         with self._lock:
