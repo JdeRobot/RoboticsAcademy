@@ -6,7 +6,7 @@
 | ------------------------------------ | ---------------- | ----------- | ------------- | -------- | ------------------------- | ----------- |
 | Basic Vacuum Cleaner                 | ok               | ok          | ok            | ok       | Gazebo Harmonic + Classic | FSM         |
 | Follow Line                          | ok               | ok          | ok            | ok       | Gazebo Harmonic + Classic | PID control |
-| Obstacle Avoidance                   | ok               |             |               |          | Gazebo Harmonic + Classic | VFF         |
+| Obstacle Avoidance                   | ok               |             | ok            |          | Gazebo Harmonic + Classic | VFF         |
 | Global navigation                    | ok               |             |               |          | Gazebo Harmonic + Classic | GPP         |
 | Laser Gridmap mapping                | ok               |             |               |          | Gazebo Harmonic           |             |
 | MonteCarlo Laser Loc                 | ok               |             |               |          | Gazebo Harmonic + Classic | AMCL        |
