@@ -46,6 +46,7 @@ services:
             - type: bind
               source: ./src
               target: /RoboticsApplicationManager
+            - /usr/share/vulkan/icd.d:/usr/share/vulkan/icd.d:ro
         tty: true
         stdin_open: true
         depends_on:
