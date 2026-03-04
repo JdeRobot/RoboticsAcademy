@@ -72,10 +72,22 @@ The solution can integrate one or more of the following difficulty increasing go
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
+### C++
+
+* `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+* `Frequency freq = Frequency();` - to instantiate the Frequency class.
+* `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
+
+This exercise supports both Python and C++ implementations. Below you will find the details for both options.
+
+### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -90,7 +102,7 @@ The solution can integrate one or more of the following difficulty increasing go
 * `WebGUI.getNextTarget()` - to obtain the next target object on the scenario.
 * `WebGUI.setTargetx` - sets the x coordinate of the target on the WebGUI.
 * `WebGUI.setTargety` - sets the y coordinate of the target on the WebGUI.
-* `WebGUI.showForces` - shows the forces being appliend on the car in real time.
+* `WebGUI.showForces` - shows the forces being applied on the car in real time.
 
 To access the target 'x' and 'y' coordinates use (target is the object obtained from WebGUI.getNextTarget):
 * `target.getPose().x` - to obtain the x position of the target
@@ -106,7 +118,7 @@ To use it, only two actions must be carried out:
 2. Mark it as visited when necessary:
 
    `currentTarget.setReached(True)`
-   
+
 **Debugging**
 
 The graphical interface (WebGUI) allows the visualization of each of the vectors of calculated forces. There is a function for this purpose:
@@ -149,6 +161,57 @@ WebGUI.map.avgy = 0.0
 WebGUI.map.targetx = 0.0
 WebGUI.map.targety = 0.0
 ```
+
+### C++
+
+* `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+* `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information.
+* `HAL::get_pose3d()` - returns a `Pose3d` struct with the robot's current position and orientation.
+  * `.x` - x coordinate of the robot
+  * `.y` - y coordinate of the robot
+  * `.yaw` - orientation of the robot with respect to the map
+* `HAL::get_laser_data()` - returns a `LaserData` struct with the laser sensor readings.
+  * `.values` - `std::vector<float>` of distance readings (in meters)
+  * `.min_angle` - start angle of the scan (radians)
+  * `.max_angle` - end angle of the scan (radians)
+  * `.angle_increment` - angular step between consecutive readings (radians)
+  * `.max_range` - maximum range of the sensor (meters)
+* `HAL::set_v(speed)` - to set the linear speed (float).
+* `HAL::set_w(speed)` - to set the angular velocity (float).
+* `WebGUI::get_next_target()` - returns a reference to the current (first unreached) `Target` object. When all targets have been reached they are reset automatically.
+* `WebGUI::show_forces(carForce, obsForce, avgForce)` - shows the three force vectors on the map panel in real time. Each force is a `std::array<double, 2>` with `{x, y}` components.
+* `WebGUI::show_local_target(x, y)` - sets the local sub-target position displayed on the WebGUI.
+
+To access the target coordinates (target is the reference obtained from `WebGUI::get_next_target()`):
+* `target.getX()` - to obtain the x position of the target
+* `target.getY()` - to obtain the y position of the target
+* `target.setReached(true)` - to mark the target as visited
+
+**Debugging**
+
+The graphical interface (WebGUI) allows the visualization of each of the vectors of calculated forces:
+
+```cpp
+#include <array>
+
+// Car direction (green line)
+std::array<double, 2> carForce = {2.0, 0.0};
+// Obstacles direction (red line)
+std::array<double, 2> obsForce = {0.0, 2.0};
+// Average direction (black line)
+std::array<double, 2> avgForce = {-2.0, 0.0};
+
+WebGUI::show_forces(carForce, obsForce, avgForce);
+```
+
+As well as the destination that is currently being pursued:
+
+```cpp
+// Current local sub-target
+WebGUI::show_local_target(1.0, 1.0);
+```
+
+![VFF_FORCES]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/vff_forces.png)
 <!---
 **API**
 
@@ -177,7 +240,9 @@ To use it, only two actions must be carried out:
 
 The following function parses laser data taking into account 1) laser only has 180º coverage and 2) the measure read at 90º corresponds to the 'front' of the robot.
 
-You must apply the conversions needed to transform that laser data to a vector of the polar coordinates and a vector in the relavite coodinate system of the robot.
+You must apply the conversions needed to transform that laser data to a vector of the polar coordinates and a vector in the relative coordinate system of the robot.
+
+#### Python
 
 ```python
 import math
@@ -220,15 +285,67 @@ if len(laser_data.values) > 0:
     laser_polar, laser_xy = parse_laser_data(laser_data)
 ```
 
+#### C++
+
+```cpp
+#include <cmath>
+#include <vector>
+#include <utility>  // std::pair
+
+// Parses the LaserData struct and returns two vectors:
+//   1. laser_polar: (distance, angle) pairs in polar coordinates,
+//      where angle is zero at the front of the robot and increases to the left.
+//   2. laser_xy: (x, y) pairs in the robot's relative coordinate system.
+//
+// Note: laser_data.values MUST NOT BE EMPTY.
+void parse_laser_data(
+    const LaserData & laser_data,
+    std::vector<std::pair<float, float>> & laser_polar,
+    std::vector<std::pair<float, float>> & laser_xy)
+{
+    int n = static_cast<int>(laser_data.values.size());
+    for (int i = 0; i < n; ++i)
+    {
+        // i contains the index of the laser ray, which starts at the robot's right
+        //
+        //                (i=90)
+        //                 ^
+        //                 |x
+        //             y   |
+        // (i=180)    <----R      (i=0)
+
+        float dist  = laser_data.values[i];
+        // Centre the angle at the front of the robot
+        float angle = laser_data.min_angle +
+                      static_cast<float>(i) * laser_data.angle_increment;
+
+        laser_polar.emplace_back(dist, angle);
+
+        float x = dist * std::cos(angle);
+        float y = dist * std::sin(angle);
+        laser_xy.emplace_back(x, y);
+    }
+}
+
+// Usage
+LaserData laser_data = HAL::get_laser_data();
+if (!laser_data.values.empty()) {
+    std::vector<std::pair<float, float>> laser_polar, laser_xy;
+    parse_laser_data(laser_data, laser_polar, laser_xy);
+}
+```
+
 
 **Coordinate system**
 
-We have 2 different coordinate systems in this exercise. 
+We have 2 different coordinate systems in this exercise.
 
-* **Absolute coordinate system**: Its origin (0,0) is located in the finish line of the circuit (exactly where the F1 starts the lap). 
+* **Absolute coordinate system**: Its origin (0,0) is located in the finish line of the circuit (exactly where the F1 starts the lap).
 * **Relative coordinate system**: It is the coordinate system solidary to the robot (F1). Positive values of X means 'forward', and positive values of Y means 'left'.
 
 You can use the following code to convert absolute coordinates to relative ones (solidary to the F1).
+
+#### Python
 
 ```python
 def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
@@ -244,6 +361,27 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
     y_rel = dx * math.sin (-robott) + dy * math.cos (-robott)
 
     return x_rel, y_rel
+```
+
+#### C++
+
+```cpp
+#include <cmath>
+
+// robotx, roboty are the absolute coordinates of the robot
+// robott is its absolute orientation (yaw)
+void absolute2relative(
+    double x_abs, double y_abs,
+    double robotx, double roboty, double robott,
+    double & x_rel, double & y_rel)
+{
+    double dx = x_abs - robotx;
+    double dy = y_abs - roboty;
+
+    // Rotate with current angle
+    x_rel =  dx * std::cos(-robott) - dy * std::sin(-robott);
+    y_rel =  dx * std::sin(-robott) + dy * std::cos(-robott);
+}
 ```
 
 
