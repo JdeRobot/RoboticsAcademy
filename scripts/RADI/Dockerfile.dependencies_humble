@@ -3,7 +3,7 @@ FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=all
-ENV VIRTUALGL_VERSION=3.0.2
+ENV VIRTUALGL_VERSION=3.1.4
 ENV TURBOVNC_VERSION=3.0.3
 
 # Setup NON INTERACTIVE ENVIRONMENT
@@ -19,12 +19,10 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-ENV GENERIC_MINIMAL_EXECUTABLE_O3DE_HASH=5b344a0be6
-
 ENV ROS_DISTRO=humble
 ENV AMENT_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
 ENV COLCON_PREFIX_PATH=/opt/ros/${ROS_DISTRO}
-ENV LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/lib:/usr/share/gazebo/../../lib/x86_64-linux-gnu/gazebo-11/plugins:
+ENV LD_LIBRARY_PATH=/opt/ros/${ROS_DISTRO}/lib:/opt/ros/${ROS_DISTRO}/lib/x86_64-linux-gnu:/opt/ros/${ROS_DISTRO}/opt/rviz_ogre_vendor/lib
 ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
 ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
 ENV ROS_PYTHON_VERSION=3
@@ -32,34 +30,17 @@ ENV ROS_VERSION=2
 
 # Install common tools
 RUN apt-get update && apt-get install -y \
-  software-properties-common bc bind9-utils \
-  bash-completion ca-certificates clang file firewalld \
+  software-properties-common \
+  bash-completion \
   apt-utils \
   build-essential \
-  git git-lfs curl wget cmake ninja-build \
-  nano vim jq \
+  git curl wget cmake \
+  nano vim \
   gnupg \
   lsb-release \
   sudo \
   net-tools \
   pciutils \
-  kbd \
-  kmod \
-  lsb-release \
-  libglu1-mesa-dev \
-  libxcb-xinerama0 \
-  libfontconfig1-dev \
-  libcurl4-openssl-dev \
-  libnvidia-gl-470 \
-  libssl-dev \
-  libxcb-xkb-dev \
-  libxkbcommon-x11-dev \
-  libxkbcommon-dev \
-  libxcb-xfixes0-dev \
-  libxcb-xinput-dev \
-  libxcb-xinput0 \
-  libpcre2-16-0 \
-  lsof tar unzip xz-utils \
   && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages
@@ -75,22 +56,6 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     python3-argcomplete \
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
-
-# Install Gazebo 11
-RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
-RUN apt-get update && apt-get install -y \
-        gazebo11 \
-        ros-humble-gazebo-ros-pkgs \
-        gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-good \
-        gstreamer1.0-plugins-ugly \
-        gstreamer1.0-libav \
-        libgstreamer-plugins-base1.0-dev \
-        libimage-exiftool-perl \
-    && apt-get -y autoremove \
-    && apt-get clean autoclean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
 # Install Gazebo Harmonic
 RUN apt-get update \
@@ -114,8 +79,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xterm \
     xserver-xorg-video-dummy \
     x11-apps \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN curl -L -o xorg.conf https://xpra.org/xorg.conf || echo "Download failed" \
@@ -153,6 +118,14 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
+
+# Install postgreSQL-18
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      wget gnupg lsb-release ca-certificates \
+  && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
+  && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update && apt-get install -y --no-install-recommends postgresql-18 \
+  && rm -rf /var/lib/apt/lists/*
 
 # Node
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - \
@@ -306,8 +279,24 @@ RUN apt-get update && \
         libpoco-dev \
       && rm -rf /var/lib/apt/lists/*
 
+# On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
+# to avoid GNU make jobserver failures under amd64 emulation.
+
+ARG TARGETARCH
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+    if [ "$TARGETARCH" = "arm64" ]; then \
+        colcon build \
+          --symlink-install \
+          --executor sequential \
+          --cmake-args \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
+    else \
+        colcon build \
+          --symlink-install \
+          --cmake-args \
+            -DCMAKE_BUILD_TYPE=Release ; \
+    fi
 
 # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
@@ -322,9 +311,8 @@ WORKDIR /home/dev_ws
 # --- PCL & ROS PCL deps (before colcon) ---
 RUN apt-get update && apt-get install -y \
     libpcl-dev \
+    ros-humble-gazebo-msgs \
     ros-humble-pcl-ros \
-    ros-humble-gazebo-ros-pkgs \
-    ros-humble-gazebo-plugins \
     ros-humble-tf-transformations \
     ros-humble-pcl-conversions && \
     rm -rf /var/lib/apt/lists/*
@@ -332,11 +320,22 @@ RUN apt-get update && apt-get install -y \
 # (Optional but recommended) install missing deps via rosdep
 RUN . /opt/ros/humble/setup.sh && \
     rosdep update && \
-    rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
+    rosdep install --from-paths src --ignore-src -r -y --rosdistro humble \
+    --skip-keys="gazebo_ros gazebo_dev gazebo_ros2_control"
+    
+# List Packages Gazebo 11
+ENV SKIP_PKGS="gazebo_ros2_control ros2_objectpose ros2_linkpose gazebo_ros2_control_demos linkpose_gazebo objectpose_gazebo ros2_conveyorbelt ros2_linkattacher ros2_linkattacher"
 
 # Build (drop the duplicate)
 WORKDIR /home/dev_ws
-RUN . /opt/ros/humble/setup.sh && colcon build && colcon build
+ARG TARGETARCH
+RUN . /opt/ros/humble/setup.sh && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+      export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
+    else \
+      colcon build --packages-skip $SKIP_PKGS && \
+      colcon build --packages-skip $SKIP_PKGS; \
+    fi
 RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
@@ -352,6 +351,21 @@ WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
 
+RUN apt-get update && apt-get install -y \
+    git \
+    git-lfs \
+    curl \
+    wget \
+    cmake \
+    ninja-build \
+    bash-completion \
+    ca-certificates \
+    clang \
+    file \
+    firewalld \
+    && git lfs install \
+    && rm -rf /var/lib/apt/lists/*
+
 ## Symlink clang version to non-versioned clang and set cc to clang
 RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
@@ -360,9 +374,9 @@ WORKDIR /data/workspace
 
 ARG O3DE_DIR=o3de
 
-## Copy repository o3de executable
+# Copy repository o3de executable
 RUN git clone https://github.com/JdeRobot/o3de.git && \
-    && git -C ${O3DE_DIR} lfs install \
-    git -C ${O3DE_DIR} lfs pull \
+    git -C ${O3DE_DIR} lfs install && \
+    git -C ${O3DE_DIR} lfs pull 
     
 WORKDIR /
