@@ -1014,6 +1014,31 @@ def buildmap():
     perception_mgr.buildmap()
 
 
+def start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin):
+    perception_mgr = _get_perception_manager()
+    perception_mgr.start_color_filter(color, rmax, rmin, gmax, gmin, bmax, bmin)
+
+
+def stop_color_filter(color):
+    perception_mgr = _get_perception_manager()
+    perception_mgr.stop_color_filter(color)
+
+
+def start_shape_filter(color, shape, radius):
+    perception_mgr = _get_perception_manager()
+    perception_mgr.start_shape_filter(color, shape, radius)
+
+
+def stop_shape_filter(color, shape):
+    perception_mgr = _get_perception_manager()
+    perception_mgr.stop_shape_filter(color, shape)
+
+
+def get_target_position(target_name):
+    perception_mgr = _get_perception_manager()
+    return perception_mgr.get_target_position(target_name)
+
+
 #################################### MAIN FUNCTION ###################################################
 
 
