@@ -20,7 +20,7 @@ const WebGUI = () => {
   const [image, setImage] = useState<string | undefined>(undefined);
   const [lapTime, setLapTime] = useState<string | undefined>(undefined);
   const [carPose, setCarPose] = useState<number[] | undefined>(undefined);
-  const [circuitImg, setCircuitImg] = useState(defaultCircuit);
+  const [circuitImg, setCircuitImg] = useState<string | undefined>(undefined);
   const [manager, setManager] = useState(exerciseContext.manager);
 
   useEffect(() => {
@@ -100,15 +100,17 @@ const WebGUI = () => {
           {lapTime} s
         </label>
       )}
-      <div className="overlay" id="circuit-aerial">
-        <img src={circuitImg} alt="" id="circuit-img" />
-        {carPose && (
-          <div
-            id="circuit-car-pos"
-            style={{ top: carPose[1], left: carPose[0] }}
-          />
-        )}
-      </div>
+      {circuitImg && (
+        <div className="overlay" id="circuit-aerial">
+          <img src={circuitImg} alt="" id="circuit-img" />
+          {carPose && (
+            <div
+              id="circuit-car-pos"
+              style={{ top: carPose[1], left: carPose[0] }}
+            />
+          )}
+        </div>
+      )}
     </WebGUIContainer>
   );
 };
