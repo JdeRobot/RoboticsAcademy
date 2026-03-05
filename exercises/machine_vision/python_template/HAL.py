@@ -42,6 +42,7 @@ from std_msgs.msg import String, Bool
 from geometry_msgs.msg import Point, Pose, PoseStamped, Quaternion
 from pcl_filter_msgs.msg import ColorFilter, ShapeFilter
 from tf_transformations import euler_from_quaternion, quaternion_from_euler
+from hal_interfaces.general.camera import CameraNode
 
 # Build PATH and import Python classes from IFRA package:
 PATH = os.path.join(get_package_share_directory("ros2srrc_execution"), "python")
@@ -58,10 +59,29 @@ from robotiq_ur import RobotiqGRIPPER
 from ros2srrc_data.msg import Action, Joint, Joints, Xyz, Ypr, Robpose
 
 # Global variables
-rclpy.init(args=None)
+if not rclpy.ok():
+    rclpy.init(args=None)
 UR5 = RBT()
 _home_joints = [0.0, -90.0, 0.0, 0.0, -90.0, 0.0]
 _perception_manager = None
+
+# Camera node
+camera_node = CameraNode("/hand_camera/image_raw")
+
+# Spin nodes so that subscription callbacks load topic data
+executor = MultiThreadedExecutor()
+executor.add_node(camera_node)
+
+def __auto_spin():
+    while rclpy.ok():
+        try:
+            executor.spin_once(timeout_sec=0)
+        except Exception:
+            pass
+        time.sleep(1/90.0)
+
+executor_thread = threading.Thread(target=__auto_spin, daemon=True)
+executor_thread.start()
 
 #################################### UTILITY CLASSES ###################################################
 
@@ -1038,6 +1058,14 @@ def get_target_position(target_name):
     perception_mgr = _get_perception_manager()
     return perception_mgr.get_target_position(target_name)
 
+
+def getImage():
+    image = camera_node.getImage()
+
+    while image is None:
+        image = camera_node.getImage()
+
+    return image.data
 
 #################################### MAIN FUNCTION ###################################################
 
