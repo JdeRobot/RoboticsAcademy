@@ -76,7 +76,7 @@ function WebGUI() {
 
         updateTrail(base_trail, setTrail, height, width);
 
-        var ang = -content[2]+Math.PI/8
+        var ang = -content[2]
 
         setVehiclePose([convPose[1]*height,convPose[0]*width, ang]);
         addToTrail(convPose[1], convPose[0], base_trail);
@@ -179,7 +179,7 @@ function WebGUI() {
       <img src={map} alt="" className="exercise-canvas" id="exercise-img"/>
       {vehiclePose && vehicleType == 0 &&
         <div id="vehic-pos" className={(liftState) ? "lifting" : ""}
-          style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}
+          style={{rotate: "z "+ (vehiclePose[2] +  Math.PI/2)+"rad", top: vehiclePose[0] -10 , left: vehiclePose[1] -10}}
         >
           <div className="arrow"/>
         </div>
@@ -187,7 +187,7 @@ function WebGUI() {
       {vehiclePose && vehicleType == 1 &&
         <div id="vehic-pos-ack"
            className={(liftState) ? "lifting-ack" : ""}
-          style={{rotate: "z "+ vehiclePose[2]+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}
+          style={{rotate: "z "+ (vehiclePose[2] + Math.PI)+"rad", top: vehiclePose[0] -25 , left: vehiclePose[1] -10}}
         >
           <div className="arrow-ack arrow"/>
         </div>

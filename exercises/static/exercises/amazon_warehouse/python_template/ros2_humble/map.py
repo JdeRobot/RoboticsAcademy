@@ -59,7 +59,7 @@ class Map:
 
     def getRobotAngle(self):
         pose = self.pose3d()
-        rt = pose.yaw - 1.24
+        rt = pose.yaw
 
         ty = math.cos(-rt) - math.sin(-rt)
         tx = math.sin(-rt) + math.cos(-rt)

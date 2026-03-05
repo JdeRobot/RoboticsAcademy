@@ -25,7 +25,7 @@ def custom_thread_excepthook(args):
 
 threading.excepthook = custom_thread_excepthook
 
-print("HAL HARMONIC initializing", flush=True)
+print("HAL 2 (HARMONIC) initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
 
