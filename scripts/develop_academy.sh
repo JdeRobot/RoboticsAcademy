@@ -6,6 +6,7 @@ branch="humble-devel"
 radi_version="humble"
 gpu_mode="false"
 nvidia="false"
+mac="false"
 compose_file="dev_humble_cpu"
 
 # Function to display help message
@@ -16,6 +17,7 @@ show_help() {
   echo "  -i  Specify the ROS2 version (default: humble)"
   echo "  -g  Enable GPU mode (default: false)"
   echo "  -n  Enable Nvidia support (default: false)"
+  echo "  -m  Enable Apple Silicon Mac mode with Rosetta x86_64 emulation (default: false)"
   echo "  -h  Display this help message"
 }
 
@@ -53,6 +55,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -n)
             nvidia="true"
+            shift 1
+            ;;
+        -m)
+            mac="true"
             shift 1
             ;;
         -h | --help) # display Help
@@ -185,6 +191,9 @@ if [ "$gpu_mode" = "true" ]; then
 fi
 if [ "$nvidia" = "true" ]; then
   compose_file="dev_humble_nvidia"
+fi
+if [ "$mac" = "true" ]; then
+  compose_file="dev_humble_cpu_mac"
 fi
 cp compose_cfg/$compose_file.yaml docker-compose.yaml
 

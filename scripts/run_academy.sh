@@ -3,6 +3,7 @@
 # Default: cpu and offline
 gpu_mode="false"
 nvidia="false"
+mac="false"
 base_path_offline="compose_cfg/"
 compose_file="user_humble_cpu"
 base_path_online="https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/compose_cfg/"
@@ -21,10 +22,11 @@ cleanup() {
 }
 
 # Loop through the arguments using a while loop
-while getopts ":g:n  " opt; do
+while getopts ":gnm" opt; do
   case $opt in
-    g) gpu_mode="true" ;; 
+    g) gpu_mode="true" ;;
     n) nvidia="true" ;;
+    m) mac="true" ;;
     \?) echo "Invalid option: -$OPTARG" >&2 ;;   # If an invalid option is provided, print an error message
   esac
 done
@@ -38,6 +40,9 @@ if [ "$gpu_mode" = "true" ]; then
 fi
 if [ "$nvidia" = "true" ]; then
   compose_file="user_humble_nvidia"
+fi
+if [ "$mac" = "true" ]; then
+  compose_file="user_humble_cpu_mac"
 fi
 
 # Check the mode
