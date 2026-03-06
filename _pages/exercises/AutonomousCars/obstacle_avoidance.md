@@ -43,6 +43,7 @@ gifs2:
 youtubeId1: 5SVkvfKPi_s
 youtubeId2: wVJJ9ndY2aY
 youtubeId3: 8DiCRFsrxUg
+youtubeId4: 6JvlBnJsP90
 ---
 
 ## Goal
@@ -374,6 +375,8 @@ Also, please note that this is **not the only solution** to this problem. We may
 ### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId3 %}
+
+{% include youtubePlayer.html id=page.youtubeId4 %}
 
 
 ## Contributors

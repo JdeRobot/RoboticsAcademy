@@ -56,6 +56,7 @@ pid:
 youtubeId1: eNuSQN9egpA
 youtubeId2: gHZVESBcgKE
 youtubeId3: XzgfaQ20atY
+youtubeId4: HRZC1-tGW-s
 ---
 
 ## Goal
@@ -255,6 +256,8 @@ This is the completely implemented controller. Now, to add the I Controller we n
 ### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId3 %}
+
+{% include youtubePlayer.html id=page.youtubeId4 %}
 
 ## Contributors
 

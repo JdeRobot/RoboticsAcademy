@@ -38,6 +38,7 @@ gifs:
 
 youtubeId1: BpHSDrFqpVk
 youtubeId2: EWTR9Y1QyBk
+youtubeId3: 2tDKgsM8nyA
 ---
 ## Goal
 
@@ -88,6 +89,8 @@ It is composed of 180 pairs of values: (0-180º distance in millimeters)
 ### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId2 %}
+
+{% include youtubePlayer.html id=page.youtubeId3 %}
 
 ## Contributors
 

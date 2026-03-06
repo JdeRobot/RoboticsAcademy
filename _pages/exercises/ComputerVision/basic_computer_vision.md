@@ -35,6 +35,7 @@ youtubeId7: otzet0RazOI
 youtubeId8: 3jDu4iyVPqc
 youtubeId9: 4u19cW4ecL4
 youtubeId10: XtTHAN9zPr8
+youtubeId11: vXg-QYPyvhk
 ---
 
 ## Goal
@@ -164,6 +165,8 @@ The Hough transform must be applied to the image. The Hough Transform is a techn
 ### Demonstrative video of the solution
 
 {% include youtubePlayer.html id=page.youtubeId10 %}
+
+{% include youtubePlayer.html id=page.youtubeId11 %}
 
 ## Contributors
 
