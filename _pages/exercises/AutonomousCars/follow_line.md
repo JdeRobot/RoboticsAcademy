@@ -26,7 +26,7 @@ gallery:
     image_path: /assets/images/exercises/follow_line/formula1_2.png
     alt: "Model."
     title: "Model."
-  
+
 gifs:
   - url: /assets/images/exercises/follow_line/oscillations.gif
     image_path: /assets/images/exercises/follow_line/oscillations.gif
@@ -71,14 +71,14 @@ The students will program a Formula1 car in a race circuit to follow the red lin
 
 ### Python
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
-* `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency freq = Frequency();` - to instanciate the Frequency class.
-* `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
@@ -88,21 +88,21 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getImage()` - to get the image (BGR8).
-* `HAL.setV(velocity)` - to set the linear speed.
-* `HAL.setW(velocity)` - to set the angular velocity.
-* `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL.getImage()` - to get the image (BGR8).
+- `HAL.setV(velocity)` - to set the linear speed.
+- `HAL.setW(velocity)` - to set the angular velocity.
+- `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
 #### C++
 
-* `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL::get_image();` - to get the image (cv::Mat).
-* `HAL::set_v(velocity);` - to set the linear speed.
-* `HAL::set_w(velocity);` - to set the angular velocity.
-* `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_image();` - to get the image (cv::Mat).
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular velocity.
+- `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
 
 ### ROS 2-native Implementation
 
@@ -110,12 +110,12 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-* `/cam_f1_left/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
-* `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/cam_f1_left/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
 For image debugging:
 
-* `/webgui_image`  - Publish to this topic to set the debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
+- `/webgui_image` - Publish to this topic to set the debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
 
 #### Python
 
@@ -125,9 +125,9 @@ For image debugging:
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
-* `rclpy.spin()` - Event-driven execution using callbacks.
-* `rclpy.spin_once()` - Single-step processing, often with custom timers.
-* `rclpy.Rate()` - Loop-based frequency control.
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 #### C++
 
@@ -173,13 +173,17 @@ PID Control is the foundation of the implementation for this exercise. To unders
 A system or set of devices, that manages, commands, directs or regulates the behavior of other devices or systems to achieve the desired results. Simply speaking, a system which controls other systems. Control Systems help a robot execute a set of commands precisely, in the presence of unforeseen errors or complications.
 
 ### Types of Control System
+
 #### Open Loop Control System
+
 A control system in which the control action is completely independent of the output of the system. An Open Loop System is a manual control system.
 
 #### Closed Loop Control System
+
 A control system in which the output has an effect on the input quantity in such a manner that the input will adjust itself based on the output generated. An open loop system can be converted to a closed one by providing feedback.
 
 ### PID Control
+
 A control loop mechanism using feedback. A PID Controller continuously calculates an error value as the difference between the desired output and the current output and applies a correction based on proportional, integral and derivative terms(denoted by P, I, D respectively).
 
 - **Proportional**
@@ -214,48 +218,43 @@ Zeigler-Nichols proposed closed loop methods for tuning the PID controller. Thos
 2. [https://www.youtube.com/watch?v=UR0hOmjaHp0](https://www.youtube.com/watch?v=UR0hOmjaHp0)
 
 ## Hints
+
 Simple hints provided to help you solve the follow_line exercise.
 
 ### References to ROS 2 Concepts
 
 Understanding these ROS 2 concepts will help you implement the exercise natively. Refer to these links for more details:
+
 1. ROS 2 Publisher & Subscriber – [https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
 2. ROS 2 Spin & Spin Once – [https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html](https://docs.ros.org/en/rolling/p/rclpy/api/init_shutdown.html)
 <!-- 3. ROS 2 Rate - add content for rate -->
 
 ### Detecting the Line to Follow
-The first task of the assignment is to detect the line to be followed. This can be achieved easily by **filtering the color of the line** from the image and applying basic image processing to find the point or line to follow, or in Control terms our *Set Point*. Refer to these links for more information:
+
+The first task of the assignment is to detect the line to be followed. This can be achieved easily by **filtering the color of the line** from the image and applying basic image processing to find the point or line to follow, or in Control terms our _Set Point_. Refer to these links for more information:
 
 1. [https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/](https://www.pyimagesearch.com/2014/08/04/opencv-python-color-detection/)
 2. [https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image](https://stackoverflow.com/questions/10469235/opencv-apply-mask-to-a-color-image)
 3. [https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv](https://stackoverflow.com/questions/22470902/understanding-moments-function-in-opencv)
 
 ### Coding the Controller
+
 The Controller can be designed with various configurations. 3 configurations have been described in detail below:
 
 - **P Controller**
-The simplest way to do the assignment is using the P Controller. Just find the error which is the difference between our *Set Point* (The point where our car should be heading) and the *Current Output* (Where the car is actually heading). Keep adjusting the value of the constant, until we get a value where there occurs no [**unstable oscillations**](#Illustrations) and no [**slow response**](#Illustrations).
+  The simplest way to do the assignment is using the P Controller. Just find the error which is the difference between our _Set Point_ (The point where our car should be heading) and the _Current Output_ (Where the car is actually heading). Keep adjusting the value of the constant, until we get a value where there occurs no [**unstable oscillations**](#Illustrations) and no [**slow response**](#Illustrations).
 
 - **PD Controller**
-This is an interesting way to see the effect of the derivative on the Control. For this, we need to calculate the derivative of the output we are receiving. Since, we are dealing with *discrete outputs in our case, we simply calculate the difference between our previous error and the present error*, then adjust the proportional constant. Adjust this value along with the P gain to get a good result.
+  This is an interesting way to see the effect of the derivative on the Control. For this, we need to calculate the derivative of the output we are receiving. Since, we are dealing with _discrete outputs in our case, we simply calculate the difference between our previous error and the present error_, then adjust the proportional constant. Adjust this value along with the P gain to get a good result.
 
 - **PID Controller**
-This is the completely implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, into the present output. While dealing with discrete outputs, we can achieve this using *accumulated error*. Then, comes the task of adjustment of gain constants until we get our desired result.
+  This is the completely implemented controller. Now, to add the I Controller we need to integrate the output from the point where error was zero, into the present output. While dealing with discrete outputs, we can achieve this using _accumulated error_. Then, comes the task of adjustment of gain constants until we get our desired result.
 
 ### Illustrations
 
 {% include gallery id="gifs" caption="Unstable Oscillations (left) - Slow Response (right)" %}
 
-
 ## Videos
-
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
-*This solution is an illustration for the Web Templates*
-
-### Demonstrative video of the solution
-
-{% include youtubePlayer.html id=page.youtubeId3 %}
 
 {% include youtubePlayer.html id=page.youtubeId4 %}
 
@@ -266,10 +265,10 @@ This is the completely implemented controller. Now, to add the I Controller we n
 
 ## References
 
-1. [https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)  
-2. [https://en.wikipedia.org/wiki/PID_controller](https://en.wikipedia.org/wiki/PID_controller)  
-3. [https://www.elprocus.com/the-working-of-a-pid-controller/](https://www.elprocus.com/the-working-of-a-pid-controller/)  
-4. [https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)  
-5. [https://instrumentationtools.com/open-loop-and-closed-animation-loop/](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)  
-6. [https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)  
-7. [http://homepages.math.uic.edu/~kauffman/DCalc.pdf](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)  
+1. [https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/](https://www.electrical4u.com/control-system-closed-loop-open-loop-control-system/)
+2. [https://en.wikipedia.org/wiki/PID_controller](https://en.wikipedia.org/wiki/PID_controller)
+3. [https://www.elprocus.com/the-working-of-a-pid-controller/](https://www.elprocus.com/the-working-of-a-pid-controller/)
+4. [https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm](https://www.tutorialspoint.com/control_systems/control_systems_introduction.htm)
+5. [https://instrumentationtools.com/open-loop-and-closed-animation-loop/](https://instrumentationtools.com/open-loop-and-closed-animation-loop/)
+6. [https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/](https://trinirobotics.com/2019/03/26/arduino-uno-robotics-part-2-pid-control/)
+7. [http://homepages.math.uic.edu/~kauffman/DCalc.pdf](http://homepages.math.uic.edu/~kauffman/DCalc.pdf)

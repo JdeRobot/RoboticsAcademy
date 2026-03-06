@@ -52,9 +52,9 @@ The objective of this exercise is to implement the logic of the VFF navigation a
 
 In navigation using a VFF (Virtual Force Field):
 
-* Each object in the environment generates a repulsion force against the robot.
+- Each object in the environment generates a repulsion force against the robot.
 
-* The destination generates a force of attraction which pulls the robot.
+- The destination generates a force of attraction which pulls the robot.
 
 This makes it possible for the robot to go towards the target, distancing itself from the obstacles, so that its direction is the vector sum of all forces.
 
@@ -62,55 +62,58 @@ This makes it possible for the robot to go towards the target, distancing itself
 
 The solution can integrate one or more of the following difficulty increasing goals, as well as any other one that occurs to you:
 
-* Go as quickly as possible.
+- Go as quickly as possible.
 
-* Choose the safest route.
+- Choose the safest route.
 
-* Obstacles in movement.
+- Obstacles in movement.
 
-* Robustness in situations of indecision (zero vector sum).
-
+- Robustness in situations of indecision (zero vector sum).
 
 ## Frequency API
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
-* `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
-* `HAL.getPose3d().yaw` - to get the orientation of the robot with
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
+- `HAL.getPose3d().y` - to obtain the position of the robot (y coordinate)
+- `HAL.getPose3d().yaw` - to get the orientation of the robot with
   regarding the map
-* `HAL.getLaserData()` - to obtain laser sensor data
+- `HAL.getLaserData()` - to obtain laser sensor data
   It is composed of 180 pairs of values: (0-180º distance in meters)
-* `HAL.setV()` - to set the linear speed
-* `HAL.setW()` - to set the angular velocity
-* `WebGUI.getNextTarget()` - to obtain the next target object on the scenario.
-* `WebGUI.setTargetx` - sets the x coordinate of the target on the WebGUI.
-* `WebGUI.setTargety` - sets the y coordinate of the target on the WebGUI.
-* `WebGUI.showForces` - shows the forces being appliend on the car in real time.
+- `HAL.setV()` - to set the linear speed
+- `HAL.setW()` - to set the angular velocity
+- `WebGUI.getNextTarget()` - to obtain the next target object on the scenario.
+- `WebGUI.setTargetx` - sets the x coordinate of the target on the WebGUI.
+- `WebGUI.setTargety` - sets the y coordinate of the target on the WebGUI.
+- `WebGUI.showForces` - shows the forces being appliend on the car in real time.
 
 To access the target 'x' and 'y' coordinates use (target is the object obtained from WebGUI.getNextTarget):
-* `target.getPose().x` - to obtain the x position of the target
-* `target.getPose().y` - to obtain the y position of the target
+
+- `target.getPose().x` - to obtain the x position of the target
+- `target.getPose().y` - to obtain the y position of the target
 
 **Own API**
 
 To simplify the exercise, the implementation of control points is offered.
 To use it, only two actions must be carried out:
+
 1. Obtain the following point:
 
    `currentTarget = WebGUI.getNextTarget()`
+
 2. Mark it as visited when necessary:
 
    `currentTarget.setReached(True)`
-   
+
 **Debugging**
 
 The graphical interface (WebGUI) allows the visualization of each of the vectors of calculated forces. There is a function for this purpose:
+
 ```python
 # Car direction  (green line in the image below)
 carForce = [2.0, 0.0]
@@ -121,7 +124,9 @@ avgForce = [-2.0, 0.0]
 
 WebGUI.showForces(carForce, obsForce, avgForce)
 ```
+
 As well as the destination that we have assigned:
+
 ```python
 # Current target
 target = [1.0, 1.0]
@@ -131,8 +136,8 @@ WebGUI.showLocalTarget(target)
 
 ![VFF_FORCES]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/vff_forces.png)
 
-
 Alternatively, the following variables can be set with the same results:
+
 ```python
 # Car direction
 WebGUI.map.carx = 0.0
@@ -150,6 +155,7 @@ WebGUI.map.avgy = 0.0
 WebGUI.map.targetx = 0.0
 WebGUI.map.targety = 0.0
 ```
+
 <!---
 **API**
 
@@ -170,7 +176,6 @@ To use it, only two actions must be carried out:
    `self.currentTarget = self.getNextTarget()`
 2. Mark it as visited when necessary:
    `self.currentTarget.setReached(True)` --->
-
 
 ### Conversion of types
 
@@ -221,13 +226,12 @@ if len(laser_data.values) > 0:
     laser_polar, laser_xy = parse_laser_data(laser_data)
 ```
 
-
 **Coordinate system**
 
-We have 2 different coordinate systems in this exercise. 
+We have 2 different coordinate systems in this exercise.
 
-* **Absolute coordinate system**: Its origin (0,0) is located in the finish line of the circuit (exactly where the F1 starts the lap). 
-* **Relative coordinate system**: It is the coordinate system solidary to the robot (F1). Positive values of X means 'forward', and positive values of Y means 'left'.
+- **Absolute coordinate system**: Its origin (0,0) is located in the finish line of the circuit (exactly where the F1 starts the lap).
+- **Relative coordinate system**: It is the coordinate system solidary to the robot (F1). Positive values of X means 'forward', and positive values of Y means 'left'.
 
 You can use the following code to convert absolute coordinates to relative ones (solidary to the F1).
 
@@ -247,10 +251,9 @@ def absolute2relative (x_abs, y_abs, robotx, roboty, robott):
     return x_rel, y_rel
 ```
 
-
 <!---### Debugging
 The graphical interface (WebGUI) allows to visualize each of the vectors of
-calculated forces. For this purpose, the following variables should be given 
+calculated forces. For this purpose, the following variables should be given
 value:
 ```python
 # Car direction
@@ -273,87 +276,94 @@ self.targetx = 0.0
 self.targety = 0.0
 ```
 -->
+
 ## Theory
+
 This exercise requires us to implement a local navigation algorithm called Virtual Force Field Algorithm. Following is the complete theory regarding this algorithm.
 
 ### Navigation
+
 Robot Navigation involves all the related tasks and algorithms required to take a robot from point A to point B **autonomously** without any collisions. It is a well studied topic in Mobile Robotics, comprising volumes of books! The problem of Navigation is broken down into the following subproblems:
 
-* **Localisation**: The robot needs to know where it is.
-* **Collision Avoidance**: The robot needs to detect and avoid obstacles
-* **Mapping**: The robot needs to remember its surroundings
-* **Planning**: The robot needs to be able to plan a route to point B
-* **Explore**: The robot needs to be able to explore new terrain
+- **Localisation**: The robot needs to know where it is.
+- **Collision Avoidance**: The robot needs to detect and avoid obstacles
+- **Mapping**: The robot needs to remember its surroundings
+- **Planning**: The robot needs to be able to plan a route to point B
+- **Explore**: The robot needs to be able to explore new terrain
 
 ![Robot Navigation Problems]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/robot-navigation-problems.png)
 
 Some of the ways to achieve the task of Navigation are as follows:
 
-* **Vision Based**: Computer Vision algorithms and optical sensors, like LIDAR sensors are used for Vision Based Navigation.
-* **Inertial Navigation**: Airborne robots use [inertial sensors](https://en.wikipedia.org/wiki/Inertial_measurement_unit) for Navigation
-* **Acoustic Navigation**: Underwater robots use SONAR based Navigation Systems
-* **Radio Navigation**: Navigation used RADAR technology.
-
+- **Vision Based**: Computer Vision algorithms and optical sensors, like LIDAR sensors are used for Vision Based Navigation.
+- **Inertial Navigation**: Airborne robots use [inertial sensors](https://en.wikipedia.org/wiki/Inertial_measurement_unit) for Navigation
+- **Acoustic Navigation**: Underwater robots use SONAR based Navigation Systems
+- **Radio Navigation**: Navigation used RADAR technology.
 
 The problem of Path Planning in Navigation is dealt with in 2 ways, which are Global Navigation and Local Navigation
 
 ### Global Navigation
-Global Navigation involves the use of a map of the environment to plan a path from point A to point B. The optimality of the path is decided based on the length of the path, the time taken to reach the target, using permanent roads etc. Global Positioning System (GPS) is one such example of Global Navigation. The algorithms used behind such systems may include [Dijkstra](https://www.youtube.com/watch?v=GazC3A4OQTE), Best First or [A*](https://www.youtube.com/watch?v=ySN5Wnu88nE) etc.
 
+Global Navigation involves the use of a map of the environment to plan a path from point A to point B. The optimality of the path is decided based on the length of the path, the time taken to reach the target, using permanent roads etc. Global Positioning System (GPS) is one such example of Global Navigation. The algorithms used behind such systems may include [Dijkstra](https://www.youtube.com/watch?v=GazC3A4OQTE), Best First or [A\*](https://www.youtube.com/watch?v=ySN5Wnu88nE) etc.
 
 ### Local Navigation
+
 Once the global path is decided, it is broken down into suitable waypoints. The robot navigates through these waypoints in order to reach it's destination. Local Navigation involves a dynamically changing path plan taking into consideration the changing surroundings and the vehicle constraints. Some examples of such algorithms would be Virtual Force Field, [Follow Wall](https://link.springer.com/chapter/10.1007/978-3-319-62533-1_7), [Pledge Algorithm](https://link.springer.com/chapter/10.1007/978-3-319-62533-1_7) etc.
 
-
-
 ### Virtual Force Field Algorithm
+
 The Virtual Force Field Algorithm works in the following steps:
 
-* The robot assigns an attraction vector to the waypoint that points towards the waypoint.
-* The robot assigns a repulsion vector to the obstacle according to its sensor readings that points away from the waypoint. This is done by adding all the vectors that are translated from the sensor readings.
-* The robot follows the vector obtained by adding the target and obstacle vector.
+- The robot assigns an attraction vector to the waypoint that points towards the waypoint.
+- The robot assigns a repulsion vector to the obstacle according to its sensor readings that points away from the waypoint. This is done by adding all the vectors that are translated from the sensor readings.
+- The robot follows the vector obtained by adding the target and obstacle vector.
 
 ![VFF]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/vff.png)
 
-
-
 ### Drawbacks
+
 There are a few problems related to this algorithm:
 
-* The robot tends to oscillate in narrow corridors, that is when the robot receives an obstacle vector simultaneously from opposite sides.
-* The robot may not be able to enter narrow corridors in the first place!
+- The robot tends to oscillate in narrow corridors, that is when the robot receives an obstacle vector simultaneously from opposite sides.
+- The robot may not be able to enter narrow corridors in the first place!
 
 ![Drawbacks]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/drawbacks.png)
 
 ### Virtual Force Histogram Algorithm
-This algorithm improves over the Virtual Force Field Algorithm, by using a data structure called the Polar Histogram. The robot maintains a histogram grid of the  instantaneous sensor values received. Then, based on the threshold value set by the programmer, the program detects minimas(valleys) in the polar histogram. The angle corresponding to these values are then followed by the robot.
+
+This algorithm improves over the Virtual Force Field Algorithm, by using a data structure called the Polar Histogram. The robot maintains a histogram grid of the instantaneous sensor values received. Then, based on the threshold value set by the programmer, the program detects minimas(valleys) in the polar histogram. The angle corresponding to these values are then followed by the robot.
 
 ![VFH]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/vfh.gif)
 
 **Note**: The exercise only requires us to implement Virtual Force Field Algorithm
-	
+
 ## Hints
+
 Simple hints provided to help you solve the local_navigation exercise. Please note that the **full solution has not been provided.**
 
 ### Determining the Vectors
+
 First of all, we need to generate the 3 required vectors, that are the **Target Vector**, **Obstacle Vector** and the **Direction Vector**.
 
 ### Target Vector
+
 The target vector can be easily obtained by subtracting the position of the car from the position of the next waypoint.
 
-In order to implement this on the WebGUI interface of the exercise, in addition to the vector obtained by subtracting, we need to apply a rotation to the vector as well. The purpose of rotation is to keep the target vector always in the direction of the waypoint and not in front of the car. You may try seeing this in your own implementation, or refer to the [illustrations](#Illustrations) 
+In order to implement this on the WebGUI interface of the exercise, in addition to the vector obtained by subtracting, we need to apply a rotation to the vector as well. The purpose of rotation is to keep the target vector always in the direction of the waypoint and not in front of the car. You may try seeing this in your own implementation, or refer to the [illustrations](#Illustrations)
 
 Refer to this [webpage](https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions) to know about the exact mathematical details of the implementation.
 
 ### Obstacle Vector
+
 The obstacle vector is to be calculated from the sensor readings we obtain from the surroundings of the robot. Each obstacle in front of the car, is going to provide a repulsion vector, which we will add to obtain the resulting repulsion vector. Assign a repulsion vector, for each of the 180 sensor readings. The magnitude of the repulsion vector is inversely proportional to the magnitude of the sensor reading. Once all the repulsion vectors are obtained, they are all added, to get the final one.
 
 **Note**: There is a catch in this case, you may notice that most of the time in our implementation of the exercise we get an obstacle vector which is almost always pointing opposite to the direction in which we are supposed to head. This is a problem, as adding this vector directly to the target vector, would give a resulting vector which is more or less, quite not what we expected. Hence, there is a trick we need to apply to solve this problem.
 
-![Obstacle Vector]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle_avoidance/obstacle_vector.png)
-*Obstacle Vector without any obstacles in front of the car*
+![Obstacle Vector]({{ site.url }}/RoboticsAcademy/assets/images/exercises/obstacle*avoidance/obstacle_vector.png)
+\_Obstacle Vector without any obstacles in front of the car*
 
 ### Direction Vector
+
 Conventionally and according to the research paper of the VFF algorithm, in order to obtain the direction vector we should add the target vector and the obstacle vector. But, due to an inherent problem behind the calculation of the obstacle vector, we cannot simply add them to obtain the final direction.
 
 A simple observation reveals that we are required to **keep moving forward** for the purpose of this exercise. Hence, the component of the direction vector in the direction of motion of the car, has no effect on the motion of the car. Therefore, we can simply leave it as a **constant**, while adjusting the vector responsible for the steering of the car. It is the steering, that will in fact, provide us with the obstacle avoidance capabilities. Hence, the steering is going to be controlled by the Direction Vector.
@@ -368,16 +378,7 @@ Also, please note that this is **not the only solution** to this problem. We may
 
 ## Videos
 
-{% include youtubePlayer.html id=page.youtubeId2 %}
-
-*This solution is an illustration for the Web Templates*
-
-### Demonstrative video of the solution
-
-{% include youtubePlayer.html id=page.youtubeId3 %}
-
 {% include youtubePlayer.html id=page.youtubeId4 %}
-
 
 ## Contributors
 
@@ -385,6 +386,7 @@ Also, please note that this is **not the only solution** to this problem. We may
 - Maintained by [Sakshay Mahna](https://github.com/SakshayMahna), [Javier Izquierdo](https://github.com/javizqh).
 
 ## References
+
 1. [http://www-personal.umich.edu/~johannb/vff&vfh.htm](http://www-personal.umich.edu/~johannb/vff&vfh.htm)
 2. [https://en.wikibooks.org/wiki/Robotics/Navigation](https://en.wikibooks.org/wiki/Robotics/Navigation)
 3. [https://en.wikipedia.org/wiki/Robot_navigation](https://en.wikipedia.org/wiki/Robot_navigation)
@@ -394,4 +396,3 @@ Also, please note that this is **not the only solution** to this problem. We may
 7. [http://www.cs.cmu.edu/~./motionplanning/papers/sbp_papers/integrated1/borenstein_cluttered_obstacle_avoid.pdf](http://www.cs.cmu.edu/~./motionplanning/papers/sbp_papers/integrated1/borenstein_cluttered_obstacle_avoid.pdf)
 8. [https://www.mathsisfun.com/algebra/vectors.html](https://www.mathsisfun.com/algebra/vectors.html)
 9. [https://matthew-brett.github.io/teaching/rotation_2d.html](https://matthew-brett.github.io/teaching/rotation_2d.html)
- 
