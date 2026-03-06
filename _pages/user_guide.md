@@ -119,6 +119,18 @@ docker run --hostname my-postgres --name academy_db -d\
     jderobot/robotics-database:latest
 ```
 
+- For MacOs users with **apple silicon**
+
+```bash
+docker run --hostname my-postgres --name academy_db --platform linux/amd64 -d\
+    -e POSTGRES_DB=academy_db \
+    -e POSTGRES_USER=user-dev \
+    -e POSTGRES_PASSWORD=robotics-academy-dev \
+    -e POSTGRES_PORT=5432 \
+    -d -p 5432:5432 \
+    jderobot/robotics-database:latest
+```
+
 - Start a new docker container of the image and keep it running in the background:
 - The priority order is: NVIDIA -> Intel or AMD -> Only CPU
 
@@ -161,6 +173,15 @@ docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/
 
 ```bash
 docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+```
+- Run **Only CPU** (For Apple Silicon, the platform flag is required)
+
+```bash
+docker run --rm -it \
+  --platform linux/amd64 \
+  -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 \
+  --link academy_db \
+  jderobot/robotics-academy:latest
 ```
 
 ### Tips for Docker
