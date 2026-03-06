@@ -10,7 +10,7 @@ import sys
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
-from manager.ram_logging.log_manager import LogManager
+from robotics_application_manager import LogManager
 
 
 class MeasuringThreadingGUI:
@@ -117,6 +117,8 @@ class MeasuringThreadingGUI:
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
+        elif "start" in message:
+            with self.ack_lock:
                 self.ack_frontend = True
         else:
             LogManager.logger.error("Unsupported msg")

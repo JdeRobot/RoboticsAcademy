@@ -1,5 +1,4 @@
 import React from "react";
-import configuration from "../config.json";
 import { Chip } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
@@ -21,27 +20,25 @@ const ExerciseCard = ({
   tags,
   status,
 }: Exercise) => {
-  const teaser = configuration.academy.exercises.teaser;
   const navigate = useNavigate();
-
-  const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
-  };
 
   const navigateToExercise = (): void => {
     navigate(`/academy/studio/${exercise_id}`, { viewTransition: true });
   };
 
+  const onMediaFallback = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    (event.target as HTMLImageElement).src = FALLBACK_IMAGE;
+  };
+
   const tagsList: string[] = JSON.parse(tags);
 
   return (
-    <StyledExerciseCardContainer state={status}>
+    <StyledExerciseCardContainer state={status} id={exercise_id}>
       <StyledExerciseCardArea onClick={() => navigateToExercise()}>
         <CardMedia
           component="img"
-          height="auto"
           style={{ flexGrow: 1 }}
-          image={teaser.url.replace("${exerciseid}", exercise_id)}
+          image={`/static/${exercise_id}/teaser.png`}
           onError={onMediaFallback}
         />
         <StyledExerciseCardInfoContainer>

@@ -34,6 +34,16 @@ on:
         required: true
         default: humble
         type: string
+      academy_owner:
+        description: 'GitHub owner for RoboticsAcademy'
+        required: false
+        default: JdeRobot
+        type: string
+      infra_owner:
+        description: 'GitHub owner for RoboticsInfrastructure'
+        required: false
+        default: JdeRobot
+        type: string
   workflow_dispatch:
     inputs:
       tag:
@@ -65,6 +75,16 @@ on:
         description: 'ROS Distro (humble)'
         required: true
         default: humble
+        type: string
+      academy_owner:
+        description: 'GitHub owner for RoboticsAcademy'
+        required: false
+        default: JdeRobot
+        type: string
+      infra_owner:
+        description: 'GitHub owner for RoboticsInfrastructure'
+        required: false
+        default: JdeRobot
         type: string
 
 jobs:
@@ -100,7 +120,7 @@ jobs:
           sudo apt-get update
           cd scripts/RADI
           if [ "${{ github.event.inputs.ROS }}" == "humble" ]; then
-            docker build -f Dockerfile.dependencies_humble -t jderobot/robotics-applications:dependencies-humble .
+            docker build --build-arg TARGETARCH=amd64 -f Dockerfile.dependencies_humble -t jderobot/robotics-applications:dependencies-humble .
           else
             echo "Incorrect ROS version"
           fi
@@ -114,6 +134,8 @@ jobs:
               --build-arg RAM=${{ github.event.inputs.RAM }} \
               --build-arg ROS_DISTRO=${{ github.event.inputs.ROS }} \
               --build-arg IMAGE_TAG=${TAG} \
+              --build-arg ACADEMY_OWNER=${{ github.event.inputs.academy_owner }} \
+              --build-arg INFRA_OWNER=${{ github.event.inputs.infra_owner }} \
               -t jderobot/robotics-academy:${TAG} .
             docker push jderobot/robotics-academy:${TAG}
           else

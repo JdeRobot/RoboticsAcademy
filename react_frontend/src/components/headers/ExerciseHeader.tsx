@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Link } from "react-router-dom";
@@ -12,49 +12,37 @@ import {
 
 import {
   HomeButton,
-  UploadButton,
   DownloadButton,
   ForumButton,
   InfoButton,
   TheoryButton,
-  DeepLearningButton,
   PlayPauseButton,
   ResetButton,
   LayoutButton,
   TerminateUniverseButton,
   ThemeButton,
-  LanguageButton,
 } from "Components/buttons";
 import { Layout } from "jderobot-ide-interface";
 
 const ExerciseHeader = ({
   project,
   name,
-  language,
+  supportedLanguages,
   url,
   setLayout,
-  setLanguage,
-  hasDLModel,
   connectManager,
-  saving,
 }: {
   project: string;
   name: string;
-  language?: string;
+  supportedLanguages: string[];
   url?: string;
   setLayout: (layout: Layout) => void;
-  setLanguage: (language: string) => void;
-  hasDLModel: boolean;
   connectManager: (
     desiredState?: string,
     callback?: () => void
   ) => Promise<void>;
-  saving?: boolean;
 }) => {
   const theme = useAcademyTheme();
-  const [dlModel, setDLModel] = useState<ArrayBuffer | undefined>();
-
-  // TODO: project -> center in the middle
 
   return (
     <AppBar position="static">
@@ -80,22 +68,11 @@ const ExerciseHeader = ({
         <StyledHeaderButtonContainer>
           <HomeButton />
           <ThemeButton />
-          {language && (
-            <LanguageButton
-              language={language}
-              setter={setLanguage}
-              loading={saving}
-            />
-          )}
-          {hasDLModel && <DeepLearningButton setModel={setDLModel} />}
-          <UploadButton language={language} />
-          <DownloadButton language={language} />
+          <DownloadButton project={project} />
           <LayoutButton setLayout={setLayout} />
           <PlayPauseButton
             project={project}
-            language={language}
-            dlModel={dlModel}
-            hasDLModel={hasDLModel}
+            supportedLanguages={supportedLanguages}
             connectManager={connectManager}
           />
           <ResetButton />

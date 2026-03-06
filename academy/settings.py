@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Local applications
-    "exercises",
+    "academy",
     # Third-party applications
     "webpack_loader",  # Integrates React webpack bundles with Django
     "rest_framework",  # Django REST Framework
@@ -74,7 +73,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "react_frontend"),
-            os.path.join(BASE_DIR, "exercises"),
+            os.path.join(BASE_DIR, "academy"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -147,7 +146,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = "staticfiles"
 
 STATICFILES_DIRS = (
-    # os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "exercises"),
     os.path.join(BASE_DIR, "react_frontend/static"),  # React frontend statics
 )
 
@@ -163,7 +162,7 @@ WEBPACK_LOADER = {
         "CACHE": not DEBUG,
         "STATS_FILE": os.path.join(BASE_DIR, "react_frontend/webpack-stats.json"),
         "POLL_INTERVAL": 0.1,
-        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
+        "IGNORE": [r".+\.hot-update.js", r".+\.map", "academy/filesystem/"],
     }
 }
 

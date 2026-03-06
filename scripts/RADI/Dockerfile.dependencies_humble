@@ -11,10 +11,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install locales to prevent errors
 RUN apt-get clean && \
-    apt-get update && \
-    apt-get install --no-install-recommends -y locales && \
-    rm -rf /var/lib/apt/lists/* && \
-    locale-gen en_US.UTF-8
+  apt-get update && \
+  apt-get install --no-install-recommends -y locales && \
+  rm -rf /var/lib/apt/lists/* && \
+  locale-gen en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
@@ -47,30 +47,30 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
   && apt-get update && apt-get install -y \
-    ros-${ROS_DISTRO}-ros-base \
-    ros-${ROS_DISTRO}-xacro \
-    ros-${ROS_DISTRO}-joint-state-publisher \
-    ros-${ROS_DISTRO}-rviz2 \
-    python3-colcon-common-extensions \
-    python3-pip python3-rosdep python3-vcstool \
-    python3-argcomplete \
+  ros-${ROS_DISTRO}-ros-base \
+  ros-${ROS_DISTRO}-xacro \
+  ros-${ROS_DISTRO}-joint-state-publisher \
+  ros-${ROS_DISTRO}-rviz2 \
+  python3-colcon-common-extensions \
+  python3-pip python3-rosdep python3-vcstool \
+  python3-argcomplete \
   && rosdep init \
   && rm -rf /var/lib/apt/lists/*
 
 # Install Gazebo 11
 RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
 RUN apt-get update && apt-get install -y \
-        gazebo11 \
-        ros-humble-gazebo-ros-pkgs \
-        gstreamer1.0-plugins-bad \
-        gstreamer1.0-plugins-good \
-        gstreamer1.0-plugins-ugly \
-        gstreamer1.0-libav \
-        libgstreamer-plugins-base1.0-dev \
-        libimage-exiftool-perl \
-    && apt-get -y autoremove \
-    && apt-get clean autoclean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  gazebo11 \
+  ros-humble-gazebo-ros-pkgs \
+  gstreamer1.0-plugins-bad \
+  gstreamer1.0-plugins-good \
+  gstreamer1.0-plugins-ugly \
+  gstreamer1.0-libav \
+  libgstreamer-plugins-base1.0-dev \
+  libimage-exiftool-perl \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
 # Install Gazebo Harmonic
@@ -78,25 +78,25 @@ RUN apt-get update \
   && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
   && apt-get update && apt-get install -y -q \
-      gz-harmonic \
+  gz-harmonic \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
-      ros-humble-ros-gzharmonic \
+  ros-humble-ros-gzharmonic \
   && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    dbus-x11 \
-    libdbus-c++-1-0v5 \
-    xvfb xauth xfonts-base xkb-data x11-xkb-utils \
-    x11vnc \
-    xterm \
-    xserver-xorg-video-dummy \
-    x11-apps \
-	&& apt-get -y autoremove \
-	&& apt-get clean autoclean \
+  dbus-x11 \
+  libdbus-c++-1-0v5 \
+  xvfb xauth xfonts-base xkb-data x11-xkb-utils \
+  x11vnc \
+  xterm \
+  xserver-xorg-video-dummy \
+  x11-apps \
+  && apt-get -y autoremove \
+  && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/{apt,dpkg,cache,log} /tmp/* /var/tmp/*
 
 RUN curl -L -o xorg.conf https://xpra.org/xorg.conf || echo "Download failed" \
@@ -110,11 +110,11 @@ RUN cd /noVNC/utils && git clone -b v0.11.0 https://github.com/novnc/websockify.
 COPY ./gpu/virtualgl_${VIRTUALGL_VERSION}_amd64.deb ./gpu/virtualgl32_${VIRTUALGL_VERSION}_amd64.deb ./gpu/turbovnc_${TURBOVNC_VERSION}_amd64.deb /
 
 RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y \
-    libxtst6:i386 \
-    libxv1:i386 \
-    libglu1-mesa:i386 \
-    libegl1-mesa:i386 \
-    libegl1-mesa:amd64
+  libxtst6:i386 \
+  libxv1:i386 \
+  libglu1-mesa:i386 \
+  libegl1-mesa:i386 \
+  libegl1-mesa:amd64
 
 RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
   && rm /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtualgl32_${VIRTUALGL_VERSION}_amd64.deb \
@@ -125,7 +125,7 @@ RUN apt-get update && dpkg -i /virtualgl_${VIRTUALGL_VERSION}_amd64.deb /virtual
   && chmod u+s /usr/lib/i386-linux-gnu/libvglfaker.so \
   && chmod u+s /usr/lib/i386-linux-gnu/libdlfaker.so \
   && apt-get update && apt-get install -y --no-install-recommends \
-    /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
+  /turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm turbovnc_${TURBOVNC_VERSION}_amd64.deb \
   && rm -rf /var/lib/apt/lists/*
 
@@ -137,7 +137,7 @@ ENV PATH="$PATH:/opt/VirtualGL/bin:/opt/TurboVNC/bin"
 
 # Install postgreSQL-18
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      wget gnupg lsb-release ca-certificates \
+  wget gnupg lsb-release ca-certificates \
   && wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
   && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && apt-get update && apt-get install -y --no-install-recommends postgresql-18 \
@@ -153,11 +153,11 @@ RUN python3.10 -m pip install --upgrade pip==23.3.1 wheel==0.41.3 setuptools==69
 
 # pip install dependencies
 RUN python3.10 -m pip install \
-    pylint==3.3.1 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
-    argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
-    matplotlib==3.0.* numpy==1.24.3 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
-    pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
-    onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 netron seaborn==0.11.2 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
+  pylint==3.3.1 transitions==0.9.0 pydantic==2.4.2 websocket-client==1.5.2 \
+  argparse==1.4.0 coverage==6.2 cerberus==1.3.4 empy==3.3.4 jinja2==3.0.3 kconfiglib==14.1.0 \
+  matplotlib==3.0.* numpy==1.24.3 nunavut==1.1.0 packaging==21.3 pkgconfig==1.5.5 pyros-genmsg==0.5.8 \
+  pyulog==1.0.1 pyyaml==5.4.1 requests==2.31.0 serial==0.0.97 six==1.16.0 toml==0.10.2 psutil==5.9.0 \
+  onnxruntime-gpu==1.22.0 Pillow==9.0.1 opencv-python==4.5.5.64 netron seaborn==0.11.2 watchdog==2.1.5 utm==0.7.0 psycopg2 jedi pyapriltags
 
 # install pytorch with CUDA 12.8 support 
 RUN python3.10 -m pip install --ignore-installed sympy==1.13.3 
@@ -168,53 +168,53 @@ RUN python3.10 -m pip install black==24.10.0
 
 # websocket server dependency
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
-    django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
+  django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
 
 # BT STUDIO hotfix
 RUN python3.10 -m pip install py-trees autopep8
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
   && apt-get update && apt-get install -y \
-    ros-humble-py-trees \
-    ros-humble-py-trees-ros
+  ros-humble-py-trees \
+  ros-humble-py-trees-ros
 
 ## Aerostack2
 WORKDIR /root/
 
 RUN apt-get update && \
-    apt-get install apt-utils -y \
-        software-properties-common \
-        git \
-        tmux \
-        tmuxinator \
-        python3-rosdep \
-        python3-pip \
-        python3-colcon-common-extensions \
-        python3-colcon-mixin \
-        python-is-python3 \
-        ros-dev-tools \
-        python3-flake8 \
-        python3-flake8-builtins  \
-        python3-flake8-comprehensions \
-        python3-flake8-docstrings \
-        python3-flake8-import-order \
-        python3-flake8-quotes \
-        cppcheck \
-        lcov \
-        lsb-release \
-        wget \
-        gnupg \
-    && rm -rf /var/lib/apt/lists/* 
+  apt-get install apt-utils -y \
+  software-properties-common \
+  git \
+  tmux \
+  tmuxinator \
+  python3-rosdep \
+  python3-pip \
+  python3-colcon-common-extensions \
+  python3-colcon-mixin \
+  python-is-python3 \
+  ros-dev-tools \
+  python3-flake8 \
+  python3-flake8-builtins  \
+  python3-flake8-comprehensions \
+  python3-flake8-docstrings \
+  python3-flake8-import-order \
+  python3-flake8-quotes \
+  cppcheck \
+  lcov \
+  lsb-release \
+  wget \
+  gnupg \
+  && rm -rf /var/lib/apt/lists/* 
 
 RUN pip3 install \
-        pylint \
-        flake8==4.0.1 \
-        pycodestyle==2.8 \
-        cmakelint \
-        cpplint \
-        transforms3d \
-        colcon-lcov-result \
-        PySimpleGUI-4-foss
+  pylint \
+  flake8==4.0.1 \
+  pycodestyle==2.8 \
+  cmakelint \
+  cpplint \
+  transforms3d \
+  colcon-lcov-result \
+  PySimpleGUI-4-foss
 
 RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
 RUN colcon mixin update default
@@ -233,70 +233,86 @@ RUN touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLC
 WORKDIR /home/drones_ws/
 
 RUN apt-get update && \
-    apt-get install -y \
-        libbenchmark-dev \
-        libeigen3-dev \
-        libgeographic-dev \
-        libncurses-dev \
-        libyaml-cpp-dev \
-        pybind11-dev \
-        python3-jinja2 \
-        python3-pydantic \
-        python3-pymap3d \
-        python3-pytest \
-        ros-humble-action-msgs \
-        ros-humble-ament-cmake \
-        ros-humble-ament-cmake-gtest \
-        ros-humble-ament-cmake-lint-cmake \
-        ros-humble-ament-cmake-pytest \
-        ros-humble-ament-cmake-python \
-        ros-humble-ament-cmake-xmllint \
-        ros-humble-ament-copyright \
-        ros-humble-ament-flake8 \
-        ros-humble-ament-index-cpp \
-        ros-humble-ament-lint-auto \
-        ros-humble-ament-lint-common \
-        ros-humble-ament-pep257 \
-        ros-humble-backward-ros \
-        ros-humble-builtin-interfaces \
-        ros-humble-cv-bridge \
-        ros-humble-geographic-msgs \
-        ros-humble-geometry-msgs \
-        ros-humble-image-transport \
-        ros-humble-mocap4r2-msgs \
-        ros-humble-nav-msgs \
-        ros-humble-pluginlib \
-        ros-humble-rclcpp \
-        ros-humble-rclcpp-action \
-        ros-humble-rclcpp-components \
-        ros-humble-rclcpp-lifecycle \
-        ros-humble-rclpy \
-        ros-humble-robot-state-publisher \
-        ros-humble-rosidl-default-generators \
-        ros-humble-rosidl-default-runtime \
-        ros-humble-rviz2 \
-        ros-humble-sdformat-urdf \
-        ros-humble-sensor-msgs \
-        ros-humble-std-msgs \
-        ros-humble-std-srvs \
-        ros-humble-tf2 \
-        ros-humble-tf2-geometry-msgs \
-        ros-humble-tf2-msgs \
-        ros-humble-tf2-ros \
-        ros-humble-trajectory-msgs \
-        ros-humble-visualization-msgs \
-        ros-humble-moveit \
-        ros-humble-ros2-control \
-        ros-humble-ros2-controllers \
-        ros-humble-gripper-controllers \
-        ros-humble-rmw-cyclonedds-cpp \
-        ros-humble-ur \
-        ros-humble-ros-testing \
-        libpoco-dev \
-      && rm -rf /var/lib/apt/lists/*
+  apt-get install -y \
+  libbenchmark-dev \
+  libeigen3-dev \
+  libgeographic-dev \
+  libncurses-dev \
+  libyaml-cpp-dev \
+  pybind11-dev \
+  python3-jinja2 \
+  python3-pydantic \
+  python3-pymap3d \
+  python3-pytest \
+  ros-humble-action-msgs \
+  ros-humble-ament-cmake \
+  ros-humble-ament-cmake-gtest \
+  ros-humble-ament-cmake-lint-cmake \
+  ros-humble-ament-cmake-pytest \
+  ros-humble-ament-cmake-python \
+  ros-humble-ament-cmake-xmllint \
+  ros-humble-ament-copyright \
+  ros-humble-ament-flake8 \
+  ros-humble-ament-index-cpp \
+  ros-humble-ament-lint-auto \
+  ros-humble-ament-lint-common \
+  ros-humble-ament-pep257 \
+  ros-humble-backward-ros \
+  ros-humble-builtin-interfaces \
+  ros-humble-cv-bridge \
+  ros-humble-geographic-msgs \
+  ros-humble-geometry-msgs \
+  ros-humble-image-transport \
+  ros-humble-mocap4r2-msgs \
+  ros-humble-nav-msgs \
+  ros-humble-pluginlib \
+  ros-humble-rclcpp \
+  ros-humble-rclcpp-action \
+  ros-humble-rclcpp-components \
+  ros-humble-rclcpp-lifecycle \
+  ros-humble-rclpy \
+  ros-humble-robot-state-publisher \
+  ros-humble-rosidl-default-generators \
+  ros-humble-rosidl-default-runtime \
+  ros-humble-rviz2 \
+  ros-humble-sdformat-urdf \
+  ros-humble-sensor-msgs \
+  ros-humble-std-msgs \
+  ros-humble-std-srvs \
+  ros-humble-tf2 \
+  ros-humble-tf2-geometry-msgs \
+  ros-humble-tf2-msgs \
+  ros-humble-tf2-ros \
+  ros-humble-trajectory-msgs \
+  ros-humble-visualization-msgs \
+  ros-humble-moveit \
+  ros-humble-ros2-control \
+  ros-humble-ros2-controllers \
+  ros-humble-gripper-controllers \
+  ros-humble-rmw-cyclonedds-cpp \
+  ros-humble-ur \
+  ros-humble-ros-testing \
+  libpoco-dev \
+  && rm -rf /var/lib/apt/lists/*
 
+# On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
+# to avoid GNU make jobserver failures under amd64 emulation.
+
+ARG TARGETARCH
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+  if [ "$TARGETARCH" = "arm64" ]; then \
+  colcon build \
+  --symlink-install \
+  --executor sequential \
+  --cmake-args \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
+  else \
+  colcon build \
+  --symlink-install \
+  --cmake-args \
+  -DCMAKE_BUILD_TYPE=Release ; \
+  fi
 
 # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
@@ -310,22 +326,28 @@ WORKDIR /home/dev_ws
 
 # --- PCL & ROS PCL deps (before colcon) ---
 RUN apt-get update && apt-get install -y \
-    libpcl-dev \
-    ros-humble-pcl-ros \
-    ros-humble-gazebo-ros-pkgs \
-    ros-humble-gazebo-plugins \
-    ros-humble-tf-transformations \
-    ros-humble-pcl-conversions && \
-    rm -rf /var/lib/apt/lists/*
+  libpcl-dev \
+  ros-humble-pcl-ros \
+  ros-humble-gazebo-ros-pkgs \
+  ros-humble-gazebo-plugins \
+  ros-humble-tf-transformations \
+  ros-humble-pcl-conversions && \
+  rm -rf /var/lib/apt/lists/*
 
 # (Optional but recommended) install missing deps via rosdep
 RUN . /opt/ros/humble/setup.sh && \
-    rosdep update && \
-    rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
+  rosdep update && \
+  rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
 
 # Build (drop the duplicate)
 WORKDIR /home/dev_ws
-RUN . /opt/ros/humble/setup.sh && colcon build && colcon build
+ARG TARGETARCH
+RUN . /opt/ros/humble/setup.sh && \
+  if [ "$TARGETARCH" = "arm64" ]; then \
+  export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
+  else \
+  colcon build && colcon build; \
+  fi
 RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
@@ -340,3 +362,13 @@ COPY install-ompl-ubuntu.sh /
 WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
+
+# Clone and build gz_ros2_control for Gazebo Harmonic (gz-sim8)
+# This is required for Pick Place Harmonic exercise controller loading
+WORKDIR /home/ws/src
+RUN git clone --depth 1 https://github.com/ros-controls/gz_ros2_control.git -b humble
+WORKDIR /home/ws
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
+  export GZ_VERSION=harmonic && \
+  colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
+WORKDIR /

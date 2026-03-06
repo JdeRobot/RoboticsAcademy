@@ -13,7 +13,7 @@ import sys
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
-from manager.ram_logging.log_manager import LogManager
+from robotics_application_manager import LogManager
 
 
 class MeasuringThreadingGUI:
@@ -150,6 +150,8 @@ class MeasuringThreadingGUI:
         if "ack" in message:
             with self.ack_lock:
                 self.ack = True
+        elif "start" in message:
+            with self.ack_lock:
                 self.ack_frontend = True
         else:
             LogManager.logger.error("Unsupported msg")
@@ -168,10 +170,9 @@ class MeasuringThreadingGUI:
 
             # Check if a new map should be sent
             with self.ack_lock:
-                if self.ack:
+                if self.ack_frontend and self.ack:
                     self.update_gui()
-                    if self.ack_frontend:
-                        self.ack = False
+                    self.ack = False
 
             # Maintain desired frequency
             elapsed = time.time() - start_time

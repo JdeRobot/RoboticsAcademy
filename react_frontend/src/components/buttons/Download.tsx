@@ -1,15 +1,14 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
-import { publish, saveCode, subscribe, unsubscribe } from "Helpers/utils";
+import { publish, subscribe, unsubscribe, zipCodeFiles } from "Helpers/utils";
 import { useEffect, useRef, useState } from "react";
-import { useExercise } from "Contexts/ExerciseContext";
 import React from "react";
+import JSZip from "jszip";
+import { getFileList } from "Api";
 
-const DownloadButton = ({ language }: { language?: string }) => {
+const DownloadButton = ({ project }: { project: string }) => {
   const theme = useAcademyTheme();
-  const exerciseContext = useExercise();
-  const codeRef = useRef("");
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
   const [isCodeUpdated, _updateCode] = useState<boolean | undefined>(false);
 
@@ -28,11 +27,7 @@ const DownloadButton = ({ language }: { language?: string }) => {
     };
   }, []);
 
-  useEffect(() => {
-    codeRef.current = exerciseContext.code;
-  }, [exerciseContext]);
-
-  const saveFile = (save?: boolean) => {
+  const saveFile = async (save?: boolean) => {
     if (save === undefined) {
       publish("autoSave");
       updateCode(false);
@@ -43,7 +38,21 @@ const DownloadButton = ({ language }: { language?: string }) => {
       return setTimeout(saveFile, 100, true);
     }
 
-    saveCode("academy", codeRef.current, language);
+    const zip = new JSZip();
+    const files = await getFileList(project);
+    await zipCodeFiles(zip, JSON.parse(files), project);
+
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      // Create a download link and trigger download
+      const url = window.URL.createObjectURL(content);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = `${project}.zip`; // Set the downloaded file's name
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url); // Clean up after the download
+    });
   };
 
   return (

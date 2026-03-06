@@ -1,9 +1,14 @@
 import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
-import { useError } from "jderobot-ide-interface";
-import { publish, subscribe, unsubscribe } from "Helpers/utils";
+import { Entry, useError } from "jderobot-ide-interface";
+import {
+  publish,
+  subscribe,
+  unsubscribe,
+  zipCodeFiles,
+  zipHelperFiles,
+} from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
 import JSZip from "jszip";
-import { useExercise } from "Contexts/ExerciseContext";
 import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -12,33 +17,27 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getProjectExtraFiles } from "Api";
+import { getFileList, getHelperFileList } from "Api";
 
 const PlayPauseButton = ({
   project,
-  language,
-  dlModel,
-  hasDLModel,
+  supportedLanguages,
   connectManager,
 }: {
   project: string;
-  language?: string;
-  dlModel: ArrayBuffer | undefined;
-  hasDLModel: boolean;
+  supportedLanguages: string[];
   connectManager: (
     desiredState?: string,
     callback?: () => void
   ) => Promise<void>;
 }) => {
   const theme = useAcademyTheme();
-  const exerciseContext = useExercise();
   const { warning, error, info, close } = useError();
-  const codeRef = useRef("");
-  const runningCodeRef = useRef("");
-  const runningDLModel = useRef<ArrayBuffer | undefined>(undefined);
-  const [state, setState] = useState<string>(
-    CommsManager.getInstance().getState()
-  );
+  const filesRef = useRef<Entry[]>([]);
+  const entrypointRef = useRef<Entry | undefined>(undefined);
+  const runningFilesRef = useRef<Entry[]>([]);
+  const runningEntrypointRef = useRef<Entry | undefined>(undefined);
+  const [state, setState] = useState<string>(states.IDLE);
   const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
   const [, _updateCode] = useState<boolean | undefined>(false);
@@ -55,21 +54,26 @@ const PlayPauseButton = ({
     }
   };
 
+  const updateCurrent = (e: unknown) => {
+    const T = CustomEvent<{ detail: { file?: Entry } }>;
+    if (e instanceof T) {
+      entrypointRef.current = e.detail.file;
+    }
+  };
+
   useEffect(() => {
     subscribe("autoSaveCompleted", () => {
       updateCode(true);
     });
     subscribe("CommsManagerStateChange", updateState);
+    subscribe("currentFile", updateCurrent);
 
     return () => {
       unsubscribe("autoSaveCompleted", () => {});
       unsubscribe("CommsManagerStateChange", () => {});
+      unsubscribe("currentFile", () => {});
     };
   }, []);
-
-  useEffect(() => {
-    codeRef.current = exerciseContext.code;
-  }, [exerciseContext]);
 
   useEffect(() => {
     if (
@@ -80,6 +84,25 @@ const PlayPauseButton = ({
       setLoading(false);
     }
   }, [state]);
+
+  const getLanguage = (extension?: string) => {
+    const fileTypes = {
+      py: "python",
+      cpp: "cpp",
+    };
+
+    if (extension === undefined) {
+      return undefined;
+    }
+
+    for (const key in fileTypes) {
+      if (key === extension) {
+        return fileTypes[key as keyof typeof fileTypes];
+      }
+    }
+
+    return undefined;
+  };
 
   // App handling
 
@@ -122,6 +145,24 @@ const PlayPauseButton = ({
       return;
     }
 
+    if (entrypointRef.current === undefined) {
+      error(
+        "Failed to run the application. Make sure to select an entrypoint by opening it in the editor."
+      );
+      setLoading(false);
+      return;
+    }
+
+    const language = getLanguage(entrypointRef.current.path.split(".").pop());
+
+    if (language === undefined || !supportedLanguages.includes(language)) {
+      error(
+        `Failed to run the application. Entrypoint ${entrypointRef.current.path} is not supported.`
+      );
+      setLoading(false);
+      return;
+    }
+
     if (save === undefined) {
       publish("autoSave");
       updateCode(false);
@@ -131,10 +172,13 @@ const PlayPauseButton = ({
       return setTimeout(onAppStateChange, 100, true);
     }
 
+    const files = await getFileList(project);
+    filesRef.current = JSON.parse(files);
+
     if (state === states.PAUSED) {
       if (
-        runningCodeRef.current === codeRef.current &&
-        runningDLModel.current === dlModel
+        runningFilesRef.current === filesRef.current &&
+        runningEntrypointRef.current === entrypointRef.current
       ) {
         try {
           await manager.resume();
@@ -152,47 +196,43 @@ const PlayPauseButton = ({
 
     try {
       const zip = new JSZip();
-      const extension = language === "cpp" ? "cpp" : "py";
+      const extension = entrypointRef.current.path.split(".").pop();
       let commonsZip;
-      let toLint = [""];
 
       if (extension === "py") {
         commonsZip = await zip.loadAsync(commons);
-        toLint = ["academy.py"];
       } else {
         commonsZip = zip;
       }
 
-      const extraFiles: { name: string; content: string }[] =
-        await getProjectExtraFiles(project, language ? language : "python");
+      const helper_files = await getHelperFileList(
+        project,
+        language ?? "python"
+      );
 
-      extraFiles.forEach((file) => {
-        commonsZip.file(file.name, file.content);
-      });
+      await zipHelperFiles(
+        commonsZip,
+        helper_files,
+        project,
+        language ?? "python",
+        entrypointRef.current
+      );
 
-      commonsZip.file(`academy.${extension}`, codeRef.current);
+      await zipCodeFiles(commonsZip, filesRef.current, project);
 
-      // add onnx file to the zip if it exists
-      if (hasDLModel) {
-        if (dlModel !== undefined) {
-          commonsZip.file("model.onnx", dlModel);
-        } else {
-          throw new Error("No ONNX model found.");
-        }
-      }
-
-      runningCodeRef.current = codeRef.current;
+      runningFilesRef.current = filesRef.current;
+      runningEntrypointRef.current = entrypointRef.current;
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64data = reader.result; // Get the zip in base64
         // Send the base64 encoded blob
-        if (base64data) {
+        if (base64data && runningEntrypointRef.current) {
           try {
             await manager.run(
-              `/workspace/code/academy.${extension}`,
-              toLint,
+              `/workspace/code/${runningEntrypointRef.current.path}`,
+              [runningEntrypointRef.current.path],
               base64data as string
             );
           } catch {
@@ -205,7 +245,7 @@ const PlayPauseButton = ({
         }
       };
 
-      zip.generateAsync({ type: "blob" }).then(function (content: Blob) {
+      commonsZip.generateAsync({ type: "blob" }).then(function (content: Blob) {
         reader.readAsDataURL(content);
       });
 

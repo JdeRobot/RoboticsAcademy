@@ -4,7 +4,21 @@ import App from "./App";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import { Home, projectLoader, Studio } from "Routes";
+import { ErrorStudio, Home, projectLoader, Studio } from "Routes";
+
+// Clear stored state on app startup to ensure fresh state on every launch
+// This removes theme preferences, search filters, and other cached UI state
+const clearStoredState = () => {
+  // Clear localStorage items (theme preferences)
+  window.localStorage.removeItem("themeType");
+
+  // Clear sessionStorage items (search/filter state)
+  window.sessionStorage.removeItem("ra_home_filters_v1");
+  window.sessionStorage.removeItem("ra_home_search_v1");
+};
+
+// Execute immediately before React mounts
+clearStoredState();
 
 const router = createBrowserRouter([
   {
@@ -12,7 +26,12 @@ const router = createBrowserRouter([
     Component: App,
     children: [
       { index: true, Component: Home },
-      { path: "studio/:proj_id", Component: Studio, loader: projectLoader },
+      {
+        path: "studio/:proj_id",
+        Component: Studio,
+        loader: projectLoader,
+        ErrorBoundary: ErrorStudio,
+      },
     ],
   },
 ]);

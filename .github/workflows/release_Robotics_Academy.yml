@@ -33,6 +33,14 @@ on:
         description: 'ROS Distro (humble)'
         required: true
         default: humble
+      academy_owner:
+        description: 'GitHub owner for RoboticsAcademy'
+        required: false
+        default: JdeRobot
+      infra_owner:
+        description: 'GitHub owner for RoboticsInfrastructure'
+        required: false
+        default: JdeRobot
 
 jobs:
   generate-RA-docker-image:
@@ -45,7 +53,10 @@ jobs:
       RI: ${{ github.event.inputs.RI }}
       RAM: ${{ github.event.inputs.RAM }}
       ROS: ${{ github.event.inputs.ROS }}
+      academy_owner: ${{ github.event.inputs.academy_owner }}
+      infra_owner: ${{ github.event.inputs.infra_owner }}
     secrets: inherit
+
   generate-RA-database-docker-image:
     name: Generate Robotics Academy Database Image
     uses: ./.github/workflows/generate_Robotics_Academy_Database.yml
@@ -54,4 +65,6 @@ jobs:
       latest: ${{ inputs.latest }}
       RA: ${{ github.event.inputs.RA }}
       RI: ${{ github.event.inputs.RIDB }}
+      academy_owner: ${{ github.event.inputs.academy_owner }}
+      infra_owner: ${{ github.event.inputs.infra_owner }}
     secrets: inherit

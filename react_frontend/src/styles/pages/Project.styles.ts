@@ -16,3 +16,23 @@ export const StyledStubBackground = styled.div<StyledStubBackgroundProps>`
   z-index: -1;
   background-color: ${(p) => p.bgColor ?? primaryColor};
 `;
+
+export const StyledErrorContainer = styled.div<StyledStubBackgroundProps>`
+  padding: 28px;
+  background-color: ${(p) => p.bgColor ?? primaryColor};
+  overflow: auto;
+  height: calc(100vh - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+interface StyledErrorMessageProps {
+  color?: string;
+}
+
+export const StyledErrorMessage = styled.h1<StyledErrorMessageProps>`
+  color: ${(p) => p.color ?? primaryColor};
+  text-align: center;
+`;

@@ -1,6 +1,12 @@
 import { Box } from "@mui/system";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import React, { ReactNode } from "react";
+import {
+  CommsManager,
+  events,
+  ManagerMsg,
+  states,
+} from "jderobot-commsmanager";
+import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
   id,
@@ -13,7 +19,7 @@ const WebGUIContainer = ({
 
   return (
     <Box
-      id={id}
+      id="webgui-container"
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -29,6 +35,91 @@ const WebGUIContainer = ({
       {children}
     </Box>
   );
+};
+
+export const connectApplication = (
+  manager: CommsManager | null,
+  updateCallback: (data: unknown) => void,
+  stateCallback?: (state: string) => void,
+  resizeRef?: MutableRefObject<HTMLImageElement | null>,
+  resizeObserver?: ResizeObserver
+) => {
+  const intRef = useRef<number | null>(null);
+
+  const onStateChange = (message: ManagerMsg) => {
+    const state = message.data.state as string;
+    if (state === states.TOOLS_READY || state === states.RUNNING) {
+      start();
+    }
+    if (stateCallback !== undefined) {
+      stateCallback(state);
+    }
+  };
+
+  const onUpdate = (message: ManagerMsg) => {
+    if (manager === null) {
+      return;
+    }
+
+    end();
+    updateCallback(message.data);
+    manager.send("gui", "ack"); // Send the ACK of the msg
+  };
+
+  useEffect(() => {
+    if (manager === null) {
+      return;
+    }
+
+    if (resizeRef && resizeRef.current && resizeObserver) {
+      resizeObserver.observe(resizeRef.current);
+    }
+
+    manager.subscribe(events.UPDATE, onUpdate);
+    manager.subscribe(events.STATE_CHANGED, onStateChange);
+
+    return () => {
+      manager.unsubscribe(events.UPDATE, onUpdate);
+      manager.unsubscribe(events.STATE_CHANGED, onStateChange);
+    };
+  }, [manager]);
+
+  const start = () => {
+    if (manager === null) {
+      return;
+    }
+
+    end();
+
+    if (manager.ws.readyState !== WebSocket.OPEN) {
+      return;
+    }
+
+    const timer = window.setInterval(async () => {
+      const state = manager.getState();
+      if (
+        state === states.IDLE ||
+        state === states.CONNECTED ||
+        state === states.WORLD_READY
+      ) {
+        window.clearInterval(timer);
+      } else {
+        try {
+          await manager.send("gui", "start");
+        } catch {
+          window.clearInterval(timer);
+        }
+      }
+    }, 1000);
+    intRef.current = timer;
+  };
+
+  const end = () => {
+    if (intRef.current !== null) {
+      window.clearInterval(intRef.current);
+      intRef.current = null;
+    }
+  };
 };
 
 export default WebGUIContainer;

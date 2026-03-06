@@ -4,23 +4,23 @@ WORKDIR /
 
 # RoboticsInfrasctructure Repository
 ARG ROBOTICS_INFRASTRUCTURE=$ROBOTICS_INFRASTRUCTURE
+ARG INFRA_OWNER=JdeRobot
 RUN mkdir -p /opt/jderobot && \
-    git clone --depth 1 https://github.com/JdeRobot/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
+    git clone --depth 1 https://github.com/${INFRA_OWNER}/RoboticsInfrastructure.git -b $ROBOTICS_INFRASTRUCTURE /opt/jderobot
 
 # create workspace and add Robot packages
 RUN mkdir -p /home/ws/src
-RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /home/ws/src/
+RUN mv /opt/jderobot/CustomRobots /opt/jderobot/jderobot_drones /opt/jderobot/Industrial /home/ws/src/
 RUN mv /opt/jderobot/resources /resources
 
 ARG IMAGE_TAG
 ENV IMAGE_TAG=${IMAGE_TAG}
 
 # Clone the RoboticsApplicationManager repository into the src folder inside RoboticsAcademy
-ARG RAM=$RAM
-RUN git clone https://github.com/JdeRobot/RoboticsApplicationManager.git -b $RAM /RoboticsApplicationManager
+RUN python3 -m pip install robotics_application_manager
 
 # copy scripts
-RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh
+RUN mv -t / /opt/jderobot/scripts/.env  /opt/jderobot/scripts/entrypoint.sh /opt/jderobot/scripts/ram_entrypoint.py /opt/jderobot/scripts/start_vnc.sh  /opt/jderobot/scripts/start_vnc_gpu.sh /opt/jderobot/scripts/kill_all.sh /opt/jderobot/scripts/test/check_device.py /opt/jderobot/scripts/set_dri_name.sh /opt/jderobot/scripts/check_ram_version.sh
 
 # Move Window Manager config
 RUN mv -f /opt/jderobot/scripts/rc.xml /etc/xdg/openbox/LXDE/rc.xml
@@ -31,13 +31,14 @@ RUN chmod +x /start_vnc.sh /kill_all.sh /entrypoint.sh /start_vnc_gpu.sh /set_dr
 
 # RoboticsAcademy
 ARG ROBOTICS_ACADEMY=$ROBOTICS_ACADEMY
-RUN git clone --depth 1 https://github.com/JdeRobot/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
+ARG ACADEMY_OWNER=JdeRobot
+RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git -b $ROBOTICS_ACADEMY /RoboticsAcademy/
 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
 RUN /bin/bash -c "source /home/dev_ws/install/local_setup.bash"
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
 
 # Compress commons
 WORKDIR /RoboticsAcademy/
