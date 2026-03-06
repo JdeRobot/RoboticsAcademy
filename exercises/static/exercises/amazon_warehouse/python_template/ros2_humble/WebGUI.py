@@ -32,11 +32,12 @@ class WebGUI(MeasuringThreadingGUI):
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
 
-        # Payload vars
         self.payload = {"map": "", "array": "", "liftState": ""}
-        self.init_coords = (171, 63)
-        self.start_coords = (201, 85.5)
+
         self.map = Map(getPose3d)
+        
+        self.init_coords = self.map.getRobotCoordinates()
+        self.start_coords = self.map.getRobotCoordinates()
 
         self.start()
 
