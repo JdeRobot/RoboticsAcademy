@@ -194,6 +194,34 @@ Fail: ABORTED: No motion plan found. No execution attempted.
 
 ### Gazebo 11 (Classic)
 
+**Object list.** The four objects are located on a conveyor that is 1 m tall.
+* **yellow_box**
+  * Size (l,w,h) = (7,5,10) cm
+  * Pose (x,y) = (0.6,0.3) m
+* **red_box**
+  * Size (l,w,h) = (5,10,8) cm
+  * Pose (x,y) = (0.6,-0.3) m
+* **blue_ball**
+  * Size (r) = (4) cm
+  * Pose (x,y) = (0.7, 0.1) m
+* **green_cylinder**
+  * Size (r,h) = (4,15) cm
+  * Pose (x,y) = (0.5, -0.1) m
+
+**Target list.** The four targets are located on a table that is 0.8 m tall.
+* **red_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,0.15) m
+* **green_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,-0.15) m
+* **blue_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,0.45) m
+* **yellow_target**
+  * Size (l,w,h) = (36,30,12) cm
+  * Pose (x,y) = (-0.6,-0.45) m
+
 ### Gazebo Harmonic
 
 **Object list.** The four objects are located on a conveyor that is 1 m tall.  
@@ -227,7 +255,7 @@ Target dimensions and positions are identical to the Gazebo Classic version.
 * **yellow_target**
   * Size (l,w,h) = (36,30,12) cm
   * Pose (x,y) = (-0.6,-0.45) m
-
+  
 ## Hints
 
 ### Relationship among ROS2, MoveIt2, Gazebo, JdeRobot provided API
