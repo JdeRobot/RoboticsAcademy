@@ -35,12 +35,11 @@ export const StyledHeaderButtonContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   margin-left: auto;
-`;
 
 interface StyledHeaderButtonProps {
-  bgColor?: string;
-  hoverColor?: string;
-  roundness?: number;
+  $bgColor?: string;
+  $hoverColor?: string;
+  $roundness?: number;
 }
 
 export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
@@ -48,18 +47,42 @@ export const StyledHeaderButton = styled.button<StyledHeaderButtonProps>`
   justify-content: center;
   width: 32px;
   height: 32px;
-  background-color: ${(p) => p.bgColor ?? primaryColor};
+  background-color: ${(p) => p.$bgColor ?? primaryColor};
   border: 0;
   margin-left: 6px;
   margin-right: 6px;
-  padding: 0 0 0 0;
+  padding: 0;
   align-content: center;
   flex-wrap: wrap;
-  border-radius: ${(p) => p.roundness ?? 1}px;
+  border-radius: ${(p) => p.$roundness ?? 1}px;
 
   &:hover {
-    background-color: ${(p) => p.hoverColor ?? primaryColor};
+    background-color: ${(p) => p.$hoverColor ?? primaryColor};
   }
+
+  &:focus {
+    outline: none;
+  }
+
+  & svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  #loading-spin {
+    animation: spin 2s linear infinite;
+    opacity: 50%;
+  }
+`;
 
   &:focus {
     outline: none;
