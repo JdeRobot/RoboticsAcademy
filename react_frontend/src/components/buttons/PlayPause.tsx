@@ -33,6 +33,97 @@ const PlayPauseButton = ({
 }) => {
   const theme = useAcademyTheme();
   const { warning, error, info, close } = useError();
+
+  const [state, setState] = useState<string>(states.IDLE);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const onAppStateChange = async () => {
+    const manager = CommsManager.getInstance();
+    const currentState = manager.getState();
+
+    setLoading(true);
+
+    if (currentState === states.RUNNING) {
+      try {
+        await manager.pause();
+      } catch (e) {
+        error("Failed to pause application.");
+      }
+      setLoading(false);
+      return;
+    }
+
+    try {
+      await manager.run();
+    } catch (e) {
+      error("Failed to run application.");
+    }
+
+    setLoading(false);
+  };
+
+  return (
+    <>
+      <StyledHeaderButton
+        $bgColor={theme.palette.primary}
+        $hoverColor={theme.palette.secondary}
+        $roundness={theme.roundness}
+        id="run-app"
+        onClick={() => onAppStateChange()}
+        title="Run app"
+        disabled={loading}
+      >
+        {loading ? (
+          <SyncRoundedIcon htmlColor={theme.palette.text} id="loading-spin" />
+        ) : (
+          <>
+            {state === states.RUNNING ? (
+              <PauseRoundedIcon htmlColor={theme.palette.text} />
+            ) : (
+              <PlayArrowRoundedIcon htmlColor={theme.palette.text} />
+            )}
+          </>
+        )}
+      </StyledHeaderButton>
+    </>
+  );
+};
+
+export default PlayPauseButton;import { StyledHeaderButton } from "Styles/headers/HeaderMenu.styles";
+import { Entry, useError } from "jderobot-ide-interface";
+import {
+  publish,
+  subscribe,
+  unsubscribe,
+  zipCodeFiles,
+  zipHelperFiles,
+} from "Helpers/utils";
+import { CommsManager, states } from "jderobot-commsmanager";
+import JSZip from "jszip";
+import { useEffect, useRef, useState } from "react";
+import commons from "../../common.zip";
+import { useAcademyTheme } from "Contexts/AcademyThemeContext";
+import React from "react";
+
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
+import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
+import { getFileList, getHelperFileList } from "Api";
+
+const PlayPauseButton = ({
+  project,
+  supportedLanguages,
+  connectManager,
+}: {
+  project: string;
+  supportedLanguages: string[];
+  connectManager: (
+    desiredState?: string,
+    callback?: () => void
+  ) => Promise<void>;
+}) => {
+  const theme = useAcademyTheme();
+  const { warning, error, info, close } = useError();
   const filesRef = useRef<Entry[]>([]);
   const entrypointRef = useRef<Entry | undefined>(undefined);
   const runningFilesRef = useRef<Entry[]>([]);
@@ -194,7 +285,14 @@ const PlayPauseButton = ({
       }
     }
 
-    try {
+  const StyledHeaderButton = styled.button`
+  background: ${(props) => props.$bgColor};
+  border-radius: ${(props) => props.$roundness}px;
+
+  &:hover {
+    background: ${(props) => props.$hoverColor};
+  }
+`  try {
       const zip = new JSZip();
       const extension = entrypointRef.current.path.split(".").pop();
       let commonsZip;
@@ -262,9 +360,9 @@ const PlayPauseButton = ({
   return (
     <>
       <StyledHeaderButton
-        bgColor={theme.palette.primary}
-        hoverColor={theme.palette.secondary}
-        roundness={theme.roundness}
+  $bgColor={theme.palette.primary}
+  $hoverColor={theme.palette.secondary}
+  $roundness={theme.roundness}
         id="run-app"
         onClick={() => onAppStateChange(undefined)}
         title="Run app"
@@ -287,3 +385,5 @@ const PlayPauseButton = ({
 };
 
 export default PlayPauseButton;
+
+
