@@ -54,7 +54,7 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
-## HAL API
+## HAL API for Gazebo 11 (Classic).
 
 ### Direct Kinematics
 
@@ -111,6 +111,65 @@ YPR_20 = [0, 90, 0]
 increment_10 = [0.3, 0.1, -0.2]
 increment_20 = [-0.4, -0.1, 0.4]
 
+## HAL API for Gazebo Harmonic.
+
+### Direct Kinematics
+
+* `HAL.MoveAbsJ(joints_deg, speed, wait_time)`
+  * Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
+
+### Inverse Kinematics
+
+#### Using absolute poses
+
+* `HAL.MoveJoint(abs_xyz, abs_ypr, speed, wait_time)`
+  * Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll), at a given relative speed in the range [0-1], adding a final delay in seconds. The robot will move at constant rotational speeds in each joint, resulting in a non-linear trajectory.
+
+#### Using relative XYZ or YPR increments
+
+* `HAL.MoveRelLinear(relative_xyz, speed, wait_time)`
+  * Moves the robot TCP pose in a linear trajectory by the distances given in increment_XYZ argument, at a given relative speed in the range [0-1], adding a final delay in seconds. The tool orientation is not changed.
+* `HAL.MoveRelReor (relative_rpy, speed, wait_time)`
+  * Reorients the robot TCP by the angular increments given in increment_YPR argument (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds. The TCP (x,y,z) stay fixed.
+
+### Gripper usage
+
+In the Gazebo Harmonic version of the exercise, object grasping is handled by the physics engine of Gazebo instead of using an artificial attach plugin.
+
+Objects are held by contact forces and friction between the gripper fingers and the object.
+
+Because of this behaviour:
+
+* `HAL.attach(object_name)` does not create a physical joint between the gripper and the object. It only updates an internal logical state used for debugging.
+* `HAL.dettach()` does not forcibly release the object. The object is released when the gripper opens and the physics simulation allows it to move freely.
+* The real grasping behaviour depends on the physical contact between the gripper and the object.
+
+Therefore, when using Gazebo Harmonic, a correct grasp requires properly positioning the gripper around the object before closing it with `HAL.GripperSet()`.
+
+### Argument examples
+
+#### Example of data targets for MoveAbsJ (angular position for each joint, in deg)
+
+absj_home = [0, -90, 70, -70, -90, 0]
+
+#### Examples of absolute XYZ poses for MoveJoint (in meters, from the world frame)
+
+aprox_yellow_box = [0.6, 0.3, 0.4]
+aprox_yellow_target = [-0.4, -0.45, 0.4]
+
+#### Examples of absolute YPR angular poses for MoveJoint (in degrees)
+
+YPR_pick = [180, 0, -90]
+YPR_place = [180, 0, 0]
+
+#### Examples of Cartesian increments for relative MoveRelLinear, [Ax,Ay,Az] in meters
+
+decrease_z_10 = [0, 0, -0.10]
+decrease_z_15 = [0, 0, -0.15]
+
+increase_z_20 = [0, 0, 0.20]
+increase_z_25 = [0, 0, 0.25]
+
 ## Where to insert and run the code?
 
 In the launched webpage, type your code in the text editor and run it pressing the run button:
@@ -133,24 +192,32 @@ Fail: ABORTED: No motion plan found. No execution attempted.
 
 ## Object and Target lists, dimensions and poses
 
-**Object list.** The four objects are located on a conveyor that is 1 m tall.
+### Gazebo 11 (Classic)
+
+### Gazebo Harmonic
+
+**Object list.** The four objects are located on a conveyor that is 1 m tall.  
+Object dimensions and positions are the same as in the Gazebo Classic version.
+
 * **yellow_box**
   * Size (l,w,h) = (7,5,10) cm
-  * Pose (x,y) = (0.6,0.45) m
+  * Pose (x,y) = (0.6,0.3) m
 * **red_box**
   * Size (l,w,h) = (5,10,8) cm
   * Pose (x,y) = (0.6,-0.3) m
-* **blue_ball**
+* **blue_sphere**
   * Size (r) = (4) cm
-  * Pose (x,y) = (0.7,0.1) m
+  * Pose (x,y) = (0.7, 0.1) m
 * **green_cylinder**
   * Size (r,h) = (4,15) cm
-  * Pose (x,y) = (0.5,0.1) m
+  * Pose (x,y) = (0.5, -0.1) m
 
-**Target list.** The four targets are located on a table that is 0.8 m tall.
+**Target list.** The four targets are located on a table that is 0.8 m tall.  
+Target dimensions and positions are identical to the Gazebo Classic version.
+
 * **red_target**
   * Size (l,w,h) = (36,30,12) cm
-  * Pose (x,y) = (0.6,0.15) m
+  * Pose (x,y) = (-0.6,0.15) m
 * **green_target**
   * Size (l,w,h) = (36,30,12) cm
   * Pose (x,y) = (-0.6,-0.15) m
