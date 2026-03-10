@@ -12,7 +12,7 @@ import sys
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
-from robotics_application_manager import LogManager  # noqa: E402
+from robotics_application_manager import LogManager
 
 
 class MeasuringThreadingGUI:
