@@ -35,3 +35,21 @@ sudo systemctl disable postgresql
 ```
 
 After this follow the steps provided in [official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation).
+
+## Docker containers exit with status 255
+
+Sometimes the containers `developer-container` and `universe_db` may stop with status 255.
+
+To restart the environment:
+
+```bash
+cd compose_cfg
+docker compose -f dev_humble_cpu.yaml up
+```
+``` docker ps
+```
+```If containers are not running: and they are showing
+
+docker compose -f dev_humble_cpu.yaml down
+docker compose -f dev_humble_cpu.yaml up
+```
