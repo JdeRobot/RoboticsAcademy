@@ -1,7 +1,6 @@
 from datetime import datetime
 import json
 import subprocess
-import rclpy
 import threading
 import time
 import websocket
@@ -56,11 +55,13 @@ class MeasuringThreadingGUI:
         threading.Thread(target=self.run_websocket, daemon=True).start()
 
         # Initialize and start the RTF thread
-        self.rtf_thread = threading.Thread(target=self.get_real_time_factor).start()
+        threading.Thread(
+            target=self.get_real_time_factor, name="rtf_thread", daemon=True
+        ).start()
 
         # Initialize and start the Frequency thread
-        self.frequency_thread = threading.Thread(
-            target=self.measure_and_send_frequency
+        threading.Thread(
+            target=self.measure_and_send_frequency, name="frequency_thread", daemon=True
         ).start()
 
         # Initialize and start the image sending thread (GUI out thread)
