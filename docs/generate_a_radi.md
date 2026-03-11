@@ -62,8 +62,6 @@ You can do this using the following options:
 
 - `--academy-owner` to specify the GitHub owner of **RoboticsAcademy**
 - `--infra-owner` to specify the GitHub owner of **RoboticsInfrastructure**
-- `-a`, `--academy` to specify the **RoboticsAcademy branch**
-- `-i`, `--infra` to specify the **RoboticsInfrastructure branch**
 
 Example:
 ```bash
@@ -71,10 +69,10 @@ Example:
 ```
 This allows the build process to clone your fork directly without modifying the Dockerfiles.
 
-If your changes come from another source that is **not a GitHub fork supported by these options**, you may still need to manually modify the repository URLs inside the Dockerfiles (for example in `scripts/RADI/Dockerfile.*`) to point to your custom repository or file locations.
+If your changes come from another source that is **not a GitHub fork supported by these options**, you may still need to manually modify the repository URLs inside the Dockerfiles to point to your custom repository or file locations.
 
 > **Note for JdeRobot contributors:**  
-> If you have write access to the official repositories, it is strongly recommended to work directly on branches within the **JdeRobot** organization instead of using forks. This avoids the need to override repository owners or modify Dockerfile URLs.
+> If you have write access to the official repositories, it is strongly recommended to work directly on branches within the **JdeRobot** organization instead of using forks.
 
 ## Troubleshooting
 
