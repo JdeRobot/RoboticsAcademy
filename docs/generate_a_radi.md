@@ -54,7 +54,7 @@ Use '-f' to force build the base image. If omitted, the base image is created on
 
 ### ⚠️ Note for External Contributors (Working from a Fork)
 
-If you are developing from a personal fork of **RoboticsAcademy (RA)** or **RoboticsInfrastructure (RI)**, specifying only the branch names in `build.sh` (for example `-a <branch>` or `-i <branch>`) is **not enough** to apply your changes.
+If you are developing from a personal fork of **RoboticsAcademy (RA)** or **RoboticsInfrastructure (RI)**, specifying only the branch names in `build.sh` is **not enough** to apply your changes.
 
 By default, the build process fetches repositories from the official **JdeRobot** GitHub organization. If your changes are located in a fork, you must also specify the repository owner so the build process pulls the code from your fork instead of the upstream repository.
 
