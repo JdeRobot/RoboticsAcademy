@@ -15,6 +15,23 @@ If the Robotics Academy Docker container does not launch properly and shows an e
 When following the [official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to set up the Robotics Academy environment using Docker, you might encounter an error when launching the PostgreSQL container:
 
 ```bash
+Error starting userland proxy: listen tcp4 0.0.0.0:5432: bind: address already in use### [Back to main README.](../README.md)
+
+# Troubleshooting Robotics Academy
+
+## Docker does not launch
+
+If the Robotics Academy Docker container does not launch properly and shows an error saying it could not connect to the database, **only restart the Robotics Academy container**, not the database container that was launched separately via `docker compose`.
+
+---
+
+## PostgreSQL Port Conflict When Starting Database Container
+
+### Issue
+
+When following the [official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to set up the Robotics Academy environment using Docker, you might encounter an error when launching the PostgreSQL container:
+
+```bash
 Error starting userland proxy: listen tcp4 0.0.0.0:5432: bind: address already in use
 ```
 
@@ -42,6 +59,23 @@ Sometimes the containers `developer-container` and `universe_db` may stop with s
 
 To restart the environment:
 ### [Back to main README.](../README.md)
+
+# Troubleshooting Robotics Academy
+
+## Docker does not launch
+
+If the Robotics Academy Docker container does not launch properly and shows an error saying it could not connect to the database, **only restart the Robotics Academy container**, not the database container that was launched separately via `docker compose`.
+
+---
+
+## PostgreSQL Port Conflict When Starting Database Container
+
+### Issue
+
+When following the [official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to set up the Robotics Academy environment using Docker, you might encounter an error when launching the PostgreSQL container:
+
+```bash
+Error starting userland proxy: listen tcp4 0.0.0.0:5432: bind: address already in use### [Back to main README.](../README.md)
 
 # Troubleshooting Robotics Academy
 
@@ -130,3 +164,21 @@ To restart the environment run:
 
 ```bash
 docker-compose up
+### [Back to main README.](../README.md)
+
+# Troubleshooting Robotics Academy
+
+## Docker does not launch
+
+If the Robotics Academy Docker container does not launch properly and shows an error saying it could not connect to the database, **only restart the Robotics Academy container**, not the database container that was launched separately via `docker compose`.
+
+---
+
+## PostgreSQL Port Conflict When Starting Database Container
+
+### Issue
+
+When following the [official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation) to set up the Robotics Academy environment using Docker, you might encounter an error when launching the PostgreSQL container:
+
+```bash
+Error starting userland proxy: listen tcp4 0.0.0.0:5432: bind: address already in use
