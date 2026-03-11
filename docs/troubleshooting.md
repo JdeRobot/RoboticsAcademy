@@ -34,4 +34,5 @@ sudo systemctl stop postgresql
 sudo systemctl disable postgresql
 ```
 
-After this follow the steps provided in [official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation).
+After this, follow the steps provided in the official installation instructions.
+[official installation instructions](https://jderobot.github.io/RoboticsAcademy/user_guide/#installation).
