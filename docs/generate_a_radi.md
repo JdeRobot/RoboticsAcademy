@@ -54,17 +54,27 @@ Use '-f' to force build the base image. If omitted, the base image is created on
 
 ### ⚠️ Note for External Contributors (Working from a Fork)
 
-If you are developing from a personal fork of **RoboticsAcademy (RA)** or **RoboticsInfrastructure (RI)**, simply running the `build.sh` script with your branch names (e.g., `-a your-branch -i your-branch`) is **not enough** to apply your changes. 
+If you are developing from a personal fork of **RoboticsAcademy (RA)** or **RoboticsInfrastructure (RI)**, specifying only the branch names in `build.sh` (for example `-a <branch>` or `-i <branch>`) is **not enough** to apply your changes.
 
-By default, the Dockerfiles are hardcoded to fetch files and clone repositories directly from the official `JdeRobot` GitHub organization. To build the RADI with your custom fork, you must manually point the Dockerfiles to your repository:
+By default, the build process fetches repositories from the official **JdeRobot** GitHub organization. If your changes are located in a fork, you must also specify the repository owner so the build process pulls the code from your fork instead of the upstream repository.
 
-1. Navigate to the `scripts/RADI/` directory and open the relevant Dockerfiles (e.g., `Dockerfile.humble`, `Dockerfile.database`).
-2. Search for the official JdeRobot URLs and replace `JdeRobot` with your GitHub username (or your fork's URL). You will typically need to modify:
-   * `git clone` commands (e.g., `https://github.com/JdeRobot/...`)
-   * `curl` commands fetching raw files (e.g., `https://raw.githubusercontent.com/JdeRobot/...`)
-3. Save the changes and run the `build.sh` script again.
+You can do this using the following options:
 
-*Note: If you are an internal contributor with write access to the official JdeRobot repositories, it is highly recommended to work directly on branches within the official repos instead of forks. This avoids the need to manually modify the Dockerfile URLs.*
+- `--academy-owner` to specify the GitHub owner of **RoboticsAcademy**
+- `--infra-owner` to specify the GitHub owner of **RoboticsInfrastructure**
+- `-a`, `--academy` to specify the **RoboticsAcademy branch**
+- `-i`, `--infra` to specify the **RoboticsInfrastructure branch**
+
+Example:
+```bash
+./build.sh --academy-owner <github-user> --infra-owner <github-user> -a <academy-fork-branch> -i <infra-fork-branch> --tag my_image
+```
+This allows the build process to clone your fork directly without modifying the Dockerfiles.
+
+If your changes come from another source that is **not a GitHub fork supported by these options**, you may still need to manually modify the repository URLs inside the Dockerfiles (for example in `scripts/RADI/Dockerfile.*`) to point to your custom repository or file locations.
+
+> **Note for JdeRobot contributors:**  
+> If you have write access to the official repositories, it is strongly recommended to work directly on branches within the **JdeRobot** organization instead of using forks. This avoids the need to override repository owners or modify Dockerfile URLs.
 
 ## Troubleshooting
 
