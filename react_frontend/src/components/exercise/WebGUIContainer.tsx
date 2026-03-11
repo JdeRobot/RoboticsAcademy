@@ -1,4 +1,8 @@
-import { Box } from "@mui/system";
+const WebGUIContainer = ({
+  children,
+}: {
+  children?: ReactNode;
+}) => {import { Box } from "@mui/system";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
 import {
   CommsManager,
