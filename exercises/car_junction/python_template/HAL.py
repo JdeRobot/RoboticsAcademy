@@ -63,3 +63,8 @@ def getImage():
 
 def setV(velocity):
     motor_node.sendV(float(velocity))
+
+
+# Set the angular velocity
+def setW(velocity):
+    motor_node.sendW(float(velocity))
