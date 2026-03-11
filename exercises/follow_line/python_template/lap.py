@@ -6,8 +6,7 @@ class Lap:
         self.pose3d = pose3d
         self.reset()
 
-    # Function to check for threshold
-    # And incrementing the running time
+    # Check lap threshold and update the running time
     def check_threshold(self):
         pose3d = self.pose3d.getPose3d()
 
