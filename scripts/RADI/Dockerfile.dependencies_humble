@@ -300,19 +300,19 @@ RUN apt-get update && \
 
 ARG TARGETARCH
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-    if [ "$TARGETARCH" = "arm64" ]; then \
-        colcon build \
-          --symlink-install \
-          --executor sequential \
-          --cmake-args \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
-    else \
-        colcon build \
-          --symlink-install \
-          --cmake-args \
-            -DCMAKE_BUILD_TYPE=Release ; \
-    fi
+  if [ "$TARGETARCH" = "arm64" ]; then \
+  colcon build \
+  --symlink-install \
+  --executor sequential \
+  --cmake-args \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
+  else \
+  colcon build \
+  --symlink-install \
+  --cmake-args \
+  -DCMAKE_BUILD_TYPE=Release ; \
+  fi
 
 # Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
 RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
@@ -343,11 +343,11 @@ RUN . /opt/ros/humble/setup.sh && \
 WORKDIR /home/dev_ws
 ARG TARGETARCH
 RUN . /opt/ros/humble/setup.sh && \
-    if [ "$TARGETARCH" = "arm64" ]; then \
-      export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
-    else \
-      colcon build && colcon build; \
-    fi
+  if [ "$TARGETARCH" = "arm64" ]; then \
+  export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
+  else \
+  colcon build && colcon build; \
+  fi
 RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages

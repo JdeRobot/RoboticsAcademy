@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from map import Map
-from HAL import getPose3d, getLiftState
+from HAL2 import getPose3d, getLiftState
 from console_interfaces.general.console import start_console
 
 # Matrix colors

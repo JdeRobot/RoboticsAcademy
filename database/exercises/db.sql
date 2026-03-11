@@ -204,12 +204,16 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 57	1	53	False
 58	12	54	False
 59	17	56	True
+60	10	58	True
+61	10	59	True
+62	10	60	True
+63	10	61	True
 \.
--- 30  16  3
 
 --
 -- Data for Name: exercises_tools; Type: TABLE DATA; Schema: public; Owner: user-dev
 --
+
 
 COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 1	1	console
