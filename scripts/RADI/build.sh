@@ -30,7 +30,7 @@ Help()
    echo
    echo "Example:"
    echo "   ./build.sh -t my_image"
-   echo "   ./build.sh --academy-owner aquintan4 -a issue-3476 -t my_image"
+   echo "   ./build.sh --infra-owner <github-user> -i <RI-branch> -t my_image"
    echo
 }
 
