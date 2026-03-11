@@ -121,27 +121,12 @@ docker compose -f dev_humble_cpu.yaml up
 docker compose -f dev_humble_cpu.yaml down
 docker compose -f dev_humble_cpu.yaml up
 ```
+
 ## Docker containers exit with status 255
 
-Sometimes the containers `developer-container` and `universe_db` may stop with **status 255**.
+Sometimes the containers `developer-container` and `universe_db` may stop with status 255.
 
-### Restart the environment
-
-Start the containers again using the same command style used in the Developer Guide:
+To restart the environment run:
 
 ```bash
-docker compose -f compose_cfg/dev_humble_cpu.yaml up
-```
-
-Check whether the containers are running:
-
-```bash
-docker ps
-```
-
-If the containers are still not running, restart them completely:
-
-```bash
-docker compose -f compose_cfg/dev_humble_cpu.yaml down
-docker compose -f compose_cfg/dev_humble_cpu.yaml up
-```
+docker-compose up
