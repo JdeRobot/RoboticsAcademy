@@ -32,7 +32,7 @@ def __auto_spin() -> None:
         time.sleep(1 / freq)
 
 
-# ROS2 init
+# Initialize ROS2 node if it has not already been initialized
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
