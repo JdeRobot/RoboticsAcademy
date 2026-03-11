@@ -110,7 +110,9 @@ fi
 if $FORCE_BUILD_NO_CACHE || $FORCE_BUILD || [[ "$(docker images -q jderobot/robotics-applications:dependencies-$ROS_DISTRO 2> /dev/null)" == "" ]]; then
   echo "===================== BUILDING $ROS_DISTRO BASE IMAGE ====================="
   echo "Building base using $DOCKERFILE_BASE for ROS $ROS_DISTRO"
-  docker build $NO_CACHE -f $DOCKERFILE_BASE -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
+  docker build $NO_CACHE -f $DOCKERFILE_BASE \
+    --build-arg TARGETARCH=$(uname -m | sed 's/x86_64/amd64/;s/arm64/arm64/') \
+    -t jderobot/robotics-applications:dependencies-$ROS_DISTRO .
 fi
 
 if [ $? -eq 0 ]; then

@@ -81,11 +81,12 @@ def enter_exercise(fal, request):
         "url": project.url,
     }
 
-    global active_project
-    if active_project is None:
-        active_project = project_id
-    else:
-        raise Exception("Alredy open session")
+    # FIX:https://github.com/JdeRobot/RoboticsAcademy/issues/3510
+    # global active_project
+    # if active_project is None:
+    #     active_project = project_id
+    # else:
+    #     raise Exception("Alredy open session")
 
     # Create filesystem base
     path = fal.exercise_path(project_id)
