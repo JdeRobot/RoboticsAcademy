@@ -149,7 +149,7 @@ def gaussian_noise(x, mu=0.0, std=0.1, noise_level=0.01):
 def add_noise(last_pose, new_pose, base_odom, noise_level):
 
     # First odom is real
-    if last_pose == None:
+    if last_pose is None:
         return new_pose
 
     # Next odom is movement from last pose to new pose + noise + base odom

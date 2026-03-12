@@ -57,14 +57,14 @@ executor_thread.start()
 
 def get_frontal_image():
     image = frontal_camera_node.getImage()
-    while image == None:
+    while image is None:
         image = frontal_camera_node.getImage()
     return image.data
 
 
 def get_ventral_image():
     image = ventral_camera_node.getImage()
-    while image == None:
+    while image is None:
         image = ventral_camera_node.getImage()
     return image.data
 

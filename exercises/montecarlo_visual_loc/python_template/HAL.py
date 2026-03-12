@@ -69,7 +69,7 @@ def getOdom():
 # Image
 def getImage():
     image = camera_node.getImage()
-    while image == None:
+    while image is None:
         image = camera_node.getImage()
     return image.data
 

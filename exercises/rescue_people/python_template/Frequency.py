@@ -9,7 +9,7 @@ def tick(ideal_cycle: int = 50):
     finish_time = datetime.now()
     ideal_ms = 1000 / ideal_cycle
 
-    if start_time_internal_freq_control == None:
+    if start_time_internal_freq_control is None:
         start_time_internal_freq_control = finish_time
         return
 

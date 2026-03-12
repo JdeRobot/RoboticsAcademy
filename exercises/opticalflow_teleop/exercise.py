@@ -302,7 +302,7 @@ class Template:
     def execute_thread(self, source_code):
         # Keep checking until the thread is alive
         # The thread will die when the coming iteration reads the flag
-        if self.thread != None:
+        if self.thread is not None:
             while self.thread.is_alive():
                 time.sleep(0.2)
 
