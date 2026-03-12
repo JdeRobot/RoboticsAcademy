@@ -100,6 +100,12 @@ geometry_eg:
     alt: "Path planning"
     image_path: /assets/images/exercises/amazon_warehouse/geometry_solution_eg.png
     title: "Path planning"
+  
+gazebo_move:
+  - url: /assets/images/exercises/amazon_warehouse/gazebo_move_tutorial.png
+    image_path: /assets/images/exercises/amazon_warehouse/gazebo_move_tutorial.png
+    alt: "Moving the robot in Gazebo Harmonic"
+    title: "Moving the robot in Gazebo Harmonic"
 
 youtubeId1: EVt9vYqEoDg
 youtubeId2: -2D90I-wZKs
@@ -206,7 +212,7 @@ To enable this feature:
    - **Transform Control**
 
 Once enabled, select the robot in the **Entity Tree**. The **Transform tool** will display the manipulation axes directly on the robot model. Using these axes, the robot can be translated in the world to inspect positions and coordinates.
-
+{% include gallery id="gazebo_move" caption="Moving the robot in Gazebo Harmonic" %}
 
 ## Supporting information
 There are two robots to choose from:
