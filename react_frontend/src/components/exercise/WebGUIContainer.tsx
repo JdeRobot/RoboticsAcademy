@@ -90,11 +90,7 @@ export const connectApplication = (
     }
 
     end();
-
-    if (manager.ws.readyState !== WebSocket.OPEN) {
-      return;
-    }
-
+   
     const timer = window.setInterval(async () => {
       const state = manager.getState();
       if (
