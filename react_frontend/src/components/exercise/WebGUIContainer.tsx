@@ -9,7 +9,7 @@ import {
 import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
-  id,
+  id = "webgui-container",
   children,
 }: {
   id?: string;
