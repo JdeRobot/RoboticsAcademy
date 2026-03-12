@@ -236,16 +236,16 @@ class Read_Rosbag:
                 if (
                     len(self.pose) > 0
                     and len(self.imu) > 0
-                    and self.color_img is not None
-                    and self.depth_img is not None
-                    and self.scan is None
+                    and self.color_img != None
+                    and self.depth_img != None
+                    and self.scan == None
                 ):
                     break
             else:
                 if "accelerometer" not in sensors:
                     k = True
                 else:
-                    if self.imu_t is None:
+                    if self.imu_t == None:
                         k = False
                     else:
                         k = True
@@ -253,7 +253,7 @@ class Read_Rosbag:
                 if "orientation" not in sensors:
                     l = True
                 else:
-                    if self.orientation_t is None:
+                    if self.orientation_t == None:
                         l = False
                     else:
                         l = True
@@ -261,7 +261,7 @@ class Read_Rosbag:
                 if "color_img" not in sensors:
                     m = True
                 else:
-                    if self.color_img_t is None:
+                    if self.color_img_t == None:
                         m = False
                     else:
                         m = True
@@ -269,7 +269,7 @@ class Read_Rosbag:
                 if "depth_img" not in sensors:
                     n = True
                 else:
-                    if self.depth_img_t is None:
+                    if self.depth_img_t == None:
                         n = False
                     else:
                         n = True
@@ -277,7 +277,7 @@ class Read_Rosbag:
                 if "scan" not in sensors:
                     o = True
                 else:
-                    if self.scan_t is None:
+                    if self.scan_t == None:
                         o = False
                     else:
                         o = True

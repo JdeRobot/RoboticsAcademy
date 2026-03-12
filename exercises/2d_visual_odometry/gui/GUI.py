@@ -136,7 +136,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def updateGUI(self):
         # try:
-        if self.bag.current_timestamp is not None:
+        if self.bag.current_timestamp != None:
             time_elapsed = self.bag.current_timestamp - self.bag.init_timestamp
             # except TypeError:
 

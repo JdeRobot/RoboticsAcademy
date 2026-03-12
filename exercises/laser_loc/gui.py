@@ -157,7 +157,7 @@ class ThreadGUI:
 
     # The measuring thread to measure frequency
     def measure_thread(self):
-        while self.gui.client is None:
+        while self.gui.client == None:
             pass
 
         previous_time = datetime.now()
@@ -183,7 +183,7 @@ class ThreadGUI:
 
     # The main thread of execution
     def run(self):
-        while self.gui.client is None:
+        while self.gui.client == None:
             pass
 
         while True:
