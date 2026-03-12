@@ -125,6 +125,21 @@ The objective of this exercise is to implement the logic that allows a logistics
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+
+#### Gazebo Harmonic support
+
+This exercise can also run in **Gazebo Harmonic**, which is the recommended simulator as **Gazebo Classic is being progressively deprecated**.
+
+When running the exercise in Gazebo Harmonic, the following imports must be used:
+
+```python
+import HAL2 as HAL
+import WebGUI2 as WebGUI
+```
+
+*Note: Both modules must include the 2 suffix. Using only one of them (HAL2 with WebGUI, or HAL with WebGUI2) will not work correctly*
+<br>
+
 * `HAL.getPose3d()` - returns x, y and theta components of the robot in world coordinates. The function returns an x,y based in this axis reference, with (0,0) next to the robot spawn in Warehouse 1:
 
 {% include gallery id="original_axis" caption="HAL.getPose3d()" %}
@@ -175,6 +190,22 @@ See the example below on how to use them:
     cv2.putText(mat, "Text", (200, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, 129, 2, cv2.LINE_AA)
     WebGUI.showNumpy(mat)
 ```
+
+## Gazebo Harmonic tools
+
+In Gazebo Harmonic it is possible to manually place the robot in the world using the **Entity Tree** and **Transform Control** tools. This can be useful for inspecting world coordinates and verifying the alignment between the simulation and the map used in the exercise, which is particularly helpful when working with the coordinate transformations described in [Conversion From 3D to 2D](#conversion-from-3d-to-2d).
+
+This is the standard way to manually manipulate entities in Gazebo Harmonic through the graphical interface.
+
+To enable this feature:
+
+1. Open the **three-dot menu** in Gazebo Harmonic.
+2. Open the **plugin selector**.
+3. Enable:
+   - **Entity Tree**
+   - **Transform Control**
+
+Once enabled, select the robot in the **Entity Tree**. The **Transform tool** will display the manipulation axes directly on the robot model. Using these axes, the robot can be translated in the world to inspect positions and coordinates.
 
 
 ## Supporting information
