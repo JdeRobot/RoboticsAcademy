@@ -12,7 +12,7 @@ To find issues you can help with, go though the list of [good first issues](http
 
 Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
-**Important**: this is Robotics Academy and it works as Robotics Academy with its own structure and codebase. If you are not able comprehend it, this may not be a good project to contribute to. Submitting changes (Pull Request) or issues without that or without reading the documentation will be considered as **spam**. An example of bad submissions are: disabling the database, frontend and backend to "simplify development for low-risk developers" in [PR 3411](https://github.com/JdeRobot/RoboticsAcademy/pull/3411), or submitting a standalone python script that tries to fix an issue that is not there in [PR 3421](https://github.com/JdeRobot/RoboticsAcademy/pull/3421).
+**Important**: this is Robotics Academy and it works as Robotics Academy with its own structure and codebase. If you are not able comprehend it, this may not be a good project to contribute to. Submitting changes (Pull Request) or issues without that or without reading the documentation will be considered as **spam**. An example of bad submissions are: disabling the database, frontend and backend to "simplify development for low-risk developers" in [PR 3411](https://github.com/JdeRobot/RoboticsAcademy/pull/3411), submitting a standalone python script that tries to fix an issue that is not there in [PR 3421](https://github.com/JdeRobot/RoboticsAcademy/pull/3421), or submitting a PR without any kind of testing done to the changes [PR 3496](https://github.com/JdeRobot/RoboticsAcademy/pull/3496).
 
 ## Opening a Pull Request
 

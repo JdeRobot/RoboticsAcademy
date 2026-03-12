@@ -9,7 +9,7 @@ import {
 import React, { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 
 const WebGUIContainer = ({
-  id,
+  id = "webgui-container",
   children,
 }: {
   id?: string;
@@ -19,7 +19,7 @@ const WebGUIContainer = ({
 
   return (
     <Box
-      id="webgui-container"
+      id={id}
       sx={{
         display: "flex",
         justifyContent: "center",

@@ -407,7 +407,7 @@ For knowing how to use each package, please follow the links in the list above.
 
 #### Frontend: inside `frontend`
 
-An exercise must contain the following filee:
+An exercise must contain the following files:
 
 - **tsconfig.json**: used for the tsconfig. **Must** contain the next code:
 
