@@ -14,6 +14,12 @@ youtubeId2: bh5oPH5DpVs
 
 <a name="installation"></a>
 
+### User Guide Image
+
+![User Guide Image](/RoboticsAcademy/assets/images/user_guide/user_guide_image.png)
+
+
+
 ## 1. Robotics Academy requirements
 
 **Robotics Academy** supports Linux (Ubuntu 18.04, 20.04, 22.04, 24.04 and other distributions), MacOS and Windows.
