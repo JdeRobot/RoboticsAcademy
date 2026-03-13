@@ -373,9 +373,11 @@ RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
 WORKDIR /data/workspace
 
 ARG O3DE_DIR=o3de
+ARG GH_USER
+ARG GH_TOKEN
 
 # Copy repository o3de executable
-RUN git clone https://github.com/JdeRobot/o3de.git && \
+RUN git clone https://${GH_USER}:${GH_TOKEN}github.com/JdeRobot/o3de.git && \
     git -C ${O3DE_DIR} lfs install && \
     git -C ${O3DE_DIR} lfs pull 
     
