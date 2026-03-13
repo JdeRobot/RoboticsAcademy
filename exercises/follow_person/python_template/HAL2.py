@@ -24,6 +24,10 @@ def custom_thread_excepthook(args):
 threading.excepthook = custom_thread_excepthook
 
 print("HAL2 initializing", flush=True)
+print("Controls:")
+print("Teleoperation mode -> W/S: move | A/D: rotate | X: stop")
+print("Automatic mode -> starts paused | W/A/S/D: pause or resume route")
+
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
@@ -89,10 +93,9 @@ def getBoundingBoxes(img):
 
 # Linear speed
 def setV(v):
-    motor_node.sendV(float(v))
+    motor_node.sendV(v)
 
 
 # Angular speed
 def setW(w):
-    motor_node.sendW(float(w))
-    
+    motor_node.sendW(w)

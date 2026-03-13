@@ -33,6 +33,9 @@ function WebGUI() {
         case "KeyX":
           manager.send("gui", "key_x");
           break;
+        case "KeyU":
+          manager.send("gui", "auto");
+          break;
       }
     };
 
@@ -52,6 +55,9 @@ function WebGUI() {
           break;
         case "KeyX":
           manager.send("gui", "key_x_up");
+          break;
+        case "KeyU":
+          manager.send("gui", "auto_up");
           break;
       }
     };
