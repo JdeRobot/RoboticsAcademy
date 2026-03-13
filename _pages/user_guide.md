@@ -6,8 +6,7 @@ sidebar:
   nav: "docs"
 
 toc: true
-toc_label: "TOC installation"
-toc_icon: "cog"
+toc_label: "User guide index"
 
 youtubeId1: bh5oPH5DpVs
 youtubeId2: bh5oPH5DpVs
@@ -15,7 +14,7 @@ youtubeId2: bh5oPH5DpVs
 
 <a name="installation"></a>
 
-## 1. Installation of Robotics Academy
+## 1. Robotics Academy requirements
 
 **Robotics Academy** supports Linux (Ubuntu 18.04, 20.04, 22.04, 24.04 and other distributions), MacOS and Windows.
 
@@ -27,6 +26,172 @@ The installation of ROS, Gazebo, etc. has been greatly simplified, as all the re
 - **RAM**: 2 gb RAM.
 - **Memory**: 20 gb of disk space.
 
+## 2. Robotics Academy on Windows
+
+### Step 0: Setup) Install Docker support: Docker Desktop
+
+Please download [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/) following the official documentation.
+
+### Step 0: Setup) Install WSL2
+
+Please install [Windows Subsytem for Linux (WSL2)](https://learn.microsoft.com/en-us/windows/wsl/install) following the official documentation if you do not have it already.
+
+Ensure to use the **WSL2** based engine is active in Docker Engine inside **Settings** > **General**. It is prefered over Hyper-V as it has better performance.
+
+![WSL integration](/RoboticsAcademy/assets/images/user_guide/wsl-integration-docker.png)
+
+### Step 0: Setup) NVIDIA Acceleration (Optional)
+
+Install the latest [NVIDIA Proprietary Drivers](https://www.nvidia.com/drivers) on the host Windows.
+
+Make sure to enable [CUDA in WSL](https://learn.microsoft.com/en-us/windows/ai/directml/gpu-cuda-in-wsl) on the host Windows.
+
+### Step 0: Setup) Download Robotics Academy and Robotics Academy Database
+
+Inside a **WSL2** terminal execute the following command to download the latest Robotics Academy and Robotics Academy Database images:
+
+```bash
+docker pull jderobot/robotics-database:latest
+docker pull jderobot/robotics-academy:latest
+```
+
+- It is recommended to use the latest image. However, older distributions of Robotics Academy can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+
+### Step 1) Launch Robotics Academy
+
+You must run these commands inside a **WSL2** Terminal (e.g., Ubuntu). Do **NOT** use **PowerShell** or **Command Prompt**. Hardware acceleration is enabled automatically.
+
+- First launch the Robotics Academy Database
+
+```bash
+docker run --hostname my-postgres --name academy_db -d\
+    -e POSTGRES_DB=academy_db \
+    -e POSTGRES_USER=user-dev \
+    -e POSTGRES_PASSWORD=robotics-academy-dev \
+    -e POSTGRES_PORT=5432 \
+    -d -p 5432:5432 \
+    jderobot/robotics-database:latest
+```
+
+- Then launch Robotics Academy
+
+```bash
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/usr/lib/wsl/lib") $([ -e /dev/dri ] && echo "--device /dev/dri") -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+```
+
+### Step 2) Use Robotics Academy
+
+Go to the section [How to use and perform the exercises?](#perform-exercise)
+
+## 3. Robotics Academy on Linux
+
+### Step 0: Setup) Install Docker support: Docker engine
+
+Please download [Docker Engine](https://docs.docker.com/engine/install/) following the official documentation.
+
+<a name="linux-nvidia"></a>
+
+### Step 0: Setup) NVIDIA Acceleration (Optional)
+
+Install the latest [NVIDIA Proprietary Drivers](https://www.nvidia.com/drivers) following the official documentation.
+
+Install the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) following the official documentation.
+
+### Step 0-1: Automatic)
+
+The following command will donwload Robotics Academy and Robotics Academy Database and launch them, so if you are using this step you may skip the next two ones.
+
+```bash
+curl -s https://raw.githubusercontent.com/JdeRobot/RoboticsAcademy/humble-devel/scripts/run_academy.sh | sudo bash
+```
+
+### Step 0: Setup) Download Robotics Academy and Robotics Academy Database
+
+Execute the following command to download the latest Robotics Academy and Robotics Academy Database images:
+
+```bash
+docker pull jderobot/robotics-database:latest
+docker pull jderobot/robotics-academy:latest
+```
+
+- It is recommended to use the latest image. However, older distributions of Robotics Academy can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+
+### Step 1) Launch Robotics Academy
+
+You must run these commands. Hardware acceleration is enabled automatically, prioritizing NVIDIA > Intel > AMD > CPU.
+
+If you are using NVIDIA make sure to have follow the [Step 0: Setup) NVIDIA Acceleration](#linux-nvidia).
+
+- First launch the Robotics Academy Database
+
+```bash
+docker run --hostname my-postgres --name academy_db -d\
+    -e POSTGRES_DB=academy_db \
+    -e POSTGRES_USER=user-dev \
+    -e POSTGRES_PASSWORD=robotics-academy-dev \
+    -e POSTGRES_PORT=5432 \
+    -d -p 5432:5432 \
+    jderobot/robotics-database:latest
+```
+
+- Then launch Robotics Academy
+
+```bash
+docker run --rm -it $(nvidia-smi >/dev/null 2>&1 && echo "--gpus all") --device /dev/dri -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
+```
+
+### Step 2) How to use and perform the exercises?
+
+Go to the section [How to use and perform the exercises?](#perform-exercise)
+
+## 4. Robotics Academy on MacOs
+
+### Step 0: Setup) Install Docker support: Docker Desktop
+
+Please download [Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/) following the official documentation.
+
+Make sure to enable "Use Rosetta for x86_64/amd64 emulation" on Apple Silicon in **Settings** > **General**. Please look at the attached image for reference.
+
+![Toggle Rosetta in Mac](https://github.com/JdeRobot/RoboticsAcademy/assets/57873504/c4096ab4-f9c1-4ddf-b612-41e78074fb99)
+
+### Step 0: Setup) Download Robotics Academy and Robotics Academy Database
+
+Execute the following command to download the latest Robotics Academy and Robotics Academy Database images:
+
+```bash
+docker pull jderobot/robotics-database:latest
+docker pull jderobot/robotics-academy:latest
+```
+
+- It is recommended to use the latest image. However, older distributions of Robotics Academy can be found [here](https://hub.docker.com/r/jderobot/robotics-academy/tags).
+
+### Step 1) Launch Robotics Academy
+
+Run the following commands.
+
+- First launch the Robotics Academy Database
+
+```bash
+docker run --hostname my-postgres --name academy_db --platform linux/amd64 -d\
+    -e POSTGRES_DB=academy_db \
+    -e POSTGRES_USER=user-dev \
+    -e POSTGRES_PASSWORD=robotics-academy-dev \
+    -e POSTGRES_PORT=5432 \
+    -d -p 5432:5432 \
+    jderobot/robotics-database:latest
+```
+
+- Then launch Robotics Academy
+
+```bash
+docker run --rm -it --platform linux/amd64 -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 jderobot/robotics-academy:latest
+```
+
+### Step 2) How to use and perform the exercises?
+
+Go to the section [How to use and perform the exercises?](#perform-exercise)
+
+<!--
 ### Linux Users
 
 #### Automatic
@@ -174,6 +339,7 @@ docker run --rm -it --gpus all -v /usr/lib/wsl:/usr/lib/wsl -e LD_LIBRARY_PATH=/
 ```bash
 docker run --rm -it -p 6080-6090:6080-6090 -p 7163:7163 -p 7164:7164 --link academy_db jderobot/robotics-academy:latest
 ```
+
 - Run **Only CPU** (For Apple Silicon, the platform flag is required)
 
 ```bash
@@ -198,11 +364,11 @@ docker ps -a
 
 ```bash
 docker rm CONTAINER_ID
-```
+``` -->
 
 <a name="perform-exercise"></a>
 
-## 3. How to use and perform the exercises?
+## 5. How to use and perform the exercises?
 
 1. On the local machine navigate to 127.0.0.1:7164/ in the browser and choose the desired exercise.
 
@@ -245,7 +411,7 @@ docker rm CONTAINER_ID
 
 4. On the exercise you'll select a world on which you want to resolve the exercise. Then you'll write the code solution in the text editor and launch it with the start button. You can pause the simulation whenever you want and check if it is executing effectively with RTF visor. At the end you can save your code or load it to resume it whenever you want.
 
-## 4. Reference execution performance data: Outdated
+## 5. Reference execution performance data: Outdated
 
 In this section, various data tables will be provided showing the performance cost of each RoboticsBackend exercise on different PCs, both running without GPU acceleration and with GPU acceleration. The values collected will include the % of CPU usage, the % of GPU usage (if is running with GPU acceleration), the RTF of Gazebo and the FPS of Gazebo.
 
