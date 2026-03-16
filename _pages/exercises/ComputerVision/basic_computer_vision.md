@@ -61,7 +61,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `WebGUI.getImage()` - to get the image (numpy array). It can be None.
 - `WebGUI.showImage(image)` - allows you to view a debug image or one with relevant information.
 
-### ROS 2-native Implementation
+### ROS 2-direct Implementation
 
 #### ROS 2 Topics
 
