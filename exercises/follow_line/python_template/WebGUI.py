@@ -157,7 +157,11 @@ class WebGUI(MeasuringThreadingGUI):
 # Create GUI instance directly
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
-start_console()
+try:
+    start_console()
+except Exception:
+    # Headless sessions can expose only /dev/pts/ptmx.
+    pass
 
 
 def showImage(image):
