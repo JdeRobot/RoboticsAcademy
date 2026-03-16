@@ -66,22 +66,18 @@ array = WebGUI.getMap('/resources/exercises/vacuum_cleaner_loc/images/mapgrannya
 
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
-## Solving the exercise directly with ROS 2
+#### ROS 2 Topics
+Use standard ROS 2 topics for direct communication with the simulation.
 
-This exercise can also be solved directly in **ROS 2** without using the HAL high-level API.  
-The following topics and message interfaces provide the same behavior used by HAL in this exercise:
-
-| Topic | Message Type |
-|------|-------------|
-| `/cmd_vel` | `geometry_msgs/msg/Twist` |
-| `/odom` | `nav_msgs/msg/Odometry` |
-| `/roombaROS/laser/scan` | `sensor_msgs/msg/LaserScan` |
-| `/roombaROS/events/right_bumper` | `gazebo_msgs/msg/ContactsState` |
-| `/roombaROS/events/center_bumper` | `gazebo_msgs/msg/ContactsState` |
-| `/roombaROS/events/left_bumper` | `gazebo_msgs/msg/ContactsState` |
+* `/cmd_vel` - Publish to this topic to control the robot motion. Message type: `geometry_msgs/msg/Twist`
+* `/odom` - Subscribe to this topic to get the robot pose and orientation. Message type: `nav_msgs/msg/Odometry`
+* `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
+* `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+* `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+* `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 
 > **Note**
-> `WebGUI` already initializes `rclpy` internally. If you implement the exercise directly in ROS 2, keep this in mind to avoid initialization conflicts.
+> `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ### Types conversion
 
