@@ -11,6 +11,7 @@ const WebGUI = () => {
   const [rightImage, setRightImage] = useState<string | undefined>(undefined);
   const [leftImage, setLeftImage] = useState<string | undefined>(undefined);
   const [manager, setManager] = useState(exerciseContext.manager);
+  const [lastState, setLastState] = useState<string>("");
 
   useEffect(() => {
     setManager(exerciseContext.manager);
@@ -35,10 +36,38 @@ const WebGUI = () => {
   };
 
   const stateCallback = (state: string) => {
+    // Handle state transitions
     if (state === states.TOOLS_READY) {
       setLeftImage(undefined);
       setRightImage(undefined);
+      // Send reset command to Python backend
+      if (manager && lastState !== "" && lastState !== states.TOOLS_READY) {
+        try {
+          manager.send("gui", "reset");
+        } catch (e) {
+          console.error("Error sending reset command:", e);
+        }
+      }
+    } else if (state === states.PAUSED) {
+      // Send pause command to Python backend
+      if (manager) {
+        try {
+          manager.send("gui", "pause");
+        } catch (e) {
+          console.error("Error sending pause command:", e);
+        }
+      }
+    } else if (state === states.RUNNING && lastState === states.PAUSED) {
+      // Send resume command to Python backend when resuming from pause
+      if (manager) {
+        try {
+          manager.send("gui", "resume");
+        } catch (e) {
+          console.error("Error sending resume command:", e);
+        }
+      }
     }
+    setLastState(state);
   };
 
   connectApplication(manager, updateCallback, stateCallback);
