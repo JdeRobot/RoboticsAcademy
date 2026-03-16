@@ -72,13 +72,15 @@ camera_node = CameraNode("/hand_camera/image_raw")
 executor = MultiThreadedExecutor()
 executor.add_node(camera_node)
 
+
 def __auto_spin():
     while rclpy.ok():
         try:
             executor.spin_once(timeout_sec=0)
         except Exception:
             pass
-        time.sleep(1/90.0)
+        time.sleep(1 / 90.0)
+
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
@@ -1066,6 +1068,7 @@ def getImage():
         image = camera_node.getImage()
 
     return image.data
+
 
 #################################### MAIN FUNCTION ###################################################
 

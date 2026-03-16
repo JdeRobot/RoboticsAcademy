@@ -46,6 +46,7 @@ from linkattacher_msgs.srv import AttachLink, DetachLink
 # MAIN ROS2 NODE
 # ==============================================================
 
+
 class HarmonicHAL(Node):
     """
     Main ROS2 node that interfaces with:
@@ -129,6 +130,7 @@ ROBOT = HarmonicHAL()
 # MoveAbsJ – Direct Joint Control
 # ==============================================================
 
+
 def MoveAbsJ(joints_deg, speed, wait_time):
     """
     Moves the robot to an absolute joint configuration.
@@ -174,6 +176,7 @@ def MoveAbsJ(joints_deg, speed, wait_time):
 # MoveJoint – Cartesian Movement via IK
 # ==============================================================
 
+
 def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
     """
     Moves robot to an absolute Cartesian pose.
@@ -189,10 +192,18 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
     pitch = math.radians(abs_ypr[1])
     yaw = math.radians(abs_ypr[2])
 
-    qx = np.sin(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) - np.cos(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
-    qy = np.cos(roll/2)*np.sin(pitch/2)*np.cos(yaw/2) + np.sin(roll/2)*np.cos(pitch/2)*np.sin(yaw/2)
-    qz = np.cos(roll/2)*np.cos(pitch/2)*np.sin(yaw/2) - np.sin(roll/2)*np.sin(pitch/2)*np.cos(yaw/2)
-    qw = np.cos(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) + np.sin(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
+    qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.sin(yaw / 2)
+    qy = np.cos(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2) + np.sin(
+        roll / 2
+    ) * np.cos(pitch / 2) * np.sin(yaw / 2)
+    qz = np.cos(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2) - np.sin(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.cos(yaw / 2)
+    qw = np.cos(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) + np.sin(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.sin(yaw / 2)
 
     pose = PoseStamped()
     pose.header.frame_id = "world"
@@ -230,7 +241,6 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
         return
 
     print("IK error code:", response.error_code.val)
-
 
     if response.error_code.val != 1:
         print("IK failed")
@@ -294,6 +304,7 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
 # Relative Movements
 # ==============================================================
 
+
 def MoveRelLinear(relative_xyz, speed, wait_time):
     """
     Performs relative Cartesian displacement
@@ -326,6 +337,7 @@ def MoveRelReor(relative_ypr, speed, wait_time):
 # GRIPPER CONTROL
 # ==============================================================
 
+
 def GripperSet(relative_closure, wait_time):
     """
     Controls the Robotiq gripper.
@@ -346,9 +358,7 @@ def GripperSet(relative_closure, wait_time):
     position = max_open - (max_open - min_close) * (relative_closure / 100.0)
 
     goal_msg = FollowJointTrajectory.Goal()
-    goal_msg.trajectory.joint_names = [
-        "robotiq_85_left_knuckle_joint"
-    ]
+    goal_msg.trajectory.joint_names = ["robotiq_85_left_knuckle_joint"]
 
     point = JointTrajectoryPoint()
     point.positions = [position]
@@ -391,7 +401,7 @@ def attach(item):
         "blue_ball": "link_3",
         "green_cylinder": "link_2",
         "red_box": "link",
-        "yellow_box": "link"
+        "yellow_box": "link",
     }
 
     request.link2_name = link_map[item]
@@ -413,6 +423,7 @@ def attach(item):
     else:
         print("Attach failed")
 
+
 def dettach():
     """
     Detach object from gripper
@@ -432,7 +443,7 @@ def dettach():
         "blue_ball": "link_3",
         "green_cylinder": "link_2",
         "red_box": "link",
-        "yellow_box": "link"
+        "yellow_box": "link",
     }
 
     request.link2_name = link_map[ROBOT.grasped_object]
