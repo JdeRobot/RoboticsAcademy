@@ -39,6 +39,7 @@ from builtin_interfaces.msg import Duration
 
 # Geometry messages
 from geometry_msgs.msg import PoseStamped
+from linkattacher_msgs.srv import AttachLink, DetachLink
 
 
 # ==============================================================
@@ -91,6 +92,20 @@ class HarmonicHAL(Node):
 
         print("Waiting for gripper controller...")
         self.gripper_client.wait_for_server()
+
+        # Attach / Detach services from Gazebo plugin
+        self.attach_client = self.create_client(AttachLink, "/ATTACHLINK")
+        self.detach_client = self.create_client(DetachLink, "/DETACHLINK")
+
+        print("Waiting for LinkAttacher services...")
+
+        while not self.attach_client.wait_for_service(timeout_sec=1.0):
+            print("Waiting for /ATTACHLINK...")
+
+        while not self.detach_client.wait_for_service(timeout_sec=1.0):
+            print("Waiting for /DETACHLINK...")
+
+        print("LinkAttacher services ready")
 
         # Logical state of grasped object (for debugging only)
         self.grasped_object = None
@@ -353,7 +368,7 @@ def GripperSet(relative_closure, wait_time):
     rclpy.spin_until_future_complete(ROBOT, result_future)
 
     # Si abrimos completamente (0%) → liberar objeto
-    if relative_closure <= 5:
+    if relative_closure >= 95:
         dettach()
 
     time.sleep(wait_time)
@@ -361,20 +376,81 @@ def GripperSet(relative_closure, wait_time):
 
 def attach(item):
     """
-    Logical attach (debug only).
-
-    In Harmonic, no artificial joint is created.
-    The grasp is purely physical.
+    Attach object to gripper using Gazebo LinkAttacher plugin
     """
-    ROBOT.grasped_object = item
-    print(f"Object logically attached: {item}")
 
+    request = AttachLink.Request()
+
+    request.model1_name = "ur5_robotiq"
+    request.link1_name = "wrist_3_link"
+
+    request.model2_name = item
+
+    # mapping between model and link
+    link_map = {
+        "blue_ball": "link_3",
+        "green_cylinder": "link_2",
+        "red_box": "link",
+        "yellow_box": "link"
+    }
+
+    request.link2_name = link_map[item]
+
+    print(
+        f"[HAL DEBUG] ATTACH -> "
+        f"{request.model1_name}:{request.link1_name}  "
+        f"{request.model2_name}:{request.link2_name}"
+    )
+
+    future = ROBOT.attach_client.call_async(request)
+    rclpy.spin_until_future_complete(ROBOT, future)
+
+    result = future.result()
+
+    if result and result.success:
+        print(f"Attached {item}")
+        ROBOT.grasped_object = item
+    else:
+        print("Attach failed")
 
 def dettach():
     """
-    Logical detach (debug only).
-    Real release happens when gripper opens.
+    Detach object from gripper
     """
-    if ROBOT.grasped_object is not None:
-        print(f"Object logically detached: {ROBOT.grasped_object}")
+
+    if ROBOT.grasped_object is None:
+        return
+
+    request = DetachLink.Request()
+
+    request.model1_name = "ur5_robotiq"
+    request.link1_name = "wrist_3_link"
+
+    request.model2_name = ROBOT.grasped_object
+
+    link_map = {
+        "blue_ball": "link_3",
+        "green_cylinder": "link_2",
+        "red_box": "link",
+        "yellow_box": "link"
+    }
+
+    request.link2_name = link_map[ROBOT.grasped_object]
+
+    print(
+        f"[HAL DEBUG] DETTACH -> "
+        f"{request.model1_name}:{request.link1_name}  "
+        f"{request.model2_name}:{request.link2_name}"
+    )
+
+    future = ROBOT.detach_client.call_async(request)
+    rclpy.spin_until_future_complete(ROBOT, future)
+
+    result = future.result()
+
+    if result and result.success:
+        print(f"Detached {ROBOT.grasped_object}")
         ROBOT.grasped_object = None
+
+    else:
+        print("Detach failed")
