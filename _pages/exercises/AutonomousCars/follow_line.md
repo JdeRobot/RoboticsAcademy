@@ -104,7 +104,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `HAL::set_w(velocity);` - to set the angular velocity.
 - `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
 
-### ROS 2-native Implementation
+### ROS 2-direct Implementation
 
 #### ROS 2 Topics
 

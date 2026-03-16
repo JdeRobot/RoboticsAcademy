@@ -77,6 +77,10 @@ The solution can integrate one or more of the following difficulty increasing go
 
 ## Robot API
 
+This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 - `HAL.getPose3d().x` - to get the position of the robot (x coordinate)
@@ -176,6 +180,34 @@ To use it, only two actions must be carried out:
    `self.currentTarget = self.getNextTarget()`
 2. Mark it as visited when necessary:
    `self.currentTarget.setReached(True)` --->
+
+### ROS 2-direct Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
+  Message type: `geometry_msgs/msg/Twist`
+
+- `/odom` - Subscribe to this topic to get the robot pose.  
+  Message type: `nav_msgs/msg/Odometry`
+
+- `/f1/laser/scan` - Subscribe to this topic to get laser scan data.  
+  Message type: `sensor_msgs/msg/LaserScan`
+
+  The field `ranges` in `sensor_msgs/msg/LaserScan` contains the measured distances expressed in **meters**.  
+
+
+#### Python
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+* `rclpy.spin()` - Event-driven execution using callbacks.
+* `rclpy.spin_once()` - Single-step processing, useful when integrating control loops.
+* `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ### Conversion of types
 
