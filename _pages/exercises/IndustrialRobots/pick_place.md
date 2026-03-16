@@ -134,17 +134,16 @@ increment_20 = [-0.4, -0.1, 0.4]
 
 ### Gripper usage
 
-In the Gazebo Harmonic version of the exercise, object grasping is handled by the physics engine of Gazebo instead of using an artificial attach plugin.
+In Gazebo Harmonic, the gripper is controlled through the joint trajectory controller and object attachment is managed through the Gazebo LinkAttacher service.
 
-Objects are held by contact forces and friction between the gripper fingers and the object.
+* `HAL.GripperSet(percentage_closure, wait_time)`
+  * Closes the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds. A percentage_closure of 100 means fully closed, 0 means fully opened.
 
-Because of this behaviour:
+* `HAL.attach(object_name)`
+  * Attaches the given object_name to the gripper using the Gazebo LinkAttacher service. Precise object names are given below.
 
-* `HAL.attach(object_name)` does not create a physical joint between the gripper and the object. It only updates an internal logical state used for debugging.
-* `HAL.dettach()` does not forcibly release the object. The object is released when the gripper opens and the physics simulation allows it to move freely.
-* The real grasping behaviour depends on the physical contact between the gripper and the object.
-
-Therefore, when using Gazebo Harmonic, a correct grasp requires properly positioning the gripper around the object before closing it with `HAL.GripperSet()`.
+* `HAL.dettach()`
+  * Dettaches the attached object from the gripper using the Gazebo LinkAttacher service. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.
 
 ### Argument examples
 
