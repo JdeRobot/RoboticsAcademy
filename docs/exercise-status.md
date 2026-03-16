@@ -13,7 +13,7 @@
 | Marker-based visual Loc               | ok               |             |               |          | -     | Gazebo Harmonic           | PnP         |
 | Localized Vacuum Cleaner              | ok               |             |               |          | -     | Gazebo Harmonic + Classic | BSA         |
 | Autoparking                           | ok               |             |               |          | [Link][vid_autoparking] | Gazebo Harmonic + Classic |             |
-| Amazon Warehouse                      | ok               |             |               |          | -     | Gazebo 11                 |             |
+| Amazon Warehouse                      | ok               |             |               |          | -     | Gazebo Harmonic + Classic                 |             |
 | Follow Person                         | ok               |             |               |          | [Link][vid_follow_person] | Gazebo 11                 |             |
 | Drone Follow Road                     | ok               |             |               |          | -     | Gazebo Harmonic           |             |
 | Drone Rescue people                   | ok               |             |               |          | -     | Gazebo Harmonic           |             |
