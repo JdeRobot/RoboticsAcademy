@@ -106,7 +106,7 @@ while True:
 * `HAL.MoveRelReor(increment_YPR, rel_speed, wait_time)` — ΔYaw/Pitch/Roll (deg), position fixed.
 
 ### Gripper
-* `HAL.GripperSet(percentage_open, wait_time)` — **100 = fully open, 0 = fully closed**. A value of `0` auto‑**detaches** any grasped object in simulation.
+* `HAL.GripperSet(relative_closure, wait_time)` — **0 = fully open, 100 = fully closed**. A value of `0` auto‑**detaches** any grasped object in simulation.
 * `HAL.attach(object_name)` — attach a simulated object to the gripper (instant in sim).
 * `HAL.detach()` — detach any attached objects.
 
