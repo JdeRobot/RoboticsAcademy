@@ -24,7 +24,7 @@
 | Basic Computer Vision                 | ok               |             |               |          | [Link][vid_basic_cv] | none                      |             |
 | DL image classification               | ok               |             |               |          | -     | none                      |             |
 | DL visual object detection            | ok               |             |               |          | -     | none                      |             |
-| Pick and Place                        | ok               |             |               |          | -     | Gazebo 11                 |             |
+| Pick and Place                        | ok               |             |               |          | -     | Gazebo Harmonic + Classic                  |             |
 | Machine Vision with industrial robot  | ok               |             |               |          | [Link][vid_machine_vision] | Gazebo 11                 |             |
 | Car junction                          | ok               |             |               |          | -     | Gazebo Harmonic           |             |
 | Digital Image Processing              | ok               |             |               |          | -     | none                      | broken      |
