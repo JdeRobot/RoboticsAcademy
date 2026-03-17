@@ -64,7 +64,6 @@ class WebGUI(MeasuringThreadingGUI):
         if not rclpy.ok():
             rclpy.init()
 
-        # ROS2 direct support with minimal changes
         self.camera_node = None
         self.input_publisher_node = None
         self.auto_image_mode = False
@@ -83,11 +82,9 @@ class WebGUI(MeasuringThreadingGUI):
     def _setup_auto_mode(self):
         """Set up automatic subscription for /webgui_image and direct publisher for /input/image_raw"""
         try:
-            # Keep the same style as the solved exercise:
-            # CameraNode for output image subscription
+
             self.camera_node = CameraNode("/webgui_image")
 
-            # Only replace HAL.publish_input_image(...) with a direct ROS2 publisher
             self.input_publisher_node = InputImagePublisher("/input/image_raw")
 
             self.auto_image_mode = True
@@ -159,13 +156,10 @@ class WebGUI(MeasuringThreadingGUI):
             if base64_buffer.startswith("data:image/jpeg;base64,"):
                 base64_buffer = base64_buffer[len("data:image/jpeg;base64,") :]
 
-            # Decodificar la cadena base64 a bytes
             image_data = base64.b64decode(base64_buffer)
 
-            # Convertir los bytes a un array de numpy
             nparr = np.frombuffer(image_data, np.uint8)
 
-            # Decodificar la imagen (convertirla a formato OpenCV)
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
             with self.frame_rgb_lock:
@@ -173,7 +167,6 @@ class WebGUI(MeasuringThreadingGUI):
                 ack_message = {"ack_img": "ack", "time": time}
                 self.send_to_client(json.dumps(ack_message))
 
-            # Minimal addition: publish to ROS2 direct topic
             if self.input_publisher_node is not None:
                 self.input_publisher_node.publish_image(img)
 
