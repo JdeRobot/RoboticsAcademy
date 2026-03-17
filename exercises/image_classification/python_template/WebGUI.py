@@ -15,14 +15,14 @@ from hal_interfaces.general.camera import CameraNode
 import numpy as np
 
 
-class InputImagePublisher(Node):
+class BrowserInputImagePublisher(Node):
     """
     Minimal direct ROS2 publisher for browser input images.
-    Publishes to /input/image_raw without using HAL high-level helpers.
+    Publishes browser frames to /input/image_raw without using HAL high-level helpers.
     """
 
     def __init__(self, topic_name="/input/image_raw"):
-        super().__init__("visual_object_detection_input_publisher")
+        super().__init__("image_classification_input_publisher")
         self.publisher = self.create_publisher(Image, topic_name, 10)
 
     def publish_image(self, image):
@@ -44,19 +44,20 @@ class InputImagePublisher(Node):
             print(f"Error publishing input image: {e}", file=sys.stderr)
 
 
-# Graphical User Interface Class
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
-        # Execution control vars
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        # GUI display state
+        self.display_image = None
+        self.display_image_updated = False
+        self.display_image_lock = threading.Lock()
 
         self.payload = {"image": "", "shape": ""}
-        self.frame_rgb = None
-        self.frame_rgb_lock = threading.Lock()
+
+        # Latest frame received from frontend
+        self.latest_input_frame = None
+        self.latest_input_frame_lock = threading.Lock()
 
         self.has_received_img = False
 
@@ -64,67 +65,69 @@ class WebGUI(MeasuringThreadingGUI):
         if not rclpy.ok():
             rclpy.init()
 
-        # ROS2 direct support with minimal changes
-        self.camera_node = None
-        self.input_publisher_node = None
-        self.auto_image_mode = False
+        # ROS2 image bridge state
+        self.webgui_image_subscriber = None
+        self.input_image_publisher = None
+        self.ros2_image_bridge_enabled = False
         self.executor = None
         self.executor_thread = None
-        self.auto_image_thread = None
+        self.webgui_image_thread = None
 
-        self._setup_auto_mode()
+        self._setup_ros2_image_bridge()
 
-        # Start ROS2 executor and image display thread if nodes created
-        if self.camera_node and self.input_publisher_node:
+        # Start ROS2 executor and image forwarding thread if nodes were created
+        if self.webgui_image_subscriber and self.input_image_publisher:
             self._start_ros2_threads()
 
         self.start()
 
-    def _setup_auto_mode(self):
-        """Set up automatic subscription for /webgui_image and direct publisher for /input/image_raw"""
+    def _setup_ros2_image_bridge(self):
+        """Set up ROS2 image bridge: subscribe to /webgui_image and publish to /input/image_raw."""
         try:
-            self.camera_node = CameraNode("/webgui_image")
+            self.webgui_image_subscriber = CameraNode("/webgui_image")
+            self.input_image_publisher = BrowserInputImagePublisher("/input/image_raw")
 
-            self.input_publisher_node = InputImagePublisher("/input/image_raw")
-
-            self.auto_image_mode = True
-            print("ROS2 mode enabled: Subscribed to /webgui_image")
-            print("ROS2 mode enabled: Publishing to /input/image_raw")
+            self.ros2_image_bridge_enabled = True
+            print("ROS2 image bridge enabled")
+            print("  /webgui_image  -> GUI display")
+            print("  browser input  -> /input/image_raw")
 
         except Exception as e:
             print(f"ROS2 mode disabled: {e}", file=sys.stderr)
-            self.camera_node = None
-            self.input_publisher_node = None
-            self.auto_image_mode = False
+            self.webgui_image_subscriber = None
+            self.input_image_publisher = None
+            self.ros2_image_bridge_enabled = False
 
     def _start_ros2_threads(self):
-        """Start ROS2 executor and image display thread"""
+        """Start ROS2 executor and GUI image forwarding thread."""
         try:
             self.executor = MultiThreadedExecutor()
-            self.executor.add_node(self.camera_node)
-            self.executor.add_node(self.input_publisher_node)
+            self.executor.add_node(self.webgui_image_subscriber)
+            self.executor.add_node(self.input_image_publisher)
 
             self.executor_thread = threading.Thread(
-                target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
+                target=self.executor.spin,
+                daemon=True,
+                name="webgui_ros2_executor",
             )
             self.executor_thread.start()
 
-            self.auto_image_thread = threading.Thread(
-                target=self._unified_image_loop,
+            self.webgui_image_thread = threading.Thread(
+                target=self._webgui_image_forwarding_loop,
                 daemon=True,
                 name="webgui_image_display",
             )
-            self.auto_image_thread.start()
+            self.webgui_image_thread.start()
 
         except Exception as e:
             print(f"Error starting ROS2 threads: {e}", file=sys.stderr)
 
-    def _unified_image_loop(self):
-        """Unified image handling loop for ROS2 subscriber"""
+    def _webgui_image_forwarding_loop(self):
+        """Read images from /webgui_image and forward them to the GUI display."""
         while True:
             try:
-                if self.camera_node:
-                    image = self.camera_node.getImage()
+                if self.webgui_image_subscriber:
+                    image = self.webgui_image_subscriber.getImage()
                     if image is not None:
                         self.showImage(image.data)
 
@@ -134,7 +137,6 @@ class WebGUI(MeasuringThreadingGUI):
                 print(f"Error in image display loop: {e}", file=sys.stderr)
                 threading.Event().wait(1.0)
 
-    # Process incoming messages to the GUI
     def gui_in_thread(self, ws, message):
         time_frame_size = 20
 
@@ -148,34 +150,30 @@ class WebGUI(MeasuringThreadingGUI):
         if "pick" in message:
             self.has_received_img = True
 
-            # Image from the frontend
+            # Image received from the frontend
             base64_buffer = message[4:-time_frame_size]
             time = message[-time_frame_size:]
 
             if base64_buffer.startswith("data:image/jpeg;base64,"):
-                base64_buffer = base64_buffer[len("data:image/jpeg;base64,") :]
+                base64_buffer = base64_buffer[len("data:image/jpeg;base64,"):]
 
             image_data = base64.b64decode(base64_buffer)
-
             nparr = np.frombuffer(image_data, np.uint8)
-
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-            with self.frame_rgb_lock:
-                self.frame_rgb = img
+            with self.latest_input_frame_lock:
+                self.latest_input_frame = img
                 ack_message = {"ack_img": "ack", "time": time}
                 self.send_to_client(json.dumps(ack_message))
 
-            if self.input_publisher_node is not None:
-                self.input_publisher_node.publish_image(img)
+            if self.input_image_publisher is not None:
+                self.input_image_publisher.publish_image(img)
 
         if "introspection" in message:
-            info = message[len("introspection:") :]
+            info = message[len("introspection:"):]
             self.fps, self.lat = info.split("/")
 
-    # Prepares and sends a map to the websocket server
     def update_gui(self):
-
         payload = self.payloadImage()
         self.payload["image"] = json.dumps(payload)
 
@@ -186,40 +184,36 @@ class WebGUI(MeasuringThreadingGUI):
             ack_message = {"ack_img": "ack", "time": ""}
             self.send_to_client(json.dumps(ack_message))
 
-    # Function to prepare image payload
-    # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
-        with self.image_show_lock:
-            image_to_be_shown_updated = self.image_to_be_shown_updated
-            image_to_be_shown = self.image_to_be_shown
+        with self.display_image_lock:
+            display_image_updated = self.display_image_updated
+            display_image = self.display_image
 
-        image = image_to_be_shown
         payload = {"image": "", "shape": ""}
 
-        if not image_to_be_shown_updated:
+        if not display_image_updated:
             return payload
 
-        shape = image.shape
-        frame = cv2.imencode(".JPEG", image)[1]
+        shape = display_image.shape
+        frame = cv2.imencode(".JPEG", display_image)[1]
         encoded_image = base64.b64encode(frame)
 
         payload["image"] = encoded_image.decode("utf-8")
         payload["shape"] = shape
 
-        with self.image_show_lock:
-            self.image_to_be_shown_updated = False
+        with self.display_image_lock:
+            self.display_image_updated = False
 
         return payload
 
-    # Function for student to call
     def showImage(self, image):
-        with self.image_show_lock:
-            self.image_to_be_shown = image
-            self.image_to_be_shown_updated = True
+        with self.display_image_lock:
+            self.display_image = image
+            self.display_image_updated = True
 
     def getImage(self):
-        with self.frame_rgb_lock:
-            return self.frame_rgb
+        with self.latest_input_frame_lock:
+            return self.latest_input_frame
 
 
 host = "ws://127.0.0.1:2303"
@@ -229,7 +223,6 @@ gui = WebGUI(host)
 start_console()
 
 
-# Expose the user functions
 def showImage(image):
     gui.showImage(image)
 
