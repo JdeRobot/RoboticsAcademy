@@ -155,7 +155,7 @@ class WebGUI(MeasuringThreadingGUI):
             time = message[-time_frame_size:]
 
             if base64_buffer.startswith("data:image/jpeg;base64,"):
-                base64_buffer = base64_buffer[len("data:image/jpeg;base64,"):]
+                base64_buffer = base64_buffer[len("data:image/jpeg;base64,") :]
 
             image_data = base64.b64decode(base64_buffer)
             nparr = np.frombuffer(image_data, np.uint8)
@@ -170,7 +170,7 @@ class WebGUI(MeasuringThreadingGUI):
                 self.input_image_publisher.publish_image(img)
 
         if "introspection" in message:
-            info = message[len("introspection:"):]
+            info = message[len("introspection:") :]
             self.fps, self.lat = info.split("/")
 
     def update_gui(self):
