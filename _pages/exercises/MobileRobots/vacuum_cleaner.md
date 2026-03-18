@@ -43,7 +43,7 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -109,7 +109,7 @@ if len(laser_data.values) > 0:
 * `HAL::set_w(velocity);` - to set the angular velocity.
 * `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left.
 
-### ROS 2-native Implementation
+### ROS 2-direct Implementation
 
 #### ROS 2 Topics
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -134,7 +134,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 #### C++
 
-In order to use native ros controls you must include the following lines:
+In order to use direct ros controls you must include the following lines:
 
 ```cpp
 #ifndef USER_NODE

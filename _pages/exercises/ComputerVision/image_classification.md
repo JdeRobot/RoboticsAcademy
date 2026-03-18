@@ -61,6 +61,12 @@ youtubeId1: aOd6c-ue1xU
 
 ## Exercise API
 
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
+#### Python
+
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
 * `WebGUI.getImage()` - to get the image. It can be None.
@@ -77,30 +83,36 @@ while True:
 <!-- Model Path -->
 ## File Path for Uploaded Model
 
-The `model_path` holds the file path to the uploaded <strong>ONNX</strong> model.
+To obtain the path of an uploaded **ONNX** model, use the `model_path_func` helper function.
+
+This function returns the full file path to a model located in the workspace directory. The model filename must be passed as an argument.
 
 ```python
-from model import model_path
+from model import model_path_func
+
+model_path = model_path_func("my_model.onnx")
 ```
 
-## Example Code
-<!-- Load ONNX session -->
-Recommended to load the ONNX model session
+### ROS 2-direct Implementation
 
-```python
-# Import the required package
-from model import model_path
-import onnxruntime
-import sys
+#### ROS 2 Topics
 
-# Load ONNX model
-try:
-    ort_session = onnxruntime.InferenceSession(model_path)
-except Exception as e:
-    print("ERROR: Model couldn't be loaded")
-    print(str(e))
-    sys.exit(1)
-```
+Use standard ROS 2 topics for direct communication.
+
+- `/input/image_raw` - Subscribe to this topic to receive input images (BGR8). Message type: `sensor_msgs/msg/Image`
+- `/webgui_image` - Publish to this topic to send the processed image to the GUI. Message type: `sensor_msgs/msg/Image`
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 <!-- Exercise Instructions -->
 ## Exercise Instructions
