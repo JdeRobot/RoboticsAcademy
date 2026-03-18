@@ -115,7 +115,9 @@ class ROS2BridgeNode(Node):
                     return None
                 return data.reshape((msg.height, msg.width, 3)).copy()
 
-            self.get_logger().warn(f"Unsupported image encoding received: {msg.encoding}")
+            self.get_logger().warn(
+                f"Unsupported image encoding received: {msg.encoding}"
+            )
             return None
 
         except Exception as e:
@@ -140,6 +142,7 @@ class ROS2BridgeNode(Node):
     def get_pose3d(self):
         with self.pose_lock:
             if self.pose is None:
+
                 class Pose3D:
                     x = 0.0
                     y = 0.0
@@ -189,7 +192,9 @@ class WebGUI(MeasuringThreadingGUI):
 
         self._setup_ros2()
 
-        pose_getter = self.ros_node.get_pose3d if self.ros_node is not None else self._dummy_pose
+        pose_getter = (
+            self.ros_node.get_pose3d if self.ros_node is not None else self._dummy_pose
+        )
         self.map = Map(pose_getter)
 
         self._publish_initial_occ_map()
@@ -229,7 +234,9 @@ class WebGUI(MeasuringThreadingGUI):
             self.image_thread = None
 
     def _publish_initial_occ_map(self):
-        occ_map = self.getMap("/resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png")
+        occ_map = self.getMap(
+            "/resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png"
+        )
         if occ_map is None:
             print("GUI: Failed to load occupancy map", file=sys.stderr)
             return
