@@ -2,7 +2,9 @@
 WebGUI for Basic Computer Vision Exercise
 Supports dual mode: Python API (getImage/showImage) and ROS2 topics
 """
-
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 import json
 import cv2
 import base64
