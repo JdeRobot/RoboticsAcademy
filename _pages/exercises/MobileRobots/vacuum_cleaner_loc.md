@@ -82,7 +82,19 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 - `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 - `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-- `/webgui_user_map` - Publish to this topic to display the image in the Web GUI. This is the equivalent of `WebGUI.showNumpy(matrix)`, but     using a topic-based interface. Message type: `sensor_msgs/msg/Image`
+- `/webgui_user_map` - Publish to this topic to display the image in the Web GUI. This is the equivalent of `WebGUI.showNumpy(matrix)`, but     using a topic-based interface. Message type: `sensor_msgs/msg/Image` **Important:** This topic must be published using a **TRANSIENT_LOCAL** QoS profile or the Web GUI will not receive the image.
+
+    ```python
+    from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
+
+    map_qos = QoSProfile(
+        reliability=ReliabilityPolicy.RELIABLE,
+        durability=DurabilityPolicy.TRANSIENT_LOCAL,
+        history=HistoryPolicy.KEEP_LAST,
+        depth=1
+    )
+    ```
+
 - `/webgui_occ_map` - Subscribe to this topic to receive the static occupancy map published by the system. This topic provides the equivalent of obtaining the map with `WebGUI.getMap(url)`. The map is published once with `transient_local` QoS, so late subscribers can still receive the latest occupancy map. Message type: `sensor_msgs/msg/Image`
 
 #### Python
