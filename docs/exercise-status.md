@@ -12,7 +12,7 @@
 | MonteCarlo Laser Loc                 |        ok        |             |               |          | -                        |        ok         |         ok         | AMCL        |
 | MonteCarlo Visual Loc                |        ok        |             |               |          | -                        |        ok         |         ok         | AMCL        |
 | Marker-based visual Loc              |        ok        |             |               |          | -                        |                   |         ok         | PnP         |
-| Localized Vacuum Cleaner             |        ok        |             |               |          | -                        |        ok         |         ok         | BSA         |
+| Localized Vacuum Cleaner             |        ok        |     ok      |               |          | -                        |        ok         |         ok         | BSA         |
 | Autoparking                          |        ok        |             |               |          | [Link][vid_autoparking]  |        ok         |         ok         |             |
 | Amazon Warehouse                     |        ok        |             |               |          | -                        |        ok         |         ok         |             |
 | Follow Person                        |        ok        |             |               |          | [Link][vid_follow_person]|        ok         |                    |             |
@@ -22,9 +22,9 @@
 | Drone Power tower Inspection         |        ok        |             |               |          | -                        |                   |         ok         |             |
 | Visual 3D reconstruction             |        ok        |             |               |          | -                        |        ok         |         ok         |             |
 | DL e2e Visual control                |        ok        |             |               |          | -                        |        ok         |         ok         |             |
-| Basic Computer Vision                |        ok        |             |               |          | [Link][vid_basic_cv]     |       none        |        none        |             |
-| DL image classification              |        ok        |             |               |          | -                        |       none        |        none        |             |
-| DL visual object detection           |        ok        |             |               |          | -                        |       none        |        none        |             |
+| Basic Computer Vision                |        ok        |     ok      |               |          | [Link][vid_basic_cv]     |       none        |        none        |             |
+| DL image classification              |        ok        |     ok      |               |          | -                        |       none        |        none        |             |
+| DL visual object detection           |        ok        |     ok      |               |          | -                        |       none        |        none        |             |
 | Pick and Place                       |        ok        |             |               |          | -                        |        ok         |         ok         |             |
 | Machine Vision with industrial robot |        ok        |             |               |          | [Link][vid_machine_vision]|       ok         |                    |             |
 | Car junction                         |        ok        |             |               |          | -                        |                   |         ok         |             |
