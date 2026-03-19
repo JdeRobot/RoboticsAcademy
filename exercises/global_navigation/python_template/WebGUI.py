@@ -24,19 +24,20 @@ class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
         super().__init__("gui_bridge_node")
         self.gui = gui_instance
-        
+
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.target_pub = self.create_publisher(Point, "/webgui/current_target", qos)
-        
+
         self.create_subscription(Path, "/webgui/path", self.path_callback, 10)
-        self.create_subscription(ROSImage, "/webgui/debug_image", self.image_callback, 10)
+        self.create_subscription(
+            ROSImage, "/webgui/debug_image", self.image_callback, 10
+        )
 
     def path_callback(self, msg):
         path_array = []
         for pose_stamped in msg.poses:
             grid_x, grid_y = self.gui.map.worldToGrid(
-                pose_stamped.pose.position.x, 
-                pose_stamped.pose.position.y
+                pose_stamped.pose.position.x, pose_stamped.pose.position.y
             )
             path_array.append([grid_x, grid_y])
         self.gui.showPath(path_array)
@@ -67,14 +68,14 @@ class WebGUI(MeasuringThreadingGUI):
         self.image_show_lock = threading.Lock()
 
         self.payload = {"image": "", "map": "", "array": ""}
-        
+
         self.pose3d_node = None
         self.bridge_node = None
         self.executor = None
         self.executor_thread = None
 
         self._setup_ros2()
-        
+
         self.map = Map(self.get_pose3d)
 
         self.start()
@@ -82,18 +83,16 @@ class WebGUI(MeasuringThreadingGUI):
     def _setup_ros2(self):
         if not rclpy.ok():
             rclpy.init()
-            
+
         self.pose3d_node = OdometryNode("/odom")
         self.bridge_node = ROS2BridgeNode(self)
-        
+
         self.executor = MultiThreadedExecutor()
         self.executor.add_node(self.pose3d_node)
         self.executor.add_node(self.bridge_node)
-        
+
         self.executor_thread = threading.Thread(
-            target=self.executor.spin,
-            daemon=True,
-            name="webgui_ros2_executor"
+            target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
         )
         self.executor_thread.start()
 
@@ -122,7 +121,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload["image"] = json.dumps(payload)
 
         self.payload["array"] = self.array
-        
+
         pos_message1 = self.map.getTaxiCoordinates()
         ang_message = self.map.getTaxiAngle()
         pos_message = str(pos_message1 + ang_message)
@@ -192,7 +191,7 @@ class WebGUI(MeasuringThreadingGUI):
         image = [[0 for x in range(400)] for y in range(400)]
         self.showNumpy(np.clip(image, 0, 255).astype("uint8"))
         self.map.reset()
-        
+
     def __del__(self):
         try:
             if self.executor:
@@ -210,23 +209,30 @@ start_console()
 def payloadImage():
     return gui.payloadImage()
 
+
 def showNumpy(image):
     gui.showNumpy(image)
+
 
 def showPath(array):
     gui.showPath(array)
 
+
 def getTargetPose():
     return gui.getTargetPose()
+
 
 def getMap(url):
     return gui.getMap(url)
 
+
 def rowColumn(pose):
     return list(gui.worldToGrid(pose))
 
+
 def worldToGrid(pose):
     return gui.worldToGrid(pose)
+
 
 def gridToWorld(cell):
     return gui.gridToWorld(cell)
