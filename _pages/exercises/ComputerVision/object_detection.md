@@ -89,6 +89,27 @@ from model import model_path_func
 model_path = model_path_func("my_model.onnx")
 ```
 
+## Example Code
+
+<!-- Load ONNX session -->
+
+Recommended to load the ONNX model session
+
+```python
+# Import the required package
+from model import model_path
+import onnxruntime
+import sys
+
+# Load ONNX model
+try:
+    ort_session = onnxruntime.InferenceSession(model_path)
+except Exception as e:
+    print("ERROR: Model couldn't be loaded")
+    print(str(e))
+    sys.exit(1)
+```
+
 ### ROS 2-direct Implementation
 
 #### ROS 2 Topics
