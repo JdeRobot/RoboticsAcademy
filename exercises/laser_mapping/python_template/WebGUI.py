@@ -14,7 +14,9 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped
 
 from map import Map
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from real_noise_odometry import OdomNoiseInjectorNode
 
@@ -38,11 +40,15 @@ class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
         super().__init__("gui_bridge_node")
         self.gui = gui_instance
-        
-        self.create_subscription(ROSImage, "/webgui/user_map", self.user_map_callback, 10)
+
+        self.create_subscription(
+            ROSImage, "/webgui/user_map", self.user_map_callback, 10
+        )
         self.create_subscription(Odometry, "/turtlebot3/odom", self.odom_callback, 10)
-        self.create_subscription(PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, 10)
-        
+        self.create_subscription(
+            PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, 10
+        )
+
         self.pose = Pose3d()
         self.noisy_pose = Pose3d()
 
@@ -98,9 +104,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.executor.add_node(self.noise_injector)
 
         self.executor_thread = threading.Thread(
-            target=self.executor.spin,
-            daemon=True,
-            name="webgui_ros2_executor"
+            target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
         )
         self.executor_thread.start()
 
@@ -139,12 +143,12 @@ class WebGUI(MeasuringThreadingGUI):
             raise ValueError(
                 "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
             )
-        
+
         if len(image.shape) == 2:
             processed_image = np.stack((image,) * 3, axis=-1)
         else:
             processed_image = image
-            
+
         with self.image_lock:
             self.user_map = processed_image
 
@@ -172,11 +176,14 @@ gui = WebGUI(host)
 
 start_console()
 
+
 def setUserMap(image):
     gui.setUserMap(image)
 
+
 def poseToMap(x_prime, y_prime, yaw_prime):
     return gui.poseToMap(x_prime, y_prime, yaw_prime)
+
 
 def showEstimatedPose(x, y, yaw):
     gui.showEstimatedPose(x, y, yaw)
