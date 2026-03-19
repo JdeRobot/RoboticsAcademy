@@ -2,18 +2,69 @@ import json
 import cv2
 import base64
 import threading
-import time
 import numpy as np
 import math
+import sys
+
+import rclpy
+from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from sensor_msgs.msg import Image as ROSImage
+from nav_msgs.msg import Odometry
+from geometry_msgs.msg import PoseStamped
 
 from map import Map
-
-from gui_interfaces.general.measuring_threading_gui_harmonic import (
-    MeasuringThreadingGUI,
-)
+from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
+from real_noise_odometry import OdomNoiseInjectorNode
 
-from HAL import getPose3d, getOdom
+
+def quat_to_yaw(qw, qx, qy, qz):
+    rotate_za0 = 2.0 * (qx * qy + qw * qz)
+    rotate_za1 = qw * qw + qx * qx - qy * qy - qz * qz
+    if rotate_za0 != 0.0 and rotate_za1 != 0.0:
+        return math.atan2(rotate_za0, rotate_za1)
+    return 0.0
+
+
+class Pose3d:
+    def __init__(self, x=0.0, y=0.0, yaw=0.0):
+        self.x = x
+        self.y = y
+        self.yaw = yaw
+
+
+class ROS2BridgeNode(Node):
+    def __init__(self, gui_instance):
+        super().__init__("gui_bridge_node")
+        self.gui = gui_instance
+        
+        self.create_subscription(ROSImage, "/webgui/user_map", self.user_map_callback, 10)
+        self.create_subscription(Odometry, "/turtlebot3/odom", self.odom_callback, 10)
+        self.create_subscription(PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, 10)
+        
+        self.pose = Pose3d()
+        self.noisy_pose = Pose3d()
+
+    def user_map_callback(self, msg):
+        try:
+            data = np.frombuffer(msg.data, dtype=np.uint8)
+            image = data.reshape((msg.height, msg.width))
+            self.gui.setUserMap(image)
+        except Exception:
+            pass
+
+    def odom_callback(self, msg):
+        self.pose.x = msg.pose.pose.position.x
+        self.pose.y = msg.pose.pose.position.y
+        ori = msg.pose.pose.orientation
+        self.pose.yaw = quat_to_yaw(ori.w, ori.x, ori.y, ori.z)
+
+    def estimated_pose_callback(self, msg):
+        self.noisy_pose.x = msg.pose.position.x
+        self.noisy_pose.y = msg.pose.position.y
+        ori = msg.pose.orientation
+        self.noisy_pose.yaw = quat_to_yaw(ori.w, ori.x, ori.y, ori.z)
 
 
 class WebGUI(MeasuringThreadingGUI):
@@ -22,23 +73,49 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.user_map = None
         self.image_lock = threading.Lock()
-
-        self.map = Map(getPose3d, getOdom)
-
-        # Payload vars
         self.payload = {"user_map": "", "real_pose": "", "noisy_pose": ""}
+
+        self.bridge_node = None
+        self.noise_injector = None
+        self.executor = None
+        self.executor_thread = None
+
+        self._setup_ros2()
+
+        self.map = Map(self.get_pose3d, self.get_noisy_pose)
 
         self.start()
 
-    # Prepares and send image to the websocket server
+    def _setup_ros2(self):
+        if not rclpy.ok():
+            rclpy.init()
+
+        self.bridge_node = ROS2BridgeNode(self)
+        self.noise_injector = OdomNoiseInjectorNode()
+
+        self.executor = MultiThreadedExecutor()
+        self.executor.add_node(self.bridge_node)
+        self.executor.add_node(self.noise_injector)
+
+        self.executor_thread = threading.Thread(
+            target=self.executor.spin,
+            daemon=True,
+            name="webgui_ros2_executor"
+        )
+        self.executor_thread.start()
+
+    def get_pose3d(self):
+        return self.bridge_node.pose
+
+    def get_noisy_pose(self):
+        return self.bridge_node.noisy_pose
+
     def update_gui(self):
         pos_message = self.map.getRobotCoordinates()
-        pos_message = str(pos_message)
-        self.payload["real_pose"] = pos_message
+        self.payload["real_pose"] = str(pos_message)
 
         n_pos_message = self.map.getRobotCoordinatesWithNoise()
-        n_pos_message = str(n_pos_message)
-        self.payload["noisy_pose"] = n_pos_message
+        self.payload["noisy_pose"] = str(n_pos_message)
 
         if np.any(self.user_map):
             _, encoded_image = cv2.imencode(".JPEG", self.user_map)
@@ -57,13 +134,17 @@ class WebGUI(MeasuringThreadingGUI):
         message = json.dumps(self.payload)
         self.send_to_client(message)
 
-    # Function to set the next image to be sent
     def setUserMap(self, image):
         if image.shape[0] != 970 or image.shape[1] != 1500:
             raise ValueError(
                 "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
             )
-        processed_image = np.stack((image,) * 3, axis=-1)
+        
+        if len(image.shape) == 2:
+            processed_image = np.stack((image,) * 3, axis=-1)
+        else:
+            processed_image = image
+            
         with self.image_lock:
             self.user_map = processed_image
 
@@ -73,18 +154,29 @@ class WebGUI(MeasuringThreadingGUI):
         yaw = yaw_prime - math.pi / 2
         return [round(x), round(y), yaw]
 
+    def showEstimatedPose(self, x, y, yaw):
+        self.bridge_node.noisy_pose.x = x
+        self.bridge_node.noisy_pose.y = y
+        self.bridge_node.noisy_pose.yaw = yaw
+
+    def __del__(self):
+        try:
+            if self.executor:
+                self.executor.shutdown()
+        except Exception:
+            pass
+
 
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
-# Redirect the console
 start_console()
 
-
-# Expose the user functions
 def setUserMap(image):
     gui.setUserMap(image)
 
-
 def poseToMap(x_prime, y_prime, yaw_prime):
     return gui.poseToMap(x_prime, y_prime, yaw_prime)
+
+def showEstimatedPose(x, y, yaw):
+    gui.showEstimatedPose(x, y, yaw)
