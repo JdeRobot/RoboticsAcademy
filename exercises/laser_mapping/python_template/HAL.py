@@ -2,25 +2,19 @@ import rclpy
 import sys
 import threading
 import time
-import numpy as np
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
-from real_noise_odometry import NoisyOdometryNode
 from hal_interfaces.general.laser import LaserNode
 
 freq = 90.0
 
-
-# Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
 
-
 threading.excepthook = custom_thread_excepthook
-
 
 def __auto_spin() -> None:
     while rclpy.ok():
@@ -30,65 +24,37 @@ def __auto_spin() -> None:
             pass
         time.sleep(1 / freq)
 
-
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
-### HAL INIT ###
 motor_node = MotorsNode("/turtlebot3/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/turtlebot3/odom")
-noisy_odometry_node = NoisyOdometryNode("/turtlebot3/odom")
-noisy_odometry_node.noise_level = 0.001
-noisy_odometry_node_2 = NoisyOdometryNode("/turtlebot3/odom")
-noisy_odometry_node_2.noise_level = 0.03
-noisy_odometry_node_3 = NoisyOdometryNode("/turtlebot3/odom")
-noisy_odometry_node_3.noise_level = 0.06
+noisy_odometry_node_low = OdometryNode("/turtlebot3/odom_noisy_low")
+noisy_odometry_node_med = OdometryNode("/turtlebot3/odom_noisy_med")
+noisy_odometry_node_high = OdometryNode("/turtlebot3/odom_noisy_high")
 laser_node = LaserNode("/turtlebot3/laser/scan")
 
-# Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
-executor.add_node(noisy_odometry_node)
-executor.add_node(noisy_odometry_node_2)
-executor.add_node(noisy_odometry_node_3)
+executor.add_node(noisy_odometry_node_low)
+executor.add_node(noisy_odometry_node_med)
+executor.add_node(noisy_odometry_node_high)
 executor.add_node(laser_node)
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
-
-### GETTERS ###
-
-
-# Pose
 def getPose3d():
-    try:
-        return odometry_node.getPose3d()
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
+    return odometry_node.getPose3d()
 
-
-# Pose
 def getOdom():
-    try:
-        return noisy_odometry_node.getPose3d()
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
-
+    return noisy_odometry_node_low.getPose3d()
 
 def getOdom2():
-    try:
-        return noisy_odometry_node_2.getPose3d()
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
-
+    return noisy_odometry_node_med.getPose3d()
 
 def getOdom3():
-    try:
-        return noisy_odometry_node_3.getPose3d()
-    except Exception as e:
-        print(f"Exception in hal getPose3d {repr(e)}")
-
+    return noisy_odometry_node_high.getPose3d()
 
 def getLaserData():
     laser_data = laser_node.getLaserData()
@@ -96,15 +62,8 @@ def getLaserData():
         laser_data = laser_node.getLaserData()
     return laser_data
 
-
-### SETTERS ###
-
-
-# Linear speed
 def setV(v):
     motor_node.sendV(float(v))
 
-
-# Angular speed
 def setW(w):
     motor_node.sendW(float(w))
