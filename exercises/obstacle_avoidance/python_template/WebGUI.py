@@ -15,32 +15,45 @@ from console_interfaces.general.console import start_console
 from lap import Lap
 from map import Map
 
+
 class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
         super().__init__("gui_bridge_node")
         self.gui = gui_instance
-        
-        self.create_subscription(Point, "/webgui/force/car", self.force_car_callback, 10)
-        self.create_subscription(Point, "/webgui/force/obs", self.force_obs_callback, 10)
-        self.create_subscription(Point, "/webgui/force/avg", self.force_avg_callback, 10)
-        self.create_subscription(Point, "/webgui/local_target", self.target_callback, 10)
-        self.create_subscription(Bool, "/webgui/target_reached", self.target_reached_callback, 10)
-        
+
+        self.create_subscription(
+            Point, "/webgui/force/car", self.force_car_callback, 10
+        )
+        self.create_subscription(
+            Point, "/webgui/force/obs", self.force_obs_callback, 10
+        )
+        self.create_subscription(
+            Point, "/webgui/force/avg", self.force_avg_callback, 10
+        )
+        self.create_subscription(
+            Point, "/webgui/local_target", self.target_callback, 10
+        )
+        self.create_subscription(
+            Bool, "/webgui/target_reached", self.target_reached_callback, 10
+        )
+
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
-        self.current_target_pub = self.create_publisher(Point, "/webgui/current_target", qos)
-        
+        self.current_target_pub = self.create_publisher(
+            Point, "/webgui/current_target", qos
+        )
+
         self.current_target_obj = self.gui.map.getNextTarget()
         self.publish_current_target()
 
     def force_car_callback(self, msg):
         self.gui.map.setCar(msg.x, msg.y)
-        
+
     def force_obs_callback(self, msg):
         self.gui.map.setObs(msg.x, msg.y)
-        
+
     def force_avg_callback(self, msg):
         self.gui.map.setAvg(msg.x, msg.y)
-        
+
     def target_callback(self, msg):
         self.gui.map.setTargetPos(msg.x, msg.y)
 
@@ -55,46 +68,45 @@ class ROS2BridgeNode(Node):
             msg = Point(
                 x=float(self.current_target_obj.getPose().x),
                 y=float(self.current_target_obj.getPose().y),
-                z=0.0
+                z=0.0,
             )
             self.current_target_pub.publish(msg)
+
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
-        
+
         self.payload = {"lap": "", "map": ""}
-        
+
         self.pose3d_node = None
         self.laser_node = None
         self.bridge_node = None
         self.executor = None
         self.executor_thread = None
-        
+
         self._setup_ros2()
         self.start()
 
     def _setup_ros2(self):
         if not rclpy.ok():
             rclpy.init()
-            
+
         self.pose3d_node = OdometryNode("/odom")
         self.laser_node = LaserNode("/f1/laser/scan")
-        
+
         self.map = Map(self.get_laser_data, self.get_pose3d)
         self.lap = Lap(self.map)
-        
+
         self.bridge_node = ROS2BridgeNode(self)
-        
+
         self.executor = MultiThreadedExecutor()
         self.executor.add_node(self.pose3d_node)
         self.executor.add_node(self.laser_node)
         self.executor.add_node(self.bridge_node)
-        
+
         self.executor_thread = threading.Thread(
-            target=self.executor.spin,
-            daemon=True,
-            name="webgui_ros2_executor"
+            target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
         )
         self.executor_thread.start()
 
@@ -115,10 +127,10 @@ class WebGUI(MeasuringThreadingGUI):
         lapped = self.lap.check_threshold()
         if lapped is not None:
             self.payload["lap"] = str(lapped)
-            
+
         map_message = self.map.get_json_data()
         self.payload["map"] = map_message
-        
+
         message = json.dumps(self.payload)
         self.send_to_client(message)
 
@@ -141,22 +153,28 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
 start_console()
 
+
 def showForces(vec1, vec2, vec3):
     gui.showForces(vec1, vec2, vec3)
+
 
 def showLocalTarget(newVec):
     return gui.showLocalTarget(newVec)
 
+
 def getNextTarget():
     return gui.map.getNextTarget()
 
+
 def setTargetx(x):
     gui.map.targetx = x
+
 
 def setTargety(y):
     gui.map.targety = y
