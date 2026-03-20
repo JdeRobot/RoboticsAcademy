@@ -9,10 +9,9 @@ toc: true
 toc_label: "TOC Vacuum Cleaner"
 toc_icon: "cog"
 
-
 gallery:
-    image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
-    alt: "Vacuum"
+  image_path: /assets/images/exercises/vacuum_cleaner/vacuum_cleaner_teaser.png
+  alt: "Vacuum"
 
 youtubeId1: c90hmfkZRNY
 youtubeId2: Xcy84DhVjrY
@@ -32,14 +31,14 @@ For this example, it is necessary to ensure that the vacuum cleaner covers the h
 
 ### Python
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ### C++
 
-* `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency freq = Frequency();` - to instanciate the Frequency class.
-* `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
@@ -49,13 +48,13 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 #### Python
 
-* `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed.
-* `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left.
-* `HAL.setV()` - to set the linear speed.
-* `HAL.setW()` - to set the angular velocity.
-* `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
+- `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL.getBumperData().state` - to establish if the robot has crashed or not. Returns 1 if the robot collides and 0 if it has not crashed.
+- `HAL.getBumperData().bumper` - if the robot has crashed, it returns 1 when the crash occurs on center of the robot, 0 when it occurs on its right and 2 if the collision is on its left.
+- `HAL.setV()` - to set the linear speed.
+- `HAL.setW()` - to set the angular velocity.
+- `HAL.getLaserData()` - It allows to obtain the data of the laser sensor, which consists of 180 pairs of values ​​(0-180º, distance in meters).
 
 Here is an example of how to parse the laser data:
 
@@ -102,23 +101,45 @@ if len(laser_data.values) > 0:
 
 #### C++
 
-* `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-* `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-* `HAL::get_laser_data();` - It allows to obtain the data of the laser sensor (LaserData), which consists of 180 pairs of values ​​(0-180º, distance in meters).
-* `HAL::set_v(velocity);` - to set the linear speed.
-* `HAL::set_w(velocity);` - to set the angular velocity.
-* `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left.
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::get_laser_data();` - It allows to obtain the data of the laser sensor (LaserData), which consists of 180 pairs of values ​​(0-180º, distance in meters).
+- `HAL::set_v(velocity);` - to set the linear speed.
+- `HAL::set_w(velocity);` - to set the angular velocity.
+- `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
 
 ### ROS 2-direct Implementation
 
 #### ROS 2 Topics
+
 Use standard ROS 2 topics for direct communication with the simulation.
 
-* `/cmd_vel`  - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
-* `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
-* `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-* `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
-* `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/roombaROS/laser/scan` - Subscribe to this topic to get laser scan data. Message type: `sensor_msgs/msg/LaserScan`
+- `/roombaROS/events/center_bumper` - Subscribe to this topic to detect collisions at the center of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+- `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
+- `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 
 #### Python
 
@@ -128,9 +149,9 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
-* `rclpy.spin()` - Event-driven execution using callbacks.
-* `rclpy.spin_once()` - Single-step processing, often with custom timers.
-* `rclpy.Rate()` - Loop-based frequency control.
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 #### C++
 
@@ -178,10 +199,11 @@ Coverage Path Planning is an important area of research in Path Planning for rob
 ## Analyzing Coverage Algorithms
 
 ### Classification
+
 Coverage algorithms are divided into two categories.
 
 - **Offline coverage**
-Uses fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.
+  Uses fixed information and the environment is known in advance. Genetic Algorithms, Neural Networks, Cellular Decomposition, Spanning Trees are some examples to name a few.
 
 - **Online Coverage**
 
@@ -208,7 +230,7 @@ The robot follows an S-shaped pattern.
 Any coverage algorithm is analyzed using the given criterion.
 
 - **Environment Decomposition**
-This involves dividing the area into smaller parts.
+  This involves dividing the area into smaller parts.
 
 - **Sweep Direction**
 
@@ -236,7 +258,7 @@ The most important task is the generation of a random angle. There are 2 ways to
 
 Among both methods, Random Duration would be preferable as the Random Angle requires precision, which requires PID to be achieved successfully.
 
-Also, in order to achieve better precision it is preferable to use ```rospy.sleep()``` in place of ```time.sleep()```.
+Also, in order to achieve better precision it is preferable to use `rospy.sleep()` in place of `time.sleep()`.
 
 ### Dash Movement
 
@@ -254,24 +276,24 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ### Illustrations
 
-![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/without_duration.gif) 
+![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/without_duration.gif)
 
-*Without applying a sleep duration the previous rotation command still has effect on the go straight command*
+_Without applying a sleep duration the previous rotation command still has effect on the go straight command_
 
 ![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/duration.gif)
 
-*After applying a duration, we get straight direction movement*
+_After applying a duration, we get straight direction movement_
 
 ![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/reduce_omega.gif)
 
-*Effect of reducing $\omega$ to generate spiral*
+_Effect of reducing $\omega$ to generate spiral_
 
 ![]({{ site.url }}/RoboticsAcademy/assets/images/exercises/vacuum_cleaner/increasing_v.gif)
 
-*Effect of increasing $v$ to generate spiral*
+_Effect of increasing $v$ to generate spiral_
 
 ### Demonstrative video of the solution
- 
+
 {% include youtubePlayer.html id=page.youtubeId3 %}
 
 ## Contributors
@@ -281,9 +303,9 @@ Being such a simple algorithm, it is not expected to work all the time. The maxi
 
 ## References
 
-1. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)  
+1. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)
 2. [https://docs.ros2.org/humble/api/sensor_msgs/msg/LaserScan.html](https://docs.ros2.org/foxy/api/sensor_msgs/msg/LaserScan.html)
-3. [https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html](https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html)  
+3. [https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html](https://docs.ros.org/en/noetic/api/gazebo_msgs/html/msg/ContactsState.html)
 4. [http://wiki.ros.org/Robots/Roomba](http://wiki.ros.org/Robots/Roomba)
 
 <!--

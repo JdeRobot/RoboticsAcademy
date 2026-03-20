@@ -104,6 +104,27 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `HAL::set_w(velocity);` - to set the angular velocity.
 - `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
 
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
 ### ROS 2-direct Implementation
 
 #### ROS 2 Topics
