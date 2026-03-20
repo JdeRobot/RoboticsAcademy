@@ -59,31 +59,19 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 
 # Install Gazebo 11
 RUN add-apt-repository ppa:openrobotics/gazebo11-gz-cli
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
   gazebo11 \
   ros-humble-gazebo-ros-pkgs \
   gstreamer1.0-plugins-bad \
   gstreamer1.0-plugins-good \
   gstreamer1.0-plugins-ugly \
   gstreamer1.0-libav \
-  libgstreamer-plugins-base1.0-dev \
   libimage-exiftool-perl \
   && apt-get -y autoremove \
   && apt-get clean autoclean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
-# Install Gazebo Harmonic
-RUN apt-get update \
-  && wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
-  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
-  && apt-get update && apt-get install -y -q \
-  gz-harmonic \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y \
-  ros-humble-ros-gzharmonic \
-  && rm -rf /var/lib/apt/lists/*
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -178,184 +166,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
   ros-humble-py-trees \
   ros-humble-py-trees-ros
 
-## Aerostack2
-WORKDIR /root/
-
-RUN apt-get update && \
-  apt-get install apt-utils -y \
-  software-properties-common \
-  git \
-  tmux \
-  tmuxinator \
-  python3-rosdep \
-  python3-pip \
-  python3-colcon-common-extensions \
-  python3-colcon-mixin \
-  python-is-python3 \
-  ros-dev-tools \
-  python3-flake8 \
-  python3-flake8-builtins  \
-  python3-flake8-comprehensions \
-  python3-flake8-docstrings \
-  python3-flake8-import-order \
-  python3-flake8-quotes \
-  cppcheck \
-  lcov \
-  lsb-release \
-  wget \
-  gnupg \
-  && rm -rf /var/lib/apt/lists/* 
-
-RUN pip3 install \
-  pylint \
-  flake8==4.0.1 \
-  pycodestyle==2.8 \
-  cmakelint \
-  cpplint \
-  transforms3d \
-  colcon-lcov-result \
-  PySimpleGUI-4-foss
-
-RUN colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml
-RUN colcon mixin update default
-RUN rm -rf log 
-# remove log folder
-RUN mkdir -p /home/drones_ws/src/
-WORKDIR /home/drones_ws/src/
-RUN git clone https://github.com/aerostack2/aerostack2.git -b robotics-academy-fix
-RUN touch aerostack2/as2_hardware_drivers/COLCON_IGNORE
-RUN touch aerostack2/as2_behavior_tree/COLCON_IGNORE
-RUN touch aerostack2/as2_map_server/COLCON_IGNORE
-RUN touch aerostack2/as2_behaviors/as2_behaviors_path_planning/COLCON_IGNORE
-RUN touch aerostack2/as2_utilities/as2_geozones/COLCON_IGNORE
-RUN touch aerostack2/as2_user_interfaces/as2_visualization/as2_rviz_plugins/COLCON_IGNORE
-
-WORKDIR /home/drones_ws/
-
-RUN apt-get update && \
-  apt-get install -y \
-  libbenchmark-dev \
-  libeigen3-dev \
-  libgeographic-dev \
-  libncurses-dev \
-  libyaml-cpp-dev \
-  pybind11-dev \
-  python3-jinja2 \
-  python3-pydantic \
-  python3-pymap3d \
-  python3-pytest \
-  ros-humble-action-msgs \
-  ros-humble-ament-cmake \
-  ros-humble-ament-cmake-gtest \
-  ros-humble-ament-cmake-lint-cmake \
-  ros-humble-ament-cmake-pytest \
-  ros-humble-ament-cmake-python \
-  ros-humble-ament-cmake-xmllint \
-  ros-humble-ament-copyright \
-  ros-humble-ament-flake8 \
-  ros-humble-ament-index-cpp \
-  ros-humble-ament-lint-auto \
-  ros-humble-ament-lint-common \
-  ros-humble-ament-pep257 \
-  ros-humble-backward-ros \
-  ros-humble-builtin-interfaces \
-  ros-humble-cv-bridge \
-  ros-humble-geographic-msgs \
-  ros-humble-geometry-msgs \
-  ros-humble-image-transport \
-  ros-humble-mocap4r2-msgs \
-  ros-humble-nav-msgs \
-  ros-humble-pluginlib \
-  ros-humble-rclcpp \
-  ros-humble-rclcpp-action \
-  ros-humble-rclcpp-components \
-  ros-humble-rclcpp-lifecycle \
-  ros-humble-rclpy \
-  ros-humble-robot-state-publisher \
-  ros-humble-rosidl-default-generators \
-  ros-humble-rosidl-default-runtime \
-  ros-humble-rviz2 \
-  ros-humble-sdformat-urdf \
-  ros-humble-sensor-msgs \
-  ros-humble-std-msgs \
-  ros-humble-std-srvs \
-  ros-humble-tf2 \
-  ros-humble-tf2-geometry-msgs \
-  ros-humble-tf2-msgs \
-  ros-humble-tf2-ros \
-  ros-humble-trajectory-msgs \
-  ros-humble-visualization-msgs \
-  ros-humble-moveit \
-  ros-humble-ros2-control \
-  ros-humble-ros2-controllers \
-  ros-humble-gripper-controllers \
-  ros-humble-rmw-cyclonedds-cpp \
-  ros-humble-ur \
-  ros-humble-ros-testing \
-  libpoco-dev \
-  && rm -rf /var/lib/apt/lists/*
-
-# On arm64 (e.g. Apple Silicon), disable parallel colcon builds and LTO
-# to avoid GNU make jobserver failures under amd64 emulation.
-
-ARG TARGETARCH
-RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
-  if [ "$TARGETARCH" = "arm64" ]; then \
-  colcon build \
-  --symlink-install \
-  --executor sequential \
-  --cmake-args \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF ; \
-  else \
-  colcon build \
-  --symlink-install \
-  --cmake-args \
-  -DCMAKE_BUILD_TYPE=Release ; \
-  fi
-
-# Install CycloneDDS RMW for ROS 2 Humble to fix cycle time issues in humble-moveit (temporary fix)    
-RUN echo 'export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp' >> ~/.bashrc
-
-# Create workspace and add IndustrialRobots repo 
-RUN mkdir -p /home/dev_ws/src/
-WORKDIR /home/dev_ws/src/
-RUN git clone https://github.com/JdeRobot/IndustrialRobots.git -b humble-devel
-RUN sudo cp /home/dev_ws/src/IndustrialRobots/ros2_SimRealRobotControl/include/move_group_interface_improved.h /opt/ros/humble/include/moveit/move_group_interface/move_group_interface_improved.h
-WORKDIR /home/dev_ws
-
-# --- PCL & ROS PCL deps (before colcon) ---
-RUN apt-get update && apt-get install -y \
-  libpcl-dev \
-  ros-humble-pcl-ros \
-  ros-humble-gazebo-ros-pkgs \
-  ros-humble-gazebo-plugins \
-  ros-humble-tf-transformations \
-  ros-humble-pcl-conversions && \
-  rm -rf /var/lib/apt/lists/*
-
-# (Optional but recommended) install missing deps via rosdep
-RUN . /opt/ros/humble/setup.sh && \
-  rosdep update && \
-  rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
-
-# Build (drop the duplicate)
-WORKDIR /home/dev_ws
-ARG TARGETARCH
-RUN . /opt/ros/humble/setup.sh && \
-  if [ "$TARGETARCH" = "arm64" ]; then \
-  export MAKEFLAGS="-j1" && colcon build --executor sequential --parallel-workers 1 && colcon build --executor sequential --parallel-workers 1; \
-  else \
-  colcon build && colcon build; \
-  fi
-RUN echo "source /home/dev_ws/install/local_setup.bash" >> ~/.bashrc
 
 # Create workspace and add drone packages
 RUN echo "source /usr/share/gazebo/setup.bash" >> ~/.bashrc
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
-RUN echo 'export AEROSTACK2_PATH=/home/drones_ws/src/aerostack2' >> ~/.bashrc
-RUN echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> ~/.bashrc
-RUN echo "source /home/drones_ws/install/setup.bash" >> ~/.bashrc
 
 # Download and install OMPL library
 COPY install-ompl-ubuntu.sh /
@@ -363,12 +177,3 @@ WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
 RUN ./install-ompl-ubuntu.sh --github --python
 
-# Clone and build gz_ros2_control for Gazebo Harmonic (gz-sim8)
-# This is required for Pick Place Harmonic exercise controller loading
-WORKDIR /home/ws/src
-RUN git clone --depth 1 https://github.com/ros-controls/gz_ros2_control.git -b humble
-WORKDIR /home/ws
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash && \
-  export GZ_VERSION=harmonic && \
-  colcon build --packages-select gz_ros2_control --allow-overriding gz_ros2_control"
-WORKDIR /
