@@ -129,13 +129,10 @@ function WebGUI() {
       noisyTrail = [];
       setUserImage(undefined);
 
-      switch (manager.getUniverse()) {
-        case "Laser Mapping Warehouse":
-          setMapImg(warehouse);
-          break;
-        case "Small Laser Mapping Warehouse":
-          setMapImg(smallWarehouse);
-          break;
+      if (manager.getUniverse().startsWith("Small")) {
+        setMapImg(smallWarehouse);
+      } else {
+        setMapImg(warehouse);
       }
     }
 
@@ -147,7 +144,7 @@ function WebGUI() {
     updateCallback,
     stateCallback,
     canvasRef,
-    resizeObserver
+    resizeObserver,
   );
 
   return (
