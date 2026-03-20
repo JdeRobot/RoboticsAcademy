@@ -61,7 +61,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Invalid Option: $1"
-            Help
+            show_help
             exit 1
             ;;
    esac
@@ -75,13 +75,13 @@ echo "RAM branch: $branch"
 echo "RoboticsBackend version: $radi_version"
 
 # Check docker compose installation
-if ! command -v docker compose &> /dev/null; then
+if ! docker compose version &> /dev/null; then
   echo "Docker Compose V2 is not installed. Please install it."
 fi
 
 # Clone the desired RAM fork and branch
 if ! [ -d src ]; then
-  git clone $ram_version -b $branch src;
+  git clone "$ram_version" -b "$branch" src;
   chown -R $(id -u):$(id -g) src/
 fi
 
