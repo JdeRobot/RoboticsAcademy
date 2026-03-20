@@ -2,6 +2,8 @@ import rclpy
 import sys
 import threading
 import time
+from std_msgs.msg import Int32
+from rclpy.qos import QoSProfile, DurabilityPolicy
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
@@ -31,38 +33,55 @@ def __auto_spin() -> None:
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
+class OdomSelectorNode(rclpy.node.Node):
+    def __init__(self):
+        super().__init__('hal_odom_selector')
+        qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
+        self.pub = self.create_publisher(Int32, "/webgui/selected_odom", qos)
+
+    def select(self, level):
+        msg = Int32()
+        msg.data = int(level)
+        self.pub.publish(msg)
+
 motor_node = MotorsNode("/turtlebot3/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/turtlebot3/odom")
-noisy_odometry_node_low = OdometryNode("/turtlebot3/odom_noisy_low")
-noisy_odometry_node_med = OdometryNode("/turtlebot3/odom_noisy_med")
-noisy_odometry_node_high = OdometryNode("/turtlebot3/odom_noisy_high")
+noisy_odometry_node_1 = OdometryNode("/turtlebot3/odom_noisy_1")
+noisy_odometry_node_2 = OdometryNode("/turtlebot3/odom_noisy_2")
+noisy_odometry_node_3 = OdometryNode("/turtlebot3/odom_noisy_3")
 laser_node = LaserNode("/turtlebot3/laser/scan")
+selector_node = OdomSelectorNode()
 
 executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(odometry_node)
-executor.add_node(noisy_odometry_node_low)
-executor.add_node(noisy_odometry_node_med)
-executor.add_node(noisy_odometry_node_high)
+executor.add_node(noisy_odometry_node_1)
+executor.add_node(noisy_odometry_node_2)
+executor.add_node(noisy_odometry_node_3)
 executor.add_node(laser_node)
+executor.add_node(selector_node)
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
 
 def getPose3d():
+    selector_node.select(0)
     return odometry_node.getPose3d()
 
 
 def getOdom():
-    return noisy_odometry_node_low.getPose3d()
+    selector_node.select(1)
+    return noisy_odometry_node_1.getPose3d()
 
 
 def getOdom2():
-    return noisy_odometry_node_med.getPose3d()
+    selector_node.select(2)
+    return noisy_odometry_node_2.getPose3d()
 
 
 def getOdom3():
-    return noisy_odometry_node_high.getPose3d()
+    selector_node.select(3)
+    return noisy_odometry_node_3.getPose3d()
 
 
 def getLaserData():
