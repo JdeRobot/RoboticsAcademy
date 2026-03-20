@@ -15,7 +15,9 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Int32
 
 from map import Map
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from hal_interfaces.general.noise_odometry import NoisyOdometryNode
 
@@ -36,12 +38,15 @@ class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
         super().__init__("gui_bridge_node")
         self.gui = gui_instance
-        qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
-        
-        self.create_subscription(ROSImage, "/webgui/user_map", self.user_map_callback, 10)
+
+        self.create_subscription(
+            ROSImage, "/webgui/user_map", self.user_map_callback, 10
+        )
         self.create_subscription(Odometry, "/turtlebot3/odom", self.odom_callback, 10)
-        self.create_subscription(Int32, "/webgui/selected_odom", self.selected_odom_callback, qos)
-        
+        self.create_subscription(
+            PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, 10
+        )
+
         self.pose = Pose3d()
         self.selected_odom = 0
 
@@ -99,9 +104,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.executor.add_node(self.noisy_node_3)
 
         self.executor_thread = threading.Thread(
-            target=self.executor.spin,
-            daemon=True,
-            name="webgui_ros2_executor"
+            target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
         )
         self.executor_thread.start()
 
@@ -145,13 +148,15 @@ class WebGUI(MeasuringThreadingGUI):
 
     def setUserMap(self, image):
         if image.shape[0] != 970 or image.shape[1] != 1500:
-            raise ValueError()
-        
+            raise ValueError(
+                "map passed has the wrong dimensions, it has to be 970 pixels high and 1500 pixels wide"
+            )
+
         if len(image.shape) == 2:
             processed_image = np.stack((image,) * 3, axis=-1)
         else:
             processed_image = image
-            
+
         with self.image_lock:
             self.user_map = processed_image
 
@@ -173,8 +178,14 @@ gui = WebGUI(host)
 
 start_console()
 
+
 def setUserMap(image):
     gui.setUserMap(image)
 
+
 def poseToMap(x_prime, y_prime, yaw_prime):
     return gui.poseToMap(x_prime, y_prime, yaw_prime)
+
+
+def showEstimatedPose(x, y, yaw):
+    gui.showEstimatedPose(x, y, yaw)
