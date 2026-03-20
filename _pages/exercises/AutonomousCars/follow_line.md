@@ -102,7 +102,19 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 - `HAL::get_image();` - to get the image (cv::Mat).
 - `HAL::set_v(velocity);` - to set the linear speed.
 - `HAL::set_w(velocity);` - to set the angular velocity.
-- `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information.
+- `WebGUI::show_image(image);` - allows you to view a debug image (cv::Mat) or with relevant information
+
+**Note**:
+- In C++ files, you should **NOT define your own `main()` function**.
+- The framework already provides a `main.cpp` which internally calls a function named `exercise()`.
+- You must implement your logic inside:
+```cpp
+void exercise() {
+
+    while (true) {
+
+    }
+}
 
 ### ROS 2-direct Implementation
 

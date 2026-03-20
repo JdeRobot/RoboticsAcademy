@@ -109,6 +109,18 @@ if len(laser_data.values) > 0:
 * `HAL::set_w(velocity);` - to set the angular velocity.
 * `HAL::get_bumper_data();` - to get the bumper state from the robot. Returns a vector of booleans with the next order: Right, Center, Left.
 
+**Note**:
+- In C++ files, you should **NOT define your own `main()` function**.
+- The framework already provides a `main.cpp` which internally calls a function named `exercise()`.
+- You must implement your logic inside:
+```cpp
+void exercise() {
+
+    while (true) {
+
+    }
+}
+
 ### ROS 2-direct Implementation
 
 #### ROS 2 Topics
