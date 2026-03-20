@@ -1,5 +1,7 @@
 FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
-
+# Optional components
+ARG INSTALL_AEROSTACK=false
+ARG INSTALL_GZ_CONTROL=false
 # Make all NVIDIA GPUS visible
 ARG NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=all
@@ -27,7 +29,6 @@ ENV PATH=/opt/ros/${ROS_DISTRO}/bin:$PATH
 ENV PYTHONPATH=/opt/ros/${ROS_DISTRO}/lib/python3.10/site-packages
 ENV ROS_PYTHON_VERSION=3
 ENV ROS_VERSION=2
-
 # Install common tools
 RUN apt-get update && apt-get install -y \
   software-properties-common \
@@ -72,6 +73,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN mkdir ~/.gazebo && touch ~/.gazebo/gui.ini
 
+# Optional: gz_ros2_control (extension point)
+RUN if [ "$INSTALL_GZ_CONTROL" = "true" ]; then \
+  echo "gz_ros2_control support can be added here"; \
+fi
+
+# Optional: Aerostack2 (extension point)
+RUN if [ "$INSTALL_AEROSTACK" = "true" ]; then \
+  echo "Aerostack2 support can be added here"; \
+fi
 
 # Install VNC
 # Xorg segfault error mitigation
@@ -149,8 +159,7 @@ RUN python3.10 -m pip install \
 
 # install pytorch with CUDA 12.8 support 
 RUN python3.10 -m pip install --ignore-installed sympy==1.13.3 
-RUN python3.10 -m pip install torch --extra-index-url https://download.pytorch.org/whl/cu128
-
+RUN python3.10 -m pip install --no-cache-dir torch --extra-index-url https://download.pytorch.org/whl/cu128
 # monaco editor
 RUN python3.10 -m pip install black==24.10.0
 
@@ -175,5 +184,5 @@ RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc
 COPY install-ompl-ubuntu.sh /
 WORKDIR /
 RUN chmod u+x install-ompl-ubuntu.sh
-RUN ./install-ompl-ubuntu.sh --github --python
+RUN ./install-ompl-ubuntu.sh --github --python || ./install-ompl-ubuntu.sh --github --python
 
