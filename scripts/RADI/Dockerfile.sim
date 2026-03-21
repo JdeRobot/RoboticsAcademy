@@ -1,21 +1,18 @@
-FROM ra-base
+FROM jderobot/robotics-base:humble
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV ROS_DISTRO=humble
 
-# Add Gazebo repo (THIS IS WHAT YOU MISSED)
-RUN apt-get update && apt-get install -y software-properties-common && \
-    add-apt-repository ppa:openrobotics/gazebo11-gz-cli
-
-# Install Gazebo + ROS integration
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gazebo11 \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+# Install Gazebo + ROS integration + GUI
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:openrobotics/gazebo11-gz-cli && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gazebo11 \
+        ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+        x11-apps \
     && rm -rf /var/lib/apt/lists/*
 
-# Minimal GUI
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    x11-apps \
-    && rm -rf /var/lib/apt/lists/*
-
+# Fix GUI issues
 RUN mkdir -p ~/.gazebo && touch ~/.gazebo/gui.ini
