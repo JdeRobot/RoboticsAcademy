@@ -13,7 +13,13 @@ from .exceptions import (
 
 
 class FAL(ABC):
-    """File Abstraction Layer"""
+    """
+    Abstract base class defining the File Abstraction Layer (FAL) interface.
+
+    Provides a unified API for file and directory operations used by
+    RoboticsAcademy exercises. Concrete implementations handle different
+    storage backends (local filesystem, remote, etc.).
+    """
 
     def __init__(self, academy="", helper=""):
         self.academy = academy
@@ -21,39 +27,49 @@ class FAL(ABC):
         self.user = None
 
     def set_user(self, user):
+        """Set the current user context for file operations."""
         self.user = user
 
     @abstractmethod
     def academy_path(self) -> str:
+        """Return the root path for all academy exercise files."""
         pass
 
     def exercise_path(self, exercise_id) -> str:
+        """Return the full path for a specific exercise directory."""
         return self.path_join(self.academy_path(), exercise_id)
 
     def helpers_path(self, exercise_id) -> str:
+        """Return the path to the helpers directory for an exercise."""
         return self.path_join(self.helper, exercise_id)
 
     def exercise_helper_path(self, project_id, language) -> str:
+        """Return the path to the language-specific template directory for an exercise."""
         return self.path_join(self.helpers_path(project_id), f"{language}_template/")
 
     @abstractmethod
     def path_join(self, a: str, b: str) -> str:
+        """Join two path components and return the result."""
         pass
 
     @abstractmethod
     def exists(self, path: str) -> bool:
+        """Return file size if exists, 0 if directory, -1 if not found."""
         pass
 
     @abstractmethod
     def isdir(self, path: str) -> bool:
+        """Return True if path is an existing directory."""
         pass
 
     @abstractmethod
     def isfile(self, path: str) -> bool:
+        """Return True if path is an existing file."""
         pass
 
     @abstractmethod
     def create(self, path: str, content):
+        """Create a new text file at path with given content. Raises InvalidPath or ResourceAlreadyExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -62,6 +78,7 @@ class FAL(ABC):
 
     @abstractmethod
     def create_binary(self, path: str, content):
+        """Create a new binary file at path with given content. Raises InvalidPath or ResourceAlreadyExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -70,18 +87,21 @@ class FAL(ABC):
 
     @abstractmethod
     def write(self, path: str, content):
+        """Overwrite an existing text file at path. Raises ResourceNotExists if missing."""
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
 
     @abstractmethod
     def write_binary(self, path: str, content):
+        """Overwrite an existing binary file at path. Raises ResourceNotExists if missing."""
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
 
     @abstractmethod
     def read(self, path: str):
+        """Read and return text content of file at path. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -90,6 +110,7 @@ class FAL(ABC):
 
     @abstractmethod
     def read_binary(self, path: str):
+        """Read and return binary content of file at path. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -98,6 +119,7 @@ class FAL(ABC):
 
     @abstractmethod
     def listdirs(self, path: str):
+        """Return list of subdirectory names at path. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -109,6 +131,7 @@ class FAL(ABC):
 
     @abstractmethod
     def listfiles(self, path: str):
+        """Return list of file names at path. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -120,6 +143,7 @@ class FAL(ABC):
 
     @abstractmethod
     def list_formatted(self, path: str, base_group: str):
+        """Return formatted directory listing for the file explorer UI."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -131,6 +155,7 @@ class FAL(ABC):
 
     @abstractmethod
     def mkdir(self, path: str):
+        """Create a new directory at path. Raises InvalidPath or ResourceAlreadyExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -139,6 +164,7 @@ class FAL(ABC):
 
     @abstractmethod
     def renamefile(self, old_path: str, new_path: str):
+        """Rename a file from old_path to new_path. Raises InvalidPath, ResourceNotExists, or ResourceAlreadyExists."""
         if ".." in new_path:
             raise InvalidPath(new_path)
 
@@ -150,6 +176,7 @@ class FAL(ABC):
 
     @abstractmethod
     def renamedir(self, old_path: str, new_path: str):
+        """Rename a directory from old_path to new_path. Raises InvalidPath, ResourceNotExists, or ResourceAlreadyExists."""
         if ".." in new_path:
             raise InvalidPath(new_path)
 
@@ -161,6 +188,7 @@ class FAL(ABC):
 
     @abstractmethod
     def removefile(self, path: str):
+        """Delete a file at path. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -173,6 +201,7 @@ class FAL(ABC):
 
     @abstractmethod
     def removedir(self, path: str):
+        """Delete a directory and all its contents. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -184,6 +213,7 @@ class FAL(ABC):
 
     @abstractmethod
     def dir_size(self, path):
+        """Return total size in bytes of all files under path. Raises InvalidPath or ResourceNotExists."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -196,11 +226,17 @@ class FAL(ABC):
             raise ResourceNotExists(path)
 
     def filename(self, path: str) -> str:
+        """Return the filename without extension from a full path."""
         return os.path.splitext(os.path.basename(path))[0]
 
 
 class FAL_RA(FAL):
-    """File Abstraction Layer"""
+    """
+    Concrete FAL implementation for local RoboticsAcademy filesystem.
+
+    Stores exercise files under the academy filesystem directory and
+    uses standard Python os/shutil operations for all file access.
+    """
 
     def __init__(self, base, helper):
         FAL.__init__(self, base, helper)
