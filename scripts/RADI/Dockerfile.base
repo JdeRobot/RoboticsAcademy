@@ -1,0 +1,39 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV ROS_DISTRO=humble
+
+# Basic tools
+RUN apt-get update && apt-get install -y \
+    locales \
+    curl \
+    gnupg \
+    lsb-release \
+    build-essential \
+    git \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Locale
+RUN locale-gen en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+# ROS2 setup
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" \
+  > /etc/apt/sources.list.d/ros2.list \
+  && apt-get update && apt-get install -y \
+  ros-${ROS_DISTRO}-ros-base \
+  ros-${ROS_DISTRO}-xacro \
+  python3-rosdep \
+  python3-vcstool \
+  python3-argcomplete \
+  && rm -rf /var/lib/apt/lists/*
+
+# Init rosdep
+RUN rosdep init || true
+RUN rosdep update
+
+# Source ROS
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
