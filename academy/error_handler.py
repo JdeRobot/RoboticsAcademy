@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 import binascii
 from functools import wraps
 import json
+import logging
 from .exceptions import (
     BinaryNotSupported,
     ResourceAlreadyExistsHelpers,
@@ -34,10 +35,12 @@ local_fal = FAL_RA(
     os.path.join(settings.BASE_DIR, "exercises"),
 )
 
-
-def error_wrapper(type: str, param: list[str | tuple] = []):
+logger = logging.getLogger(__name__)
+def error_wrapper(type: str, param: list[str | tuple] = None):
     """Decorator for API views with parameter validation and error handling."""
-
+    if param is None:
+        param = []
+    
     def decorated(func):
         @wraps(func)
         @api_view([type])
@@ -47,16 +50,16 @@ def error_wrapper(type: str, param: list[str | tuple] = []):
                 check_parameters(request.data if type == "POST" else request.GET, param)
                 return func(fal, request)
             except CUSTOM_EXCEPTIONS as e:
-                print(str(e))
+                logger.warning("API error: %s", e)
                 return Response({"message": str(e)}, status=e.error_code)
             except json.JSONDecodeError as e:
-                print(str(e))
+                logger.warning("Invalid JSON format: %s", e)
                 return Response({"error": f"Invalid JSON format: {str(e)}"}, status=422)
             except (binascii.Error, ValueError) as e:
-                print(str(e))
+                logger.warning("Invalid B64 format: %s", e)
                 return Response({"error": f"Invalid B64 format: {str(e)}"}, status=422)
             except Exception as e:
-                print(str(e))
+                logger.exception("Unhandled error in %s", func.__name__)
                 return Response({"error": f"An error occurred: {str(e)}"}, status=500)
 
         return wrapper
