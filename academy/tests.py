@@ -10,7 +10,7 @@ import os
 import shutil
 import tempfile
 
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.urls import reverse
 
 from academy.exceptions import (
@@ -240,15 +240,25 @@ class EnterExerciseViewTests(TestCase):
         self.assertEqual(response.status_code, 500)
 
     def test_valid_exercise_returns_success(self):
-        _make_exercise("test_enter", "Test Enter")
-        response = self.client.get(
-            "/academy/enter_exercise/", {"project_id": "test_enter"}
-        )
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertTrue(data["success"])
-        self.assertIn("info", data)
-        self.assertEqual(data["info"]["name"], "Test Enter")
+        import tempfile, shutil
+        from academy import error_handler
+        from academy.file_access import FAL_RA
+        tmp = tempfile.mkdtemp()
+        orig = error_handler.local_fal
+        error_handler.local_fal = FAL_RA(tmp, os.path.join(tmp, "exercises"))
+        try:
+            _make_exercise("test_enter", "Test Enter")
+            response = self.client.get(
+                "/academy/enter_exercise/", {"project_id": "test_enter"}
+            )
+            self.assertEqual(response.status_code, 200)
+            data = response.json()
+            self.assertTrue(data["success"])
+            self.assertIn("info", data)
+            self.assertEqual(data["info"]["name"], "Test Enter")
+        finally:
+            error_handler.local_fal = orig
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 class FileManagementViewTests(TestCase):
@@ -262,11 +272,18 @@ class FileManagementViewTests(TestCase):
         os.makedirs(ex_dir, exist_ok=True)
         with open(os.path.join(ex_dir, "academy.py"), "w") as f:
             f.write("# starter")
-        self.settings_override = override_settings(BASE_DIR=self.tmp)
-        self.settings_override.enable()
+        # Patch local_fal directly since it is instantiated at import time
+        from academy import error_handler
+        from academy.file_access import FAL_RA
+        self._orig_fal = error_handler.local_fal
+        error_handler.local_fal = FAL_RA(
+            self.tmp,
+            os.path.join(self.tmp, "exercises"),
+        )
 
     def tearDown(self):
-        self.settings_override.disable()
+        from academy import error_handler
+        error_handler.local_fal = self._orig_fal
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def test_get_file_list_missing_project_returns_400(self):
