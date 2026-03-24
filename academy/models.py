@@ -168,6 +168,7 @@ class ExerciseUniverses(models.Model):
         universe: Related Universe instance.
         is_default: Whether this universe is the default for the exercise.
     """
+
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
     is_default = models.BooleanField()

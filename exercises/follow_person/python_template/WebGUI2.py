@@ -109,10 +109,7 @@ class WebGUI(MeasuringThreadingGUI):
             self.last_udp_command = cmd.decode("utf-8", errors="ignore")
 
             if VERBOSE_UDP:
-                log(
-                    f"UDP command sent -> {self.last_udp_command}",
-                    "UDP",
-                )
+                log(f"UDP command sent -> {self.last_udp_command}", "UDP")
 
         except OSError as e:
             log(f"UDP send error: {e}", "ERROR")
@@ -131,10 +128,7 @@ class WebGUI(MeasuringThreadingGUI):
                     return
 
                 if VERBOSE_UDP:
-                    log(
-                        f"Pulsed command start -> {cmd.decode()}",
-                        "UDP",
-                    )
+                    log(f"Pulsed command start -> {cmd.decode()}", "UDP")
 
                 self._send_udp(cmd)
 
@@ -204,13 +198,19 @@ class WebGUI(MeasuringThreadingGUI):
         # --------------------------------------------------------
         # KEY UP EVENTS
         # --------------------------------------------------------
-        elif "key_w_up" in message or "key_s_up" in message or "key_a_up" in message or "key_d_up" in message or "key_x_up" in message:
+        elif (
+            "key_w_up" in message
+            or "key_s_up" in message
+            or "key_a_up" in message
+            or "key_d_up" in message
+            or "key_x_up" in message
+        ):
             log(f"Key released -> stop movement", "KEY")
             self._send_udp(b"US")
 
         else:
             log(f"Unknown frontend message: {message}", "WARN")
-            
+
     # ============================================================
     # GUI OUTPUT THREAD
     # ============================================================
@@ -328,3 +328,4 @@ start_console()
 
 def showImage(img):
     gui.setImage(img)
+    

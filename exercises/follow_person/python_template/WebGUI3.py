@@ -11,15 +11,16 @@ from geometry_msgs.msg import Twist  # Para publicar velocidades lineales y angu
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 
+
 # ============================================================
 # CONFIG
 # ============================================================
 WEBSOCKET_HOST = "ws://127.0.0.1:2303"
 FPS = 30
 
-# Velocidad por defecto (ajustable)
-LINEAR_SPEED = 0.01  # metros por ciclo
-ANGULAR_SPEED = 0.01  # radianes por ciclo
+LINEAR_SPEED = 0.01
+ANGULAR_SPEED = 0.01
+
 
 # ============================================================
 # LOG
@@ -27,6 +28,7 @@ ANGULAR_SPEED = 0.01  # radianes por ciclo
 def log(msg):
     now = datetime.now().strftime("%H:%M:%S.%f")[:-3]
     print(f"[WebGUI][{now}] {msg}")
+
 
 # ============================================================
 # WebGUI
@@ -82,7 +84,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         # Log teclas
         self.keys_received += 1
-        #log(f"Tecla: {message}")
+        # log(f"Tecla: {message}")
 
         twist = Twist()
 
@@ -91,10 +93,8 @@ class WebGUI(MeasuringThreadingGUI):
         # =====================
         if message == "key_w":
             twist.linear.x = LINEAR_SPEED
-
         elif message == "key_s":
             twist.linear.x = -LINEAR_SPEED
-
         elif message in ["key_w_up", "key_s_up"]:
             twist.linear.x = 0.0
 
@@ -103,10 +103,8 @@ class WebGUI(MeasuringThreadingGUI):
         # =====================
         if message == "key_a":
             twist.angular.z = ANGULAR_SPEED
-
         elif message == "key_d":
             twist.angular.z = -ANGULAR_SPEED
-
         elif message in ["key_a_up", "key_d_up"]:
             twist.angular.z = 0.0
 
@@ -134,15 +132,18 @@ class WebGUI(MeasuringThreadingGUI):
         try:
             if self.image is None:
                 return
+
             _, encoded = cv2.imencode(".JPEG", self.image)
             payload = {
                 "image": base64.b64encode(encoded).decode(),
                 "shape": self.image.shape,
             }
+
             self.msg["image"] = json.dumps(payload)
             self.send_to_client(json.dumps(self.msg))
             self.images_sent += 1
             self.last_image_shape = self.image.shape
+
         except Exception as e:
             log(f"update_gui error: {e}")
 
@@ -159,6 +160,7 @@ class WebGUI(MeasuringThreadingGUI):
     def stop(self):
         self.running = False
 
+
 # ==========================
 # Inicializar GUI
 # ==========================
@@ -166,6 +168,8 @@ host = WEBSOCKET_HOST
 gui = WebGUI(host)
 start_console()
 
+
 # Función para setear la imagen
 def showImage(img):
     gui.setImage(img)
+    
