@@ -328,4 +328,3 @@ start_console()
 
 def showImage(img):
     gui.setImage(img)
-    

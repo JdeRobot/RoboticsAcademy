@@ -172,4 +172,3 @@ start_console()
 # Función para setear la imagen
 def showImage(img):
     gui.setImage(img)
-    
