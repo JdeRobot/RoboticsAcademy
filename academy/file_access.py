@@ -73,7 +73,7 @@ class FAL(ABC):
         if ".." in path:
             raise InvalidPath(path)
 
-        if self.exists(path) > 0:
+        if self.exists(path) != -1:
             raise ResourceAlreadyExists(path)
 
     @abstractmethod
@@ -82,7 +82,7 @@ class FAL(ABC):
         if ".." in path:
             raise InvalidPath(path)
 
-        if self.exists(path) > 0:
+        if self.exists(path) != -1:
             raise ResourceAlreadyExists(path)
 
     @abstractmethod
