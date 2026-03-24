@@ -34,7 +34,6 @@ def log(msg):
 # WebGUI
 # ============================================================
 class WebGUI(MeasuringThreadingGUI):
-
     def __init__(self, host=WEBSOCKET_HOST, freq=FPS):
 
         self.out_period = 1.0 / freq

@@ -35,7 +35,6 @@ def log(msg: str, category: str = "INFO"):
 
 
 class WebGUI(MeasuringThreadingGUI):
-
     def __init__(
         self,
         host: str = WEBSOCKET_HOST,
