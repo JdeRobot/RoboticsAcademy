@@ -118,7 +118,6 @@ class WebGUI(MeasuringThreadingGUI):
     # ============================================================
 
     def _pulse_manual_command(self, cmd: bytes):
-
         def pulse():
 
             with self.cmd_lock:
