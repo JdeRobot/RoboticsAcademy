@@ -16,6 +16,7 @@ freq = 30.0
 # Lift State
 liftState = False
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:

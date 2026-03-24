@@ -63,7 +63,7 @@ class WebGUI(MeasuringThreadingGUI):
         # Payload Lap Message
         lapped = self.lap.check_threshold()
         self.payload["lap"] = ""
-        if lapped != None:
+        if lapped is not None:
             self.payload["lap"] = str(lapped)
 
         # Payload Map Message

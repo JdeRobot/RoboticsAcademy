@@ -35,7 +35,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"map": "", "array": "", "liftState": ""}
 
         self.map = Map(getPose3d)
-        
+
         self.init_coords = self.map.getRobotCoordinates()
         self.start_coords = self.map.getRobotCoordinates()
 

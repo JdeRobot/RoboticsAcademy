@@ -13,27 +13,12 @@ from console_interfaces.general.console import start_console
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
+        super().__init__(host)
 
         # Execution control vars
-        self.out_period = 1.0 / freq
         self.right_image = None
         self.image_lock = threading.Lock()
-        self.ack = True
-        self.ack_frontend = True
-        self.ack_lock = threading.Lock()
-        self.running = True
-
-        self.world_name = "empty"
-
-        self.host = host
         self.msg = {"image_right": ""}
-
-        self.ideal_cycle = 80
-        self.real_time_factor = 0
-        self.frequency_message = {"brain": "", "gui": "", "rtf": ""}
-        self.iteration_counter = 0
-        self.fps = 0
-        self.lat = 0
 
         self.start()
 

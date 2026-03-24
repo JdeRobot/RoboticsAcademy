@@ -2,7 +2,7 @@ class InvalidPath(Exception):
     """Exception raised when a path is not valid."""
 
     def __init__(self, msg):
-        self.message = f"Pat: {msg} is invalid."
+        self.message = f"Path: {msg} is invalid."
         super().__init__(self.message)
         self.error_code = 403
 

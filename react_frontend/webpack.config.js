@@ -106,5 +106,5 @@ module.exports = {
       filename: "css/[name].css",
     }),
   ],
-  devtool: "inline-source-map",
+  devtool: process.argv.includes("production") ? false : "inline-source-map",
 };
