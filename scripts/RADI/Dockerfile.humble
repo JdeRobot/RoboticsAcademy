@@ -37,15 +37,18 @@ RUN git clone --depth 1 https://github.com/${ACADEMY_OWNER}/RoboticsAcademy.git 
 # Compiling and sourcing the workspace
 WORKDIR /home/ws
 RUN /bin/bash -c "source /home/drones_ws/install/setup.bash"
-RUN /bin/bash -c "source /home/dev_ws/install/local_setup.bash"
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
+RUN /bin/bash -c "if [ -f /home/dev_ws/install/local_setup.bash ]; then source /home/dev_ws/install/local_setup.bash; fi"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos gz_link_attacher"
 
 # Compress commons
 WORKDIR /RoboticsAcademy/
 RUN cd /RoboticsAcademy/common && cd console_interfaces && zip -r ../common.zip console_interfaces/ && cd .. && cd gui_interfaces && zip -r -u ../common.zip gui_interfaces/ && cd .. && cd hal_interfaces && zip -r -u ../common.zip hal_interfaces/ && cd ../.. && mv common/common.zip react_frontend/src/common.zip
 
 # build react_fronted
-RUN cd /RoboticsAcademy/react_frontend/ && yarn install && yarn run build
+RUN cd /RoboticsAcademy/react_frontend/ && \
+    yarn install && \
+    yarn run build && \
+    rm -rf node_modules
 
 # Django server
 EXPOSE 7164
