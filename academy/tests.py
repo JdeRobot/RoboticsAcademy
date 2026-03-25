@@ -27,6 +27,7 @@ from academy.models import Exercise, Universe, World, Robot, Tool
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _make_exercise(exercise_id="test_ex", name="Test Exercise"):
     """Create and return a minimal Exercise instance for testing."""
     return Exercise.objects.create(
@@ -41,6 +42,7 @@ def _make_exercise(exercise_id="test_ex", name="Test Exercise"):
 # ---------------------------------------------------------------------------
 # FAL_RA Unit Tests
 # ---------------------------------------------------------------------------
+
 
 class FALRATests(TestCase):
     """Unit tests for the FAL_RA filesystem abstraction layer."""
@@ -167,6 +169,7 @@ class FALRATests(TestCase):
 # Exception Unit Tests
 # ---------------------------------------------------------------------------
 
+
 class ExceptionTests(TestCase):
     """Unit tests for custom exception classes."""
 
@@ -177,6 +180,7 @@ class ExceptionTests(TestCase):
 
     def test_parameter_invalid_message(self):
         from academy.exceptions import ParameterInvalid
+
         exc = ParameterInvalid("project_id")
         self.assertIn("project_id", str(exc))
         self.assertEqual(exc.error_code, 400)
@@ -193,6 +197,7 @@ class ExceptionTests(TestCase):
 
     def test_binary_not_supported_message(self):
         from academy.exceptions import BinaryNotSupported
+
         exc = BinaryNotSupported("/some/file.bin")
         self.assertIn("not supported", str(exc))
         self.assertEqual(exc.error_code, 415)
@@ -201,6 +206,7 @@ class ExceptionTests(TestCase):
 # ---------------------------------------------------------------------------
 # API View Tests
 # ---------------------------------------------------------------------------
+
 
 class GetExerciseListViewTests(TestCase):
     """Tests for the get_exercise_list API endpoint."""
@@ -243,6 +249,7 @@ class EnterExerciseViewTests(TestCase):
         import tempfile, shutil
         from academy import error_handler
         from academy.file_access import FAL_RA
+
         tmp = tempfile.mkdtemp()
         orig = error_handler.local_fal
         error_handler.local_fal = FAL_RA(tmp, os.path.join(tmp, "exercises"))
@@ -275,6 +282,7 @@ class FileManagementViewTests(TestCase):
         # Patch local_fal directly since it is instantiated at import time
         from academy import error_handler
         from academy.file_access import FAL_RA
+
         self._orig_fal = error_handler.local_fal
         error_handler.local_fal = FAL_RA(
             self.tmp,
@@ -283,6 +291,7 @@ class FileManagementViewTests(TestCase):
 
     def tearDown(self):
         from academy import error_handler
+
         error_handler.local_fal = self._orig_fal
         shutil.rmtree(self.tmp, ignore_errors=True)
 
