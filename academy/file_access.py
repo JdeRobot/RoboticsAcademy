@@ -53,7 +53,7 @@ class FAL(ABC):
         pass
 
     @abstractmethod
-    def exists(self, path: str) -> bool:
+    def exists(self, path: str) -> int:
         """Return file size if exists, 0 if directory, -1 if not found."""
         pass
 
@@ -247,7 +247,7 @@ class FAL_RA(FAL):
     def path_join(self, a: str, b: str) -> str:
         return os.path.join(a, b)
 
-    def exists(self, path: str) -> bool:
+    def exists(self, path: str) -> int:
         if not os.path.exists(path):
             return -1
 
@@ -318,6 +318,7 @@ class FAL_RA(FAL):
     def list_formatted(self, path: str, base_group: str):
         super().list_formatted(path, base_group)
 
+        # list_dir already returns the tree structure used by the explorer.
         return list_dir(path, path, base_group=base_group)
 
     def mkdir(self, path: str):

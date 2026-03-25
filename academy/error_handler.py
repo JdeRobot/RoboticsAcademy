@@ -65,7 +65,9 @@ def error_wrapper(type: str, param: list[str | tuple] = []):
 
 
 def check_parameters(request, param: list[str | tuple]):
-    """Validate required request parameters."""
+    """
+    Validate that required fields are present and meet length constraints.
+    """
 
     for p in param:
         min_len = 0
