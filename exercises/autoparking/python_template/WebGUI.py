@@ -9,7 +9,7 @@ import sensor_msgs_py.point_cloud2 as pc2
 
 from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
-from map_autopark import Map
+from map import Map
 
 class LaserData:
     def __init__(self, maxAngle, maxRange, values):
@@ -82,11 +82,16 @@ class WebGUI(MeasuringThreadingGUI):
 
     def update_gui(self):
         self.executor.spin_once(timeout_sec=0)
-        
+
         if self.mode == "Laser":
-            map_message = self.map.get_json_data()
-            self.payload["map"] = map_message
-            
+            if (
+                self.ros_node.laser_f is not None
+                and self.ros_node.laser_r is not None
+                and self.ros_node.laser_b is not None
+            ):
+                map_message = self.map.get_json_data()
+                self.payload["map"] = map_message
+
         elif self.mode == "Lidar":
             if self.ros_node.lidar:
                 points = []
