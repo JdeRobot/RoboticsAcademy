@@ -18,7 +18,6 @@ class ListenerParameters:
         # properties = ic.getProperties()
 
         data = cfg["3DReconstruction"][cam]["data"]
-        print(data)
 
         self.K = np.array(
             [
