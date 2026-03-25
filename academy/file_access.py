@@ -1,4 +1,4 @@
-# File Abstraction Layer
+"""File abstraction layer helpers for Robotics Academy."""
 
 from abc import ABC, abstractmethod
 import os
@@ -22,6 +22,7 @@ class FAL(ABC):
     """
 
     def __init__(self, academy="", helper=""):
+        """Initialize backend and helper roots."""
         self.academy = academy
         self.helper = helper
         self.user = None
@@ -44,8 +45,11 @@ class FAL(ABC):
         return self.path_join(self.helper, exercise_id)
 
     def exercise_helper_path(self, project_id, language) -> str:
-        """Return the path to the language-specific template directory for an exercise."""
-        return self.path_join(self.helpers_path(project_id), f"{language}_template/")
+        """Return the template directory for a project language."""
+        return self.path_join(
+            self.helpers_path(project_id),
+            f"{language}_template/",
+        )
 
     @abstractmethod
     def path_join(self, a: str, b: str) -> str:
@@ -54,7 +58,7 @@ class FAL(ABC):
 
     @abstractmethod
     def exists(self, path: str) -> int:
-        """Return file size if exists, 0 if directory, -1 if not found."""
+        """Return -1 for missing paths, 0 for dirs, or file size for files."""
         pass
 
     @abstractmethod
@@ -69,7 +73,7 @@ class FAL(ABC):
 
     @abstractmethod
     def create(self, path: str, content):
-        """Create a new text file at path with given content. Raises InvalidPath or ResourceAlreadyExists."""
+        """Create a text file after validating the path."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -78,7 +82,7 @@ class FAL(ABC):
 
     @abstractmethod
     def create_binary(self, path: str, content):
-        """Create a new binary file at path with given content. Raises InvalidPath or ResourceAlreadyExists."""
+        """Create a binary file after validating the path."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -87,21 +91,21 @@ class FAL(ABC):
 
     @abstractmethod
     def write(self, path: str, content):
-        """Overwrite an existing text file at path. Raises ResourceNotExists if missing."""
+        """Overwrite an existing text file."""
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
 
     @abstractmethod
     def write_binary(self, path: str, content):
-        """Overwrite an existing binary file at path. Raises ResourceNotExists if missing."""
+        """Overwrite an existing binary file."""
         size = self.exists(path)
         if size < 0:
             raise ResourceNotExists(path)
 
     @abstractmethod
     def read(self, path: str):
-        """Read and return text content of file at path. Raises InvalidPath or ResourceNotExists."""
+        """Read and return text content from a file."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -110,7 +114,7 @@ class FAL(ABC):
 
     @abstractmethod
     def read_binary(self, path: str):
-        """Read and return binary content of file at path. Raises InvalidPath or ResourceNotExists."""
+        """Read and return binary content from a file."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -119,7 +123,7 @@ class FAL(ABC):
 
     @abstractmethod
     def listdirs(self, path: str):
-        """Return list of subdirectory names at path. Raises InvalidPath or ResourceNotExists."""
+        """List direct child directories."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -131,7 +135,7 @@ class FAL(ABC):
 
     @abstractmethod
     def listfiles(self, path: str):
-        """Return list of file names at path. Raises InvalidPath or ResourceNotExists."""
+        """List direct child files."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -143,7 +147,7 @@ class FAL(ABC):
 
     @abstractmethod
     def list_formatted(self, path: str, base_group: str):
-        """Return formatted directory listing for the file explorer UI."""
+        """Return the explorer tree for a directory."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -155,7 +159,7 @@ class FAL(ABC):
 
     @abstractmethod
     def mkdir(self, path: str):
-        """Create a new directory at path. Raises InvalidPath or ResourceAlreadyExists."""
+        """Create a directory."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -164,7 +168,7 @@ class FAL(ABC):
 
     @abstractmethod
     def renamefile(self, old_path: str, new_path: str):
-        """Rename a file from old_path to new_path. Raises InvalidPath, ResourceNotExists, or ResourceAlreadyExists."""
+        """Rename a file."""
         if ".." in new_path:
             raise InvalidPath(new_path)
 
@@ -176,7 +180,7 @@ class FAL(ABC):
 
     @abstractmethod
     def renamedir(self, old_path: str, new_path: str):
-        """Rename a directory from old_path to new_path. Raises InvalidPath, ResourceNotExists, or ResourceAlreadyExists."""
+        """Rename a directory."""
         if ".." in new_path:
             raise InvalidPath(new_path)
 
@@ -188,7 +192,7 @@ class FAL(ABC):
 
     @abstractmethod
     def removefile(self, path: str):
-        """Delete a file at path. Raises InvalidPath or ResourceNotExists."""
+        """Remove a file."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -201,7 +205,7 @@ class FAL(ABC):
 
     @abstractmethod
     def removedir(self, path: str):
-        """Delete a directory and all its contents. Raises InvalidPath or ResourceNotExists."""
+        """Remove a directory tree."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -213,7 +217,7 @@ class FAL(ABC):
 
     @abstractmethod
     def dir_size(self, path):
-        """Return total size in bytes of all files under path. Raises InvalidPath or ResourceNotExists."""
+        """Return the total size of a directory tree."""
         if ".." in path:
             raise InvalidPath(path)
 
@@ -239,15 +243,19 @@ class FAL_RA(FAL):
     """
 
     def __init__(self, base, helper):
+        """Initialize the local filesystem backend."""
         FAL.__init__(self, base, helper)
 
     def academy_path(self) -> str:
+        """Return the local academy workspace root."""
         return self.path_join(self.academy, "filesystem")
 
     def path_join(self, a: str, b: str) -> str:
+        """Join two local filesystem paths."""
         return os.path.join(a, b)
 
     def exists(self, path: str) -> int:
+        """Return -1 for missing paths, 0 for dirs, or file size for files."""
         if not os.path.exists(path):
             return -1
 
@@ -257,12 +265,15 @@ class FAL_RA(FAL):
         return os.path.getsize(path)
 
     def isdir(self, path: str) -> bool:
+        """Return whether a path is a directory."""
         return os.path.isdir(path)
 
     def isfile(self, path: str) -> bool:
+        """Return whether a path is a file."""
         return os.path.isfile(path)
 
     def create(self, path: str, content):
+        """Create a text file."""
         super().create(path, content)
 
         with open(path, "w") as f:
@@ -270,6 +281,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def create_binary(self, path: str, content):
+        """Create a binary file."""
         super().create_binary(path, content)
 
         with open(path, "wb") as f:
@@ -277,6 +289,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def write(self, path: str, content):
+        """Overwrite a text file."""
         super().write(path, content)
 
         with open(path, "w") as f:
@@ -284,6 +297,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def write_binary(self, path: str, content):
+        """Overwrite a binary file."""
         super().write_binary(path, content)
 
         with open(path, "wb") as f:
@@ -291,6 +305,7 @@ class FAL_RA(FAL):
         os.chmod(path, 0o777)
 
     def read(self, path: str) -> str:
+        """Read text content from a file."""
         super().read(path)
 
         try:
@@ -299,55 +314,71 @@ class FAL_RA(FAL):
         except Exception:
             raise BinaryNotSupported(path)
 
-    def read_binary(self, path: str) -> str:
+    def read_binary(self, path: str) -> bytes:
+        """Read binary content from a file."""
         super().read(path)
 
         with open(path, "rb") as f:
             return f.read()
 
     def listdirs(self, path: str):
+        """List direct child directories."""
         super().listdirs(path)
 
-        return [d for d in os.listdir(path) if self.isdir(self.path_join(path, d))]
+        return [
+            d for d in os.listdir(path)
+            if self.isdir(self.path_join(path, d))
+        ]
 
     def listfiles(self, path: str):
+        """List direct child files."""
         super().listfiles(path)
 
-        return [d for d in os.listdir(path) if self.isfile(self.path_join(path, d))]
+        return [
+            d for d in os.listdir(path)
+            if self.isfile(self.path_join(path, d))
+        ]
 
     def list_formatted(self, path: str, base_group: str):
+        """Return the explorer tree for a directory."""
         super().list_formatted(path, base_group)
 
         # list_dir already returns the tree structure used by the explorer.
         return list_dir(path, path, base_group=base_group)
 
     def mkdir(self, path: str):
+        """Create a directory."""
         super().mkdir(path)
 
         os.makedirs(path)
         os.chmod(path, mode=0o777)
 
     def renamefile(self, old_path: str, new_path: str):
+        """Rename a file."""
         super().renamefile(old_path, new_path)
 
         os.rename(old_path, new_path)
 
     def renamedir(self, old_path: str, new_path: str):
+        """Rename a directory."""
         super().renamedir(old_path, new_path)
 
         os.rename(old_path, new_path)
 
     def removefile(self, path: str):
+        """Remove a file."""
         super().removefile(path)
 
         os.remove(path)
 
     def removedir(self, path: str):
+        """Remove a directory tree."""
         super().removedir(path)
 
         shutil.rmtree(path)
 
     def dir_size(self, path):
+        """Return the total size of a directory tree."""
         super().dir_size(path)
 
         total_size = 0

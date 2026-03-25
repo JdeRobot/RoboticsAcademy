@@ -2,7 +2,7 @@
 
 from json import JSONEncoder
 import mimetypes
-import chardet
+import chardet  # type: ignore[import-untyped]
 import os
 
 
