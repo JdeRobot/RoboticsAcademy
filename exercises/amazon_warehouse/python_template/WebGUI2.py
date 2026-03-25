@@ -44,20 +44,24 @@ class GUIBridgeNode(Node):
 
         qos_transient = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 
-        self.create_subscription(Odometry, "/amazon_robot/odom", self.odom_callback, qos_profile_sensor_data)
+        self.create_subscription(
+            Odometry, "/amazon_robot/odom", self.odom_callback, qos_profile_sensor_data
+        )
         self.create_subscription(Float64, "/platform/cmd_vel", self.lift_callback, 10)
-        self.create_subscription(String, "/webgui/path", self.path_callback, qos_transient)
+        self.create_subscription(
+            String, "/webgui/path", self.path_callback, qos_transient
+        )
 
         self.map1_pub = self.create_publisher(ROSImage, "/webgui/map_1", qos_transient)
         self.map2_pub = self.create_publisher(ROSImage, "/webgui/map_2", qos_transient)
-        
+
         self.publish_maps()
 
     def publish_maps(self):
         try:
             map1 = cv2.imread("/resources/exercises/amazon_warehouse/images/map.png")
             map2 = cv2.imread("/resources/exercises/amazon_warehouse/images/map_2.png")
-            
+
             if map1 is not None:
                 msg1 = ROSImage()
                 msg1.height, msg1.width, _ = map1.shape
@@ -65,7 +69,7 @@ class GUIBridgeNode(Node):
                 msg1.step = msg1.width * 3
                 msg1.data = np.array(map1, dtype=np.uint8).tobytes()
                 self.map1_pub.publish(msg1)
-                
+
             if map2 is not None:
                 msg2 = ROSImage()
                 msg2.height, msg2.width, _ = map2.shape
@@ -132,7 +136,7 @@ class WebGUI(MeasuringThreadingGUI):
     def update_gui(self):
         with self.array_lock:
             self.payload["array"] = self.array
-        
+
         self.payload["liftState"] = self.get_lift_state()
 
         pos_message = self.map.getRobotCoordinates()
