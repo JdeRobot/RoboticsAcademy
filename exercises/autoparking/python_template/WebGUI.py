@@ -7,9 +7,12 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan, PointCloud2
 import sensor_msgs_py.point_cloud2 as pc2
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from map import Map
+
 
 class LaserData:
     def __init__(self, maxAngle, maxRange, values):
@@ -17,15 +20,24 @@ class LaserData:
         self.maxRange = maxRange
         self.values = values
 
+
 class WebGUINode(Node):
     def __init__(self):
-        super().__init__('autoparking_gui_node')
-        
-        self.sub_scan_front = self.create_subscription(LaserScan, '/prius_autoparking/scan_front', self.scan_f_cb, 10)
-        self.sub_scan_side = self.create_subscription(LaserScan, '/prius_autoparking/scan_side', self.scan_r_cb, 10)
-        self.sub_scan_back = self.create_subscription(LaserScan, '/prius_autoparking/scan_back', self.scan_b_cb, 10)
-        self.sub_pc2 = self.create_subscription(PointCloud2, '/prius_autoparking/pc2', self.pc2_cb, 10)
-        
+        super().__init__("autoparking_gui_node")
+
+        self.sub_scan_front = self.create_subscription(
+            LaserScan, "/prius_autoparking/scan_front", self.scan_f_cb, 10
+        )
+        self.sub_scan_side = self.create_subscription(
+            LaserScan, "/prius_autoparking/scan_side", self.scan_r_cb, 10
+        )
+        self.sub_scan_back = self.create_subscription(
+            LaserScan, "/prius_autoparking/scan_back", self.scan_b_cb, 10
+        )
+        self.sub_pc2 = self.create_subscription(
+            PointCloud2, "/prius_autoparking/pc2", self.pc2_cb, 10
+        )
+
         self.laser_f = None
         self.laser_r = None
         self.laser_b = None
@@ -47,17 +59,18 @@ class WebGUINode(Node):
     def pc2_cb(self, msg):
         self.lidar = msg
 
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
-        
+
         if not rclpy.ok():
             rclpy.init()
-            
+
         self.ros_node = WebGUINode()
         self.executor = rclpy.executors.SingleThreadedExecutor()
         self.executor.add_node(self.ros_node)
-        
+
         self.payload = {"map": ""}
         self.map = Map(self.get_front, self.get_right, self.get_back)
 
@@ -96,10 +109,15 @@ class WebGUI(MeasuringThreadingGUI):
             if self.ros_node.lidar:
                 points = []
                 color = (20, 20, 255)
-                for p in pc2.read_points(self.ros_node.lidar, field_names=("x", "y", "z"), skip_nans=True):
+                for p in pc2.read_points(
+                    self.ros_node.lidar, field_names=("x", "y", "z"), skip_nans=True
+                ):
                     x, y, z = p
                     if not (math.isinf(x) or math.isinf(y) or math.isinf(z)):
-                        points.append((float(x * 10), float((z + 1.75) * 10), float(-y * 10)) + color)
+                        points.append(
+                            (float(x * 10), float((z + 1.75) * 10), float(-y * 10))
+                            + color
+                        )
                 self.payload["lidar"] = json.dumps(points)
 
         message = json.dumps(self.payload)
@@ -107,6 +125,7 @@ class WebGUI(MeasuringThreadingGUI):
 
     def reset_gui(self):
         self.map = Map(self.get_front, self.get_right, self.get_back)
+
 
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
