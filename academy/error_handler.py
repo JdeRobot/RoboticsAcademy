@@ -36,9 +36,11 @@ local_fal = FAL_RA(
 )
 
 logger = logging.getLogger(__name__)
+
+
 def error_wrapper(type: str, param: list[str | tuple] = []):
     """Decorator for API views with parameter validation and error handling."""
-    
+
     def decorated(func):
         @wraps(func)
         @api_view([type])
