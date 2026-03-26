@@ -211,6 +211,9 @@ def create_file(fal, request):
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     filename = request.data.get("file_name")
+    template = request.data.get("template", None)
+
+    print(template)
 
     path = fal.exercise_path(project_id)
     create_path = fal.path_join(location, filename)
