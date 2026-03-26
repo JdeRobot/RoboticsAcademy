@@ -28,6 +28,12 @@ from rest_framework import status
 @csrf_exempt
 @api_view(["GET"])
 def save_exercise_db(request):
+    """
+    Trigger a PostgreSQL dump of exercise-related tables to the repository.
+
+    Dumps tables: exercises, exercises_universes, exercises_tools.
+    Output is written to RoboticsAcademy/database/exercises/db.sql.
+    """
 
     subprocess.Popen(
         [
@@ -45,6 +51,12 @@ def save_exercise_db(request):
 @csrf_exempt
 @api_view(["GET"])
 def save_universe_db(request):
+    """
+    Trigger a PostgreSQL dump of universe-related tables to a SQL file.
+
+    Dumps tables: universes, worlds, robots, tools.
+    Output is written to /universes.sql inside the container.
+    """
 
     subprocess.Popen(
         [
@@ -139,6 +151,11 @@ def get_exercise_list(fal, request):
 
 @error_wrapper("GET", ["project", "language"])
 def get_helper_file_list(fal, request):
+    """
+    Return the list of helper files for a given exercise and language.
+
+    Query params: project (str), language (str).
+    """
     project = request.GET.get("project")
     language = request.GET.get("language")
 
@@ -150,6 +167,11 @@ def get_helper_file_list(fal, request):
 
 @error_wrapper("GET", ["project", "language", "filename"])
 def get_helper_file(fal, request):
+    """
+    Return the content of a specific helper file for an exercise.
+
+    Query params: project (str), language (str), filename (str).
+    """
     project = request.GET.get("project")
     language = request.GET.get("language")
     filename = request.GET.get("filename", None)
@@ -163,6 +185,11 @@ def get_helper_file(fal, request):
 
 @error_wrapper("GET", ["project"])
 def get_file_list(fal, request):
+    """
+    Return the list of user files for a given exercise project.
+
+    Query params: project (str).
+    """
     project = request.GET.get("project")
 
     base_group = "Code"
@@ -176,6 +203,11 @@ def get_file_list(fal, request):
 
 @error_wrapper("POST", ["project_id", ("location", -1), "file_name"])
 def create_file(fal, request):
+    """
+    Create a new empty file inside the exercise project directory.
+
+    POST params: project_id (str), location (str), file_name (str).
+    """
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     filename = request.data.get("file_name")
@@ -193,6 +225,11 @@ def create_file(fal, request):
 
 @error_wrapper("POST", ["project_id", ("location", -1), "folder_name"])
 def create_folder(fal, request):
+    """
+    Create a new folder inside the exercise project directory.
+
+    POST params: project_id (str), location (str), folder_name (str).
+    """
     project_id = request.data.get("project_id")
     location = request.data.get("location")
     folder_name = request.data.get("folder_name")
@@ -210,6 +247,11 @@ def create_folder(fal, request):
 
 @error_wrapper("POST", ["project_id", "path", "rename_to"])
 def rename_file(fal, request):
+    """
+    Rename a file inside the exercise project directory.
+
+    POST params: project_id (str), path (str), rename_to (str).
+    """
     project_id = request.data.get("project_id")
     path = request.data.get("path")
     rename_path = request.data.get("rename_to")
@@ -231,6 +273,11 @@ def rename_file(fal, request):
 
 @error_wrapper("POST", ["project_id", "path", "rename_to"])
 def rename_folder(fal, request):
+    """
+    Rename a folder inside the exercise project directory.
+
+    POST params: project_id (str), path (str), rename_to (str).
+    """
     project_id = request.data.get("project_id")
     path = request.data.get("path")
     rename_path = request.data.get("rename_to")
@@ -252,6 +299,11 @@ def rename_folder(fal, request):
 
 @error_wrapper("POST", ["project_id", "path"])
 def delete_file(fal, request):
+    """
+    Delete a file from the exercise project directory.
+
+    POST params: project_id (str), path (str).
+    """
     project_id = request.data.get("project_id")
     path = request.data.get("path")
 
@@ -265,6 +317,11 @@ def delete_file(fal, request):
 
 @error_wrapper("POST", ["project_id", "path"])
 def delete_folder(fal, request):
+    """
+    Delete a folder and its contents from the exercise project directory.
+
+    POST params: project_id (str), path (str).
+    """
     project_id = request.data.get("project_id")
     path = request.data.get("path")
 
@@ -278,6 +335,12 @@ def delete_folder(fal, request):
 
 @error_wrapper("GET", ["project", "filename"])
 def get_file(fal, request):
+    """
+    Return the content of a file from the exercise project directory.
+
+    Query params: project (str), filename (str), binary (bool, optional).
+    Returns base64-encoded content if binary=True.
+    """
     project_id = request.GET.get("project", None)
     filename = request.GET.get("filename", None)
 
@@ -300,6 +363,11 @@ def get_file(fal, request):
 
 @error_wrapper("POST", ["project", "filename", ("content", -1)])
 def save_file(fal, request):
+    """
+    Save content to a file in the exercise project directory.
+
+    POST params: project (str), filename (str), content (str).
+    """
     project_id = request.data.get("project")
     filename = request.data.get("filename")
     content = request.data.get("content")
@@ -415,6 +483,11 @@ def get_docker_universe_data(fal, request):
 
 @error_wrapper("POST", ["project_id", "file_name", ("location", -1), "content"])
 def upload(fal, request):
+    """
+    Upload a binary file (e.g. ONNX model) to the exercise project directory.
+
+    POST params: project_id (str), file_name (str), location (str), content (base64 str).
+    """
     # Get the name and the zip file from the request
     project_id = request.data.get("project_id")
     file_name = request.data.get("file_name")
