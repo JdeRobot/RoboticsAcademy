@@ -58,12 +58,12 @@ class BumperNode(Node):
             self.left_callback,
         ]
 
-        # Subscribe to all the callbacks
-        for i in range(len(self.topics)):
-
-            self.sub = self.create_subscription(
-                ContactsState, topics[i], self.callbacks_[i], 10
-            )
+        # Subscribe to all the callbacks and store in a list
+        # to prevent subscriptions from being garbage collected
+        self.subs_ = [
+            self.create_subscription(ContactsState, topics[i], self.callbacks_[i], 10)
+            for i in range(len(self.topics))
+        ]
 
         # Right, center, left
         self.contact_states_ = [ContactsState() for _ in range(3)]
