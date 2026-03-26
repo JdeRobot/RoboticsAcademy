@@ -1,3 +1,4 @@
+import base64
 import json
 import threading
 import sys
@@ -19,6 +20,13 @@ from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from map import Map
 from console_interfaces.general.console import start_console
 
+red = [0, 0, 255]
+orange = [0, 165, 255]
+yellow = [0, 255, 255]
+green = [0, 255, 0]
+blue = [255, 0, 0]
+indigo = [130, 0, 75]
+violet = [211, 0, 148]
 
 def quat_to_yaw(qw, qx, qy, qz):
     rotate_za0 = 2.0 * (qx * qy + qw * qz)
@@ -27,13 +35,11 @@ def quat_to_yaw(qw, qx, qy, qz):
         return math.atan2(rotate_za0, rotate_za1)
     return 0.0
 
-
 class Pose3d:
     def __init__(self, x=0.0, y=0.0, yaw=0.0):
         self.x = x
         self.y = y
         self.yaw = yaw
-
 
 class GUIBridgeNode(Node):
     def __init__(self, gui_instance):
@@ -51,34 +57,9 @@ class GUIBridgeNode(Node):
         self.create_subscription(
             String, "/webgui/path", self.path_callback, qos_transient
         )
-
-        self.map1_pub = self.create_publisher(ROSImage, "/webgui/map_1", qos_transient)
-        self.map2_pub = self.create_publisher(ROSImage, "/webgui/map_2", qos_transient)
-
-        self.publish_maps()
-
-    def publish_maps(self):
-        try:
-            map1 = cv2.imread("/resources/exercises/amazon_warehouse/images/map.png")
-            map2 = cv2.imread("/resources/exercises/amazon_warehouse/images/map_2.png")
-
-            if map1 is not None:
-                msg1 = ROSImage()
-                msg1.height, msg1.width, _ = map1.shape
-                msg1.encoding = "bgr8"
-                msg1.step = msg1.width * 3
-                msg1.data = np.array(map1, dtype=np.uint8).tobytes()
-                self.map1_pub.publish(msg1)
-
-            if map2 is not None:
-                msg2 = ROSImage()
-                msg2.height, msg2.width, _ = map2.shape
-                msg2.encoding = "bgr8"
-                msg2.step = msg2.width * 3
-                msg2.data = np.array(map2, dtype=np.uint8).tobytes()
-                self.map2_pub.publish(msg2)
-        except Exception:
-            pass
+        self.create_subscription(
+            ROSImage, "/webgui/image", self.image_callback, qos_transient
+        )
 
     def odom_callback(self, msg):
         self.pose.x = msg.pose.pose.position.x
@@ -92,6 +73,11 @@ class GUIBridgeNode(Node):
     def path_callback(self, msg):
         self.gui.update_path_array(msg.data)
 
+    def image_callback(self, msg):
+        channels = 1 if msg.encoding in ['mono8', '8UC1'] else 3
+        shape = (msg.height, msg.width) if channels == 1 else (msg.height, msg.width, channels)
+        image = np.frombuffer(msg.data, dtype=np.uint8).reshape(shape)
+        self.gui.showNumpy(image)
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -99,6 +85,11 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.array_lock = threading.Lock()
         self.array = ""
+        
+        self.image_to_be_shown = None
+        self.image_to_be_shown_updated = False
+        self.image_show_lock = threading.Lock()
+
         self.payload = {"map": "", "array": "", "liftState": False}
 
         self.bridge_node = None
@@ -143,8 +134,61 @@ class WebGUI(MeasuringThreadingGUI):
         ang_message = self.map.getRobotAngle()
         self.payload["map"] = str(pos_message + ang_message)
 
+        payload_img = self.payloadImage()
+        self.payload["image"] = json.dumps(payload_img)
+
         message = json.dumps(self.payload)
         self.send_to_client(message)
+
+    def payloadImage(self):
+        with self.image_show_lock:
+            image_to_be_shown_updated = self.image_to_be_shown_updated
+            image_to_be_shown = self.image_to_be_shown
+
+        image = image_to_be_shown
+        payload = {"image": "", "shape": ""}
+
+        if not image_to_be_shown_updated:
+            return payload
+
+        shape = image.shape
+        frame = cv2.imencode(".JPEG", image)[1]
+        encoded_image = base64.b64encode(frame)
+
+        payload["image"] = encoded_image.decode("utf-8")
+        payload["shape"] = shape
+
+        with self.image_show_lock:
+            self.image_to_be_shown_updated = False
+
+        return payload
+
+    def process_colors(self, image):
+        colored_image = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+
+        mask = image < 128
+        colored_image[mask] = image[mask][:, None] * 2
+
+        color_table = {
+            128: red,
+            129: orange,
+            130: yellow,
+            131: green,
+            132: blue,
+            133: indigo,
+            134: violet,
+        }
+
+        for value, color in color_table.items():
+            mask = image == value
+            colored_image[mask] = color
+
+        return colored_image
+
+    def showNumpy(self, image):
+        with self.image_show_lock:
+            self.image_to_be_shown = self.process_colors(image)
+            self.image_to_be_shown_updated = True
 
     def update_path_array(self, strArray):
         with self.array_lock:
@@ -176,7 +220,6 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
-
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
@@ -185,10 +228,11 @@ gui = WebGUI(host)
 
 start_console()
 
-
 def getMap(url):
     return gui.getMap(url)
 
-
 def showPath(array):
     return gui.showPath(array)
+
+def showNumpy(image):
+    gui.showNumpy(image)
