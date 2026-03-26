@@ -28,6 +28,7 @@ blue = [255, 0, 0]
 indigo = [130, 0, 75]
 violet = [211, 0, 148]
 
+
 def quat_to_yaw(qw, qx, qy, qz):
     rotate_za0 = 2.0 * (qx * qy + qw * qz)
     rotate_za1 = qw * qw + qx * qx - qy * qy - qz * qz
@@ -35,11 +36,13 @@ def quat_to_yaw(qw, qx, qy, qz):
         return math.atan2(rotate_za0, rotate_za1)
     return 0.0
 
+
 class Pose3d:
     def __init__(self, x=0.0, y=0.0, yaw=0.0):
         self.x = x
         self.y = y
         self.yaw = yaw
+
 
 class GUIBridgeNode(Node):
     def __init__(self, gui_instance):
@@ -74,10 +77,15 @@ class GUIBridgeNode(Node):
         self.gui.update_path_array(msg.data)
 
     def image_callback(self, msg):
-        channels = 1 if msg.encoding in ['mono8', '8UC1'] else 3
-        shape = (msg.height, msg.width) if channels == 1 else (msg.height, msg.width, channels)
+        channels = 1 if msg.encoding in ["mono8", "8UC1"] else 3
+        shape = (
+            (msg.height, msg.width)
+            if channels == 1
+            else (msg.height, msg.width, channels)
+        )
         image = np.frombuffer(msg.data, dtype=np.uint8).reshape(shape)
         self.gui.showNumpy(image)
+
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -85,7 +93,7 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.array_lock = threading.Lock()
         self.array = ""
-        
+
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
@@ -220,6 +228,7 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
+
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
@@ -228,11 +237,14 @@ gui = WebGUI(host)
 
 start_console()
 
+
 def getMap(url):
     return gui.getMap(url)
 
+
 def showPath(array):
     return gui.showPath(array)
+
 
 def showNumpy(image):
     gui.showNumpy(image)
