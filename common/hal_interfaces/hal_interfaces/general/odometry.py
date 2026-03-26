@@ -123,8 +123,8 @@ def odometry2Pose3D(odom):
 
 ### HAL INTERFACE ###
 class OdometryNode(Node):
-    def __init__(self, topic):
-        super().__init__("odometry_node")
+    def __init__(self, topic, node_name="odometry_node"):
+        super().__init__(node_name)
         self.sub = self.create_subscription(
             nav_msgs.msg.Odometry, topic, self.listener_callback, 10
         )
