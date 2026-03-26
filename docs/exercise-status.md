@@ -13,9 +13,9 @@
 | MonteCarlo Visual Loc                |        ok        |             |               |          | -                        |        ok         |         ok         | AMCL        |
 | Marker-based visual Loc              |        ok        |             |               |          | -                        |                   |         ok         | PnP         |
 | Localized Vacuum Cleaner             |        ok        |     ok      |               |          | -                        |        ok         |         ok         | BSA         |
-| Autoparking                          |        ok        |             |               |          | [Link][vid_autoparking]  |        ok         |         ok         |             |
-| Amazon Warehouse                     |        ok        |             |               |          | -                        |        ok         |         ok         |             |
-| Follow Person                        |        ok        |             |               |          | [Link][vid_follow_person]|        ok         |                    |             |
+| Autoparking                          |        ok        |     ok      |               |          | [Link][vid_autoparking]  |        ok         |         ok         |             |
+| Amazon Warehouse                     |        ok        |     ok      |               |          | -                        |        ok         |         ok         |             |
+| Follow Person                        |        ok        |             |               |          | [Link][vid_follow_person]|        ok         |         ok         |             |
 | Drone Follow Road                    |        ok        |             |               |          | -                        |                   |         ok         |             |
 | Drone Rescue people                  |        ok        |             |               |          | -                        |                   |         ok         |             |
 | Drone Gymkhana                       |        ok        |             |               |          | -                        |                   |         ok         |             |
