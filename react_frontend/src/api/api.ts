@@ -211,7 +211,8 @@ const saveFile = async (project: string, fileName: string, content: string) => {
 const createFile = async (
   projectId: string,
   fileName: string,
-  location: string
+  location: string,
+  template?: string
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -223,6 +224,7 @@ const createFile = async (
     project_id: projectId,
     location: location,
     file_name: fileName,
+    template: template,
   };
 
   try {
