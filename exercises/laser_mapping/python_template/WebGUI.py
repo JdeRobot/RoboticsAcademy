@@ -14,8 +14,11 @@ from sensor_msgs.msg import Image as ROSImage
 from nav_msgs.msg import Odometry
 
 from map import Map
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
+
 
 def quat_to_yaw(qw, qx, qy, qz):
     rotate_za0 = 2.0 * (qx * qy + qw * qz)
@@ -24,11 +27,13 @@ def quat_to_yaw(qw, qx, qy, qz):
         return math.atan2(rotate_za0, rotate_za1)
     return 0.0
 
+
 class Pose3d:
     def __init__(self, x=0.0, y=0.0, yaw=0.0):
         self.x = x
         self.y = y
         self.yaw = yaw
+
 
 class GUIBridgeNode(Node):
     def __init__(self, gui_instance):
@@ -36,7 +41,7 @@ class GUIBridgeNode(Node):
         self.gui = gui_instance
         self.pose = Pose3d()
         self.noisy_pose = Pose3d()
-        
+
         qos_transient = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 
         self.create_subscription(
@@ -46,7 +51,10 @@ class GUIBridgeNode(Node):
             Odometry, "/turtlebot3/odom", self.odom_callback, qos_profile_sensor_data
         )
         self.create_subscription(
-            Odometry, "/turtlebot3/odom_noisy", self.noisy_odom_callback, qos_profile_sensor_data
+            Odometry,
+            "/turtlebot3/odom_noisy",
+            self.noisy_odom_callback,
+            qos_profile_sensor_data,
         )
 
     def user_map_callback(self, msg):
@@ -68,6 +76,7 @@ class GUIBridgeNode(Node):
         self.noisy_pose.y = msg.pose.pose.position.y
         ori = msg.pose.pose.orientation
         self.noisy_pose.yaw = quat_to_yaw(ori.w, ori.x, ori.y, ori.z)
+
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
@@ -102,10 +111,16 @@ class WebGUI(MeasuringThreadingGUI):
         self.executor_thread.start()
 
     def get_pose3d(self):
-        return Pose3d(self.bridge_node.pose.x, self.bridge_node.pose.y, self.bridge_node.pose.yaw)
+        return Pose3d(
+            self.bridge_node.pose.x, self.bridge_node.pose.y, self.bridge_node.pose.yaw
+        )
 
     def get_noisy_pose(self):
-        return Pose3d(self.bridge_node.noisy_pose.x, self.bridge_node.noisy_pose.y, self.bridge_node.noisy_pose.yaw)
+        return Pose3d(
+            self.bridge_node.noisy_pose.x,
+            self.bridge_node.noisy_pose.y,
+            self.bridge_node.noisy_pose.yaw,
+        )
 
     def update_gui(self):
         pos_message = self.map.getRobotCoordinates()
@@ -158,13 +173,16 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
 start_console()
 
+
 def setUserMap(image):
     gui.setUserMap(image)
+
 
 def poseToMap(x_prime, y_prime, yaw_prime):
     return gui.poseToMap(x_prime, y_prime, yaw_prime)
