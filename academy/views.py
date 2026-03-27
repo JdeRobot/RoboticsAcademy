@@ -218,15 +218,16 @@ def create_file(fal, request):
     create_path = fal.path_join(location, filename)
     file_path = fal.path_join(path, create_path)
 
-    if exists_in_helpers(fal, create_path, project_id):
-        raise ResourceAlreadyExistsHelpers(create_path)
-
     content = ""
 
     if template is not None:
         content = select_template(template)
 
     fal.create(file_path, content)
+
+    if exists_in_helpers(fal, create_path, project_id):
+        raise ResourceAlreadyExistsHelpers(create_path)
+
     return Response({"success": True})
 
 

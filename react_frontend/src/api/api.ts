@@ -212,7 +212,8 @@ const createFile = async (
   projectId: string,
   fileName: string,
   location: string,
-  template?: string
+  template?: string,
+  warning?: (msg: string) => void
 ) => {
   if (!projectId) throw new Error("Current Project name is not set");
   if (!fileName) throw new Error("File name is not set");
@@ -231,6 +232,14 @@ const createFile = async (
     await axios.post(apiUrl, params, axiosExtra());
   } catch (e: unknown) {
     const error = e as ApiError;
+
+    if (warning !== undefined && error.response?.status === 412) {
+      warning(`You are overwriting a helper file with the name of ${fileName}
+
+      Bear this in mind as it may result in unexpected behavior
+      `);
+    }
+
     throw Error(error.response?.data.message);
   }
 };

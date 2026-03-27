@@ -40,7 +40,7 @@ class ResourceAlreadyExistsHelpers(Exception):
     def __init__(self, msg):
         self.message = f" {msg} already exists in the helpers"
         super().__init__(self.message)
-        self.error_code = 409
+        self.error_code = 412
 
     def __str__(self):
         return f"{self.message}"
