@@ -173,7 +173,8 @@ const CreateAction = ({
   const validPyTemplate =
     creationType === "python" && template.startsWith("py");
   const validCppTemplate = creationType === "cpp" && template.startsWith("cpp");
-  const validTemplate = validPyTemplate || validCppTemplate;
+  const validTemplate =
+    validPyTemplate || validCppTemplate || creationType === "plain";
 
   return (
     <Modal
