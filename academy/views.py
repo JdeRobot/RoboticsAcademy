@@ -4,17 +4,15 @@ API views for Robotics Academy.
 
 import base64
 import json
-from django.http import HttpResponse, JsonResponse
+import ast
+from django.http import JsonResponse
 import subprocess
 import sys
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 
 from academy.exceptions import (
-    BinaryNotSupported,
-    ResourceAlreadyExists,
     ResourceAlreadyExistsHelpers,
-    ResourceNotExists,
 )
 from academy.project_view import EntryEncoder, exists_in_helpers
 from academy.serializers import FileContentSerializer
@@ -22,7 +20,7 @@ from academy.serializers import FileContentSerializer
 from .error_handler import error_wrapper
 from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
-from rest_framework import status
+
 
 
 @csrf_exempt
@@ -86,9 +84,14 @@ def enter_exercise(fal, request):
     for tool in project.tools.all():
         tools.append(tool.name)
 
+    try:
+        parsed_tags = ast.literal_eval(project.tags) if project.tags else []
+    except (ValueError, SyntaxError):
+        parsed_tags = []
+        
     info = {
         "name": project.name,
-        "tags": eval(project.tags),
+        "tags": parsed_tags,
         "tools": tools,
         "url": project.url,
     }
@@ -107,7 +110,7 @@ def enter_exercise(fal, request):
         # Create base files
         file_path = fal.path_join(path, "academy.py")
         fal.create(file_path, "")
-        for tag in eval(project.tags):
+        for tag in parsed_tags:
             if tag == "MULTILANGUAGE":
                 file_path = fal.path_join(path, "academy.cpp")
                 fal.create(file_path, "")
