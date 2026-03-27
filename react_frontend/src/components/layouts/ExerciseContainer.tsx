@@ -7,6 +7,7 @@ import IdeInterface, {
   ExtraApi,
   ExtraSnippets,
   StatusBarComponents,
+  useError,
 } from "jderobot-ide-interface";
 import { ExerciseProvider } from "Contexts/ExerciseContext";
 import { ExerciseHeader } from "Components/headers";
@@ -47,6 +48,7 @@ const ExerciseContainer = ({
   multiLanguage: boolean;
   children: JSX.Element;
 }) => {
+  const { warning } = useError();
   const hasTriedToConnect = useRef(false);
   const timeoutRef = useRef<number | null>(null);
   const connectTimeoutRef = useRef<number | null>(null);
@@ -184,7 +186,7 @@ const ExerciseContainer = ({
           options={[]}
           layout={layout}
           statusBarComponents={statusBar}
-          explorers={[fileExplorer]}
+          explorers={[fileExplorer(warning)]}
           extraEditors={[]}
           baseFile={base_file}
           baseUniverse={universes ? universes[0] : undefined}
