@@ -20,6 +20,7 @@ from academy.project_view import EntryEncoder, exists_in_helpers
 from academy.serializers import FileContentSerializer
 
 from .error_handler import error_wrapper
+from .templates import select_template
 from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 from rest_framework import status
@@ -213,8 +214,6 @@ def create_file(fal, request):
     filename = request.data.get("file_name")
     template = request.data.get("template", None)
 
-    print(template)
-
     path = fal.exercise_path(project_id)
     create_path = fal.path_join(location, filename)
     file_path = fal.path_join(path, create_path)
@@ -222,7 +221,12 @@ def create_file(fal, request):
     if exists_in_helpers(fal, create_path, project_id):
         raise ResourceAlreadyExistsHelpers(create_path)
 
-    fal.create(file_path, "")
+    content = ""
+
+    if template is not None:
+        content = select_template(template)
+
+    fal.create(file_path, content)
     return Response({"success": True})
 
 
