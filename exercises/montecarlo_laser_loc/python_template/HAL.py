@@ -24,7 +24,7 @@ if not rclpy.ok():
 
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/odom")
-noisy_odometry_node = OdometryNode("/odom_noisy")
+noisy_odometry_node = OdometryNode("/odom_noisy", node_name="noisy_odometry_node")
 laser_node = LaserNode("/roombaROS/laser/scan")
 bumper_node = BumperNode(
     [
