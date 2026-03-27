@@ -8,9 +8,9 @@
 | Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Link][vid_follow_line]  |        ok         |         ok         | PID control |
 | Obstacle Avoidance                   |        ok        |     ok      |               |          | [Link][vid_obstacle]     |        ok         |         ok         | VFF         |
 | Global navigation                    |        ok        |     ok      |               |          | -                        |        ok         |         ok         | GPP         |
-| Laser Gridmap mapping                |        ok        |             |               |          | -                        |                   |         ok         |             |
-| MonteCarlo Laser Loc                 |        ok        |             |               |          | -                        |        ok         |         ok         | AMCL        |
-| MonteCarlo Visual Loc                |        ok        |             |               |          | -                        |        ok         |         ok         | AMCL        |
+| Laser Gridmap mapping                |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
+| MonteCarlo Laser Loc                 |        ok        |     ok      |               |          | -                        |        ok         |         ok         | AMCL        |
+| MonteCarlo Visual Loc                |        ok        |     ok      |               |          | -                        |        ok         |         ok         | AMCL        |
 | Marker-based visual Loc              |        ok        |             |               |          | -                        |                   |         ok         | PnP         |
 | Localized Vacuum Cleaner             |        ok        |     ok      |               |          | -                        |        ok         |         ok         | BSA         |
 | Autoparking                          |        ok        |     ok      |               |          | [Link][vid_autoparking]  |        ok         |         ok         |             |
