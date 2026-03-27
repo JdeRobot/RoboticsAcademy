@@ -235,9 +235,8 @@ const createFile = async (
 
     if (warning !== undefined && error.response?.status === 412) {
       warning(`You are overwriting a helper file with the name of ${fileName}
-      
-      Make sure to know what you are doing as this may result
-      in unexpected behavior
+
+      Bear this in mind as it may result in unexpected behavior
       `);
     }
 
