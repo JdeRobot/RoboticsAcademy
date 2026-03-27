@@ -5,7 +5,6 @@ import time
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
-from hal_interfaces.general.noise_odometry import NoisyOdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.camera import CameraNode
 
@@ -39,7 +38,9 @@ motor_node = MotorsNode("/turtlebot3/cmd_vel", 4, 0.3)
 camera_node = CameraNode("/turtlebot3/camera/image_raw")
 odometry_node = OdometryNode("/turtlebot3/odom")
 laser_node = LaserNode("/turtlebot3/laser/scan")
-noisy_odometry_node = NoisyOdometryNode("/turtlebot3/odom")
+noisy_odometry_node = OdometryNode(
+    "/turtlebot3/odom_noisy", node_name="noisy_odometry_node"
+)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
