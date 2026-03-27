@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -10,17 +11,22 @@ import {
   ModalInputSelectIconEntry,
   contrastSelector,
 } from "jderobot-ide-interface";
-import FileDownloadRoundedIcon from "@mui/icons-material/FileDownloadRounded";
+
+import LoopRoundedIcon from "@mui/icons-material/LoopRounded";
+import NotInterestedRoundedIcon from "@mui/icons-material/NotInterestedRounded";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
-import { PythonIcon, CppIcon } from "Icons/index";
+import { PythonIcon, CppIcon, RosIcon } from "Icons/index";
+import { StyledTemplatesTitle } from "Styles/fileCreator/fileCreator.styles";
 
 export interface newTemplate {
+  fileType: string;
   fileName: string;
   templateType: string;
 }
 
 const initialNewFileModalData: newTemplate = {
   fileName: "",
+  fileType: "plain",
   templateType: "empty",
 };
 
@@ -28,6 +34,7 @@ const CreateAction = ({
   onSubmit,
   isOpen,
   onClose,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   fileList,
   location,
   project,
@@ -54,23 +61,23 @@ const CreateAction = ({
   ///////////////////////// TYPES ////////////////////////////////////////////////
   const plain: ModalInputSelectIconEntry = {
     id: "plain",
-    title: "Plain File",
+    title: "No template",
     iconType: "fill",
-    icon: <FileDownloadRoundedIcon htmlColor={textColor} />,
+    icon: <NotInterestedRoundedIcon htmlColor={textColor} />,
   };
 
   const python: ModalInputSelectIconEntry = {
     id: "python",
     title: "Python",
     iconType: "fill",
-    icon: <PythonIcon htmlColor={textColor} />,
+    icon: <PythonIcon />,
   };
 
   const cpp: ModalInputSelectIconEntry = {
     id: "cpp",
     title: "C++",
     iconType: "fill",
-    icon: <CppIcon htmlColor={textColor} />,
+    icon: <CppIcon />,
   };
 
   ///////////////////////// TEMPLATES //////////////////////////////////////////
@@ -78,38 +85,38 @@ const CreateAction = ({
     id: "py-reactive",
     title: "Reactive",
     iconType: "fill",
-    icon: <FileDownloadRoundedIcon htmlColor={textColor} />,
+    icon: <LoopRoundedIcon htmlColor={textColor} />,
   };
 
   const pyRos: ModalInputSelectIconEntry = {
     id: "py-ros2",
     title: "ROS2 control",
     iconType: "fill",
-    icon: <FileDownloadRoundedIcon htmlColor={textColor} />,
+    icon: <RosIcon />,
   };
 
   const cppReactive: ModalInputSelectIconEntry = {
     id: "cpp-reactive",
     title: "Reactive",
     iconType: "fill",
-    icon: <FileDownloadRoundedIcon htmlColor={textColor} />,
+    icon: <LoopRoundedIcon htmlColor={textColor} />,
   };
 
   const cppRos: ModalInputSelectIconEntry = {
     id: "cpp-ros2",
     title: "ROS2 control",
     iconType: "fill",
-    icon: <FileDownloadRoundedIcon htmlColor={textColor} />,
+    icon: <RosIcon />,
   };
 
   //////////////////////////////////////////////////////////////////////////////
 
-  const onOptionTypeChange = (e: any) => {
+  const onOptionTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCreationType(e.target.value);
     handleInputChange(e);
   };
 
-  const onOptionTemplateChange = (e: any) => {
+  const onOptionTemplateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTemplate(e.target.value);
     handleInputChange(e);
   };
@@ -124,8 +131,15 @@ const CreateAction = ({
     setTemplate("empty");
   }, [isOpen]);
 
-  const handleInputChange = (event: any) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+
+    if (name === "fileType" && value === "plain") {
+      setFormState((prevFormData) => ({
+        ...prevFormData,
+        templateType: "empty",
+      }));
+    }
 
     setFormState((prevFormData) => ({
       ...prevFormData,
@@ -133,14 +147,14 @@ const CreateAction = ({
     }));
   };
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onSubmit(project, location, formState);
     setFormState(initialNewFileModalData);
     onClose();
   };
 
-  const handleCancel = (event: any) => {
+  const handleCancel = (event: React.FormEvent) => {
     if (event) {
       event.preventDefault();
     }
@@ -148,6 +162,18 @@ const CreateAction = ({
     onClose();
     setFormState(initialNewFileModalData);
   };
+
+  const validPython =
+    creationType === "python" && formState["fileName"].endsWith(".py");
+  const validCpp =
+    creationType === "cpp" && formState["fileName"].endsWith(".cpp");
+  const validPlain = creationType === "plain" && formState.fileName !== "";
+  const validName = validPython || validCpp || validPlain;
+
+  const validPyTemplate =
+    creationType === "python" && template.startsWith("py");
+  const validCppTemplate = creationType === "cpp" && template.startsWith("cpp");
+  const validTemplate = validPyTemplate || validCppTemplate;
 
   return (
     <Modal
@@ -158,15 +184,15 @@ const CreateAction = ({
       onReset={handleCancel}
     >
       <ModalTitlebar
-        title="Load template"
+        title="Create new file"
         htmlFor="fileName"
         hasClose
         handleClose={handleCancel}
       />
       <ModalRow type="input">
         <ModalInputBox
-          isInputValid={formState.fileName === ""}
-          ref={focusInputRef as any}
+          isInputValid={validName}
+          ref={focusInputRef}
           id="fileName"
           placeholder="File Name"
           onChange={handleInputChange}
@@ -175,39 +201,48 @@ const CreateAction = ({
           required
         />
       </ModalRow>
-      <ModalRow>
-        <ModalInputSelectIcon
-          id="fileType"
-          title="Templates"
-          onChange={onOptionTypeChange}
-          selected={creationType}
-          entries={[plain, python, cpp]}
-        />
-      </ModalRow>
-      {creationType === "python" && (
+      <details>
+        <StyledTemplatesTitle color={textColor}>
+          Start from template
+        </StyledTemplatesTitle>
         <ModalRow>
           <ModalInputSelectIcon
-            id="templateType"
-            title="Select Template Type"
-            onChange={onOptionTemplateChange}
-            selected={template}
-            entries={[pyReactive, pyRos]}
+            id="fileType"
+            title="Templates"
+            onChange={onOptionTypeChange}
+            selected={creationType}
+            entries={[plain, python, cpp]}
           />
         </ModalRow>
-      )}
-      {creationType === "cpp" && (
-        <ModalRow>
-          <ModalInputSelectIcon
-            id="templateType"
-            title="Select Template Type"
-            onChange={onOptionTemplateChange}
-            selected={template}
-            entries={[cppReactive, cppRos]}
-          />
-        </ModalRow>
-      )}
+        {creationType === "python" && (
+          <ModalRow>
+            <ModalInputSelectIcon
+              id="templateType"
+              title="Select Python template"
+              onChange={onOptionTemplateChange}
+              selected={template}
+              entries={[pyReactive, pyRos]}
+            />
+          </ModalRow>
+        )}
+        {creationType === "cpp" && (
+          <ModalRow>
+            <ModalInputSelectIcon
+              id="templateType"
+              title="Select C++ template"
+              onChange={onOptionTemplateChange}
+              selected={template}
+              entries={[cppReactive, cppRos]}
+            />
+          </ModalRow>
+        )}
+      </details>
       <ModalRow type="buttons">
-        <button type="submit" id="create-new-action">
+        <button
+          type="submit"
+          id="create-new-action"
+          disabled={!(validName && validTemplate)}
+        >
           Create
         </button>
       </ModalRow>
