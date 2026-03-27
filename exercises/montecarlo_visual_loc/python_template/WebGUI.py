@@ -13,9 +13,12 @@ from geometry_msgs.msg import PoseStamped, PoseArray
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from map import Map
+
 
 def quat_to_yaw(qw, qx, qy, qz):
     rotate_za0 = 2.0 * (qx * qy + qw * qz)
@@ -24,11 +27,13 @@ def quat_to_yaw(qw, qx, qy, qz):
         return math.atan2(rotate_za0, rotate_za1)
     return 0.0
 
+
 class Pose3d:
     def __init__(self, x=0.0, y=0.0, yaw=0.0):
         self.x = x
         self.y = y
         self.yaw = yaw
+
 
 class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
@@ -38,8 +43,12 @@ class ROS2BridgeNode(Node):
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 
         self.create_subscription(Odometry, "/odom", self.odom_callback, 10)
-        self.create_subscription(PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, qos)
-        self.create_subscription(PoseArray, "/webgui/particles", self.particles_callback, qos)
+        self.create_subscription(
+            PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, qos
+        )
+        self.create_subscription(
+            PoseArray, "/webgui/particles", self.particles_callback, qos
+        )
         self.create_subscription(Image, "/webgui/image_debug", self.image_callback, 10)
 
         self.pose = Pose3d()
@@ -62,13 +71,19 @@ class ROS2BridgeNode(Node):
         for pose in msg.poses:
             x = pose.position.x
             y = pose.position.y
-            yaw = quat_to_yaw(pose.orientation.w, pose.orientation.x, pose.orientation.y, pose.orientation.z)
+            yaw = quat_to_yaw(
+                pose.orientation.w,
+                pose.orientation.x,
+                pose.orientation.y,
+                pose.orientation.z,
+            )
             particles.append([x, y, yaw])
         self.gui.showParticles(particles)
 
     def image_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
         self.gui.setImage(cv_image)
+
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -207,27 +222,35 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 start_console()
 
+
 def showImage(img):
     gui.setImage(img)
+
 
 def showPosition(x, y, angle):
     gui.showPosition(x, y, angle)
 
+
 def showParticles(particles):
     gui.showParticles(particles)
+
 
 def getMap(url):
     return gui.getMap(url)
 
+
 def getBGRMap(url):
     return gui.getBGRMap(url)
 
+
 def poseToMap(x_prime, y_prime, yaw_prime):
     return gui.poseToMap(x_prime, y_prime, yaw_prime)
+
 
 def mapToPose(x, y, yaw):
     return gui.mapToPose(x, y, yaw)
