@@ -2,6 +2,7 @@ import numpy as np
 import math
 from math import pi as pi
 
+
 class Map:
     def __init__(self, pose_getter):
         self.pose_getter = pose_getter
