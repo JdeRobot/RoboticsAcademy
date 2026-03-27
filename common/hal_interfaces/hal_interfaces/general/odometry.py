@@ -9,6 +9,8 @@ if not rclpy.ok():
 
 ### AUXILIARY FUNCTIONS ###
 class Pose3d:
+    """Represents a 3D pose with position, orientation, and timestamp."""
+
     def __init__(self):
 
         self.x = 0  # X coord [meters]
@@ -123,15 +125,22 @@ def odometry2Pose3D(odom):
 
 ### HAL INTERFACE ###
 class OdometryNode(Node):
-    def __init__(self, topic):
-        super().__init__("odometry_node")
+    def __init__(self, topic, node_name="odometry_node"):
+        super().__init__(node_name)
         self.sub = self.create_subscription(
             nav_msgs.msg.Odometry, topic, self.listener_callback, 10
         )
         self.last_pose_ = nav_msgs.msg.Odometry()
 
     def listener_callback(self, msg):
+        """Store the latest odometry message received from the topic."""
         self.last_pose_ = msg
 
     def getPose3d(self):
+        """
+        Return the latest pose as a Pose3d object.
+
+        Returns:
+            Pose3d with position, orientation, and timestamp fields populated.
+        """
         return odometry2Pose3D(self.last_pose_)

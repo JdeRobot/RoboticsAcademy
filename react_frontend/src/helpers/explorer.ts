@@ -9,6 +9,7 @@ import {
   renameFolder,
   uploadFile,
 } from "Api";
+import { CreateFile, newTemplate } from "Components/fileCreator";
 
 export const fileExplorer = {
   name: "Code",
@@ -41,6 +42,14 @@ export const fileExplorer = {
     },
     delete: (project: string, path: string) => {
       return deleteFolder(project, path);
+    },
+  },
+  modals: {
+    createFile: {
+      component: CreateFile,
+      onCreate: (project: string, location: string, data: newTemplate) => {
+        return createFile(project, data.fileName, location, data.templateType);
+      },
     },
   },
 };
