@@ -194,14 +194,3 @@ def showImage(image):
 
 def showEstimatedPose(pose):
     gui.showEstimatedPose(pose)
-
-
-def followRobot():
-    for i in range(10):
-        subprocess.call(
-            "gz topic -t /gui/track -m gz.msgs.CameraTrack -p 'track_mode:2'",
-            shell=True,
-            stderr=subprocess.STDOUT,
-            bufsize=1024,
-            universal_newlines=True,
-        )
