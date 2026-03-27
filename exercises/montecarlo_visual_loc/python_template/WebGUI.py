@@ -4,47 +4,128 @@ import matplotlib.pyplot as plt
 import threading
 import cv2
 import base64
+import rclpy
+from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.qos import QoSProfile, DurabilityPolicy
+from nav_msgs.msg import Odometry
+from geometry_msgs.msg import PoseStamped, PoseArray
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
 
 from gui_interfaces.general.measuring_threading_gui_harmonic import (
     MeasuringThreadingGUI,
 )
 from console_interfaces.general.console import start_console
 from map import Map
-from HAL import getPose3d
 
-# Graphical User Interface Class
+
+def quat_to_yaw(qw, qx, qy, qz):
+    rotate_za0 = 2.0 * (qx * qy + qw * qz)
+    rotate_za1 = qw * qw + qx * qx - qy * qy - qz * qz
+    if rotate_za0 != 0.0 and rotate_za1 != 0.0:
+        return math.atan2(rotate_za0, rotate_za1)
+    return 0.0
+
+
+class Pose3d:
+    def __init__(self, x=0.0, y=0.0, yaw=0.0):
+        self.x = x
+        self.y = y
+        self.yaw = yaw
+
+
+class ROS2BridgeNode(Node):
+    def __init__(self, gui_instance):
+        super().__init__("gui_bridge_node_visual")
+        self.gui = gui_instance
+        self.bridge = CvBridge()
+        qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
+
+        self.create_subscription(Odometry, "/odom", self.odom_callback, 10)
+        self.create_subscription(
+            PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, qos
+        )
+        self.create_subscription(
+            PoseArray, "/webgui/particles", self.particles_callback, qos
+        )
+        self.create_subscription(Image, "/webgui/image_debug", self.image_callback, 10)
+
+        self.pose = Pose3d()
+
+    def odom_callback(self, msg):
+        self.pose.x = msg.pose.pose.position.x
+        self.pose.y = msg.pose.pose.position.y
+        ori = msg.pose.pose.orientation
+        self.pose.yaw = quat_to_yaw(ori.w, ori.x, ori.y, ori.z)
+
+    def estimated_pose_callback(self, msg):
+        x = msg.pose.position.x
+        y = msg.pose.position.y
+        ori = msg.pose.orientation
+        yaw = quat_to_yaw(ori.w, ori.x, ori.y, ori.z)
+        self.gui.showPosition(x, y, yaw)
+
+    def particles_callback(self, msg):
+        particles = []
+        for pose in msg.poses:
+            x = pose.position.x
+            y = pose.position.y
+            yaw = quat_to_yaw(
+                pose.orientation.w,
+                pose.orientation.x,
+                pose.orientation.y,
+                pose.orientation.z,
+            )
+            particles.append([x, y, yaw])
+        self.gui.showParticles(particles)
+
+    def image_callback(self, msg):
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
+        self.gui.setImage(cv_image)
 
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
-
-        # Payload vars
         self.payload = {"image": "", "map": "", "user": "", "particles": ""}
         self.init_coords = (171, 63)
         self.start_coords = (201, 85.5)
-        self.map = Map(getPose3d)
 
-        # Particles
         self.particles = []
-        # Image
         self.image = None
         self.image_lock = threading.Lock()
         self.image_updated = False
-        # User position
         self.user_position = (0, 0)
         self.user_angle = (0, 0)
 
+        self.bridge_node = None
+        self.executor = None
+        self.executor_thread = None
+
+        self._setup_ros2()
+
+        self.map = Map(self.get_pose3d)
         self.start()
 
-    # Prepares and sends a map to the websocket server
-    def update_gui(self):
+    def _setup_ros2(self):
+        if not rclpy.ok():
+            rclpy.init()
+        self.bridge_node = ROS2BridgeNode(self)
+        self.executor = MultiThreadedExecutor()
+        self.executor.add_node(self.bridge_node)
+        self.executor_thread = threading.Thread(
+            target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
+        )
+        self.executor_thread.start()
 
-        # Payload Image Message
+    def get_pose3d(self):
+        return self.bridge_node.pose
+
+    def update_gui(self):
         payload_image = self.payloadImage()
         self.payload["image"] = json.dumps(payload_image)
 
-        # Payload Map Message
         pos_message = self.map.getRobotCoordinates()
         if pos_message == self.init_coords:
             pos_message = self.start_coords
@@ -52,14 +133,12 @@ class WebGUI(MeasuringThreadingGUI):
         pos_message = str(pos_message + ang_message)
         self.payload["map"] = pos_message
 
-        # Payload User Message
         pos_message_user = self.user_position
         ang_message_user = self.user_angle
         pos_message_user = pos_message_user + ang_message_user
         pos_message_user = str(pos_message_user)
         self.payload["user"] = pos_message_user
 
-        # Payload Particles Message
         if self.particles:
             self.payload["particles"] = json.dumps(self.particles)
         else:
@@ -68,21 +147,18 @@ class WebGUI(MeasuringThreadingGUI):
         message = json.dumps(self.payload)
         self.send_to_client(message)
 
-    # Function to prepare image payload
-    # Encodes the image as a JSON string and sends through the WS
     def payloadImage(self):
         with self.image_lock:
             image_updated = self.image_updated
             image_to_be_shown = self.image
 
-        image = image_to_be_shown
         payload = {"image": "", "shape": ""}
 
-        if not image_updated:
+        if not image_updated or image_to_be_shown is None:
             return payload
 
-        shape = image.shape
-        frame = cv2.imencode(".JPEG", image)[1]
+        shape = image_to_be_shown.shape
+        frame = cv2.imencode(".JPEG", image_to_be_shown)[1]
         encoded_image = base64.b64encode(frame)
 
         payload["image"] = encoded_image.decode("utf-8")
@@ -97,11 +173,9 @@ class WebGUI(MeasuringThreadingGUI):
         scale_y = 15
         offset_y = 63
         y = scale_y * y + offset_y
-
         scale_x = -30
         offset_x = 171
         x = scale_x * x + offset_x
-
         self.user_position = x, y
         self.user_angle = (angle,)
 
@@ -136,21 +210,24 @@ class WebGUI(MeasuringThreadingGUI):
         yaw = map_yaw + math.pi / 2
         return [x, y, yaw]
 
-    # Function to set the next image to be sent
     def setImage(self, image):
         with self.image_lock:
             self.image = image
             self.image_updated = True
 
+    def __del__(self):
+        try:
+            if self.executor:
+                self.executor.shutdown()
+        except Exception:
+            pass
+
 
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
-
-# Redirect the console
 start_console()
 
 
-# Expose to the user
 def showImage(img):
     gui.setImage(img)
 
