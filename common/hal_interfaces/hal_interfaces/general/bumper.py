@@ -60,10 +60,7 @@ class BumperNode(Node):
 
         # Subscribe to all the callbacks
         for i in range(len(self.topics)):
-
-            self.sub = self.create_subscription(
-                ContactsState, topics[i], self.callbacks_[i], 10
-            )
+            self.create_subscription(ContactsState, topics[i], self.callbacks_[i], 10)
 
         # Right, center, left
         self.contact_states_ = [ContactsState() for _ in range(3)]

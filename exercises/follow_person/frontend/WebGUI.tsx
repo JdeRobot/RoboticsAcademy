@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer, {
-  connectApplication,
-} from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, { connectApplication } from "Components/exercise/WebGUIContainer";
 import { useExercise } from "Contexts/ExerciseContext";
 import { states } from "jderobot-commsmanager";
 
@@ -15,25 +13,63 @@ function WebGUI() {
     setManager(exerciseContext.manager);
   }, [exerciseContext]);
 
-  function listen_key() {
-    if (manager === null) {
-      return;
-    }
+  useEffect(() => {
+    if (!manager) return;
 
-    window.addEventListener("keypress", function (event) {
-      if (event.code === "KeyS") {
-        manager.send("gui", "key_s");
-      } else if (event.code === "KeyW") {
-        manager.send("gui", "key_w");
-      } else if (event.code === "KeyA") {
-        manager.send("gui", "key_a");
-      } else if (event.code === "KeyD") {
-        manager.send("gui", "key_d");
-      } else if (event.code === "KeyX") {
-        manager.send("gui", "key_x");
+    const handleKeyDown = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case "KeyW":
+          manager.send("gui", "key_w");
+          break;
+        case "KeyS":
+          manager.send("gui", "key_s");
+          break;
+        case "KeyA":
+          manager.send("gui", "key_a");
+          break;
+        case "KeyD":
+          manager.send("gui", "key_d");
+          break;
+        case "KeyX":
+          manager.send("gui", "key_x");
+          break;
+        case "KeyU":
+          manager.send("gui", "auto");
+          break;
       }
-    });
-  }
+    };
+
+    const handleKeyUp = (event: KeyboardEvent) => {
+      switch (event.code) {
+        case "KeyW":
+          manager.send("gui", "key_w_up");
+          break;
+        case "KeyS":
+          manager.send("gui", "key_s_up");
+          break;
+        case "KeyA":
+          manager.send("gui", "key_a_up");
+          break;
+        case "KeyD":
+          manager.send("gui", "key_d_up");
+          break;
+        case "KeyX":
+          manager.send("gui", "key_x_up");
+          break;
+        case "KeyU":
+          manager.send("gui", "auto_up");
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [manager]);
 
   const updateCallback = (updateData: unknown) => {
     const data = updateData as any;
@@ -52,7 +88,6 @@ function WebGUI() {
   };
 
   connectApplication(manager, updateCallback, stateCallback);
-  listen_key();
 
   return (
     <WebGUIContainer>

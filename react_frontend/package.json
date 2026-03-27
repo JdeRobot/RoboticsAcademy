@@ -64,7 +64,7 @@
     "axios": "^1.13.5",
     "glob": "^8.0.3",
     "jderobot-commsmanager": "1.0.25",
-    "jderobot-ide-interface": "0.2.137",
+    "jderobot-ide-interface": "^0.2.140",
     "jszip": "^3.10.1",
     "react-router-dom": "^7.12.0",
     "styled-components": "^5.3.6"
