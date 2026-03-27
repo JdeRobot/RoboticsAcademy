@@ -1,12 +1,11 @@
 import numpy as np
 import math
 from math import pi as pi
-import cv2
 
 
 class Map:
-    def __init__(self, pose3d):
-        self.pose3d = pose3d
+    def __init__(self, pose_getter):
+        self.pose_getter = pose_getter
 
     def RTx(self, angle, tx, ty, tz):
         RT = np.matrix(
@@ -46,7 +45,7 @@ class Map:
         return RTz
 
     def getRobotCoordinates(self):
-        pose = self.pose3d()
+        pose = self.pose_getter()
         x = pose.x
         y = pose.y
 
@@ -61,11 +60,8 @@ class Map:
         return x, y
 
     def getRobotAngle(self):
-        pose = self.pose3d()
-
+        pose = self.pose_getter()
         return (pose.yaw,)
 
-    # Function to reset
     def reset(self):
-        # Nothing to do, service takes care!
         pass
