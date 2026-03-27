@@ -104,11 +104,9 @@ class WebGUI(MeasuringThreadingGUI):
             rclpy.init()
 
         self.bridge_node = ROS2BridgeNode(self)
-        self.noise_node = NoisyOdometryNode("/odom", "/odom_noisy", 0.01)
 
         self.executor = MultiThreadedExecutor()
         self.executor.add_node(self.bridge_node)
-        self.executor.add_node(self.noise_node)
 
         self.executor_thread = threading.Thread(
             target=self.executor.spin, daemon=True, name="webgui_ros2_executor"
