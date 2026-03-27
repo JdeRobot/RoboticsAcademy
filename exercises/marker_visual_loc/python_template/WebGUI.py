@@ -15,8 +15,11 @@ from sensor_msgs.msg import Image as RosImage
 from cv_bridge import CvBridge
 
 from map import Map
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
+
 
 def quat_to_yaw(qw, qx, qy, qz):
     rotate_za0 = 2.0 * (qx * qy + qw * qz)
@@ -25,12 +28,14 @@ def quat_to_yaw(qw, qx, qy, qz):
         return math.atan2(rotate_za0, rotate_za1)
     return 0.0
 
+
 class Pose3d:
     def __init__(self, x=0.0, y=0.0, yaw=0.0, timeStamp=0.0):
         self.x = x
         self.y = y
         self.yaw = yaw
         self.timeStamp = timeStamp
+
 
 class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
@@ -40,9 +45,15 @@ class ROS2BridgeNode(Node):
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
 
         self.create_subscription(Odometry, "/turtlebot3/odom", self.pose3d_callback, 10)
-        self.create_subscription(Odometry, "/turtlebot3/odom_noisy", self.odom_callback, 10)
-        self.create_subscription(PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, qos)
-        self.create_subscription(RosImage, "/webgui/image_debug", self.image_callback, 10)
+        self.create_subscription(
+            Odometry, "/turtlebot3/odom_noisy", self.odom_callback, 10
+        )
+        self.create_subscription(
+            PoseStamped, "/webgui/estimated_pose", self.estimated_pose_callback, qos
+        )
+        self.create_subscription(
+            RosImage, "/webgui/image_debug", self.image_callback, 10
+        )
 
         self.pose3d = Pose3d()
         self.odom = Pose3d()
@@ -72,13 +83,14 @@ class ROS2BridgeNode(Node):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
         self.gui.setImage(cv_image)
 
+
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
         super().__init__(host)
         self.image = None
         self.image_lock = threading.Lock()
         self.predict_pose = None
-        
+
         self.bridge_node = None
         self.executor = None
         self.executor_thread = None
@@ -169,16 +181,20 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
 start_console()
 
+
 def showImage(image):
     gui.setImage(image)
 
+
 def showEstimatedPose(pose):
     gui.showEstimatedPose(pose)
+
 
 def followRobot():
     for i in range(10):

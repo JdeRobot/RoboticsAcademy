@@ -5,7 +5,6 @@ import sys
 
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
-from hal_interfaces.general.noise_odometry import NoisyOdometryNode
 from hal_interfaces.general.laser import LaserNode
 from hal_interfaces.general.camera import CameraNode
 

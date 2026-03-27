@@ -14,7 +14,6 @@ from gui_interfaces.general.measuring_threading_gui_harmonic import (
 )
 from console_interfaces.general.console import start_console
 from map import Map
-from hal_interfaces.general.noise_odometry import NoisyOdometryNode
 
 
 def quat_to_yaw(qw, qx, qy, qz):
