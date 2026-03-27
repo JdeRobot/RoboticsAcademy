@@ -1,71 +1,33 @@
 import numpy as np
-from rclpy.node import Node
 import math
+import rclpy
+from rclpy.node import Node
 import nav_msgs.msg
 
 
-### AUXILIARY FUNCTIONS ###
 class Pose3d:
     def __init__(self):
-
-        self.x = 0  # X coord [meters]
-        self.y = 0  # Y coord [meters]
-        self.z = 0  # Z coord [meters]
-        self.h = 1  # H param
-        self.yaw = 0  # Yaw angle[rads]
-        self.pitch = 0  # Pitch angle[rads]
-        self.roll = 0  # Roll angle[rads]
-        self.q = [0, 0, 0, 0]  # Quaternion
-        self.timeStamp = 0  # Time stamp [s]
-
-    def __str__(self):
-        s = "Pose3D: {\n   x: " + str(self.x) + "\n   y: " + str(self.y)
-        s = s + "\n   z: " + str(self.z) + "\n   H: " + str(self.h)
-        s = (
-            s
-            + "\n   Yaw: "
-            + str(self.yaw)
-            + "\n   Pitch: "
-            + str(self.pitch)
-            + "\n   Roll: "
-            + str(self.roll)
-        )
-        s = (
-            s
-            + "\n   quaternion: "
-            + str(self.q)
-            + "\n   timeStamp: "
-            + str(self.timeStamp)
-            + "\n}"
-        )
-        return s
+        self.x = 0
+        self.y = 0
+        self.z = 0
+        self.h = 1
+        self.yaw = 0
+        self.pitch = 0
+        self.roll = 0
+        self.q = [0, 0, 0, 0]
+        self.timeStamp = 0
 
 
 def quat2Yaw(qw, qx, qy, qz):
-    """
-    Translates from Quaternion to Yaw.
-    @param qw,qx,qy,qz: Quaternion values
-    @type qw,qx,qy,qz: float
-    @return Yaw value translated from Quaternion
-    """
-
     rotateZa0 = 2.0 * (qx * qy + qw * qz)
     rotateZa1 = qw * qw + qx * qx - qy * qy - qz * qz
     rotateZ = 0.0
     if rotateZa0 != 0.0 and rotateZa1 != 0.0:
         rotateZ = math.atan2(rotateZa0, rotateZa1)
-
     return rotateZ
 
 
 def quat2Pitch(qw, qx, qy, qz):
-    """
-    Translates from Quaternion to Pitch.
-    @param qw,qx,qy,qz: Quaternion values
-    @type qw,qx,qy,qz: float
-    @return Pitch value translated from Quaternion
-    """
-
     rotateYa0 = -2.0 * (qx * qz - qw * qy)
     rotateY = 0.0
     if rotateYa0 >= 1.0:
@@ -74,28 +36,19 @@ def quat2Pitch(qw, qx, qy, qz):
         rotateY = -math.pi / 2.0
     else:
         rotateY = math.asin(rotateYa0)
-
     return rotateY
 
 
 def quat2Roll(qw, qx, qy, qz):
-    """
-    Translates from Quaternion to Roll.
-    @param qw,qx,qy,qz: Quaternion values
-    @type qw,qx,qy,qz: float
-    @return Roll value translated from Quaternion
-    """
     rotateXa0 = 2.0 * (qy * qz + qw * qx)
     rotateXa1 = qw * qw - qx * qx - qy * qy + qz * qz
     rotateX = 0.0
-
     if rotateXa0 != 0.0 and rotateXa1 != 0.0:
         rotateX = math.atan2(rotateXa0, rotateXa1)
     return rotateX
 
 
 def euler2quat(yaw, pitch, roll):
-
     qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(
         roll / 2
     ) * np.sin(pitch / 2) * np.sin(yaw / 2)
@@ -108,32 +61,7 @@ def euler2quat(yaw, pitch, roll):
     qw = np.cos(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) + np.sin(
         roll / 2
     ) * np.sin(pitch / 2) * np.sin(yaw / 2)
-
     return [qx, qy, qz, qw]
-
-
-def odometry2Pose3D(odom):
-    """
-    Translates from ROS Odometry to JderobotTypes Pose3d.
-    @param odom: ROS Odometry to translate
-    @type odom: Odometry
-    @return a Pose3d translated from odom
-
-    """
-    pose = Pose3d()
-    ori = odom.pose.pose.orientation
-
-    pose.x = odom.pose.pose.position.x
-    pose.y = odom.pose.pose.position.y
-    pose.z = odom.pose.pose.position.z
-    # pose.h = odom.pose.pose.position.h
-    pose.yaw = quat2Yaw(ori.w, ori.x, ori.y, ori.z)
-    pose.pitch = quat2Pitch(ori.w, ori.x, ori.y, ori.z)
-    pose.roll = quat2Roll(ori.w, ori.x, ori.y, ori.z)
-    pose.q = [ori.w, ori.x, ori.y, ori.z]
-    pose.timeStamp = odom.header.stamp.sec + (odom.header.stamp.nanosec * 1e-9)
-
-    return pose
 
 
 def gaussian_noise(x, mu=0.0, std=0.1, noise_level=0.01):
@@ -143,12 +71,9 @@ def gaussian_noise(x, mu=0.0, std=0.1, noise_level=0.01):
 
 
 def add_noise(last_pose, new_pose, base_odom, noise_level):
-
-    # First odom is real
     if last_pose is None:
         return new_pose
 
-    # Next odom is movement from last pose to new pose + noise + base odom
     mov_x = new_pose.pose.pose.position.x - last_pose.pose.pose.position.x
     mov_y = new_pose.pose.pose.position.y - last_pose.pose.pose.position.y
     mov_z = new_pose.pose.pose.position.z - last_pose.pose.pose.position.z
@@ -167,21 +92,16 @@ def add_noise(last_pose, new_pose, base_odom, noise_level):
         old_ori.w, old_ori.x, old_ori.y, old_ori.z
     )
 
-    # Add noise
     dist = gaussian_noise(dist, noise_level=noise_level)
     mov_yaw = gaussian_noise(mov_yaw, noise_level=noise_level)
 
-    # Get new odom angle
     ori = base_odom.pose.pose.orientation
-
     new_yaw = quat2Yaw(ori.w, ori.x, ori.y, ori.z) + mov_yaw
     new_pitch = quat2Pitch(ori.w, ori.x, ori.y, ori.z) + mov_pitch
     new_roll = quat2Roll(ori.w, ori.x, ori.y, ori.z) + mov_roll
     new_ori = euler2quat(new_yaw, new_pitch, new_roll)
 
-    # Generate new odom
     new_odom = nav_msgs.msg.Odometry()
-
     new_odom.pose.pose.position.x = base_odom.pose.pose.position.x + (
         dist * math.cos(new_yaw)
     )
@@ -199,27 +119,36 @@ def add_noise(last_pose, new_pose, base_odom, noise_level):
     return new_odom
 
 
-### HAL INTERFACE ###
-class NoisyOdometryNode(Node):
-    def __init__(self, topic):
-        super().__init__("noisy_odometry_node")
+class OdomNoiseInjectorNode(Node):
+    def __init__(self):
+        super().__init__("odom_noise_injector")
         self.sub = self.create_subscription(
-            nav_msgs.msg.Odometry, topic, self.listener_callback, 10
+            nav_msgs.msg.Odometry, "/turtlebot3/odom", self.listener_callback, 10
         )
-        self.last_pose_ = None
-        self.noisy_pose = nav_msgs.msg.Odometry()
+        self.pub_low = self.create_publisher(
+            nav_msgs.msg.Odometry, "/turtlebot3/odom_noisy_low", 10
+        )
+        self.pub_med = self.create_publisher(
+            nav_msgs.msg.Odometry, "/turtlebot3/odom_noisy_med", 10
+        )
+        self.pub_high = self.create_publisher(
+            nav_msgs.msg.Odometry, "/turtlebot3/odom_noisy_high", 10
+        )
 
-        ### Control the amount of noise ###
-        self.noise_level = 0.01  # 0.1 = a lot
+        self.last_pose = None
+        self.noisy_pose_low = nav_msgs.msg.Odometry()
+        self.noisy_pose_med = nav_msgs.msg.Odometry()
+        self.noisy_pose_high = nav_msgs.msg.Odometry()
 
     def listener_callback(self, msg):
-        # First odom is real
-        # Second odom is movement from first real to second real + noise + first odom
-        # Third odom is movement from second real to third real + noise + second odom
-        self.noisy_pose = add_noise(
-            self.last_pose_, msg, self.noisy_pose, self.noise_level
+        self.noisy_pose_low = add_noise(self.last_pose, msg, self.noisy_pose_low, 0.001)
+        self.noisy_pose_med = add_noise(self.last_pose, msg, self.noisy_pose_med, 0.03)
+        self.noisy_pose_high = add_noise(
+            self.last_pose, msg, self.noisy_pose_high, 0.06
         )
-        self.last_pose_ = msg
 
-    def getPose3d(self):
-        return odometry2Pose3D(self.noisy_pose)
+        self.last_pose = msg
+
+        self.pub_low.publish(self.noisy_pose_low)
+        self.pub_med.publish(self.noisy_pose_med)
+        self.pub_high.publish(self.noisy_pose_high)

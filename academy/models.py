@@ -1,5 +1,8 @@
 """
-models.py
+Django ORM models for Robotics Academy.
+
+Defines the database schema for exercises, universes, worlds,
+robots, and tools used by the Robotics Academy platform.
 """
 
 from django.db import models
@@ -23,7 +26,11 @@ RosVersion = (("ROS", "ROS"), ("ROS2", "ROS2"))
 
 class Tool(models.Model):
     """
-    Modelo Tool para Robotics Academy
+    Represents a tool available in the Robotics Academy platform.
+
+    Attributes:
+        name: Unique identifier and primary key for the tool.
+        base_config: Default configuration string for the tool.
     """
 
     name = models.CharField(max_length=50, blank=False, unique=True, primary_key=True)
@@ -38,7 +45,11 @@ class Tool(models.Model):
 
 class Robot(models.Model):
     """
-    Modelo Robot para RoboticsAcademy
+    Represents a robot available in the Robotics Academy platform.
+
+    Attributes:
+        name: Unique name identifying the robot.
+        launch_file_path: Path to the ROS launch file for this robot.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
@@ -53,7 +64,15 @@ class Robot(models.Model):
 
 class World(models.Model):
     """
-    Modelo World para RoboticsCademy
+    Represents a simulation world in the Robotics Academy platform.
+
+    Attributes:
+        name: Unique name identifying the world.
+        launch_file_path: Path to the ROS launch file for this world.
+        tools_config: JSON string with tool configuration overrides.
+        ros_version: ROS version used (ROS or ROS2).
+        type: Simulator type (none, gazebo, gz, physical).
+        start_pose: List of starting poses for robots in this world.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
@@ -81,7 +100,12 @@ class World(models.Model):
 
 class Universe(models.Model):
     """
-    Modelo Universe para Robotics Academy
+    Represents a universe combining a world and a robot.
+
+    Attributes:
+        name: Unique name identifying the universe.
+        world: Associated World instance.
+        robot: Associated Robot instance.
     """
 
     name = models.CharField(max_length=100, blank=False, unique=True)
@@ -104,7 +128,17 @@ class Universe(models.Model):
 
 class Exercise(models.Model):
     """
-    Robotics Academy Exercise model
+    Represents a Robotics Academy exercise.
+
+    Attributes:
+        exercise_id: Unique string identifier for the exercise.
+        name: Human-readable name of the exercise.
+        description: Short description of the exercise goals.
+        tags: JSON-encoded list of tags (e.g. MULTILANGUAGE).
+        status: Lifecycle status (ACTIVE, INACTIVE, PROTOTYPE).
+        universes: Associated Universe instances via ExerciseUniverses.
+        tools: Associated Tool instances.
+        url: Optional URL for additional exercise resources.
     """
 
     exercise_id = models.CharField(max_length=40, blank=False, unique=True)
@@ -126,6 +160,15 @@ class Exercise(models.Model):
 
 
 class ExerciseUniverses(models.Model):
+    """
+    Through model linking Exercise and Universe with a default flag.
+
+    Attributes:
+        exercise: Related Exercise instance.
+        universe: Related Universe instance.
+        is_default: Whether this universe is the default for the exercise.
+    """
+
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     universe = models.ForeignKey(Universe, on_delete=models.CASCADE)
     is_default = models.BooleanField()
