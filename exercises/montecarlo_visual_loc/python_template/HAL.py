@@ -32,7 +32,7 @@ if not rclpy.ok():
 ### HAL INIT ###
 motor_node = MotorsNode("/cmd_vel", 4, 0.3)
 odometry_node = OdometryNode("/odom")
-noisy_odometry_node = NoisyOdometryNode("/odom")
+noisy_odometry_node = OdometryNode("/odom_noisy", node_name="noisy_odometry_node")
 laser_node = LaserNode("/roombaROS/laser/scan")
 camera_node = CameraNode("/camera/image_raw")
 
