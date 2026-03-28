@@ -21,7 +21,7 @@ from academy.exceptions import (
 )
 from academy.file_access import FAL_RA
 from academy.models import Exercise, Universe, World, Robot, Tool
-
+from academy.templates import select_template
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -380,3 +380,57 @@ class FileManagementViewTests(TestCase):
             },
         )
         self.assertEqual(response.status_code, 403)
+
+
+class TemplateTests(TestCase):
+    """Tests for academy/templates.py select_template function."""
+
+    def test_py_reactive_returns_nonempty(self):
+        result = select_template("py-reactive")
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+
+    def test_py_ros2_returns_nonempty(self):
+        result = select_template("py-ros2")
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+
+    def test_cpp_reactive_returns_nonempty(self):
+        result = select_template("cpp-reactive")
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+
+    def test_cpp_ros2_returns_nonempty(self):
+        result = select_template("cpp-ros2")
+        self.assertIsInstance(result, str)
+        self.assertGreater(len(result), 0)
+
+    def test_unknown_template_returns_empty_string(self):
+        self.assertEqual(select_template("unknown"), "")
+
+    def test_empty_string_returns_empty_string(self):
+        self.assertEqual(select_template(""), "")
+
+    def test_py_reactive_contains_expected_keywords(self):
+        result = select_template("py-reactive")
+        self.assertIn("HAL", result)
+        self.assertIn("WebGUI", result)
+        self.assertIn("Frequency", result)
+        self.assertIn("while True", result)
+
+    def test_py_ros2_contains_expected_keywords(self):
+        result = select_template("py-ros2")
+        self.assertIn("rclpy", result)
+        self.assertIn("Node", result)
+        self.assertIn("WebGUI", result)
+
+    def test_cpp_reactive_contains_expected_keywords(self):
+        result = select_template("cpp-reactive")
+        self.assertIn("HAL.hpp", result)
+        self.assertIn("WebGUI.hpp", result)
+        self.assertIn("Frequency.hpp", result)
+
+    def test_cpp_ros2_contains_expected_keywords(self):
+        result = select_template("cpp-ros2")
+        self.assertIn("rclcpp", result)
+        self.assertIn("Node", result)
