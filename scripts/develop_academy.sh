@@ -61,11 +61,25 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Invalid Option: $1"
+            echo "Note: If you meant to enable NVIDIA GPU support, use -n (not --nvidia)"
             Help
             exit 1
             ;;
    esac
 done
+
+# --- Auto-detect GPU if no flag was explicitly provided ---
+if [ "$nvidia" = "false" ] && [ "$gpu_mode" = "false" ]; then
+  if nvidia-smi > /dev/null 2>&1; then
+    echo "[INFO] NVIDIA GPU detected. Enabling NVIDIA mode automatically. Use -g to force generic GPU mode or run without GPU flags for CPU mode."
+    nvidia="true"
+  elif [ -e /dev/dri ]; then
+    echo "[INFO] GPU device found at /dev/dri. Enabling GPU mode automatically."
+    gpu_mode="true"
+  else
+    echo "[INFO] No GPU detected. Running in CPU-only mode."
+  fi
+fi
 
 # Set up trap to catch interrupt signal (Ctrl+C) and execute cleanup function
 trap 'cleanup' INT
