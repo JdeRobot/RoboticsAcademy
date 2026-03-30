@@ -23,7 +23,6 @@ from .models import Exercise, Universe, ExerciseUniverses
 from rest_framework.response import Response
 
 
-
 @csrf_exempt
 @api_view(["GET"])
 def save_exercise_db(request):
@@ -89,7 +88,7 @@ def enter_exercise(fal, request):
         parsed_tags = ast.literal_eval(project.tags) if project.tags else []
     except (ValueError, SyntaxError):
         parsed_tags = []
-        
+
     info = {
         "name": project.name,
         "tags": parsed_tags,
