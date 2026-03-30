@@ -22,10 +22,7 @@ class WebGUINode(Node):
         self.pub = self.create_publisher(Twist, "/person/cmd_vel", 10)
         self.bridge = CvBridge()
         self.image_sub = self.create_subscription(
-            Image, 
-            "/webgui/image_show", 
-            self.image_callback, 
-            10
+            Image, "/webgui/image_show", self.image_callback, 10
         )
 
     def image_callback(self, msg):
@@ -101,7 +98,7 @@ class WebGUI(MeasuringThreadingGUI):
     def gui_out_thread(self):
         while self.running:
             start_time = time.time()
-            
+
             self.executor.spin_once(timeout_sec=0)
 
             with self.ack_lock:
@@ -136,6 +133,7 @@ class WebGUI(MeasuringThreadingGUI):
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 start_console()
+
 
 def showImage(img):
     gui.setImage(img)
