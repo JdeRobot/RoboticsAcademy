@@ -10,17 +10,24 @@ from rclpy.executors import MultiThreadedExecutor
 from sensor_msgs.msg import Image as RosImage
 from cv_bridge import CvBridge
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
+
 
 class ROS2BridgeNode(Node):
     def __init__(self, gui_instance):
         super().__init__("gui_bridge_node_drone")
         self.gui = gui_instance
         self.bridge = CvBridge()
-        
-        self.create_subscription(RosImage, "/webgui/image_debug_right", self.image_right_callback, 10)
-        self.create_subscription(RosImage, "/webgui/image_debug_left", self.image_left_callback, 10)
+
+        self.create_subscription(
+            RosImage, "/webgui/image_debug_right", self.image_right_callback, 10
+        )
+        self.create_subscription(
+            RosImage, "/webgui/image_debug_left", self.image_left_callback, 10
+        )
 
     def image_right_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
@@ -29,6 +36,7 @@ class ROS2BridgeNode(Node):
     def image_left_callback(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="passthrough")
         self.gui.setLeftImage(cv_image)
+
 
 class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303", freq=30.0):
@@ -117,13 +125,16 @@ class WebGUI(MeasuringThreadingGUI):
         except Exception:
             pass
 
+
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
 start_console()
 
+
 def showImage(image):
     gui.setRightImage(image)
+
 
 def showLeftImage(image):
     gui.setLeftImage(image)
