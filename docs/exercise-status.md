@@ -25,7 +25,7 @@
 | Basic Computer Vision                |        ok        |     ok      |               |          | [Link][vid_basic_cv]     |       none        |        none        |             |
 | DL image classification              |        ok        |     ok      |               |          | -                        |       none        |        none        |             |
 | DL visual object detection           |        ok        |     ok      |               |          | -                        |       none        |        none        |             |
-| Pick and Place                       |        ok        |             |               |          | [Link][vid_pick_place]   |        ok         |         ok         |             |
+| Pick and Place                       |        ok        |     ok      |               |          | [Link][vid_pick_place]   |        ok         |         ok         |             |
 | Machine Vision with industrial robot |        ok        |             |               |          | [Link][vid_machine_vision]|       ok         |                    |             |
 | Car junction                         |        ok        |             |               |          | -                        |                   |         ok         |             |
 
