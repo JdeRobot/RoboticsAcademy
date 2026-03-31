@@ -142,7 +142,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.point_to_send = []
         self.matching_to_save = []
         self.matching = []
-        self.send_to_client("#res")
+        self.send_to_client(json.dumps({"reset": True}))
 
     def reset_gui(self):
         self.ClearAllPoints()
