@@ -20,14 +20,14 @@
 | Drone Rescue people                  |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
 | Drone Gymkhana                       |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
 | Drone Power tower Inspection         |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
-| Visual 3D reconstruction             |        ok        |             |               |          | -                        |        ok         |         ok         |             |
-| DL e2e Visual control                |        ok        |             |               |          | -                        |        ok         |         ok         |             |
+| Visual 3D reconstruction             |        ok        |     ok      |               |          | -                        |        ok         |         ok         |             |
+| DL e2e Visual control                |        ok        |     ok      |               |          | -                        |        ok         |         ok         |             |
 | Basic Computer Vision                |        ok        |     ok      |               |          | [Link][vid_basic_cv]     |       none        |        none        |             |
 | DL image classification              |        ok        |     ok      |               |          | -                        |       none        |        none        |             |
 | DL visual object detection           |        ok        |     ok      |               |          | -                        |       none        |        none        |             |
 | Pick and Place                       |        ok        |     ok      |               |          | [Link][vid_pick_place]   |        ok         |         ok         |             |
 | Machine Vision with industrial robot |        ok        |             |               |          | [Link][vid_machine_vision]|       ok         |                    |             |
-| Car junction                         |        ok        |             |               |          | -                        |                   |         ok         |             |
+| Car junction                         |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
 
 ## 🚧 Exercises under repair / workshop state
 
