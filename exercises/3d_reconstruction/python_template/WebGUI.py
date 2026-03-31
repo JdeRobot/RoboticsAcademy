@@ -12,7 +12,9 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import String, Bool, Float32MultiArray, Empty
 from cv_bridge import CvBridge
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 
 
@@ -21,16 +23,24 @@ class WebGUINode(Node):
         super().__init__("webgui_3d_reconstruction")
         self.gui = gui_instance
         self.bridge = CvBridge()
-        
+
         qos_profile = QoSProfile(depth=10, durability=DurabilityPolicy.TRANSIENT_LOCAL)
-        
-        self.create_subscription(Image, '/webgui/image_left', self.img_left_cb, qos_profile)
-        self.create_subscription(Image, '/webgui/image_right', self.img_right_cb, qos_profile)
-        self.create_subscription(Bool, '/webgui/paint_matching', self.paint_match_cb, 10)
-        self.create_subscription(String, '/webgui/points_new', self.pts_new_cb, 10)
-        self.create_subscription(String, '/webgui/points_all', self.pts_all_cb, 10)
-        self.create_subscription(Float32MultiArray, '/webgui/image_matching', self.img_match_cb, 10)
-        self.create_subscription(Empty, '/webgui/clear_points', self.clear_cb, 10)
+
+        self.create_subscription(
+            Image, "/webgui/image_left", self.img_left_cb, qos_profile
+        )
+        self.create_subscription(
+            Image, "/webgui/image_right", self.img_right_cb, qos_profile
+        )
+        self.create_subscription(
+            Bool, "/webgui/paint_matching", self.paint_match_cb, 10
+        )
+        self.create_subscription(String, "/webgui/points_new", self.pts_new_cb, 10)
+        self.create_subscription(String, "/webgui/points_all", self.pts_all_cb, 10)
+        self.create_subscription(
+            Float32MultiArray, "/webgui/image_matching", self.img_match_cb, 10
+        )
+        self.create_subscription(Empty, "/webgui/clear_points", self.clear_cb, 10)
 
     def img_left_cb(self, msg):
         try:
@@ -69,7 +79,9 @@ class WebGUINode(Node):
 
     def img_match_cb(self, msg):
         if len(msg.data) >= 4:
-            self.gui.showImageMatching(msg.data[0], msg.data[1], msg.data[2], msg.data[3])
+            self.gui.showImageMatching(
+                msg.data[0], msg.data[1], msg.data[2], msg.data[3]
+            )
 
     def clear_cb(self, msg):
         self.gui.ClearAllPoints()
@@ -105,11 +117,11 @@ class WebGUI(MeasuringThreadingGUI):
 
     def update_gui(self):
         self.executor.spin_once(timeout_sec=0)
-            
+
         payload1, payload2 = self.payloadImage()
         self.payload["img1"] = json.dumps(payload1)
         self.payload["img2"] = json.dumps(payload2)
-        
+
         length_point_send = len(self.point_to_send)
         if length_point_send != 0:
             if length_point_send > 500:
@@ -120,10 +132,10 @@ class WebGUI(MeasuringThreadingGUI):
                 del self.point_to_send[0:length_point_send]
         else:
             self.payload["pts"] = json.dumps([])
-            
+
         self.payload["match"] = json.dumps(self.matching)
         self.matching = []
-        
+
         self.payload["p_match"] = self.paint_matching
 
         message = json.dumps(self.payload)
@@ -158,7 +170,9 @@ class WebGUI(MeasuringThreadingGUI):
 
     def showImages(self, image1, image2, paint_matching):
         self.paint_matching = "T" if paint_matching else "F"
-        if not np.array_equal(self.image1_to_be_shown, image1) or not np.array_equal(self.image2_to_be_shown, image2):
+        if not np.array_equal(self.image1_to_be_shown, image1) or not np.array_equal(
+            self.image2_to_be_shown, image2
+        ):
             with self.image_show_lock:
                 self.image1_to_be_shown = image1
                 self.image2_to_be_shown = image2
@@ -199,17 +213,22 @@ gui = WebGUI(host)
 
 start_console()
 
+
 def showImages(image1, image2, paint_matching):
     gui.showImages(image1, image2, paint_matching)
+
 
 def ShowNewPoints(points):
     gui.ShowNewPoints(points)
 
+
 def ShowAllPoints(points):
     gui.ShowAllPoints(points)
 
+
 def showImageMatching(x1, y1, x2, y2):
     gui.showImageMatching(x1, y1, x2, y2)
+
 
 def ClearAllPoints():
     gui.ClearAllPoints()
