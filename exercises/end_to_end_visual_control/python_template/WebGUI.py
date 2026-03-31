@@ -23,8 +23,8 @@ class WebGUINode(Node):
         super().__init__("webgui_end_to_end")
         self.gui = gui_instance
         self.bridge = CvBridge()
-        
-        self.create_subscription(Image, '/webgui/image', self.img_cb, 10)
+
+        self.create_subscription(Image, "/webgui/image", self.img_cb, 10)
 
     def img_cb(self, msg):
         try:
@@ -46,21 +46,21 @@ class WebGUI(MeasuringThreadingGUI):
         self.image_to_be_shown = None
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
-        
+
         self.payload = {"image": "", "lap": "", "map": ""}
-        
+
         self.ros_node = WebGUINode(self)
         self.odom_node = OdometryNode("/odom", "webgui_odometry")
-        
+
         self.executor = MultiThreadedExecutor()
         self.executor.add_node(self.ros_node)
         self.executor.add_node(self.odom_node)
-        
+
         self.executor_thread = threading.Thread(target=self.executor.spin, daemon=True)
         self.executor_thread.start()
 
         self.lap = Lap(self.odom_node)
-        
+
         self.start()
 
     def gui_in_thread(self, ws, message):
@@ -125,6 +125,7 @@ class WebGUI(MeasuringThreadingGUI):
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 start_console()
+
 
 def showImage(image):
     gui.showImage(image)
