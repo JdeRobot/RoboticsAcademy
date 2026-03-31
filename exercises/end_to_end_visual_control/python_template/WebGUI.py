@@ -14,9 +14,6 @@ from console_interfaces.general.console import start_console
 from lap import Lap
 from hal_interfaces.general.odometry import OdometryNode
 
-sys.path.insert(0, "/RoboticsApplicationManager")
-from robotics_application_manager import LogManager
-
 
 class WebGUINode(Node):
     def __init__(self, gui_instance):
@@ -74,8 +71,6 @@ class WebGUI(MeasuringThreadingGUI):
             self.lap.unpause()
         elif "pause" in message:
             self.lap.pause()
-        else:
-            LogManager.logger.error("Unsupported msg")
 
     def update_gui(self):
         payload = self.payloadImage()
