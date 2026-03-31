@@ -832,7 +832,7 @@ def detach():
 
 
 def GripperSet(relative_closure, wait_time):
-    """Set gripper closure percentage (100% full open, 0% full closed)"""
+    """Set gripper closure percentage (0% fully open, 100% fully closed)"""
     ACTION = Action()
     ACTION.action = "MoveG"
     ACTION.speed = float(1)  # Gripper speed not working for Robotiq 85, set to 100%
@@ -878,7 +878,7 @@ def back_to_home():
     """Move robot back to home position"""
     print("Moving robot back to home position...")
     MoveAbsJ(_home_joints, 0.9, 1.0)
-    GripperSet(0, 0.5)  # 100% open (full release)
+    GripperSet(0, 0.5)  # 0% closed (fully open / full release)
     print("Robot returned to home position")
 
 

@@ -334,7 +334,7 @@ def dettach():
     )
 
 
-# Gripper closing and opeining to a given percentage (100% full open, 0% full closed)
+# Set gripper closure to a given percentage (0% fully open, 100% fully closed)
 # Speed max 1.0, wait time after movement in seconds
 def GripperSet(relative_closure, wait_time):
     ACTION = Action()
