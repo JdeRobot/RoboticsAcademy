@@ -7,12 +7,12 @@ import rclpy
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from sensor_msgs.msg import Image
-from nav_msgs.msg import Odometry
 from cv_bridge import CvBridge
 
 from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from lap import Lap
+from hal_interfaces.general.odometry import OdometryNode
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 from robotics_application_manager import LogManager
@@ -25,7 +25,6 @@ class WebGUINode(Node):
         self.bridge = CvBridge()
         
         self.create_subscription(Image, '/webgui/image', self.img_cb, 10)
-        self.create_subscription(Odometry, '/odom', self.odom_cb, 10)
 
     def img_cb(self, msg):
         try:
@@ -35,26 +34,6 @@ class WebGUINode(Node):
                 self.gui.image_to_be_shown_updated = True
         except Exception:
             pass
-            
-    def odom_cb(self, msg):
-        # Actualizamos las variables de la GUI directamente
-        self.gui.current_x = msg.pose.pose.position.x
-        self.gui.current_y = msg.pose.pose.position.y
-
-
-# Envoltorio para mantener lap.py original intacto
-class Pose3DMock:
-    def __init__(self, gui):
-        self.gui = gui
-        
-    def getPose3d(self):
-        # lap.py espera un objeto con atributos x e y
-        class Pose:
-            pass
-        p = Pose()
-        p.x = self.gui.current_x
-        p.y = self.gui.current_y
-        return p
 
 
 class WebGUI(MeasuringThreadingGUI):
@@ -68,20 +47,19 @@ class WebGUI(MeasuringThreadingGUI):
         self.image_to_be_shown_updated = False
         self.image_show_lock = threading.Lock()
         
-        self.current_x = 0.0
-        self.current_y = 0.0
-
         self.payload = {"image": "", "lap": "", "map": ""}
         
         self.ros_node = WebGUINode(self)
+        self.odom_node = OdometryNode("/odom", "webgui_odometry")
+        
         self.executor = MultiThreadedExecutor()
         self.executor.add_node(self.ros_node)
+        self.executor.add_node(self.odom_node)
+        
         self.executor_thread = threading.Thread(target=self.executor.spin, daemon=True)
         self.executor_thread.start()
 
-        # Instanciamos nuestro Mock y se lo pasamos al Lap original
-        self.pose3d_mock = Pose3DMock(self)
-        self.lap = Lap(self.pose3d_mock)
+        self.lap = Lap(self.odom_node)
         
         self.start()
 
@@ -108,7 +86,8 @@ class WebGUI(MeasuringThreadingGUI):
         if lapped is not None:
             self.payload["lap"] = str(lapped)
 
-        pos_message = str((self.current_x, self.current_y))
+        pose = self.odom_node.getPose3d()
+        pos_message = str((pose.x, pose.y))
         self.payload["map"] = pos_message
 
         message = json.dumps(self.payload)
