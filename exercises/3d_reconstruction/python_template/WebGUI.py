@@ -105,11 +105,6 @@ class WebGUI(MeasuringThreadingGUI):
 
     def update_gui(self):
         self.executor.spin_once(timeout_sec=0)
-        
-        if getattr(self, 'needs_clear', False):
-            self.send_to_client("#res")
-            self.needs_clear = False
-            return
             
         payload1, payload2 = self.payloadImage()
         self.payload["img1"] = json.dumps(payload1)
@@ -189,11 +184,11 @@ class WebGUI(MeasuringThreadingGUI):
         self.matching.append([x1, y1, x2, y2])
 
     def ClearAllPoints(self):
-        self.point_to_save.clear()
-        self.point_to_send.clear()
-        self.matching.clear()
-        self.point_set.clear()
-        self.needs_clear = True
+        self.point_to_save = []
+        self.point_to_send = []
+        self.matching_to_save = []
+        self.matching = []
+        self.send_to_client(json.dumps({"reset": True}))
 
     def reset_gui(self):
         self.ClearAllPoints()
