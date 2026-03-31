@@ -129,9 +129,15 @@ The objective of this exercise is to implement the logic that allows a logistics
 
 ## Robot API
 
+This exercise supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
+#### Python
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-
+* 
 #### Gazebo Harmonic support
 
 This exercise can also run in **Gazebo Harmonic**, which is the recommended simulator as **Gazebo Classic is being progressively deprecated**.
@@ -196,6 +202,34 @@ See the example below on how to use them:
     cv2.putText(mat, "Text", (200, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, 129, 2, cv2.LINE_AA)
     WebGUI.showNumpy(mat)
 ```
+
+### ROS 2-direct Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication with the simulation and the WebGUI.
+
+- `/amazon_robot/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/amazon_robot/odom` - Subscribe to this topic to receive the current pose of the robot. Message type: `nav_msgs/msg/Odometry`
+- `/amazon_robot/scan` - Subscribe to this topic to receive the 2D laser data. Message type: `sensor_msgs/msg/LaserScan`
+- `/platform/cmd_vel` - Publish to this topic to control the lifting platform. Positive values lift the platform (`5.0`) and negative values (`-5.0`) lower it. Message type: `std_msgs/msg/Float64`
+
+For WebGUI debugging:
+
+- `/webgui/path` - Publish the planned path so it can be displayed in the WebGUI. Message type: `std_msgs/msg/String`. QoS: `TRANSIENT_LOCAL` (depth 1)
+- `/webgui/image` - Publish a debug image for visualization in the WebGUI. Message type: `sensor_msgs/msg/Image`. QoS: `TRANSIENT_LOCAL` (depth 1)
+  
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 ## Gazebo Harmonic tools
 
