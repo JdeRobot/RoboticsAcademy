@@ -299,8 +299,8 @@ class FAL_RA(FAL):
         except Exception:
             raise BinaryNotSupported(path)
 
-    def read_binary(self, path: str) -> str:
-        super().read(path)
+    def read_binary(self, path: str) -> bytes:
+        super().read_binary(path)
 
         with open(path, "rb") as f:
             return f.read()
