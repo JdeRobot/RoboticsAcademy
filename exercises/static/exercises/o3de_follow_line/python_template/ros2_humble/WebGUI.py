@@ -17,7 +17,7 @@ import sys
 
 sys.path.insert(0, "/RoboticsApplicationManager")
 
-from manager.ram_logging.log_manager import LogManager
+from robotics_application_manager.ram_logging.log_manager import LogManager
 
 
 class WebGUIImagePublisher(Node):
@@ -47,7 +47,7 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"image": "", "lap": "", "map": ""}
         self.bridge = CvBridge()
 
-        self.pose3d_object = OdometryNode("/odom")
+        self.pose3d_object = OdometryNode("/chassis_link/odom")
 
         self.executor = rclpy.executors.MultiThreadedExecutor()
         self.executor.add_node(self.webgui_publisher)
