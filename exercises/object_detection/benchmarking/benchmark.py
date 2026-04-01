@@ -1,4 +1,3 @@
-from os import path
 from BoundingBox import BoundingBox
 from BoundingBoxes import BoundingBoxes
 from utils import *

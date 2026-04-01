@@ -35,7 +35,7 @@ class BoundingBox:
         # If relative coordinates, convert to absolute values
         # For relative coords: (x,y,w,h)=(X_center/img_width , Y_center/img_height)
         if typeCoordinates == CoordinatesType.Relative:
-            (self._x, self._y, self._w, self._h) = convertToAbsoluteValues(
+            self._x, self._y, self._w, self._h = convertToAbsoluteValues(
                 imgSize, (x, y, w, h)
             )
             self._width_img = imgSize[0]
@@ -121,7 +121,7 @@ class BoundingBox:
 
         if (
             det1.getClassId() == det2.getClassId()
-            and det1.classConfidence == det2.classConfidenc()
+            and det1.getConfidence() == det2.getConfidence()
             and det1BB[0] == det2BB[0]
             and det1BB[1] == det2BB[1]
             and det1BB[2] == det2BB[2]

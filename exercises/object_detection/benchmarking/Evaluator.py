@@ -139,7 +139,7 @@ class Evaluator:
         # Each resut represents a class
         for result in results:
             if result is None:
-                raise IOError("Error: Class %d could not be found." % classId)
+                raise IOError("Error: Class could not be found.")
 
             classId = result["class"]
             precision = result["precision"]

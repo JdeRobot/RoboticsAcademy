@@ -12,7 +12,7 @@ class BoundingBoxes:
     def removeBoundingBox(self, _boundingBox):
         for d in self._boundingBoxes:
             if BoundingBox.compare(d, _boundingBox):
-                del self._boundingBoxes[d]
+                self._boundingBoxes.remove(d)
                 return
 
     def removeAllBoundingBoxes(self):
