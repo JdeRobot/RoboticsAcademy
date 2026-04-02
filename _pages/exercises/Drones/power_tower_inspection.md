@@ -109,6 +109,34 @@ Simple hints provided to help you solve the power_tower_inspection exercise. Ple
 
 The main task of this exercise is the detection of defect, i.e., rust, damaging the power towers, wires and the inductors. A possible and simple way for the detection could be by **filtering the color of the rust** and creating a bounding box around the defect detected.
 
+#### Optional: Structured Detection Representation (Advanced)
+
+While detecting defects such as rust, students may optionally represent detections in a structured format instead of directly drawing on the image.
+
+For example:
+
+```python
+detections = []
+
+for c in contours:
+    x, y, w, h = cv.boundingRect(c)
+
+    detections.append({
+        "label": "rust",
+        "bbox": [x, y, w, h],
+        "confidence": 1.0
+    })
+```    
+
+This representation can help in:
+- improving debugging and logging
+- separating detection logic from visualization
+- enabling future extensions with learning-based methods such as object detection models
+
+Students can still visualize results by iterating over the detections and drawing bounding boxes.
+
+This step is optional and does not change the core objective of the exercise.    
+
 ### Where are the possible defects located?
 
 For moving the focus of the student to developing the algorithm for navigating and detecting the defects, we are providing the abstract locations of the defects.
