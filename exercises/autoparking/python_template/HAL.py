@@ -145,3 +145,44 @@ def getLidarData():
     Returns:
         LidarData: Object with the following attributes:
             - points (list[tuple]): List of (x, y, z) tuples in meters
+            - intensities (list[float]): Intensity values per point
+                                        (empty if not available)
+            - timeStamp (float): Timestamp in seconds
+            - min_range (float): Minimum sensor range in meters (default: 0.1)
+            - max_range (float): Maximum sensor range in meters (default: 15.0)
+            - field_of_view (tuple): (horizontal, vertical) FOV in radians
+            - is_dense (bool): True if all points are finite (no NaN/Inf)
+
+    Example:
+        lidar = HAL.getLidarData()
+        for point in lidar.points:
+            x, y, z = point
+    """
+    lidar = lidar_node.getLidarData()
+    timestamp = lidar.timeStamp
+    while timestamp == 0.0:
+        lidar = lidar_node.getLidarData()
+        timestamp = lidar.timeStamp
+    return lidar
+
+
+def setV(velocity):
+    """
+    Sets the linear velocity of the car.
+
+    Args:
+        velocity (float): Linear velocity in m/s.
+                         Positive = forward, Negative = backward
+    """
+    motor_node.sendV(float(velocity))
+
+
+def setW(velocity):
+    """
+    Sets the angular velocity of the car.
+
+    Args:
+        velocity (float): Angular velocity in rad/s.
+                         Positive = left turn, Negative = right turn
+    """
+    motor_node.sendW(float(velocity))
