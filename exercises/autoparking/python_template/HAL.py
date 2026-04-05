@@ -68,19 +68,7 @@ def getPose3d():
 
 
 def getFrontLaserData():
-    """
-    Returns laser scan data from the front laser sensor.
-
-    NOTE: This belongs to the old 3-laser universe.
-    If you are using the new 3D LiDAR universe, use getLidarData() instead.
-
-    Returns:
-        LaserData: Object with attributes:
-            - values (list[float]): Distance measurements in meters
-            - minAngle (float): Start angle of scan in radians
-            - maxAngle (float): End angle of scan in radians
-            - timeStamp (float): Timestamp of the scan
-    """
+    
     laser = laser_front_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -90,19 +78,7 @@ def getFrontLaserData():
 
 
 def getRightLaserData():
-    """
-    Returns laser scan data from the right-side laser sensor.
-
-    NOTE: This belongs to the old 3-laser universe.
-    If you are using the new 3D LiDAR universe, use getLidarData() instead.
-
-    Returns:
-        LaserData: Object with attributes:
-            - values (list[float]): Distance measurements in meters
-            - minAngle (float): Start angle of scan in radians
-            - maxAngle (float): End angle of scan in radians
-            - timeStamp (float): Timestamp of the scan
-    """
+    
     laser = laser_right_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -112,19 +88,7 @@ def getRightLaserData():
 
 
 def getBackLaserData():
-    """
-    Returns laser scan data from the rear laser sensor.
-
-    NOTE: This belongs to the old 3-laser universe.
-    If you are using the new 3D LiDAR universe, use getLidarData() instead.
-
-    Returns:
-        LaserData: Object with attributes:
-            - values (list[float]): Distance measurements in meters
-            - minAngle (float): Start angle of scan in radians
-            - maxAngle (float): End angle of scan in radians
-            - timeStamp (float): Timestamp of the scan
-    """
+    
     laser = laser_back_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -134,30 +98,7 @@ def getBackLaserData():
 
 
 def getLidarData():
-    """
-    Returns 3D LiDAR point cloud data from the Prius autoparking vehicle.
-    This is the primary sensor for the NEW 3D LiDAR universe.
-    Subscribes to /prius_autoparking/pc2 (sensor_msgs/PointCloud2).
-
-    Use this function instead of the laser functions (getFrontLaserData,
-    getRightLaserData, getBackLaserData) when working in the 3D LiDAR universe.
-
-    Returns:
-        LidarData: Object with the following attributes:
-            - points (list[tuple]): List of (x, y, z) tuples in meters
-            - intensities (list[float]): Intensity values per point
-                                        (empty if not available)
-            - timeStamp (float): Timestamp in seconds
-            - min_range (float): Minimum sensor range in meters (default: 0.1)
-            - max_range (float): Maximum sensor range in meters (default: 15.0)
-            - field_of_view (tuple): (horizontal, vertical) FOV in radians
-            - is_dense (bool): True if all points are finite (no NaN/Inf)
-
-    Example:
-        lidar = HAL.getLidarData()
-        for point in lidar.points:
-            x, y, z = point
-    """
+   
     lidar = lidar_node.getLidarData()
     timestamp = lidar.timeStamp
     while timestamp == 0.0:
