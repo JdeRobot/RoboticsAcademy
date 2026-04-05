@@ -69,7 +69,7 @@ def getPose3d():
 
 def getFrontLaserData():
     """
-    If you are using the new 3D LiDAR universe, use getLidarData() instead.
+    Returns laser scan data from the front laser sensor.
 
     Returns:
         LaserData: Object with attributes:
@@ -78,15 +78,17 @@ def getFrontLaserData():
             - maxAngle (float): End angle of scan in radians
             - timeStamp (float): Timestamp of the scan
     """
-    
     laser = laser_front_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
+        laser = laser_front_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 
 def getRightLaserData():
     """
-    If you are using the new 3D LiDAR universe, use getLidarData() instead.
+    Returns laser scan data from the right-side laser sensor.
 
     Returns:
         LaserData: Object with attributes:
@@ -95,15 +97,17 @@ def getRightLaserData():
             - maxAngle (float): End angle of scan in radians
             - timeStamp (float): Timestamp of the scan
     """
-    
     laser = laser_right_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
+        laser = laser_right_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 
 def getBackLaserData():
     """
-    If you are using the new 3D LiDAR universe, use getLidarData() instead.
+    Returns laser scan data from the rear laser sensor.
 
     Returns:
         LaserData: Object with attributes:
@@ -112,16 +116,17 @@ def getBackLaserData():
             - maxAngle (float): End angle of scan in radians
             - timeStamp (float): Timestamp of the scan
     """
-    
     laser = laser_back_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
+        laser = laser_back_node.getLaserData()
+        timestamp = laser.timeStamp
+    return laser
 
 
 def getLidarData():
     """
-    Use this function instead of the laser functions (getFrontLaserData,
-    getRightLaserData, getBackLaserData) when working in the 3D LiDAR universe.
+    Returns 3D LiDAR point cloud data from the Prius autoparking vehicle.
 
     Returns:
         LidarData: Object with the following attributes:
@@ -139,7 +144,31 @@ def getLidarData():
         for point in lidar.points:
             x, y, z = point
     """
-   
     lidar = lidar_node.getLidarData()
     timestamp = lidar.timeStamp
     while timestamp == 0.0:
+        lidar = lidar_node.getLidarData()
+        timestamp = lidar.timeStamp
+    return lidar
+
+
+def setV(velocity):
+    """
+    Sets the linear velocity of the car.
+
+    Args:
+        velocity (float): Linear velocity in m/s.
+                         Positive = forward, Negative = backward
+    """
+    motor_node.sendV(float(velocity))
+
+
+def setW(velocity):
+    """
+    Sets the angular velocity of the car.
+
+    Args:
+        velocity (float): Angular velocity in rad/s.
+                         Positive = left turn, Negative = right turn
+    """
+    motor_node.sendW(float(velocity))
