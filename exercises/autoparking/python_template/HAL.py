@@ -2,7 +2,6 @@ import rclpy
 import threading
 import time
 import sys
-
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
@@ -13,17 +12,15 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
-
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
 
-
 threading.excepthook = custom_thread_excepthook
-# ROS2 init
 
+# ROS2 init
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
@@ -44,7 +41,6 @@ executor.add_node(laser_right_node)
 executor.add_node(laser_back_node)
 executor.add_node(lidar_node)
 
-
 def __auto_spin() -> None:
     while rclpy.ok():
         try:
@@ -53,16 +49,38 @@ def __auto_spin() -> None:
             pass
         time.sleep(1 / freq)
 
-
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
 
 
 def getPose3d():
+    """
+    Returns the current pose of the car in 3D space.
+
+    Returns:
+        Pose3d: Object with the following attributes:
+            - x (float): X position in meters
+            - y (float): Y position in meters
+            - z (float): Z position in meters
+            - yaw (float): Rotation around Z axis in radians
+    """
     return odometry_node.getPose3d()
 
 
 def getFrontLaserData():
+    """
+    Returns laser scan data from the front laser sensor.
+
+    NOTE: This belongs to the old 3-laser universe.
+    If you are using the new 3D LiDAR universe, use getLidarData() instead.
+
+    Returns:
+        LaserData: Object with attributes:
+            - values (list[float]): Distance measurements in meters
+            - minAngle (float): Start angle of scan in radians
+            - maxAngle (float): End angle of scan in radians
+            - timeStamp (float): Timestamp of the scan
+    """
     laser = laser_front_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -72,6 +90,19 @@ def getFrontLaserData():
 
 
 def getRightLaserData():
+    """
+    Returns laser scan data from the right-side laser sensor.
+
+    NOTE: This belongs to the old 3-laser universe.
+    If you are using the new 3D LiDAR universe, use getLidarData() instead.
+
+    Returns:
+        LaserData: Object with attributes:
+            - values (list[float]): Distance measurements in meters
+            - minAngle (float): Start angle of scan in radians
+            - maxAngle (float): End angle of scan in radians
+            - timeStamp (float): Timestamp of the scan
+    """
     laser = laser_right_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -81,6 +112,19 @@ def getRightLaserData():
 
 
 def getBackLaserData():
+    """
+    Returns laser scan data from the rear laser sensor.
+
+    NOTE: This belongs to the old 3-laser universe.
+    If you are using the new 3D LiDAR universe, use getLidarData() instead.
+
+    Returns:
+        LaserData: Object with attributes:
+            - values (list[float]): Distance measurements in meters
+            - minAngle (float): Start angle of scan in radians
+            - maxAngle (float): End angle of scan in radians
+            - timeStamp (float): Timestamp of the scan
+    """
     laser = laser_back_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -90,17 +134,14 @@ def getBackLaserData():
 
 
 def getLidarData():
-    lidar = lidar_node.getLidarData()
-    timestamp = lidar.timeStamp
-    while timestamp == 0.0:
-        lidar = lidar_node.getLidarData()
-        timestamp = lidar.timeStamp
-    return lidar
+    """
+    Returns 3D LiDAR point cloud data from the Prius autoparking vehicle.
+    This is the primary sensor for the NEW 3D LiDAR universe.
+    Subscribes to /prius_autoparking/pc2 (sensor_msgs/PointCloud2).
 
+    Use this function instead of the laser functions (getFrontLaserData,
+    getRightLaserData, getBackLaserData) when working in the 3D LiDAR universe.
 
-def setV(velocity):
-    motor_node.sendV(float(velocity))
-
-
-def setW(velocity):
-    motor_node.sendW(float(velocity))
+    Returns:
+        LidarData: Object with the following attributes:
+            - points (list[tuple]): List of (x, y, z) tuples in meters
