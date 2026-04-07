@@ -9,6 +9,7 @@ from hal_interfaces.specific.threed_reconstruction.parameters_camera import (
 )
 import numpy as np
 
+
 # Hardware Abstraction Layer
 
 IMG_WIDTH = 640

@@ -12,11 +12,13 @@ IMG_WIDTH = 320
 IMG_HEIGHT = 240
 freq = 30.0
 
+
 # Mutes exceptions
 def custom_thread_excepthook(args):
     if "spin" in args.thread.name:
         return
     sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+
 
 threading.excepthook = custom_thread_excepthook
 
@@ -41,6 +43,7 @@ executor.add_node(laser_right_node)
 executor.add_node(laser_back_node)
 executor.add_node(lidar_node)
 
+
 def __auto_spin() -> None:
     while rclpy.ok():
         try:
@@ -48,6 +51,7 @@ def __auto_spin() -> None:
         except Exception:
             pass
         time.sleep(1 / freq)
+
 
 executor_thread = threading.Thread(target=__auto_spin, daemon=True)
 executor_thread.start()
