@@ -17,7 +17,7 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getFileList, getHelperFileList } from "Api";
+import { getFile, getFileList, getHelperFileList } from "Api";
 
 const PlayPauseButton = ({
   project,
@@ -37,6 +37,7 @@ const PlayPauseButton = ({
   const entrypointRef = useRef<Entry | undefined>(undefined);
   const runningFilesRef = useRef<Entry[]>([]);
   const runningEntrypointRef = useRef<Entry | undefined>(undefined);
+  const runningContentRef = useRef<string | undefined>(undefined);
   const [state, setState] = useState<string>(states.IDLE);
   const [loading, setLoading] = useState<boolean>(false);
   const isCodeUpdatedRef = useRef<boolean | undefined>(undefined);
@@ -176,21 +177,26 @@ const PlayPauseButton = ({
     filesRef.current = JSON.parse(files);
 
     if (state === states.PAUSED) {
+      // TODO: this should be for all files
       if (
-        runningFilesRef.current === filesRef.current &&
+        JSON.stringify(runningFilesRef.current) ===
+          JSON.stringify(filesRef.current) &&
         runningEntrypointRef.current === entrypointRef.current
       ) {
-        try {
-          await manager.resume();
-          console.log("App resumed correctly!");
-        } catch (e: unknown) {
-          console.error("Error resuming app: " + (e as Error).message);
-          error(
-            "Failed to resume the application. See the traces in the terminal."
-          );
+        const currContent = await getFile(project, entrypointRef.current.path);
+        if (currContent === runningContentRef.current) {
+          try {
+            await manager.resume();
+            console.log("App resumed correctly!");
+          } catch (e: unknown) {
+            console.error("Error resuming app: " + (e as Error).message);
+            error(
+              "Failed to resume the application. See the traces in the terminal."
+            );
+          }
+          setLoading(false);
+          return;
         }
-        setLoading(false);
-        return;
       }
     }
 
@@ -219,6 +225,10 @@ const PlayPauseButton = ({
       );
 
       await zipCodeFiles(commonsZip, filesRef.current, project);
+
+      commonsZip.files[entrypointRef.current.path]._data.then(
+        (value: string) => (runningContentRef.current = value)
+      );
 
       runningFilesRef.current = filesRef.current;
       runningEntrypointRef.current = entrypointRef.current;
