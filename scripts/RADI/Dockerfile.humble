@@ -41,7 +41,7 @@ RUN /bin/bash -c "source /home/dev_ws/install/local_setup.bash"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash; colcon build --symlink-install --packages-ignore gz_ros2_control gz_ros2_control_demos"
 
 # CPP Support lib installation
-WORKDIR /home/ws/src/ra_cpp_api/vacuum_cleaner_cpp
+WORKDIR /RoboticsAcademy/common/ra_cpp_api/vacuum_cleaner_cpp
 
 RUN mkdir build && cd build && \
     cmake .. && \
