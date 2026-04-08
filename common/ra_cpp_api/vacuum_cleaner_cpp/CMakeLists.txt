@@ -34,7 +34,7 @@ add_library(WebGUI SHARED src/WebGUI.cpp)
 target_include_directories(WebGUI PUBLIC include)
 
 ament_target_dependencies(WebGUI rclcpp nav_msgs gazebo_msgs tf2 tf2_geometry_msgs)
-target_link_libraries(WebGUI PUBLIC Frequency Boost::system nlohmann_json::nlohmann_json)
+target_link_libraries(WebGUI Frequency Boost::system nlohmann_json::nlohmann_json)
 
 # ==========================================
 # TARGET 3: libHAL.so
@@ -43,4 +43,4 @@ add_library(HAL SHARED src/HAL.cpp)
 target_include_directories(HAL PUBLIC include ${COMMON_INTERFACES_INCLUDE})
 
 ament_target_dependencies(HAL rclcpp geometry_msgs sensor_msgs std_msgs)
-target_link_libraries(HAL PUBLIC ${COMMON_INTERFACES_LIB})
+target_link_libraries(HAL ${COMMON_INTERFACES_LIB})
