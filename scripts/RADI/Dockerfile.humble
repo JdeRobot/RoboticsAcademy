@@ -51,7 +51,7 @@ RUN mkdir -p /RoboticsAcademy/exercises/vacuum_cleaner/cpp_template/libs
 
 RUN cp build/libHAL.so build/libWebGUI.so build/libFrequency.so /RoboticsAcademy/exercises/vacuum_cleaner/cpp_template/libs/
 
-RUN cp include/*.hpp /RoboticsAcademy/exercises/vacuum_cleaner/cpp_template/
+RUN cp include/vacuum_cleaner_cpp/*.hpp /RoboticsAcademy/exercises/vacuum_cleaner/cpp_template/
 
 # End cpp support
 
