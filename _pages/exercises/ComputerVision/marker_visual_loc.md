@@ -126,7 +126,7 @@ tags:
   tag_0:
     position: [1.75, -3.535, 0.8, -1.57079]
 ```
-Being the position [X, Y, Z, Yaw]
+Being the position [X, Y, Z, Yaw] of the center of the tag.
 
 ## Theory
 
