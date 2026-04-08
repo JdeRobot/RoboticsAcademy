@@ -1,5 +1,5 @@
-#ifndef VACUUM_CLEANER_CPP__WEBGUI_HPP_
-#define VACUUM_CLEANER_CPP__WEBGUI_HPP_
+#ifndef INCLUDE_WEBGUI_HPP_
+#define INCLUDE_WEBGUI_HPP_
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>

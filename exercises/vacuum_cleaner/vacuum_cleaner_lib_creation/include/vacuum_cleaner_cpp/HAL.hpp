@@ -1,5 +1,5 @@
-#ifndef VACUUM_CLEANER_CPP__HAL_HPP_
-#define VACUUM_CLEANER_CPP__HAL_HPP_
+#ifndef INCLUDE_HAL_HPP_
+#define INCLUDE_HAL_HPP_
 
 #include <vector>
 #include <memory>

@@ -1,5 +1,5 @@
-#ifndef VACUUM_CLEANER_CPP__FREQUENCY_HPP_
-#define VACUUM_CLEANER_CPP__FREQUENCY_HPP_
+#ifndef INCLUDE_FREQUENCY_HPP_
+#define INCLUDE_FREQUENCY_HPP_
 
 #include <chrono>
 #include <cmath>
