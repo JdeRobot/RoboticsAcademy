@@ -292,9 +292,7 @@ class FAL_RA(FAL):
 
     def read(self, path: str) -> str:
         super().read(path)
-        my_private_libs = ["libFrequency.so", "libHAL.so", "libWebGUI.so"]
-        if "/libs/" in path and any(lib in path for lib in my_private_libs):
-            return ""
+
         try:
             with open(path, "r") as f:
                 return f.read()
