@@ -107,20 +107,26 @@ const getRoboticsBackendUniverse = async (
 const getHelperFile = async (
   project: string,
   language: string,
-  fileName: string
+  fileName: string,
+  binary?: boolean
 ) => {
   if (!project) throw new Error("Current Project id is not set");
   if (!language) throw new Error("Current Language is not set");
   if (!fileName) throw new Error("File name is not set");
 
-  const apiUrl = `/academy/get_helper_file?project=${encodeURIComponent(
+  let apiUrl = `/academy/get_helper_file?project=${encodeURIComponent(
     project
   )}&language=${encodeURIComponent(language)}&filename=${encodeURIComponent(
     fileName
   )}`;
 
+  if (binary) apiUrl += `&binary=true`;
+
   try {
     const response = await axios.get(apiUrl);
+    if (binary) {
+      return atob(response.data.content);
+    }
     return response.data.content;
   } catch (e: unknown) {
     const error = e as ApiError;

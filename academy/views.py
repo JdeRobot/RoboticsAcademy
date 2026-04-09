@@ -179,13 +179,18 @@ def get_helper_file(fal, request):
     project = request.GET.get("project")
     language = request.GET.get("language")
     filename = request.GET.get("filename", None)
+    binary = request.GET.get("binary", None)
 
     path = fal.exercise_helper_path(project, language)
+    file_path = fal.path_join(path, filename)
 
-    if is_binary_mimetype(fal.path_join(path, filename)):
-        content = fal.read_binary(fal.path_join(path, filename))
+    if binary is None or binary is False:
+        content = fal.read(file_path)
     else:
-        content = fal.read(fal.path_join(path, filename))
+        content = fal.read_binary(file_path)
+        b64 = base64.b64encode(content)
+        content = b64.decode("utf-8")
+
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)
 
