@@ -20,6 +20,7 @@ from academy.serializers import FileContentSerializer
 from .error_handler import error_wrapper
 from .templates import select_template
 from .models import Exercise, Universe, ExerciseUniverses
+from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
 
@@ -181,7 +182,10 @@ def get_helper_file(fal, request):
 
     path = fal.exercise_helper_path(project, language)
 
-    content = fal.read(fal.path_join(path, filename))
+    if is_binary_mimetype(fal.path_join(path, filename)):
+        content = fal.read_binary(fal.path_join(path, filename))
+    else:
+        content = fal.read(fal.path_join(path, filename))
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)
 
