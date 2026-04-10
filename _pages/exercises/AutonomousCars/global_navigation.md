@@ -132,6 +132,10 @@ The solution can integrate one or more of the following difficulty increasing go
 
 ## Robot API
 
+This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.setV()` - to set the linear speed.
@@ -147,6 +151,35 @@ array = WebGUI.getMap('/resources/exercises/global_navigation/images/cityLargenB
 * `WebGUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter.
     
 The map image has a resolution of 400x400 pixels and indicates whether there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
+
+### ROS 2-direct Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+*⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
+
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+
+- `/odom` - Subscribe to this topic to receive the robot odometry.  
+  Message type: `nav_msgs/msg/Odometry`
+
+- `/webgui/current_target` - Subscribe to this topic to receive the current goal selected from the WebGUI.  
+  Message type: `geometry_msgs/msg/Point`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
+
+- `/webgui/path` - Publish to this topic to display the planned path in the WebGUI.
+  Message type: `nav_msgs/msg/Path`
+
+- `/webgui/debug_image` - Publish to this topic to display a debug image typically used to visualize the cost map, wavefront expansion, or any other intermediate grid representation.
+  Message type: `sensor_msgs/msg/Image`
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 ## Videos
 
