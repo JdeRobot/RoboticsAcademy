@@ -234,7 +234,7 @@ While monitoring <strong>validation loss</strong> and checking <strong>evaluatio
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -245,35 +245,35 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 -   `HAL.setW(velocity)` - to set the angular velocity.
 -   `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
-### ROS 2-native Implementation
-
-`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
-
-**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
-
-#### ROS 2 Topics
+### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
--   `/cam_f1_left/image_raw ` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
--   `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
 
-#### Frequency Control
+#### ROS 2 Topics
 
-Use standard ROS 2 mechanisms to manage loop timing:
+- `/cam_f1_left/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
 
--   `rclpy.spin()` - Event-driven execution using callbacks.
--   `rclpy.spin_once()` - Single-step processing, often with custom timers.
--   `rclpy.Rate()` - Loop-based frequency control.
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-#### Image Debugging
+- `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
+  Message type: `sensor_msgs/msg/Image`  
+  QoS: `TRANSIENT_LOCAL`, depth `10`
 
--   Publish processed images to the topic: `/webgui_image`
-    Used for sending debug or processed visuals to the frontend.
--   The GUI automatically subscribes to `/webgui_image`
-    Images published to this topic are displayed in the GUI interface.
+- `/odom` - Subscribe to this topic if you want lap and map feedback, as used internally by the WebGUI.  
+  Message type: `nav_msgs/msg/Odometry`
 
-<!-- TODO: USER CODE -->
+The user node must load the trained model locally and run inference on the images received from `/cam_f1_left/image_raw`.
+
+#### Model loading from local file
+
+```python
+
+from model import model_path_func
+model_path = model_path_func("model.onnx")
+
+```
 
 ## Run the Exercise
 
