@@ -377,6 +377,7 @@ Create a folder with the folder name as "exercise_id" at the location from repos
 Inside that folder create 2 or more new ones with the following names:
 
 - `<language>_template`: the available languages are `python` and `cpp`. One for each supported language.
+- `cpp_lib`: used for precompilation of additional C++ libaries like WebGUI or HAL.
 - `frontend`
 
 You may add a teaser to the exercise by creating a file called `teaser.png` using a 9/10 aspect ratio.
@@ -403,7 +404,133 @@ For knowing how to use each package, please follow the links in the list above.
 
 #### Source code: inside `cpp_template`
 
+An exercise must contain this 3 files and a folder:
+
+- **main.cpp**: used as the entrypoint for launching the WebGUI, HAL, console control and the user code. **Must** contain the next code:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "academy.cpp"
+#include "rclcpp/rclcpp.hpp"
+#include <bits/stdc++.h>
+#include <filesystem>
+#include <string>
+#include <thread>
+
+void start_console()
+{
+  int virtual_terminal = 0;
+  for (const auto &entry : std::filesystem::directory_iterator("/dev/pts/"))
+  {
+    std::filesystem::path outfilename = entry.path();
+    std::string filename = outfilename.filename().string();
+    if (filename != "ptmx" && std::stoi(filename) > virtual_terminal)
+    {
+      virtual_terminal = std::stoi(filename);
+    }
+  }
+
+  const std::string v_terminal_str = "/dev/pts/" + std::to_string(virtual_terminal);
+
+  if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL)
+  {
+    std::cerr << "Error redirecting stdout!" << std::endl;
+  }
+
+  if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL)
+  {
+    std::cerr << "Error redirecting stderr!" << std::endl;
+  }
+
+  if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL)
+  {
+    std::cerr << "Error redirecting stdin!" << std::endl;
+  }
+};
+
+int main(int argc, char *argv[])
+{
+  rclcpp::init(argc, argv);
+  start_console();
+
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
+
+  auto HAL_node = std::make_shared<HAL>();
+  executor.add_node(HAL_node);
+
+  auto WebGUI_node = std::make_shared<WebGUINode>();
+  executor.add_node(WebGUI_node);
+
+#ifdef USER_NODE
+  auto user_node = std::make_shared<UserNode>();
+  executor.add_node(user_node);
+#else
+  std::thread user(exercise);
+#endif
+  std::thread ros([&executor]{executor.spin();});
+  WebGUI();
+
+#ifndef USER_NODE
+  user.join();
+#endif
+  ros.join();
+
+  rclcpp::shutdown();
+  return 0;
+}
+```
+
+- **package.xml**: Package description of the ROS package.
+- **CMakeLists.txt**: needed for compilation of the ROS package.
+- **libs/**: needed for storing the libraries for user access.
+
+#### Source code: inside `cpp_lib`
+
 **WORK IN PROGRESS**
+
+This directory contains the source code for the C++ libraries WebGUI, HAL, Frequency and others.
+
+It must contain:
+
+- **src/**: contains the source code for at least HAL, WebGUI and Frequency.
+- **include/**: contains the headers for the source code.
+- **CMakeLists.txt**: needed for compilation of the libraries.
+
+This directory will not be accesible to the user and will only be used to compile the libraries.
+
+To do that compilation you must launch the **RADI** using Robotics Academy as a **volume** (it is recommende to use the developer script) using the next command (in Linux):
+
+```bash
+docker exec -it cf17d87822efd8f7596d8c5dd274ef84789e7be57eaa6a9a78ad7d1e16dd0807 bash
+```
+
+Then inside the **RADI** navigate to the desired exercise like:
+
+```bash
+cd RoboticsAcademy/exercises/vacuum_cleaner
+```
+
+After being inside the exercise directory you must compile the libary inside the **RADI** using;
+
+```bash
+cd cpp_lib
+mkdir build
+cd build/
+cmake ..
+make
+chmod 777 *.so
+```
+
+After compiling the libraries you **must** move them to the libs folder created in the **cpp_template** section.
+
+```bash
+mv *.so ../../cpp_template/libs/
+cd ..
+rm -r build/
+# Copy the headers to the cpp_template directory
+cp -r include/ ../cpp_template/libs/
+```
 
 #### Frontend: inside `frontend`
 

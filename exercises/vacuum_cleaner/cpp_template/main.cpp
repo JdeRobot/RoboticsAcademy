@@ -10,32 +10,31 @@
 void start_console()
 {
   int virtual_terminal = 0;
-  for (const auto &entry : filesystem::directory_iterator("/dev/pts/"))
+  for (const auto &entry : std::filesystem::directory_iterator("/dev/pts/"))
   {
-    // Converting the path to const char * in the subsequent lines
-    filesystem::path outfilename = entry.path();
-    string filename = outfilename.filename().string();
-    if (filename != "ptmx" && stoi(filename) > virtual_terminal)
+    std::filesystem::path outfilename = entry.path();
+    std::string filename = outfilename.filename().string();
+    if (filename != "ptmx" && std::stoi(filename) > virtual_terminal)
     {
-      virtual_terminal = stoi(filename);
+      virtual_terminal = std::stoi(filename);
     }
   }
 
-  const string v_terminal_str = "/dev/pts/" + to_string(virtual_terminal);
+  const std::string v_terminal_str = "/dev/pts/" + std::to_string(virtual_terminal);
 
   if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL)
   {
-    cerr << "Error redirecting stdout!" << endl;
+    std::cerr << "Error redirecting stdout!" << std::endl;
   }
 
   if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL)
   {
-    cerr << "Error redirecting stderr!" << endl;
+    std::cerr << "Error redirecting stderr!" << std::endl;
   }
 
   if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL)
   {
-    cerr << "Error redirecting stdin!" << endl;
+    std::cerr << "Error redirecting stdin!" << std::endl;
   }
 };
 
@@ -56,9 +55,9 @@ int main(int argc, char *argv[])
   auto user_node = std::make_shared<UserNode>();
   executor.add_node(user_node);
 #else
-  thread user(exercise);
+  std::thread user(exercise);
 #endif
-  thread ros([&executor]{executor.spin();});
+  std::thread ros([&executor]{executor.spin();});
   WebGUI();
 
 #ifndef USER_NODE
