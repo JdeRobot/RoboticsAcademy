@@ -18,6 +18,7 @@ import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
 import { getFile, getFileList, getHelperFileList } from "Api";
+import { KeyOffOutlined } from "@mui/icons-material";
 
 const PlayPauseButton = ({
   project,
@@ -109,20 +110,29 @@ const PlayPauseButton = ({
     for (const key in zip1.files) {
       if (!Object.hasOwn(zip1.files, key)) continue;
       if (!Object.hasOwn(zip2.files, key)) {
-        return true;
+        return false;
       }
-
-      console.log(zip1.files[key]);
 
       zip1.files[key]._data.then((value: string) => {
         zip2.files[key]._data.then((old: string) => {
           if (value !== old) {
-            return true;
+            return false;
           }
         });
       });
     }
-    return false;
+    return true;
+  };
+
+  const mergeZips = async (zip1: JSZip, zip2: JSZip) => {
+    let mergeZip = new JSZip();
+    for (const zipObject of [zip1, zip2]) {
+      mergeZip = await mergeZip.loadAsync(
+        await zipObject.generateAsync({ type: "blob" }),
+        { createFolders: true }
+      );
+    }
+    return mergeZip;
   };
 
   // App handling
@@ -195,18 +205,12 @@ const PlayPauseButton = ({
 
     const files = await getFileList(project);
     filesRef.current = JSON.parse(files);
-    const commonsZip = await loadFiles(
-      entrypointRef.current,
-      JSON.parse(files)
-    );
+    const userZip = await loadFiles(entrypointRef.current, JSON.parse(files));
 
     if (state === states.PAUSED) {
-      // TODO: this should be for all files
-      console.log(runningFilesRef.current.files);
-      const different = compareZips(commonsZip, runningFilesRef.current);
-      console.log(different);
+      const sameZips = compareZips(userZip, runningFilesRef.current);
 
-      if (different && runningEntrypointRef.current === entrypointRef.current) {
+      if (sameZips && runningEntrypointRef.current === entrypointRef.current) {
         try {
           await manager.resume();
           console.log("App resumed correctly!");
@@ -222,13 +226,14 @@ const PlayPauseButton = ({
     }
 
     try {
-      runningFilesRef.current = Object.create(commonsZip);
+      runningFilesRef.current = userZip;
+      const helperZip = new JSZip();
       runningEntrypointRef.current = entrypointRef.current;
 
       const extension = entrypointRef.current.path.split(".").pop();
 
       if (extension === "py") {
-        await commonsZip.loadAsync(commons);
+        await helperZip.loadAsync(commons);
       }
 
       const helper_files = await getHelperFileList(
@@ -237,12 +242,14 @@ const PlayPauseButton = ({
       );
 
       await zipHelperFiles(
-        commonsZip,
+        helperZip,
         helper_files,
         project,
         language ?? "python",
         entrypointRef.current
       );
+
+      const finalZip = await mergeZips(helperZip, userZip);
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();
@@ -266,7 +273,7 @@ const PlayPauseButton = ({
         }
       };
 
-      commonsZip.generateAsync({ type: "blob" }).then(function (content: Blob) {
+      finalZip.generateAsync({ type: "blob" }).then(function (content: Blob) {
         reader.readAsDataURL(content);
       });
 
