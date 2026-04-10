@@ -10,7 +10,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "gazebo_msgs/msg/performance_metrics.hpp"
-#include "vacuum_cleaner_cpp/Frequency.hpp"
+#include "Frequency.hpp"
 
 namespace beast = boost::beast;
 namespace websocket = beast::websocket;
