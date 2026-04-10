@@ -8,7 +8,7 @@ First off, thanks for your interest in contributing to RoboticsAcademy! All cont
 
 If you are new to GitHub, visit the [first-contributions instructions](https://github.com/firstcontributions/first-contributions/blob/master/README.md) to learn how to contribute on GitHub.
 
-To find issues you can help with, go though the list of [good first issues](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
+To find issues you can help with, go through the list of [good first issues](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3Agood-first-issue) or issues labeled with [help wanted](https://github.com/JdeRobot/RoboticsAcademy/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22).
 
 Once found or created an issue, let us know that you want to work on it by commenting in the issue.
 
@@ -22,21 +22,21 @@ If you have fixed an issue and want to share your fix create a pull request. If 
 - Does not contain any additional code than the one related to the fix
 - Has been tested and compiled with a corresponding video or image. **Not a link to another webpage, you must add the video or image with Github's add file feature.**
 - If the changes are still in progress open a Draft instead of a Pull Request. All PR will be considered as ready to merge
-- The changes submited must be up to date with the latest version of the branch they are being submitted to
+- The changes submitted must be up to date with the latest version of the branch they are being submitted to
 
 If it breaks one of the points above you will be requested to change it and if you do not it will be closed.
 
-Also do **not** ping or request reviews from mantainers or members of JdeRobot. The corresponding mantainer will asign a proper reviewer and ping other members if needed.
+Also do **not** ping or request reviews from maintainers or members of JdeRobot. The corresponding maintainer will assign a proper reviewer and ping other members if needed.
 
 ## Questions, suggestions or new ideas
 
-Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhacements are also welcome as discussion posts.
+Please don't open an issue to ask a question or suggestion. Use the [GitHub Discussions](https://github.com/JdeRobot/RoboticsAcademy/discussions) which are meant for that. New ideas and enhancements are also welcome as discussion posts.
 
 ## Issue reporting
 
 Feel free to [create a new issue](https://github.com/JdeRobot/RoboticsAcademy/issues/new) if you have some issue to report. But first, make sure that the issue has not been reported yet.
 
-Be sure to explain in details the context and the outcome that you are lookign for. If reporting bugs, provide basic information like you OS version, RoboticsBackend version and the exercise launched.
+Be sure to explain in details the context and the outcome that you are looking for. If reporting bugs, provide basic information like your OS version, RoboticsBackend version and the exercise launched.
 
 The responses to the issues **must** be related to the topic and they must not contain any solutions, for that use a Pull Request.
 
