@@ -352,7 +352,7 @@ def get_docker_universe_data(fal, request):
         if tool.base_config != "None":
             tools_config.update({tool.name: tool.base_config})
 
-    if len(project.universes.all()) == 0:
+    if not project.universes.exists():
         config = {
             "name": None,
             "world": {
