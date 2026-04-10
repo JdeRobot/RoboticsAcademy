@@ -8,7 +8,7 @@ import {
   zipHelperFiles,
 } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
-import JSZip from "jszip";
+import JSZip, { forEach } from "jszip";
 import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -35,7 +35,7 @@ const PlayPauseButton = ({
   const { warning, error, info, close } = useError();
   const filesRef = useRef<Entry[]>([]);
   const entrypointRef = useRef<Entry | undefined>(undefined);
-  const runningFilesRef = useRef<Entry[]>([]);
+  const runningFilesRef = useRef<JSZip>(JSZip);
   const runningEntrypointRef = useRef<Entry | undefined>(undefined);
   const runningContentRef = useRef<string | undefined>(undefined);
   const [state, setState] = useState<string>(states.IDLE);
@@ -103,6 +103,26 @@ const PlayPauseButton = ({
     }
 
     return undefined;
+  };
+
+  const compareZips = (zip1: JSZip, zip2: JSZip) => {
+    for (const key in zip1.files) {
+      if (!Object.hasOwn(zip1.files, key)) continue;
+      if (!Object.hasOwn(zip2.files, key)) {
+        return true;
+      }
+
+      console.log(zip1.files[key]);
+
+      zip1.files[key]._data.then((value: string) => {
+        zip2.files[key]._data.then((old: string) => {
+          if (value !== old) {
+            return true;
+          }
+        });
+      });
+    }
+    return false;
   };
 
   // App handling
@@ -175,40 +195,40 @@ const PlayPauseButton = ({
 
     const files = await getFileList(project);
     filesRef.current = JSON.parse(files);
+    const commonsZip = await loadFiles(
+      entrypointRef.current,
+      JSON.parse(files)
+    );
 
     if (state === states.PAUSED) {
       // TODO: this should be for all files
-      if (
-        JSON.stringify(runningFilesRef.current) ===
-          JSON.stringify(filesRef.current) &&
-        runningEntrypointRef.current === entrypointRef.current
-      ) {
-        const currContent = await getFile(project, entrypointRef.current.path);
-        if (currContent === runningContentRef.current) {
-          try {
-            await manager.resume();
-            console.log("App resumed correctly!");
-          } catch (e: unknown) {
-            console.error("Error resuming app: " + (e as Error).message);
-            error(
-              "Failed to resume the application. See the traces in the terminal."
-            );
-          }
-          setLoading(false);
-          return;
+      console.log(runningFilesRef.current.files);
+      const different = compareZips(commonsZip, runningFilesRef.current);
+      console.log(different);
+
+      if (different && runningEntrypointRef.current === entrypointRef.current) {
+        try {
+          await manager.resume();
+          console.log("App resumed correctly!");
+        } catch (e: unknown) {
+          console.error("Error resuming app: " + (e as Error).message);
+          error(
+            "Failed to resume the application. See the traces in the terminal."
+          );
         }
+        setLoading(false);
+        return;
       }
     }
 
     try {
-      const zip = new JSZip();
+      runningFilesRef.current = Object.create(commonsZip);
+      runningEntrypointRef.current = entrypointRef.current;
+
       const extension = entrypointRef.current.path.split(".").pop();
-      let commonsZip;
 
       if (extension === "py") {
-        commonsZip = await zip.loadAsync(commons);
-      } else {
-        commonsZip = zip;
+        await commonsZip.loadAsync(commons);
       }
 
       const helper_files = await getHelperFileList(
@@ -223,15 +243,6 @@ const PlayPauseButton = ({
         language ?? "python",
         entrypointRef.current
       );
-
-      await zipCodeFiles(commonsZip, filesRef.current, project);
-
-      commonsZip.files[entrypointRef.current.path]._data.then(
-        (value: string) => (runningContentRef.current = value)
-      );
-
-      runningFilesRef.current = filesRef.current;
-      runningEntrypointRef.current = entrypointRef.current;
 
       // Convert the blob to base64 using FileReader
       const reader = new FileReader();
@@ -266,6 +277,17 @@ const PlayPauseButton = ({
         console.error("Error running app: " + e.message);
         error("Error running app: " + e.message);
       }
+    }
+
+    async function loadFiles(entrypoint: Entry, files: Entry[]) {
+      const zip = new JSZip();
+
+      await zipCodeFiles(zip, files, project);
+
+      zip.files[entrypoint.path]._data.then(
+        (value: string) => (runningContentRef.current = value)
+      );
+      return zip;
     }
   };
 
