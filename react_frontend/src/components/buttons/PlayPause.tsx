@@ -8,7 +8,7 @@ import {
   zipHelperFiles,
 } from "Helpers/utils";
 import { CommsManager, states } from "jderobot-commsmanager";
-import JSZip, { forEach } from "jszip";
+import JSZip from "jszip";
 import { useEffect, useRef, useState } from "react";
 import commons from "../../common.zip";
 import { useAcademyTheme } from "Contexts/AcademyThemeContext";
@@ -17,8 +17,7 @@ import React from "react";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import PauseRoundedIcon from "@mui/icons-material/PauseRounded";
 import SyncRoundedIcon from "@mui/icons-material/SyncRounded";
-import { getFile, getFileList, getHelperFileList } from "Api";
-import { KeyOffOutlined } from "@mui/icons-material";
+import { getFileList, getHelperFileList } from "Api";
 
 const PlayPauseButton = ({
   project,
