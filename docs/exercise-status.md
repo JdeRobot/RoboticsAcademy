@@ -7,14 +7,14 @@
 | Basic Vacuum Cleaner                 |        ok        |     ok      |      ok       |    ok    | [Link][vid_basic_vacuum] |        ok         |         ok         | FSM         |
 | Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Link][vid_follow_line]  |        ok         |         ok         | PID control |
 | Obstacle Avoidance                   |        ok        |     ok      |               |          | [Link][vid_obstacle]     |        ok         |         ok         | VFF         |
-| Global navigation                    |        ok        |     ok      |               |          | -                        |        ok         |         ok         | GPP         |
-| Laser Gridmap mapping                |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
+| Global navigation                    |        ok        |     ok      |               |          | [Link][vid_global_nav]   |        ok         |         ok         | GPP         |
+| Laser Gridmap mapping                |        ok        |     ok      |               |          | [Link][vid_laser_mapping]|                   |         ok         |             |
 | MonteCarlo Laser Loc                 |        ok        |     ok      |               |          | -                        |        ok         |         ok         | AMCL        |
 | MonteCarlo Visual Loc                |        ok        |     ok      |               |          | -                        |        ok         |         ok         | AMCL        |
 | Marker-based visual Loc              |        ok        |     ok      |               |          | -                        |                   |         ok         | PnP         |
-| Localized Vacuum Cleaner             |        ok        |     ok      |               |          | -                        |        ok         |         ok         | BSA         |
+| Localized Vacuum Cleaner             |        ok        |     ok      |               |          | [Link][vid_localized_vacuum]|        ok         |         ok         | BSA         |
 | Autoparking                          |        ok        |     ok      |               |          | [Link][vid_autoparking]  |        ok         |         ok         |             |
-| Amazon Warehouse                     |        ok        |     ok      |               |          | -                        |        ok         |         ok         |             |
+| Amazon Warehouse                     |        ok        |     ok      |               |          | [Link][vid_amazon_warehouse]|        ok         |         ok         |             |
 | Follow Person                        |        ok        |     ok      |               |          | [Link][vid_follow_person]|        ok         |         ok         |             |
 | Drone Follow Road                    |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
 | Drone Rescue people                  |        ok        |     ok      |               |          | -                        |                   |         ok         |             |
@@ -50,3 +50,7 @@
 [vid_machine_vision]: https://www.youtube.com/watch?v=ELx35ymlQXk
 [vid_basic_vacuum]: https://www.youtube.com/watch?v=ceQO6Z_ZiCM
 [vid_pick_place]: https://www.youtube.com/watch?v=y41iRZfnB7E
+[vid_amazon_warehouse]: https://www.youtube.com/watch?v=t-sJ1vK8yGk
+[vid_laser_mapping]: https://www.youtube.com/watch?v=rH7A-gPXplU
+[vid_localized_vacuum]: https://www.youtube.com/watch?v=cajn0qb-oeY
+[vid_global_nav]: https://www.youtube.com/watch?v=mOqtXiUAny0
