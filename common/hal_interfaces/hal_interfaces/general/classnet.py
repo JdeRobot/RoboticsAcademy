@@ -220,8 +220,6 @@ class NeuralNetwork:
         self.net = cv2.dnn.readNetFromTensorflow(FROZEN_GRAPH, PB_TXT)
 
     def detect(self, img):
-        rows = img.shape[0]
-        cols = img.shape[1]
         self.net.setInput(
             cv2.dnn.blobFromImage(
                 img,
@@ -238,8 +236,6 @@ class NeuralNetwork:
 
     # Get bounding boxes function
     def getBoundingBoxes(self, img):
-        rows = img.shape[0]
-        cols = img.shape[1]
         detections = self.detect(img)
         bounding_boxes = []
 

@@ -9,7 +9,6 @@ class Lap:
     # Function to check for threshold
     # And incrementing the running time
     def check_threshold(self):
-        pose3d = self.pose3d.getPose3d()
 
         # Variable for pause
         if self.pause_condition == False:
