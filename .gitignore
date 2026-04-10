@@ -118,7 +118,7 @@ webpack-stats.json
 *.DS_Store
 react_frontend/static
 developer_scripts
-src
+# src
 !/react_frontend/src
 
 # Intermediate file created in root during development
