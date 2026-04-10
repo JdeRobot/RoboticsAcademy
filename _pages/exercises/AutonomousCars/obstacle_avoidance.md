@@ -187,6 +187,8 @@ To use it, only two actions must be carried out:
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
+*⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.*
+
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
   Message type: `geometry_msgs/msg/Twist`
 
@@ -196,8 +198,26 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/f1/laser/scan` - Subscribe to this topic to get laser scan data.  
   Message type: `sensor_msgs/msg/LaserScan`
 
-  The field `ranges` in `sensor_msgs/msg/LaserScan` contains the measured distances expressed in **meters**.  
+**WebGUI:**
+- `/webgui/current_target` - Subscribe to this topic to receive the current target.  
+  Message type: `geometry_msgs/msg/Point`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
 
+- `/webgui/target_reached` - Publish to notify that the current target has been reached.  
+  Message type: `std_msgs/msg/Bool`  
+  When `data=True`, the GUI updates to the next target.
+
+- `/webgui/local_target` - Publish to visualize the current local target.  
+  Message type: `geometry_msgs/msg/Point`  
+
+- `/webgui/force/car` - Publish to visualize the attractive force.  
+  Message type: `geometry_msgs/msg/Point`
+
+- `/webgui/force/obs` - Publish to visualize the repulsive force.  
+  Message type: `geometry_msgs/msg/Point`
+
+- `/webgui/force/avg` - Publish to visualize the resulting force.  
+  Message type: `geometry_msgs/msg/Point`
 
 #### Python
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
