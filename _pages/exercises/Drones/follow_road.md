@@ -98,6 +98,43 @@ Besides through the buttons in the drone teleoperator WebGUI, take off and landi
 * `WebGUI.showImage(cv2_image)` - Shows a image of the camera in the WebGUI.
 * `WebGUI.showLeftImage(cv2_image)` - Shows another image of the camera in the WebGUI.
 
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
+
+This exercise uses Aerostack2 interfaces for drone control, so the ROS 2-direct version is more advanced than in ground robots.  
+In practice, camera topics are used directly, while motion commands and platform state changes are typically handled through the Aerostack2 Python API.
+
+- `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
+
+- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`
+
+- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`
+
+- `/webgui/image_debug_right` - Publish to this topic to display a debug image in the right panel of the WebGUI. Message type: `sensor_msgs/msg/Image`
+
+- `/webgui/image_debug_left` - Publish to this topic to display a debug image in the left panel of the WebGUI. Message type: `sensor_msgs/msg/Image`
+
+- `/drone0/platform/state_machine_event` - Service used internally for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
+
+For motion commands, this exercise does not usually publish directly to a simple `/cmd_vel` topic.  
+Instead, it uses the Aerostack2 Python API through methods such as:
+
+- `set_cmd_pos(x, y, z, az)` - position command with yaw
+- `set_cmd_vel(vx, vy, vz, az)` - velocity command with yaw rate
+- `set_cmd_mix(vx, vy, z, az)` - mixed planar velocity + altitude + yaw rate command
+- `takeoff(h)` - takeoff command
+- `land()` - landing command
+
+For drone state feedback, values such as position, velocity, orientation, roll, pitch, yaw, and landed state are obtained through the Aerostack2 wrapper, not through the simple HAL-style topics used in other exercises.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 ## Theory
 
