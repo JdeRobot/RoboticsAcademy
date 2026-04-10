@@ -158,7 +158,7 @@ The map image has a resolution of 400x400 pixels and indicates whether there is 
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-*⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
+> ⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
 
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
