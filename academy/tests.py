@@ -467,6 +467,7 @@ class GetHelperFileViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+
 class TemplateTests(TestCase):
     """Tests for academy/templates.py select_template function."""
 
