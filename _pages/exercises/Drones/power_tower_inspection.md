@@ -51,6 +51,45 @@ while True:
 
 ## Robot API
 
+### HAL-based Implementation
+
+The Robot API section above describes the HAL-based implementation, which is the default way to interact with the drone using the Hardware Abstraction Layer.
+
+### ROS 2-direct Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+**Camera topics** (bridged via `ros_gz_image`):
+
+- `/drone0/frontal_cam/image_raw` - Subscribe to receive images from the frontal camera. Message type: `sensor_msgs/msg/Image`
+- `/drone0/ventral_cam/image_raw` - Subscribe to receive images from the ventral camera. Message type: `sensor_msgs/msg/Image`
+
+**Drone state** (published by Aerostack2):
+
+- `/drone0/self_localization/pose` - Subscribe to receive the current pose of the drone. Message type: `geometry_msgs/msg/PoseStamped`
+- `/drone0/self_localization/twist` - Subscribe to receive the current velocity and yaw rate of the drone. Message type: `geometry_msgs/msg/TwistStamped`
+
+**Drone control** (consumed by Aerostack2 motion controller):
+
+- `/drone0/motion_reference/pose` - Publish to command a target position with yaw angle. Message type: `geometry_msgs/msg/PoseStamped`
+- `/drone0/motion_reference/twist` - Publish to command linear and angular velocities. Message type: `geometry_msgs/msg/TwistStamped`
+
+#### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+
+
 * `import HAL` - to import the HAL(Hardware Abstraction Layer) library class. This class contains the functions that sends and receives information to and from the Hardware(Gazebo).
 * `import WebGUI` - to import the GUI(Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
