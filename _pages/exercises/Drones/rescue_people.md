@@ -44,10 +44,12 @@ While survivors are known to be close to **40º16'47.23" N**, **3º49'01.78" W**
 
 ## Robot API
 
+This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-
-### Sensors and drone state
 
 * `HAL.get_position()` - Returns the actual position of the drone as a numpy array [x, y, z], in m.
 * `HAL.get_velocity()` - Returns the actual velocities of the drone as a numpy array [vx, vy, vz], in m/s.
@@ -91,8 +93,44 @@ Besides using the buttons at the drone teleoperator WebGUI, taking off and landi
 * `WebGUI.showImage(cv2_image)` - Shows a image of the camera  in the WebGUI
 * `WebGUI.showLeftImage(cv2_image)` - Shows another image of the camera in the WebGUI
 
-<!--## Theory
-**Comming soon.**-->
+### ROS 2-direct Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+This exercise uses Aerostack2 interfaces for drone control, so the ROS 2-direct version is more advanced than in ground robots.  
+
+- `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
+
+- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`
+
+- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`
+
+- `/webgui/image_debug_right` - Publish to this topic to display a debug image in the right panel of the WebGUI. Message type: `sensor_msgs/msg/Image`
+
+- `/webgui/image_debug_left` - Publish to this topic to display a debug image in the left panel of the WebGUI. Message type: `sensor_msgs/msg/Image`
+
+- `/drone0/platform/state_machine_event` - Service used internally for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
+
+For motion commands, this exercise does not usually publish directly to a simple `/cmd_vel` topic.  
+Instead, it uses the Aerostack2 Python API through methods such as:
+
+- `set_cmd_pos(x, y, z, az)` - position command with yaw
+- `set_cmd_vel(vx, vy, vz, az)` - velocity command with yaw rate
+- `set_cmd_mix(vx, vy, z, az)` - mixed planar velocity + altitude + yaw rate command
+- `takeoff(h)` - takeoff command
+- `land()` - landing command
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 ## Hints
 

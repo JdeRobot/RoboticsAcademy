@@ -51,10 +51,12 @@ The goal of this exercise is to implement the logic that allows a quadrotor to f
 
 ## Robot API
 
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-
-### Sensors and drone state
 
 * `HAL.get_position()` - Returns the current position of the drone as a numpy array [x, y, z], in m.
 * `HAL.get_velocity()` - Returns the current velocities of the drone as a numpy array [vx, vy, vz], in m/s.
@@ -100,12 +102,11 @@ Besides through the buttons in the drone teleoperator WebGUI, take off and landi
 
 ### ROS 2-direct Implementation
 
+#### ROS 2 Topics
+
 Use standard ROS 2 topics for direct communication with the simulation.
 
-⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
-
 This exercise uses Aerostack2 interfaces for drone control, so the ROS 2-direct version is more advanced than in ground robots.  
-In practice, camera topics are used directly, while motion commands and platform state changes are typically handled through the Aerostack2 Python API.
 
 - `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
 
@@ -128,7 +129,9 @@ Instead, it uses the Aerostack2 Python API through methods such as:
 - `takeoff(h)` - takeoff command
 - `land()` - landing command
 
-For drone state feedback, values such as position, velocity, orientation, roll, pitch, yaw, and landed state are obtained through the Aerostack2 wrapper, not through the simple HAL-style topics used in other exercises.
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
