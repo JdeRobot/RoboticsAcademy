@@ -234,10 +234,10 @@ def create_file(fal, request):
     if template is not None:
         content = select_template(template)
 
-    fal.create(file_path, content)
-
     if exists_in_helpers(fal, create_path, project_id):
         raise ResourceAlreadyExistsHelpers(create_path)
+
+    fal.create(file_path, content)
 
     return Response({"success": True})
 
