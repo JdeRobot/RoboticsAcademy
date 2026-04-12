@@ -70,9 +70,7 @@ def enter_exercise(fal, request):
     project_id = request.GET.get("project_id")
     project = Exercise.objects.get(exercise_id=project_id)
 
-    tools = []
-    for tool in project.tools.all():
-        tools.append(tool.name)
+    tools = list(project.tools.values_list("name", flat=True))
 
     info = {
         "name": project.name,
@@ -347,10 +345,10 @@ def get_docker_universe_data(fal, request):
 
     tools = []
     tools_config = {}
-    for tool in project.tools.all():
-        tools.append(tool.name)
-        if tool.base_config != "None":
-            tools_config.update({tool.name: tool.base_config})
+    for name, base_config in project.tools.values_list("name", "base_config"):
+        tools.append(name)
+        if base_config != "None":
+            tools_config[name] = base_config
 
     if len(project.universes.all()) == 0:
         config = {
