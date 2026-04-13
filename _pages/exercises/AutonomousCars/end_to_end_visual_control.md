@@ -249,8 +249,6 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
-
 #### ROS 2 Topics
 
 - `/cam_f1_left/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
@@ -265,6 +263,16 @@ Use standard ROS 2 topics for direct communication with the simulation.
   Message type: `nav_msgs/msg/Odometry`
 
 The user node must load the trained model locally and run inference on the images received from `/cam_f1_left/image_raw`.
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 #### Model loading from local file
 

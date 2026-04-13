@@ -54,6 +54,10 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
+## Robot API
+
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
 ## HAL API for Gazebo 11 (Classic).
 
 ### Direct Kinematics
@@ -144,6 +148,40 @@ In Gazebo Harmonic, the gripper is controlled through the joint trajectory contr
 
 * `HAL.dettach()`
   * Dettaches the attached object from the gripper using the Gazebo LinkAttacher service. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.
+
+### ROS 2-direct Implementation
+
+#### ROS 2 Topics
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/compute_ik` - Service used to compute inverse kinematics for a Cartesian pose.  
+  Service type: `moveit_msgs/srv/GetPositionIK`
+
+- `/joint_trajectory_controller/follow_joint_trajectory` - Action used to move the arm joints.  
+  Action type: `control_msgs/action/FollowJointTrajectory`
+
+- `/gripper_controller/follow_joint_trajectory` - Action used to control the gripper joint.  
+  Action type: `control_msgs/action/FollowJointTrajectory`
+
+- `/ATTACHLINK` - Service used to attach an object to the gripper in simulation.  
+  Service type: `linkattacher_msgs/srv/AttachLink`
+
+- `/DETACHLINK` - Service used to detach an object from the gripper in simulation.  
+  Service type: `linkattacher_msgs/srv/DetachLink`
+
+- `/move_action` - MoveIt action server available in the system.  
+  Action type: `moveit_msgs/action/MoveGroup`
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control. ecution pipeline.
 
 ### Argument examples
 
