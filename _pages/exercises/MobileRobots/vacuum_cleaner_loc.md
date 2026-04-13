@@ -71,7 +71,7 @@ array = WebGUI.getMap('/resources/exercises/vacuum_cleaner_loc/images/mapgrannya
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
 ### ROS 2-direct Implementation
-Use standard ROS 2 topics for direct communication with the simulation.
+Use standard ROS 2 topics for direct communication with the simulation. Load the map in: /resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png
 
 - `/cmd_vel` - Publish to this topic to control the robot motion. Message type: `geometry_msgs/msg/Twist`
 - `/odom` - Subscribe to this topic to get the robot pose and orientation. Message type: `nav_msgs/msg/Odometry`
@@ -80,9 +80,8 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 - `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 
-- `/webgui_occ_map` - Subscribe to this topic to receive the static occupancy map published by the system. This topic provides the equivalent of obtaining the map with `WebGUI.getMap(url)`. The map is published once with `transient_local` QoS, so late subscribers can still receive the latest occupancy map. Message type: `sensor_msgs/msg/Image`
-
 For image debugging:
+
 - `/webgui_user_map` - Publish to this topic to display the image in the Web GUI. This is the equivalent of `WebGUI.showNumpy(matrix)`, but     using a topic-based interface. Message type: `sensor_msgs/msg/Image` **Important:** This topic must be published using a **TRANSIENT_LOCAL** QoS profile or the Web GUI will not receive the image.
 
     ```python

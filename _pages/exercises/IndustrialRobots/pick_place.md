@@ -56,7 +56,7 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 
 ## Robot API
 
-This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+<!-- This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options. -->
 
 ## HAL API for Gazebo 11 (Classic).
 
@@ -149,7 +149,7 @@ In Gazebo Harmonic, the gripper is controlled through the joint trajectory contr
 * `HAL.dettach()`
   * Dettaches the attached object from the gripper using the Gazebo LinkAttacher service. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.
 
-### ROS 2-direct Implementation
+<!-- ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
@@ -182,7 +182,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.Rate()` - Loop-based frequency control. ecution pipeline.
 
 **Note**
-`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution. -->
 
 ### Argument examples
 

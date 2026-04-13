@@ -207,7 +207,7 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/webgui/local_target` - Publish to visualize the current local target.  
   Message type: `geometry_msgs/msg/Point` 
 
-  For image debugging:
+  For WebGUI debugging:
 
 - `/webgui/force/car` - Publish to visualize the attractive force.  
   Message type: `geometry_msgs/msg/Point`

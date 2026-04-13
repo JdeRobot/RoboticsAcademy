@@ -102,6 +102,8 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/roombaROS/events/left_bumper` - Subscribe to this topic to receive left bumper events. Message type depends on the bumper interface used by the exercise.
 
+For WebGUI debugging:
+
 - `/webgui/estimated_pose` - Publish to this topic to display the estimated robot pose in the WebGUI. Message type: `geometry_msgs/msg/PoseStamped`  
   QoS: `TRANSIENT_LOCAL`, depth `1`
 
