@@ -37,7 +37,6 @@ public:
     static std::shared_ptr<Map> map_;
     static std::shared_ptr<Lap> lap_;
     
-    // Nodos propios del WebGUI a través de interfaces comunes
     static std::shared_ptr<OdometryNode> pose3d_node_;
     static std::shared_ptr<LaserNode> laser_node_;
 

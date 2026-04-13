@@ -7,7 +7,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(ament_cmake REQUIRED)
 
-# Ajustado para los tópicos actuales (Laser, Odom, Cmd_vel, Points, Bools)
 set(ROS2_PACKAGES
     rclcpp
     nav_msgs

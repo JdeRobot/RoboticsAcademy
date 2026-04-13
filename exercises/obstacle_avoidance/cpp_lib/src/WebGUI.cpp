@@ -1,6 +1,7 @@
 #include "WebGUI.hpp"
 #include <thread>
 #include <chrono>
+#include <ament_index_cpp/get_package_share_directory.hpp>
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
@@ -11,7 +12,7 @@ std::shared_ptr<OdometryNode> WebGUINode::pose3d_node_ = nullptr;
 std::shared_ptr<LaserNode> WebGUINode::laser_node_ = nullptr;
 
 WebGUINode::WebGUINode() : Node("webgui_bridge_node") {
-    if (!pose3d_node_) pose3d_node_ = std::make_shared<OdometryNode>("/odom");
+    if (!pose3d_node_) pose3d_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom_node");
     if (!laser_node_) laser_node_ = std::make_shared<LaserNode>("/f1/laser/scan");
 
     if (!map_) {
@@ -19,6 +20,7 @@ WebGUINode::WebGUINode() : Node("webgui_bridge_node") {
             []() { 
                 LaserData d = WebGUINode::laser_node_->getLaserData(); 
                 while (d.values.empty() && rclcpp::ok()) { 
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Evita que la CPU se congele esperando
                     d = WebGUINode::laser_node_->getLaserData(); 
                 }
                 return d; 
@@ -26,6 +28,17 @@ WebGUINode::WebGUINode() : Node("webgui_bridge_node") {
             []() { return WebGUINode::pose3d_node_->getPose3d(); }
         );
         lap_ = std::make_shared<Lap>(map_);
+
+        std::thread spin_thread([]() {
+            rclcpp::executors::SingleThreadedExecutor executor;
+            executor.add_node(WebGUINode::pose3d_node_);
+            executor.add_node(WebGUINode::laser_node_);
+            while (rclcpp::ok()) {
+                executor.spin_some();
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            }
+        });
+        spin_thread.detach();
     }
 
     auto cb_car = [](geometry_msgs::msg::Point::UniquePtr m) { map_->setCar(m->x, m->y); };
@@ -66,6 +79,7 @@ void WebGUINode::publish_current_target() {
     }
 }
 
+// WebSocket Session Helper
 class session : public std::enable_shared_from_this<session> {
     tcp::resolver resolver_;
     websocket::stream<beast::tcp_stream> ws_;
@@ -130,22 +144,6 @@ public:
 };
 
 WebGUI::WebGUI() {
-    auto webgui_node = std::make_shared<WebGUINode>();
-
-    // Creamos un hilo para ejecutar el propio executor del WebGUI
-    std::thread spin_thread([webgui_node]() {
-        rclcpp::executors::MultiThreadedExecutor executor;
-        executor.add_node(webgui_node);
-        executor.add_node(WebGUINode::pose3d_node_);
-        executor.add_node(WebGUINode::laser_node_);
-        
-        while (rclcpp::ok()) {
-            executor.spin_some();
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-    });
-    spin_thread.detach();
-
     net::io_context ioc;
     std::make_shared<session>(ioc)->run("127.0.0.1", "2303", "{\"lap\":\"\",\"map\":\"\"}");
     ioc.run();

@@ -14,7 +14,7 @@ Map::Map(std::function<LaserData()> laser_cb, std::function<Pose3d()> pose_cb)
     : carx(0), cary(0), obsx(0), obsy(0), avgx(0), avgy(0),
       targetx(0), targety(0), laser_callback_(laser_cb), pose_callback_(pose_cb) {
     
-    std::ifstream file("config/targets_f1.json");
+    std::ifstream file("/resources/exercises/obstacle_avoidance/simple_circuit_targets.json");
     nlohmann::json j;
     if (file.is_open() && (file >> j)) {
         if (j.contains("targets")) {
