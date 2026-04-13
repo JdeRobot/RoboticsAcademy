@@ -53,6 +53,10 @@ The objective of this exercise is to implement the logic of a navigation algorit
 
 ## Robot API
 
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 - `HAL.getPose3d()` - to get all the position information.
@@ -68,6 +72,35 @@ The objective of this exercise is to implement the logic of a navigation algorit
   It is composed of 180 pairs of values: (0-180º distance in millimeters)
 - `HAL.setV()` - to set the linear speed.
 - `HAL.setW()` - to set the angular velocity.
+
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/prius_autoparking/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+
+- `/prius_autoparking/odom` - Subscribe to this topic to receive the car odometry. Message type: `nav_msgs/msg/Odometry`
+
+- `/prius_autoparking/scan_front` - Subscribe to this topic to receive the front laser scan. Message type: `sensor_msgs/msg/LaserScan`
+
+- `/prius_autoparking/scan_side` - Subscribe to this topic to receive the right-side laser scan. Message type: `sensor_msgs/msg/LaserScan`
+
+- `/prius_autoparking/scan_back` - Subscribe to this topic to receive the rear laser scan. Message type: `sensor_msgs/msg/LaserScan`
+
+- `/prius_autoparking/pc2` - Subscribe to this topic to receive 3D LiDAR data. Message type: `sensor_msgs/msg/PointCloud2`
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Laser attributes
 

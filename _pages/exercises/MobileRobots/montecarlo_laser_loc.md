@@ -54,6 +54,10 @@ The goal of this exercise is to develop a localization algorithm based on the pa
 
 ## Robot API
 
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that receive information from the webcam.
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.setW()` - to set the angular velocity.
@@ -80,6 +84,67 @@ The goal of this exercise is to develop a localization algorithm based on the pa
 ```python
 array = WebGUI.getMap('/resources/exercises/montecarlo_laser_loc/images/mapgrannyannie.png')
 ```
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+
+- `/odom` - Subscribe to this topic to receive the robot ground-truth odometry. Message type: `nav_msgs/msg/Odometry`
+
+- `/odom_noisy` - Subscribe to this topic to receive the noisy odometry. Message type: `nav_msgs/msg/Odometry`
+
+- `/roombaROS/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
+
+- `/roombaROS/events/right_bumper` - Subscribe to this topic to receive right bumper events. Message type depends on the bumper interface used by the exercise.
+
+- `/roombaROS/events/center_bumper` - Subscribe to this topic to receive center bumper events. Message type depends on the bumper interface used by the exercise.
+
+- `/roombaROS/events/left_bumper` - Subscribe to this topic to receive left bumper events. Message type depends on the bumper interface used by the exercise.
+
+For WebGUI debugging:
+
+- `/webgui/estimated_pose` - Publish to this topic to display the estimated robot pose in the WebGUI. Message type: `geometry_msgs/msg/PoseStamped`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
+
+- `/webgui/particles` - Publish to this topic to display the particle set in the WebGUI. Message type: `geometry_msgs/msg/PoseArray`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
+
+    ```python
+    from geometry_msgs.msg import PoseArray, Pose
+    import math
+
+    def publish_particles(self, particles):
+        msg = PoseArray()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = "map"
+
+        for x, y, yaw in particles:
+            pose = Pose()
+            pose.position.x = float(x)
+            pose.position.y = float(y)
+
+            # Convert yaw → quaternion (2D)
+            pose.orientation.z = math.sin(yaw / 2.0)
+            pose.orientation.w = math.cos(yaw / 2.0)
+
+            msg.poses.append(pose)
+
+        self.particles_pub.publish(msg)
+    ```
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ### Types conversion
 

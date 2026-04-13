@@ -196,15 +196,37 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/f1/laser/scan` - Subscribe to this topic to get laser scan data.  
   Message type: `sensor_msgs/msg/LaserScan`
 
-  The field `ranges` in `sensor_msgs/msg/LaserScan` contains the measured distances expressed in **meters**.  
+- `/webgui/current_target` - Subscribe to this topic to receive the current target.  
+  Message type: `geometry_msgs/msg/Point`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
 
+- `/webgui/target_reached` - Publish to notify that the current target has been reached.  
+  Message type: `std_msgs/msg/Bool`  
+  When `data=True`, the GUI updates to the next target.
 
-#### Python
+- `/webgui/local_target` - Publish to visualize the current local target.  
+  Message type: `geometry_msgs/msg/Point` 
+
+  For WebGUI debugging:
+
+- `/webgui/force/car` - Publish to visualize the attractive force.  
+  Message type: `geometry_msgs/msg/Point`
+
+- `/webgui/force/obs` - Publish to visualize the repulsive force.  
+  Message type: `geometry_msgs/msg/Point`
+
+- `/webgui/force/avg` - Publish to visualize the resulting force.  
+  Message type: `geometry_msgs/msg/Point`
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
-* `rclpy.spin()` - Event-driven execution using callbacks.
-* `rclpy.spin_once()` - Single-step processing, useful when integrating control loops.
-* `rclpy.Rate()` - Loop-based frequency control.
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.

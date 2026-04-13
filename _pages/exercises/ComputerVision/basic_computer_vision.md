@@ -49,7 +49,7 @@ Here the intention is to develop some basic exercises about computer vision. You
 - `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 - `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
-## Exercise API
+## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
@@ -63,11 +63,12 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication.
 
 - `/input/image_raw` - Subscribe to this topic to receive input images (BGR8). Message type: `sensor_msgs/msg/Image`
+
+For image debugging:
+
 - `/webgui_image` - Publish to this topic to send the processed image to the GUI. Message type: `sensor_msgs/msg/Image`
 
 #### Python
@@ -81,6 +82,9 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Theory
 

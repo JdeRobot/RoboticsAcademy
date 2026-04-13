@@ -234,7 +234,7 @@ While monitoring <strong>validation loss</strong> and checking <strong>evaluatio
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -245,35 +245,46 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 -   `HAL.setW(velocity)` - to set the angular velocity.
 -   `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
-### ROS 2-native Implementation
-
-`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
-
-**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
-
-#### ROS 2 Topics
+### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
--   `/cam_f1_left/image_raw ` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
--   `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+- `/cam_f1_left/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
 
-#### Frequency Control
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-Use standard ROS 2 mechanisms to manage loop timing:
+- `/odom` - Subscribe to this topic if you want lap and map feedback, as used internally by the WebGUI.  
+  Message type: `nav_msgs/msg/Odometry`
 
--   `rclpy.spin()` - Event-driven execution using callbacks.
--   `rclpy.spin_once()` - Single-step processing, often with custom timers.
--   `rclpy.Rate()` - Loop-based frequency control.
+The user node must load the trained model locally and run inference on the images received from `/cam_f1_left/image_raw`.
 
-#### Image Debugging
+For image debugging:
 
--   Publish processed images to the topic: `/webgui_image`
-    Used for sending debug or processed visuals to the frontend.
--   The GUI automatically subscribes to `/webgui_image`
-    Images published to this topic are displayed in the GUI interface.
+- `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
+  Message type: `sensor_msgs/msg/Image`  
+  QoS: `TRANSIENT_LOCAL`, depth `10`
 
-<!-- TODO: USER CODE -->
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### Model loading from local file
+
+```python
+
+from model import model_path_func
+model_path = model_path_func("model.onnx")
+
+```
 
 ## Run the Exercise
 

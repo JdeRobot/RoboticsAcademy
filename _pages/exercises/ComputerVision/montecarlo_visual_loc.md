@@ -56,6 +56,10 @@ The objective of this exercise is to develop a visual localisation algorithm bas
 
 ## Robot API
 
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 * `HAL.getImage()` - to get the image.
@@ -87,6 +91,42 @@ The instruction to get the image with the roof textures is:
 ```python
 array = WebGUI.getColorMap('/resources/exercises/montecarlo_visual_loc/images/color_mapgrannyannie.png')
 ```
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
+
+- `/odom` - Subscribe to this topic to receive the robot ground-truth odometry. Message type: `nav_msgs/msg/Odometry`
+
+- `/odom_noisy` - Subscribe to this topic to receive the noisy odometry. Message type: `nav_msgs/msg/Odometry`
+
+- `/roombaROS/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
+
+- `/camera/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
+
+For image debugging:
+
+- `/webgui/estimated_pose` - Publish to this topic to display the estimated robot pose in the WebGUI. Message type: `geometry_msgs/msg/PoseStamped`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
+
+- `/webgui/particles` - Publish to this topic to display the particle set in the WebGUI. Message type: `geometry_msgs/msg/PoseArray`  
+  QoS: `TRANSIENT_LOCAL`, depth `1`
+
+- `/webgui/image_debug` - Publish to this topic to display a debug image in the WebGUI. Message type: `sensor_msgs/msg/Image`
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Theory
 

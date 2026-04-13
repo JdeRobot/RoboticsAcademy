@@ -72,11 +72,9 @@ The goal of this practice is to implement the logic of a navigation algorithm fo
 - `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 - `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
-### C++
-
-Not supported
-
 ## Robot API
+
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -93,13 +91,37 @@ Not supported
 <!-- - `HAL.getTemplate()` - to get the image template of the stop sign -->
 - `WebGUI.showImage(image)` - allows you to view a debug image or with relevant information.
 
-#### C++
+### ROS 2-direct Implementation
 
-Not supported
+Use standard ROS 2 topics for direct communication with the simulation.
 
-### ROS 2-native Implementation
+- `/prius_autoparking/image_raw` - Subscribe to this topic to receive the camera image.  
+  Message type: `sensor_msgs/msg/Image`
 
-Not supported
+- `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
+  Message type: `geometry_msgs/msg/Twist`
+
+- `/odom` - Subscribe to this topic to receive the car odometry.  
+  Message type: `nav_msgs/msg/Odometry`
+
+For image debugging:
+
+- `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
+  Message type: `sensor_msgs/msg/Image`  
+  QoS: `TRANSIENT_LOCAL`
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Videos
 

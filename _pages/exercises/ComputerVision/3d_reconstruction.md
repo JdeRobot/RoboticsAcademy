@@ -69,6 +69,10 @@ In this exercise, the intention is to program the necessary logic to allow kobuk
 
 ## Robot API
 
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+
+### HAL-based Implementation
+
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
@@ -98,6 +102,74 @@ def algorithm(self):
  # color = [1.0, 0.0, 0.0] R, G, B
  # self.point.plotPoint(position, color)
 ```
+### ROS 2-direct Implementation
+
+Use standard ROS 2 topics for direct communication with the simulation.
+
+- `/cam_turtlebot_left/image_raw` - Subscribe to this topic to receive the left camera image. Message type: `sensor_msgs/msg/Image`
+
+- `/cam_turtlebot_right/image_raw` - Subscribe to this topic to receive the right camera image. Message type: `sensor_msgs/msg/Image`
+
+For WebGUI debugging:
+
+- `/webgui/image_left` - Publish to this topic to display the left image in the WebGUI.  
+  Message type: `sensor_msgs/msg/Image`  
+  QoS: `TRANSIENT_LOCAL`, depth `10`
+
+- `/webgui/image_right` - Publish to this topic to display the right image in the WebGUI.  
+  Message type: `sensor_msgs/msg/Image`  
+  QoS: `TRANSIENT_LOCAL`, depth `10`
+
+- `/webgui/paint_matching` - Publish to this topic to enable or disable matching visualization.  
+  Message type: `std_msgs/msg/Bool`
+
+- `/webgui/points_new` - Publish to this topic to add newly reconstructed 3D points.  
+  Message type: `std_msgs/msg/String`  
+  Format: JSON list of points `[x, y, z, r, g, b]`
+
+- `/webgui/points_all` - Publish to this topic to replace the full reconstructed point cloud.  
+  Message type: `std_msgs/msg/String`  
+  Format: JSON list of points
+
+- `/webgui/image_matching` - Publish to this topic to visualize correspondences between both images.  
+  Message type: `std_msgs/msg/Float32MultiArray`  
+  Format: `[x1, y1, x2, y2]`
+
+- `/webgui/clear_points` - Publish to this topic to clear all reconstructed points.  
+  Message type: `std_msgs/msg/Empty`
+
+#### Note
+In this exercise, the 3D reconstruction is not performed through ROS 2 topics.
+Functions such as: `backproject()`, `project()`, `graficToOptical()`, `opticalToGrafic()` and `getCameraPosition()` are local geometric utilities based on the stereo calibration file in (`"/workspace/code/3d_reconstruction_conf.yml`).
+
+#### Example: publishing new 3D points
+
+```python
+import json
+from std_msgs.msg import String
+
+points = [
+    [x, y, z, r, g, b],
+    [x2, y2, z2, r2, g2, b2]
+]
+
+msg = String()
+msg.data = json.dumps(points)
+
+points_pub.publish(msg)
+```
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
+To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
+
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ### 3D Viewer
 
