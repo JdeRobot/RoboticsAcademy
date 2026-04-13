@@ -345,10 +345,10 @@ def get_docker_universe_data(fal, request):
 
     tools = []
     tools_config = {}
-    for name, base_config in project.tools.values_list("name", "base_config"):
-        tools.append(name)
+    for tool_name, base_config in project.tools.values_list("name", "base_config"):
+        tools.append(tool_name)
         if base_config != "None":
-            tools_config[name] = base_config
+            tools_config[tool_name] = base_config
 
     if len(project.universes.all()) == 0:
         config = {
