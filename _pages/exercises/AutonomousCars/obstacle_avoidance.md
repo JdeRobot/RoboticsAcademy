@@ -195,9 +195,6 @@ To use it, only two actions must be carried out:
 
 #### C++
 
-- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
-- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information.
-
 - `HAL::get_pose3d()` - to get the position of the robot (returns `Pose3d`)
 - `HAL::get_pose3d().x` - to get the position of the robot (x coordinate, `double`)
 - `HAL::get_pose3d().y` - to obtain the position of the robot (y coordinate, `double`)
