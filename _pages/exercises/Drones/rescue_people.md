@@ -97,28 +97,29 @@ Besides using the buttons at the drone teleoperator WebGUI, taking off and landi
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-This exercise uses Aerostack2 interfaces for drone control, so the ROS 2-direct version is more advanced than in ground robots. For more information about (Aerostack 2)[https://aerostack2.github.io/]
+This exercise uses Aerostack2, so the ROS 2-direct version is more advanced than in ground robots. For more information about [Aerostack 2](https://aerostack2.github.io/)
+
+The drone namespace is `/drone0`.
 
 - `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
 
-- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`
+- `/drone0/ventral_cam/image_raw` - Subscribe to this topic to receive the ventral camera image. Message type: `sensor_msgs/msg/Image`  
 
-- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`
+- `/drone0/self_localization/twist` - Subscribe to this topic to receive the drone twist, including yaw rate. Message type: `geometry_msgs/msg/TwistStamped`  
+
+- `/drone0/motion_reference/pose` - Publish to this topic to send position references with orientation. Message type: `geometry_msgs/msg/PoseStamped`  
+
+- `/drone0/motion_reference/twist` - Publish to this topic to send velocity references. Message type: `geometry_msgs/msg/TwistStamped`  
+
+- `/drone0/platform/info` - Subscribe to this topic to receive the platform state information. Message type: `as2_msgs/msg/PlatformInfo`  
+
+- `/drone0/platform/state_machine_event` - Service used for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
+
+For image debugging:
 
 - `/webgui/image_debug_right` - Publish to this topic to display a debug image in the right panel of the WebGUI. Message type: `sensor_msgs/msg/Image`
 
 - `/webgui/image_debug_left` - Publish to this topic to display a debug image in the left panel of the WebGUI. Message type: `sensor_msgs/msg/Image`
-
-- `/drone0/platform/state_machine_event` - Service used internally for takeoff and landing state transitions. Service type: `as2_msgs/srv/SetPlatformStateMachineEvent`
-
-For motion commands, this exercise does not usually publish directly to a simple `/cmd_vel` topic.  
-Instead, it uses the Aerostack2 Python API through methods such as:
-
-- `set_cmd_pos(x, y, z, az)` - position command with yaw
-- `set_cmd_vel(vx, vy, vz, az)` - velocity command with yaw rate
-- `set_cmd_mix(vx, vy, z, az)` - mixed planar velocity + altitude + yaw rate command
-- `takeoff(h)` - takeoff command
-- `land()` - landing command
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
