@@ -72,14 +72,25 @@ The solution can integrate one or more of the following difficulty increasing go
 
 ## Frequency API
 
+### Python
+
 - `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 - `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 - `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -180,6 +191,69 @@ To use it, only two actions must be carried out:
    `self.currentTarget = self.getNextTarget()`
 2. Mark it as visited when necessary:
    `self.currentTarget.setReached(True)` --->
+### HAL-based Implementation
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information.
+
+- `HAL::get_pose3d()` - to get the position of the robot (returns `Pose3d`)
+- `HAL::get_pose3d().x` - to get the position of the robot (x coordinate, `double`)
+- `HAL::get_pose3d().y` - to obtain the position of the robot (y coordinate, `double`)
+- `HAL::get_pose3d().yaw` - to get the orientation of the robot with regarding the map (`double`)
+- `HAL::get_laser_data()` - to obtain laser sensor data (returns `const LaserData *`)
+  It contains the laser readings of the environment around the robot
+- `HAL::set_v(const double velocity)` - to set the linear speed (`const double` input)
+- `HAL::set_w(const double velocity)` - to set the angular velocity (`const double` input)
+- `WebGUI::getNextTarget()` - to obtain the next target object on the scenario (returns `std::shared_ptr<Target>`)
+- `WebGUI::setTargetx(double x)` - sets the x coordinate of the target on the WebGUI (`double` input)
+- `WebGUI::setTargety(double y)` - sets the y coordinate of the target on the WebGUI (`double` input)
+- `WebGUI::showForces(const std::vector<double>& v1, const std::vector<double>& v2, const std::vector<double>& v3)` - shows the forces being applied on the car in real time (`const std::vector<double>&` input)
+- `WebGUI::showLocalTarget(const std::vector<double>& v)` - shows the local target (`const std::vector<double>&` input)
+
+To access the target `x` and `y` coordinates use (target is the object obtained from `WebGUI::getNextTarget()`):
+
+- `target->getPose().x` - to obtain the x position of the target
+- `target->getPose().y` - to obtain the y position of the target
+
+**Own API**
+
+To simplify the exercise, the implementation of control points is offered.
+To use it, only two actions must be carried out:
+
+1. Obtain the following point:
+
+   `auto currentTarget = WebGUI::getNextTarget();`
+
+2. Mark it as visited when necessary:
+
+   `currentTarget->setReached(true);`
+
+**Debugging**
+
+- `WebGUI::showForces(const std::vector<double>& v1, const std::vector<double>& v2, const std::vector<double>& v3)` - displays the forces involved in the navigation
+- `WebGUI::showLocalTarget(const std::vector<double>& v)` - displays the current local target
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+
+        freq.tick();
+    }
+}
+```
 
 ### ROS 2-direct Implementation
 
@@ -207,7 +281,7 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/webgui/local_target` - Publish to visualize the current local target.  
   Message type: `geometry_msgs/msg/Point` 
 
-  For WebGUI debugging:
+For WebGUI debugging:
 
 - `/webgui/force/car` - Publish to visualize the attractive force.  
   Message type: `geometry_msgs/msg/Point`
