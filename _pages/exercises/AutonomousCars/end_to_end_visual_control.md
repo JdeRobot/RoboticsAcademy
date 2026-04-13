@@ -253,14 +253,16 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
-- `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
-  Message type: `sensor_msgs/msg/Image`  
-  QoS: `TRANSIENT_LOCAL`, depth `10`
-
 - `/odom` - Subscribe to this topic if you want lap and map feedback, as used internally by the WebGUI.  
   Message type: `nav_msgs/msg/Odometry`
 
 The user node must load the trained model locally and run inference on the images received from `/cam_f1_left/image_raw`.
+
+For image debugging:
+
+- `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
+  Message type: `sensor_msgs/msg/Image`  
+  QoS: `TRANSIENT_LOCAL`, depth `10`
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 

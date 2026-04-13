@@ -140,6 +140,7 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**  
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
 ## Theory
 
 PID Control is the main principle behind this exercise. To understand PID Control, let us first understand what is Control in general.

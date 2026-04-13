@@ -66,6 +66,9 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 Use standard ROS 2 topics for direct communication.
 
 - `/input/image_raw` - Subscribe to this topic to receive input images (BGR8). Message type: `sensor_msgs/msg/Image`
+
+For image debugging:
+
 - `/webgui_image` - Publish to this topic to send the processed image to the GUI. Message type: `sensor_msgs/msg/Image`
 
 #### Python

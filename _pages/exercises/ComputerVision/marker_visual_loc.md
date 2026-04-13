@@ -82,6 +82,8 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/turtlebot3/camera/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
 
+For image debugging:
+
 - `/webgui/estimated_pose` - Publish to this topic to display the estimated robot pose in the WebGUI. Message type: `geometry_msgs/msg/PoseStamped`  
   QoS: `TRANSIENT_LOCAL`, depth `1`
 

@@ -110,6 +110,8 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/cam_turtlebot_right/image_raw` - Subscribe to this topic to receive the right camera image. Message type: `sensor_msgs/msg/Image`
 
+For image debugging:
+
 - `/webgui/image_left` - Publish to this topic to display the left image in the WebGUI.  
   Message type: `sensor_msgs/msg/Image`  
   QoS: `TRANSIENT_LOCAL`, depth `10`

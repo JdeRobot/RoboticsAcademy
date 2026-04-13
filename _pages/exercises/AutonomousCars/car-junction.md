@@ -101,12 +101,14 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
   Message type: `geometry_msgs/msg/Twist`
 
+- `/odom` - Subscribe to this topic to receive the car odometry.  
+  Message type: `nav_msgs/msg/Odometry`
+
+For image debugging:
+
 - `/webgui/image` - Publish to this topic to display a debug image in the WebGUI.  
   Message type: `sensor_msgs/msg/Image`  
   QoS: `TRANSIENT_LOCAL`
-
-- `/odom` - Subscribe to this topic to receive the car odometry.  
-  Message type: `nav_msgs/msg/Odometry`
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 

@@ -214,7 +214,7 @@ Use standard ROS 2 topics for direct communication with the simulation and the W
 - `/amazon_robot/scan` - Subscribe to this topic to receive the 2D laser data. Message type: `sensor_msgs/msg/LaserScan`
 - `/platform/cmd_vel` - Publish to this topic to control the lifting platform. Positive values lift the platform (`5.0`) and negative values (`-5.0`) lower it. Message type: `std_msgs/msg/Float64`
 
-For WebGUI debugging:
+For image debugging:
 
 - `/webgui/path` - Publish the planned path so it can be displayed in the WebGUI. Message type: `std_msgs/msg/String`. QoS: `TRANSIENT_LOCAL` (depth 1)
 - `/webgui/image` - Publish a debug image for visualization in the WebGUI. Message type: `sensor_msgs/msg/Image`. QoS: `TRANSIENT_LOCAL` (depth 1)

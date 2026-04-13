@@ -82,6 +82,8 @@ Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/turtlebot3/laser/scan` - Subscribe to this topic to receive laser data. Message type: `sensor_msgs/msg/LaserScan`
 
+For image debugging:
+
 - `/webgui/user_map` - Publish to this topic to display the generated occupancy map in the WebGUI. Message type: `sensor_msgs/msg/Image`  
   QoS: `TRANSIENT_LOCAL`, depth `1` The map sent to `/webgui/user_map` must be a `mono8` image with **1500 pixels width** and **970 pixels height**.
 

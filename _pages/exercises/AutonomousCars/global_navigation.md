@@ -165,6 +165,8 @@ Use standard ROS 2 topics for direct communication with the simulation.
   Message type: `geometry_msgs/msg/Point`  
   QoS: `TRANSIENT_LOCAL`, depth `1`
 
+For image debugging:
+
 - `/webgui/path` - Publish to this topic to display the planned path in the WebGUI.
   Message type: `nav_msgs/msg/Path`
 
