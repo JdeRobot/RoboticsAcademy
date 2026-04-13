@@ -382,6 +382,94 @@ class FileManagementViewTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
 
+class GetHelperFileViewTests(TestCase):
+    """Tests for get_helper_file and get_helper_file_list endpoints."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.fal = FAL_RA(self.tmp, self.tmp)
+        from academy import error_handler
+
+        self._orig_fal = error_handler.local_fal
+        error_handler.local_fal = FAL_RA(self.tmp, self.tmp)
+        Exercise.objects.create(
+            exercise_id="helper_test_ex",
+            name="Helper Test Exercise",
+            description="Test",
+            url="helper_test_ex",
+        )
+        helper_dir = os.path.join(self.tmp, "helper_test_ex", "python_template")
+        os.makedirs(helper_dir, exist_ok=True)
+        with open(os.path.join(helper_dir, "helper.py"), "w") as f:
+            f.write("# helper content")
+        with open(os.path.join(helper_dir, "model.onnx"), "wb") as f:
+            f.write(b"TESTBIN")
+
+    def tearDown(self):
+        from academy import error_handler
+
+        error_handler.local_fal = self._orig_fal
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def test_get_helper_file_missing_project_returns_400(self):
+        response = self.client.get(
+            "/academy/get_helper_file/",
+            {"language": "python", "filename": "helper.py"},
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_helper_file_missing_filename_returns_text_file(self):
+        response = self.client.get(
+            "/academy/get_helper_file/",
+            {
+                "project": "helper_test_ex",
+                "language": "python",
+                "filename": "helper.py",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("content", response.json())
+
+    def test_get_helper_file_binary_returns_base64(self):
+        response = self.client.get(
+            "/academy/get_helper_file/",
+            {
+                "project": "helper_test_ex",
+                "language": "python",
+                "filename": "model.onnx",
+                "binary": "true",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("content", response.json())
+
+    def test_get_helper_file_text_without_binary_flag(self):
+        response = self.client.get(
+            "/academy/get_helper_file/",
+            {
+                "project": "helper_test_ex",
+                "language": "python",
+                "filename": "helper.py",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["content"], "# helper content")
+
+    def test_get_helper_file_list_missing_project_returns_400(self):
+        response = self.client.get(
+            "/academy/get_helper_file_list/",
+            {"language": "python"},
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_get_helper_file_list_valid_returns_200(self):
+        response = self.client.get(
+            "/academy/get_helper_file_list/",
+            {"project": "helper_test_ex", "language": "python"},
+        )
+        self.assertEqual(response.status_code, 200)
+
+
 class TemplateTests(TestCase):
     """Tests for academy/templates.py select_template function."""
 
