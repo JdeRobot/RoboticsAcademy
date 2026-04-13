@@ -112,8 +112,6 @@ except Exception as e:
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication.
 
 - `/input/image_raw` - Subscribe to this topic to receive input images (BGR8). Message type: `sensor_msgs/msg/Image`

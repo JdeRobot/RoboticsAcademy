@@ -82,7 +82,7 @@ The students will program a Formula1 car in a race circuit to follow the red lin
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -127,8 +127,6 @@ void exercise() {
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/cam_f1_left/image_raw` - Subscribe to this topic to receive camera images (BGR8). Message type: `sensor_msgs/msg/Image`
@@ -138,17 +136,18 @@ For image debugging:
 
 - `/webgui_image` - Publish to this topic to set the debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
 
-#### Python
-
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
-`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 #### C++
 

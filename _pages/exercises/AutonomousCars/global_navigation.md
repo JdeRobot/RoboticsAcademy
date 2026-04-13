@@ -132,7 +132,7 @@ The solution can integrate one or more of the following difficulty increasing go
 
 ## Robot API
 
-This exercise now supports ROS 2-native implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
+This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
 
@@ -154,11 +154,7 @@ The map image has a resolution of 400x400 pixels and indicates whether there is 
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
-
-> ⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
 
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
@@ -175,11 +171,18 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/webgui/debug_image` - Publish to this topic to display a debug image typically used to visualize the cost map, wavefront expansion, or any other intermediate grid representation.
   Message type: `sensor_msgs/msg/Image`
 
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Videos
 

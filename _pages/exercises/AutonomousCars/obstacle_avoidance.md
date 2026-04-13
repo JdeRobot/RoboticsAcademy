@@ -187,8 +187,6 @@ To use it, only two actions must be carried out:
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-> ⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
-
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities.  
   Message type: `geometry_msgs/msg/Twist`
 
@@ -198,7 +196,6 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/f1/laser/scan` - Subscribe to this topic to get laser scan data.  
   Message type: `sensor_msgs/msg/LaserScan`
 
-**WebGUI:**
 - `/webgui/current_target` - Subscribe to this topic to receive the current target.  
   Message type: `geometry_msgs/msg/Point`  
   QoS: `TRANSIENT_LOCAL`, depth `1`
@@ -219,12 +216,15 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/webgui/force/avg` - Publish to visualize the resulting force.  
   Message type: `geometry_msgs/msg/Point`
 
-#### Python
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
-* `rclpy.spin()` - Event-driven execution using callbacks.
-* `rclpy.spin_once()` - Single-step processing, useful when integrating control loops.
-* `rclpy.Rate()` - Loop-based frequency control.
+- `rclpy.spin()` - Event-driven execution using callbacks.
+- `rclpy.spin_once()` - Single-step processing, often with custom timers.
+- `rclpy.Rate()` - Loop-based frequency control.
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.

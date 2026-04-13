@@ -95,11 +95,9 @@ Besides using the buttons at the drone teleoperator WebGUI, taking off and landi
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
 
-This exercise uses Aerostack2 interfaces for drone control, so the ROS 2-direct version is more advanced than in ground robots.  
+This exercise uses Aerostack2 interfaces for drone control, so the ROS 2-direct version is more advanced than in ground robots. For more information about (Aerostack 2)[https://aerostack2.github.io/]
 
 - `/drone0/frontal_cam/image_raw` - Subscribe to this topic to receive the frontal camera image. Message type: `sensor_msgs/msg/Image`
 
@@ -131,6 +129,9 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Hints
 

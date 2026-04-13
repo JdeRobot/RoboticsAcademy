@@ -63,8 +63,6 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication.
 
 - `/input/image_raw` - Subscribe to this topic to receive input images (BGR8). Message type: `sensor_msgs/msg/Image`
@@ -81,6 +79,9 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Theory
 

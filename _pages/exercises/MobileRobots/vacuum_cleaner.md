@@ -131,8 +131,6 @@ void exercise() {
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
@@ -141,17 +139,18 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/roombaROS/events/left_bumper` - Subscribe to this topic to detect collisions at the left side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 - `/roombaROS/events/right_bumper` - Subscribe to this topic to detect collisions at the right side of the robot. Message type: `gazebo_msgs/msg/ContactsState`
 
-#### Python
-
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
-`from WebGUI import gui` - to enable the Web GUI for visualizing camera images.
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 #### C++
 

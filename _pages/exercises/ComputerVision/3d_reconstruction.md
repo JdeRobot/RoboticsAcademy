@@ -106,10 +106,6 @@ def algorithm(self):
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-> ⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
-
-#### ROS 2 Topics
-
 - `/cam_turtlebot_left/image_raw` - Subscribe to this topic to receive the left camera image. Message type: `sensor_msgs/msg/Image`
 
 - `/cam_turtlebot_right/image_raw` - Subscribe to this topic to receive the right camera image. Message type: `sensor_msgs/msg/Image`
@@ -160,11 +156,18 @@ msg.data = json.dumps(points)
 
 points_pub.publish(msg)
 ```
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ### 3D Viewer
 

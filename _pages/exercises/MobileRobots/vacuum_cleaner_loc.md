@@ -71,9 +71,6 @@ array = WebGUI.getMap('/resources/exercises/vacuum_cleaner_loc/images/mapgrannya
 For this example, it is necessary to ensure that the vacuum cleaner covers the highest possible percentage of the house. The application of the automatic evaluator (referee) will measure the percentage traveled, and based on this percentage, will perform the qualification of the solution algorithm.
 
 ### ROS 2-direct Implementation
-
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/cmd_vel` - Publish to this topic to control the robot motion. Message type: `geometry_msgs/msg/Twist`
@@ -98,6 +95,10 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/webgui_occ_map` - Subscribe to this topic to receive the static occupancy map published by the system. This topic provides the equivalent of obtaining the map with `WebGUI.getMap(url)`. The map is published once with `transient_local` QoS, so late subscribers can still receive the latest occupancy map. Message type: `sensor_msgs/msg/Image`
 
 #### Python
+
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
 
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 

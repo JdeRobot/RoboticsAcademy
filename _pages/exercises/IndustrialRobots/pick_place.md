@@ -151,8 +151,6 @@ In Gazebo Harmonic, the gripper is controlled through the joint trajectory contr
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
 
 - `/compute_ik` - Service used to compute inverse kinematics for a Cartesian pose.  
@@ -182,6 +180,9 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control. ecution pipeline.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ### Argument examples
 

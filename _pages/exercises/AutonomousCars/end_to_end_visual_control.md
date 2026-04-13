@@ -249,8 +249,6 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 Use standard ROS 2 topics for direct communication with the simulation.
 
-#### ROS 2 Topics
-
 - `/cam_f1_left/image_raw` - Subscribe to this topic to receive the camera image. Message type: `sensor_msgs/msg/Image`
 
 - `/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
@@ -273,6 +271,9 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 #### Model loading from local file
 

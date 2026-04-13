@@ -72,10 +72,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 ### ROS 2-direct Implementation
 
-#### ROS 2 Topics
-
 Use standard ROS 2 topics for direct communication with the simulation.
-> ⚠️ Even when using ROS 2-direct, you must still import `WebGUI` if you want visualization.
 
 - `/turtlebot3/cmd_vel` - Publish to this topic to set both linear and angular velocities. Message type: `geometry_msgs/msg/Twist`
 
@@ -88,11 +85,18 @@ Use standard ROS 2 topics for direct communication with the simulation.
 - `/webgui/user_map` - Publish to this topic to display the generated occupancy map in the WebGUI. Message type: `sensor_msgs/msg/Image`  
   QoS: `TRANSIENT_LOCAL`, depth `1` The map sent to `/webgui/user_map` must be a `mono8` image with **1500 pixels width** and **970 pixels height**.
 
+**Note**: Ensure this import is included in your script to access the Web GUI functionalities.
+
+`import WebGUI` - to enable the Web GUI for visualizing camera images.
+
 To have frequency control you need to use standard ROS 2 mechanisms to manage loop timing:
 
 - `rclpy.spin()` - Event-driven execution using callbacks.
 - `rclpy.spin_once()` - Single-step processing, often with custom timers.
 - `rclpy.Rate()` - Loop-based frequency control.
+
+**Note**
+`WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
 
 ## Theory
 Laser mapping is the process by which a robot builds a representation of an unknown environment using distance measurements obtained from a LIDAR sensor while moving through the space.
