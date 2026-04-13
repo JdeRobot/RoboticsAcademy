@@ -389,6 +389,7 @@ class GetHelperFileViewTests(TestCase):
         self.tmp = tempfile.mkdtemp()
         self.fal = FAL_RA(self.tmp, self.tmp)
         from academy import error_handler
+
         self._orig_fal = error_handler.local_fal
         error_handler.local_fal = FAL_RA(self.tmp, self.tmp)
         Exercise.objects.create(
@@ -406,6 +407,7 @@ class GetHelperFileViewTests(TestCase):
 
     def tearDown(self):
         from academy import error_handler
+
         error_handler.local_fal = self._orig_fal
         shutil.rmtree(self.tmp, ignore_errors=True)
 
@@ -427,6 +429,7 @@ class GetHelperFileViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn("content", response.json())
+
     def test_get_helper_file_binary_returns_base64(self):
         response = self.client.get(
             "/academy/get_helper_file/",
