@@ -228,7 +228,6 @@ WebGUI::WebGUI()
     if (!WebGUINode::pose3d_node_) {
         WebGUINode::pose3d_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom_node");
         
-        // Hilo independiente para hacer el spin del nodo de odometría del GUI
         std::thread([]() {
             rclcpp::executors::SingleThreadedExecutor exec;
             exec.add_node(WebGUINode::pose3d_node_);
