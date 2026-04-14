@@ -7,7 +7,7 @@
 | Basic Vacuum Cleaner                 |        ok        |     ok      |      ok       |    ok    | [Link][vid_basic_vacuum]     |        ok         |         ok         | FSM         |
 | Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Link][vid_follow_line]      |        ok         |         ok         | PID control |
 | Obstacle Avoidance                   |        ok        |     ok      |      ok       |          | [Link][vid_obstacle]         |        ok         |         ok         | VFF         |
-| Global navigation                    |        ok        |     ok      |               |          | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
+| Global navigation                    |        ok        |     ok      |      ok       |          | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
 | Laser Gridmap mapping                |        ok        |     ok      |               |          | [Link][vid_laser_mapping]    |                   |         ok         |             |
 | MonteCarlo Laser Loc                 |        ok        |     ok      |               |          | -                            |        ok         |         ok         | AMCL        |
 | MonteCarlo Visual Loc                |        ok        |     ok      |               |          | -                            |        ok         |         ok         | AMCL        |

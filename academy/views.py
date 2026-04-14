@@ -428,7 +428,9 @@ def get_docker_universe_data(fal, request):
     """
     name = request.GET.get("universe")
     project_id = request.GET.get("project")
-    project = Exercise.objects.prefetch_related("tools", "universes").get(exercise_id=project_id)
+    project = Exercise.objects.prefetch_related("tools", "universes").get(
+        exercise_id=project_id
+    )
 
     tools = []
     tools_config = {}
