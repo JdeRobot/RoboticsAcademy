@@ -289,6 +289,7 @@ For WebGUI debugging:
 - `/webgui/force/avg` - Publish to visualize the resulting force.  
   Message type: `geometry_msgs/msg/Point`
 
+#### Python
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -301,6 +302,40 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+In order to use native ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ### Conversion of types
 
