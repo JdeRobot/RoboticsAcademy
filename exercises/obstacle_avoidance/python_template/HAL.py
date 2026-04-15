@@ -57,3 +57,35 @@ def setV(velocity):
 
 def setW(velocity):
     motors.sendW(float(velocity))
+
+# Variables globales para recordar la última velocidad enviada
+_last_v = 0.0
+_last_w = 0.0
+
+def setVW(v, w, dt=0.1, v_max=2.0, w_max=2.0, a_v_max=2, a_w_max=2):
+    global _last_v, _last_w
+
+    # 1. Limitar velocidades máximas
+    v = max(min(v, v_max), -v_max)
+    w = max(min(w, w_max), -w_max)
+
+    # 2. Limitar aceleración (cambio respecto al último valor)
+    dv = v - _last_v
+    dw = w - _last_w
+
+    dv_max = a_v_max * dt
+    dw_max = a_w_max * dt
+
+    dv = max(min(dv, dv_max), -dv_max)
+    dw = max(min(dw, dw_max), -dw_max)
+
+    v_limited = _last_v + dv
+    w_limited = _last_w + dw
+
+    # 3. Enviar a motores
+    motors.sendV(float(v_limited))
+    motors.sendW(float(w_limited))
+
+    # 4. Guardar valores actuales
+    _last_v = v_limited
+    _last_w = w_limited
