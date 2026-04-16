@@ -52,7 +52,14 @@ class Map:
         self.targetx = newx
         self.targety = newy
 
-        # Get the JSON data as string
+    # --- Dynamic Window Methods ---
+    def showDynamicWindow(self, dynamic_window):
+        """Recibe lista de pares (v, w) que el usuario calcula"""
+        self.payload["dynamicWindow"] = dynamic_window
+
+    def showBestVelocity(self, best_vw):
+        """Recibe el par (v, w) que el usuario ha elegido"""
+        self.payload["bestVelocity"] = best_vw
 
     def get_json_data(self):
         self.payload["pose"] = self.setPose(self.pose_callback())
@@ -61,8 +68,6 @@ class Map:
         self.payload["obstacle"] = self.setArrow(self.obsx, self.obsy)
         self.payload["average"] = self.setArrow(self.avgx, self.avgy)
         self.payload["laser"], self.payload["max_range"] = self.setLaserValues()
-        # self.payload["max_range"] = self.laser.maxRange
-
         message = json.dumps(self.payload)
         return message
 
@@ -99,47 +104,33 @@ class Map:
         )
         return RT
 
-        # Target function
-        # Function to get information of next target
-
+    # --- Targets ---
     def getNextTarget(self):
         for target in self.targets:
-            if target.isReached() == False:
+            if not target.isReached():
                 self.setTargetPos(target.pose.x, target.pose.y)
                 return target
         return self.resetTargets()
 
-    # Function to reset all targets once the last one is reached
     def resetTargets(self):
         for target in self.targets:
             target.setReached(False)
         return self.targets[0]
 
-        # Function to reset target information
-
     def reset(self):
         for target in self.targets:
             target.setReached(False)
 
-            # Interpret the Target values
-
     def setPose(self, pose):
         return [pose.x, pose.y, pose.yaw]
-
-        # Interpret the Target values
 
     def setTarget(self, x, y):
         return [x, y]
 
-        # Interpret the arrow values
-
     def setArrow(self, posx, posy):
         return (posx, posy)
 
-        # Interpret the Laser values
-
     def setLaserValues(self):
-        # Init laser array
         laser = []
         self.laser = self.laser_callback()
 
@@ -189,9 +180,6 @@ class Target:
 
     def getId(self):
         return self.id
-
-    def getPose(self):
-        return self.pose
 
     def isReached(self):
         return self.reached

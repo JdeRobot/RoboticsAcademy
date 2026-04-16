@@ -10,14 +10,24 @@ import Arrow from "./resources/arrow.svg";
 import "./css/GUICanvas.css";
 
 function WebGUI() {
-  const meter = 73; // 1m = 73px
+  const meter = 73;
+
+  const VMAX = 2.0;
+  const WMAX = 2.0;
+  const VIEW_MARGIN = 10;
+  const HEAT_SIZE = 280;
+  const HEAT_MARGIN = 10;
 
   const [laser, setLaser] = useState<number[][]>([]);
   const [maxRange, setMaxRange] = useState<number>(1000);
-  const [carForce, setCarForce] = useState<number[]>([2 * meter, 0]);
-  const [avgForce, setAvgForce] = useState<number[]>([2 * meter, 0]);
-  const [obsForce, setObsForce] = useState<number[]>([2 * meter, -Math.PI / 2]);
+
+  const [currentV, setCurrentV] = useState(0);
+  const [currentW, setCurrentW] = useState(0);
+
   const [targetPose, setTargetPose] = useState<number[] | undefined>(undefined);
+
+  const [dynamicWindow, setDynamicWindow] = useState<any[]>([]);
+
   const exerciseContext = useExercise();
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -29,54 +39,40 @@ function WebGUI() {
     let data = updateData as any;
     data = data.update;
 
-    if (data.map) {
-      const dataToDraw = JSON.parse(data.map);
+    if (!data.map) return;
 
-      setLaser(dataToDraw.laser);
-      setMaxRange(dataToDraw.max_range);
-      const carForceDist = getDist(dataToDraw.car[0], dataToDraw.car[1]);
-      setCarForce([
-        carForceDist * meter,
-        getAng(dataToDraw.car[0], dataToDraw.car[1]),
-      ]);
-      const avgForceDist = getDist(
-        dataToDraw.average[0],
-        dataToDraw.average[1]
+    const dataToDraw = JSON.parse(data.map);
+
+    setLaser(dataToDraw.laser);
+    setMaxRange(dataToDraw.max_range);
+
+    if (dataToDraw.bestVelocity) {
+      setCurrentV(dataToDraw.bestVelocity[0]);
+      setCurrentW(dataToDraw.bestVelocity[1]);
+    }
+
+    if (dataToDraw.dynamicWindow) {
+      setDynamicWindow(
+        dataToDraw.dynamicWindow.map((i: any) => [i[0], i[1], i[2]])
       );
-      setAvgForce([
-        avgForceDist * meter,
-        getAng(dataToDraw.average[0], dataToDraw.average[1]),
-      ]);
-      const obsForceDist = getDist(
-        dataToDraw.obstacle[0],
-        dataToDraw.obstacle[1]
+    }
+
+    if (dataToDraw.pose && dataToDraw.target) {
+      const targetDist = Math.sqrt(
+        Math.pow(dataToDraw.pose[0] - dataToDraw.target[0], 2) +
+        Math.pow(dataToDraw.pose[1] - dataToDraw.target[1], 2)
       );
-      setObsForce([
-        obsForceDist * meter,
-        getAng(dataToDraw.obstacle[0], dataToDraw.obstacle[1]),
-      ]);
-      const targetDist = getDist(
-        dataToDraw.pose[0] - dataToDraw.target[0],
-        dataToDraw.pose[1] - dataToDraw.target[1]
+
+      const targetAng = Math.atan2(
+        dataToDraw.pose[1] - dataToDraw.target[1],
+        dataToDraw.pose[0] - dataToDraw.target[0]
       );
-      const targetAng = getAng(
-        dataToDraw.pose[0] - dataToDraw.target[0],
-        dataToDraw.pose[1] - dataToDraw.target[1]
-      );
+
       setTargetPose([
         targetDist * meter,
         targetAng - dataToDraw.pose[2] - Math.PI,
       ]);
     }
-  };
-
-  const getDist = (x: number, y: number) => {
-    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-  };
-
-  const getAng = (x: number, y: number) => {
-    const ang = Math.atan2(y, x);
-    return ang;
   };
 
   const stateCallback = (state: string) => {
@@ -87,52 +83,211 @@ function WebGUI() {
 
   connectApplication(manager, updateCallback);
 
-  return (
-    <WebGUIContainer id="f1-road">
-      <img src={F1Car} id="f1-car" />
-      {laser.map((element) => {
-        const ang = -element[1];
-        const length = (element[0] / maxRange) * 100;
-        return (
-          <hr
-            className="laser-beam"
-            style={{
-              rotate: "z " + ang + "rad",
-              width: "calc(" + length + "%)",
-            }}
-          />
-        );
-      })}
+  // =========================================================
+  // ===================== WINDOW SCENE ======================
+  // =========================================================
+  const WindowScene = () => (
+    <div style={{ position: "relative", width: "100%", height: "300px" }}>
+      {/* ---------------- COCHE ---------------- */}
       <img
-        className="arrow green"
-        src={Arrow}
-        style={{ height: carForce[0], rotate: "z " + -carForce[1] + "rad" }}
-      />
-      <img
-        className="arrow red"
-        src={Arrow}
-        style={{ height: obsForce[0], rotate: "z " + -obsForce[1] + "rad" }}
-      />
-      <img
-        className="arrow"
-        src={Arrow}
+        src={F1Car}
+        id="f1-car"
         style={{
-          height: avgForce[0],
-          rotate: "z " + -avgForce[1] + "rad",
-          zIndex: "6",
+          position: "absolute",
+          left: "25%",
+          top: "80%",
+          transform: "translate(-50%, -50%)",
         }}
       />
+
+      {/* ---------------- TARGET ---------------- */}
       {targetPose && (
         <div
           className="target-container"
           style={{
+            position: "absolute",
+            left: "25%",
+            top: "80%",
+            transform: `translate(-50%, -50%) rotate(${-targetPose[1]}rad)`,
             height: targetPose[0],
-            rotate: "z " + -targetPose[1] + "rad",
           }}
         >
           <div id="target" />
         </div>
       )}
+
+      {/* ---------------- LASER ---------------- */}
+      {laser.map((element, i) => {
+        const ang = -element[1];
+        const length = (element[0] / maxRange) * 100;
+
+        return (
+          <hr
+            key={i}
+            className="laser-beam"
+            style={{
+              position: "absolute",
+              left: "25%",
+              top: "60%",
+              transformOrigin: "0% 50%",
+              transform: `rotate(${ang}rad)`,
+              width: `${length}%`,
+            }}
+          />
+        );
+      })}
+
+      {/* ---------------- VISOR VELOCIDADES (INTOCADO) ---------------- */}
+      <div
+        style={{
+          position: "absolute",
+          left: "75%",
+          top: "25%",
+          transform: "translate(-50%, -50%)",
+          width: "280px",
+          height: "140px",
+          zIndex: 10,
+        }}
+      >
+        <svg
+          width={280}
+          height={140}
+          style={{
+            border: "1.5px solid #333",
+            borderRadius: "10px",
+            background: "#fafafa",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+          }}
+        >
+          {(() => {
+            const lines = [];
+
+            for (let w = -WMAX; w <= WMAX; w += 0.5) {
+              const x = 130 - (w / WMAX) * (130 - VIEW_MARGIN);
+
+              lines.push(
+                <line
+                  key={`w-${w}`}
+                  x1={x}
+                  y1={VIEW_MARGIN}
+                  x2={x}
+                  y2={140 - VIEW_MARGIN}
+                  stroke={w === 0 ? "#444" : "#ddd"}
+                  strokeWidth={w === 0 ? 1.5 : 0.5}
+                />
+              );
+            }
+
+            for (let v = 0; v <= VMAX; v += 0.5) {
+              const y = 70 - (v / VMAX) * (70 - VIEW_MARGIN);
+
+              lines.push(
+                <line
+                  key={`v-${v}`}
+                  x1={VIEW_MARGIN}
+                  y1={y}
+                  x2={280 - VIEW_MARGIN}
+                  y2={y}
+                  stroke={v === 0 ? "#444" : "#ddd"}
+                  strokeWidth={v === 0 ? 1.5 : 0.5}
+                />
+              );
+            }
+
+            return lines;
+          })()}
+
+          <line x1={130} y1={VIEW_MARGIN} x2={130} y2={140 - VIEW_MARGIN} stroke="#444" />
+          <line x1={VIEW_MARGIN} y1={70} x2={280 - VIEW_MARGIN} y2={70} stroke="#444" />
+
+          <circle
+            cx={130 - (currentW / WMAX) * (130 - VIEW_MARGIN)}
+            cy={70 - (currentV / VMAX) * (70 - VIEW_MARGIN)}
+            r={5}
+            fill="#ff4d4d"
+            stroke="#222"
+            strokeWidth={1.5}
+          />
+
+          <text x={10} y={110} fontSize="13" fill="#222">
+            v: {currentV.toFixed(2)} m/s
+          </text>
+          <text x={10} y={130} fontSize="13" fill="#222">
+            w: {currentW.toFixed(2)} rad/s
+          </text>
+        </svg>
+      </div>
+
+      {/* ---------------- HEATMAP (INTOCADO) ---------------- */}
+      <div
+        style={{
+          position: "absolute",
+          left: "75%",
+          top: "50%",
+          transform: "translate(-50%, 0)",
+          width: `${HEAT_SIZE}px`,
+          height: `${HEAT_SIZE / 2}px`,
+          zIndex: 10,
+        }}
+      >
+        <svg
+          width={HEAT_SIZE}
+          height={HEAT_SIZE / 2}
+          style={{
+            border: "1.5px solid #333",
+            borderRadius: "10px",
+            background: "#fafafa",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+          }}
+        >
+          {dynamicWindow.length > 0 &&
+            (() => {
+              const wContainer = HEAT_SIZE;
+              const hContainer = HEAT_SIZE / 2;
+
+              const vValues = dynamicWindow.map(d => d[0]);
+              const wValues = dynamicWindow.map(d => d[1]);
+
+              const minV = Math.min(...vValues);
+              const maxV = Math.max(...vValues);
+              const minW = Math.min(...wValues);
+              const maxW = Math.max(...wValues);
+
+              const safeW = (maxW - minW) || 1;
+              const safeV = (maxV - minV) || 1;
+
+              return dynamicWindow.map(([v, w, score], i) => {
+                const x =
+                  HEAT_MARGIN +
+                  ((maxW - w) / safeW) * (wContainer - 2 * HEAT_MARGIN);
+
+                const y =
+                  hContainer -
+                  HEAT_MARGIN -
+                  ((v - minV) / safeV) * (hContainer - 2 * HEAT_MARGIN);
+
+                const r = Math.floor(255 * (1 - score));
+                const g = Math.floor(255 * score);
+
+                return (
+                  <circle
+                    key={i}
+                    cx={x}
+                    cy={y}
+                    r={4}
+                    fill={`rgb(${r},${g},0)`}
+                  />
+                );
+              });
+            })()}
+        </svg>
+      </div>
+    </div>
+  );
+
+  return (
+    <WebGUIContainer id="f1-road">
+      <WindowScene />
     </WebGUIContainer>
   );
 }
