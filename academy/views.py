@@ -20,6 +20,7 @@ from academy.serializers import FileContentSerializer
 from .error_handler import error_wrapper
 from .templates import select_template
 from .models import Exercise, Universe, ExerciseUniverses
+from .project_view import is_binary_mimetype
 from rest_framework.response import Response
 
 
@@ -78,11 +79,9 @@ def enter_exercise(fal, request):
     Retrieve basic information about an exercise. Only called when entering.
     """
     project_id = request.GET.get("project_id")
-    project = Exercise.objects.get(exercise_id=project_id)
+    project = Exercise.objects.prefetch_related("tools").get(exercise_id=project_id)
 
-    tools = []
-    for tool in project.tools.all():
-        tools.append(tool.name)
+    tools = list(project.tools.values_list("name", flat=True))
 
     try:
         parsed_tags = ast.literal_eval(project.tags) if project.tags else []
@@ -178,10 +177,18 @@ def get_helper_file(fal, request):
     project = request.GET.get("project")
     language = request.GET.get("language")
     filename = request.GET.get("filename", None)
+    binary = request.GET.get("binary", None)
 
     path = fal.exercise_helper_path(project, language)
+    file_path = fal.path_join(path, filename)
 
-    content = fal.read(fal.path_join(path, filename))
+    if binary is None or binary is False:
+        content = fal.read(file_path)
+    else:
+        content = fal.read_binary(file_path)
+        b64 = base64.b64encode(content)
+        content = b64.decode("utf-8")
+
     serializer = FileContentSerializer({"content": content})
     return Response(serializer.data)
 
@@ -421,16 +428,18 @@ def get_docker_universe_data(fal, request):
     """
     name = request.GET.get("universe")
     project_id = request.GET.get("project")
-    project = Exercise.objects.get(exercise_id=project_id)
+    project = Exercise.objects.prefetch_related("tools", "universes").get(
+        exercise_id=project_id
+    )
 
     tools = []
     tools_config = {}
-    for tool in project.tools.all():
-        tools.append(tool.name)
-        if tool.base_config != "None":
-            tools_config.update({tool.name: tool.base_config})
+    for tool_name, base_config in project.tools.values_list("name", "base_config"):
+        tools.append(tool_name)
+        if base_config != "None":
+            tools_config[tool_name] = base_config
 
-    if len(project.universes.all()) == 0:
+    if not project.universes.exists():
         config = {
             "name": None,
             "world": {

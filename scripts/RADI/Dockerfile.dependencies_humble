@@ -41,6 +41,7 @@ RUN apt-get update && apt-get install -y \
   sudo \
   net-tools \
   pciutils \
+  nlohmann-json3-dev \
   && rm -rf /var/lib/apt/lists/*
 
 # Install ROS2 and ROS packages

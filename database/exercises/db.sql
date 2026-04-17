@@ -116,9 +116,9 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 3	autoparking	Autoparking	Autoparking exercise testing	["AUTONOMOUS DRIVING","SERVICE ROBOTS","ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/autoparking
 4	follow_person	Follow Person	Follow a person with kobuki robot	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/follow_person
 5	vacuum_cleaner_loc	Localized Vacuum Cleaner	Localiized vauum clenaer	["ROS2", "MOBILE ROBOTS", "SERVICE ROBOTS"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner_loc
-6	global_navigation	Global Navigation	Global navigation exercise using REACT and RAM	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation
+6	global_navigation	Global Navigation	Global navigation exercise using REACT and RAM	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation
 7	rescue_people	Drone Rescue People	Drone Rescue People exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/rescue_people
-8	obstacle_avoidance	Obstacle Avoidance	Obstacle Avoidance exercise using React and RAM	["ROS2","AUTONOMOUS DRIVING"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance
+8	obstacle_avoidance	Obstacle Avoidance	Obstacle Avoidance exercise using React and RAM	["ROS2","AUTONOMOUS DRIVING",  "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance
 9	3d_reconstruction	3D Reconstruction	3D Reconstruction exercise using React and RAM	["ROS2","COMPUTER VISION"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction
 10	amazon_warehouse	Amazon Warehouse	Control an amazon-like robot to organize a warehouse	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse
 11	montecarlo_laser_loc	Montecarlo Laser Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc

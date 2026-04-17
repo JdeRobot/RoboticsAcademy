@@ -110,10 +110,10 @@ class Universe(models.Model):
 
     name = models.CharField(max_length=100, blank=False, unique=True)
     world = models.OneToOneField(
-        World, default=None, on_delete=models.CASCADE, db_column='"world_id"'
+        World, default=None, on_delete=models.CASCADE, db_column="world_id"
     )
     robot = models.OneToOneField(
-        Robot, default=None, on_delete=models.CASCADE, db_column='"robot_id"'
+        Robot, default=None, on_delete=models.CASCADE, db_column="robot_id"
     )
 
     def __str__(self):

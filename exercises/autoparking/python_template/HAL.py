@@ -2,7 +2,6 @@ import rclpy
 import threading
 import time
 import sys
-
 from hal_interfaces.general.motors import MotorsNode
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
@@ -22,8 +21,8 @@ def custom_thread_excepthook(args):
 
 
 threading.excepthook = custom_thread_excepthook
-# ROS2 init
 
+# ROS2 init
 print("HAL initializing", flush=True)
 if not rclpy.ok():
     rclpy.init(args=None)
@@ -59,10 +58,30 @@ executor_thread.start()
 
 
 def getPose3d():
+    """
+    Returns the current pose of the car in 3D space.
+
+    Returns:
+        Pose3d: Object with the following attributes:
+            - x (float): X position in meters
+            - y (float): Y position in meters
+            - z (float): Z position in meters
+            - yaw (float): Rotation around Z axis in radians
+    """
     return odometry_node.getPose3d()
 
 
 def getFrontLaserData():
+    """
+    Returns laser scan data from the front laser sensor.
+
+    Returns:
+        LaserData: Object with attributes:
+            - values (list[float]): Distance measurements in meters
+            - minAngle (float): Start angle of scan in radians
+            - maxAngle (float): End angle of scan in radians
+            - timeStamp (float): Timestamp of the scan
+    """
     laser = laser_front_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -72,6 +91,16 @@ def getFrontLaserData():
 
 
 def getRightLaserData():
+    """
+    Returns laser scan data from the right-side laser sensor.
+
+    Returns:
+        LaserData: Object with attributes:
+            - values (list[float]): Distance measurements in meters
+            - minAngle (float): Start angle of scan in radians
+            - maxAngle (float): End angle of scan in radians
+            - timeStamp (float): Timestamp of the scan
+    """
     laser = laser_right_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -81,6 +110,16 @@ def getRightLaserData():
 
 
 def getBackLaserData():
+    """
+    Returns laser scan data from the rear laser sensor.
+
+    Returns:
+        LaserData: Object with attributes:
+            - values (list[float]): Distance measurements in meters
+            - minAngle (float): Start angle of scan in radians
+            - maxAngle (float): End angle of scan in radians
+            - timeStamp (float): Timestamp of the scan
+    """
     laser = laser_back_node.getLaserData()
     timestamp = laser.timeStamp
     while timestamp == 0.0:
@@ -90,6 +129,25 @@ def getBackLaserData():
 
 
 def getLidarData():
+    """
+    Returns 3D LiDAR point cloud data from the Prius autoparking vehicle.
+
+    Returns:
+        LidarData: Object with the following attributes:
+            - points (list[tuple]): List of (x, y, z) tuples in meters
+            - intensities (list[float]): Intensity values per point
+                                        (empty if not available)
+            - timeStamp (float): Timestamp in seconds
+            - min_range (float): Minimum sensor range in meters (default: 0.1)
+            - max_range (float): Maximum sensor range in meters (default: 15.0)
+            - field_of_view (tuple): (horizontal, vertical) FOV in radians
+            - is_dense (bool): True if all points are finite (no NaN/Inf)
+
+    Example:
+        lidar = HAL.getLidarData()
+        for point in lidar.points:
+            x, y, z = point
+    """
     lidar = lidar_node.getLidarData()
     timestamp = lidar.timeStamp
     while timestamp == 0.0:
@@ -99,8 +157,22 @@ def getLidarData():
 
 
 def setV(velocity):
+    """
+    Sets the linear velocity of the car.
+
+    Args:
+        velocity (float): Linear velocity in m/s.
+                         Positive = forward, Negative = backward
+    """
     motor_node.sendV(float(velocity))
 
 
 def setW(velocity):
+    """
+    Sets the angular velocity of the car.
+
+    Args:
+        velocity (float): Angular velocity in rad/s.
+                         Positive = left turn, Negative = right turn
+    """
     motor_node.sendW(float(velocity))

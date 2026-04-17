@@ -67,9 +67,15 @@ const zipHelperFile = async (
   file_name: string,
   project: string,
   language: string,
-  entrypoint: Entry
+  entrypoint: Entry,
+  binary?: boolean
 ) => {
-  let content = await getHelperFile(project, language, file_path);
+  let content = await getHelperFile(project, language, file_path, binary);
+
+  if (binary) {
+    zip.file(file_name, content, { binary: binary });
+    return;
+  }
 
   if (language === "cpp") {
     content = content.replace("academy.cpp", `${entrypoint.path}`);
@@ -102,7 +108,8 @@ const zipHelperFolder = async (
         element.name,
         project,
         language,
-        entrypoint
+        entrypoint,
+        element.binary
       );
     }
   }
