@@ -405,13 +405,11 @@ def get_universes_list(fal, request):
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
 
-    exercise_universes = (
+    niverses_list = list(
         ExerciseUniverses.objects.filter(exercise=project)
-        .select_related("universe")
         .order_by("-is_default")
+        .values_list("universe__name", flat=True)
     )
-
-    universes_list = [eu.universe.name for eu in exercise_universes]
 
     return Response({"universes_list": universes_list})
 
