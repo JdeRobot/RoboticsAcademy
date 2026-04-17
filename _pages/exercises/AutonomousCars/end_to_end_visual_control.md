@@ -77,7 +77,7 @@ This dataset includes data from all <strong>four circuits</strong> available in 
 <p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Huggingface under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
 
 -   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset) **OUTDATED**
--   [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/e2e-visual-control-combined-dataset)
+-   [JdeRobot/e2e-visual-control-combined-dataset](https://huggingface.co/datasets/JdeRobot/e2e-visual-control-combined-dataset)
 
 #### Method 01: Use the git lfs command [Recommended: Low]
 
