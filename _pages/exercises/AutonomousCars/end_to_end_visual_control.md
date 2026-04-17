@@ -76,19 +76,19 @@ This dataset includes data from all <strong>four circuits</strong> available in 
 
 <p style="text-align:justify">The datasets for the End-to-End Visual Control exercise are hosted on Huggingface under the JdeRobot organization. Students can access them using the <code class="language-plaintext highlighter-rouge" style="color:#222831;background:#bdbdbd">load_dataset()</code> method and directly apply them for training and testing their models. Although multiple download options are available, this guide highlights two recommended approaches for retrieving the datasets to a local machine.</p>
 
--   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset)
--   [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset)
+-   [JdeRobot/Follow-Line-Simple-Circuit-Dataset](https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset) **OUTDATED**
+-   [JdeRobot/Follow-Line-Combine-Dataset](https://huggingface.co/datasets/JdeRobot/e2e-visual-control-combined-dataset)
 
 #### Method 01: Use the git lfs command [Recommended: Low]
 
 Visit the [git-lfs](https://git-lfs.com/) website and install `git-lfs` on your local machine.
 
 ```bash
-# Simple Circuit Dataset
+# Simple Circuit Dataset: OUTDATED
 git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Simple-Circuit-Dataset
 
 # Combine Circuit Dataset
-git clone https://huggingface.co/datasets/JdeRobot/Follow-Line-Combine-Dataset
+git clone https://huggingface.co/datasets/JdeRobot/e2e-visual-control-combined-dataset
 ```
 
 #### Method 02: Huggingface Hub API [Recommended: High]
@@ -112,14 +112,14 @@ pip install huggingface_hub
 ```python
 from huggingface_hub import snapshot_download
 
-# Download Simple Circuit Dataset to local folder
+# Download Simple Circuit Dataset to local folder: OUTDATED
 snapshot_download(repo_id="JdeRobot/Follow-Line-Simple-Circuit-Dataset",
     repo_type="dataset",resume_download=True,max_workers=16,
     token="HF_ACCESS_TOKEN",local_dir=output_dir
 )
 
 # Download Combine Dataset to local folder
-snapshot_download(repo_id="JdeRobot/Follow-Line-Combine-Dataset",
+snapshot_download(repo_id="JdeRobot/e2e-visual-control-combined-dataset",
     repo_type="dataset",resume_download=True,max_workers=16,
     token="HF_ACCESS_TOKEN",local_dir=output_dir
 )
