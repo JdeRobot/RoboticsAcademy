@@ -405,7 +405,7 @@ def get_universes_list(fal, request):
     project_id = request.GET.get("project")
     project = Exercise.objects.get(exercise_id=project_id)
 
-    niverses_list = list(
+    universes_list = list(
         ExerciseUniverses.objects.filter(exercise=project)
         .order_by("-is_default")
         .values_list("universe__name", flat=True)
