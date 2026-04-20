@@ -1,46 +1,24 @@
 #ifndef INCLUDE_WEBGUI_HPP_
 #define INCLUDE_WEBGUI_HPP_
 
-#include <boost/beast/core.hpp>
-#include <boost/beast/websocket.hpp>
-#include <boost/asio/connect.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <boost/asio/strand.hpp>
-#include <nlohmann/json.hpp>
-#include "rclcpp/rclcpp.hpp"
-#include "nav_msgs/msg/odometry.hpp"
-#include "gazebo_msgs/msg/performance_metrics.hpp"
-#include "Frequency.hpp"
+#include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
+#include "common_interfaces_cpp/hal/odometry.hpp"
+#include <memory>
+#include <vector>
 
-namespace beast = boost::beast;
-namespace websocket = beast::websocket;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
-using json = nlohmann::json;
-
-class WebGUI
+class WebGUI : public BaseWebGUI
 {
 public:
     WebGUI();
-    static std::string img_payload;
-};
+    ~WebGUI() override = default;
 
-class WebGUINode : public rclcpp::Node
-{
-public:
-    WebGUINode();
-    static std::vector<double> get_pose();
-    static double get_performance();
+    json update_gui() override;
+    std::shared_ptr<OdometryNode> get_odometry_node() const;
 
 private:
-    void pose_callback(nav_msgs::msg::Odometry::UniquePtr msg);
-    void performance_callback(gazebo_msgs::msg::PerformanceMetrics::UniquePtr msg);
+    std::vector<double> get_pose();
 
-    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
-    rclcpp::Subscription<gazebo_msgs::msg::PerformanceMetrics>::SharedPtr perf_sub_;
-
-    static nav_msgs::msg::Odometry last_odom;
-    static gazebo_msgs::msg::PerformanceMetrics last_perf;
+    std::shared_ptr<OdometryNode> odom_node_;
 };
 
 #endif

@@ -43,13 +43,14 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
   start_console();
 
-  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 3);
 
   auto HAL_node = std::make_shared<HAL>();
   executor.add_node(HAL_node);
 
-  auto WebGUI_node = std::make_shared<WebGUINode>();
+  auto WebGUI_node = std::make_shared<WebGUI>();
   executor.add_node(WebGUI_node);
+  executor.add_node(WebGUI_node->get_odometry_node());
 
 #ifdef USER_NODE
   auto user_node = std::make_shared<UserNode>();
@@ -58,7 +59,6 @@ int main(int argc, char *argv[])
   std::thread user(exercise);
 #endif
   std::thread ros([&executor]{executor.spin();});
-  WebGUI();
 
 #ifndef USER_NODE
   user.join();

@@ -40,10 +40,10 @@ target_include_directories(Frequency PUBLIC include)
 
 # --- libWebGUI.so ---
 add_library(WebGUI SHARED src/WebGUI.cpp)
-target_include_directories(WebGUI PUBLIC include)
+target_include_directories(WebGUI PUBLIC include ${COMMON_INTERFACES_INCLUDE})
 
 ament_target_dependencies(WebGUI ${WEBGUI_ROS_DEPS})
-target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS})
+target_link_libraries(WebGUI ${WEBGUI_SYS_DEPS} ${COMMON_INTERFACES_LIB})
 
 # --- libHAL.so ---
 add_library(HAL SHARED src/HAL.cpp)
