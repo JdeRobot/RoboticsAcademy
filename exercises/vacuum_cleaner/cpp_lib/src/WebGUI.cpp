@@ -6,9 +6,11 @@ WebGUI::WebGUI()
     odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom_node");
 }
 
-std::shared_ptr<OdometryNode> WebGUI::get_odometry_node() const
+std::vector<rclcpp::Node::SharedPtr> WebGUI::get_nodes()
 {
-    return odom_node_;
+    auto nodes = BaseWebGUI::get_nodes();
+    nodes.push_back(odom_node_);
+    return nodes;
 }
 
 std::vector<double> WebGUI::get_pose()

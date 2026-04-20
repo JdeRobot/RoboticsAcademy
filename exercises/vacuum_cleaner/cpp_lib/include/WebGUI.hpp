@@ -13,7 +13,7 @@ public:
     ~WebGUI() override = default;
 
     json update_gui() override;
-    std::shared_ptr<OdometryNode> get_odometry_node() const;
+    std::vector<rclcpp::Node::SharedPtr> get_nodes();
 
 private:
     std::vector<double> get_pose();
@@ -21,4 +21,4 @@ private:
     std::shared_ptr<OdometryNode> odom_node_;
 };
 
-#endif
+#endif // INCLUDE_WEBGUI_HPP_

@@ -49,8 +49,10 @@ int main(int argc, char *argv[])
   executor.add_node(HAL_node);
 
   auto WebGUI_node = std::make_shared<WebGUI>();
-  executor.add_node(WebGUI_node);
-  executor.add_node(WebGUI_node->get_odometry_node());
+
+  for (const auto& node : WebGUI_node->get_nodes()) {
+    executor.add_node(node);
+  }
 
 #ifdef USER_NODE
   auto user_node = std::make_shared<UserNode>();
