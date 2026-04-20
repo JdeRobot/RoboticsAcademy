@@ -40,12 +40,7 @@ def _odom_callback(msg):
 
 odom_node = rclpy.create_node("odom_velocity_reader")
 
-odom_node.create_subscription(
-    Odometry,
-    "/odom",
-    _odom_callback,
-    10
-)
+odom_node.create_subscription(Odometry, "/odom", _odom_callback, 10)
 
 # Spin nodes so that subscription callbacks load topic data
 executor = rclpy.executors.MultiThreadedExecutor()
@@ -86,8 +81,7 @@ def getVelocity():
     return _current_v, _current_w
 
 
-def getDynamicWindowLimits(A_V=3.0, A_W=3.0, DT=0.1,
-                           V_MAX=2.0, W_MAX=2.0):
+def getDynamicWindowLimits(A_V=3.0, A_W=3.0, DT=0.1, V_MAX=2.0, W_MAX=2.0):
     """
     Returns dynamic window limits based on REAL robot velocity.
     """
