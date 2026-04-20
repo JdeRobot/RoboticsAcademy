@@ -137,7 +137,7 @@ function WebGUI() {
         );
       })}
 
-      {/* ---------------- VISOR VELOCIDADES (INTOCADO) ---------------- */}
+      {/* ---------------- VISOR VELOCIDADES ---------------- */}
       <div
         style={{
           position: "absolute",
@@ -209,6 +209,36 @@ function WebGUI() {
             strokeWidth={1.5}
           />
 
+          {/* rango dinámico */}
+          {(() => {
+            const maxAccV = 3;
+            const maxAccW = 3;
+            const dt = 0.1;
+
+            const vMin = Math.max(0, currentV - maxAccV * dt);
+            const vMax = Math.min(VMAX, currentV + maxAccV * dt);
+
+            const wMin = Math.max(-WMAX, currentW - maxAccW * dt);
+            const wMax = Math.min(WMAX, currentW + maxAccW * dt);
+
+            const x1 = 130 - (wMax / WMAX) * (130 - VIEW_MARGIN);
+            const x2 = 130 - (wMin / WMAX) * (130 - VIEW_MARGIN);
+            const y1 = 70 - (vMax / VMAX) * (70 - VIEW_MARGIN);
+            const y2 = 70 - (vMin / VMAX) * (70 - VIEW_MARGIN);
+
+            return (
+              <rect
+                x={Math.min(x1, x2)}
+                y={Math.min(y1, y2)}
+                width={Math.abs(x2 - x1)}
+                height={Math.abs(y2 - y1)}
+                fill="none"
+                stroke="black"
+                strokeWidth={2}
+              />
+            );
+          })()}
+
           <text x={10} y={110} fontSize="13" fill="#222">
             v: {currentV.toFixed(2)} m/s
           </text>
@@ -218,7 +248,7 @@ function WebGUI() {
         </svg>
       </div>
 
-      {/* ---------------- HEATMAP (INTOCADO) ---------------- */}
+      {/* ---------------- HEATMAP ---------------- */}
       <div
         style={{
           position: "absolute",
@@ -280,6 +310,46 @@ function WebGUI() {
                 );
               });
             })()}
+
+            {/* Mejor velocidad */}
+            {currentV !== undefined &&
+              currentW !== undefined &&
+              dynamicWindow.length > 0 &&
+              (() => {
+                const wContainer = HEAT_SIZE;
+                const hContainer = HEAT_SIZE / 2;
+
+                const vValues = dynamicWindow.map(d => d[0]);
+                const wValues = dynamicWindow.map(d => d[1]);
+
+                const minV = Math.min(...vValues);
+                const maxV = Math.max(...vValues);
+                const minW = Math.min(...wValues);
+                const maxW = Math.max(...wValues);
+
+                const safeW = (maxW - minW) || 1;
+                const safeV = (maxV - minV) || 1;
+
+                const x =
+                  HEAT_MARGIN +
+                  ((maxW - currentW) / safeW) * (wContainer - 2 * HEAT_MARGIN);
+
+                const y =
+                  hContainer -
+                  HEAT_MARGIN -
+                  ((currentV - minV) / safeV) * (hContainer - 2 * HEAT_MARGIN);
+
+                return (
+                  <circle
+                    cx={x}
+                    cy={y}
+                    r={8}
+                    fill="none"
+                    stroke="black"
+                    strokeWidth={2}
+                  />
+                );
+              })()}
         </svg>
       </div>
     </div>

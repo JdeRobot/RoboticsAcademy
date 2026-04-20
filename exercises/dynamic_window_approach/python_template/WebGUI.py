@@ -34,7 +34,7 @@ class WebGUI(MeasuringThreadingGUI):
         """Function for student to call"""
         self.map.setTargetPos(newVec[0], newVec[1])
 
-    # --- Métodos para ventana dinámica ---
+    # --- DWA ---
     def showDynamicWindow(self, dynamic_window):
         self.map.showDynamicWindow(dynamic_window)
 
