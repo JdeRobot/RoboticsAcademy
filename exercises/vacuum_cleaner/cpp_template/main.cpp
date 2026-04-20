@@ -43,23 +43,31 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
   start_console();
 
-  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 3);
-
   auto HAL_node = std::make_shared<HAL>();
-  executor.add_node(HAL_node);
-
   auto WebGUI_node = std::make_shared<WebGUI>();
 
-  for (const auto& node : WebGUI_node->get_nodes()) {
-    executor.add_node(node);
-  }
+  std::vector<rclcpp::Node::SharedPtr> all_nodes;
+  all_nodes.push_back(HAL_node);
+  
+  auto gui_nodes = WebGUI_node->get_nodes();
+  all_nodes.insert(all_nodes.end(), gui_nodes.begin(), gui_nodes.end());
 
 #ifdef USER_NODE
   auto user_node = std::make_shared<UserNode>();
-  executor.add_node(user_node);
-#else
+  all_nodes.push_back(user_node);
+#endif
+
+  size_t thread_count = all_nodes.size();
+  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), thread_count);
+
+  for (const auto& node : all_nodes) {
+    executor.add_node(node);
+  }
+
+#ifndef USER_NODE
   std::thread user(exercise);
 #endif
+
   std::thread ros([&executor]{executor.spin();});
 
 #ifndef USER_NODE
