@@ -33,10 +33,12 @@ laser = LaserNode("/f1/laser/scan")
 _current_v = 0.0
 _current_w = 0.0
 
+
 def _odom_callback(msg):
     global _current_v, _current_w
     _current_v = msg.twist.twist.linear.x
     _current_w = msg.twist.twist.angular.z
+
 
 odom_node = rclpy.create_node("odom_velocity_reader")
 
