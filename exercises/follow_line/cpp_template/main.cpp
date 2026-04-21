@@ -10,61 +10,68 @@
 void start_console()
 {
   int virtual_terminal = 0;
-  for (const auto &entry : filesystem::directory_iterator("/dev/pts/"))
+  for (const auto &entry : std::filesystem::directory_iterator("/dev/pts/"))
   {
-    // Converting the path to const char * in the subsequent lines
-    filesystem::path outfilename = entry.path();
-    string filename = outfilename.filename().string();
-    if (filename != "ptmx" && stoi(filename) > virtual_terminal)
+    std::filesystem::path outfilename = entry.path();
+    std::string filename = outfilename.filename().string();
+    if (filename != "ptmx" && std::stoi(filename) > virtual_terminal)
     {
-      virtual_terminal = stoi(filename);
+      virtual_terminal = std::stoi(filename);
     }
   }
 
-  const string v_terminal_str = "/dev/pts/" + to_string(virtual_terminal);
+  const std::string v_terminal_str = "/dev/pts/" + std::to_string(virtual_terminal);
 
   if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL)
   {
-    cerr << "Error redirecting stdout!" << endl;
+    std::cerr << "Error redirecting stdout!" << std::endl;
   }
 
   if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL)
   {
-    cerr << "Error redirecting stderr!" << endl;
+    std::cerr << "Error redirecting stderr!" << std::endl;
   }
 
   if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL)
   {
-    cerr << "Error redirecting stdin!" << endl;
+    std::cerr << "Error redirecting stdin!" << std::endl;
   }
-};
+}
 
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
   start_console();
 
-  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
-
-  auto HAL_node = std::make_shared<HAL>();
-  executor.add_node(HAL_node);
-
-  auto WebGUI_node = std::make_shared<WebGUINode>();
-  executor.add_node(WebGUI_node);
+  auto WebGUI_node = std::make_shared<WebGUI>();
+  rclcpp::executors::SingleThreadedExecutor gui_executor;
+  for (const auto& node : WebGUI_node->get_nodes()) {
+    gui_executor.add_node(node);
+  }
 
 #ifdef USER_NODE
   auto user_node = std::make_shared<UserNode>();
-  executor.add_node(user_node);
-#else
-  thread user(exercise);
-#endif
-  thread ros([&executor]{executor.spin();});
-  WebGUI();
+  rclcpp::executors::SingleThreadedExecutor user_executor;
+  user_executor.add_node(user_node);
 
-#ifndef USER_NODE
-  user.join();
+  std::thread gui_ros([&gui_executor]{ gui_executor.spin(); });
+  std::thread user_ros([&user_executor]{ user_executor.spin(); });
+
+  gui_ros.join();
+  user_ros.join();
+#else
+  auto HAL_node = std::make_shared<HAL>();
+  rclcpp::executors::SingleThreadedExecutor hal_executor;
+  hal_executor.add_node(HAL_node);
+
+  std::thread gui_ros([&gui_executor]{ gui_executor.spin(); });
+  std::thread hal_ros([&hal_executor]{ hal_executor.spin(); });
+  std::thread user_api(exercise, WebGUI_node);
+
+  user_api.join();
+  gui_ros.join();
+  hal_ros.join();
 #endif
-  ros.join();
 
   rclcpp::shutdown();
   return 0;
