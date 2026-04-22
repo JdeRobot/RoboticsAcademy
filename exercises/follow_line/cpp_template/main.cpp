@@ -2,10 +2,10 @@
 #include "WebGUI.hpp"
 #include "academy.cpp"
 #include "rclcpp/rclcpp.hpp"
-#include <bits/stdc++.h>
 #include <filesystem>
-#include <string>
 #include <thread>
+#include <string>
+#include <iostream>
 
 void start_console()
 {
@@ -43,34 +43,31 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
   start_console();
 
-  auto WebGUI_node = std::make_shared<WebGUI>();
-  rclcpp::executors::SingleThreadedExecutor gui_executor;
-  for (const auto& node : WebGUI_node->get_nodes()) {
-    gui_executor.add_node(node);
+  auto webgui_instance = std::make_shared<WebGUI>();
+  HAL hal_instance; 
+
+  rclcpp::executors::MultiThreadedExecutor executor;
+
+  for (const auto& node : webgui_instance->get_nodes()) {
+    executor.add_node(node);
   }
 
 #ifdef USER_NODE
   auto user_node = std::make_shared<UserNode>();
-  rclcpp::executors::SingleThreadedExecutor user_executor;
-  user_executor.add_node(user_node);
-
-  std::thread gui_ros([&gui_executor]{ gui_executor.spin(); });
-  std::thread user_ros([&user_executor]{ user_executor.spin(); });
-
-  gui_ros.join();
-  user_ros.join();
+  executor.add_node(user_node);
+  executor.spin();
 #else
-  auto HAL_node = std::make_shared<HAL>();
-  rclcpp::executors::SingleThreadedExecutor hal_executor;
-  hal_executor.add_node(HAL_node);
+  for (const auto& node : HAL::get_nodes()) {
+    executor.add_node(node);
+  }
 
-  std::thread gui_ros([&gui_executor]{ gui_executor.spin(); });
-  std::thread hal_ros([&hal_executor]{ hal_executor.spin(); });
-  std::thread user_api(exercise);
+  std::thread user_thread(exercise);
 
-  user_api.join();
-  gui_ros.join();
-  hal_ros.join();
+  executor.spin();
+
+  if (user_thread.joinable()) {
+    user_thread.join();
+  }
 #endif
 
   rclcpp::shutdown();

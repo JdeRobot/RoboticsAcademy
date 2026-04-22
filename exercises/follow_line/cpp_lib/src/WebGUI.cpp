@@ -44,19 +44,13 @@ WebGUI::WebGUI()
 
     debug_node_ = std::make_shared<rclcpp::Node>("webgui_debug_node");
     
-    auto qos = rclcpp::QoS(10);
+    auto qos = rclcpp::QoS(rclcpp::KeepLast(1)).durability_volatile().best_effort();
+    
     debug_sub_ = debug_node_->create_subscription<sensor_msgs::msg::Image>(
         "/webgui_image", 
         qos,
         std::bind(&WebGUI::debug_image_callback, this, std::placeholders::_1)
     );
-}
-
-WebGUI::~WebGUI()
-{
-    if (instance_ == this) {
-        instance_ = nullptr;
-    }
 }
 
 std::vector<rclcpp::Node::SharedPtr> WebGUI::get_nodes()
@@ -71,14 +65,14 @@ void WebGUI::debug_image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 {
     try {
         cv::Mat img = cv_bridge::toCvShare(msg, "bgr8")->image;
-        showImage(img);
+        show_image(img);
     } catch (const std::exception& e) {
     }
 }
 
-void WebGUI::showImage(const cv::Mat& image)
+void WebGUI::show_image(const cv::Mat& image)
 {
-    if (!instance_ || image.empty()) return;
+    if (image.empty() || !instance_) return;
 
     std::lock_guard<std::mutex> lock(instance_->image_show_lock_);
     instance_->image_to_be_shown_ = image.clone();
@@ -88,17 +82,9 @@ void WebGUI::showImage(const cv::Mat& image)
 std::map<std::string, std::string> WebGUI::get_image_mode()
 {
     std::map<std::string, std::string> mode;
-    if (!instance_) {
-        mode["auto_mode"] = "false";
-        mode["topic_subscribed"] = "null";
-        mode["manual_mode_available"] = "false";
-        return mode;
-    }
-
-    mode["auto_mode"] = instance_->auto_image_mode_ ? "true" : "false";
-    mode["topic_subscribed"] = instance_->auto_image_mode_ ? "/webgui_image" : "null";
+    mode["auto_mode"] = auto_image_mode_ ? "true" : "false";
+    mode["topic_subscribed"] = auto_image_mode_ ? "/webgui_image" : "null";
     mode["manual_mode_available"] = "true";
-    
     return mode;
 }
 
