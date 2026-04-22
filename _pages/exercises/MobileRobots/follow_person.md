@@ -56,9 +56,7 @@ vff:
     title: "Virtual Force Field (VFF)"
 
 
-youtubeId1: "Tt7RkdUgm_U"
-youtubeId2: "fDAU465eVxQ"
-youtubeId3: "2E5op15e56Q"
+youtubeId1: "_5i4MkE5HxI"
 ---
 
 ## Goal
@@ -249,10 +247,6 @@ Derivative Controller gives an output depending on the rate of change or error w
 ## Videos
 
 {% include youtubePlayer.html id=page.youtubeId1 %}
-
-*Example of use of Person Teleoperator*
-
-{% include youtubePlayer.html id=page.youtubeId3 %}
 
 *Reference solution of Simulated Follow Person*
 
