@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
   std::thread gui_ros([&gui_executor]{ gui_executor.spin(); });
   std::thread hal_ros([&hal_executor]{ hal_executor.spin(); });
-  std::thread user_api(exercise, WebGUI_node);
+  std::thread user_api(exercise);
 
   user_api.join();
   gui_ros.join();

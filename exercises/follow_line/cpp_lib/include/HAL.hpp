@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <thread>
+#include <opencv2/opencv.hpp>
 #include "rclcpp/rclcpp.hpp"
 #include "common_interfaces_cpp/hal/motors.hpp"
 #include "common_interfaces_cpp/hal/camera.hpp"

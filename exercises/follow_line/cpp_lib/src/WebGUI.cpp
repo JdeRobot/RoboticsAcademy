@@ -1,6 +1,8 @@
 #include "WebGUI.hpp"
 #include <cv_bridge/cv_bridge.h>
 
+WebGUI* WebGUI::instance_ = nullptr;
+
 static std::string base64_encode(const unsigned char* data, size_t len) {
     static const char lookup[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     std::string out;
@@ -35,6 +37,8 @@ WebGUI::WebGUI()
       image_to_be_shown_updated_(false),
       auto_image_mode_(true)
 {
+    instance_ = this;
+
     odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
     lap_ = std::make_shared<Lap>(odom_node_);
 
@@ -46,6 +50,13 @@ WebGUI::WebGUI()
         qos,
         std::bind(&WebGUI::debug_image_callback, this, std::placeholders::_1)
     );
+}
+
+WebGUI::~WebGUI()
+{
+    if (instance_ == this) {
+        instance_ = nullptr;
+    }
 }
 
 std::vector<rclcpp::Node::SharedPtr> WebGUI::get_nodes()
@@ -67,19 +78,27 @@ void WebGUI::debug_image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
 
 void WebGUI::showImage(const cv::Mat& image)
 {
-    if (image.empty()) return;
+    if (!instance_ || image.empty()) return;
 
-    std::lock_guard<std::mutex> lock(image_show_lock_);
-    image_to_be_shown_ = image.clone();
-    image_to_be_shown_updated_ = true;
+    std::lock_guard<std::mutex> lock(instance_->image_show_lock_);
+    instance_->image_to_be_shown_ = image.clone();
+    instance_->image_to_be_shown_updated_ = true;
 }
 
 std::map<std::string, std::string> WebGUI::get_image_mode()
 {
     std::map<std::string, std::string> mode;
-    mode["auto_mode"] = auto_image_mode_ ? "true" : "false";
-    mode["topic_subscribed"] = auto_image_mode_ ? "/webgui_image" : "null";
+    if (!instance_) {
+        mode["auto_mode"] = "false";
+        mode["topic_subscribed"] = "null";
+        mode["manual_mode_available"] = "false";
+        return mode;
+    }
+
+    mode["auto_mode"] = instance_->auto_image_mode_ ? "true" : "false";
+    mode["topic_subscribed"] = instance_->auto_image_mode_ ? "/webgui_image" : "null";
     mode["manual_mode_available"] = "true";
+    
     return mode;
 }
 

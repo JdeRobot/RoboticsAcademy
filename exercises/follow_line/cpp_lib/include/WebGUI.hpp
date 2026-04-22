@@ -14,14 +14,14 @@ class WebGUI : public BaseWebGUI
 {
 public:
     WebGUI();
-    ~WebGUI() override = default;
+    ~WebGUI() override;
 
     json update_gui() override;
     void process_message(const std::string& msg) override;
     std::vector<rclcpp::Node::SharedPtr> get_nodes() override;
 
-    void showImage(const cv::Mat& image);
-    std::map<std::string, std::string> get_image_mode();
+    static void showImage(const cv::Mat& image);
+    static std::map<std::string, std::string> get_image_mode();
 
 private:
     json payloadImage();
@@ -37,6 +37,8 @@ private:
     bool image_to_be_shown_updated_;
     std::mutex image_show_lock_;
     bool auto_image_mode_;
+
+    static WebGUI* instance_;
 };
 
 #endif
