@@ -5,6 +5,7 @@
 #include <chrono>
 #include <string>
 #include <memory>
+#include <mutex>  // FIX 4: necesario para proteger el estado de tiempo entre hilos
 
 class Lap {
 public:
@@ -22,6 +23,7 @@ private:
     bool lap_rest_;
     bool buffer_;
     bool pause_condition_;
+    std::mutex lap_mutex_;
 };
 
 #endif

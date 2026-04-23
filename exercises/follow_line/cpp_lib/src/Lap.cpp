@@ -8,6 +8,8 @@ Lap::Lap(std::shared_ptr<OdometryNode> pose3d) : pose3d_(pose3d) {
 }
 
 std::string Lap::check_threshold() {
+    std::lock_guard<std::mutex> lock(lap_mutex_);
+
     if (!pause_condition_) {
         if (start_time_.time_since_epoch().count() != 0 && !lap_rest_) {
             auto now = std::chrono::system_clock::now();
@@ -39,15 +41,17 @@ std::string Lap::check_threshold() {
        << std::setfill('0') << std::setw(2) << minutes << ":"
        << std::setfill('0') << std::setw(2) << static_cast<int>(seconds) << "."
        << std::setfill('0') << std::setw(6) << static_cast<int>(std::round((seconds - std::floor(seconds)) * 1000000));
-       
+
     return ss.str();
 }
 
 std::string Lap::return_lap_time() {
+    std::lock_guard<std::mutex> lock(lap_mutex_);
     return std::to_string(lap_time_.count());
 }
 
 void Lap::reset() {
+    std::lock_guard<std::mutex> lock(lap_mutex_);
     start_time_ = std::chrono::system_clock::time_point();
     lap_time_ = std::chrono::duration<double>::zero();
     lap_rest_ = true;
@@ -56,10 +60,12 @@ void Lap::reset() {
 }
 
 void Lap::pause() {
+    std::lock_guard<std::mutex> lock(lap_mutex_);
     pause_condition_ = true;
 }
 
 void Lap::unpause() {
+    std::lock_guard<std::mutex> lock(lap_mutex_);
     if (pause_condition_) {
         start_time_ = std::chrono::system_clock::now();
     }

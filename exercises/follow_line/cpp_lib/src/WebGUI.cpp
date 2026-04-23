@@ -5,6 +5,7 @@
 #include "Lap.hpp"
 #include <cv_bridge/cv_bridge.h>
 #include <mutex>
+#include <atomic>
 
 static std::string base64_encode(const unsigned char* data, size_t len) {
     static const char lookup[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -45,13 +46,19 @@ public:
         odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
         lap_ = std::make_shared<Lap>(odom_node_);
         debug_node_ = std::make_shared<rclcpp::Node>("webgui_debug_node");
-        
+
         auto qos = rclcpp::QoS(rclcpp::KeepLast(1)).durability_volatile().best_effort();
-        
+
+        image_cb_group_ = debug_node_->create_callback_group(
+            rclcpp::CallbackGroupType::MutuallyExclusive);
+        rclcpp::SubscriptionOptions opts;
+        opts.callback_group = image_cb_group_;
+
         debug_sub_ = debug_node_->create_subscription<sensor_msgs::msg::Image>(
-            "/webgui_image", 
+            "/webgui_image",
             qos,
-            std::bind(&WebGUINode::debug_image_callback, this, std::placeholders::_1)
+            std::bind(&WebGUINode::debug_image_callback, this, std::placeholders::_1),
+            opts
         );
     }
 
@@ -61,12 +68,9 @@ public:
 
     void show_image(const cv::Mat& image) {
         if (image.empty()) return;
-        
-        std::unique_lock<std::mutex> lock(image_show_lock_, std::try_to_lock);
-        if (lock.owns_lock()) {
-            image.copyTo(image_to_be_shown_);
-            image_to_be_shown_updated_ = true;
-        }
+        std::lock_guard<std::mutex> lock(image_show_lock_);
+        image.copyTo(image_to_be_shown_);
+        image_to_be_shown_updated_.store(true);
     }
 
 protected:
@@ -80,43 +84,45 @@ protected:
     }
 
     void process_message(const std::string& msg) override {
+        BaseWebGUI::process_message(msg);
+
         if (msg.find("ack") != std::string::npos) {
             std::lock_guard<std::mutex> lock(ack_lock_);
             ack_ = true;
         } else if (msg.find("startLap") != std::string::npos) {
             lap_->unpause();
+        } else if (msg.find("pause") != std::string::npos) {
+            lap_->pause();
         } else if (msg.find("start") != std::string::npos) {
             std::lock_guard<std::mutex> lock(ack_lock_);
             ack_frontend_ = true;
-        } else if (msg.find("pause") != std::string::npos) {
-            lap_->pause();
         }
     }
 
 private:
     json payloadImage() {
-        cv::Mat local_img;
+        cv::Mat local_copy;
         {
             std::lock_guard<std::mutex> lock(image_show_lock_);
-            if (!image_to_be_shown_updated_ || image_to_be_shown_.empty()) {
+            if (!image_to_be_shown_updated_.load() || image_to_be_shown_.empty()) {
                 return {{"image", ""}, {"shape", ""}};
             }
-            local_img = image_to_be_shown_;
-            image_to_be_shown_updated_ = false;
+            local_copy = image_to_be_shown_.clone();
+            image_to_be_shown_updated_.store(false);
         }
 
         cv::Mat resized_img;
-        if (local_img.cols > 640) {
-            double scale = 640.0 / local_img.cols;
-            cv::resize(local_img, resized_img, cv::Size(), scale, scale);
+        if (local_copy.cols > 640) {
+            double scale = 640.0 / local_copy.cols;
+            cv::resize(local_copy, resized_img, cv::Size(), scale, scale);
         } else {
-            resized_img = local_img;
+            resized_img = local_copy;
         }
 
         std::vector<uchar> buf;
         std::vector<int> params = {cv::IMWRITE_JPEG_QUALITY, 60};
         cv::imencode(".JPEG", resized_img, buf, params);
-        
+
         json p;
         p["image"] = base64_encode(buf.data(), buf.size());
         p["shape"] = std::vector<int>{resized_img.rows, resized_img.cols, 3};
@@ -133,9 +139,10 @@ private:
     std::shared_ptr<OdometryNode> odom_node_;
     std::shared_ptr<Lap> lap_;
     rclcpp::Node::SharedPtr debug_node_;
+    rclcpp::CallbackGroup::SharedPtr image_cb_group_;
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr debug_sub_;
     cv::Mat image_to_be_shown_;
-    bool image_to_be_shown_updated_;
+    std::atomic<bool> image_to_be_shown_updated_;
     std::mutex image_show_lock_;
 };
 
