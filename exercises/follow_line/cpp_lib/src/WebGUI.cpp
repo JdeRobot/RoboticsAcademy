@@ -5,9 +5,6 @@
 #include "Lap.hpp"
 #include <cv_bridge/cv_bridge.h>
 #include <mutex>
-#include <string>
-#include <vector>
-#include <thread>
 
 static std::string base64_encode(const unsigned char* data, size_t len) {
     static const char lookup[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -38,13 +35,12 @@ static std::string base64_encode(const unsigned char* data, size_t len) {
     return out;
 }
 
-class WebGUIImpl : public BaseWebGUI
+class WebGUINode : public BaseWebGUI
 {
 public:
-    WebGUIImpl()
+    WebGUINode()
         : BaseWebGUI("webgui_node", "127.0.0.1", "2303", 30.0, "/stats"),
-          image_to_be_shown_updated_(false),
-          auto_image_mode_(true)
+          image_to_be_shown_updated_(false)
     {
         odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
         lap_ = std::make_shared<Lap>(odom_node_);
@@ -55,38 +51,35 @@ public:
         debug_sub_ = debug_node_->create_subscription<sensor_msgs::msg::Image>(
             "/webgui_image", 
             qos,
-            std::bind(&WebGUIImpl::debug_image_callback, this, std::placeholders::_1)
+            std::bind(&WebGUINode::debug_image_callback, this, std::placeholders::_1)
         );
     }
 
-    std::vector<rclcpp::Node::SharedPtr> get_nodes() override
-    {
+    std::vector<rclcpp::Node::SharedPtr> get_internal_nodes() {
         return {shared_from_this(), odom_node_, debug_node_};
     }
 
-    void show_image(const cv::Mat& image)
-    {
+    void show_image(const cv::Mat& image) {
         if (image.empty()) return;
-        std::lock_guard<std::mutex> lock(image_show_lock_);
-        image_to_be_shown_ = image.clone();
-        image_to_be_shown_updated_ = true;
+        
+        std::unique_lock<std::mutex> lock(image_show_lock_, std::try_to_lock);
+        if (lock.owns_lock()) {
+            image.copyTo(image_to_be_shown_);
+            image_to_be_shown_updated_ = true;
+        }
     }
 
 protected:
-    json update_gui() override
-    {
+    json update_gui() override {
         json payload;
         payload["image"] = payloadImage().dump();
         payload["lap"] = lap_->check_threshold();
-
         Pose3d pose = odom_node_->getPose3d();
         payload["map"] = "(" + std::to_string(pose.x) + ", " + std::to_string(pose.y) + ")";
-
         return payload;
     }
 
-    void process_message(const std::string& msg) override
-    {
+    void process_message(const std::string& msg) override {
         if (msg.find("ack") != std::string::npos) {
             std::lock_guard<std::mutex> lock(ack_lock_);
             ack_ = true;
@@ -101,10 +94,8 @@ protected:
     }
 
 private:
-    json payloadImage()
-    {
+    json payloadImage() {
         cv::Mat local_img;
-        
         {
             std::lock_guard<std::mutex> lock(image_show_lock_);
             if (!image_to_be_shown_updated_ || image_to_be_shown_.empty()) {
@@ -123,23 +114,20 @@ private:
         }
 
         std::vector<uchar> buf;
-        std::vector<int> compression_params = {cv::IMWRITE_JPEG_QUALITY, 60};
-        cv::imencode(".JPEG", resized_img, buf, compression_params);
-        std::string encoded = base64_encode(buf.data(), buf.size());
-
+        std::vector<int> params = {cv::IMWRITE_JPEG_QUALITY, 60};
+        cv::imencode(".JPEG", resized_img, buf, params);
+        
         json p;
-        p["image"] = encoded;
+        p["image"] = base64_encode(buf.data(), buf.size());
         p["shape"] = std::vector<int>{resized_img.rows, resized_img.cols, 3};
         return p;
     }
 
-    void debug_image_callback(const sensor_msgs::msg::Image::SharedPtr msg)
-    {
+    void debug_image_callback(const sensor_msgs::msg::Image::SharedPtr msg) {
         try {
             cv::Mat img = cv_bridge::toCvShare(msg, "bgr8")->image;
             show_image(img);
-        } catch (const std::exception& e) {
-        }
+        } catch (...) {}
     }
 
     std::shared_ptr<OdometryNode> odom_node_;
@@ -149,33 +137,25 @@ private:
     cv::Mat image_to_be_shown_;
     bool image_to_be_shown_updated_;
     std::mutex image_show_lock_;
-    bool auto_image_mode_;
 };
 
-namespace {
-    std::shared_ptr<WebGUIImpl> gui_instance_ = nullptr;
-    std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_ = nullptr;
-    std::thread spin_thread_;
-}
+std::shared_ptr<WebGUINode> WebGUI::gui_node_ = nullptr;
+std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> WebGUI::executor_ = nullptr;
+std::thread WebGUI::spin_thread_;
 
 void WebGUI::init()
 {
-    if (!gui_instance_) {
-        gui_instance_ = std::make_shared<WebGUIImpl>();
+    if (!gui_node_) {
+        gui_node_ = std::make_shared<WebGUINode>();
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
-        
-        for (const auto& node : gui_instance_->get_nodes()) {
+        for (const auto& node : gui_node_->get_internal_nodes()) {
             executor_->add_node(node);
         }
-
-        spin_thread_ = std::thread([]() {
-            executor_->spin();
-        });
+        spin_thread_ = std::thread([]() { executor_->spin(); });
         spin_thread_.detach();
     }
 }
 
-void WebGUI::show_image(const cv::Mat& image)
-{
-    if (gui_instance_) gui_instance_->show_image(image);
+void WebGUI::show_image(const cv::Mat& image) {
+    if (gui_node_) gui_node_->show_image(image);
 }

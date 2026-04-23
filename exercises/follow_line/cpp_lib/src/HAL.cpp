@@ -2,17 +2,14 @@
 #include "common_interfaces_cpp/hal/motors.hpp"
 #include "common_interfaces_cpp/hal/camera.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include <thread>
 #include <chrono>
 
 using namespace std::chrono_literals;
 
-namespace {
-    std::shared_ptr<MotorsNode> motors_node_ = nullptr;
-    std::shared_ptr<CameraNode> camera_node_ = nullptr;
-    std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_ = nullptr;
-    std::thread spin_thread_;
-}
+std::shared_ptr<MotorsNode> HAL::motors_node_ = nullptr;
+std::shared_ptr<CameraNode> HAL::camera_node_ = nullptr;
+std::shared_ptr<rclcpp::executors::SingleThreadedExecutor> HAL::executor_ = nullptr;
+std::thread HAL::spin_thread_;
 
 void HAL::init()
 {
@@ -20,7 +17,7 @@ void HAL::init()
         motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3);
         camera_node_ = std::make_shared<CameraNode>("/cam_f1_left/image_raw");
 
-        executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
+        executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
         executor_->add_node(motors_node_);
         executor_->add_node(camera_node_);
 
