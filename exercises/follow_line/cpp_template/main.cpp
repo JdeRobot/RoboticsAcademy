@@ -7,6 +7,17 @@
 #include <string>
 #include <iostream>
 
+class SystemBootstrapper {
+public:
+    static void init_hal() {
+        HAL::init();
+    }
+    
+    static void init_webgui() {
+        WebGUI::init();
+    }
+};
+
 void start_console()
 {
   int virtual_terminal = 0;
@@ -22,20 +33,9 @@ void start_console()
 
   const std::string v_terminal_str = "/dev/pts/" + std::to_string(virtual_terminal);
 
-  if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL)
-  {
-    std::cerr << "Error redirecting stdout!" << std::endl;
-  }
-
-  if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL)
-  {
-    std::cerr << "Error redirecting stderr!" << std::endl;
-  }
-
-  if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL)
-  {
-    std::cerr << "Error redirecting stdin!" << std::endl;
-  }
+  if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL) {}
+  if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL) {}
+  if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL) {}
 }
 
 int main(int argc, char *argv[])
@@ -43,27 +43,17 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
   start_console();
 
-  auto webgui_instance = std::make_shared<WebGUI>();
-  HAL hal_instance; 
-
-  rclcpp::executors::MultiThreadedExecutor executor;
-
-  for (const auto& node : webgui_instance->get_nodes()) {
-    executor.add_node(node);
-  }
+  SystemBootstrapper::init_webgui();
 
 #ifdef USER_NODE
+  rclcpp::executors::SingleThreadedExecutor executor;
   auto user_node = std::make_shared<UserNode>();
   executor.add_node(user_node);
   executor.spin();
 #else
-  for (const auto& node : HAL::get_nodes()) {
-    executor.add_node(node);
-  }
+  SystemBootstrapper::init_hal();
 
   std::thread user_thread(exercise);
-
-  executor.spin();
 
   if (user_thread.joinable()) {
     user_thread.join();
