@@ -32,9 +32,7 @@ HAL = Node("hal_node")
 HAL.grasped_object = None
 
 HAL.gripper_client = ActionClient(
-    HAL,
-    FollowJointTrajectory,
-    "/gripper_controller/follow_joint_trajectory"
+    HAL, FollowJointTrajectory, "/gripper_controller/follow_joint_trajectory"
 )
 
 print("[HAL] Waiting for gripper controller...")
@@ -59,6 +57,7 @@ print("[HAL] LinkAttacher ready")
 # MoveAbsJ (IDÉNTICO a classic)
 # ==============================================================
 
+
 def MoveAbsJ(absolute_joints, speed, wait_time):
 
     ACTION = Action()
@@ -78,7 +77,9 @@ def MoveAbsJ(absolute_joints, speed, wait_time):
 
     if EXECUTION["Success"]:
         print(f"Robot moved to Joint Angular Goal: {absolute_joints}")
-        print(f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %")
+        print(
+            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
+        )
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
@@ -89,6 +90,7 @@ def MoveAbsJ(absolute_joints, speed, wait_time):
 # ==============================================================
 # MoveLinear
 # ==============================================================
+
 
 def MoveLinear(abs_xyz, abs_ypr, speed, wait_time):
 
@@ -140,16 +142,25 @@ def MoveLinear(abs_xyz, abs_ypr, speed, wait_time):
 # MoveJoint
 # ==============================================================
 
+
 def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
 
     roll = math.radians(abs_ypr[0])
     pitch = math.radians(abs_ypr[1])
     yaw = math.radians(abs_ypr[2])
 
-    qx = np.sin(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) - np.cos(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
-    qy = np.cos(roll/2)*np.sin(pitch/2)*np.cos(yaw/2) + np.sin(roll/2)*np.cos(pitch/2)*np.sin(yaw/2)
-    qz = np.cos(roll/2)*np.cos(pitch/2)*np.sin(yaw/2) - np.sin(roll/2)*np.sin(pitch/2)*np.cos(yaw/2)
-    qw = np.cos(roll/2)*np.cos(pitch/2)*np.cos(yaw/2) + np.sin(roll/2)*np.sin(pitch/2)*np.sin(yaw/2)
+    qx = np.sin(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) - np.cos(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.sin(yaw / 2)
+    qy = np.cos(roll / 2) * np.sin(pitch / 2) * np.cos(yaw / 2) + np.sin(
+        roll / 2
+    ) * np.cos(pitch / 2) * np.sin(yaw / 2)
+    qz = np.cos(roll / 2) * np.cos(pitch / 2) * np.sin(yaw / 2) - np.sin(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.cos(yaw / 2)
+    qw = np.cos(roll / 2) * np.cos(pitch / 2) * np.cos(yaw / 2) + np.sin(
+        roll / 2
+    ) * np.sin(pitch / 2) * np.sin(yaw / 2)
 
     InputPose = Robpose()
     InputPose.x = float(abs_xyz[0])
@@ -163,8 +174,12 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
     EXECUTION = UR5.RobMove_EXECUTE("PTP", float(speed), InputPose)
 
     if EXECUTION["Success"]:
-        print(f"Robot moved Point-to-Point to Abs XYZ: {abs_xyz} and Abs YPR: {abs_ypr}")
-        print(f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %")
+        print(
+            f"Robot moved Point-to-Point to Abs XYZ: {abs_xyz} and Abs YPR: {abs_ypr}"
+        )
+        print(
+            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
+        )
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
@@ -175,6 +190,7 @@ def MoveJoint(abs_xyz, abs_ypr, speed, wait_time):
 # ==============================================================
 # MoveRelLinear
 # ==============================================================
+
 
 def MoveRelLinear(relative_xyz, speed, wait_time):
 
@@ -192,7 +208,9 @@ def MoveRelLinear(relative_xyz, speed, wait_time):
 
     if EXECUTION["Success"]:
         print(f"Robot moved LINEARLY by a relative increment of : {relative_xyz}")
-        print(f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %")
+        print(
+            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
+        )
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
@@ -203,6 +221,7 @@ def MoveRelLinear(relative_xyz, speed, wait_time):
 # ==============================================================
 # MoveRelReor
 # ==============================================================
+
 
 def MoveRelReor(relative_ypr, speed, wait_time):
 
@@ -220,7 +239,9 @@ def MoveRelReor(relative_ypr, speed, wait_time):
 
     if EXECUTION["Success"]:
         print(f"TCP reoriented by a relative increment of : {relative_ypr}")
-        print(f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %")
+        print(
+            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
+        )
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
@@ -231,6 +252,7 @@ def MoveRelReor(relative_ypr, speed, wait_time):
 # ==============================================================
 # MoveSingleJ
 # ==============================================================
+
 
 def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
 
@@ -247,7 +269,9 @@ def MoveSingleJ(joint_number, relative_angle, speed, wait_time):
 
     if EXECUTION["Success"]:
         print(f"Robot moved {joint_number} in {relative_angle} degrees")
-        print(f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %")
+        print(
+            f"Movement Execution Time: {EXECUTION['ExecTime']} s at Robot Speed: {speed*100} %"
+        )
     else:
         print("Robot movement FAILED, check REASON in MoveIt output")
 
@@ -301,9 +325,8 @@ def GripperSet(relative_closure, wait_time):
 
     if relative_closure <= 5:
         dettach()
-    
-    time.sleep(wait_time)
 
+    time.sleep(wait_time)
 
 
 def attach(item):
