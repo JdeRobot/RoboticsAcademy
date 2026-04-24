@@ -11,7 +11,7 @@
 | Laser Gridmap mapping                |        ok        |     ok      |               |          | [Link][vid_laser_mapping]    |                   |         ok         |             |
 | MonteCarlo Laser Loc                 |        ok        |     ok      |               |          | -                            |        ok         |         ok         | AMCL        |
 | MonteCarlo Visual Loc                |        ok        |     ok      |               |          | -                            |        ok         |         ok         | AMCL        |
-| Marker-based visual Loc              |        ok        |     ok      |               |          | -                            |                   |         ok         | PnP         |
+| Marker-based visual Loc              |        ok        |     ok      |               |          | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
 | Localized Vacuum Cleaner             |        ok        |     ok      |               |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
 | Autoparking                          |        ok        |     ok      |               |          | [Link][vid_autoparking]      |        ok         |         ok         |             |
 | Amazon Warehouse                     |        ok        |     ok      |               |          | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
@@ -54,3 +54,4 @@
 [vid_laser_mapping]: https://www.youtube.com/watch?v=rH7A-gPXplU
 [vid_localized_vacuum]: https://www.youtube.com/watch?v=cajn0qb-oeY
 [vid_global_nav]: https://www.youtube.com/watch?v=mOqtXiUAny0
+[vid_marker_loc]: https://www.youtube.com/watch?v=HF57L6ekrRg
