@@ -60,6 +60,12 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 
 ## HAL API for Gazebo 11 (Classic).
 
+To use this HAL API, you need to import the HAL module:
+
+```python
+import HAL
+```
+
 ### Direct Kinematics
 
 * `HAL.MoveAbsJ(absolute_joints, rel_speed, wait_time)`
@@ -97,44 +103,59 @@ The goal of this exercise is to learn the underlying infrastructure of Industria
 #### Example of data targets for MoveAbsJ (angular position for each joint, in deg)
 
 absj_10 = [0, -90, 45, -135, -90, 0]
+
 absj_20 = [-45, -90, 90, -90, -90, 90]
+
 absj_30 = [20, -90, 45, -45, -90, 0]
 
 #### Examples of absolute XYZ poses for MoveJoint and MoveLinear (in meters, from the world frame)
 
 pose_10 = [0.5, 0, 1.3]
+
 pose_20 = [0, 0.5, 1.3]
 
 #### Examples of absolute YPR angular poses or MoveJoint and MoveLinear (in degrees)
 
 YPR_10 = [0, 90, 90]
+
 YPR_20 = [0, 90, 0]
 
 #### Examples of Cartesian increments for relative MoveRelLinear, [Ax,Ay,Az] in meters)
 
 increment_10 = [0.3, 0.1, -0.2]
+
 increment_20 = [-0.4, -0.1, 0.4]
 
 ## HAL API for Gazebo Harmonic.
+
+To use this HAL API, you need to import the HAL_Harmonic module:
+
+```python
+import HAL_Harmonic
+```
 
 ### Direct Kinematics
 
 * `HAL.MoveAbsJ(joints_deg, speed, wait_time)`
   * Moves the robot to the given angular position for each joint (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
+* `HAL.MoveSingleJ("jointX", value_in_deg, rel_speed, wait_time)`
+  * Moves a single joint by a relative angular increment (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.s
 
 ### Inverse Kinematics
 
 #### Using absolute poses
 
 * `HAL.MoveJoint(abs_xyz, abs_ypr, speed, wait_time)`
-  * Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (in degrees) of (Yaw,Pitch,Roll), at a given relative speed in the range [0-1], adding a final delay in seconds. The robot will move at constant rotational speeds in each joint, resulting in a non-linear trajectory.
+  * Moves the robot Tool Center Point (TCP) to an absolute (X,Y,Z) pose with an absolute orientation (Roll,Pitch,Yaw in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds.
+* `HAL.MoveLinear (absolute_XYZ, absolute_YPR, rel_speed, wait_time)`
+  * Moves the robot TCP to an absolute (X,Y,Z) pose with an absolute orientation (Roll,Pitch,Yaw in degrees) following a linear trajectory, at a given relative speed in the range [0-1], adding a final delay in seconds.
 
 #### Using relative XYZ or YPR increments
 
 * `HAL.MoveRelLinear(relative_xyz, speed, wait_time)`
-  * Moves the robot TCP pose in a linear trajectory by the distances given in increment_XYZ argument, at a given relative speed in the range [0-1], adding a final delay in seconds. The tool orientation is not changed.
+  * Moves the robot TCP in Cartesian space by the given relative displacement (in meters), maintaining orientation.
 * `HAL.MoveRelReor (relative_rpy, speed, wait_time)`
-  * Reorients the robot TCP by the angular increments given in increment_YPR argument (in degrees), at a given relative speed in the range [0-1], adding a final delay in seconds. The TCP (x,y,z) stay fixed.
+  * Reorients the robot TCP by relative angular increments (Roll,Pitch,Yaw in degrees), keeping the TCP position fixed.
 
 ### Gripper usage
 
@@ -193,19 +214,23 @@ absj_home = [0, -90, 70, -70, -90, 0]
 #### Examples of absolute XYZ poses for MoveJoint (in meters, from the world frame)
 
 aprox_yellow_box = [0.6, 0.3, 0.4]
+
 aprox_yellow_target = [-0.4, -0.45, 0.4]
 
 #### Examples of absolute YPR angular poses for MoveJoint (in degrees)
 
 YPR_pick = [180, 0, -90]
-YPR_place = [180, 0, 0]
+
+YPR_place = [0, 90, 0]
 
 #### Examples of Cartesian increments for relative MoveRelLinear, [Ax,Ay,Az] in meters
 
 decrease_z_10 = [0, 0, -0.10]
+
 decrease_z_15 = [0, 0, -0.15]
 
 increase_z_20 = [0, 0, 0.20]
+
 increase_z_25 = [0, 0, 0.25]
 
 ## Where to insert and run the code?
