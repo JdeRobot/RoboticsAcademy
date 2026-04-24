@@ -408,11 +408,16 @@ def get_universes_list(fal, request):
     universes_list = []
 
     proj_univs = project.universes.all()
+
+    default_universes = dict(
+        ExerciseUniverses.objects.filter(exercise=project).values_list(
+            "universe_id", "is_default"
+        )
+    )
+
     proj_univs = sorted(
         proj_univs,
-        key=lambda univ: not ExerciseUniverses.objects.get(
-            exercise=project, universe=univ
-        ).is_default,
+        key=lambda univ: not default_universes.get(univ.id, False),
     )
 
     for universe in proj_univs:
