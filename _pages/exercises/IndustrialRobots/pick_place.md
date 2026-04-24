@@ -92,11 +92,22 @@ import HAL
 ### Gripper usage
 
 * `HAL.GripperSet(percentage_closure, wait_time)`
-  * Closes the two-finger gripper to the closing percentage given in the first argument, adding a final delay in seconds. A percentage_closure of 100 means full closed, 0 means full opened.
-* `HAL.attach (object_name)`
-  * Attaches the given object_name to the gripper, instantly. Precise object names are given below
-* `HAL.dettach ()`
-  * Dettaches the attached objects to the gripper, instantly. No argument is needed. When the gripper is fully opened with `HAL.GripperSet(0, wait_time)` an automatic dettach is performed.  
+  * Controls the two-finger gripper opening.
+    * 0 → fully open  
+    * 100 → fully closed  
+  * When the gripper is opened (typically ≤ 5%), any attached object is automatically detached.
+
+* `HAL.attach(object_name)`
+  * Attaches the specified object to the gripper using the Gazebo LinkAttacher ROS2 service.
+  * The object must be one of the predefined simulation objects.
+
+* `HAL.dettach()`
+  * Detaches the currently attached object from the gripper using the LinkAttacher service.
+  * If no object is attached, the function does nothing.
+
+* `Notes:`
+  * Only one object can be attached at a time.
+  * The attach/detach operations rely on ROS2 service calls and are not instantaneous.
 
 ### Argument examples
 
