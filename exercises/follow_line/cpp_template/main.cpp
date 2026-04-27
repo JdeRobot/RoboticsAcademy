@@ -2,69 +2,63 @@
 #include "WebGUI.hpp"
 #include "academy.cpp"
 #include "rclcpp/rclcpp.hpp"
-#include <bits/stdc++.h>
 #include <filesystem>
-#include <string>
 #include <thread>
+#include <string>
+#include <iostream>
+
+class SystemBootstrapper {
+public:
+    static void init_hal() {
+        HAL::init();
+    }
+    
+    static void init_webgui() {
+        WebGUI::init();
+    }
+};
 
 void start_console()
 {
   int virtual_terminal = 0;
-  for (const auto &entry : filesystem::directory_iterator("/dev/pts/"))
+  for (const auto &entry : std::filesystem::directory_iterator("/dev/pts/"))
   {
-    // Converting the path to const char * in the subsequent lines
-    filesystem::path outfilename = entry.path();
-    string filename = outfilename.filename().string();
-    if (filename != "ptmx" && stoi(filename) > virtual_terminal)
+    std::filesystem::path outfilename = entry.path();
+    std::string filename = outfilename.filename().string();
+    if (filename != "ptmx" && std::stoi(filename) > virtual_terminal)
     {
-      virtual_terminal = stoi(filename);
+      virtual_terminal = std::stoi(filename);
     }
   }
 
-  const string v_terminal_str = "/dev/pts/" + to_string(virtual_terminal);
+  const std::string v_terminal_str = "/dev/pts/" + std::to_string(virtual_terminal);
 
-  if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL)
-  {
-    cerr << "Error redirecting stdout!" << endl;
-  }
-
-  if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL)
-  {
-    cerr << "Error redirecting stderr!" << endl;
-  }
-
-  if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL)
-  {
-    cerr << "Error redirecting stdin!" << endl;
-  }
-};
+  if (freopen(v_terminal_str.c_str(), "w", stdout) == NULL) {}
+  if (freopen(v_terminal_str.c_str(), "w", stderr) == NULL) {}
+  if (freopen(v_terminal_str.c_str(), "w", stdin) == NULL) {}
+}
 
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
   start_console();
 
-  rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);
-
-  auto HAL_node = std::make_shared<HAL>();
-  executor.add_node(HAL_node);
-
-  auto WebGUI_node = std::make_shared<WebGUINode>();
-  executor.add_node(WebGUI_node);
+  SystemBootstrapper::init_webgui();
 
 #ifdef USER_NODE
+  rclcpp::executors::SingleThreadedExecutor executor;
   auto user_node = std::make_shared<UserNode>();
   executor.add_node(user_node);
+  executor.spin();
 #else
-  thread user(exercise);
-#endif
-  thread ros([&executor]{executor.spin();});
-  WebGUI();
+  SystemBootstrapper::init_hal();
 
-#ifndef USER_NODE
-  user.join();
+  std::thread user_thread(exercise);
+
+  if (user_thread.joinable()) {
+    user_thread.join();
+  }
 #endif
-  ros.join();
 
   rclcpp::shutdown();
   return 0;
