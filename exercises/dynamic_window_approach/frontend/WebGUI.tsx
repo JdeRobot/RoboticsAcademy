@@ -53,19 +53,19 @@ function WebGUI() {
 
     if (dataToDraw.dynamicWindow) {
       setDynamicWindow(
-        dataToDraw.dynamicWindow.map((i: any) => [i[0], i[1], i[2]])
+        dataToDraw.dynamicWindow.map((i: any) => [i[0], i[1], i[2]]),
       );
     }
 
     if (dataToDraw.pose && dataToDraw.target) {
       const targetDist = Math.sqrt(
         Math.pow(dataToDraw.pose[0] - dataToDraw.target[0], 2) +
-        Math.pow(dataToDraw.pose[1] - dataToDraw.target[1], 2)
+          Math.pow(dataToDraw.pose[1] - dataToDraw.target[1], 2),
       );
 
       const targetAng = Math.atan2(
         dataToDraw.pose[1] - dataToDraw.target[1],
-        dataToDraw.pose[0] - dataToDraw.target[0]
+        dataToDraw.pose[0] - dataToDraw.target[0],
       );
 
       setTargetPose([
@@ -78,10 +78,13 @@ function WebGUI() {
   const stateCallback = (state: string) => {
     if (state === states.TOOLS_READY) {
       setTargetPose(undefined);
+      setCurrentV(0);
+      setCurrentW(0);
+      setDynamicWindow([]);
     }
   };
 
-  connectApplication(manager, updateCallback);
+  connectApplication(manager, updateCallback, stateCallback);
 
   // =========================================================
   // ===================== WINDOW SCENE ======================
@@ -174,7 +177,7 @@ function WebGUI() {
                   y2={140 - VIEW_MARGIN}
                   stroke={w === 0 ? "#444" : "#ddd"}
                   strokeWidth={w === 0 ? 1.5 : 0.5}
-                />
+                />,
               );
             }
 
@@ -190,15 +193,27 @@ function WebGUI() {
                   y2={y}
                   stroke={v === 0 ? "#444" : "#ddd"}
                   strokeWidth={v === 0 ? 1.5 : 0.5}
-                />
+                />,
               );
             }
 
             return lines;
           })()}
 
-          <line x1={130} y1={VIEW_MARGIN} x2={130} y2={140 - VIEW_MARGIN} stroke="#444" />
-          <line x1={VIEW_MARGIN} y1={70} x2={280 - VIEW_MARGIN} y2={70} stroke="#444" />
+          <line
+            x1={130}
+            y1={VIEW_MARGIN}
+            x2={130}
+            y2={140 - VIEW_MARGIN}
+            stroke="#444"
+          />
+          <line
+            x1={VIEW_MARGIN}
+            y1={70}
+            x2={280 - VIEW_MARGIN}
+            y2={70}
+            stroke="#444"
+          />
 
           <circle
             cx={130 - (currentW / WMAX) * (130 - VIEW_MARGIN)}
@@ -275,16 +290,16 @@ function WebGUI() {
               const wContainer = HEAT_SIZE;
               const hContainer = HEAT_SIZE / 2;
 
-              const vValues = dynamicWindow.map(d => d[0]);
-              const wValues = dynamicWindow.map(d => d[1]);
+              const vValues = dynamicWindow.map((d) => d[0]);
+              const wValues = dynamicWindow.map((d) => d[1]);
 
               const minV = Math.min(...vValues);
               const maxV = Math.max(...vValues);
               const minW = Math.min(...wValues);
               const maxW = Math.max(...wValues);
 
-              const safeW = (maxW - minW) || 1;
-              const safeV = (maxV - minV) || 1;
+              const safeW = maxW - minW || 1;
+              const safeV = maxV - minV || 1;
 
               return dynamicWindow.map(([v, w, score], i) => {
                 const x =
@@ -311,45 +326,45 @@ function WebGUI() {
               });
             })()}
 
-            {/* Mejor velocidad */}
-            {currentV !== undefined &&
-              currentW !== undefined &&
-              dynamicWindow.length > 0 &&
-              (() => {
-                const wContainer = HEAT_SIZE;
-                const hContainer = HEAT_SIZE / 2;
+          {/* Mejor velocidad */}
+          {currentV !== undefined &&
+            currentW !== undefined &&
+            dynamicWindow.length > 0 &&
+            (() => {
+              const wContainer = HEAT_SIZE;
+              const hContainer = HEAT_SIZE / 2;
 
-                const vValues = dynamicWindow.map(d => d[0]);
-                const wValues = dynamicWindow.map(d => d[1]);
+              const vValues = dynamicWindow.map((d) => d[0]);
+              const wValues = dynamicWindow.map((d) => d[1]);
 
-                const minV = Math.min(...vValues);
-                const maxV = Math.max(...vValues);
-                const minW = Math.min(...wValues);
-                const maxW = Math.max(...wValues);
+              const minV = Math.min(...vValues);
+              const maxV = Math.max(...vValues);
+              const minW = Math.min(...wValues);
+              const maxW = Math.max(...wValues);
 
-                const safeW = (maxW - minW) || 1;
-                const safeV = (maxV - minV) || 1;
+              const safeW = maxW - minW || 1;
+              const safeV = maxV - minV || 1;
 
-                const x =
-                  HEAT_MARGIN +
-                  ((maxW - currentW) / safeW) * (wContainer - 2 * HEAT_MARGIN);
+              const x =
+                HEAT_MARGIN +
+                ((maxW - currentW) / safeW) * (wContainer - 2 * HEAT_MARGIN);
 
-                const y =
-                  hContainer -
-                  HEAT_MARGIN -
-                  ((currentV - minV) / safeV) * (hContainer - 2 * HEAT_MARGIN);
+              const y =
+                hContainer -
+                HEAT_MARGIN -
+                ((currentV - minV) / safeV) * (hContainer - 2 * HEAT_MARGIN);
 
-                return (
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={8}
-                    fill="none"
-                    stroke="black"
-                    strokeWidth={2}
-                  />
-                );
-              })()}
+              return (
+                <circle
+                  cx={x}
+                  cy={y}
+                  r={8}
+                  fill="none"
+                  stroke="black"
+                  strokeWidth={2}
+                />
+              );
+            })()}
         </svg>
       </div>
     </div>
