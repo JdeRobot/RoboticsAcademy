@@ -5,7 +5,7 @@
 #include <chrono>
 #include <string>
 #include <memory>
-#include <mutex>  // FIX 4: necesario para proteger el estado de tiempo entre hilos
+#include <mutex>
 
 class Lap {
 public:
