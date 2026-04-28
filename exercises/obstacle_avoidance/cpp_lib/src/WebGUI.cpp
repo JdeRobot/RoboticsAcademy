@@ -1,6 +1,5 @@
 #include "WebGUI.hpp"
 #include "Map.hpp"
-#include "Lap.hpp"
 #include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
 #include "common_interfaces_cpp/webgui/RTFMonitor.hpp"
 #include "common_interfaces_cpp/hal/odometry.hpp"
@@ -21,7 +20,6 @@ public:
     {
         odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
         laser_node_ = std::make_shared<LaserNode>("/f1/laser/scan", "webgui_laser");
-        lap_ = std::make_shared<Lap>(odom_node_);
         map_ = std::make_shared<Map>(laser_node_, odom_node_);
         aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
 
@@ -70,14 +68,8 @@ protected:
     json update_gui() override {
         gui_iterations_++;
         json inner;
-        inner["lap"] = lap_->check_threshold();
         inner["map"] = map_->get_json_data().dump();
         return inner;
-    }
-
-    void on_frontend_message(const std::string& msg) override {
-        if (msg.find("startLap") != std::string::npos) lap_->unpause();
-        else if (msg.find("pause") != std::string::npos) lap_->pause();
     }
 
 private:
@@ -145,7 +137,6 @@ private:
 
     std::shared_ptr<OdometryNode> odom_node_;
     std::shared_ptr<LaserNode> laser_node_;
-    std::shared_ptr<Lap> lap_;
     std::shared_ptr<Map> map_;
     
     rclcpp::Node::SharedPtr aux_node_;

@@ -39,7 +39,6 @@ target_include_directories(Frequency PUBLIC include)
 add_library(WebGUI SHARED 
     src/WebGUI.cpp 
     src/Map.cpp 
-    src/Lap.cpp
 )
 target_include_directories(WebGUI PUBLIC include ${COMMON_INTERFACES_INCLUDE} ${OpenCV_INCLUDE_DIRS})
 ament_target_dependencies(WebGUI ${WEBGUI_ROS_DEPS})
