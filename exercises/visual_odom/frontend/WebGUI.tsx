@@ -8,12 +8,14 @@ import { states } from "jderobot-commsmanager";
 
 function WebGUI() {
   const exerciseContext = useExercise();
+
   const [image, setImage] = useState<string | undefined>(undefined);
 
   // =========================
-  // 🧠 NUEVO: POSE STATE
+  // POSE + TRAJECTORY
   // =========================
   const [pose, setPose] = useState<any>(null);
+  const [trajectory, setTrajectory] = useState<any[]>([]);
 
   const [manager, setManager] = useState(exerciseContext.manager);
 
@@ -26,18 +28,25 @@ function WebGUI() {
     const update = data.update;
 
     // =========================
-    // IMAGE (igual que antes)
+    // IMAGE
     // =========================
     if (update.image) {
-      const image = JSON.parse(update.image);
-      setImage(`data:image/png;base64,${image.image}`);
+      const img = JSON.parse(update.image);
+      setImage(`data:image/png;base64,${img.image}`);
+    }
 
-      // =========================
-      // 🧠 NUEVO: POSE
-      // =========================
-      if (image.pose) {
-        setPose(image.pose);
-      }
+    // =========================
+    // POSE
+    // =========================
+    if (update.pose) {
+      setPose(update.pose);
+    }
+
+    // =========================
+    // TRAJECTORY
+    // =========================
+    if (update.trajectory) {
+      setTrajectory(update.trajectory);
     }
   };
 
@@ -45,6 +54,7 @@ function WebGUI() {
     if (state === states.TOOLS_READY) {
       setImage(undefined);
       setPose(null);
+      setTrajectory([]);
     }
   };
 
@@ -53,11 +63,16 @@ function WebGUI() {
   return (
     <WebGUIContainer>
 
-      {/* Imagen principal (igual que antes) */}
-      <WebGUIImage id="gui_canvas" src={image} style={{ width: "100%" }} fit />
+      {/* IMAGE */}
+      <WebGUIImage
+        id="gui_canvas"
+        src={image}
+        style={{ width: "100%" }}
+        fit
+      />
 
       {/* =========================
-          🧠 NUEVO: VISOR POSE DEBUG
+          POSE OVERLAY
           ========================= */}
       {pose && (
         <div style={{
@@ -76,6 +91,39 @@ function WebGUI() {
           <div>z: {pose.z.toFixed(2)}</div>
           <div>yaw: {pose.yaw.toFixed(2)}</div>
         </div>
+      )}
+
+      {/* =========================
+          TRAJECTORY VISUAL (BÁSICO)
+          ========================= */}
+      {trajectory.length > 0 && (
+        <svg
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        >
+          {trajectory.map((p, i) => {
+            if (i === 0) return null;
+            const prev = trajectory[i - 1];
+
+            return (
+              <line
+                key={i}
+                x1={prev.x * 50 + 200}
+                y1={prev.y * 50 + 200}
+                x2={p.x * 50 + 200}
+                y2={p.y * 50 + 200}
+                stroke="red"
+                strokeWidth={2}
+              />
+            );
+          })}
+        </svg>
       )}
 
     </WebGUIContainer>

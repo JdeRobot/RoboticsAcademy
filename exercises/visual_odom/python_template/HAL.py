@@ -21,6 +21,11 @@ class InputPublisher(Node):
         self.bridge = CvBridge()
         self.get_logger().info("Input publisher initialized on /input/image_raw")
 
+        # =========================================================
+        # VISUAL ODOMETRY + TRAJECTORY STORAGE
+        # =========================================================
+        self.trajectory = []  # list of poses (x, y, z, yaw)
+
     def publish_image(self, cv_image):
         """
         Publish a CV image to the ROS2 topic
@@ -49,35 +54,47 @@ class InputPublisher(Node):
         except Exception as e:
             self.get_logger().error(f"Failed to publish image: {e}")
 
+    # =========================================================
+    # VISUAL ODOMETRY API
+    # =========================================================
 
-# =========================================================
-# POSE ESTIMATION (VISUAL ODOMETRY STORAGE)
-# =========================================================
+    def setEstimatedPose(self, x, y, z=0.0, roll=0.0, pitch=0.0, yaw=0.0):
+        """
+        Store estimated pose and append to trajectory
+        """
+        pose = {
+            "x": float(x),
+            "y": float(y),
+            "z": float(z),
+            "roll": float(roll),
+            "pitch": float(pitch),
+            "yaw": float(yaw),
+        }
 
-_current_pose = {
-    "x": 0.0,
-    "y": 0.0,
-    "z": 0.0,
-    "roll": 0.0,
-    "pitch": 0.0,
-    "yaw": 0.0,
-}
+        self._current_pose = pose
+        self.trajectory.append(pose)
 
+        # debug print (NO BORRADO como pediste)
+        print(f"[HAL] Pose updated: {pose}")
 
-def setEstimatedPose(x, y, z=0.0, roll=0.0, pitch=0.0, yaw=0.0):
-    global _current_pose
-    _current_pose = {
-        "x": float(x),
-        "y": float(y),
-        "z": float(z),
-        "roll": float(roll),
-        "pitch": float(pitch),
-        "yaw": float(yaw),
-    }
+    def getEstimatedPose(self):
+        """
+        Return current estimated pose
+        """
+        return getattr(self, "_current_pose", {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "roll": 0.0,
+            "pitch": 0.0,
+            "yaw": 0.0,
+        })
 
-
-def getEstimatedPose():
-    return _current_pose
+    def getTrajectory(self):
+        """
+        Return full trajectory for visualization
+        """
+        return self.trajectory
 
 
 # =========================================================
