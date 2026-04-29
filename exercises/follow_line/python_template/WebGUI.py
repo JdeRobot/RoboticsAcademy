@@ -3,7 +3,9 @@ import base64
 import json
 import threading
 import rclpy
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 
 from hal_interfaces.general.camera import CameraNode

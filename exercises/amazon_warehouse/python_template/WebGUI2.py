@@ -16,7 +16,9 @@ from sensor_msgs.msg import Image as ROSImage
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Float64, String
 
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from map import Map
 from console_interfaces.general.console import start_console
 

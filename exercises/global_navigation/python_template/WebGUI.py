@@ -15,7 +15,9 @@ from nav_msgs.msg import Path
 from sensor_msgs.msg import Image as ROSImage
 
 from hal_interfaces.general.odometry import OdometryNode
-from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import (
+    MeasuringThreadingGUI,
+)
 from console_interfaces.general.console import start_console
 from map import Map
 
