@@ -1,53 +1,72 @@
-#ifndef INCLUDE_MAP_HPP_
-#define INCLUDE_MAP_HPP_
+#ifndef MAP_HPP_
+#define MAP_HPP_
 
-#include <string>
-#include <vector>
-#include <memory>
-#include <functional>
-#include <nlohmann/json.hpp>
 #include "common_interfaces_cpp/hal/odometry.hpp"
 #include "common_interfaces_cpp/hal/laser.hpp"
+#include <memory>
+#include <vector>
+#include <string>
+#include <mutex>
+#include <array>
+#include <thread>
+#include <atomic>
+#include <nlohmann/json.hpp>
 
 class Target {
 public:
-    Target(const std::string& id, const Pose3d& pose, bool active = false, bool reached = false);
-    std::string getId() const;
-    Pose3d getPose() const;
-    bool isReached() const;
-    void setReached(bool value);
+    Target(std::string id, Pose3d pose, bool active = false, bool reached = false);
 
-    std::string id;
-    Pose3d pose;
-    bool reached;
-    bool active;
+    std::string get_id() const;
+    Pose3d get_pose() const;
+    bool is_reached() const;
+    void set_reached(bool value);
+    bool is_active() const;
+    void set_active(bool value);
+
+private:
+    std::string id_;
+    Pose3d pose_;
+    bool active_;
+    bool reached_;
 };
 
 class Map {
 public:
-    Map(std::function<LaserData()> laser_cb, std::function<Pose3d()> pose_cb);
+    Map(std::shared_ptr<LaserNode> laser, std::shared_ptr<OdometryNode> odom);
+    ~Map();
 
-    void setCar(double x, double y);
-    void setObs(double x, double y);
-    void setAvg(double x, double y);
-    void setTargetPos(double x, double y);
-    
-    std::string get_json_data();
-    std::shared_ptr<Target> getNextTarget();
+    void set_car(double newx, double newy);
+    void set_obs(double newx, double newy);
+    void set_avg(double newx, double newy);
+    void set_target_pos(double newx, double newy);
+    void set_target_x(double x);
+    void set_target_y(double y);
+
+    std::array<double, 2> get_next_target();
+    void mark_current_target_reached();
     void reset();
 
-    double targetx, targety;
+    nlohmann::json get_json_data();
 
 private:
-    std::vector<double> setPose(const Pose3d& pose);
-    std::pair<nlohmann::json, double> setLaserValues();
+    void load_targets();
+    void laser_poll_loop();
 
-    double carx, cary, obsx, obsy, avgx, avgy;
+    double carx_, cary_;
+    double obsx_, obsy_;
+    double avgx_, avgy_;
+    double targetx_, targety_;
+
     std::vector<std::shared_ptr<Target>> targets_;
-    nlohmann::json payload_;
+    std::shared_ptr<LaserNode> laser_;
+    std::shared_ptr<OdometryNode> odom_;
 
-    std::function<LaserData()> laser_callback_;
-    std::function<Pose3d()> pose_callback_;
+    LaserData cached_laser_;
+    std::mutex laser_mtx_;
+    std::thread laser_thread_;
+    std::atomic<bool> laser_running_;
+
+    std::mutex map_mtx_;
 };
 
 #endif

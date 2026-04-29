@@ -1,174 +1,200 @@
 #include "WebGUI.hpp"
-#include <thread>
-#include <chrono>
-#include <ament_index_cpp/get_package_share_directory.hpp>
+#include "Map.hpp"
+#include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
+#include "common_interfaces_cpp/webgui/RTFMonitor.hpp"
+#include "common_interfaces_cpp/hal/odometry.hpp"
+#include "common_interfaces_cpp/hal/laser.hpp"
+#include "geometry_msgs/msg/point.hpp"
+#include "std_msgs/msg/bool.hpp"
+#include <atomic>
 
-using namespace std::chrono_literals;
-using std::placeholders::_1;
+using json = nlohmann::json;
 
-std::shared_ptr<Map> WebGUINode::map_ = nullptr;
-std::shared_ptr<Lap> WebGUINode::lap_ = nullptr;
-std::shared_ptr<OdometryNode> WebGUINode::pose3d_node_ = nullptr;
-std::shared_ptr<LaserNode> WebGUINode::laser_node_ = nullptr;
+class WebGUINode : public BaseWebGUI
+{
+public:
+    WebGUINode()
+        : BaseWebGUI("webgui_node", "127.0.0.1", "2303", 30.0)
+        , gui_iterations_(0)
+        , rtf_monitor_("/stats", std::chrono::milliseconds(500))
+    {
+        odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+        laser_node_ = std::make_shared<LaserNode>("/f1/laser/scan", "webgui_laser");
+        map_ = std::make_shared<Map>(laser_node_, odom_node_);
+        aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
 
-WebGUINode::WebGUINode() : Node("webgui_bridge_node") {
-    if (!pose3d_node_) pose3d_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom_node");
-    if (!laser_node_) laser_node_ = std::make_shared<LaserNode>("/f1/laser/scan");
+        setup_ros2_communications();
 
-    if (!map_) {
-        map_ = std::make_shared<Map>(
-            []() { 
-                LaserData d = WebGUINode::laser_node_->getLaserData(); 
-                while (d.values.empty() && rclcpp::ok()) { 
-                    std::this_thread::sleep_for(std::chrono::milliseconds(50)); // Evita que la CPU se congele esperando
-                    d = WebGUINode::laser_node_->getLaserData(); 
-                }
-                return d; 
-            },
-            []() { return WebGUINode::pose3d_node_->getPose3d(); }
-        );
-        lap_ = std::make_shared<Lap>(map_);
+        last_stat_time_ = std::chrono::steady_clock::now();
+        stats_timer_ = this->create_wall_timer(
+            std::chrono::milliseconds(500),
+            std::bind(&WebGUINode::send_stats, this));
 
-        std::thread spin_thread([]() {
-            rclcpp::executors::SingleThreadedExecutor executor;
-            executor.add_node(WebGUINode::pose3d_node_);
-            executor.add_node(WebGUINode::laser_node_);
-            while (rclcpp::ok()) {
-                executor.spin_some();
-                std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            }
-        });
-        spin_thread.detach();
-    }
-
-    auto cb_car = [](geometry_msgs::msg::Point::UniquePtr m) { map_->setCar(m->x, m->y); };
-    auto cb_obs = [](geometry_msgs::msg::Point::UniquePtr m) { map_->setObs(m->x, m->y); };
-    auto cb_avg = [](geometry_msgs::msg::Point::UniquePtr m) { map_->setAvg(m->x, m->y); };
-    auto cb_target = [](geometry_msgs::msg::Point::UniquePtr m) { map_->setTargetPos(m->x, m->y); };
-
-    sub_car_ = create_subscription<geometry_msgs::msg::Point>("/webgui/force/car", 10, cb_car);
-    sub_obs_ = create_subscription<geometry_msgs::msg::Point>("/webgui/force/obs", 10, cb_obs);
-    sub_avg_ = create_subscription<geometry_msgs::msg::Point>("/webgui/force/avg", 10, cb_avg);
-    sub_target_ = create_subscription<geometry_msgs::msg::Point>("/webgui/local_target", 10, cb_target);
-    
-    sub_reached_ = create_subscription<std_msgs::msg::Bool>("/webgui/target_reached", 10, 
-        std::bind(&WebGUINode::target_reached_callback, this, _1));
-
-    rclcpp::QoS qos(1); qos.transient_local();
-    pub_current_target_ = create_publisher<geometry_msgs::msg::Point>("/webgui/current_target", qos);
-
-    current_target_obj_ = map_->getNextTarget();
-    publish_current_target();
-}
-
-void WebGUINode::target_reached_callback(std_msgs::msg::Bool::UniquePtr msg) {
-    if (msg->data && current_target_obj_ && map_) {
-        current_target_obj_->setReached(true);
-        current_target_obj_ = map_->getNextTarget();
         publish_current_target();
     }
-}
 
-void WebGUINode::publish_current_target() {
-    if (current_target_obj_) {
-        geometry_msgs::msg::Point m;
-        m.x = current_target_obj_->getPose().x;
-        m.y = current_target_obj_->getPose().y;
-        m.z = 0.0;
-        pub_current_target_->publish(m);
-    }
-}
-
-// WebSocket Session Helper
-class session : public std::enable_shared_from_this<session> {
-    tcp::resolver resolver_;
-    websocket::stream<beast::tcp_stream> ws_;
-    beast::flat_buffer buffer_;
-    std::string host_, text_;
-
-public:
-    explicit session(net::io_context& ioc) : resolver_(net::make_strand(ioc)), ws_(net::make_strand(ioc)) {}
-
-    void run(char const* host, char const* port, char const* text) {
-        host_ = host; text_ = text;
-        buffer_.max_size(1024 * 1024);
-        resolver_.async_resolve(host, port, beast::bind_front_handler(&session::on_resolve, shared_from_this()));
+    std::vector<rclcpp::Node::SharedPtr> get_internal_nodes() {
+        return { shared_from_this(), odom_node_, laser_node_, aux_node_ };
     }
 
-    void on_resolve(beast::error_code ec, tcp::resolver::results_type results) {
-        if (ec) return;
-        beast::get_lowest_layer(ws_).expires_after(std::chrono::seconds(30));
-        beast::get_lowest_layer(ws_).async_connect(results, beast::bind_front_handler(&session::on_connect, shared_from_this()));
+    void show_forces(const std::array<double, 2>& vec1, const std::array<double, 2>& vec2, const std::array<double, 2>& vec3) {
+        map_->set_car(vec1[0], vec1[1]);
+        map_->set_obs(vec2[0], vec2[1]);
+        map_->set_avg(vec3[0], vec3[1]);
     }
 
-    void on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type ep) {
-        if (ec) return;
-        beast::get_lowest_layer(ws_).expires_never();
-        ws_.set_option(websocket::stream_base::timeout::suggested(beast::role_type::client));
-        ws_.read_message_max(1024 * 1024);
-        ws_.auto_fragment(false);
-        host_ += ':' + std::to_string(ep.port());
-        ws_.async_handshake(host_, "", beast::bind_front_handler(&session::on_handshake, shared_from_this()));
+    void show_local_target(const std::array<double, 2>& new_vec) {
+        map_->set_target_pos(new_vec[0], new_vec[1]);
     }
 
-    void on_handshake(beast::error_code ec) {
-        if (ec) return;
-        ws_.async_write(net::buffer(text_), beast::bind_front_handler(&session::on_write, shared_from_this()));
+    std::array<double, 2> get_next_target() {
+        return map_->get_next_target();
     }
 
-    void on_write(beast::error_code ec, std::size_t) {
-        if (ec) return;
-        ws_.async_read(buffer_, beast::bind_front_handler(&session::on_read, shared_from_this()));
+    void set_target_x(double x) {
+        map_->set_target_x(x);
     }
 
-    void on_read(beast::error_code ec, std::size_t) {
-        if (ec) return;
-        buffer_.consume(buffer_.size());
+    void set_target_y(double y) {
+        map_->set_target_y(y);
+    }
 
-        json j;
-        j["lap"] = "";
-        j["map"] = "";
+    void mark_target_reached() {
+        map_->mark_current_target_reached();
+        publish_current_target();
+    }
 
-        if (WebGUINode::lap_) {
-            auto lapped = WebGUINode::lap_->check_threshold();
-            j["lap"] = std::to_string(lapped);
+protected:
+    json update_gui() override {
+        gui_iterations_++;
+        json inner;
+        inner["map"] = map_->get_json_data().dump();
+        return inner;
+    }
+
+private:
+    void setup_ros2_communications() {
+        force_car_sub_ = aux_node_->create_subscription<geometry_msgs::msg::Point>(
+            "/webgui/force/car", 10, [this](const geometry_msgs::msg::Point::SharedPtr msg) {
+                map_->set_car(msg->x, msg->y);
+            });
+
+        force_obs_sub_ = aux_node_->create_subscription<geometry_msgs::msg::Point>(
+            "/webgui/force/obs", 10, [this](const geometry_msgs::msg::Point::SharedPtr msg) {
+                map_->set_obs(msg->x, msg->y);
+            });
+
+        force_avg_sub_ = aux_node_->create_subscription<geometry_msgs::msg::Point>(
+            "/webgui/force/avg", 10, [this](const geometry_msgs::msg::Point::SharedPtr msg) {
+                map_->set_avg(msg->x, msg->y);
+            });
+
+        target_sub_ = aux_node_->create_subscription<geometry_msgs::msg::Point>(
+            "/webgui/local_target", 10, [this](const geometry_msgs::msg::Point::SharedPtr msg) {
+                map_->set_target_pos(msg->x, msg->y);
+            });
+
+        target_reached_sub_ = aux_node_->create_subscription<std_msgs::msg::Bool>(
+            "/webgui/target_reached", 10, [this](const std_msgs::msg::Bool::SharedPtr msg) {
+                if (msg->data) {
+                    mark_target_reached();
+                }
+            });
+
+        auto qos_target = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
+        target_pub_ = aux_node_->create_publisher<geometry_msgs::msg::Point>(
+            "/webgui/current_target", qos_target);
+    }
+
+    void publish_current_target() {
+        auto coords = map_->get_next_target();
+        geometry_msgs::msg::Point msg;
+        msg.x = coords[0];
+        msg.y = coords[1];
+        msg.z = 0.0;
+        target_pub_->publish(msg);
+    }
+
+    void send_stats() {
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed = now - last_stat_time_;
+
+        double current_freq = 0.0;
+        if (elapsed.count() > 0.0) {
+            current_freq = gui_iterations_.exchange(0) / elapsed.count();
         }
-        
-        if (WebGUINode::map_) {
-            j["map"] = WebGUINode::map_->get_json_data();
-        }
+        last_stat_time_ = now;
 
-        std::string out = j.dump();
-        ws_.async_write(net::buffer(out), beast::bind_front_handler(&session::on_write, shared_from_this()));
+        json stats;
+        stats["brain"] = std::round(current_freq * 10.0) / 10.0;
+        stats["gui"]   = 30.0;
+        stats["rtf"]   = rtf_monitor_.get();
+        stats["fps"]   = -1.0;
+        stats["lat"]   = -1.0;
+
+        send_to_frontend(stats);
     }
+
+    std::shared_ptr<OdometryNode> odom_node_;
+    std::shared_ptr<LaserNode> laser_node_;
+    std::shared_ptr<Map> map_;
+    
+    rclcpp::Node::SharedPtr aux_node_;
+    rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr force_car_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr force_obs_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr force_avg_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr target_sub_;
+    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr target_reached_sub_;
+    rclcpp::Publisher<geometry_msgs::msg::Point>::SharedPtr target_pub_;
+
+    RTFMonitor rtf_monitor_;
+    rclcpp::TimerBase::SharedPtr stats_timer_;
+    std::atomic<int> gui_iterations_;
+    std::chrono::time_point<std::chrono::steady_clock> last_stat_time_;
 };
 
-WebGUI::WebGUI() {
-    net::io_context ioc;
-    std::make_shared<session>(ioc)->run("127.0.0.1", "2303", "{\"lap\":\"\",\"map\":\"\"}");
-    ioc.run();
+std::shared_ptr<WebGUINode> WebGUI::gui_node_  = nullptr;
+std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> WebGUI::executor_ = nullptr;
+std::thread WebGUI::spin_thread_;
+
+void WebGUI::init()
+{
+    if (gui_node_) return;
+    gui_node_ = std::make_shared<WebGUINode>();
+    executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
+    for (auto& node : gui_node_->get_internal_nodes())
+        executor_->add_node(node);
+    spin_thread_ = std::thread([]() { executor_->spin(); });
+    spin_thread_.detach();
 }
 
-void WebGUI::showForces(const std::vector<double>& v1, const std::vector<double>& v2, const std::vector<double>& v3) {
-    if (WebGUINode::map_) {
-        WebGUINode::map_->setCar(v1[0], v1[1]);
-        WebGUINode::map_->setObs(v2[0], v2[1]);
-        WebGUINode::map_->setAvg(v3[0], v3[1]);
-    }
+void WebGUI::show_forces(const std::array<double, 2>& vec1, const std::array<double, 2>& vec2, const std::array<double, 2>& vec3)
+{
+    if (gui_node_) gui_node_->show_forces(vec1, vec2, vec3);
 }
 
-void WebGUI::showLocalTarget(const std::vector<double>& v) {
-    if (WebGUINode::map_) WebGUINode::map_->setTargetPos(v[0], v[1]);
+void WebGUI::show_local_target(const std::array<double, 2>& new_vec)
+{
+    if (gui_node_) gui_node_->show_local_target(new_vec);
 }
 
-std::shared_ptr<Target> WebGUI::getNextTarget() {
-    return WebGUINode::map_ ? WebGUINode::map_->getNextTarget() : nullptr;
+std::array<double, 2> WebGUI::get_next_target()
+{
+    if (gui_node_) return gui_node_->get_next_target();
+    return {0.0, 0.0};
 }
 
-void WebGUI::setTargetx(double x) {
-    if (WebGUINode::map_) WebGUINode::map_->targetx = x;
+void WebGUI::set_target_x(double x)
+{
+    if (gui_node_) gui_node_->set_target_x(x);
 }
 
-void WebGUI::setTargety(double y) {
-    if (WebGUINode::map_) WebGUINode::map_->targety = y;
+void WebGUI::set_target_y(double y)
+{
+    if (gui_node_) gui_node_->set_target_y(y);
+}
+
+void WebGUI::mark_target_reached()
+{
+    if (gui_node_) gui_node_->mark_target_reached();
 }
