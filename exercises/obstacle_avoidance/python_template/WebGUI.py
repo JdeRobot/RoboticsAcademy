@@ -10,7 +10,7 @@ from rclpy.qos import QoSProfile, DurabilityPolicy
 
 from hal_interfaces.general.odometry import OdometryNode
 from hal_interfaces.general.laser import LaserNode
-from gui_interfaces.general.measuring_threading_gui import MeasuringThreadingGUI
+from gui_interfaces.general.measuring_threading_gui_harmonic import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from lap import Lap
 from map import Map
