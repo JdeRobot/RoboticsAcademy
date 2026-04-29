@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <functional>
+#include <mutex>
 #include <opencv2/opencv.hpp>
 #include "common_interfaces_cpp/hal/odometry.hpp"
 
@@ -44,6 +45,7 @@ public:
 private:
     std::function<Pose3d()> pose_callback_;
     cv::Mat grid_;
+    std::mutex grid_mtx_;
 };
 
 #endif

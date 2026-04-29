@@ -1,245 +1,234 @@
 #include "WebGUI.hpp"
+#include "Map.hpp"
+#include "common_interfaces_cpp/webgui/WebGUIBridge.hpp"
+#include "common_interfaces_cpp/hal/odometry.hpp"
+#include "geometry_msgs/msg/point.hpp"
+#include "nav_msgs/msg/path.hpp"
+#include "sensor_msgs/msg/image.hpp"
 #include <cv_bridge/cv_bridge.h>
-#include <boost/beast/core/detail/base64.hpp>
-#include <regex>
+#include <mutex>
+#include <atomic>
+#include <algorithm>
+#include <string>
+#include <sstream>
 
-using namespace std::chrono_literals;
-using std::placeholders::_1;
-
-std::shared_ptr<Map> WebGUINode::map_ = nullptr;
-std::shared_ptr<OdometryNode> WebGUINode::pose3d_node_ = nullptr;
-std::shared_ptr<rclcpp::Publisher<geometry_msgs::msg::Point>> WebGUINode::target_pub_ = nullptr;
-
-std::vector<double> WebGUI::worldXY = {};
-std::string WebGUI::array_str = "[]";
-cv::Mat WebGUI::image_to_be_shown = cv::Mat();
-bool WebGUI::image_to_be_shown_updated = false;
-std::mutex WebGUI::image_show_lock;
-std::mutex WebGUI::array_lock;
-
-WebGUINode::WebGUINode() : Node("gui_bridge_node")
+class WebGUINode : public BaseWebGUI
 {
-    rclcpp::QoS qos(rclcpp::KeepLast(1));
-    qos.transient_local();
-
-    target_pub_ = this->create_publisher<geometry_msgs::msg::Point>("/webgui/current_target", qos);
-
-    path_sub_ = this->create_subscription<nav_msgs::msg::Path>(
-        "/webgui/path", 10, std::bind(&WebGUINode::path_callback, this, _1));
-    
-    image_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
-        "/webgui/debug_image", 10, std::bind(&WebGUINode::image_callback, this, _1));
-}
-
-void WebGUINode::publish_target(double x, double y)
-{
-    if (target_pub_) {
-        geometry_msgs::msg::Point msg;
-        msg.x = x;
-        msg.y = y;
-        msg.z = 0.0;
-        target_pub_->publish(msg);
-    }
-}
-
-void WebGUINode::path_callback(nav_msgs::msg::Path::UniquePtr msg)
-{
-    std::vector<std::vector<int>> path_array;
-    if (WebGUINode::map_) {
-        for (const auto& pose_stamped : msg->poses) {
-            auto coords = WebGUINode::map_->worldToGrid(pose_stamped.pose.position.x, pose_stamped.pose.position.y);
-            path_array.push_back(coords);
-        }
-    }
-    WebGUI::showPath(path_array);
-}
-
-void WebGUINode::image_callback(sensor_msgs::msg::Image::UniquePtr msg)
-{
-    try {
-        cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(*msg, sensor_msgs::image_encodings::MONO8);
-        WebGUI::showNumpy(cv_ptr->image);
-    } catch (...) {}
-}
-
-void WebGUI::showNumpy(const cv::Mat& image)
-{
-    cv::Mat processed;
-    if (image.channels() == 1) {
-        cv::cvtColor(image, processed, cv::COLOR_GRAY2BGR);
-    } else {
-        processed = image.clone();
-    }
-
-    std::lock_guard<std::mutex> lock(image_show_lock);
-    image_to_be_shown = processed;
-    image_to_be_shown_updated = true;
-}
-
-void WebGUI::showPath(const std::vector<std::vector<int>>& array)
-{
-    std::lock_guard<std::mutex> lock(array_lock);
-    json j = array;
-    array_str = j.dump();
-}
-
-std::vector<double> WebGUI::getTargetPose() { return worldXY; }
-
-cv::Mat WebGUI::getMap(const std::string& url) 
-{ 
-    if (WebGUINode::map_) return WebGUINode::map_->getMap(url); 
-    return cv::Mat(); 
-}
-
-std::vector<int> WebGUI::rowColumn(const std::vector<double>& pose) 
-{ 
-    if (WebGUINode::map_) return WebGUINode::map_->rowColumn(pose); 
-    return {}; 
-}
-
-std::vector<int> WebGUI::worldToGrid(const std::vector<double>& pose) 
-{ 
-    if (WebGUINode::map_ && pose.size() >= 2) return WebGUINode::map_->worldToGrid(pose[0], pose[1]); 
-    return {}; 
-}
-
-std::vector<double> WebGUI::gridToWorld(const std::vector<int>& cell) 
-{ 
-    if (WebGUINode::map_ && cell.size() >= 2) return WebGUINode::map_->gridToWorld(cell[0], cell[1]); 
-    return {}; 
-}
-
-void WebGUI::reset_gui() 
-{ 
-    cv::Mat empty_img = cv::Mat::zeros(400, 400, CV_8UC3);
-    showNumpy(empty_img);
-    if (WebGUINode::map_) WebGUINode::map_->reset(); 
-}
-
-std::string WebGUI::payloadImage()
-{
-    std::lock_guard<std::mutex> lock(image_show_lock);
-    json payload = {{"image", ""}, {"shape", {}}};
-    
-    if (!image_to_be_shown_updated || image_to_be_shown.empty()) {
-        return payload.dump();
-    }
-
-    std::vector<uchar> buf;
-    cv::imencode(".JPEG", image_to_be_shown, buf);
-    std::string encoded_image;
-    encoded_image.resize(boost::beast::detail::base64::encoded_size(buf.size()));
-    boost::beast::detail::base64::encode(&encoded_image[0], buf.data(), buf.size());
-
-    payload["image"] = encoded_image;
-    payload["shape"] = {image_to_be_shown.rows, image_to_be_shown.cols, image_to_be_shown.channels()};
-    
-    image_to_be_shown_updated = false;
-    return payload.dump();
-}
-
-class session : public std::enable_shared_from_this<session>
-{
-    tcp::resolver resolver_;
-    websocket::stream<beast::tcp_stream> ws_;
-    beast::flat_buffer buffer_;
-    std::string host_;
-
 public:
-    explicit session(net::io_context &ioc) : resolver_(net::make_strand(ioc)), ws_(net::make_strand(ioc)) {}
+    WebGUINode()
+        : BaseWebGUI("webgui_node", "127.0.0.1", "2303", 30.0)
+        , image_updated_(false)
+        , last_image_payload_("{\"image\":\"\",\"shape\":[]}")
+        , map_util_([this](){ return odom_node_->getPose3d(); })
+    {
+        odom_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom");
+        aux_node_ = std::make_shared<rclcpp::Node>("webgui_aux");
 
-    void run(char const *host, char const *port) {
-        host_ = host;
-        buffer_.max_size(1024 * 1024 * 10);
-        resolver_.async_resolve(host, port, beast::bind_front_handler(&session::on_resolve, shared_from_this()));
-    }
+        auto qos_transient = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
+        target_pub_ = aux_node_->create_publisher<geometry_msgs::msg::Point>(
+            "/webgui/current_target", qos_transient);
 
-    void on_resolve(beast::error_code ec, tcp::resolver::results_type results) {
-        if (ec) return;
-        beast::get_lowest_layer(ws_).expires_after(std::chrono::seconds(30));
-        beast::get_lowest_layer(ws_).async_connect(results, beast::bind_front_handler(&session::on_connect, shared_from_this()));
-    }
+        auto qos_volatile = rclcpp::QoS(rclcpp::KeepLast(10)).durability_volatile().best_effort();
+        
+        debug_sub_ = aux_node_->create_subscription<sensor_msgs::msg::Image>(
+            "/webgui/debug_image", qos_volatile,
+            [this](const sensor_msgs::msg::Image::SharedPtr msg) {
+                try {
+                    cv::Mat img = cv_bridge::toCvShare(msg, "bgr8")->image;
+                    show_image(img);
+                } catch (...) {}
+            });
 
-    void on_connect(beast::error_code ec, tcp::resolver::results_type::endpoint_type ep) {
-        if (ec) return;
-        beast::get_lowest_layer(ws_).expires_never();
-        ws_.set_option(websocket::stream_base::timeout::suggested(beast::role_type::client));
-        ws_.read_message_max(1024 * 1024 * 10);
-        ws_.auto_fragment(false);
-        host_ += ':' + std::to_string(ep.port());
-        ws_.async_handshake(host_, "/", beast::bind_front_handler(&session::on_handshake, shared_from_this()));
-    }
-
-    void on_handshake(beast::error_code ec) {
-        if (ec) return;
-        ws_.async_read(buffer_, beast::bind_front_handler(&session::on_read, shared_from_this()));
-    }
-
-    void on_read(beast::error_code ec, std::size_t) {
-        if (ec) return;
-        std::string msg = beast::buffers_to_string(buffer_.data());
-        buffer_.consume(buffer_.size());
-
-        if (msg.find("pick") != std::string::npos) {
-            std::regex re("[-+]?[0-9]*\\.?[0-9]+");
-            auto words_begin = std::sregex_iterator(msg.begin(), msg.end(), re);
-            auto words_end = std::sregex_iterator();
-
-            std::vector<double> coords;
-            for (std::sregex_iterator i = words_begin; i != words_end && coords.size() < 2; ++i) {
-                coords.push_back(std::stod(i->str()));
-            }
-
-            if (coords.size() == 2 && WebGUINode::map_) {
-                WebGUI::worldXY = WebGUINode::map_->gridToWorld(static_cast<int>(coords[0]), static_cast<int>(coords[1]));
-                if (!WebGUI::worldXY.empty()) {
-                    WebGUINode::publish_target(WebGUI::worldXY[0], WebGUI::worldXY[1]);
+        path_sub_ = aux_node_->create_subscription<nav_msgs::msg::Path>(
+            "/webgui/path", qos_volatile,
+            [this](const nav_msgs::msg::Path::SharedPtr msg) {
+                std::vector<std::vector<int>> path;
+                for (const auto& pose : msg->poses) {
+                    path.push_back(map_util_.worldToGrid(pose.pose.position.x, pose.pose.position.y));
                 }
-            }
-        }
-
-        std::string map_pos = "";
-        if (WebGUINode::map_) {
-            auto coords = WebGUINode::map_->getTaxiCoordinates();
-            auto angle = WebGUINode::map_->getTaxiAngle();
-            if (!coords.empty() && !angle.empty()) {
-                map_pos = "(" + std::to_string(coords[0]) + ", " + std::to_string(coords[1]) + ", " + std::to_string(angle[0]) + ")";
-            }
-        }
-
-        json payload = {
-            {"image", WebGUI::payloadImage()},
-            {"array", WebGUI::array_str},
-            {"map", map_pos}
-        };
-
-        std::string out = payload.dump();
-        ws_.async_write(net::buffer(out), beast::bind_front_handler(&session::on_write, shared_from_this()));
+                show_path(path);
+            });
     }
 
-    void on_write(beast::error_code ec, std::size_t) {
-        if (ec) return;
-        ws_.async_read(buffer_, beast::bind_front_handler(&session::on_read, shared_from_this()));
+    std::vector<rclcpp::Node::SharedPtr> get_internal_nodes() {
+        return { shared_from_this(), odom_node_, aux_node_ };
     }
+
+    void show_image(const cv::Mat& img) {
+        if (img.empty()) return;
+        std::lock_guard<std::mutex> lk(img_mtx_);
+        img.copyTo(img_buf_);
+        image_updated_.store(true);
+    }
+
+    void show_path(const std::vector<std::vector<int>>& path) {
+        std::lock_guard<std::mutex> lk(path_mtx_);
+        current_path_ = path;
+    }
+
+    std::vector<double> get_target_pose() {
+        std::lock_guard<std::mutex> lk(target_mtx_);
+        return current_target_;
+    }
+
+    cv::Mat get_map(const std::string& url) {
+        return map_util_.getMap(url);
+    }
+
+    std::vector<int> world_to_grid(const std::vector<double>& pose) {
+        if (pose.size() < 2) return {0, 0};
+        return map_util_.worldToGrid(pose[0], pose[1]);
+    }
+
+    std::vector<double> grid_to_world(const std::vector<double>& cell) {
+        if (cell.size() < 2) return {0.0, 0.0};
+        return map_util_.gridToWorld(static_cast<int>(cell[0]), static_cast<int>(cell[1]));
+    }
+
+protected:
+    json update_gui() override {
+        json inner;
+        inner["image"] = encode_image();
+        
+        std::string path_str = "[]";
+        {
+            std::lock_guard<std::mutex> lk(path_mtx_);
+            path_str = json(current_path_).dump();
+        }
+        inner["array"] = path_str;
+
+        Pose3d pose = odom_node_->getPose3d();
+        std::vector<int> grid_pos = map_util_.worldToGrid(pose.x, pose.y);
+        
+        inner["map"] = "(" + std::to_string(grid_pos[0]) + ", " + 
+                       std::to_string(grid_pos[1]) + ", " + 
+                       std::to_string(pose.yaw) + ")";
+
+        return inner;
+    }
+
+    void on_frontend_message(const std::string& msg) override {
+        if (msg.find("pick") == 0) {
+            std::string coords_str = msg.substr(4);
+            std::replace(coords_str.begin(), coords_str.end(), ',', ' ');
+
+            std::istringstream iss(coords_str);
+            double grid_x, grid_y;
+            
+            if (iss >> grid_x >> grid_y) {
+                std::vector<double> world_xy = map_util_.gridToWorld(static_cast<int>(grid_x), static_cast<int>(grid_y));
+
+                {
+                    std::lock_guard<std::mutex> lk(target_mtx_);
+                    current_target_ = world_xy;
+                }
+
+                geometry_msgs::msg::Point pt;
+                pt.x = world_xy[0];
+                pt.y = world_xy[1];
+                pt.z = 0.0;
+                target_pub_->publish(pt);
+            }
+        }
+    }
+
+private:
+    std::string encode_image() {
+        cv::Mat local;
+        {
+            std::lock_guard<std::mutex> lk(img_mtx_);
+            if (!image_updated_.load() || img_buf_.empty())
+                return last_image_payload_;
+
+            img_buf_.copyTo(local);
+            image_updated_.store(false);
+        }
+
+        cv::Mat out;
+        if (local.cols > 640) {
+            double scale = 640.0 / local.cols;
+            cv::resize(local, out, cv::Size(), scale, scale);
+        } else {
+            out = local;
+        }
+
+        std::vector<uchar> buf;
+        cv::imencode(".jpg", out, buf, { cv::IMWRITE_JPEG_QUALITY, 60 });
+
+        json p;
+        p["image"] = base64_encode(buf.data(), buf.size());
+        p["shape"] = std::vector<int>{ out.rows, out.cols, 3 };
+
+        last_image_payload_ = p.dump();
+        return last_image_payload_;
+    }
+
+    std::shared_ptr<OdometryNode> odom_node_;
+    rclcpp::Node::SharedPtr aux_node_;
+    
+    rclcpp::Publisher<geometry_msgs::msg::Point>::SharedPtr target_pub_;
+    rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr path_sub_;
+    rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr debug_sub_;
+
+    cv::Mat img_buf_;
+    std::mutex img_mtx_;
+    std::atomic<bool> image_updated_;
+    std::string last_image_payload_;
+
+    std::vector<std::vector<int>> current_path_;
+    std::mutex path_mtx_;
+
+    std::vector<double> current_target_;
+    std::mutex target_mtx_;
+
+    Map map_util_;
 };
 
-WebGUI::WebGUI()
-{
-    if (!WebGUINode::pose3d_node_) {
-        WebGUINode::pose3d_node_ = std::make_shared<OdometryNode>("/odom", "webgui_odom_node");
-        
-        std::thread([]() {
-            rclcpp::executors::SingleThreadedExecutor exec;
-            exec.add_node(WebGUINode::pose3d_node_);
-            exec.spin();
-        }).detach();
-    }
+std::shared_ptr<WebGUINode> WebGUI::gui_node_  = nullptr;
+std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> WebGUI::executor_ = nullptr;
+std::thread WebGUI::spin_thread_;
 
-    if (!WebGUINode::map_) {
-        WebGUINode::map_ = std::make_shared<Map>([]() { return WebGUINode::pose3d_node_->getPose3d(); });
-    }
-    
-    net::io_context ioc;
-    std::make_shared<session>(ioc)->run("127.0.0.1", "2303");
-    ioc.run();
+void WebGUI::init()
+{
+    if (gui_node_) return;
+    gui_node_ = std::make_shared<WebGUINode>();
+    executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
+    for (auto& node : gui_node_->get_internal_nodes())
+        executor_->add_node(node);
+    spin_thread_ = std::thread([]() { executor_->spin(); });
+    spin_thread_.detach();
+}
+
+void WebGUI::show_image(const cv::Mat& image)
+{
+    if (gui_node_) gui_node_->show_image(image);
+}
+
+void WebGUI::show_path(const std::vector<std::vector<int>>& path)
+{
+    if (gui_node_) gui_node_->show_path(path);
+}
+
+std::vector<double> WebGUI::get_target_pose()
+{
+    if (gui_node_) return gui_node_->get_target_pose();
+    return {};
+}
+
+cv::Mat WebGUI::get_map(const std::string& url)
+{
+    if (gui_node_) return gui_node_->get_map(url);
+    return cv::Mat();
+}
+
+std::vector<int> WebGUI::world_to_grid(const std::vector<double>& pose)
+{
+    if (gui_node_) return gui_node_->world_to_grid(pose);
+    return {0, 0};
+}
+
+std::vector<double> WebGUI::grid_to_world(const std::vector<double>& cell)
+{
+    if (gui_node_) return gui_node_->grid_to_world(cell);
+    return {0.0, 0.0};
 }
