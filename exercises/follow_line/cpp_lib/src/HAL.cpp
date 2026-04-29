@@ -14,8 +14,8 @@ std::thread HAL::spin_thread_;
 void HAL::init()
 {
     if (!motors_node_) {
-        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3);
-        camera_node_ = std::make_shared<CameraNode>("/cam_f1_left/image_raw");
+        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
+        camera_node_ = std::make_shared<CameraNode>("/cam_f1_left/image_raw", "hal_camera");
 
         executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
         executor_->add_node(motors_node_);
