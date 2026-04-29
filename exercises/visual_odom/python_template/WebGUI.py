@@ -44,6 +44,19 @@ class WebGUI(MeasuringThreadingGUI):
         self.payload = {"image": "", "shape": ""}
         self.has_received_img = False
 
+        # =========================
+        # NUEVO: POSE (ODOMETRÍA VISUAL)
+        # =========================
+        self.pose = {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "yaw": 0.0,
+            "pitch": 0.0,
+            "roll": 0.0
+        }
+        self.pose_lock = threading.Lock()
+
         # Initialize ROS2 if not already initialized
         if not rclpy.ok():
             rclpy.init()
@@ -62,6 +75,18 @@ class WebGUI(MeasuringThreadingGUI):
             self._start_ros2_threads()
 
         self.start()
+
+    # =========================
+    # NUEVO: ACTUALIZAR POSE
+    # =========================
+    def updatePose(self, x, y, z, yaw, pitch=0.0, roll=0.0):
+        with self.pose_lock:
+            self.pose["x"] = float(x)
+            self.pose["y"] = float(y)
+            self.pose["z"] = float(z)
+            self.pose["yaw"] = float(yaw)
+            self.pose["pitch"] = float(pitch)
+            self.pose["roll"] = float(roll)
 
     def _setup_auto_mode(self):
         """Set up automatic image subscription for /webgui_image topic"""
@@ -192,6 +217,13 @@ class WebGUI(MeasuringThreadingGUI):
     def update_gui(self):
         """Prepares and sends image payload to the websocket server"""
         payload = self.payloadImage()
+
+        # =========================
+        # NUEVO: INCLUIR POSE
+        # =========================
+        with self.pose_lock:
+            payload["pose"] = self.pose.copy()
+
         self.payload["image"] = json.dumps(payload)
 
         message = json.dumps(self.payload)

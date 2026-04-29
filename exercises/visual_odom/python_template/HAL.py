@@ -50,8 +50,41 @@ class InputPublisher(Node):
             self.get_logger().error(f"Failed to publish image: {e}")
 
 
-# Publishing frequency for executor spin
-SPIN_FREQUENCY = 30.0  # Hz
+# =========================================================
+# POSE ESTIMATION (VISUAL ODOMETRY STORAGE)
+# =========================================================
+
+_current_pose = {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0,
+    "roll": 0.0,
+    "pitch": 0.0,
+    "yaw": 0.0,
+}
+
+
+def setEstimatedPose(x, y, z=0.0, roll=0.0, pitch=0.0, yaw=0.0):
+    global _current_pose
+    _current_pose = {
+        "x": float(x),
+        "y": float(y),
+        "z": float(z),
+        "roll": float(roll),
+        "pitch": float(pitch),
+        "yaw": float(yaw),
+    }
+
+
+def getEstimatedPose():
+    return _current_pose
+
+
+# =========================================================
+# ROS2 SPIN CONFIGURATION
+# =========================================================
+
+SPIN_FREQUENCY = 30.0
 
 
 def custom_thread_excepthook(args):
