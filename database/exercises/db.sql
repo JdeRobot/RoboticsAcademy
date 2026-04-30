@@ -124,7 +124,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 11	montecarlo_laser_loc	Montecarlo Laser Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc
 12	montecarlo_visual_loc	Montecarlo Visual Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc
 13	marker_visual_loc	Marker Visual Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/marker_visual_loc
-14	laser_mapping	Laser Mapping	Build a map based on sensor readings	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping
+14	laser_mapping	Laser Mapping	Build a map based on sensor readings	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping
 15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision
 16	follow_road	Drone Follow Road	Drone Follow Road exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_road
 17	pick_place	Pick and Place	Pick and Place exercise	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place
