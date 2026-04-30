@@ -1,0 +1,48 @@
+#real-pos {
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+  left: 0;
+}
+
+#noisy-pos {
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+  left: 0;
+}
+
+#user-pos {
+  position: absolute;
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  transition: left 0.1s ease-out, top 0.1s ease-out;
+  left: 0;
+}
+
+.beacon {
+  position: absolute;
+  border: 2px solid rgb(255, 255, 255);
+  cursor: pointer;
+  z-index: 5;
+}
+
+.beacon-vert {
+  width: 0px;
+  height: 20px;
+  translate: 0 -10px;
+}
+
+.beacon-hor {
+  width: 20px;
+  height: 0px;
+  translate: -10px;
+}
