@@ -75,11 +75,13 @@ cv::Mat Map::RTFormula()
 
 double Map::getGridVal(int x, int y)
 {
+    std::lock_guard<std::mutex> lock(grid_mtx_);
     return grid_.at<double>(y, x);
 }
 
 void Map::setGridVal(int x, int y, double val)
 {
+    std::lock_guard<std::mutex> lock(grid_mtx_);
     grid_.at<double>(y, x) = val;
 }
 
