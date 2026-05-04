@@ -42,17 +42,26 @@ void HAL::set_w(const float velocity)
     if (motors_node_) motors_node_->sendW(static_cast<double>(velocity));
 }
 
-std::array<double, 3> HAL::get_pose3d()
+HAL::Pose3d HAL::get_pose3d()
 {
-    if (!odometry_node_) return {0.0, 0.0, 0.0};
+    if (!odometry_node_) return HAL::Pose3d{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
     
     auto raw_pose = odometry_node_->getPose3d();
-    return {raw_pose.x, raw_pose.y, raw_pose.yaw};
+    return HAL::Pose3d{
+        raw_pose.x, 
+        raw_pose.y, 
+        raw_pose.z, 
+        raw_pose.h,
+        raw_pose.yaw, 
+        raw_pose.pitch, 
+        raw_pose.roll,
+        raw_pose.timeStamp
+    };
 }
 
-std::vector<float> HAL::get_laser_data()
+HAL::LaserData HAL::get_laser_data()
 {
-    if (!laser_node_) return {};
+    if (!laser_node_) return HAL::LaserData{};
     
     auto raw_laser = laser_node_->getLaserData();
     while (raw_laser.values.empty() && rclcpp::ok()) {
@@ -60,5 +69,12 @@ std::vector<float> HAL::get_laser_data()
         raw_laser = laser_node_->getLaserData();
     }
     
-    return raw_laser.values;
+    return HAL::LaserData{
+        raw_laser.values, 
+        raw_laser.minAngle, 
+        raw_laser.maxAngle, 
+        raw_laser.minRange, 
+        raw_laser.maxRange,
+        raw_laser.timeStamp
+    };
 }

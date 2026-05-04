@@ -4,7 +4,6 @@
 #include <memory>
 #include <thread>
 #include <vector>
-#include <array>
 
 class MotorsNode;
 class OdometryNode;
@@ -14,12 +13,32 @@ namespace rclcpp::executors { class MultiThreadedExecutor; }
 class HAL
 {
 public:
+    struct Pose3d {
+        double x;
+        double y;
+        double z;
+        double h;
+        double yaw;
+        double pitch;
+        double roll;
+        double timeStamp;
+    };
+
+    struct LaserData {
+        std::vector<float> values;
+        double minAngle;
+        double maxAngle;
+        double minRange;
+        double maxRange;
+        double timeStamp;
+    };
+
     HAL() = delete;
 
     static void set_v(const float velocity);
     static void set_w(const float velocity);
-    static std::array<double, 3> get_pose3d();
-    static std::vector<float> get_laser_data();
+    static Pose3d get_pose3d();
+    static LaserData get_laser_data();
 
 private:
     static void init();
