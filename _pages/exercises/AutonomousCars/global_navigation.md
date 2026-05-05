@@ -130,11 +130,19 @@ The solution can integrate one or more of the following difficulty increasing go
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the `tick` function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instantiate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -151,6 +159,91 @@ array = WebGUI.getMap('/resources/exercises/global_navigation/images/cityLargenB
 * `WebGUI.rowColumn(vector)` - returns the index in map coordinates corresponding to the vector in world coordinates passed as parameter.
     
 The map image has a resolution of 400x400 pixels and indicates whether there is an obstacle or not by its color. The map in the Gazebo world has its center in [0, 0] and it has a width and height of 500 meters. Therefore, each of the pixels in the map image represent a cell in the Gazebo world with a width and height of 1.25 meters.
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+
+- `HAL::set_v(velocity)` - sets the linear velocity of the taxi. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity)` - sets the angular velocity of the taxi. The input is a `float`. Returns `void`.
+- `HAL::get_pose3d()` - returns the current robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x` - gets the robot x position in world coordinates (`double`).
+- `HAL::get_pose3d().y` - gets the robot y position in world coordinates (`double`).
+- `HAL::get_pose3d().yaw` - gets the robot orientation around the vertical axis in world coordinates (`double`).
+- `WebGUI::show_image(image)` - displays a debug image in the WebGUI. The input must be a `cv::Mat`. Returns `void`.
+- `WebGUI::show_path(path)` - displays a path on the map. The input must be a `std::vector<std::vector<int>>`, where each inner vector represents a grid cell of the path. Returns `void`.
+- `WebGUI::get_target_pose()` - returns the selected destination in world coordinates as a `std::vector<double>`.
+- `WebGUI::get_map(url)` - returns the map image as a `cv::Mat`. The input must be a `std::string` with the map URL.
+- `WebGUI::world_to_grid(pose)` - converts world coordinates to map grid coordinates. The input must be a `std::vector<double>` and the function returns a `std::vector<int>`.
+- `WebGUI::grid_to_world(cell)` - converts map grid coordinates to world coordinates. The input must be a `std::vector<double>` and the function returns a `std::vector<double>`.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
+1. Example to load the map:
+
+    ```cpp
+    cv::Mat map = WebGUI::get_map("/resources/exercises/global_navigation/images/cityLargenBin.png");
+    ```
+
+2. Example to get the selected target:
+
+    ```cpp
+    std::vector<double> target = WebGUI::get_target_pose();
+
+    double target_x = target[0];
+    double target_y = target[1];
+    ```
+
+3. Example to convert coordinates:
+
+    ```cpp
+    // World coordinates to grid coordinates
+    std::vector<double> world_pose = {target_x, target_y};
+    std::vector<int> grid_cell = WebGUI::world_to_grid(world_pose);
+
+    int row = grid_cell[0];
+    int col = grid_cell[1];
+
+    // Grid coordinates to world coordinates
+    std::vector<double> grid_cell_as_double = {120.0, 250.0};
+    std::vector<double> world_pose_from_grid = WebGUI::grid_to_world(grid_cell_as_double);
+
+    double world_x = world_pose_from_grid[0];
+    double world_y = world_pose_from_grid[1];
+    ```
+
+4. Example to show a planned path:
+
+    ```cpp
+    std::vector<std::vector<int>> path = {
+        {10, 20},
+        {11, 20},
+        {12, 21}
+    };
+
+    WebGUI::show_path(path);
+    ```
+
 
 ### ROS 2-direct Implementation
 
@@ -185,6 +278,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use native ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Videos
 
