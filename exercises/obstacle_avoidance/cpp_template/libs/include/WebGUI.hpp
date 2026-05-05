@@ -11,6 +11,7 @@ namespace rclcpp::executors { class MultiThreadedExecutor; }
 class WebGUI
 {
 public:
+    // Prevent instantiation. WebGUI acts as a global static utility.
     WebGUI() = delete;
 
     static void show_forces(const std::array<double, 2>& vec1, const std::array<double, 2>& vec2, const std::array<double, 2>& vec3);
@@ -24,6 +25,7 @@ private:
     static void init();
     friend class SystemBootstrapper;
 
+    // Hidden internal state. Not accessible to the user.
     static std::shared_ptr<WebGUINode> gui_node_;
     static std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
     static std::thread spin_thread_;

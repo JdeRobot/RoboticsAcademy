@@ -38,8 +38,19 @@ void HAL::set_w(const float velocity)
     if (motors_node_) motors_node_->sendW(static_cast<double>(velocity));
 }
 
-Pose3d HAL::get_pose3d()
+HAL::Pose3d HAL::get_pose3d()
 {
-    if (odometry_node_) return odometry_node_->getPose3d();
-    return Pose3d();
+    if (!odometry_node_) return HAL::Pose3d{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    
+    auto raw_pose = odometry_node_->getPose3d();
+    return HAL::Pose3d{
+        raw_pose.x, 
+        raw_pose.y, 
+        raw_pose.z, 
+        raw_pose.h,
+        raw_pose.yaw, 
+        raw_pose.pitch, 
+        raw_pose.roll,
+        raw_pose.timeStamp
+    };
 }
