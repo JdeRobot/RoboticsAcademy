@@ -8,10 +8,10 @@
 | Follow Line                          |        ok        |     ok      |      ok       |    ok    | [Link][vid_follow_line]      |        ok         |         ok         | PID control |
 | Obstacle Avoidance                   |        ok        |     ok      |      ok       |          | [Link][vid_obstacle]         |        ok         |         ok         | VFF         |
 | Global navigation                    |        ok        |     ok      |      ok       |          | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
-| Laser Gridmap mapping                |        ok        |     ok      |               |          | [Link][vid_laser_mapping]    |                   |         ok         |             |
-| MonteCarlo Laser Loc                 |        ok        |     ok      |               |          | -                            |        ok         |         ok         | AMCL        |
-| MonteCarlo Visual Loc                |        ok        |     ok      |               |          | -                            |        ok         |         ok         | AMCL        |
-| Marker-based visual Loc              |        ok        |     ok      |               |          | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
+| Laser Gridmap mapping                |        ok        |     ok      |      ok       |          | [Link][vid_laser_mapping]    |                   |         ok         |             |
+| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
+| MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
+| Marker-based visual Loc              |        ok        |     ok      |      ok       |          | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
 | Localized Vacuum Cleaner             |        ok        |     ok      |               |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
 | Autoparking                          |        ok        |     ok      |               |          | [Link][vid_autoparking]      |        ok         |         ok         |             |
 | Amazon Warehouse                     |        ok        |     ok      |               |          | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
