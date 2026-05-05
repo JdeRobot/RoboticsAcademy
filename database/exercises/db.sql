@@ -122,7 +122,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 9	3d_reconstruction	3D Reconstruction	3D Reconstruction exercise using React and RAM	["ROS2","COMPUTER VISION"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction
 10	amazon_warehouse	Amazon Warehouse	Control an amazon-like robot to organize a warehouse	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse
 11	montecarlo_laser_loc	Montecarlo Laser Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc
-12	montecarlo_visual_loc	Montecarlo Visual Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc
+12	montecarlo_visual_loc	Montecarlo Visual Loc	Calculate the position of the robot based on the	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc
 13	marker_visual_loc	Marker Visual Loc	Calculate the position of the robot based on the	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/marker_visual_loc
 14	laser_mapping	Laser Mapping	Build a map based on sensor readings	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping
 15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision
