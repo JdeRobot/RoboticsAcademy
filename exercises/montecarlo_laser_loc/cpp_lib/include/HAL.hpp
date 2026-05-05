@@ -4,15 +4,12 @@
 #include <memory>
 #include <thread>
 #include <vector>
-
-// Forward declarations to speed up compilation by avoiding heavy ROS 2 includes.
-// - MotorsNode links to "common_interfaces_cpp/hal/motors.hpp"
-// - OdometryNode links to "common_interfaces_cpp/hal/odometry.hpp"
-// - LaserNode links to "common_interfaces_cpp/hal/laser.hpp"
+#include <string>
 
 class MotorsNode;
 class OdometryNode;
 class LaserNode;
+class BumperNode;
 namespace rclcpp::executors { class MultiThreadedExecutor; }
 
 class HAL
@@ -38,24 +35,29 @@ public:
         double timeStamp;
     };
 
-    // Prevent instantiation. HAL acts as a global static utility.
+    struct BumperData {
+        int state;
+        int bumper;
+    };
+
     HAL() = delete;
 
     static void set_v(const float velocity);
     static void set_w(const float velocity);
     static Pose3d get_pose3d();
     static Pose3d get_odom();
+    static BumperData get_bumper_data();
     static LaserData get_laser_data();
 
 private:
     static void init();
     friend class SystemBootstrapper;
 
-    // Hidden internal state. Not accessible to the user.
     static std::shared_ptr<MotorsNode> motors_node_;
     static std::shared_ptr<OdometryNode> odometry_node_;
     static std::shared_ptr<OdometryNode> noisy_odometry_node_;
     static std::shared_ptr<LaserNode> laser_node_;
+    static std::shared_ptr<BumperNode> bumper_node_;
     static std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> executor_;
     static std::thread spin_thread_;
 };

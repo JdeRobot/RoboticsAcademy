@@ -3,7 +3,6 @@
 
 #include <memory>
 #include <thread>
-#include "common_interfaces_cpp/hal/odometry.hpp"
 
 // Forward declarations to speed up compilation by avoiding heavy ROS 2 includes.
 // - MotorsNode links to "common_interfaces_cpp/hal/motors.hpp"
@@ -15,6 +14,17 @@ namespace rclcpp::executors { class SingleThreadedExecutor; }
 class HAL
 {
 public:
+    struct Pose3d {
+        double x;
+        double y;
+        double z;
+        double h;
+        double yaw;
+        double pitch;
+        double roll;
+        double timeStamp;
+    };
+
     // Prevent instantiation. HAL acts as a global static utility.
     HAL() = delete;
 

@@ -2,6 +2,7 @@
 #include "common_interfaces_cpp/hal/motors.hpp"
 #include "common_interfaces_cpp/hal/odometry.hpp"
 #include "common_interfaces_cpp/hal/laser.hpp"
+#include "common_interfaces_cpp/hal/bumper.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include <chrono>
 
@@ -11,22 +12,31 @@ std::shared_ptr<MotorsNode> HAL::motors_node_ = nullptr;
 std::shared_ptr<OdometryNode> HAL::odometry_node_ = nullptr;
 std::shared_ptr<OdometryNode> HAL::noisy_odometry_node_ = nullptr;
 std::shared_ptr<LaserNode> HAL::laser_node_ = nullptr;
+std::shared_ptr<BumperNode> HAL::bumper_node_ = nullptr;
 std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> HAL::executor_ = nullptr;
 std::thread HAL::spin_thread_;
 
 void HAL::init()
 {
     if (!motors_node_) {
-        odometry_node_ = std::make_shared<OdometryNode>("/turtlebot3/odom", "hal_odometry");
-        noisy_odometry_node_ = std::make_shared<OdometryNode>("/turtlebot3/odom_noisy", "hal_noisy_odometry_node");
-        motors_node_ = std::make_shared<MotorsNode>("/turtlebot3/cmd_vel", 4.0, 0.3, "hal_motors");
-        laser_node_ = std::make_shared<LaserNode>("/turtlebot3/laser/scan", "hal_laser");
+        motors_node_ = std::make_shared<MotorsNode>("/cmd_vel", 4.0, 0.3, "hal_motors");
+        odometry_node_ = std::make_shared<OdometryNode>("/odom", "hal_odometry");
+        noisy_odometry_node_ = std::make_shared<OdometryNode>("/odom_noisy", "noisy_odometry_node");
+        laser_node_ = std::make_shared<LaserNode>("/roombaROS/laser/scan", "hal_laser");
+        
+        std::vector<std::string> bumper_topics = {
+            "/roombaROS/events/right_bumper",
+            "/roombaROS/events/center_bumper",
+            "/roombaROS/events/left_bumper"
+        };
+        bumper_node_ = std::make_shared<BumperNode>(bumper_topics, "hal_bumper");
 
         executor_ = std::make_shared<rclcpp::executors::MultiThreadedExecutor>();
+        executor_->add_node(motors_node_);
         executor_->add_node(odometry_node_);
         executor_->add_node(noisy_odometry_node_);
-        executor_->add_node(motors_node_);
         executor_->add_node(laser_node_);
+        executor_->add_node(bumper_node_);
 
         spin_thread_ = std::thread([]() {
             executor_->spin();
@@ -76,6 +86,17 @@ HAL::Pose3d HAL::get_odom()
         raw_pose.pitch, 
         raw_pose.roll,
         raw_pose.timeStamp
+    };
+}
+
+HAL::BumperData HAL::get_bumper_data()
+{
+    if (!bumper_node_) return HAL::BumperData{0, 1};
+    
+    auto raw_data = bumper_node_->getBumperData();
+    return HAL::BumperData{
+        raw_data.state, 
+        raw_data.bumper
     };
 }
 
