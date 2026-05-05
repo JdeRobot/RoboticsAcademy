@@ -49,14 +49,24 @@ The goal of this exercise is to develop a localization algorithm based on the pa
 
 ## Frequency API
 
+### Python
+
 * `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
 * `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
 This exercise now supports ROS 2-direct implementation in addition to the original HAL-based approach. Below you'll find the details for both options.
 
 ### HAL-based Implementation
+
+#### Python
 
 * `import HAL` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that receive information from the webcam.
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -84,6 +94,57 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 ```python
 array = WebGUI.getMap('/resources/exercises/montecarlo_laser_loc/images/mapgrannyannie.png')
 ```
+
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::set_v(velocity)` - sets the linear velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity)` - sets the angular velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::get_pose3d()` - returns the current ground-truth robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x` - gets the robot x position in world coordinates (`double`).
+- `HAL::get_pose3d().y` - gets the robot y position in world coordinates (`double`).
+- `HAL::get_pose3d().yaw` - gets the robot orientation around the vertical axis in world coordinates (`double`).
+- `HAL::get_odom()` - returns the noisy odometry pose as a `HAL::Pose3d`.
+- `HAL::get_odom().x` - gets the noisy odometry x position (`double`).
+- `HAL::get_odom().y` - gets the noisy odometry y position (`double`).
+- `HAL::get_odom().yaw` - gets the noisy odometry orientation around the vertical axis (`double`).
+- `HAL::get_bumper_data()` - returns the bumper sensor data as a `HAL::BumperData`.
+- `HAL::get_bumper_data().state` - indicates whether the robot has collided (`int`). A value of `1` means collision and `0` means no collision.
+- `HAL::get_bumper_data().bumper` - indicates which bumper detected the collision (`int`): `0` for right, `1` for center, and `2` for left.
+- `HAL::get_laser_data()` - returns the laser sensor data as a `HAL::LaserData`.
+- `HAL::get_laser_data().values` - contains the laser distance readings as a `std::vector<float>`.
+- `HAL::get_laser_data().minAngle` - minimum laser angle (`double`).
+- `HAL::get_laser_data().maxAngle` - maximum laser angle (`double`).
+- `HAL::get_laser_data().minRange` - minimum valid laser range (`double`).
+- `HAL::get_laser_data().maxRange` - maximum valid laser range (`double`).
+- `WebGUI::show_position(x, y, angle)` - displays the estimated robot position in the WebGUI. The inputs are `double` values in Gazebo world coordinates. Returns `void`.
+- `WebGUI::show_particles(particles)` - displays the particle set in the WebGUI. The input must be a `std::vector<std::vector<double>>`, where each particle is represented as `[x, y, yaw, weight]` in Gazebo world coordinates. Returns `void`.
+- `WebGUI::pose_to_map(x, y, yaw)` - converts a pose from Gazebo world coordinates to map pixel coordinates. The inputs are `double` values and the function returns a `std::vector<double>`.
+- `WebGUI::map_to_pose(map_x, map_y, map_yaw)` - converts a pose from map pixel coordinates to Gazebo world coordinates. The inputs are `double` values and the function returns a `std::vector<double>`.
+- `WebGUI::get_map(url)` - returns the map image as a `cv::Mat`. The input must be a `std::string` with the map URL.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -132,6 +193,7 @@ For WebGUI debugging:
 
         self.particles_pub.publish(msg)
     ```
+#### Python
 
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
@@ -145,6 +207,41 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+#### C++
+
+In order to use native ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ### Types conversion
 

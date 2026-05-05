@@ -136,6 +136,8 @@ For image debugging:
 
 - `/webgui_image` - Publish to this topic to set the debug image in the GUI interface. Message type: `sensor_msgs/msg/Image`
 
+#### Python
+
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.

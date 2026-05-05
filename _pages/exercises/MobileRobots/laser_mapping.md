@@ -39,8 +39,16 @@ The robot must be able to:
 
 ## Frequency API
 
-* `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
-* `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+### Python
+
+- `import Frequency` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency.tick(ideal_rate)` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
+
+### C++
+
+- `#include "Frequency.hpp"` - to import the Frequency library class. This class contains the tick function to regulate the execution rate.
+- `Frequency freq = Frequency();` - to instanciate the Frequency class.
+- `freq.tick(ideal_rate);` - regulates the execution rate to the number of Hz specified. Defaults to 50 Hz.
 
 ## Robot API
 
@@ -48,7 +56,7 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 
 ### HAL-based Implementation
 
-## Robot API
+#### Python
 
 * `import HAL` - to import the HAL library class. This class contains the functions that receive information from the sensors or work with the actuators.
 * `import WebGUI` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
@@ -70,6 +78,88 @@ This exercise now supports ROS 2-native implementation in addition to the origin
 * `WebGUI.poseToMap(x, y, yaw)` - converts a gazebo world coordinate system position to a map pixel.
 * `WebGUI.setUserMap(map)` - shows the user built map on the user interface. It represents the values of the field that have been assigned to the array passed as a parameter. Accepts as input a two-dimensional uint8 numpy array whose values can range from 0 to 255 (grayscale). The array must be 970 pixels high and 1500 pixels wide.
 
+#### C++
+
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
+- `HAL::set_v(velocity)` - sets the linear velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity)` - sets the angular velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::get_pose3d()` - returns the current ground-truth robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x` - gets the robot x position in world coordinates (`double`).
+- `HAL::get_pose3d().y` - gets the robot y position in world coordinates (`double`).
+- `HAL::get_pose3d().yaw` - gets the robot orientation around the vertical axis in world coordinates (`double`).
+- `HAL::get_odom()` - returns the noisy odometry pose as a `HAL::Pose3d`.
+- `HAL::get_odom().x` - gets the noisy odometry x position (`double`).
+- `HAL::get_odom().y` - gets the noisy odometry y position (`double`).
+- `HAL::get_odom().yaw` - gets the noisy odometry orientation around the vertical axis (`double`).
+- `HAL::get_laser_data()` - returns the laser sensor data as a `HAL::LaserData`.
+- `HAL::get_laser_data().values` - contains the laser distance readings as a `std::vector<float>`.
+- `HAL::get_laser_data().minAngle` - minimum laser angle (`double`).
+- `HAL::get_laser_data().maxAngle` - maximum laser angle (`double`).
+- `HAL::get_laser_data().minRange` - minimum valid laser range (`double`).
+- `HAL::get_laser_data().maxRange` - maximum valid laser range (`double`).
+- `WebGUI::pose_to_map(x, y, yaw)` - converts a robot pose from Gazebo world coordinates to map pixel coordinates. The inputs are `double` values. Returns a `std::vector<double>`.
+- `WebGUI::set_user_map(image)` - displays the user-built occupancy map in the WebGUI. The input must be a `cv::Mat`. Returns `void`.
+
+In order to use the HAL-based controls you must include the following lines:
+
+```cpp
+#include "HAL.hpp"
+#include "WebGUI.hpp"
+#include "Frequency.hpp"
+
+void exercise() {
+    Frequency freq = Frequency();
+    // Enter sequential code!
+
+    while (true)
+    {
+        // Enter iterative code!
+        freq.tick();
+
+
+    }
+}
+```
+
+1. Example to get the robot pose:
+
+    ```cpp
+    HAL::Pose3d odom = HAL::get_odom();
+
+    double odom_x = odom.x;
+    double odom_y = odom.y;
+    double odom_yaw = odom.yaw;
+    ```
+
+2. Example to get laser data:
+
+    ```cpp
+    HAL::LaserData laser = HAL::get_laser_data();
+
+    if (!laser.values.empty()) {
+        float first_distance = laser.values[0];
+    }
+    ```
+
+3. Example to convert a robot pose to map coordinates:
+
+    ```cpp
+    std::vector<double> map_pose = WebGUI::pose_to_map(robot_x, robot_y, robot_yaw);
+
+    double map_x = map_pose[0];
+    double map_y = map_pose[1];
+    double map_yaw = map_pose[2];
+    ```
+
+4. Example to show the generated occupancy map:
+
+    ```cpp
+    cv::Mat user_map(970, 1500, CV_8UC1, cv::Scalar(127));
+
+    WebGUI::set_user_map(user_map);
+    ```
+
 ### ROS 2-direct Implementation
 
 Use standard ROS 2 topics for direct communication with the simulation.
@@ -87,6 +177,7 @@ For image debugging:
 - `/webgui/user_map` - Publish to this topic to display the generated occupancy map in the WebGUI. Message type: `sensor_msgs/msg/Image`  
   QoS: `TRANSIENT_LOCAL`, depth `1` The map sent to `/webgui/user_map` must be a `mono8` image with **1500 pixels width** and **970 pixels height**.
 
+#### Python
 **Note**: Ensure this import is included in your script to access the Web GUI functionalities.
 
 `import WebGUI` - to enable the Web GUI for visualizing camera images.
@@ -99,6 +190,42 @@ To have frequency control you need to use standard ROS 2 mechanisms to manage lo
 
 **Note**
 `WebGUI` already initializes `rclpy` internally, so this should be taken into account when building a direct ROS 2 solution.
+
+
+#### C++
+
+In order to use native ros controls you must include the following lines:
+
+```cpp
+#ifndef USER_NODE
+#define USER_NODE
+
+#include "rclcpp/rclcpp.hpp"
+
+class UserNode : public rclcpp::Node {
+  // Your class
+};
+
+#endif
+```
+
+You must define `USER_NODE` and a `UserNode` node class.
+
+To have frequency control you may use a timer and a control function as follows:
+
+```cpp
+  UserNode() : Node("user_node")
+  {
+    // More subscribers and publishers
+    timer_ = create_wall_timer(100ms, std::bind(&UserNode::control_cycle, this));
+  };
+
+// More Code
+
+  void control_cycle(){
+    // Your function
+  };
+```
 
 ## Theory
 Laser mapping is the process by which a robot builds a representation of an unknown environment using distance measurements obtained from a LIDAR sensor while moving through the space.
