@@ -214,7 +214,6 @@ COPY public.exercises_universes (id, exercise_id, universe_id, is_default) FROM 
 67	14	63	False
 68	14	64	False
 69	14	65	False
-70	27	40	False
 \.
 
 --
@@ -304,9 +303,6 @@ COPY public.exercises_tools (id, exercise_id, tool_id) FROM stdin;
 79	15	video
 80	18	video
 81	19	video
-82	27	console
-83	27	simulator
-84	27	web_gui
 \.
 
 --
