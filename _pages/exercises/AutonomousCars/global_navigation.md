@@ -165,18 +165,18 @@ The map image has a resolution of 400x400 pixels and indicates whether there is 
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-- `HAL::set_v(velocity)` - sets the linear velocity of the taxi. The input is a `float`. Returns `void`.
-- `HAL::set_w(velocity)` - sets the angular velocity of the taxi. The input is a `float`. Returns `void`.
-- `HAL::get_pose3d()` - returns the current robot pose as a `HAL::Pose3d`.
-- `HAL::get_pose3d().x` - gets the robot x position in world coordinates (`double`).
-- `HAL::get_pose3d().y` - gets the robot y position in world coordinates (`double`).
-- `HAL::get_pose3d().yaw` - gets the robot orientation around the vertical axis in world coordinates (`double`).
-- `WebGUI::show_image(image)` - displays a debug image in the WebGUI. The input must be a `cv::Mat`. Returns `void`.
-- `WebGUI::show_path(path)` - displays a path on the map. The input must be a `std::vector<std::vector<int>>`, where each inner vector represents a grid cell of the path. Returns `void`.
-- `WebGUI::get_target_pose()` - returns the selected destination in world coordinates as a `std::vector<double>`.
-- `WebGUI::get_map(url)` - returns the map image as a `cv::Mat`. The input must be a `std::string` with the map URL.
-- `WebGUI::world_to_grid(pose)` - converts world coordinates to map grid coordinates. The input must be a `std::vector<double>` and the function returns a `std::vector<int>`.
-- `WebGUI::grid_to_world(cell)` - converts map grid coordinates to world coordinates. The input must be a `std::vector<double>` and the function returns a `std::vector<double>`.
+- `HAL::set_v(velocity);` - sets the linear velocity of the taxi. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity);` - sets the angular velocity of the taxi. The input is a `float`. Returns `void`.
+- `HAL::get_pose3d();` - returns the current robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x;` - gets the robot x position in world coordinates (`double`).
+- `HAL::get_pose3d().y;` - gets the robot y position in world coordinates (`double`).
+- `HAL::get_pose3d().yaw;` - gets the robot orientation around the vertical axis in world coordinates (`double`).
+- `WebGUI::show_image(image);` - displays a debug image in the WebGUI. The input must be a `cv::Mat`. Returns `void`.
+- `WebGUI::show_path(path);` - displays a path on the map. The input must be a `std::vector<std::vector<int>>`, where each inner vector represents a grid cell of the path. Returns `void`.
+- `WebGUI::get_target_pose();` - returns the selected destination in world coordinates as a `std::vector<double>`.
+- `WebGUI::get_map(url);` - returns the map image as a `cv::Mat`. The input must be a `std::string` with the map URL.
+- `WebGUI::world_to_grid(pose);` - converts world coordinates to map grid coordinates. The input must be a `std::vector<double>` and the function returns a `std::vector<int>`.
+- `WebGUI::grid_to_world(cell);` - converts map grid coordinates to world coordinates. The input must be a `std::vector<double>` and the function returns a `std::vector<double>`.
 
 In order to use the HAL-based controls you must include the following lines:
 
@@ -198,6 +198,8 @@ void exercise() {
     }
 }
 ```
+
+### C++ API examples
 
 1. Example to load the map:
 

@@ -83,28 +83,28 @@ This exercise now supports ROS 2-direct implementation in addition to the origin
 
 - `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
 - `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
-- `HAL::set_v(velocity)` - sets the linear velocity of the robot. The input is a `float`. Returns `void`.
-- `HAL::set_w(velocity)` - sets the angular velocity of the robot. The input is a `float`. Returns `void`.
-- `HAL::get_pose3d()` - returns the current ground-truth robot pose as a `HAL::Pose3d`.
-- `HAL::get_pose3d().x` - gets the robot x position in world coordinates (`double`).
-- `HAL::get_pose3d().y` - gets the robot y position in world coordinates (`double`).
-- `HAL::get_pose3d().yaw` - gets the robot orientation around the vertical axis in world coordinates (`double`).
-- `HAL::get_odom()` - returns the noisy odometry pose as a `HAL::Pose3d`.
-- `HAL::get_odom().x` - gets the noisy odometry x position (`double`).
-- `HAL::get_odom().y` - gets the noisy odometry y position (`double`).
-- `HAL::get_odom().yaw` - gets the noisy odometry orientation around the vertical axis (`double`).
-- `HAL::get_image()` - returns the latest camera image as a `cv::Mat`.
-- `HAL::get_laser_data()` - returns the laser sensor data as a `HAL::LaserData`.
-- `HAL::get_laser_data().values` - contains the laser distance readings as a `std::vector<float>`.
-- `HAL::get_laser_data().minAngle` - minimum laser angle (`double`).
-- `HAL::get_laser_data().maxAngle` - maximum laser angle (`double`).
-- `HAL::get_laser_data().minRange` - minimum valid laser range (`double`).
-- `HAL::get_laser_data().maxRange` - maximum valid laser range (`double`).
-- `HAL::get_bumper_data()` - returns the bumper sensor data as a `HAL::BumperData`.
-- `HAL::get_bumper_data().state` - gets the bumper state (`int`).
-- `HAL::get_bumper_data().bumper` - gets the bumper identifier (`int`).
-- `WebGUI::show_image(image)` - displays a debug image in the WebGUI. The input must be a `cv::Mat`. Returns `void`.
-- `WebGUI::show_estimated_pose(pose)` - displays the user-estimated robot pose in the WebGUI. The input must be a `std::tuple<double, double, double>` containing `(x, y, yaw)`. Returns `void`.
+- `HAL::set_v(velocity);` - sets the linear velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity);` - sets the angular velocity of the robot. The input is a `float`. Returns `void`.
+- `HAL::get_pose3d();` - returns the current ground-truth robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x;` - gets the robot x position in world coordinates (`double`).
+- `HAL::get_pose3d().y;` - gets the robot y position in world coordinates (`double`).
+- `HAL::get_pose3d().yaw;` - gets the robot orientation around the vertical axis in world coordinates (`double`).
+- `HAL::get_odom();` - returns the noisy odometry pose as a `HAL::Pose3d`.
+- `HAL::get_odom().x;` - gets the noisy odometry x position (`double`).
+- `HAL::get_odom().y;` - gets the noisy odometry y position (`double`).
+- `HAL::get_odom().yaw;` - gets the noisy odometry orientation around the vertical axis (`double`).
+- `HAL::get_image();` - returns the latest camera image as a `cv::Mat`.
+- `HAL::get_laser_data();` - returns the laser sensor data as a `HAL::LaserData`.
+- `HAL::get_laser_data().values;` - contains the laser distance readings as a `std::vector<float>`.
+- `HAL::get_laser_data().minAngle;` - minimum laser angle (`double`).
+- `HAL::get_laser_data().maxAngle;` - maximum laser angle (`double`).
+- `HAL::get_laser_data().minRange;` - minimum valid laser range (`double`).
+- `HAL::get_laser_data().maxRange;` - maximum valid laser range (`double`).
+- `HAL::get_bumper_data();` - returns the bumper sensor data as a `HAL::BumperData`.
+- `HAL::get_bumper_data().state;` - gets the bumper state (`int`).
+- `HAL::get_bumper_data().bumper;` - gets the bumper identifier (`int`).
+- `WebGUI::show_image(image);` - displays a debug image in the WebGUI. The input must be a `cv::Mat`. Returns `void`.
+- `WebGUI::show_estimated_pose(pose);` - displays the user-estimated robot pose in the WebGUI. The input must be a `std::tuple<double, double, double>` containing `(x, y, yaw)`. Returns `void`.
 
 In order to use the HAL-based controls you must include the following lines:
 
