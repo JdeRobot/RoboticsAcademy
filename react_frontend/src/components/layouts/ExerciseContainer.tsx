@@ -138,8 +138,7 @@ const ExerciseContainer = ({
   const editorApi: ExtraApi = {
     file: {
       get: (project: string, file: Entry) => {
-        //TODO: allow binary support
-        return getFile(project, file.path);
+        return getFile(project, file.path, file.binary);
       },
       save: (project: string, file: Entry, content: string) => {
         return saveFile(project, file.path, content);
