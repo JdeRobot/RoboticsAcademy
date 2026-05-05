@@ -194,40 +194,31 @@ To use it, only two actions must be carried out:
 ### HAL-based Implementation
 
 #### C++
+- `#include "HAL.hpp"` - to import the HAL (Hardware Abstraction Layer) library class. This class contains the functions that send and receive information to and from the Hardware (Gazebo).
+- `#include "WebGUI.hpp"` - to import the WebGUI (Web Graphical User Interface) library class. This class contains the functions used to view the debugging information, like image widgets.
 
-- `HAL::get_pose3d()` - to get the position of the robot (returns `Pose3d`)
-- `HAL::get_pose3d().x` - to get the position of the robot (x coordinate, `double`)
-- `HAL::get_pose3d().y` - to obtain the position of the robot (y coordinate, `double`)
-- `HAL::get_pose3d().yaw` - to get the orientation of the robot with regarding the map (`double`)
-- `HAL::get_laser_data()` - to obtain laser sensor data (returns `const LaserData *`)
-  It contains the laser readings of the environment around the robot
-- `HAL::set_v(const double velocity)` - to set the linear speed (`const double` input)
-- `HAL::set_w(const double velocity)` - to set the angular velocity (`const double` input)
-- `WebGUI::getNextTarget()` - to obtain the next target object on the scenario (returns `std::shared_ptr<Target>`)
-- `WebGUI::setTargetx(double x)` - sets the x coordinate of the target on the WebGUI (`double` input)
-- `WebGUI::setTargety(double y)` - sets the y coordinate of the target on the WebGUI (`double` input)
-- `WebGUI::showForces(const std::vector<double>& v1, const std::vector<double>& v2, const std::vector<double>& v3)` - shows the forces being applied on the car in real time (`const std::vector<double>&` input)
-- `WebGUI::showLocalTarget(const std::vector<double>& v)` - shows the local target (`const std::vector<double>&` input)
+- `HAL::get_pose3d();` - returns the current robot pose as a `HAL::Pose3d`.
+- `HAL::get_pose3d().x;` - gets the robot x position in the map reference system (`double`).
+- `HAL::get_pose3d().y;` - gets the robot y position in the map reference system (`double`).
+- `HAL::get_pose3d().yaw;` - gets the robot orientation around the vertical axis with respect to the map (`double`).
+- `HAL::get_laser_data();` - returns the laser sensor data as a `HAL::LaserData`.
+- `HAL::get_laser_data().values;` - contains the laser distance readings (`std::vector<float>`).
+- `HAL::get_laser_data().minAngle;` - minimum laser angle (`double`).
+- `HAL::get_laser_data().maxAngle;` - maximum laser angle (`double`).
+- `HAL::get_laser_data().minRange;` - minimum valid laser range (`double`).
+- `HAL::get_laser_data().maxRange;` - maximum valid laser range (`double`).
+- `HAL::set_v(velocity);` - sets the linear velocity of the car. The input is a `float`. Returns `void`.
+- `HAL::set_w(velocity);` - sets the angular velocity of the car. The input is a `float`. Returns `void`.
+- `WebGUI::get_next_target();` - returns the current target coordinates as a `std::array<double, 2>`. It keeps returning the same target until `WebGUI::mark_target_reached();` is called.
+- `WebGUI::set_target_x(x);` - sets the x coordinate of the target shown in the WebGUI. The input is a `double`. Returns `void`.
+- `WebGUI::set_target_y(y);` - sets the y coordinate of the target shown in the WebGUI. The input is a `double`. Returns `void`.
+- `WebGUI::show_forces(car_force, obs_force, avg_force);` - displays the attractive force, repulsive force and resulting force in the WebGUI. Each input must be a `std::array<double, 2>`. Returns `void`.
+- `WebGUI::show_local_target(local_target);` - displays the current local target in the WebGUI. The input must be a `std::array<double, 2>`. Returns `void`.
+- `WebGUI::mark_target_reached();` - notifies the WebGUI that the current target has been reached. Returns `void`.
 
-To access the target `x` and `y` coordinates use (target is the object obtained from `WebGUI::getNextTarget()`):
-
-- `target->getPose().x` - to obtain the x position of the target
-- `target->getPose().y` - to obtain the y position of the target
-
-**Own API**
-
-To simplify the exercise, the implementation of control points is offered.
-To use it, only two actions must be carried out:
-
-1. Obtain the following point:
-
-   `auto currentTarget = WebGUI::getNextTarget();`
-
-2. Mark it as visited when necessary:
-
-   `currentTarget->setReached(true);`
-
-**Debugging**
+To access the target `x` and `y` coordinates, use the array returned by `WebGUI::get_next_target()`:
+  - `target[0]` - x coordinate of the current target.
+  - `target[1]` - y coordinate of the current target.
 
 - `WebGUI::showForces(const std::vector<double>& v1, const std::vector<double>& v2, const std::vector<double>& v3)` - displays the forces involved in the navigation
 - `WebGUI::showLocalTarget(const std::vector<double>& v)` - displays the current local target
@@ -251,6 +242,29 @@ void exercise() {
     }
 }
 ```
+### C++ API examples
+
+1. Get the current target:
+
+    ```cpp
+    std::array<double, 2> current_target = WebGUI::get_next_target();
+    ```
+
+    The returned array contains the target coordinates:
+
+    ```cpp
+    double target_x = current_target[0];
+    double target_y = current_target[1];
+    ```
+
+    `WebGUI::get_next_target()` keeps returning the same target until it is marked as reached.
+
+2. Mark the current target as reached when necessary:
+
+    ```cpp
+    WebGUI::mark_target_reached();
+    ```
+
 
 ### ROS 2-direct Implementation
 
