@@ -1,6 +1,6 @@
 """
 HAL (Hardware Abstraction Layer) for Basic Computer Vision Exercise
-Bridges frontend input images to ROS2 /input/image_raw topic
+Now extended with Visual Odometry support (didactic trajectory + drift)
 """
 
 import rclpy
@@ -11,9 +11,15 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from rclpy.node import Node
 
+# NEW: WebGUI bridge
+import WebGUI
+
+
+# =========================================================
+# INPUT IMAGE PUBLISHER (UNCHANGED)
+# =========================================================
 
 class InputPublisher(Node):
-    """Publishes input images received from frontend to ROS2 topic"""
 
     def __init__(self):
         super().__init__("input_publisher")
@@ -21,137 +27,119 @@ class InputPublisher(Node):
         self.bridge = CvBridge()
         self.get_logger().info("Input publisher initialized on /input/image_raw")
 
-        # =========================================================
-        # VISUAL ODOMETRY + TRAJECTORY STORAGE
-        # =========================================================
-        self.trajectory = []  # list of poses (x, y, z, yaw)
-
     def publish_image(self, cv_image):
-        """
-        Publish a CV image to the ROS2 topic
 
-        Args:
-            cv_image: OpenCV image (numpy array) in BGR format
-        """
         if cv_image is None:
-            self.get_logger().warn("Attempted to publish None image, skipping")
+            self.get_logger().warn("None image skipped")
             return
 
         try:
-            # Validate image has correct shape
             if len(cv_image.shape) != 3 or cv_image.shape[2] != 3:
-                self.get_logger().error(
-                    f"Invalid image shape: {cv_image.shape}. Expected (H, W, 3)"
-                )
+                self.get_logger().error(f"Bad shape: {cv_image.shape}")
                 return
 
-            # Convert OpenCV image to ROS2 Image message
             ros_image = self.bridge.cv2_to_imgmsg(cv_image, encoding="bgr8")
             self.publisher.publish(ros_image)
 
         except CvBridgeError as e:
-            self.get_logger().error(f"CvBridge conversion error: {e}")
+            self.get_logger().error(f"Bridge error: {e}")
+
         except Exception as e:
-            self.get_logger().error(f"Failed to publish image: {e}")
-
-    # =========================================================
-    # VISUAL ODOMETRY API
-    # =========================================================
-
-    def setEstimatedPose(self, x, y, z=0.0, roll=0.0, pitch=0.0, yaw=0.0):
-        """
-        Store estimated pose and append to trajectory
-        """
-        pose = {
-            "x": float(x),
-            "y": float(y),
-            "z": float(z),
-            "roll": float(roll),
-            "pitch": float(pitch),
-            "yaw": float(yaw),
-        }
-
-        self._current_pose = pose
-        self.trajectory.append(pose)
-
-        # debug print (NO BORRADO como pediste)
-        print(f"[HAL] Pose updated: {pose}")
-
-    def getEstimatedPose(self):
-        """
-        Return current estimated pose
-        """
-        return getattr(self, "_current_pose", {
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0,
-            "roll": 0.0,
-            "pitch": 0.0,
-            "yaw": 0.0,
-        })
-
-    def getTrajectory(self):
-        """
-        Return full trajectory for visualization
-        """
-        return self.trajectory
+            self.get_logger().error(f"Publish error: {e}")
 
 
 # =========================================================
-# ROS2 SPIN CONFIGURATION
+# VISUAL ODOMETRY STATE (NEW)
 # =========================================================
 
-SPIN_FREQUENCY = 30.0
+class VisualOdometry:
+    def __init__(self):
+        self.x = 0.0
+        self.y = 0.0
+
+        self.prev_x = 0.0
+        self.prev_y = 0.0
+
+        self.drift = 0.0
+
+        self.lock = threading.Lock()
+
+    def update(self, dx, dy):
+
+        with self.lock:
+            # integrate motion
+            self.x += dx
+            self.y += dy
+
+            # drift = distance from start
+            self.drift = (self.x ** 2 + self.y ** 2) ** 0.5
+
+            return {
+                "x": self.x,
+                "y": self.y,
+                "drift": self.drift
+            }
 
 
-def custom_thread_excepthook(args):
-    """Mutes exceptions from ROS2 spin threads to avoid console spam"""
-    if "spin" in args.thread.name:
-        return
-    sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
+# =========================================================
+# GLOBAL STATE
+# =========================================================
+
+vo = VisualOdometry()
+
+input_publisher = None
+executor = None
 
 
-threading.excepthook = custom_thread_excepthook
+# =========================================================
+# ROS2 INIT
+# =========================================================
+
+if not rclpy.ok():
+    rclpy.init(args=sys.argv)
+
+input_publisher = InputPublisher()
+
+executor = rclpy.executors.MultiThreadedExecutor()
+executor.add_node(input_publisher)
 
 
-def __auto_spin() -> None:
-    """Auto-spin ROS2 executor in background thread"""
+def __auto_spin():
     while rclpy.ok():
         try:
             executor.spin_once(timeout_sec=0)
         except Exception as e:
-            # Log unexpected errors during spin
-            print(f"Error in ROS2 executor spin: {e}", file=sys.stderr)
-        time.sleep(1 / SPIN_FREQUENCY)
+            print(f"Spin error: {e}", file=sys.stderr)
+
+        time.sleep(1 / 30.0)
 
 
-# Initialize ROS2 context
-if not rclpy.ok():
-    rclpy.init(args=sys.argv)
+threading.Thread(
+    target=__auto_spin,
+    daemon=True,
+    name="hal_spin_thread"
+).start()
 
-# Create input publisher node
-input_publisher = InputPublisher()
 
-# Setup executor and start background spin thread
-executor = rclpy.executors.MultiThreadedExecutor()
-executor.add_node(input_publisher)
-executor_thread = threading.Thread(
-    target=__auto_spin, daemon=True, name="hal_spin_thread"
-)
-executor_thread.start()
-
+# =========================================================
+# IMAGE API
+# =========================================================
 
 def publish_input_image(cv_image):
-    """
-    Publish input image to ROS2 topic
-
-    This function is called by WebGUI when receiving input frames from the browser.
-    The image is published to /input/image_raw for ROS2 users to subscribe to.
-
-    Args:
-        cv_image: OpenCV image (numpy array) in BGR format
-    """
-    if input_publisher is not None:
+    if input_publisher:
         input_publisher.publish_image(cv_image)
-    else:
-        print("Warning: input_publisher not initialized", file=sys.stderr)
+
+
+# =========================================================
+# NEW: VISUAL ODOMETRY API
+# =========================================================
+
+def publish_user_motion(dx, dy):
+    """
+    Called from vision script (optical flow result)
+    """
+
+    odom = vo.update(dx, dy)
+
+    # Send to WebGUI (RIGHT PANEL)
+    WebGUI.sendOdom(odom)
