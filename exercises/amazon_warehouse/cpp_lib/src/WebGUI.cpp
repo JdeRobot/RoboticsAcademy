@@ -32,14 +32,12 @@ public:
 
         auto qos_transient = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
         
-        // Suscripción para detectar cuando se levanta la plataforma
         lift_sub_ = aux_node_->create_subscription<std_msgs::msg::Float64>(
             "/platform/cmd_vel", 10,
             [this](const std_msgs::msg::Float64::SharedPtr msg) {
                 lift_state_.store(msg->data > 0.0);
             });
 
-        // Suscripción opcional por topic para el path (para mantener fidelidad 100% con Python)
         path_sub_ = aux_node_->create_subscription<std_msgs::msg::String>(
             "/webgui/path", qos_transient,
             [this](const std_msgs::msg::String::SharedPtr msg) {
@@ -80,7 +78,6 @@ public:
     }
 
     void show_path(const std::vector<std::vector<double>>& array) {
-        // En C++ usamos nlohmann::json directamente en lugar de expresiones regulares
         json j_array = json::array();
         for (const auto& wp : array) {
             if (wp.size() >= 2) {
@@ -89,7 +86,7 @@ public:
         }
         
         std::lock_guard<std::mutex> lk(array_mtx_);
-        array_str_ = j_array.dump(); // Genera un string tipo "[[x,y],[x,y]]"
+        array_str_ = j_array.dump();
     }
 
     cv::Mat get_map(const std::string& url) {
@@ -111,7 +108,7 @@ protected:
 
         auto coords = map_util_.getRobotCoordinates();
         double yaw = map_util_.getRobotAngle();
-        // El frontend espera "(y, x, yaw)", que es exactamente como lo empaquetamos aquí:
+
         inner["map"] = "(" + std::to_string(std::get<0>(coords)) + ", " + 
                        std::to_string(std::get<1>(coords)) + ", " + 
                        std::to_string(yaw) + ")";
