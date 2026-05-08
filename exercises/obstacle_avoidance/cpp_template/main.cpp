@@ -1,3 +1,4 @@
+#include "HAL.hpp"
 #include "WebGUI.hpp"
 #include "academy.cpp"
 #include "rclcpp/rclcpp.hpp"
