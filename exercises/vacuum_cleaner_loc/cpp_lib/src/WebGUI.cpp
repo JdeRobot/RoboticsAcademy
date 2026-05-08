@@ -25,9 +25,6 @@ public:
 
         auto qos_transient = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
 
-        occ_map_pub_ = aux_node_->create_publisher<sensor_msgs::msg::Image>(
-            "/webgui_occ_map", qos_transient);
-
         user_map_sub_ = aux_node_->create_subscription<sensor_msgs::msg::Image>(
             "/webgui_user_map", qos_transient,
             [this](const sensor_msgs::msg::Image::SharedPtr msg) {
@@ -43,8 +40,6 @@ public:
                     }
                 } catch (...) {}
             });
-
-        publish_initial_occ_map();
 
         last_stat_time_ = std::chrono::steady_clock::now();
         stats_timer_ = this->create_wall_timer(
@@ -93,16 +88,6 @@ protected:
     }
 
 private:
-    void publish_initial_occ_map() {
-        cv::Mat occ_map = cv::imread("/resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png", cv::IMREAD_COLOR);
-        if (!occ_map.empty()) {
-            sensor_msgs::msg::Image msg;
-            cv_bridge::CvImage(std_msgs::msg::Header(), "bgr8", occ_map).toImageMsg(msg);
-            msg.header.frame_id = "map";
-            occ_map_pub_->publish(msg);
-        }
-    }
-
     cv::Mat process_colors(const cv::Mat& image) {
         if (image.channels() == 3) return image.clone();
 
@@ -184,7 +169,6 @@ private:
     std::shared_ptr<OdometryNode> odom_node_;
     rclcpp::Node::SharedPtr aux_node_;
     
-    rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr occ_map_pub_;
     rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr user_map_sub_;
 
     cv::Mat img_buf_;

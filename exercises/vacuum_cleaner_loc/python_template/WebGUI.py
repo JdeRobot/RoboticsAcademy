@@ -41,24 +41,11 @@ class ROS2BridgeNode(Node):
         self.user_map_updated = False
         self.user_map_lock = threading.Lock()
 
-        occ_qos = QoSProfile(
-            history=HistoryPolicy.KEEP_LAST,
-            depth=1,
-            reliability=ReliabilityPolicy.RELIABLE,
-            durability=DurabilityPolicy.TRANSIENT_LOCAL,
-        )
-
         user_qos = QoSProfile(
             history=HistoryPolicy.KEEP_LAST,
             depth=1,
             reliability=ReliabilityPolicy.RELIABLE,
             durability=DurabilityPolicy.TRANSIENT_LOCAL,
-        )
-
-        self.occ_map_publisher = self.create_publisher(
-            ROSImage,
-            "/webgui_occ_map",
-            occ_qos,
         )
 
         self.create_subscription(Odometry, "/odom", self.odom_callback, 10)
@@ -124,21 +111,6 @@ class ROS2BridgeNode(Node):
             self.get_logger().error(f"Error converting ROS image: {e}")
             return None
 
-    def publish_occ_map(self, image):
-        if image is None:
-            return
-
-        msg = ROSImage()
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = "map"
-        msg.height = image.shape[0]
-        msg.width = image.shape[1]
-        msg.encoding = "rgb8"
-        msg.is_bigendian = 0
-        msg.step = image.shape[1] * 3
-        msg.data = image.astype(np.uint8).tobytes()
-        self.occ_map_publisher.publish(msg)
-
     def get_pose3d(self):
         with self.pose_lock:
             if self.pose is None:
@@ -197,8 +169,6 @@ class WebGUI(MeasuringThreadingGUI):
         )
         self.map = Map(pose_getter)
 
-        self._publish_initial_occ_map()
-
         self.start()
 
     def _setup_ros2(self):
@@ -232,18 +202,6 @@ class WebGUI(MeasuringThreadingGUI):
             self.executor = None
             self.executor_thread = None
             self.image_thread = None
-
-    def _publish_initial_occ_map(self):
-        occ_map = self.getMap(
-            "/resources/exercises/vacuum_cleaner_loc/images/mapgrannyannie.png"
-        )
-        if occ_map is None:
-            print("GUI: Failed to load occupancy map", file=sys.stderr)
-            return
-
-        if self.ros_node is not None:
-            self.ros_node.publish_occ_map(occ_map)
-            print("GUI: Occupancy map published to /webgui_occ_map")
 
     def _dummy_pose(self):
         class Pose3D:
