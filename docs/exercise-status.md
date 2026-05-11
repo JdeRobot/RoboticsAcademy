@@ -18,7 +18,7 @@
 | Follow Person                        |        ok        |     ok      |               |          | [Link][vid_follow_person]    |        ok         |         ok         |             |
 | Drone Follow Road                    |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
 | Drone Rescue people                  |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
-| Drone Gymkhana                       |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
+| Drone Gymkhana                       |        ok        |     ok      |               |          | [Link][vid_drone_gymkhana]   |                   |         ok         |             |
 | Drone Power tower Inspection         |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
 | Visual 3D reconstruction             |        ok        |     ok      |               |          | -                            |        ok         |         ok         |             |
 | DL e2e Visual control                |        ok        |     ok      |               |          | -                            |        ok         |         ok         |             |
@@ -55,3 +55,4 @@
 [vid_localized_vacuum]: https://www.youtube.com/watch?v=cajn0qb-oeY
 [vid_global_nav]: https://www.youtube.com/watch?v=mOqtXiUAny0
 [vid_marker_loc]: https://www.youtube.com/watch?v=HF57L6ekrRg
+[vid_drone_gymkhana]: https://www.youtube.com/watch?v=uNVWs_-JfV8
