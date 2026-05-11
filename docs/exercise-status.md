@@ -12,9 +12,9 @@
 | MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
 | MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
 | Marker-based visual Loc              |        ok        |     ok      |      ok       |          | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
-| Localized Vacuum Cleaner             |        ok        |     ok      |               |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
-| Autoparking                          |        ok        |     ok      |               |          | [Link][vid_autoparking]      |        ok         |         ok         |             |
-| Amazon Warehouse                     |        ok        |     ok      |               |          | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
+| Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
+| Autoparking                          |        ok        |     ok      |      ok       |          | [Link][vid_autoparking]      |        ok         |         ok         |             |
+| Amazon Warehouse                     |        ok        |     ok      |      ok       |          | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
 | Follow Person                        |        ok        |     ok      |               |          | [Link][vid_follow_person]    |        ok         |         ok         |             |
 | Drone Follow Road                    |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
 | Drone Rescue people                  |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
