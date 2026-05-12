@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(VacuumCleanerLibs CXX)
+project(FollowRoadLibs CXX)
 
 # Forzar el estándar C++17 para máxima compatibilidad con ROS 2 Humble
 set(CMAKE_CXX_STANDARD 17)
