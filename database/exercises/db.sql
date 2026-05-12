@@ -117,7 +117,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 4	follow_person	Follow Person	Follow a person with kobuki robot	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/follow_person
 5	vacuum_cleaner_loc	Localized Vacuum Cleaner	Localiized vauum clenaer	["ROS2", "MOBILE ROBOTS", "SERVICE ROBOTS", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/vacuum_cleaner_loc
 6	global_navigation	Global Navigation	Global navigation exercise using REACT and RAM	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation
-7	rescue_people	Drone Rescue People	Drone Rescue People exercise	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/rescue_people
+7	rescue_people	Drone Rescue People	Drone Rescue People exercise	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/rescue_people
 8	obstacle_avoidance	Obstacle Avoidance	Obstacle Avoidance exercise using React and RAM	["ROS2","AUTONOMOUS DRIVING",  "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance
 9	3d_reconstruction	3D Reconstruction	3D Reconstruction exercise using React and RAM	["ROS2","COMPUTER VISION"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction
 10	amazon_warehouse	Amazon Warehouse	Control an amazon-like robot to organize a warehouse	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse
@@ -130,8 +130,8 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 17	pick_place	Pick and Place	Pick and Place exercise	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place
 18	image_classification	Image Classification	Deep learning-based Image Classification.	["Computer Vision","Deep Learning","Classification"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/image_classification
 19	object_detection	Visual Object Detection	Deep learning-based object detection.	["Computer Vision","Deep Learning"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/object_detection
-20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
-21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
+20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2", "Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
+21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
 23	digital_image_processing	Digital Image Processing Exercises	Digital Image Processing Exercises	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/digital_image_processing
 24	car_junction	Car Junction	Autonomous Navigation through traffic at road junction.	["AUTONOMOUS DRIVING","ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/car_junction
