@@ -1,100 +1,57 @@
 """
-HAL (Hardware Abstraction Layer) for Basic Computer Vision Exercise
-Now extended with Visual Odometry support (didactic trajectory + drift)
+HAL
+Visual Odometry 3D
+Envía:
+- imagen input
+- pose 3D actual
+- estimated trajectory
+- ground truth trajectory
 """
 
 import rclpy
 import sys
 import threading
 import time
+import json
+import traceback
+
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from rclpy.node import Node
 
-# NEW: WebGUI bridge
 import WebGUI
 
 
 # =========================================================
-# INPUT IMAGE PUBLISHER (UNCHANGED)
+# IMAGE PUBLISHER
 # =========================================================
-
 class InputPublisher(Node):
 
     def __init__(self):
         super().__init__("input_publisher")
-        self.publisher = self.create_publisher(Image, "/input/image_raw", 10)
+        self.image_pub = self.create_publisher(Image, "/input/image_raw", 10)
         self.bridge = CvBridge()
-        self.get_logger().info("Input publisher initialized on /input/image_raw")
 
     def publish_image(self, cv_image):
-
         if cv_image is None:
-            self.get_logger().warn("None image skipped")
             return
 
         try:
-            if len(cv_image.shape) != 3 or cv_image.shape[2] != 3:
-                self.get_logger().error(f"Bad shape: {cv_image.shape}")
-                return
+            ros_image = self.bridge.cv2_to_imgmsg(
+                cv_image,
+                encoding="bgr8"
+            )
+            ros_image.header.stamp = self.get_clock().now().to_msg()
+            ros_image.header.frame_id = "camera"
+            self.image_pub.publish(ros_image)
 
-            ros_image = self.bridge.cv2_to_imgmsg(cv_image, encoding="bgr8")
-            self.publisher.publish(ros_image)
-
-        except CvBridgeError as e:
-            self.get_logger().error(f"Bridge error: {e}")
-
-        except Exception as e:
-            self.get_logger().error(f"Publish error: {e}")
+        except CvBridgeError:
+            self.get_logger().warning("CvBridge error")
 
 
 # =========================================================
-# VISUAL ODOMETRY STATE (NEW)
+# ROS INIT
 # =========================================================
-
-class VisualOdometry:
-    def __init__(self):
-        self.x = 0.0
-        self.y = 0.0
-
-        self.prev_x = 0.0
-        self.prev_y = 0.0
-
-        self.drift = 0.0
-
-        self.lock = threading.Lock()
-
-    def update(self, dx, dy):
-
-        with self.lock:
-            # integrate motion
-            self.x += dx
-            self.y += dy
-
-            # drift = distance from start
-            self.drift = (self.x ** 2 + self.y ** 2) ** 0.5
-
-            return {
-                "x": self.x,
-                "y": self.y,
-                "drift": self.drift
-            }
-
-
-# =========================================================
-# GLOBAL STATE
-# =========================================================
-
-vo = VisualOdometry()
-
-input_publisher = None
-executor = None
-
-
-# =========================================================
-# ROS2 INIT
-# =========================================================
-
 if not rclpy.ok():
     rclpy.init(args=sys.argv)
 
@@ -104,42 +61,84 @@ executor = rclpy.executors.MultiThreadedExecutor()
 executor.add_node(input_publisher)
 
 
-def __auto_spin():
+def spin():
     while rclpy.ok():
-        try:
-            executor.spin_once(timeout_sec=0)
-        except Exception as e:
-            print(f"Spin error: {e}", file=sys.stderr)
-
-        time.sleep(1 / 30.0)
+        executor.spin_once(timeout_sec=0.01)
+        time.sleep(1 / 60.0)
 
 
-threading.Thread(
-    target=__auto_spin,
-    daemon=True,
-    name="hal_spin_thread"
-).start()
+threading.Thread(target=spin, daemon=True).start()
 
 
 # =========================================================
-# IMAGE API
+# INTERNAL PAYLOAD
 # =========================================================
+def _send_payload(data):
+    try:
+        gui = getattr(WebGUI, "gui", None)
 
-def publish_input_image(cv_image):
-    if input_publisher:
-        input_publisher.publish_image(cv_image)
+        if gui is not None and hasattr(gui, "payload"):
+            for k, v in data.items():
+                gui.payload[k] = json.dumps(v)
+            return True
+
+        if hasattr(WebGUI, "sendData"):
+            WebGUI.sendData(data)
+            return True
+
+    except Exception as e:
+        print("[HAL ERROR]", e)
+        traceback.print_exc()
+
+    return False
 
 
 # =========================================================
-# NEW: VISUAL ODOMETRY API
+# PUBLIC API
 # =========================================================
+def publish_input_image(img):
+    input_publisher.publish_image(img)
 
-def publish_user_motion(dx, dy):
+
+def publish_pose3d(position, rotation=None):
     """
-    Called from vision script (optical flow result)
+    position: [x,y,z]
+    rotation: optional 3x3 or yaw
     """
+    payload = {
+        "camera_position": position
+    }
 
-    odom = vo.update(dx, dy)
+    if rotation is not None:
+        payload["camera_rotation"] = rotation
 
-    # Send to WebGUI (RIGHT PANEL)
-    WebGUI.sendOdom(odom)
+    _send_payload(payload)
+
+
+def publish_estimated_path(path):
+    """
+    path = [[x,y,z], ...]
+    """
+    _send_payload({
+        "estimated_path": path
+    })
+
+
+def publish_ground_truth_path(path):
+    """
+    path = [[x,y,z], ...]
+    """
+    _send_payload({
+        "ground_truth_path": path
+    })
+
+
+def publish_all(position, estimated_path, gt_path):
+    """
+    helper principal
+    """
+    _send_payload({
+        "camera_position": position,
+        "estimated_path": estimated_path,
+        "ground_truth_path": gt_path
+    })

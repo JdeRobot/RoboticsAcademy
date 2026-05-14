@@ -1,237 +1,208 @@
 import React, { useState, useEffect, useRef } from "react";
 import WebGUIImage from "Components/exercise/WebGUIImage";
-import WebGUIContainer, {
-  connectApplication,
-} from "Components/exercise/WebGUIContainer";
+import WebGUIContainer, { connectApplication } from "Components/exercise/WebGUIContainer";
 import { useExercise } from "Contexts/ExerciseContext";
 import { states } from "jderobot-commsmanager";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-function WebGUI() {
+const ThreeViewer: React.FC = () => {
+  const mountRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const mount = mountRef.current;
+    if (!mount) return;
+
+    // -----------------------
+    // SCENE
+    // -----------------------
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x111111);
+
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      mount.clientWidth / mount.clientHeight,
+      0.01,
+      1000
+    );
+
+    camera.position.set(0, -5, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(mount.clientWidth, mount.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    mount.innerHTML = "";
+    mount.appendChild(renderer.domElement);
+
+    // -----------------------
+    // ORBIT CONTROLS (mouse)
+    // -----------------------
+    const controls = new OrbitControls(camera, renderer.domElement);
+
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+
+    // 🔥 CONTROL DE RATÓN (lo que querías)
+    controls.mouseButtons = {
+      LEFT: THREE.MOUSE.ROTATE,
+      MIDDLE: THREE.MOUSE.PAN,   // rueda presionada = mover escena
+      RIGHT: THREE.MOUSE.DOLLY,  // zoom
+    };
+
+    controls.screenSpacePanning = true;
+    controls.panSpeed = 1.0;
+
+    controls.target.set(0, 0, 0);
+    controls.update();
+
+    // -----------------------
+    // GRID
+    // -----------------------
+    const grid = new THREE.GridHelper(20, 40, 0x444444, 0x222222);
+    scene.add(grid);
+
+    // -----------------------
+    // AXES (más visibles)
+    // -----------------------
+    const axes = new THREE.AxesHelper(2.5);
+    scene.add(axes);
+
+    // -----------------------
+    // RESIZE
+    // -----------------------
+    const resize = () => {
+      const w = mount.clientWidth;
+      const h = mount.clientHeight;
+
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    };
+
+    const ro = new ResizeObserver(resize);
+    ro.observe(mount);
+
+    // -----------------------
+    // LOOP
+    // -----------------------
+    const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    return () => {
+      ro.disconnect();
+      controls.dispose();
+      renderer.dispose();
+    };
+  }, []);
+
+  return <div ref={mountRef} style={{ width: "100%", height: "100%" }} />;
+};
+
+const WebGUI: React.FC = () => {
   const exerciseContext = useExercise();
+  const [manager, setManager] = useState<any>(exerciseContext.manager);
 
-  const [image, setImage] = useState<string | undefined>(undefined);
-
-  const [trajectory, setTrajectory] = useState<{ x: number; y: number }[]>([]);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const [drift, setDrift] = useState(0);
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const [manager, setManager] = useState(exerciseContext.manager);
+  const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setManager(exerciseContext.manager);
-  }, [exerciseContext]);
+  }, [exerciseContext.manager]);
 
-  const updateCallback = (updateData: unknown) => {
-    const data = updateData as any;
-    const update = data.update;
+  const updateCallback = (updateData: any) => {
+    const update = updateData.update ?? {};
 
-    if (update.image) {
+    const raw = update.img1 ?? update.image ?? update.img ?? "";
+    if (!raw) return;
+
+    try {
+      let base64: string = raw;
+
       try {
-        const parsed =
-          typeof update.image === "string"
-            ? JSON.parse(update.image)
-            : update.image;
+        const parsed = JSON.parse(raw);
+        base64 = parsed?.img ?? parsed?.image ?? parsed ?? raw;
+      } catch {}
 
-        const base64 = parsed?.image || parsed || update.image;
+      const finalSrc = base64.startsWith("data:")
+        ? base64
+        : `data:image/jpeg;base64,${base64}`;
 
-        if (base64) {
-          setImage(`data:image/jpeg;base64,${base64}`);
-        }
-      } catch {
-        setImage(`data:image/jpeg;base64,${update.image}`);
-      }
-    }
-
-    if (update.odom) {
-      const odomData = JSON.parse(update.odom);
-
-      const scale = 1.2;
-
-      const newPos = {
-        x: odomData.x * scale,
-        y: odomData.y * scale,
-      };
-
-      setPos(newPos);
-      setDrift(odomData.drift ?? 0);
-
-      setTrajectory((prev) => [...prev, newPos].slice(-1500));
+      setImageSrc(finalSrc);
+    } catch {
+      setImageSrc(undefined);
     }
   };
 
   const stateCallback = (state: string) => {
     if (state === states.TOOLS_READY) {
-      setImage(undefined);
-      setTrajectory([]);
-      setPos({ x: 0, y: 0 });
-      setDrift(0);
+      setImageSrc(undefined);
     }
   };
 
   connectApplication(manager, updateCallback, stateCallback);
 
-  // =========================================================
-  // ODOMETRY DRAW (FIXED RESPONSIVE + BOUNDS)
-  // =========================================================
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const w = canvas.width;
-    const h = canvas.height;
-
-    ctx.clearRect(0, 0, w, h);
-
-    const cx = w / 2;
-    const cy = h / 2;
-
-    // GRID
-    ctx.fillStyle = "#444";
-    ctx.fillRect(cx, 0, 1, h);
-    ctx.fillRect(0, cy, w, 1);
-
-    // 🔥 LIMITE DEL MUNDO (evita que se salga)
-    const WORLD_LIMIT = 80;
-
-    // 🔥 escala automática según canvas
-    const scale = Math.min(w, h) / (2 * WORLD_LIMIT);
-
-    const clamp = (v: number, min: number, max: number) =>
-      Math.max(min, Math.min(max, v));
-
-    const worldToScreen = (p: { x: number; y: number }) => {
-      const x = cx + clamp(p.y, -WORLD_LIMIT, WORLD_LIMIT) * scale;
-      const y = cy - clamp(p.x, -WORLD_LIMIT, WORLD_LIMIT) * scale;
-      return { x, y };
-    };
-
-    // TRAJECTORY (RED LINE)
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-
-    trajectory.forEach((p, i) => {
-      const s = worldToScreen(p);
-
-      if (i === 0) ctx.moveTo(s.x, s.y);
-      else ctx.lineTo(s.x, s.y);
-    });
-
-    ctx.stroke();
-
-    // CURRENT POSITION (GREEN)
-    const s = worldToScreen(pos);
-
-    ctx.fillStyle = "lime";
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, 5, 0, Math.PI * 2);
-    ctx.fill();
-
-  }, [trajectory, pos]);
-
-  // =========================================================
-  // RENDER (UNCHANGED)
-  // =========================================================
-return (
-  <WebGUIContainer>
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        height: "100%",   // 🔥 IMPORTANTE: NO 100vh
-        overflow: "hidden",
-      }}
-    >
-
-      {/* ================= LEFT IMAGE ================= */}
+  return (
+    <WebGUIContainer>
       <div
         style={{
-          flex: 1,
-          minHeight: 0,     // 🔥 CLAVE FLEX FIX
           display: "flex",
-          background: "#000",
+          width: "100%",
+          height: "100%",
           overflow: "hidden",
-          borderRight: "2px solid #333",
         }}
       >
+        {/* LEFT: IMAGEN (SIN CAMBIOS) */}
         <div
           style={{
-            flex: 1,
-            minHeight: 0,
+            width: "50%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            overflow: "hidden",
+            padding: 12,
+            background: "#000",
+            borderRight: "2px solid #333",
+            boxSizing: "border-box",
           }}
         >
-          {image && (
+          {imageSrc ? (
             <WebGUIImage
               id="gui_canvas"
-              src={image}
+              src={imageSrc}
               style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
+                maxWidth: "50%",
+                maxHeight: "90vh",
+                width: "auto",
+                height: "auto",
                 objectFit: "contain",
+                display: "block",
               }}
               fit
             />
+          ) : (
+            <div style={{ color: "#666", fontSize: 14 }}>
+              Waiting for image...
+            </div>
           )}
         </div>
-      </div>
 
-      {/* ================= RIGHT ODOMETRY ================= */}
-      <div
-        style={{
-          flex: 1,
-          minHeight: 0,     // 🔥 CLAVE FLEX FIX
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: "#111",
-          color: "white",
-          padding: "10px",
-          fontFamily: "monospace",
-          overflow: "hidden", // 🔥 evita overflow visual
-        }}
-      >
-        <h3 style={{ margin: "0 0 10px 0" }}>Visual Odometry</h3>
-
-        <div style={{ marginBottom: "10px" }}>
-          <p><b>X:</b> {pos.x.toFixed(2)}</p>
-          <p><b>Y:</b> {pos.y.toFixed(2)}</p>
-          <p><b>Drift:</b> {drift.toFixed(3)}</p>
-        </div>
-
-        {/* CANVAS AREA */}
+        {/* RIGHT: 3D VIEWER */}
         <div
           style={{
-            flex: 1,
-            minHeight: 0,   // 🔥 MUY IMPORTANTE
-            overflow: "hidden",
+            width: "50%",
+            height: "100%",
+            background: "#111",
           }}
         >
-          <canvas
-            ref={canvasRef}
-            width={400}
-            height={400}
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "block",
-              background: "black",
-              border: "1px solid #444",
-            }}
-          />
+          <ThreeViewer />
         </div>
       </div>
-
-    </div>
-  </WebGUIContainer>
-);
-}
+    </WebGUIContainer>
+  );
+};
 
 export default WebGUI;

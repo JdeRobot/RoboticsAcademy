@@ -1,7 +1,13 @@
 """
-WebGUI for Basic Computer Vision Exercise
-Supports dual mode: Python API (getImage/showImage) and ROS2 topics
-Now extended with Visual Odometry channel (odom)
+WebGUI for Visual Odometry 3D
+Server is PASSIVE: only forwards raw images and odom to client.
+No overlay or trajectory drawing on the server.
+
+EXTENSION:
+- camera_position (3D)
+- camera_rotation
+- estimated_path (3D)
+- ground_truth_path (3D)
 """
 
 import json
@@ -10,15 +16,20 @@ import base64
 import threading
 import rclpy
 import sys
+import numpy as np
+import time
+import traceback
 
 from gui_interfaces.general.measuring_threading_gui_no_sim import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from hal_interfaces.general.camera import CameraNode
-import numpy as np
 
 import HAL
 
 
+# =========================================================
+# WEBGUI CLASS
+# =========================================================
 class WebGUI(MeasuringThreadingGUI):
 
     def __init__(self, host="ws://127.0.0.1:2303"):
@@ -27,23 +38,42 @@ class WebGUI(MeasuringThreadingGUI):
         # -----------------------------
         # IMAGE STATE
         # -----------------------------
-        self.image_to_be_shown = None
-        self.image_to_be_shown_updated = False
-        self.image_show_lock = threading.Lock()
+        self.image_to_show = None
+        self.image_lock = threading.Lock()
 
         self.frame_rgb = None
-        self.frame_rgb_lock = threading.Lock()
+        self.frame_lock = threading.Lock()
 
         # -----------------------------
-        # PAYLOAD (IMAGE + ODOM)
+        # INITIAL PAYLOAD (3D SYSTEM)
         # -----------------------------
         self.payload = {
             "image": "",
             "shape": "",
-            "odom": ""
+
+            # 2D LEGACY (NO ROMPER COMPATIBILIDAD)
+            "odom": {
+                "x": 0.0,
+                "y": 0.0,
+                "yaw": 0.0
+            },
+
+            # 3D CAMERA STATE
+            "camera_position": [0.0, 0.0, 0.0],
+            "camera_rotation": None,
+
+            # TRAJECTORIES
+            "estimated_path": [],
+            "ground_truth_path": [],
+
+            # optional metadata
+            "pts": None,
+            "pts3d": None,
+            "pts_kind": None,
+            "ts": None
         }
 
-        self.has_received_img = False
+        self.has_image = False
 
         # -----------------------------
         # ROS2 INIT
@@ -52,143 +82,156 @@ class WebGUI(MeasuringThreadingGUI):
             rclpy.init()
 
         self.camera_node = None
-        self.auto_image_mode = False
         self.executor = None
-        self.executor_thread = None
-        self.auto_image_thread = None
 
-        self._setup_auto_mode()
-
-        if self.camera_node:
-            self._start_ros2_threads()
+        self._setup_ros()
+        self._start_threads()
 
         self.start()
 
     # =========================================================
-    # ROS2 SETUP
+    # ROS SETUP
     # =========================================================
-
-    def _setup_auto_mode(self):
+    def _setup_ros(self):
         try:
             self.camera_node = CameraNode("/webgui_image")
-            self.auto_image_mode = True
-            print("ROS2 mode enabled: Subscribed to /webgui_image")
-
+            print("WebGUI subscribed to /webgui_image")
         except Exception as e:
-            print(f"ROS2 mode disabled: {e}")
+            print(f"ROS disabled: {e}")
             self.camera_node = None
-            self.auto_image_mode = False
 
-    def _start_ros2_threads(self):
-        try:
+    def _start_threads(self):
+        if self.camera_node:
             self.executor = rclpy.executors.MultiThreadedExecutor()
             self.executor.add_node(self.camera_node)
 
-            self.executor_thread = threading.Thread(
+            threading.Thread(
                 target=self.executor.spin,
-                daemon=True,
-                name="webgui_ros2_executor"
-            )
-            self.executor_thread.start()
+                daemon=True
+            ).start()
 
-            self.auto_image_thread = threading.Thread(
-                target=self._unified_image_loop,
-                daemon=True,
-                name="webgui_image_display",
-            )
-            self.auto_image_thread.start()
+            threading.Thread(
+                target=self._image_loop,
+                daemon=True
+            ).start()
 
-        except Exception as e:
-            print(f"Error starting ROS2 threads: {e}", file=sys.stderr)
-
-    def _unified_image_loop(self):
+    def _image_loop(self):
         while True:
             try:
                 if self.camera_node:
-                    image = self.camera_node.getImage()
-                    if image is not None:
-                        self.showImage(image.data)
-
-                threading.Event().wait(0.033)
-
+                    img = self.camera_node.getImage()
+                    if img is not None:
+                        self.showImage(img.data)
             except Exception as e:
-                print(f"Error in image loop: {e}", file=sys.stderr)
-                threading.Event().wait(1.0)
+                print(f"Image loop error: {e}", file=sys.stderr)
+
+            threading.Event().wait(0.033)
 
     # =========================================================
     # INPUT FROM FRONTEND
     # =========================================================
-
     def gui_in_thread(self, ws, message):
         TIME_FRAME_SIZE = 20
 
-        if "ack" in message:
-            with self.ack_lock:
-                self.ack = True
-
-        elif "start" in message:
-            with self.ack_lock:
-                self.ack_frontend = True
-
         if "pick" in message:
-            self._handle_input_frame(message, TIME_FRAME_SIZE)
+            self._handle_frame(message, TIME_FRAME_SIZE)
 
-        if "introspection" in message:
-            info = message[len("introspection:") :]
-            try:
-                self.fps, self.lat = info.split("/")
-            except ValueError:
-                print(f"Invalid introspection format: {info}", file=sys.stderr)
-
-    def _handle_input_frame(self, message, time_frame_size):
+    def _handle_frame(self, message, time_frame_size):
         try:
-            self.has_received_img = True
+            self.has_image = True
 
             base64_buffer = message[4:-time_frame_size]
             timestamp = message[-time_frame_size:]
 
             if base64_buffer.startswith("data:image/jpeg;base64,"):
-                base64_buffer = base64_buffer[len("data:image/jpeg;base64,") :]
+                base64_buffer = base64_buffer[len("data:image/jpeg;base64,"):]
 
             image_data = base64.b64decode(base64_buffer)
             nparr = np.frombuffer(image_data, np.uint8)
             img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
             if img is None:
-                print("Warning: Failed to decode image", file=sys.stderr)
                 return
 
-            with self.frame_rgb_lock:
+            with self.frame_lock:
                 self.frame_rgb = img
 
-            HAL.publish_input_image(img)
+            try:
+                HAL.publish_input_image(img)
+            except Exception:
+                traceback.print_exc()
 
-            ack_message = {"ack_img": "ack", "time": timestamp}
-            self.send_to_client(json.dumps(ack_message))
+            self.send_to_client(json.dumps({
+                "ack_img": "ok",
+                "time": timestamp
+            }))
 
         except Exception as e:
-            print(f"Error handling frame: {e}", file=sys.stderr)
+            print(f"Frame error: {e}", file=sys.stderr)
+            traceback.print_exc()
 
     # =========================================================
-    # GUI OUTPUT
+    # OUTPUT LOOP
     # =========================================================
-
     def update_gui(self):
-        payload = self.payloadImage()
+        payload = self._encode_image()
 
-        self.payload["image"] = json.dumps(payload["image"])
-        self.payload["shape"] = json.dumps(payload["shape"])
-        self.payload["odom"] = json.dumps(self.payload.get("odom", ""))
+        try:
+            self.payload["image"] = json.dumps(payload["image"])
+            self.payload["shape"] = json.dumps(payload["shape"])
+        except Exception:
+            self.payload["image"] = json.dumps("")
+            self.payload["shape"] = json.dumps("")
 
-        message = json.dumps(self.payload)
-        self.send_to_client(message)
+        # -----------------------------
+        # PROTECT 3D DATA (NO OVERWRITE)
+        # -----------------------------
+        protected_keys = {
+            "camera_position",
+            "camera_rotation",
+            "estimated_path",
+            "ground_truth_path",
+            "pts",
+            "pts3d",
+            "pts_kind",
+            "ts"
+        }
 
-        if not self.has_received_img:
-            self.send_to_client(json.dumps({"ack_img": "ack", "time": ""}))
+        # serialize safe fields only
+        for k in list(self.payload.keys()):
+            if k in protected_keys:
+                continue
 
-    def payloadImage(self):
-        with self.image_show_lock:
-            image = self.image_to_be_shown
+            try:
+                val = self.payload[k]
+
+                if isinstance(val, str):
+                    try:
+                        json.loads(val)
+                        message_val = val
+                    except Exception:
+                        message_val = json.dumps(val)
+                else:
+                    message_val = json.dumps(val)
+
+                self.payload[k] = message_val
+
+            except Exception:
+                traceback.print_exc()
+
+        try:
+            message = json.dumps(self.payload)
+            self.send_to_client(message)
+        except Exception as e:
+            print(f"Failed to send payload: {e}", file=sys.stderr)
+            traceback.print_exc()
+
+    # =========================================================
+    # IMAGE ENCODING
+    # =========================================================
+    def _encode_image(self):
+        with self.image_lock:
+            image = self.image_to_show
 
         payload = {"image": "", "shape": ""}
 
@@ -196,85 +239,106 @@ class WebGUI(MeasuringThreadingGUI):
             return payload
 
         try:
-            shape = image.shape
-            success, frame = cv2.imencode(".JPEG", image)
-
+            success, frame = cv2.imencode(".jpg", image)
             if not success:
                 return payload
 
             encoded = base64.b64encode(frame).decode("utf-8")
 
             payload["image"] = encoded
-            payload["shape"] = shape
+            payload["shape"] = image.shape
 
         except Exception as e:
             print(f"Encoding error: {e}", file=sys.stderr)
+            traceback.print_exc()
 
         return payload
 
     # =========================================================
-    # PUBLIC API (Python mode)
+    # PUBLIC API
     # =========================================================
-
     def showImage(self, image):
         if image is None:
             return
 
-        with self.image_show_lock:
-            self.image_to_be_shown = image
-            self.image_to_be_shown_updated = True
+        with self.image_lock:
+            try:
+                self.image_to_show = image.copy()
+            except Exception:
+                self.image_to_show = image
 
     def getImage(self):
-        with self.frame_rgb_lock:
+        with self.frame_lock:
             return self.frame_rgb
-
-    # =========================================================
-    # NEW: ODOMETRY CHANNEL
-    # =========================================================
-
-    def setOdom(self, odom):
-        """
-        Store odometry data to be sent to frontend
-
-        Args:
-            odom: dict {x, y, drift}
-        """
-        try:
-            self.payload["odom"] = odom
-        except Exception as e:
-            print(f"Error setting odom: {e}", file=sys.stderr)
 
 
 # =========================================================
 # GLOBAL INSTANCE
 # =========================================================
-
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
 
 start_console()
 
-# =========================================================
-# EXPOSE API
-# =========================================================
 
+# =========================================================
+# API WRAPPERS
+# =========================================================
 def showImage(image):
     if gui:
         gui.showImage(image)
-
 
 def getImage():
     if gui:
         return gui.getImage()
     return None
 
-
 def sendOdom(odom):
-    """
-    Send odometry data to WebGUI
+    try:
+        if gui:
+            gui.payload["odom"] = {
+                "x": float(odom.get("x", 0.0)),
+                "y": float(odom.get("y", 0.0)),
+                "yaw": float(odom.get("yaw", 0.0))
+            }
+    except Exception:
+        traceback.print_exc()
 
-    Args:
-        odom: dict {x, y, drift}
-    """
+
+# =========================================================
+# NEW 3D API
+# =========================================================
+def publishPose3D(position, rotation=None):
     if gui:
-        gui.setOdom(odom)
+        gui.payload["camera_position"] = [
+            float(position[0]),
+            float(position[1]),
+            float(position[2])
+        ]
+        if rotation is not None:
+            gui.payload["camera_rotation"] = rotation
+
+
+def publishEstimatedPath(path):
+    if gui:
+        gui.payload["estimated_path"] = [
+            [float(x), float(y), float(z)] for x, y, z in path
+        ]
+
+
+def publishGroundTruthPath(path):
+    if gui:
+        gui.payload["ground_truth_path"] = [
+            [float(x), float(y), float(z)] for x, y, z in path
+        ]
+
+
+def publishAll(position, estimated_path, gt_path):
+    if gui:
+        gui.payload["camera_position"] = [
+            float(position[0]),
+            float(position[1]),
+            float(position[2])
+        ]
+        gui.payload["estimated_path"] = estimated_path
+        gui.payload["ground_truth_path"] = gt_path
