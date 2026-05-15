@@ -2,12 +2,6 @@
 WebGUI for Visual Odometry 3D
 Server is PASSIVE: only forwards raw images and odom to client.
 No overlay or trajectory drawing on the server.
-
-EXTENSION:
-- camera_position (3D)
-- camera_rotation
-- estimated_path (3D)
-- ground_truth_path (3D)
 """
 
 import json
@@ -17,14 +11,50 @@ import threading
 import rclpy
 import sys
 import numpy as np
-import time
 import traceback
+from pathlib import Path
 
 from gui_interfaces.general.measuring_threading_gui_no_sim import MeasuringThreadingGUI
 from console_interfaces.general.console import start_console
 from hal_interfaces.general.camera import CameraNode
 
 import HAL
+
+
+# =========================================================
+# POSES LOADER (FIXED PATH)
+# =========================================================
+def load_poses():
+    """
+    Ruta FIJA como pediste:
+    /RoboticsAcademy/exercises/visual_odom/frontend/resources/poses.txt
+    """
+    file_path = Path("/RoboticsAcademy/exercises/visual_odom/frontend/resources/poses.txt")
+
+    print("[GT] Looking for:", file_path)
+
+    if not file_path.exists():
+        print("[GT] ERROR: poses.txt not found at fixed path")
+        return []
+
+    poses = []
+    with open(file_path, "r") as f:
+        for i, line in enumerate(f):
+            try:
+                vals = list(map(float, line.strip().split()))
+                T = np.array(vals).reshape(3, 4)
+
+                pos = [float(T[0, 3]), float(T[1, 3]), float(T[2, 3])]
+                poses.append(pos)
+
+                if i < 3:
+                    print(f"[GT] sample {i}: {pos}")
+
+            except Exception as e:
+                print(f"[GT] parse error line {i}: {e}")
+
+    print(f"[GT] TOTAL POSES LOADED: {len(poses)}")
+    return poses
 
 
 # =========================================================
@@ -35,48 +65,43 @@ class WebGUI(MeasuringThreadingGUI):
     def __init__(self, host="ws://127.0.0.1:2303"):
         super().__init__(host)
 
+        print("[WEBGUI] INIT START")
+
         # -----------------------------
         # IMAGE STATE
         # -----------------------------
         self.image_to_show = None
         self.image_lock = threading.Lock()
 
-        self.frame_rgb = None
-        self.frame_lock = threading.Lock()
+        # -----------------------------
+        # GROUND TRUTH
+        # -----------------------------
+        self.gt_positions = load_poses()
+        self.gt_path = []
+        self.gt_index = 0
 
         # -----------------------------
-        # INITIAL PAYLOAD (3D SYSTEM)
+        # PAYLOAD
         # -----------------------------
         self.payload = {
             "image": "",
             "shape": "",
+            "odom": {"x": 0.0, "y": 0.0, "yaw": 0.0},
 
-            # 2D LEGACY (NO ROMPER COMPATIBILIDAD)
-            "odom": {
-                "x": 0.0,
-                "y": 0.0,
-                "yaw": 0.0
-            },
-
-            # 3D CAMERA STATE
             "camera_position": [0.0, 0.0, 0.0],
             "camera_rotation": None,
 
-            # TRAJECTORIES
             "estimated_path": [],
             "ground_truth_path": [],
 
-            # optional metadata
             "pts": None,
             "pts3d": None,
             "pts_kind": None,
             "ts": None
         }
 
-        self.has_image = False
-
         # -----------------------------
-        # ROS2 INIT
+        # ROS
         # -----------------------------
         if not rclpy.ok():
             rclpy.init()
@@ -89,15 +114,17 @@ class WebGUI(MeasuringThreadingGUI):
 
         self.start()
 
+        print("[WEBGUI] INIT COMPLETE")
+
     # =========================================================
-    # ROS SETUP
+    # ROS
     # =========================================================
     def _setup_ros(self):
         try:
             self.camera_node = CameraNode("/webgui_image")
-            print("WebGUI subscribed to /webgui_image")
+            print("[ROS] subscribed to /webgui_image")
         except Exception as e:
-            print(f"ROS disabled: {e}")
+            print("[ROS ERROR]", e)
             self.camera_node = None
 
     def _start_threads(self):
@@ -105,15 +132,8 @@ class WebGUI(MeasuringThreadingGUI):
             self.executor = rclpy.executors.MultiThreadedExecutor()
             self.executor.add_node(self.camera_node)
 
-            threading.Thread(
-                target=self.executor.spin,
-                daemon=True
-            ).start()
-
-            threading.Thread(
-                target=self._image_loop,
-                daemon=True
-            ).start()
+            threading.Thread(target=self.executor.spin, daemon=True).start()
+            threading.Thread(target=self._image_loop, daemon=True).start()
 
     def _image_loop(self):
         while True:
@@ -123,111 +143,64 @@ class WebGUI(MeasuringThreadingGUI):
                     if img is not None:
                         self.showImage(img.data)
             except Exception as e:
-                print(f"Image loop error: {e}", file=sys.stderr)
+                print("[IMG LOOP ERROR]", e)
 
             threading.Event().wait(0.033)
 
     # =========================================================
-    # INPUT FROM FRONTEND
+    # GT STEP (manual or auto)
     # =========================================================
-    def gui_in_thread(self, ws, message):
-        TIME_FRAME_SIZE = 20
+    def step_gt(self):
+        if self.gt_index >= len(self.gt_positions):
+            print("[GT] END")
+            return
 
-        if "pick" in message:
-            self._handle_frame(message, TIME_FRAME_SIZE)
+        pos = self.gt_positions[self.gt_index]
+        self.gt_index += 1
 
-    def _handle_frame(self, message, time_frame_size):
-        try:
-            self.has_image = True
+        self.gt_path.append(pos)
 
-            base64_buffer = message[4:-time_frame_size]
-            timestamp = message[-time_frame_size:]
-
-            if base64_buffer.startswith("data:image/jpeg;base64,"):
-                base64_buffer = base64_buffer[len("data:image/jpeg;base64,"):]
-
-            image_data = base64.b64decode(base64_buffer)
-            nparr = np.frombuffer(image_data, np.uint8)
-            img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-            if img is None:
-                return
-
-            with self.frame_lock:
-                self.frame_rgb = img
-
-            try:
-                HAL.publish_input_image(img)
-            except Exception:
-                traceback.print_exc()
-
-            self.send_to_client(json.dumps({
-                "ack_img": "ok",
-                "time": timestamp
-            }))
-
-        except Exception as e:
-            print(f"Frame error: {e}", file=sys.stderr)
-            traceback.print_exc()
+        print(f"[GT] STEP {self.gt_index}: {pos}")
 
     # =========================================================
-    # OUTPUT LOOP
+    # UPDATE GUI (IMPORTANT PART FIXED)
     # =========================================================
     def update_gui(self):
+
         payload = self._encode_image()
 
         try:
             self.payload["image"] = json.dumps(payload["image"])
             self.payload["shape"] = json.dumps(payload["shape"])
-        except Exception:
-            self.payload["image"] = json.dumps("")
-            self.payload["shape"] = json.dumps("")
+        except:
+            self.payload["image"] = ""
+            self.payload["shape"] = ""
 
         # -----------------------------
-        # PROTECT 3D DATA (NO OVERWRITE)
+        # IMPORTANT: CLEAN SERIALIZATION
         # -----------------------------
-        protected_keys = {
-            "camera_position",
-            "camera_rotation",
-            "estimated_path",
-            "ground_truth_path",
-            "pts",
-            "pts3d",
-            "pts_kind",
-            "ts"
-        }
+        self.payload["ground_truth_path"] = [
+            [float(x), float(y), float(z)]
+            for x, y, z in self.gt_path
+        ]
 
-        # serialize safe fields only
-        for k in list(self.payload.keys()):
-            if k in protected_keys:
-                continue
+        self.payload["estimated_path"] = [
+            [float(x), float(y), float(z)]
+            for x, y, z in self.payload["estimated_path"]
+            if isinstance(x, (list, tuple)) and len(x) == 3
+        ]
 
-            try:
-                val = self.payload[k]
-
-                if isinstance(val, str):
-                    try:
-                        json.loads(val)
-                        message_val = val
-                    except Exception:
-                        message_val = json.dumps(val)
-                else:
-                    message_val = json.dumps(val)
-
-                self.payload[k] = message_val
-
-            except Exception:
-                traceback.print_exc()
+        # DEBUG
+        print("[SEND GT]", len(self.payload["ground_truth_path"]))
 
         try:
-            message = json.dumps(self.payload)
-            self.send_to_client(message)
+            self.send_to_client(json.dumps(self.payload))
         except Exception as e:
-            print(f"Failed to send payload: {e}", file=sys.stderr)
+            print("[SEND ERROR]", e)
             traceback.print_exc()
 
     # =========================================================
-    # IMAGE ENCODING
+    # IMAGE
     # =========================================================
     def _encode_image(self):
         with self.image_lock:
@@ -240,40 +213,21 @@ class WebGUI(MeasuringThreadingGUI):
 
         try:
             success, frame = cv2.imencode(".jpg", image)
-            if not success:
-                return payload
-
-            encoded = base64.b64encode(frame).decode("utf-8")
-
-            payload["image"] = encoded
-            payload["shape"] = image.shape
-
-        except Exception as e:
-            print(f"Encoding error: {e}", file=sys.stderr)
-            traceback.print_exc()
+            if success:
+                payload["image"] = base64.b64encode(frame).decode("utf-8")
+                payload["shape"] = image.shape
+        except:
+            pass
 
         return payload
 
-    # =========================================================
-    # PUBLIC API
-    # =========================================================
     def showImage(self, image):
-        if image is None:
-            return
-
         with self.image_lock:
-            try:
-                self.image_to_show = image.copy()
-            except Exception:
-                self.image_to_show = image
-
-    def getImage(self):
-        with self.frame_lock:
-            return self.frame_rgb
+            self.image_to_show = image.copy()
 
 
 # =========================================================
-# GLOBAL INSTANCE
+# GLOBAL
 # =========================================================
 host = "ws://127.0.0.1:2303"
 gui = WebGUI(host)
@@ -285,60 +239,8 @@ start_console()
 # API WRAPPERS
 # =========================================================
 def showImage(image):
-    if gui:
-        gui.showImage(image)
-
-def getImage():
-    if gui:
-        return gui.getImage()
-    return None
-
-def sendOdom(odom):
-    try:
-        if gui:
-            gui.payload["odom"] = {
-                "x": float(odom.get("x", 0.0)),
-                "y": float(odom.get("y", 0.0)),
-                "yaw": float(odom.get("yaw", 0.0))
-            }
-    except Exception:
-        traceback.print_exc()
+    gui.showImage(image)
 
 
-# =========================================================
-# NEW 3D API
-# =========================================================
-def publishPose3D(position, rotation=None):
-    if gui:
-        gui.payload["camera_position"] = [
-            float(position[0]),
-            float(position[1]),
-            float(position[2])
-        ]
-        if rotation is not None:
-            gui.payload["camera_rotation"] = rotation
-
-
-def publishEstimatedPath(path):
-    if gui:
-        gui.payload["estimated_path"] = [
-            [float(x), float(y), float(z)] for x, y, z in path
-        ]
-
-
-def publishGroundTruthPath(path):
-    if gui:
-        gui.payload["ground_truth_path"] = [
-            [float(x), float(y), float(z)] for x, y, z in path
-        ]
-
-
-def publishAll(position, estimated_path, gt_path):
-    if gui:
-        gui.payload["camera_position"] = [
-            float(position[0]),
-            float(position[1]),
-            float(position[2])
-        ]
-        gui.payload["estimated_path"] = estimated_path
-        gui.payload["ground_truth_path"] = gt_path
+def stepGroundTruth():
+    gui.step_gt()
