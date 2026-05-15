@@ -9,7 +9,7 @@
 | Obstacle Avoidance                   |        ok        |     ok      |      ok       |          | [Link][vid_obstacle]         |        ok         |         ok         | VFF         |
 | Global navigation                    |        ok        |     ok      |      ok       |          | [Link][vid_global_nav]       |        ok         |         ok         | GPP         |
 | Laser Gridmap mapping                |        ok        |     ok      |      ok       |          | [Link][vid_laser_mapping]    |                   |         ok         |             |
-| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
+| MonteCarlo Laser Loc                 |        ok        |     ok      |      ok       |          | [Link][vid_montecarlo_laser] |        ok         |         ok         | AMCL        |
 | MonteCarlo Visual Loc                |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         | AMCL        |
 | Marker-based visual Loc              |        ok        |     ok      |      ok       |          | [Link][vid_marker_loc]       |                   |         ok         | PnP         |
 | Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
@@ -56,3 +56,4 @@
 [vid_global_nav]: https://www.youtube.com/watch?v=mOqtXiUAny0
 [vid_marker_loc]: https://www.youtube.com/watch?v=HF57L6ekrRg
 [vid_drone_gymkhana]: https://www.youtube.com/watch?v=uNVWs_-JfV8
+[vid_montecarlo_laser]: https://www.youtube.com/watch?v=mkEZ-ffX6cA
