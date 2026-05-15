@@ -167,6 +167,15 @@ RUN python3.10 -m pip install torch --extra-index-url https://download.pytorch.o
 # monaco editor
 RUN python3.10 -m pip install black==24.10.0
 
+# Install ONNX Runtime C++ API
+RUN apt-get update && apt-get install -y wget && \
+    wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.17.1/onnxruntime-linux-x64-1.17.1.tgz -O /tmp/onnxruntime.tgz && \
+    tar -zxvf /tmp/onnxruntime.tgz -C /tmp && \
+    cp -r /tmp/onnxruntime-linux-x64-1.17.1/include/* /usr/local/include/ && \
+    cp -r /tmp/onnxruntime-linux-x64-1.17.1/lib/* /usr/local/lib/ && \
+    ldconfig && \
+    rm -rf /tmp/onnxruntime*
+
 # websocket server dependency
 RUN python3.10 -m pip install websocket_server==0.6.4 posix-ipc==1.1.1 django==4.1.7 djangorestframework==3.13.1 \
   django-webpack-loader==1.5.0 django-cors-headers==3.14.0 websockets==11.0.3 asyncio==3.4.3
