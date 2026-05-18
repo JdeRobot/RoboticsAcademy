@@ -15,19 +15,19 @@
 | Localized Vacuum Cleaner             |        ok        |     ok      |      ok       |          | [Link][vid_localized_vacuum] |        ok         |         ok         | BSA         |
 | Autoparking                          |        ok        |     ok      |      ok       |          | [Link][vid_autoparking]      |        ok         |         ok         |             |
 | Amazon Warehouse                     |        ok        |     ok      |      ok       |          | [Link][vid_amazon_warehouse] |        ok         |         ok         |             |
-| Follow Person                        |        ok        |     ok      |               |          | [Link][vid_follow_person]    |        ok         |         ok         |             |
+| Follow Person                        |        ok        |     ok      |      ok       |          | [Link][vid_follow_person]    |        ok         |         ok         |             |
 | Drone Follow Road                    |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 | Drone Rescue people                  |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 | Drone Gymkhana                       |        ok        |     ok      |      ok       |          | [Link][vid_drone_gymkhana]   |                   |         ok         |             |
 | Drone Power tower Inspection         |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 | Visual 3D reconstruction             |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         |             |
-| DL e2e Visual control                |        ok        |     ok      |               |          | -                            |        ok         |         ok         |             |
-| Basic Computer Vision                |        ok        |     ok      |               |          | [Link][vid_basic_cv]         |       none        |        none        |             |
-| DL image classification              |        ok        |     ok      |               |          | -                            |       none        |        none        |             |
-| DL visual object detection           |        ok        |     ok      |               |          | -                            |       none        |        none        |             |
-| Pick and Place                       |        ok        |     ok      |               |          | [Link][vid_pick_place]       |        ok         |         ok         |             |
+| DL e2e Visual control                |        ok        |     ok      |      ok       |          | -                            |        ok         |         ok         |             |
+| Basic Computer Vision                |        ok        |     ok      |      ok       |          | [Link][vid_basic_cv]         |       none        |        none        |             |
+| DL image classification              |        ok        |     ok      |      ok       |          | -                            |       none        |        none        |             |
+| DL visual object detection           |        ok        |     ok      |      ok       |          | -                            |       none        |        none        |             |
+| Pick and Place                       |        ok        |     ok      |      ok       |          | [Link][vid_pick_place]       |        ok         |         ok         |             |
 | Machine Vision with industrial robot |        ok        |             |               |          | [Link][vid_machine_vision]   |        ok         |                    |             |
-| Car junction                         |        ok        |     ok      |               |          | -                            |                   |         ok         |             |
+| Car junction                         |        ok        |     ok      |      ok       |          | -                            |                   |         ok         |             |
 
 ## 🚧 Exercises under repair / workshop state
 
