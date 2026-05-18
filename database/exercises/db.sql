@@ -125,10 +125,10 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 12	montecarlo_visual_loc	Montecarlo Visual Loc	Calculate the position of the robot based on the	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc
 13	marker_visual_loc	Marker Visual Loc	Calculate the position of the robot based on the	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/marker_visual_loc
 14	laser_mapping	Laser Mapping	Build a map based on sensor readings	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/laser_mapping
-15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	["ROS2"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision
+15	basic_computer_vision	Basic Computer Vision	Basic Computer Vision exercise using React and RAM	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/basic_computer_vision
 16	follow_road	Drone Follow Road	Drone Follow Road exercise	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_road
 17	pick_place	Pick and Place	Pick and Place exercise	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place
-18	image_classification	Image Classification	Deep learning-based Image Classification.	["Computer Vision","Deep Learning","Classification"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/image_classification
+18	image_classification	Image Classification	Deep learning-based Image Classification.	["Computer Vision","Deep Learning","Classification", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/image_classification
 19	object_detection	Visual Object Detection	Deep learning-based object detection.	["Computer Vision","Deep Learning", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/object_detection
 20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2", "Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
