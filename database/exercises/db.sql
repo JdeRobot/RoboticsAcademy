@@ -119,7 +119,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 6	global_navigation	Global Navigation	Global navigation exercise using REACT and RAM	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/global_navigation
 7	rescue_people	Drone Rescue People	Drone Rescue People exercise	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/rescue_people
 8	obstacle_avoidance	Obstacle Avoidance	Obstacle Avoidance exercise using React and RAM	["ROS2","AUTONOMOUS DRIVING",  "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/obstacle_avoidance
-9	3d_reconstruction	3D Reconstruction	3D Reconstruction exercise using React and RAM	["ROS2","COMPUTER VISION"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction
+9	3d_reconstruction	3D Reconstruction	3D Reconstruction exercise using React and RAM	["ROS2","COMPUTER VISION", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/3d_reconstruction
 10	amazon_warehouse	Amazon Warehouse	Control an amazon-like robot to organize a warehouse	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/amazon_warehouse
 11	montecarlo_laser_loc	Montecarlo Laser Loc	Calculate the position of the robot based on the	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/MobileRobots/montecarlo_laser_loc
 12	montecarlo_visual_loc	Montecarlo Visual Loc	Calculate the position of the robot based on the	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/montecarlo_visual_loc
