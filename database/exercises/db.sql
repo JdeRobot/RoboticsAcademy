@@ -129,7 +129,7 @@ COPY public.exercises (id, exercise_id, name, description, tags, status, url) FR
 16	follow_road	Drone Follow Road	Drone Follow Road exercise	["ROS2", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/follow_road
 17	pick_place	Pick and Place	Pick and Place exercise	["ROS2"]	PROTOTYPE	https://jderobot.github.io/RoboticsAcademy/exercises/IndustrialRobots/pick_place
 18	image_classification	Image Classification	Deep learning-based Image Classification.	["Computer Vision","Deep Learning","Classification"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/image_classification
-19	object_detection	Visual Object Detection	Deep learning-based object detection.	["Computer Vision","Deep Learning"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/object_detection
+19	object_detection	Visual Object Detection	Deep learning-based object detection.	["Computer Vision","Deep Learning", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/ComputerVision/object_detection
 20	drone_gymkhana	Drone Gymkhana	Drone Gymkhana	["ROS2", "Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/drone_gymkhana
 21	power_tower_inspection	Power Tower Inspection	Power Tower inspection using drones	["ROS2","Drones", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/Drones/power_tower_inspection
 22	end_to_end_visual_control	End to End Visual Control	End to end visual control using deep learning.	["Computer Vision","Deep Learning","AUTONOMOUS DRIVING", "MULTILANGUAGE"]	ACTIVE	https://jderobot.github.io/RoboticsAcademy/exercises/AutonomousCars/end_to_end_visual_control
